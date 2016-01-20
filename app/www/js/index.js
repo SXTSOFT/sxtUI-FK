@@ -17,6 +17,20 @@
  * under the License.
  */
 var app = {
+    appDir:function(){
+      return cordova.file.dataDirectory+'app';
+    },
+    getUrl:function(url){
+      return encodeURI('http://10.245.9.151:3000/'+url);
+    },
+    download:function(url,win,fail){
+      var versionTransFer = new FileTransfer();
+      versionTransFer.download(app.getUrl(url),app.appDir()+'/'+url,win,fail,false,{
+        headers:{
+          "Authorization": "Basic dGVzdHVzZXJuYW1lOnRlc3RwYXNzd29yZA=="
+        }
+      });
+    },
     // Application Constructor
     initialize: function() {
         this.bindEvents();
@@ -45,5 +59,27 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
+
+      try {
+        app.download('version.json', function (entry) {
+          entry.file(function(file){
+            var reader = new FileReader();
+            reader.onloadend = function (ev) {
+              var version =  JSON.parse(ev.target.result);
+
+              alert(ev.target.result);
+
+            };
+            reader.readAsText(file, "UTF-8");
+          },function(error){
+            alert(error.code);
+          })
+        }, function (error) {
+          alert('error:'+JSON.stringify(error));
+        });
+        console.log('Received Event: ' + id);
+      }catch(ex){
+        alert(JSON.stringify(ex));
+      }
     }
 };

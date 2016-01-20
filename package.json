@@ -1,7 +1,9 @@
 {
   "name": "fuse",
   "version": "1.2.1",
-  "dependencies": {},
+  "dependencies": {
+    "bower": "^1.7.2"
+  },
   "scripts": {
     "test": "gulp test"
   },
