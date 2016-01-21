@@ -9,15 +9,12 @@
 
             <form name="loginForm" novalidate>
                 <md-input-container class="md-block" md-no-float>
-                    <input type="email" name="email" ng-model="vm.form.email" placeholder="Email"
-                           translate translate-attr-placeholder="LOGIN.EMAIL"
-                           ng-pattern="/^.+@.+\..+$/" required>
-                    <div ng-messages="loginForm.email.$error" ng-show="loginForm.email.$touched" role="alert" multiple>
+                    <input type="text" name="username" ng-model="vm.form.username" placeholder="Email"
+                           translate translate-attr-placeholder="LOGIN.USERNAME"
+                           required>
+                    <div ng-messages="loginForm.username.$error" ng-show="loginForm.username.$touched" role="alert" multiple>
                         <div ng-message="required">
-                            <span translate="LOGIN.ERRORS.EMAIL_REQUIRED">Email field is required</span>
-                        </div>
-                        <div ng-message="pattern">
-                            <span translate="LOGIN.ERRORS.EMAIL_MUST_VALID">Email must be a valid e-mail address</span>
+                            <span translate="LOGIN.ERRORS.USERNAME_REQUIRED">用户名必须填写</span>
                         </div>
                     </div>
                 </md-input-container>
@@ -28,7 +25,7 @@
                            required>
                     <div ng-messages="loginForm.password.$error" ng-show="loginForm.password.$touched" role="alert">
                         <div ng-message="required">
-                            <span translate="LOGIN.ERRORS.PASSWORD_REQUIRED">Password field is required</span>
+                            <span translate="LOGIN.ERRORS.PASSWORD_REQUIRED">密码必须填写</span>
                         </div>
                     </div>
                 </md-input-container>
