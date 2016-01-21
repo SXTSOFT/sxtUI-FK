@@ -7,7 +7,7 @@
         .config(config);
 
     /** @ngInject */
-    function config($ariaProvider, $logProvider, msScrollConfigProvider, uiGmapGoogleMapApiProvider, $translateProvider, $provide, fuseConfigProvider)
+    function config($ariaProvider, $logProvider, msScrollConfigProvider, $translateProvider, $provide, fuseConfigProvider)
     {
         // ng-aria configuration
         $ariaProvider.config({
@@ -28,18 +28,12 @@
         toastr.options.preventDuplicates = true;
         toastr.options.progressBar = true;
 
-        // uiGmapgoogle-maps configuration
-        uiGmapGoogleMapApiProvider.configure({
-            //    key: 'your api key',
-            v        : '3.exp',
-            libraries: 'weather,geometry,visualization'
-        });
 
         // angular-translate configuration
         $translateProvider.useLoader('$translatePartialLoader', {
             urlTemplate: '{part}/i18n/{lang}.json'
         });
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('cn');
         $translateProvider.useSanitizeValueStrategy('sanitize');
 
         // Text Angular options

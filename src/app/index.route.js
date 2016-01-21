@@ -9,7 +9,7 @@
     /** @ngInject */
     function routeConfig($stateProvider, $urlRouterProvider, $locationProvider)
     {
-        $locationProvider.html5Mode(true);
+        //$locationProvider.html5Mode(true);
 
         $urlRouterProvider.otherwise('/sample');
 
@@ -55,6 +55,11 @@
                 main      : 'app/core/layouts/content-with-toolbar.html',
                 toolbar   : 'app/toolbar/layouts/content-with-toolbar/toolbar.html',
                 navigation: ''
+            },
+            contentWithFootbar  : {
+              main      : 'app/core/layouts/content-with-footbar.html',
+              toolbar   : 'app/toolbar/layouts/content-with-footbar/footbar.html',
+              navigation: ''
             }
         };
         // END - Layout Style Switcher

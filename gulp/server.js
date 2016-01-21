@@ -55,7 +55,12 @@ gulp.task('serve', ['watch'], function ()
 
 gulp.task('serve:dist', ['build'], function ()
 {
-    browserSyncInit(conf.paths.dist);
+  browserSyncInit(conf.paths.dist);
+});
+
+gulp.task('build:app', ['build-app'], function ()
+{
+  console.log('complete');
 });
 
 gulp.task('serve:e2e', ['inject'], function ()

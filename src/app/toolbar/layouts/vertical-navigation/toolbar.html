@@ -77,35 +77,35 @@
             </md-menu>
         </md-menu-bar>
 
-        <div class="toolbar-separator"></div>
+        <!--<div class="toolbar-separator"></div>-->
 
-        <md-menu id="language-menu" md-offset="0 72" md-position-mode="target-right target">
-            <md-button class="language-button" ng-click="$mdOpenMenu()"
-                       aria-label="Language" md-menu-origin md-menu-align-target>
-                <div layout="row" layout-align="center center">
-                    <img class="flag" ng-src="assets/images/flags/{{vm.selectedLanguage.flag}}.png">
-                    <span class="iso">{{vm.selectedLanguage.code}}</span>
-                </div>
-            </md-button>
+        <!--<md-menu id="language-menu" md-offset="0 72" md-position-mode="target-right target">-->
+            <!--<md-button class="language-button" ng-click="$mdOpenMenu()"-->
+                       <!--aria-label="Language" md-menu-origin md-menu-align-target>-->
+                <!--<div layout="row" layout-align="center center">-->
+                    <!--<img class="flag" ng-src="assets/images/flags/{{vm.selectedLanguage.flag}}.png">-->
+                    <!--<span class="iso">{{vm.selectedLanguage.code}}</span>-->
+                <!--</div>-->
+            <!--</md-button>-->
 
-            <md-menu-content width="3" id="language-menu-content">
-                <md-menu-item ng-repeat="(iso, lang) in vm.languages">
-                    <md-button ng-click="vm.changeLanguage(lang)" aria-label="{{lang.title}}" translate
-                               translate-attr-aria-label="{{lang.title}}">
-                        <span layout="row" layout-align="start center">
-                            <img class="flag" ng-src="assets/images/flags/{{lang.flag}}.png">
-                            <span translate="{{lang.translation}}">{{lang.title}}</span>
-                        </span>
-                    </md-button>
-                </md-menu-item>
-            </md-menu-content>
-        </md-menu>
+            <!--<md-menu-content width="3" id="language-menu-content">-->
+                <!--<md-menu-item ng-repeat="(iso, lang) in vm.languages">-->
+                    <!--<md-button ng-click="vm.changeLanguage(lang)" aria-label="{{lang.title}}" translate-->
+                               <!--translate-attr-aria-label="{{lang.title}}">-->
+                        <!--<span layout="row" layout-align="start center">-->
+                            <!--<img class="flag" ng-src="assets/images/flags/{{lang.flag}}.png">-->
+                            <!--<span translate="{{lang.translation}}">{{lang.title}}</span>-->
+                        <!--</span>-->
+                    <!--</md-button>-->
+                <!--</md-menu-item>-->
+            <!--</md-menu-content>-->
+        <!--</md-menu>-->
 
-        <div class="toolbar-separator"></div>
+        <!--<div class="toolbar-separator"></div>-->
 
-        <md-button id="quick-panel-toggle" class="md-icon-button" ng-click="vm.toggleSidenav('quick-panel')"
-                   aria-label="Toggle quick panel" translate translate-attr-aria-label="TOOLBAR.TOGGLE_QUICK_PANEL">
-            <md-icon md-font-icon="icon-format-list-bulleted" class="icon"></md-icon>
-        </md-button>
+        <!--<md-button id="quick-panel-toggle" class="md-icon-button" ng-click="vm.toggleSidenav('quick-panel')"-->
+                   <!--aria-label="Toggle quick panel" translate translate-attr-aria-label="TOOLBAR.TOGGLE_QUICK_PANEL">-->
+            <!--<md-icon md-font-icon="icon-format-list-bulleted" class="icon"></md-icon>-->
+        <!--</md-button>-->
     </div>
 </div>

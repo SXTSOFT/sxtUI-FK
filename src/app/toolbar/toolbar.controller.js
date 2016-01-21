@@ -135,19 +135,19 @@
              * end of this if block. If you have all the translation files, remove this if
              * block and the translations should work without any problems.
              */
-            if ( lang.code !== 'en' )
-            {
-                var message = 'Fuse supports translations through angular-translate module, but currently we do not have any translations other than English language. If you want to help us, send us a message through ThemeForest profile page.';
-
-                $mdToast.show({
-                    template : '<md-toast id="language-message" layout="column" layout-align="center start"><div class="md-toast-content">' + message + '</div></md-toast>',
-                    hideDelay: 7000,
-                    position : 'top right',
-                    parent   : '#content'
-                });
-
-                return;
-            }
+            //if ( lang.code !== 'en' )
+            //{
+            //    var message = 'Fuse supports translations through angular-translate module, but currently we do not have any translations other than English language. If you want to help us, send us a message through ThemeForest profile page.';
+            //
+            //    $mdToast.show({
+            //        template : '<md-toast id="language-message" layout="column" layout-align="center start"><div class="md-toast-content">' + message + '</div></md-toast>',
+            //        hideDelay: 7000,
+            //        position : 'top right',
+            //        parent   : '#content'
+            //    });
+            //
+            //    return;
+            //}
 
             // Change the language
             $translate.use(lang.code);
