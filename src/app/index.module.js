@@ -18,10 +18,10 @@
             'app.toolbar',
 
             // Quick panel
-            'app.quick-panel',
+            //'app.quick-panel',
 
             // Sample
-            'app.sample',
+            //'app.sample',
             'app.auth'
         ]);
 })();

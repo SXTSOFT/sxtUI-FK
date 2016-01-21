@@ -35,7 +35,7 @@
       });
 
     // Translation
-    //$translatePartialLoaderProvider.addPart('app/main/auth');
+    $translatePartialLoaderProvider.addPart('app/main/auth');
 
     // Navigation
     msNavigationServiceProvider.saveItem('auth', {
