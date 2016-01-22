@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('fuse')
+        .module('sxt')
         .config(routeConfig);
 
     /** @ngInject */
@@ -11,7 +11,7 @@
     {
         //$locationProvider.html5Mode(true);
 
-        $urlRouterProvider.otherwise('/auth/login');
+        $urlRouterProvider.otherwise('/');
 
         /**
          * Layout Style Switcher
@@ -80,10 +80,6 @@
                     'navigation@app': {
                         templateUrl: layouts[layoutStyle].navigation,
                         controller : 'NavigationController as vm'
-                    },
-                    'quickPanel@app': {
-                        templateUrl: 'app/quick-panel/quick-panel.html',
-                        controller : 'QuickPanelController as vm'
                     }
                 }
             });

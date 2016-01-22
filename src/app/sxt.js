@@ -131,7 +131,7 @@ window.sxt = (function(win)
           tx.executeSql('DELETE FROM Profiles WHERE id=?',[user.username],function(tx,results){
             tx.executeSql('INSERT INTO Profiles (id,pf) VALUES(?,?)',[user.username,JSON.stringify(user)],function(tx,results){
               callback && callback();
-            })
+            });
           });
         });
       })

@@ -15,21 +15,22 @@
     // State
     $stateProvider
       .state('app.auth', {
-        url    : '/auth/login',
+        url    : '/auth',
         views    : {
           'main@'                       : {
             templateUrl: 'app/core/layouts/content-only.html',
             controller : 'MainController as vm'
-          },
-          'content@app.auth': {
-            templateUrl: 'app/main/auth/login/login.html',
-            controller : 'LoginController as vm'
           }
         },
-        resolve: {
-          SampleData: function (apiResolver)
-          {
-            return apiResolver.resolve('sample@get');
+        abstract:true
+      })
+      .state('app.auth.login', {
+        auth     : false,
+        url      : '/login',
+        views    : {
+          'content@app.auth': {
+            templateUrl: 'app/main/auth/login/login.html',
+            controller: 'LoginController as vm'
           }
         }
       });

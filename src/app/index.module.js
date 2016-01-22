@@ -6,7 +6,7 @@
      * Main module of the Fuse
      */
     angular
-        .module('fuse', [
+        .module('sxt', [
 
             // Core
             'app.core',
@@ -21,7 +21,9 @@
             //'app.quick-panel',
 
             // Sample
-            //'app.sample',
+            'app.sample',
+
+            // auth
             'app.auth'
         ]);
 })();

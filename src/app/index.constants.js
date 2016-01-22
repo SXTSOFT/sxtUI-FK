@@ -3,5 +3,8 @@
     'use strict';
 
     angular
-        .module('fuse');
+      .module('sxt')
+      .constant('appConfig',{
+        apiUrl:'http://vkde.sxtsoft.com'
+      })
 })();

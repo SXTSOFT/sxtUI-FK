@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('fuse')
+        .module('sxt')
         .factory('api', apiService);
 
     /** @ngInject */

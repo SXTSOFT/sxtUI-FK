@@ -3,13 +3,13 @@
     'use strict';
 
     angular
-        .module('fuse')
+        .module('sxt')
         .config(config);
 
     /** @ngInject */
-    function config()
+    function config(appAuthProvider)
     {
-        // Put your custom configurations here
+      appAuthProvider.interceptors.push('vankeAuth');
     }
 
 })();

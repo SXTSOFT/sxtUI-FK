@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('fuse')
+        .module('sxt')
         .controller('MainController', MainController);
 
     /** @ngInject */
@@ -23,6 +23,6 @@
         });
     }
     angular.element(document).ready(function () {
-      angular.bootstrap(document, ['fuse']);
+      angular.bootstrap(document, ['sxt']);
     });
 })();

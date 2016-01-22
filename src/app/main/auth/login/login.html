@@ -7,9 +7,9 @@
 
             <div class="title" translate="LOGIN.TITLE">Log in to your account</div>
 
-            <form name="loginForm" novalidate>
+            <form name="loginForm" novalidate ng-submit="vm.login(loginForm)" >
                 <md-input-container class="md-block" md-no-float>
-                    <input type="text" name="username" ng-model="vm.form.username" placeholder="Email"
+                    <input type="text" name="username" ng-model="vm.form.username" placeholder="用户名"
                            translate translate-attr-placeholder="LOGIN.USERNAME"
                            required>
                     <div ng-messages="loginForm.username.$error" ng-show="loginForm.username.$touched" role="alert" multiple>
@@ -20,7 +20,7 @@
                 </md-input-container>
 
                 <md-input-container class="md-block" md-no-float>
-                    <input type="password" name="password" ng-model="vm.form.password" placeholder="Password"
+                    <input type="password" name="password" ng-model="vm.form.password" placeholder="密码"
                            translate translate-attr-placeholder="LOGIN.PASSWORD"
                            required>
                     <div ng-messages="loginForm.password.$error" ng-show="loginForm.password.$touched" role="alert">
@@ -32,23 +32,22 @@
 
                 <div class="remember-forgot-password" layout="row" layout-xs="column"
                      layout-align="space-between center">
-                    <md-checkbox class="remember-me" ng-model="data.cb1" aria-label="Remember Me">
-                        <span translate="LOGIN.REMEMBER_ME">Remember Me</span>
+                    <md-checkbox  class="remember-me" ng-model="data.cb1" aria-label="Remember Me">
+                        <span translate="LOGIN.REMEMBER_ME">记住我</span>
                     </md-checkbox>
 
-                    <a ui-sref="app.pages_auth_forgot-password" class="forgot-password md-accent-color"
-                       translate="LOGIN.FORGOT_PASSWORD">Forgot Password?</a>
+                    <a  class="forgot-password md-accent-color"
+                       translate="LOGIN.FORGOT_PASSWORD">忘记密码?</a>
                 </div>
 
-                <md-button type="submit" class="md-raised md-accent" aria-label="LOG IN"
-                           ng-disabled="loginForm.$invalid || loginForm.$pristine"
+                <md-button type="submit"  class="md-raised md-accent" aria-label="登录"
                            translate="LOGIN.LOG_IN" translate-attr-aria-label="LOGIN.LOG_IN">
-                    LOG IN
+                    登录
                 </md-button>
             </form>
 
             <div class="separator">
-                <span class="text" translate="LOGIN.OR">OR</span>
+                <span class="text" translate="LOGIN.OR">或</span>
             </div>
 
             <md-button class="md-raised google">
@@ -68,7 +67,6 @@
                 </span>
                 </div>
             </md-button>
-
             <div class="register" layout="row" layout-sm="column" layout-align="center center">
                 <span class="text" translate="LOGIN.DONT_HAVE_ACCOUNT">Don't have an account?</span>
                 <a class="link" ui-sref="app.pages_auth_register" translate="LOGIN.CREATE_ACCOUNT">Create an account</a>

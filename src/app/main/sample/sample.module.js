@@ -12,7 +12,7 @@
         // State
         $stateProvider
             .state('app.sample', {
-                url    : '/sample',
+                url    : '/',
                 views  : {
                     'content@app': {
                         templateUrl: 'app/main/sample/sample.html',

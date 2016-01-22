@@ -10,7 +10,7 @@
     function SampleController(SampleData)
     {
         var vm = this;
-
+ console.log('SampleController')
         // Data
         vm.helloText = SampleData.data.helloText;
 
