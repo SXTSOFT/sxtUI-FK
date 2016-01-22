@@ -7,11 +7,11 @@
     .run(runBlock);
 
   /** @ngInject */
-  function runBlock($rootScope, $timeout, $state, appAuth,$location)
+  function runBlock($rootScope, $timeout, $state, auth,$location)
   {
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-      if (toState.auth !== false && !appAuth.isLoggedIn()) {
-        appAuth.getUser(true).then(function(){
+      if (toState.auth !== false && !auth.isLoggedIn()) {
+        auth.getUser(true).then(function(){
           if(toState.name.indexOf('login')!=-1)
             $location.path('/');
           else

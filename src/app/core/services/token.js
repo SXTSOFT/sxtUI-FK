@@ -4,7 +4,7 @@
 (function(){
   'use strict';
   angular
-    .module('app.auth')
+    .module('app.core')
     .factory('authToken',authToken);
   /** @ngInject */
   function authToken($cookies){

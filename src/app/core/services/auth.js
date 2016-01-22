@@ -3,8 +3,8 @@
   'use strict';
 
   angular
-    .module('app.auth')
-    .provider('appAuth', appAuthProvider)
+    .module('app.core')
+    .provider('auth', appAuthProvider)
 
   /** @ngInject */
   function appAuthProvider()

@@ -11,6 +11,9 @@
     {
         var vm = this;
 
+        $rootScope.$on('user:login',function(user){
+          vm.user = user;
+        });
         // Data
         $rootScope.global = {
             search: ''

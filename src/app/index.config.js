@@ -7,9 +7,9 @@
         .config(config);
 
     /** @ngInject */
-    function config(appAuthProvider)
+    function config(authProvider)
     {
-      appAuthProvider.interceptors.push('vankeAuth');
+      authProvider.interceptors.push('vankeAuth');
     }
 
 })();
