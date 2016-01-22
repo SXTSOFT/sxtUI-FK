@@ -48,7 +48,7 @@
     msNavigationServiceProvider.saveItem('auth.login', {
       title    : '登录',
       icon     : 'icon-tile-four',
-      state    : 'app.auth',
+      state    : 'app.auth.login',
       weight   : 1
     });
   }
