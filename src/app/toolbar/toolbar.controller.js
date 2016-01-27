@@ -7,12 +7,16 @@
         .controller('ToolbarController', ToolbarController);
 
     /** @ngInject */
-    function ToolbarController($rootScope, $mdSidenav, $translate, $mdToast)
+    function ToolbarController($rootScope, $mdSidenav, $translate, $mdToast, auth)
     {
         var vm = this;
 
-        $rootScope.$on('user:login',function(user){
+        auth.getUser().then(function(user){
+          console.log('user',user)
           vm.user = user;
+        });
+        $rootScope.$on('user:logout',function(user){
+          vm.user = null;
         });
         // Data
         $rootScope.global = {
@@ -22,27 +26,27 @@
         vm.bodyEl = angular.element('body');
         vm.userStatusOptions = [
             {
-                'title': 'Online',
+                'title': '在线',
                 'icon' : 'icon-checkbox-marked-circle',
                 'color': '#4CAF50'
             },
             {
-                'title': 'Away',
+                'title': '忙碌',
                 'icon' : 'icon-clock',
                 'color': '#FFC107'
             },
             {
-                'title': 'Do not Disturb',
+                'title': '请勿打扰',
                 'icon' : 'icon-minus-circle',
                 'color': '#F44336'
             },
             {
-                'title': 'Invisible',
+                'title': '隐身',
                 'icon' : 'icon-checkbox-blank-circle-outline',
                 'color': '#BDBDBD'
             },
             {
-                'title': 'Offline',
+                'title': '离线',
                 'icon' : 'icon-checkbox-blank-circle-outline',
                 'color': '#616161'
             }
@@ -54,17 +58,11 @@
                 'code'       : 'en',
                 'flag'       : 'us'
             },
-            es: {
-                'title'      : 'Spanish',
+            cn: {
+                'title'      : '中文',
                 'translation': 'TOOLBAR.SPANISH',
-                'code'       : 'es',
-                'flag'       : 'es'
-            },
-            tr: {
-                'title'      : 'Turkish',
-                'translation': 'TOOLBAR.TURKISH',
-                'code'       : 'tr',
-                'flag'       : 'tr'
+                'code'       : 'cn',
+                'flag'       : 'cn'
             }
         };
 
@@ -116,7 +114,7 @@
          */
         function logout()
         {
-            // Do logout here..
+            auth.logout();
         }
 
         /**

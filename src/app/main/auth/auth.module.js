@@ -10,8 +10,10 @@
     .config(config);
 
   /** @ngInject */
-  function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
+  function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider,authProvider)
   {
+    authProvider.interceptors.push('vankeAuth');
+
     // State
     $stateProvider
       .state('app.auth', {

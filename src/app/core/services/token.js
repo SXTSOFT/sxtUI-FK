@@ -20,7 +20,7 @@
     return tokenInjector;
 
     function setToken(tk){
-      token = tk? tk.token_type + ' ' + tk.access_token : null;
+      token = tk && tk.token_type && tk.access_token ? tk.token_type + ' ' + tk.access_token : null;
       if(token)
         $cookies.put('token',token);
       else

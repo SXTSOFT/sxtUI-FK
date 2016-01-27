@@ -4,6 +4,7 @@
   "dependencies": {
     "angular": "1.4.8",
     "angular-animate": "1.4.8",
+    "angular-mocks": "1.4.8",
     "angular-aria": "1.4.8",
     "angular-chart.js": "0.8.8",
     "angular-cookies": "1.4.8",
@@ -28,10 +29,11 @@
     "angular-xeditable": "0.1.9",
     "Sortable": "1.4.2",
     "jqueryui-touch-punch": "*",
-    "angular-moment-picker": "moment-picker#5e5b007"
+    "angular-moment-picker": "moment-picker#5e5b007",
+    "IndexedDBShim": "~2.2.1"
   },
   "devDependencies": {
-    "angular-mocks": "1.4.8"
+
   },
   "resolutions": {
     "angular": "1.4.8",

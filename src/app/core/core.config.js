@@ -7,72 +7,77 @@
         .config(config);
 
     /** @ngInject */
-    function config($ariaProvider, $logProvider, msScrollConfigProvider, $translateProvider, $provide, fuseConfigProvider)
+    function config($ariaProvider, $logProvider, msScrollConfigProvider, $translateProvider, $provide, fuseConfigProvider, $httpProvider)
     {
-        // ng-aria configuration
-        $ariaProvider.config({
-            tabindex: false
-        });
+      $httpProvider.interceptors.push('authToken');
 
-        // Enable debug logging
-        $logProvider.debugEnabled(true);
+      // ng-aria configuration
+      $ariaProvider.config({
+          tabindex: false
+      });
 
-        // msScroll configuration
-        msScrollConfigProvider.config({
-            wheelPropagation: true
-        });
+      // Enable debug logging
+      $logProvider.debugEnabled(true);
 
-        // toastr configuration
-        toastr.options.timeOut = 3000;
-        toastr.options.positionClass = 'toast-top-right';
-        toastr.options.preventDuplicates = true;
-        toastr.options.progressBar = true;
+      // msScroll configuration
+      msScrollConfigProvider.config({
+          wheelPropagation: true
+      });
+
+      // toastr configuration
+      toastr.options.timeOut = 3000;
+      toastr.options.positionClass = 'toast-top-right';
+      toastr.options.preventDuplicates = true;
+      toastr.options.progressBar = true;
 
 
-        // angular-translate configuration
-        $translateProvider.useLoader('$translatePartialLoader', {
-            urlTemplate: '{part}/i18n/{lang}.json'
-        });
-        $translateProvider.preferredLanguage('cn');
-        $translateProvider.useSanitizeValueStrategy('sanitize');
+      // angular-translate configuration
+      $translateProvider.useLoader('$translatePartialLoader', {
+          urlTemplate: '{part}/i18n/{lang}.json'
+      });
+      $translateProvider.preferredLanguage('cn');
+      $translateProvider.useSanitizeValueStrategy('sanitize');
 
-        // Text Angular options
-        $provide.decorator('taOptions', [
-            '$delegate', function (taOptions)
-            {
-                taOptions.toolbar = [
-                    ['bold', 'italics', 'underline', 'ul', 'ol', 'quote']
-                ];
+      // Text Angular options
+      $provide.decorator('taOptions', [
+          '$delegate', function (taOptions)
+          {
+              taOptions.toolbar = [
+                  ['bold', 'italics', 'underline', 'ul', 'ol', 'quote']
+              ];
 
-                taOptions.classes = {
-                    focussed           : 'focussed',
-                    toolbar            : 'ta-toolbar',
-                    toolbarGroup       : 'ta-group',
-                    toolbarButton      : 'md-button',
-                    toolbarButtonActive: 'active',
-                    disabled           : '',
-                    textEditor         : 'form-control',
-                    htmlEditor         : 'form-control'
-                };
+              taOptions.classes = {
+                  focussed           : 'focussed',
+                  toolbar            : 'ta-toolbar',
+                  toolbarGroup       : 'ta-group',
+                  toolbarButton      : 'md-button',
+                  toolbarButtonActive: 'active',
+                  disabled           : '',
+                  textEditor         : 'form-control',
+                  htmlEditor         : 'form-control'
+              };
 
-                return taOptions;
-            }
-        ]);
+              return taOptions;
+          }
+      ]);
 
-        // Text Angular tools
-        $provide.decorator('taTools', [
-            '$delegate', function (taTools)
-            {
-                taTools.bold.iconclass = 'icon-format-bold';
-                taTools.italics.iconclass = 'icon-format-italic';
-                taTools.underline.iconclass = 'icon-format-underline';
-                taTools.ul.iconclass = 'icon-format-list-bulleted';
-                taTools.ol.iconclass = 'icon-format-list-numbers';
-                taTools.quote.iconclass = 'icon-format-quote';
+      // Text Angular tools
+      $provide.decorator('taTools', [
+          '$delegate', function (taTools)
+          {
+              taTools.bold.iconclass = 'icon-format-bold';
+              taTools.italics.iconclass = 'icon-format-italic';
+              taTools.underline.iconclass = 'icon-format-underline';
+              taTools.ul.iconclass = 'icon-format-list-bulleted';
+              taTools.ol.iconclass = 'icon-format-list-numbers';
+              taTools.quote.iconclass = 'icon-format-quote';
 
-                return taTools;
-            }
-        ]);
+              return taTools;
+          }
+      ]);
+
+      console.log('mock',angular.mock)
+        //$provide.decorator('$httpBackend',angular.mock.e2e.$httpBackendDecorator);
 
         // Fuse theme configurations
         fuseConfigProvider.config({

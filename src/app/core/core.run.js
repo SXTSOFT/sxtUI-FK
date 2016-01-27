@@ -7,40 +7,60 @@
         .run(runBlock);
 
     /** @ngInject */
-    function runBlock(msUtils, fuseGenerator, fuseConfig)
+    function runBlock(msUtils, fuseGenerator, fuseConfig, $httpBackend, $rootScope, $timeout, $state, auth,$location,$q)
     {
-        /**
-         * Generate extra classes based on registered themes so we
-         * can use same colors with non-angular-material elements
-         */
-        fuseGenerator.generate();
+      /**
+       * Generate extra classes based on registered themes so we
+       * can use same colors with non-angular-material elements
+       */
+      fuseGenerator.generate();
 
-        /**
-         * Disable md-ink-ripple effects on mobile
-         * if 'disableMdInkRippleOnMobile' config enabled
-         */
-        if ( fuseConfig.getConfig('disableMdInkRippleOnMobile') && msUtils.isMobile() )
-        {
-            var bodyEl = angular.element('body');
-            bodyEl.attr('md-no-ink', true);
-        }
+      /**
+       * Disable md-ink-ripple effects on mobile
+       * if 'disableMdInkRippleOnMobile' config enabled
+       */
+      if ( fuseConfig.getConfig('disableMdInkRippleOnMobile') && msUtils.isMobile() )
+      {
+        var bodyEl = angular.element('body');
+        bodyEl.attr('md-no-ink', true);
+      }
 
-        /**
-         * Put isMobile() to the html as a class
-         */
-        if ( msUtils.isMobile() )
-        {
-            angular.element('html').addClass('is-mobile');
-        }
+      /**
+       * Put isMobile() to the html as a class
+       */
+      if ( msUtils.isMobile() )
+      {
+        angular.element('html').addClass('is-mobile');
+      }
 
-        /**
-         * Put browser information to the html as a class
-         */
-        var browserInfo = msUtils.detectBrowser();
-        if ( browserInfo )
-        {
-            var htmlClass = browserInfo.browser + ' ' + browserInfo.version + ' ' + browserInfo.os;
-            angular.element('html').addClass(htmlClass);
+      /**
+       * Put browser information to the html as a class
+       */
+      var browserInfo = msUtils.detectBrowser();
+      if ( browserInfo )
+      {
+        var htmlClass = browserInfo.browser + ' ' + browserInfo.version + ' ' + browserInfo.os;
+        angular.element('html').addClass(htmlClass);
+      }
+
+
+      $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        if (toState.auth !== false && !auth.isLoggedIn()) {
+          auth.getUser(true).then(function(){
+            if(toState.name.indexOf('login')!=-1)
+              $timeout(function(){$location.path('/');},100);
+            else
+              $state.go(toState.name, toParams);
+          });
+          event.preventDefault ();
         }
+      });
+
+      //$httpBackend.whenGET(/^\/.json\//).passThrough();
+      $httpBackend.when('GET',function(url){
+        console.log('get',url);
+        return true;
+      }).passThrough();
+
     }
 })();

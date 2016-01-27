@@ -7,45 +7,49 @@
         .config(config);
 
     /** @ngInject */
-    function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
+    function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider,apiProvider)
     {
-        // State
-        $stateProvider
-            .state('app.sample', {
-                url    : '/',
-                views  : {
-                    'content@app': {
-                        templateUrl: 'app/main/sample/sample.html',
-                        controller : 'SampleController as vm'
-                    }
-                },
-                resolve: {
-                    SampleData: function (apiResolver)
-                    {
-                        return apiResolver.resolve('sample@get');
-                    }
-                }
-            });
+      // State
+      $stateProvider
+          .state('app.sample', {
+              url    : '/',
+              views  : {
+                  'content@app': {
+                      templateUrl: 'app/main/sample/sample.html',
+                      controller : 'SampleController as vm'
+                  }
+              },
+              resolve: {
+                  SampleData: function (apiResolver)
+                  {
+                      return apiResolver.resolve('sample@get');
+                  }
+              }
+          });
 
-        // Translation
-        $translatePartialLoaderProvider.addPart('app/main/sample');
+      // Translation
+      $translatePartialLoaderProvider.addPart('app/main/sample');
 
-        // Navigation
-        msNavigationServiceProvider.saveItem('fuse', {
-            title : 'SAMPLE',
-            group : true,
-            weight: 1
-        });
+      // Navigation
+      msNavigationServiceProvider.saveItem('fuse', {
+          title : 'SAMPLE',
+          group : true,
+          weight: 1
+      });
 
-        msNavigationServiceProvider.saveItem('fuse.sample', {
-            title    : 'Sample',
-            icon     : 'icon-tile-four',
-            state    : 'app.sample',
-            /*stateParams: {
-                'param1': 'page'
-             },*/
-            translate: 'SAMPLE.SAMPLE_NAV',
-            weight   : 1
-        });
+      msNavigationServiceProvider.saveItem('fuse.sample', {
+          title    : 'Sample',
+          icon     : 'icon-tile-four',
+          state    : 'app.sample',
+          /*stateParams: {
+              'param1': 'page'
+           },*/
+          translate: 'SAMPLE.SAMPLE_NAV',
+          weight   : 1
+      });
+
+      var $http = apiProvider.$http;
+      apiProvider.register('sample',$http.resource('app/data/sample/sample.json'));
+
     }
 })();

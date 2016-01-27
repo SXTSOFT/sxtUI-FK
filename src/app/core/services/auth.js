@@ -17,9 +17,9 @@
 
     this.$get = appAuth;
 
-    appAuth.$injector = ['$q','$injector','authToken','$state','$rootScope','$location'];
+    appAuth.$injector = ['$q','$injector','authToken','$state','$rootScope','$location','sxt'];
 
-    function appAuth($q,$injector,authToken,$state,$rootScope,$location){
+    function appAuth($q,$injector,authToken,$state,$rootScope,$location, sxt){
 
       var reversedInterceptors = [];
 
@@ -34,7 +34,8 @@
         login      : login,
         getUser    : getUser,
         autoLogin  : autoLogin,
-        currentUser: loginedUser
+        currentUser: loginedUser,
+        logout     : logout
       };
 
       //判断用户是否登录
@@ -44,59 +45,45 @@
 
       //根据用户凭据获取token
       function token(user) {
-        var chain = [];
-        var promise = $q.when (user);
-        forEach (reversedInterceptors, function (interceptor) {
-          if (interceptor.token) {
-            chain.unshift(interceptor.token);
-          }
-        });
-
-        while (chain.length) {
-          var thenFn = chain.shift ();
-          promise = promise.then(thenFn);
-        }
-        return promise;
+        return sxt.invoke(reversedInterceptors, 'token' ,user)
       }
 
       //根据token获取个人信息调用
       function profile(token) {
-        var chain = [];
-        var promise = $q.when (token);
-        forEach (reversedInterceptors, function (interceptor) {
-          if (interceptor.profile) {
-            chain.unshift(interceptor.profile);
-          }
-        });
-
-        while (chain.length) {
-          var thenFn = chain.shift ();
-          promise = promise.then(thenFn)
-        }
-        return promise;
+        return sxt.invoke(reversedInterceptors, 'profile' ,token)
       }
 
       // 根据用户凭据登录系统
       function login(user){
         return token(user).then(function(token){
           authToken.setToken(token);
-          getProfile(token);
+          getProfile(token,user);
         },function(){
           $state.go('app.auth.login');
         });
       }
 
       // 根据用户token登录系统
-      function getProfile(token){
-        profile(token).then(function(user){
-          loginedUser = user;
+      function getProfile(token,user){
+         profile(token).then(function(profile){
+           if(token == profile)
+            profile = null;
+
+          loginedUser = profile;
           if(!loginedUser)
             $state.go('app.auth.login');
           else {
-            $rootScope.$emit ('user:login', user);
-            if(!autoLoginPath){
-              $location.path('/');
-            }
+            profile.username = profile.username||profile.Id;
+            profile.token = token;
+            profile.user = user;
+            sxt.cache.setProfile(profile,function(){
+              console.log('save sql',profile);
+              $rootScope.$emit ('user:login', profile);
+              if(!autoLoginPath){
+                $location.path('/');
+              }
+            })
+
           }
         });
       }
@@ -121,6 +108,14 @@
         return getUser().then(function(user){
           autoLoginPath = false;
           return user;
+        });
+      }
+
+      // 退出登录
+      function logout(){
+        sxt.cache.removeProfile(loginedUser, function(){
+          $rootScope.$emit ('user:logout', loginedUser);
+          $state.go('app.auth.login');
         });
       }
     }
