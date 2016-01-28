@@ -53,6 +53,14 @@
     }
 
     function cfg(method){
+      if(method == 'custom' || method=='resource'){
+        return function (){
+          return {
+            method : method,
+            args: Array.prototype.slice.call(arguments)
+          };
+        }
+      }
       return function () {
         return provider.$http.$http[method].apply(this,Array.prototype.slice.call(arguments));
       };

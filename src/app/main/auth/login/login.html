@@ -1,34 +1,26 @@
 <div id="login" class="flex-scrollable login1" layout="column" ms-scroll>
-    <div id="login-form-wrapper" layout="column" layout-align="center center">
-        <div id="login-form" class="md-whiteframe-8dp wklogo">
-            <div class=" md-accent-bg logo">
-                <span><img src="//app/main/auth/images/logo.png"> </span>
+    <div id="login-form-wrapper" layout="column" layout-align="center center" layout-align-xs="center start">
+        <div id="login-form" >
+            <div class="logo">
+                <span><img src="/app/main/auth/images/logo.png"> </span>
             </div>
 
             <!--<div class="title" translate="LOGIN.TITLE">万科数字工程</div>-->
 
             <form name="loginForm" novalidate ng-submit="vm.login(loginForm)" >
                 <div class="login-name">
-                  <md-input-container class="md-block input-name" md-no-float>
-                    <input type="text" name="username" ng-model="vm.form.username" placeholder="用户名"
+                  <md-input-container class="md-block" md-no-float>
+                    <md-icon md-svg-src="/app/main/auth/images/user.svg"></md-icon>
+                    <input type="text" name="username" ng-model="vm.form.username" placeholder="请输入用户名"
                            translate translate-attr-placeholder="LOGIN.USERNAME"
                            required>
-                    <div ng-messages="loginForm.username.$error" ng-show="loginForm.username.$touched" role="alert" multiple>
-                      <div ng-message="required">
-                        <span translate="LOGIN.ERRORS.USERNAME_REQUIRED" style="font-size:30px; margin:10px 0;display: block">用户名必须填写</span>
-                      </div>
-                    </div>
                   </md-input-container>
-
-                  <md-input-container class="md-block input-psw" md-no-float>
-                    <input type="password" name="password" ng-model="vm.form.password" placeholder="密码"
+                  <md-divider></md-divider>
+                  <md-input-container class="md-block" md-no-float>
+                    <md-icon md-svg-src="/app/main/auth/images/password.svg"></md-icon>
+                    <input type="password" name="password" ng-model="vm.form.password" placeholder="请输入密码"
                            translate translate-attr-placeholder="LOGIN.PASSWORD"
                            required>
-                    <div ng-messages="loginForm.password.$error" ng-show="loginForm.password.$touched" role="alert">
-                      <div ng-message="required">
-                        <span translate="LOGIN.ERRORS.PASSWORD_REQUIRED"  style="font-size:30px; margin:10px 0;display: block">密码必须填写</span>
-                      </div>
-                    </div>
                   </md-input-container>
                 </div>
 
@@ -42,11 +34,12 @@
                     <a  class="forgot-password md-accent-color"
                        translate="LOGIN.FORGOT_PASSWORD" href="">忘记密码?</a>
                 </div>-->
-
-                <md-button type="submit"  class="md-raised md-red" aria-label="登录" flex="100"
+              <div layout="row" layout-align="center center">
+                <md-button type="submit" flex="90"  class="md-raised md-warn" aria-label="登录"
                            translate="LOGIN.LOG_IN" translate-attr-aria-label="LOGIN.LOG_IN">
                     登录
                 </md-button>
+            </div>
             </form>
 
             <!--<div class="separator">-->

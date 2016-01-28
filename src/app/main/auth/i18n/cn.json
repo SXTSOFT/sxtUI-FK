@@ -1,8 +1,8 @@
 {
   "LOGIN": {
     "TITLE": "登录您的帐号",
-    "USERNAME": "用户名",
-    "PASSWORD": "密码",
+    "USERNAME": "请输入用户名",
+    "PASSWORD": "请输入密码",
     "REMEMBER_ME": "记住我",
     "FORGOT_PASSWORD": "忘记密码?",
     "LOG_IN": "登录",

@@ -1,218 +1,81 @@
-#login {
-    height: 100%;
-   // background: url('/assets/images/backgrounds/march.jpg') no-repeat;
-    background-size: cover;
+#login-form{
 
-    #login-form-wrapper {
-        flex: 1 0 auto;
-        padding: 32px;
+   width: 300px;
 
-        #login-form {
-            width: 750px;
-            max-width: 750px;
-            height: 1334px;
-            padding: 32px;
-            background: #FFFFFF;
-            text-align: center;
-
-            .logo {
-                width: 128px;
-                height: 128px;
-                line-height: 128px;
-                font-size: 86px;
-                font-weight: 500;
-                margin: 32px auto;
-                color: #FFFFFF;
-                border-radius: 2px;
-            }
-
-            .title {
-                font-size: 17px;
-                margin: 16px 0 32px 0;
-            }
-
-            form {
-                width: 100%;
-                text-align: left;
-
-                md-checkbox {
-                    margin: 0;
-                }
-
-                .remember-forgot-password {
-                    font-size: 13px;
-                    margin-top: 8px;
-
-                    .remember-me {
-                        margin-bottom: 16px
-                    }
-
-                    .forgot-password {
-                        font-size: 13px;
-                        font-weight: 500;
-                        margin-bottom: 16px
-                    }
-                }
-
-                .md-button {
-                    width: 220px;
-                    margin: 16px auto;
-                    display: block;
-                }
-            }
-
-            .register {
-                margin: 32px auto 24px auto;
-                width: 250px;
-                font-weight: 500;
-
-                .text {
-                    margin-right: 8px;
-                }
-
-                .link {
-
-                }
-            }
-
-            .separator {
-                font-size: 15px;
-                font-weight: 600;
-                margin: 24px auto 16px auto;
-                position: relative;
-                overflow: hidden;
-                width: 100px;
-                color: rgba(0, 0, 0, 0.54);
-
-                .text {
-                    display: inline-block;
-                    vertical-align: baseline;
-                    position: relative;
-                    padding: 0 8px;
-                    z-index: 9999;
-
-                    &:before, &:after {
-                        content: '';
-                        display: block;
-                        width: 30px;
-                        position: absolute;
-                        top: 10px;
-                        border-top: 1px solid rgba(0, 0, 0, 0.12);
-                    }
-
-                    &:before {
-                        right: 100%;
-                    }
-
-                    &:after {
-                        left: 100%;
-                    }
-                }
-            }
-
-            .md-button {
-
-                &.google,
-                &.facebook {
-                    width: 192px;
-                    text-transform: none;
-                    color: #FFFFFF;
-                    font-size: 13px;
-
-                    md-icon {
-                        color: #FFFFFF;
-                        margin: 0 8px 0 0;
-                    }
-                }
-
-                &.google {
-                    background-color: #D73D32;
-                }
-
-                &.facebook {
-                    background-color: rgb(63, 92, 154);
-                }
-            }
-        }
+  .logo{
+    margin-top: 25px;
+    text-align: center;
+    img{
+      width:120px;
     }
-}
+  }
 
-// RESPONSIVE
+  .login-name{
+    background: white;
+    border: 1px solid silver;
+    padding: 0 15px;
+    margin: 30px 0 20px 0;
+    width: 100%;
+  }
+
+  md-input-container{
+    margin:10px 0;
+
+    input{
+      background: transparent!important;
+      line-height: 24px!important;
+      border: 0px!important;
+      &.ng-invalid {
+        &::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+          color: red;
+        }
+        &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+          color: red;
+          opacity: 1;
+        }
+        &::-moz-placeholder { /* Mozilla Firefox 19+ */
+          color: red;
+          opacity: 1;
+        }
+        &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+          color: red;
+        }
+        &:placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
+          color: red;
+        }
+      }
+    }
+  }
+
+  .md-errors-spacer{
+    display: none;
+  }
+}
 @media screen and (max-width: $layout-breakpoint-xs) {
 
-    #login {
+  #login {
 
-        #login-form-wrapper {
-            padding: 16px;
+    #login-form-wrapper {
 
-            #login-form {
-                padding: 24px;
-                width: 100%;
+      #login-form {
+        width: 100%;
 
-                form {
+        form {
 
-                    .md-button {
-                        width: 90%;
-                    }
-                }
-
-                .md-button {
-
-                    &.google,
-                    &.facebook {
-                        width: 80%;
-                    }
-                }
-            }
+          .md-button {
+            width: 90%;
+          }
         }
+
+        .md-button {
+
+          &.google,
+          &.facebook {
+            width: 80%;
+          }
+        }
+      }
     }
+  }
 
-}
-.wklogo .md-accent-bg{
-  background-color: transparent !important;
-}
-
-.input-name input{
-  background: url('/app/main/auth/images/name.png') left center no-repeat;
-  padding-left:60px;
-  line-height: 91px;
-  height: 99px;
-  font-size: 30px;
-}
-.input-psw input{
-  background: url('/app/main/auth/images/psw.png') left center no-repeat;
-  padding-left:60px;
-  line-height: 91px;
-  height: 99px;
-  font-size: 30px;
-}
-.md-red{
-  background:rgb(232, 44, 46)!important;
-  color:#fff !important;
-  width:95% !important;
-  margin:44px auto !important;
-  height: 85px;
-  font-size: 32px;
-}
-.member md-checkbox.md-default-theme.md-checked .md-icon, md-checkbox.md-checked .md-icon {
-  background-color: rgb(232, 44, 46);
-}
-input:-webkit-autofill{
-  background-color: transparent !important;
-}
-.login1 #login-form-wrapper #login-form{
-  background: #f5f5f5 !important;
-  padding: 0px !important;
-}
-.login-name{
-  background: #fff;
-  padding: 0 38px;
-  border-bottom: 1px solid #DAD4D4;
-  border-top: 1px solid #DAD4D4;
-}
-md-input-container{
-  margin: 10px 0 !important;
-}
-#login #login-form-wrapper #login-form .logo{
-  margin: 100px auto 130px auto;
 }
