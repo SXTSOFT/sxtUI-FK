@@ -5,7 +5,6 @@
     angular
         .module('app.core',
             [
-                'ngMockE2E',
                 'ngAnimate',
                 'ngAria',
                 'ngCookies',

@@ -52,7 +52,7 @@
 
     function profile(token){
       if(!sxt.connection.isOnline())return token;
-      if(token && !token.username) {
+      if(!token || !token.username) {
         return $q (function (resolve, reject) {
           $http
             .get (appConfig.apiUrl + '/api/Security/Account/UserInfo', {t: new Date ().getTime ()})

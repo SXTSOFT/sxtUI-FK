@@ -56,11 +56,5 @@
         }
       });
 
-      //$httpBackend.whenGET(/^\/.json\//).passThrough();
-      $httpBackend.when('GET',function(url){
-        console.log('get',url);
-        return true;
-      }).passThrough();
-
     }
 })();

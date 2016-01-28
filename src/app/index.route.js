@@ -7,7 +7,7 @@
         .config(routeConfig);
 
     /** @ngInject */
-    function routeConfig($stateProvider, $urlRouterProvider, $locationProvider)
+    function routeConfig($stateProvider, $urlRouterProvider)
     {
         //$locationProvider.html5Mode(true);
 
@@ -33,7 +33,7 @@
         ]);
 
         // Get active layout
-        var layoutStyle = $cookies.get('layoutStyle') || 'verticalNavigation';
+        var layoutStyle = 'contentWithFootbar';// : 'verticalNavigation';
 
         var layouts = {
             verticalNavigation  : {

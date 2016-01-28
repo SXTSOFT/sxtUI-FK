@@ -24,6 +24,8 @@
             'app.sample',
 
             // auth
-            'app.auth'
+            'app.auth',
+
+            'app.szgc'
         ]);
 })();
