@@ -1,0 +1,61 @@
+﻿<section class="panel" style="border-top-width:0;" >
+
+    <div class="menu-toggle-list" ng-show="!searBarHide">
+
+        <sxt-projects-jd ng-model="project.pid" levels="0" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree">
+            <md-list>
+                <md-subheader class="md-no-sticky">录入时间：</md-subheader>
+                <md-list-item>
+                    <input class="form-control" type="date" value="" ng-model="m.sDate" />
+                </md-list-item>
+                <md-subheader class="md-no-sticky">至</md-subheader>
+                <md-list-item>
+                    <input class="form-control" type="date" value="" ng-model="m.eDate" />
+                </md-list-item>
+            </md-list>
+        </sxt-projects-jd>
+    </div>
+    <div style="text-align:right"><toggle-menu inst="searBarHide"></toggle-menu></div>
+            <form method="post" action="http://szdp.vanke.com:8088/api/Report/GetBatchCountReport" target="_blank">
+                <input id="export" type="hidden" name="table" />
+
+                <md-button class="md-raised md-primary" ng-click="printBatchCount()" type="submit">Excel导出</md-button>
+            </form>
+    <div id="dvBatchCount">
+        <div >
+            <p class="bc_title">项目填报统计表</p>
+            <table class="table wk-table" contenteditable="true" width="100%">
+                <thead>
+                    <tr style="background:#5191d1; color:#fff;border-bottom:2px solid #fff;">
+                        <th width="30%">项目名称</th>
+                        <th width="15%">时间</th>
+                        <th width="18%">录入人数</th>
+                        <th width="10%">土建</th>
+                        <th width="10%">机电</th>
+                        <th width="10%">装修</th>
+                        <th width="17%">合计</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in batchData2" style="background :{{item.myCol}};border-bottom:1px solid #ddd; padding:8px">
+                        <td rowspan="{{item.colp}}" ng-if="item.colp">{{item.projectName}}</td>
+                        <td>{{item.CreatedTime}}</td>
+                        <td>{{item.jlNumber}}</td>
+                        <td>{{item.tjNumber}}</td>
+                        <td>{{item.jdNumber}}</td>
+                        <td>{{item.zxNumber}}</td>
+                        <td>{{item.dayCountNumber}}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <style type="text/css">
+                    th, td {
+                text-align: center;
+            }
+
+        </style>
+    </div>
+    </section>

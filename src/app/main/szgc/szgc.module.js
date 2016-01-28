@@ -10,7 +10,7 @@
     .config(config);
 
   /** @ngInject */
-  function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider,authProvider)
+  function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
   {
 
 
@@ -36,7 +36,18 @@
             controller: 'SzgcReportController as vm'
           }
         }
-      });
+      })
+      .state('app.szgc.report.viewBath', {
+        url: '/viewBath',
+        controller: 'viewBathController',
+        templateUrl: 'app/main/szgc/report/viewBath-app.html'
+      })
+      .state('app.szgc.report.batchCount', {
+        url:'/batchCount',
+        controller: 'batchCountController',
+        templateUrl: 'app/main/szgc/report/batchCount-app.html'
+      })
+
 
     // Translation
     //$translatePartialLoaderProvider.addPart('app/main/auth');

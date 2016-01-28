@@ -1,0 +1,28 @@
+﻿<div>
+    <md-list ng-show="selectors.length && selectors[0].selected">
+        <md-subheader class="md-no-sticky">已选择项</md-subheader>
+         <md-list-item ng-repeat="st in selectors" ng-if="st.selected"><p>{{st.label}}：{{st.selected.$name}}</p><md-checkbox class="md-secondary"  ng-click="item_clear(st.index)"  ng-checked="1"></md-checkbox></md-list-item>
+        <md-divider></md-divider>
+</md-list>
+
+    <div ng-repeat="st in selectors" data-title="{{st.label}}" ng-if="st.items.length" class="J_selectorLine s-brand" ng-show="isShow(st)">
+        <md-list>
+            <md-subheader class="md-no-sticky">
+                <div layout="row">
+                    <div flex="none" class="stlabel">{{st.label}}</div>
+                    <div flex>
+                        <md-button class="md-fab md-mini" ng-class="{'md-primary':lt.selected}" ng-repeat="lt in st.letters" ng-click="st.filter(lt)">
+                            {{lt.$name}}
+                        </md-button>
+                    </div>
+                </div>
+            </md-subheader>
+            <md-divider></md-divider>
+            <md-list-item ng-repeat="item in st.filters" ng-click="item_selected(item, st.index)">
+                <p>{{item.$name}}</p>
+                <md-divider></md-divider>
+            </md-list-item>
+        </md-list>
+    </div>
+    <div ng-transclude></div>
+</div>
