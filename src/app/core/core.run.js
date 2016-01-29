@@ -46,7 +46,7 @@
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
         if (toState.auth !== false && !auth.isLoggedIn()) {
-          auth.getUser(true).then(function(){
+          auth.autoLogin().then(function(){
             if(toState.name.indexOf('login')!=-1)
               $timeout(function(){$location.path('/');},100);
             else

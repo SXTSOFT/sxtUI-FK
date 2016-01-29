@@ -1,25 +1,26 @@
 ﻿<section class="panel" style="border-top-width:0;" ng-hide="is('gx3.viewBath.view')">
 
     <div class="menu-toggle-list" ng-show="!searBarHide">
-        <sxt-projects-jd ng-model="project.pid" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" is-more="project.isMore" on-queryed="project.onQueryed">
-            <md-list>
-                <md-subheader class="md-no-sticky">工序：</md-subheader>
-                <md-list-item>
-                    <sxt-procedure-type style="width:100%;" ng-model="project.procedureTypeId"></sxt-procedure-type>
-                </md-list-item>
-                <md-list-item>
-                    <sxt-select ng-model="project.procedureId" style="width:100%;" name-value="project.procedureName" sources="project.procedures" text-field="ProcedureName" value-field="ProcedureId"></sxt-select>
-                </md-list-item>
-                <md-subheader class="md-no-sticky">班组：</md-subheader>
-                <md-list-item>
-                    <input type="text" ng-model="ddd.grpKey" class="form-control" placeholder="请输入班组名称">
-                </md-list-item>
-            </md-list>
+        <sxt-projects-jd ng-model="vm.project.pid" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" is-more="vm.project.isMore" on-queryed="vm.project.onQueryed">
+
+                  <md-input-container class="md-block" md-no-float>
+                    <label>工序专业</label>
+                    <sxt-procedure-type style="width:100%;" ng-model="vm.project.procedureTypeId"></sxt-procedure-type>
+                    </md-input-container>
+                  <md-input-container  class="md-block" md-no-float>
+                    <label>工序</label>
+                    <sxt-select ng-model="vm.project.procedureId" style="width:100%;" name-value="vm.project.procedureName" sources="vm.project.procedures" text-field="ProcedureName" value-field="ProcedureId"></sxt-select>
+                  </md-input-container>
+                  <md-input-container  class="md-block" md-no-float >
+                    <label>班组</label>
+                    <input ng-model="vm.ddd.grpKey" >
+                  </md-input-container>
+
         </sxt-projects-jd>
     </div>
     <div style="text-align:right"><toggle-menu inst="searBarHide"></toggle-menu></div>
     <md-content class="md-padding"  layout-xs="column">
-        <md-card ng-repeat="item in baths.Rows | filter:{GrpName : ddd.grpKey} |orderBy:sortColumn:reverse">
+        <md-card ng-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey} |orderBy:sortColumn:reverse">
 
             <md-card-title>
                 <md-card-title-text>

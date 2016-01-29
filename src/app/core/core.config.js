@@ -76,8 +76,6 @@
           }
       ]);
 
-      console.log('mock',angular.mock)
-        //$provide.decorator('$httpBackend',angular.mock.e2e.$httpBackendDecorator);
 
         // Fuse theme configurations
         fuseConfigProvider.config({

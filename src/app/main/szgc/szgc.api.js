@@ -13,9 +13,29 @@
     apiProvider.register('szgc',{
       ProjectSettings:{
         query:function(args) {
-          return $http.get($http.url('/api/ProjectSetting', args))
+          return $http.get($http.url('/api/ProjectSetting', args));
+        }
+      },
+      ProcedureService:{
+        getAll:function(args){
+          return $http.get($http.url('/api/PProcedure', args));
+        }
+      },
+      ProcedureTypeService:{
+        getAll:function(args){
+          return $http.get($http.url('/api/ProcedureType',args));
+        }
+      },
+      addProcessService:{
+        queryByProjectAndProdure2:function(projectid,bathParens){
+          return $http.get($http.url('/api/Project/' + projectid + '/baths', bathParens));
+        }
+      },
+      BatchSetService:{
+        getAll:function(args){
+          return $http.get($http.url('/api/ProcedureBatchSet' , args));
         }
       }
     })
   }
-})
+})();

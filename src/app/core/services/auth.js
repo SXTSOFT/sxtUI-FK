@@ -34,7 +34,7 @@
         login      : login,
         getUser    : getUser,
         autoLogin  : autoLogin,
-        currentUser: loginedUser,
+        current    : currentUser,
         logout     : logout
       };
 
@@ -69,7 +69,7 @@
            if(token == profile)
             profile = null;
 
-          loginedUser = profile;
+           loginedUser = profile;
           if(!loginedUser)
             $state.go('app.auth.login');
           else {
@@ -80,7 +80,9 @@
               console.log('save sql',profile);
               $rootScope.$emit ('user:login', profile);
               if(!autoLoginPath){
-                $location.path('/');
+
+                $state.go('app.szgc.home')
+                //$location.path('/');
               }
             })
 
@@ -117,6 +119,10 @@
           $rootScope.$emit ('user:logout', loginedUser);
           $state.go('app.auth.login');
         });
+      }
+
+      function currentUser(){
+        return loginedUser;
       }
     }
   }

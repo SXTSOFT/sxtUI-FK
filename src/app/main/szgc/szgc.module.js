@@ -6,7 +6,7 @@
   'use strict';
 
   angular
-    .module('app.szgc', [])
+    .module('app.szgc', ['app.core','ui.select'])
     .config(config);
 
   /** @ngInject */
@@ -39,12 +39,12 @@
       })
       .state('app.szgc.report.viewBath', {
         url: '/viewBath',
-        controller: 'viewBathController',
+        controller: 'viewBathController as vm',
         templateUrl: 'app/main/szgc/report/viewBath-app.html'
       })
       .state('app.szgc.report.batchCount', {
         url:'/batchCount',
-        controller: 'batchCountController',
+        controller: 'batchCountController as vm',
         templateUrl: 'app/main/szgc/report/batchCount-app.html'
       })
 

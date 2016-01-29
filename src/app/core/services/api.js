@@ -9,7 +9,7 @@
   /** @ngInject */
   function apiProvider() {
 
-    var api = {},provider = this;
+    var api = {},provider = this,injector;
     provider.register = register;
     provider.$http = {
       url:url,
@@ -17,16 +17,23 @@
       post:cfg('post'),
       delete:cfg('delete'),
       options:cfg('options'),
+      head:cfg('head'),
       resource:cfg('resource'),
       custom:cfg('custom')
     };
 
 
     provider.$get = getApi;
+    provider.get = getServer;
 
     getApi.$injector = ['$resource','$http'];
 
-    function getApi($resource,$http){
+    function getServer(name){
+      return injector.get(name);
+    }
+
+    function getApi($resource,$http,$injector){
+      injector = $injector;
       provider.$http.$http = $http;
       resolveApi(api,$resource,$http);
       return api;
@@ -62,14 +69,18 @@
         }
       }
       return function () {
-        return provider.$http.$http[method].apply(this,Array.prototype.slice.call(arguments));
+        var args = Array.prototype.slice.call(arguments),
+          url = args[0];
+        if(url.indexOf('http')==-1)
+          args[0] = sxt.app.api+url;
+        return provider.$http.$http[method].apply(this,args);
       };
     }
 
 
     function custom(fn,scope){
       return function (){
-        fn.apply(scope,Array.prototype.slice.call(arguments));
+        return fn.apply(scope,Array.prototype.slice.call(arguments));
       }
     }
 
@@ -98,6 +109,7 @@
           parts.push(encodeUriQuery(key) + '=' + encodeUriQuery(v));
         });
       });
+      return parts.join('&');
     }
 
     function url(path,args) {

@@ -7,7 +7,7 @@
         .controller('LoginController', LoginController);
 
     /** @ngInject */
-    function LoginController(auth,$scope)
+    function LoginController(auth,$mdToast)
     {
 
       var vm = this;
@@ -19,7 +19,7 @@
         auth.login(vm.form).then(function(){
 
         },function(reject){
-          alert(JSON.stringify(reject));
+          $mdToast.show('用户名或密码错误')
         })
       }
         //////////
