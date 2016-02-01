@@ -21,7 +21,7 @@
       if(user) {
         user.grant_type = 'password';
         user.scope = 'sxt';
-        return $q (function (resolve) {
+        return $q (function (resolve,reject) {
           $http ({
             method: 'POST',
             url: appConfig.apiUrl + '/auth/connect/token',
@@ -37,8 +37,13 @@
             },
             data: user
           }).then (function (result) {
-            var token = result.data;
-            resolve (token);
+            if(result) {
+              var token = result.data;
+              resolve(token);
+            }
+            else{
+              reject({})
+            }
           },function(){
             resolve(user);
           });

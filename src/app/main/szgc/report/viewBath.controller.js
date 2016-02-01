@@ -9,7 +9,7 @@
     .controller('viewBathController',viewBathController);
 
   /** @ngInject */
-  function viewBathController($scope,api,$q){
+  function viewBathController($scope,api,$q,$timeout){
     var vm = this;
     vm.ddd = {};
     vm.ddd.grpKey = "";
@@ -154,7 +154,7 @@
           });
           $timeout(function() {
             vm.reverse = false;
-            vm.toggleSort('JLDate');
+            //vm.toggleSort('JLDate');
           }, 1000);
 
         });
@@ -206,7 +206,7 @@
           });
           $timeout(function() {
             vm.reverse = false;
-            vm.toggleSort('JLDate');
+            //vm.toggleSort('JLDate');
           }, 1000);
         })
       }

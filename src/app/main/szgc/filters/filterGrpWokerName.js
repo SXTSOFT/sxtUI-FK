@@ -9,7 +9,7 @@
   function filterGrpWokerName(){
     return function(value) {
       var name = "";
-      if (value.length > 4) {
+      if (value && value.length > 4) {
         name = value.substr(0,4) + '...';
       } else {
         name = value;

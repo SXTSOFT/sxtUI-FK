@@ -59,7 +59,9 @@
           authToken.setToken(token);
           getProfile(token,user);
         },function(){
-          $state.go('app.auth.login');
+          //$state.go('app.auth.login');
+          return $q.reject("用户名或密码错误");
+
         });
       }
 

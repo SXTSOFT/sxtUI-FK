@@ -20,12 +20,12 @@
     </div>
     <div style="text-align:right"><toggle-menu inst="searBarHide"></toggle-menu></div>
     <md-content class="md-padding"  layout-xs="column">
-        <md-card ng-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey} |orderBy:sortColumn:reverse">
+        <md-card ng-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey} ">
 
             <md-card-title>
                 <md-card-title-text>
-                    <span class="md-headline">{{ item.RegionNameTree.substring(project.nameTree.length+1).length==0?'': item.RegionNameTree.substring(project.nameTree.length+1)+'>'}} {{item.RegionName}}</span>
-                    <p>{{item.ProcedureName}}</p>
+                    <span class="md-headline">{{ item.RegionNameTree}} {{item.RegionName}}</span>
+                    <p>{{item.ProcedureName}}{{item}}</p>
                 </md-card-title-text>
             </md-card-title>
 

@@ -47,6 +47,11 @@
         controller: 'batchCountController as vm',
         templateUrl: 'app/main/szgc/report/batchCount-app.html'
       })
+      .state('app.szgc.report.projectMasterList', {
+        url:'/projectMasterList',
+        controller: 'projectMasterListController1 as vm',
+        templateUrl: 'app/main/szgc/report/projectMasterList-app.html'
+      })
 
 
     // Translation

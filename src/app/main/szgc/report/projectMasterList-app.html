@@ -1,0 +1,129 @@
+<section class="panel" style="border-top-width:0;">
+    <style>
+        .aColor {
+            color: #040ad2;
+        }
+
+        .bColor {
+            color: #118033;
+        }
+
+        .cColor {
+            color: #dd0200;
+        }
+
+        .dColor {
+            color: #994038;
+        }
+
+        .odd {
+            background-color: #F8F8FF;
+        }
+
+        .even {
+            background-color:;
+        }
+    </style>
+    <div class="menu-toggle-list" ng-show="!searBarHide">
+
+        <sxt-projects-jd ng-model="project.pid" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
+        </sxt-projects-jd>
+    </div>
+    <div style="text-align:right"><toggle-menu inst="searBarHide"></toggle-menu></div>
+    <div ng-show="project.pid">
+        <div>
+            <div>
+                <p class="pro_title">项目总览</p>
+                <div class="table-responsive pro_tb">
+                    <table class="table pro_table wk-table">
+                        <thead>
+                            <tr class="tr_pro">
+                                <th width="25%">名称</th>
+                                <th width="25%">合格</th>
+                                <th width="25%">不合格</th>
+                                <th width="25%">合格比例(%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat=" cMessage in CountBatchByProject" ng-class="{even: !$even, odd: !$odd}">
+                                <th>{{cMessage.RegionTypeName}}</th>
+                                <th class="bColor">{{cMessage.OKCount}}</th>
+                                <th class="cColor">{{cMessage.NCount}}</th>
+                                <th>{{cMessage.percentE}}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div>
+                <p class="pro_title">工序总览</p>
+                <div class="table-responsive pro_t">
+                    <ul class="pro_ul1 pro_ult">
+                        <li class="li_pro">
+                            <p class="list-p1">
+                                <span class="pro_span1">工序名称</span>
+                                <span class="pro_span11">班组</span>
+                            </p>
+                            <p class="list-p2">
+                                <span class="pro_span2">状态</span>
+                                <span class="pro_span3">验收时间</span>
+                            </p>
+                        </li>
+                    </ul>
+                    <div id="demo" style="overflow:hidden;height:152px;">
+                        <div id="demo1">
+                            <ul id="btn_test" class="line pro_ul1 ">
+                                <li id="abc" ng-repeat="gMessage in GetBatchDetails" ng-class="{even: !$even, odd: !$odd}">
+                                    <p class="list-p1">
+                                        <span class="pro_span1 " title="{{gMessage.ProcedureName}}" style=" white-space nowrap;text-overflow ellipsis;overflow-x hidden;">
+                                            {{gMessage.ProcedureName}}
+                                        </span>
+                                        <span title="{{gMessage.GrpName}}" class="pro_span11 " style=" white-space nowrap;text-overflow ellipsis;overflow-x hidden;">{{gMessage.GrpName}}</span>
+                                    </p>
+                                    <p class="list-p2">
+                                        <span class="pro_span2  {{gMessage.isColor}}" style="line-height:35px">
+                                            {{gMessage.CheckResult}}
+                                        </span>
+                                        <span class="pro_span3 ">{{gMessage.CheckDate}}</span>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id='demo2'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div id="main1" style="height:400px"></div>
+            </div>
+        </div>
+        <script>
+var speed = 1150000;
+var idemo = document.getElementById('demo');
+var idemo1 = document.getElementById('demo');
+var idemo2 = document.getElementById('demo2');
+demo2.innerHTML = demo1.innerHTML + demo1.innerHTML;
+
+function Marquee() {
+
+    if (idemo2.offsetTop - idemo.scrollTop <= 0) {
+        idemo.scrollTop -= idemo1.offsetHeight;
+    } else {
+        idemo.scrollTop++;
+
+
+    }
+}
+var MyMar = setInterval(Marquee, speed);
+idemo.onmouseover = function() {
+    clearInterval(MyMar);
+};
+idemo.onmouseout = function() {
+    MyMar = setInterval(Marquee, speed);
+};
+        </script>
+    </div>
+    </section>
