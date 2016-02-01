@@ -26,11 +26,11 @@
     </style>
     <div class="menu-toggle-list" ng-show="!searBarHide">
 
-        <sxt-projects-jd ng-model="project.pid" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
+        <sxt-projects-jd ng-model="vm.project.pid" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" on-queryed="vm.project.onQueryed" is-more="vm.project.isMore">
         </sxt-projects-jd>
     </div>
     <div style="text-align:right"><toggle-menu inst="searBarHide"></toggle-menu></div>
-    <div ng-show="project.pid">
+    <div ng-show="vm.project.pid">
         <div>
             <div>
                 <p class="pro_title">项目总览</p>
@@ -45,7 +45,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat=" cMessage in CountBatchByProject" ng-class="{even: !$even, odd: !$odd}">
+                            <tr ng-repeat=" cMessage in vm.CountBatchByProject" ng-class="{even: !$even, odd: !$odd}">
                                 <th>{{cMessage.RegionTypeName}}</th>
                                 <th class="bColor">{{cMessage.OKCount}}</th>
                                 <th class="cColor">{{cMessage.NCount}}</th>
@@ -74,7 +74,7 @@
                     <div id="demo" style="overflow:hidden;height:152px;">
                         <div id="demo1">
                             <ul id="btn_test" class="line pro_ul1 ">
-                                <li id="abc" ng-repeat="gMessage in GetBatchDetails" ng-class="{even: !$even, odd: !$odd}">
+                                <li id="abc" ng-repeat="gMessage in vm.GetBatchDetails" ng-class="{even: !$even, odd: !$odd}">
                                     <p class="list-p1">
                                         <span class="pro_span1 " title="{{gMessage.ProcedureName}}" style=" white-space nowrap;text-overflow ellipsis;overflow-x hidden;">
                                             {{gMessage.ProcedureName}}
