@@ -1,0 +1,204 @@
+﻿<section class="panel nt">
+
+    <form name="addForm" class="form-horizontal" ng-submit="save(addForm)">
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-sm-2 col-lg-1 control-label">项目</label>
+                        <div class="col-sm-10 col-lg-11">
+                            <p class="form-control-static">{{data.projectName}} {{data.rName}}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-lg-1 control-label">工序</label>
+                        <div class="col-sm-10 col-lg-11"> 
+                            <p class="form-control-static">{{data.procedureName}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group" ng-class="{'has-error':addForm.jldw.$invalid}">
+                        <label class="col-sm-4 col-lg-2 control-label">监理单位</label>
+                        <div class="col-sm-8 col-lg-10">
+                            <sxt-select name="jldw" ng-disabled="!data.isFirst" required ng-model="data.curHistory.SupervisorCompanyId" name-value="data.curHistory.SupervisorCompanyName" sources="data.construction" text-field="UnitName" value-field="UnitId"></sxt-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" ng-class="{'has-error':addForm.ysr.$invalid}">
+                        <label class="col-sm-4 col-lg-2 control-label">验收人</label>
+                        <div class="col-sm-8 col-lg-10">
+                            <sxt-select name="ysr" required ng-model="data.curStep.CheckWorker" obj-value="data.submitUser" name-value="data.curStep.CheckWorkerName" sources="data.submitUsers" text-field="name" value-field="id"></sxt-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" ng-repeat="batch in data.batchs">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-sm-2 col-lg-1 control-label">{{$index==0?'验收批':''}} <!--<button ng-if="$index==0 && data.isFirst" type="button" ng-click="addBatch()" class="btn btn-white btn-xs"><i class="fa fa-plus"></i></button>--></label>
+                        <div class="col-sm-6 col-lg-7">
+                            <div class="input-group">
+                                <span class="input-group-addon" >验收批{{batch.BatchNo}}</span>
+                                <input type="text" class="form-control" ng-disabled="!data.isFirst" ng-model="batch.Remark" placeholder="验收批描述" />
+                                <span class="input-group-addon" ng-if="$index==0">第{{batch.Count}}次验收</span>
+                                <span class="input-group-btn" ng-if="$index!=0"><button ng-click="removeBatch(batch)" type="button" class="btn btn-white"><i class="fa fa-times"></i></button></span>
+                            </div>
+                        </div>
+                        <!--<div class="col-sm-4 col-lg-4">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon2">完成占比</span>
+                                <input type="number" class="form-control" ng-disabled="!data.isFirst" ng-keyup="changeBatch(batch)"  ng-model="batch.WorkRatio" placeholder="数字(未填写为100)" />
+                                <span class="input-group-addon" id="basic-addon2">%</span>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group" ng-class="{'has-error':addForm.zid.$invalid}">
+                        <label class="col-sm-6 col-lg-3 control-label">总承包</label>
+                        <div class="col-sm-6 col-lg-9">
+                            <sxt-select  required name="zid"  ng-model="data.curHistory.ParentCompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.ParentCompanyName" sources="data.supervision1" text-field="UnitName" value-field="UnitId"></sxt-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-sm-6 col-lg-3 control-label">专业承包</label>
+                        <div class="col-sm-6 col-lg-9">
+                            <sxt-select   ng-model="data.curHistory.CompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.CompanyName" sources="data.supervision" text-field="UnitName" value-field="UnitId"></sxt-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" ng-class="{'has-error':addForm.gid.$invalid}">
+                        <label class="col-sm-6 col-lg-3 control-label">施工班组</label>
+                        <div class="col-sm-6 col-lg-9">
+                            <sxt-select required  ng-model="data.curHistory.GrpId" ng-disabled="!data.isFirst" name="gid" name-value="data.curHistory.GrpName" sources="data.groups" text-field="name" value-field="id"></sxt-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div><div class="clearfix"></div></div>
+
+        <div class="panel-body">
+            <fieldset>
+                <legend>验收件</legend>
+
+                <span class="fs-display-1 display-block">原验收表扫描件</span>
+                <div> <small></small></div>
+                <sxt-images ng-model="data.curStep.GroupImg"  project="data.projectInfo" edit="true"></sxt-images>
+                <!--<files ng-model="data.curStep.GroupImg"></files>-->
+                <div class="clearfix"></div>
+                <span class="fs-display-1 display-block">附件</span>
+                <div> <small></small></div>
+                <sxt-images ng-model="data.curStep.GroupImg2"  project="data.projectInfo" edit="true"></sxt-images>
+            </fieldset>
+            <fieldset>
+                <legend>主控项目</legend>
+                <div class="row" ng-repeat="n in targets.zk" lx-ripple="grey-200" ng-click="n.isOK=!n.isOK">
+                    <div class="col-sm-10">
+                        <p class="h24">
+                            <strong>{{$index+1}}、{{n.TargetName}} </strong><br ng-if="n.Remark" />
+                            {{n.Remark}}
+                        </p>
+                    </div>
+                    <div class="col-sm-2 h48">
+                        <div class="switch">
+                            <input type="checkbox" ng-model="n.isOK" id="id{{n.Id}}" class="switch__input">
+                            <label class="switch__label" for="id{{n.Id}}">{{ n.isOK?'　符合':'不符合' }}</label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="h48"></div>
+            <fieldset ng-if="targets.yb && targets.yb.length">
+                <legend>
+                    一般项目
+                </legend>
+
+
+                <div class="row hidden-xs">
+                    <div class="col-md-4" flex-item="4"><div class="ml++">项目</div></div>
+                    <div class="col-md-2">允许偏差（mm）</div>
+                    <div class="col-md-2">检查点数</div>
+                    <div class="col-md-2">合格率</div>
+                    <div class="col-md-2">最大偏差</div>
+                </div>
+                <div class="row" ng-repeat="n in targets.yb" ng-class="{'bgc-red-A100':!ybIsOkRow(n)}">
+                    <div class="col-md-4">
+                        <div class="h48">
+                            {{$index+1}}、{{n.TargetName}}
+                        </div>
+                    </div>
+                    <div class="col-md-2"><div class="h48"><span class="hidden-lg">允许偏差（mm）：</span> {{n.DeviationLimit}}</div></div>
+                    <div class="col-md-2">
+                        <lx-text-field label="检查点数" fixed-label="true">
+                            <input type="number"   ng-model="n.CheckNum" >
+                        </lx-text-field>
+                    </div>
+                    <div class="col-md-2">
+                        <lx-text-field label="合格率" fixed-label="true">
+                            <input  type="number" step="0.01"  ng-model="n.PassRatio" >
+                        </lx-text-field>
+                    </div>
+                    <div class="col-md-2">
+                        <lx-text-field label="最大偏差" fixed-label="true">
+                            <input type="number" step="0.01"  ng-model="n.MaxDeviation" >
+                        </lx-text-field>
+                    </div>
+                </div>
+
+
+            </fieldset>
+                <div class="row" flex-gutter="12">
+                    <div class="col-md-4" hide-sm>
+                        <div class="p+">
+
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="p+">
+
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="h48">
+                            主控：{{zkIsOk()?"合格":"不合格"}}
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+        <div class="h48"  ng-if="targets.yb && targets.yb.length">
+                            一般：{{ybIsOk()?"合格":"不合格"}}({{ybHGL()}}) 总体({{ybHGLPJ()}})
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="h48">
+                            结果：{{zkIsOk()&&ybIsOk()?"合格":"不合格"}}
+
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="form-group">
+
+            <div class="col-sm-9 col-lg-10 col-sm-offset-2 col-lg-offset-1 ">
+                <button type="submit" ng-disabled="isSaveing" class="btn btn-white pull-right" style="margin-right:15px;">{{ isSaveing ?'正在提交...':'提交'}}  </button>
+            </div>
+        </div>
+    </form>
+    <div style="position:fixed; top:20px; right:20px;">
+        <md-button class="md-fab md-mini" ng-click="back()"><i class="fa fa-arrow-left"></i></md-button>
+    </div>
+</section>

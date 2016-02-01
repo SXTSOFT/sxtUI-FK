@@ -2,6 +2,8 @@
  * Created by zhangzhaoyong on 16/1/28.
  */
 (function(){
+  'use strict';
+
   angular
     .module('app.szgc')
     .config(config)
@@ -29,6 +31,9 @@
       addProcessService:{
         queryByProjectAndProdure2:function(projectid,bathParens){
           return $http.get($http.url('/api/Project/' + projectid + '/baths', bathParens));
+        },
+        delProcess:function(id){
+          return $http.delete('/api/PPBatchRelation/' + id);
         }
       },
       BatchSetService:{
@@ -53,8 +58,11 @@
         GetBatchDetails:function(args) {
           return $http.get($http.url('/api/Report/GetBatchDetails' , args));
         }
-
-
+      },
+      CheckStepService:{
+        getAll:function(procedureId,args){
+          return $http.get($http.url('/api/procedure/'+procedureId+'/CheckStep' , args));
+        }
       }
     })
   }
