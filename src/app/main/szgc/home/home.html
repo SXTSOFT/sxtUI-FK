@@ -1,2 +1,24 @@
-Home
-maps
+<md-content>
+  <md-toolbar class="md-red md-hue-2">
+    <div layout="row" layout-align="center center">
+        <h2 class="md-flex">万科数字工程</h2>
+    </div>
+  </md-toolbar>
+</md-content>
+  <div flex layout="column" class="home_bg">
+    <div flex="80">
+    </div>
+    <div>
+      <div class="bottom-sheet-demo inset" layout="row" layout-sm="row" layout-align="end" >
+        <md-button flex="50" class="md-primary md-raised" ng-click="showListBottomSheet($event)">
+          <md-icon  md-svg-src="/app/main/szgc/images/camera.svg" style="color: greenyellow;"></md-icon>
+          <span>拍摄照片上传</span>
+        </md-button>
+        <md-button flex="50" class="md-red md-raised" ng-click="showGridBottomSheet($event)">
+          <md-icon  md-svg-src="/app/main/szgc/images/upload.svg" ></md-icon>
+          <span>本地图片上传</span>
+        </md-button>
+      </div>
+    </div>
+  </div>
+
