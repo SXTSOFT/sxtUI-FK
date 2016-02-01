@@ -52,6 +52,34 @@
         controller: 'projectMasterListController1 as vm',
         templateUrl: 'app/main/szgc/report/projectMasterList-app.html'
       })
+      .state('app.szgc.settings',{
+        url:'/settings',
+        views :{
+          'content@app':{
+            controller:'SzgcSettingsController',
+            templateUrl:'app/main/szgc/settings/settings.html'
+          }
+        }
+      })
+      .state('app.szgc.ys',{
+        url:'/ys',
+        views :{
+          'content@app':{
+            controller:'MyProcessController',
+            templateUrl:'app/main/szgc/ys/myProcess-app.html'
+          }
+        }
+      })
+      .state('app.szgc.ys.update', {
+        url: '/update/{projectid}/{name}/{batchId}/{procedureId}/{type}/{idTree}/{procedureName}/{nameTree}/{checkedCount}',
+        controller: 'UpdateProcessController',
+        templateUrl: 'app/main/szgc/ys/updateProcess.html'
+      })
+      .state('app.szgc.ys.add', {
+        url: '/new/{projectid}/{name}/{batchId}/{procedureId}/{type}/{idTree}/{procedureName}/{nameTree}/{flag}',
+        controller: 'AddProcessController',
+        templateUrl: 'app/main/szgc/ys/addProcess-app.html'
+      })
 
 
     // Translation

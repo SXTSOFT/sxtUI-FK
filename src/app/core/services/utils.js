@@ -15,7 +15,9 @@
     return {
       tips:tipsMessage,
       alert:alertMessage,
-      confirm:confirmMessage
+      confirm:confirmMessage,
+      error:errorMessage,
+      copy:copyFn
     };
 
     function tipsMessage(message){
@@ -54,6 +56,24 @@
           .targetEvent(ev)
           .ok(ok || '确定')
           .cancel(cancel || '取消')
+      );
+    }
+
+    function copyFn(a,b,c,d){
+      return angular.copy(a,b,c,d)
+    }
+
+    function errorMessage(message,errorData){
+      return $mdToast.show(
+        $mdToast
+          .simple()
+          .textContent(message+(errorData?errorData:''))
+          .position({
+            bottom:false,
+            top:true,
+            right:true
+          })
+          .hideDelay(3000)
       );
     }
   }
