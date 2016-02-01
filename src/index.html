@@ -26,14 +26,14 @@
     </head>
 
 
-    <body md-theme="{{vm.themes.active.name}}" md-theme-watch ng-controller="IndexController as vm"
+    <body   md-theme-watch md-theme="{{vm.themes.active.name}}" ng-controller="IndexController as vm"
           class="{{state.current.bodyClass || ''}}">
 
         <!-- SPLASH SCREEN -->
         <ms-splash-screen id="splash-screen">
             <div class="center">
                 <div class="logo">
-                    <span>S</span>
+                    <span><img src="assets/images/logos/logo.png"> </span>
                 </div>
                 <!-- Material Design Spinner -->
                 <div class="spinner-wrapper">
