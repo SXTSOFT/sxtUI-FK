@@ -114,7 +114,7 @@
                     $log.warn('The theme "' + themeName + '" does not exist! Falling back to the "default" theme.');
 
                     // Otherwise set theme to default theme
-                    service.themes.active.name = 'default';
+                    service.themes.active.name = 'pink';
                     service.themes.active.theme = service.themes.list.default;
                     $cookies.put('selectedTheme', service.themes.active.name);
 

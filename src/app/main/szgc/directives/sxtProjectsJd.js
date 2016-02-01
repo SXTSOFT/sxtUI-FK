@@ -75,7 +75,7 @@
               }
               else {
                 init = false;
-                return api.vanke.projects({ page_size: 1000, page_number: 1 }).then(function (result) {
+                return api.szgc.vanke.projects({ page_size: 1000, page_number: 1 }).then(function (result) {
                   var s = new st(index, 'project_id', 'name', result.data.data, '项目');
                   scope.onQueryed && scope.onQueryed(s);
                   return s;
@@ -88,7 +88,7 @@
               }
               else {
                 init = false;
-                return api.vanke.project_items({ page_number: 1, page_size: 10, project_id: value }).then(function (result) {
+                return api.szgc.vanke.project_items({ page_number: 1, page_size: 10, project_id: value }).then(function (result) {
                   var s = new st(index, 'project_item_id', 'name', result.data.data, '分期');
                   scope.onQueryed && scope.onQueryed(s);
                   return s;
@@ -102,7 +102,7 @@
               }
               else {
                 init = false;
-                return api.vanke.buildings({ page_number: 1, page_size: 10, project_item_id: value }).then(function (result) {
+                return api.szgc.vanke.buildings({ page_number: 1, page_size: 10, project_item_id: value }).then(function (result) {
                   //scope.onQueryed && scope.onQueryed(result.data);
                   var s = new st(index, 'building_id', 'name', result.data.data, '楼栋');
                   scope.onQueryed && scope.onQueryed(s);
@@ -117,7 +117,7 @@
               }
               else {
                 init = false;
-                return api.vanke.floors(value).then(function (result) {
+                return api.szgc.vanke.floors(value).then(function (result) {
                   scope.onQueryed && scope.onQueryed(result.data);
                   var data = [];
                   result.data.data.forEach(function (item) {
@@ -137,7 +137,7 @@
               }
               else {
                 init = false;
-                return api.vanke.rooms({ page_number: 1, page_size: 1000, building_id: value.split('-')[0], floor: value.split('-')[1] }).then(function (result) {
+                return api.szgc.vanke.rooms({ page_number: 1, page_size: 1000, building_id: value.split('-')[0], floor: value.split('-')[1] }).then(function (result) {
                   //scope.onQueryed && scope.onQueryed(result.data);
                   var s = new st(index, 'room_id', 'name', result.data.data, '户');
                   scope.onQueryed && scope.onQueryed(s);

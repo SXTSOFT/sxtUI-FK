@@ -13,13 +13,11 @@
     ],procedureId = '2814510f-0188-4993-a153-559b40d0b5e8';
 
     var $http,$q,auth,api;
-    angular.injector(['ng','app.core']).invoke([
-      '$http','$q','auth','api', function (_$http,_$q,_auth,_api)
+    angular.injector(['ng']).invoke([
+      '$http','$q',function (_$http,_$q)
       {
         $http = _$http;
         $q = _$q;
-        auth = _auth;
-        api = _api;
       }
     ]);
 
@@ -32,10 +30,10 @@
           return get('/common/v1/profile');
         }),
         isPartner:http.custom(function(f){
-          return (!f && (partner.indexOf(auth.currentUser.loginname) != -1)) || auth.currentUser.Partner ;
+          return (!f && (partner.indexOf(getAuth().current().loginname) != -1)) || getAuth().current().Partner ;
         }),
         getPartner:http.custom( function () {
-          return auth.currentUser.Partner;
+          return getAuth().current().Partner;
         }),
         getPermissin:http.custom(function () {
           var me = this;
@@ -49,19 +47,19 @@
           });
         }),
         _projects: http.custom(function (arg) {
-          return s.get(utils.url('/common/v1/projects', arg));
+          return get(http.url('/common/v1/projects', arg));
         }),
         projects: http.custom(function (arg) {
           var me = this;
           if (!me.isPartner(1)) {
-            return s.get(utils.url('/common/v1/DE/projects', arg));
+            return get(http.url('/common/v1/DE/projects', arg));
           }
           else {
             return $q(function (resolve, reject) {
               if (p1)
                 resolve(p1);
               else {
-                api.szgc.ProjectSettings.query({ unitId: auth.currentUser.Partner }).then(function (result) {
+                api.szgc.ProjectSettings.query({ unitId: getAuth().current().Partner }).then(function (result) {
                   permission = result.data;
                   me._projects(arg).then(function (result) {
                     var p = permission;
@@ -85,7 +83,7 @@
           }
         }),
         project_items: http.custom(function (arg) {
-          return get(utils.url('/common/v1/project_items', arg)).then(function (result) {
+          return get(http.url('/common/v1/project_items', arg)).then(function (result) {
             var p = permission;
             if (p) {
               if (p.Rows.find(function (it) {
@@ -111,7 +109,7 @@
           return result;
         }),
         buildings: http.custom(function (arg) {
-          return get(utils.url('/common/v1/buildings', arg)).then(function (result) {
+          return get(http.url('/common/v1/buildings', arg)).then(function (result) {
             result.data.data.sort(function (i1, i2) {
               return i1.name.localeCompare(i2.name);
             });
@@ -119,32 +117,44 @@
           })
         }),
         floors: http.custom(function (build_id) {
-          return get(utils.url('/common/v1/buildings/' + build_id + '/floors'));
+          return get(http.url('/common/v1/buildings/' + build_id + '/floors'));
         }),
         units: http.custom(function (arg) {
-          return get(utils.url('/common/v1/buildings/' + arg + '/units', arg));
+          return get(http.url('/common/v1/buildings/' + arg + '/units', arg));
         }),
         rooms: http.custom(function (arg) {
-          return get(utils.url('/common/v1/rooms', arg));
+          return get(http.url('/common/v1/rooms', arg));
         }),
         partners: http.custom(function (arg) {
-          return get(utils.url('/common/v1/partners', arg));
+          return get(http.url('/common/v1/partners', arg));
         }),
         skills: http.custom(function (arg) {
-          return get(utils.url('/common/v1/skills', arg));
+          return get(http.url('/common/v1/skills', arg));
         }),
         employees: http.custom(function (arg) {
-          return get(utils.url('/common/v1/partners/'+arg+'/employees'));
+          return get(http.url('/common/v1/partners/'+arg+'/employees'));
         }),
         teams: http.custom(function (arg) {
-          return get(utils.url('/common/v1/partners/' + arg + '/teams'));
+          return get(http.url('/common/v1/partners/' + arg + '/teams'));
         })
       }
     });
 
+    function getAuth(){
+      if(!auth)
+        auth = apiProvider.get('auth');
+      return auth;
+    }
+
+    function getApi(){
+      if(!api)
+        api = apiProvider.get('api');
+      return api;
+    }
+
     function tk(method, api, arg) {
       return $q(function (resolve, reject) {
-        auth.getUser().then(function (user) {
+        getAuth().getUser().then(function (user) {
           $http({
             method: method,
             url: 'http://szapi.vanke.com' + api,
@@ -164,4 +174,4 @@
       return tk('get', api, arg);
     }
   }
-})
+})();

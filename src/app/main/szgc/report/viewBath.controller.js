@@ -9,7 +9,7 @@
     .controller('viewBathController',viewBathController);
 
   /** @ngInject */
-  function viewBathController($scope,api){
+  function viewBathController($scope,api,$q,$timeout){
     var vm = this;
     vm.ddd = {};
     vm.ddd.grpKey = "";
@@ -23,10 +23,11 @@
       }
     };
     var pt, ptype;
+    console.log('api',api)
     //质量总表
     vm.WorkGrops = []; //班组
     vm.getProjects = function() {
-      vkapi.projects({
+      api.szgc.vanke.projects({
         page_size: 1000,
         page_number: 1
       }).then(function(result) {
@@ -64,7 +65,7 @@
       if (pt == t && vm.project.procedureTypeId == ptype) return;
       pt = t;
       ptype = vm.project.procedureTypeId;
-      BatchSetService.getAll('?status=4&batchType=' + t).then(function(result) {
+      api.szgc.BatchSetService.getAll({status:4,batchType: t}).then(function(result) {
         var data = [];
         console.log("BatchSetServiceresult", result);
         result.data.Rows.forEach(function(item) {
@@ -79,7 +80,7 @@
     }
 
     //施工单位信息
-    vkapi.partners({
+    api.szgc.vanke.partners({
       page_size: 1000,
       page_number: 1,
       type: 'construction'
@@ -107,8 +108,8 @@
 
     };
 
-    ProcedureService.getAll('?status=4').then(function(r) {
-      vm.produres = r.data;
+    api.szgc.ProcedureService.getAll({status:4}).then(function(r) {
+      vm.project.produres = r.data;
     });
     //获取资料表数据
     var queryTable = function() {
@@ -122,7 +123,7 @@
           regionIdTree: vm.project.idTree
         }
 
-        addProcessService.queryByProjectAndProdure2(vm.project.projectId, batchParems).then(function(result) {
+        api.szgc.addProcessService.queryByProjectAndProdure2(vm.project.projectId, batchParems).then(function(result) {
           if (result.data.Rows.length > 0) {
             result.data.Rows.forEach(function(item) {
               if (item.AccordRatio > 0) {
@@ -153,7 +154,7 @@
           });
           $timeout(function() {
             vm.reverse = false;
-            vm.toggleSort('JLDate');
+            //vm.toggleSort('JLDate');
           }, 1000);
 
         });
@@ -169,7 +170,7 @@
           }
         vm.project.data.items.forEach(function(p) {
           batchParems.regionIdTree = p.$id;
-          df.push(addProcessService.queryByProjectAndProdure2(p.$id, batchParems));
+          df.push(api.szgc.addProcessService.queryByProjectAndProdure2(p.$id, batchParems));
         })
         $q.all(df).then(function(rs) {
           var bs = [];
@@ -205,24 +206,31 @@
           });
           $timeout(function() {
             vm.reverse = false;
-            vm.toggleSort('JLDate');
+            //vm.toggleSort('JLDate');
           }, 1000);
         })
       }
 
     }
     //区域改变
-    $scope.$watch('project.pid', function() {
+    $scope.$watch(function(){
+      return  vm.project.pid;
+    }, function() {
       queryTable();
     })
-    //工序改变
-    $scope.$watch('project.procedureId', function() {
+
+    $scope.$watch(function(){
+      return  vm.project.procedureId;
+    }, function() {
       queryTable();
     })
-    //专业施工单位改变
-    $scope.$watch('project.companyId', function() {
+
+    $scope.$watch(function(){
+      return  vm.project.companyId;
+    }, function() {
       queryTable();
     })
+
     //班组改变
     vm.changeWorkGrop = function(workGropId) {
       vm.project.workGroupId = workGropId;
@@ -230,8 +238,12 @@
       checkState(workGropId);
     }
     //动态加载工序
-    $scope.$watch('project.procedureTypeId', queryProcedures);
-    $scope.$watch('project.type', queryProcedures);
+    $scope.$watch(function(){
+      return vm.project.procedureTypeId
+    }, queryProcedures);
+    $scope.$watch(function(){
+      return vm.project.type;
+    }, queryProcedures);
 
 
   }

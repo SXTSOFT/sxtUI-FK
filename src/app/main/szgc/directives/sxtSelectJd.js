@@ -117,7 +117,7 @@
           var q = scope.onQuery(index, newSt, scope.selectors.length > 1 ? scope.selectors[index - 1].selected.$id : null);
           if (q) {
             q.then(function (result) {
-              next = result;
+              var next = result;
               scope.selectors[index] = next;
             });
           }
@@ -132,7 +132,7 @@
           var q = scope.onQuery(index + 1, newSt, item.$id);
           if (q) {
             q.then(function (result) {
-              next = result;
+              var next = result;
               scope.selectors[index + 1] = next;
               if (result.selected)
                 scope.item_selected(result.selected, scope.selectors.length - 1, false);

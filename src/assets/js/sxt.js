@@ -1,6 +1,14 @@
 /**
  * Created by jiuyuong on 2016/1/21.
  */
+if(!Array.prototype.find)
+  Array.prototype.find = function(fn){
+    for(var i= 0,l=this.length;i<l;i++){
+      if(fn(this[i])===true){
+        return this[i];
+      }
+    }
+  }
 window.sxt = (function(win)
 {
   'use strict';
@@ -11,7 +19,8 @@ window.sxt = (function(win)
     version: '1.1.12',
     app: {
       appDir: appDir,
-      serve: 'http://10.245.9.151:3000/',
+      serve: 'http://10.245.9.151:3000',
+      api:'http://vkde.sxtsoft.com',
       getUrl: getUrl,
       download: download
     },
