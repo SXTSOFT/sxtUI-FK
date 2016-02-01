@@ -35,6 +35,12 @@
         getAll:function(args){
           return $http.get($http.url('/api/ProcedureBatchSet' , args));
         }
+      },
+      projectMasterListService:{
+        //统计工序填报情况(监理)
+        GetBatchCount:function(args){
+          return $http.get($http.url('/api/Report/GetBatchCount' , args));
+        }
       }
     })
   }
