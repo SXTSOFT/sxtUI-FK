@@ -7,9 +7,10 @@
         .controller('ToolbarController', ToolbarController);
 
     /** @ngInject */
-    function ToolbarController($rootScope, $mdSidenav, $translate, $mdToast, auth)
+    function ToolbarController($rootScope, $mdSidenav, $translate, $mdToast, auth, $state)
     {
         var vm = this;
+        vm.is = isRoute;
 
         auth.getUser().then(function(user){
           console.log('user',user)
@@ -89,6 +90,9 @@
             vm.selectedLanguage = vm.languages[$translate.preferredLanguage()];
         }
 
+        function isRoute(route){
+           return $state.includes(route);
+        }
 
         /**
          * Toggle sidenav

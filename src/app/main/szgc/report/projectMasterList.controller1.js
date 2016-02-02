@@ -81,8 +81,17 @@
           vm.NCountE.length = 20;
           vm.OKCountE.length = 20;
         }
+        vm.config = {
+          title: vm.project.projectName + '班组施工情况',
+          //subtitle: 'Line Chart Subtitle',
+          showXAxis: true,
+          showYAxis: true,
+          showLegend: true,
+          stack: false,
+        };
+        vm.data = [vm.NCountE,vm.OKCountE];
         //引用echarts 显示图形界面。
-        showEcherts.showEchert('main1', vm.project.projectName + '班组施工情况', vm.GrpNameE, vm.NCountE, vm.OKCountE)
+        //showEcherts.showEchert('main1', vm.project.projectName + '班组施工情况', vm.GrpNameE, vm.NCountE, vm.OKCountE)
 
       });
 

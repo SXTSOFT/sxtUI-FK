@@ -60,3 +60,80 @@
   -o-transform: scale(1) rotate(0deg);
   transform: scale(1) rotate(0deg);
 }
+
+.point-add {
+  background: #f10417 url(/assets/images/logos/logo_03.jpg) no-repeat center;
+  background-size:80%;
+  cursor: pointer;
+  position: absolute;
+  left: 50%;
+  margin-left: -25px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  line-height: 60px;
+  text-align: center;
+  border: 3px solid #fff;
+  z-index: 9;
+}
+
+.mouse-over {
+  box-shadow:0 0 12px rgba(0,0,0,0.19);
+  width:336px;
+  height:195px;
+  background:#fff;
+  border-radius:5px;
+  z-index:999;
+  &:after{
+    background:url(/assets/images/backgrounds/jiao.png) no-repeat center top;
+    width:363px;
+    height:22px;
+    content:"";
+    display:block;
+    margin:23px 0 0 0;
+  }
+  .point-nav {
+
+
+    div {
+      float: left;
+      width: 108px;
+      text-align: center;
+      font-size: 14px;
+      color: #373737;
+      height: 96px;
+      border-right: 1px solid #E6E6E6;
+      &:last-child {
+        border: none;
+        width: 109px;
+      }
+    }
+    i {
+      height: 70px;
+      display: block;
+      width: 100%;
+    }
+    .nav01 i {
+      display: block;
+      background: url(/assets/images/backgrounds/ico-01.png) no-repeat center;
+    }
+    .nav02 i {
+      display: block;
+      background: url(/assets/images/backgrounds/ico-02.png) no-repeat center;
+    }
+    .nav03 i {
+      display: block;
+      background: url(/assets/images/backgrounds/ico-03.png) no-repeat center;
+    }
+  }
+  .name {
+    color: #fa0014;
+    font-size: 16px;
+    padding: 18px 0 0 18px;
+  }
+  .add {
+    background: url(/assets/images/backgrounds/ico-04.png) no-repeat left center;
+    margin: 8px 18px;
+    text-indent: 17px;
+  }
+}

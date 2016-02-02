@@ -43,6 +43,8 @@
       $state.go(path);
     }
     vm.onNavList = function () {
+      vm.tabs.length = 0;
+      $state.go('app.szgc.report');
       // $scope.tabs.splice($scope.data.selectedIndex-1, 1);
     };
   }

@@ -1,24 +1,13 @@
-﻿<section class="panel" style="border-top-width:0;" >
+﻿<md-content flex>
     <div class="menu-toggle-list" ng-show="!searBarHide">
         <sxt-projects-jd ng-model="vm.project.pid" levels="0" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree">
-            <md-list>
-                <!--<md-subheader class="md-no-sticky"></md-subheader>-->
-              <h4>录入时间：</h4>
-              <md-datepicker ng-model="vm.m.sDate" md-placeholder="选择时间"></md-datepicker>
-                <!--<md-list-item>-->
-                    <!--<input class="form-control" type="date" value="" ng-model="vm.m.sDate" />-->
-                <!--</md-list-item>-->
-                <!--<md-subheader class="md-no-sticky"></md-subheader>-->
-              <h4>截止时间:</h4>
-              <md-datepicker ng-model="vm.m.eDate" md-placeholder="选择时间"></md-datepicker>
-                <!--<md-list-item>-->
-                    <!--<input class="form-control" type="date" value="" ng-model="vm.m.eDate" />-->
-                <!--</md-list-item>-->
-            </md-list>
+
+            从  <md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间"></md-datepicker>
+            至   <md-datepicker ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间"></md-datepicker>
+
         </sxt-projects-jd>
     </div>
-    <div style="text-align:right"><toggle-menu inst="searBarHide"></toggle-menu></div>
-    <div id="dvBatchCount">
+    <div id="dvBatchCount" ng-show="searBarHide">
         <div >
             <p class="bc_title">项目填报统计表</p>
             <table class="table wk-table" contenteditable="true" width="100%">
@@ -54,4 +43,6 @@
 
         </style>
     </div>
-    </section>
+</md-content>
+    <div style="position: absolute; top:50px; right:0px;"><toggle-menu inst="searBarHide"></toggle-menu></div>
+

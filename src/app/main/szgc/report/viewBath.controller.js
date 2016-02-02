@@ -222,27 +222,29 @@
     }
     //区域改变
     $scope.$watch(function(){
-      return  vm.project.pid;
+      return $scope.searBarHide;
+      //return  vm.project.pid;
     }, function() {
+      if($scope.searBarHide)
       queryTable();
     })
 
     $scope.$watch(function(){
       return  vm.project.procedureId;
     }, function() {
-      queryTable();
+      //queryTable();
     })
 
     $scope.$watch(function(){
       return  vm.project.companyId;
     }, function() {
-      queryTable();
+      //queryTable();
     })
 
     //班组改变
     vm.changeWorkGrop = function(workGropId) {
       vm.project.workGroupId = workGropId;
-      queryTable();
+      //queryTable();
       checkState(workGropId);
     }
     //动态加载工序

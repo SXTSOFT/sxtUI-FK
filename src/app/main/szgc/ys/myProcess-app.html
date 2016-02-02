@@ -1,4 +1,4 @@
-﻿<div ng-hide="is('app.szgc.ys.add')">
+﻿<md-content ng-hide="is('app.szgc.ys.add')">
     <div  class="menu-toggle-list" ng-show="!searBarHide">
         <sxt-projects-jd ng-model="project.pid" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
             <md-list>
@@ -18,7 +18,6 @@
           </md-list>
         </sxt-projects-jd>
     </div>
-    <div style="text-align:right"><toggle-menu inst="searBarHide"></toggle-menu></div>
     <div class="table-responsive" ng-if="project.procedureId">
         <table class="table table-striped datagrid m-b-small">
             <thead>
@@ -67,5 +66,6 @@
             </tbody>
         </table>
     </div>
-</div>
+</md-content>
+<div style="position: absolute; top:50px; right:0px;"><toggle-menu inst="searBarHide"></toggle-menu></div>
 <ui-view></ui-view>

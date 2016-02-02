@@ -15,23 +15,9 @@
          *@param {yNCount, yOKCount}   表示y轴不合格合格数据
          */
         var showEchert = function(idMsg, projectName, XdataMsg, yNCount, yOKCount) {
-          require(
-            [
-              'echarts',
-              'echarts/chart/line',
-              'echarts/chart/bar',
-              'echarts/chart/scatter',
-              'echarts/chart/pie',
-              'echarts/chart/radar',
-              'echarts/chart/force',
-              'echarts/chart/chord',
-              'echarts/chart/gauge',
-              'echarts/chart/funnel',
-              'echarts/chart/venn',
-              'echarts/chart/eventRiver'
 
-            ],
-            function(ec1) {
+
+            function ec(ec1) {
               // 基于准备好的dom，初始化echarts图表
               var myChart = ec1.init(document.getElementById(idMsg));
               var zrColor = require('zrender/tool/color');
@@ -184,8 +170,8 @@
               // 为echarts对象加载数据
               return myChart.setOption(option);
 
-            }
-          );
+            };
+
         }
         return {
           showEchert: showEchert

@@ -6,7 +6,7 @@
   'use strict';
 
   angular
-    .module('app.szgc', ['app.core','ui.select'])
+    .module('app.szgc', ['app.core','angular-echarts'])
     .config(config);
 
   /** @ngInject */

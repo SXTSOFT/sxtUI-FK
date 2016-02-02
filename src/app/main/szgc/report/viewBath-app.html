@@ -1,6 +1,6 @@
-﻿<section class="panel" style="border-top-width:0;" ng-hide="is('gx3.viewBath.view')">
-
-    <div class="menu-toggle-list" ng-show="!searBarHide">
+﻿<ui-view flex layout="column">
+<md-content flex  ng-show="!searBarHide">
+  <div class="menu-toggle-list">
         <sxt-projects-jd ng-model="vm.project.pid" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" is-more="vm.project.isMore" on-queryed="vm.project.onQueryed">
 <div class="md-padding">
                   <md-input-container class="md-block" md-no-float>
@@ -17,9 +17,9 @@
                   </md-input-container>
 </div>
         </sxt-projects-jd>
-    </div>
-    <div style="text-align:right"><toggle-menu inst="searBarHide"></toggle-menu></div>
-    <md-content class="md-padding"  layout="column" flex>
+  </div>
+    </md-content>
+    <md-content flex class="md-padding"  ng-show="searBarHide" layout="column" flex>
       <md-virtual-repeat-container id="vertical-container" flex>
         <md-card md-virtual-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey} " flex>
 
@@ -78,6 +78,5 @@
         </md-card>
         </md-virtual-repeat-container>
     </md-content>
-
-</section>
-<ui-view></ui-view>
+  <div style="position: absolute; top:50px; right:0px;"><toggle-menu inst="searBarHide"></toggle-menu></div>
+</ui-view>
