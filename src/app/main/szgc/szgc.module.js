@@ -26,6 +26,24 @@
           }
         }
       })
+      .state('app.szgc.jd',{
+        url   :'/home/jd',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/szgc/home/link.html',
+            controller:'SzgcJdController as vm'
+          }
+        }
+      })
+      .state('app.szgc.yhyd',{
+        url   :'/home/yhyd',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/szgc/home/link.html',
+            controller:'SzgcyhydController as vm'
+          }
+        }
+      })
       .state('app.szgc.report', {
         url      : '/report',
         views    : {
@@ -88,6 +106,7 @@
         controller: 'AddProcessController as vm',
         templateUrl: 'app/main/szgc/ys/addProcess-app.html'
       })
+
 
 
     // Translation

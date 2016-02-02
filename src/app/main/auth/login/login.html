@@ -2,7 +2,7 @@
     <div id="login-form-wrapper" layout="column" layout-align="center center" layout-align-xs="center start">
         <div id="login-form" >
             <div class="logo">
-                <span><img src="/app/main/auth/images/logo.png"> </span>
+                <span><img src="app/main/auth/images/logo.png"> </span>
             </div>
 
             <!--<div class="title" translate="LOGIN.TITLE">万科数字工程</div>-->
@@ -10,14 +10,14 @@
             <form name="loginForm" novalidate ng-submit="vm.login(loginForm)" >
                 <div class="login-name">
                   <md-input-container class="md-block" md-no-float>
-                    <md-icon md-svg-src="/app/main/auth/images/user.svg"></md-icon>
+                    <md-icon md-svg-src="app/main/auth/images/user.svg"></md-icon>
                     <input type="text" name="username" ng-model="vm.form.username" placeholder="请输入用户名"
                            translate translate-attr-placeholder="LOGIN.USERNAME"
                            required>
                   </md-input-container>
                   <md-divider></md-divider>
                   <md-input-container class="md-block" md-no-float>
-                    <md-icon md-svg-src="/app/main/auth/images/password.svg"></md-icon>
+                    <md-icon md-svg-src="app/main/auth/images/password.svg"></md-icon>
                     <input type="password" name="password" ng-model="vm.form.password" placeholder="请输入密码"
                            translate translate-attr-placeholder="LOGIN.PASSWORD"
                            required>

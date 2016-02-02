@@ -78,7 +78,7 @@
         isMore: '=',
         cache: '@'
       },
-      templateUrl: '/app/main/szgc/directives/sxt-projects-jd-app.html',
+      templateUrl: 'app/main/szgc/directives/sxt-projects-jd-app.html',
       link: function (scope, element, attr, ctrl) {
         scope.selectors = [];
         scope.isMore = true;

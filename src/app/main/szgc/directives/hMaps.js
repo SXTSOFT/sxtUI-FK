@@ -87,22 +87,25 @@
         $timeout(function(){
 
 
-        var point = new BMap.Point(114.006492,22.555939);
-        var map = new BMap.Map(element[0]);
-        var overlay = new ComplexCustomOverlay(point, '万科安托山','万科安托山');
+        var point = new BMap.Point(114.111701,22.631026);
+        var map = new BMap.Map(element[0],{
+
+        });
+        var overlay = new ComplexCustomOverlay(point, '万科麓城','万科麓城');
+          var overlay2 = new ComplexCustomOverlay(new BMap.Point(114.006492,22.555939),'万科安托山','万科安托山');
          var sContent= '<div class="mouse-over cyzn-bg">\
-          <div class="name">万科安托山</div>\
-            <div class="add">龙华新区龙观快速与悦兴路交汇处</div>\
+          <div class="name">万科麓城</div>\
+            <div class="add">万科麓城</div>\
             <div class="point-nav">\
-            <div class="nav01"><a href="floor.html"><i></i>\
+            <div class="nav01"><a href="#/home/jd"><i></i>\
             <span>可视化进度</span>\
             </a>\
             </div>\
-            <div class="nav02"><a href="#"><i></i>\
+            <div class="nav02"><a href="#/report/viewBath"><i></i>\
             <span>质量报表</span>\
             </a>\
             </div>\
-            <div class="nav03"><a href="#"><i></i>\
+            <div class="nav03"><a href="#/home/yhyd"><i></i>\
             <span>一户一档</span>\
             </a>\
             </div>\
@@ -111,17 +114,49 @@
           var infoWindow = new BMap.InfoWindow(sContent,{
             offset:new BMap.Size(-30,-30)
           });
+          var sContent2= '<div class="mouse-over cyzn-bg">\
+          <div class="name">万科安托山</div>\
+            <div class="add">龙华新区龙观快速与悦兴路交汇处</div>\
+            <div class="point-nav">\
+            <div class="nav01"><a href="#/home/jd"><i></i>\
+            <span>可视化进度</span>\
+            </a>\
+            </div>\
+            <div class="nav02"><a href="#/report/viewBath"><i></i>\
+            <span>质量报表</span>\
+            </a>\
+            </div>\
+            <div class="nav03"><a href="#/home/yhyd"><i></i>\
+            <span>一户一档</span>\
+            </a>\
+            </div>\
+            </div>\
+            </div>'
+          var infoWindow2 = new BMap.InfoWindow(sContent2,{
+            offset:new BMap.Size(-30,-30)
+          });
 
         map.centerAndZoom(point, 15);
 
           var marker = new BMap.Marker(point,{
-            icon:new BMap.Icon('/assets/images/backgrounds/T.png',new BMap.Size(60,60))
-          });        // 创建标注
+            icon:new BMap.Icon('../assets/images/backgrounds/T.png',new BMap.Size(60,60))
+          });
+          var marker2 = new BMap.Marker(new BMap.Point(114.006492,22.555939),{
+            icon:new BMap.Icon('../assets/images/backgrounds/T.png',new BMap.Size(60,60))
+          });
           map.addOverlay(marker);
+          map.addOverlay(marker2);
+          map.addOverlay(overlay2)
           map.addOverlay(overlay);
+          map.setZoom(11)
+
           marker.addEventListener("click",function(){
             //alert('a')
             this.openInfoWindow(infoWindow);
+          });
+          marker2.addEventListener("click",function(){
+            //alert('a')
+            this.openInfoWindow(infoWindow2);
           });
         },1000)
       }

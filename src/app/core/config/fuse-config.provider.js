@@ -88,7 +88,7 @@
                  * throw exception;
                  */
                 console.log('error:',exception)
-              alert(exception);
+              //alert(exception);
                 //utils.error(exception.msg, errorData);
             };
         }
