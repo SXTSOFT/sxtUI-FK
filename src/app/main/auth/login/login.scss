@@ -6,7 +6,7 @@
     margin-top: 25px;
     text-align: center;
     img{
-      width:120px;
+      width:96px;
     }
   }
 
@@ -27,21 +27,21 @@
       border: 0px!important;
       &.ng-invalid {
         &::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-          color: red;
+          color: #808080;
         }
         &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-          color: red;
+          color:#808080;
           opacity: 1;
         }
         &::-moz-placeholder { /* Mozilla Firefox 19+ */
-          color: red;
+          color:#808080;
           opacity: 1;
         }
         &:-ms-input-placeholder { /* Internet Explorer 10-11 */
-          color: red;
+          color:#808080;
         }
         &:placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
-          color: red;
+          color:  #808080;
         }
       }
     }
