@@ -15,7 +15,6 @@
          *@param {yNCount, yOKCount}   表示y轴不合格合格数据
          */
         var showEchert = function(idMsg, projectName, XdataMsg, yNCount, yOKCount) {
-          console.log(idMsg, projectName, XdataMsg, yNCount, yOKCount);
           require(
             [
               'echarts',

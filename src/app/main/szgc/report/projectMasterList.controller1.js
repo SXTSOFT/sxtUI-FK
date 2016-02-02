@@ -81,15 +81,9 @@
           vm.NCountE.length = 20;
           vm.OKCountE.length = 20;
         }
-        var params = {};
-        //params.idMsg='main1';
-        //params.projectName=vm.project.projectName+'班组施工情况';
-        //params.XdataMsg=vm.GrpNameE;
-        //params.yNCount=vm.NCountE;
-        //params.yOKCount=vm.OKCountE;
-        console.log('vm.project.projectName',vm.project.projectName);
+        //引用echarts 显示图形界面。
         showEcherts.showEchert('main1', vm.project.projectName + '班组施工情况', vm.GrpNameE, vm.NCountE, vm.OKCountE)
-        //api.szgc.showEcherts.showEchert(params);
+
       });
 
     };
