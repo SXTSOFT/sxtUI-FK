@@ -30,8 +30,8 @@
         url   :'/home/jd',
         views :{
           'content@app':{
-            templateUrl : 'app/main/szgc/home/link.html',
-            controller:'SzgcJdController as vm'
+            templateUrl : 'app/main/szgc/home/link2.html',
+            controller:'SzgcyhydController as vm'
           }
         }
       })

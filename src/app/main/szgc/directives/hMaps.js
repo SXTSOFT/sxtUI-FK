@@ -135,7 +135,7 @@
           var infoWindow2 = new BMap.InfoWindow(sContent2,{
             offset:new BMap.Size(-30,-30)
           });
-
+map.addControl(new BMap.NavigationControl());
         map.centerAndZoom(point, 15);
 
           var marker = new BMap.Marker(point,{
