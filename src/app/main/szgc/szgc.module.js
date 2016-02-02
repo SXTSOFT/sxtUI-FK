@@ -12,8 +12,6 @@
   /** @ngInject */
   function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
   {
-
-
     // State
     $stateProvider
       .state('app.szgc', {
@@ -41,6 +39,11 @@
         url: '/viewBath',
         controller: 'viewBathController as vm',
         templateUrl: 'app/main/szgc/report/viewBath-app.html'
+      })
+      .state('app.szgc.report.viewBath.view', {
+        url: '/{bathid}',
+        controller: 'viewBathDetailController as vm',
+        templateUrl: 'app/main/szgc/report/viewBathDetail-app.html'
       })
       .state('app.szgc.report.batchCount', {
         url:'/batchCount',

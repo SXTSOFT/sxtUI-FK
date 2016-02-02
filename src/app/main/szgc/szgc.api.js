@@ -22,8 +22,8 @@
         getAll:function(args){
           return $http.get($http.url('/api/PProcedure', args));
         },
-        getAppImg:function(){
-
+        getAppImg:function(regionId,produceId,roleid){
+          return $http.get('/api/projects/' + regionId + '/Procedure/' + produceId + '/APPImgs?roleId=' + roleid);
         }
       },
       ProcedureTypeService:{
@@ -38,8 +38,15 @@
         delProcess:function(id){
           return $http.delete('/api/PPBatchRelation/' + id);
         },
-        getBatchRelation:function(){
-
+        //根据区域树获取验收批数据
+        getBatchRelation: function(parems) {
+          return $http.get($http.url('/api/BatchRelation/GetBatchRelationAllHistoryList', parems));
+        },
+        getCheckStepByBatchId: function(batchRelationId, parems) {
+          return $http.get($http.url('/api/BatchRelation/' + batchRelationId + '/CheckStep', parems));
+        },
+        getAll:function(batchId, parems) {
+          return $http.get($http.url('/api/BatchSet/' + batchId + '/PPCheckDataList', parems));
         }
       },
       BatchSetService:{
@@ -71,18 +78,18 @@
         }
       },
       ProcProBatchRelationService:{
-        getbyid:function(){
-
+        getbyid:function(id){
+          return $http.get('/api/PPBatchRelation/' + id);
         }
       },
       TargetService:{
-        getAll:function(){
-
+        getAll:function(procedureId){
+          return $http.get($http.url('/api/PProcedure/' + procedureId + '/EngineeringTarget'));
         }
       },
       ProjectSettingsSevice:{
-        query:function(){
-
+        query:function(args){
+          return $http.get($http.url('/api/ProjectSetting', args));
         }
       }
     })
