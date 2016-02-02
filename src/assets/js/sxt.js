@@ -131,6 +131,7 @@ window.sxt = (function(win)
 
   //获取登录人信息
   function getProfile(callback,user){
+    return callback();
     getDb(function(db){
       if(user) {
         db.profiles.get(user.username).then(cb(callback),cb(callback,false));
@@ -145,7 +146,7 @@ window.sxt = (function(win)
   }
 
   function setProfiles(user,callback){
-
+    return callback();
     getDb(function(db){
       db.profiles.get(user.username).then(function(user2){
         if(user2){
@@ -160,6 +161,7 @@ window.sxt = (function(win)
   }
 
   function removeProfile(profile,callback){
+    return callback();
     getDb(function(db) {
       db.profile.clear ().then (cb (callback), cb (callback));
     });
@@ -176,6 +178,7 @@ window.sxt = (function(win)
   }
 
   function setProfile(user,callback){
+    return callback();
     getDb(function(db) {
       console.log('setProfile', user);
       db.profile.select().then(function(data){

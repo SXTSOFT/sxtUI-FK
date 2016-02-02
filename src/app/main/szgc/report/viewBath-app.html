@@ -2,7 +2,7 @@
 
     <div class="menu-toggle-list" ng-show="!searBarHide">
         <sxt-projects-jd ng-model="vm.project.pid" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" is-more="vm.project.isMore" on-queryed="vm.project.onQueryed">
-
+<div class="md-padding">
                   <md-input-container class="md-block" md-no-float>
                     <label>工序专业</label>
                     <sxt-procedure-type style="width:100%;" ng-model="vm.project.procedureTypeId"></sxt-procedure-type>
@@ -15,17 +15,18 @@
                     <label>班组</label>
                     <input ng-model="vm.ddd.grpKey" >
                   </md-input-container>
-
+</div>
         </sxt-projects-jd>
     </div>
     <div style="text-align:right"><toggle-menu inst="searBarHide"></toggle-menu></div>
-    <md-content class="md-padding"  layout-xs="column">
-        <md-card ng-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey} ">
+    <md-content class="md-padding"  layout="column" flex>
+      <md-virtual-repeat-container id="vertical-container" flex>
+        <md-card md-virtual-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey} " flex>
 
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-headline">{{ item.RegionNameTree}} {{item.RegionName}}</span>
-                    <p>{{item.ProcedureName}}{{item}}</p>
+                    <p>{{item.ProcedureName}}</p>
                 </md-card-title-text>
             </md-card-title>
 
@@ -75,6 +76,7 @@
                     </md-button>
             </md-card-actions>
         </md-card>
+        </md-virtual-repeat-container>
     </md-content>
 
 </section>

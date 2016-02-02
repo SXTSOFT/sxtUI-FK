@@ -112,8 +112,14 @@
       vm.project.produres = r.data;
     });
     //获取资料表数据
-    var queryTable = function() {
+    var t1,queryTable = function() {
+      if(t1)
+        $timeout.cancel(t1);
+      t1 = $timeout(function(){
+
+
       vm.baths = {};
+      console.log(vm.project)
       if (vm.project.pid) {
         var batchParems = {
           isGetChilde: 1,
@@ -159,7 +165,8 @@
 
         });
 
-      } else if (vm.project.data) {
+      }
+      else if (vm.project.data) {
         var df = [],
           batchParems = {
             isGetChilde: 1,
@@ -168,6 +175,7 @@
             companyId: vm.project.companyId,
             regionIdTree: vm.project.idTree
           }
+
         vm.project.data.items.forEach(function(p) {
           batchParems.regionIdTree = p.$id;
           df.push(api.szgc.addProcessService.queryByProjectAndProdure2(p.$id, batchParems));
@@ -210,7 +218,7 @@
           }, 1000);
         })
       }
-
+      },500);
     }
     //区域改变
     $scope.$watch(function(){

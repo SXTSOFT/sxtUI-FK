@@ -21,6 +21,9 @@
       ProcedureService:{
         getAll:function(args){
           return $http.get($http.url('/api/PProcedure', args));
+        },
+        getAppImg:function(){
+
         }
       },
       ProcedureTypeService:{
@@ -34,6 +37,9 @@
         },
         delProcess:function(id){
           return $http.delete('/api/PPBatchRelation/' + id);
+        },
+        getBatchRelation:function(){
+
         }
       },
       BatchSetService:{
@@ -62,6 +68,21 @@
       CheckStepService:{
         getAll:function(procedureId,args){
           return $http.get($http.url('/api/procedure/'+procedureId+'/CheckStep' , args));
+        }
+      },
+      ProcProBatchRelationService:{
+        getbyid:function(){
+
+        }
+      },
+      TargetService:{
+        getAll:function(){
+
+        }
+      },
+      ProjectSettingsSevice:{
+        query:function(){
+
         }
       }
     })

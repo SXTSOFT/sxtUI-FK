@@ -13,7 +13,11 @@
 
   /** @ngInject */
   function MyProcessController($scope, api, utils, $state){
+
     var vm = this;
+    $scope.is = function(route){
+      return $state.is(route);
+    }
     $scope.delProcess = function(BatchRelationId) {
       utils.confirm(null, '确认删除验收批吗？',
         function() {

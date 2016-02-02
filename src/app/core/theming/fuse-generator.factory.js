@@ -145,7 +145,7 @@
             fuseTheming.setThemesList(themes);
 
             // Remember selected theme.
-            var selectedTheme = $cookies.get('selectedTheme');
+            var selectedTheme ='vanke'; $cookies.get('selectedTheme');
 
             if ( selectedTheme )
             {
@@ -153,7 +153,7 @@
             }
             else
             {
-                fuseTheming.setActiveTheme('default');
+                fuseTheming.setActiveTheme('vanke');
             }
         }
 
