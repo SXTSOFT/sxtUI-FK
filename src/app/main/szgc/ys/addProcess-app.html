@@ -6,35 +6,35 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label class="col-sm-2 col-lg-1 control-label">项目</label>
+                      <md-subheader class="md-no-sticky">项目</md-subheader>
                         <div class="col-sm-10 col-lg-11">
                             <p class="form-control-static">{{data.projectName}} {{data.rName}}</p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 col-lg-1 control-label">工序</label>
-                        <div class="col-sm-10 col-lg-11"> 
+                      <md-subheader class="md-no-sticky">工序</md-subheader>
+                        <div class="col-sm-10 col-lg-11">
                             <p class="form-control-static">{{data.procedureName}}</p>
                         </div>
                     </div>
                 </div>
             </div>
-           
+
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group" ng-class="{'has-error':addForm.jldw.$invalid}">
-                        <label class="col-sm-4 col-lg-2 control-label">监理单位</label>
-                        <div class="col-sm-8 col-lg-10">
+                      <md-subheader class="md-no-sticky">监理单位</md-subheader>
+                      <md-list-item>
                             <sxt-select name="jldw" ng-disabled="!data.isFirst" required ng-model="data.curHistory.SupervisorCompanyId" name-value="data.curHistory.SupervisorCompanyName" sources="data.construction" text-field="UnitName" value-field="UnitId"></sxt-select>
-                        </div>
+                      </md-list-item>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group" ng-class="{'has-error':addForm.ysr.$invalid}">
-                        <label class="col-sm-4 col-lg-2 control-label">验收人</label>
-                        <div class="col-sm-8 col-lg-10">
+                      <md-subheader class="md-no-sticky">验收人</md-subheader>
+                      <md-list-item>
                             <sxt-select name="ysr" required ng-model="data.curStep.CheckWorker" obj-value="data.submitUser" name-value="data.curStep.CheckWorkerName" sources="data.submitUsers" text-field="name" value-field="id"></sxt-select>
-                        </div>
+                      </md-list-item>
                     </div>
                 </div>
             </div>
@@ -42,7 +42,7 @@
             <div class="row" ng-repeat="batch in data.batchs">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label class="col-sm-2 col-lg-1 control-label">{{$index==0?'验收批':''}} <!--<button ng-if="$index==0 && data.isFirst" type="button" ng-click="addBatch()" class="btn btn-white btn-xs"><i class="fa fa-plus"></i></button>--></label>
+                      <md-subheader class="md-no-sticky">{{$index==0?'验收批':''}} <!--<button ng-if="$index==0 && data.isFirst" type="button" ng-click="addBatch()" class="btn btn-white btn-xs"><i class="fa fa-plus"></i></button>--></md-subheader>
                         <div class="col-sm-6 col-lg-7">
                             <div class="input-group">
                                 <span class="input-group-addon" >验收批{{batch.BatchNo}}</span>
@@ -64,10 +64,10 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group" ng-class="{'has-error':addForm.zid.$invalid}">
-                        <label class="col-sm-6 col-lg-3 control-label">总承包</label>
-                        <div class="col-sm-6 col-lg-9">
+                      <md-subheader class="md-no-sticky">总承包</md-subheader>
+                      <md-list-item>
                             <sxt-select  required name="zid"  ng-model="data.curHistory.ParentCompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.ParentCompanyName" sources="data.supervision1" text-field="UnitName" value-field="UnitId"></sxt-select>
-                        </div>
+                      </md-list-item>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -118,6 +118,10 @@
                         <div class="switch">
                             <input type="checkbox" ng-model="n.isOK" id="id{{n.Id}}" class="switch__input">
                             <label class="switch__label" for="id{{n.Id}}">{{ n.isOK?'　符合':'不符合' }}</label>
+                          <!--<md-switch ng-model="n.Id" aria-label="">-->
+                            <!--{{ n.isOK?'符合':'不符合' }}-->
+                          <!--</md-switch>-->
+
                         </div>
                     </div>
                 </div>
@@ -127,8 +131,6 @@
                 <legend>
                     一般项目
                 </legend>
-
-
                 <div class="row hidden-xs">
                     <div class="col-md-4" flex-item="4"><div class="ml++">项目</div></div>
                     <div class="col-md-2">允许偏差（mm）</div>
