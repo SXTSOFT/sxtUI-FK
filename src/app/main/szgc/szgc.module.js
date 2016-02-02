@@ -59,8 +59,13 @@
         url:'/settings',
         views :{
           'content@app':{
-            controller:'SzgcSettingsController',
-            templateUrl:'app/main/szgc/settings/settings.html'
+            controller:'SzgcSettingsController as vm',
+            templateUrl:'app/main/szgc/settings/settings.html',
+            resolve:{
+              profile:['api',function(api){
+                return api.szgc.vanke.profile();
+              }]
+            }
           }
         }
       })
@@ -68,19 +73,19 @@
         url:'/ys',
         views :{
           'content@app':{
-            controller:'MyProcessController',
+            controller:'MyProcessController as vm',
             templateUrl:'app/main/szgc/ys/myProcess-app.html'
           }
         }
       })
       .state('app.szgc.ys.update', {
         url: '/update/{projectid}/{name}/{batchId}/{procedureId}/{type}/{idTree}/{procedureName}/{nameTree}/{checkedCount}',
-        controller: 'UpdateProcessController',
+        controller: 'UpdateProcessController as vm',
         templateUrl: 'app/main/szgc/ys/updateProcess.html'
       })
       .state('app.szgc.ys.add', {
         url: '/new/{projectid}/{name}/{batchId}/{procedureId}/{type}/{idTree}/{procedureName}/{nameTree}/{flag}',
-        controller: 'AddProcessController',
+        controller: 'AddProcessController as vm',
         templateUrl: 'app/main/szgc/ys/addProcess-app.html'
       })
 

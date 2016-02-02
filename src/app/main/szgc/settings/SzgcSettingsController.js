@@ -9,8 +9,10 @@
     .controller('SzgcSettingsController',SzgcSettingsController);
 
   /** @ngInject */
-  function SzgcSettingsController(){
-    var vm = this;
+  function SzgcSettingsController(profile){
 
+    var vm = this;
+    vm.profile = profile.data.data;
+    console.log('profile',profile);
   }
 })();
