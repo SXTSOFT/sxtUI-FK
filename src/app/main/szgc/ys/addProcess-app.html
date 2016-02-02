@@ -1,93 +1,48 @@
-﻿<section class="panel nt">
-
+﻿<md-content>
     <form name="addForm" class="form-horizontal" ng-submit="save(addForm)">
+      <md-list>
+        <md-subheader class="md-no-sticky">项目</md-subheader>
+        <md-list-item>
+          <p>项目{{data.projectName}} {{data.rName}}</p>
+        </md-list-item>
+        <md-subheader class="md-no-sticky">工序</md-subheader>
+        <md-list-item>
+          <p>工序{{data.procedureName}}</p>
+        </md-list-item>
+        <md-subheader class="md-no-sticky">监理单位</md-subheader>
+        <md-list-item>
+          <sxt-select name="jldw" ng-disabled="!data.isFirst" required ng-model="data.curHistory.SupervisorCompanyId" name-value="data.curHistory.SupervisorCompanyName" sources="data.construction" text-field="UnitName" value-field="UnitId"></sxt-select>
+        </md-list-item>
+        <md-subheader class="md-no-sticky">验收人</md-subheader>
+        <md-list-item>
+          <sxt-select name="ysr" required ng-model="data.curStep.CheckWorker" obj-value="data.submitUser" name-value="data.curStep.CheckWorkerName" sources="data.submitUsers" text-field="name" value-field="id"></sxt-select>
+        </md-list-item>
+        <div ng-repeat="batch in data.batchs">
 
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                      <md-subheader class="md-no-sticky">项目</md-subheader>
-                        <div class="col-sm-10 col-lg-11">
-                            <p class="form-control-static">{{data.projectName}} {{data.rName}}</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                      <md-subheader class="md-no-sticky">工序</md-subheader>
-                        <div class="col-sm-10 col-lg-11">
-                            <p class="form-control-static">{{data.procedureName}}</p>
-                        </div>
-                    </div>
-                </div>
+          <md-subheader class="md-no-sticky">{{$index==0?'验收批':''}} <!--<button ng-if="$index==0 && data.isFirst" type="button" ng-click="addBatch()" class="btn btn-white btn-xs"><i class="fa fa-plus"></i></button>--></md-subheader>
+          <div class="col-sm-6 col-lg-7">
+            <div class="input-group">
+              <span class="input-group-addon" >验收批{{batch.BatchNo}}</span>
+              <input type="text" class="form-control" ng-disabled="!data.isFirst" ng-model="batch.Remark" placeholder="验收批描述" />
+              <span class="input-group-addon" ng-if="$index==0">第{{batch.Count}}次验收</span>
+              <span class="input-group-btn" ng-if="$index!=0"><button ng-click="removeBatch(batch)" type="button" class="btn btn-white"><i class="fa fa-times"></i></button></span>
             </div>
+          </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group" ng-class="{'has-error':addForm.jldw.$invalid}">
-                      <md-subheader class="md-no-sticky">监理单位</md-subheader>
-                      <md-list-item>
-                            <sxt-select name="jldw" ng-disabled="!data.isFirst" required ng-model="data.curHistory.SupervisorCompanyId" name-value="data.curHistory.SupervisorCompanyName" sources="data.construction" text-field="UnitName" value-field="UnitId"></sxt-select>
-                      </md-list-item>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group" ng-class="{'has-error':addForm.ysr.$invalid}">
-                      <md-subheader class="md-no-sticky">验收人</md-subheader>
-                      <md-list-item>
-                            <sxt-select name="ysr" required ng-model="data.curStep.CheckWorker" obj-value="data.submitUser" name-value="data.curStep.CheckWorkerName" sources="data.submitUsers" text-field="name" value-field="id"></sxt-select>
-                      </md-list-item>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row" ng-repeat="batch in data.batchs">
-                <div class="col-md-12">
-                    <div class="form-group">
-                      <md-subheader class="md-no-sticky">{{$index==0?'验收批':''}} <!--<button ng-if="$index==0 && data.isFirst" type="button" ng-click="addBatch()" class="btn btn-white btn-xs"><i class="fa fa-plus"></i></button>--></md-subheader>
-                        <div class="col-sm-6 col-lg-7">
-                            <div class="input-group">
-                                <span class="input-group-addon" >验收批{{batch.BatchNo}}</span>
-                                <input type="text" class="form-control" ng-disabled="!data.isFirst" ng-model="batch.Remark" placeholder="验收批描述" />
-                                <span class="input-group-addon" ng-if="$index==0">第{{batch.Count}}次验收</span>
-                                <span class="input-group-btn" ng-if="$index!=0"><button ng-click="removeBatch(batch)" type="button" class="btn btn-white"><i class="fa fa-times"></i></button></span>
-                            </div>
-                        </div>
-                        <!--<div class="col-sm-4 col-lg-4">
-                            <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon2">完成占比</span>
-                                <input type="number" class="form-control" ng-disabled="!data.isFirst" ng-keyup="changeBatch(batch)"  ng-model="batch.WorkRatio" placeholder="数字(未填写为100)" />
-                                <span class="input-group-addon" id="basic-addon2">%</span>
-                            </div>
-                        </div>-->
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group" ng-class="{'has-error':addForm.zid.$invalid}">
-                      <md-subheader class="md-no-sticky">总承包</md-subheader>
-                      <md-list-item>
-                            <sxt-select  required name="zid"  ng-model="data.curHistory.ParentCompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.ParentCompanyName" sources="data.supervision1" text-field="UnitName" value-field="UnitId"></sxt-select>
-                      </md-list-item>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="col-sm-6 col-lg-3 control-label">专业承包</label>
-                        <div class="col-sm-6 col-lg-9">
-                            <sxt-select   ng-model="data.curHistory.CompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.CompanyName" sources="data.supervision" text-field="UnitName" value-field="UnitId"></sxt-select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group" ng-class="{'has-error':addForm.gid.$invalid}">
-                        <label class="col-sm-6 col-lg-3 control-label">施工班组</label>
-                        <div class="col-sm-6 col-lg-9">
-                            <sxt-select required  ng-model="data.curHistory.GrpId" ng-disabled="!data.isFirst" name="gid" name-value="data.curHistory.GrpName" sources="data.groups" text-field="name" value-field="id"></sxt-select>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
+        <md-subheader class="md-no-sticky">总承包</md-subheader>
+        <md-list-item>
+          <sxt-select  required name="zid"  ng-model="data.curHistory.ParentCompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.ParentCompanyName" sources="data.supervision1" text-field="UnitName" value-field="UnitId"></sxt-select>
+        </md-list-item>
+        <md-subheader class="md-no-sticky">专业承包</md-subheader>
+        <md-list-item>
+          <sxt-select  required name="zid"  ng-model="data.curHistory.ParentCompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.ParentCompanyName" sources="data.supervision1" text-field="UnitName" value-field="UnitId"></sxt-select>
+        </md-list-item>
+        <md-subheader class="md-no-sticky">施工班组</md-subheader>
+        <md-list-item>
+          <sxt-select required  ng-model="data.curHistory.GrpId" ng-disabled="!data.isFirst" name="gid" name-value="data.curHistory.GrpName" sources="data.groups" text-field="name" value-field="id"></sxt-select>
+        </md-list-item>
+      </md-list>
 
 
         <div><div class="clearfix"></div></div>
@@ -201,6 +156,8 @@
         </div>
     </form>
     <div style="position:fixed; top:20px; right:20px;">
-        <md-button class="md-fab md-mini" ng-click="back()"><i class="fa fa-arrow-left"></i></md-button>
+        <md-button class="md-fab md-mini" ng-click="back()">
+          <md-icon md-font-icon="icon-arrow-left"></md-icon>
+        </md-button>
     </div>
-</section>
+</md-content>

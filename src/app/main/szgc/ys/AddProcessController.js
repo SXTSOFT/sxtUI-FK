@@ -10,10 +10,13 @@
   /** @ngInject */
   function AddProcessController($scope, $filter, $stateParams, utils,  $q, api,auth,$state){
 
+
     //给默认时间
     var dateFilter = $filter('date');
     $scope.m = {};
-
+$scope.back = function(){
+  history.back();
+}
     $scope.m.CheckDateF = new Date();
     $scope.m.CheckDate = dateFilter($scope.m.CheckDateF, 'yyyy-MM-dd HH:dd:ss');
 
