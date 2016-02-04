@@ -45,7 +45,7 @@
         }
       })
       .state('app.szgc.report', {
-        url      : '/report',
+        url      : '/report/{id}/{category}',
         views    : {
           'content@app': {
             templateUrl: 'app/main/szgc/report/report.html',
