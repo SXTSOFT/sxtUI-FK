@@ -24,7 +24,7 @@
         return $q (function (resolve,reject) {
           $http ({
             method: 'POST',
-            url: appConfig.apiUrl + '/auth/connect/token',
+            url: sxt.app.api + '/auth/connect/token',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
               'Authorization': 'Basic ' + btoa ('59EEDFCCB53C451488E067522992853B:9d6ab75f921942e61fb43a9b1fc25c63')
@@ -60,7 +60,7 @@
       if(!token || !token.username) {
         return $q (function (resolve, reject) {
           $http
-            .get (appConfig.apiUrl + '/api/Security/Account/UserInfo', {t: new Date ().getTime ()})
+            .get (sxt.app.api + '/api/Security/Account/UserInfo', {t: new Date ().getTime ()})
             .then (function (d) {
               resolve (d && d.data);
             }, function () {

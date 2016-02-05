@@ -42,7 +42,7 @@
 
     function onHttpResponseError(rejection){
       if(rejection.status == 401){
-        setToken(null);
+        //setToken(null);
       }
     }
 
