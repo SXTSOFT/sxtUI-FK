@@ -40,7 +40,10 @@
     }
 
     function resolveApi(p,$resource,$http){
+      if(p!==api)
+        p.root = api;
       angular.forEach(p,function(o,k){
+        if(k === 'root' || !angular.isObject(o))return;
         if(o.method && o.args){
           if(o.method == 'custom'){
             p[k] = custom(o.args[0],p);
@@ -50,6 +53,7 @@
           }
         }
         else{
+
           resolveApi(o,$resource,$http);
         }
       });

@@ -91,6 +91,20 @@
         query:function(args){
           return $http.get($http.url('/api/ProjectSetting', args));
         }
+      },
+      FilesService:{
+        get: function (id) {
+          return $http.get('/api/Files/' + id);
+        },
+        group: function (group) {
+          return $http.get('/api/Files?group=' + group);
+        },
+        delete: function (id) {
+          return $http.delete('/api/Files/' + id);
+        },
+        update: function (file) {
+          return $http.put('/api/Files/' + file.Id, file);
+        }
       }
     })
   }

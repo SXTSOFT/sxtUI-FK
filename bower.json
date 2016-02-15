@@ -30,7 +30,9 @@
     "jqueryui-touch-punch": "*",
     "angular-moment-picker": "moment-picker#5e5b007",
     "IndexedDBShim": "~2.2.1",
-    "angular-echarts": "^0.3.5"
+    "angular-echarts": "^0.3.5",
+    "bootstrap": "^3.3.6",
+    "angular-file-upload": "^2.2.0"
   },
   "devDependencies": {
     "angular-mocks": "1.4.8"

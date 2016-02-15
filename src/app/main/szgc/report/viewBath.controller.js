@@ -9,8 +9,11 @@
     .controller('viewBathController',viewBathController);
 
   /** @ngInject */
-  function viewBathController($scope,api,$q,$timeout){
+  function viewBathController($scope,api,$q,$timeout,$state){
     var vm = this;
+    vm.is = function(route){
+      return $state.is(route);
+    }
     vm.ddd = {};
     vm.ddd.grpKey = "";
 
@@ -222,10 +225,11 @@
     }
     //区域改变
     $scope.$watch(function(){
-      return $scope.searBarHide;
+      return vm.searBarHide;
       //return  vm.project.pid;
     }, function() {
-      if($scope.searBarHide)
+      console.log('sh',vm.searBarHide)
+      if(vm.searBarHide)
       queryTable();
     })
 

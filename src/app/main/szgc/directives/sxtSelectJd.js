@@ -76,6 +76,7 @@
         onQuery: '=',
         onChange: '=',
         isMore: '=',
+        objectScope:'=',
         cache: '@'
       },
       templateUrl: 'app/main/szgc/directives/sxt-projects-jd-app.html',
@@ -103,7 +104,16 @@
           }
           scope.onChange && scope.onChange(scope);
         }
-
+        if(scope.objectScope){
+          scope.objectScope.backJdSelect = function(){
+            if(scope.selectors.length){
+              scope.item_clear(scope.selectors.length-2);
+            }
+          }
+          scope.objectScope.isJdBack = function(){
+            return scope.selectors.length && scope.selectors[0].selected;
+          }
+        }
         scope.toggleMore = function () {
           scope.isMore = !scope.isMore;
         }

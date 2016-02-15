@@ -11,9 +11,6 @@
   &.ng-hide{
     max-height: 0;
   }
-  .stlabel{
-    line-height: 52px;
-  }
 }
 .panel>.table-responsive{
   border-top:2px solid rgb(221, 221, 221);
@@ -21,44 +18,10 @@
 .menu{
   position:relative;
 }
-.menu i{
-  position:absolute;
-  top:12px;
-  left:14px;
-  -webkit-transition-property: -webkit-transform;
-  -moz-transition-property: -moz-transform;
-  transition-property: transform;
-  -webkit-transition-duration: 0.3s;
-  -moz-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-}
-.menu:not(.menu-left) i.fa-bars{
-  -webkit-transform: scale(1) rotate(0deg);
-  -moz-transform: scale(1) rotate(0deg);
-  -ms-transform: scale(1) rotate(0deg);
-  -o-transform: scale(1) rotate(0deg);
-  transform: scale(1) rotate(0deg);
-}
-.menu:not(.menu-left) i.fa-arrow-left,.menu:not(.menu-left) i.fa-arrow-up{
-  -webkit-transform: scale(0) rotate(-90deg);
-  -moz-transform: scale(0) rotate(-90deg);
-  -ms-transform: scale(0) rotate(-90deg);
-  -o-transform: scale(0) rotate(-90deg);
-  transform: scale(0) rotate(-90deg);
-}
-.menu.menu-left i.fa-bars{
-  -webkit-transform: scale(0) rotate(90deg);
-  -moz-transform: scale(0) rotate(90deg);
-  -ms-transform: scale(0) rotate(90deg);
-  -o-transform: scale(0) rotate(90deg);
-  transform: scale(0) rotate(90deg);
-}
-.menu.menu-left i.fa-arrow-left,.menu.menu-left i.fa-arrow-up{
-  -webkit-transform: scale(1) rotate(0deg);
-  -moz-transform: scale(1) rotate(0deg);
-  -ms-transform: scale(1) rotate(0deg);
-  -o-transform: scale(1) rotate(0deg);
-  transform: scale(1) rotate(0deg);
+.text-disabled{
+  text-decoration: line-through;
+  color:silver;
+  font-style: italic;
 }
 
 .point-add {
@@ -135,5 +98,36 @@
     background: url(../assets/images/backgrounds/ico-04.png) no-repeat left center;
     margin: 8px 18px;
     text-indent: 17px;
+  }
+}
+
+.imageEdit{
+  div{cursor:hand;}
+  .edititem{
+    min-width:100px;
+    float:left;
+    padding:5px 0;
+    position:relative;
+    .action{
+      position:absolute;
+      top:10px;
+      right:10px;
+    }
+    .proc{
+      position:absolute;
+      top:45%;
+      left:45%;
+    }
+  }
+  .file-drop-zone{
+    width:140px;
+    cursor:hand;
+    border-style:solid;
+    overflow: hidden;
+    background:url(../assets/images/etc/plug.png) no-repeat center center;
+    input{
+      opacity: 0;
+      text-indent: -1000px;
+    }
   }
 }
