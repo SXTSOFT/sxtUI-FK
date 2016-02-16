@@ -1,0 +1,36 @@
+#toolbar{
+  .md-button{
+    line-height:26px;
+    min-width:80px;
+    font-size:12px;
+  }
+  md-icon{
+    margin-top: 2px;
+  }
+}
+#toptoolbar{
+  height:48px;
+  min-height:48px;
+  max-height:48px;
+  z-index: 55 !important;
+  background-color:rgb(244,67,54);
+  color:#fff;
+  .md-button{
+    position: absolute;
+    left:0;
+    top:4px;
+    md-icon{
+      color:#fff;
+    }
+    span{
+      display: inline-block;
+      vertical-align: top;
+      padding-top: 3px;
+    }
+  }
+  h2{
+    text-align:center;
+    display:block;
+    width:100%;
+  }
+}
