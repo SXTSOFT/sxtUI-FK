@@ -27,7 +27,7 @@
         }
       })
       .state('app.szgc.jd',{
-        url   :'/home/jd',
+        url   :'/home/jd/:id',
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/link2.html',
