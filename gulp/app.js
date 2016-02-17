@@ -37,14 +37,14 @@ gulp.task('html-app', ['inject', 'partials'], function ()
     .pipe(assets.restore())
     .pipe($.useref())
     .pipe($.revReplace())
-    .pipe(htmlFilter)
-    .pipe($.minifyHtml({
-      empty       : true,
-      spare       : true,
-      quotes      : true,
-      conditionals: true
-    }))
-    .pipe(htmlFilter.restore)
+    //.pipe(htmlFilter)
+    //.pipe($.minifyHtml({
+    //  empty       : true,
+    //  spare       : true,
+    //  quotes      : true,
+    //  conditionals: true
+    //}))
+    //.pipe(htmlFilter.restore)
     .pipe(gulp.dest(path.join(conf.paths.app, '/')))
     .pipe($.size({
       title    : path.join(conf.paths.app, '/'),

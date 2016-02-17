@@ -12,7 +12,7 @@
   function toggleMenuDirective($mdMedia) {
     return {
       restrict: 'EA',
-      template: '<md-button  class="md-fab menu md-mini" ng-class="{\'menu-left\':!inst}" lx-ripple="white" ng-click="whenClick()"><md-icon md-font-icon="{{getinst()?\'icon-menu\':\'icon-arrow-up\'}}" ng-class="{\'icon-menu\':!inst,\'icon-menu\':inst}" ></md-icon></md-button>',
+      template: '<md-button  class="md-fab menu md-mini" ng-class="{\'menu-left\':!inst}"  ng-click="whenClick()"><md-icon md-font-icon="{{getinst()?\'icon-menu\':\'icon-arrow-up\'}}" ng-class="{\'icon-menu\':!inst,\'icon-menu\':inst}" ></md-icon></md-button>',
       scope: {
         inst: '='
       },

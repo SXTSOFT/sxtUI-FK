@@ -6,7 +6,7 @@
   'use strict';
 
   angular
-    .module('app.szgc', ['app.core','angular-echarts'])
+    .module('app.szgc', ['app.core','angular-echarts','angularFileUpload'])
     .config(config);
 
   /** @ngInject */
@@ -27,7 +27,7 @@
         }
       })
       .state('app.szgc.jd',{
-        url   :'/home/jd',
+        url   :'/home/jd/:id',
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/link2.html',
@@ -45,7 +45,7 @@
         }
       })
       .state('app.szgc.report', {
-        url      : '/report/{id}/{category}',
+        url      : '/report',
         views    : {
           'content@app': {
             templateUrl: 'app/main/szgc/report/report.html',

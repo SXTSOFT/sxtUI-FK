@@ -6,8 +6,12 @@
   angular
     .module('app.szgc')
     .controller('viewBathDetailController',viewBathDetailController);
-  function viewBathDetailController($scope,api,$stateParams,utils,$q,$timeout) {
+  function viewBathDetailController($scope,api,$stateParams,utils,$q,$state) {
 
+    var vm = this;
+    vm.back = function(){
+      $state.go('app.szgc.report.viewBath')
+    }
     var newItem = function(name) {
       return {
         colspan: 1,

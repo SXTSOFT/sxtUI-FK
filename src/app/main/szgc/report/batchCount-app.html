@@ -1,18 +1,21 @@
-﻿<md-content flex>
-    <div class="menu-toggle-list" ng-show="!searBarHide">
-        <sxt-projects-jd ng-model="vm.project.pid" levels="0" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree">
+﻿<md-content flex layout="column" ng-show="!vm.searBarHide" class="menu-toggle-list">
+  <div flex style="overflow: auto">
+        <sxt-projects-jd ng-model="vm.project.pid" object-scope="vm" levels="0" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree">
 
             从  <md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间"></md-datepicker>
             至   <md-datepicker ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间"></md-datepicker>
 
         </sxt-projects-jd>
-    </div>
-    <div id="dvBatchCount" ng-show="searBarHide">
-        <div >
-            <p class="bc_title">项目填报统计表</p>
-            <table class="table wk-table" contenteditable="true" width="100%">
+  <div class="md-padding" layout="row">
+
+    <md-button type="submit" flex ng-click="vm.searBarHide=true"  class="md-raised md-primary"> 确定  </md-button>
+  </div></div>
+    </md-content>
+    <md-content flex id="dvBatchCount" ng-show="vm.searBarHide">
+            <table class="table table-border" contenteditable="true" width="100%">
+              <caption>项目填报统计表</caption>
                 <thead>
-                    <tr style="background:#5191d1; color:#fff;border-bottom:2px solid #fff;">
+                    <tr>
                         <th width="30%">项目名称</th>
                         <th width="15%">时间</th>
                         <th width="18%">录入人数</th>
@@ -35,14 +38,10 @@
 
                 </tbody>
             </table>
-        </div>
-        <style type="text/css">
-                    th, td {
-                text-align: center;
-            }
-
-        </style>
-    </div>
-</md-content>
-    <div style="position: absolute; top:50px; right:0px;"><toggle-menu inst="searBarHide"></toggle-menu></div>
+    </md-content>
+    <div style="position: fixed; top:0px; right:0px;">
+      <md-button class="md-fab md-mini" ng-show="!vm.searBarHide && vm.isJdBack()" ng-click="vm.backJdSelect()">
+        <md-icon md-font-icon="icon-arrow-left"></md-icon>
+      </md-button>
+      <toggle-menu inst="vm.searBarHide"></toggle-menu></div>
 

@@ -482,7 +482,7 @@ $scope.back = function(){
             PassText: zkitem.PassText,
             NoPassText: zkitem.NoPassText,
             ProcedureId: procedure,
-            MPCheckValue: zkitem.MPCheckValue,
+            MPCheckValue: zkitem.isOK?1:0,
             CheckWorker: step.CheckWorker,
             TargetTypeId: zkitem.TargetTypeId,
             Sort: zkitem.Sort,

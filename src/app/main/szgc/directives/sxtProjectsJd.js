@@ -25,9 +25,10 @@
         nameTree: '=',
         onQuery: '=',
         onQueryed: '=',
-        isMore: '='
+        isMore: '=',
+        objectScope:'='
       },
-      template: '<sxt-select-jd  ng-model="value" is-more="isMore" value-name="regionName" id-tree="idTree" name-tree="nameTree" on-query="onQueryInner" on-change="onChanged" ><div ng-transclude></div></sxt-select-jd>',
+      template: '<sxt-select-jd  ng-model="value" is-more="isMore" object-scope="objectScope" value-name="regionName" id-tree="idTree" name-tree="nameTree" on-query="onQueryInner" on-change="onChanged" ><div ng-transclude></div></sxt-select-jd>',
       link: function (scope, element, attr, ctrl) {
         scope.onChanged = function (p) {
           if (!p.selectors.length || !p.selectors[0].selected) {

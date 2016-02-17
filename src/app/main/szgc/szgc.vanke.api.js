@@ -59,7 +59,8 @@
               if (p1)
                 resolve(p1);
               else {
-                api.szgc.ProjectSettings.query({ unitId: getAuth().current().Partner }).then(function (result) {
+                console.log('me',me)
+                me.root.szgc.ProjectSettings.query({ unitId: getAuth().current().Partner }).then(function (result) {
                   permission = result.data;
                   me._projects(arg).then(function (result) {
                     var p = permission;

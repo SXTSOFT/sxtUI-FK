@@ -1,7 +1,8 @@
-<md-content flex layout="column">
-  <md-tabs class="md-dynamic-height  md-border-bottom" md-selected="vm.selectedIndex" >
+
+  <md-tabs md-border-bottom flex md-selected="vm.selectedIndex" >
     <md-tab label="系统设置">
-      <md-content>
+      <md-tab-content flex layout-fill layout="column">
+        <md-content flex>
         <md-list>
           <md-subheader class="md-no-sticky">个人信息</md-subheader>
           <md-list-item ng-click="vm.selectedIndex=1" >
@@ -19,10 +20,12 @@
             <md-button flex class="md-raised md-warn" ui-sref="app.auth.login">退出</md-button>
           </md-list-item>
         </md-list>
-      </md-content>
+        </md-content>
+      </md-tab-content>
     </md-tab>
     <md-tab label="个人信息">
-      <md-content >
+      <md-tab-content flex layout-fill layout="column">
+      <md-content flex>
         <md-list>
             <md-subheader class="md-no-sticky">个人信息</md-subheader>
             <md-list-item>
@@ -51,7 +54,7 @@
             </md-list-item>
         </md-list>
       </md-content>
+        </md-tab-content>
     </md-tab>
   </md-tabs>
-</md-content>
 
