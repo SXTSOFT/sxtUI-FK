@@ -14,6 +14,7 @@
 
     var vm = this;
     vm.link = 'http://vkde.sxtsoft.com/yhyd/';
+    vm.picUrl = '/upload/floor-img.jpg'
     vm.back = function(){
       history.back();
     }
