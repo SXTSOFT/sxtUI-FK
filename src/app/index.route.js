@@ -59,7 +59,8 @@
             contentWithFootbar  : {
               main      : 'app/core/layouts/content-with-footbar.html',
               toolbar   : 'app/toolbar/layouts/content-with-footbar/footbar.html',
-              navigation: ''
+              navigation: '',
+              toptoolbar:'app/toolbar/layouts/content-with-footbar/toptoolbar.html'
             }
         };
         // END - Layout Style Switcher
@@ -80,6 +81,10 @@
                     'navigation@app': {
                         templateUrl: layouts[layoutStyle].navigation,
                         controller : 'NavigationController as vm'
+                    },
+                    'toptoolbar@app':{
+                      templateUrl: layouts[layoutStyle].toptoolbar,
+                      controller : 'TopToolbarController as vm'
                     }
                 }
             });
