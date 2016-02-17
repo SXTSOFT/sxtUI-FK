@@ -40,7 +40,7 @@
           attributionControl:false
         }),
           //layer = L.tileLayer(sxt.app.api + '/api/file/load?x={x}&y={y}&z={z}', {
-          layer = L.tileLayer('http://localhost:46844/api/picMap/load/{z}_{x}_{y}.png?path='+scope.picUrl, {
+          layer = L.tileLayer('http://vkde.sxtsoft.com/api/picMap/load/{z}_{x}_{y}.png?path='+scope.picUrl, {
             noWrap:true,
             continuousWorld:false,
             tileSize:512
