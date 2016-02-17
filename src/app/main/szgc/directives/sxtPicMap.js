@@ -11,12 +11,16 @@
   /** @ngInject */
   function sxtPicMap($timeout,sxt){
     return {
+      scope:{
+        picUrl:'@'
+      },
       link:link
     }
 
     function link(scope,element,attr,ctrl){
 
       $timeout(function(){
+        console.log('picUrl',scope.picUrl)
         //var crs = ;
 
         var map = L.map(element[0],{
@@ -36,7 +40,7 @@
           attributionControl:false
         }),
           //layer = L.tileLayer(sxt.app.api + '/api/file/load?x={x}&y={y}&z={z}', {
-          layer = L.tileLayer('http://localhost:46844/api/picMap/load/{z}/{x}/{y}', {
+          layer = L.tileLayer('http://localhost:46844/api/picMap/load/{z}_{x}_{y}.png?path='+scope.picUrl, {
             noWrap:true,
             continuousWorld:false,
             tileSize:512
