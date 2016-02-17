@@ -8,16 +8,7 @@
     },
     "installed_plugins": {
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.sxtsoft.ui"
-        },
-        "cordova-plugin-file": {
-            "PACKAGE_NAME": "com.sxtsoft.ui"
-        },
-        "cordova-plugin-file-transfer": {
-            "PACKAGE_NAME": "com.sxtsoft.ui"
-        },
-        "cordova-plugin-indexedDB": {
-            "PACKAGE_NAME": "com.sxtsoft.ui"
+            "PACKAGE_NAME": "com.phonegap.helloworld"
         }
     },
     "dependent_plugins": {}
