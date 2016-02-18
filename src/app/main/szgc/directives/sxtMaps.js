@@ -12,12 +12,14 @@
   function sxtMapsDirective($timeout){
     return {
       scope:{
-
+        markers:'=',
+        markerClick:'&'
       },
       link:link
     }
 
     function  link(scope,element,attr,ctrl){
+
       $timeout(function(){
         var map = L.map(element[0],{
           center:[22.631026,114.111701],
@@ -30,17 +32,23 @@
 
         layer.addTo(map);
 
-        L.marker([22.631026,114.111701],{
-          project:'124344'
-        }).on('click',function(e) {
-          console.log('e', e.target.options.project)
-        }).addTo(map)
-
-        L.marker([22.631026,114.311701]).addTo(map)
+        scope.$watchCollection('makers',function(){
+          if(scope.markers){
+            angular.forEach(scope.markers,function(o,k){
+              L
+                .marker([o.lat, o.lng],o)
+                .on('click',markerClick)
+                .addTo(map);
+            })
+          }
+        });
 
       },1000)
 
+      function markerClick(e){
+        scope.markerClick( {$current : e.target.options});
 
+      }
 
     }
   }

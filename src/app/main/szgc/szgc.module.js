@@ -18,6 +18,8 @@
         abstract:true
       })
       .state('app.szgc.home',{
+        noBack:true,
+        title :'万科数字工程',
         url   :'/',
         views :{
           'content@app':{
@@ -27,7 +29,8 @@
         }
       })
       .state('app.szgc.jd',{
-        url   :'/home/jd',
+        title :'形象进度',
+        url   :'/home/jd/:id',
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/link2.html',
@@ -36,6 +39,7 @@
         }
       })
       .state('app.szgc.yhyd',{
+        title :'一户一档',
         url   :'/home/yhyd',
         views :{
           'content@app':{
@@ -45,6 +49,8 @@
         }
       })
       .state('app.szgc.report', {
+        noBack:true,
+        title    :'报表',
         url      : '/report',
         views    : {
           'content@app': {
@@ -54,26 +60,32 @@
         }
       })
       .state('app.szgc.report.viewBath', {
+        title :'质量总表',
         url: '/viewBath',
         controller: 'viewBathController as vm',
         templateUrl: 'app/main/szgc/report/viewBath-app.html'
       })
       .state('app.szgc.report.viewBath.view', {
+        title :'查看详细',
         url: '/{bathid}',
         controller: 'viewBathDetailController as vm',
         templateUrl: 'app/main/szgc/report/viewBathDetail-app.html'
       })
       .state('app.szgc.report.batchCount', {
+        title :'项目填报情况统计表',
         url:'/batchCount',
         controller: 'batchCountController as vm',
         templateUrl: 'app/main/szgc/report/batchCount-app.html'
       })
       .state('app.szgc.report.projectMasterList', {
+        title:'项目班组总览表',
         url:'/projectMasterList',
         controller: 'projectMasterListController1 as vm',
         templateUrl: 'app/main/szgc/report/projectMasterList-app.html'
       })
       .state('app.szgc.settings',{
+        noBack:true,
+        title:'设置',
         url:'/settings',
         views :{
           'content@app':{
@@ -88,6 +100,8 @@
         }
       })
       .state('app.szgc.ys',{
+        noBack:true,
+        title:'验收',
         url:'/ys',
         views :{
           'content@app':{
@@ -96,12 +110,8 @@
           }
         }
       })
-      .state('app.szgc.ys.update', {
-        url: '/update/{projectid}/{name}/{batchId}/{procedureId}/{type}/{idTree}/{procedureName}/{nameTree}/{checkedCount}',
-        controller: 'UpdateProcessController as vm',
-        templateUrl: 'app/main/szgc/ys/updateProcess.html'
-      })
       .state('app.szgc.ys.add', {
+        title:'添加验收',
         url: '/new/{projectid}/{name}/{batchId}/{procedureId}/{type}/{idTree}/{procedureName}/{nameTree}/{flag}',
         controller: 'AddProcessController as vm',
         templateUrl: 'app/main/szgc/ys/addProcess-app.html'

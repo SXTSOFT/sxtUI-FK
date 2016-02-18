@@ -5,7 +5,8 @@
     font-size:12px;
   }
   md-icon{
-    margin-top: 2px;
+    padding-top: 4px;
+    height:28px;
   }
 }
 #toptoolbar{
@@ -19,6 +20,7 @@
     position: absolute;
     left:0;
     top:4px;
+
     md-icon{
       color:#fff;
     }
@@ -33,4 +35,24 @@
     display:block;
     width:100%;
   }
+  .md-inner{
+    .md-right{
+      .md-half-circle{
+        border-right-color:#fff;
+        border-top-color:#fff;
+      }
+    }
+    .md-left{
+      .md-half-circle{
+        border-left-color:#fff;
+        border-bottom-color:#fff;
+        border-top-color:#fff;
+      }
+    }
+    .md-gap{
+      border-top-color:#fff;
+      border-bottom-color:#fff;
+    }
+  }
+
 }
