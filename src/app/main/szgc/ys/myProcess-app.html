@@ -7,11 +7,12 @@
             <md-list>
               <md-subheader class="md-no-sticky">工序</md-subheader>
               <md-list-item>
-                <sxt-procedure-type style="width:100%;" ng-model="project.procedureTypeId"></sxt-procedure-type>
+                <sxt-procedure style="width:100%" ng-model="project.procedureId" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-procedure>
+                <!--<sxt-procedure-type style="width:100%;" ng-model="project.procedureTypeId"></sxt-procedure-type>-->
               </md-list-item>
-              <md-list-item>
-                <sxt-select style="width:100%;" ng-model="project.procedureId" name-value="project.procedureName" sources="project.procedures" text-field="ProcedureName" value-field="ProcedureId"></sxt-select>
-              </md-list-item>
+              <!--<md-list-item>-->
+                <!--<sxt-select style="width:100%;" ng-model="project.procedureId" name-value="project.procedureName" sources="project.procedures" text-field="ProcedureName" value-field="ProcedureId"></sxt-select>-->
+              <!--</md-list-item>-->
               <md-divider></md-divider>
               <md-subheader class="md-no-sticky">验收状态</md-subheader>
               <md-list-item ng-repeat="state in project.states">

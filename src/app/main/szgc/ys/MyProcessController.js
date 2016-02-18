@@ -242,8 +242,8 @@
       });
     }
 
-    $scope.$watch('project.type', queryProcedures);
-    $scope.$watch('project.procedureTypeId', queryProcedures);
+    //$scope.$watch('project.type', queryProcedures);
+    //$scope.$watch('project.procedureTypeId', queryProcedures);
     $scope.$watch('project.procedureId', function(a,b) {
       if(a != b){
         if ( !$scope.project.pid) {
