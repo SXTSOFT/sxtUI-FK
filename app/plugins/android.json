@@ -9,6 +9,9 @@
     "installed_plugins": {
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.sxt.szgc"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.sxt.szgc"
         }
     },
     "dependent_plugins": {}

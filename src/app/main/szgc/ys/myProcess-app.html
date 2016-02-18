@@ -2,8 +2,8 @@
   <md-tab label="验收">
     <md-tab-content flex layout-full fayout="column">
       <md-content flex ng-hide="is('app.szgc.ys.add')">
-        <div class="menu-toggle-list" ng-show="!searBarHide">
-          <sxt-projects-jd ng-model="project.pid" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
+        <div class="menu-toggle-list" ng-show="!vm.searBarHide">
+          <sxt-projects-jd ng-model="project.pid" object-scope="vm" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
             <md-list>
               <md-subheader class="md-no-sticky">工序</md-subheader>
               <md-list-item>
@@ -22,10 +22,10 @@
           </sxt-projects-jd>
           <div class="md-padding" layout="row">
 
-            <md-button type="submit" flex ng-click="searBarHide=true"  class="md-raised md-primary"> 确定  </md-button>
+            <md-button type="submit" flex ng-click="vm.searBarHide=true"  class="md-raised md-primary"> 确定  </md-button>
           </div>
         </div>
-        <div class="table-responsive" ng-show="searBarHide">
+        <div class="table-responsive" ng-show="vm.searBarHide">
           <table class="table table-striped datagrid m-b-small">
             <thead>
             <tr>
@@ -74,7 +74,11 @@
           </table>
         </div>
       </md-content>
-      <div ng-show="is('app.szgc.ys')" style="position: fixed; top:0px; right:0px;z-index:99;"><toggle-menu inst="searBarHide"></toggle-menu></div>
+      <div ng-show="is('app.szgc.ys')" style="position: absolute; top:0px; right:0px;z-index:99;">
+        <md-button class="md-fab md-mini" ng-show="!vm.searBarHide && vm.isJdBack()" ng-click="vm.backJdSelect()">
+          <md-icon md-font-icon="icon-arrow-left"></md-icon>
+        </md-button>
+        <toggle-menu inst="vm.searBarHide"></toggle-menu></div>
       <ui-view flex ng-show="is('app.szgc.ys.add')"></ui-view>
     </md-tab-content>
   </md-tab>

@@ -5,8 +5,11 @@
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="NetworkStatus">
+        <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
+    </feature>
     <allow-intent href="market:*" />
-    <name>Vanke DP</name>
+    <name>数字工程</name>
     <description>
         Hello World sample application that responds to the deviceready event.
     </description>
@@ -73,6 +76,7 @@
     <gap:splash gap:platform="ios" height="768" src="www/res/screen/ios/screen-ipad-landscape.png" width="1024" />
     <gap:splash gap:platform="winphone" src="www/res/screen/windows-phone/screen-portrait.jpg" />
     <access origin="*" />
+    <allow-navigation href="cdvfile://*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />

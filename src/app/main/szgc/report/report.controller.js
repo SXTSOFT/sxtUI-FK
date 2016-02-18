@@ -10,7 +10,7 @@
     .controller('SzgcReportController', SzgcReportController);
 
   /** @ngInject */
-  function SzgcReportController(auth,$state)
+  function SzgcReportController($scope,$state)
   {
 
     var vm = this;
@@ -29,6 +29,11 @@
               '报表详细'
       });
     }
+    $scope.$watch(function(){
+      return $state.is('app.szgc.report');
+    },function(){
+      vm.data.selectedIndex = $state.is('app.szgc.report')?0:1;
+    });
 
     vm.goToReport = function (name, path, $event) {
       if (vm.tabs.length == 0) {

@@ -54,6 +54,11 @@
           });
           event.preventDefault ();
         }
+        else{
+          $rootScope.noBack = toState.noBack;
+          $rootScope.title = toState.title;
+        }
+        //console.log('toState',toState)
       });
 
     }
