@@ -26,6 +26,7 @@
     ];
     vm.markerClick = markerClick;
 
+
     function markerClick($current){
       $state.go('app.szgc.jd',{id:$current.projectId});
     }

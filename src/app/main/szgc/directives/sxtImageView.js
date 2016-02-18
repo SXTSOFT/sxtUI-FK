@@ -13,7 +13,7 @@
     return {
       restrict:'EA',
       scope:{
-        imageData:'='
+        imageData:'=sxtImageView'
       },
       link:link
     }
@@ -27,18 +27,17 @@
         if(!imagedata){
           imagedata=[];
           $('img',element).each(function(index,el){
-            imagedata.push({
-              Url:$(el).attr('src')
-            });
+            imagedata.push($(el).attr('src'));
           })
           defaultIndex = $('img',element).index($(e.target))
           if(defaultIndex==-1)
             defaultIndex=0;
         }
         var str=[];
-        str.push('<div  style="position:fixed;top:0;right:0;left:0;bottom:0;background:rgba(0,0,0,.6);z-index:10000;" class="piclayer"><div class="pic_close"><span></span></div><div class="swiper-container"><div class="swiper-wrapper">')
+        str.push('<div class="piclayer">\
+        <div class="pic_close"><button class="md-fab md-mini md-button md-ink-ripple md-vanke-theme" type="button"  aria-hidden="false"><md-icon md-font-icon class="ng-scope ng-isolate-scope md-font icon-window-close material-icons md-vanke-theme" aria-hidden="true"></md-icon></button></div><div class="swiper-container"><div class="swiper-wrapper">')
         angular.forEach(imagedata, function(data){
-          var arl=data.Url;
+          var arl=data;
           str.push('<div class="swiper-slide"><p><img src="'+arl+'"></p></div>');
         });
         str.push('</div><div class="swiper-pagination"></div></div></div>');
@@ -48,19 +47,19 @@
         var iWidth=$(window).width();
         var iHeight=$(window).height();
 
-        var iSh=iHeight-150;
+        var iSh=iHeight;//-150;
 
         $('.swiper-container').width(iWidth+'px');
         $('.swiper-container').height(iSh+'px');
         $('.swiper-slide').height(iSh+'px');
-        $('.swiper-slide p').height(iSh+'px');
+        $('.swiper-slide p').height(iSh+'px').css('line-height',iSh+'px');
 
         preview = new Swiper(o.find('.swiper-container')[0], {
           initialSlide:defaultIndex,
           pagination: '.swiper-pagination',
           paginationClickable: true
         });//'.swiper-container'
-        o.find('.pic_close span').click(function(){
+        o.find('.pic_close button').click(function(){
           preview.destroy();
           o.remove();
         })
