@@ -2,3 +2,18 @@
   background:url("app/main/szgc/images/bg_home.png") center no-repeat;
   background-size: contain;
 }
+#subtoolbar{
+  height:50px;
+  line-height:50px;
+  background:#f8f8f8;
+  border-bottom:1px solid #b2b2b2;
+  .md-button{
+    margin:6px 1px;
+    padding:0;
+    min-width:68px;
+    color:#e93030;
+  }
+  .hr{
+    color:#bfbfbf;
+  }
+}
