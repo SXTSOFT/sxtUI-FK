@@ -35,7 +35,7 @@
         }
         var str=[];
         str.push('<div class="piclayer">\
-        <div class="pic_close"><button class="md-fab md-mini md-button md-ink-ripple md-vanke-theme" type="button"  aria-hidden="false"><md-icon md-font-icon class="ng-scope ng-isolate-scope md-font icon-window-close material-icons md-vanke-theme" aria-hidden="true"></md-icon></button></div><div class="swiper-container"><div class="swiper-wrapper">')
+        <div class="swiper-container"><div class="swiper-wrapper">')
         angular.forEach(imagedata, function(data){
           var arl=data;
           str.push('<div class="swiper-slide"><p><img src="'+arl+'"></p></div>');
@@ -52,7 +52,7 @@
         $('.swiper-container').width(iWidth+'px');
         $('.swiper-container').height(iSh+'px');
         $('.swiper-slide').height(iSh+'px');
-        $('.swiper-slide p').height(iSh+'px').css('line-height',iSh+'px');
+        $('.swiper-slide p').height(iSh+'px');//.css('line-height',iSh+'px');
 
         preview = new Swiper(o.find('.swiper-container')[0], {
           initialSlide:defaultIndex,
@@ -60,9 +60,20 @@
           paginationClickable: true
         });//'.swiper-container'
         o.find('.pic_close button').click(function(){
-          preview.destroy();
-          o.remove();
+          //preview.destroy();
+          //o.remove();
         })
+        //$('.picplayer').is(':visible')
+        if($('.piclayer').css('display')){
+          $('body .swiper-container').click(function(e){
+            preview.destroy();
+            o.remove();
+            e.preventDefault();
+          })
+
+
+        }
+
       });
       scope.$on('destroy',function(){
         o.remove();
