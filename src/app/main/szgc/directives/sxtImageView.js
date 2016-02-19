@@ -17,8 +17,8 @@
       },
       link:link
     }
-//<div class="swiper-slide"  ng-repeat="imagedata in imagedata"><img ng-src="{{imagedata.Url}}">{{imagedata.Url}}</div>\
-    function link(scope,element,attr,ctrl){
+
+   function link(scope,element,attr,ctrl){
 
       element.click(function(e){
 
@@ -70,4 +70,4 @@
       });
     }
   }
-})()
+})();
