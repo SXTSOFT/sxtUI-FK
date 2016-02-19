@@ -12,8 +12,16 @@
     padding:0;
     min-width:68px;
     color:#e93030;
+    &.md-vanke-theme:not([disabled]):hover{
+      background:none;
+    }
+    &:not([disabled]):hover{
+      background:none;
+    }
   }
   .hr{
-    color:#bfbfbf;
+    background:#bfbfbf;
+    width:1px;
+    height:20px;
   }
 }
