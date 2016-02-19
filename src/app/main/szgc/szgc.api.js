@@ -5,10 +5,10 @@
   'use strict';
 
   angular
+
     .module('app.szgc')
     .config(config)
-
-  /** @ngInject */
+  /** @anInject */
   function config(apiProvider){
 
     var $http = apiProvider.$http;
