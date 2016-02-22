@@ -48,6 +48,16 @@
           }
         }
       })
+      .state('app.szgc.buildingdetail',{
+        title :'形象进度',
+        url   :'/home/jd2/detail',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/szgc/home/buildingdetail.html',
+            controller:'SzgcyhydController as vm'
+          }
+        }
+      })
       .state('app.szgc.yhyd',{
         title :'一户一档',
         url   :'/home/yhyd',

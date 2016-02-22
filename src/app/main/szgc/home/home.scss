@@ -25,3 +25,23 @@
     height:20px;
   }
 }
+#detail{
+  .md-title{
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: .005em;
+  }
+  md-list{
+    md-list-item{
+      &.md-no-proxy{
+        padding:0;
+      }
+      &.md-3-line{
+        .md-list-item-text{
+          margin:16px 0;
+        }
+      }
+    }
+  }
+
+}

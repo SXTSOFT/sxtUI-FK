@@ -21,7 +21,6 @@
    function link(scope,element,attr,ctrl){
 
       element.click(function(e){
-
         var preview,defaultIndex = 0;
         var imagedata = scope.imageData;
         if(!imagedata){
@@ -63,9 +62,10 @@
           //preview.destroy();
           //o.remove();
         })
+
         //$('.picplayer').is(':visible')
-        if($('.piclayer').css('display')){
-          $('body .swiper-container').click(function(e){
+        if($(o).css('display')){
+          $(o.find('.swiper-container')[0]).click(function(e){
             preview.destroy();
             o.remove();
             e.preventDefault();
