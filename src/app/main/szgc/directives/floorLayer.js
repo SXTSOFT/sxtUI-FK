@@ -22,7 +22,7 @@
     function link(scope,element,attr,ctrl){
 
       //element.click(function(){
-        //var floorData=[50,50,20,10];
+        //var floorData=[50,50,20,10,30];
         var floorData = scope.floorData;
         var str=[];
         var zIndex= 1,zWholeIndex=1;
@@ -36,21 +36,41 @@
     //    </div>
     //    </md-list-item>
     //    </md-list>
+        if(!floorData){
+          floorData=[50,50,20,10,30];
+        }
         str.push('<div class="floor-layer"><div class="item" flex>\
           <a>\
           <div class="whole"><md-list class="whole-progress">');
         while(floorData[2]--){
           zIndex++;
-          str.push('<md-list-item class="build-m" style="z-index:'+(floorData[2]+floorData[3])+'"></md-list-item>');
+          if(floorData[2]+floorData[3]+1 == floorData[4]){
+            str.push('<md-list-item class="build-m-presell" style="z-index:'+(floorData[2]+floorData[3])+'"></md-list-item>');
+          }else{
+            str.push('<md-list-item class="build-m" style="z-index:'+(floorData[2]+floorData[3])+'"></md-list-item>');
+          }
+
         }
         while(floorData[3]--){
           zIndex++;
-          str.push('<md-list-item class="wall-m" style="z-index:'+(floorData[3])+'"></md-list-item>');
+          if(floorData[3]+1 == floorData[4]){
+            str.push('<md-list-item class="wall-m-presell" style="z-index:'+(floorData[3])+'"></md-list-item>');
+          }else{
+            str.push('<md-list-item class="wall-m" style="z-index:'+(floorData[3])+'"></md-list-item>');
+          }
+
         }
         str.push('<md-list-item class="build-b"></md-list-item></md-list><md-list class="whole-target">');
-        while(floorData[1]--){
+        floorData[1]=floorData[1]-1;
+        str.push('<md-list-item class="wall-t" style="z-index:'+(floorData[1])+'"></md-list-item>');
+        while((floorData[1]--)){
           zIndex++;
-          str.push('<md-list-item class="wall-t" style="z-index:'+(floorData[1])+'"></md-list-item>');
+          if(floorData[1]+1 == floorData[4]){
+            str.push('<md-list-item class="wall-m-presell" style="z-index:'+(floorData[1])+'"></md-list-item>');
+          }else{
+            str.push('<md-list-item class="wall-m" style="z-index:'+(floorData[1])+'"></md-list-item>');
+          }
+
         }
         str.push('<md-list-item class="build-b"></md-list-item></md-list></div><p>100栋（100层）</p></a></div></div>');
         //var o = $(str.join('')).appendTo('#progress')

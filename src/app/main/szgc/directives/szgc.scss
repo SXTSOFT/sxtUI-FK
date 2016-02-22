@@ -192,7 +192,7 @@
   .item{
     position: absolute;
     bottom:0;
-    //width:100%;
+    width:100%;
     margin:0 auto;
     a{
       color:#333;
@@ -218,6 +218,8 @@
         .build-b{ position:relative; background-image:url(main/szgc/images/build-b.png); width:184px; height:129px; margin: -95px 0 0 0; }
         .wall-t{ position:relative; background-image:url(main/szgc/images/wall-t.png); width:184px; height:107px; margin: 0 0 -89px 0;}
         .wall-m{ position:relative; background-image:url(main/szgc/images/wall-m.png); width:184px; height:109px; margin: 0 0 -92px 0;}
+        .build-m-presell{ position:relative; background-image:url(main/szgc/images/build-m-red.png); width:184px; height:109px; margin: 0 0 -92px 0}
+        .wall-m-presell{ position:relative; background-image:url(main/szgc/images/wall-m-red.png); width:184px; height:109px; margin: 0 0 -92px 0}
       }
     }
 
