@@ -45,3 +45,22 @@
   }
 
 }
+.barstyle{
+  md-list-item .md-avatar{
+    width: auto!important;
+    margin-left: 10px;
+  }
+  md-list-item.md-3-line, md-list-item.md-3-line > .md-no-style{
+    min-height: 40px!important;
+  }
+  md-list-item .md-avatar{
+    height: 28px!important;
+  }
+  md-list md-list-item.md-3-line .md-list-item-text{
+    margin: 8px 0 !important;
+  }
+  md-list-item.md-3-line > .md-avatar{
+    margin-top: 9px!important;
+  }
+
+}
