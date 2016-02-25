@@ -10,8 +10,8 @@
 
   /** @ngInject */
   function config(apiProvider){
+    var $http = apiProvider.$http,$q = apiProvider.$q;
 
-    var $http = apiProvider.$http;
     apiProvider.register('szgc',{
       ProjectSettings:{
         query:function(args) {
@@ -104,6 +104,49 @@
         },
         update: function (file) {
           return $http.put('/api/Files/' + file.Id, file);
+        }
+      },
+      ReportService:{
+        getBuilds:function(projectId){
+          var builds=[];
+          var api = this.root;
+          api.szgc.vanke.project_items({project_id:projectId,page_size:0,page_number:1}).then(function(result){
+            var buff=[];
+            result.data.data.forEach(function(fq){
+             // buff.push(api.szgc.vanke.buildings())
+            })
+          })
+          //console.log('q',apiProvider.$q)
+          return $q.$q(function(resolve){
+            resolve([
+              [50,50,20,10,10,1],//总高度，当前栋最高楼层，第二道工序楼层，第一道工序楼层，起售楼层，栋数
+              [50,35,20,10,20,2],
+              [50,40,20,10,30,3],
+              [50,40,20,10,30,4]
+            ]);
+          })
+        },
+        getBuild:function(id){
+          return $q.$q(function(resolve){
+            resolve({
+              'title':'二期工程',
+              'data':[50,50,20,10,10,1],
+              'start':'2010-10-10',
+              'end':'2010-11-11',
+              'sale':'2011-01-01'
+            });
+          })
+        }
+      },
+      ProjectExService:{
+        update: function (data) {
+          return $http.put('/api/ProjectEx/' + data.ProjectId, data);
+        },
+        get: function (id) {
+          return $http.get('/api/ProjectEx/'+id);
+        },
+        query: function (status) {
+          return $http.get('/api/ProjectEx?status=' + status);
         }
       }
     })

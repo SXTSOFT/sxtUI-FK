@@ -45,6 +45,7 @@
 
 
       $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        console.log('toState',toState,toParams)
         if (toState.auth !== false && !auth.isLoggedIn()) {
           auth.autoLogin().then(function(){
             if(toState.name.indexOf('login')!=-1)

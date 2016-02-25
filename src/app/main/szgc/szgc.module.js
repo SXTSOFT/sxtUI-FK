@@ -29,8 +29,8 @@
         }
       })
       .state('app.szgc.jd',{
-        title :'形象进度',
-        url   :'/home/jd/:id',
+        //title :'形象进度',
+        url   :'/home/jd/{pid}/{pname}',
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/link2.html',
@@ -39,22 +39,48 @@
         }
       })
       .state('app.szgc.jd2',{
-        title :'深圳公园里',
-        url   :'/home/jd2',
+        //title :'形象进度',
+        url   :'/home/jd2/{projectType}/{itemId}/{itemName}',
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/link3.html',
-            controller:'SzgcyhydController as vm'
+            controller:'SzgcyhydController as vm',
+            resolve:{
+              //builds:function(){
+              //  return [
+              //    [50,50,20,10,10,1],//总高度，当前栋最高楼层，第二道工序楼层，第一道工序楼层，起售楼层，栋数
+              //    [50,35,20,10,20,2],
+              //    [50,40,20,10,30,3],
+              //    [50,40,20,10,30,4]
+              //  ];
+              //}
+
+            }
           }
         }
       })
       .state('app.szgc.buildingdetail',{
-        title :'深圳公园里-一期-1栋',
+        title :'形象进度',
         url   :'/home/jd2/detail',
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/buildingdetail.html',
-            controller:'SzgcyhydController as vm'
+            controller:'SzgcbuilddetailController as vm',
+            resolve:{
+              //details:['api',function(api){
+              //  return {
+              //    'title':'二期工程',
+              //    'data':[50,50,20,10,10,1],
+              //    'start':'2010-10-10',
+              //    'end':'2010-11-11',
+              //    'sale':'2011-01-01'
+              //  }
+              //}]
+              details:['$stateParams','api',function($stateParams,api){
+                console.log('details,$stateParams',api)
+                return api.szgc.ReportService.getBuild($stateParams.id);
+              }]
+            }
           }
         }
       })

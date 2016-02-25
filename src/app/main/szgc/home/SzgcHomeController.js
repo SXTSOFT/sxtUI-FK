@@ -7,12 +7,14 @@
     .controller('SzgcHomeController', SzgcHomeController);
 
   /** @ngInject */
-  function SzgcHomeController(auth,$state)
+  function SzgcHomeController($scope,auth,$state,$rootScope)
   {
 
     var vm = this;
-    //
-
+    vm.data = {};
+    vm.is = function (state) {
+      return vm.includes(state);
+    }
     vm.markers = [
       {
         lat:22.631026,
@@ -26,9 +28,8 @@
     ];
     vm.markerClick = markerClick;
 
-
     function markerClick($current){
-      $state.go('app.szgc.jd',{id:$current.projectId});
+      $state.go('app.szgc.jd',{pid:$current.projectId, pname: $current.title});
     }
   }
 })();
