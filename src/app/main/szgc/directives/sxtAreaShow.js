@@ -53,7 +53,7 @@
                   annotationBar: false,
                   attributionControl: false
                 }),
-                  layer = L.tileLayer('http://vkde.sxtsoft.com/api/picMap/load/{z}_{x}_{y}.png?path='+scope.picUrl, {
+                  layer = L.tileLayer(sxt.app.api + '/api/picMap/load/{z}_{x}_{y}.png?path='+fs.data.Files[0].Url.replace('/s_', '/'), {
                     noWrap:true,
                     continuousWorld:false,
                     tileSize:512
@@ -108,7 +108,7 @@
                         }
                       }
                       else {
-                        $state.go('app.szgc.jd2', { itemId: layer.options.itemId, itemName: layer.options.itemName, projectType: 2 })
+                        $state.go('app.szgc.project.buildinglist', { itemId: layer.options.itemId, itemName: layer.options.itemName, projectType: 2 })
                       }
                     }
 

@@ -57,7 +57,7 @@
         }
         else{
           $rootScope.noBack = toState.noBack;
-          $rootScope.title = toState.title;
+          $rootScope.title = toState.title || $rootScope.title;
         }
         //console.log('toState',toState)
       });

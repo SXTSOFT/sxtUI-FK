@@ -48,7 +48,7 @@
       $timeout(function () {
         var map = L.map(element[0], {
             center: [22.631026, 114.111701],
-            zoom: 11,
+            zoom: 10,
             attributionControl: false
           }),
           layer = L.tileLayer('http://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {

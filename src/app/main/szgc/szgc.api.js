@@ -147,6 +147,12 @@
         },
         query: function (status) {
           return $http.get('/api/ProjectEx?status=' + status);
+        },
+        building: function (projectid) {
+          return $http.get('/api/ProjectEx/building?projectid=' + projectid);
+        },
+        building2: function (projectid) {
+          return $http.get('/api/ProjectEx/building2?projectid=' + projectid);
         }
       }
     })

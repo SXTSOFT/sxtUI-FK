@@ -139,49 +139,31 @@
           return get(http.url('/common/v1/partners/' + arg + '/teams'));
         }),
         buildingsInfo:http.custom(function(type, typeId){
-          return $q(function (resolve) {
-            resolve([
-              {
-                "building_id": "55fa5cdeeb5548bc263117db",
-                "floors":10,
-                "name": "7栋商业"
-              },
-              {
-                "building_id": "55fa5c8feb5548bc26310f47",
-                "floors": 25,
-                "name": "6栋"
-              },
-              {
-                "building_id": "55fa5c8feb5548bc26310f45",
-                "floors": 29,
-                "name": "2栋"
-              },
-              {
-                "building_id": "55fa5c59eb5548bc263109c2",
-                "floors": 30,
-                "name": "4栋"
-              },
-              {
-                "building_id": "55fa5c59eb5548bc263109c0",
-                "floors": 30,
-                "name": "1栋配套"
-              },
-              {
-                "building_id": "55c05dce90595cdf0fb2fb3c",
-                "floors": 40,
-                "name": "3栋"
-              },
-              {
-                "building_id": "55c05da790595cdf0fb2f98f",
-                "floors": 40,
-                "name": "1栋"
-              },
-              {
-                "building_id": "55c05da590595cdf0fb2f975",
-                "floors": 40,
-                "name": "5栋"
-              }
-            ])
+          var s = this;
+          return $q(function (resolve,reject) {
+            if (type == 2) {
+              s.buildings({
+                page_number: 1,
+                page_size: 10000,
+                project_item_id: typeId
+              }).then(function (b1) {
+                var bd = [],bs=[];
+                b1.data.data.forEach(function (b) {
+                  bs.push(s.floors(b.building_id));
+                  bd.push(b);
+                });
+                $q.all(bs).then(function (b1) {
+                  var i = 0;
+                  b1.forEach(function (r) {
+                    bd[i++].floors = r.data.data.length;
+                  });
+                  resolve(bd);
+                })
+              })
+            }
+            else{
+              alert('接口未实现');reject('接口未实现');
+            }
           });
         })
       }

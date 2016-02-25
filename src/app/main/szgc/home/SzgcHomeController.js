@@ -15,21 +15,10 @@
     vm.is = function (state) {
       return vm.includes(state);
     }
-    vm.markers = [
-      {
-        lat:22.631026,
-        lng:114.111701,
-        projectId:'1'
-      },{
-        lat:22.630026,
-        lng:114.311701,
-        projectId:'2'
-      }
-    ];
     vm.markerClick = markerClick;
 
     function markerClick($current){
-      $state.go('app.szgc.jd',{pid:$current.projectId, pname: $current.title});
+      $state.go('app.szgc.project',{pid:$current.projectId, pname: $current.title});
     }
   }
 })();

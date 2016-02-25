@@ -14,7 +14,7 @@
             var self = this;
             self._layers = {};
             L.Util.setOptions(self, options);
-            
+
             self.getData();
         },
         getData: function () {
@@ -64,6 +64,7 @@
             }
             if (options.icon && options.icon.options && options.icon.options.iconUrl) {
                 var iconOpt = options.icon.options;
+              iconOpt.iconUrl = iconOpt.iconUrl.replace('/dp/libs','assets')
                 layer.setIcon(new L.Icon(iconOpt));
                 layer.options = L.Util.extend(geojson.options, layer.options);
             }
@@ -83,7 +84,7 @@
         onAdd:function(map){
             L.GeoJSON.prototype.onAdd.call(this, map);
             var self = this;
-            
+
             map.on('draw:created', function (e) {
                 var type = e.layerType,
                     layer = e.layer;
