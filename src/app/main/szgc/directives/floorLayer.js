@@ -14,7 +14,9 @@
     return {
       restrict:'EA',
       scope:{
-        floorData:'=sxtfloor'
+        floorData:'=sxtfloor',
+        floorNum: '=',
+        sellLine:'='
       },
       link:link
     }
@@ -23,101 +25,109 @@
 
       //element.click(function(){
         //var floorData=[50,50,20,10,30];
-        var floorData = scope.floorData;
+      var sellLine = parseInt(scope.sellLine * scope.floorData.floors), gx1 = scope.floorData.gx1, gx2 = scope.floorData.gx2;
+      if (gx1 > scope.floorData.floors) gx1 = scope.floorData.floors;
+      if (gx2 > scope.floorData.floors) gx2 = scope.floorData.floors;
         var str=[];
         var zIndex= 1,zWholeIndex=1;
         var iFloorHeight= 0,iWinHeight= 0,itemp=0;
         var zoom=0;
+        //console.log('data',floorData);
         //append数据
-    //<md-list>
-    //  <md-list-item class="md-3-line">
-    //    <div class="md-list-item-text">
-    //    <p></p>
-    //    </div>
-    //    </md-list-item>
-    //    </md-list>
-        if(!floorData){
-          floorData=[50,50,20,10,30];
-        }
         str.push('<div class="floor-layer"><div class="item" flex>\
           <a>\
-          <div class="whole"><md-list class="whole-progress">');
-        while(floorData[2]--){
-          zIndex++;
-          if(floorData[2]+floorData[3]+1 == floorData[4]){
-            str.push('<md-list-item class="build-m-presell" style="z-index:'+(floorData[2]+floorData[3])+'"></md-list-item>');
+          <div class="whole"><ul class="whole-progress">');
+      for (var i = Math.max(gx1, gx2) ; i >= 0; i--) {
+        if (i == sellLine) {
+          str.push('<li class="build-m-presell" style="z-index:' + i + '"></li>')
+        }
+        else {
+          if (gx2 >= i) {
+            str.push('<li class="wall-m" style="z-index:' + i + '"></li>')
+          }
+          else {
+            str.push('<li class="build-m" style="z-index:' + i + '"></li>')
+          }
+        }
+      }
+
+
+
+        //while(floorData[2]){
+      //  zIndex++;
+      //  if(floorData[2]+floorData[3] == floorData[4]){
+      //    str.push('<li class="build-m-presell" style="z-index:'+(floorData[2]+floorData[3])+'"></li>');
+      //  }else{
+      //    str.push('<li class="build-m" style="z-index:'+(floorData[2]+floorData[3])+'"></li>');
+      //  }
+      //  floorData[2]--;
+      //}
+      //while(floorData[3]){
+      //  zIndex++;
+      //  if(floorData[3] == floorData[4]){
+      //    str.push('<li class="wall-m-presell" style="z-index:'+(floorData[3])+'"></li>');
+      //  }else{
+      //    str.push('<li class="wall-m" style="z-index:'+(floorData[3])+'"></li>');
+      //  }
+      //  floorData[3]--;
+      //}
+        str.push('<li class="build-b"></li></ul><ul class="whole-target">');
+        //floorData[1]=floorData[1]-1;
+        str.push('<li class="wall-t" style="z-index:'+scope.floorData.floors+'"></li>');
+      var totalFloors = scope.floorData.floors;
+        while((totalFloors--)){
+          if(totalFloors == sellLine){
+            str.push('<li class="wall-m-presell" style="z-index:'+totalFloors+'"></li>');
           }else{
-            str.push('<md-list-item class="build-m" style="z-index:'+(floorData[2]+floorData[3])+'"></md-list-item>');
+            str.push('<li class="wall-m" style="z-index:'+totalFloors+'"></li>');
           }
 
         }
-        while(floorData[3]--){
-          zIndex++;
-          if(floorData[3]+1 == floorData[4]){
-            str.push('<md-list-item class="wall-m-presell" style="z-index:'+(floorData[3])+'"></md-list-item>');
-          }else{
-            str.push('<md-list-item class="wall-m" style="z-index:'+(floorData[3])+'"></md-list-item>');
-          }
-
-        }
-        str.push('<md-list-item class="build-b"></md-list-item></md-list><md-list class="whole-target">');
-        floorData[1]=floorData[1]-1;
-        str.push('<md-list-item class="wall-t" style="z-index:'+(floorData[1])+'"></md-list-item>');
-        while((floorData[1]--)){
-          zIndex++;
-          if(floorData[1]+1 == floorData[4]){
-            str.push('<md-list-item class="wall-m-presell" style="z-index:'+(floorData[1])+'"></md-list-item>');
-          }else{
-            str.push('<md-list-item class="wall-m" style="z-index:'+(floorData[1])+'"></md-list-item>');
-          }
-
-        }
-        str.push('<md-list-item class="build-b"></md-list-item></md-list></div><p>100栋（100层）</p></a></div></div>');
+        str.push('<li class="build-b"></li></ul></div><p>'+scope.floorData.name+'('+scope.floorData.floors+'层)</p></a></div></div>');
         //var o = $(str.join('')).appendTo('#progress')
       var o = $(str.join('')).appendTo(element)
-       // console.log($('.floor-layer').length);
-        if($('.floor-layer').length<=4){
-            //$('.floor-layer').css('width','25%');
 
-        }
-
-        zoom=0.18;
-        itemp=(floorData[0]-1)*18+107+34;
+      zoom=0.18;
+      itemp=(scope.floorNum-1)*18+107+34;
         //根据手机大小来定zoom，最小为0.12
-        iWinHeight = $(window).height()-220;
-        var izoom = iWinHeight/2/itemp;
-        if(izoom < 0.1){
-          zoom = 0.12;
-        }else{
-          zoom = izoom;
-        }
+      iWinHeight = $(window).height()-220;
+      var izoom = iWinHeight/2/itemp;
+      if(izoom < 0.1){
+        zoom = 0.12;
+      }else{
+        zoom = izoom;
+      }
 
         //窗口缩放时自动调整相应参数
         $(window).resize(function(){
           if($(window).width()>960){
             zoom = 1;
-            iFloorHeight = ((floorData[0]-1)*18+107+34)*zoom+80;
+            iFloorHeight = ((scope.floorNum-1)*18+107+34)*zoom+80;
             $('.whole').css('zoom',zoom);
             $('.floor-layer').css('height',iFloorHeight+'px');
           }
           else if($(window).width() > 760){
             zoom = 0.5;
-            iFloorHeight = ((floorData[0]-1)*18+107+34)*zoom+50;
+            iFloorHeight = ((scope.floorNum-1)*18+107+34)*zoom+50;
             $('.whole').css('zoom',zoom);
             $('.floor-layer').css('height',iFloorHeight+'px');
           }else{
             zoom = izoom;
             $('.whole').css('zoom',zoom);
-            iFloorHeight = ((floorData[0]-1)*18+107+34)*zoom+50;
+            iFloorHeight = ((scope.floorNum-1)*18+107+34)*zoom+50;
             $('.floor-layer').css('height',iFloorHeight+'px');
           }
         })
 
 
         iFloorHeight = itemp*zoom+50;
-        $('.whole').css('zoom',zoom);
+        $('.whole',element).css('zoom',zoom);
         $('.floor-layer').css('height',iFloorHeight+'px');
 
+        scope.$on('$destroy',function(){
+          o.remove();
+          $(element).remove();
+        });
       //放大缩小区域，暂不用
         //$('.item').on('mousewheel DOMMouseScroll', function (e) {
         //  var direct=0;

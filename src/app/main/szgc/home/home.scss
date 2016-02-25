@@ -26,6 +26,7 @@
   }
 }
 #detail{
+  padding:5px;
   .md-title{
     font-size: 13px;
     font-weight: 500;
@@ -33,12 +34,21 @@
   }
   md-list{
     md-list-item{
+      .md-avatar{
+        height:20px;
+        width:60px;
+        margin-bottom:4px;
+      }
       &.md-no-proxy{
         padding:0;
       }
       &.md-3-line{
+        min-height:30px;
+        .md-avatar{
+          margin-top:4px;
+        }
         .md-list-item-text{
-          margin:16px 0;
+          margin:4px 0;
         }
       }
     }
