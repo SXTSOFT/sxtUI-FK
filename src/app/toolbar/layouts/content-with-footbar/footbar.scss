@@ -1,8 +1,9 @@
 #toolbar{
   .md-button{
     line-height:26px;
-    min-width:80px;
+    min-width:75px;
     font-size:12px;
+    margin:6px 2px;
   }
   md-icon{
     padding-top: 4px;
@@ -14,13 +15,21 @@
   min-height:48px;
   max-height:48px;
   z-index: 55 !important;
-  background-color:rgb(244,67,54);
+  background-color:rgb(233,48,48);
   color:#fff;
+  &.md-whiteframe-1dp{
+    box-shadow:none;
+  }
   .md-button{
     position: absolute;
     left:0;
     top:4px;
-    background-color: rgba(158,158,158,0.2);
+    &.md-vanke-theme:not([disabled]):hover{
+      background:none;
+    }
+    &:not([disabled]):hover{
+      background:none;
+    }
     md-icon{
       color:#fff;
     }
@@ -35,4 +44,24 @@
     display:block;
     width:100%;
   }
+  .md-inner{
+    .md-right{
+      .md-half-circle{
+        border-right-color:#fff;
+        border-top-color:#fff;
+      }
+    }
+    .md-left{
+      .md-half-circle{
+        border-left-color:#fff;
+        border-bottom-color:#fff;
+        border-top-color:#fff;
+      }
+    }
+    .md-gap{
+      border-top-color:#fff;
+      border-bottom-color:#fff;
+    }
+  }
+
 }

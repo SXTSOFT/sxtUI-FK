@@ -7,7 +7,7 @@
     .module('app.core')
     .factory('authToken',authToken);
   /** @ngInject */
-  function authToken($cookies){
+  function authToken($cookies,$rootScope){
     var token,tokenInjector;
 
     tokenInjector = {
@@ -42,6 +42,10 @@
 
     function onHttpResponseError(rejection){
       if(rejection.status == 401){
+        $rootScope.$emit ('user:needlogin');
+        //$rootScope.$emit('')
+        //document.location = '#/auth/login'
+        //$state.go('')
         //setToken(null);
       }
     }

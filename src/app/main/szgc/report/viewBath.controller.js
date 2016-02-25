@@ -252,12 +252,12 @@
       checkState(workGropId);
     }
     //动态加载工序
-    $scope.$watch(function(){
-      return vm.project.procedureTypeId
-    }, queryProcedures);
-    $scope.$watch(function(){
-      return vm.project.type;
-    }, queryProcedures);
+    //$scope.$watch(function(){
+    //  return vm.project.procedureTypeId
+    //}, queryProcedures);
+    //$scope.$watch(function(){
+    //  return vm.project.type;
+    //}, queryProcedures);
 
 
   }

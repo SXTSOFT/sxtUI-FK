@@ -131,3 +131,102 @@
     }
   }
 }
+.piclayer{
+  position:fixed;
+  top:0;
+  right:0;
+  left:0;
+  bottom:0;
+  background:rgba(100,100,100,.95);
+  z-index:10000;
+  .pic_close{
+
+    height:50px;
+    position: absolute;
+    right:0;
+    top: 0;
+  }
+  .swiper-container{
+    width:100%;
+    .swiper-wrapper{
+      height:100%;
+      .swiper-slide{
+        display:table;
+        width: 100%;
+        p{
+          display: table-cell;
+          vertical-align:middle;
+          width:100%;
+          padding:0;
+          margin:0;
+          -webkit-margin-before: 0;
+          -webkit-margin-after: 0;
+          img{
+            max-width:100%;
+            max-height:100%;
+            margin:0 auto;
+            display: block;
+          }
+        }
+
+      }
+    }
+    .swiper-pagination-bullet{
+      width: 20px;
+      height: 20px;
+      background:#ffffff;
+      opacity:.9;
+    }
+    .swiper-pagination-bullet-active{
+      background: #ff0000!important;
+    }
+  }
+}
+
+//building
+.floor-layer{
+  //width:20%;
+  //display: inline-block;
+  text-align: center;
+  position: relative;
+  .item{
+    position: absolute;
+    bottom:0;
+    width:100%;
+    margin:0 auto;
+    a{
+      color:#333;
+      &:hover{
+        color:#f00;
+      }
+      .whole{
+        position:relative; width: 180px; margin: 0 auto;overflow: hidden;
+        .whole-progress{
+          position:absolute; bottom:0;
+        }
+        ul{
+          -webkit-padding-start:0;
+          li{
+            list-style: none;
+          }
+        }
+        .whole-target{
+          filter:alpha(opacity=20); opacity:0.2;
+        }
+        .build-t{ position:relative; background-image:url(main/szgc/images/build-t.png); width:184px; height:107px; margin: 0 0 -89px 0;}
+        .build-m{ position:relative; background-image:url(main/szgc/images/build-m.png); width:184px; height:109px; margin: 0 0 -92px 0;}
+        .build-b{ position:relative; background-image:url(main/szgc/images/build-b.png); width:184px; height:129px; margin: -95px 0 0 0; }
+        .wall-t{ position:relative; background-image:url(main/szgc/images/wall-t.png); width:184px; height:107px; margin: 0 0 -89px 0;}
+        .wall-m{ position:relative; background-image:url(main/szgc/images/wall-m.png); width:184px; height:109px; margin: 0 0 -92px 0;}
+        .build-m-presell{ position:relative; background-image:url(main/szgc/images/build-m-red.png); width:184px; height:109px; margin: 0 0 -92px 0}
+        .wall-m-presell{ position:relative; background-image:url(main/szgc/images/wall-m-red.png); width:184px; height:109px; margin: 0 0 -92px 0}
+      }
+    }
+
+  }
+}
+
+
+
+
+

@@ -21,6 +21,9 @@
 
     function appAuth($q,$injector,authToken,$state,$rootScope,$location, sxt){
 
+      $rootScope.$on('user:needlogin',function(){
+        $state.go('app.auth.login');
+      });
       var reversedInterceptors = [];
 
       forEach(interceptorFactories, function(interceptorFactory) {
@@ -72,8 +75,9 @@
             profile = null;
 
            loginedUser = profile;
-          if(!loginedUser)
-            $state.go('app.auth.login');
+          if(!loginedUser) {
+            //$state.go('app.auth.login');
+          }
           else {
             profile.username = profile.username||profile.Id;
             profile.token = token;

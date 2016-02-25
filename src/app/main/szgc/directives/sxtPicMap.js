@@ -31,7 +31,7 @@
               return 512 * Math.pow(2, e);
             }
           }),
-          center:[.38531902026005, .5],
+          center:[.48531902026005, .5],
           zoom:0,
           minZoom:0,
           maxZoom:3,
