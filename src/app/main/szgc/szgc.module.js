@@ -39,7 +39,7 @@
         }
       })
       .state('app.szgc.jd2',{
-        title :'形象进度',
+        title :'深圳公园里',
         url   :'/home/jd2',
         views :{
           'content@app':{
@@ -49,7 +49,7 @@
         }
       })
       .state('app.szgc.buildingdetail',{
-        title :'形象进度',
+        title :'深圳公园里-一期-1栋',
         url   :'/home/jd2/detail',
         views :{
           'content@app':{
