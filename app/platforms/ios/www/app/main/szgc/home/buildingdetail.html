@@ -1,0 +1,52 @@
+
+<div layout="row" layout-fill layout-sm="column" id="detail" class="barstyle">
+  <div>
+    <div class="md-title"><h5>基本信息</h5></div>
+    <md-list>
+      <md-list-item class="md-3-line" >
+        <span  class="md-avatar" >楼栋：</span>
+        <div class="md-list-item-text" layout="column">
+          <p>二期3栋</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="md-3-line" >
+        <span class="md-avatar" >楼层：</span>
+        <div class="md-list-item-text" layout="column">
+          <p>45层</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="md-3-line" >
+        <span class="md-avatar" >开工日期：</span>
+        <div class="md-list-item-text" layout="column">
+          <p>2014年10月20日</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="md-3-line">
+        <span class="md-avatar">竣工日期：</span>
+        <div class="md-list-item-text" layout="column">
+          <p>2016年8月20日</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="md-3-line" style="min-height: 40px!important;">
+        <span class="md-avatar">销售日期：</span>
+        <div class="md-list-item-text" layout="column">
+          <p>2016年9月20日</p>
+        </div>
+      </md-list-item>
+
+    </md-list>
+  </div>
+
+</div>
+<div layout="row" layout-fill layout-sm="column" >
+  <div flex>
+    <div class="md-title"><h5>工程进度</h5></div>
+    <div ng-controller="LineChartController">
+      <bar-chart config="config" data="data"></bar-chart>
+
+    </div>
+
+  </div>
+</div>
+
+
