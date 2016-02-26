@@ -16,8 +16,10 @@
     }
 
     function link(scope, element, attr, ctrl) {
-      var preview,o;
+      var preview, o,def;
       $rootScope.$on('sxtImageView', function (a, e) {
+        if(def)return;
+        def=true;
         if (preview)
           preview.destroy();
         if (o)
@@ -27,8 +29,7 @@
           request.push(api.szgc.FilesService.group(g));
         });
         $q.all(request).then(function (results) {
-
-
+          def = false;
           var defaultIndex = 0;
           var imagedata = [];
           results.forEach(function (result) {
@@ -81,6 +82,7 @@
           if ($(o).css('display')) {
             $(o.find('.swiper-container')[0]).click(function (e) {
               preview.destroy();
+              $('.piclayer').remove();
               o.remove();
               e.preventDefault();
               preview = o = null;

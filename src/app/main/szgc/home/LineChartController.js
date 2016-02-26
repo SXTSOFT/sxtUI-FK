@@ -52,4 +52,4 @@
     $scope.multiple = [pageload, firstPaint ];
   }
 
-})()
+})();

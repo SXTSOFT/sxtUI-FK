@@ -1,6 +1,9 @@
-<div layout="column" layout-fill >
-  <bar-chart  config="vm.data.config" data="vm.data.data" style="height:500px;"></bar-chart>
+<div flex layout="column" layout-fill >
+  <div flex="50">
+  <bar-chart  config="vm.data.config" data="vm.data.data" style="height:500px;"></bar-chart></div>
+  <div flex="50">
   <floor-layer  sxtfloor="vm.build" single="true" sell-line="vm.sellLine" floor-num="vm.build.floors"></floor-layer>
+  </div>
 </div>
 
 

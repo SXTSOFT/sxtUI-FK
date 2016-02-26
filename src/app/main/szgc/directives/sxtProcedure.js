@@ -52,7 +52,7 @@
     function link(scope,element,attrs,ctrl){
 
       scope.sett = function(p){
-        scope.value = p.Id;
+        scope.value = p.ProcedureId;
         scope.nameValue = p.ProcedureName;
         ctrl.$setViewValue(scope.value);
       }
