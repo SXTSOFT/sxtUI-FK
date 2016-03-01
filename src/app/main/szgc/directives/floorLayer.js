@@ -69,16 +69,17 @@
       var iWinWidth = $(window).width();
 
       //itemp=(scope.floorNum)*18+107+34+50;
-       itemp=(scope.floorNum)*17+18+34+50;
+       itemp=(scope.floorNum)*17+143+50;
 
       iWinHeight = $(window).height()-130;
       var newobj={},iflayerWidth=0;
       newobj = api.szgc.sxtHouseService.getZ(iWinWidth,iWinHeight,scope.buildLen,200,itemp);
-       zoom = newobj.z;
+       //zoom = newobj.z;
+        zoom = iWinHeight/newobj.y/itemp;
         iflayerWidth = (1/newobj.x)*iWinWidth;
         $('#floorlayer').css('width',iWinWidth+'px');
         iFloorHeight = itemp*zoom;
-
+        console.log('heights',itemp,iFloorHeight,iWinHeight,newobj.z,zoom)
         $('.floor-layer').css({'height':iFloorHeight+'px','width':iflayerWidth+'px'});
         var iFh=(iFloorHeight-50)/itemp;
         $('.whole',element).css({'zoom':iFh});
