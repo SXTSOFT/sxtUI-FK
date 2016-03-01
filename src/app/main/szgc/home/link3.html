@@ -1,4 +1,13 @@
-<div>
-    <floor-layer style="width:33%;float:left;" ng-repeat="sxtfloor in vm.data.builds" sxtfloor="sxtfloor" floor-num="vm.data.floorNum" sell-line="vm.sellLine" ng-click="vm.setFloor(sxtfloor)" ui-sref="app.szgc.project.buildinglist.building({buildId:sxtfloor.building_id,buildName:sxtfloor.name,floors:sxtfloor.floors})" flex="33"></floor-layer>
-</div>
+<panzoom style="width:100%; height: 600px;" config="vm.panzoomConfig" model="vm.model">
+  <div id="floorlayer" style="margin:10px 0;">
+    <floor-layer style="float:left;" build-len="vm.buildLen" ng-repeat="sxtfloor in vm.data.builds" sxtfloor="sxtfloor" floor-num="vm.data.floorNum" sell-line="vm.sellLine" onclick="alert('')" ui-sref="app.szgc.project.buildinglist.building({buildId:sxtfloor.building_id,buildName:sxtfloor.name,floors:sxtfloor.floors})"></floor-layer>
+    <div style="clear:both;display:table;"></div>
+  </div>
+</panzoom>
+<!--<div id="touchme" hm-tap="onHammer" hm-doubletap="callout='Ooh! You just tapped me. Twice.'" hm-drag="callout='Ooh! You just dragged me.'" hm-swipe="callout='Ooh! You just swiped me.'" hm-transform="callout='Ooh! You just transformed me.'" hm-transform="callout='Ooh! You just transformed me.'" hm-rotate="callout='Ooh! You just rotated me.'" hm-rotate="callout='Ooh! You just pinched me.'" hm-options="{tap_always: false}">-->
+
+  <!--<span id="callout" ng-init="callout='Bust a few moves…'">{{callout}}</span>-->
+<!--</div>-->
+
+
 

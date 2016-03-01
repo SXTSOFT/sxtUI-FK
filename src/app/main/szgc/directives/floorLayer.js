@@ -10,13 +10,14 @@
     .directive('floorLayer', floorLayerDirective);
 
   /** @ngInject */
-  function floorLayerDirective($timeout){
+  function floorLayerDirective($timeout,api){
     return {
       restrict:'EA',
       scope:{
         floorData:'=sxtfloor',
         floorNum: '=',
-        sellLine:'='
+        sellLine:'=',
+        buildLen:'='
       },
       link:link
     }
@@ -25,6 +26,9 @@
 
       //element.click(function(){
         //var floorData=[50,50,20,10,30];
+      scope.$watch('floorNum',function(){
+        if(!scope.floorNum) return;
+      //console.log('floorNum',scope.floorNum)
       var sellLine = parseInt(scope.sellLine * scope.floorData.floors), gx1 = scope.floorData.gx1, gx2 = scope.floorData.gx2;
       if (gx1 > scope.floorData.floors) gx1 = scope.floorData.floors;
       if (gx2 > scope.floorData.floors) gx2 = scope.floorData.floors;
@@ -35,7 +39,7 @@
         str.push('<div class="floor-layer"><div class="item" flex>\
           <a>\
           <div class="whole"><ul class="whole-progress">');
-      for (var i = Math.max(gx1, gx2) ; i >= 0; i--) {
+      for (var i = Math.max(gx1, gx2) ; i >= 1; i--) {
         if (i == sellLine) {
           str.push('<li class="build-m-presell" style="z-index:' + i + '"></li>')
         }
@@ -60,54 +64,31 @@
           }
 
         }
-        str.push('<li class="build-b"></li></ul></div><p>'+scope.floorData.name+'('+scope.floorData.floors+'层)</p></a><div>'+scope.floorData.summary+'</div></div></div>');
-      var o = $(str.join('')).appendTo(element)
+        str.push('<li class="build-b"></li></ul></div><p>'+scope.floorData.name+'('+scope.floorData.floors+'层)<br/>&nbsp;'+scope.floorData.summary+'</p></a></div></div>');
+      var o = $(str.join('')).appendTo(element);
+      var iWinWidth = $(window).width();
 
-      zoom=0.18;
-      itemp=(scope.floorNum-1)*18+107+34;
-        //根据手机大小来定zoom，最小为0.12
-      iWinHeight = $(window).height()-220;
-      var izoom = iWinHeight/2/itemp;
-      if(izoom < 0.1){
-        zoom = 0.12;
-      }else{
-        zoom = izoom;
-      }
-      if(zoom>1)
-        zoom=1;
+      //itemp=(scope.floorNum)*18+107+34+50;
+       itemp=(scope.floorNum)*17+18+34+50;
 
-        //窗口缩放时自动调整相应参数
-        $(window).resize(function(){
-          if($(window).width()>960){
-            zoom = 1;
-            iFloorHeight = ((scope.floorNum-1)*18+107+34)*zoom+80;
-            $('.whole').css('zoom',zoom);
-            $('.floor-layer').css('height',iFloorHeight+'px');
-          }
-          else if($(window).width() > 760){
-            zoom = 0.5;
-            iFloorHeight = ((scope.floorNum-1)*18+107+34)*zoom+50;
-            $('.whole').css('zoom',zoom);
-            $('.floor-layer').css('height',iFloorHeight+'px');
-          }else{
-            zoom = izoom;
-            $('.whole').css('zoom',zoom);
-            iFloorHeight = ((scope.floorNum-1)*18+107+34)*zoom+50;
-            $('.floor-layer').css('height',iFloorHeight+'px');
-          }
-        })
+      iWinHeight = $(window).height()-130;
+      var newobj={},iflayerWidth=0;
+      newobj = api.szgc.sxtHouseService.getZ(iWinWidth,iWinHeight,scope.buildLen,200,itemp);
+       zoom = newobj.z;
+        iflayerWidth = (1/newobj.x)*iWinWidth;
+        $('#floorlayer').css('width',iWinWidth+'px');
+        iFloorHeight = itemp*zoom;
 
-
-        iFloorHeight = itemp*zoom+50;
-        $('.whole',element).css('zoom',zoom);
-        $('.floor-layer').css('height',iFloorHeight+'px');
-
+        $('.floor-layer').css({'height':iFloorHeight+'px','width':iflayerWidth+'px'});
+        var iFh=(iFloorHeight-50)/itemp;
+        $('.whole',element).css({'zoom':iFh});
         scope.$on('$destroy',function(){
           o.remove();
           $(element).remove();
         });
-
+      })
     }
   }
 
 })();
+

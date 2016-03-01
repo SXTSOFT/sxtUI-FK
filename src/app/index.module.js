@@ -26,6 +26,8 @@
             // auth
             'app.auth',
 
-            'app.szgc'
+            'app.szgc',
+          'panzoom',
+          'hmTouchEvents'
         ]);
 })();

@@ -184,9 +184,7 @@
 }
 
 //building
-.floor-layer{
-  //width:20%;
-  //display: inline-block;
+.floor-layer1{
   text-align: center;
   position: relative;
   .item{
@@ -199,8 +197,13 @@
       &:hover{
         color:#f00;
       }
+      p{
+        white-space: nowrap;
+        overflow: hidden;
+        margin:0;
+      }
       .whole{
-        position:relative; width: 180px; margin: 0 auto;overflow: hidden;
+        position:relative; width: 180px; margin: 0 auto;
         .whole-progress{
           position:absolute; bottom:0;
         }
@@ -225,6 +228,56 @@
 
   }
 }
+.floor-layer{
+  //width:20%;
+  //display: inline-block;
+  text-align: center;
+  position: relative;
+  //overflow:hidden;
+  .item{
+    position: absolute;
+    bottom:0;
+    width:100%;
+    margin:0 auto;
+    a{
+      color:#333;
+      &:hover{
+        color:#f00;
+      }
+      p{
+        white-space: nowrap;
+        overflow: hidden;
+        margin:0;
+      }
+      .whole{
+        position:relative; width: 180px; margin: 0 auto;overflow: hidden;
+        .whole-progress{
+          position:absolute; bottom:0;
+        }
+        ul{
+          -webkit-padding-start:0;
+          margin-bottom:0;
+          li{
+            list-style: none;
+          }
+        }
+        .whole-target{
+          filter:alpha(opacity=20); opacity:0.2;
+        }
+        .build-t{ position:relative; background-image:url(../app/main/szgc/images/build-t.png); width:184px; height:107px; margin: 0 0 -89px 0;}
+        .build-m{ position:relative; background-image:url(../app/main/szgc/images/build-m.png); width:184px; height:109px; margin: 0 0 -92px 0;}
+        .build-b{ position:relative; background-image:url(../app/main/szgc/images/build-b.png); width:184px; height:129px; margin: -95px 0 0 0; }
+        .wall-t{ position:relative; background-image:url(../app/main/szgc/images/wall-t.png); width:184px; height:107px; margin: 0 0 -89px 0;}
+        .wall-m{ position:relative; background-image:url(../app/main/szgc/images/wall-m.png); width:184px; height:109px; margin: 0 0 -92px 0;}
+        .build-m-presell{ position:relative; background-image:url(../app/main/szgc/images/build-m-red.png); width:184px; height:109px; margin: 0 0 -92px 0}
+        .wall-m-presell{ position:relative; background-image:url(../app/main/szgc/images/wall-m-red.png); width:184px; height:109px; margin: 0 0 -92px 0}
+      }
+    }
+
+  }
+}
+
+
 
 
 
