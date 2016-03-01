@@ -7,28 +7,18 @@
     .controller('SzgcHomeController', SzgcHomeController);
 
   /** @ngInject */
-  function SzgcHomeController(auth,$state)
+  function SzgcHomeController($scope,auth,$state,$rootScope)
   {
 
     var vm = this;
-    //
-
-    vm.markers = [
-      {
-        lat:22.631026,
-        lng:114.111701,
-        projectId:'1'
-      },{
-        lat:22.630026,
-        lng:114.311701,
-        projectId:'2'
-      }
-    ];
+    vm.data = {};
+    vm.is = function (state) {
+      return vm.includes(state);
+    }
     vm.markerClick = markerClick;
 
-
     function markerClick($current){
-      $state.go('app.szgc.jd',{id:$current.projectId});
+      $state.go('app.szgc.project',{pid:$current.projectId, pname: $current.title});
     }
   }
 })();

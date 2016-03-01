@@ -8,7 +8,6 @@
 
   /** @ngInject */
   function apiProvider() {
-
     var api = {},provider = this,injector;
     provider.register = register;
     provider.$http = {
@@ -21,20 +20,25 @@
       resource:cfg('resource'),
       custom:cfg('custom')
     };
+    provider.$q = function(){
+      return provider.$q.$q.apply(provider,Array.prototype.slice.call(arguments));
+    }
+
 
 
     provider.$get = getApi;
     provider.get = getServer;
 
-    getApi.$injector = ['$resource','$http'];
+    getApi.$injector = ['$resource','$http','$injector','$q'];
 
     function getServer(name){
       return injector.get(name);
     }
 
-    function getApi($resource,$http,$injector){
+    function getApi($resource,$http,$injector,$q){
       injector = $injector;
       provider.$http.$http = $http;
+      provider.$q.$q = $q;
       resolveApi(api,$resource,$http);
       return api;
     }

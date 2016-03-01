@@ -28,9 +28,9 @@
           }
         }
       })
-      .state('app.szgc.jd',{
-        title :'形象进度',
-        url   :'/home/jd/:id',
+      .state('app.szgc.project',{
+        //title :'形象进度',
+        url   :'/home/jd/{pid}/{pname}',
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/link2.html',
@@ -38,23 +38,64 @@
           }
         }
       })
-      .state('app.szgc.jd2',{
-        title :'形象进度',
-        url   :'/home/jd2',
+      .state('app.szgc.project.buildinglist',{
+        //title :'形象进度',
+        url   :'/items/{projectType}/{itemId}/{itemName}',
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/link3.html',
-            controller:'SzgcyhydController as vm'
+            controller:'SzgcyhydLink3Controller as vm',
+            resolve:{
+              builds:['$stateParams', 'api','$q',function($stateParams, api,$q){
+                return $q(function(resolve){
+                  api.szgc.vanke.buildingsInfo($stateParams.projectType, $stateParams.itemId).then(function (data) {
+                    api.szgc.ProjectExService.building($stateParams.pid + '>' + $stateParams.itemId).then(function (data2) {
+                      var mx = 0;
+                      data.forEach(function (item) {
+                        if (mx < item.floors)
+                          mx = item.floors;
+                        var fd = data2.data.Rows.find(function (it) { return it.RegionId == item.building_id; }) || {};
+                        item.gx1 = fd.gx1||0;
+                        item.gx2 = fd.gx2 || 0;
+                        item.summary = fd.AreaRemark || '';
+                      });
+                      resolve({
+                        floorNum:mx,
+                        builds:data
+                      });
+                    });
+                  })
+                })
+              }]
+            }
           }
         }
       })
-      .state('app.szgc.buildingdetail',{
-        title :'形象进度',
-        url   :'/home/jd2/detail',
+      .state('app.szgc.project.buildinglist.building',{
+        //title :'形象进度',
+        url   :'/building/{buildId}/{buildName}/{floors}',
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/buildingdetail.html',
-            controller:'SzgcyhydController as vm'
+            controller:'SzgcbuilddetailController as vm',
+            resolve:{
+              details:['$stateParams','api',function($stateParams,api){
+                return api.szgc.ProjectExService.building2($stateParams.pid + '>' + $stateParams.itemId + '>' + $stateParams.buildId).then(function (result) {
+                    var pageload = {
+                      name: '',
+                      datapoints: []
+                    }
+
+                    result.data.Rows.forEach(function (r) {
+                      pageload.datapoints.push({
+                        x: r.ProcedureName,
+                        y: r.gx1
+                      });
+                    })
+                    return [pageload];
+                  });
+              }]
+            }
           }
         }
       })
