@@ -1,8 +1,9 @@
 #toolbar{
+  font-size:12px;
   .md-button{
     line-height:26px;
     min-width:75px;
-    font-size:12px;
+    font-size:0.8em;
     margin:6px 2px;
   }
   md-icon{
@@ -11,9 +12,9 @@
   }
 }
 #toptoolbar{
-  height:46px;
-  min-height:46px;
-  max-height:46px;
+  height:44px;
+  min-height:44px;
+  max-height:44px;
   z-index: 55 !important;
   background-color:rgb(233,48,48);
   color:#fff;
