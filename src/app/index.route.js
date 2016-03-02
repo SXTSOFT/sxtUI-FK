@@ -31,9 +31,9 @@
                 $cookies = _$cookies;
             }
         ]);
-
+        var mobileDetect = new MobileDetect(window.navigator.userAgent)
         // Get active layout
-        var layoutStyle = 'contentWithFootbar';// : 'verticalNavigation';
+        var layoutStyle = mobileDetect.mobile()?'contentWithFootbar':'verticalNavigation';// : 'verticalNavigation';
 
         var layouts = {
             verticalNavigation  : {

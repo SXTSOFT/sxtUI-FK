@@ -89,7 +89,7 @@
         str.push('<div style="height:55px;"></div></div></div><p>' + scope.floorData.name + '(' + scope.floorData.floors + '层)<br/>&nbsp;' + scope.floorData.summary +'</p></a></div></div>');
         var o = $(str.join('')).appendTo(element);
         var barchartHeight=$('#barchart').outerHeight();
-        itemp = (scope.floorNum - 1) * 18 + 107 + 34+40;
+        itemp = (scope.floorNum - 1) * 18 + 500;
         //根据手机大小来定zoom，最小为0.12
         iWinHeight = $(window).height() - 100-barchartHeight;
 

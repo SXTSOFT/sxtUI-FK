@@ -192,16 +192,50 @@
 
     msNavigationServiceProvider.saveItem('szgc.home', {
       title    : '首页',
-      icon     : 'icon-tile-four',
+      icon     : 'icon-home',
       state    : 'app.szgc.home',
       weight   : 1
     });
 
     msNavigationServiceProvider.saveItem('szgc.report', {
       title    : '报表',
-      icon     : 'icon-tile-four',
+      icon     : 'icon-chart-bar',
       state    : 'app.szgc.report',
       weight   : 1
     });
+
+    msNavigationServiceProvider.saveItem('szgc.ys', {
+      title    : '验收',
+      icon     : 'icon-apps',
+      state    : 'app.szgc.ys',
+      weight   : 1
+    })
+
+    msNavigationServiceProvider.saveItem('setting', {
+      title : '系统管理',
+      group : true,
+      weight: 1
+    });
+
+    msNavigationServiceProvider.saveItem('setting.ys', {
+      title    : '工序管理',
+      icon     : 'icon-tile-four',
+      state    : 'app.szgc.home3',
+      weight   : 1
+    })
+
+    msNavigationServiceProvider.saveItem('setting.ys1', {
+      title    : '项目权限',
+      icon     : 'icon-account-switch',
+      state    : 'app.szgc.home1',
+      weight   : 1
+    })
+
+    msNavigationServiceProvider.saveItem('setting.ys2', {
+      title    : '系统配置',
+      icon     : 'icon-cog',
+      state    : 'app.szgc.home2',
+      weight   : 1
+    })
   }
 })();

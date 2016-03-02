@@ -62,7 +62,7 @@
             if (!layer) {
                 return this;
             }
-            if (options.icon && options.icon.options && options.icon.options.iconUrl) {
+            if (geojson.geometry.type == 'Point' && options.icon && options.icon.options && options.icon.options.iconUrl) {
                 var iconOpt = options.icon.options;
               iconOpt.iconUrl = iconOpt.iconUrl.replace('/dp/libs','assets')
                 layer.setIcon(new L.Icon(iconOpt));

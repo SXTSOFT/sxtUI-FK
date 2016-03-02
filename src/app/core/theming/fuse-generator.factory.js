@@ -7,7 +7,7 @@
         .factory('fuseGenerator', fuseGeneratorService);
 
     /** @ngInject */
-    function fuseGeneratorService($cookies, $log, fuseTheming)
+    function fuseGeneratorService($cookies, $log, fuseTheming,msUtils)
     {
         // Storage for simplified themes object
         var themes = {};
@@ -145,7 +145,7 @@
             fuseTheming.setThemesList(themes);
 
             // Remember selected theme.
-            var selectedTheme ='vanke'; $cookies.get('selectedTheme');
+            var selectedTheme = null;// $cookies.get('selectedTheme');
 
             if ( selectedTheme )
             {
@@ -153,7 +153,7 @@
             }
             else
             {
-                fuseTheming.setActiveTheme('vanke');
+                fuseTheming.setActiveTheme(msUtils.isMobile()? 'vanke':'fuse-red');
             }
         }
 

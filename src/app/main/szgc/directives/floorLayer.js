@@ -73,7 +73,7 @@
 
       iWinHeight = $(window).height()-130;
       var newobj={},iflayerWidth=0;
-      newobj = api.szgc.sxtHouseService.getZ(iWinWidth,iWinHeight,scope.buildLen,200,itemp);
+      newobj = api.szgc.sxtHouseService.getZ(iWinWidth,iWinHeight,scope.buildLen,500,itemp);
        //zoom = newobj.z;
         zoom = iWinHeight/newobj.y/itemp;
         iflayerWidth = (1/newobj.x)*iWinWidth;

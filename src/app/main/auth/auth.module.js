@@ -40,18 +40,18 @@
     // Translation
     $translatePartialLoaderProvider.addPart('app/main/auth');
 
-    // Navigation
-    msNavigationServiceProvider.saveItem('auth', {
-      title : '认证',
-      group : true,
-      weight: 1
-    });
-
-    msNavigationServiceProvider.saveItem('auth.login', {
-      title    : '登录',
-      icon     : 'icon-tile-four',
-      state    : 'app.auth.login',
-      weight   : 1
-    });
+    //// Navigation
+    //msNavigationServiceProvider.saveItem('auth', {
+    //  title : '认证',
+    //  group : true,
+    //  weight: 1
+    //});
+    //
+    //msNavigationServiceProvider.saveItem('auth.login', {
+    //  title    : '登录',
+    //  icon     : 'icon-tile-four',
+    //  state    : 'app.auth.login',
+    //  weight   : 1
+    //});
   }
 })();

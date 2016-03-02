@@ -30,23 +30,23 @@
       // Translation
       $translatePartialLoaderProvider.addPart('app/main/sample');
 
-      // Navigation
-      msNavigationServiceProvider.saveItem('fuse', {
-          title : 'SAMPLE',
-          group : true,
-          weight: 1
-      });
-
-      msNavigationServiceProvider.saveItem('fuse.sample', {
-          title    : 'Sample',
-          icon     : 'icon-tile-four',
-          state    : 'app.sample',
-          /*stateParams: {
-              'param1': 'page'
-           },*/
-          translate: 'SAMPLE.SAMPLE_NAV',
-          weight   : 1
-      });
+      //// Navigation
+      //msNavigationServiceProvider.saveItem('fuse', {
+      //    title : 'SAMPLE',
+      //    group : true,
+      //    weight: 1
+      //});
+      //
+      //msNavigationServiceProvider.saveItem('fuse.sample', {
+      //    title    : 'Sample',
+      //    icon     : 'icon-tile-four',
+      //    state    : 'app.sample',
+      //    /*stateParams: {
+      //        'param1': 'page'
+      //     },*/
+      //    translate: 'SAMPLE.SAMPLE_NAV',
+      //    weight   : 1
+      //});
 
       var $http = apiProvider.$http;
       apiProvider.register('sample',$http.resource('app/data/sample/sample.json'));
