@@ -77,9 +77,9 @@
        //zoom = newobj.z;
         zoom = iWinHeight/newobj.y/itemp;
         iflayerWidth = (1/newobj.x)*iWinWidth;
-        $('#floorlayer').css('width',iWinWidth+'px');
+        $('#floorlayer').css('width',100+'%');
         iFloorHeight = itemp*zoom;
-        console.log('heights',itemp,iFloorHeight,iWinHeight,newobj.z,zoom)
+        //console.log('heights',itemp,iFloorHeight,iWinHeight,newobj.z,zoom)
         $('.floor-layer').css({'height':iFloorHeight+'px','width':iflayerWidth+'px'});
         var iFh=(iFloorHeight-50)/itemp;
         $('.whole',element).css({'zoom':iFh});

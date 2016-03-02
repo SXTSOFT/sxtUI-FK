@@ -194,9 +194,6 @@
     margin:0 auto;
     a{
       color:#333;
-      &:hover{
-        color:#f00;
-      }
       p{
         white-space: nowrap;
         overflow: hidden;
@@ -256,7 +253,6 @@
         }
         ul{
           -webkit-padding-start:0;
-          margin-bottom:0;
           li{
             list-style: none;
           }
@@ -281,5 +277,20 @@
 
 
 
+.relpos {
+  position: relative;
+}
 
+#target {
+  left: 0;
+  top: 0;
+  width: 500px;
+  height: 500px;
+  vertical-align: middle;
+  text-align: center;
+  color: white;
+  background-color: #444;
+  font-size: 36pt;
+  font-family: 'Futura', 'Avenir', 'Helvetica', sans-serif;
+}
 
