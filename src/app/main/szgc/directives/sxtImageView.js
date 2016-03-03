@@ -12,37 +12,53 @@
   function sxtImageViewDirective($rootScope, api, $q) {
     return {
       restrict: 'EA',
-      link: link
+      link: link,
+      scope:{
+        isContainer:'='
+      }
     }
 
     function link(scope, element, attr, ctrl) {
-      var preview, o,def;
-      $rootScope.$on('sxtImageView', function (a, e) {
+      var preview, o,def,player;
+      player = function (a, e) {
         if(def)return;
         def=true;
         if (preview)
           preview.destroy();
         if (o)
           o.remove();
-        var request = [];
-        e.groups.forEach(function (g) {
-          request.push(api.szgc.FilesService.group(g));
-        });
-        $q.all(request).then(function (results) {
+
+        $q(function(resolve) {
+          if(!e)
+            resolve(null);
+          else{
+            var request = [];
+            e.groups.forEach(function (g) {
+              request.push(api.szgc.FilesService.group(g));
+            });
+            $q.all(request).then(function(results){
+              resolve(results);
+            });
+          }
+        }).then(function (results) {
           def = false;
           var defaultIndex = 0;
-          var imagedata = [];
-          results.forEach(function (result) {
-            result.data.Files.forEach(function (f) {
-              imagedata.push(sxt.app.api + f.Url.substring(1));
+          var imagedata = null;
+
+          if(results) {
+            imagedata = [];
+            results.forEach (function (result) {
+              result.data.Files.forEach (function (f) {
+                imagedata.push ({date: f.CreateDate, url: sxt.app.api + f.Url.substring (1)});
+              })
             })
-          });;
+          };
           if (!imagedata) {
             imagedata = [];
             $('img', element).each(function (index, el) {
-              imagedata.push($(el).attr('src'));
+              imagedata.push({url:$(el)[0].src});
             })
-            defaultIndex = $('img', element).index($(e.target))
+            defaultIndex = $('img', element).index($(a.target))
             if (defaultIndex == -1)
               defaultIndex = 0;
           }
@@ -51,8 +67,8 @@
           str.push('<div class="piclayer">\
         <div class="swiper-container"><div class="swiper-wrapper">')
           angular.forEach(imagedata, function (data) {
-            var arl = data;
-            str.push('<div class="swiper-slide"><p><img src="' + arl + '"></p></div>');
+            var arl = data.url;
+            str.push('<div class="swiper-slide"><p><img src="' + arl + '"></p><div style="position:absolute;top:20px;left:20px; font-size:20px; color:white;text-shadow:2px 2px 3px #ff0000">' + (data.date?'日期：'+data.date:'') + '</div></div>');
           });
           str.push('</div><div class="swiper-pagination"></div></div></div>');
           o = $(str.join('')).appendTo('body')
@@ -94,7 +110,11 @@
           o.remove();
           preview.destroy();
         });
-      });
+      };
+      $rootScope.$on('sxtImageView',player);
+      if(scope.isContainer) {
+        element.on ('click', player);
+      }
     }
   }
 })();

@@ -21,6 +21,7 @@
       gx1: $scope.$parent.vm.current.gx1,
       gx2: $scope.$parent.vm.current.gx2
     }
+    vm.sellLine = 0.6;
     vm.data= {
       config: {
         showXAxis: true,
@@ -29,9 +30,16 @@
         debug: true,
         stack: true,
         yAxis: {
+          type: 'value',
           min: 0,
-          splitNumber: vm.build.floors,
-          max: vm.build.floors
+          name:'楼层',
+          interval: 10,
+          max: vm.build.floors,
+          axisLabel: {
+            formatter: function (value, index) {
+              return parseInt(value);//非真正解决
+            }
+          }
         }
       },
       data:details

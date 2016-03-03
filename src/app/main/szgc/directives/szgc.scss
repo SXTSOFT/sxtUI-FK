@@ -211,7 +211,9 @@
           }
         }
         .whole-target{
-          filter:alpha(opacity=20); opacity:0.2;
+          .wall-t,.wall-m,.build-b{
+            filter:alpha(opacity=20); opacity:0.2;
+          }
         }
         .build-t{ position:relative; background-image:url(../app/main/szgc/images/build-t.png); width:184px; height:107px; margin: 0 0 -89px 0;}
         .build-m{ position:relative; background-image:url(../app/main/szgc/images/build-m.png); width:184px; height:109px; margin: 0 0 -92px 0;}
@@ -258,7 +260,9 @@
           }
         }
         .whole-target{
-          filter:alpha(opacity=20); opacity:0.2;
+          .wall-t,.wall-m,.build-b{
+            filter:alpha(opacity=20); opacity:0.2;
+          }
         }
         .build-t{ position:relative; background-image:url(../app/main/szgc/images/build-t.png); width:184px; height:107px; margin: 0 0 -89px 0;}
         .build-m{ position:relative; background-image:url(../app/main/szgc/images/build-m.png); width:184px; height:109px; margin: 0 0 -92px 0;}

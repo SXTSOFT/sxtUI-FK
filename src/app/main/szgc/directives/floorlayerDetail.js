@@ -82,6 +82,7 @@
           }
         })
         angular.forEach(temparr, function (v, k) {
+          if(!v.y)return;
           var iBottom = v.y * 18 + 60;
           str.push('<div style="height:18px;position:absolute;bottom:' + iBottom + 'px;"><span style="height:4px;width:30px;background:#f00;display:block;float:left;margin-top:6px;"></span><span style="display:block;margin-left:35px;border:1px solid #ddd;background:#fff;text-align:left;padding:3px;">' +v.y+'层'+ v.x + '<span><span style="clear:both;"></span></div>');
         })
