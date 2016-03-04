@@ -7,7 +7,7 @@
     .factory('vankeAuth', vankeAuth);
 
   /** @ngInject */
-  function vankeAuth($http,$q,appConfig,sxt)
+  function vankeAuth($http,$q,appConfig,$state)
   {
     var service = {
       token   : token,
@@ -17,60 +17,21 @@
     return service;
 
     function token(user){
-      if(!sxt.connection.isOnline())return user;
-      if(user) {
-        user.grant_type = 'password';
-        user.scope = 'sxt';
-        return $q (function (resolve,reject) {
-          $http ({
-            method: 'POST',
-            url: sxt.app.api + '/auth/connect/token',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'Authorization': 'Basic ' + btoa ('59EEDFCCB53C451488E067522992853B:9d6ab75f921942e61fb43a9b1fc25c63')
-            },
-            transformRequest: function (obj) {
-              var str = [];
-              for (var p in obj)
-                str.push (encodeURIComponent (p) + "=" + encodeURIComponent (obj[p]));
-              return str.join ("&");
-            },
-            data: user
-          }).then (function (result) {
-            if(result) {
-              var token = result.data;
-              resolve(token);
-            }
-            else{
-              reject({})
-            }
-          },function(){
-            resolve(user);
-          });
-          //
-        });
-      }
-      else{
-        return user;
-      }
+      return $q(function(resolve,reject){
+        user ? resolve(user):reject('');
+      })
     }
 
     function profile(token){
-      if(!sxt.connection.isOnline())return token;
-      if(!token || !token.username) {
-        return $q (function (resolve, reject) {
-          $http
-            .get (sxt.app.api + '/api/Security/Account/UserInfo', {t: new Date ().getTime ()})
-            .then (function (d) {
-              resolve (d && d.data);
-            }, function () {
-              reject (token);
-            });
-        });
-      }
-      else{
-        return token;
-      }
+      return $q(function(resolve,reject){
+        token?resolve({
+          id:1,
+          RealName:token.username,
+          Token:'429ad0b0d7ab966180cc4718324c50ddf176d099',
+          Username:token.username,
+          Partner:''
+        }):$state.go('app.auth.login');
+      })
     }
   }
 
