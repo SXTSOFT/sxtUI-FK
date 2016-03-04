@@ -28,6 +28,28 @@
           }
         }
       })
+      .state('app.szgc.area',{
+        noBack:true,
+        title :'划区',
+        url   :'/edit',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/szgc/home/area.html',
+            controller:'SzgcAreaController as vm'
+          }
+        }
+      })
+      .state('app.szgc.xc',{
+        noBack:true,
+        title :'验收',
+        url   :'/xc',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/szgc/home/xc.html',
+            controller:'SzgcXCController as vm'
+          }
+        }
+      })
       .state('app.szgc.project',{
         //title :'形象进度',
         url   :'/home/jd/{pid}/{pname}',
@@ -208,16 +230,16 @@
     });
 
     msNavigationServiceProvider.saveItem('szgc.report', {
-      title    : '报表',
-      icon     : 'icon-chart-bar',
-      state    : 'app.szgc.report',
+      title    : '划区',
+      icon     : 'icon-pen',
+      state    : 'app.szgc.area',
       weight   : 1
     });
 
     msNavigationServiceProvider.saveItem('szgc.ys', {
       title    : '验收',
       icon     : 'icon-apps',
-      state    : 'app.szgc.ys',
+      state    : 'app.szgc.xc',
       weight   : 1
     })
 

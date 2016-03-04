@@ -11,40 +11,11 @@
 
   /** @ngInject */
   function  utilsFactory($mdToast,$mdDialog){
-    function accSub(arg2, arg1) {
-      var r1, r2, m, n;
-      try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
-      try { r2 = arg2.toString().split(".")[1].length } catch (e) { r2 = 0 }
-      m = Math.pow(10, Math.max(r1, r2));
-      n = (r1 >= r2) ? r1 : r2;
-      return parseFloat(((arg2 * m - arg1 * m) / m).toFixed(n));
-    }
-    function accAdd(arg2, arg1) {
-      var r1, r2, m;
-      try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
-      try { r2 = arg2.toString().split(".")[1].length } catch (e) { r2 = 0 }
-      m = Math.pow(10, Math.max(r1, r2));
-      return parseFloat((arg1 * m + arg2 * m) / m);
-    }
-    function accMul(arg2, arg1) {
-      var m = 0, s1 = arg1.toString(), s2 = arg2.toString();
-      try { m += s1.split(".")[1].length } catch (e) { }
-      try { m += s2.split(".")[1].length } catch (e) { }
-      return parseFloat(Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m));
-    }
-    function accDiv(arg1, arg2) {
-      var t1 = 0, t2 = 0, r1, r2;
-      try { t1 = arg1.toString().split(".")[1].length } catch (e) { }
-      try { t2 = arg2.toString().split(".")[1].length } catch (e) { }
-      //with (Math) {
 
-        r1 = Number(arg1.toString().replace(".", ""));
-        r2 = Number(arg2.toString().replace(".", ""));
-        return parseFloat((r1 / r2) * Math.pow(10, t2 - t1));
-      //}
-    }
     return {
+      id:'52327c423debf68027000006',
       math: {
+
         //+
         sum:function(){
           var t=0,arg = arguments,p;
@@ -74,6 +45,39 @@
       error:errorMessage,
       copy:copyFn
     };
+
+    function accSub(arg2, arg1) {
+      var r1, r2, m, n;
+      try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
+      try { r2 = arg2.toString().split(".")[1].length } catch (e) { r2 = 0 }
+      m = Math.pow(10, Math.max(r1, r2));
+      n = (r1 >= r2) ? r1 : r2;
+      return parseFloat(((arg2 * m - arg1 * m) / m).toFixed(n));
+    }
+    function accAdd(arg2, arg1) {
+      var r1, r2, m;
+      try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
+      try { r2 = arg2.toString().split(".")[1].length } catch (e) { r2 = 0 }
+      m = Math.pow(10, Math.max(r1, r2));
+      return parseFloat((arg1 * m + arg2 * m) / m);
+    }
+    function accMul(arg2, arg1) {
+      var m = 0, s1 = arg1.toString(), s2 = arg2.toString();
+      try { m += s1.split(".")[1].length } catch (e) { }
+      try { m += s2.split(".")[1].length } catch (e) { }
+      return parseFloat(Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m));
+    }
+    function accDiv(arg1, arg2) {
+      var t1 = 0, t2 = 0, r1, r2;
+      try { t1 = arg1.toString().split(".")[1].length } catch (e) { }
+      try { t2 = arg2.toString().split(".")[1].length } catch (e) { }
+      //with (Math) {
+
+      r1 = Number(arg1.toString().replace(".", ""));
+      r2 = Number(arg2.toString().replace(".", ""));
+      return parseFloat((r1 / r2) * Math.pow(10, t2 - t1));
+      //}
+    }
 
     function tipsMessage(message){
       return $mdToast.show(
