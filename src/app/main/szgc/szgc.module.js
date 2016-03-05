@@ -141,6 +141,17 @@
           }
         }
       })
+      .state('app.szgc.choose', {
+        noBack:true,
+        title    :'选择',
+        url      : '/report',
+        views    : {
+          'content@app': {
+            templateUrl: 'app/main/szgc/report/choose.html',
+            controller: 'SzgcChooseController as vm'
+          }
+        }
+      })
       .state('app.szgc.tzg', {
         noBack:true,
         title    :'发送整改通知',
