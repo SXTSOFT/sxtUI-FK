@@ -32,8 +32,8 @@
                   return 512 * Math.pow (2, e);
                 }
               }),
-              center: [.48531902026005, .3],
-              zoom: 0,
+             center: [.23531902026005, .18],
+             zoom: 1,
               minZoom: 0,
               maxZoom: 3,
               scrollWheelZoom: true,
