@@ -21,7 +21,7 @@
       onQueryed: function(data) {
         if (!vm.project.pid) {
           vm.project.data = data;
-          queryTable();
+         // queryTable();
         }
       }
     };

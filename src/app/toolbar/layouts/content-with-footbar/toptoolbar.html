@@ -3,6 +3,7 @@
   <h2>
     <span>{{$root.title || '万科数字工程'}}</span>
   </h2>
+  <md-button style="color:white;position: absolute;top:0px;right:5px;" ui-sref="app.szgc.home" ng-show="showgz">发送整改</md-button>
   <div style="position: absolute;top:5px;right:5px;">
   <md-progress-circular id="toolbar-progress" ng-if="$root.loadingProgress"
                         md-mode="indeterminate" md-diameter="40">

@@ -70,6 +70,29 @@
           'contrastStrongLightColors': '300 400'
         }
       },
+      {
+        name:'blue-1',
+        options:{
+          '50': '#ececee',
+          '100': '#c5c6cb',
+          '200': '#9ea1a9',
+          '300': '#7d818c',
+          '400': '#5c616f',
+          '500':'#1f6db4',
+          '600': '#353a48',
+          '700': '#2d323e',
+          '800': '#262933',
+          '900': '#1e2129',
+          'A100': '#c5c6cb',
+          'A200': '#9ea1a9',
+          'A400': '#5c616f',
+          'A700': '#2d323e',
+          'contrastDefaultColor': 'light',
+          'contrastDarkColors': '50 100 200 A100',
+          'contrastStrongLightColors': '300 400'
+
+        }
+      }
     ];
 
     angular

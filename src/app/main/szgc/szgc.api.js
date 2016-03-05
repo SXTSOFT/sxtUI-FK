@@ -24,7 +24,46 @@
         },
         getAppImg:function(regionId,produceId,roleid){
           return $http.get('/api/projects/' + regionId + '/Procedure/' + produceId + '/APPImgs?roleId=' + roleid);
+        },
+        getbyid:function (id) {
+          return $http.get('/api/PProcedure/' + id);
+        },
+        update:function (id, data) {
+          return $http.put('/api/PProcedure/' + id, data);
+        },
+        create:function (data) {
+          return $http.post('/api/PProcedure', data);
+        },
+        destroy:function (data) {
+          return $http.delete('/api/PProcedure/' + data.Id);
+        },
+        upfile:function (data) {
+          return $http.put('/api/PProcedure/File' + data);
+        },
+        updateSatus:function (id,status) {
+          return $http.put('/api/PProcedure/UpdateStatusByProcedureId?id=' + id + "&status=" + status);
+        },
+        FilesCount:function(groupId){
+          return $http.get('/api/Procedure/FilesCount?groupId=' + groupId);
+        },
+        deleteAppImg: function(id) {
+          return $http.delete('/api/APPImgs/' + id);
         }
+
+    //return {
+    //  getAll: getAll,
+    //  getbyid: getbyid,
+    //  update: update,
+    //  create: create,
+    //  destroy: destroy,
+    //  upfile: upfile,
+    //  updateSatus: updateSatus,
+    //  FilesCount:FilesCount,
+    //  getAppImg: function (regionId, produceId, roleid) {
+    //    return $http.get('/api/projects/' + regionId + '/Procedure/' + produceId + '/APPImgs?roleId=' + roleid);
+    //  },
+    //
+    //}
       },
       ProcedureTypeService:{
         getAll:function(args){

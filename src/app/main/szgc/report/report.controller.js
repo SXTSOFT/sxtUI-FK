@@ -29,6 +29,7 @@
               '报表详细'
       });
     }
+    console.log('scope',vm)
     $scope.$watch(function(){
       return $state.is('app.szgc.report');
     },function(){

@@ -29,17 +29,24 @@
         var scale = getRelativeScale(e.gesture.scale);
        // $('#floorlayer').css('zoom',scale);
         $.Velocity.hook($('#floorlayer'), 'scale', scale);
+        e.preventDefault();
 
         //console.log('pinchmove')
         //var scale = $(element).css();
       }
       scope.pinchend = function(e){
         currentScale = getRelativeScale(e.gesture.scale);
+        e.preventDefault();
         //console.log('pinchend')
       }
 
       function getRelativeScale(scale) {
-        return scale * currentScale;
+        var nowScale=scale * currentScale;;
+        if(nowScale <1){
+          nowScale =1;
+        }
+        //return scale * currentScale;
+        return nowScale;
       }
       var deltax= 0,deltay=0;
       var lastx= 0,lasty=0;
