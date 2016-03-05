@@ -24,7 +24,7 @@
 
       $timeout(function () {
         var map = L.map(element[0], {
-            center: [22.631026, 114.111701],
+            center: [39.904983,116.427287],
             zoom: 10,
             attributionControl: false
           }),

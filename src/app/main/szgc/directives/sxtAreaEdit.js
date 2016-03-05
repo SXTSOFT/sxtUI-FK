@@ -139,16 +139,16 @@
                     };
                     $scope.photo ();
                   },
-                    template: '<md-dialog aria-label="拍照"  ng-cloak><form><md-toolbar><div class="md-toolbar-tools"><h2>{{title || \'拍照\'}}</h2></div></md-toolbar>\
+                    template: '<md-dialog aria-label="拍照"  ng-cloak><form><md-toolbar style="background:#1f6db4"><div class="md-toolbar-tools"><h2>{{title || \'拍照\'}}</h2></div></md-toolbar>\
                   <md-dialog-content><div class="md-dialog-content" >\
                 <img width="120" class="cimages" ng-repeat="img in images" ng-src="{{img.Url|fileurl}}" /></div></md-dialog-content>\
-                <md-dialog-actions layout="row" ng-click="cancel()">\
-                  <md-button >取消</md-button>\
+                <md-dialog-actions layout="row" style="border-top:solid 2px #1f6db4">\
+                  <md-button  class="md-raised" ng-click="cancel()" >取消</md-button>\
                 <span flex></span>\
-                <md-button ng-click="photo($event)" >\
+                <md-button  class="md-raised" ng-click="photo($event)" >\
                     拍照\
                   </md-button>\
-                <md-button ng-click="answer()"  md-autofocus style="margin-right:20px;">发送整改通知</md-button>\
+                <md-button  class="md-raised" ng-click="answer()"  md-autofocus style="margin-right:20px;">发送整改通知</md-button>\
                   </md-dialog-actions>\
                   </form>\
                   </md-dialog>',

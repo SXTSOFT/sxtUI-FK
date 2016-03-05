@@ -19,7 +19,7 @@
       })
       .state('app.szgc.home',{
         noBack:true,
-        title :'金茂工程质量管理',
+        title :'金茂质量平台',
         url   :'/',
         views :{
           'content@app':{

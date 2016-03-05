@@ -9,12 +9,12 @@
     .directive('sxtImageView',sxtImageViewDirective);
 
   /** @ngInject */
-  function sxtImageViewDirective($rootScope, api, $q) {
+  function sxtImageViewDirective($rootScope, $http, $q) {
     return {
       restrict: 'EA',
       link: link,
       scope:{
-        isContainer:'='
+        isContainer:'@'
       }
     }
 
@@ -33,7 +33,7 @@
           else{
             var request = [];
             e.groups.forEach(function (g) {
-              request.push(api.szgc.FilesService.group(g));
+              request.push($http.get('http://vkde.sxtsoft.com/api/Files?group='+g));
             });
             $q.all(request).then(function(results){
               resolve(results);
@@ -47,7 +47,7 @@
             imagedata = [];
             results.forEach (function (result) {
               result.data.Files.forEach (function (f) {
-                imagedata.push ({date: f.CreateDate, url: sxt.app.api + f.Url.substring (1)});
+                imagedata.push ({date: f.CreateDate, url: 'http://vkde.sxtsoft.com' + f.Url.substring (1)});
               })
             })
           };
