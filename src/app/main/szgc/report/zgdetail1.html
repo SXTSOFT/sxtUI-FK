@@ -22,7 +22,7 @@
           <p>问题：</p>
         </div>
         <div flex class="md-list-item-text">
-          <p>问题</p>
+          <p>{{p.summary}}</p>
         </div>
       </md-list-item>
       <md-list-item>
@@ -30,7 +30,7 @@
           <p>描述：</p>
         </div>
         <div flex class="md-list-item-text">
-          <p>描述</p>
+          <p>{{summary}}</p>
         </div>
       </md-list-item>
       <md-divider></md-divider>
@@ -71,7 +71,7 @@
     </md-list>
   </md-content>
   <div style="background:#1f6db4;color:#fff;margin-top:10px;width:100%;text-align: center;padding-top:5px;">
-    <md-button ui-sref="app.szgc.view({pid:pid})" flex>查看标注</md-button>
+    <md-button ui-sref="app.szgc.view({pid:p.pid})" flex>查看标注</md-button>
   </div>
   <!--<div style="background:#fff;color:#f00;margin-top:10px;width:100%;text-align: center">-->
     <!--<md-button flex>关闭</md-button>-->

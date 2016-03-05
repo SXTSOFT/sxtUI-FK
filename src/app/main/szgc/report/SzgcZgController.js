@@ -9,9 +9,13 @@
     .controller('SzgcZgController',SzgcZgController);
 
   /** @ngInject */
-  function  SzgcZgController($stateParams,utils,$http,$scope){
+  function  SzgcZgController($stateParams,utils,$http,$scope,$rootScope){
+    $rootScope.pid = $stateParams.pid;
+    $scope.$watch('summary',function(){
+      $rootScope.summary = $scope.summary;
+    })
     if($stateParams.pid){
-      $scope.pid = $stateParams.pid;
+      $scope.p = $stateParams;
       $http.get('http://vkde.sxtsoft.com/api/Files?group='+$stateParams.pid).then(function(result){
         $scope.images = result.data.Files;
       })

@@ -11,10 +11,7 @@
   {
     // 第三方登录插件
     var interceptorFactories = this.interceptors = [];
-    var forEach = angular.forEach,loginedUser ={
-      Username:'管理员',
-      Id:1
-    };
+    var forEach = angular.forEach,loginedUser = null;
     // 是否转跳的登录
     var autoLoginPath = false;
 

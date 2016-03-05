@@ -166,7 +166,7 @@
       .state('app.szgc.tzg', {
         noBack:true,
         title    :'发送整改通知',
-        url      : '/zg/send/{pid}',
+        url      : '/zg/send/{pid}/{summary}/{user}',
         views    : {
           'content@app': {
             templateUrl: 'app/main/szgc/report/send.html',
@@ -187,37 +187,13 @@
       })
       .state('app.szgc.zgdetail', {
         title    :'整改详情',
-        url      : '/zgdetail/{pid}',
+        url      : '/zgdetail/{pid}/{summary}/{user}',
         views    : {
           'content@app': {
             templateUrl: 'app/main/szgc/report/zgdetail1.html',
             controller: 'SzgcZgController as vm'
           }
         }
-      })
-      .state('app.szgc.report.viewBath', {
-        title :'质量总表',
-        url: '/viewBath',
-        controller: 'viewBathController as vm',
-        templateUrl: 'app/main/szgc/report/viewBath-app.html'
-      })
-      .state('app.szgc.report.viewBath.view', {
-        title :'查看详细',
-        url: '/{bathid}',
-        controller: 'viewBathDetailController as vm',
-        templateUrl: 'app/main/szgc/report/viewBathDetail-app.html'
-      })
-      .state('app.szgc.report.batchCount', {
-        title :'项目填报情况统计表',
-        url:'/batchCount',
-        controller: 'batchCountController as vm',
-        templateUrl: 'app/main/szgc/report/batchCount-app.html'
-      })
-      .state('app.szgc.report.projectMasterList', {
-        title:'项目班组总览表',
-        url:'/projectMasterList',
-        controller: 'projectMasterListController1 as vm',
-        templateUrl: 'app/main/szgc/report/projectMasterList-app.html'
       })
       .state('app.szgc.settings',{
         noBack:true,
@@ -273,18 +249,12 @@
     });
 
     msNavigationServiceProvider.saveItem('szgc.report', {
-      title    : '划区',
+      title    : '绘制部位',
       icon     : 'icon-pen',
       state    : 'app.szgc.area',
       weight   : 1
     });
 
-    msNavigationServiceProvider.saveItem('szgc.ys', {
-      title    : '验收',
-      icon     : 'icon-apps',
-      state    : 'app.szgc.xc',
-      weight   : 1
-    })
 
     msNavigationServiceProvider.saveItem('setting', {
       title : '系统管理',

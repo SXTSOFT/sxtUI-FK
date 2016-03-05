@@ -10,7 +10,7 @@
     .directive('sxtAreaEdit',sxtAreaEdit);
 
   /** @ngInject */
-  function sxtAreaEdit($timeout,$http,$state,utils,msUtils,$mdDialog){
+  function sxtAreaEdit($timeout,$http,$state,utils,msUtils,$mdDialog,auth){
     return {
       scope:{
 
@@ -74,7 +74,7 @@
             click: function (layer, cb) {
               if (layer.editing && layer.editing._enabled) return;
               {
-                if (layer._icon) {
+                if (layer._icon && msUtils.isMobile()) {
                   $state.go('app.szgc.zgdetail',{pid:layer.options.pid});
                 }
                 else {
@@ -85,6 +85,9 @@
             onAdd: function (layer,cb) {
               if(layer.options.icon){
                 layer.options.pid = msUtils.guidGenerator();
+                layer.options.date = moment().format('YYYY-MM-DD HH:mm');
+                layer.options.user = auth.current().Username;
+
                 $mdDialog.show({
                   locals:{
                     options:layer.options
@@ -146,7 +149,7 @@
                   <md-button  class="md-raised" ng-click="cancel()" >取消</md-button>\
                 <span flex></span>\
                 <md-button  class="md-raised" ng-click="photo($event)" >\
-                    拍照\
+                    添加 \
                   </md-button>\
                 <md-button  class="md-raised" ng-click="answer()"  md-autofocus style="margin-right:20px;">发送整改通知</md-button>\
                   </md-dialog-actions>\
