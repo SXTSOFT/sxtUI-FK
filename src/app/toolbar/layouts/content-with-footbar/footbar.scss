@@ -69,6 +69,27 @@
   }
 
 }
+.ys{
+  .cls-1,.cls-2{
+    fill: #f4f6f8;
+    stroke: #989898;
+    stroke-linejoin: round;
+    stroke-width: 1px;
+  }
+  .active{
+    .cls-3{
+      stroke:#1f6db4;
+    }
+  }
+  .cls-3{
+    fill: #f4f6f8;
+    stroke: rgb(158,158,158);
+  }
+
+  .cls-2 {
+    fill-rule: evenodd;
+  }
+}
 #send{
   .iconred{
     .cls-1 {
