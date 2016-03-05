@@ -9,7 +9,7 @@
     .controller('SzgcyhydController', SzgcyhydController);
 
   /** @ngInject */
-  function SzgcyhydController(api,$stateParams,$rootScope)
+  function SzgcyhydController($scope,api,$stateParams,$rootScope,$cookies,$timeout)
   {
 
     var vm = this;
@@ -28,6 +28,12 @@
     $rootScope.title = vm.data.projectName;
 
     vm.sellLine = 0.6;
+    vm.setProject=function(){
+      $cookies.put('projects', JSON.stringify([{
+        project_id: vm.data.projectId,
+        name: vm.data.projectName
+      }]));
+    }
 
     vm.project = {
       onQueryed: function(data) {
@@ -37,6 +43,7 @@
         }
       }
     };
+
   }
 
 })();

@@ -20,10 +20,7 @@
     vm.setFloor = function (current) {
       $scope.$parent.vm.current = current;
     }
-    console.log('hm',$scope,vm)
-    vm.onHammer = function(){
-      console.log('b')
-    }
+
     vm.data = builds;
     //console.log('bulids',builds)
     vm.buildLen = builds.builds.length;

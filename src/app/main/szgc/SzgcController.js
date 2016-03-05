@@ -10,7 +10,7 @@
     .controller('SzgcController', SzgcController);
 
   /** @ngInject */
-  function SzgcController(auth,$scope)
+  function SzgcController(auth)
   {
 
     var vm = this;

@@ -19,15 +19,15 @@
   min-height:44px;
   max-height: 44px;
   z-index: 55 !important;
-  background-color:rgb(233,48,48);
+  background-color:#1f6db4;
   color:#fff;
   &.md-whiteframe-1dp{
     box-shadow:none;
   }
   .md-button{
-    position: absolute;
-    left:0;
-    top:4px;
+    //position: absolute;
+    //left:0;
+    //top:4px;
     &.md-vanke-theme:not([disabled]):hover{
       background:none;
     }
@@ -66,6 +66,86 @@
       border-top-color:#fff;
       border-bottom-color:#fff;
     }
+  }
+
+}
+#send{
+  .iconred{
+    .cls-1 {
+      fill: #fff;
+      stroke: red;
+    }
+    .cls-2 {
+      fill: red;
+      fill-rule: evenodd;
+    }
+  }
+  .iconblue{
+    .cls-1 {
+      fill: #1f6db4;
+      stroke: #1f6db4;
+      fill-rule: evenodd;
+    }
+    .cls-2 {
+      fill: #1f6db4;
+    }
+  }
+
+  .md-toolbar-tools{
+    font-size:14px;
+  }
+  .bg{
+    background: #fff;
+  }
+  .mb10{
+    margin-bottom:10px;
+  }
+  .note{
+    md-icon{
+      width: 20px !important;
+      height: 20px !important;
+      line-height: 20px !important;
+      margin-right:5px;
+    }
+  }
+  p{
+    margin:0;
+  }
+}
+#zgdetail{
+  .bg{
+    padding:0 20px;
+    background:#fff;
+    h3{
+      font-size:18px;
+      margin-top:10px;
+      line-height:36px;
+    }
+    .md-button{
+      border:1px solid #ccc;
+      padding:2px 6px;
+    }
+    p{
+      span{
+        margin-right:10px;
+      }
+    }
+  }
+}
+#detail1{
+  md-list-item{
+    p{
+      font-size:16px;
+      margin:0;
+    }
+    .md-list-item-text{
+      p{
+        font-size:16px !important;
+      }
+    }
+  }
+  .md-button{
+    font-size:16px;
   }
 
 }

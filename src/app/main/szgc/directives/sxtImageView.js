@@ -27,7 +27,6 @@
           preview.destroy();
         if (o)
           o.remove();
-
         $q(function(resolve) {
           if(!e)
             resolve(null);
@@ -44,7 +43,6 @@
           def = false;
           var defaultIndex = 0;
           var imagedata = null;
-
           if(results) {
             imagedata = [];
             results.forEach (function (result) {

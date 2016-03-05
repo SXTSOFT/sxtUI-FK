@@ -10,21 +10,23 @@
     .directive('sxtProjectsJd', sxtProjectsJdDirective);
 
   /** @ngInject */
-  function sxtProjectsJdDirective($timeout, api,  $q)
+  function sxtProjectsJdDirective($timeout, api,  $q,$cookies)
   {
-    var $cookies = {
-      c:{},
-      put:function(name,value){
-        this.c[name] = value;
-      },
-      remove:function(name){
-        delete this.c[name];
-      },
-      get:function(name){
-        return this.c[name];
-      }
-    };
+    //var $cookies = {
+    //  c:{},
+    //  put:function(name,value){
+    //    this.c[name] = value;
+    //  },
+    //  remove:function(name){
+    //    delete this.c[name];
+    //  },
+    //  get:function(name){
+    //    return this.c[name];
+    //  }
+    //};
+
     var cookieName = 'projects';
+    //console.log('getcookie',$cookies.get('projects'));
     return {
       transclude: true,
       scope: {
@@ -42,6 +44,7 @@
       },
       template: '<sxt-select-jd  ng-model="value" is-more="isMore" object-scope="objectScope" value-name="regionName" id-tree="idTree" name-tree="nameTree" on-query="onQueryInner" on-change="onChanged" ><div ng-transclude></div></sxt-select-jd>',
       link: function (scope, element, attr, ctrl) {
+
         scope.onChanged = function (p) {
           if (!p.selectors.length || !p.selectors[0].selected) {
             scope.regionType =
@@ -78,11 +81,10 @@
         try {
           cookie = cookie ? JSON.parse(cookie) : null;
         } catch (e) { }
-        //console.log('getcookie',cookie);
+        console.log('getcookie',cookie);
         scope.onQueryInner = function (index, st, value) {
           switch (index) {
             case 0:
-
               if (init && cookie && cookie[index]) {
                 return $q(function (r) { r(new st(index, 'project_id', 'name', [cookie[index]], '项目', cookie[index])) });
               }

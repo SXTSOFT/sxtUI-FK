@@ -19,6 +19,7 @@
 
     function markerClick($current){
       $state.go('app.szgc.project',{pid:$current.projectId, pname: $current.title});
+     // $scope.$parent.vm.params =1;
     }
   }
 })();

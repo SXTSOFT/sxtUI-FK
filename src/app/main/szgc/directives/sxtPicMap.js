@@ -20,7 +20,7 @@
     function link(scope,element,attr,ctrl){
 
       $timeout(function(){
-        console.log('picUrl',scope.picUrl)
+        //console.log('picUrl',scope.picUrl)
         //var crs = ;
 
         var map = L.map(element[0],{
@@ -40,7 +40,7 @@
           attributionControl:false
         }),
           //layer = L.tileLayer(sxt.app.api + '/api/file/load?x={x}&y={y}&z={z}', {
-          layer = L.tileLayer('http://vkde.sxtsoft.com/api/picMap/load/{z}_{x}_{y}.png?path='+scope.picUrl, {
+          layer = L.tileLayer(appConfig.apiUrl + '/api/picMap/load/{z}_{x}_{y}.png?path=' + fs.data.Files[0].Url.replace('/s_', '/'), {
             noWrap:true,
             continuousWorld:false,
             tileSize:512

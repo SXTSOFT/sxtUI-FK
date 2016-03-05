@@ -36,6 +36,10 @@
         var iFloorHeight = 0, iWinHeight = 0, itemp = 0, iWwidth = 0;
         var zoom = 0;
         var p = element.position(), h = $(window).height();
+        var summary = scope.floorData.summary;
+        if(summary== undefined || summary == ''){
+          summary = '';
+        }
 
         str.push('<div class="floor-layer1"><div class="item" flex>\
           <a>\
@@ -87,7 +91,7 @@
           str.push('<div style="height:18px;position:absolute;bottom:' + iBottom + 'px;"><span style="height:4px;width:30px;background:#f00;display:block;float:left;margin-top:6px;"></span><span style="display:block;margin-left:35px;border:1px solid #ddd;background:#fff;text-align:left;padding:3px;">' +v.y+'层'+ v.x + '<span><span style="clear:both;"></span></div>');
         })
 
-        str.push('<div style="height:55px;"></div></div></div><p>' + scope.floorData.name + '(' + scope.floorData.floors + '层)<br/>&nbsp;' + scope.floorData.summary +'</p></a></div></div>');
+        str.push('<div style="height:55px;"></div></div></div><p>' + scope.floorData.name + '(' + scope.floorData.floors + '层)<br/>&nbsp;' + summary +'</p></a></div></div>');
         var o = $(str.join('')).appendTo(element);
         var barchartHeight=$('#barchart').outerHeight();
         itemp = (scope.floorNum - 1) * 18 + 500;
@@ -121,10 +125,13 @@
         //    $('.floor-layer1').css('height', iFloorHeight + 'px');
         //  }
         //})
-
+        //$('.floor-layer').css({'height':iFloorHeight+'px','width':iflayerWidth+'px'});
         iFloorHeight = itemp * zoom ;
-        $('.whole', element).css('zoom', zoom);
-        $('.floor-layer1').css({'height': iFloorHeight + 'px','width': '80%'});
+        var iFh=(iFloorHeight-50)/itemp;
+        $('.whole',element).css({'zoom':iFh});
+
+       // $('.whole', element).css('zoom', zoom);
+        $('.floor-layer1').css({'height': iFloorHeight + 'px','width': '70%'});
 
         scope.$on('$destroy', function () {
           o.remove();

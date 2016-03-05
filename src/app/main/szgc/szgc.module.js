@@ -95,7 +95,7 @@
       })
       .state('app.szgc.project.buildinglist.building',{
         //title :'形象进度',
-        url   :'/building/{buildId}/{buildName}/{floors}',
+        url   :'/building/{buildId}/{buildName}/{floors}/{floorNum}',
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/buildingdetail.html',
@@ -141,14 +141,35 @@
           }
         }
       })
-      .state('app.szgc.report', {
+      .state('app.szgc.tzg', {
         noBack:true,
         title    :'报表',
         url      : '/report',
         views    : {
           'content@app': {
-            templateUrl: 'app/main/szgc/report/report.html',
-            controller: 'SzgcReportController as vm'
+            templateUrl: 'app/main/szgc/report/send.html',
+            controller: 'SzgcZgController as vm'
+          }
+        }
+      })
+
+      .state('app.szgc.zg', {
+        title    :'整改',
+        url      : '/zg',
+        views    : {
+          'content@app': {
+            templateUrl: 'app/main/szgc/report/zgdetail.html',
+            controller: 'SzgcZgController as vm'
+          }
+        }
+      })
+      .state('app.szgc.zgdetail', {
+        title    :'整改详情',
+        url      : '/zgdetail',
+        views    : {
+          'content@app': {
+            templateUrl: 'app/main/szgc/report/zgdetail1.html',
+            controller: 'SzgcZgController as vm'
           }
         }
       })
@@ -269,5 +290,12 @@
       state    : 'app.szgc.home2',
       weight   : 1
     })
+
+    //msNavigationServiceProvider.saveItem('szgc.send', {
+    //  title    : '查看整改',
+    //  icon     : 'icon-account-switch',
+    //  state    : 'app.szgc.report',
+    //  weight   : 1
+    //})
   }
 })();

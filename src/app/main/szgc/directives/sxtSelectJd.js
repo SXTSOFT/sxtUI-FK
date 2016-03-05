@@ -102,6 +102,7 @@
             scope.idTree = idTree.join('>');
             scope.nameTree = nameTree.join('>');
           }
+
           scope.onChange && scope.onChange(scope);
         }
         if(scope.objectScope){
@@ -138,16 +139,18 @@
           var next = scope.selectors[index + 1];
           if (noSync !== false)
             syncValue();
-
           var q = scope.onQuery(index + 1, newSt, item.$id);
           if (q) {
             q.then(function (result) {
               var next = result;
               scope.selectors[index + 1] = next;
-              if (result.selected)
+              if (result.selected){
                 scope.item_selected(result.selected, scope.selectors.length - 1, false);
-              else if (noSync === false)
+              }
+              else if (noSync === false){
                 syncValue();
+              }
+
             });
           }
         }
