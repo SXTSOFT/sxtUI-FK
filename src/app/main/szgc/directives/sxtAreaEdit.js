@@ -75,7 +75,7 @@
               if (layer.editing && layer.editing._enabled) return;
               {
                 if (layer._icon) {
-
+                  $state.go('app.szgc.zgdetail',{pid:layer.options.pid});
                 }
                 else {
                 }
