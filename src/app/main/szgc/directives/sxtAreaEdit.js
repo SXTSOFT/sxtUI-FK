@@ -110,7 +110,7 @@
 
                       });
                     }
-                    $scope.photo();
+                    //$scope.photo();
                     $scope.images = [];
                     $scope.options = options;
                       $scope.hide = function() {
@@ -121,8 +121,10 @@
                         $mdDialog.cancel();
                       };
 
-                      $scope.answer = function(answer) {
-                        $mdDialog.hide(answer);
+                      $scope.answer = function() {
+                        cb();
+                        $mdDialog.hide();
+                        $state.go('app.szgc.tzg',{pid:options.pid})
                       };
                     },
                     template: '<md-dialog aria-label="拍照"  ng-cloak><form><md-toolbar><div class="md-toolbar-tools"><h2>拍照</h2></div></md-toolbar>\

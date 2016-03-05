@@ -31,7 +31,7 @@
       .state('app.szgc.area',{
         noBack:true,
         title :'划区',
-        url   :'/edit',
+        url   :'/edit/{pid}/{pname}',
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/area.html',
@@ -42,7 +42,7 @@
       .state('app.szgc.xc',{
         noBack:true,
         title :'验收',
-        url   :'/xc',
+        url   :'/xc/{pid}/{pname}',
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/xc.html',
@@ -143,8 +143,8 @@
       })
       .state('app.szgc.tzg', {
         noBack:true,
-        title    :'报表',
-        url      : '/report',
+        title    :'发送整改通知',
+        url      : '/zg/send/{pid}',
         views    : {
           'content@app': {
             templateUrl: 'app/main/szgc/report/send.html',
@@ -165,7 +165,7 @@
       })
       .state('app.szgc.zgdetail', {
         title    :'整改详情',
-        url      : '/zgdetail',
+        url      : '/zgdetail/{pid}',
         views    : {
           'content@app': {
             templateUrl: 'app/main/szgc/report/zgdetail1.html',

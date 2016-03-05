@@ -7,23 +7,19 @@
         .controller('IndexController', IndexController);
 
     /** @ngInject */
-    function IndexController(fuseTheming,$state,$scope,$rootScope)
+    function IndexController(fuseTheming,$state,$scope,$rootScope,utils)
     {
         var vm = this;
 
         // Data
         vm.themes = fuseTheming.themes;
-      $rootScope.showgz = false;
-      $scope.$watch(function(){
-        return $state.is('app.szgc.zg');
-      },function(){
-        if($state.is('app.szgc.zg')){
-          $rootScope.showgz = true;
-        }else{
-          $rootScope.showgz = false;
-        }
-       // console.log('show',$rootScope.showgz)
-      });
-        //////////
+      $rootScope.showgz = function(){
+        return $state.is('app.szgc.tzg');
+      };
+      $rootScope.send = function($event){
+        utils.alert('发送成功',$event,function(){
+          history.back();
+        })
+      }
     }
 })();

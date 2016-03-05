@@ -93,7 +93,7 @@
       );
     }
 
-    function alertMessage(message,ev){
+    function alertMessage(message,ev,fn){
       return $mdDialog.show(
         $mdDialog.alert()
           .parent(angular.element(document.querySelector('body')))
@@ -103,7 +103,9 @@
           .ariaLabel('温馨提示')
           .ok('确定')
           .targetEvent(ev)
-      );
+      ).then(function(){
+        fn && fn();
+      })
     }
 
     function confirmMessage(message,ev,ok,cancel){

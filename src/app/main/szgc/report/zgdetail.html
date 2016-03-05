@@ -1,31 +1,17 @@
 <div id="zgdetail">
-<md-list  class="bg mb10">
+<md-list  class="bg mb10" ng-repeat="z in zg">
   <md-item>
   <div layout="row">
     <h3 flex>亚奥 金茂悦一期>14栋>1802</h3>
-      <md-button class="md-secondary  md-raised" ui-sref="app.szgc.zgdetail">查看详情</md-button>
+      <md-button class="md-secondary  md-raised" ui-sref="app.szgc.zgdetail({pid:z.pid})">查看详情</md-button>
   </div>
     <md-divider></md-divider>
     <div layout="row">
       <div style="padding-top:10px;">
-      <p style="display:block;"><span>提交时间：2015-3-5 14:00</span><span>提交人：XXX</span></p>
+      <p style="display:block;"><span>提交时间：2015-3-5 14:00</span><span>提交人：张三</span></p>
       <p style="font-size:16px;">整改原因：色板不一致</p>
       </div>
     </div>
   </md-item>
-  <!--<md-list-item>-->
-    <!--<div layout="row" >-->
-      <!--<h3>亚奥 金茂悦一期>14栋>1802</h3>-->
-      <!--<md-button class="md-secondary md-raised" flex ui-sref="app.szgc.zgdetail">查看详情</md-button>-->
-    <!--</div>-->
-    <!--</md-list-item>-->
-  <!--<md-divider></md-divider>-->
-      <!--<md-list-item>-->
-    <!--<div style="padding-top:10px;">-->
-      <!--<p style="display:block;"><span>提交时间：2015-3-5 14:00</span><span>提交人：XXX</span></p>-->
-      <!--<p style="font-size:16px;">整改原因：色板不一致</p>-->
-    <!--</div>-->
-
-  <!--</md-list-item>-->
 </md-list>
 </div>

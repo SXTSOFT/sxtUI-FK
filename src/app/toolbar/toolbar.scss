@@ -2,11 +2,14 @@
   height: 49px;
   min-height: 49px;
   max-height: 49px;
+  .md-button{
+    line-height: 24px;
+  }
 }
 #toolbar {
-  height: 49px;
-  min-height: 49px;
-  max-height: 49px;
+  height: 64px;
+  min-height: 64px;
+  max-height: 64px;
     z-index: 55 !important;
 
     #navigation-toggle {

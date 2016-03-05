@@ -7,7 +7,7 @@
     .controller('SzgcHomeController', SzgcHomeController);
 
   /** @ngInject */
-  function SzgcHomeController($scope,auth,$state,$rootScope)
+  function SzgcHomeController($scope,auth,$state,$rootScope,msUtils)
   {
 
     var vm = this;
@@ -18,7 +18,9 @@
     vm.markerClick = markerClick;
 
     function markerClick($current){
-      $state.go('app.szgc.project',{pid:$current.projectId, pname: $current.title});
+      msUtils.isMobile()?
+        $state.go('app.szgc.xc',{pid:$current.projectId, pname: $current.title}):
+        $state.go('app.szgc.area',{pid:$current.projectId, pname: $current.title});
      // $scope.$parent.vm.params =1;
     }
   }

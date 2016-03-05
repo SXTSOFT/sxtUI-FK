@@ -153,7 +153,7 @@
             }
             else
             {
-                fuseTheming.setActiveTheme(msUtils.isMobile()? 'vanke':'fuse-red');
+                fuseTheming.setActiveTheme('vanke');
             }
         }
 
