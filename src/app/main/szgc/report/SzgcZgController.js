@@ -32,7 +32,9 @@
                 zg.push(f.options)
               }
             })
-            console.log('d',d)
+            zg.sort(function(a,b){
+              return (b.date ||'').localeCompare(a.date||'');
+            });
             $scope.zg = zg;
           }
           catch (ex) {
