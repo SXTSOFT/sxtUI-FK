@@ -32,7 +32,7 @@
                   return 512 * Math.pow (2, e);
                 }
               }),
-              center: [.48531902026005, .5],
+              center: [.48531902026005, .3],
               zoom: 0,
               minZoom: 0,
               maxZoom: 3,
@@ -101,7 +101,7 @@
                           //var image = document.createElement ('img');
                           //image.src = "data:image/jpeg;base64," + imageData;
                           //element.append (image);
-                          $http.post('http://vkde.sxtsoft.com/api/Files/'+options.pid+'/base64',{Url:imageData}).then(function(result){
+                          $http.post('http://vkde.sxtsoft.com/api/Files/'+layer.options.pid+'/base64',{Url:imageData}).then(function(result){
                             $scope.images.push(result.data.Files[0]);
                             //utils.alert('上传成功');
                           })

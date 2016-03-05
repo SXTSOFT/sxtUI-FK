@@ -50,6 +50,17 @@
           }
         }
       })
+      .state('app.szgc.view',{
+        noBack:true,
+        title :'验收',
+        url   :'/zg/view/{pid}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/szgc/home/view.html',
+            controller:'SzgcXCController as vm'
+          }
+        }
+      })
       .state('app.szgc.project',{
         //title :'形象进度',
         url   :'/home/jd/{pid}/{pname}',

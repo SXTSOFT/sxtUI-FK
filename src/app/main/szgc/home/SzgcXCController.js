@@ -10,8 +10,8 @@
     .controller('SzgcXCController', SzgcXCController);
 
   /** @ngInject */
-  function SzgcXCController()
+  function SzgcXCController($scope,$stateParams)
   {
-
+    $scope.pid = $stateParams.pid;
   }
 })();
