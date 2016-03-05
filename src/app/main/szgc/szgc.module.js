@@ -19,7 +19,7 @@
       })
       .state('app.szgc.home',{
         noBack:true,
-        title :'万科数字工程',
+        title :'金茂工程质量管理',
         url   :'/',
         views :{
           'content@app':{
@@ -155,7 +155,7 @@
       .state('app.szgc.choose', {
         noBack:true,
         title    :'选择',
-        url      : '/report',
+        url      : '/choose',
         views    : {
           'content@app': {
             templateUrl: 'app/main/szgc/report/choose.html',

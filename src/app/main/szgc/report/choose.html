@@ -3,7 +3,7 @@
     <div>
       <md-input-container class="md-block">
         <label>项目</label>
-        <md-select ng-model="project">
+        <md-select ng-model="vm.project1">
           <md-option ng-repeat="project in vm.project" value="{{project}}">{{project}}</md-option>
         </md-select>
       </md-input-container>
@@ -11,7 +11,7 @@
     <div>
       <md-input-container class="md-block">
         <label>分期</label>
-        <md-select ng-model="fenqi">
+        <md-select ng-model="vm.fenqi1">
           <md-option ng-repeat="fenqi in vm.fenqi" value="{{fenqi}}">{{fenqi}}</md-option>
         </md-select>
       </md-input-container>
@@ -19,7 +19,7 @@
     <div>
         <md-input-container class="md-block">
           <label>楼栋</label>
-          <md-select ng-model="building">
+          <md-select ng-model="vm.buildings1">
             <md-option ng-repeat="building in vm.buildings" value="{{building}}">{{building}}</md-option>
           </md-select>
         </md-input-container>
@@ -27,7 +27,7 @@
     <div>
       <md-input-container class="md-block">
         <label>楼层</label>
-        <md-select ng-model="floor">
+        <md-select ng-model="vm.floors1">
           <md-option ng-repeat="floor in vm.floors" value="{{floor}}">{{floor}}</md-option>
         </md-select>
       </md-input-container>
@@ -35,7 +35,7 @@
       <div>
         <md-input-container class="md-block">
           <label>户</label>
-          <md-select ng-model="room">
+          <md-select ng-model="vm.rooms1">
             <md-option ng-repeat="room in vm.rooms" value="{{room}}">{{room}}</md-option>
           </md-select>
         </md-input-container>
@@ -43,6 +43,6 @@
 
   </md-content>
   <div layout="row">
-    <md-button type="submit" flex ng-click="change()"  class="md-raised md-primary"> 确定  </md-button>
+    <md-button type="submit" flex ng-click="vm.change()"  class="md-raised md-primary"> 确定  </md-button>
   </div>
 </div>

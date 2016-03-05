@@ -57,6 +57,7 @@
                   var d = JSON.parse(project.AreaRemark),zg=[];
                   d.features.forEach(function(f,i){
                     if(f.geometry.type!='Point' || f.options.pid==scope.pid){
+                      if(f.geometry.type != '')f.options.fill=false;
                       zg.push(f)
                     }
                   });
