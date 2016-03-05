@@ -42,8 +42,8 @@
             }
           );
           L.tileLayer (
-            'http://vkde.sxtsoft.com/api/picMap/load/{z}_{x}_{y}.png?path=/upload/hx.jpg',
-            //'http://vkde.sxtsoft.com/upload/hx_tile_{z}_{x}_{y}.png',
+            //'http://vkde.sxtsoft.com/api/picMap/load/{z}_{x}_{y}.png?path=/upload/hx.jpg',
+            'http://vkde.sxtsoft.com/upload/hx_tile_{z}_{x}_{y}.png',
             {
               attribution: false
             }).addTo (map);
