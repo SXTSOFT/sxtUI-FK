@@ -39,7 +39,7 @@
           <p>照片：</p>
         </div>
         <div flex class="md-list-item-text">
-          <p><img src="" ></p>
+          <p><img width="100" ng-repeat="img in images" ng-src="{{img.Url|fileurl}}" ></p>
         </div>
 
       </md-list-item>
@@ -71,10 +71,10 @@
     </md-list>
   </md-content>
   <div style="background:#1f6db4;color:#fff;margin-top:10px;width:100%;text-align: center">
-    <md-button flex>查看标注</md-button>
+    <md-button ui-sref="app.szgc.view({pid:pid})" flex>查看标注</md-button>
   </div>
-  <div style="background:#fff;color:#f00;margin-top:10px;width:100%;text-align: center">
-    <md-button flex>关闭</md-button>
-  </div>
+  <!--<div style="background:#fff;color:#f00;margin-top:10px;width:100%;text-align: center">-->
+    <!--<md-button flex>关闭</md-button>-->
+  <!--</div>-->
 
 </div>

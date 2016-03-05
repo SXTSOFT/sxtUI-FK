@@ -11,7 +11,10 @@
   /** @ngInject */
   function  SzgcZgController($stateParams,utils,$http,$scope){
     if($stateParams.pid){
-
+      $scope.pid = $stateParams.pid;
+      $http.get('http://vkde.sxtsoft.com/api/Files?group='+$stateParams.pid).then(function(result){
+        $scope.images = result.data.Files;
+      })
     }
     else{
       $http.get ('http://vkde.sxtsoft.com/api/ProjectEx/'+utils.id).then (function (result) {
@@ -35,4 +38,4 @@
       });
     }
   }
-})()
+})();
