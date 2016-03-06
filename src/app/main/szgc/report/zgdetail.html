@@ -1,16 +1,14 @@
-<div  ng-repeat="z in zg">
-<md-list  class="bg mb10">
-  <md-list-item ui-sref="app.szgc.zgdetail({pid:z.pid,summary:z.summary,user:z.user})">
-    <div flex layout="column">
-      <h3 style="color:black">亚奥 金茂悦一期>14栋>1802</h3>
-        <div style="color:black">
-           <div><span>提交时间：{{z.date}}</span> <span>提交人：{{z.user}}</span></div>
-           <div>整改原因：{{z.summary}}</div>
-       </div>
-    </div>
-    <md-icon flex="none" md-font-icon="icon-chevron-right"   class="icon"></md-icon>
 
+<md-list  class="bg mb10">
+  <div  ng-repeat="z in zg">
+  <md-list-item ui-sref="app.szgc.zgdetail({pid:z.pid,summary:z.summary,user:z.user})">
+    <div class="md-list-item-text">
+      <h3>亚奥 金茂悦一期>14栋>1802</h3>
+      <h4>提交时间：{{z.date}} &nbsp; 提交人：{{z.user}}</h4>
+      <p>整改原因：{{z.summary}}</p>
+    </div>
   </md-list-item>
+    <md-divider></md-divider>
+  </div>
 </md-list>
-<md-divider></md-divider>
-</div>
+

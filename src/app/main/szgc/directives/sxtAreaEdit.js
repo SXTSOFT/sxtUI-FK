@@ -96,6 +96,7 @@
                         html: data.text,
                         color: layer.options.color
                       }),
+                      saved:false,
                       draggable: true,       // Allow label dragging...?
                       zIndexOffset: 1000     // Make appear above other map features
                     }).on('dragend',function(e){
