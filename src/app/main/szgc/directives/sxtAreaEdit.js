@@ -50,7 +50,7 @@
           var drawnItems = new L.FeatureGroup ();
           map.addLayer (drawnItems);
 
-          var apiLayer = L.GeoJSON.api ({
+          var cmenu,apiLayer = L.GeoJSON.api ({
             get: function (cb) {
               if (project.AreaRemark) {
                 try {
@@ -81,6 +81,105 @@
                 }
               }
 
+            },
+            contextMenu:function(e,cb){
+              var layer = e.layer;
+              if(layer instanceof L.Polygon || layer instanceof L.Rectangle) {
+                if(cmenu!=null){
+                  cmenu.hide();
+                  cmenu = null;
+                }
+                var fn = function(data){
+                  var p = layer.getBounds().getCenter();
+                  var marker = layer.mk || (layer.mk = L.marker(p, {
+                      icon: new ST.L.LabelIcon({
+                        html: data.text,
+                        color: layer.options.color
+                      }),
+                      draggable: true,       // Allow label dragging...?
+                      zIndexOffset: 1000     // Make appear above other map features
+                    }).on('dragend',function(e){
+                      var p = this.getLatLng();
+                      layer.options.areaLabel.lat = p.lat;
+                      layer.options.areaLabel.lng = p.lng;
+                      cb();
+                    }).addTo(layer._map));
+                  marker.options.icon.setText(data.text);
+                  layer.options.areaLabel = data;
+                  layer.options.areaLabel.lat = p.lat;
+                  layer.options.areaLabel.lng = p.lng;
+                  cb();
+                }
+                cmenu = new ST.L.ContextMenu (e, {
+                  contextmenuWidth: 150,
+                  actions: [
+                    {
+                      text: '客厅',
+                      callback: function () {
+                        fn({
+                          text: '客厅',
+                          id:1
+                        })
+                      }
+                    },
+                    {
+                      text: '主卧室',
+                      callback: function () {
+                        fn({
+                          text: '主卧室',
+                          id:2
+                        })
+                      }
+                    },
+                    {
+                      text: '次卧室',
+                      callback: function () {
+                        fn({
+                          text: '次卧室',
+                          id:3
+                        })
+                      }
+                    },
+                    {
+                      text: '厨房',
+                      callback: function () {
+                        fn({
+                          text: '厨房',
+                          id:4
+                        })
+                      }
+                    },
+                    {
+                      text: '主卫',
+                      callback: function () {
+                        fn({
+                          text: '主卫',
+                          id:5
+                        })
+                      }
+                    },
+                    {
+                      text: '卫生间',
+                      callback: function () {
+                        fn({
+                          text: '卫生间',
+                          id:6
+                        })
+                      }
+                    },
+                    {
+                      text: '餐厅',
+                      callback: function () {
+                        fn({
+                          text: '餐厅',
+                          id:7
+                        })
+                      }
+                    }
+                  ]
+                });
+                cmenu.show ();
+              }
             },
             onAdd: function (layer,cb) {
               if(layer.options.icon){
