@@ -9,7 +9,7 @@
     .controller('SzgcyhydController', SzgcyhydController);
 
   /** @ngInject */
-  function SzgcyhydController(api,$stateParams,$rootScope,$sec)
+  function SzgcyhydController(api,$stateParams,$rootScope)
   {
 
     var vm = this;
