@@ -10,7 +10,7 @@
     .directive('sxtSelectJd', sxtSelectJdDirective);
 
   /** @ngInject */
-  function sxtSelectJdDirective()
+  function sxtSelectJdDirective($rootScope)
   {
     var joinArr = function (arr) {
       var n = [];
@@ -103,6 +103,7 @@
             scope.nameTree = nameTree.join('>');
           }
           scope.onChange && scope.onChange(scope);
+
         }
         if(scope.objectScope){
           scope.objectScope.backJdSelect = function(){
@@ -129,6 +130,9 @@
             q.then(function (result) {
               var next = result;
               scope.selectors[index] = next;
+              if(!$rootScope.$$phase){
+                scope.$apply();
+              }
             });
           }
         };
@@ -144,10 +148,15 @@
             q.then(function (result) {
               var next = result;
               scope.selectors[index + 1] = next;
+
               if (result.selected)
                 scope.item_selected(result.selected, scope.selectors.length - 1, false);
               else if (noSync === false)
                 syncValue();
+
+              if(!$rootScope.$$phase){
+                scope.$apply();
+              }
             });
           }
         }
@@ -155,6 +164,9 @@
           scope.selectors.push(result);
           if (result.selected)
             scope.item_selected(result.selected, scope.selectors.length - 1, false);
+          if(!$rootScope.$$phase){
+            scope.$apply();
+          }
         });
       }
     }

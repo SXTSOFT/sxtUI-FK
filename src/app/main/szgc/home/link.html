@@ -1,10 +1,11 @@
 <md-content flex layout="column" ng-show="!vm.searBarHide" class="menu-toggle-list">
     <sxt-projects-jd ng-model="vm.project.pid" object-scope="vm" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" >
       <div class="md-padding" layout="row">
-        <md-button type="submit" flex ng-click="vm.searBarHide=true"  class="md-raised md-primary"> 确定  </md-button>
+        <md-button type="submit" ng-disabled="vm.project.type!=64" flex ng-click="vm.yhyd()"  class="md-raised md-primary"> 确定  </md-button>
       </div></sxt-projects-jd>
-      <toggle-menu inst="vm.searBarHide" ng-show="vm.is('app.szgc.report.viewBath')"></toggle-menu>
   </md-content>
 <md-content flex layout="column" ng-show="vm.searBarHide">
   <iframe flex ng-src="http://vkde.sxtsoft.com/yhyd/"></iframe>
+  <div style="position: absolute; top:0px; right:0px;">
+    <toggle-menu inst="vm.searBarHide"></toggle-menu></div>
 </md-content>

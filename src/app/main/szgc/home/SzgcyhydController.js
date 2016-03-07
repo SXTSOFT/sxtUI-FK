@@ -9,7 +9,7 @@
     .controller('SzgcyhydController', SzgcyhydController);
 
   /** @ngInject */
-  function SzgcyhydController(api,$stateParams,$rootScope)
+  function SzgcyhydController(api,$stateParams,$rootScope,$sec)
   {
 
     var vm = this;
@@ -37,6 +37,10 @@
         }
       }
     };
+    vm.yhyd = function(){
+      vm.searBarHide = true;
+      vm.link = 'http://vkde.sxtsoft.com/yhyd/'
+    }
   }
 
 })();

@@ -139,32 +139,46 @@
           return get(http.url('/common/v1/partners/' + arg + '/teams'));
         }),
         buildingsInfo:http.custom(function(type, typeId){
-          var s = this;
-          return $q(function (resolve,reject) {
-            if (type == 2) {
-              s.buildings({
-                page_number: 1,
-                page_size: 10000,
-                project_item_id: typeId
-              }).then(function (b1) {
-                var bd = [],bs=[];
-                b1.data.data.forEach(function (b) {
-                  bs.push(s.floors(b.building_id));
-                  bd.push(b);
-                });
-                $q.all(bs).then(function (b1) {
-                  var i = 0;
-                  b1.forEach(function (r) {
-                    bd[i++].floors = r.data.data.length;
-                  });
-                  resolve(bd);
-                })
-              })
-            }
-            else{
-              alert('接口未实现');reject('接口未实现');
-            }
-          });
+          if(type == 2) {
+            return get (http.url ('/common/v1/buildings', {
+              project_item_id: typeId,
+              page_size: 0,
+              page_number: 1
+            }));
+          }
+          else{
+            return get (http.url ('/common/v1/buildings', {
+              project_id: typeId,
+              page_size: 0,
+              page_number: 1
+            }));
+          }
+          //var s = this;
+          //return $q(function (resolve,reject) {
+          //  if (type == 2) {
+          //    s.buildings({
+          //      page_number: 1,
+          //      page_size: 10000,
+          //      project_item_id: typeId
+          //    }).then(function (b1) {
+          //      var bd = [],bs=[];
+          //      b1.data.data.forEach(function (b) {
+          //        bs.push(s.floors(b.building_id));
+          //        bd.push(b);
+          //      });
+          //      $q.all(bs).then(function (b1) {
+          //        var i = 0;
+          //        b1.forEach(function (r) {
+          //          bd[i++].floors = r.data.data.length;
+          //        });
+          //        resolve(bd);
+          //      })
+          //    })
+          //  }
+          //  else{
+          //    alert('接口未实现');reject('接口未实现');
+          //  }
+          //});
         })
       }
     });
