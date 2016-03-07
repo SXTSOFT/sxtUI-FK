@@ -28,7 +28,7 @@
             var d = JSON.parse(project.AreaRemark);
             var zg = [];
             d.features.forEach(function(f){
-              if(f.geometry.type=='Point'){
+              if(f.geometry.type=='Point' && f.options.date){
                 zg.push(f.options)
               }
             })
