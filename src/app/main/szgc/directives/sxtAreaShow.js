@@ -75,7 +75,7 @@
                           if (d.features.length) {
                             var g = [];
                             d.features.forEach(function (f) {
-                              if (f.options.gid)
+                              if (f.options.gid && g.find(function(a){return a ==f.options.gid;})==null)
                                 g.push(f.options.gid);
                             });
                             if (g.length) {

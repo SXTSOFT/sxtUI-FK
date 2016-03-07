@@ -107,7 +107,7 @@
 
         });
         scope.$on('$destroy', function () {
-          o.remove();
+          $('.piclayer').remove();
           preview.destroy();
         });
       };
