@@ -353,15 +353,16 @@
     }
     md-grid-tile-footer {
       background: rgba(255,255,255,1);
-      height: 36px;
+      height: 80px;
       figcaption {
         width: 100%;
         h3 {
+          line-height: 80px;
           margin: 0;
           font-weight: 700;
           width: 100%;
           text-align: center;
-          color:#000000;
+          color:rgb(215,62,50);
         }
       }
     }
