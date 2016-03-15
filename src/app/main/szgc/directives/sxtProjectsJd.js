@@ -10,20 +10,9 @@
     .directive('sxtProjectsJd', sxtProjectsJdDirective);
 
   /** @ngInject */
-  function sxtProjectsJdDirective($timeout, api,  $q)
+  function sxtProjectsJdDirective($timeout, api,  $q,appCookie)
   {
-    var $cookies = {
-      c:{},
-      put:function(name,value){
-        this.c[name] = value;
-      },
-      remove:function(name){
-        delete this.c[name];
-      },
-      get:function(name){
-        return this.c[name];
-      }
-    };
+    var $cookies = appCookie;
     var cookieName = 'projects';
     return {
       transclude: true,

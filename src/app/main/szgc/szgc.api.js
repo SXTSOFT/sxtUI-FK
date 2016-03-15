@@ -104,6 +104,14 @@
         },
         update: function (file) {
           return $http.put('/api/Files/' + file.Id, file);
+        },
+        GetPrjFilesByFilter: function (regionId, procedureID, partionId) {
+          return $http.get($http.url('/api/Files/' + regionId+'/GetPrjFilesByFilter', { procedureID: procedureID, partionId: partionId }));
+        },
+        GetPartionId: function () {
+          return $q.$q(function (resolve) {
+            resolve({ data: { Rows: [{ Id: 1, desc: '卫生间' }, { Id: 2, desc: '厨房' }, { Id: 4, desc: '主卧' }, { Id: 8, desc: '次卧' }, { Id: 16, desc: '儿童房' }, { Id: 32, desc: '卫生间1' }, { Id: 64, desc: '卫生间2' }] }});
+          });
         }
       },
       ReportService:{

@@ -17,7 +17,7 @@
       link: function (scope, element, attrs, ctrl) {
         var p = element.position(), h = $(window).height();
         element.height(h - p.top - 150);
-        var map,layer;
+        var map,layer,dlg;
         var ran = function () {
           $timeout(function(){
 
@@ -27,10 +27,14 @@
             if (map && map.projectId == scope.projectId) return;
             if (map) map.remove();
             var showImgs = function(){
-              if(scope.groups){
+              if(scope.groups && scope.groups.length){
                 $rootScope.$emit('sxtImageView', {
                   groups: scope.groups
                 });
+              }
+              else{
+                if(!dlg)
+                dlg = utils.alert('暂未上传照片').then(function(){dlg=null;})
               }
             }
             $rootScope.$on('sxtImageViewAll',showImgs)
@@ -75,8 +79,12 @@
                           if (d.features.length) {
                             var g = [];
                             d.features.forEach(function (f) {
-                              if (f.options.gid && g.find(function(a){return a ==f.options.gid;})==null)
-                                g.push(f.options.gid);
+                              if (f.options.gid && g.find(function(a){return a ==f.options.gid;})==null) {
+                                g.push (f.options.gid);
+                              }
+                              if(f.options.icon && f.options.icon.options && f.options.icon.options.iconUrl){
+                                f.options.icon.options.iconUrl = f.options.icon.options.iconUrl.replace('/dp/libs/','assets/')
+                              }
                             });
                             if (g.length) {
                               scope.groups = g;

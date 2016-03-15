@@ -9,7 +9,7 @@
     .directive('sxtMaps',sxtMapsDirective);
 
   /** @ngInject */
-  function sxtMapsDirective($timeout,api){
+  function sxtMapsDirective($timeout,api,markerCulster){
     return {
       scope:{
         markers:'=',
@@ -28,7 +28,7 @@
             zoom: 10,
             attributionControl: false
           }),
-          layer = L.tileLayer('http://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+          layer = L.tileLayer('http://mt2.google.cn/vt/lyrs=r&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}', {
             subdomains: "1234"
           });
 
@@ -44,30 +44,36 @@
                 projectId: row.ProjectId,
                 title: row.ProjectNo,
                 lat: row.Latitude,
-                lng: row.Longitude
+                lng: row.Longitude,
+                center: function () {
+                  map.setView(new L.latLng([row.Latitude, row.Longitude]))
+                }
               })
             }
           });
-
+          var parentGroup = markerCulster.markerClusterGroup();
           angular.forEach(scope.markers, function (o, k) {
-            mks.push(L
+            var mk = L
               .marker([o.lat, o.lng], L.extend({
                 icon: L.icon({
-                  iconUrl: 'libs/leaflet/images/M.png',
+                  iconUrl: 'assets/leaflet/images/M.png',
                   iconSize: [24, 24],
                   iconAnchor: [12, 12]
                 })
               }, o))
-              .on('click', markerClick)
-              .addTo(map));
-          })
+              .on('click', markerClick);
+            mks.push(mk);
+            parentGroup.addLayer(mk);
+          });
+          parentGroup.addTo(map);
+
         });
         map.on('zoomend', function (e) {
           var zoom = map.getZoom();
           if (zoom < 10) {
             mks.forEach(function (marker) {
               marker.setIcon(L.icon({
-                iconUrl: 'libs/leaflet/images/S1.png',
+                iconUrl: 'assets/leaflet/images/S1.png',
                 iconSize: [18, 18],
                 iconAnchor: [9, 9]
               }));
@@ -76,7 +82,7 @@
           else if (zoom < 11) {
             mks.forEach(function (marker) {
               marker.setIcon(L.icon({
-                iconUrl: 'libs/leaflet/images/S.png',
+                iconUrl: 'assets/leaflet/images/S.png',
                 iconSize: [24, 24],
                 iconAnchor: [12, 12]
               }));
@@ -85,7 +91,7 @@
           else if(zoom>=11 && zoom <=12) {
             mks.forEach(function (marker) {
               marker.setIcon(L.icon({
-                iconUrl: 'libs/leaflet/images/M.png',
+                iconUrl: 'assets/leaflet/images/M.png',
                 iconSize: [39, 39],
                 iconAnchor: [20, 20]
               }));
@@ -94,7 +100,7 @@
           else {
             mks.forEach(function (marker) {
               marker.setIcon(L.icon({
-                iconUrl: 'libs/leaflet/images/L.png',
+                iconUrl: 'assets/leaflet/images/L.png',
                 iconSize: [70, 70],
                 iconAnchor: [35, 35]
               }));

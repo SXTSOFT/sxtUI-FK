@@ -9,7 +9,7 @@
     .directive('sxtImageView',sxtImageViewDirective);
 
   /** @ngInject */
-  function sxtImageViewDirective($rootScope, api, $q) {
+  function sxtImageViewDirective($rootScope, api, $q,utils) {
     return {
       restrict: 'EA',
       link: link,
@@ -61,6 +61,10 @@
             defaultIndex = $('img', element).index($(a.target))
             if (defaultIndex == -1)
               defaultIndex = 0;
+          }
+          if(imagedata.length==0){
+            utils.alert('暂无图片')
+            return;
           }
           //console.log('img',img)
           var str = [];
