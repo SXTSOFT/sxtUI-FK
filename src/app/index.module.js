@@ -28,6 +28,7 @@
 
             'app.szgc',
           'panzoom',
-          'hmTouchEvents'
+          'hmTouchEvents',
+          'ui.tree'
         ]);
 })();

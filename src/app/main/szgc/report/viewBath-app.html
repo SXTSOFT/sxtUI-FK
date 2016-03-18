@@ -22,7 +22,7 @@
   </div>
   </div>
     </md-content>
-    <md-content flex class="md-padding"  ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')" layout="column" flex>
+    <md-content class="md-padding"  ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')" layout="column" flex>
       <md-virtual-repeat-container id="vertical-container" flex>
         <md-card md-virtual-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey} " flex>
 
