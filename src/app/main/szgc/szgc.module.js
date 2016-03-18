@@ -87,11 +87,11 @@
                       datapoints: []
                     }, gx = [
                       //{ x: '主体', id: '953cea5b-b6fb-4eb7-b019-da391f090efd' },
-                      { x: '墙体', id: 'f95cd41c-f47d-4fdc-a0ff-c138450ea279' },
-                      { x: '瓷砖', id: '702d964d-cd97-4217-8038-ce9b62d7584b' },
-                      { x: '门窗', id: '51bb20e2-92a2-4c9f-85a9-c4545e710cf0' },
-                      { x: '油漆', id: '00000000-0000-0000-0000-000000000000' },
-                      { x: '橱柜', id: '1c419fcc-24a9-4e38-9132-ce8076051e6a' }
+                      { x: '墙体', id: 'f95cd41c-f47d-4fdc-a0ff-c138450ea279',color:'rgba(193,35,43,1)' },
+                      { x: '瓷砖', id: '702d964d-cd97-4217-8038-ce9b62d7584b',color:'rgba(181,195,52,1)' },
+                      { x: '门窗', id: '51bb20e2-92a2-4c9f-85a9-c4545e710cf0',color:'rgba(252,206,16,1)' },
+                      { x: '油漆', id: '00000000-0000-0000-0000-000000000000', color:'rgba(193,35,43,1)'},
+                      { x: '橱柜', id: '1c419fcc-24a9-4e38-9132-ce8076051e6a',color:'rgba(181,195,52,1)' }
                     ]
 
                     result.data.Rows.forEach(function (r) {
@@ -100,7 +100,18 @@
                         g.y = r.gx1;
                       }
                     });
-                    pageload.datapoints = gx;
+
+                    //pageload.datapoints = gx;
+                    var tempdata = [];
+                      tempdata = gx;
+                  console.log(gx)
+                    tempdata.forEach(function(item){
+                      if(!item.y){
+                       // pageload.datapoints.push(item);
+                        item.color = null;
+                      }
+                      pageload.datapoints.push(item);
+                    })
                     var char = angular.copy(pageload);
                     //char.datapoints.splice(0, 1);
                     return [char];
