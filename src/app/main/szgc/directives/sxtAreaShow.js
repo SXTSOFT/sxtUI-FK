@@ -18,29 +18,47 @@
         var p = element.position(), h = $(window).height();
         element.height(h - p.top - 150);
         var map,layer,dlg;
+
         var ran = function () {
           $timeout(function(){
-
-
             if (!scope.projectId) return;
             //var crs = ;
+            var temp=[];
             if (map && map.projectId == scope.projectId) return;
             if (map) map.remove();
-            var showImgs = function(){
-              if(scope.groups && scope.groups.length){
-                $rootScope.$emit('sxtImageView', {
-                  groups: scope.groups
-                });
+            var showImgs = function(d,data){
+             // console.log('load',data)
+              if(!data.data) return;
+              if(data.data){
+                data.data = false;
+                var load = false;
               }
-              else{
-                if(!dlg)
-                dlg = utils.alert('暂未上传照片').then(function(){dlg=null;})
+              if(load) return;
+              if(!load){
+                load = true;
+                newFn(load);
               }
             }
-            $rootScope.$on('sxtImageViewAll',showImgs)
+            var newFn = function(load){
+                if(load){
+                 // console.log('temp',$rootScope.temp)
+                  if($rootScope.temp){
+                    $rootScope.$emit('sxtImageView', {
+                      groups: $rootScope.temp
+                    });
+                  }
+                  else{
+                    if(!dlg){
+                      dlg = utils.alert('暂未上传照片').then(function(){dlg=null;})
+                    }
+                  }
+                }
+            }
+
+            $rootScope.$on('sxtImageViewAll',showImgs);
+
             api.szgc.ProjectExService.get(scope.projectId).then(function (result) {
               var project = result.data;
-
               if (project.AreaImage) {
                 api.szgc.FilesService.group(project.AreaImage).then(function (fs) {
                   if (fs.data.Files.length == 0) return;
@@ -89,6 +107,10 @@
                             if (g.length) {
                               scope.groups = g;
                             }
+                            scope.$watch('scope.groups',function(){
+                              //console.log('change',scope.groups)
+                              $rootScope.temp = scope.groups;
+                            })
                           }
                         }
                         catch (ex) {

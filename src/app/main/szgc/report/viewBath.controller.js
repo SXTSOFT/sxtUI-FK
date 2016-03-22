@@ -116,6 +116,7 @@
     });
     //获取资料表数据
     var t1,queryTable = function() {
+      vm.norecords = false;
       if(t1)
         $timeout.cancel(t1);
       t1 = $timeout(function(){
@@ -143,7 +144,13 @@
             })
           }
           vm.baths = result.data;
+
           console.log(" vm.baths ", result.data);
+          if(vm.baths.Rows.length){
+            vm.norecords = false;
+          }else {
+            vm.norecords = true;
+          }
           //截取班组组长名称
           var fishIndex = 0;
           var lastIndex = 0;

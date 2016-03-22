@@ -18,7 +18,7 @@
       history.back();
     }
     vm.showImg = function () {
-      $rootScope.$emit('sxtImageViewAll');
+      $rootScope.$emit('sxtImageViewAll',{data:true});
     }
     vm.data = {
       projectId: $stateParams.pid,
@@ -42,7 +42,7 @@
     })
     var play = function(){
       api.szgc.FilesService.GetPrjFilesByFilter(vm.project.pid, vm.project.procedureId, vm.project.partion ? vm.project.partion.Id : null).then(function (r) {
-
+        console.log('r.data.Rows.length',r.data.Rows.length)
         if (r.data.Rows.length == 0) {
           utils.alert('暂无照片');
         }

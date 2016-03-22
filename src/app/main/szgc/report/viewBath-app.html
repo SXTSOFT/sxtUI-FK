@@ -79,7 +79,9 @@
                     </md-button>
             </md-card-actions>
         </md-card>
+        <h2 ng-if="vm.norecords">无此记录</h2>
         </md-virtual-repeat-container>
+
     </md-content>
   <div style="position: absolute; top:0px; right:0px;">
     <md-button class="md-fab md-mini" ng-show="!vm.searBarHide && vm.isJdBack()" ng-click="vm.backJdSelect()">
