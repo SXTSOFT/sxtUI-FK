@@ -20,19 +20,18 @@
       summary: $stateParams.summary || $scope.$parent.vm.current.summary,
       gx1: $scope.$parent.vm.current.gx1,
       gx2: $scope.$parent.vm.current.gx2
-    }
+    };
     vm.sellLine = 0.6;
     vm.data= {
       config: {
         showXAxis: true,
         showYAxis: true,
-        showLegend: true,
+        showLegend: false,
         debug: true,
-        stack: true,
+        stack: false,
         yAxis: {
           type: 'value',
           min: 0,
-          name:'楼层',
           interval: 10,
           max: vm.build.floors,
           axisLabel: {

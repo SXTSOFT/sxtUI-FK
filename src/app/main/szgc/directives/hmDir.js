@@ -21,6 +21,7 @@
       scope.pinch = function(e){
         var scale = getRelativeScale(e.gesture.scale);
         $.Velocity.hook($('#floorlayer'), 'scale', scale);
+        e.preventDefault();
        //$('#floorlayer').css('zoom',scale);
         //console.log('pinch',e)
       }
@@ -29,17 +30,22 @@
         var scale = getRelativeScale(e.gesture.scale);
        // $('#floorlayer').css('zoom',scale);
         $.Velocity.hook($('#floorlayer'), 'scale', scale);
-
+        e.preventDefault();
         //console.log('pinchmove')
         //var scale = $(element).css();
       }
       scope.pinchend = function(e){
         currentScale = getRelativeScale(e.gesture.scale);
+        e.preventDefault();
         //console.log('pinchend')
       }
 
       function getRelativeScale(scale) {
-        return scale * currentScale;
+        var newscale = scale * currentScale;
+        if(newscale <=1){
+          newscale =1;
+        }
+        return newscale;//scale * currentScale;
       }
       var deltax= 0,deltay=0;
       var lastx= 0,lasty=0;

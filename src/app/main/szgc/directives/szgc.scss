@@ -172,10 +172,11 @@
       }
     }
     .swiper-pagination-bullet{
-      width: 20px;
-      height: 20px;
+      width: 8px;
+      height: 8px;
       background:#ffffff;
       opacity:.9;
+      margin: 0 4px;
     }
     .swiper-pagination-bullet-active{
       background: #ff0000!important;
