@@ -1,11 +1,15 @@
-<md-content flex>
-    <div flex class="menu-toggle-list" ng-show="!searBarHide">
 
-        <sxt-projects-jd ng-model="vm.project.pid" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" on-queryed="vm.project.onQueryed" is-more="vm.project.isMore">
+<md-content flex layout="column" ng-show="!vm.searBarHide" class="menu-toggle-list">
+  <div flex style="overflow: auto">
+        <sxt-projects-jd ng-model="vm.project.pid" object-scope="vm" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" on-queryed="vm.project.onQueryed" is-more="vm.project.isMore">
         </sxt-projects-jd>
-    </div>
-    <div flex  ng-show="searBarHide">
-        <div>
+  <div class="md-padding" layout="row">
+
+    <md-button type="submit" flex ng-click="vm.searBarHide=true"  class="md-raised md-primary"> 确定  </md-button>
+  </div></div>
+</md-content>
+    <md-content flex  ng-show="vm.searBarHide">
+<!--        <div>
             <div>
                 <p class="pro_title">项目总览</p>
                 <div class="table-responsive pro_tb">
@@ -68,14 +72,11 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div>
-            <div>
-              <bar-chart config="vm.config" data="vm.data"></bar-chart>
-            </div>
-        </div>
+        </div>-->
+              <bar-chart flex config="vm.config" data="vm.data"></bar-chart>
 
 
-    </div>
-</md-content>
-<div style="position: absolute; top:50px; right:0px;"><toggle-menu inst="searBarHide"></toggle-menu></div>
+    </md-content>
+
+<div style="position: absolute; top:0px; right:0px;">
+  <toggle-menu inst="vm.searBarHide"></toggle-menu></div>

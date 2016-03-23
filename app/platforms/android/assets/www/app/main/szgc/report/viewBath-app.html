@@ -1,25 +1,28 @@
-<ui-view flex layout="column">
-<md-content flex  ng-show="!searBarHide">
-  <div class="menu-toggle-list">
-        <sxt-projects-jd ng-model="vm.project.pid" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" is-more="vm.project.isMore" on-queryed="vm.project.onQueryed">
-<div class="md-padding">
-                  <md-input-container class="md-block" md-no-float>
-                    <label>工序专业</label>
-                    <sxt-procedure-type style="width:100%;" ng-model="vm.project.procedureTypeId"></sxt-procedure-type>
-                    </md-input-container>
-                  <md-input-container  class="md-block" md-no-float>
-                    <label>工序</label>
-                    <sxt-select ng-model="vm.project.procedureId" style="width:100%;" name-value="vm.project.procedureName" sources="vm.project.procedures" text-field="ProcedureName" value-field="ProcedureId"></sxt-select>
-                  </md-input-container>
-                  <md-input-container  class="md-block" md-no-float >
-                    <label>班组</label>
-                    <input ng-model="vm.ddd.grpKey" >
-                  </md-input-container>
-</div>
+
+<md-content flex layout="column" ng-show="!vm.searBarHide && vm.is('app.szgc.report.viewBath')" class="menu-toggle-list">
+  <div flex style="overflow: auto">
+        <sxt-projects-jd ng-model="vm.project.pid" object-scope="vm" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" is-more="vm.project.isMore" on-queryed="vm.project.onQueryed">
+<md-list>
+  <md-subheader>工序</md-subheader>
+  <md-list-item>
+    <sxt-procedure style="width:100%" ng-model="vm.project.procedureId" name-value="vm.project.procedureName" region-type="vm.project.type" class="md-block"></sxt-procedure>
+  </md-list-item>
+  <md-list-item>班组</md-list-item>
+  <md-list-item>
+    <md-input-container style="width:100%" class="md-block" md-no-float >
+      <label>班组</label>
+      <input ng-model="vm.ddd.grpKey" >
+    </md-input-container>
+  </md-list-item>
+</md-list>
         </sxt-projects-jd>
+  <div class="md-padding" layout="row">
+
+    <md-button type="submit" flex ng-click="vm.searBarHide=true"  class="md-raised md-primary"> 确定  </md-button>
+  </div>
   </div>
     </md-content>
-    <md-content flex class="md-padding"  ng-show="searBarHide" layout="column" flex>
+    <md-content flex class="md-padding"  ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')" layout="column" flex>
       <md-virtual-repeat-container id="vertical-container" flex>
         <md-card md-virtual-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey} " flex>
 
@@ -71,12 +74,18 @@
                 </md-list>
             </md-card-content>
             <md-card-actions layout="row" layout-align="end center">
-                    <md-button class="md-raised" ui-sref="app.viewbath({bathid:item.Id})">
+                    <md-button class="md-raised" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">
                         查看
                     </md-button>
             </md-card-actions>
         </md-card>
         </md-virtual-repeat-container>
     </md-content>
-  <div style="position: absolute; top:50px; right:0px;"><toggle-menu inst="searBarHide"></toggle-menu></div>
-</ui-view>
+  <div style="position: absolute; top:0px; right:0px;">
+    <md-button class="md-fab md-mini" ng-show="!vm.searBarHide && vm.isJdBack()" ng-click="vm.backJdSelect()">
+    <md-icon md-font-icon="icon-arrow-left"></md-icon>
+  </md-button>
+    <toggle-menu inst="vm.searBarHide" ng-show="vm.is('app.szgc.report.viewBath')"></toggle-menu>
+
+  </div>
+<md-content ui-view flex ng-if="!vm.is('app.szgc.report.viewBath')"></md-content>

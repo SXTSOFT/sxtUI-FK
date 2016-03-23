@@ -1,9 +1,9 @@
 
 
-<section class="panel" style="border-top-width:0;" >
+<div class="panel" style="border-top-width:0;" >
     <div class="panel-body">
      <!--<a class="btn btn-sm btn-white" style="padding: 5px 31px; float: right;margin-right: -4px;margin-bottom: 6px;margin-top: -6px;" ng-click="goback()">返回</a>-->
- <h2>{{titol.ProcedureName}}验收记录表</h2>       
+ <h2>{{titol.ProcedureName}}验收记录表</h2>
     </div>
     <div class="table-responsive">
         <div class="row">
@@ -84,7 +84,7 @@
                                     <td style="width:40px;">&nbsp;</td>
                                     <td rowspan="2" colspan="{{data.selected.d.info.ybColLength}}">
                                         &nbsp; &nbsp;  项目
-                                        
+
                                         <div class="clearfix"></div>
                                     </td>
                                     <td width="91" rowspan="2" align="center">允许偏差（mm）</td>
@@ -144,17 +144,15 @@
             </div>
         </div>
     </div><div img-fancy>
-    <fieldset>
+    <fieldset  sxt-image-view is-container="true">
         <legend>原验收表扫描件</legend>
-        <sxt-images ng-model="data.selected.step.GroupImg" project="data.projectInfo" ></sxt-images>
-        
+        <sxt-images  ng-model="data.selected.step.GroupImg" project="data.projectInfo" ></sxt-images>
+
     </fieldset>
-    <fieldset>
+    <fieldset  sxt-image-view is-container="true">
         <legend>附件</legend>
-        <sxt-images ng-model="data.selected.step.GroupImg2" project="data.projectInfo"></sxt-images>
+        <sxt-images  ng-model="data.selected.step.GroupImg2" project="data.projectInfo"></sxt-images>
     </fieldset></div>
 
-    <div style="position:fixed; top:20px; right:20px;">
-        <md-button class="md-fab md-mini" ng-click="back()"><i class="fa fa-arrow-left"></i></md-button>
-    </div>
-</section>
+
+</div>
