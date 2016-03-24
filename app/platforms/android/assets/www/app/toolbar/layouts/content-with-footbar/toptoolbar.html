@@ -1,0 +1,10 @@
+<div class="md-toolbar-tools">
+    <md-icon ng-hide="$root.noBack===true" md-font-icon="icon-chevron-left" style="color:white;" ng-click="goBack();" class="icon s32"></md-icon>
+  <h2>
+    <span>{{$root.title || '万科数字工程'}}</span>
+  </h2>
+  <div style="position: absolute;top:5px;right:5px;">
+  <md-progress-circular id="toolbar-progress" ng-if="$root.loadingProgress"
+                        md-mode="indeterminate" md-diameter="40">
+  </md-progress-circular></div>
+</div>

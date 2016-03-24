@@ -13,8 +13,8 @@
     var vm=this;
     vm.project1 = '亚奥';
     vm.project=['亚奥','公园里'];
-    vm.fenqi1='金茂悦一期';
-    vm.fenqi=['金茂悦一期','金茂悦二期'];
+    vm.fenqi1='星河一期';
+    vm.fenqi=['星河一期','星河二期'];
     vm.buildings1 = '14栋';
     vm.buildings=['14栋','15栋'];
     vm.floors1 = '15层';
