@@ -2,7 +2,7 @@
   <defs>
     <style>
       .cls-1 {
-        fill: #f4f6f8;
+        fill: #ff0000;
         stroke: #989898;
         stroke-width: 2px;
         fill-rule: evenodd;

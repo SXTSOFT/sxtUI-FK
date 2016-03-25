@@ -19,7 +19,7 @@
       })
       .state('app.szgc.home',{
         noBack:true,
-        title :'金茂质量平台',
+        title :'工程大数据',
         url   :'/',
         views :{
           'content@app':{
@@ -236,7 +236,7 @@
 
     // Navigation
     msNavigationServiceProvider.saveItem('szgc', {
-      title : '数字工程',
+     // title : '数字工程',
       group : true,
       weight: 1
     });

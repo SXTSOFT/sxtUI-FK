@@ -11,10 +11,10 @@
   /** @ngInject */
   function  SzgcChooseController(msUtils,$state){
     var vm=this;
-    vm.project1 = '亚奥';
-    vm.project=['亚奥','公园里'];
-    vm.fenqi1='星河一期';
-    vm.fenqi=['星河一期','星河二期'];
+    vm.project1 = '星河智荟';
+    vm.project=['星河智荟','星河传奇'];
+    vm.fenqi1='一期';
+    vm.fenqi=['一期','二期'];
     vm.buildings1 = '14栋';
     vm.buildings=['14栋','15栋'];
     vm.floors1 = '15层';

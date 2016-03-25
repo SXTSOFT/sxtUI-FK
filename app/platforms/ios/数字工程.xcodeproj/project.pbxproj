@@ -26,6 +26,7 @@
 		0C597FC51C981E6100D62986 /* Default-667h.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C597FC11C981E6100D62986 /* Default-667h.png */; };
 		0C597FC61C981E6100D62986 /* Default-736h.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C597FC21C981E6100D62986 /* Default-736h.png */; };
 		0C597FC71C981E6100D62986 /* default~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C597FC31C981E6100D62986 /* default~iphone.png */; };
+		0CE27D101CA3DC60002EA252 /* 数字工程-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0CE27D0F1CA3DC60002EA252 /* 数字工程-Info.plist */; };
 		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
@@ -84,6 +85,7 @@
 		0C597FC11C981E6100D62986 /* Default-667h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-667h.png"; sourceTree = "<group>"; };
 		0C597FC21C981E6100D62986 /* Default-736h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h.png"; sourceTree = "<group>"; };
 		0C597FC31C981E6100D62986 /* default~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default~iphone.png"; sourceTree = "<group>"; };
+		0CE27D0F1CA3DC60002EA252 /* 数字工程-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "数字工程-Info.plist"; sourceTree = "<group>"; };
 		1D3623240D0F684500981E51 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* 数字工程.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "数字工程.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,7 +108,6 @@
 		30B4F2FF19D5E07200D9F7D8 /* Default-Landscape-736h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape-736h.png"; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* 数字工程-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "数字工程-Prefix.pch"; sourceTree = "<group>"; };
 		5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
-		8D1107310486CEB800E47090 /* 数字工程-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "数字工程-Info.plist"; path = "../数字工程-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x~iphone.png"; sourceTree = "<group>"; };
 		EB87FDF21871DA7A0020F90C /* merges */ = {isa = PBXFileReference; lastKnownFileType = folder; name = merges; path = ../../merges; sourceTree = "<group>"; };
 		EB87FDF31871DA8E0020F90C /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ../../www; sourceTree = "<group>"; };
@@ -204,9 +205,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0CE27D0F1CA3DC60002EA252 /* 数字工程-Info.plist */,
 				0C597F9F1C981DDF00D62986 /* icons1 */,
 				308D05311370CCF300D202BF /* splash */,
-				8D1107310486CEB800E47090 /* 数字工程-Info.plist */,
 			);
 			name = Resources;
 			path = "数字工程/Resources";
@@ -367,6 +368,7 @@
 				0C597FBD1C981DDF00D62986 /* icon-76@2x.png in Resources */,
 				0C597FB81C981DDF00D62986 /* icon-60@2x.png in Resources */,
 				0C597FBB1C981DDF00D62986 /* icon-72@2x.png in Resources */,
+				0CE27D101CA3DC60002EA252 /* 数字工程-Info.plist in Resources */,
 				D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */,
 				30B4F30219D5E07200D9F7D8 /* Default-Landscape-736h.png in Resources */,
 				0C597FBF1C981DDF00D62986 /* icon-small@2x.png in Resources */,

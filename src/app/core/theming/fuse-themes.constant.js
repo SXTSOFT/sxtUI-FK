@@ -93,56 +93,26 @@
                 }
             }
         },
-      'vanke'     : {
-        primary   : {
-          name: 'blue-1',
-          hues: {
-            'default': '500',
-            'hue-1'  : '500',
-            'hue-2'  : '500',
-            'hue-3'  : '500'
-          }
-        },
-        accent    : {
-          name: 'blue-1',
-          hues: {
-            'default': '500',
-            'hue-1'  : '500',
-            'hue-2'  : '500',
-            'hue-3'  : '500'
-          }
-        },
-        warn      : {name: 'blue-1'},
-        background: {
-          name: 'grey',
-          hues: {
-            'default': 'A100',
-            'hue-1'  : '100',
-            'hue-2'  : '50',
-            'hue-3'  : '300'
-          }
-        }
-      }
       //'vanke'     : {
       //  primary   : {
-      //    name: 'red',
+      //    name: 'blue-1',
       //    hues: {
-      //      'default': '900',
-      //      'hue-1'  : '600',
+      //      'default': '500',
+      //      'hue-1'  : '500',
       //      'hue-2'  : '500',
-      //      'hue-3'  : 'A100'
+      //      'hue-3'  : '500'
       //    }
       //  },
       //  accent    : {
-      //    name: 'red',
+      //    name: 'blue-1',
       //    hues: {
       //      'default': '500',
-      //      'hue-1'  : '400',
-      //      'hue-2'  : '600',
-      //      'hue-3'  : 'A100'
+      //      'hue-1'  : '500',
+      //      'hue-2'  : '500',
+      //      'hue-3'  : '500'
       //    }
       //  },
-      //  warn      : {name: 'red'},
+      //  warn      : {name: 'blue-1'},
       //  background: {
       //    name: 'grey',
       //    hues: {
@@ -153,6 +123,36 @@
       //    }
       //  }
       //}
+      'vanke'     : {
+        primary   : {
+          name: 'red',
+          hues: {
+            'default': '900',
+            'hue-1'  : '600',
+            'hue-2'  : '500',
+            'hue-3'  : 'A100'
+          }
+        },
+        accent    : {
+          name: 'red',
+          hues: {
+            'default': '500',
+            'hue-1'  : '400',
+            'hue-2'  : '600',
+            'hue-3'  : 'A100'
+          }
+        },
+        warn      : {name: 'red'},
+        background: {
+          name: 'grey',
+          hues: {
+            'default': 'A100',
+            'hue-1'  : '100',
+            'hue-2'  : '50',
+            'hue-3'  : '300'
+          }
+        }
+      }
     };
 
     angular

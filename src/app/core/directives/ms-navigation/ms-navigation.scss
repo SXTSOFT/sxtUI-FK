@@ -43,7 +43,7 @@
             color: rgba(255, 255, 255, 0.70);
 
             &:hover {
-                background: rgba(0, 0, 0, 0.1);
+                background:#e6e7ea;
             }
 
             // Non-link & Link Common
@@ -57,13 +57,13 @@
                 justify-content: flex-start;
                 align-items: center;
                 padding-right: 16px;
-                color: rgba(255, 255, 255, 0.70);
+                color: #5c5c5c;
                 text-decoration: none;
                 white-space: nowrap;
                 overflow: hidden;
 
                 .icon {
-                    color: rgba(255, 255, 255, 0.7);
+                    color: #5c5c5c;
                     margin: 0 16px 0 0;
                 }
 
@@ -107,10 +107,11 @@
                 }
 
                 &.active {
-                    color: #FFFFFF;
+                    color: #333;
+                  background-color:#e6e7ea ;
 
                     .icon {
-                        color: #FFFFFF;
+                        color: #333;
                     }
 
                     .badge {
@@ -152,7 +153,8 @@
                 > .ms-navigation-button {
                     height: 32px;
                     line-height: 32px;
-                    color: rgba(255, 255, 255, 0.3);
+                    color: #d7d7d7;
+
                 }
             }
         }
