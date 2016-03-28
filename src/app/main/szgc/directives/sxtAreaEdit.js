@@ -204,6 +204,8 @@
                         sourceType: 1,
                         allowEdit: true,
                         encodingType: 0,
+
+
                         saveToPhotoAlbum: false,
                         correctOrientation: true
                       }).then (function (imageData) {
@@ -212,6 +214,14 @@
                           //var image = document.createElement ('img');
                           //image.src = "data:image/jpeg;base64," + imageData;
                           //element.append (image);
+                          //imageData = imageData.replace('data:image/jpeg;base64','').replace('data:image/jpeg;ase64','')
+                          //$scope.title = '正在上传图片';
+                          //$http.post('http://vkde.sxtsoft.com/api/Files/'+layer.options.pid+'/base64',{Url:imageData}).then(function(result){
+                          //  $scope.images.push(result.data.Files[0]);
+                          //  $scope.title=null;
+                          // // utils.alert('上传成功');
+                          //})
+                          //
                           imageData = imageData.replace('data:image/jpeg;base64,','').replace('data:image/png;base64,','')
                           $scope.title = '正在上传图片';
                           $http.post ('http://vkde.sxtsoft.com/api/Files/' + layer.options.pid + '/base64', {Url: imageData}).then (function (result) {
@@ -242,10 +252,10 @@
                     };
                     $scope.photo ();
                   },
-                    template: '<md-dialog aria-label="拍照"  ng-cloak><form><md-toolbar style="background:#1f6db4"><div class="md-toolbar-tools"><h2>{{title || \'拍照\'}}</h2></div></md-toolbar>\
+                    template: '<md-dialog aria-label="拍照"  ng-cloak><form><md-toolbar style="background-color:rgb(233,48,48)"><div class="md-toolbar-tools"><h2>{{title || \'拍照\'}}</h2></div></md-toolbar>\
                   <md-dialog-content><div class="md-dialog-content" >\
                 <img width="120" class="cimages" ng-repeat="img in images" ng-src="{{img.Url|fileurl}}" /></div></md-dialog-content>\
-                <md-dialog-actions layout="row" style="border-top:solid 2px #1f6db4">\
+                <md-dialog-actions layout="row" style="border-top:solid 2px rgb(233,48,48)">\
                   <md-button  class="md-raised" ng-click="cancel()" >取消</md-button>\
                 <span flex></span>\
                 <md-button  class="md-raised" ng-click="photo($event)" >\

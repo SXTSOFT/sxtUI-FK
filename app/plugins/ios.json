@@ -9,7 +9,8 @@
     "installed_plugins": {
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.sxt.szgc"
-        }
+        },
+        "cordova-plugin-camera": {}
     },
     "dependent_plugins": {}
 }
