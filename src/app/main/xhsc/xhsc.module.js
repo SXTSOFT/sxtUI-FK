@@ -1,0 +1,79 @@
+/**
+ * Created by jiuyuong on 2016/3/30.
+ */
+(function(){
+  'use strict';
+
+  angular
+    .module('app.xhsc', ['app.core'])
+    .config(config);
+
+  /** @ngInject */
+  function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
+  {
+    // State
+    $stateProvider
+      .state('app.xhsc', {
+        abstract:true
+      })
+      .state('app.xhsc.home',{
+        noBack:true,
+        title :'工程管理',
+        url   :'/',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/home/home.html',
+            controller:'HomeController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.choose',{
+        noBack:true,
+        title :'验收',
+        url   :'/choose',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/choose.html',
+            controller:'ChooseController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.chooseHouse',{
+        noBack:true,
+        title :'抹灰工程',
+        url   :'/chooseHouse',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/chooseHouse.html',
+            controller:'ChooseHouseController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.check',{
+        noBack:true,
+        title :'实测',
+        url   :'/check',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/checkHouse.html',
+            controller:'checkHouseController as vm'
+          }
+        }
+      })
+
+    // Navigation
+    msNavigationServiceProvider.saveItem('xhsc', {
+      // title : '数字工程',
+      group : true,
+      weight: 1
+    });
+
+    msNavigationServiceProvider.saveItem('xhsc.home', {
+      title    : '首页',
+      icon     : 'icon-home',
+      state    : 'app.xhsc.home',
+      weight   : 1
+    });
+
+  }
+})();

@@ -17,18 +17,9 @@
             // Toolbar
             'app.toolbar',
 
-            // Quick panel
-            //'app.quick-panel',
-
-            // Sample
-            'app.sample',
-
             // auth
             'app.auth',
 
-            'app.szgc',
-          'panzoom',
-          'hmTouchEvents',
-          'ngCordova'
+            'app.xhsc'
         ]);
 })();
