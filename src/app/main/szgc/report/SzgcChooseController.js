@@ -23,7 +23,7 @@
     vm.rooms=['03','04'];
     vm.change = function(){
       msUtils.isMobile()?
-        $state.go('app.szgc.xc',{pid:'1', pname: '2'}):
+        $state.go('app.szgc.xc',{pid:'1', pname: vm.project1+'-'+vm.fenqi1}):
         $state.go('app.szgc.area',{pid:'1', pname: '2'});
     };
 

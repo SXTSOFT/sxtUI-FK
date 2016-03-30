@@ -13,5 +13,6 @@
   function SzgcXCController($scope,$stateParams)
   {
     $scope.pid = $stateParams.pid;
+    $scope.pname = $stateParams.pname;
   }
 })();

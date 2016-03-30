@@ -12,7 +12,7 @@
       margin:0;
     }
     .active{
-      background:#fff7d6;
+      background:#ff0000;
     }
   </style>
   <style>
@@ -23,7 +23,7 @@
     }
 
     .tblbody tr:hover {
-      background: #fff7d6;
+      background: #ff0000;
     }
 
     table th,
@@ -284,54 +284,54 @@
 
         }
       }
-    $scope.sortDown = function(){
-      var n =data.current;
-      if (data.current){
-        var idx = data.rows.indexOf(n);
-        if (idx == idx-1) {
-          return;
-        }
-        var prevIndex=idx-1;
-        var prev = data.rows[prevIndex];
-//        if (n.parent) {
-//          if (!prev.parent) {
-//
-//            n.subs = prev.subs;
-//            n.subs.push(prev);
-//            n.CategoryName = prev.CategoryName;
-//            n.parent = null;
-//            var nx = n.subs.indexOf(n);
-//            n.subs.splice(nx, 1);
-//            n.subs.forEach(function (it) {
-//              it.parent = n;
-//            });
-//            prev.rowSpan = 0;
-//            n.rowSpan = n.subs.length + 1;
-//            n.colSpan = 1;
-//          }
-//          data.rows[idx + 1] = n;
-//          data.rows[idx] = prev;
-//          //$scope.$apply();
-//          //}
+//    $scope.sortDown = function(){
+//      var n =data.current;
+//      if (data.current){
+//        var idx = data.rows.indexOf(n);
+//        if (idx == idx-1) {
+//          return;
 //        }
-//        else {
-          while (prev.parent) {
-            prev = data.rows[++prevIndex];
-          }
-          data.rows[prevIndex] = n;
-          for (var i = 0, l = n.subs.length; i < l; i++) {
-            data.rows[--prevIndex] = n.subs[i];
-          }
-          data.rows[--prevIndex] = prev;
-          prev.subs.forEach(function (it) {
-            data.rows[--prevIndex] = it;
-          })
-       // }
-        //var insertIndex = idx - prev.rowSpan-1;
-
-      }
-
-    }
+//        var prevIndex=idx-1;
+//        var prev = data.rows[prevIndex];
+////        if (n.parent) {
+////          if (!prev.parent) {
+////
+////            n.subs = prev.subs;
+////            n.subs.push(prev);
+////            n.CategoryName = prev.CategoryName;
+////            n.parent = null;
+////            var nx = n.subs.indexOf(n);
+////            n.subs.splice(nx, 1);
+////            n.subs.forEach(function (it) {
+////              it.parent = n;
+////            });
+////            prev.rowSpan = 0;
+////            n.rowSpan = n.subs.length + 1;
+////            n.colSpan = 1;
+////          }
+////          data.rows[idx + 1] = n;
+////          data.rows[idx] = prev;
+////          //$scope.$apply();
+////          //}
+////        }
+////        else {
+//          while (prev.parent) {
+//            prev = data.rows[++prevIndex];
+//          }
+//          data.rows[prevIndex] = n;
+//          for (var i = 0, l = n.subs.length; i < l; i++) {
+//            data.rows[--prevIndex] = n.subs[i];
+//          }
+//          data.rows[--prevIndex] = prev;
+//          prev.subs.forEach(function (it) {
+//            data.rows[--prevIndex] = it;
+//          })
+//       // }
+//        //var insertIndex = idx - prev.rowSpan-1;
+//
+//      }
+//
+//    }
       $scope.save = function () {
         data.rows.forEach(function (row) {
           if (row.parent) {

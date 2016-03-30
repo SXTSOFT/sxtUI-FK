@@ -42,7 +42,7 @@
       .state('app.szgc.xc',{
         noBack:true,
         title :'验收',
-        url   :'/xc/{pid}/{pname}',
+      url   :'/xc/{pid}/{pname}',
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/xc.html',
