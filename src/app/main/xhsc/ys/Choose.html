@@ -23,7 +23,30 @@
   <md-tab label="工序验收" md-on-select="vm.onNavList()">
     <md-tab-content flex layout-fill layout="column">
       <md-content flex>
+        <md-list ng-cloak>
+          <md-subheader class="md-no-sticky">装修</md-subheader>
+          <md-list-item ui-sref="app.xhsc.chooseHouse">
+            <p>地砖工程</p>
+          </md-list-item>
+          <md-list-item ui-sref="app.xhsc.chooseHouse">
+            <p>墙砖粘贴</p>
+          </md-list-item>
+          <md-list-item ui-sref="app.xhsc.chooseHouse">
+            <p>油漆</p>
+          </md-list-item>
+          <md-divider></md-divider>
+          <md-subheader class="md-no-sticky">土建</md-subheader>
+          <md-list-item ui-sref="app.xhsc.chooseHouse">
+            <p>抹灰工程</p>
+          </md-list-item>
+          <md-list-item ui-sref="app.xhsc.chooseHouse">
+            <p>钢筋</p>
+          </md-list-item>
+          <md-list-item ui-sref="app.xhsc.chooseHouse">
+            <p>幕墙工程</p>
+          </md-list-item>
 
+      </md-content>
     </md-tab-content>
   </md-tab>
 </md-tabs>

@@ -60,6 +60,17 @@
           }
         }
       })
+      .state('app.xhsc.zg',{
+        noBack:true,
+        title :'实测',
+        url   :'/zg',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/zg.html',
+            controller:'zgController as vm'
+          }
+        }
+      })
 
     // Navigation
     msNavigationServiceProvider.saveItem('xhsc', {

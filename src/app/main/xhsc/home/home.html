@@ -1,1 +1,52 @@
-home
+<!--<div>-->
+<!--<div class="bottom-sheet-demo inset" layout="row" layout-sm="column" layout-align="center" >-->
+  <!--<md-button flex="50" class="md-primary md-raised" ng-click="showListBottomSheet()">整改任务</md-button>-->
+  <!--<md-button flex="50" class="md-primary md-raised" ng-click="showListBottomSheet()">验收任务</md-button>-->
+<!--</div>-->
+<!--<div ng-if="alert">-->
+  <!--<br/>-->
+  <!--<b layout="row" layout-align="center center" class="md-padding">-->
+    <!--{{alert}}-->
+  <!--</b>-->
+<!--</div>-->
+<!--</div>-->
+<md-toolbar class="md-theme-light">
+  <h2 class="md-toolbar-tools" style="background-color:rgb(233,48,48) ">
+    <md-button class="md-raised" flex>整改</md-button>
+    <md-button class="md-raised" flex>已整改</md-button>
+    <md-button class="md-raised" flex>未整改</md-button>
+  </h2>
+</md-toolbar>
+<md-content>
+  <md-list>
+    <md-list-item class="md-3-line" ng-repeat="item in messages">
+      <div class="md-list-item-text">
+        <h3>{{item.what}}</h3>
+        <h4>{{item.who}}</h4>
+        <p>{{item.notes}}</p>
+      </div>
+      <md-button class="md-secondary">整改</md-button>
+      <md-divider ng-if="!$last"></md-divider>
+    </md-list-item>
+  </md-list>
+</md-content>
+<md-toolbar  class="md-theme-light">
+  <h2  class="md-toolbar-tools" style="background-color: rgb(233,48,48)">
+    <md-button class="md-raised" flex>验收</md-button>
+    <md-button class="md-raised" flex>已验收</md-button>
+    <md-button class="md-raised" flex>未验收</md-button>
+  </h2>
+</md-toolbar>
+<md-content>
+  <md-list>
+    <md-list-item class="md-3-line" ng-repeat="item in messages">
+      <div class="md-list-item-text">
+        <h3>{{item.what}}</h3>
+        <h4>{{item.who}}</h4>
+        <p>{{item.notes}}</p>
+      </div>
+      <md-button class="md-secondary">验收</md-button>
+      <md-divider ng-if="!$last"></md-divider>
+    </md-list-item>
+  </md-list>
+</md-content>

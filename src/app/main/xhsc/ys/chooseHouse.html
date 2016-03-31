@@ -4,25 +4,30 @@
     <div class="md-toolbar-tools">
 
       <h2>
-        <span>选择部位</span>
+        <span> 星河智荟一期一栋一单元</span>
       </h2>
       <span flex></span>
       <md-switch flex="none" ng-model="vm.muti" aria-label="Switch 1">
         {{ vm.muti ? '多选':'单选' }}
       </md-switch>
     </div>
+
   </md-toolbar>
   <md-card>
     <md-card-title>
       <md-card-title-text>
-      <md-button flex>  1栋</md-button>
+       <md-button flex>  1楼</md-button>
+
       </md-card-title-text>
     </md-card-title>
       <md-card-content>
 <div ng-if="vm.muti">
+  <div>
   <md-checkbox>101</md-checkbox>
   <md-checkbox>102</md-checkbox>
   <md-checkbox>103</md-checkbox>
+    <md-button ui-sref="app.xhsc.check" class="md-raised">确定</md-button>
+  </div>
 
 </div>
         <div ng-if="!vm.muti">
@@ -32,5 +37,26 @@
 
         </div>
       </md-card-content>
+  </md-card>
+  <md-card>
+    <md-card-title>
+      <md-card-title-text>
+        <md-button flex>  2楼</md-button>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+      <div ng-if="vm.muti">
+        <md-checkbox>201</md-checkbox>
+        <md-checkbox>202</md-checkbox>
+        <md-checkbox>203</md-checkbox>
+
+
+      </div>
+      <div ng-if="!vm.muti">
+        <md-button ui-sref="app.xhsc.check" class="md-raised">201</md-button>
+        <md-button ui-sref="app.xhsc.check" class="md-raised">202</md-button>
+        <md-button ui-sref="app.xhsc.check" class="md-raised">203</md-button>
+      </div>
+    </md-card-content>
   </md-card>
 </md-content>
