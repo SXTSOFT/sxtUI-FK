@@ -23,7 +23,12 @@
         $rootScope.global = {
             search: ''
         };
-
+      $rootScope.toLeft = function(){
+          $rootScope.$emit('leftEvent');
+        }
+      $rootScope.toRight = function(){
+          $rootScope.$emit('rightEvent');
+        }
         vm.bodyEl = angular.element('body');
         vm.userStatusOptions = [
             {

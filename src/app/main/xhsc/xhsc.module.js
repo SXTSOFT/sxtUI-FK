@@ -18,6 +18,9 @@
       })
       .state('app.xhsc.home',{
         noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
         title :'工程管理',
         url   :'/',
         views :{
@@ -29,6 +32,9 @@
       })
       .state('app.xhsc.choose',{
         noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
         title :'验收',
         url   :'/choose',
         views :{
@@ -40,6 +46,9 @@
       })
       .state('app.xhsc.chooseHouse',{
         noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
         title :'抹灰工程',
         url   :'/chooseHouse',
         views :{
@@ -51,6 +60,9 @@
       })
       .state('app.xhsc.check',{
         noBack:true,
+        sendBt:true,
+        rightArrow:true,
+        leftArrow:true,
         title :'实测',
         url   :'/check',
         views :{
@@ -61,7 +73,10 @@
         }
       })
       .state('app.xhsc.zg',{
-        noBack:true,
+        noBack:false,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
         title :'实测',
         url   :'/zg',
         views :{

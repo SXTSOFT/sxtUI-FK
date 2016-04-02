@@ -1,19 +1,12 @@
-<md-toolbar flex="none" layout="row">
-  <md-input-container >
-    <div>
-      星河智荟一期一栋一单元一楼101 <md-button class="md-raised" ui-sref="app.xhsc.zg">发送</md-button>
-    </div>
-    <md-select ng-model="size">
-      <md-option >立面垂直度</md-option>
-      <md-option >阴阳角方正度</md-option>
-    </md-select>
+<md-content>
+  <md-tabs md-selected="selectedIndex" md-border-bottom md-autoselect>
+    <md-tab ng-repeat="tab in vm.tabs"
+            ng-disabled="tab.disabled"
+            label="{{tab.title}}">
+      <div class="demo-tab tab{{$index%4}}" style="padding: 25px; text-align: center;">
+        <div ng-bind="tab.content"></div>
 
-  </md-input-container>
-</md-toolbar>
-
-<md-content flex layout="row">
-
-  <div flex sxt-sc>
-
-  </div>
+      </div>
+    </md-tab>
+  </md-tabs>
 </md-content>
