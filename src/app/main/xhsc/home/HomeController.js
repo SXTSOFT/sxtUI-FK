@@ -15,6 +15,7 @@
       vm.okValue = ' okValue ';
     }
     vm.bass = Math.floor(Math.random() * 100);
+    vm.bassa = Math.floor(Math.random() * 100);
     vm.showFlag = false;
     vm.showMDBar = function(){
       vm.showFlag = !vm.showFlag;
