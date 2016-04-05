@@ -1,0 +1,31 @@
+.sxt-num-input{
+  background: #ffffff;
+  width:168px;
+  border: solid 1px silver;
+  border-radius: 6px;
+  .md-button{
+    min-width:55px;
+    margin: 0;
+  }
+  div{
+    >div{
+      border-bottom: solid 1px silver;
+      border-right: solid 1px silver;
+      &:last-child{
+        border-right: 0;
+      }
+      span{
+        color:#000000;
+      }
+      .md-button{
+        cursor: pointer;
+      }
+    }
+    &:last-child{
+      >div{
+        border-bottom: 0!important;
+      }
+    }
+  }
+
+}

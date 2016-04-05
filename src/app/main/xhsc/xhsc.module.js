@@ -86,6 +86,20 @@
           }
         }
       })
+      .state('app.xhsc.demo',{
+        noBack:false,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'DEMO',
+        url   :'/demo',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/home/demo.html',
+            controller:'DemoController as vm'
+          }
+        }
+      })
 
     // Navigation
     msNavigationServiceProvider.saveItem('xhsc', {

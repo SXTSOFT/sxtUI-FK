@@ -16,7 +16,7 @@
     }
     function  link(scope,element,attr,ctrl){
       mapPopupSerivce.set(scope.popup,element);
-      scope.$on('$destory',function(){
+      scope.$on('$destroy',function(){
         mapPopupSerivce.remove(scope.popup);
       })
     }
