@@ -29,6 +29,7 @@
             'app.szgc',
           'panzoom',
           'hmTouchEvents',
-          'ui.tree'
+          'ui.tree',
+          'ngCordova'
         ]);
 })();
