@@ -25,19 +25,30 @@
         $(element).parent().siblings().find('.numberpanel').css('display','none');
         if($(element).find('.numberpanel').is(':hidden')){
           $(element).find('.numberpanel').css('display','block');
+          var width = $('.sxt-num-input').width()-$(element).parent().width();
+          $(element).find('.numberpanel').css('left',-width/2+'px');
           //scope.isView = true;
         }else{
           $(element).find('.numberpanel').css('display','none');
           //scope.isView = false;
         }
-
         //scope.isView = !scope.isView;
       }
       scope.ok = function(){
         $(element).find('.numberpanel').css('display','none');
         //scope.isView = false;
       }
-      //$(document.body).not(element).on('click',scope.ok);
+
+      $(document).bind("click",function(e){
+        var target = $(e.target);
+        if(target.closest(".sxtnumdowndown").length == 0){
+          $(element).find('.numberpanel').css('display','none');
+        }
+
+      })
+        //$(document).not($('.sxtnumdowndown')).on('click',scope.ok);
+
+
       scope.$on('$destroy',function(){
         //$(document.body).not(element).un('click',scope.ok);
       })

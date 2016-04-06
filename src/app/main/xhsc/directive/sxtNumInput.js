@@ -13,7 +13,8 @@
     return {
       scope:{
         value:'=ngModel',
-        ok:'&'
+        ok:'&',
+        sliderStep:'=ngStep'
       },
       link:link,
       templateUrl:'app/main/xhsc/directive/sxtNumInput.html'
@@ -52,7 +53,12 @@
             break;
         }
         scope.value = str;
+
       }
+      scope.$watch('value',function(){
+       // scope.value2 =  isNaN(parseFloat(scope.value))?0:parseFloat(scope.value);
+       // scope.step = 0.1;
+      })
     }
   }
 
