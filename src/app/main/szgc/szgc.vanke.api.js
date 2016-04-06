@@ -22,6 +22,20 @@
     ]);
 
     var permission,p1;
+    var getNumName = function (str) {
+      str = str.replace('十', '10')
+        .replace('九', '9')
+        .replace('八', '8')
+        .replace('七', '7')
+        .replace('六', '6')
+        .replace('五', '5')
+        .replace('四', '4')
+        .replace('三', '3')
+        .replace('二', '2')
+        .replace('一', '1');
+      var n = parseInt(str);
+      return n;
+    };
 
     var http = apiProvider.$http;
     apiProvider.register('szgc',{
@@ -112,7 +126,16 @@
         buildings: http.custom(function (arg) {
           return get(http.url('/common/v1/buildings', arg)).then(function (result) {
             result.data.data.sort(function (i1, i2) {
-              return i1.name.localeCompare(i2.name);
+              var n1 = getNumName(i1.name),
+                n2 = getNumName(i2.name);
+              if (!isNaN(n1) && !isNaN(n2))
+                return n1 - n2;
+              else if ((isNaN(n1) && !isNaN(n2)))
+                return 1;
+              else if ((!isNaN(n1) && isNaN(n2)))
+                return -1;
+              else
+                return i1.name.localeCompare(i2.name);
             });
             return result;
           })
@@ -144,14 +167,48 @@
               project_item_id: typeId,
               page_size: 0,
               page_number: 1
-            }));
+            })).then(function(r) {
+              r.data.data.forEach (function (b) {
+                b.floors = isNaN (parseInt (b.total_floor)) ? 1 : parseInt (b.total_floor);
+              });
+              r.data.data.sort (function (i1, i2) {
+                var n1 = getNumName (i1.name),
+                  n2 = getNumName (i2.name);
+                if (!isNaN (n1) && !isNaN (n2))
+                  return n1 - n2;
+                else if ((isNaN (n1) && !isNaN (n2)))
+                  return 1;
+                else if ((!isNaN (n1) && isNaN (n2)))
+                  return -1;
+                else
+                  return i1.name.localeCompare (i2.name);
+              });
+              return r;
+            });
           }
           else{
             return get (http.url ('/common/v1/buildings', {
               project_id: typeId,
               page_size: 0,
               page_number: 1
-            }));
+            })).then(function(r){
+              r.data.data.forEach(function (b) {
+                b.floors = isNaN(parseInt(b.total_floor)) ? 1 : parseInt(b.total_floor);
+              });
+              r.data.data.sort(function (i1, i2) {
+                var n1 = getNumName(i1.name),
+                  n2 = getNumName(i2.name);
+                if (!isNaN(n1) && !isNaN(n2))
+                  return n1 - n2;
+                else if ((isNaN(n1) && !isNaN(n2)))
+                  return 1;
+                else if ((!isNaN(n1) && isNaN(n2)))
+                  return -1;
+                else
+                  return i1.name.localeCompare(i2.name);
+              });
+              return r.data.data;
+            });
           }
           //var s = this;
           //return $q(function (resolve,reject) {
