@@ -97,7 +97,10 @@
               nameTree.push(c.selected.$name);
               scope.value = c.selected.$id;
               scope.valueName = c.selected.$name;
+              if(scope.objectScope)
+                scope.objectScope.item = c.selected;
               c = scope.selectors[++i];
+
             }
             scope.idTree = idTree.join('>');
             scope.nameTree = nameTree.join('>');
