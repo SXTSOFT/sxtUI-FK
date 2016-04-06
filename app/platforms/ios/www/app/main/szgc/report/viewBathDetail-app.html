@@ -14,7 +14,7 @@
                         <td colspan="5">{{titol.RegionNameTree}}</td>
                     </tr>
                     <tr>
-                        <td >分项工程名称</td>
+                        <td>分项工程名称</td>
                         <td width="21%">{{titol.ProcedureName}}</td>
                         <td width="20%">检查日期</td>
                         <td>{{jlTitol.CheckDate}}</td>
@@ -144,17 +144,15 @@
             </div>
         </div>
     </div><div img-fancy>
-    <fieldset  sxt-image-view>
+    <fieldset  sxt-image-view is-container="true">
         <legend>原验收表扫描件</legend>
-        <sxt-images ng-model="data.selected.step.GroupImg" project="data.projectInfo" ></sxt-images>
+        <sxt-images  ng-model="data.selected.step.GroupImg" project="data.projectInfo" ></sxt-images>
 
     </fieldset>
-    <fieldset  sxt-image-view>
+    <fieldset  sxt-image-view is-container="true">
         <legend>附件</legend>
-        <sxt-images ng-model="data.selected.step.GroupImg2" project="data.projectInfo"></sxt-images>
+        <sxt-images  ng-model="data.selected.step.GroupImg2" project="data.projectInfo"></sxt-images>
     </fieldset></div>
 
-    <!--<div style="position:absolute; top:0px; right:0px;">-->
-        <!--<md-button class="md-fab md-mini" ng-click="vm.back()"><md-icon md-font-icon="icon-arrow-left"></md-icon></md-button>-->
-    <!--</div>-->
+
 </div>

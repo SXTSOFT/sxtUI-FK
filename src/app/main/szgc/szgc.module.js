@@ -199,6 +199,16 @@
         controller: 'AddProcessController as vm',
         templateUrl: 'app/main/szgc/ys/addProcess-app.html'
       })
+      .state('app.szgc.image', {
+        title:'添加图片',
+        url: '/jj',
+        views :{
+          'content@app':{
+            controller:'AddProcessController as vm',
+            templateUrl:'app/main/szgc/ys/uploadImages.html'
+          }
+        }
+      })
 
 
 

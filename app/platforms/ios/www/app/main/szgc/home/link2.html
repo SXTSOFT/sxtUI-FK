@@ -1,11 +1,11 @@
 <div flex layout="column" >
   <md-toolbar  id="subtoolbar">
     <div class="md-toolbar-tools">
-      <md-button aria-label="形象进度" ui-sref="app.szgc.jd2" style="min-width:10px!important;" flex>
-        形象进度
-      </md-button>
-      <span class="hr"></span>
-      <md-button aria-label="现场实景" sxt-image-view="vm.images" flex>
+      <!--<md-button aria-label="形象进度" ui-sref="app.szgc.jd2" style="min-width:10px!important;" flex>-->
+        <!--形象进度-->
+      <!--</md-button>-->
+      <!--<span class="hr"></span>-->
+      <md-button aria-label="现场实景" sxt-image-view="vm.images" flex ng-click="vm.showImg()">
         现场实景
       </md-button>
       <span class="hr"></span>
@@ -22,7 +22,8 @@
  <!-- <md-toolbar>
     形象进度、现场实景、质量总表、一户一档
   </md-toolbar>-->
- <sxt-pic-map flex pic-url="{{ vm.picUrl }}"></sxt-pic-map>
+ <!--<sxt-pic-map flex pic-url="{{ vm.picUrl }}"></sxt-pic-map>-->
+  <sxt-area-show flex project-id="vm.data.projectId" ></sxt-area-show>
   <!--<div style="position:fixed; top:55px; right:20px;">
     <md-button class="md-fab md-mini" ng-click="vm.back()">
       <md-icon md-font-icon="icon-arrow-left"></md-icon>

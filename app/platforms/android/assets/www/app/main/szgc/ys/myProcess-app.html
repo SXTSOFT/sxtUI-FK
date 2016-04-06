@@ -1,87 +1,222 @@
-﻿<md-tabs md-border-bottom flex layout="column">
-  <md-tab label="验收">
-    <md-tab-content flex layout-full fayout="column">
-      <md-content flex ng-hide="is('app.szgc.ys.add')">
-        <div class="menu-toggle-list" ng-show="!vm.searBarHide">
-          <sxt-projects-jd ng-model="project.pid" object-scope="vm" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
-            <md-list>
-              <md-subheader class="md-no-sticky">工序</md-subheader>
-              <md-list-item>
-                <sxt-procedure style="width:100%" ng-model="project.procedureId" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-procedure>
-                <!--<sxt-procedure-type style="width:100%;" ng-model="project.procedureTypeId"></sxt-procedure-type>-->
-              </md-list-item>
-              <!--<md-list-item>-->
-                <!--<sxt-select style="width:100%;" ng-model="project.procedureId" name-value="project.procedureName" sources="project.procedures" text-field="ProcedureName" value-field="ProcedureId"></sxt-select>-->
-              <!--</md-list-item>-->
-              <md-divider></md-divider>
-              <md-subheader class="md-no-sticky">验收状态</md-subheader>
-              <md-list-item ng-repeat="state in project.states">
-                <p> {{state.title}}({{state.c}})</p>
-                <md-checkbox class="md-secondary" ng-click="checkState(state)"  ng-checked="state.selected"></md-checkbox>
-              </md-list-item>
-            </md-list>
-          </sxt-projects-jd>
-          <div class="md-padding" layout="row">
 
-            <md-button type="submit" flex ng-click="vm.searBarHide=true"  class="md-raised md-primary"> 确定  </md-button>
-          </div>
-        </div>
-        <div class="table-responsive" ng-show="vm.searBarHide">
-          <table class="table table-striped datagrid m-b-small">
-            <thead>
-            <tr>
-              <th colspan="{{isPartner?9:12}}">项目总数：{{project.data.results.length}}；已检查：{{project.data.checkedCount}}；已完成：{{project.data.cmpCount}}；未合格：{{project.data.checkedCount-project.data.cmpCount}}；未检查：{{project.data.total-project.data.checkedCount}}</th>
-            </tr>
-            <tr>
-              <!--     <th>项目</th> -->
-              <th>部位</th>
-              <th>验收批</th>
-              <th>工序</th>
-              <th style="width: 50px;padding-left: 0px;padding-right: 0px;">已验</th>
-              <th style="width: 90px;padding-left: 0px;padding-right: 0px;">验收结果</th>
-              <th style="width: 65px;padding-left: 0px;padding-right: 0px;">合格率(%)</th>
-              <th style="width: 80px;padding-left: 0px;padding-right: 0px;">验收人</th>
-              <th style="width: 100px;padding-left: 0px;padding-right: 0px;">最后检查</th>
-              <th ng-if="!isPartner">万科</th>
-              <th ng-if="!isPartner" style="width: 80px;padding-left: 0px;padding-right: 0px;">抽查人</th>
-              <th ng-if="!isPartner" style="width: 100px;padding-left: 0px;padding-right: 0px;">抽查时间</th>
-              <th style="padding-left: 0px;padding-right: 0px;"  class="text-center">操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="item in project.rows">
-              <!-- <td>{{project.nameTree }} </td> -->
-              <td>{{item.$name}}</td>
-              <td>{{item.BatchNo}}<span ng-if="item.Remark">、{{item.Remark}}</span></td>
-              <td>{{project.procedureName}}</td>
-              <td>{{item.checkedCount==0?'否':item.checkedCount+'次'}}</td>
-              <td  style="color:{{item.color}};">
-                {{item.stateName}}
-              </td>
-              <td>{{item.MinPassRatio}}</td>
-              <td>{{item.CheckWorkerName}}</td>
-              <td>{{item.CheckDate}}</td>
-              <td ng-if="!isPartner">{{item.MinPassRatio1}}</td>
-              <td ng-if="!isPartner">{{item.CheckWorkerName1}}</td>
-              <td ng-if="!isPartner">{{item.CheckDate1}}</td>
-              <td class="text-center">
-                <a class="btn btn-white btn-xs" ng-if="isPartner " ui-sref="app.szgc.ys.add({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})">{{ item.checkedCount==0?'录入': '复验'}}</a>
-                <a class="btn btn-white btn-xs" ng-if="!isPartner && item.checkedCount && (!item.MinPassRatio1 || item.MinPassRatio1<80) " ui-sref="app.szgc.ys.add({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})">{{ item.CheckDate1?'复验': '抽验'}}</a>
-                <a class="btn btn-white btn-xs" ng-if="!isPartner && item.checkedCount && item.MinPassRatio1 && item.MinPassRatio1>=80" ui-sref="app.szgc.report.viewBath.view({bathid:item.BatchRelationId})" title="查看"></a>
-                <a class="btn btn-white btn-xs" ng-if="isPartner " ng-show="item.checkedCount" ui-sref="app.szgc.ys.add({projectid:item.$id,name:item.$name,batchId:'new',procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree,flag:true,project_item_id:item.project_item_id})">新增验收批</a>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </md-content>
-      <div ng-show="is('app.szgc.ys')" style="position: absolute; top:0px; right:0px;z-index:99;">
-        <md-button class="md-fab md-mini" ng-show="!vm.searBarHide && vm.isJdBack()" ng-click="vm.backJdSelect()">
-          <md-icon md-font-icon="icon-arrow-left"></md-icon>
-        </md-button>
-        <toggle-menu inst="vm.searBarHide"></toggle-menu></div>
-      <ui-view flex ng-show="is('app.szgc.ys.add')"></ui-view>
-    </md-tab-content>
-  </md-tab>
-</md-tabs>
+
+     <md-tabs md-border-bottom flex layout="column" style="display: block;">
+       <md-tab label="验收" >
+         <md-tab-content flex layout-fill layout="column">
+            <md-content flex layout="column" ng-hide="is('app.szgc.ys.add')" >
+              <div ng-show="!vm.searBarHide">
+              <div flex style="overflow: auto">
+                <sxt-projects-jd ng-model="project.pid" object-scope="vm" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
+                  <md-list>
+                    <md-subheader class="md-no-sticky">工序</md-subheader>
+                    <md-list-item>
+                      <sxt-procedure style="width:100%" ng-model="project.procedureId" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-procedure>
+                      <!--<sxt-procedure-type style="width:100%;" ng-model="project.procedureTypeId"></sxt-procedure-type>-->
+                    </md-list-item>
+                    <!--<md-list-item>-->
+                    <!--<sxt-select style="width:100%;" ng-model="project.procedureId" name-value="project.procedureName" sources="project.procedures" text-field="ProcedureName" value-field="ProcedureId"></sxt-select>-->
+                    <!--</md-list-item>-->
+                    <md-divider></md-divider>
+                    <md-subheader class="md-no-sticky">验收状态</md-subheader>
+                    <md-list-item ng-repeat="state in project.states">
+                      <p> {{state.title}}({{state.c}})</p>
+                      <md-checkbox class="md-secondary" ng-click="checkState(state)"  ng-checked="state.selected"></md-checkbox>
+                    </md-list-item>
+                  </md-list>
+                </sxt-projects-jd>
+                <div class="md-padding" layout="row">
+
+                  <md-button type="submit" flex ng-click="vm.searBarHide=true"  class="md-raised md-primary"> 确定  </md-button>
+                </div>
+              </div>
+              </div>
+              <div  ng-show="vm.searBarHide" flex layout="column">
+              <md-virtual-repeat-container id="vertical-container" flex>
+                <md-card md-virtual-repeat="item in project.rows" flex>
+
+                  <md-card-title>
+                    <md-card-title-text>
+                      <span class="md-headline">{{project.nameTree}}</span>
+
+                    </md-card-title-text>
+                  </md-card-title>
+
+                  <md-card-content>
+                    <md-list>
+                      <md-list-item class="secondary-button-padding">
+                        <p>部位</p>
+                        <p class="md-secondary" >{{item.$name}}</p>
+                      </md-list-item>
+                      <md-list-item class="secondary-button-padding">
+                        <p>验收批</p>
+                        <p class="md-secondary">{{item.BatchNo}}<span ng-if="item.Remark">、{{item.Remark}}</span></p>
+                      </md-list-item>
+                      <md-list-item class="secondary-button-padding">
+                        <p>工序</p>
+                        <p class="md-secondary">{{project.procedureName}}</p>
+                      </md-list-item>
+                      <md-list-item class="secondary-button-padding">
+                        <p>已验</p>
+                        <p class="md-secondary">{{item.checkedCount==0?'否':item.checkedCount+'次'}}</p>
+                      </md-list-item>
+                      <md-list-item class="secondary-button-padding">
+                        <p>验收结果</p>
+                        <p class="md-secondary" style="color:{{item.color}};">{{item.stateName}}</p>
+                      </md-list-item>
+                      <md-list-item class="secondary-button-padding">
+                        <p>合格率(%)</p>
+                        <p class="md-secondary">{{item.MinPassRatio}}</p>
+                      </md-list-item>
+                      <md-list-item class="secondary-button-padding">
+                        <p>验收人</p>
+                        <p class="md-secondary">{{item.CheckWorkerName}}</p>
+                      </md-list-item>
+                      <md-list-item class="secondary-button-padding">
+                        <p>最后检查</p>
+                        <p class="md-secondary">{{item.CheckDate}}</p>
+                      </md-list-item>
+                      <md-list-item class="secondary-button-padding">
+                        <p>万科</p>
+                        <p class="md-secondary" ng-if="!isPartner">{{item.MinPassRatio1}}</p>
+                      </md-list-item>
+                      <md-list-item class="secondary-button-padding">
+                        <p>抽查人</p>
+                        <p class="md-secondary" ng-if="!isPartner">{{item.CheckWorkerName1}}</p>
+                      </md-list-item>
+                      <md-list-item class="secondary-button-padding">
+                        <p>抽查时间</p>
+                        <p class="md-secondary" ng-if="!isPartner">{{item.CheckDate1}}</p>
+                      </md-list-item>
+                      <md-list-item class="secondary-button-padding">
+                        <p>操作</p>
+                        <p class="md-secondary">
+                          <a class="btn btn-white btn-xs" ng-if="isPartner " ui-sref="app.szgc.ys.add({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})">{{ item.checkedCount==0?'录入': '复验'}}</a>
+                          <a class="btn btn-white btn-xs" ng-if="!isPartner && item.checkedCount && (!item.MinPassRatio1 || item.MinPassRatio1<80) " ui-sref="app.szgc.ys.add({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})">{{ item.CheckDate1?'复验': '抽验'}}</a>
+                          <a class="btn btn-white btn-xs" ng-if="!isPartner && item.checkedCount && item.MinPassRatio1 && item.MinPassRatio1>=80" ui-sref="app.szgc.report.viewBath.view({bathid:item.BatchRelationId})" title="查看"></a>
+                          <a class="btn btn-white btn-xs" ng-if="isPartner " ng-show="item.checkedCount" ui-sref="app.szgc.ys.add({projectid:item.$id,name:item.$name,batchId:'new',procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree,flag:true,project_item_id:item.project_item_id})">新增验收批</a>
+
+                        </p>
+                      </md-list-item>
+                    </md-list>
+                  </md-card-content>
+                </md-card>
+              </md-virtual-repeat-container>
+
+              </div>
+            </md-content>
+            <div ng-show="is('app.szgc.ys')" style="position: absolute; top:0px; right:0px;z-index:99;">
+              <md-button class="md-fab md-mini" ng-show="!vm.searBarHide && vm.isJdBack()" ng-click="vm.backJdSelect()">
+                <md-icon md-font-icon="icon-arrow-left"></md-icon>
+              </md-button>
+              <toggle-menu inst="vm.searBarHide"></toggle-menu></div>
+            <ui-view flex ng-show="is('app.szgc.ys.add')"></ui-view>
+
+         </md-tab-content>
+       </md-tab>
+     </md-tabs>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<md-tabs md-border-bottom flex layout="column" style="display: none;">-->
+  <!--<md-tab label="验收">-->
+    <!--<md-tab-content flex layout-full fayout="column">-->
+      <!--<md-content flex ng-hide="is('app.szgc.ys.add')">-->
+        <!--<div class="menu-toggle-list" ng-show="!vm.searBarHide">-->
+          <!--<sxt-projects-jd ng-model="project.pid" object-scope="vm" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">-->
+            <!--<md-list>-->
+              <!--<md-subheader class="md-no-sticky">工序</md-subheader>-->
+              <!--<md-list-item>-->
+                <!--<sxt-procedure style="width:100%" ng-model="project.procedureId" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-procedure>-->
+                <!--&lt;!&ndash;<sxt-procedure-type style="width:100%;" ng-model="project.procedureTypeId"></sxt-procedure-type>&ndash;&gt;-->
+              <!--</md-list-item>-->
+              <!--&lt;!&ndash;<md-list-item>&ndash;&gt;-->
+                <!--&lt;!&ndash;<sxt-select style="width:100%;" ng-model="project.procedureId" name-value="project.procedureName" sources="project.procedures" text-field="ProcedureName" value-field="ProcedureId"></sxt-select>&ndash;&gt;-->
+              <!--&lt;!&ndash;</md-list-item>&ndash;&gt;-->
+              <!--<md-divider></md-divider>-->
+              <!--<md-subheader class="md-no-sticky">验收状态</md-subheader>-->
+              <!--<md-list-item ng-repeat="state in project.states">-->
+                <!--<p> {{state.title}}({{state.c}})</p>-->
+                <!--<md-checkbox class="md-secondary" ng-click="checkState(state)"  ng-checked="state.selected"></md-checkbox>-->
+              <!--</md-list-item>-->
+            <!--</md-list>-->
+          <!--</sxt-projects-jd>-->
+          <!--<div class="md-padding" layout="row">-->
+
+            <!--<md-button type="submit" flex ng-click="vm.searBarHide=true"  class="md-raised md-primary"> 确定  </md-button>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="table-responsive" ng-show="vm.searBarHide">-->
+          <!--<table class="table table-striped datagrid m-b-small">-->
+            <!--<thead>-->
+            <!--<tr>-->
+              <!--<th colspan="{{isPartner?9:12}}">项目总数：{{project.data.results.length}}；已检查：{{project.data.checkedCount}}；已完成：{{project.data.cmpCount}}；未合格：{{project.data.checkedCount-project.data.cmpCount}}；未检查：{{project.data.total-project.data.checkedCount}}</th>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--&lt;!&ndash;     <th>项目</th> &ndash;&gt;-->
+              <!--<th>部位</th>-->
+              <!--<th>验收批</th>-->
+              <!--<th>工序</th>-->
+              <!--<th style="width: 50px;padding-left: 0px;padding-right: 0px;">已验</th>-->
+              <!--<th style="width: 90px;padding-left: 0px;padding-right: 0px;">验收结果</th>-->
+              <!--<th style="width: 65px;padding-left: 0px;padding-right: 0px;">合格率(%)</th>-->
+              <!--<th style="width: 80px;padding-left: 0px;padding-right: 0px;">验收人</th>-->
+              <!--<th style="width: 100px;padding-left: 0px;padding-right: 0px;">最后检查</th>-->
+              <!--<th ng-if="!isPartner">万科</th>-->
+              <!--<th ng-if="!isPartner" style="width: 80px;padding-left: 0px;padding-right: 0px;">抽查人</th>-->
+              <!--<th ng-if="!isPartner" style="width: 100px;padding-left: 0px;padding-right: 0px;">抽查时间</th>-->
+              <!--<th style="padding-left: 0px;padding-right: 0px;"  class="text-center">操作</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr ng-repeat="item in project.rows">-->
+              <!--&lt;!&ndash; <td>{{project.nameTree }} </td> &ndash;&gt;-->
+              <!--<td>{{item.$name}}</td>-->
+              <!--<td>{{item.BatchNo}}<span ng-if="item.Remark">、{{item.Remark}}</span></td>-->
+              <!--<td>{{project.procedureName}}</td>-->
+              <!--<td>{{item.checkedCount==0?'否':item.checkedCount+'次'}}</td>-->
+              <!--<td  style="color:{{item.color}};">-->
+                <!--{{item.stateName}}-->
+              <!--</td>-->
+              <!--<td>{{item.MinPassRatio}}</td>-->
+              <!--<td>{{item.CheckWorkerName}}</td>-->
+              <!--<td>{{item.CheckDate}}</td>-->
+              <!--<td ng-if="!isPartner">{{item.MinPassRatio1}}</td>-->
+              <!--<td ng-if="!isPartner">{{item.CheckWorkerName1}}</td>-->
+              <!--<td ng-if="!isPartner">{{item.CheckDate1}}</td>-->
+              <!--<td class="text-center">-->
+                <!--<a class="btn btn-white btn-xs" ng-if="isPartner " ui-sref="app.szgc.ys.add({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})">{{ item.checkedCount==0?'录入': '复验'}}</a>-->
+                <!--<a class="btn btn-white btn-xs" ng-if="!isPartner && item.checkedCount && (!item.MinPassRatio1 || item.MinPassRatio1<80) " ui-sref="app.szgc.ys.add({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})">{{ item.CheckDate1?'复验': '抽验'}}</a>-->
+                <!--<a class="btn btn-white btn-xs" ng-if="!isPartner && item.checkedCount && item.MinPassRatio1 && item.MinPassRatio1>=80" ui-sref="app.szgc.report.viewBath.view({bathid:item.BatchRelationId})" title="查看"></a>-->
+                <!--<a class="btn btn-white btn-xs" ng-if="isPartner " ng-show="item.checkedCount" ui-sref="app.szgc.ys.add({projectid:item.$id,name:item.$name,batchId:'new',procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree,flag:true,project_item_id:item.project_item_id})">新增验收批</a>-->
+              <!--</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+          <!--</table>-->
+        <!--</div>-->
+      <!--</md-content>-->
+      <!--<div ng-show="is('app.szgc.ys')" style="position: absolute; top:0px; right:0px;z-index:99;">-->
+        <!--<md-button class="md-fab md-mini" ng-show="!vm.searBarHide && vm.isJdBack()" ng-click="vm.backJdSelect()">-->
+          <!--<md-icon md-font-icon="icon-arrow-left"></md-icon>-->
+        <!--</md-button>-->
+        <!--<toggle-menu inst="vm.searBarHide"></toggle-menu></div>-->
+      <!--<ui-view flex ng-show="is('app.szgc.ys.add')"></ui-view>-->
+    <!--</md-tab-content>-->
+  <!--</md-tab>-->
+<!--</md-tabs>-->
 
