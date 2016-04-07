@@ -72,7 +72,7 @@
         <div class="swiper-container"><div class="swiper-wrapper">')
           angular.forEach(imagedata, function (data) {
             var arl = data.url;
-            str.push('<div class="swiper-slide"><p><img src="' + arl + '"></p><div style="position:absolute;top:20px;left:20px; font-size:20px; color:white;text-shadow:2px 2px 3px #ff0000">' + (data.date?'日期：'+data.date:'') + '</div></div>');
+            str.push('<div class="swiper-slide"><p><img src="' + arl.replace('/s_','/') + '"></p><div style="position:absolute;top:20px;left:20px; font-size:20px; color:white;text-shadow:2px 2px 3px #ff0000">' + (data.date?'日期：'+data.date:'') + '</div></div>');
           });
           str.push('</div><div class="swiper-pagination"></div></div></div>');
           o = $(str.join('')).appendTo('body')
