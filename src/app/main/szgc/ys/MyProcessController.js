@@ -44,7 +44,8 @@
       states: [{
         id: -1,
         color: '',
-        title: '全部'
+        title: '全部',
+        selected: true,
       }, {
         id: 0,
         color: 'slategrey',
@@ -195,12 +196,36 @@
     };
     $scope.checkState = function(state) {
       if (state.id == -1) {
-        $scope.project.states.forEach(function(item) {
-          item.selected = true;
-        });
-        state.selected = false;
+        if(state.selected){
+          state.selected = false;
+          $scope.project.states.forEach(function(item) {
+            item.selected = false;
+          });
+        }else{
+          state.selected = true;
+          $scope.project.states.forEach(function(item) {
+            item.selected = true;
+          });
+        }
       } else {
         state.selected = !state.selected;
+        var newArr1 = angular.copy($scope.project.states);
+        var newArr = newArr1.splice(1,$scope.project.states.length-1);
+        var i=0;
+        newArr.forEach(function(item){
+          if(!item.selected){
+            i--;
+          }else{
+            i++;
+          }
+          if(i == newArr.length){
+            $scope.project.states[0].selected = true;
+          }else{
+            $scope.project.states[0].selected = false;
+          }
+
+        })
+
       }
       $scope.project.filter();
     };

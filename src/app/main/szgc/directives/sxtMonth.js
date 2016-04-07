@@ -14,7 +14,6 @@
         month: '=sxtMonth'
       },
       link: function (scope, element, attr, ctrl) {
-        console.log('month',scope.month)
         scope.$watch('month', function () {
           if (!scope.month) return;
           element.html();

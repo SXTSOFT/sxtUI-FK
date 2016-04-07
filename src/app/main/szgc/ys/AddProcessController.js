@@ -530,10 +530,10 @@ $scope.back = function(){
         utils.alert('请上传原验收表扫描件');
         return;
       }
-      utils.confirm(null, '确认向验收批：' + $scope.data.curHistory.BatchNo + ' 添加新记录吗?',
-        function() {
-          $scope._save(addForm);
-        })
+      utils.confirm(null, '确认向验收批：' + $scope.data.curHistory.BatchNo + ' 添加新记录吗?').then(function() {
+        $scope._save(addForm);
+      });
+
     }
 
 

@@ -19,11 +19,11 @@
         imageType: '=',
         roomType:'='
       },
-      template: '<div flex style="overflow: hidden;position:relative"><div style="line-height: 20px; left:0;width:100%;background:#fff;"><div class="btn-group" role="group" aria-label="">\
+      template: '<div flex style="overflow: hidden;position:relative"><div style="position:fixed;top:56px;line-height: 20px; left:0;width:100%;background:#fff;"><div class="btn-group" role="group" aria-label="">\
   <button type="button" class="btn btn-white" ng-click="add(-1)"><span class="glyphicon glyphicon-chevron-left"></span></button>\
   <button type="button" class="btn btn-white yearlabel" data-day="{{year}}-1-1" data-type="3">{{year}}</button>\
   <button type="button" class="btn btn-white" ng-click="add(1)"><span class="glyphicon glyphicon-chevron-right"></span></button>\
-</div> <button type="button"  class="btn btn-white yearlabel">全部</button><button type="button" ng-show="isLoading" class="btn btn-white"><i class="fa fa-refresh fa-spin"></i></button> </div><div flex style="overflow: auto" class="clear months"><div ng-repeat="m in months" sxt-month="m"></div><div class="clear"></div></div></div>',
+</div> <button type="button"  class="btn btn-white yearlabel">全部</button><button type="button" ng-show="isLoading" class="btn btn-white"><i class="fa fa-refresh fa-spin"></i></button> </div><div flex style="overflow: auto;margin-top:34px;" class="clear months"><div ng-repeat="m in months" sxt-month="m"></div><div class="clear"></div></div></div>',
       link: function (scope, element, attr, ctrl) {
         var map,curlay;
         element.addClass('sxtcalendar');
@@ -189,6 +189,11 @@
           pdiv = div; pday = day; pdayType = dayType;
           if (!div) return;
           var el = div.find('.content');
+          //$(element).on('touchmove',function(e){
+          //  console.log('a')
+          //  e.preventDefault();
+          //  e.stopPropagation();
+          //})
           el.css({
             overflow:'auto',
             height:(div.height()-40)
@@ -227,7 +232,7 @@
               images.forEach(function (img, i) {
                 str.push('<a href="javascript:void(0)" style="float:left;text-align:center;padding:5px;"><img gid="' + img.GroupId + '" style="height:120px" src="' + sxt.app.api + '/api/Files/thumb/120?path=' + img.Url + '" title="' + (img.partName ? '(' + img.partName + ') ' : '') + img.CreateDate + ' ' + (i + 1) + '/' + images.length + '" class="img-thumbnail" /><p>' + (img.partName ? '(' + img.partName + ') ' : '') + img.CreateDate + ' ' + (i + 1) + '/' + images.length + '</p></a>')
               });
-              str.push('</div>');
+              str.push('<div style="clear:both;display: block;"></div></div><div style="clear:both;display: block;"></div>');
               var o = $(str.join('')).appendTo(el);
               o.find('img').click(function (e) {
                 viewImage(scope.imageType == 2 ? $(this).attr('gid') : images, $('img', o).index($(e.target)), div, images);
@@ -428,19 +433,22 @@
         });
         element.on('click', ' div.months div.calendar-table', function (e) {
           var self = $(this), n = self.clone(), offset = self.position(), target = e.target;
+          var inHeight = $(window).height()- 100;
           //if (!$(target).hasClass('photo')) return;
+          $('.months').hide();
+          //console.log('ele',self.height(),$('.content>div').height())
           $('table',n).hide();
           n.addClass('hmonth');
           n.css({
-            position: 'absolute',
+            position:'relative', //'absolute',
             left: offset.left,
             width: self.width(),
-            height: self.height()
+            height: inHeight//self.height()
           }).appendTo(element).animate({
             width: element.width(),
-            height: element.height(),
+            height:element.height(),
             left: 0,
-            top: element.scrollTop(),
+            top:element.scrollTop(),
             margin:0
           }, function () {
             var table = $('table',n), div = $('<div style="display:none"><div class="btn-toolbar" style="border-bottom:2px solid rgb(101, 101, 101);padding:4px 10px;" role="toolbar"><div class="btn-group img-title" style="line-height:22px;font-weight:bold;"></div><div class="btn-group pull-right btn-group-xs" role="group"> <button type="button" class="btn btn-white btn-close">关闭</button></div></div><div class="content">正在加载……</div></div>');
@@ -452,6 +460,7 @@
             });
             div.find('.btn-toolbar button.btn-close').click(function () {
               div.hide();
+              $('.months').show();
               n.animate({
                 top: offset.top,
                 left: offset.left,
@@ -469,6 +478,7 @@
           });
         })
         element.on('click', ' button.btn_closeyear', function (e) {
+          //$('.months').show();
           scope.show = false;
           scope.$apply();
         });
