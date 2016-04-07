@@ -7,7 +7,7 @@
         .controller('LoginController', LoginController);
 
     /** @ngInject */
-    function LoginController(auth,utils)
+    function LoginController(auth,utils,appCookie)
     {
 
       var vm = this;
@@ -27,6 +27,16 @@
           })
         }
       }
+
+      var authObj = appCookie.get('auth');
+      console.log('auth',appCookie.get('auth'))
+      if(authObj) {
+        authObj = JSON.parse (authObj);
+        vm.form = authObj;
+        vm.login();
+      }
+
+
         //////////
     }
 })();

@@ -8,7 +8,7 @@
     .directive('sxtYear',sxtYear);
 
   /** @ngInject */
-  function sxtYear(utils, api, sxt,$q) {
+  function sxtYear(utils, api, sxt,$q,$mdDialog) {
     return {
       scope: {
         procedureId: '=',
@@ -293,7 +293,7 @@
 
                 $('.swiper-slide', o).height((iSh/2) + 'px');
                 $('.swiper-slide p', o).height((iSh/2) + 'px');//.css('line-height',iSh+'px');
-                $ ('.innermap', o).height (((iSh/2) - 20) + 'px');
+                $ ('.innermap', o).height ((iSh/2) + 'px');
                 $('.rotate',o).css({
                   top:(iSh/2)+10
                 });
@@ -370,6 +370,7 @@
                 }
               }
             });//'.swiper-container'
+
             o.find('.pic_close button').click(function () {
               //preview.destroy();
               //o.remove();
@@ -388,12 +389,13 @@
             //if ($(o).css('display')) {
             $(o.find('.swiper-container')[0]).not('.rotate').click(function (e) {
               if ($(e.target).hasClass('swiper-button-next') || $(e.target).hasClass('swiper-button-prev')) return;
-              preview.destroy();
+
+/*              preview.destroy();
               o.remove();
               map.remove();
               e.preventDefault();
               preview = o = null;
-              $('.piclayer').remove();
+              $('.piclayer').remove();*/
             })
             //}
           });
