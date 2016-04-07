@@ -66,6 +66,12 @@
             utils.alert('暂无图片')
             return;
           }
+          imagedata.sort(function(s1,s2){
+            if(s1.date && s2.date){
+              return s1.date.localeCompare(s2.date);
+            }
+            return 0;
+          })
           //console.log('img',img)
           var str = [];
           str.push('<div class="piclayer">\
