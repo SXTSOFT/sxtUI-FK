@@ -30,6 +30,7 @@
         }
         if ($mdMedia('sm'))
           scope.inst = true;
+        //scope.whenClick();
       }
     }
   }

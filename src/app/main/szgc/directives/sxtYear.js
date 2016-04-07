@@ -19,14 +19,15 @@
         imageType: '=',
         roomType:'='
       },
-      template: '<div><div class="btn-group" role="group" aria-label="">\
+      template: '<div flex style="overflow: hidden;position:relative"><div style="line-height: 20px; left:0;width:100%;background:#fff;"><div class="btn-group" role="group" aria-label="">\
   <button type="button" class="btn btn-white" ng-click="add(-1)"><span class="glyphicon glyphicon-chevron-left"></span></button>\
   <button type="button" class="btn btn-white yearlabel" data-day="{{year}}-1-1" data-type="3">{{year}}</button>\
   <button type="button" class="btn btn-white" ng-click="add(1)"><span class="glyphicon glyphicon-chevron-right"></span></button>\
-</div> <button type="button"  class="btn btn-white yearlabel">全部</button> <button type="button"  class="btn btn-white btn_closeyear pull-right">关闭</button> <button type="button" ng-show="isLoading" class="btn btn-white"><i class="fa fa-refresh fa-spin"></i></button> </div><div class="clear months"><div ng-repeat="m in months" sxt-month="m"></div><div class="clear"></div></div>',
+</div> <button type="button"  class="btn btn-white yearlabel">全部</button><button type="button" ng-show="isLoading" class="btn btn-white"><i class="fa fa-refresh fa-spin"></i></button> </div><div flex style="overflow: auto" class="clear months"><div ng-repeat="m in months" sxt-month="m"></div><div class="clear"></div></div></div>',
       link: function (scope, element, attr, ctrl) {
         var map,curlay;
         element.addClass('sxtcalendar');
+        //element.find('>div').height(element.height());
         scope.$watch('year', function () {
           if (!scope.year) return;
           scope.months = [];
@@ -148,7 +149,7 @@
                       scope.geo = layers;
                     });
                     api.szgc.FilesService.group(scope.bid + '-'+scope.roomType).then(function (response) {
-                      var file = null;;
+                      var file = null;
                       response.data.Files.forEach(function (mp) {
                         file = mp.Url;
                       });
@@ -188,7 +189,10 @@
           pdiv = div; pday = day; pdayType = dayType;
           if (!div) return;
           var el = div.find('.content');
-
+          el.css({
+            overflow:'auto',
+            height:(div.height()-40)
+          });
           if (!day && dayType != 4) {
             el.html('暂无照片');
           }
@@ -221,7 +225,7 @@
             if (images.length) {
               var str = ['<div>'];
               images.forEach(function (img, i) {
-                str.push('<a href="javascript:void(0)" style="float:left;text-align:center;padding:5px;"><img gid="' + img.GroupId + '" style="height:120px" src="' + appConfig.apiUrl + '/api/Files/thumb/120?path=' + img.Url + '" title="' + (img.partName ? '(' + img.partName + ') ' : '') + img.CreateDate + ' ' + (i + 1) + '/' + images.length + '" class="img-thumbnail" /><p>' + (img.partName ? '(' + img.partName + ') ' : '') + img.CreateDate + ' ' + (i + 1) + '/' + images.length + '</p></a>')
+                str.push('<a href="javascript:void(0)" style="float:left;text-align:center;padding:5px;"><img gid="' + img.GroupId + '" style="height:120px" src="' + sxt.app.api + '/api/Files/thumb/120?path=' + img.Url + '" title="' + (img.partName ? '(' + img.partName + ') ' : '') + img.CreateDate + ' ' + (i + 1) + '/' + images.length + '" class="img-thumbnail" /><p>' + (img.partName ? '(' + img.partName + ') ' : '') + img.CreateDate + ' ' + (i + 1) + '/' + images.length + '</p></a>')
               });
               str.push('</div>');
               var o = $(str.join('')).appendTo(el);
@@ -246,15 +250,15 @@
                 Files: gid
               }
             });
-          }) : FilesService.group('sub-' + gid)).then(function (r) {
+          }) : api.szgc.FilesService.group('sub-' + gid)).then(function (r) {
 
             var imagedata = r.data.Files;
             imagedata.splice(0, 0, images[defaultIndex]);
             var str = [];
-            str.push('<div class="piclayer"><div style="position:absolute;right:20px;top:20px;color:#fff;z-index:100000" class="rotate"><span style="margin-right:5px;font-size:16px;display:inline-block;vertical-align:top;">旋转</span><img width="30" src="/dp/Image/rotate2.png"></div>\
-        <div class="outermap" style="width:50%;float:left;background:#ddd; "><div class="innermap"></div><p style="text-align:center;font-size:16px;color:#000;height:80px;padding-top:10px;">' + scope.regionName + '</p></div><div class="imagesv" style="width:50%;float:right;"><div class="swiper-container"><div class="swiper-wrapper">')
+            str.push('<div class="piclayer"><div class="rotate" style="position:absolute;right:20px;top:20px;color:#fff;z-index:100000" class="rotate"><span style="margin-right:5px;font-size:16px;display:inline-block;vertical-align:top;">旋转</span><img width="30" src="assets/leaflet/images/rotate2.png"></div>\
+        <div class="outermap" style="width:50%;float:left;background:#ddd; "><div class="innermap"></div><p style="text-align:center;font-size:16px;color:#000;">' + scope.regionName + '</p></div><div class="imagesv" style="width:50%;float:right;"><div class="swiper-container"><div class="swiper-wrapper">')
             angular.forEach(imagedata, function (data) {
-              str.push('<div class="swiper-slide"><p><img gid="' + data.GroupId + '" src="' + appConfig.apiUrl + data.Url.substring(1).replace('/s_','/') + '"></p>' + (data.CreateDate ? '<div style="position:absolute;top:20px;left:20px; font-size:20px; color:white;text-shadow:2px 2px 3px #ff0000">日期：' + data.CreateDate + (data.partName ? '(' + data.partName + ')' : '') + (data.Remark ? '<div style="font-size:16px">'+data.Remark+'</div>' : '') + '</div>' : '') + '</div>');
+              str.push('<div class="swiper-slide"><p><img gid="' + data.GroupId + '" src="' + sxt.app.api + data.Url.substring(1).replace('/s_','/') + '"></p>' + (data.CreateDate ? '<div style="position:absolute;top:20px;left:20px; font-size:20px; color:white;text-shadow:2px 2px 3px #ff0000">日期：' + data.CreateDate + (data.partName ? '(' + data.partName + ')' : '') + (data.Remark ? '<div style="font-size:16px">'+data.Remark+'</div>' : '') + '</div>' : '') + '</div>');
             });
             str.push('</div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div><div class="swiper-pagination"></div></div></div></div>');
             var o = $(str.join('')).appendTo('body')
@@ -271,7 +275,32 @@
             $('.swiper-slide', o).height(iSh + 'px');
             $('.swiper-slide p', o).height(iSh + 'px');//.css('line-height',iSh+'px');
             if (scope.imageType == 2) {
-              $('.innermap', o).height((iSh - 80) + 'px');
+              if(iWidth<iHeight){
+                $('.outermap',o).css({
+                  width:'100%',
+                  top:0,
+                  height:iHeight/2,
+                  float:'none'
+                })
+                $('.imagesv',o).css({
+                  width:'100%',
+                  top:iHeight/2,
+                  height:iHeight/2,
+                  float:'none'
+                });
+                $('.swiper-container',o).width('100%');
+                $('.swiper-container', o).height((iSh/2) + 'px');
+
+                $('.swiper-slide', o).height((iSh/2) + 'px');
+                $('.swiper-slide p', o).height((iSh/2) + 'px');//.css('line-height',iSh+'px');
+                $ ('.innermap', o).height (((iSh/2) - 20) + 'px');
+                $('.rotate',o).css({
+                  top:(iSh/2)+10
+                });
+              }
+              else {
+                $ ('.innermap', o).height ((iSh - 80) + 'px');
+              }
               map = L.map($('.innermap', o)[0], {
                 crs: L.extend({}, L.CRS, {
                   projection: L.Projection.LonLat,
@@ -290,7 +319,7 @@
               });
 
               //layer = L.tileLayer(sxt.app.api + '/api/file/load?x={x}&y={y}&z={z}', {
-              L.tileLayer(appConfig.apiUrl + '/api/picMap/load/{z}_{x}_{y}.png?path=' + scope.file.replace('/s_', '/'), {
+              L.tileLayer(sxt.app.api + '/api/picMap/load/{z}_{x}_{y}.png?path=' + scope.file.replace('/s_', '/'), {
                 noWrap: true,
                 continuousWorld: false,
                 tileSize: 512
@@ -371,7 +400,7 @@
         }
         element.on('click', ' button.yearlabel', function (e) {
           $(this).blur();
-          var div = $('<div style="background:white"><div class="btn-toolbar" style="border-bottom:2px solid rgb(101, 101, 101);padding-bottom:5px" role="toolbar"><div class="btn-group img-title" style="line-height:22px;font-weight:bold;"></div><div class="btn-group pull-right btn-group-xs" role="group"> <button type="button" class="btn btn-white btn-close">关闭</button></div></div><div class="content">正在加载……</div></div>');
+          var div = $('<div style="background:white"><div class="btn-toolbar" style="border-bottom:2px solid rgb(101, 101, 101);padding:4px 10px" role="toolbar"><div class="btn-group img-title" style="line-height:22px;font-weight:bold; "></div><div class="btn-group pull-right btn-group-xs" role="group"> <button type="button" class="btn btn-white btn-close">关闭</button></div></div><div class="content">正在加载……</div></div>');
           div.css({
             position: 'absolute',
             top: 0,
@@ -400,10 +429,10 @@
         element.on('click', ' div.months div.calendar-table', function (e) {
           var self = $(this), n = self.clone(), offset = self.position(), target = e.target;
           //if (!$(target).hasClass('photo')) return;
+          $('table',n).hide();
           n.addClass('hmonth');
           n.css({
             position: 'absolute',
-            top: offset.top,
             left: offset.left,
             width: self.width(),
             height: self.height()
@@ -411,14 +440,14 @@
             width: element.width(),
             height: element.height(),
             left: 0,
-            top: 0,
+            top: element.scrollTop(),
             margin:0
           }, function () {
-            var table = $('table',n), div = $('<div style="display:none"><div class="btn-toolbar" style="border-bottom:2px solid rgb(101, 101, 101);padding-bottom:5px" role="toolbar"><div class="btn-group img-title" style="line-height:22px;font-weight:bold;"></div><div class="btn-group pull-right btn-group-xs" role="group"> <button type="button" class="btn btn-white btn-close">关闭</button></div></div><div class="content">正在加载……</div></div>');
+            var table = $('table',n), div = $('<div style="display:none"><div class="btn-toolbar" style="border-bottom:2px solid rgb(101, 101, 101);padding:4px 10px;" role="toolbar"><div class="btn-group img-title" style="line-height:22px;font-weight:bold;"></div><div class="btn-group pull-right btn-group-xs" role="group"> <button type="button" class="btn btn-white btn-close">关闭</button></div></div><div class="content">正在加载……</div></div>');
             div.appendTo(n);
-            table.css({ float: 'left' });
+            //table.css({ float: 'left' });
 
-            div.width(n.width() - table.width() - 30).css({ float: 'right' }).fadeIn(function () {
+            div.width(n.width()).fadeIn(function () {
               playImage(n, $(target).attr('data-day'), $(target).attr('data-type')||'1');
             });
             div.find('.btn-toolbar button.btn-close').click(function () {

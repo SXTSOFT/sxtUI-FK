@@ -382,3 +382,28 @@ img.cimages{
     }
   }
 }
+.sxtcalendar{
+  .calendar-table{
+    background: #fff;
+    th{
+      text-align: center;
+    }
+    td{
+      text-align: center;
+      p{
+        -webkit-margin-before: 0;
+        -webkit-margin-after: 0;
+        margin:0;
+      }
+      &.photo{
+        span{
+          padding: 5px;
+          background-color:red;
+          border-radius:100%;
+          color:white;
+          cursor:pointer;
+        }
+      }
+    }
+  }
+}
