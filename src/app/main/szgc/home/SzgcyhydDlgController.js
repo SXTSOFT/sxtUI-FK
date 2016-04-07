@@ -10,6 +10,7 @@
   /** @ngInject */
   function SzgcyhydDlgController(project,$mdDialog){
     var vm = this;
+    vm.project = project;
     vm.data={
       id:'5667277272f69e5c23094929',
       isShow:1,

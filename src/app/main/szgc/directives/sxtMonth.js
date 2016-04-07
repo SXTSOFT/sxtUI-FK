@@ -24,7 +24,7 @@
           //head
           element.addClass('calendar-table');
           //html.push('<div class="calendar-table">');
-          html.push('<table class="table-condensed">');
+          html.push('<table class="table-condensed" style="width: 100%;">');
           html.push('<thead><tr style="border-bottom:2px solid rgb(101, 101, 101);"><th></th><th colspan="5" style="cursor:pointer" data-day="' + m.format('YYYY-MM-1') + '" data-type="2" class="month">');
           html.push(m.format('YYYY年MM月'));
           html.push('</th><th></th></tr>');
@@ -36,7 +36,7 @@
 
               if (m.day() == j && m.month() == mt) {
                 html.push('<td data-day="' + ye + '-' + (mt+1) + '-' + m.date() + '" >');
-                html.push(m.date());
+                html.push('<span data-day="' + ye + '-' + (mt+1) + '-' + m.date() + '" >'+m.date()+'</span>');
                 m = m.add(1, 'd');
               }
               else {

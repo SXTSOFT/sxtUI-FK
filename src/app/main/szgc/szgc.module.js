@@ -122,8 +122,7 @@
         }
       })
       .state('app.szgc.yhyd',{
-        title :'一户一档',
-        url   :'/home/yhyd',
+        url   :'/home/yhyd/{pid}/{pname}',
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/link.html',
