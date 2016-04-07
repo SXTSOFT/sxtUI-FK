@@ -1,5 +1,5 @@
 <md-content flex layout="column" ng-show="!vm.searBarHide" class="menu-toggle-list">
-    <sxt-projects-jd ng-model="vm.project.pid" object-scope="vm" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" >
+    <sxt-projects-jd ng-model="vm.project.pid" object-scope="vm.project" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" >
       <div class="md-padding" layout="row">
         <md-button type="submit" ng-disabled="vm.project.type!=64" flex ng-click="vm.searBarHide=true"  class="md-raised md-primary"> 确定  </md-button>
       </div></sxt-projects-jd>
@@ -18,13 +18,13 @@
         <h3>房屋装修图纸</h3>
       </md-grid-tile-footer>
     </md-grid-tile>
-    <md-grid-tile ng-click="vm.play(2)">
+    <md-grid-tile ng-click="vm.playN(2)">
       <img src="assets/images/icon/icon-3.png" />
       <md-grid-tile-footer>
         <h3>隐蔽工程照片</h3>
       </md-grid-tile-footer>
     </md-grid-tile>
-    <md-grid-tile ng-disabled="true">
+    <md-grid-tile  ng-click="vm.playN(3)">
       <img src="assets/images/icon/icon-4.png" />
       <md-grid-tile-footer >
         <h3>质量验收记录</h3>

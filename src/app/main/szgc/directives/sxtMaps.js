@@ -35,37 +35,39 @@
         layer.addTo(map);
         var mks = [];
         api.szgc.ProjectExService.query(4).then(function (result) {
-          scope.markers = [];
-
-          result.data.Rows.forEach(function (row) {
-            //console.log('makers2', row)
-            if (row.Latitude && row.Longitude) {
-              scope.markers.push({
-                projectId: row.ProjectId,
-                title: row.ProjectNo,
-                lat: row.Latitude,
-                lng: row.Longitude,
-                center: function () {
-                  map.setView(new L.latLng([row.Latitude, row.Longitude]))
-                }
-              })
-            }
-          });
-          var parentGroup = markerCulster.markerClusterGroup();
-          angular.forEach(scope.markers, function (o, k) {
-            var mk = L
-              .marker([o.lat, o.lng], L.extend({
-                icon: L.icon({
-                  iconUrl: 'assets/leaflet/images/M.png',
-                  iconSize: [24, 24],
-                  iconAnchor: [12, 12]
+          api.szgc.vanke.projects().then(function (r2) {
+            scope.markers = [];
+            result.data.Rows.forEach(function (row) {
+              if (row.Latitude && row.Longitude && r2.data.data.find(function (a) { return a.project_id == row.ProjectId; }) != null) {
+                scope.markers.push({
+                  projectId: row.ProjectId,
+                  title: row.ProjectNo,
+                  lat: row.Latitude,
+                  lng: row.Longitude,
+                  pinyin: Pinyin.getPinyinArrayFirst(row.ProjectNo).join(''),
+                  center: function () {
+                    map.setView(new L.latLng([row.Latitude, row.Longitude]),14)
+                  }
                 })
-              }, o))
-              .on('click', markerClick);
-            mks.push(mk);
-            parentGroup.addLayer(mk);
+              }
+            });
+            var parentGroup = L.markerClusterGroup();
+            angular.forEach(scope.markers, function (o, k) {
+              var mk = L
+                .marker([o.lat, o.lng], L.extend({
+                  icon: L.icon({
+                    iconUrl: 'assets/leaflet/images/M.png',
+                    iconSize: [24, 24],
+                    iconAnchor: [12, 12]
+                  })
+                }, o))
+                .on('click', markerClick);
+              mks.push(mk);
+              parentGroup.addLayer(mk);
+
+            });
+            parentGroup.addTo(map);
           });
-          parentGroup.addTo(map);
 
         });
         map.on('zoomend', function (e) {

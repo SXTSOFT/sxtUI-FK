@@ -9,14 +9,11 @@
     .controller('SzgcyhydController', SzgcyhydController);
 
   /** @ngInject */
-  function SzgcyhydController(api,$stateParams,$rootScope,$scope,utils)
+  function SzgcyhydController(api,$mdDialog,$rootScope,$scope,utils,$stateParams,appCookie)
   {
 
     var vm = this;
-
-    vm.back = function(){
-      history.back();
-    }
+    vm.project ={};
     vm.showImg = function () {
       $rootScope.$emit('sxtImageViewAll',{data:true});
     }
@@ -24,6 +21,7 @@
       projectId: $stateParams.pid,
       projectName:$stateParams.pname
     };
+    appCookie.put('projects',JSON.stringify([{project_id:$stateParams.pid,name:$stateParams.pname}]))
     //vm.$parent.data.pname = vm.data.projectName;
     $rootScope.title = vm.data.projectName;
 
@@ -79,6 +77,39 @@
       if(vm.project.partion)
         play();
     })
+
+
+    var whenBack = function(e,data){
+      if(vm.showPlayer || vm.searBarHide ){
+        data.cancel = true;
+        if(vm.showPlayer){
+          vm.showPlayer =false;
+        }
+        else if(vm.searBarHide){
+          vm.searBarHide = false;
+        }
+      }
+    }
+    $scope.$on('goBack',whenBack);
+    vm.playN = function(n){
+      $mdDialog.show({
+          locals:{
+            project:vm.project
+          },
+          controller: 'SzgcyhydDlgController as vm',
+          templateUrl: 'app/main/szgc/home/SzgcyhydDlg.html',
+          parent: angular.element(document.body),
+          clickOutsideToClose:true,
+          fullscreen: true
+        })
+        .then(function(answer) {
+
+        }, function() {
+
+        });
+    }
+    //vm.playN();
+
   }
 
 })();

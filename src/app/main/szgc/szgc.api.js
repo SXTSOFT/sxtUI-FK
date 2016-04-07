@@ -105,8 +105,8 @@
         update: function (file) {
           return $http.put('/api/Files/' + file.Id, file);
         },
-        GetPrjFilesByFilter: function (regionId, procedureID, partionId) {
-          return $http.get($http.url('/api/Files/' + regionId+'/GetPrjFilesByFilter', { procedureID: procedureID, partionId: partionId }));
+        GetPrjFilesByFilter: function (regionId, args) {
+          return $http.get($http.url('/api/Files/' + regionId+'/GetPrjFilesByFilter', args));
         },
         GetPartionId: function () {
           return $q.$q(function (resolve) {
@@ -161,6 +161,9 @@
         },
         building2: function (projectid) {
           return $http.get('/api/ProjectEx/building2?projectid=' + projectid);
+        },
+        queryById:function(projectId){
+          return $http.get('/api/ProjectEx?projectId=' + projectId);
         }
       },
       sxtHouseService:{

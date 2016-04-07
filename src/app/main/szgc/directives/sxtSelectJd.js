@@ -140,6 +140,9 @@
           }
         };
         scope.item_selected = function (item, index, noSync) {
+          if(index==0){
+            $rootScope.title = item.$name;
+          }
           var cnt = scope.selectors[index];
           cnt.selected = item;
           var next = scope.selectors[index + 1];

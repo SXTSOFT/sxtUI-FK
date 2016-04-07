@@ -148,6 +148,7 @@
               }
               break;
             default:
+              init = false;
               return scope.onChange ? scope.onQuery(index, st, value) : null;
           }
         }
