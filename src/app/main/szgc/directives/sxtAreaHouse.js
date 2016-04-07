@@ -8,7 +8,7 @@
     .directive('sxtAreaHouse',sxtAreaHouse);
 
   /** @ngInject */
-  function sxtAreaHouse($timeout,$rootScope,api,sxt,$mdDialog){
+  function sxtAreaHouse($timeout,$rootScope,api,sxt,$mdDialog,$http){
     return {
       scope: {
         show:'=',
