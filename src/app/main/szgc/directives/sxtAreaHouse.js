@@ -248,7 +248,6 @@
                           saveToPhotoAlbum: false,
                           correctOrientation: true
                         }).then (function (imageData) {
-
                           if (imageData) {
                             //var image = document.createElement ('img');
                             //image.src = "data:image/jpeg;base64," + imageData;
