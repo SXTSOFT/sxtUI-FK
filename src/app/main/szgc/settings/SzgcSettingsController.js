@@ -9,10 +9,13 @@
     .controller('SzgcSettingsController',SzgcSettingsController);
 
   /** @ngInject */
-  function SzgcSettingsController(profile){
+  function SzgcSettingsController(profile,auth){
 
     var vm = this;
     vm.profile = profile.data.data;
+    vm.logout = function(){
+      auth.logout();
+    }
     console.log('profile',profile);
   }
 })();
