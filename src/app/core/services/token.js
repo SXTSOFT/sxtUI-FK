@@ -28,8 +28,8 @@
     }
 
     function getToken(){
-      if(!token)
-        token = $cookies.get('token');
+      //if(!token)
+      //  token = $cookies.get('token');
       return token;
     }
 

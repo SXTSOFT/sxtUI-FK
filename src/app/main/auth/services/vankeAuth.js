@@ -7,13 +7,15 @@
     .factory('vankeAuth', vankeAuth);
 
   /** @ngInject */
-  function vankeAuth($http,$q,appConfig,sxt)
+  function vankeAuth($http,$q,appConfig,sxt,appCookie,$rootScope)
   {
     var service = {
       token   : token,
       profile : profile
     };
-
+    $rootScope.$on('user:logout',function(){
+      appCookie.remove('auth');
+    })
     return service;
 
     function token(user){
@@ -38,13 +40,16 @@
             data: user
           }).then (function (result) {
             if(result) {
+              appCookie.put('auth',JSON.stringify(user));
               var token = result.data;
               resolve(token);
             }
             else{
+              appCookie.remove('auth');
               reject({})
             }
           },function(){
+            appCookie.remove('auth');
             resolve(user);
           });
           //
@@ -57,6 +62,7 @@
 
     function profile(token){
       if(!sxt.connection.isOnline())return token;
+
       if(!token || !token.username) {
         return $q (function (resolve, reject) {
           $http
