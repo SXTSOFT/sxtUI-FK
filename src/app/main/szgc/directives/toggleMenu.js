@@ -28,8 +28,8 @@
 
           }
         }
-        if ($mdMedia('sm'))
-          scope.inst = true;
+        //if($mdMedia('sm'))
+          scope.inst = false;
         //scope.whenClick();
       }
     }
