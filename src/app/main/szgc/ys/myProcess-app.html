@@ -135,11 +135,16 @@
 
 <md-tabs md-border-bottom flex layout="column">
   <md-tab label="验收">
-    <md-tab-content flex layout-full fayout="column">
-      <md-content flex ng-hide="is('app.szgc.ys.add')">
+    <md-tab-content flex layout-full layout="column">
+      <md-content flex layout="column" ng-hide="is('app.szgc.ys.add')||is('app.szgc.ys.upload')" >
         <div class="menu-toggle-list" ng-show="!vm.searBarHide">
-          <sxt-projects-jd ng-model="project.pid" object-scope="vm" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
-            <md-list>
+
+
+              <sxt-projects-jd ng-model="project.pid" object-scope="project" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
+                              <div class="md-padding" layout="row" ng-show="project.type==64">
+                               <md-button type="submit" flex ui-sref="app.szgc.ys.upload({projectid:project.pid,name:project.typeName,type:project.item.type,idTree:project.idTree,nameTree:project.nameTree})" class="md-raised md-primary"> 隐蔽工程照片  </md-button>
+                              </div>
+                <md-list>
               <md-subheader class="md-no-sticky">工序</md-subheader>
               <md-list-item>
                 <sxt-procedure style="width:100%" ng-model="project.procedureId" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-procedure>
@@ -215,7 +220,8 @@
           <md-icon md-font-icon="icon-arrow-left"></md-icon>
         </md-button>
         <toggle-menu inst="vm.searBarHide"></toggle-menu></div>
-      <ui-view flex ng-show="is('app.szgc.ys.add')"></ui-view>
+      <ui-view layout="column" flex ng-show="is('app.szgc.ys.add')||is('app.szgc.ys.upload')"></ui-view>
+
     </md-tab-content>
   </md-tab>
 </md-tabs>

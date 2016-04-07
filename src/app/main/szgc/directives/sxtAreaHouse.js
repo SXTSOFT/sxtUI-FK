@@ -281,7 +281,7 @@
                         $mdDialog.hide ();
                         //$state.go ('app.szgc.tzg', {pid: options.pid})
                       };
-                      //$scope.photo ();
+                      $scope.photo ();
                     },
                     template: '<md-dialog aria-label="添加拍照"  ng-cloak><form><md-toolbar ><div class="md-toolbar-tools"><h2>{{title || \'拍照\'}}</h2></div></md-toolbar>\
                   <md-dialog-content><div class="md-dialog-content" >\
