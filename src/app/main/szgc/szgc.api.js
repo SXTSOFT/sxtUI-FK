@@ -5,7 +5,6 @@
   'use strict';
 
   angular
-
     .module('app.szgc')
     .config(config)
   /** @anInject */
@@ -166,6 +165,17 @@
           return $http.get('/api/ProjectEx?projectId=' + projectId);
         }
       },
+      grpFitRateService:{
+        getGrpFitRateByFiter: function (prjIds, skillIds, fromDate, toDate) {
+          return $http.post("/api/Report/GetGrpFitRateByFiter/", { SkillIds: skillIds, FromDate: fromDate, ToDate: toDate, PrjIds: prjIds });
+        }
+      },
+      parentCompanyFitRateByFiter:{
+        getParentCompanyFitRateByFiter: function (prjIds, fromDate, toDate) {
+          return $http.post("/api/Report/GetParentCompanyFitRateByFiter/", { PrjIds: prjIds,FromDate: fromDate, ToDate: toDate });
+        }
+      },
+
       sxtHouseService:{
         getZ: function (totalW, totalH, m, w, h) {
           var x;

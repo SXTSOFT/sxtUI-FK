@@ -159,6 +159,38 @@
         controller: 'batchCountController as vm',
         templateUrl: 'app/main/szgc/report/batchCount-app.html'
       })
+      .state('app.szgc.report.batchRaio', {
+        title :'班组验收合格率对比',
+        url:'/batchRaio',
+        controller: 'batchRaioController as vm',
+        templateUrl: 'app/main/szgc/report/batchRaio-app.html',
+        resolve: {
+          _projects:['api',function(api){
+            return api.szgc.vanke.projects({
+              page_size: 1000,
+              page_number: 1
+            })
+          }],
+          _skills:['api',function(api){
+            console.log('api',api)
+            return api.szgc.vanke.skills({ page_number: 1, page_size: 10000 });
+          }]
+        }
+      })
+      .state('app.szgc.report.allRaio', {
+        title:'总承包单位验收合格率',
+        url:'/allRaio',
+        controller: 'allRaioController as vm',
+        templateUrl: 'app/main/szgc/report/allRaio-app.html',
+        resolve: {
+          _projects:['api',function(api){
+            return api.szgc.vanke.projects({
+              page_size: 1000,
+              page_number: 1
+            })
+          }]
+        }
+      })
       .state('app.szgc.report.projectMasterList', {
         title:'项目班组总览表',
         url:'/projectMasterList',
