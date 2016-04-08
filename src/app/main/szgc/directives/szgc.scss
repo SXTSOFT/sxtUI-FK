@@ -433,3 +433,8 @@ md-content{
 
   }
 }
+.md-toolbar-tools{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow:ellipsis;
+}

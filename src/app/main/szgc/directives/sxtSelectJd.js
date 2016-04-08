@@ -167,6 +167,12 @@
               }
             });
           }
+          else{
+            syncValue();
+            if(!$rootScope.$$phase){
+              scope.$apply();
+            }
+          }
         }
         scope.onQuery(0, newSt, scope.value,scope).then(function (result) {
           scope.selectors.push(result);
