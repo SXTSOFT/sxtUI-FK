@@ -3,11 +3,10 @@
         <sxt-projects-jd ng-model="vm.project.pid" object-scope="vm" levels="0" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree">
 
           <div layout="row" class="newinput">
-            <div flex-gt-sm flex>
+            <div flex="50" style="text-align: center">
               从<md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间"></md-datepicker>
             </div>
-            <spacer flex="2"></spacer>
-            <div flex-gt-sm flex>
+            <div flex style="text-align: center">
               至<md-datepicker ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间"></md-datepicker>
             </div>
           </div>
