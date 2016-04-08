@@ -106,7 +106,9 @@
             scope.nameTree = nameTree.join('>');
           }
           scope.onChange && scope.onChange(scope);
-
+          if(!$rootScope.$$phase){
+            scope.$apply();
+          }
         }
         if(scope.objectScope){
           scope.objectScope.backJdSelect = function(){
@@ -128,7 +130,7 @@
           scope.selectors.splice(index + 1, scope.selectors.length);
           scope.selectors[index].selected = null;
           syncValue();
-          var q = scope.onQuery(index, newSt, scope.selectors.length > 1 ? scope.selectors[index - 1].selected.$id : null);
+          var q = scope.onQuery(index, newSt, scope.selectors.length > 1 ? scope.selectors[index - 1].selected.$id : null,scope);
           if (q) {
             q.then(function (result) {
               var next = result;
@@ -149,7 +151,7 @@
           if (noSync !== false)
             syncValue();
 
-          var q = scope.onQuery(index + 1, newSt, item.$id);
+          var q = scope.onQuery(index + 1, newSt, item.$id,scope);
           if (q) {
             q.then(function (result) {
               var next = result;
@@ -166,7 +168,7 @@
             });
           }
         }
-        scope.onQuery(0, newSt, scope.value).then(function (result) {
+        scope.onQuery(0, newSt, scope.value,scope).then(function (result) {
           scope.selectors.push(result);
           if (result.selected)
             scope.item_selected(result.selected, scope.selectors.length - 1, false);

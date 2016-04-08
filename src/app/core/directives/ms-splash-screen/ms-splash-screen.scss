@@ -1,11 +1,11 @@
 #splash-screen {
+    background:url('../app/main/auth/login/bg.jpg')!important;
     display: block;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #3C4252;
     z-index: 99999;
 
     &.ng-leave {
@@ -21,14 +21,13 @@
         display: block;
         width: 100%;
         position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 95px;
     }
 
     .logo {
-        width: 96px;
-        height: 96px;
-        line-height: 96px;
+        width: 151px;
+        height: 151px;
+        line-height: 151px;
         margin: 0 auto 48px auto;
         font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
         font-size: 56px;
