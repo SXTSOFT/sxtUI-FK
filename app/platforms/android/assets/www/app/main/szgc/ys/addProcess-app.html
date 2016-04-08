@@ -55,7 +55,7 @@
                 <div> <small></small></div>
                 <sxt-images ng-model="data.curStep.GroupImg" files="data.pics" project="data.projectInfo" edit="true"></sxt-images>
                 <!--<files ng-model="data.curStep.GroupImg"></files>-->
-                <div class="clearfix"></div>
+                <div class="clearfix" style="clear:both;display: block;"></div>
                 <span class="fs-display-1 display-block">附件</span>
                 <div> <small></small></div>
                 <sxt-images ng-model="data.curStep.GroupImg2"  project="data.projectInfo" edit="true"></sxt-images>
@@ -90,7 +90,7 @@
                   </md-input-container>
                   <md-input-container class="md-block">
                     <label>合格率</label>
-                    <input  type="number" ng-disabled="!n.checked" step="0.01"  ng-model="n.PassRatio" >
+                    <input  type="number" ng-disabled="!n.checked" step="0.01" max="100.0"  ng-model="n.PassRatio" >
                   </md-input-container>
                   <md-input-container class="md-block">
                     <label>最大偏差</label>

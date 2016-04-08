@@ -8,6 +8,7 @@
     .module('app.szgc')
     .directive('sxtImageView',sxtImageViewDirective);
 
+  var def;
   /** @ngInject */
   function sxtImageViewDirective($rootScope, api, $q,utils) {
     return {
@@ -19,12 +20,12 @@
     }
 
     function link(scope, element, attr, ctrl) {
-      var preview, o,def,player;
+      var viewer, o,player;
       player = function (a, e) {
         if(def)return;
         def=true;
-        if (preview)
-          preview.destroy();
+        if (viewer)
+          viewer.destroy();
         if (o)
           o.remove();
 
@@ -82,13 +83,13 @@
           str.push('</ul>');
           o = $(str.join('')).appendTo('body')
 
-          var viewer = new Viewer(o[0],{
-            navbar:false,
+          viewer = new Viewer(o[0],{
             button:true,
             scalable:false,
             hide:function(){
               viewer.destroy();
               o.remove();
+              def =false;
             },
             build:function(){
 
@@ -98,7 +99,7 @@
 
         });
         scope.$on('$destroy', function () {
-
+          def =false;
         });
       };
       $rootScope.$on('sxtImageView',player);
