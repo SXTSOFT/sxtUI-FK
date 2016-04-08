@@ -22,6 +22,7 @@
         var scale = getRelativeScale(e.gesture.scale);
         $.Velocity.hook($('#floorlayer'), 'scale', scale);
         e.preventDefault();
+        e.stopPropagation();
        //$('#floorlayer').css('zoom',scale);
         //console.log('pinch',e)
       }
@@ -31,6 +32,7 @@
        // $('#floorlayer').css('zoom',scale);
         $.Velocity.hook($('#floorlayer'), 'scale', scale);
         e.preventDefault();
+        e.stopPropagation();
         //console.log('pinchmove')
         //var scale = $(element).css();
       }
@@ -38,6 +40,7 @@
         currentScale = getRelativeScale(e.gesture.scale);
         e.preventDefault();
         //console.log('pinchend')
+        e.stopPropagation();
       }
 
       function getRelativeScale(scale) {
@@ -69,6 +72,7 @@
         //console.log('xx',x,y)
         //console.log('x',e,e.gesture.deltaX,deltax)
         e.preventDefault();
+        e.stopPropagation();
         //element.children().css({
         //  'left' : x + 'px',
         //  'top' : y + 'px'
@@ -80,6 +84,7 @@
         lasty=deltay;// + e.gesture.deltaX;
         //console.log('dragend',deltax)
         e.preventDefault();
+        e.stopPropagation();
       }
     }
   }

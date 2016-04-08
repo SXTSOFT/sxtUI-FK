@@ -341,7 +341,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                 conf.data.push({
                   color: datapoint.color,
                   value: datapoint.y,
-                  name: datapoint.x
+                  name:datapoint.x
                 });
               });
               conf = angular.extend(conf, {
@@ -350,7 +350,8 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                   normal: {
                     label: {
                       show: true,
-                      position: 'top'
+                      color: '#fff',
+                      position: 'inside'
                     },
                     color: function (conf) {
                       if (conf.data != null && conf.data.color != undefined) {

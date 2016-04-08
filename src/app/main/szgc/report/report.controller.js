@@ -26,6 +26,7 @@
         name: $state.is('app.szgc.report.viewBath')?'质量总表':
           $state.is('app.szgc.report.projectMasterList') ? '项目班组总览表' :
             $state.is('app.szgc.report.batchCount') ? '项目填报情况统计表' :
+              $state.is('app.szgc.report.batchRaio') ? '班组验收合格率对比' :
               '报表详细'
       });
     }
