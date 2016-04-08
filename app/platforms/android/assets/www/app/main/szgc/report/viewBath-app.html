@@ -22,64 +22,109 @@
   </div>
   </div>
     </md-content>
-    <md-content flex class="md-padding"  ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')" layout="column" flex>
+    <md-content class="md-padding"  ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')" layout="column" flex>
       <md-virtual-repeat-container id="vertical-container" flex>
-        <md-card md-virtual-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey} " flex>
+        <div class="simple-table-container md-whiteframe-4dp">
+          <table class="simple" ms-responsive-table>
+            <thead>
+            <tr>
+              <th>班组</th>
+              <th>班组首验(%)</th>
+              <th>班组再验(%)</th>
+              <th>监理员</th>
+              <th>查验时间</th>
+              <th>万科抽检(%)</th>
+              <th>符合率(%)</th>
+              <th>检查员</th>
+              <th>查验时间</th>
+              <th>操作</th>
+            </tr>
+            </thead>
 
-            <md-card-title>
-                <md-card-title-text>
-                    <span class="md-headline">{{ item.RegionNameTree}} {{item.RegionName}}</span>
-                    <p>{{item.ProcedureName}}</p>
-                </md-card-title-text>
-            </md-card-title>
+            <tfoot>
+            <tr>
+              <td></td>
+            </tr>
+            </tfoot>
 
-            <md-card-content>
-                <md-list>
-                    <md-list-item class="secondary-button-padding">
-                        <p>班组</p>
-                        <p class="md-secondary" >{{item.GrpWokerName | filterGrpWokerName}}</p>
-                    </md-list-item>
-                    <md-list-item class="secondary-button-padding">
-                        <p>班组首验(%)</p>
-                        <p class="md-secondary">{{item.JLFirst}}</p>
-                    </md-list-item>
-                    <md-list-item class="secondary-button-padding">
-                        <p>班组再验(%)</p>
-                        <p class="md-secondary">{{item.JLLast}}</p>
-                    </md-list-item>
-                    <md-list-item class="secondary-button-padding">
-                        <p>监理员</p>
-                        <p class="md-secondary">{{item.JLUser}}</p>
-                    </md-list-item>
-                    <md-list-item class="secondary-button-padding">
-                        <p>查验时间</p>
-                        <p class="md-secondary">{{item.JLDate}}</p>
-                    </md-list-item>
-                    <md-list-item class="secondary-button-padding">
-                        <p>万科抽检(%)</p>
-                        <p class="md-secondary">{{item.WKLast}}</p>
-                    </md-list-item>
-                    <md-list-item class="secondary-button-padding">
-                        <p>符合率(%)</p>
-                        <p class="md-secondary">{{item.AccordRatio}}</p>
-                    </md-list-item>
-                    <md-list-item class="secondary-button-padding">
-                        <p>检查员</p>
-                        <p class="md-secondary">{{item.WKLastUser}}</p>
-                    </md-list-item>
-                    <md-list-item class="secondary-button-padding">
-                        <p>查验时间</p>
-                        <p class="md-secondary">{{item.VKDate}}</p>
-                    </md-list-item>
-                </md-list>
-            </md-card-content>
-            <md-card-actions layout="row" layout-align="end center">
-                    <md-button class="md-raised" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">
-                        查看
-                    </md-button>
-            </md-card-actions>
-        </md-card>
+            <tbody>
+            <tr ng-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey}">
+              <td class="name">{{item.GrpWokerName | filterGrpWokerName}}</td>
+              <td class="position">{{item.JLFirst}}</td>
+              <td class="name">{{item.JLLast}}</td>
+              <td class="position">{{item.JLUser}}</td>
+              <td class="name">{{item.JLDate}}</td>
+              <td class="position">{{item.WKLast}}</td>
+              <td class="name">{{item.AccordRatio}}</td>
+              <td class="position">{{item.WKLastUser}}</td>
+              <td class="name">{{item.VKDate}}</td>
+              <td class="office">
+                <a class="btn btn-white btn-xs" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">
+                查看
+                </a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <!--<md-card md-virtual-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey} " flex>-->
+
+            <!--<md-card-title>-->
+                <!--<md-card-title-text>-->
+                    <!--<span class="md-headline">{{ item.RegionNameTree}} {{item.RegionName}}</span>-->
+                    <!--<p>{{item.ProcedureName}}</p>-->
+                <!--</md-card-title-text>-->
+            <!--</md-card-title>-->
+
+            <!--<md-card-content>-->
+                <!--<md-list>-->
+                    <!--<md-list-item class="secondary-button-padding">-->
+                        <!--<p>班组</p>-->
+                        <!--<p class="md-secondary" >{{item.GrpWokerName | filterGrpWokerName}}</p>-->
+                    <!--</md-list-item>-->
+                    <!--<md-list-item class="secondary-button-padding">-->
+                        <!--<p>班组首验(%)</p>-->
+                        <!--<p class="md-secondary">{{item.JLFirst}}</p>-->
+                    <!--</md-list-item>-->
+                    <!--<md-list-item class="secondary-button-padding">-->
+                        <!--<p>班组再验(%)</p>-->
+                        <!--<p class="md-secondary">{{item.JLLast}}</p>-->
+                    <!--</md-list-item>-->
+                    <!--<md-list-item class="secondary-button-padding">-->
+                        <!--<p>监理员</p>-->
+                        <!--<p class="md-secondary">{{item.JLUser}}</p>-->
+                    <!--</md-list-item>-->
+                    <!--<md-list-item class="secondary-button-padding">-->
+                        <!--<p>查验时间</p>-->
+                        <!--<p class="md-secondary">{{item.JLDate}}</p>-->
+                    <!--</md-list-item>-->
+                    <!--<md-list-item class="secondary-button-padding">-->
+                        <!--<p>万科抽检(%)</p>-->
+                        <!--<p class="md-secondary">{{item.WKLast}}</p>-->
+                    <!--</md-list-item>-->
+                    <!--<md-list-item class="secondary-button-padding">-->
+                        <!--<p>符合率(%)</p>-->
+                        <!--<p class="md-secondary">{{item.AccordRatio}}</p>-->
+                    <!--</md-list-item>-->
+                    <!--<md-list-item class="secondary-button-padding">-->
+                        <!--<p>检查员</p>-->
+                        <!--<p class="md-secondary">{{item.WKLastUser}}</p>-->
+                    <!--</md-list-item>-->
+                    <!--<md-list-item class="secondary-button-padding">-->
+                        <!--<p>查验时间</p>-->
+                        <!--<p class="md-secondary">{{item.VKDate}}</p>-->
+                    <!--</md-list-item>-->
+                <!--</md-list>-->
+            <!--</md-card-content>-->
+            <!--<md-card-actions layout="row" layout-align="end center">-->
+                    <!--<md-button class="md-raised" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">-->
+                        <!--查看-->
+                    <!--</md-button>-->
+            <!--</md-card-actions>-->
+        <!--</md-card>-->
+        <p ng-if="vm.norecords" style="text-align: center;font-size: 1.3rem;margin-top: 10px ;">暂无数据</p>
         </md-virtual-repeat-container>
+
     </md-content>
   <div style="position: absolute; top:0px; right:0px;">
     <md-button class="md-fab md-mini" ng-show="!vm.searBarHide && vm.isJdBack()" ng-click="vm.backJdSelect()">

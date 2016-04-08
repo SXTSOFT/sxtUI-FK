@@ -395,12 +395,12 @@
             $(o.find('.swiper-container')[0]).not('.rotate').click(function (e) {
               if ($(e.target).hasClass('swiper-button-next') || $(e.target).hasClass('swiper-button-prev')) return;
 
-/*              preview.destroy();
+              preview.destroy();
               o.remove();
               map.remove();
               e.preventDefault();
               preview = o = null;
-              $('.piclayer').remove();*/
+              $('.piclayer').remove();
             })
             //}
           });
