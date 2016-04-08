@@ -1,21 +1,33 @@
+#login{
+  background:url('../app/main/auth/login/bg.jpg');
+  #login-form-wrapper{
+    background:url('../app/main/auth/login/vanke.png') no-repeat  center 596px;
+    background-size: 100% auto;
+  }
+
+}
+
 #login-form{
 
-   width: 300px;
+  width: 295px;
+  height: 525px;
+
 
   .logo{
     margin-top: 25px;
     text-align: center;
     img{
-      width:96px;
+      width:151px;
     }
   }
 
   .login-name{
     background: white;
-    border: 1px solid silver;
+    border: 1px solid #c1c1c1;
     padding: 0 15px;
     margin: 30px 0 20px 0;
-    width: 100%;
+    width: 295px;
+    border-radius: 10px;
   }
 
   md-input-container{
@@ -50,32 +62,16 @@
   .md-errors-spacer{
     display: none;
   }
-}
-@media screen and (max-width: $layout-breakpoint-xs) {
 
-  #login {
+  button.login{
+    height: 44px!important;
+    width: 295px!important;
+    background:url('../app/main/auth/login/btn.png') no-repeat;
+    background-size: contain;
+    font-size: 18px;
+    color:white;
+    letter-spacing: 7px;
+    text-shadow: 1px 1px 1px #666666;
 
-    #login-form-wrapper {
-
-      #login-form {
-        width: 100%;
-
-        form {
-
-          .md-button {
-            width: 90%;
-          }
-        }
-
-        .md-button {
-
-          &.google,
-          &.facebook {
-            width: 80%;
-          }
-        }
-      }
-    }
   }
-
 }

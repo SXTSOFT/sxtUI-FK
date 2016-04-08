@@ -68,7 +68,7 @@
           cookie = cookie ? JSON.parse(cookie) : null;
         } catch (e) { }
         //console.log('getcookie',cookie);
-        scope.onQueryInner = function (index, st, value) {
+        scope.onQueryInner = function (index, st, value,innerScope) {
           switch (index) {
             case 0:
 
@@ -77,6 +77,7 @@
               }
               else {
                 init = false;
+                innerScope && scope.onChanged(innerScope);
                 return api.szgc.vanke.projects({ page_size: 1000, page_number: 1 }).then(function (result) {
                   var s = new st(index, 'project_id', 'name', result.data.data, '项目');
                   scope.onQueryed && scope.onQueryed(s);
@@ -90,6 +91,7 @@
               }
               else {
                 init = false;
+                innerScope && scope.onChanged(innerScope);
                 return api.szgc.vanke.project_items({ page_number: 1, page_size: 10, project_id: value }).then(function (result) {
                   var s = new st(index, 'project_item_id', 'name', result.data.data, '分期');
                   scope.onQueryed && scope.onQueryed(s);
@@ -104,6 +106,7 @@
               }
               else {
                 init = false;
+                innerScope && scope.onChanged(innerScope);
                 return api.szgc.vanke.buildings({ page_number: 1, page_size: 10, project_item_id: value }).then(function (result) {
                   //scope.onQueryed && scope.onQueryed(result.data);
                   var s = new st(index, 'building_id', 'name', result.data.data, '楼栋');
@@ -119,6 +122,7 @@
               }
               else {
                 init = false;
+                innerScope && scope.onChanged(innerScope);
                 return api.szgc.vanke.floors(value).then(function (result) {
                   scope.onQueryed && scope.onQueryed(result.data);
                   var data = [];
@@ -139,6 +143,7 @@
               }
               else {
                 init = false;
+                innerScope && scope.onChanged(innerScope);
                 return api.szgc.vanke.rooms({ page_number: 1, page_size: 1000, building_id: value.split('-')[0], floor: value.split('-')[1] }).then(function (result) {
                   //scope.onQueryed && scope.onQueryed(result.data);
                   var s = new st(index, 'room_id', 'name', result.data.data, '户');
@@ -149,6 +154,7 @@
               break;
             default:
               init = false;
+              innerScope && scope.onChanged(innerScope);
               return scope.onChange ? scope.onQuery(index, st, value) : null;
           }
         }

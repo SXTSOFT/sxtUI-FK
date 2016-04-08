@@ -389,8 +389,8 @@
     return o;
 
     function view(src) {
-/*      var h = $ (window).height ();
-      var dlg = $ ('<div class="imageViewer js-imageViewer" data-magnifyingGlass="false"></div>');
+      /*var h = $ (window).height ();
+      var dlg = $ ('<div></div>');
       dlg.css ({
         width: '100%',
         position: 'absolute',
@@ -400,11 +400,19 @@
         overflow: 'hidden',
         zIndex: 100000
       }).appendTo (document.body);
-      dlg.html ('<div class="imageViewer js-imageViewer" data-magnifyingGlass="false">     <div class="imageViewer-container js-imageViewer-container">         <div class="imageViewer-container-base js-imageViewer-base">             <img src="https://placekitten.com/g/2000/2000" data-imageViewerLg="https://placekitten.com/g/2000/2000" alt="" class="imageViewer-container-base-img js-imageViewer-img">         </div>     </div> </div>');
+      dlg.html ('<div  class="Viewer" style="width: 100%;height: 100%;bottom: top:0; background: #0a0a0a;"><img src="https://placekitten.com/g/2000/2000"  alt="" ></div>' +
+        '<div class="btn" style="position: absolute;z-index:100000;top:10px;right:10px; "><img class="rotate" width="30" src="assets/leaflet/images/rotate2.png"></div>');
 
-
-      var imageViewer = new ImageViewerView(dlg.find('.imageViewer'));*/
-
+      dlg.find('.Viewer img').smartZoom({containerClass:'Viewer'});
+      var i = 0;
+      dlg.find('.btn .rotate').click(function(e){
+        var deg = 90 * (++i);
+        var vcss = dlg.find('.Viewer img').css('transform');
+        console.log(dlg.find('.Viewer img').css('transform'))
+        dlg.find('.Viewer img').rotate( deg );
+        if(i>3)i=0;
+      })
+*/
     }
   }
 })();
