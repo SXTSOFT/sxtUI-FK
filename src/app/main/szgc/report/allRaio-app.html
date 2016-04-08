@@ -1,0 +1,71 @@
+<md-content flex layout="column" ng-show="!vm.searBarHide" class="menu-toggle-list">
+  <div flex style="overflow: auto">
+    <div layout="row" style="background:#fff;font-size:14px;">
+      <p class="md-padding" style="margin-bottom: 0;">项目</p>
+    </div>
+    <div class="md-padding">
+      <fieldset class="demo-fieldset" >
+        <div layout="row" layout-wrap flex>
+          <div flex-xs flex="50">
+            <md-checkbox aria-label="全选"
+                         aria-label="Select All"
+                         ng-checked="vm.isChecked"
+                         ng-click="vm.toggleAll()">
+              <span>全选</span>
+            </md-checkbox>
+          </div>
+          <div class="demo-select-all-checkboxes" flex="100" ng-repeat="item in vm.projects">
+            <md-checkbox ng-checked="item.selected" ng-click="vm.toggle(item)">
+              {{ item.name }}
+            </md-checkbox>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    从  <md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间"></md-datepicker>
+    至   <md-datepicker ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间"></md-datepicker>
+
+
+    <div class="md-padding" layout="row">
+
+      <md-button type="submit" flex ng-click="vm.postData()"  class="md-raised md-primary"> 确定  </md-button>
+    </div>
+
+
+  </div>
+</md-content>
+<md-content flex ng-show="vm.searBarHide">
+  <div layout="row">
+    <div id="report" style="height:350px;width:100%">
+      <bar-chart  config="vm.data.config" data="vm.data.data" style="height:350px;"></bar-chart>
+    </div>
+
+  </div>
+  <div class="simple-table-container md-whiteframe-4dp">
+    <table class="simple" ms-responsive-table>
+      <thead>
+      <tr>
+        <th>公司名称</th>
+        <th>合格率(%)</th>
+      </tr>
+      </thead>
+
+      <tfoot>
+      <tr>
+        <td></td>
+      </tr>
+      </tfoot>
+
+      <tbody>
+      <tr ng-repeat="item in vm.reportData">
+        <td class="name">{{item.ParentCompanyName}}</td>
+        <td class="position">{{item.rate}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</md-content>
+<div style="position: absolute; top:0px; right:0px;">
+  <toggle-menu inst="vm.searBarHide"></toggle-menu></div>
+

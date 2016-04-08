@@ -63,6 +63,9 @@
         _projects: http.custom(function (arg) {
           return get(http.url('/common/v1/projects', arg));
         }),
+        //getGrpFitRateByFiter: function (prjIds, skillIds, fromDate, toDate) {
+        //  return $http.post("/api/Report/GetGrpFitRateByFiter/", { SkillIds: skillIds, FromDate: fromDate, ToDate: toDate, PrjIds: prjIds });
+        //},
         projects: http.custom(function (arg) {
           var me = this;
           if (!me.isPartner(1)) {
