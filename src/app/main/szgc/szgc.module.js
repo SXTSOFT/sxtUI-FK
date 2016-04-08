@@ -48,24 +48,34 @@
             resolve:{
               builds:['$stateParams', 'api','$q',function($stateParams, api,$q){
                 return $q(function(resolve){
-                  api.szgc.vanke.buildingsInfo($stateParams.projectType, $stateParams.itemId).then(function (data) {
-                    api.szgc.ProjectExService.building($stateParams.pid + '>' + $stateParams.itemId).then(function (data2) {
-                      var mx = 0;
-                      data.data.data.forEach(function (item) {
-                        item.floors = item.total_floor;
-                        if (mx < item.total_floor)
-                          mx = item.floors;
-                        var fd = data2.data.Rows.find(function (it) { return it.RegionId == item.building_id; }) || {};
-                        item.gx1 = fd.gx1||0;
-                        item.gx2 = fd.gx2 || 0;
-                        item.summary = fd.AreaRemark || '';
+                  api.szgc.ProjectExService.queryPno($stateParams.pid).then(function (exs) {
+                    api.szgc.vanke.buildingsInfo ($stateParams.projectType, $stateParams.itemId).then (function (data) {
+                      api.szgc.ProjectExService.building ($stateParams.pid + '>' + $stateParams.itemId).then (function (data2) {
+                        var mx = 0;
+                        data.data.data.forEach (function (item) {
+                          item.floors = item.total_floor;
+                          if (mx < item.total_floor)
+                            mx = item.floors;
+                          var fd = data2.data.Rows.find (function (it) {
+                              return it.RegionId == item.building_id;
+                            }) || {};
+                          item.gx1 = fd.gx1 || 0;
+                          item.gx2 = fd.gx2 || 0;
+                          item.summary = fd.AreaRemark || '';
+                          var sel = exs.data.Rows.find(function (it) { return it.ProjectId == item.building_id; });
+                          item.sellLine = parseInt((sel && sel.SellLine) ? (sel.SellLine.indexOf('%') == -1 ? parseInt(sel.SellLine) :
+                          parseFloat(sel.SellLine.replace('%', '')) / 100 * item.floors) : -1000);
+                          if (isNaN(item.sellLine)) {
+                            item.sellLine = -1000;
+                          }
+                        });
+                        resolve ({
+                          floorNum: mx,
+                          builds: data.data.data
+                        });
                       });
-                      resolve({
-                        floorNum:mx,
-                        builds:data.data.data
-                      });
-                    });
-                  })
+                    })
+                  });
                 })
               }]
             }

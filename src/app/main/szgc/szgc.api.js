@@ -155,6 +155,9 @@
         query: function (status) {
           return $http.get('/api/ProjectEx?status=' + status);
         },
+        queryPno: function (pno) {
+          return $http.get('/api/ProjectEx?pno=' + pno);
+        },
         building: function (projectid) {
           return $http.get('/api/ProjectEx/building?projectid=' + projectid);
         },

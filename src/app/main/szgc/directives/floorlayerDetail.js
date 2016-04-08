@@ -27,7 +27,7 @@
       scope.$watch('bdetailData', function () {
         if (!scope.bdetailData) return;
 
-        var sellLine = parseInt(scope.sellLine * scope.floorData.floors), gx1 = scope.floorData.gx1, gx2 = scope.floorData.gx2;
+        var sellLine = scope.floorData.sellLine, gx1 = scope.floorData.gx1, gx2 = scope.floorData.gx2;
         if (gx1 > scope.floorData.floors) gx1 = scope.floorData.floors;
         if (gx2 > scope.floorData.floors) gx2 = scope.floorData.floors;
         //var _floorData = [scope.floorNum, scope.floorData.floors, 20, 10, sellLine, scope.floorData.name]

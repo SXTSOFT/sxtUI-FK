@@ -22,11 +22,11 @@
     function link(scope, element, attr, ctrl) {
       var viewer, o,player;
       player = function (a, e) {
-        if(def)return;
-        def=true;
         $timeout(function(){
           def = false;
-        },1000)
+        },1000);
+        if(def)return;
+        def=true;
         if (viewer)
           viewer.destroy();
         if (o)
