@@ -17,7 +17,7 @@
       vm.login = function(loginForm){
 
         console.log('login',vm.form);
-        if(!vm.form.username || !vm.form.password){
+        if(!vm.form.username || !vm.form.password || vm.form.username=='' || vm.form.password==''){
           utils.tips('请输入用户名密码');
         }
         else {
