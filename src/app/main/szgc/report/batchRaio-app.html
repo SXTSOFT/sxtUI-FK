@@ -1,7 +1,9 @@
 <md-content flex layout="column" ng-show="!vm.searBarHide" class="menu-toggle-list">
   <div flex style="overflow: auto">
+    <div layout="row" style="background:#fff;font-size:14px;">
+      <p class="md-padding" style="margin-bottom: 0;">项目</p>
+    </div>
     <div class="md-padding">
-      <div layout="row" class="md-padding">项目</div>
       <fieldset class="demo-fieldset" >
         <div layout="row" layout-wrap flex>
 
@@ -25,7 +27,9 @@
       从  <md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间"></md-datepicker>
       至   <md-datepicker ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间"></md-datepicker>
 
-    <div layout="row" class="md-padding">班组</div>
+    <div layout="row" style="background:#fff;font-size:14px;">
+      <p class="md-padding" style="margin-bottom: 0;">班组</p>
+    </div>
     <div layout="row" class="md-padding">
 
       <div layout="row" layout-wrap flex>
@@ -72,7 +76,7 @@
       <thead>
       <tr>
         <th>班组</th>
-        <th>合格率</th>
+        <th>合格率(%)</th>
       </tr>
       </thead>
 
