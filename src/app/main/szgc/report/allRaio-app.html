@@ -22,9 +22,14 @@
         </div>
       </fieldset>
     </div>
-
-    从  <md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间"></md-datepicker>
-    至   <md-datepicker ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间"></md-datepicker>
+    <div layout="row" class="newinput">
+      <div flex="50" style="text-align: center">
+        从 <md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间"></md-datepicker>
+      </div>
+      <div flex style="text-align: center">
+          至 <md-datepicker ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间"></md-datepicker>
+      </div>
+    </div>
 
 
     <div class="md-padding" layout="row">
@@ -39,6 +44,7 @@
   <div layout="row">
     <div id="report" style="height:350px;width:100%">
       <bar-chart  config="vm.data.config" data="vm.data.data" style="height:350px;"></bar-chart>
+      <!--<bar-y id="main" legend="vm.legend" item="vm.item" data="vm.data1" style="height:350px;width:100%"></bar-y>-->
     </div>
 
   </div>
