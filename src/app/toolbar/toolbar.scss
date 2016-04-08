@@ -10,6 +10,18 @@
   max-height: 49px;
 
 }
+.newinput{
+  .md-button{
+    &.md-icon-button{
+      margin:0;
+    }
+  }
+  padding-left: 14px;
+  .md-datepicker-input{
+    min-width: 80px;
+    width:100%;
+  }
+}
 #toolbar {
   height: 64px;
   min-height: 64px;

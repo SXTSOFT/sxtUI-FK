@@ -24,8 +24,15 @@
       </fieldset>
     </div>
 
-      从  <md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间"></md-datepicker>
-      至   <md-datepicker ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间"></md-datepicker>
+    <div layout="row" class="newinput">
+      <div flex-gt-sm flex>
+        从 <md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间"></md-datepicker>
+      </div>
+      <spacer flex="2"></spacer>
+      <div flex-gt-sm flex>
+        至 <md-datepicker ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间"></md-datepicker>
+      </div>
+    </div>
 
     <div layout="row" style="background:#fff;font-size:14px;">
       <p class="md-padding" style="margin-bottom: 0;">班组</p>

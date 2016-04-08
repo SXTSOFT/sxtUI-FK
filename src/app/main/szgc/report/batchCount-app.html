@@ -2,8 +2,15 @@
   <div flex style="overflow: auto">
         <sxt-projects-jd ng-model="vm.project.pid" object-scope="vm" levels="0" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree">
 
-            从  <md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间"></md-datepicker>
-            至   <md-datepicker ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间"></md-datepicker>
+          <div layout="row" class="newinput">
+            <div flex-gt-sm flex>
+              从<md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间"></md-datepicker>
+            </div>
+            <spacer flex="2"></spacer>
+            <div flex-gt-sm flex>
+              至<md-datepicker ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间"></md-datepicker>
+            </div>
+          </div>
 
         </sxt-projects-jd>
   <div class="md-padding" layout="row">
