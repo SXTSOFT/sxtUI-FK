@@ -54,7 +54,7 @@
               if (scope.procedureId && (!file.gx || file.gx.indexOf(scope.procedureId) == -1)) return;
               if (scope.partion && scope.partion.Id && file.GroupId.indexOf('-' + scope.partion.Id + '-14') == -1) return;
               scope.allfilter.push(file);
-              var date = moment(file.CreateDate);
+              var date = moment(file.CreateDate,'YYYY-MM-DD');
               if (date.year() == scope.year) {
                 var days = scope.months[date.month()].d;
                 var day = days.find(function (dy) { return dy.day == date.date(); });
@@ -176,7 +176,7 @@
         var pdiv, pday,pdayType, playImage = function (div, day,dayType) {
           if (!div && pdiv) {
             if (pday && pday != '') {
-              var m = moment(pday),
+              var m = moment(pday,'YYYY-M-D'),
                 mt = m.month() + 1,
                 ye = m.year();
               $('[data-day]', pdiv).removeClass('photo');
@@ -197,7 +197,7 @@
             el.html('暂无照片');
           }
           else {
-            var m = moment(day), images = [];
+            var m = moment(day,'YYYY-M-D'), images = [];
             switch (dayType) {
               case '1':
                 var fd = scope.months[m.month()].d.find(function (dy) { return dy.day == m.date(); });
