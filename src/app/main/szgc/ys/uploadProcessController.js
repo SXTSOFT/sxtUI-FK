@@ -14,7 +14,7 @@
     $scope.project = {
       files: []
     }
-    $scope.project.pid = $stateParams.projectid;
+    $scope.project.pid = $stateParams.idTree;
     $scope.project.bid = $stateParams.idTree.split('>')[1];
     $scope.project.gid = $scope.project.bid + '-' + $stateParams.type;
 

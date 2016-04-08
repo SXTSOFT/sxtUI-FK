@@ -16,7 +16,8 @@
         gid: '=',
         upload: '@',
         oid: '=',
-        oName:'='
+        oName:'=',
+        pid:'='
       },
       link: function (scope, element, attrs, ctrl) {
         var map, layer, apiLayer, drawControl;
@@ -210,7 +211,6 @@
               }
             }).addTo (map);
             map.on ('click', function (e) {
-              console.log(e);
               var p = e.latlng,
                 eb;
               apiLayer.eachLayer(function (layer) {
@@ -231,9 +231,14 @@
                 };
                 $mdDialog.show({
                     locals:{
-                      options:layer.options
+                      options:scope
                     },
                     controller: function($scope, $mdDialog,options,$cordovaCamera) {
+                      $scope.project={
+                        fid:options.pid.replace(/\>/g, '-') + '-' + options.oid,
+                        sid:'sub-'+options.pid.replace(/\>/g, '-') + '-' + options.oid,
+                      };
+                      console.log('sc',$scope.project)
                       $scope.photo = function ($event) {
                         if ($event) {
                           $event.preventDefault ();
@@ -284,11 +289,17 @@
                     },
                     template: '<md-dialog aria-label="添加拍照"  ng-cloak><form><md-toolbar ><div class="md-toolbar-tools"><h2>{{title || \'拍照\'}}</h2></div></md-toolbar>\
                   <md-dialog-content><div class="md-dialog-content" >\
-                <img width="120" class="cimages" ng-repeat="img in images" ng-src="{{img.Url|fileurl}}" /></div></md-dialog-content>\
+                <fieldset>\
+                    <legend>总体</legend>\
+                    <sxt-images edit="true" ng-model="project.fid" single="true"></sxt-images>\
+                  </fieldset>\
+                  <fieldset>\
+                  <legend>细部</legend>\
+                  <sxt-images edit="true" ng-model="project.sid"></sxt-images>\
+                  </fieldset>\
+                </div>\
+                </md-dialog-content>\
                 <md-dialog-actions layout="row" style="border-top:solid 2px red">\
-                <md-button  class="md-raised" ng-click="photo($event)" >\
-                    添加 \
-                  </md-button>\
               <span flex></span>\
                 <md-button  class="md-raised" ng-click="answer()"  md-autofocus style="margin-right:20px;">确定</md-button>\
                   </md-dialog-actions>\

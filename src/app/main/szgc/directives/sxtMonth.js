@@ -18,7 +18,7 @@
         scope.$watch('month', function () {
           if (!scope.month) return;
           element.html();
-          var m = moment(scope.month.m),
+          var m = moment(scope.month.m,'YYYY-M-D'),
             mt = m.month(), ye = m.year();
           var html = [];
           //head
@@ -52,7 +52,7 @@
         });
         scope.$watchCollection('month.d', function () {
           if (!scope.month.d) return;
-          var m = moment(scope.month.m),
+          var m = moment(scope.month.m,'YYYY-M-d'),
             mt = m.month()+1, ye = m.year();
           $('[data-day]',element).removeClass('photo');
           scope.month.d.forEach(function (d) {
