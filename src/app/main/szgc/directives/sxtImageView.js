@@ -92,6 +92,7 @@
             hide:function(){
               viewer.destroy();
               o.remove();
+              viewer = o=null;
               def =false;
             },
             build:function(){
@@ -102,6 +103,11 @@
 
         });
         scope.$on('$destroy', function () {
+          if (viewer)
+            viewer.destroy();
+          if (o)
+            o.remove();
+          viewer = o=null;
           def =false;
         });
       };
