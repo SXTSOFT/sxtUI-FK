@@ -10,7 +10,7 @@
 
   var def;
   /** @ngInject */
-  function sxtImageViewDirective($rootScope, api, $q,utils) {
+  function sxtImageViewDirective($rootScope, api, $q,utils,$timeout) {
     return {
       restrict: 'EA',
       link: link,
@@ -24,6 +24,9 @@
       player = function (a, e) {
         if(def)return;
         def=true;
+        $timeout(function(){
+          def = false;
+        },1000)
         if (viewer)
           viewer.destroy();
         if (o)

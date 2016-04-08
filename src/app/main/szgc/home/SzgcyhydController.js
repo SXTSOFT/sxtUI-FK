@@ -92,21 +92,29 @@
     }
     $scope.$on('goBack',whenBack);
     vm.playN = function(n){
-      $mdDialog.show({
-          locals:{
-            project:vm.project
-          },
-          controller: 'SzgcyhydDlgController as vm',
-          templateUrl: 'app/main/szgc/home/SzgcyhydDlg.html',
-          parent: angular.element(document.body),
-          clickOutsideToClose:true,
-          fullscreen: true
-        })
-        .then(function(answer) {
+      api.szgc.FilesService.GetPrjFilesByFilter(vm.project.pid, { imageType: n }).then(function(r){
+        if(r.data.Rows.length==0){
+          utils.alert('暂无照片');
+        }
+        else {
+          $mdDialog.show ({
+              locals: {
+                project: vm.project
+              },
+              controller: 'SzgcyhydDlgController as vm',
+              templateUrl: 'app/main/szgc/home/SzgcyhydDlg.html',
+              parent: angular.element (document.body),
+              clickOutsideToClose: true,
+              fullscreen: true
+            })
+            .then (function (answer) {
 
-        }, function() {
+            }, function () {
 
-        });
+            });
+        }
+      })
+
     }
     //vm.playN();
 
