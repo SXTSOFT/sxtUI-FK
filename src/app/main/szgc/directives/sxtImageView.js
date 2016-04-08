@@ -66,53 +66,39 @@
             utils.alert('暂无图片')
             return;
           }
+          imagedata.sort(function(s1,s2){
+            if(s1.date && s2.date){
+              return s1.date.localeCompare(s2.date);
+            }
+            return 0;
+          })
           //console.log('img',img)
           var str = [];
-          str.push('<div class="piclayer">\
-        <div class="swiper-container"><div class="swiper-wrapper">')
+          str.push('<ul>')
           angular.forEach(imagedata, function (data) {
             var arl = data.url;
-            str.push('<div class="swiper-slide"><p><img src="' + arl.replace('/s_','/') + '"></p><div style="position:absolute;top:20px;left:20px; font-size:20px; color:white;text-shadow:2px 2px 3px #ff0000">' + (data.date?'日期：'+data.date:'') + '</div></div>');
+            str.push('<li><img src="' + arl.replace('/s_','/') + '" alt="' + (data.date?'日期：'+data.date:'') + '"></li>');
           });
-          str.push('</div><div class="swiper-pagination"></div></div></div>');
+          str.push('</ul>');
           o = $(str.join('')).appendTo('body')
-          //$('body').append(o);
 
-          var iWidth = $(window).width();
-          var iHeight = $(window).height();
-
-          var iSh = iHeight;//-150;
-
-          $('.swiper-container').width(iWidth + 'px');
-          $('.swiper-container').height(iSh + 'px');
-          $('.swiper-slide').height(iSh + 'px');
-          $('.swiper-slide p').height(iSh + 'px');//.css('line-height',iSh+'px');
-
-          preview = new Swiper(o.find('.swiper-container')[0], {
-            initialSlide: defaultIndex,
-            pagination: '.swiper-pagination',
-            paginationClickable: true
-          });//'.swiper-container'
-          o.find('.pic_close button').click(function () {
-            //preview.destroy();
-            //o.remove();
-          })
-
-          //$('.picplayer').is(':visible')
-          if ($(o).css('display')) {
-            $(o.find('.swiper-container')[0]).click(function (e) {
-              preview.destroy();
-              $('.piclayer').remove();
+          var viewer = new Viewer(o[0],{
+            navbar:false,
+            button:true,
+            scalable:false,
+            hide:function(){
+              viewer.destroy();
               o.remove();
-              e.preventDefault();
-              preview = o = null;
-            })
-          }
+            },
+            build:function(){
+
+            }
+          });
+          viewer.show();
 
         });
         scope.$on('$destroy', function () {
-          $('.piclayer').remove();
-          preview.destroy();
+
         });
       };
       $rootScope.$on('sxtImageView',player);
