@@ -8,7 +8,7 @@
     .directive('sxtYear',sxtYear);
 
   /** @ngInject */
-  function sxtYear(utils, api, sxt,$q,$mdDialog) {
+  function sxtYear(utils, api, sxt,$q,$timeout) {
     return {
       scope: {
         procedureId: '=',
@@ -20,9 +20,9 @@
         roomType:'='
       },
       template: '<div flex style="overflow: hidden;position:relative"><div style="position:fixed;top:56px;line-height: 20px; left:0;width:100%;background:#fff;"><div class="btn-group" role="group" aria-label="">\
-  <button type="button" class="btn btn-white" ng-click="add(-1)"><span class="glyphicon glyphicon-chevron-left"></span></button>\
+  <button type="button" class="btn btn-white" ng-click="add(-1)"> <md-icon md-font-icon="icon-chevron-left"></md-icon></button>\
   <button type="button" class="btn btn-white yearlabel" data-day="{{year}}-1-1" data-type="3">{{year}}</button>\
-  <button type="button" class="btn btn-white" ng-click="add(1)"><span class="glyphicon glyphicon-chevron-right"></span></button>\
+  <button type="button" class="btn btn-white" ng-click="add(1)"><md-icon md-font-icon="icon-chevron-right"></md-icon></button>\
 </div> <button type="button"  class="btn btn-white yearlabel">全部</button><button type="button" ng-show="isLoading" class="btn btn-white"><i class="fa fa-refresh fa-spin"></i></button> </div><div flex style="overflow: auto;margin-top:34px;" class="clear months"><div ng-repeat="m in months" sxt-month="m"></div><div class="clear"></div></div></div>',
       link: function (scope, element, attr, ctrl) {
         var map,curlay;
@@ -69,6 +69,7 @@
               }
             });
           }
+
           playImage();
         }
         scope.$watch('procedureId', filter);
@@ -159,6 +160,13 @@
                 }
                 filter();
                 scope.isLoading = false;
+                $timeout(function(){
+                  var m = moment();
+                  $('[sxt-year]').animate({
+                    scrollTop:$('[data-day="' + m.year() + '-' + (m.month()+1) + '-1"]', element).position().top-100
+                  });
+
+                },500)
               })
 
           }
@@ -183,6 +191,8 @@
               scope.months[m.month()].d.forEach(function (d) {
                 $('[data-day="' + ye + '-' + mt + '-' + d.day + '"]', pdiv).addClass('photo');
               });
+
+
             }
           }
           div = div || pdiv; day = day || pday; dayType = dayType || pdayType;
