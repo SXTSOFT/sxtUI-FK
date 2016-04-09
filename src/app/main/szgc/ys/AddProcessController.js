@@ -239,7 +239,14 @@ $scope.back = function(){
 
         $scope.data.batchs.push(batch);
 
-        $scope.data.supervision = results[1].data.Rows;
+        var sm0 = [];
+        results[1].data.Rows.forEach(function (n) {
+          if (sm0.find(function (n2) { return n2.UnitId == n.UnitId; }) == null) {
+            sm0.push(n);
+          }
+        })
+
+        $scope.data.supervision = sm0;
         if (isB && $scope.data.supervision.length && !batch.CompanyId)
           batch.CompanyId = $scope.data.supervision[0].UnitId;
         if (isB) {
@@ -251,12 +258,15 @@ $scope.back = function(){
 
         }
 
-        console.log('$scope.data.curHistory', $scope.data.curHistory);
 
-        $scope.data.supervision1 = results[2].data.Rows;
+        var sm1 = [];
+        results[2].data.Rows.forEach(function (n) {
+          if (sm1.find(function (n2) { return n2.UnitId == n.UnitId; }) == null) {
+            sm1.push(n);
+          }
+        })
+        $scope.data.supervision1 = sm1;
 
-        console.log('----results---',results);
-        console.log('---- 监理1$scope.data.supervision1---',$scope.data.supervision1);
 
         if (isB && $scope.data.supervision1.length && !batch.ParentCompanyId) {
           batch.ParentCompanyId = $scope.data.supervision1[0].UnitId;
