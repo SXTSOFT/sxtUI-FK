@@ -36,13 +36,18 @@
           if(!e)
             resolve(null);
           else{
-            var request = [];
-            e.groups.forEach(function (g) {
-              request.push(api.szgc.FilesService.group(g));
-            });
-            $q.all(request).then(function(results){
-              resolve(results);
-            });
+            if(e.images){
+              resolve(e);
+            }
+            else {
+              var request = [];
+              e.groups.forEach (function (g) {
+                request.push (api.szgc.FilesService.group (g));
+              });
+              $q.all (request).then (function (results) {
+                resolve (results);
+              });
+            }
           }
         }).then(function (results) {
           def = false;
@@ -50,13 +55,18 @@
           var imagedata = null;
 
           if(results) {
-            imagedata = [];
-            results.forEach (function (result) {
-              result.data.Files.forEach (function (f) {
-                imagedata.push ({date: f.CreateDate, url: sxt.app.api + f.Url.substring (1)});
+            if(results.images){
+              imagedata = results.images;
+            }
+            else {
+              imagedata = [];
+              results.forEach (function (result) {
+                result.data.Files.forEach (function (f) {
+                  imagedata.push ({date: f.CreateDate, url: sxt.app.api + f.Url.substring (1)});
+                })
               })
-            })
-          };
+            }
+          }
           if (!imagedata) {
             imagedata = [];
             $('img', element).each(function (index, el) {
