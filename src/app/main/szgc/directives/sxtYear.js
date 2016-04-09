@@ -383,7 +383,9 @@
                   }
                 }
               }
-            });//'.swiper-container'
+            });
+
+
 
             o.find('.pic_close button').click(function () {
               //preview.destroy();
