@@ -64,7 +64,7 @@
           }
 
         }
-        str.push('<li class="build-b"></li></ul></div><p>'+scope.floorData.name+'('+scope.floorData.floors+'层)<br/>&nbsp;'+scope.floorData.summary+'</p></a></div></div>');
+        str.push('<li class="build-b"></li></ul></div><p>'+scope.floorData.name+'('+Math.max(gx1, gx2)+'/'+scope.floorData.floors+'层)<br/>&nbsp;'+scope.floorData.summary+'</p></a></div></div>');
       var o = $(str.join('')).appendTo(element);
       var iWinWidth = $(window).width();
 
