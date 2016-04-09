@@ -27,6 +27,7 @@
         showXAxis: true,
         showYAxis: true,
         showLegend: false,
+        width:367,
         debug: true,
         stack: false,
         yAxis: {

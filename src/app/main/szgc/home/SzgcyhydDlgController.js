@@ -15,7 +15,7 @@
       id:'5667277272f69e5c23094929',
       isShow:1,
       roomType:'A',
-      imageType:2
+      imageType:project.n
     }
     console.log('project',project);
 

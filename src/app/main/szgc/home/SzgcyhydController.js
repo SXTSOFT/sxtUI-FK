@@ -97,6 +97,7 @@
           utils.alert('暂无照片');
         }
         else {
+          vm.project.n = n;
           $mdDialog.show ({
               locals: {
                 project: vm.project

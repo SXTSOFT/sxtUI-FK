@@ -123,8 +123,8 @@
         //})
 
         iFloorHeight = itemp * zoom ;
-        $('.whole', element).css('zoom', zoom);
-        $('.floor-layer1').css({'height': iFloorHeight + 'px','width': '80%'});
+        $('.whole', element).css('zoom', '0.24');
+        $('.floor-layer1').css({'height': '250px','width': '250px'});
 
         scope.$on('$destroy', function () {
           o.remove();
