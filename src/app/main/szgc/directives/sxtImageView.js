@@ -24,10 +24,9 @@
       player = function (a, e) {
         $timeout(function(){
           def = false;
-        },1000)
+        },1000);
         if(def)return;
         def=true;
-
         if (viewer)
           viewer.destroy();
         if (o)
@@ -93,6 +92,7 @@
             hide:function(){
               viewer.destroy();
               o.remove();
+              viewer = o=null;
               def =false;
             },
             build:function(){
@@ -103,6 +103,11 @@
 
         });
         scope.$on('$destroy', function () {
+          if (viewer)
+            viewer.destroy();
+          if (o)
+            o.remove();
+          viewer = o=null;
           def =false;
         });
       };

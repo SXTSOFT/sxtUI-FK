@@ -19,15 +19,17 @@
         imageType: '=',
         roomType:'='
       },
-      template: '<div flex style="overflow: hidden;position:relative"><div style="position:fixed;top:56px;line-height: 20px; left:0;width:100%;background:#fff;"><div class="btn-group" role="group" aria-label="">\
+      template: '<div class="tbb" style="position:absolute;top:50px;line-height: 20px; left:0;width:100%;background:#fff;z-index:1002"><div class="btn-group" role="group" aria-label="">\
   <button type="button" class="btn btn-white" ng-click="add(-1)"> <md-icon md-font-icon="icon-chevron-left"></md-icon></button>\
   <button type="button" class="btn btn-white yearlabel" data-day="{{year}}-1-1" data-type="3">{{year}}</button>\
   <button type="button" class="btn btn-white" ng-click="add(1)"><md-icon md-font-icon="icon-chevron-right"></md-icon></button>\
-</div> <button type="button"  class="btn btn-white yearlabel">全部</button><button type="button" ng-show="isLoading" class="btn btn-white"><i class="fa fa-refresh fa-spin"></i></button> </div><div flex style="overflow: auto;margin-top:34px;" class="clear months"><div ng-repeat="m in months" sxt-month="m"></div><div class="clear"></div></div></div>',
+</div> <button type="button"  class="btn btn-white yearlabel">全部</button><button type="button" ng-show="isLoading" class="btn btn-white"><i class="fa fa-refresh fa-spin"></i></button> </div><div style="overflow: auto;margin-top:34px;" class="clear months"><div ng-repeat="m in months" sxt-month="m"></div></div>',
       link: function (scope, element, attr, ctrl) {
         var map,curlay;
         element.addClass('sxtcalendar');
-        //element.find('>div').height(element.height());
+        $timeout(function(){
+          element.find('.tbb').insertBefore(element);
+        },500);
         scope.$watch('year', function () {
           if (!scope.year) return;
           scope.months = [];
@@ -69,7 +71,6 @@
               }
             });
           }
-
           playImage();
         }
         scope.$watch('procedureId', filter);
@@ -191,8 +192,6 @@
               scope.months[m.month()].d.forEach(function (d) {
                 $('[data-day="' + ye + '-' + mt + '-' + d.day + '"]', pdiv).addClass('photo');
               });
-
-
             }
           }
           div = div || pdiv; day = day || pday; dayType = dayType || pdayType;
