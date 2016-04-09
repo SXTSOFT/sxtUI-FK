@@ -87,7 +87,7 @@
           str.push('<div style="height:18px;position:absolute;bottom:' + iBottom + 'px;"><span style="height:4px;width:30px;background:#f00;display:block;float:left;margin-top:6px;"></span><span style="display:block;margin-left:35px;border:1px solid #ddd;background:#fff;text-align:left;padding:3px;">' +v.y+'层'+ v.x + '<span><span style="clear:both;"></span></div>');
         })
 
-        str.push('<div style="height:55px;"></div></div></div><p>' + scope.floorData.name + '(' + scope.floorData.floors + '层)<br/>&nbsp;' + scope.floorData.summary +'</p></a></div></div>');
+        str.push('<div style="height:55px;"></div></div></div><p>' + scope.floorData.name + '('+ Math.max(gx1, gx2) +'/' + scope.floorData.floors + '层)<br/>&nbsp;' + scope.floorData.summary +'</p></a></div></div>');
         var o = $(str.join('')).appendTo(element);
         var barchartHeight=$('#barchart').outerHeight();
         itemp = (scope.floorNum - 1) * 18 + 500;

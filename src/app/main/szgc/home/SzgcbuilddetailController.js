@@ -30,14 +30,24 @@
         width:367,
         debug: true,
         stack: false,
+        xAxis:{
+          type: 'category'
+        },
         yAxis: {
           type: 'value',
           min: 0,
-          interval: 10,
-          max: vm.build.floors,
+          max: 50,
           axisLabel: {
             formatter: function (value, index) {
               return parseInt(value);//非真正解决
+            }
+          },
+          yAxisIndex:0
+        },
+        series: {
+          label: {
+            normal: {
+              show: true
             }
           }
         }
