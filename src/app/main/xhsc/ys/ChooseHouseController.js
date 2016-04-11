@@ -9,8 +9,8 @@
     .controller('ChooseHouseController',ChooseHouseController);
 
   /** @ngInject */
-  function ChooseHouseController(){
-
+  function ChooseHouseController(remote){
+    //remote.Measure.query
   }
 
 })();
