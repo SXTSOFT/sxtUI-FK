@@ -11,7 +11,7 @@
     {
         var vm = this;
         vm.is = isRoute;
-
+      $rootScope.toggle = false;
         auth.getUser().then(function(user){
           console.log('user',user)
           vm.user = user;
@@ -29,6 +29,9 @@
       $rootScope.toRight = function(){
           $rootScope.$emit('rightEvent');
         }
+      $rootScope.toggleRight = function(){
+          $rootScope.$emit('toggleRightEvent');
+      }
         vm.bodyEl = angular.element('body');
         vm.userStatusOptions = [
             {

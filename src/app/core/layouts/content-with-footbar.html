@@ -3,3 +3,90 @@
   <md-content id="content" class="animate-slide-left md-background md-hue-1" layout="column" ui-view="content" flex></md-content>
   <md-toolbar id="toolbar2" class="md-menu-toolbar md-whiteframe-1dp" ui-view="toolbar"></md-toolbar>
 </div>
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" id="rightsidenav" md-component-id="right" style="width:50%;">
+  <md-toolbar class="md-menu-toolbar md-theme-light" style="height: 44px;min-height: 44px;text-align:center;background: #fff;color:#f00;">
+    <md-icon md-font-icon="icon-chevron-left" class="icon s32" style="position: absolute;left:16px;top:5px;color:#f00;"></md-icon>
+    <h1 class="md-toolbar-tools" style="text-align:center;display: block;line-height: 44px;">星河智慧</h1>
+    <md-switch flex="none" ng-model="vm.muti" aria-label="Switch 1" style="position: absolute;right:16px;top:5px;margin:0;">
+      {{ vm.muti ? '多选':'单选' }}
+    </md-switch>
+  </md-toolbar>
+  <md-content layout="column" flex>
+    <div class="procedure">
+      <!--<div flex layout="row">-->
+        <!--<md-list  flex layout="row" style="background:#fff;border-top:1px solid #d8d8d8;padding:0" class="filter">-->
+          <!--<md-list-item flex="25"  ng-class="{'active':1}"><md-button><span>全部</span></md-button></md-list-item>-->
+          <!--<md-list-item flex="25"><md-button ><span class="ing"><i></i>验收中</span></md-button></md-list-item>-->
+          <!--<md-list-item flex="25"><md-button><span class="done"><i></i>已验收</span></md-button></md-list-item>-->
+          <!--<md-list-item flex="25"><md-button><span class="yet">未验收</span></md-button></md-list-item>-->
+        <!--</md-list>-->
+      <!--</div>-->
+      <!--<div class="search">-->
+        <!--<div class="search_bar">-->
+          <!--<input type="text" class="inputtext"  ng-if="0">-->
+          <!--<div class="inputtext"><span>搜索</span></div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <md-list style="background: #fff;border-top:1px solid #d8d8d8;margin-bottom:50px;">
+        <md-list-item>
+        <p>星河一期</p>
+        <md-checkbox class="md-secondary" ng-if="vm.muti"></md-checkbox>
+      </md-list-item>
+        <md-divider></md-divider>
+        <md-list-item>
+          <p>星河一期</p>
+          <md-checkbox class="md-secondary" ng-if="vm.muti"></md-checkbox>
+        </md-list-item>
+        <md-divider></md-divider>
+      </md-list>
+
+
+      <!--<div layout="column">-->
+        <!--<md-list style="background: #fff;border-top:1px solid #d8d8d8;margin-bottom:50px;padding:8px" flex class="room-list">-->
+          <!--<md-list-item layout="row" layout-wrap="">-->
+            <!--<md-button>-->
+              <!--<p>101</p>-->
+              <!--<md-checkbox class="md-secondary" ng-if="vm.muti"></md-checkbox>-->
+            <!--</md-button>-->
+          <!--</md-list-item>-->
+          <!--<md-list-item layout="row" layout-wrap="">-->
+            <!--<md-button>-->
+              <!--<p>101</p>-->
+              <!--<md-checkbox class="md-secondary" ng-if="vm.muti"></md-checkbox>-->
+            <!--</md-button>-->
+          <!--</md-list-item>-->
+          <!--<md-list-item  layout="row" layout-wrap="">-->
+            <!--<md-button>-->
+              <!--<p>101</p>-->
+              <!--<md-checkbox class="md-secondary" ng-if="vm.muti"></md-checkbox>-->
+            <!--</md-button>-->
+          <!--</md-list-item>-->
+          <!--<md-list-item layout="row" layout-wrap="">-->
+            <!--<md-button>-->
+              <!--<p>101</p>-->
+              <!--<md-checkbox class="md-secondary" ng-if="vm.muti"></md-checkbox>-->
+            <!--</md-button>-->
+          <!--</md-list-item>-->
+          <!--<md-list-item layout="row" layout-wrap="">-->
+            <!--<md-button>-->
+              <!--<p>101</p>-->
+              <!--<md-checkbox class="md-secondary" ng-if="vm.muti"></md-checkbox>-->
+            <!--</md-button>-->
+          <!--</md-list-item>-->
+          <!--<md-list-item layout="row" layout-wrap="">-->
+            <!--<md-button>-->
+              <!--<p>101</p>-->
+              <!--<md-checkbox class="md-secondary" ng-if="vm.muti"></md-checkbox>-->
+            <!--</md-button>-->
+          <!--</md-list-item>-->
+        <!--</md-list>-->
+      <!--</div>-->
+    </div>
+  </md-content>
+  <md-toolbar class="md-menu-toolbar md-theme-light" style="height: 44px;min-height: 44px;text-align:center;background: #fff;color:#f00;" ng-if="vm.muti">
+    <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+      <md-button>取消选择</md-button>
+      <md-button>确认</md-button>
+    </section>
+  </md-toolbar>
+</md-sidenav>

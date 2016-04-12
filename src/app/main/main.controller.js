@@ -26,4 +26,6 @@
 
       angular.bootstrap(document, ['sxt']);
     });
+
+
 })();

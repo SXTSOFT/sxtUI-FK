@@ -1,52 +1,156 @@
-<md-tabs md-border-bottom flex layout="column" md-selected="vm.data.selectedIndex">
-  <md-tab label="实测实量" md-on-select="vm.onNavList()">
-    <md-tab-content flex layout-fill layout="column">
-      <md-content flex>
-        <md-list ng-cloak>
-          <md-subheader class="md-no-sticky">土建</md-subheader>
-          <md-list-item ui-sref="app.xhsc.chooseHouse">
-            <p>抹灰工程</p>
-          </md-list-item>
-          <md-list-item ui-sref="app.xhsc.chooseHouse">
-            <p>钢筋</p>
-          </md-list-item>
-          <md-divider></md-divider>
-          <md-subheader class="md-no-sticky">精装</md-subheader>
-          <md-list-item ui-sref="app.xhsc.chooseHouse">
-            <p>油漆</p>
-          </md-list-item>
-          <md-divider></md-divider>
-        </md-list>
-      </md-content>
-    </md-tab-content>
-  </md-tab>
-  <md-tab label="工序验收" md-on-select="vm.onNavList()">
-    <md-tab-content flex layout-fill layout="column">
-      <md-content flex>
-        <md-list ng-cloak>
-          <md-subheader class="md-no-sticky">装修</md-subheader>
-          <md-list-item ui-sref="app.xhsc.chooseHouse">
-            <p>地砖工程</p>
-          </md-list-item>
-          <md-list-item ui-sref="app.xhsc.chooseHouse">
-            <p>墙砖粘贴</p>
-          </md-list-item>
-          <md-list-item ui-sref="app.xhsc.chooseHouse">
-            <p>油漆</p>
-          </md-list-item>
-          <md-divider></md-divider>
-          <md-subheader class="md-no-sticky">土建</md-subheader>
-          <md-list-item ui-sref="app.xhsc.chooseHouse">
-            <p>抹灰工程</p>
-          </md-list-item>
-          <md-list-item ui-sref="app.xhsc.chooseHouse">
-            <p>钢筋</p>
-          </md-list-item>
-          <md-list-item ui-sref="app.xhsc.chooseHouse">
-            <p>幕墙工程</p>
-          </md-list-item>
+<!--<md-tabs md-border-bottom flex layout="column" md-selected="vm.data.selectedIndex">-->
+  <!--<md-tab label="实测实量" md-on-select="vm.onNavList()">-->
+    <!--<md-tab-content flex layout-fill layout="column">-->
+      <!--<md-content flex>-->
+        <!--<md-list ng-cloak>-->
+          <!--<md-subheader class="md-no-sticky">土建</md-subheader>-->
+          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
+            <!--<p>抹灰工程</p>-->
+          <!--</md-list-item>-->
+          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
+            <!--<p>钢筋</p>-->
+          <!--</md-list-item>-->
+          <!--<md-divider></md-divider>-->
+          <!--<md-subheader class="md-no-sticky">精装</md-subheader>-->
+          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
+            <!--<p>油漆</p>-->
+          <!--</md-list-item>-->
+          <!--<md-divider></md-divider>-->
+        <!--</md-list>-->
+      <!--</md-content>-->
+    <!--</md-tab-content>-->
+  <!--</md-tab>-->
+  <!--<md-tab label="工序验收" md-on-select="vm.onNavList()">-->
+    <!--<md-tab-content flex layout-fill layout="column">-->
+      <!--<md-content flex>-->
+        <!--<md-list ng-cloak>-->
+          <!--<md-subheader class="md-no-sticky">装修</md-subheader>-->
+          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
+            <!--<p>地砖工程</p>-->
+          <!--</md-list-item>-->
+          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
+            <!--<p>墙砖粘贴</p>-->
+          <!--</md-list-item>-->
+          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
+            <!--<p>油漆</p>-->
+          <!--</md-list-item>-->
+          <!--<md-divider></md-divider>-->
+          <!--<md-subheader class="md-no-sticky">土建</md-subheader>-->
+          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
+            <!--<p>抹灰工程</p>-->
+          <!--</md-list-item>-->
+          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
+            <!--<p>钢筋</p>-->
+          <!--</md-list-item>-->
+          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
+            <!--<p>幕墙工程</p>-->
+          <!--</md-list-item>-->
 
-      </md-content>
-    </md-tab-content>
-  </md-tab>
-</md-tabs>
+      <!--</md-content>-->
+    <!--</md-tab-content>-->
+  <!--</md-tab>-->
+<!--</md-tabs>-->
+<div layout="column" ng-cloak="">
+  <!--<my-sidenav></my-sidenav>-->
+  <md-content class="main-padding" layout="column">
+    <h2 class="md-title" style="color:#e93030;font-size:16px;">土建</h2>
+    <md-list class="procedure-list">
+      <md-list-item class="veggie-option" layout="row" layout-wrap="" ng-sref="">
+        <div class="md-item-text">
+          <p class="md-primary">土建工程土建工程</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p>土建工程</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p>土建工程</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p>土建工程</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p>土建工程</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p>土建工程</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p>土建工程</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p>土建工程</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p>土建工程</p>
+        </div>
+      </md-list-item>
+    </md-list>
+    <h2 class="md-title" style="color:#e93030;font-size:16px;">土建</h2>
+    <md-list class="procedure-list">
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p class="md-primary">土建工程土建工程</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p>土建工程</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p>土建工程</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p>土建工程</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p>土建工程</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p>土建工程</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p>土建工程</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p>土建工程</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="">
+        <div class="md-item-text">
+          <p>土建工程</p>
+        </div>
+      </md-list-item>
+    </md-list>
+  </md-content>
+</div>
+
+
+
