@@ -396,8 +396,10 @@
     function query(data){
       return $q(function(resolve){
         resolve({
-          rows:data,
-          total:100
+          data: {
+            rows: data,
+            total: 100
+          }
         });
       })
     }
@@ -424,14 +426,16 @@
 
     function get(data){
       return $q(function(resolve){
-        resolve(data);
+        resolve({data:data});
       })
     }
 
     function post(data){
       return $q(function(resolve){
         resolve({
+          data:{
           code:1
+         }
         });
       })
     }
