@@ -246,6 +246,12 @@
         controller: 'uploadProcessController as vm',
         templateUrl: 'app/main/szgc/ys/upload.html'
       })
+      .state('app.szgc.ys.file', {
+        title:'添加验收',
+        url: '/file',
+        controller: 'fileDownController as vm',
+        templateUrl: 'app/main/szgc/ys/fileDown.html'
+      })
 
 
 
