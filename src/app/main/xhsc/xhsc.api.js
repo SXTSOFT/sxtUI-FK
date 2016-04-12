@@ -37,7 +37,7 @@
                * 8、 楼层
                * 16、 房间
                * */
-              RegionType: 1 | 2 | 4 | 8 | 16
+              RegionType: 2 | 4 | 8 | 16
             }
           ))
         },
@@ -225,6 +225,15 @@
            * 添加测量标注点
            * @param {Array} points
            *        [{
+           *        type:'Feature',//固定为Feature
+           *        geometry:{
+           *          type:'lineGroup' // lineGroup 测量组，areaGroup　区域组，以后会扩展，
+           *          coordinates:[] //图形位置信息
+           *        }，
+           *        options:{       //几何图形配置项，属性不固定，不同的geometry.type不尽相同
+           *          color:'red'
+           *        },
+           *        properties：{  // 属性值
            *          MeasurePointID:'id',//唯一ID，客户端生成
            *          AcceptanceItemID:'',// 实测项ID
            *          CheckRegionID:'', //区域ID
@@ -237,7 +246,8 @@
            *          ExtendedField1:'',
            *          ExtendedField2:''
            *          ExtendedField3:''
-           *        }]
+           *        }
+           *      }]
            * **/
           create:function(points){
             return post(points);
@@ -267,6 +277,7 @@
            * 　　　　[{
            *          MeasurePointID:'id',//唯一ID，客户端生成
            *          RegionType:'Group',//区域类型（Point：标注点，Region：区域，Group：组） 固定为Group,
+           *          Geometry:'',//几何描述
            *          ChildrenPointID:[
            *            'id1','id2'
            *          ]
@@ -282,6 +293,7 @@
            * 　　　　[{
            *          MeasurePointID:'id',//唯一ID，客户端生成
            *          RegionType:'Group',//区域类型（Point：标注点，Region：区域，Group：组） 固定为Group,
+           *          Geometry:'',//几何描述
            *          ChildrenPointID:[
            *            'id1','id2'
            *          ]

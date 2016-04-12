@@ -10,7 +10,7 @@
 
   /** @ngInject */
   function ChooseHouseController(remote){
-    //remote.Measure.query
+    //remote.Measure.query()
   }
 
 })();
