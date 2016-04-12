@@ -29,7 +29,7 @@
               AcceptanceItemID: 'string1',
               MeasureItemName: '测量项名称',
               SpecialtyID: 'id1;id2;id3',
-              SpecialtyName: '专业类型;专业类型',
+              SpecialtyName: '专业类型;专业类型;专业类型',
               /**
                * 1 、项目
                * 2、 区域
