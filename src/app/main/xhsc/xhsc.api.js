@@ -227,25 +227,11 @@
            *        [{
            *        type:'Feature',//固定为Feature
            *        geometry:{
-           *          type:'lineGroup' // lineGroup 测量组，areaGroup　区域组，以后会扩展，
-           *          coordinates:[] //图形位置信息
+           *          type:'stamp' // 固定为stamp
+           *          coordinates:[0.21,0.20003] //图形位置信息
            *        }，
            *        options:{       //几何图形配置项，属性不固定，不同的geometry.type不尽相同
            *          color:'red'
-           *        },
-           *        properties：{  // 属性值
-           *          MeasurePointID:'id',//唯一ID，客户端生成
-           *          AcceptanceItemID:'',// 实测项ID
-           *          CheckRegionID:'', //区域ID
-           *          AcceptanceIndexID:'',//实测指标Id
-           *          MeasurePointNo:'',//测量点编号
-           *          Remark:'', //备注
-           *          RegionType:'Point',//区域类型（Point：标注点，Region：区域，Group：组） 固定为Point
-           *          RegionName:''//标点名称,
-           *          Geometry:'',//几何描述
-           *          ExtendedField1:'',
-           *          ExtendedField2:''
-           *          ExtendedField3:''
            *        }
            *      }]
            * **/
@@ -257,16 +243,15 @@
            * @param {string} measurePointID 唯一ID
            * @param {Array} points
            *        [{
-           *          MeasurePointID:'id',//唯一ID
-           *          AcceptanceItemID:'',// 实测项ID
-           *          CheckRegionID:'', //区域ID
-           *          AcceptanceIndexID:'',//实测指标Id
-           *          MeasurePointNo:'',//测量点编号
-           *          Remark:'', //备注
-           *          RegionType:'Point',//区域类型（Point：标注点，Region：区域，Group：组） 固定为Point
-           *          RegionName:''//标点名称,
-           *          Geometry:'',//几何描述
-           *        }]
+           *        type:'Feature',//固定为Feature
+           *        geometry:{
+           *          type:'stamp' // lineGroup 测量组，areaGroup　区域组，以后会扩展，
+           *          coordinates:[] //图形位置信息
+           *        }，
+           *        options:{       //几何图形配置项，属性不固定，不同的geometry.type不尽相同
+           *          color:'red'
+           *        }
+           *      }]
            * **/
           update:function(measurePointID, points){
             return post(points);
@@ -275,12 +260,22 @@
            * 添加测量组
            * @param {Array} points
            * 　　　　[{
+           *        type:'Feature',//固定为Feature
+           *        geometry:{
+           *          type:'lineGroup' // lineGroup 测量组 或　areaGroup　区域组
+           *          coordinates:[] //图形位置信息
+           *        }，
+           *        options:{       //几何图形配置项，属性不固定，不同的geometry.type不尽相同
+           *          color:'red'
+           *        },
+           *        properties：{
            *          MeasurePointID:'id',//唯一ID，客户端生成
            *          RegionType:'Group',//区域类型（Point：标注点，Region：区域，Group：组） 固定为Group,
            *          Geometry:'',//几何描述
            *          ChildrenPointID:[
            *            'id1','id2'
            *          ]
+           *         }
            *        }]
            * */
           createGroup:function(points){
@@ -291,12 +286,22 @@
            * @param {string} measurePointID 唯一ID
            * @param {Array} points
            * 　　　　[{
+           *        type:'Feature',//固定为Feature
+           *        geometry:{
+           *          type:'lineGroup' // lineGroup 测量组 或　areaGroup　区域组
+           *          coordinates:[] //图形位置信息
+           *        }，
+           *        options:{       //几何图形配置项，属性不固定，不同的geometry.type不尽相同
+           *          color:'red'
+           *        },
+           *        properties：{
            *          MeasurePointID:'id',//唯一ID，客户端生成
            *          RegionType:'Group',//区域类型（Point：标注点，Region：区域，Group：组） 固定为Group,
            *          Geometry:'',//几何描述
            *          ChildrenPointID:[
            *            'id1','id2'
            *          ]
+           *        }
            *        }]
            * */
           updateGroup:function(measurePointID,points){
@@ -315,6 +320,22 @@
            * 获取点
            * @param {string} acceptanceIndexID 实测指标Id
            * @param {string} checkRegionID 区域ID
+           *
+           * @returns {object}
+           *          {
+           *            type:'FeatureCollection',固定为FeatureCollection
+           *            features:[{
+           *              type:'Feature',//固定为Feature
+           *              geometry:{
+           *                type:'lineGroup' // lineGroup 测量组 或　areaGroup　区域组 或　stamp　测量点，以后会更多类型
+           *                coordinates:[] //图形位置信息
+           *              }，
+           *              options:{       //几何图形配置项，属性不固定，不同的geometry.type不尽相同
+           *                color:'red'
+           *              }
+           *            }]
+           *          }
+           *
            * */
           query:function(acceptanceIndexID,checkRegionID){
             return query(array({
