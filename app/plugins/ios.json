@@ -7,6 +7,18 @@
         "files": {}
     },
     "installed_plugins": {
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.sxt.szgc"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.sxt.szgc"
+        },
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "com.sxt.szgc"
+        },
+        "cordova-plugin-indexedDB": {
+            "PACKAGE_NAME": "com.sxt.szgc"
+        },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.sxt.szgc"
         }

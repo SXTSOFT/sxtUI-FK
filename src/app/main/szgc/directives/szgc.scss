@@ -392,11 +392,18 @@ img.cimages{
       text-align: center;
     }
     td{
+      height: 30px;
       text-align: center;
       p{
         -webkit-margin-before: 0;
         -webkit-margin-after: 0;
         margin:0;
+      }
+      span{
+        display: inline-block;
+        height: 30px;
+        width: 30px;
+        line-height: 20px;
       }
       &.photo{
         span{

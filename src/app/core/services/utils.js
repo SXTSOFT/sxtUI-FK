@@ -109,8 +109,8 @@
           .textContent(message)
           .ariaLabel('需要您的确认')
           .targetEvent(ev)
-          .ok(ok || '确定')
-          .cancel(cancel || '取消')
+          .ok('确定')
+          .cancel( '取消')
       );
     }
 

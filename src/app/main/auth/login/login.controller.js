@@ -17,7 +17,7 @@
       vm.login = function(loginForm){
 
         if(!vm.form || !vm.form.username || !vm.form.password){
-          utils.tips('请输入用户名密码');
+          utils.tips('请输入您的用户名和密码');
         }
         else {
           vm.logining = '正在登录';

@@ -30,6 +30,14 @@
     margin-top: 2px;
   }
 }
+.table{
+  tr{
+    th,td{
+      padding: 10px;
+      white-space: nowrap;
+    }
+  }
+}
 #toptoolbar{
   height:44px;
   min-height:44px;
