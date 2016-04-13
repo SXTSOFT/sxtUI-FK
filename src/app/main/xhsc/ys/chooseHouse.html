@@ -18,14 +18,19 @@
 <div flex="40" layout="column" style="border-right:1px solid #d8d8d8;background: #fff;">
   <md-content style="background: #fff;;padding-bottom:44px;">
     <md-list ng-cloak class="md-padding">
-      <md-list-item class="secondary-button-padding"  ng-click="vm.open(item)" ng-repeat="item in vm.Region">
-        <md-checkbox  ng-if="vm.muti" ng-model="item.selected" ></md-checkbox>
-        <!--<i ng-click="vm.checked()" class="myselect" ng-class="{'selected':1}" ng-if="vm.muti"></i>-->
-        <p>{{item.RegionName}}</p>
-        <!--<md-button ng-click="vm.go()" aria-label="Send Email" class="md-secondary" >验收</md-button>-->
-        <md-icon class="md-secondary" ng-show="item.showArr" aria-label="Chat" md-font-icon="icon-chevron-right"></md-icon>
-        <md-divider></md-divider>
+      <md-list-item ng-repeat="item in vm.Region" ng-click="vm.open(item)">
+        <md-checkbox ng-if="vm.muti" ng-model="item.selected"></md-checkbox>
+        <p>{{item.RegionName }}</p>
+        <md-icon class="md-secondary" ng-show="item.showArr" md-font-icon="icon-chevron-right"></md-icon>
       </md-list-item>
+      <!--<md-list-item class="secondary-button-padding"  ng-click="vm.open(item)" ng-repeat="item in vm.Region">-->
+        <!--<md-checkbox  ng-if="vm.muti" ng-model="item.selected" ></md-checkbox>-->
+        <!--&lt;!&ndash;<i ng-click="vm.checked()" class="myselect" ng-class="{'selected':1}" ng-if="vm.muti"></i>&ndash;&gt;-->
+        <!--<p>{{item.RegionName}}</p>-->
+        <!--&lt;!&ndash;<md-button ng-click="vm.go()" aria-label="Send Email" class="md-secondary" >验收</md-button>&ndash;&gt;-->
+        <!--<md-icon class="md-secondary" ng-show="item.showArr" aria-label="Chat" md-font-icon="icon-chevron-right"></md-icon>-->
+        <!--<md-divider></md-divider>-->
+      <!--</md-list-item>-->
 
     </md-list>
   </md-content>
@@ -74,8 +79,8 @@
 <div class="inner-footerbar" ng-if="vm.muti">
   <md-toolbar>
     <md-list flex layout="row" style="background:#fff;padding:0;">
-      <md-list-item flex style="border-right:1px solid #d8d8d8;"><md-button>取消选择</md-button></md-list-item>
-      <md-list-item flex><md-button >确定</md-button></md-list-item>
+      <md-list-item flex style="border-right:1px solid #d8d8d8;"><md-button style="color:#000;">取消选择</md-button></md-list-item>
+      <md-list-item flex><md-button style="color:#000;">确定</md-button></md-list-item>
     </md-list>
   </md-toolbar>
 </div>

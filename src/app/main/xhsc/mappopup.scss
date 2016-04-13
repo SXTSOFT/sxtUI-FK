@@ -305,21 +305,21 @@
     margin-bottom: 0;
   }
   md-list-item{
-    ._md-list-item-inner {
+    .md-list-item-inner {
     > md-checkbox{
       margin-top:0;
       margin-right:5px;
     }
     }
-    ._md-secondary-container{
+    .md-secondary-container{
       md-checkbox{
         &:last-child{
           margin-right:8px;
         }
       }
     }
-    ._md-list-item-inner{
-      ._md-secondary-container {
+    .md-list-item-inner{
+      .md-secondary-container {
         md-checkbox{
           &:last-child{
             margin-right:8px;
@@ -330,11 +330,11 @@
     md-checkbox{
       width:18px;
       height:18px;
-      ._md-container{
+      .md-container{
         width:18px;
         height:18px;
       }
-      ._md-icon{
+      .md-icon{
         background: url(toolbar/images/check.png);
         border-width:0;
         width:18px;
@@ -344,7 +344,7 @@
       }
       &.md-vanke-theme{
         &.md-checked {
-          ._md-icon{
+          .md-icon{
             background: url(toolbar/images/checked.png);
             background-color:transparent;
           }
@@ -392,7 +392,7 @@
       margin:0;
       background: rgb(245,245,245);
       border-bottom: 1px solid #d8d8d8;
-      ._md-subheader-inner{
+      .md-subheader-inner{
         padding: 0;
       }
      .header{
@@ -426,11 +426,11 @@
            md-checkbox{
              width:18px;
              height:18px;
-             ._md-container{
+             .md-container{
                width:18px;
                height:18px;
              }
-             ._md-icon{
+             .md-icon{
                background: url(toolbar/images/check.png);
                border-width:0;
                width:18px;
@@ -440,7 +440,7 @@
              }
              &.md-vanke-theme{
                &.md-checked {
-                 ._md-icon{
+                 .md-icon{
                    background: url(toolbar/images/checked.png);
                    background-color:transparent;
                  }
@@ -459,14 +459,14 @@
       min-height: 32px;
       float: left;
       width:20%;
-      ._md-list-item-inner {
+      .md-list-item-inner {
         > p {
           width: 100%;
           text-align: center;
           flex: none;
         }
       }
-      ._md-no-style{
+      .md-no-style{
         border:1px solid #d8d8d8;
         border-radius:32px;
         padding: 0;
@@ -507,6 +507,17 @@
         }
         p{
           margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+.md-padding{
+  md-list-item {
+    .md-list-item-inner {
+      > md-icon.md-secondary{
+        &:not(.md-avatar-icon){
+          margin-top:0;
         }
       }
     }
