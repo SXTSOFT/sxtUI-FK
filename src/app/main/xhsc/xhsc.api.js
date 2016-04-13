@@ -270,6 +270,7 @@
            * 获取点
            * @param {string} acceptanceItemID 实测项Id
            * @param {string} checkRegionID 区域ID
+           * @param {int} flags 0或空时为返回当前层，-1返回上一层同户型
            *
            * @returns {object}
            *          {
@@ -291,7 +292,7 @@
            *          }
            *
            * */
-          query:function(acceptanceItemID,checkRegionID){
+          query:function(acceptanceItemID,checkRegionID,flags){
             return get({
               type: 'FeatureCollection',//固定为FeatureCollection
               features: [{
@@ -339,8 +340,9 @@
            * 获取检查点值
            * @param {string} acceptanceItemID 实测项Id
            * @param {string} checkRegionID 区域ID
+           * @param {int} flags 0或空为返回当前层，-1返回上一层同户型
            * */
-          query:function(acceptanceItemID,checkRegionID){
+          query:function(acceptanceItemID,checkRegionID,flags){
             return query(array(
               {
                 ParentMeasurePointID:'',//所在测量组ID，如果没有为null
