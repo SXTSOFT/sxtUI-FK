@@ -27,13 +27,13 @@
       vm.floors =  null;
     }
     vm.search = function(){
-      $('.search_bar input').focus();
       vm.showSearch = true;
     }
     vm.hideSearch = function(){
       vm.showSearch = false;
     }
     vm.open = function(id){
+      vm.floors = null;
       vm.Region.forEach(function(item){
         item.showArr = false;
         if(id.RegionName == item.RegionName){
