@@ -111,7 +111,7 @@
             return query(array({
               AreaID: 'string',
               ProjectID:'string',
-              AreaName:'一期',
+              AreaName:'一期{0}',
               ProjectName:'星河丹堤'
             }));
           },
