@@ -247,28 +247,14 @@
            *        }，
            *        options:{       //几何图形配置项，属性不固定，不同的geometry.type不尽相同
            *          color:'red'
+           *        },
+           *        properties:{
+           *          $id:'guid', //唯一ID
+           *          $groupId:'guid' //所在属组（可以不用，但请保存为UI使用）
            *        }
            *      }]
            * **/
           create:function(points){
-            return post(points);
-          },
-          /**
-           * 更新测量标注点
-           * @param {string} measurePointID 唯一ID
-           * @param {Array} points
-           *        [{
-           *        type:'Feature',//固定为Feature
-           *        geometry:{
-           *          type:'stamp' // lineGroup 测量组，areaGroup　区域组，以后会扩展，
-           *          coordinates:[] //图形位置信息
-           *        }，
-           *        options:{       //几何图形配置项，属性不固定，不同的geometry.type不尽相同
-           *          color:'red'
-           *        }
-           *      }]
-           * **/
-          update:function(measurePointID, points){
             return post(points);
           },
           /**
@@ -282,7 +268,7 @@
 
           /**
            * 获取点
-           * @param {string} acceptanceIndexID 实测指标Id
+           * @param {string} acceptanceItemID 实测项Id
            * @param {string} checkRegionID 区域ID
            *
            * @returns {object}
@@ -296,26 +282,33 @@
            *              }，
            *              options:{       //几何图形配置项，属性不固定，不同的geometry.type不尽相同
            *                color:'red'
-           *              }
+           *              },
+           *              properties:{
+           *                $id:'guid', //唯一ID
+           *                $groupId:'guid' //所在属组（可以不用，但请保存为UI使用）
+           *               }
            *            }]
            *          }
            *
            * */
-          query:function(acceptanceIndexID,checkRegionID){
-            return query(array({
-              MeasurePointID:'id',//唯一ID
-              AcceptanceItemID:'',// 实测项ID
-              CheckRegionID:'', //区域ID
-              AcceptanceIndexID:'',//实测指标Id
-              MeasurePointNo:'',//测量点编号
-              Remark:'', //备注
-              RegionType:'Point',//区域类型（Point：标注点，Region：区域，Group：组） 固定为Point
-              RegionName:'',//标点名称,
-              Geometry:'',//几何描述
-              ExtendedField1:'',
-              ExtendedField2:'',
-              ExtendedField3:''
-            }))
+          query:function(acceptanceItemID,checkRegionID){
+            return get({
+              type: 'FeatureCollection',//固定为FeatureCollection
+              features: [{
+                type: 'Feature',//固定为Feature
+                geometry: {
+                  type: 'lineGroup', // lineGroup 测量组 或　areaGroup　区域组 或　stamp　测量点，以后会更多类型
+                  coordinates: [] //图形位置信息
+                },
+                options: {       //几何图形配置项，属性不固定，不同的geometry.type不尽相同
+                  color: 'red'
+                },
+                properties:{
+                  $id:'guid', //唯一ID
+                  $groupId:'guid' //所在属组（可以不用，但请保存为UI使用）
+                }
+              }]
+            });
           }
         },
 		    /***
@@ -323,12 +316,12 @@
          */
         MeasureValue:{
           /**
-           * 添加测试值
+           * 添加或更新测试值
            * @param {Array} values 测试值
-           *        {
-           *          ParentMeasurePointID:'',//所在测量组ID，如果没有为null
-           *          MeasurePointID:'',
-           *          AcceptanceIndexID:''
+           *        [{
+           *          ParentMeasurePointID:'',//所在测量组ID，如果没有为null，对应$groupId
+           *          MeasurePointID:'',//测量点ID
+           *          AcceptanceIndexID:'',//指标ID
            *          MeasureValue:''//测量值
            *          DesignValue:''//设计值
            *          CalculatedValue:''//计算值
@@ -336,41 +329,23 @@
            *          ExtendedField1:'',//扩展字段1
            *          ExtendedField2:'',//扩展字段2
            *          ExtendedField3:''//扩展字段3
-           *        }
+           *        }]
            * */
           create:function(values){
             return post(values);
           },
-          /**
-           *  更新测试值
-           * @param {Array} values 测试值
-           *        {
-           *          ParentMeasurePointID:'',//所在测量组ID，如果没有为null
-           *          MeasurePointID:'',
-           *          AcceptanceIndexID:''
-           *          MeasureValue:''//测量值
-           *          DesignValue:''//设计值
-           *          CalculatedValue:''//计算值
-           *          Remark:'',//备注
-           *          ExtendedField1:'',//扩展字段1
-           *          ExtendedField2:'',//扩展字段2
-           *          ExtendedField3:''//扩展字段3
-           *        }
-           * */
-          update:function(values){
-            return post(values);
-          },
+
           /**
            * 获取检查点值
-           * @param {string} acceptanceIndexID 实测指标Id
+           * @param {string} acceptanceItemID 实测项Id
            * @param {string} checkRegionID 区域ID
            * */
-          query:function(acceptanceIndexID,checkRegionID){
+          query:function(acceptanceItemID,checkRegionID){
             return query(array(
               {
                 ParentMeasurePointID:'',//所在测量组ID，如果没有为null
-                MeasurePointID:'',
-                AcceptanceIndexID:'',
+                MeasurePointID:'',//测量点ID
+                AcceptanceIndexID:'',//所属指标ID
                 MeasureValue:'',//测量值
                 DesignValue:'',//设计值
                 CalculatedValue:'',//计算值
