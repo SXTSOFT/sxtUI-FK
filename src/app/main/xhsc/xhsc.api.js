@@ -213,7 +213,7 @@
          * */
         getStatus:function(acceptanceItemID, regionID, acceptanceItemIDType){
           return query(array({
-            RegionID:'string',
+            RegionID:'string{0}',
             CheckBatchID:'{0}',//验收批Id
             CheckBatchNo:'批{0}',//验收批号
             CheckBatchDescription:'',//验收批描述
@@ -237,7 +237,7 @@
          */
         MeasurePoint:{
           /**
-           * 添加测量标注点
+           * 更新或添加测量标注点
            * @param {Array} points
            *        [{
            *        type:'Feature',//固定为Feature
