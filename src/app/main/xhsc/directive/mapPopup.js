@@ -9,13 +9,17 @@
   /** @Inject */
   function mapPopup(mapPopupSerivce){
     return {
+      restrict:'A',
       scope:{
         popup:'@mapPopup'
       },
       link:link
     }
     function  link(scope,element,attr,ctrl){
-      mapPopupSerivce.set(scope.popup,element);
+      mapPopupSerivce.set(scope.popup,{
+        el:element,
+        scope:scope
+      });
       scope.$on('$destroy',function(){
         mapPopupSerivce.remove(scope.popup);
       })

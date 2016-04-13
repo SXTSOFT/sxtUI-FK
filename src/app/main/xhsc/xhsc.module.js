@@ -78,11 +78,11 @@
         rightArrow:false,
         leftArrow:false,
         title :'实测',
-        url   :'/zg',
+        url   :'/sc',
         views :{
           'content@app':{
-            templateUrl : 'app/main/xhsc/ys/zg.html',
-            controller:'zgController as vm'
+            templateUrl : 'app/main/xhsc/ys/sc.html',
+            controller:'scController as vm'
           }
         }
       })

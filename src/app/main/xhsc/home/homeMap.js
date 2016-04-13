@@ -50,7 +50,7 @@
             }
           }
         });
-        project._map.openPopup(mapPopupSerivce.get('p3')[0],[0.3,0.2],{
+        project._map.openPopup(mapPopupSerivce.get('p3').el[0],[0.3,0.2],{
           maxWidth:300
         })
         //var draggable = new L.Draggable("<div>aaaaa</div>");
