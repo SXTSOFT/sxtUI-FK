@@ -27,8 +27,8 @@
           //return  $http.get('api/address',{data:''});
           return query (array ({
               AcceptanceItemID: 'string1',
-              MeasureItemName: '测量项名称',
-              SpecialtyID: 'id1;id2;id3',
+              MeasureItemName: '测量项{0}',
+              SpecialtyID: 'id1;id2',
               SpecialtyName: '专业类型;专业类型',
               /**
                * 1 、项目
@@ -52,7 +52,7 @@
               AcceptanceIndexID:'',
               AcceptanceItemID:'',
               ParentAcceptanceIndexID:'',
-              IndexName:'',//指标名称
+              IndexName:'指标名称{0}',//指标名称
               /**
                * Single：各自测量，SelectMaterial：选择材质测量）
                * */
@@ -61,11 +61,19 @@
                * 1 原位
                * 2 非原位
                * */
-              MeasureMethod:'',//实测方法
-              PassYieldComputeMode:'',//计算合格率方式
+              MeasureMethod:'1',//实测方法
+	            /**
+               * 1 测量值
+               * 2 与设计值对比
+               * 3 测量组对比
+               * 4 区域测量点对比
+               * 5 上下楼层对比
+               */
+              PassYieldComputeMode:'1',//计算合格率方式
               /**
                * 合并标识
-               * 0：不合并，1：合并
+               * 0：不合并
+               * 1：合并
                * */
               GroupSign:1,//合并标识
               Weight:9.1,//权重
@@ -219,7 +227,14 @@
         }
       },
 
+	    /**
+       * 质量管理
+       */
       ProjectQuality:{
+		    /**
+         * 检查点
+         *
+         */
         MeasurePoint:{
           /**
            * 添加测量标注点
@@ -254,57 +269,6 @@
            *      }]
            * **/
           update:function(measurePointID, points){
-            return post(points);
-          },
-          /**
-           * 添加测量组
-           * @param {Array} points
-           * 　　　　[{
-           *        type:'Feature',//固定为Feature
-           *        geometry:{
-           *          type:'lineGroup' // lineGroup 测量组 或　areaGroup　区域组
-           *          coordinates:[] //图形位置信息
-           *        }，
-           *        options:{       //几何图形配置项，属性不固定，不同的geometry.type不尽相同
-           *          color:'red'
-           *        },
-           *        properties：{
-           *          MeasurePointID:'id',//唯一ID，客户端生成
-           *          RegionType:'Group',//区域类型（Point：标注点，Region：区域，Group：组） 固定为Group,
-           *          Geometry:'',//几何描述
-           *          ChildrenPointID:[
-           *            'id1','id2'
-           *          ]
-           *         }
-           *        }]
-           * */
-          createGroup:function(points){
-            return post(points);
-          },
-          /**
-           *  更新测量组
-           * @param {string} measurePointID 唯一ID
-           * @param {Array} points
-           * 　　　　[{
-           *        type:'Feature',//固定为Feature
-           *        geometry:{
-           *          type:'lineGroup' // lineGroup 测量组 或　areaGroup　区域组
-           *          coordinates:[] //图形位置信息
-           *        }，
-           *        options:{       //几何图形配置项，属性不固定，不同的geometry.type不尽相同
-           *          color:'red'
-           *        },
-           *        properties：{
-           *          MeasurePointID:'id',//唯一ID，客户端生成
-           *          RegionType:'Group',//区域类型（Point：标注点，Region：区域，Group：组） 固定为Group,
-           *          Geometry:'',//几何描述
-           *          ChildrenPointID:[
-           *            'id1','id2'
-           *          ]
-           *        }
-           *        }]
-           * */
-          updateGroup:function(measurePointID,points){
             return post(points);
           },
           /**
@@ -354,11 +318,15 @@
             }))
           }
         },
+		    /***
+         * 检查值
+         */
         MeasureValue:{
           /**
            * 添加测试值
            * @param {Array} values 测试值
            *        {
+           *          ParentMeasurePointID:'',//所在测量组ID，如果没有为null
            *          MeasurePointID:'',
            *          AcceptanceIndexID:''
            *          MeasureValue:''//测量值
@@ -377,6 +345,7 @@
            *  更新测试值
            * @param {Array} values 测试值
            *        {
+           *          ParentMeasurePointID:'',//所在测量组ID，如果没有为null
            *          MeasurePointID:'',
            *          AcceptanceIndexID:''
            *          MeasureValue:''//测量值
@@ -399,6 +368,7 @@
           query:function(acceptanceIndexID,checkRegionID){
             return query(array(
               {
+                ParentMeasurePointID:'',//所在测量组ID，如果没有为null
                 MeasurePointID:'',
                 AcceptanceIndexID:'',
                 MeasureValue:'',//测量值
@@ -432,9 +402,6 @@
         for(var k in obj){
           var v = obj[k];
           if(typeof(v)==='string'){
-            if(v.indexOf('{0}')==-1)
-              v = v+ (i+1);
-            else
               v = v.replace('{0}',(i+1));
           }
           o[k] = v;
