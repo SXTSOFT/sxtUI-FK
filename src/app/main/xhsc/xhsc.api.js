@@ -49,7 +49,7 @@
            * */
           query:function(acceptanceItemID){
             return query(array({
-              AcceptanceIndexID:'',
+              AcceptanceIndexID:'{0}',
               AcceptanceItemID:'',
               ParentAcceptanceIndexID:'',
               IndexName:'指标名称{0}',//指标名称

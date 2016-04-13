@@ -1,0 +1,25 @@
+<div  layout-padding>
+<div class="mappopup">
+  <div layout="row">
+    <sxt-num-downdown ng-model="vm.bass"></sxt-num-downdown>
+  </div>
+</div>
+<div layout-gt-sm="row" class="takeph">
+  <span style="color:#fff;min-width:70px;display: inline-block;vertical-align: top;height:30px;line-height: 26px;padding: 2px;">拍照</span>
+  <md-icon style="margin:0 0 0 10px;"><img src="app/main/xhsc/images/camera.png" width="35"></md-icon>
+</div>
+<div layout="row">
+
+      <md-button class="md-mini" flex ng-click="removeLayer()">
+        <span>删除</span>
+      </md-button>
+  <md-button class="md-mini" flex ng-click="cancelEdit()">
+    <span>取消</span>
+  </md-button>
+  <span flex></span>
+      <md-button  class="md-mini" flex ng-click="updateValue()">
+        <span>确定</span>
+      </md-button>
+
+</div>
+</div>

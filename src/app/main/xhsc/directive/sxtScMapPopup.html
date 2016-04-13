@@ -1,0 +1,32 @@
+<div class="mappopup" >
+  <div style="width:300px">
+  <div layout="row">
+    <sxt-num-downdown ng-model="vm.bass"></sxt-num-downdown>
+  </div>
+    <div layout="row">
+      <span style="color:#fff;min-width:70px;display: inline-block;vertical-align: top;margin-top:6px;height:30px;line-height: 26px;padding: 2px;">选择类型</span>
+      <md-input-container flex>
+        <md-select ng-model="user.state">
+          <md-option value="0">
+            啊啊啊
+          </md-option>
+          <md-option value="1">
+            啊啊啊1
+          </md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+</div>
+<div layout-gt-sm="row" class="takeph">
+  <span style="color:#fff;min-width:70px;display: inline-block;vertical-align: top;height:30px;line-height: 26px;padding: 2px;">拍照</span>
+  <md-icon style="margin:0 0 0 10px;"><img src="app/main/xhsc/images/camera.png" width="35"></md-icon>
+</div>
+<div class="leaflet-draw-subbuttom" >
+  <ul  layout="row">
+    <li><a class="" href="javascript:void(0)" ng-click="removeLayer()">删除</a></li>
+    <li flex></li>
+    <li><a class="" href="javascript:void(0)" ng-click="cancelEdit()">取消</a></li>
+    <li><a class="" href="javascript:void(0)" ng-click="updateValue()">确定</a></li>
+  </ul>
+</div>
+</div>

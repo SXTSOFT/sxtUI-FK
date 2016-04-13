@@ -1,6 +1,5 @@
 <div class="sxt-num-input" layout="column">
-  <div layout="row">
-    <div layout="column" class="mslider">
+ <div layout="column" class="mslider">
       <div flex layout="row">
         <div flex="33"><md-button ng-click="ck('ac')">AC</md-button></div>
         <div flex="33"><md-button ng-click="ck('+-')">+/-</md-button></div>
@@ -26,17 +25,6 @@
         <div flex="33"><md-button ng-click="ck('.')">.</md-button></div>
       </div>
     </div>
-    <div layout="column" class="nomargin">
-      <md-slider-container flex style="background:#fff;position: relative;left: -1px;border-left:1px solid silver;">
-        <md-input-container>
-          <input flex type="number" ng-model="value" aria-label="bass" aria-controls="bass-slider" style="display: none;">
-        </md-input-container>
-        <md-slider md-discrete ng-model="value" min="0" max="100" ng-step="sliderStep" aria-label="bass" class="md-primary"
-                   md-vertical></md-slider>
-        </md-slider>
-      </md-slider-container>
-    </div>
-  </div>
   <div layout="row" style="background: #ddd;;border-top:1px solid silver;">
     <div flex="100" layout="column"><md-button ng-click="ck('ok')" flex>确定</md-button></div>
   </div>
