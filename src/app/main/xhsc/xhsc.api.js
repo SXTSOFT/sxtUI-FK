@@ -21,10 +21,11 @@
         /**
          * 获取本人所有实测项目
          *
-         * @param    {string}  areaID     分期ID
+         * @param    {string}  regionID     部位ID
+         * @param   {string}  regionType  部位类型
          * */
-        query:function(areaID) {
-          //return  $http.get('api/address',{data:''});
+        query:function(regionID,regionType) {
+          //return  $http.get('api/address',{regionID:regionID,regionType:regionType});
           return query (array ({
               AcceptanceItemID: 'string1',
               MeasureItemName: '测量项{0}',
