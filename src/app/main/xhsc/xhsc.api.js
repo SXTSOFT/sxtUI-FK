@@ -24,7 +24,7 @@
          * @param    {string}  areaID     分期
          * */
         query:function(areaID) {
-          //return  $http.get('api/address',{areaID:areaID});
+          //return  $http.get('/api/Measure'',{areaID:areaID});
           return query (array ({
               AcceptanceItemID: 'string1',
               MeasureItemName: '测量项{0}',
@@ -48,11 +48,11 @@
            * @param  {string} acceptanceItemID 实测项ID（）
            * */
           query:function(acceptanceItemID){
-            return query(array({
-              AcceptanceIndexID:'{0}',
+            return query([{
+              AcceptanceIndexID:'1',
               AcceptanceItemID:'',
               ParentAcceptanceIndexID:'',
-              IndexName:'指标名称{0}',//指标名称
+              IndexName:'铝型材拼缝宽度',//指标名称
               /**
                * Single：各自测量，SelectMaterial：选择材质测量）
                * */
@@ -78,21 +78,295 @@
               GroupSign:1,//合并标识
               Weight:9.1,//权重
               SinglePassYield:true,//各自合格率
-              SummaryPassYield:true,//汇总合格率
-              children:array({
-                AcceptanceIndexID:'',
+              SummaryPassYield:true//汇总合格率
+            },
+              {
+                AcceptanceIndexID:'2',
                 AcceptanceItemID:'',
                 ParentAcceptanceIndexID:'',
-                IndexName:'',//指标名称
+                IndexName:'门洞',//指标名称
+                /**
+                 * Single：各自测量，SelectMaterial：选择材质测量）
+                 * */
                 IndexType:'Single',
-                MeasureMethod:'',//实测方法
-                PassYieldComputeMode:'',//计算合格率方式
+                /**
+                 * 1 原位
+                 * 2 非原位
+                 * */
+                MeasureMethod:'1',//实测方法
+                /**
+                 * 1 测量值
+                 * 2 与设计值对比
+                 * 3 测量组对比
+                 * 4 区域测量点对比
+                 * 5 上下楼层对比
+                 */
+                PassYieldComputeMode:'2',//计算合格率方式
+                /**
+                 * 合并标识
+                 * 0：不合并
+                 * 1：合并
+                 * */
                 GroupSign:1,//合并标识
                 Weight:9.1,//权重
                 SinglePassYield:true,//各自合格率
-                SummaryPassYield:true//汇总合格率
-              })
-            }))
+                SummaryPassYield:true,//汇总合格率
+                children:[{
+                  AcceptanceIndexID:'3',
+                  AcceptanceItemID:'',
+                  ParentAcceptanceIndexID:'',
+                  IndexName:'高度',//指标名称
+                  /**
+                   * Single：各自测量，SelectMaterial：选择材质测量）
+                   * */
+                  IndexType:'Single',
+                  /**
+                   * 1 原位
+                   * 2 非原位
+                   * */
+                  MeasureMethod:'1',//实测方法
+                  /**
+                   * 1 测量值
+                   * 2 与设计值对比
+                   * 3 测量组对比
+                   * 4 区域测量点对比
+                   * 5 上下楼层对比
+                   */
+                  PassYieldComputeMode:'2',//计算合格率方式
+                  /**
+                   * 合并标识
+                   * 0：不合并
+                   * 1：合并
+                   * */
+                  GroupSign:1,//合并标识
+                  Weight:9.1,//权重
+                  SinglePassYield:true,//各自合格率
+                  SummaryPassYield:true
+                },{
+                  AcceptanceIndexID:'4',
+                  AcceptanceItemID:'',
+                  ParentAcceptanceIndexID:'',
+                  IndexName:'宽度',//指标名称
+                  /**
+                   * Single：各自测量，SelectMaterial：选择材质测量）
+                   * */
+                  IndexType:'Single',
+                  /**
+                   * 1 原位
+                   * 2 非原位
+                   * */
+                  MeasureMethod:'1',//实测方法
+                  /**
+                   * 1 测量值
+                   * 2 与设计值对比
+                   * 3 测量组对比
+                   * 4 区域测量点对比
+                   * 5 上下楼层对比
+                   */
+                  PassYieldComputeMode:'2',//计算合格率方式
+                  /**
+                   * 合并标识
+                   * 0：不合并
+                   * 1：合并
+                   * */
+                  GroupSign:1,//合并标识
+                  Weight:9.1,//权重
+                  SinglePassYield:true,//各自合格率
+                  SummaryPassYield:true
+                }
+
+                ]
+              },{
+                AcceptanceIndexID:'3',
+                AcceptanceItemID:'',
+                ParentAcceptanceIndexID:'',
+                IndexName:'方正度',//指标名称
+                /**
+                 * Single：各自测量，SelectMaterial：选择材质测量）
+                 * */
+                IndexType:'Single',
+                /**
+                 * 1 原位
+                 * 2 非原位
+                 * */
+                MeasureMethod:'1',//实测方法
+                /**
+                 * 1 测量值
+                 * 2 与设计值对比
+                 * 3 测量组对比
+                 * 4 区域测量点对比
+                 * 5 上下楼层对比
+                 */
+                PassYieldComputeMode:'3',//计算合格率方式
+                /**
+                 * 合并标识
+                 * 0：不合并
+                 * 1：合并
+                 * */
+                GroupSign:1,//合并标识
+                Weight:9.1,//权重
+                SinglePassYield:true,//各自合格率
+                SummaryPassYield:true
+              },{
+                AcceptanceIndexID:'5',
+                AcceptanceItemID:'',
+                ParentAcceptanceIndexID:'',
+                IndexName:'天花水平度',//指标名称
+                /**
+                 * Single：各自测量，SelectMaterial：选择材质测量）
+                 * */
+                IndexType:'Single',
+                /**
+                 * 1 原位
+                 * 2 非原位
+                 * */
+                MeasureMethod:'1',//实测方法
+                /**
+                 * 1 测量值
+                 * 2 与设计值对比
+                 * 3 测量组对比
+                 * 4 区域测量点对比
+                 * 5 上下楼层对比
+                 */
+                PassYieldComputeMode:'4',//计算合格率方式
+                /**
+                 * 合并标识
+                 * 0：不合并
+                 * 1：合并
+                 * */
+                GroupSign:1,//合并标识
+                Weight:9.1,//权重
+                SinglePassYield:true,//各自合格率
+                SummaryPassYield:true
+              },{
+                AcceptanceIndexID:'5',
+                AcceptanceItemID:'',
+                ParentAcceptanceIndexID:'',
+                IndexName:'天花水平度',//指标名称
+                /**
+                 * Single：各自测量，SelectMaterial：选择材质测量）
+                 * */
+                IndexType:'Single',
+                /**
+                 * 1 原位
+                 * 2 非原位
+                 * */
+                MeasureMethod:'1',//实测方法
+                /**
+                 * 1 测量值
+                 * 2 与设计值对比
+                 * 3 测量组对比
+                 * 4 区域测量点对比
+                 * 5 上下楼层对比
+                 */
+                PassYieldComputeMode:'5',//计算合格率方式
+                /**
+                 * 合并标识
+                 * 0：不合并
+                 * 1：合并
+                 * */
+                GroupSign:1,//合并标识
+                Weight:9.1,//权重
+                SinglePassYield:true,//各自合格率
+                SummaryPassYield:true
+              },{
+                AcceptanceIndexID:'6',
+                AcceptanceItemID:'',
+                ParentAcceptanceIndexID:'',
+                IndexName:'天花水平度',//指标名称
+                /**
+                 * Single：各自测量，SelectMaterial：选择材质测量）
+                 * */
+                IndexType:'Single',
+                /**
+                 * 1 原位
+                 * 2 非原位
+                 * */
+                MeasureMethod:'1',//实测方法
+                /**
+                 * 1 测量值
+                 * 2 与设计值对比
+                 * 3 测量组对比
+                 * 4 区域测量点对比
+                 * 5 上下楼层对比
+                 */
+                PassYieldComputeMode:'1',//计算合格率方式
+                /**
+                 * 合并标识
+                 * 0：不合并
+                 * 1：合并
+                 * */
+                GroupSign:1,//合并标识
+                Weight:9.1,//权重
+                SinglePassYield:true,//各自合格率
+                SummaryPassYield:true,
+                children:[
+                  {
+                    AcceptanceIndexID:'5',
+                    AcceptanceItemID:'',
+                    ParentAcceptanceIndexID:'',
+                    IndexName:'立面垂直度',//指标名称
+                    /**
+                     * Single：各自测量，SelectMaterial：选择材质测量）
+                     * */
+                    IndexType:'Single',
+                    /**
+                     * 1 原位
+                     * 2 非原位
+                     * */
+                    MeasureMethod:'1',//实测方法
+                    /**
+                     * 1 测量值
+                     * 2 与设计值对比
+                     * 3 测量组对比
+                     * 4 区域测量点对比
+                     * 5 上下楼层对比
+                     */
+                    PassYieldComputeMode:'1',//计算合格率方式
+                    /**
+                     * 合并标识
+                     * 0：不合并
+                     * 1：合并
+                     * */
+                    GroupSign:1,//合并标识
+                    Weight:9.1,//权重
+                    SinglePassYield:true,//各自合格率
+                    SummaryPassYield:true
+                  },
+                  {
+                    AcceptanceIndexID:'5',
+                    AcceptanceItemID:'',
+                    ParentAcceptanceIndexID:'',
+                    IndexName:'表面平整度',//指标名称
+                    /**
+                     * Single：各自测量，SelectMaterial：选择材质测量）
+                     * */
+                    IndexType:'Single',
+                    /**
+                     * 1 原位
+                     * 2 非原位
+                     * */
+                    MeasureMethod:'1',//实测方法
+                    /**
+                     * 1 测量值
+                     * 2 与设计值对比
+                     * 3 测量组对比
+                     * 4 区域测量点对比
+                     * 5 上下楼层对比
+                     */
+                    PassYieldComputeMode:'5',//计算合格率方式
+                    /**
+                     * 合并标识
+                     * 0：不合并
+                     * 1：合并
+                     * */
+                    GroupSign:1,//合并标识
+                    Weight:9.1,//权重
+                    SinglePassYield:true,//各自合格率
+                    SummaryPassYield:true
+                  }
+                ]
+              }])
           }
         }
       },
