@@ -9,7 +9,7 @@
     <table  ng-if="MeasureIndex.PassYieldComputeMode=='2'" border="0" cellspacing="0" cellpadding="0"  style="margin-bottom:15px;width:100%">
       <thead>
       <tr>
-        <th style="width:80px; text-align: center;">实测值</th>
+        <th style="width:80px; text-align: center;">测量项</th>
         <th ng-repeat="item in MeasureIndex.children">{{item.IndexName}}</th>
       </tr>
       </thead>
@@ -47,11 +47,27 @@
         <input ng-model="value.Remark">
       </md-input-container>
     </div>
-      <div layout="row" ng-repeat="item  in  values">
+      <div ng-if="MeasureIndex.PassYieldComputeMode=='3'" layout="row" ng-repeat="item  in  values">
       <span style="color:#fff;min-width:120px; text-align: right; display: inline-block;vertical-align: top;margin-top:6px;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
         {{item.seq}}
       </span>
         <span style="position: relative;width:100%;display: inline-block;height:30px;border-bottom: 1px solid #555;"><sxt-num-downdown ng-model="item.MeasureValue"></sxt-num-downdown></span>
+      </div>
+      <div ng-if="MeasureIndex.PassYieldComputeMode=='3'" layout="row" >
+      <span style="color:#fff;min-width:120px; text-align: right; display: inline-block;vertical-align: top;margin-top:6px;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
+       包含实测点
+      </span>
+        <span style="position: relative;width:100%;display: inline-block;height:30px;border-bottom: 1px solid #555;">
+        <p ng-repeat="item in values">{{item.seq}}</p>,
+        </span>
+      </div>
+      <div layout="row" >
+      <span style="color:#fff;min-width:120px; text-align: right; display: inline-block;vertical-align: top;margin-top:6px;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
+       差异
+      </span>
+        <span style="position: relative;width:100%;display: inline-block;height:30px;border-bottom: 1px solid #555;">
+          {{distinct(values)}}
+        </span>
       </div>
     </div>
     <div  ng-if="MeasureIndex.IndexType=='SelectMaterial'">
@@ -66,7 +82,7 @@
       </md-input-container>
     </div>
     <div layout="row" style="margin-top:20px;" class="addPanel">
-      <span style="color:#fff;min-width:70px;display: inline-block;vertical-align: top;margin-top:6px;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">值:</span>
+      <span style="color:#fff;min-width:120px;display: inline-block;vertical-align: top;margin-top:6px;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">值:</span>
       <span style="position: relative;width:100%;display: inline-block;height:30px;border-bottom: 1px solid #555;"><sxt-num-downdown ng-model="value.MeasureValue"></sxt-num-downdown></span>
     </div>
     </div>

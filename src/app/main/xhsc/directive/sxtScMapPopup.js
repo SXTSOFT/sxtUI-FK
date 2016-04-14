@@ -114,6 +114,28 @@
         }
         scope.$apply();
       };
+      scope.distinct = function(array){
+        if(!array || !array.forEach)return;
+        var min=100000,max=-100000;
+        array.forEach(function(item){
+          if(item.MeasureValue) {
+            if (item.MeasureValue < min)
+              min = item.MeasureValue;
+            if (item.MeasureValue > max)
+              max = item.MeasureValue;
+          }
+          else {
+            if (item < min)
+              min = item;
+            if (item > max)
+              max = item;
+          }
+        })
+        return max-min;
+      }
+      scope.distinct2 = function(){
+        scope.distinct(Array.prototype.splice.call(arguments));
+      }
       scope.removeLayer = function(){
         var layer = scope.context.layer;
         layer._fg.removeLayer(layer);
