@@ -7,7 +7,7 @@
     .module('app.xhsc')
     .factory('xhUtils',xhUtils);
   /** @ngInject */
-  function xhUtils(remote,$rootScope){
+  function xhUtils(remote,$rootScope,$q){
     var cP;
     var o = {
       getProcedure:getProcedure
@@ -32,7 +32,7 @@
       });
     }
     function getProcedure(cb){
-      if(cP)cb(cp);
+      if(cP)return cb(cP);
       remote.Measure.query().then(function(result){
 
         var s = [];

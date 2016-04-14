@@ -495,7 +495,7 @@
              * 1：进行中
              * 2：已验收
              * */
-            Status:1
+            Status:Math.floor(Math.random()*2)
           }))
         }
       },

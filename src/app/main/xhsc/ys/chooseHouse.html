@@ -1,37 +1,31 @@
 
-<md-toolbar layout="row" style="height: 44px;line-height: 44px;background: #f4f4f6;color:#f00;border-bottom: 1px solid #d8d8d8;position: absolute;top:0;left:0;">
-  <!--<h2 style="text-align: center;display: block;width:100%;margin: 0;line-height: 44px;">工序</h2>-->
-  <md-switch flex="none" ng-model="vm.muti" aria-label="Switch 1" style="position: absolute;right:16px;top:5px;margin:0;">
-    {{ vm.muti ? '多选':'单选' }}
-  </md-switch>
-</md-toolbar>
+<!--<md-toolbar layout="row" style="height: 44px;line-height: 44px;background: #f4f4f6;color:#f00;border-bottom: 1px solid #d8d8d8;position: absolute;top:0;left:0;">-->
+  <!--&lt;!&ndash;<h2 style="text-align: center;display: block;width:100%;margin: 0;line-height: 44px;">工序</h2>&ndash;&gt;-->
+  <!--<md-switch flex="none" ng-model="vm.muti" aria-label="Switch 1" style="position: absolute;right:16px;top:5px;margin:0;">-->
+    <!--{{ vm.muti ? '多选':'单选' }}-->
+  <!--</md-switch>-->
+<!--</md-toolbar>-->
 
-<div flex layout="row" style="max-height:48px;height:48px;position: absolute;top:44px;width:100%;">
+<div flex layout="row" style="max-height:48px;height:48px;position: absolute;top:0;width:100%;">
     <md-list  flex layout="row" style="background:#fff;padding:0;" class="filter">
-      <md-list-item flex="25" ng-class="{'active':1}"><md-button><span>全部</span></md-button></md-list-item>
-      <md-list-item flex="25" ng-click="vm.myFilter('ing')"><md-button ><span class="ing"><i></i>验收中</span></md-button></md-list-item>
-      <md-list-item flex="25"><md-button><span class="done"><i></i>已验收</span></md-button></md-list-item>
-      <md-list-item flex="25"><md-button><span class="yet"><i></i>未验收</span></md-button></md-list-item>
+      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == -1}" ng-click="vm.myFilter('-1')"><md-button><span>全部</span></md-button></md-list-item>
+      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == 1}" ng-click="vm.myFilter('1')"><md-button ><span class="ing"><i></i>验收中</span></md-button></md-list-item>
+      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == 2}" ng-click="vm.myFilter('2')"><md-button><span class="done"><i></i>已验收</span></md-button></md-list-item>
+      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == 0}" ng-click="vm.myFilter('0')"><md-button><span class="yet"><i></i>未验收</span></md-button></md-list-item>
     </md-list>
 </div>
-<md-content layout="row" flex class="floor-list" style="border-top:1px solid #d8d8d8;margin-top:92px;">
+<md-content layout="row" flex class="floor-list" style="border-top:1px solid #d8d8d8;margin-top:48px;">
 <div flex="40" layout="column" style="border-right:1px solid #d8d8d8;background: #fff;">
   <md-content style="background: #fff;;padding-bottom:44px;">
     <md-list ng-cloak class="md-padding">
+      <md-divider></md-divider>
       <md-list-item ng-repeat="item in vm.Region" ng-click="vm.open(item)">
-        <md-checkbox ng-if="vm.muti" ng-model="item.selected"></md-checkbox>
+        <!--<md-switch class="md-secondary" ng-model="item.selected"></md-switch>-->
+        <md-checkbox class="md-secondary left" ng-if="vm.muti" ng-model="item.selected"></md-checkbox>
         <p>{{item.RegionName }}</p>
         <md-icon class="md-secondary" ng-show="item.showArr" md-font-icon="icon-chevron-right"></md-icon>
+        <md-divider></md-divider>
       </md-list-item>
-      <!--<md-list-item class="secondary-button-padding"  ng-click="vm.open(item)" ng-repeat="item in vm.Region">-->
-        <!--<md-checkbox  ng-if="vm.muti" ng-model="item.selected" ></md-checkbox>-->
-        <!--&lt;!&ndash;<i ng-click="vm.checked()" class="myselect" ng-class="{'selected':1}" ng-if="vm.muti"></i>&ndash;&gt;-->
-        <!--<p>{{item.RegionName}}</p>-->
-        <!--&lt;!&ndash;<md-button ng-click="vm.go()" aria-label="Send Email" class="md-secondary" >验收</md-button>&ndash;&gt;-->
-        <!--<md-icon class="md-secondary" ng-show="item.showArr" aria-label="Chat" md-font-icon="icon-chevron-right"></md-icon>-->
-        <!--<md-divider></md-divider>-->
-      <!--</md-list-item>-->
-
     </md-list>
   </md-content>
 </div>
@@ -46,7 +40,7 @@
     <div ng-repeat="floor in vm.floors | filter:vm.number" layout="column">
     <h3>
       <div class="header">
-        <div class="margin">
+        <div class="margin" ng-class="{'ing':floor.status==1,'done':floor.status==2,'yet':floor.status==0}">
           <md-button ng-click="vm.changeStat(floor,vm.floors)">
             <p>{{floor.RegionName}}</p>
             <i ng-if="vm.muti" style="position: absolute;right:5px;top:6px;" class="myselect" ng-class="{'selected':floor.selected}"></i>
@@ -56,7 +50,7 @@
     </h3>
       <md-list>
         <md-list-item ng-repeat="room in floor.children | filter:vm.number">
-          <md-button ng-click="vm.changeStat(room,floor.children)" ng-class="{'ing':0,'done':1}">
+          <md-button ng-click="vm.changeStat(room,floor.children)" ng-class="{'ing':room.status==1,'done':room.status==2,'yet':room.status==0}">
           <p>{{ room.RegionName}}</p>
           <i style="position: absolute;right:5px;top:6px;"  ng-if="vm.muti" class="myselect" ng-class="{'selected':room.selected}"></i>
           </md-button>

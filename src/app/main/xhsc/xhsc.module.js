@@ -50,7 +50,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'抹灰工程',
-        url   :'/chooseHouse/{id}',
+        url   :'/chooseHouse/{id}/{itemid}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/chooseHouse.html',

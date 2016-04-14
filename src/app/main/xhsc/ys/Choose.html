@@ -53,99 +53,24 @@
 <div layout="column" ng-cloak="">
   <!--<my-sidenav></my-sidenav>-->
   <md-content class="main-padding md-hue-1" layout="column">
-    <h2 class="md-title" style="color:#e93030;font-size:16px;">土建</h2>
-    <md-list class="procedure-list">
-      <md-list-item class="veggie-option" layout="row" layout-wrap="" ui-sref="app.xhsc.chooseHouse({id:1})">
+    <!--<md-list class="procedure-list" ng-repeat="acceptance in vm.Measure">-->
+      <!--<h2 class="md-title" style="color:#e93030;font-size:16px;">{{acceptance.MeasureItemName}}</h2>-->
+      <!--<md-list-item class="veggie-option" layout="row" layout-wrap="" ui-sref="app.xhsc.chooseHouse({id:acceptance.AcceptanceItemID,itemId:item.id})" ng-repeat="item in acceptance.new">-->
+        <!--<div class="md-item-text">-->
+          <!--<p>{{item.name}}</p>-->
+        <!--</div>-->
+      <!--</md-list-item>-->
+    <!--</md-list>-->
+    <div>
+      <md-select placeholder="星河智慧一期" ng-model="vm.selectedArea" style="margin-bottom:10px;" ng-change="vm.change()">
+        <md-option ng-value="area" ng-repeat="area in vm.Areas">{{area.ProjectName}}{{area.AreaName}}</md-option>
+      </md-select>
+    </div>
+    <md-list class="procedure-list" ng-repeat="procdure in vm.xhMeasure">
+      <h2 class="md-title" style="color:#e93030;font-size:16px;">{{procdure.$name}} > {{procdure.children[0].$name}}</h2>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="" ui-sref="app.xhsc.chooseHouse({id:subpro.AcceptanceItemID})" ng-repeat="subpro in procdure.ps">
         <div class="md-item-text">
-          <p>土建工程土建工程</p>
-        </div>
-      </md-list-item>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="" ui-sref="app.xhsc.chooseHouse({id:1})">
-        <div class="md-item-text">
-          <p>土建工程</p>
-        </div>
-      </md-list-item>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="">
-        <div class="md-item-text">
-          <p>土建工程</p>
-        </div>
-      </md-list-item>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="">
-        <div class="md-item-text">
-          <p>土建工程</p>
-        </div>
-      </md-list-item>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="">
-        <div class="md-item-text">
-          <p>土建工程</p>
-        </div>
-      </md-list-item>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="">
-        <div class="md-item-text">
-          <p>土建工程</p>
-        </div>
-      </md-list-item>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="">
-        <div class="md-item-text">
-          <p>土建工程</p>
-        </div>
-      </md-list-item>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="">
-        <div class="md-item-text">
-          <p>土建工程</p>
-        </div>
-      </md-list-item>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="">
-        <div class="md-item-text">
-          <p>土建工程</p>
-        </div>
-      </md-list-item>
-    </md-list>
-    <h2 class="md-title" style="color:#e93030;font-size:16px;">土建</h2>
-    <md-list class="procedure-list">
-      <md-list-item class="veggie-option" layout="row" layout-wrap="">
-        <div class="md-item-text">
-          <p class="md-primary">土建工程土建工程</p>
-        </div>
-      </md-list-item>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="">
-        <div class="md-item-text">
-          <p>土建工程</p>
-        </div>
-      </md-list-item>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="">
-        <div class="md-item-text">
-          <p>土建工程</p>
-        </div>
-      </md-list-item>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="">
-        <div class="md-item-text">
-          <p>土建工程</p>
-        </div>
-      </md-list-item>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="">
-        <div class="md-item-text">
-          <p>土建工程</p>
-        </div>
-      </md-list-item>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="">
-        <div class="md-item-text">
-          <p>土建工程</p>
-        </div>
-      </md-list-item>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="">
-        <div class="md-item-text">
-          <p>土建工程</p>
-        </div>
-      </md-list-item>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="">
-        <div class="md-item-text">
-          <p>土建工程</p>
-        </div>
-      </md-list-item>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="">
-        <div class="md-item-text">
-          <p>土建工程</p>
+          <p class="md-primary">{{subpro.MeasureItemName}}</p>
         </div>
       </md-list-item>
     </md-list>

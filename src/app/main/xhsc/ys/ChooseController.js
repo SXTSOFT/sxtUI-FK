@@ -9,14 +9,16 @@
     .controller('ChooseController',ChooseController);
 
   /** @ngInject */
-  function ChooseController($scope,$timeout,remote,$rootScope){
+  function ChooseController($scope,$timeout,remote,$rootScope,xhUtils){
     var vm=this;
     function toggleRightEvent(){
       //$mdSidenav('right')
       //  .toggle();
     }
 
-
+    xhUtils.getProcedure(function(result){
+      vm.xhMeasure = result;
+    });
     vm.close = function () {
       //$mdSidenav('right').close()
       //  .then(function () {
