@@ -19,13 +19,12 @@
        */
       Measure:{
         /**
-         * 获取本人所有实测项目
+         * 获取本人所有实测项目(并非自定义的，而是系统基础项)
          *
-         * @param    {string}  regionID     部位ID
-         * @param   {string}  regionType  部位类型
+         * @param    {string}  areaID     分期
          * */
-        query:function(regionID,regionType) {
-          //return  $http.get('api/address',{regionID:regionID,regionType:regionType});
+        query:function(areaID) {
+          //return  $http.get('api/address',{areaID:areaID});
           return query (array ({
               AcceptanceItemID: 'string1',
               MeasureItemName: '测量项{0}',
@@ -38,7 +37,7 @@
                * 8、 楼层
                * 16、 房间
                * */
-              RegionType: 2 | 4 | 8 | 16
+              RegionType: 1 | 2 | 4 | 8 | 16
             }
           ))
         },
@@ -46,7 +45,7 @@
           /**
            * 获取实测项所有指标
            *
-           * @param  {string} acceptanceItemID 实测项ID
+           * @param  {string} acceptanceItemID 实测项ID（）
            * */
           query:function(acceptanceItemID){
             return query(array({
@@ -206,22 +205,21 @@
       MeasureCheckBatch:{
         /**
          * @param    {string}  acceptanceItemID     实测项ID/工序ID
-         * @param    {string}  regionID  区域ID
-         * @param    {int}     acceptanceItemIDType  返回状态类型
+         * @param    {string}  areaID  分期ID
+         * @param    {int}     acceptanceItemIDType  返回状态类型（目前仅为1）
          *           1   --实测项
          *           2   --工序
          *           3   --整改
          * */
-        getStatus:function(acceptanceItemID, regionID, acceptanceItemIDType){
+        getStatus:function(acceptanceItemID, areaID, acceptanceItemIDType){
           return query(array({
             RegionID:'string{0}',
-            CheckBatchID:'{0}',//验收批Id
-            CheckBatchNo:'批{0}',//验收批号
-            CheckBatchDescription:'',//验收批描述
+            RegionType:1,
+            AcceptanceItemID:'acceptanceItemID{0}',//自定义后的实测项目ID
             /**
-             * 0：未开始，
-             * 1：验收合格，
-             * 2：验收不合格
+             * 0：未验收
+             * 1：进行中
+             * 2：已验收
              * */
             Status:1
           }))
