@@ -59,6 +59,9 @@
           remoteS.updateData(value);
         },
         onPopup:function(e){
+          if(e.layer instanceof L.Stamp
+          || e.layer instanceof L.AreaGroup
+          || e.layer instanceof L.LineGroup)
           var edit = mapPopupSerivce.get('mapPopup');
           if(edit) {
             edit.scope.context = e;
@@ -93,8 +96,12 @@
             var g = featureGroups[m.AcceptanceIndexID] = angular.copy(m);
             g.options = options;
             g.toolbar = {
-              group:{
+              draw:{
 
+              },
+              group:{
+                lineGroup: m.PassYieldComputeMode=='3',
+                areaGroup:m.PassYieldComputeMode=='4'
               }
             };
           });

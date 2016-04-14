@@ -48,7 +48,8 @@
            * @param  {string} acceptanceItemID 实测项ID（）
            * */
           query:function(acceptanceItemID){
-            return query([{
+            return query([
+              {
               AcceptanceIndexID:'1',
               AcceptanceItemID:'',
               ParentAcceptanceIndexID:'',
@@ -176,7 +177,8 @@
                 }
 
                 ]
-              },{
+              },
+              {
                 AcceptanceIndexID:'3',
                 AcceptanceItemID:'',
                 ParentAcceptanceIndexID:'',
@@ -239,10 +241,10 @@
                 SinglePassYield:true,//各自合格率
                 SummaryPassYield:true
               },{
-                AcceptanceIndexID:'5',
+                AcceptanceIndexID:'15',
                 AcceptanceItemID:'',
                 ParentAcceptanceIndexID:'',
-                IndexName:'天花水平度',//指标名称
+                IndexName:'区域测量点对比',//指标名称
                 /**
                  * Single：各自测量，SelectMaterial：选择材质测量）
                  * */
