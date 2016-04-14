@@ -18,6 +18,9 @@
       })
       .state('app.xhsc.home',{
         noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
         title :'工程管理',
         url   :'/',
         views :{
@@ -29,6 +32,9 @@
       })
       .state('app.xhsc.choose',{
         noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
         title :'验收',
         url   :'/choose',
         views :{
@@ -40,8 +46,11 @@
       })
       .state('app.xhsc.chooseHouse',{
         noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
         title :'抹灰工程',
-        url   :'/chooseHouse',
+        url   :'/chooseHouse/{id}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/chooseHouse.html',
@@ -51,6 +60,9 @@
       })
       .state('app.xhsc.check',{
         noBack:true,
+        sendBt:true,
+        rightArrow:true,
+        leftArrow:true,
         title :'实测',
         url   :'/check',
         views :{
@@ -61,13 +73,30 @@
         }
       })
       .state('app.xhsc.zg',{
-        noBack:true,
+        noBack:false,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
         title :'实测',
-        url   :'/zg',
+        url   :'/sc',
         views :{
           'content@app':{
-            templateUrl : 'app/main/xhsc/ys/zg.html',
-            controller:'zgController as vm'
+            templateUrl : 'app/main/xhsc/ys/sc.html',
+            controller:'scController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.demo',{
+        noBack:false,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'DEMO',
+        url   :'/demo',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/home/demo.html',
+            controller:'DemoController as vm'
           }
         }
       })

@@ -7,10 +7,21 @@
         .controller('TopToolbarController', TopToolbarController);
 
     /** @ngInject */
-    function TopToolbarController($scope) {
+    function TopToolbarController($scope,remote,$rootScope) {
+      var vm=this;
       $scope.goBack = function(){
         history.go(-1);//返回
       }
+      remote.Project.Area.query().then(function(result){
+        vm.Areas = result.data.rows;
+        vm.selectedArea = vm.Areas[0];
+      })
+
+      vm.change = function(){
+        $rootScope.$emit('areaSelect',vm.selectedArea)
+      }
+
     }
+
 
 })();

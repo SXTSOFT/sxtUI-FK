@@ -1,0 +1,47 @@
+.sxt-num-input{
+  background: #ffffff;
+  //width:218px;
+  width: 168px;
+  border: solid 1px silver;
+  border-radius: 6px;
+  overflow: hidden;
+  .md-button{
+    min-width:55px;
+    margin: 0;
+  }
+  .mslider{
+    >div{
+      >div{
+        border-bottom: solid 1px silver;
+        border-right: solid 1px silver;
+        &:last-child{
+          border-right: 0;
+        }
+        span{
+          color:#000000;
+        }
+        .md-button{
+          cursor: pointer;
+        }
+      }
+      &:last-child{
+        >div{
+          border-bottom: 0!important;
+        }
+      }
+    }
+    //&:last-child{
+    //  >div{
+    //    border-bottom: 0!important;
+    //  }
+    //}
+  }
+  .nomargin{
+    md-slider{
+      margin: 0;
+      &[md-vertical]{
+        min-height: 200px;
+      }
+    }
+  }
+}

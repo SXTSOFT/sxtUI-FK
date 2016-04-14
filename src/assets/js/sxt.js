@@ -19,10 +19,7 @@ window.sxt = (function(win)
     version: '1.1.12',
     app: {
       appDir: appDir,
-      serve: 'http://10.245.9.151:3000',
-     // api:'http://vkde.sxtsoft.com',
-    //  api:'http://localhost:46844',
-      api:'http://szdp.vanke.com:8088',
+      api:'http://ggem.sxtsoft.com:9191',
       getUrl: getUrl,
       download: download
     },

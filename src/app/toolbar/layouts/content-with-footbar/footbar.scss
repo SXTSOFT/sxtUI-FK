@@ -17,6 +17,8 @@
 #toolbar2{
   font-size:12px;
   padding-top: 4px;
+  background: #f4f4f6;
+  border-top:1px solid #d3d3d5;
   .md-button{
     line-height:26px;
     min-width:75px;
@@ -53,16 +55,19 @@ background-color:rgb(233,48,48);
     md-icon{
       color:#fff;
     }
-    span{
-      display: inline-block;
-      vertical-align: top;
-      padding-top: 3px;
-    }
   }
   h2{
     text-align:center;
     display:block;
     width:100%;
+    margin-left:-32px;
+    span{
+      display: inline-block;
+      vertical-align: top;
+      &.subtitle{
+        padding-top: 6px;
+      }
+    }
   }
   .md-inner{
     .md-right{

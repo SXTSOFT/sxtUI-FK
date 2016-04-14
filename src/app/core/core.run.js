@@ -57,6 +57,10 @@
         }
         else{
           $rootScope.noBack = toState.noBack;
+          $rootScope.sendBt = toState.sendBt;
+          $rootScope.subtitle = toState.subtitle;
+          $rootScope.leftArrow = toState.leftArrow;
+          $rootScope.rightArrow = toState.rightArrow;
           $rootScope.title = toState.title || $rootScope.title;
         }
         //console.log('toState',toState)

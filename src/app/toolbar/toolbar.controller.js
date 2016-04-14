@@ -11,7 +11,7 @@
     {
         var vm = this;
         vm.is = isRoute;
-
+      $rootScope.toggle = false;
         auth.getUser().then(function(user){
           console.log('user',user)
           vm.user = user;
@@ -23,7 +23,15 @@
         $rootScope.global = {
             search: ''
         };
-
+      $rootScope.toLeft = function(){
+          $rootScope.$emit('leftEvent');
+        }
+      $rootScope.toRight = function(){
+          $rootScope.$emit('rightEvent');
+        }
+      $rootScope.toggleRight = function(){
+          $rootScope.$emit('toggleRightEvent');
+      }
         vm.bodyEl = angular.element('body');
         vm.userStatusOptions = [
             {
@@ -67,6 +75,10 @@
             }
         };
 
+      //remote.Project.Area.query().then(function(result){
+      //  vm.Areas = result.data.rows;
+      //  vm.selectedArea = vm.Areas[0];
+      //})
         // Methods
         vm.toggleSidenav = toggleSidenav;
         vm.logout = logout;
