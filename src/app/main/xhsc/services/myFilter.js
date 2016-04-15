@@ -9,18 +9,26 @@
     .filter('myFilter',myFilter);
 
   function myFilter(){
-    return function(items,args){
-      var output=[];
-      //console.log('a',args)
-      args.room.forEach(function(item){
-          if(args.status == -1){
-            output = args.room;
-            return output;
-          }else if(item.status == args.status){
-            output.push(item)
-          }
-        })
+    console.log('myFilter',arguments)
+    return function(items,status) {
+      console.log('myFilter1', arguments)
+      var output = [];
+      if (!items)return output;
+      if (status == -1) {
+        output = items;
         return output;
+      }
+      //console.log('a',args)
+      items.forEach(function (item) {
+        if (
+          item.find(function (it) {
+            return it.status == status
+          })
+        ) {
+          output.push(item)
+        }
+      })
+      return output;
     }
   }
 

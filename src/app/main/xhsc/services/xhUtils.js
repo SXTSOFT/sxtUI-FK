@@ -34,7 +34,7 @@
       return appendTree(container[container.length-1].children,ids, idx+1, item);
     }
     function getProcedure(areaId,cb){
-     if(!areaId && cP)return cb(cP);
+     if(!areaId && cP)return cb(angular.copy(cP));
       _areaId = areaId;
       remote.Measure.query(areaId).then(function(result){
 
@@ -75,32 +75,42 @@
         region = result.data;
 
         region.find = find;
+        region.each = each;
         //栋
         region.Children && region.Children.forEach(function(d){
           d.$parent = region;
           d.find = find;
           d.next = next;
           d.prev = prev;
+          d.each = each;
           d.Children && d.Children.forEach(function(l){
             l.$parent = d;
             l.find = find;
             l.next = next;
             l.prev = prev;
+            l.each = each;
 
             l.Children && l.Children.forEach(function(r){
               r.$parent = l;
               r.find = find;
               r.next = next;
               r.prev = prev;
+              r.each = each;
             })
           })
         });
-        cb(region);
+        cb(angular.copy(region));
       })
-
+      function each(fn){
+        fn(this);
+        this.Children && this.Children.forEach(function(item){
+          item.each(fn);
+        })
+      }
       function find(id){
-        if(this.RegionID==id)
+        if(this.RegionID==id ||(typeof id==='function' && id(this)===true))
           return this;
+
         if(this.Children){
           var fd;
           this.Children.forEach(function(c){

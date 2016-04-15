@@ -19,11 +19,11 @@
   <md-content style="background: #fff;;padding-bottom:44px;">
     <md-list ng-cloak class="md-padding">
       <md-divider></md-divider>
-      <md-list-item ng-repeat="item in vm.Region" ng-click="vm.open(item)">
+      <md-list-item ng-repeat="item in vm.Region| myFilter:vm.tabStatus" ng-click="vm.open(item)">
         <!--<md-switch class="md-secondary" ng-model="item.selected"></md-switch>-->
         <!--<md-checkbox class="md-secondary left" ng-if="vm.muti" ng-model="item.selected"></md-checkbox>-->
         <p ng-class="{'ing':item.status==1,'done':item.status==2,'yet':item.status==0}">{{item.RegionName }}</p>
-        <md-icon class="md-secondary go" ng-click="vm.goMeasure()" md-font-icon="icon-pen"></md-icon>
+        <md-icon class="md-secondary go" ng-click="vm.goMeasure()" md-font-icon="icon-pencil"></md-icon>
         <md-icon class="md-secondary" ng-show="item.showArr" md-font-icon="icon-chevron-right"></md-icon>
         <md-divider></md-divider>
       </md-list-item>
@@ -38,7 +38,7 @@
       <input type="text" class="inputtext"  ng-model="vm.number" ng-blur="vm.hideSearch()" placeholder="搜索">
     </div>
     </div>
-    <div ng-repeat="floor in vm.floors" layout="column">
+    <div ng-repeat="floor in vm.current.Children | myFilter:vm.tabStatus" layout="column">
       <h3>
         <div class="header">
           <div class="margin" ng-class="{'ing':floor.status==1,'done':floor.status==2,'yet':floor.status==0}">
@@ -50,8 +50,8 @@
         </div>
       </h3>
       <md-list>
-        <md-list-item ng-repeat="room in floor.children | myFilter:{room: floor.children,status:vm.tabStatus}">
-          <md-button ng-click="vm.changeStat(room,floor.children)" ng-class="{'ing':room.status==1,'done':room.status==2,'yet':room.status==0}">
+        <md-list-item ng-repeat="room in floor.Children | myFilter:vm.tabStatus">
+          <md-button ng-click="vm.changeStat(room,floor.Children)" ng-class="{'ing':room.status==1,'done':room.status==2,'yet':room.status==0}">
           <p>{{ room.RegionName}}</p>
           <i style="position: absolute;right:5px;top:6px;"  ng-if="vm.muti" class="myselect" ng-class="{'selected':room.selected}"></i>
           </md-button>
