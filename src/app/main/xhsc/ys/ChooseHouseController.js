@@ -21,6 +21,14 @@
     }
     vm.open = function(id) {
       vm.current = id;
+      //vm.floors = null;
+      //vm.Region.forEach(function (item) {
+      //  item.showArr = false;
+      //  if (id.RegionName == item.RegionName) {
+      //    vm.floors = item.Children;
+      //    id.showArr = true;
+      //  }
+      //})
     }
     vm.tabStatus = -1;
     vm.myFilter = function(num){
