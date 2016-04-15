@@ -48,8 +48,8 @@
            * @param  {string} acceptanceItemID 实测项ID
            * */
           query:function(acceptanceItemID){
-            //return $http.get($http.url('/Api/MeasureInfo/GetMeasureIndex',{acceptanceItemID:acceptanceItemID}));
-            return query([
+            return $http.get($http.url('/Api/MeasureInfo/GetMeasureIndex',{acceptanceItemID:acceptanceItemID}));
+            /**return query([
               {
               AcceptanceIndexID:'1',
               AcceptanceItemID:'',
@@ -370,7 +370,7 @@
                   }
                 ]
               }])
-          }
+          }**/
         }
       },
       /**
@@ -426,7 +426,8 @@
          * @returns {*}
          * **/
         updateHouseDrawing:function(regionID,draw){
-          return post(regionID,draw);
+          return $http.post($http.url('/Api/MeasureInfo/ModifyHouseType',{regionID:regionID,draw:draw}));
+          /**return post(regionID,draw);**/
         }
       },
 
@@ -443,7 +444,9 @@
          *           3   --整改
          * */
         getStatus:function(acceptanceItemID, areaID, acceptanceItemIDType){
-          return query(array({
+           return $http.get($http.url('/Api/MeasureInfo/getStatus',{acceptanceItemID:acceptanceItemID,areaID:areaID,acceptanceItemIDType:acceptanceItemIDType}));
+           
+         /** return query(array({
             RegionID:'string{0}',
             RegionType:1,
             AcceptanceItemID:'acceptanceItemID{0}',//自定义后的实测项目ID
@@ -451,10 +454,10 @@
              * 0：未验收
              * 1：进行中
              * 2：已验收
-             * */
+             * 
             Status:Math.floor(Math.random()*2)
           }))
-        }
+        }**/
       },
 
 	    /**
@@ -485,7 +488,8 @@
            *      }]
            * **/
           create:function(points){
-            return post(points);
+            return $http.post($http.url('/Api/MeasurePointApi/CreatePoint', points))
+            /**return post(points);**/
           },
           /**
            * 删除点
@@ -523,7 +527,9 @@
            *
            * */
           query:function(acceptanceItemID,checkRegionID,flags){
-            return get({
+            return $http.get($http.url('/Api/MeasurePointApi/GetMeasurePoint', {acceptanceItemID: acceptanceItemID,checkRegionID:checkRegionID,flags:flags}))
+            
+           /** return get({
               type: 'FeatureCollection',//固定为FeatureCollection
               features: [{
                 type: 'Feature',//固定为Feature
@@ -539,7 +545,7 @@
                   $groupId:'guid' //所在属组（可以不用，但请保存为UI使用）
                 }
               }]
-            });
+            });**/
           }
         },
 		    /***
