@@ -7,15 +7,29 @@
     .module('app.xhsc')
     .directive('sxtScMap',sxtScMap);
   /** @ngInject */
-  function sxtScMap($timeout,mapPopupSerivce,remote){
+  function sxtScMap($timeout,mapPopupSerivce,remote,$q){
+    function uuidfn(){
+      var d = new Date().getTime();
+      if(window.performance && typeof window.performance.now === "function"){
+        d += performance.now();
+      }
+      var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (d + Math.random()*16)%16 | 0;
+        d = Math.floor(d/16);
+        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+      });
+      return uuid;
+    }
     return {
       scope:{
+        acceptanceItem:'=',
         measureIndexes:'=',
         currentIndex:'=',
         mapUrl:'=',
         regionId:'=',
         regionName:'=',
-        tips:'='
+        tips:'=',
+        project:'='
       },
       link:link
     }
@@ -90,11 +104,38 @@
           },1500)
         }
       }
-      var options = {
+      var points={},
+        options = {
         onLoad:function(){
-          console.log('onload',this);
+          var layer = this;
+          var defer = points[scope.acceptanceItem+scope.regionId],
+            defer2 = points[scope.acceptanceItem+scope.regionId+'2'];
+          if(!defer)
+            defer = points[scope.acceptanceItem+scope.regionId] =
+              remote.ProjectQuality.MeasurePoint.query(scope.acceptanceItem,scope.regionId,0);
+          if(!defer2)
+            defer2 = points[scope.acceptanceItem+scope.regionId] =
+              remote.ProjectQuality.MeasureValue.query(scope.acceptanceItem,scope.regionId,0);
+          $q.all([defer,defer2]).then(function(rs){
+            rs[1].data.forEach(function(value){
+              rs[0].data.forEach(function(f){
+                if(f.properties.$id==value.MeasurePointID){
+                  angular.extend(f.properties,value);
+                }
+              });
+            });
+
+            layer.addData(rs[0].data);
+          });
+
         },
         onUpdateData:function(value,measureIndex,popupScope){
+          value.AcceptanceItemID = scope.acceptanceItem;
+          value.CheckRegionID = scope.regionId;
+          value.RegionType = 8;
+          value.MeasureValueId = value.MeasureValueId||uuidfn();
+          value.ParentMeasurePointID = value.$groupId;
+          value.MeasurePointID = value.$id;
           remoteS.updateData(value);
         },
         onPopup:function(e){
@@ -126,7 +167,7 @@
       var install = function(){
         if(!scope.measureIndexes || !scope.regionId)return;
         if(!project){
-          project = new L.SXT.Project (element[0], {
+          project = scope.project = new L.SXT.Project (element[0], {
             map: {
               map: {}
             },

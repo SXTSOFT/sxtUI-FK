@@ -15,6 +15,7 @@
       //$mdSidenav('right')
       //  .toggle();
     }
+
     remote.Project.Area.query().then(function(result){
       vm.Areas = result.data;
       vm.selectedArea = vm.Areas[0];

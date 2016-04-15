@@ -50,7 +50,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'抹灰工程',
-        url   :'/chooseHouse/{id}/{areaId}',
+        url   :'/chooseHouse/{id}/{areaId}/{pname}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/chooseHouse.html',
@@ -63,7 +63,6 @@
         sendBt:true,
         rightArrow:true,
         leftArrow:true,
-        title :'实测',
         url   :'/check',
         views :{
           'content@app':{

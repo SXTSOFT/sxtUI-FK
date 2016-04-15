@@ -12,7 +12,8 @@
   function ChooseHouseController($scope,xhUtils,remote,$rootScope,$stateParams,$state){
     var vm=this;
     vm.areaId = $stateParams.areaId;
-
+    vm.pname = $stateParams.pname;
+    $rootScope.title = vm.pname;
     vm.search = function(){
       vm.showSearch = true;
     }
@@ -37,7 +38,14 @@
     }
     vm.changeStat = function(item,items){
       if(!vm.muti){
-        $state.go('app.xhsc.sc',{areaId:vm.areaId,acceptanceItemID:item.AcceptanceItemID,regionId:item.RegionID,regionType:item.RegionType,name:item.FullName})
+        $state.go('app.xhsc.sc',{
+          areaId:vm.areaId,
+          acceptanceItemID:item.AcceptanceItemID,
+          regionId:item.RegionID,
+          regionType:item.RegionType,
+          name:item.FullName,
+          pname:vm.pname
+        })
       }
       else{
         item.selected=!item.selected;
@@ -53,6 +61,7 @@
 
           var find = result.data.find(function(r){return r.RegionID==item.RegionID;});
           if(find){
+            item.AcceptanceItemID = find.AcceptanceItemID;
             item.status = find.Status;
           }
           else{
