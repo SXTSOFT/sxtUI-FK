@@ -289,7 +289,13 @@
 }
 .main-padding{
   padding:10px 16px;
-
+  .md-subheader-wrapper{
+    &:not(.md-sticky-no-effect)[sticky-state="active"]{
+      margin-left:0;
+      transform: translate3d(0, 200px, 0px);
+      background: rgb(245,245,245);
+    }
+  }
   md-list{
     md-list-item{
       border:1px solid #d8d8d8;
@@ -700,7 +706,17 @@
   }
 }
 .selectArea{
+  .md-subheader{
+    .md-subheader-inner{
+      background: rgb(245,245,245);
+      padding:5px 0;
+    }
+  }
+
   .md-select-value{
+    span{
+      padding:4px;
+    }
     .md-text{
       font-size:16px;
     }
