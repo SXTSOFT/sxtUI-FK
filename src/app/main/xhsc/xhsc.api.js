@@ -57,12 +57,12 @@
               IndexName:'铝型材拼缝宽度',//指标名称
               /**
                * Single：各自测量，SelectMaterial：选择材质测量）
-               * */
+               * *
               IndexType:'Single',
               /**
                * 1 原位
                * 2 非原位
-               * */
+               * *
               MeasureMethod:'1',//实测方法
 	            /**
                * 1 测量值
@@ -70,13 +70,13 @@
                * 3 测量组对比
                * 4 区域测量点对比
                * 5 上下楼层对比
-               */
+               *
               PassYieldComputeMode:'1',//计算合格率方式
               /**
                * 合并标识
                * 0：不合并
                * 1：合并
-               * */
+               * *
               GroupSign:1,//合并标识
               Weight:9.1,//权重
               SinglePassYield:true,//各自合格率
@@ -89,12 +89,12 @@
                 IndexName:'门洞',//指标名称
                 /**
                  * Single：各自测量，SelectMaterial：选择材质测量）
-                 * */
+                 * *
                 IndexType:'Single',
                 /**
                  * 1 原位
                  * 2 非原位
-                 * */
+                 * *
                 MeasureMethod:'1',//实测方法
                 /**
                  * 1 测量值
@@ -102,13 +102,13 @@
                  * 3 测量组对比
                  * 4 区域测量点对比
                  * 5 上下楼层对比
-                 */
+                 *
                 PassYieldComputeMode:'2',//计算合格率方式
                 /**
                  * 合并标识
                  * 0：不合并
                  * 1：合并
-                 * */
+                 * *
                 GroupSign:1,//合并标识
                 Weight:9.1,//权重
                 SinglePassYield:true,//各自合格率
@@ -120,12 +120,12 @@
                   IndexName:'高度',//指标名称
                   /**
                    * Single：各自测量，SelectMaterial：选择材质测量）
-                   * */
+                   * *
                   IndexType:'Single',
                   /**
                    * 1 原位
                    * 2 非原位
-                   * */
+                   * *
                   MeasureMethod:'1',//实测方法
                   /**
                    * 1 测量值
@@ -133,13 +133,13 @@
                    * 3 测量组对比
                    * 4 区域测量点对比
                    * 5 上下楼层对比
-                   */
+                   *
                   PassYieldComputeMode:'2',//计算合格率方式
                   /**
                    * 合并标识
                    * 0：不合并
                    * 1：合并
-                   * */
+                   * *
                   GroupSign:1,//合并标识
                   Weight:9.1,//权重
                   SinglePassYield:true,//各自合格率
@@ -151,12 +151,12 @@
                   IndexName:'宽度',//指标名称
                   /**
                    * Single：各自测量，SelectMaterial：选择材质测量）
-                   * */
+                   * *
                   IndexType:'Single',
                   /**
                    * 1 原位
                    * 2 非原位
-                   * */
+                   * *
                   MeasureMethod:'1',//实测方法
                   /**
                    * 1 测量值
@@ -164,13 +164,13 @@
                    * 3 测量组对比
                    * 4 区域测量点对比
                    * 5 上下楼层对比
-                   */
+                   *
                   PassYieldComputeMode:'2',//计算合格率方式
                   /**
                    * 合并标识
                    * 0：不合并
                    * 1：合并
-                   * */
+                   * *
                   GroupSign:1,//合并标识
                   Weight:9.1,//权重
                   SinglePassYield:true,//各自合格率
@@ -186,12 +186,12 @@
                 IndexName:'方正度',//指标名称
                 /**
                  * Single：各自测量，SelectMaterial：选择材质测量）
-                 * */
+                 * *
                 IndexType:'Single',
                 /**
                  * 1 原位
                  * 2 非原位
-                 * */
+                 * *
                 MeasureMethod:'1',//实测方法
                 /**
                  * 1 测量值
@@ -199,13 +199,13 @@
                  * 3 测量组对比
                  * 4 区域测量点对比
                  * 5 上下楼层对比
-                 */
+                 *
                 PassYieldComputeMode:'3',//计算合格率方式
                 /**
                  * 合并标识
                  * 0：不合并
                  * 1：合并
-                 * */
+                 * *
                 GroupSign:1,//合并标识
                 Weight:9.1,//权重
                 SinglePassYield:true,//各自合格率
@@ -217,12 +217,12 @@
                 IndexName:'天花水平度',//指标名称
                 /**
                  * Single：各自测量，SelectMaterial：选择材质测量）
-                 * */
+                 * *
                 IndexType:'Single',
                 /**
                  * 1 原位
                  * 2 非原位
-                 * */
+                 * *
                 MeasureMethod:'1',//实测方法
                 /**
                  * 1 测量值
@@ -230,13 +230,13 @@
                  * 3 测量组对比
                  * 4 区域测量点对比
                  * 5 上下楼层对比
-                 */
+                 *
                 PassYieldComputeMode:'4',//计算合格率方式
                 /**
                  * 合并标识
                  * 0：不合并
                  * 1：合并
-                 * */
+                 * *
                 GroupSign:1,//合并标识
                 Weight:9.1,//权重
                 SinglePassYield:true,//各自合格率
@@ -248,12 +248,12 @@
                 IndexName:'区域测量点对比',//指标名称
                 /**
                  * Single：各自测量，SelectMaterial：选择材质测量）
-                 * */
+                 * *
                 IndexType:'Single',
                 /**
                  * 1 原位
                  * 2 非原位
-                 * */
+                 * *
                 MeasureMethod:'1',//实测方法
                 /**
                  * 1 测量值
@@ -261,13 +261,13 @@
                  * 3 测量组对比
                  * 4 区域测量点对比
                  * 5 上下楼层对比
-                 */
+                 *
                 PassYieldComputeMode:'5',//计算合格率方式
                 /**
                  * 合并标识
                  * 0：不合并
                  * 1：合并
-                 * */
+                 * *
                 GroupSign:1,//合并标识
                 Weight:9.1,//权重
                 SinglePassYield:true,//各自合格率
@@ -279,12 +279,12 @@
                 IndexName:'天花水平度',//指标名称
                 /**
                  * Single：各自测量，SelectMaterial：选择材质测量）
-                 * */
+                 * *
                 IndexType:'Single',
                 /**
                  * 1 原位
                  * 2 非原位
-                 * */
+                 * *
                 MeasureMethod:'1',//实测方法
                 /**
                  * 1 测量值
@@ -292,13 +292,13 @@
                  * 3 测量组对比
                  * 4 区域测量点对比
                  * 5 上下楼层对比
-                 */
+                 *
                 PassYieldComputeMode:'1',//计算合格率方式
                 /**
                  * 合并标识
                  * 0：不合并
                  * 1：合并
-                 * */
+                 * *
                 GroupSign:1,//合并标识
                 Weight:9.1,//权重
                 SinglePassYield:true,//各自合格率
@@ -311,12 +311,12 @@
                     IndexName:'立面垂直度',//指标名称
                     /**
                      * Single：各自测量，SelectMaterial：选择材质测量）
-                     * */
+                     * *
                     IndexType:'Single',
                     /**
                      * 1 原位
                      * 2 非原位
-                     * */
+                     * *
                     MeasureMethod:'1',//实测方法
                     /**
                      * 1 测量值
@@ -324,13 +324,13 @@
                      * 3 测量组对比
                      * 4 区域测量点对比
                      * 5 上下楼层对比
-                     */
+                     *
                     PassYieldComputeMode:'1',//计算合格率方式
                     /**
                      * 合并标识
                      * 0：不合并
                      * 1：合并
-                     * */
+                     * *
                     GroupSign:1,//合并标识
                     Weight:9.1,//权重
                     SinglePassYield:true,//各自合格率
@@ -343,12 +343,12 @@
                     IndexName:'表面平整度',//指标名称
                     /**
                      * Single：各自测量，SelectMaterial：选择材质测量）
-                     * */
+                     * *
                     IndexType:'Single',
                     /**
                      * 1 原位
                      * 2 非原位
-                     * */
+                     * *
                     MeasureMethod:'1',//实测方法
                     /**
                      * 1 测量值
@@ -356,13 +356,13 @@
                      * 3 测量组对比
                      * 4 区域测量点对比
                      * 5 上下楼层对比
-                     */
+                     *
                     PassYieldComputeMode:'5',//计算合格率方式
                     /**
                      * 合并标识
                      * 0：不合并
                      * 1：合并
-                     * */
+                     * *
                     GroupSign:1,//合并标识
                     Weight:9.1,//权重
                     SinglePassYield:true,//各自合格率
@@ -378,7 +378,7 @@
        * */
       Project:{
         query:function(){
-          return $http.get('/Api/ProjectInfoApi/GetProjectAreaList');
+          return $http.get($http.url{'/Api/ProjectInfoApi/GetProjectAreaList'});
         },
         /**
          * 分期
@@ -426,7 +426,7 @@
          * @returns {*}
          * **/
         updateHouseDrawing:function(regionID,draw){
-          return $http.post($http.url('/Api/MeasureInfo/ModifyHouseType',{regionID:regionID,draw:draw}));
+          return $http.post('/Api/MeasureInfo/ModifyHouseType',{regionID:regionID,draw:draw});
           /**return post(regionID,draw);**/
         }
       },
@@ -488,7 +488,7 @@
            *      }]
            * **/
           create:function(points){
-            return $http.post($http.url('/Api/MeasurePointApi/CreatePoint', points))
+            return $http.post('/Api/MeasurePointApi/CreatePoint', points)
             /**return post(points);**/
           },
           /**
