@@ -50,7 +50,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'抹灰工程',
-        url   :'/chooseHouse/{id}/{areaId}',
+        url   :'/chooseHouse/{id}/{areaId}/{pname}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/chooseHouse.html',
@@ -78,7 +78,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'实测',
-        url   :'/sc/{areaId}/{acceptanceItemID}/{regionId}/{regionType}/{name}',
+        url   :'/sc/{areaId}/{acceptanceItemID}/{regionId}/{regionType}/{name}/{pname}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/sc.html',

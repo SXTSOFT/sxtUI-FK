@@ -85,27 +85,9 @@
           remoteS.delete(layer.toGeoJSON());
         }
       },project;
-      $timeout(function() {
-        scope.$watchCollection('measureIndexes', function () {
-          console.log('measureIndexes',scope.measureIndexes)
-          if(!scope.measureIndexes)return;
-          if (project)
-            project.map.remove ();
-
-          var featureGroups= {};
-          scope.measureIndexes.forEach(function(m){
-            var g = featureGroups[m.AcceptanceIndexID] = angular.copy(m);
-            g.options = options;
-            g.toolbar = {
-              draw:{
-
-              },
-              group:{
-                lineGroup: m.PassYieldComputeMode=='3',
-                areaGroup:m.PassYieldComputeMode=='4'
-              }
-            };
-          });
+      var install = function(){
+        if(!scope.measureIndexes || !scope.regionId)return;
+        if(!project){
           project = new L.SXT.Project (element[0], {
             map: {
               map: {}
@@ -114,15 +96,40 @@
               base: {
                 url: 'http://vkde.sxtsoft.com/upload/hx_tile_{z}_{x}_{y}.png'
               }
-            },
-            featureGroups: featureGroups
+            }
           });
-          project.swipeFeature(scope.measureIndexes[scope.currentIndex].AcceptanceIndexID);
+        }
+        var featureGroups= {};
+        scope.measureIndexes.forEach(function(m){
+          var id = scope.regionId+m.AcceptanceIndexID;
+          if(project._featureGroups[id])return;
+          var g = featureGroups[id] = angular.copy(m);
+          g.options = options;
+          g.toolbar = {
+            draw:{},
+            group:{
+              lineGroup: m.PassYieldComputeMode=='3',
+              areaGroup:m.PassYieldComputeMode=='4'
+            }
+          };
         });
+
+        project.registerGroups(featureGroups);
+        project.swipeFeature(scope.regionId+scope.measureIndexes[scope.currentIndex].AcceptanceIndexID);
+      }
+      $timeout(function() {
+        scope.$watchCollection('measureIndexes', function () {
+          install();
+
+        });
+        scope.$watch('regionId',function(){
+          install();
+        });
+
 
         scope.$watch('currentIndex',function(){
           if(project){
-            project.swipeFeature(scope.measureIndexes[scope.currentIndex].AcceptanceIndexID);
+            project.swipeFeature(scope.regionId+scope.measureIndexes[scope.currentIndex].AcceptanceIndexID);
           }
         })
       },500);

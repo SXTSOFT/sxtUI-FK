@@ -32,6 +32,7 @@
         }
       });
     };
+    console.log('acceptanceItemID',vm.info.acceptanceItemID )
     remote.Measure.MeasureIndex.query (vm.info.acceptanceItemID).then (function (r) {
       vm.MeasureIndexes = r.data.rows;
     });

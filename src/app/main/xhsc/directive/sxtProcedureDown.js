@@ -13,7 +13,10 @@
   function sxtProcedureDown(xhUtils){
     return {
       scope:{
-        value:'=ngModel'
+        obj:'=ngModel',
+        value:'=',
+        areaId:'=',
+        regionType:'='
       },
       template:'<md-menu flex="none">' +
       '<md-button aria-label="展开工序" ng-click="$mdOpenMenu($event)">' +
@@ -25,7 +28,7 @@
       '<md-tab-label><span sxt-procedure-tb>{{g.$name}}({{g.ps.length}})</span></md-tab-label>' +
       '<md-tab-body>' +
       '<md-content>' +
-      '<section ng-repeat="c in g.children|sxtProcedureS">' +
+      '<section ng-if="g.children && g.children.length" ng-repeat="c in g.children|sxtProcedureS">' +
       '<md-subheader class="md-primary">{{c.$name}}({{c.ps.length}})</md-subheader>\
       <md-list layout-padding>\
       <md-list-item ng-click="sett(p)" ng-repeat="p in c.ps">\
@@ -33,6 +36,11 @@
       </md-list-item>\
       </md-list>\
       </section>\
+       <md-list   layout-padding>\
+      <md-list-item ng-click="sett(p)" ng-repeat="p in g.ps">\
+      {{p.MeasureItemName}}\
+      </md-list-item>\
+      </md-list>\
       </md-content>\
      </md-tab-body>\
       </md-tab>\
@@ -43,8 +51,14 @@
     }
 
     function link(scope,element,attrs,ctrl){
-      xhUtils.getProcedure(null,function(data){
-        scope.types = data;
+      scope.$watch('areaId',function(){
+        if(scope.areaId){
+          xhUtils.getProcedure(scope.areaId,function(data){
+            scope.types = data;
+          });
+        }
+      })
+      scope.$watch('value',function(){
       });
 
       scope.sett = function(p){
