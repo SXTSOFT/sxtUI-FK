@@ -27,15 +27,14 @@
             vm.info.regionId = next.RegionID;
           }
           else{
-            utils.alert('未找到'+(prev?'上':'下')+'一位置')
+            utils.alert('未找到'+(prev?'上':'下')+'一位置');
           }
         }
       });
     };
-    console.log('acceptanceItemID',vm.info.acceptanceItemID )
+    //console.log('acceptanceItemID',vm.info.acceptanceItemID )
     remote.Measure.MeasureIndex.query (vm.info.acceptanceItemID).then (function (r) {
       vm.MeasureIndexes = r.data.rows;
     });
-
   }
 })();
