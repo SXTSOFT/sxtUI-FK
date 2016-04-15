@@ -49,8 +49,8 @@
 <div layout="column" ng-cloak="">
 
   <md-content class="main-padding md-hue-1" layout="column">
-    <div class="selectArea" style="position: fixed;z-index: 10;top:44px;left:0;width:100%;padding:10px 16px;background:rgb(245,245,245);margin-bottom:10px;">
-      <md-select ng-model="vm.selectedArea" style="margin-bottom:10px;">
+    <div class="selectArea" style="position: fixed;z-index: 10;top:44px;left:0;width:100%;padding:10px 16px 0 16px;background:rgb(245,245,245);margin-bottom:10px;">
+      <md-select ng-model="vm.selectedArea" style="margin-bottom: 0">
           <md-option ng-value="area" ng-repeat="area in vm.Areas">{{area.ProjectName}}{{area.AreaName}}</md-option>
       </md-select>
     </div>
