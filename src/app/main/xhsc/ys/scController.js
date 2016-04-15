@@ -8,11 +8,15 @@
     .module('app.xhsc')
     .controller('scController',scController)
   /** @ngInject */
-  function scController($scope,remote,$timeout) {
+  function scController($scope,remote,$timeout,$stateParams) {
     var vm = this;
-
-
-    remote.Measure.MeasureIndex.query ('').then (function (r) {
+    vm.info = {
+      name: $stateParams.name,
+      acceptanceItemID: $stateParams.acceptanceItemID,
+      regionId: $stateParams.regionId,
+      regionType: $stateParams.regionType
+    };
+    remote.Measure.MeasureIndex.query (vm.info.acceptanceItemID).then (function (r) {
       vm.MeasureIndexes = r.data.rows;
     });
   }

@@ -8,9 +8,10 @@
     .factory('xhUtils',xhUtils);
   /** @ngInject */
   function xhUtils(remote,$rootScope,$q){
-    var cP;
+    var _areaId, cP,region;
     var o = {
-      getProcedure:getProcedure
+      getProcedure:getProcedure,
+      getRegion:getRegion
     };
     return o;
 
@@ -31,29 +32,48 @@
         children:[]
       });
     }
-    function getProcedure(cb){
-      if(cP)return cb(cP);
-      remote.Measure.query().then(function(result){
+    function getProcedure(areaId,cb){
+     if(!areaId && cP)return cb(cP);
+      _areaId = areaId;
+      remote.Measure.query(areaId).then(function(result){
 
         var s = [];
-        result.data.rows.forEach(function (item) {
+        result.data.forEach(function (item) {
           var ids = item.SpecialtyID.split(';');
           appendTree(s,ids,0,item);
         });
         s.forEach(function(g){
           g.ps = [];
           g.children.forEach(function(c){
-            c.ps = [];
-            c.children.forEach(function(p){
+
+            if(!c.children){
+              g.ps.push(c);
+            }
+            else {
+              c.ps = [];
+              c.children.forEach(function (p) {
                 c.ps.push(p);
                 g.ps.push(p);
-            })
+              })
+            }
           });
         });
         console.log('r',s)
         cP = s;
         cb(cP);
       });
+    }
+
+    function getRegion(areaId,cb){
+      if(!areaId || areaId==_areaId &&region ) {
+        cb(region);
+        return;
+      }
+      _areaId = areaId;
+      remote.Project.Area.queryRegion(_areaId).then(function(result){
+        region = result.data;
+        cb(region);
+      })
     }
   }
 })();

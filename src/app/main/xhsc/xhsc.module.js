@@ -72,13 +72,13 @@
           }
         }
       })
-      .state('app.xhsc.zg',{
+      .state('app.xhsc.sc',{
         noBack:false,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'实测',
-        url   :'/sc',
+        url   :'/sc/{acceptanceItemID}/{regionId}/{regionType}/{name}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/sc.html',

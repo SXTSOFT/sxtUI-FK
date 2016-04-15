@@ -24,7 +24,7 @@
          * @param    {string}  areaID     分期
          * */
         query:function(areaID) {
-          return  $http.get($http.url('/Api/MeasureInfo/MeasureQuery',{areaID:'e19619e8b35d4e2f8ad602ecc9eea4f7'}));
+          return  $http.get($http.url('/Api/MeasureInfo/MeasureQuery',{areaID:areaID}));
           /*return query (array ({
               AcceptanceItemID: 'string1',
               MeasureItemName: '测量项{0}',
@@ -395,32 +395,7 @@
            * @param    {string}  areaID     分期ID
            * */
           queryRegion:function(areaID){
-            return get(array({
-              RegionID: 'string',
-              RegionName:'{0}栋',
-              RegionType: 4,
-              ParentRegionID: 'string',//分期ID
-              ParentRegionName: '一期',
-              FullName: '星河丹堤-一期-1栋',
-              children:array(
-                {
-                  RegionID: 'string',
-                  RegionName:'{0}层',
-                  RegionType: 8,
-                  ParentRegionID: 'string',
-                  ParentRegionName: '1栋',
-                  FullName: '星河丹堤-一期-1栋-1层',
-                  children:array(
-                    {
-                      RegionID: 'string',
-                      RegionName:'{0}R',
-                      RegionType: 16,
-                      ParentRegionID: 'string',
-                      ParentRegionName: '1层',
-                      FullName: '星河丹堤-一期-1栋-1层-101'
-                    })
-                })
-            }))
+            return $http.get($http.url('/api/ProjectInfoApi/GetRegionTreeByRegionID',{areaID:areaID}));
           }
         },
 

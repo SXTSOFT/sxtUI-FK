@@ -1,79 +1,13 @@
-<!--<md-tabs md-border-bottom flex layout="column" md-selected="vm.data.selectedIndex">-->
-  <!--<md-tab label="实测实量" md-on-select="vm.onNavList()">-->
-    <!--<md-tab-content flex layout-fill layout="column">-->
-      <!--<md-content flex>-->
-        <!--<md-list ng-cloak>-->
-          <!--<md-subheader class="md-no-sticky">土建</md-subheader>-->
-          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
-            <!--<p>抹灰工程</p>-->
-          <!--</md-list-item>-->
-          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
-            <!--<p>钢筋</p>-->
-          <!--</md-list-item>-->
-          <!--<md-divider></md-divider>-->
-          <!--<md-subheader class="md-no-sticky">精装</md-subheader>-->
-          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
-            <!--<p>油漆</p>-->
-          <!--</md-list-item>-->
-          <!--<md-divider></md-divider>-->
-        <!--</md-list>-->
-      <!--</md-content>-->
-    <!--</md-tab-content>-->
-  <!--</md-tab>-->
-  <!--<md-tab label="工序验收" md-on-select="vm.onNavList()">-->
-    <!--<md-tab-content flex layout-fill layout="column">-->
-      <!--<md-content flex>-->
-        <!--<md-list ng-cloak>-->
-          <!--<md-subheader class="md-no-sticky">装修</md-subheader>-->
-          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
-            <!--<p>地砖工程</p>-->
-          <!--</md-list-item>-->
-          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
-            <!--<p>墙砖粘贴</p>-->
-          <!--</md-list-item>-->
-          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
-            <!--<p>油漆</p>-->
-          <!--</md-list-item>-->
-          <!--<md-divider></md-divider>-->
-          <!--<md-subheader class="md-no-sticky">土建</md-subheader>-->
-          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
-            <!--<p>抹灰工程</p>-->
-          <!--</md-list-item>-->
-          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
-            <!--<p>钢筋</p>-->
-          <!--</md-list-item>-->
-          <!--<md-list-item ui-sref="app.xhsc.chooseHouse">-->
-            <!--<p>幕墙工程</p>-->
-          <!--</md-list-item>-->
 
-      <!--</md-content>-->
-    <!--</md-tab-content>-->
-  <!--</md-tab>-->
-<!--</md-tabs>-->
 <div layout="column" ng-cloak="">
-  <!--<my-sidenav></my-sidenav>-->
+
   <md-content class="main-padding md-hue-1" layout="column">
-    <!--<md-list class="procedure-list" ng-repeat="acceptance in vm.Measure">-->
-      <!--<h2 class="md-title" style="color:#e93030;font-size:16px;">{{acceptance.MeasureItemName}}</h2>-->
-      <!--<md-list-item class="veggie-option" layout="row" layout-wrap="" ui-sref="app.xhsc.chooseHouse({id:acceptance.AcceptanceItemID,itemId:item.id})" ng-repeat="item in acceptance.new">-->
-        <!--<div class="md-item-text">-->
-          <!--<p>{{item.name}}</p>-->
-        <!--</div>-->
-      <!--</md-list-item>-->
-    <!--</md-list>-->
+
     <div>
-      <!--<md-autocomplete md-selected-item="selectedItem" md-search-text="vm.searchText" md-items="item in getMatches(searchText)" md-item-text="item.display" ng-model="vm.selectedArea">-->
-        <!--<md-item-template>-->
-          <!--<span md-highlight-text="searchText">{{item.display}}</span>-->
-        <!--</md-item-template>-->
-        <!--<md-not-found>-->
-          <!--No matches found.-->
-        <!--</md-not-found>-->
-      <!--</md-autocomplete>-->
     </div>
     <div class="selectArea">
-      <md-select ng-model="vm.selectedArea" style="margin-bottom:10px;" ng-change="vm.change()">
-        <md-option ng-value="area" ng-repeat="area in vm.Areas">{{area.ProjectName}}{{area.AreaName}}{{area.AreaID}}</md-option>
+      <md-select ng-model="vm.selectedArea" style="margin-bottom:10px;">
+          <md-option ng-value="area" ng-repeat="area in vm.Areas">{{area.ProjectName}}{{area.AreaName}}</md-option>
       </md-select>
     </div>
     <md-list class="procedure-list" ng-repeat="procdure in vm.xhMeasure">

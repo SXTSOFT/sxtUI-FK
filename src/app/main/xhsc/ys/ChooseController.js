@@ -16,12 +16,18 @@
       //  .toggle();
     }
     remote.Project.Area.query().then(function(result){
-      vm.Areas = result.data.rows;
+      vm.Areas = result.data;
       vm.selectedArea = vm.Areas[0];
+
     })
-    xhUtils.getProcedure(function(result){
-      vm.xhMeasure = result;
-    });
+    $scope.$watch('vm.selectedArea',function(){
+      if(vm.selectedArea) {
+        xhUtils.getProcedure(vm.selectedArea.AreaID, function (result) {
+          vm.xhMeasure = result;
+        });
+      }
+    })
+
     vm.close = function () {
       //$mdSidenav('right').close()
       //  .then(function () {
@@ -31,8 +37,6 @@
     function areaSelectEvent(event,data){
       vm.areaId = data.AreaName;
     }
-    $rootScope.$on('areaSelect',areaSelectEvent)
-    $rootScope.$on('toggleRightEvent',toggleRightEvent)
   }
 
 })();
