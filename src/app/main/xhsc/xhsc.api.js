@@ -68,7 +68,7 @@
            * 获取本人所有相关分期
            * */
           query:function(){
-            return $http.get($http.url('Api/ProjectInfoApi/GetProjectAreaList'));
+            return $http.get($http.url('/Api/ProjectInfoApi/GetProjectAreaList'));
           },
           /**
            * 获取分期所楼栋、层、房间数据
@@ -269,7 +269,7 @@
             return $http.get($http.url('/Api/MeasureValueApi/GetMeasureValues', {
               acceptanceItemID: acceptanceItemID,
               checkRegionID: checkRegionID,
-              
+
             }));
           }
         }
