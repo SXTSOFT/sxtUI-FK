@@ -381,7 +381,7 @@
        * */
       Project:{
         query:function(){
-          return $http.get($http.url('/Api/ProjectInfoApi/GetProjectAreaList'));
+          return $http.get($http.url('/Api/ProjectInfoApi/GetProjectList'));
         },
         /**
          * 分期
@@ -391,14 +391,14 @@
            * 获取本人所有相关分期
            * */
           query:function(){
-            return $http.get($http.url('/Api/ProjectInfoApi/GetProjectAreaList',{ ProjectID: "32de4b81ace94847b37564ea8472fda2" }));
+            return $http.get($http.url('Api/ProjectInfoApi/GetProjectAreaList'));
           },
           /**
            * 获取分期所楼栋、层、房间数据
            * @param    {string}  areaID     分期ID
            * */
           queryRegion:function(areaID){
-            return $http.get($http.url('/api/ProjectInfoApi/GetRegionTreeByRegionID',{areaID:areaID}));
+            return $http.get($http.url('/api/ProjectInfoApi/GetRegionTreeByRegionID',{AreaID:areaID}));
           }
         },
 
