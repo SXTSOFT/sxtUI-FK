@@ -13,7 +13,9 @@
         measureIndexes:'=',
         currentIndex:'=',
         mapUrl:'=',
-        regionId:'='
+        regionId:'=',
+        regionName:'=',
+        tips:'='
       },
       link:link
     }
@@ -22,6 +24,7 @@
         buff:[],
         uploading:false,
         t:null,
+        t1:null,
         replaceData:function(data){
           var self = this;
           for(var i= 0,l=self.buff.length;i<l;i++) {
@@ -42,20 +45,55 @@
               self.t = null;
               var updates = self.buff;
               self.buff=[];
-              remote.ProjectQuality.MeasurePoint.create(updates).then(function(){
-                console.log('update',updates);
+              self.tips('正在保存测量点……');
+              remote.ProjectQuality.MeasurePoint.create(updates).then(function(r){
+                if(r.data.ErrorCode==0) {
+                  self.tips('已保存测量点。');
+                }
+                else{
+                  self.tips(r.data.ErrorMessage);
+                }
               })
             },500);
           }
         },
         updateData:function(data){
-          console.log('update value',data);
+          var self = this;
+          self.tips('正在保存测量值……');
+          data.ParentMeasurePointID = data.$groupId;
+          data.MeasurePointID = data.$id;
+          remote.ProjectQuality.MeasureValue.create([data]).then(function(r){
+            if(r.data.ErrorCode==0) {
+              self.tips('已保存测量值。');
+            }
+            else{
+              self.tips(r.data.ErrorMessage);
+            }
+          })
+          //remoteS.updateData
+         // console.log('update value',data);
         },
         delete:function(data){
-          console.log('delete layer',data);
+          var self = this;
+          self.tips('正在删除测量点……');
+          remote.MeasurePoint.delete(data.$id).then(function(){
+            self.tips('已删除测量点。');
+          });
+          //console.log('delete layer',data);
+        },
+        tips:function(tp){
+          scope.tips = tp;
+          if(this.t1)
+            $timeout.cancel(this.t1);
+          this.t1=$timeout(function(){
+            scope.tips = '';
+          },1500)
         }
       }
       var options = {
+        onLoad:function(){
+          console.log('onload',this);
+        },
         onUpdateData:function(value,measureIndex,popupScope){
           remoteS.updateData(value);
         },
@@ -104,7 +142,10 @@
           var id = scope.regionId+m.AcceptanceIndexID;
           if(project._featureGroups[id])return;
           var g = featureGroups[id] = angular.copy(m);
-          g.options = options;
+          g.options = angular.copy(options);
+          g.options.regionId = scope.regionId;
+          g.options.acceptanceIndexID = m.AcceptanceIndexID;
+          g.options.regionName = scope.regionName;
           g.toolbar = {
             draw:{},
             group:{
@@ -120,13 +161,10 @@
       $timeout(function() {
         scope.$watchCollection('measureIndexes', function () {
           install();
-
         });
         scope.$watch('regionId',function(){
           install();
         });
-
-
         scope.$watch('currentIndex',function(){
           if(project){
             project.swipeFeature(scope.regionId+scope.measureIndexes[scope.currentIndex].AcceptanceIndexID);
