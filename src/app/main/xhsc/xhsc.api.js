@@ -564,6 +564,9 @@
            * 添加或更新测试值
            * @param {Array} values 测试值
            *        [{
+           *          AcceptanceItemID:"",//实测项ID 必填
+           *          CheckRegionID:'',//测量区域Id 必填
+           *          RegionType:'',//区域类型 必填
            *          ParentMeasurePointID:'',//所在测量组ID，如果没有为null，对应$groupId
            *          MeasurePointID:'',//测量点ID
            *          AcceptanceIndexID:'',//指标ID
@@ -584,13 +587,12 @@
            * 获取检查点值
            * @param {string} acceptanceItemID 实测项Id
            * @param {string} checkRegionID 区域ID
-           * @param {int} flags 0或空为返回当前层，-1返回上一层同户型
            * */
           query: function (acceptanceItemID, checkRegionID, flags) {
             return $http.get($http.url('/Api/MeasureValueApi/GetMeasureValues', {
               acceptanceItemID: acceptanceItemID,
               checkRegionID: checkRegionID,
-              flags: flags
+              
             }));
           }
         }
