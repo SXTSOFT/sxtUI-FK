@@ -9,9 +9,7 @@
     .filter('myFilter',myFilter);
 
   function myFilter(){
-    console.log('myFilter',arguments)
     return function(items,status) {
-      console.log('myFilter1', arguments)
       var output = [];
       if (!items)return output;
       if (status == -1) {
