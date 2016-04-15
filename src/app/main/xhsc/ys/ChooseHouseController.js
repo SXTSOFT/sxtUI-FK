@@ -9,15 +9,30 @@
     .controller('ChooseHouseController',ChooseHouseController);
 
   /** @ngInject */
-  function ChooseHouseController($scope,remote,$rootScope){
+  function ChooseHouseController($scope,remote,$rootScope,$stateParams){
     var vm=this;
     remote.Project.Area.queryRegion(1).then(function(result){
       vm.Region = result.data;
       vm.Region.forEach(function(t){
         t.selected = false;
+        t.status = Math.floor(Math.random()*3);
         t.showArr = false;
+        t.children.forEach(function(_t){
+          _t.selected = false;
+          _t.status = Math.floor(Math.random()*3)
+          _t.children.forEach(function(_tt){
+            _tt.selected = false;
+            _tt.status = Math.floor(Math.random()*3)
+          })
+        })
       })
+     // console.log('region',vm.Region)
     })
+    remote.MeasureCheckBatch.getStatus($stateParams.id,$stateParams.areaId,1).then(function(result){
+      //console.log('result',result)
+
+    })
+
     function areaSelectEvent(event,data){
       vm.areaId = data.AreaName;
       remote.Project.Area.queryRegion(1).then(function(result){
@@ -41,14 +56,11 @@
           id.showArr = true;
         }
       })
-
-      for (var i = 0; i < vm.floors.length; i++) {
-        vm.floors[i].selected = false;
-        for (var j = 0; j < vm.floors[i].children.length; j++) {
-          vm.floors[i].children[j].selected = false;
-
-        }
-      }
+    }
+    vm.tabStatus = -1;
+    vm.myFilter = function(num){
+      vm.tabStatus = num;
+      //console.log('floor',vm.floors)
     }
     vm.changeStats = function(id){
       for (var i = 0; i < vm.floors.length; i++) {

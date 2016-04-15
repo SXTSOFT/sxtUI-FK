@@ -9,14 +9,19 @@
     .controller('ChooseController',ChooseController);
 
   /** @ngInject */
-  function ChooseController($scope,$timeout,remote,$rootScope){
+  function ChooseController($scope,$timeout,remote,$rootScope,xhUtils){
     var vm=this;
     function toggleRightEvent(){
       //$mdSidenav('right')
       //  .toggle();
     }
-
-
+    remote.Project.Area.query().then(function(result){
+      vm.Areas = result.data.rows;
+      vm.selectedArea = vm.Areas[0];
+    })
+    xhUtils.getProcedure(function(result){
+      vm.xhMeasure = result;
+    });
     vm.close = function () {
       //$mdSidenav('right').close()
       //  .then(function () {
