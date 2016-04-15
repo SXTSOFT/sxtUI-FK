@@ -15,7 +15,10 @@
       //$mdSidenav('right')
       //  .toggle();
     }
-
+    remote.Project.Area.query().then(function(result){
+      vm.Areas = result.data.rows;
+      vm.selectedArea = vm.Areas[0];
+    })
     xhUtils.getProcedure(function(result){
       vm.xhMeasure = result;
     });

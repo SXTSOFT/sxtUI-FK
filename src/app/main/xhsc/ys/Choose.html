@@ -62,13 +62,23 @@
       <!--</md-list-item>-->
     <!--</md-list>-->
     <div>
-      <md-select placeholder="星河智慧一期" ng-model="vm.selectedArea" style="margin-bottom:10px;" ng-change="vm.change()">
-        <md-option ng-value="area" ng-repeat="area in vm.Areas">{{area.ProjectName}}{{area.AreaName}}</md-option>
+      <!--<md-autocomplete md-selected-item="selectedItem" md-search-text="vm.searchText" md-items="item in getMatches(searchText)" md-item-text="item.display" ng-model="vm.selectedArea">-->
+        <!--<md-item-template>-->
+          <!--<span md-highlight-text="searchText">{{item.display}}</span>-->
+        <!--</md-item-template>-->
+        <!--<md-not-found>-->
+          <!--No matches found.-->
+        <!--</md-not-found>-->
+      <!--</md-autocomplete>-->
+    </div>
+    <div class="selectArea">
+      <md-select ng-model="vm.selectedArea" style="margin-bottom:10px;" ng-change="vm.change()">
+        <md-option ng-value="area" ng-repeat="area in vm.Areas">{{area.ProjectName}}{{area.AreaName}}{{area.AreaID}}</md-option>
       </md-select>
     </div>
     <md-list class="procedure-list" ng-repeat="procdure in vm.xhMeasure">
-      <h2 class="md-title" style="color:#e93030;font-size:16px;">{{procdure.$name}} > {{procdure.children[0].$name}}</h2>
-      <md-list-item class="veggie-option" layout="row" layout-wrap="" ui-sref="app.xhsc.chooseHouse({id:subpro.AcceptanceItemID})" ng-repeat="subpro in procdure.ps">
+      <h2 class="md-title" style="color:#e93030;font-size:16px;margin-top:10px;">{{procdure.$name}} > {{procdure.children[0].$name}}</h2>
+      <md-list-item class="veggie-option" layout="row" layout-wrap="" ui-sref="app.xhsc.chooseHouse({id:subpro.AcceptanceItemID,areaId:vm.selectedArea.AreaID})" ng-repeat="subpro in procdure.ps">
         <div class="md-item-text">
           <p class="md-primary">{{subpro.MeasureItemName}}</p>
         </div>

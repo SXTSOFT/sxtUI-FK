@@ -664,6 +664,13 @@
     }
   }
 }
+.selectArea{
+  .md-select-value{
+    .md-text{
+      font-size:16px;
+    }
+  }
+}
 [md-theme="vanke"]{
   .leaflet-control{
     a{

@@ -26,9 +26,9 @@
           })
         })
       })
-      console.log('region',vm.Region)
+     // console.log('region',vm.Region)
     })
-    remote.MeasureCheckBatch.getStatus($stateParams.id,1,1).then(function(result){
+    remote.MeasureCheckBatch.getStatus($stateParams.id,$stateParams.areaId,1).then(function(result){
       //console.log('result',result)
 
     })
@@ -60,7 +60,7 @@
     vm.tabStatus = -1;
     vm.myFilter = function(num){
       vm.tabStatus = num;
-
+      //console.log('floor',vm.floors)
     }
     vm.changeStats = function(id){
       for (var i = 0; i < vm.floors.length; i++) {
