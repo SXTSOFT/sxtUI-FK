@@ -20,7 +20,6 @@
       vm.showSearch = false;
     }
     vm.open = function(id) {
-      console.log('id',id)
       vm.floors = null;
       vm.Region.forEach(function (item) {
         item.showArr = false;
@@ -69,14 +68,19 @@
           })
         }
       })
+      remote.MeasureCheckBatch.getStatus($stateParams.id,$stateParams.areaId,1).then(function(result){
+        //console.log('result',result)
+
+      })
       if(vm.Region.length) {
         vm.open(vm.Region[0]);
       }
     })
-    remote.MeasureCheckBatch.getStatus($stateParams.id,$stateParams.areaId,1).then(function(result){
-      //console.log('result',result)
 
-    })
+    vm.goMeasure = function(){
+      console.log('none')
+    }
+
   }
 
 })();
