@@ -78,7 +78,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'实测',
-        url   :'/sc/{acceptanceItemID}/{regionId}/{regionType}/{name}',
+        url   :'/sc/{areaId}/{acceptanceItemID}/{regionId}/{regionType}/{name}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/sc.html',

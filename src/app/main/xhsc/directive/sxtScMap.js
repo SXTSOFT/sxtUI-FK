@@ -12,7 +12,8 @@
       scope:{
         measureIndexes:'=',
         currentIndex:'=',
-        mapUrl:'='
+        mapUrl:'=',
+        regionId:'='
       },
       link:link
     }

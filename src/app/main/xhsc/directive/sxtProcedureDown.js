@@ -43,7 +43,7 @@
     }
 
     function link(scope,element,attrs,ctrl){
-      xhUtils.getProcedure(function(data){
+      xhUtils.getProcedure(null,function(data){
         scope.types = data;
       });
 

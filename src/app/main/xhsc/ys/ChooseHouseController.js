@@ -11,7 +11,44 @@
   /** @ngInject */
   function ChooseHouseController($scope,xhUtils,remote,$rootScope,$stateParams,$state){
     var vm=this;
-    xhUtils.getRegion($stateParams.areaId, function(data){
+    vm.areaId = $stateParams.areaId;
+
+    vm.search = function(){
+      vm.showSearch = true;
+    }
+    vm.hideSearch = function(){
+      vm.showSearch = false;
+    }
+    vm.open = function(id) {
+      console.log('id',id)
+      vm.floors = null;
+      vm.Region.forEach(function (item) {
+        item.showArr = false;
+        if (id.RegionName == item.RegionName) {
+          vm.floors = item.children;
+          id.showArr = true;
+        }
+      })
+    }
+    vm.tabStatus = -1;
+    vm.myFilter = function(num){
+      vm.tabStatus = num;
+      //console.log('floor',vm.floors)
+    }
+    vm.changeStat = function(item,items){
+      if(!vm.muti){
+        $state.go('app.xhsc.sc',{areaId:vm.areaId,acceptanceItemID:$stateParams.id,regionId:item.RegionID,regionType:item.RegionType,name:item.FullName})
+/*        items.forEach(function(t){
+          t.selected =false;
+        })
+        item.selected=true;*/
+      }
+      else{
+        item.selected=!item.selected;
+      }
+
+    }
+    xhUtils.getRegion( vm.areaId, function(data){
       vm.Region = data.Children;
       vm.Region.forEach(function(t){
         t.selected = false;
@@ -40,51 +77,6 @@
       //console.log('result',result)
 
     })
-
-    vm.search = function(){
-      vm.showSearch = true;
-    }
-    vm.hideSearch = function(){
-      vm.showSearch = false;
-    }
-    vm.open = function(id) {
-      console.log('id',id)
-      vm.floors = null;
-      vm.Region.forEach(function (item) {
-        item.showArr = false;
-        if (id.RegionName == item.RegionName) {
-          vm.floors = item.children;
-          id.showArr = true;
-        }
-      })
-    }
-    vm.tabStatus = -1;
-    vm.myFilter = function(num){
-      vm.tabStatus = num;
-      //console.log('floor',vm.floors)
-    }
-    vm.changeStat = function(item,items){
-      if(!vm.muti){
-        $state.go('app.xhsc.sc',{acceptanceItemID:$stateParams.id,regionId:item.RegionID,regionType:item.RegionType,name:item.FullName})
-/*        items.forEach(function(t){
-          t.selected =false;
-        })
-        item.selected=true;*/
-      }
-      else{
-        item.selected=!item.selected;
-      }
-
-      /*      vm.floors.forEach(function(item){
-              item.children.forEach(function(t){
-                if(t.RegionName ==  id.RegionName){
-                  t.selected = !t.selected;
-                }
-              })
-            })*/
-
-    }
-    //$rootScope.$on('areaSelect',areaSelectEvent)
   }
 
 })();
