@@ -124,7 +124,7 @@
             project.swipeFeature(scope.measureIndexes[scope.currentIndex].AcceptanceIndexID);
           }
         })
-      },0);
+      },500);
 
     }
   }

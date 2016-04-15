@@ -24,30 +24,31 @@
          * @param    {string}  areaID     分期
          * */
         query:function(areaID) {
-          //return  $http.get('/api/Measure'',{areaID:areaID});
-          return query (array ({
+          return  $http.get($http.url('/Api/MeasureInfo/MeasureQuery',{areaID:'e19619e8b35d4e2f8ad602ecc9eea4f7'}));
+          /*return query (array ({
               AcceptanceItemID: 'string1',
               MeasureItemName: '测量项{0}',
               SpecialtyID: 'id1;id2',
               SpecialtyName: '专业类型;专业类型',
-              /**
+              /!**
                * 1 、项目
                * 2、 区域
                * 4、 楼项
                * 8、 楼层
                * 16、 房间
-               * */
+               * *!/
               RegionType: 1 | 2 | 4 | 8 | 16
             }
-          ))
+          ))*/
         },
         MeasureIndex:{
           /**
            * 获取实测项所有指标
            *
-           * @param  {string} acceptanceItemID 实测项ID（）
+           * @param  {string} acceptanceItemID 实测项ID
            * */
           query:function(acceptanceItemID){
+            //return $http.get($http.url('/Api/MeasureInfo/GetMeasureIndex',{acceptanceItemID:acceptanceItemID}));
             return query([
               {
               AcceptanceIndexID:'1',
@@ -376,6 +377,9 @@
        * 项目
        * */
       Project:{
+        query:function(){
+          return $http.get('/Api/ProjectInfoApi/GetProjectAreaList');
+        },
         /**
          * 分期
          * */
@@ -384,12 +388,7 @@
            * 获取本人所有相关分期
            * */
           query:function(){
-            return query(array({
-              AreaID: 'string',
-              ProjectID:'string',
-              AreaName:'一期{0}',
-              ProjectName:'星河丹堤'
-            }));
+            return $http.get($http.url('/Api/ProjectInfoApi/GetProjectAreaList',{ ProjectID: "32de4b81ace94847b37564ea8472fda2" }));
           },
           /**
            * 获取分期所楼栋、层、房间数据
@@ -431,19 +430,7 @@
          * @returns {object}
          * */
         getHouseDrawing:function(regionID){
-          get({
-            DrawingID:'',
-            DrawingName:'',
-            /**
-            * 1建筑平面图
-            * 3户型图
-            * 4平面结构图
-            * */
-            DrawingType:1,
-            DrawingImageUrl:'',
-            Width:1024,
-            Height:1024
-          })
+          return $http.get($http.url('/Api/MeasurePointApi/GetHouseDrawing',{regionID:regionID}));
         },
         /**
          * 获取楼层图
@@ -451,14 +438,7 @@
          * @returns {object}
          * */
         getFloorDrawing:function(regionID){
-          get({
-            DrawingID:'',
-            DrawingName:'',
-            DrawingType:'',
-            DrawingImageUrl:'',
-            Width:1024,
-            Height:1024
-          })
+          return $http.get($http.url('/Api/MeasurePointApi/getFloorDrawing',{regionID:regionID}));
         },
         /**
          * 更新户型图
@@ -537,8 +517,8 @@
            *
            * @param {string} measurePointID 唯一ID
            * */
-          delete:function(measurePointID){
-            return post(points);
+          delete:function(measurePointID) {
+            return $http.delete($http.url('/Api/MeasurePointApi/DeletePoint', {measurePointID: measurePointID}))
           },
 
           /**
@@ -608,7 +588,7 @@
            *        }]
            * */
           create:function(values){
-            return post(values);
+            return $http.post('/Api/MeasureValueApi/CreateMeasureValue',values);
           },
 
           /**
@@ -618,19 +598,11 @@
            * @param {int} flags 0或空为返回当前层，-1返回上一层同户型
            * */
           query:function(acceptanceItemID,checkRegionID,flags){
-            return query(array(
-              {
-                ParentMeasurePointID:'',//所在测量组ID，如果没有为null
-                MeasurePointID:'',//测量点ID
-                AcceptanceIndexID:'',//所属指标ID
-                MeasureValue:'',//测量值
-                DesignValue:'',//设计值
-                CalculatedValue:'',//计算值
-                Remark:'',//备注
-                ExtendedField1:'',//扩展字段1
-                ExtendedField2:'',//扩展字段2
-                ExtendedField3:''//扩展字段3
-              }));
+            return $http.get($http.url('/Api/MeasureValueApi/GetMeasureValues',{
+              acceptanceItemID:acceptanceItemID,
+              checkRegionID:checkRegionID,
+              flags:flags
+            }));
           }
         }
       }
