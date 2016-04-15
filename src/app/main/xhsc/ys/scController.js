@@ -56,6 +56,9 @@
         $mdDialog.show({
             fullscreen:true,
             controller: function($scope,$mdDialog,items){
+              items.forEach(function(item){
+                item.checked = true;
+              })
               $scope.items = items;
               $scope.answer = function() {
                 $mdDialog.hide();
@@ -70,15 +73,15 @@
             template: '<md-dialog>\
             <md-toolbar>\
             <div class="md-toolbar-tools">\
-          <h2>提交测量</h2>\
+          <h2>请选择提交项目</h2>\
           <span flex></span>\
           </div>\
           </md-toolbar>\
-          <md-dialog-content style="max-width:300px;max-height:410px; ">\
+          <md-dialog-content style="min-width:320px;max-height:410px; ">\
           <md-list>\
           <md-list-item ng-repeat="topping in items">\
           <p> {{ topping.regionName }} </p>\
-          <md-checkbox class="md-secondary" ng-model="topping.regionId"></md-checkbox>\
+          <md-checkbox class="md-secondary" ng-model="topping.checked"></md-checkbox>\
           </md-list-item>\
           </md-list>\
           </md-dialog-content>\
