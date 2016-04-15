@@ -177,6 +177,15 @@
       margin-top: 13px;
       text-align: center;
     }
+    .md-button{
+      min-height:32px;
+      padding: 0;
+      margin:7px 8px;
+      &.md-fab{
+        width:32px;
+        height:32px;
+      }
+    }
   }
     .scright{
       span{
