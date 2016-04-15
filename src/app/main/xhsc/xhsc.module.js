@@ -35,7 +35,7 @@
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
-        title :'验收',
+        title :'实测实量',
         url   :'/choose',
         views :{
           'content@app':{

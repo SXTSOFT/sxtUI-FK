@@ -61,16 +61,16 @@
         <!--</div>-->
       <!--</md-list-item>-->
     <!--</md-list>-->
-    <div>
-      <!--<md-autocomplete md-selected-item="selectedItem" md-search-text="vm.searchText" md-items="item in getMatches(searchText)" md-item-text="item.display" ng-model="vm.selectedArea">-->
+    <!--<div>-->
+      <!--<md-autocomplete md-selected-item="vm.selectedArea" md-search-text="vm.searchText" md-items="item in getMatches(searchText)" md-item-text="item.AreaName" ng-model="vm.selectedArea">-->
         <!--<md-item-template>-->
-          <!--<span md-highlight-text="searchText">{{item.display}}</span>-->
+          <!--<span md-highlight-text="searchText">{{item.AreaName}}{{item.AreaID}}</span>-->
         <!--</md-item-template>-->
         <!--<md-not-found>-->
           <!--No matches found.-->
         <!--</md-not-found>-->
       <!--</md-autocomplete>-->
-    </div>
+    <!--</div>-->
     <div class="selectArea">
       <md-select ng-model="vm.selectedArea" style="margin-bottom:10px;" ng-change="vm.change()">
         <md-option ng-value="area" ng-repeat="area in vm.Areas">{{area.ProjectName}}{{area.AreaName}}{{area.AreaID}}</md-option>
