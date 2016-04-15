@@ -8,10 +8,10 @@
 
 <div flex layout="row" style="max-height:48px;height:48px;position: absolute;top:0;width:100%;">
     <md-list  flex layout="row" style="background:#fff;padding:0;" class="filter">
-      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == -1}" ng-click="vm.myFilter('-1')"><md-button><span>全部</span></md-button></md-list-item>
-      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == 1}" ng-click="vm.myFilter('1')"><md-button ><span class="ing"><i></i>验收中</span></md-button></md-list-item>
-      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == 2}" ng-click="vm.myFilter('2')"><md-button><span class="done"><i></i>已验收</span></md-button></md-list-item>
-      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == 0}" ng-click="vm.myFilter('0')"><md-button><span class="yet"><i></i>未验收</span></md-button></md-list-item>
+      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == -1}" ng-click="vm.myFilter('-1')"><span>全部</span></md-list-item>
+      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == 1}" ng-click="vm.myFilter('1')"><span class="ing"><i></i>验收中</span></md-list-item>
+      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == 2}" ng-click="vm.myFilter('2')"><span class="done"><i></i>已验收</span></md-list-item>
+      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == 0}" ng-click="vm.myFilter('0')"><span class="yet"><i></i>未验收</span></md-list-item>
     </md-list>
 </div>
 <md-content layout="row" flex class="floor-list" style="border-top:1px solid #d8d8d8;margin-top:48px;">
@@ -21,8 +21,9 @@
       <md-divider></md-divider>
       <md-list-item ng-repeat="item in vm.Region" ng-click="vm.open(item)">
         <!--<md-switch class="md-secondary" ng-model="item.selected"></md-switch>-->
-        <md-checkbox class="md-secondary left" ng-if="vm.muti" ng-model="item.selected"></md-checkbox>
-        <p>{{item.RegionName }}</p>
+        <!--<md-checkbox class="md-secondary left" ng-if="vm.muti" ng-model="item.selected"></md-checkbox>-->
+        <p ng-class="{'ing':item.status==1,'done':item.status==2,'yet':item.status==0}">{{item.RegionName }}</p>
+        <md-icon class="md-secondary go" ng-click="vm.goMeasure()" md-font-icon="icon-pen"></md-icon>
         <md-icon class="md-secondary" ng-show="item.showArr" md-font-icon="icon-chevron-right"></md-icon>
         <md-divider></md-divider>
       </md-list-item>
