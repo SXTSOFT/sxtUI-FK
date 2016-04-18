@@ -19,7 +19,7 @@
   <md-content style="background: #fff;;padding-bottom:44px;">
     <md-list ng-cloak class="md-padding">
       <md-divider></md-divider>
-      <md-list-item ng-repeat="item in vm.Region| myFilter:vm.tabStatus" ng-click="vm.open(item)">
+      <md-list-item ng-repeat="item in vm.Region| myFilter:vm.tabStatus" ng-click="vm.open(item)"  ng-class="{'active':item.actived}">
         <!--<md-switch class="md-secondary" ng-model="item.selected"></md-switch>-->
         <!--<md-checkbox class="md-secondary left" ng-if="vm.muti" ng-model="item.selected"></md-checkbox>-->
         <p ng-class="{'ing':item.status==1,'done':item.status==2,'yet':item.status==0}">{{item.RegionName }}</p>
