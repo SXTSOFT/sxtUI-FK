@@ -7,7 +7,7 @@
     .module('app.xhsc')
     .directive('sxtScMapPopup',sxtScMapPopup);
   /** @ngInject */
-  function sxtScMapPopup(mapPopupSerivce){
+  function sxtScMapPopup(mapPopupSerivce,$timeout){
     return {
       restrict:'E',
       scope:{
@@ -18,9 +18,12 @@
     }
 
     function link(scope,element,attr,ctrl){
+      scope.ct ={
+      };
       //实测值
       scope.$watch('value',function(){
         console.log('value',scope.value);
+        //console.log('scope',scope)
         /**
          * 添加测试值
          * @param {Array} values 测试值
@@ -113,6 +116,7 @@
             scope.values = ps;
           });
         }
+        $timeout(function(){scope.ct.show && scope.ct.show();},100);
         scope.$apply();
       };
       scope.distinct = function(array){

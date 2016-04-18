@@ -12,17 +12,28 @@
   function sxtNumDowndown($timeout){
     return {
       scope:{
-        value:'=ngModel'
+        value:'=ngModel',
+        ct:'='
       },
       link:link,
-      template:'<div class="sxtnumdowndown" style="position:relative"><span ng-click="toggleView()" style="display: block;">&nbsp;{{value}}</span><div class="numberpanel"  style="position: absolute;left:-56px;top:30px;width:auto;z-index:10005;display:none;" ><sxt-num-input ng-model="value" ok="ok()"></sxt-num-input></div></div>'
+      template:'<div class="sxtnumdowndown" style="position:relative"><span ng-click="toggleView()" style="display: block;">&nbsp;{{value}}</span><div class="numberpanel"  style="position: absolute;left:-56px;top:30px;width:auto;z-index:10005;display: none;" ><sxt-num-input ng-model="value" ok="ok()"></sxt-num-input></div></div>'
     }
 
     function link(scope,element,attr,ctrl){
       //ng-show="isView"
-      $('.numberpanel').css('display','none');
-      console.log('a',$(element).find('.numberpanel').is(':hidden'))
-
+     $('.numberpanel').css('display','none');
+      if(scope.ct) {
+        scope.ct.show = function () {
+          if ($(element).parent().parent().hasClass('addPanel')) {
+            console.log('add', $(element).parent().parent().eq(0))
+            $(element).parent().parent().eq(0).find('.numberpanel').css('display', 'block');
+          } else if ($(element).parent().hasClass('addPanel')) {
+            $(element).parent().eq(0).find('.numberpanel').css('display', 'block');
+          } else {
+            $(element).find('.numberpanel').css('display', 'block');
+          }
+        };
+      };
       scope.toggleView = function(){
         //console.log('a',$(element).parent().siblings().find('.numberpanel').length)
         if($(element).parent().siblings().find('.numberpanel').length){
@@ -45,8 +56,8 @@
         }
       }
       scope.ok = function(){
-        //$(element).find('.numberpanel').css('display','none');
-        $('.numberpanel').css('display','none');
+        $(element).find('.numberpanel').css('display','none');
+        //$('.numberpanel').css('display','none');
       }
       var docClick = function(e){
         var target = $(e.target);

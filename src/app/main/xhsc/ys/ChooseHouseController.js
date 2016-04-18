@@ -79,7 +79,7 @@
     })
 
     vm.goMeasure = function(){
-      console.log('none')
+      //console.log('none')
     }
 
   }
