@@ -40,13 +40,15 @@
     }
     return self;
 }
+// 调整iOS7及以上的版本全屏问题 --begin
+
 - (void)viewDidLayoutSubviews{
     
     if ([self respondsToSelector:@selector(topLayoutGuide)]) // iOS 7 or above
     {
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];//当前黑色，如果要白色可以改成UIStatusBarStyleLightContent
         
-         self.view.backgroundColor = [UIColor colorWithRed:233/ 255.0f green:48/ 255.0f blue:48/ 255.0f alpha:1];        
+        self.view.backgroundColor = [UIColor colorWithRed:233/ 255.0f green:48/ 255.0f blue:48/ 255.0f alpha:1];
         CGFloat top = self.topLayoutGuide.length;
         
         if(self.webView.frame.origin.y == 0){
