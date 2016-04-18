@@ -27,7 +27,8 @@
         $event.preventDefault();
       }
       scope.ck = function(cmd,$event){
-        scope.cancel($event);
+
+        $event && scope.cancel($event);
         var str = (scope.value ||'').toString(),
           num = parseFloat(str);
         if(isNaN(num)){
@@ -60,6 +61,12 @@
         scope.value = str;
 
       }
+      $('.ak',element).on('click',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        scope.ck($(this).html());
+        scope.$apply();
+      })
       scope.$watch('value',function(){
        // scope.value2 =  isNaN(parseFloat(scope.value))?0:parseFloat(scope.value);
        // scope.step = 0.1;
