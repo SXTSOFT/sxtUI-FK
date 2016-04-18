@@ -265,6 +265,14 @@
           },
 
           /**
+           * 删除测试值
+           * @param {string} acceptanceItemID 测量值ID
+           * */
+          delete:function(measureValueId)
+          {
+            return $http.post('/Api/MeasureValueApi/DeleteMeasureValue', measureValueId);
+          }
+          /**
            * 获取检查点值
            * @param {string} acceptanceItemID 实测项Id
            * @param {string} checkRegionID 区域ID
