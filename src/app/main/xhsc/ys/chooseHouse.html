@@ -38,7 +38,7 @@
       <input type="text" class="inputtext"  ng-model="vm.number" ng-blur="vm.hideSearch()" placeholder="搜索">
     </div>
     </div>
-    <div ng-repeat="floor in vm.current.Children | filter:inputtext:myFilter:vm.tabStatus" layout="column">
+    <div ng-repeat="floor in vm.current.Children |myFilter:vm.tabStatus" layout="column">
       <h3>
         <div class="header">
           <div class="margin" ng-class="{'ing':floor.status==1,'done':floor.status==2,'yet':floor.status==0}">
