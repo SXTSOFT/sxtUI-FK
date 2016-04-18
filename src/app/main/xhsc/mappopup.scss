@@ -623,6 +623,36 @@
      }
   }
 }
+.zdytable{
+  border-collapse: collapse;
+  margin-bottom: 16px;
+  //table-layout: fixed;
+  tr{
+    th,td{
+      border:1px solid #ccc;
+      padding: 8px;
+    }
+    td{
+      &.head{
+        font-size:16px;
+      }
+      p{
+        max-width: 80px;
+        margin: 0;
+      }
+      &.procedurename{
+        text-align: center;
+        p{
+          width:12px;
+          margin: 0 auto;
+
+        }
+      }
+    }
+
+  }
+}
+
 .filter{
   md-list-item{
     position: relative;
