@@ -2,13 +2,13 @@
   background: #ffffff;
   //width:218px;
   //width: 168px;
-  width:262px;
+  width:300px;
  // border: solid 1px silver;
   border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 3px 14px rgba(0,0,0,.4);
   .md-button{
-    min-width:55px;
+    min-width:70px;
     margin: 5px;
   }
   .mslider{
@@ -50,5 +50,10 @@
 .sxtnumdowndown{
   span {
     line-height: 30px;
+  }
+  .md-button{
+    line-height: 48px;
+    height: 48px;
+
   }
 }
