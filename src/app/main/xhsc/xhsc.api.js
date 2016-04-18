@@ -211,8 +211,8 @@
            *          }
            *
            * */
-          query:function(acceptanceItemID,checkRegionID,flags){
-            return $http.get($http.url('/Api/MeasurePointApi/GetMeasurePoint', {acceptanceItemID: acceptanceItemID,checkRegionID:checkRegionID,flags:flags}))
+          query:function(acceptanceItemID,checkRegionID,regionType,flags){
+            return $http.get($http.url('/Api/MeasurePointApi/GetMeasurePoint', {acceptanceItemID: acceptanceItemID,checkRegionID:checkRegionID,regionType:regionType,flags:flags}))
 
            /** return get({
               type: 'FeatureCollection',//固定为FeatureCollection
@@ -231,6 +231,10 @@
                 }
               }]
             });**/
+          },
+
+          submit:function(values){
+            return $http.post('/Api/MeasurePointApi/MeasureSubmit',values)
           }
         },
 		    /***
@@ -268,9 +272,16 @@
           query: function (acceptanceItemID, checkRegionID, flags) {
             return $http.get($http.url('/Api/MeasureValueApi/GetMeasureValues', {
               acceptanceItemID: acceptanceItemID,
-              checkRegionID: checkRegionID,
-
+              checkRegionID: checkRegionID
             }));
+        },
+          /**
+           * 删除点
+           *
+           * @param {string} measurePointID 唯一ID
+           * */
+          delete:function(measureValueId) {
+            return $http.delete($http.url('/Api/MeasureValueApi/DeleteMeasureValue', {measureValueId: measureValueId}))
           }
         }
       }

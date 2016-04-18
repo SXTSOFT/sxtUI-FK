@@ -85,6 +85,20 @@
           }
         }
       })
+      .state('app.xhsc.scv',{
+        noBack:false,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'实测查看',
+        url   :'/scv/{areaId}/{acceptanceItemID}/{regionId}/{regionType}/{name}/{pname}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/scv.html',
+            controller:'scController as vm'
+          }
+        }
+      })
       .state('app.xhsc.demo',{
         noBack:false,
         sendBt:false,

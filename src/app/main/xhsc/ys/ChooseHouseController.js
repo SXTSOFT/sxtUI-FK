@@ -23,13 +23,15 @@
     vm.open = function(id) {
       vm.current = id;
       //vm.floors = null;
-      //vm.Region.forEach(function (item) {
-      //  item.showArr = false;
-      //  if (id.RegionName == item.RegionName) {
-      //    vm.floors = item.Children;
-      //    id.showArr = true;
-      //  }
-      //})
+      vm.Region.forEach(function (item) {
+        item.showArr = false;
+        item.actived = false;
+        if (id.RegionName == item.RegionName) {
+         // vm.floors = item.Children;
+          id.showArr = true;
+          item.actived = true;
+        }
+      })
     }
     vm.tabStatus = -1;
     vm.myFilter = function(num){

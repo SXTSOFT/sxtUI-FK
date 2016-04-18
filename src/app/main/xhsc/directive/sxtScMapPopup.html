@@ -1,10 +1,18 @@
 <div class="md-padding" style="width: 300px;">
   <div class="mappopup">
+    <div layout="row" >
+      <span flex="none" style="color:#fff;display: inline-block;vertical-align: top;margin-top:2px;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
+       名称：
+      </span>
+      <md-input-container flex>
+        <input ng-model="value.seq">
+      </md-input-container>
+    </div>
     <div layout="row" ng-if="MeasureIndex.PassYieldComputeMode=='1' && (!MeasureIndex.children||!MeasureIndex.children.length) ">
-      <span style="color:#fff;min-width:120px;display: inline-block;vertical-align: top;margin-top:2px;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
+      <span flex="none" style="color:#fff;display: inline-block;vertical-align: top;margin-top:2px;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
         {{MeasureIndex.IndexName}}
       </span>
-      <span style="position: relative;width:100%;display: inline-block;height:30px;line-height: 30px;border-bottom: 1px solid #555;"><sxt-num-downdown ng-model="value.MeasureValue"></sxt-num-downdown></span>
+      <span flex style="position: relative;display: inline-block;height:30px;line-height: 30px;border-bottom: 1px solid #555;"><sxt-num-downdown ng-model="value.CalculatedValue"></sxt-num-downdown></span>
     </div>
     <table  ng-if="MeasureIndex.PassYieldComputeMode=='2'" border="0" cellspacing="0" cellpadding="0"  style="margin-bottom:15px;width:100%">
       <thead>
@@ -100,10 +108,10 @@
   </div>-->
 <div class="leaflet-draw-subbuttom" >
   <ul  layout="row">
-    <li><a class="" href="javascript:void(0)" ng-click="removeLayer()">删除</a></li>
+    <li ng-if="!readonly"><a class="" href="javascript:void(0)" ng-click="removeLayer()">删除</a></li>
     <li flex></li>
     <li><a class="" href="javascript:void(0)" ng-click="cancelEdit()">取消</a></li>
-    <li><a class="" href="javascript:void(0)" ng-click="updateValue()">确定</a></li>
+    <li ng-if="!readonly"><a class="" href="javascript:void(0)" ng-click="updateValue()">确定</a></li>
   </ul>
 </div>
 </div>
