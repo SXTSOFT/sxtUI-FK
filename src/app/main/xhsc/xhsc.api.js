@@ -265,6 +265,14 @@
           },
 
           /**
+           * 删除测试值
+           * @param {string} acceptanceItemID 测量值ID
+           * */
+          delete:function(measureValueId)
+          {
+            return $http.post('/Api/MeasureValueApi/DeleteMeasureValue', measureValueId);
+          },
+          /**
            * 获取检查点值
            * @param {string} acceptanceItemID 实测项Id
            * @param {string} checkRegionID 区域ID
@@ -287,48 +295,5 @@
       }
     });
 
-    function query(data){
-      return $q(function(resolve){
-        resolve({
-          data: {
-            rows: data,
-            total: 100
-          }
-        });
-      })
-    }
-
-    function array(obj){
-      var a=[];
-      for(var i=0;i<10;i++){
-        var o={};
-        for(var k in obj){
-          var v = obj[k];
-          if(typeof(v)==='string'){
-              v = v.replace('{0}',(i+1));
-          }
-          o[k] = v;
-        }
-        a.push(o);
-      }
-      return a;
-    }
-
-
-    function get(data){
-      return $q(function(resolve){
-        resolve({data:data});
-      })
-    }
-
-    function post(data){
-      return $q(function(resolve){
-        resolve({
-          data:{
-          code:1
-         }
-        });
-      })
-    }
   }
 })();
