@@ -60,10 +60,10 @@
         scope.value = str;
 
       }
-      scope.$watch('value',function(){
-       // scope.value2 =  isNaN(parseFloat(scope.value))?0:parseFloat(scope.value);
-       // scope.step = 0.1;
-      })
+      //scope.$watch('value',function(){
+      // // scope.value2 =  isNaN(parseFloat(scope.value))?0:parseFloat(scope.value);
+      // // scope.step = 0.1;
+      //})
     }
   }
 
