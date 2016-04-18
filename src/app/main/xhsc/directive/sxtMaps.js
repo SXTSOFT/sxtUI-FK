@@ -24,8 +24,8 @@
 
       $timeout(function () {
         var map = L.map(element[0], {
-            center: [39.125596,117.190182],
-            zoom: 12,
+            center: [39.193092,117.106007],
+            zoom: 14,
             attributionControl: false
           }),
           layer = L.tileLayer('http://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
@@ -50,9 +50,9 @@
             mks.push(L
               .marker([o.lat, o.lng], L.extend({
                 icon: L.icon({
-                  iconUrl: 'libs/leaflet/images/M.png',
-                  iconSize: [27, 37],
-                  iconAnchor: [12, 12]
+                  iconUrl: 'libs/leaflet/images/L.png',
+                  iconSize: [70, 70],
+                  iconAnchor: [35, 35]
                 })
               }, o))
               .on('click', markerClick)

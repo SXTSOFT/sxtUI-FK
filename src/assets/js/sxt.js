@@ -19,8 +19,8 @@ window.sxt = (function(win)
     version: '1.1.12',
     app: {
       appDir: appDir,
-      //api:'http://ggem.sxtsoft.com:9191',
-      api:'http://localhost:8107',
+      api:'http://ggem.sxtsoft.com:9191',
+     // api:'http://localhost:8107',
       getUrl: getUrl,
       download: download
     },
