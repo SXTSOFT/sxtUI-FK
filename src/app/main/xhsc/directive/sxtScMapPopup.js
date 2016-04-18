@@ -89,13 +89,53 @@
          */
 
       });
-
-      scope.apply = function(){
+      scope.updateValue = function() {
         var context = scope.context;
+        if (!context.featureGroup.options.onUpdateData || context.featureGroup.options.onUpdateData (scope.value, scope.MeasureIndex, scope) !== false) {
+          scope.cancelEdit ();
+        }
+      };
+      scope.apply = function() {
+        var context = scope.context;
+        scope.PointType = context.layer.toGeoJSON().geometry.type;
+
+        //console.log('PointType',scope.PointType )
         scope.MeasureIndex = context.featureGroup.options.properties;
         scope.value = context.layer.getValue();
+        scope.values=null;
+        if(scope.PointType=='LineGroup') {
+          var ps = [];
+          context.featureGroup.eachLayer(function (layer) {
+            if (layer._value && layer._value.$groupId == scope.value.$id) {
+              ps.push(layer._value);
+            }
+            scope.values = ps;
+          });
+        }
         scope.$apply();
       };
+      scope.distinct = function(array){
+        if(!array || !array.forEach)return;
+        var min=100000,max=-100000;
+        array.forEach(function(item){
+          if(item.MeasureValue) {
+            if (item.MeasureValue < min)
+              min = item.MeasureValue;
+            if (item.MeasureValue > max)
+              max = item.MeasureValue;
+          }
+          else {
+            if (item < min)
+              min = item;
+            if (item > max)
+              max = item;
+          }
+        })
+        return max-min;
+      }
+      scope.distinct2 = function(){
+        scope.distinct(Array.prototype.splice.call(arguments));
+      }
       scope.removeLayer = function(){
         var layer = scope.context.layer;
         layer._fg.removeLayer(layer);

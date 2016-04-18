@@ -12,14 +12,11 @@
                 'ngResource',
                 'ngSanitize',
                 'ngMaterial',
-                'chart.js',
                 'pascalprecht.translate',
                 'timer',
                 'ui.router',
-                'textAngular',
                 'ui.sortable',
                 'ng-sortable',
-                'xeditable',
                 'moment-picker'
             ]);
 })();

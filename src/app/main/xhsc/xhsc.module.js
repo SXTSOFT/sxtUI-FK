@@ -35,7 +35,7 @@
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
-        title :'验收',
+        title :'实测实量',
         url   :'/choose',
         views :{
           'content@app':{
@@ -50,7 +50,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'抹灰工程',
-        url   :'/chooseHouse/{id}',
+        url   :'/chooseHouse/{id}/{areaId}/{pname}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/chooseHouse.html',
@@ -63,7 +63,6 @@
         sendBt:true,
         rightArrow:true,
         leftArrow:true,
-        title :'实测',
         url   :'/check',
         views :{
           'content@app':{
@@ -72,13 +71,13 @@
           }
         }
       })
-      .state('app.xhsc.zg',{
+      .state('app.xhsc.sc',{
         noBack:false,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'实测',
-        url   :'/sc',
+        url   :'/sc/{areaId}/{acceptanceItemID}/{regionId}/{regionType}/{name}/{pname}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/sc.html',

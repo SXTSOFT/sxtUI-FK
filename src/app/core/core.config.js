@@ -39,7 +39,7 @@
       $translateProvider.useSanitizeValueStrategy('sanitize');
 
       // Text Angular options
-      $provide.decorator('taOptions', [
+      /*$provide.decorator('taOptions', [
           '$delegate', function (taOptions)
           {
               taOptions.toolbar = [
@@ -59,10 +59,10 @@
 
               return taOptions;
           }
-      ]);
+      ]);*/
 
       // Text Angular tools
-      $provide.decorator('taTools', [
+      /*$provide.decorator('taTools', [
           '$delegate', function (taTools)
           {
               taTools.bold.iconclass = 'icon-format-bold';
@@ -74,7 +74,7 @@
 
               return taTools;
           }
-      ]);
+      ]);*/
 
 
         // Fuse theme configurations

@@ -13,7 +13,7 @@
         history.go(-1);//返回
       }
       remote.Project.Area.query().then(function(result){
-        vm.Areas = result.data.rows;
+        vm.Areas = result.data;
         vm.selectedArea = vm.Areas[0];
       })
 

@@ -9,13 +9,25 @@
     .controller('ChooseController',ChooseController);
 
   /** @ngInject */
-  function ChooseController($scope,$timeout,remote,$rootScope){
+  function ChooseController($scope,$timeout,remote,$rootScope,xhUtils){
     var vm=this;
     function toggleRightEvent(){
       //$mdSidenav('right')
       //  .toggle();
     }
 
+    remote.Project.Area.query().then(function(result){
+      vm.Areas = result.data;
+      vm.selectedArea = vm.Areas[0];
+
+    })
+    $scope.$watch('vm.selectedArea',function(){
+      if(vm.selectedArea) {
+        xhUtils.getProcedure(vm.selectedArea.AreaID, function (result) {
+          vm.xhMeasure = result;
+        });
+      }
+    })
 
     vm.close = function () {
       //$mdSidenav('right').close()
@@ -26,8 +38,6 @@
     function areaSelectEvent(event,data){
       vm.areaId = data.AreaName;
     }
-    $rootScope.$on('areaSelect',areaSelectEvent)
-    $rootScope.$on('toggleRightEvent',toggleRightEvent)
   }
 
 })();
