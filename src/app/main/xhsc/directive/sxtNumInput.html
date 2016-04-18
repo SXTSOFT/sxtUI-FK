@@ -1,31 +1,61 @@
+<!--<div class="sxt-num-input" layout="column">-->
+ <!--<div layout="column" class="mslider">-->
+      <!--<div flex layout="row">-->
+        <!--<div flex="33"><md-button ng-click="ck('ac')">AC</md-button></div>-->
+        <!--<div flex="33"><md-button ng-click="ck('+-')">+/-</md-button></div>-->
+        <!--<div flex="33"><md-button ng-click="ck(-1)">←</md-button></div>-->
+      <!--</div>-->
+      <!--<div flex layout="row">-->
+        <!--<div flex="33"><md-button ng-click="ck(7)">7</md-button></div>-->
+        <!--<div flex="33"><md-button ng-click="ck(8)">8</md-button></div>-->
+        <!--<div flex="33"><md-button ng-click="ck(9)">9</md-button></div>-->
+      <!--</div>-->
+      <!--<div flex layout="row">-->
+        <!--<div flex="33"><md-button ng-click="ck(4)">4</md-button></div>-->
+        <!--<div flex="33"><md-button ng-click="ck(5)">5</md-button></div>-->
+        <!--<div flex="33"><md-button ng-click="ck(6)">6</md-button></div>-->
+      <!--</div>-->
+      <!--<div flex layout="row">-->
+        <!--<div flex="33"><md-button ng-click="ck(1)">1</md-button></div>-->
+        <!--<div flex="33"><md-button ng-click="ck(2)">2</md-button></div>-->
+        <!--<div flex="33"><md-button ng-click="ck(3)">3</md-button></div>-->
+      <!--</div>-->
+      <!--<div flex layout="row">-->
+        <!--<div flex="66" layout="column"><md-button ng-click="ck(0)" flex>0</md-button></div>-->
+        <!--<div flex="33"><md-button ng-click="ck('.')">.</md-button></div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--<div layout="row" style="background: #ddd;;border-top:1px solid silver;">-->
+    <!--<div flex="100" layout="column"><md-button ng-click="ck('ok')" flex>确定</md-button></div>-->
+  <!--</div>-->
+<!--</div>-->
 <div class="sxt-num-input" layout="column">
- <div layout="column" class="mslider">
-      <div flex layout="row">
-        <div flex="33"><md-button ng-click="ck('ac')">AC</md-button></div>
-        <div flex="33"><md-button ng-click="ck('+-')">+/-</md-button></div>
-        <div flex="33"><md-button ng-click="ck(-1)">←</md-button></div>
-      </div>
-      <div flex layout="row">
-        <div flex="33"><md-button ng-click="ck(7)">7</md-button></div>
-        <div flex="33"><md-button ng-click="ck(8)">8</md-button></div>
-        <div flex="33"><md-button ng-click="ck(9)">9</md-button></div>
-      </div>
-      <div flex layout="row">
-        <div flex="33"><md-button ng-click="ck(4)">4</md-button></div>
-        <div flex="33"><md-button ng-click="ck(5)">5</md-button></div>
-        <div flex="33"><md-button ng-click="ck(6)">6</md-button></div>
-      </div>
-      <div flex layout="row">
-        <div flex="33"><md-button ng-click="ck(1)">1</md-button></div>
-        <div flex="33"><md-button ng-click="ck(2)">2</md-button></div>
-        <div flex="33"><md-button ng-click="ck(3)">3</md-button></div>
-      </div>
-      <div flex layout="row">
-        <div flex="66" layout="column"><md-button ng-click="ck(0)" flex>0</md-button></div>
-        <div flex="33"><md-button ng-click="ck('.')">.</md-button></div>
-      </div>
+  <div layout="column" class="newkeyboard">
+    <div flex layout="row">
+      <div flex="25"><md-button class="md-raised" ng-click="ck(7)">7</md-button></div>
+      <div flex="25"><md-button class="md-raised" ng-click="ck(8)">8</md-button></div>
+      <div flex="25"><md-button class="md-raised" ng-click="ck(9)">9</md-button></div>
+      <div flex="25"><md-button class="md-raised" ng-click="ck('ac')">AC</md-button></div>
     </div>
-  <div layout="row" style="background: #ddd;;border-top:1px solid silver;">
+    <div flex layout="row">
+      <div flex="25"><md-button class="md-raised" ng-click="ck(4)">4</md-button></div>
+      <div flex="25"><md-button class="md-raised" ng-click="ck(5)">5</md-button></div>
+      <div flex="25"><md-button class="md-raised" ng-click="ck(6)">6</md-button></div>
+      <div flex="25"><md-button class="md-raised" ng-click="ck('+-')">+/-</md-button></div>
+    </div>
+    <div flex layout="row">
+      <div flex="25"><md-button class="md-raised" ng-click="ck(1)">1</md-button></div>
+      <div flex="25"><md-button class="md-raised" ng-click="ck(2)">2</md-button></div>
+      <div flex="25"><md-button class="md-raised" ng-click="ck(3)">3</md-button></div>
+      <div flex="25"><md-button class="md-raised" ng-click="ck(-1)">←</md-button></div>
+    </div>
+    <div flex layout="row">
+      <div flex="25"><md-button class="md-raised" ng-click="ck(0)">0</md-button></div>
+      <div flex="25"><md-button class="md-raised" ng-click="ck('.')">.</md-button></div>
+      <div flex="50" style="margin:5px 5px;"><md-button class="md-raised" ng-click="ck('ok')" style="width:100%;margin:0">确定</md-button></div>
+    </div>
+  </div>
+  <div layout="row" style="background: #ddd;;border-top:1px solid silver;display: none;">
     <div flex="100" layout="column"><md-button ng-click="ck('ok')" flex>确定</md-button></div>
   </div>
 </div>

@@ -302,19 +302,27 @@
       margin-left:-1px;
       margin-bottom: -1px;
       background: #fff;
-      .md-item-text{
-        display: table;
-        height:120px;
-        text-align: center;
-        width:100%;
-        p{
-          margin-bottom: 0;
-          display: table-cell;
-          vertical-align: middle;
-          font-size:16px;
-          color:#000;
+      .md-no-style{
+        padding: 0;
+      }
+      .md-button{
+        margin:0;
+        .md-item-text{
+          display: table;
+          height:120px;
+          text-align: center;
+          width:100%;
+          p{
+            //margin-bottom: 0;
+            display: table-cell;
+            vertical-align: middle;
+            font-size:16px;
+            color:#000;
+            margin:0;
+          }
         }
       }
+
     }
   }
 
@@ -579,7 +587,7 @@
 .md-padding{
   md-list-item {
     &.active{
-      background: rgba(200,200,200,.1);
+      background: rgba(0,0,0,0.03);
     }
         button{
           &.md-button{
@@ -660,6 +668,7 @@
   md-list-item{
     position: relative;
     text-align: center;
+    border-bottom:2px solid transparent;
     .md-button{
       margin:8px 0;
       line-height: 24px;
@@ -720,7 +729,7 @@
       width:0;
     }
     &.active{
-      border-bottom: 2px solid #f00;
+      border-color: #f00;
     }
 
   }

@@ -1,7 +1,7 @@
 <div class="md-padding" style="width: 300px;">
   <div class="mappopup">
     <div layout="row" >
-      <span flex="none" style="color:#fff;display: inline-block;vertical-align: top;margin-top:2px;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
+      <span flex="none" style="color:#fff;display: inline-block;vertical-align: top;margin-top:0;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
        名称：
       </span>
       <md-input-container flex>
@@ -9,7 +9,7 @@
       </md-input-container>
     </div>
     <div layout="row" ng-if="MeasureIndex.PassYieldComputeMode=='1' && (!MeasureIndex.children||!MeasureIndex.children.length) ">
-      <span flex="none" style="color:#fff;display: inline-block;vertical-align: top;margin-top:2px;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
+      <span flex="none" style="color:#fff;display: inline-block;vertical-align: top;margin-top:0;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
         {{MeasureIndex.IndexName}}
       </span>
       <span flex style="position: relative;display: inline-block;height:30px;line-height: 30px;border-bottom: 1px solid #555;"><sxt-num-downdown ng-model="value.CalculatedValue"></sxt-num-downdown></span>
@@ -41,14 +41,14 @@
       </tbody>
     </table>
     <div layout="row" ng-if="(MeasureIndex.PassYieldComputeMode=='3' || MeasureIndex.PassYieldComputeMode=='4') && PointType=='Stamp'">
-      <span style="color:#fff;min-width:120px;display: inline-block;vertical-align: top;margin-top:2px;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
+      <span style="color:#fff;min-width:120px;display: inline-block;vertical-align: top;margin-top:0;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
         {{MeasureIndex.IndexName}}
       </span>
       <span style="position: relative;width:100%;display: inline-block;height:30px;line-height:30px;border-bottom: 1px solid #555;"><sxt-num-downdown ng-model="value.MeasureValue"></sxt-num-downdown></span>
     </div>
     <div ng-if="(MeasureIndex.PassYieldComputeMode=='3' || MeasureIndex.PassYieldComputeMode=='4') && PointType!='Stamp'">
     <div layout="row">
-      <span style="color:#fff;min-width:120px;text-align: right; display: inline-block;vertical-align: top;margin-top:2px;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;padding-right:15px">
+      <span style="color:#fff;min-width:120px;text-align: right; display: inline-block;vertical-align: top;margin-top:0;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;padding-right:15px">
         组名称
       </span>
       <md-input-container>
@@ -56,13 +56,13 @@
       </md-input-container>
     </div>
       <div layout="row" ng-repeat="item  in  values"  class="addPanel">
-      <span style="color:#fff;min-width:120px; text-align: right;display: inline-block;vertical-align: top;margin-top:2px;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;padding-right:15px">
+      <span style="color:#fff;min-width:120px; text-align: right;display: inline-block;vertical-align: top;margin-top:0;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;padding-right:15px">
         {{item.seq}}
       </span>
         <span style="position: relative;width:100%;display: inline-block;height:30px;border-bottom: 1px solid #555;line-height: 30px;"><sxt-num-downdown ng-model="item.MeasureValue"></sxt-num-downdown></span>
       </div>
       <div ng-if="MeasureIndex.PassYieldComputeMode=='3'" layout="row" >
-      <span style="color:#fff;min-width:120px; text-align: right; display: inline-block;vertical-align: top;margin-top:6px;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
+      <span style="color:#fff;min-width:120px; text-align: right; display: inline-block;vertical-align: top;margin-top:0;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
        包含实测点
       </span>
         <span style="position: relative;width:100%;display: inline-block;height:30px;border-bottom: 1px solid #555;">
@@ -70,7 +70,7 @@
         </span>
       </div>
       <div layout="row" >
-      <span style="color:#fff;min-width:120px; text-align: right; display: inline-block;vertical-align: top;margin-top:6px;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
+      <span style="color:#fff;min-width:120px; text-align: right; display: inline-block;vertical-align: top;margin-top:0;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
        差异
       </span>
         <span style="position: relative;width:100%;display: inline-block;height:30px;border-bottom: 1px solid #555;">
@@ -80,7 +80,7 @@
     </div>
     <div  ng-if="MeasureIndex.IndexType=='SelectMaterial'">
     <div layout="row">
-      <span style="color:#fff;min-width:70px;display: inline-block;vertical-align: top;margin-top:6px;height:30px;line-height: 26px;padding: 2px;">选择类型</span>
+      <span style="color:#fff;min-width:70px;display: inline-block;vertical-align: top;margin-top:0;height:30px;line-height: 26px;padding: 2px;">选择类型</span>
       <md-input-container flex>
         <md-select ng-model="value.AcceptanceIndexID">
           <md-option ng-repeat="item in MeasureIndex.children" value="{{item.AcceptanceIndexID}}">
@@ -90,7 +90,7 @@
       </md-input-container>
     </div>
     <div layout="row" style="margin-top:20px;" class="addPanel">
-      <span style="color:#fff;min-width:70px;display: inline-block;vertical-align: top;margin-top:2px;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">值:</span>
+      <span style="color:#fff;min-width:70px;display: inline-block;vertical-align: top;margin-top:0;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">值:</span>
       <span style="position: relative;width:100%;display: inline-block;height:30px;line-height:30px;border-bottom: 1px solid #555;"><sxt-num-downdown ng-model="value.MeasureValue"></sxt-num-downdown></span>
     </div>
     </div>
