@@ -15,7 +15,7 @@
         value:'=ngModel'
       },
       link:link,
-      template:'<div class="sxtnumdowndown" style="position:relative"><span ng-click="toggleView()" style="display: block;">&nbsp;{{value}}</span><div class="numberpanel"  style="position: absolute;left:-56px;top:20px;width:auto;z-index:10005;display:none;" ><sxt-num-input ng-model="value" ok="ok()"></sxt-num-input></div></div>'
+      template:'<div class="sxtnumdowndown" style="position:relative"><span ng-click="toggleView()" style="display: block;">&nbsp;{{value}}</span><div class="numberpanel"  style="position: absolute;left:-56px;top:30px;width:auto;z-index:10005;display:none;" ><sxt-num-input ng-model="value" ok="ok()"></sxt-num-input></div></div>'
     }
 
     function link(scope,element,attr,ctrl){
@@ -36,6 +36,7 @@
         if($(element).find('.numberpanel').is(':hidden')){
           $(element).find('.numberpanel').css('display','block');
           var width = $('.sxt-num-input').width()-$(element).parent().width();
+         // console.log('width',$(element).parent().width())
           $(element).find('.numberpanel').css('left',-width/2+'px');
           //scope.isView = true;
         }else{
