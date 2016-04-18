@@ -32,14 +32,14 @@
     }
     vm.changeItem = function(item){
       $timeout(function(){
-        $state.go('app.szgc.project',{pid:item.projectId, pname: item.title});
+        $state.go('app.xhsc.choose',{pid:item.projectId, pname: item.title});
       },200)
 
     }
 
     function markerClick($current){
     //  appCookie.put('projects',JSON.stringify([{project_id:$current.projectId,name:$current.title}]))
-      $state.go('app.szgc.project',{pid:$current.projectId, pname:'天津星河时代'});
+      $state.go('app.xhsc.choose',{pid:$current.projectId, pname:'天津星河时代'});
     }
   }
 })();

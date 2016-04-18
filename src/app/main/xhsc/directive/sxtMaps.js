@@ -25,7 +25,7 @@
       $timeout(function () {
         var map = L.map(element[0], {
             center: [39.125596,117.190182],
-            zoom: 10,
+            zoom: 12,
             attributionControl: false
           }),
           layer = L.tileLayer('http://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
@@ -51,7 +51,7 @@
               .marker([o.lat, o.lng], L.extend({
                 icon: L.icon({
                   iconUrl: 'libs/leaflet/images/M.png',
-                  iconSize: [24, 24],
+                  iconSize: [27, 37],
                   iconAnchor: [12, 12]
                 })
               }, o))
@@ -61,29 +61,12 @@
 
         map.on('zoomend', function (e) {
           var zoom = map.getZoom();
-          if (zoom < 10) {
-            mks.forEach(function (marker) {
-              marker.setIcon(L.icon({
-                iconUrl: 'libs/leaflet/images/S1.png',
-                iconSize: [18, 18],
-                iconAnchor: [9, 9]
-              }));
-            })
-          }
-          else if (zoom < 11) {
-            mks.forEach(function (marker) {
-              marker.setIcon(L.icon({
-                iconUrl: 'libs/leaflet/images/S.png',
-                iconSize: [24, 24],
-                iconAnchor: [12, 12]
-              }));
-            })
-          }
-          else if(zoom>=11 && zoom <=12) {
+
+          if(zoom <=12) {
             mks.forEach(function (marker) {
               marker.setIcon(L.icon({
                 iconUrl: 'libs/leaflet/images/M.png',
-                iconSize: [39, 39],
+                iconSize: [27, 37],
                 iconAnchor: [20, 20]
               }));
             })
