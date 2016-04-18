@@ -13,7 +13,13 @@
       var output = [];
       if (!items)return output;
       if (status == -1) {
-        output = items;
+        items.forEach(function(item){
+          if( item.find(function (it) {
+              return it.status != -1;
+            })){
+            output.push(item);
+          }
+        })
         return output;
       }
       //console.log('a',args)

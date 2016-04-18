@@ -287,48 +287,5 @@
       }
     });
 
-    function query(data){
-      return $q(function(resolve){
-        resolve({
-          data: {
-            rows: data,
-            total: 100
-          }
-        });
-      })
-    }
-
-    function array(obj){
-      var a=[];
-      for(var i=0;i<10;i++){
-        var o={};
-        for(var k in obj){
-          var v = obj[k];
-          if(typeof(v)==='string'){
-              v = v.replace('{0}',(i+1));
-          }
-          o[k] = v;
-        }
-        a.push(o);
-      }
-      return a;
-    }
-
-
-    function get(data){
-      return $q(function(resolve){
-        resolve({data:data});
-      })
-    }
-
-    function post(data){
-      return $q(function(resolve){
-        resolve({
-          data:{
-          code:1
-         }
-        });
-      })
-    }
   }
 })();
