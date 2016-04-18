@@ -5,12 +5,12 @@
     <span ng-class="{'subtitle':$root.leftArrow===true}">{{$root.subtitle||$root.title || '工程大数据'}}</span>
     <md-icon class="arrows icon s32" ng-show="$root.rightArrow===true" md-font-icon="icon-chevron-right" style="color:#fff;" ng-click="toRight()"></md-icon>
   </h2>
-  <div ng-show="$root.sendBt===true"><md-button style="color:white;position: absolute;top:9px;right:0;margin:0;min-width:60px;min-height:24px;line-height:24px;" ng-click="send($event)" ui-sref="app.xhsc.zg">发送</md-button></div>
-  <div style="position: absolute;top:5px;right:5px;font-size:14px;" class="topSelect" ng-if="!$root.loadingProgress">
-      <md-select placeholder="星河智慧一期" ng-model="vm.selectedArea" style="min-width: 120px;margin:0" ng-change="vm.change()">
-        <md-option ng-value="area" ng-repeat="area in vm.Areas">{{area.ProjectName}}{{area.AreaName}}</md-option>
-      </md-select>
-  </div>
+  <!--<div ng-show="$root.sendBt===true"><md-button style="color:white;position: absolute;top:9px;right:0;margin:0;min-width:60px;min-height:24px;line-height:24px;" ng-click="send($event)" ui-sref="app.xhsc.zg">发送</md-button></div>-->
+  <!--<div style="position: absolute;top:5px;right:5px;font-size:14px;" class="topSelect" ng-if="!$root.loadingProgress">-->
+      <!--<md-select placeholder="星河智慧一期" ng-model="vm.selectedArea" style="min-width: 120px;margin:0" ng-change="vm.change()">-->
+        <!--<md-option ng-value="area" ng-repeat="area in vm.Areas">{{area.ProjectName}}{{area.AreaName}}</md-option>-->
+      <!--</md-select>-->
+  <!--</div>-->
   <!--<div style="position: absolute;top:12px;right:25px;font-size:14px;" ng-click="toggleRight()">-->
     <!--星河智慧一期<md-icon class="icon s32" md-font-icon="icon-menu-down" style="color:#fff;"></md-icon>-->
     <!--</div>-->
