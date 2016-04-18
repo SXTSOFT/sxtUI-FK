@@ -22,7 +22,12 @@
 
     function link(scope,element,attr,ctrl){
 
-      scope.ck = function(cmd){
+      scope.cancel = function($event){
+        $event.stopPropagation();
+        $event.preventDefault();
+      }
+      scope.ck = function(cmd,$event){
+        scope.cancel($event);
         var str = (scope.value ||'').toString(),
           num = parseFloat(str);
         if(isNaN(num)){
