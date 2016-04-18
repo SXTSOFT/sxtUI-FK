@@ -202,7 +202,7 @@
         }
         if(tile)
           project._map.removeLayer(tile);
-        tile = L.tileLayer(sxt.app.api+'/Api/Picture/Tile/{z}_{x}_{y}?path=/UploadFiles/Framework/'+ scope.imageUrl, {attribution: false});
+        tile = L.tileLayer(sxt.app.api+'/Api/Picture/Tile/{z}_{x}_{y}?path=/fs/UploadFiles/Framework/'+ scope.imageUrl, {attribution: false});
         project._map.addLayer(tile);
 
         var featureGroups= {};
