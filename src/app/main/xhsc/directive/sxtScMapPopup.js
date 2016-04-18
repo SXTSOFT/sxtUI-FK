@@ -11,7 +11,7 @@
     return {
       restrict:'E',
       scope:{
-
+        readonly:'='
       },
       templateUrl:'app/main/xhsc/directive/sxtScMapPopup.html',
       link:link
@@ -91,7 +91,8 @@
       });
       scope.updateValue = function() {
         var context = scope.context;
-        if (!context.featureGroup.options.onUpdateData || context.featureGroup.options.onUpdateData (scope.value, scope.MeasureIndex, scope) !== false) {
+
+        if (!context.featureGroup.options.onUpdateData || context.featureGroup.options.onUpdateData (context) !== false) {
           scope.cancelEdit ();
         }
       };

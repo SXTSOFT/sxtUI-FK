@@ -8,19 +8,48 @@
     .module('app.xhsc')
     .controller('scController',scController)
   /** @ngInject */
-  function scController($scope,remote,xhUtils,$stateParams,utils,$mdDialog,$state) {
+  function scController($scope,remote,xhUtils,$stateParams,utils,$mdDialog,$state,$rootScope) {
     var vm = this;
     vm.info = {
       name: $stateParams.name,
       areaId:$stateParams.areaId,
       acceptanceItemID: $stateParams.acceptanceItemID,
-      regionId: $stateParams.regionId,
-      regionType: $stateParams.regionType,
+      //regionId: $stateParams.regionId,
+      //regionType: $stateParams.regionType,
       aItem:{
         MeasureItemName:$stateParams.pname,
         AcceptanceItemID:$stateParams.acceptanceItemID
       }
     };
+    $rootScope.title = vm.info.aItem.MeasureItemName;
+    vm.setRegionId = function(regionId,regionType){
+      switch (regionType) {
+        case '8':
+          remote.Project.getFloorDrawing(regionId).then(function (r) {
+            if(r.data.length) {
+              vm.info.imageUrl = r.data[0].DrawingImageUrl;
+              vm.info.regionId = regionId;
+              vm.info.regionType = regionType;
+            }
+            else{
+              utils.alert('未找到图纸');
+            }
+          });
+        case '16':
+          remote.Project.getHouseDrawing(regionId).then(function (r) {
+            if(r.data.length) {
+              vm.info.imageUrl = r.data[0].DrawingImageUrl;
+              vm.info.regionId = regionId;
+              vm.info.regionType = regionType;
+            }
+            else{
+              utils.alert('未找到图纸');
+            }
+          });
+          break;
+      }
+    }
+
     vm.nextRegion = function(prev){
       xhUtils.getRegion(vm.info.areaId,function(r){
         var find = r.find(vm.info.regionId);
@@ -28,7 +57,8 @@
           var next = prev?find.prev():find.next();
           if(next) {
             vm.info.name = next.FullName;
-            vm.info.regionId = next.RegionID;
+            //vm.info.regionId = next.RegionID;
+            vm.setRegionId(next.RegionID,vm.info.regionType);
           }
           else{
             utils.alert('未找到'+(prev?'上':'下')+'一位置');
@@ -61,7 +91,25 @@
               })
               $scope.items = items;
               $scope.answer = function() {
-                $mdDialog.hide();
+                var vs=[];
+                items.forEach(function(item){
+                  if(item.checked){
+                    vs.push({
+                      AcceptanceItemID:vm.info.acceptanceItemID,
+                      CheckRegionID:item.regionId,
+                      RegionType:vm.info.regionType
+                    })
+                  }
+                });
+                if(vs.length) {
+                  remote.ProjectQuality.MeasurePoint.submit(vs).then(function(r){
+                    $mdDialog.hide();
+                  });
+                }
+                else{
+                  $mdDialog.hide();
+                }
+
               };
               $scope.cancel = function() {
                 $mdDialog.cancel();
@@ -101,5 +149,6 @@
           });
       }
     }
+    vm.setRegionId($stateParams.regionId,$stateParams.regionType);
   }
 })();
