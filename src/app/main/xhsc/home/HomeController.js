@@ -38,8 +38,8 @@
     }
 
     function markerClick($current){
-      appCookie.put('projects',JSON.stringify([{project_id:$current.projectId,name:$current.title}]))
-      $state.go('app.szgc.project',{pid:$current.projectId, pname: '天津星河时代'});
+    //  appCookie.put('projects',JSON.stringify([{project_id:$current.projectId,name:$current.title}]))
+      $state.go('app.szgc.project',{pid:$current.projectId, pname:'天津星河时代'});
     }
   }
 })();
