@@ -2,14 +2,17 @@
   background: #ffffff;
   //width:218px;
   //width: 168px;
-  width:240px;
+  width:340px;
  // border: solid 1px silver;
   border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 3px 14px rgba(0,0,0,.4);
   .md-button{
-    min-width:51px;
+    min-width:80px;
     margin: 5px;
+      line-height: 80px;
+      height: 80px;
+
   }
   .mslider{
     >div{
@@ -51,9 +54,5 @@
   span {
     line-height: 30px;
   }
-  .md-button{
-    line-height: 48px;
-    height: 48px;
 
-  }
 }
