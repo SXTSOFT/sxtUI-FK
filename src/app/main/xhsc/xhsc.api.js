@@ -271,7 +271,7 @@
           delete:function(measureValueId)
           {
             return $http.post('/Api/MeasureValueApi/DeleteMeasureValue', measureValueId);
-          }
+          },
           /**
            * 获取检查点值
            * @param {string} acceptanceItemID 实测项Id
