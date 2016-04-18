@@ -123,6 +123,22 @@
         }
     }
 }
+#toolBar3{
+  height: 44px;
+  line-height: 44px;
+  background: #f4f4f6;
+  color:#f00;
+  border-bottom: 1px solid #d8d8d8;
+  position: absolute;
+  top:0;
+  left:0;
+  #switch{
+    position: absolute;
+    right:16px;
+    top:5px;
+    margin:0;
+  }
+}
 
 #language-message {
     min-height: 88px;
