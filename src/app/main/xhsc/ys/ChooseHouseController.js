@@ -54,6 +54,7 @@
       }
 
     }
+    vm.loadCircle = true;
     xhUtils.getRegion( vm.areaId, function(data){
 
      vm.Region = data.Children;
@@ -70,6 +71,7 @@
             item.status = -1;
           }
         })
+        vm.loadCircle = false;
       })
 
 

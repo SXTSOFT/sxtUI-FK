@@ -25,7 +25,7 @@
       if(scope.ct) {
         scope.ct.show = function () {
           if ($(element).parent().parent().hasClass('addPanel')) {
-            console.log('add', $(element).parent().parent().eq(0))
+            //console.log('add', $(element).parent().parent().eq(0))
             $(element).parent().parent().eq(0).find('.numberpanel').css('display', 'block');
           } else if ($(element).parent().hasClass('addPanel')) {
             $(element).parent().eq(0).find('.numberpanel').css('display', 'block');
@@ -47,7 +47,6 @@
         if($(element).find('.numberpanel').is(':hidden')){
           $(element).find('.numberpanel').css('display','block');
           var width = $('.sxt-num-input').width()-$(element).parent().width();
-         // console.log('width',$(element).parent().width())
           $(element).find('.numberpanel').css('left',-width/2+'px');
           //scope.isView = true;
         }else{
