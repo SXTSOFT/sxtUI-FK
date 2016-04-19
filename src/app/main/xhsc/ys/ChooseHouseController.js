@@ -71,12 +71,13 @@
           }
         });
         vm.Region = data.Children;
+        if(vm.Region.length) {
+          vm.open(vm.Region[0]);
+        }
       })
 
 
-      if(vm.Region.length) {
-        vm.open(vm.Region[0]);
-      }
+
     })
 
     vm.goMeasure = function(){
