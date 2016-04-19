@@ -23,6 +23,21 @@
   background:transparent;
   color:#fff;
   font-size:16px;
+  .leftside{
+    color:#fff;
+    display: inline-block;
+    vertical-align: top;
+    margin-top:0;
+    height:30px;
+    line-height: 26px;
+    padding: 2px;
+    margin-bottom:20px;
+    &.kd{
+      width:90px;
+      text-align:right;
+      padding-right: 15px;
+    }
+  }
   md-input-container{
     margin:0;
     width:100%;
@@ -176,6 +191,13 @@
     }
   }
 }
+.mease{
+  display: none;
+  &.inmease{
+    display: block;
+  }
+}
+
 .imglist{
   margin-top:16px;
   p{

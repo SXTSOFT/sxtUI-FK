@@ -116,7 +116,7 @@
             scope.values = ps;
           });
         }
-        $timeout(function(){scope.ct.show && scope.ct.show();},100);
+        $timeout(function(){scope.ct.show && scope.ct.show();},300);
         scope.$apply();
       };
       scope.distinct = function(array){

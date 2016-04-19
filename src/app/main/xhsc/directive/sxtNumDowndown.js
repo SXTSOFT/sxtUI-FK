@@ -16,7 +16,7 @@
         ct:'='
       },
       link:link,
-      template:'<div class="sxtnumdowndown" style="position:relative"><span ng-click="toggleView()" style="display: block;">&nbsp;{{value}}</span><div class="numberpanel"  style="position: absolute;left:-56px;top:30px;width:auto;z-index:10005;display: none;" ><sxt-num-input ng-model="value" ok="ok()"></sxt-num-input></div></div>'
+      template:'<div class="sxtnumdowndown" style="position:relative"><span ng-click="toggleView()" style="display: block;">&nbsp;{{value}}</span><div class="numberpanel"  style="position: absolute;left:-56px;top:30px;width:auto;z-index:10005;" ><sxt-num-input ng-model="value" ok="ok()"></sxt-num-input></div></div>'
     }
 
     function link(scope,element,attr,ctrl){
@@ -24,13 +24,25 @@
      $('.numberpanel').css('display','none');
       if(scope.ct) {
         scope.ct.show = function () {
+         // console.log('a',$(element).parent().parent().parent().hasClass('nostamp'))
           if ($(element).parent().parent().hasClass('addPanel')) {
-            //console.log('add', $(element).parent().parent().eq(0))
-            $(element).parent().parent().eq(0).find('.numberpanel').css('display', 'block');
+            if($(element).parent().parent().parent().hasClass('stamp')){
+              $(element).find('.numberpanel').css('display', 'block');
+              for(var i=0;i<$(element).parent().parent().parent().find('.addPanel').length;i++){
+                $(element).parent().parent().parent().find('.addPanel').eq(i).find('.numberpanel').css('display', 'none');
+
+              }
+              $(element).parent().parent().parent().find('.addPanel').eq(0).find('.numberpanel').css('display', 'block');
+
+            }else{
+               $(element).parent().parent().eq(0).find('.numberpanel').css('display', 'block');
+               $(element).find('.numberpanel').css('display', 'block');
+            }
+
           } else if ($(element).parent().hasClass('addPanel')) {
             $(element).parent().eq(0).find('.numberpanel').css('display', 'block');
           } else {
-            $(element).find('.numberpanel').css('display', 'block');
+            $('.numberpanel').css('display', 'block');
           }
         };
       };
@@ -55,13 +67,14 @@
         }
       }
       scope.ok = function(){
-        $(element).find('.numberpanel').css('display','none');
-        //$('.numberpanel').css('display','none');
+        //$(element).find('.numberpanel').css('display','none');
+        $('.numberpanel').css('display','none');
       }
       var docClick = function(e){
         var target = $(e.target);
         if(target.closest(".sxtnumdowndown").length == 0){
-          $(element).find('.numberpanel').css('display','none');
+          //$(element).find('.numberpanel').css('display','none');
+          $('.numberpanel').css('display','none');
         }
       }
       $(document).bind("click",docClick);
