@@ -1,5 +1,6 @@
 <div class="md-toolbar-tools" style="padding: 0">
-    <md-icon md-font-icon="icon-chevron-left" style="color:white;" ng-click="goBack();" class="icon s32"></md-icon>
+    <!--<md-icon md-font-icon="icon-chevron-left" style="color:white;" ng-click="goBack();" class="icon s32"></md-icon>-->
+  <md-button ng-click="goBack();" style="color:white;">返回</md-button>
   <h2>
     <md-icon class="arrows icon s32" ng-show="$root.leftArrow===true" md-font-icon="icon-chevron-left" style="color:#fff;" ng-click="toLeft()"></md-icon>
     <span ng-class="{'subtitle':$root.leftArrow===true}">{{$root.subtitle||$root.title || '工程大数据'}}</span>
