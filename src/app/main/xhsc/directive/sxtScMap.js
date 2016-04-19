@@ -217,8 +217,8 @@
           g.toolbar = {
             draw:{},
             group:{
-              lineGroup: m.PassYieldComputeMode=='3',
-              areaGroup:m.PassYieldComputeMode=='4'
+              lineGroup: m.QSKey=='3',
+              areaGroup:m.QSKey=='4'
             }
           };
           if(scope.readonly==true){
