@@ -202,7 +202,7 @@
         }
         if(tile)
           project._map.removeLayer(tile);
-        tile = L.tileLayer(sxt.app.api+'/Api/Picture/Tile/{z}_{x}_{y}?path=/fs/UploadFiles/Framework/'+ scope.imageUrl, {attribution: false});
+        tile = L.tileLayer(sxt.app.api+'/Api/Picture/Tile/{z}_{x}_{y}?path=/fs/UploadFiles/Framework/'+ scope.imageUrl, {attribution: false,noWrap: true});
         project._map.addLayer(tile);
 
         var featureGroups= {};
@@ -217,8 +217,8 @@
           g.toolbar = {
             draw:{},
             group:{
-              lineGroup: m.PassYieldComputeMode=='3',
-              areaGroup:m.PassYieldComputeMode=='4'
+              lineGroup: m.QSKey=='3',
+              areaGroup:m.QSKey=='4'
             }
           };
           if(scope.readonly==true){

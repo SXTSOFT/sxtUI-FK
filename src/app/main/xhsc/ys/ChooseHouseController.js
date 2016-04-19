@@ -56,7 +56,7 @@
     }
     xhUtils.getRegion( vm.areaId, function(data){
 
-     vm.Region = data.Children;
+
       remote.MeasureCheckBatch.getStatus($stateParams.id,$stateParams.areaId,1).then(function(result){
        // console.log('r',result)
         data.each(function(item){
@@ -69,13 +69,15 @@
           else{
             item.status = -1;
           }
-        })
+        });
+        vm.Region = data.Children;
+        if(vm.Region.length) {
+          vm.open(vm.Region[0]);
+        }
       })
 
 
-      if(vm.Region.length) {
-        vm.open(vm.Region[0]);
-      }
+
     })
 
     vm.goMeasure = function(){
