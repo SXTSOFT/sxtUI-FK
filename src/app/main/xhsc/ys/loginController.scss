@@ -1,0 +1,35 @@
+.login{
+  height:768px;
+  width:100%;
+  background: url(main/xhsc/images/bg1.jpg) no-repeat;
+  background-size:cover;
+  md-input-container {
+    .md-input{
+      padding: 0;
+    }
+  }
+  md-checkbox{
+    &.md-vanke-theme{
+      .md-icon{
+        border-color:#d8d8d8;
+        border-width:1px;
+      }
+    }
+  }
+  .md-button{
+    padding: 3px 6px;
+    font-size:20px;
+    border-radius:8px;
+    letter-spacing: 5px;
+  }
+}
+@media (max-width: 768px){
+  .login{
+    background: url(main/xhsc/images/bg2.jpg) no-repeat;
+    background-size:cover;
+    height:1024px;
+  }
+}
+
+
+

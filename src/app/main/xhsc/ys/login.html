@@ -1,0 +1,48 @@
+<md-content class="login" layout="column">
+<div id="login">
+  <div id="login-form-wrapper" layout="column" layout-align="center center" layout-align-xs="center start">
+    <div id="login-form" style="padding:40px 60px;background: #fff;border-radius:8px;box-shadow: 0 0 8px #ccc;width: 50%;position: absolute;top:50%;left: 50%;transform: translate(-50%,-50%);">
+      <div class="logo1">
+        <span><img src="app/main/xhsc/images/logo.png"> </span>
+      </div>
+
+      <!--<div class="title" translate="LOGIN.TITLE">万科数字工程</div>-->
+
+      <form name="loginForm" novalidate ng-submit="vm.login(loginForm)" >
+        <div class="login-name">
+          <md-input-container class="md-block" md-no-float>
+            <md-icon md-svg-src="app/main/auth/images/user.svg"></md-icon>
+            <input type="text" name="username" ng-model="vm.form.username" placeholder="请输入用户名"
+                   required>
+          </md-input-container>
+          <md-divider></md-divider>
+          <md-input-container class="md-block" md-no-float>
+            <md-icon md-svg-src="app/main/auth/images/password.svg"></md-icon>
+            <input type="password" name="password" ng-model="vm.form.password" placeholder="请输入密码"
+                   required>
+          </md-input-container>
+
+        </div>
+        <md-checkbox>记住用户名</md-checkbox>
+
+        <!--<div class="remember-forgot-password member" layout="row" layout-xs="column"
+             layout-align="space-between center">
+            <md-checkbox  class="remember-me" ng-model="data.cb1" aria-label="Remember Me">
+                <span translate="LOGIN.REMEMBER_ME" class="red">记住我</span>
+            </md-checkbox>
+
+            <a  class="forgot-password md-accent-color"
+               translate="LOGIN.FORGOT_PASSWORD" href="">忘记密码?</a>
+        </div>-->
+        <div layout="row" layout-align="center center">
+
+          <md-button type="submit" flex  class="md-raised md-warn" aria-label="登录"
+                     translate="LOGIN.LOG_IN" translate-attr-aria-label="LOGIN.LOG_IN">
+            登录
+          </md-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</md-content>

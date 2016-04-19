@@ -14,7 +14,16 @@
       <md-list-item flex="25" ng-class="{'active':vm.tabStatus == 0}" ng-click="vm.myFilter('0')"><span class="yet"><i></i>未验收</span></md-list-item>
     </md-list>
 </div>
-<md-content layout="row" flex class="floor-list" style="border-top:1px solid #d8d8d8;margin-top:48px;">
+<md-content layout="row" flex class="floor-list" style="border-top:1px solid #d8d8d8;margin-top:48px;" ng-show="vm.loadCircle">
+  <div style="text-align: right;width:100%;position: relative;">
+    <div style="position: absolute;right:60px;">
+      <md-progress-circular class="md-accent md-hue-1" md-diameter="70"></md-progress-circular>
+    </div>
+
+  </div>
+
+</md-content>
+<md-content layout="row" flex class="floor-list" style="border-top:1px solid #d8d8d8;margin-top:48px;" ng-show="!vm.loadCircle">
 <div flex="40" layout="column" style="border-right:1px solid #d8d8d8;background: #fff;">
   <md-content style="background: #fff;;padding-bottom:44px;">
     <md-list ng-cloak class="md-padding">

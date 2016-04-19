@@ -58,6 +58,19 @@
           }
         }
       })
+      //.state('app.xhsc.check',{
+      //  noBack:true,
+      //  sendBt:true,
+      //  rightArrow:true,
+      //  leftArrow:true,
+      //  url   :'/check',
+      //  views :{
+      //    'content@app':{
+      //      templateUrl : 'app/main/xhsc/ys/login.html',
+      //      controller:'LoginController as vm'
+      //    }
+      //  }
+      //})
       .state('app.xhsc.check',{
         noBack:true,
         sendBt:true,
