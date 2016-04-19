@@ -2,7 +2,7 @@
   <div class="mappopup">
     <div layout="row" >
       <span flex="none" style="color:#fff;display: inline-block;vertical-align: top;margin-top:0;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
-       名称：
+       点序号：
       </span>
       <md-input-container flex>
         <input ng-model="value.seq">
@@ -10,7 +10,7 @@
     </div>
     <div layout="row" ng-if="MeasureIndex.PassYieldComputeMode=='1' && (!MeasureIndex.children||!MeasureIndex.children.length) ">
       <span flex="none" style="color:#fff;display: inline-block;vertical-align: top;margin-top:0;height:30px;line-height: 26px;padding: 2px;margin-bottom:20px;">
-        {{MeasureIndex.IndexName}}
+       实测值：
       </span>
       <span flex style="position: relative;display: inline-block;height:30px;line-height: 30px;border-bottom: 1px solid #555;"><sxt-num-downdown ct="ct" ng-model="value.CalculatedValue"></sxt-num-downdown></span>
     </div>
