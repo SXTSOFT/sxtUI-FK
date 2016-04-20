@@ -20,7 +20,8 @@ window.sxt = (function(win)
     app: {
       appDir: appDir,
       //api:'http://ggem.sxtsoft.com:9191',
-      api:'http://localhost:8107',
+      //api:'http://localhost:8107',
+      api:'http://10.245.9.164:8107',
       getUrl: getUrl,
       download: download
     },
