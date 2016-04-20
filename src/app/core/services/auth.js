@@ -11,7 +11,7 @@
   {
     // 第三方登录插件
     var interceptorFactories = this.interceptors = [];
-    var forEach = angular.forEach,loginedUser = {id: 1, RealName: "v-zhangqy03", Token: "429ad0b0d7ab966180cc4718324c50ddf176d099", Username: "v-zhangqy03"};
+    var forEach = angular.forEach,loginedUser=null;
     // 是否转跳的登录
     var autoLoginPath = false;
 
@@ -87,7 +87,7 @@
               $rootScope.$emit ('user:login', profile);
               if(!autoLoginPath){
 
-                $state.go('app.szgc.home')
+                $state.go('app.xhsc.home')
                 //$location.path('/');
               }
             })
