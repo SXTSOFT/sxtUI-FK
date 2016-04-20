@@ -69,7 +69,55 @@
     };
     //console.log('acceptanceItemID',vm.info.acceptanceItemID )
     remote.Measure.MeasureIndex.query (vm.info.acceptanceItemID).then (function (r) {
-      vm.MeasureIndexes = r.data;
+      var m=[];
+      r.data.forEach(function(item){
+        if(item.IndexName=='结构立面垂直度'|| item.IndexName=='结构表面平整度') {
+          var fd = m.find(function (k) {
+            return k.IndexName == '结构立面';
+          });
+          if (!fd) {
+            fd = {
+              AcceptanceIndexID: 'a',
+              IndexName: '结构立面',
+              cds: []
+            }
+            m.push(fd);
+          }
+          fd.cds.push(item);
+        }
+        else if(item.IndexName=='立面垂直度'|| item.IndexName=='表面平整度') {
+          var fd = m.find(function (k) {
+            return k.IndexName == '立面/表面';
+          });
+          if (!fd) {
+            fd = {
+              AcceptanceIndexID: 'a',
+              IndexName: '立面/表面',
+              cds: []
+            }
+            m.push(fd);
+          }
+          fd.cds.push(item);
+        }
+        else if(item.IndexName=='阴阳角方正度度'|| item.IndexName=='阴阳角直线度度') {
+          var fd = m.find(function (k) {
+            return k.IndexName == '阴阳角';
+          });
+          if (!fd) {
+            fd = {
+              AcceptanceIndexID: 'a',
+              IndexName: '阴阳角',
+              cds: []
+            }
+            m.push(fd);
+          }
+          fd.cds.push(item);
+        }
+        else{
+          m.push(item);
+        }
+      });
+      vm.MeasureIndexes = m;
     });
     vm.submit = function(){
       if(vm.project){

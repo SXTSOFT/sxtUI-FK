@@ -139,7 +139,9 @@
             rs[1].data.forEach(function(value){
               rs[0].data.forEach(function(f){
                // console.log('a',f.properties.$id,value.MeasurePointID,f.properties.$id==value.MeasurePointID)
-                if(f.properties.$id==value.MeasurePointID && value.AcceptanceIndexID==scope.measureIndexes[scope.currentIndex].AcceptanceIndexID){
+                if(f.properties.$id==value.MeasurePointID && (value.AcceptanceIndexID==scope.measureIndexes[scope.currentIndex].AcceptanceIndexID|| (scope.measureIndexes[scope.currentIndex].cds&&scope.measureIndexes[scope.currentIndex].cds.find(function(a){
+                    return a.AcceptanceIndexID==f.properties.AcceptanceItemID;
+                  })))){
                   value.seq = value.MeasurPointName||value.seq;
 
 
@@ -148,7 +150,22 @@
                     f.options && (f.options.color = value.color);
                   }
                   angular.extend(f.properties,value);
-                  ps.push(f);
+                  if(scope.measureIndexes[scope.currentIndex].cds) {
+                    var prevP = ps.find(function (f1) {
+                      return f1.properties.$id == f.properties.$id;
+                    });
+                    if (prevP) {
+                      prevP.cds[value.AcceptanceIndexID]=value
+                    }
+                    else {
+                      f.cds = {};
+                      f.cds[value.AcceptanceIndexID]=value;
+                      ps.push(f);
+                    }
+                  }
+                  else{
+                    ps.push(f);
+                  }
                 }
               });
             });
@@ -209,7 +226,21 @@
         },
         onUpdateData:function(context){
           var value = context.layer.getValue();
-          this.onUpdateD(value);
+          if(value.cds){
+            for(var k in value.cds){
+              this.onUpdateD(angular.extend({},value,{
+                $id:value.cds[k].$id||sxt.uuid(),
+                AcceptanceIndexID:k,
+                MeasureValueId:value.cds[k].MeasureValueId||sxt.uuid(),
+                MeasureValue:value.cds[k].MeasureValue,
+                MeasurePointID:value.MeasurePointID
+              }));
+              value.MeasureValue = value.cds[k].MeasureValue;
+            }
+          }
+          else {
+            this.onUpdateD(value);
+          }
           if(value.Prev &&(( !value.Prev.CalculatedValue && value.CalculatedValue)||value.Prev.NeedUpload)){
             value.Prev.NeedUpload = true;
             value.Prev.CalculatedValue = value.CalculatedValue;
@@ -225,11 +256,11 @@
         onUpdateD:function(value){
           value.AcceptanceItemID = scope.acceptanceItem;
           value.CheckRegionID = scope.regionId;
-          value.AcceptanceIndexID = scope.measureIndexes[scope.currentIndex].AcceptanceIndexID;
+          value.AcceptanceIndexID = value.AcceptanceIndexID || scope.measureIndexes[scope.currentIndex].AcceptanceIndexID;
           value.RegionType = scope.regionType;
           value.MeasureValueId = value.MeasureValueId||sxt.uuid();
           //value.ParentMeasureValueID = value.$groupId;
-          value.MeasurePointID = value.$id;
+          value.MeasurePointID = value.MeasurePointID|| value.$id;
           value.MeasurPointName = value.seq;
           value.MeasurPointType = 0;
           remoteS.updateData(value);
