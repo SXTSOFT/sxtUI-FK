@@ -30,7 +30,7 @@
     $scope.$watch('vm.info.t',function(){
       if(vm.info.t){
         remote.ProjectQuality.getMeasureCheckResult(vm.info.t).then(function(rs){
-          //console.log('rs',rs);
+          console.log('rs',rs);
           vm.alItem = rs.data;
           vm.person = rs.data[0].MeasureUserName;
           vm.time = rs.data[0].MeasureTime;
@@ -39,15 +39,19 @@
           var l=0;
           rs.data.forEach(function(item){
             //console.log('rs',item);
+            if(item.ResultStatus == 1){
+              item.passText = "验收合格"
+            }else if(item.ResultStatus == 2){
+              item.passText = "验收不合格"
+            }
             item.cols = item.Points.length;
             if(item.cols>l)l=item.cols;
-
           })
 
           rs.data.forEach(function(item){
-            while(item.Points.length<l){
-              item.Points.push({});
-            }
+              while(item.Points.length<l){
+                item.Points.push({});
+              }
           })
           vm.cols =l;
           if((vm.cols +5)%4 != 0){

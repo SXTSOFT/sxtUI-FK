@@ -39,8 +39,9 @@
       //console.log('floor',vm.floors)
     }
     vm.changeStat = function(item,items){
+
       if(!vm.muti){
-        $state.go(item.Status==1?'app.xhsc.scd':'app.xhsc.sc',{
+        $state.go(item.status==2?'app.xhsc.scd':'app.xhsc.sc',{
           areaId:vm.areaId,
           acceptanceItemID:item.AcceptanceItemID,
           regionId:item.RegionID,
@@ -64,10 +65,10 @@
   }
     vm.loadCircle = true;
     xhUtils.getRegion( vm.areaId, function(data){
-
+      //console.log('r',data.Children)
      vm.Region = data.Children;
       remote.MeasureCheckBatch.getStatus($stateParams.id,$stateParams.areaId,1).then(function(result){
-       //console.log('r',result)
+      // console.log('r',result)
         data.each(function(item){
           var find = result.data.find(function(r){return r.RegionID==item.RegionID;});
           if(find){
