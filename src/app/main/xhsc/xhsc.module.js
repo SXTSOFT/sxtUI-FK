@@ -71,19 +71,19 @@
       //    }
       //  }
       //})
-      //.state('app.xhsc.check',{
-      //  noBack:true,
-      //  sendBt:true,
-      //  rightArrow:true,
-      //  leftArrow:true,
-      //  url   :'/check',
-      //  views :{
-      //    'content@app':{
-      //      templateUrl : 'app/main/xhsc/ys/checkHouse.html',
-      //      controller:'checkHouseController as vm'
-      //    }
-      //  }
-      //})
+      .state('app.xhsc.check',{
+        noBack:true,
+        sendBt:true,
+        rightArrow:true,
+        leftArrow:true,
+        url   :'/check',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/checkHouse.html',
+            controller:'checkHouseController as vm'
+          }
+        }
+      })
       .state('app.xhsc.sc',{
         noBack:false,
         sendBt:false,
