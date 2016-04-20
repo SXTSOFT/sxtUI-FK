@@ -40,7 +40,7 @@
     }
     vm.changeStat = function(item,items){
       if(!vm.muti){
-        $state.go('app.xhsc.sc',{
+        $state.go(item.Status==1?'app.xhsc.scd':'app.xhsc.sc',{
           areaId:vm.areaId,
           acceptanceItemID:item.AcceptanceItemID,
           regionId:item.RegionID,
