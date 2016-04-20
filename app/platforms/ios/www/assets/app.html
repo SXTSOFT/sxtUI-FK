@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Fuse - Admin Theme</title>
+
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+  <link rel="stylesheet" href="styles/vendor-97e360c91f.css">
+
+  <link rel="stylesheet" href="styles/app-523f831935.css">
+
+
+
+</head>
+
+
+<body md-theme="{{vm.themes.active.name}}" md-theme-watch ng-controller="IndexController as vm"
+      class="{{state.current.bodyClass || ''}}">
+
+<!-- SPLASH SCREEN -->
+<ms-splash-screen id="splash-screen">
+  <div class="center">
+    <div class="logo">
+      <span>F</span>
+    </div>
+    <!-- Material Design Spinner -->
+    <div class="spinner-wrapper">
+      <div class="outer-spinner">
+        <div class="spinner">
+          <div class="left">
+            <div class="circle"></div>
+          </div>
+          <div class="right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- / Material Design Spinner -->
+  </div>
+</ms-splash-screen>
+<!-- / SPLASH SCREEN -->
+
+<div id="main" class="animate-slide-up" ui-view="main" layout="column"></div>
+
+<ms-theme-options></ms-theme-options>
+
+<script src="scripts/vendor-ee712593d4.js"></script>
+
+<script src="scripts/app-9dbdd0236f.js"></script>
+</body>
+</html>

@@ -9,9 +9,10 @@
 <div flex layout="row" style="max-height:48px;height:48px;position: absolute;top:0;width:100%;">
     <md-list  flex layout="row" style="background:#fff;padding:0;" class="filter">
       <md-list-item flex="25" ng-class="{'active':vm.tabStatus == -1}" ng-click="vm.myFilter('-1')"><span>全部</span></md-list-item>
-      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == 1}" ng-click="vm.myFilter('1')"><span class="ing"><i></i>验收中</span></md-list-item>
-      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == 2}" ng-click="vm.myFilter('2')"><span class="done"><i></i>已验收</span></md-list-item>
-      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == 0}" ng-click="vm.myFilter('0')"><span class="yet"><i></i>未验收</span></md-list-item>
+      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == 0}" ng-click="vm.myFilter('0')"><span class="yet"><i></i>未测量</span></md-list-item>
+      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == 1}" ng-click="vm.myFilter('1')"><span class="ing"><i></i>测量中</span></md-list-item>
+      <md-list-item flex="25" ng-class="{'active':vm.tabStatus == 2}" ng-click="vm.myFilter('2')"><span class="done"><i></i>已测量</span></md-list-item>
+
     </md-list>
 </div>
 <md-content layout="row" flex class="floor-list" style="border-top:1px solid #d8d8d8;margin-top:48px;" ng-show="vm.loadCircle">
