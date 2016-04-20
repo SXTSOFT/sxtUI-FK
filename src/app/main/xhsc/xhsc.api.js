@@ -308,6 +308,7 @@ MeasureTime: "2016-04-20 11:21:59"//测量时间
 MeasureUserId: "admin" //测量人ID
 MeasureUserName: "体验帐户" //测量人
 ParticipantIDs: null
+MaximumDeviation：//最大偏差值
 Points: 【
 AcceptanceIndexID: "aa2672eedfb94418b18449c3d704f9c7"//指标ID
 CalculatedValue: 1//计算值
