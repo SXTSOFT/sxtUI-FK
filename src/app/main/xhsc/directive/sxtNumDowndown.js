@@ -24,13 +24,11 @@
      $('.numberpanel').css('display','none');
       if(scope.ct) {
         scope.ct.show = function () {
-         // console.log('a',$(element).parent().parent().parent().hasClass('nostamp'))
+
           if ($(element).parent().parent().hasClass('addPanel')) {
             if($(element).parent().parent().parent().hasClass('stamp')){
-              $(element).find('.numberpanel').css('display', 'block');
               for(var i=0;i<$(element).parent().parent().parent().find('.addPanel').length;i++){
                 $(element).parent().parent().parent().find('.addPanel').eq(i).find('.numberpanel').css('display', 'none');
-
               }
               $(element).parent().parent().parent().find('.addPanel').eq(0).find('.numberpanel').css('display', 'block');
 
@@ -43,6 +41,7 @@
             $(element).parent().eq(0).find('.numberpanel').css('display', 'block');
           } else {
             $('.numberpanel').css('display', 'block');
+           // $(element).find('.numberpanel').css('display', 'block');
           }
         };
       };
