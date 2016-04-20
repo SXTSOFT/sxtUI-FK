@@ -27,9 +27,11 @@
     function link(scope,element,attr,ctrl){
       var remoteS = {
         buff:[],
+        buff2:[],
         uploading:false,
         t:null,
         t1:null,
+        t2:null,
         replaceData:function(data){
           var self = this;
           for(var i= 0,l=self.buff.length;i<l;i++) {
@@ -62,19 +64,40 @@
             },500);
           }
         },
+        replaceData2:function(data){
+          var self = this;
+          for(var i= 0,l=self.buff2.length;i<l;i++) {
+            if (self.buff2[i].$id == data.$id) {
+              self.buff2[i] = data;
+              return true;
+            }
+          }
+          return false;
+        },
         updateData:function(data){
           var self = this;
-          self.tips('正在保存测量值……');
-          data.ParentMeasurePointID = data.$groupId;
-          data.MeasurePointID = data.$id;
-          remote.ProjectQuality.MeasureValue.create([data]).then(function(r){
-            if(r.data.ErrorCode==0) {
-              self.tips('已保存测量值。');
-            }
-            else{
-              self.tips(r.data.ErrorMessage);
-            }
-          })
+          if(!self.replaceData2(data))
+            self.buff2.push(data);
+
+          if(!self.t2){
+            self.t2 = $timeout(function(){
+              self.t2 = null;
+              var updates = self.buff2;
+              self.buff2=[];
+              self.tips('正在保存测量值……');
+              //data.ParentMeasurePointID = data.$groupId;
+
+              remote.ProjectQuality.MeasureValue.create(updates).then(function(r){
+                if(r.data.ErrorCode==0) {
+                  self.tips('已保存测量值。');
+                }
+                else{
+                  self.tips(r.data.ErrorMessage);
+                }
+              });
+            },500);
+          }
+
           //remoteS.updateData
          // console.log('update value',data);
         },
@@ -114,7 +137,7 @@
             rs[1].data.forEach(function(value){
               rs[0].data.forEach(function(f){
                 if(f.properties.$id==value.MeasurePointID && value.AcceptanceIndexID==scope.measureIndexes[scope.currentIndex].AcceptanceIndexID){
-                  value.seq = value.MeasurPointName;
+                  value.seq = value.MeasurPointName||value.seq;
 
 
                   if(f.geometry.type =='Stamp' && !value.color) {
@@ -142,14 +165,14 @@
           value.AcceptanceIndexID = scope.measureIndexes[scope.currentIndex].AcceptanceIndexID;
           value.RegionType = scope.regionType;
           value.MeasureValueId = value.MeasureValueId||sxt.uuid();
-          value.ParentMeasurePointID = value.$groupId;
+          //value.ParentMeasureValueID = value.$groupId;
           value.MeasurePointID = value.$id;
           value.MeasurPointName = value.seq;
           value.MeasurPointType = 0;
           remoteS.updateData(value);
         },
         setColor:function(v){
-          if(!v || ((!v.CalculatedValue) && v.CalculatedValue!==0)) {
+          if(!v || ((!v.MeasureValue) && v.MeasureValue!==0)) {
             v.color = '#9E9E9E';
           }
           else if(v.MeasureStatus==1){
@@ -161,7 +184,7 @@
           else if(v.MeasureStatus==3){
             v.color = '#F44336';
           }
-          else if((v.CalculatedValue||v.CalculatedValue===0)){
+          else if((v.MeasureValue||v.MeasureValue===0)){
             v.color = '#4CAF50';
           }
         },
@@ -178,12 +201,15 @@
             return edit.el[0];
           }
         },
-        onUpdate:function(layer,isNew){
+        onUpdate:function(layer,isNew,isGroup){
           var v = layer.getValue();
           this.setColor(v);
           layer.updateValue && layer.updateValue(v);
           remoteS.update(layer.toGeoJSON());
-          if(isNew){
+          if(isNew || isGroup){
+            if(isGroup) {
+              v.ParentMeasureValueID = isGroup === true ? null : isGroup.getValue().MeasureValueId;
+            }
             this.onUpdateD(v);
           }
         },
