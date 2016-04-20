@@ -29,8 +29,8 @@
           <tr ng-repeat="item in vm.alItem">
             <td rowspan="{{vm.alItem.length}}" colspan="1" class="procedurename" ng-if="$index==0"><p>{{vm.info.aItem.MeasureItemName}}</p></td>
             <td>{{item.IndexName}}</td>
-            <td align="center">结果</td>
-            <td align="center">结果</td>
+            <td align="center">{{item.QualifiedRate}}</td>
+            <td align="center">{{item.MaximumDeviation}}</td>
             <td align="center">{{item.QualifiedRate}}</td>
             <td ng-repeat="point in item.Points" align="center">{{point.MeasureValue}}</td>
           </tr>

@@ -292,36 +292,36 @@
           return $http.get($http.url('/Api/MeasureValueApi/GetMeasureCheckResult',{measureRecordID:measureRecordID}))
         }
         //测量项的点测量数据：
-        
 
 
 
-【AcceptanceIndexID: "bda32789505d4adf9457fccd64b69bf2"//指标ID
-AcceptanceItemID: "e66a7435e8274dc0b7c09924ce1ee91c"//测量项ID
-CheckRegionID: "77961e877d4c4f9890dbe6207853d59f"//区域ID
-CheckStatus: 1//验收状态
-CompanyName: null//公司名称
-IndexName: "结构截面尺寸"//指标名称
-MeasureRecordID: "d80f8e047db84b24aadb50ab154bd6a4"//测量记录ID
-MeasureStatus: 2 //测量状态
-MeasureTime: "2016-04-20 11:21:59"//测量时间
-MeasureUserId: "admin" //测量人ID
-MeasureUserName: "体验帐户" //测量人
-ParticipantIDs: null
-MaximumDeviation：//最大偏差值
-Points: 【
-AcceptanceIndexID: "aa2672eedfb94418b18449c3d704f9c7"//指标ID
-CalculatedValue: 1//计算值
-DesignValue: null//设计值
-MeasurPointName: "2"//标点名称
-MeasureRecordID: "d80f8e047db84b24aadb50ab154bd6a4"//测量记录ID
-MeasureStatus: 1//状态
-MeasureValue: 5//测量值
-MeasureValueId: "09c9d723d1ff4dc8aa3d11e632eee67b"
-ParentMeasureValueID: null
-】
-QualifiedRate: null
-】
+//
+//【AcceptanceIndexID: "bda32789505d4adf9457fccd64b69bf2"//指标ID
+//AcceptanceItemID: "e66a7435e8274dc0b7c09924ce1ee91c"//测量项ID
+//CheckRegionID: "77961e877d4c4f9890dbe6207853d59f"//区域ID
+//CheckStatus: 1//验收状态
+//CompanyName: null//公司名称
+//IndexName: "结构截面尺寸"//指标名称
+//MeasureRecordID: "d80f8e047db84b24aadb50ab154bd6a4"//测量记录ID
+//MeasureStatus: 2 //测量状态
+//MeasureTime: "2016-04-20 11:21:59"//测量时间
+//MeasureUserId: "admin" //测量人ID
+//MeasureUserName: "体验帐户" //测量人
+//ParticipantIDs: null
+//MaximumDeviation：//最大偏差值
+//Points: 【
+//AcceptanceIndexID: "aa2672eedfb94418b18449c3d704f9c7"//指标ID
+//CalculatedValue: 1//计算值
+//DesignValue: null//设计值
+//MeasurPointName: "2"//标点名称
+//MeasureRecordID: "d80f8e047db84b24aadb50ab154bd6a4"//测量记录ID
+//MeasureStatus: 1//状态
+//MeasureValue: 5//测量值
+//MeasureValueId: "09c9d723d1ff4dc8aa3d11e632eee67b"
+//ParentMeasureValueID: null
+//】
+//QualifiedRate: null
+//】
       }
     });
 
