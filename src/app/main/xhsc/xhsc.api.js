@@ -283,6 +283,13 @@
           delete:function(measureValueId) {
             return $http.delete($http.url('/Api/MeasureValueApi/DeleteMeasureValue', {measureValueId: measureValueId}))
           }
+        },
+
+        getNumber:function(acceptanceItemID,checkRegionID){
+          return $http.get($http.url('/Api/MeasureValueApi/GetMeasureRecordNum',{acceptanceItemID:acceptanceItemID,checkRegionID:checkRegionID}));
+        },
+        getMeasureCheckResult:function(measureRecordID){
+          return $http.get($http.url('/Api/MeasureValueApi/GetMeasureCheckResult',{measureRecordID:measureRecordID}))
         }
       }
     });

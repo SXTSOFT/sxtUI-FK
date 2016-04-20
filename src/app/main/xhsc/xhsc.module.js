@@ -112,6 +112,20 @@
           }
         }
       })
+      .state('app.xhsc.scd',{
+        noBack:false,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'实测结果',
+        url   :'/scd/{areaId}/{acceptanceItemID}/{regionId}/{regionType}/{name}/{pname}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/scd.html',
+            controller:'scdController as vm'
+          }
+        }
+      })
       .state('app.xhsc.demo',{
         noBack:false,
         sendBt:false,

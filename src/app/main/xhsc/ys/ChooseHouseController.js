@@ -48,6 +48,14 @@
           name:item.FullName,
           pname:vm.pname
         })
+/*        $state.go('app.xhsc.scd',{
+          areaId:vm.areaId,
+          acceptanceItemID:item.AcceptanceItemID,
+          regionId:item.RegionID,
+          regionType:item.RegionType,
+          name:item.FullName,
+          pname:vm.pname
+        })*/
       }
       else{
         item.selected=!item.selected;

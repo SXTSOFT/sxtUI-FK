@@ -107,7 +107,7 @@
         scope.MeasureIndex = context.featureGroup.options.properties;
         scope.value = context.layer.getValue();
         scope.values=null;
-        if(scope.PointType=='LineGroup') {
+        if(scope.PointType=='LineGroup' || scope.PointType=='AreaGroup') {
           var ps = [];
           context.featureGroup.eachLayer(function (layer) {
             if (layer._value && layer._value.$groupId == scope.value.$id) {

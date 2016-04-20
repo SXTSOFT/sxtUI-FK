@@ -7,10 +7,11 @@
     .module('app.xhsc')
     .directive('sxtScMap',sxtScMap);
   /** @ngInject */
-  function sxtScMap($timeout,mapPopupSerivce,remote,$q,sxt){
+  function sxtScMap($timeout,mapPopupSerivce,remote,$q,sxt,xhUtils){
 
     return {
       scope:{
+        areaId:'=',
         acceptanceItem:'=',
         measureIndexes:'=',
         currentIndex:'=',
@@ -132,6 +133,7 @@
           if(!defer2)
             defer2 = points[scope.acceptanceItem+scope.regionId+'2'] =
               remote.ProjectQuality.MeasureValue.query(scope.acceptanceItem,scope.regionId,scope.regionType,0);
+          remoteS.tips('正在加载点数据……');
           $q.all([defer,defer2]).then(function(rs){
             var ps = [];
             rs[1].data.forEach(function(value){
@@ -149,13 +151,73 @@
                 }
               });
             });
-            layer.addData(ps);
+
+            remoteS.tips('加载完毕');
+
+              var idx = scope.measureIndexes.find(function(m){return m.AcceptanceIndexID==layer.options.acceptanceIndexID;});
+              if(idx && idx.QSKey=='5'){
+                remoteS.tips('正在加载上层数据……');
+                xhUtils.getRegion(scope.areaId,function(r){
+                  var find = r.find(scope.regionId);
+                  if(find) {
+                    var ix = find.$parent.Children.indexOf(find);
+                    var prev = find.$parent.prev();
+                    if (prev)
+                      prev = prev.Children[ix];
+                    if(prev) {
+                      $q.all([remote.ProjectQuality.MeasurePoint.query(scope.acceptanceItem, prev.RegionID, scope.regionType, 0),
+                          remote.ProjectQuality.MeasureValue.query(scope.acceptanceItem, prev.RegionID, scope.regionType, 0)])
+                        .then(function (rs) {
+                          //var ps2 = [];
+                          rs[1].data.forEach(function(value){
+                            rs[0].data.forEach(function(f){
+                              if(f.properties.$id==value.MeasurePointID && value.AcceptanceIndexID==scope.measureIndexes[scope.currentIndex].AcceptanceIndexID) {
+                                value.seq = value.MeasurPointName || value.seq;
+                                value.CheckRegionID = prev.RegionID;
+                                value.MeasurePointID = f.properties.MeasurePointID;
+                                var to = ps.find(function (p) {
+                                  return p.properties.$id == f.properties.$id;
+                                })
+                                if (to) {
+                                  to.properties.Prev = value;
+                                }
+                                else {
+                                  angular.extend(f.properties, {
+                                    CheckRegionID:scope.regionId,
+                                    RegionType:scope.regionType,
+                                    MeasureValueId:sxt.uuid(),
+                                    Prev: value
+                                  });
+                                  ps.push(f);
+                                }
+                              }
+                              remoteS.tips('加载上层完毕');
+                              layer.addData(ps);
+                            });
+                          });
+                        });
+                    }
+                  }
+                });
+              }
+            else{
+              layer.addData(ps);
+            }
           });
 
         },
         onUpdateData:function(context){
           var value = context.layer.getValue();
           this.onUpdateD(value);
+          if(value.Prev &&(( !value.Prev.CalculatedValue && value.CalculatedValue)||value.Prev.NeedUpload)){
+            value.Prev.NeedUpload = true;
+            value.Prev.CalculatedValue = value.CalculatedValue;
+            value.Prev.AcceptanceItemID = value.AcceptanceItemID;
+            value.Prev.MeasurPointName = value.MeasurPointName;
+            value.Prev.MeasurPointType = value.MeasurPointType;
+            value.Prev.RegionType = value.RegionType;
+            remoteS.updateData(value.Prev);
+          }
           this.setColor(value);
           context.layer.updateValue && context.layer.updateValue(scope.value);
         },
