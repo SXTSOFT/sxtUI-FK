@@ -138,6 +138,7 @@
             var ps = [];
             rs[1].data.forEach(function(value){
               rs[0].data.forEach(function(f){
+               // console.log('a',f.properties.$id,value.MeasurePointID,f.properties.$id==value.MeasurePointID)
                 if(f.properties.$id==value.MeasurePointID && value.AcceptanceIndexID==scope.measureIndexes[scope.currentIndex].AcceptanceIndexID){
                   value.seq = value.MeasurPointName||value.seq;
 

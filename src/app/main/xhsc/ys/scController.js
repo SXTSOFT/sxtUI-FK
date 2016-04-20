@@ -35,6 +35,7 @@
               utils.alert('未找到图纸');
             }
           });
+                                      break;
         case '16':
           remote.Project.getHouseDrawing(regionId).then(function (r) {
             if(r.data.length) {
