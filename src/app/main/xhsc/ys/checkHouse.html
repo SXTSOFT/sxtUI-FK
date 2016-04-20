@@ -1,5 +1,45 @@
 <md-content layout-padding>
   <table cellspacing="0" cellpadding="0" border="0" width="100%" class="zdytable">
+    <tr>
+      <td colspan="{{vm.cols + 5}}" style="text-align: center;" class="head">
+        abc
+      </td>
+    </tr>
+    <tr>
+      <td colspan="{{vm.oneCols}}">
+        项目名称:{{vm.info.name}}
+      </td>
+      <td colspan="{{vm.twoCols}}">检查人:{{vm.person}}</td>
+      <td colspan="{{vm.twoCols}}">检查日期:{{vm.time}}</td>
+    </tr>
+    <tr>
+      <td>内容</td>
+      <td style="width:100px;text-align: center;">位置</td>
+      <td align="center">结果</td>
+      <td align="center">最大偏差</td>
+      <td align="center">合格率</td>
+      <td ng-repeat="i in vm.alItem[0].Points">{{$index+1}}</td>
+    </tr>
+    <!--<tr ng-repeat="item in vm.alItem">-->
+    <!--<td>{{item.IndexName}}</td>-->
+    <!--<td>结果</td>-->
+    <!--<td>最大偏差</td>-->
+    <!--<td>合格率</td>-->
+    <!--<td ng-repeat="point in item.Points">{{point.MeasureValue}}</td>-->
+    <!--</tr>-->
+    <tr ng-repeat="item in vm.alItem">
+      <td rowspan="{{vm.alItem.length}}" colspan="1" class="procedurename" ng-if="$index==0"><p>工程</p></td>
+      <td>{{item.IndexName}}</td>
+      <td>结果</td>
+      <td>结果</td>
+      <td>结果</td>
+      <td ng-repeat="point in item.Points">{{point.MeasureValue}}</td>
+    </tr>
+
+  </table>
+
+
+  <table cellspacing="0" cellpadding="0" border="0" width="100%" class="zdytable">
           <tr>
             <td colspan="26" style="text-align: center;" class="head">实测工序名称</td>
           </tr>
