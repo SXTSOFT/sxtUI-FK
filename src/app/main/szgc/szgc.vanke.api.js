@@ -32,8 +32,9 @@
         .replace('四', '4')
         .replace('三', '3')
         .replace('二', '2')
-        .replace('一', '1');
-      var n = parseInt(str);
+        .replace('一', '1')
+        .replace('十', '10');
+      var n = parseInt( /\d+/.exec(str));
       return n;
     };
 
@@ -102,6 +103,18 @@
         }),
         project_items: http.custom(function (arg) {
           return get(http.url('/common/v1/project_items', arg)).then(function (result) {
+            result.data.data.sort(function (i1, i2) {
+              var n1 = getNumName(i1.name),
+                n2 = getNumName(i2.name);
+              if (!isNaN(n1) && !isNaN(n2))
+                return n1 - n2;
+              else if ((isNaN(n1) && !isNaN(n2)))
+                return 1;
+              else if ((!isNaN(n1) && isNaN(n2)))
+                return -1;
+              else
+                return i1.name.localeCompare(i2.name);
+            });
             var p = permission;
             if (p) {
               if (p.Rows.find(function (it) {
