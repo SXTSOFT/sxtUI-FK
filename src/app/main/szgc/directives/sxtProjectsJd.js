@@ -69,7 +69,7 @@
         } catch (e) { }
         //console.log('getcookie',cookie);
         var getNumName = function (str) {
-          str = str.replace('十', '10')
+          str = str.replace('十','10')
             .replace('九', '9')
             .replace('八', '8')
             .replace('七', '7')
@@ -120,16 +120,22 @@
                 return api.szgc.vanke.project_items({ page_number: 1, page_size: 1000, project_id: value }).then(function (result) {
                   var s = new st(index, 'project_item_id', 'name', result.data.data, '分期');
                   scope.onQueryed && scope.onQueryed(s);
-                  s.filters.forEach(function(it){
-                    it.orderNumber = getNumName(it.$name)
-                    //for(var i=0;i<numlet.length;i++) {
-                    //  idx = it.$name.indexOf(numlet[i]);
-                    //  if (idx != -1) {
-                    //    it.orderName = it.$name.replace(numlet[i], numSmall[i]);
-                    //    it.orderNumber = it.orderName.match(reg);
-                    //  }
-                    //}
-                  })
+
+                  //s.filters.forEach(function(it){
+                  //  it.orderNumber = getNumName(it.$name)
+                  //})
+                  s.filters.sort(function (i1, i2) {
+                    var n1 = getNumName(i1.$name),
+                      n2 = getNumName(i2.$name);
+                    if (!isNaN(n1) && !isNaN(n2))
+                      return n1 - n2;
+                    else if ((isNaN(n1) && !isNaN(n2)))
+                      return 1;
+                    else if ((!isNaN(n1) && isNaN(n2)))
+                      return -1;
+                    else
+                      return i1.$name.localeCompare(i2.$name);
+                  });
                   console.log('s',s)
                   return s;
                 });
