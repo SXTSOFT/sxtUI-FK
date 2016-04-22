@@ -92,7 +92,7 @@
               else {
                 init = false;
                 innerScope && scope.onChanged(innerScope);
-                return api.szgc.vanke.project_items({ page_number: 1, page_size: 10, project_id: value }).then(function (result) {
+                return api.szgc.vanke.project_items({ page_number: 1, page_size: 1000, project_id: value }).then(function (result) {
                   var s = new st(index, 'project_item_id', 'name', result.data.data, '分期');
                   scope.onQueryed && scope.onQueryed(s);
                   return s;
@@ -107,7 +107,7 @@
               else {
                 init = false;
                 innerScope && scope.onChanged(innerScope);
-                return api.szgc.vanke.buildings({ page_number: 1, page_size: 10, project_item_id: value }).then(function (result) {
+                return api.szgc.vanke.buildings({ page_number: 1, page_size: 10000, project_item_id: value }).then(function (result) {
                   //scope.onQueryed && scope.onQueryed(result.data);
                   var s = new st(index, 'building_id', 'name', result.data.data, '楼栋');
                   scope.onQueryed && scope.onQueryed(s);
