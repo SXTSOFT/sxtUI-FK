@@ -21,7 +21,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
 xmlns:android="http://schemas.android.com/apk/res/android"
            id="cordova-plugin-file"
-      version="4.1.0">
+      version="4.1.1">
     <name>File</name>
     <description>Cordova File Plugin</description>
     <license>Apache 2.0</license>
@@ -100,6 +100,12 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
     <js-module src="www/resolveLocalFileSystemURI.js" name="resolveLocalFileSystemURI">
         <merges target="window" />
+    </js-module>
+
+    <!-- Required for browserify: we always link module below as there is conditional reference
+    to this module from requestFileSystem and resolveLocalFileSystemURI modules. -->
+    <js-module src="www/browser/isChrome.js" name="isChrome">
+        <runs />
     </js-module>
 
     <info>
@@ -396,10 +402,6 @@ to config.xml in order for the application to find previously stored files.
     </platform>
 
     <platform name="browser">
-        <js-module src="www/browser/isChrome.js" name="isChrome">
-            <runs />
-        </js-module>
-
         <!-- File for Chrome -->
         <js-module src="www/browser/Preparing.js" name="Preparing">
             <runs />

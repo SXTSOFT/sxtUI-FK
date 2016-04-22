@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-file",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "Cordova File Plugin",
   "cordova": {
     "id": "cordova-plugin-file",
@@ -39,5 +39,5 @@
     "cordova-firefoxos"
   ],
   "author": "Apache Software Foundation",
-  "license": "Apache 2.0"
+  "license": "Apache-2.0"
 }

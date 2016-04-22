@@ -253,7 +253,6 @@
       })
 
 
-
     // Translation
     //$translatePartialLoaderProvider.addPart('app/main/auth');
 
