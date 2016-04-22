@@ -9,7 +9,8 @@
     .config(config)
   /** @anInject */
   function config(apiProvider){
-    var $http = apiProvider.$http,$q = apiProvider.$q;
+    var $http = apiProvider.$http,
+      $q = apiProvider.$q;
 
     apiProvider.register('szgc',{
       ProjectSettings:{

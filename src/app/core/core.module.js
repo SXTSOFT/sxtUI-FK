@@ -21,5 +21,6 @@
                 'ng-sortable',
                 'xeditable',
                 'moment-picker'
+
             ]);
 })();

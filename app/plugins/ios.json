@@ -7,9 +7,6 @@
         "files": {}
     },
     "installed_plugins": {
-        "cordova-plugin-camera": {
-            "PACKAGE_NAME": "com.sxt.szgc"
-        },
         "cordova-plugin-file": {
             "PACKAGE_NAME": "com.sxt.szgc"
         },
@@ -20,6 +17,12 @@
             "PACKAGE_NAME": "com.sxt.szgc"
         },
         "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.sxt.szgc"
+        },
+        "cordova-plugin-app-version": {
+            "PACKAGE_NAME": "com.sxt.szgc"
+        },
+        "cordova-plugin-file-opener2": {
             "PACKAGE_NAME": "com.sxt.szgc"
         }
     },
