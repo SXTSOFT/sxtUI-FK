@@ -293,13 +293,13 @@
                 $('.outermap',o).css({
                   width:'100%',
                   top:0,
-                  height:iHeight/2,
+                  height:iHeight*0.4,
                   float:'none'
                 })
                 $('.imagesv',o).css({
                   width:'100%',
-                  top:iHeight/2,
-                  height:iHeight/2,
+                  top:iHeight *0.4,
+                  height:iHeight*0.6,
                   float:'none'
                 });
                 $('.swiper-container',o).width('100%');

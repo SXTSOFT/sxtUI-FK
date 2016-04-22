@@ -42,8 +42,8 @@
 </md-content>
 <md-content flex ng-show="vm.searBarHide">
   <div layout="row">
-    <div id="report" style="height:350px;width:100%">
-      <bar-chart  config="vm.data.config" data="vm.data.data" style="height:350px;"></bar-chart>
+    <div id="report" style="height:350px;width:100%;overflow-x: auto;">
+      <bar-chart  config="vm.data.config" data="vm.data.data" style="height:350px;width:100%;"></bar-chart>
       <!--<bar-y id="main" legend="vm.legend" item="vm.item" data="vm.data1" style="height:350px;width:100%"></bar-y>-->
     </div>
 

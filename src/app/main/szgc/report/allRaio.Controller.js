@@ -124,8 +124,9 @@
         }
       })();
       //呈现报表
-     //var myChart3 = echarts.init(document.getElementById("report"));
-
+     //var myChart3 = document.getElementById("report");
+      //console.log('data',xAxis_data)
+      //$('#report').css('width',xAxis_data.length * 80 +'px');
       vm.data= {
         config: {
           showXAxis: true,
@@ -138,6 +139,31 @@
             min: 0,
             max: 100
           },
+          dataZoom:[
+            {
+              type: 'slider',
+              show: true,
+              start: 94,
+              end: 100,
+              handleSize: 8
+            },
+            {
+              type: 'inside',
+              start: 94,
+              end: 100
+            },
+            {
+              type: 'slider',
+              show: true,
+              yAxisIndex: 0,
+              filterMode: 'empty',
+              width: 12,
+              height: '70%',
+              handleSize: 8,
+              showDataShadow: false,
+              left: '93%'
+            }
+          ],
           series:{
             data: fit_value,
             barMaxWidth: 20,
@@ -148,7 +174,11 @@
       var pageload = {
         datapoints: xAxis_data
       };
+
       vm.data.data = [ pageload ];
+      $(window).resize(function(){
+
+      })
       //myChart3.setOption({
       //  title: {
       //    text: '班组验收合格率对比',

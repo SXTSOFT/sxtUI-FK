@@ -8,10 +8,10 @@
 function getLinkFunction($http, theme, util, type) {
     return function (scope, element, attrs) {
         scope.config = scope.config || {};
-        var ndWrapper = element.find('div')[0], ndParent = element.parent()[0], parentWidth = ndParent.clientWidth, parentHeight = ndParent.clientHeight, width, height, chart;
+        var ndWrapper = element.find('div')[0], ndParent = element.parent()[0], parentWidth = ndParent.clientWidth, parentHeight = ndParent.clientHeight,iwindow= $(window).width(), width, height, chart;
         var chartEvent = {};
         function getSizes(config) {
-            width = config.width || parseInt(attrs.width) || parentWidth || 320;
+            width = config.width || parseInt(attrs.width) || $(window).width() || 320;
             height = config.height || parseInt(attrs.height) || parentHeight || 240;
             ndWrapper.style.width = width + 'px';
             ndWrapper.style.height = height + 'px';
@@ -46,6 +46,14 @@ function getLinkFunction($http, theme, util, type) {
                     toolbox: angular.extend({ show: false }, angular.isObject(config.toolbox) ? config.toolbox : {}),
                     xAxis: [ angular.extend(xAxis, util.getAxisTicks(data, config, type)) ],
                     yAxis: [ yAxis ],
+                    dataZoom:[
+                      {
+                        type: 'inside',
+                        show:true,
+                        start: 50,
+                        end: 100
+                      }
+                    ],
                     series: util.getSeries(data, config, type)
                 };
             if (!config.showXAxis) {
@@ -72,7 +80,8 @@ function getLinkFunction($http, theme, util, type) {
             if (config.dataZoom) {
                 options.dataZoom = angular.extend({
                     show: true,
-                    realtime: true
+                    realtime: true,
+                    type:'inside'
                 }, config.dataZoom);
             }
             if (config.dataRange) {
@@ -97,8 +106,11 @@ function getLinkFunction($http, theme, util, type) {
             var options;
             getSizes(scope.config);
             if (!chart) {
+               //console.log('aaa')
                 chart = echarts.init(ndWrapper, theme.get(scope.config.theme || 'macarons'));
             }
+          console.log('aaa',ndWrapper)
+            chart = echarts.init(ndWrapper, theme.get(scope.config.theme || 'macarons'));
             if (scope.config.event) {
                 if (!Array.isArray(scope.config.event)) {
                     scope.config.event = [scope.config.event];
@@ -136,6 +148,7 @@ function getLinkFunction($http, theme, util, type) {
                         }
                         if (options.series.length) {
                             chart.setOption(options);
+                          console.log('value1');
                             chart.resize();
                         } else {
                             chart.showLoading({
@@ -172,11 +185,14 @@ function getLinkFunction($http, theme, util, type) {
                 }
             }
         }
+      $(window).resize(function(){
+        scope.config.forceClear = !scope.config.forceClear;
+      })
         // update when charts config changes
         scope.$watch(function () {
             return scope.config;
         }, function (value) {
-            if (value) {
+          if (value) {
                 setOptions();
             }
         }, true);
@@ -592,7 +608,10 @@ angular.module('angular-echarts.theme').factory('blue', function () {
             // 数据背景颜色
             fillerColor: 'rgba(144,197,237,0.2)',
             // 填充颜色
-            handleColor: '#1790cf'    // 手柄颜色
+            handleColor: '#1790cf',
+            width:70,
+            type:'inside',
+          show:true// 手柄颜色
         },
         grid: { borderWidth: 0 },
         // 类目轴
@@ -829,7 +848,9 @@ angular.module('angular-echarts.theme').factory('dark', function () {
             // 数据背景颜色
             fillerColor: 'rgba(200,200,200,0.2)',
             // 填充颜色
-            handleColor: '#eee'    // 手柄颜色
+            handleColor: '#eee',    // 手柄颜色
+            type:'inside',
+            show:true// 手柄颜色
         },
         // 网格
         grid: { borderWidth: 0 },
@@ -1142,6 +1163,8 @@ angular.module('angular-echarts.theme').factory('green', function () {
             // 数据背景颜色
             fillerColor: 'rgba(64,136,41,0.2)',
             // 填充颜色
+            type:'inside',
+            show:true,
             handleColor: '#408829'    // 手柄颜色
         },
         grid: { borderWidth: 0 },
@@ -1374,6 +1397,8 @@ angular.module('angular-echarts.theme').factory('infographic', function () {
             // 数据背景颜色
             fillerColor: 'rgba(181,195,52,0.2)',
             // 填充颜色
+            type:'inside',
+            show:true,
             handleColor: '#27727B'
         },
         // 网格
@@ -1666,6 +1691,8 @@ angular.module('angular-echarts.theme').factory('macarons', function () {
             // 数据背景颜色
             fillerColor: 'rgba(182,162,222,0.2)',
             // 填充颜色
+          type:'inside',
+          show:true,
             handleColor: '#008acd'    // 手柄颜色
         },
         // 网格
@@ -1958,6 +1985,8 @@ angular.module('angular-echarts.theme').factory('red', function () {
             // 数据背景颜色
             fillerColor: 'rgba(216,54,27,0.2)',
             // 填充颜色
+          type:'inside',
+          show:true,
             handleColor: '#d8361b'    // 手柄颜色
         },
         grid: { borderWidth: 0 },
@@ -2163,6 +2192,8 @@ angular.module('angular-echarts.theme').factory('shine', function () {
             // 数据背景颜色
             fillerColor: 'rgba(154,217,247,0.2)',
             // 填充颜色
+          type:'inside',
+          show:true,
             handleColor: '#005eaa'    // 手柄颜色
         },
         grid: { borderWidth: 0 },
