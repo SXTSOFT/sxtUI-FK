@@ -33,7 +33,7 @@
         .replace('三', '3')
         .replace('二', '2')
         .replace('一', '1');
-      var n = parseInt(str);
+      var n = parseInt(/\d+/.exec(str));
       return n;
     };
 

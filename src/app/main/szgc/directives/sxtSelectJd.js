@@ -21,7 +21,7 @@
     }
     var newSt = function (index, idField, nameField, items, label, selected) {
       var nt = [], letters = [], filters = [];
-      letters.push({ $id: '', selected: true, $name: '所有' })
+      letters.push({ $id: '', selected: true, $name: '所有' });
       items.forEach(function (item) {
         var n = typeof item == 'object' ? item : { $id: item, $name: item };
         item.$id = item[idField];

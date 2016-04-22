@@ -10,7 +10,7 @@
       <md-input-container class="md-block">
         <label>{{st.label}}</label>
         <md-select ng-model="st.current" md-on-close="st.current && item_selected(st.current, st.index)">
-          <md-option ng-repeat="item in st.filters" ng-value="item">
+          <md-option ng-repeat="item in st.filters | orderBy:'orderNumber'" ng-value="item">
             {{item.$name}}
           </md-option>
         </md-select>

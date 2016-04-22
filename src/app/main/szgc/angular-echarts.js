@@ -350,8 +350,8 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                   normal: {
                     label: {
                       show: true,
-                      color: '#fff',
-                      position: 'inside'
+                      //color: '#fff',
+                      position: 'top'
                     },
                     color: function (conf) {
                       if (conf.data != null && conf.data.color != undefined) {
