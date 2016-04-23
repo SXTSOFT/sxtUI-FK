@@ -7,9 +7,10 @@
     .controller('SzgcHomeController', SzgcHomeController);
 
   /** @ngInject */
-  function SzgcHomeController($scope,auth,$state,$rootScope,appCookie,$timeout)
+  function SzgcHomeController($scope,auth,$state,$rootScope,appCookie,$timeout,versionUpdate)
   {
 
+    versionUpdate.check();
     var vm = this;
     vm.data = {};
     vm.is = function (state) {

@@ -13,7 +13,7 @@
                  <md-list>
                     <md-subheader class="md-no-sticky">工序</md-subheader>
                     <md-list-item>
-                      <sxt-procedure style="width:100%" ng-model="project.procedureId" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-procedure>
+                      <sxt-procedure style="width:100%" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-procedure>
                       <!--<sxt-procedure-type style="width:100%;" ng-model="project.procedureTypeId"></sxt-procedure-type>-->
                     </md-list-item>
                     <!--<md-list-item>-->
@@ -55,10 +55,10 @@
                       <td class="name">{{item.$name}}</td>
                       <td class="position">{{item.stateName}}</td>
                       <td class="office">
-                        <a class="btn btn-white btn-xs" ng-if="isPartner " ui-sref="app.szgc.ys.add({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})">{{ item.checkedCount==0?'录入': '复验'}}</a>
-                        <a class="btn btn-white btn-xs" ng-if="!isPartner && item.checkedCount && (!item.MinPassRatio1 || item.MinPassRatio1<80) " ui-sref="app.szgc.ys.add({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})">{{ item.CheckDate1?'复验': '抽验'}}</a>
+                        <a class="btn btn-white btn-xs" ng-if="isPartner " ui-sref="app.szgc.ys.add({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureTypeId:project.procedureTypeId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})">{{ item.checkedCount==0?'录入': '复验'}}</a>
+                        <a class="btn btn-white btn-xs" ng-if="!isPartner && item.checkedCount && (!item.MinPassRatio1 || item.MinPassRatio1<80) " ui-sref="app.szgc.ys.add({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureTypeId:project.procedureTypeId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})">{{ item.CheckDate1?'复验': '抽验'}}</a>
                         <a class="btn btn-white btn-xs" ng-if="!isPartner && item.checkedCount && item.MinPassRatio1 && item.MinPassRatio1>=80" ui-sref="app.szgc.report.viewBath.view({bathid:item.BatchRelationId})" title="查看"></a>
-                        <a class="btn btn-white btn-xs" ng-if="isPartner " ng-show="item.checkedCount" ui-sref="app.szgc.ys.add({projectid:item.$id,name:item.$name,batchId:'new',procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree,flag:true,project_item_id:item.project_item_id})">新增验收批</a>
+                        <a class="btn btn-white btn-xs" ng-if="isPartner " ng-show="item.checkedCount" ui-sref="app.szgc.ys.add({projectid:item.$id,name:item.$name,batchId:'new',procedureTypeId:project.procedureTypeId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree,flag:true,project_item_id:item.project_item_id})">新增验收批</a>
 
                       </td>
                     </tr>
