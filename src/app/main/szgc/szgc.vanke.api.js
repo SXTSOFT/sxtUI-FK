@@ -23,7 +23,7 @@
 
     var permission,p1;
     var getNumName = function (str) {
-      str = str.replace('十', '10')
+      str = str.replace('十','10')
         .replace('九', '9')
         .replace('八', '8')
         .replace('七', '7')
@@ -32,7 +32,17 @@
         .replace('四', '4')
         .replace('三', '3')
         .replace('二', '2')
-        .replace('一', '1');
+        .replace('一', '1')
+        .replace('十一', '11')
+        .replace('十二', '12')
+        .replace('十三', '13')
+        .replace('十四', '14')
+        .replace('十五', '15')
+        .replace('十六', '16')
+        .replace('十七', '17')
+        .replace('十八', '18')
+        .replace('十九', '19')
+        .replace('二十', '20');
       var n = parseInt(/\d+/.exec(str));
       return n;
     };
@@ -103,6 +113,19 @@
         project_items: http.custom(function (arg) {
           return get(http.url('/common/v1/project_items', arg)).then(function (result) {
             var p = permission;
+            result.data.data.sort(function (i1, i2) {
+              var n1 = getNumName(i1.name),
+                n2 = getNumName(i2.name);
+              if (!isNaN(n1) && !isNaN(n2))
+                return n1 - n2;
+              else if ((isNaN(n1) && !isNaN(n2)))
+                return 1;
+              else if ((!isNaN(n1) && isNaN(n2)))
+                return -1;
+              else
+                return i1.name.localeCompare(i2.name);
+            });
+
             if (p) {
               if (p.Rows.find(function (it) {
                   return it.RegionIdTree.substring(it.RegionIdTree.length - arg.project_id) == arg.project_id

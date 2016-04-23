@@ -15,6 +15,7 @@
     return {
       require:'ngModel',
       scope:{
+        procedureTypeId: '=',
         regionType:'=',
         value:'=ngModel',
         nameValue:'='
@@ -52,6 +53,7 @@
     function link(scope,element,attrs,ctrl){
 
       scope.sett = function(p){
+        scope.procedureTypeId = p.ProcedureTypeId;
         scope.value = p.ProcedureId;
         scope.nameValue = p.ProcedureName;
         ctrl.$setViewValue(scope.value);

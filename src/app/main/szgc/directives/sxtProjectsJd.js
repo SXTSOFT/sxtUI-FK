@@ -68,30 +68,7 @@
           cookie = cookie ? JSON.parse(cookie) : null;
         } catch (e) { }
         //console.log('getcookie',cookie);
-        var getNumName = function (str) {
-          str = str.replace('十','10')
-            .replace('九', '9')
-            .replace('八', '8')
-            .replace('七', '7')
-            .replace('六', '6')
-            .replace('五', '5')
-            .replace('四', '4')
-            .replace('三', '3')
-            .replace('二', '2')
-            .replace('一', '1')
-            .replace('十一', '11')
-            .replace('十二', '12')
-            .replace('十三', '13')
-            .replace('十四', '14')
-            .replace('十五', '15')
-            .replace('十六', '16')
-            .replace('十七', '17')
-            .replace('十八', '18')
-            .replace('十九', '19')
-            .replace('二十', '20');
-          var n = parseInt(/\d+/.exec(str));
-          return n;
-        };
+
 
         scope.onQueryInner = function (index, st, value,innerScope) {
           switch (index) {
@@ -120,23 +97,6 @@
                 return api.szgc.vanke.project_items({ page_number: 1, page_size: 1000, project_id: value }).then(function (result) {
                   var s = new st(index, 'project_item_id', 'name', result.data.data, '分期');
                   scope.onQueryed && scope.onQueryed(s);
-
-                  //s.filters.forEach(function(it){
-                  //  it.orderNumber = getNumName(it.$name)
-                  //})
-                  s.filters.sort(function (i1, i2) {
-                    var n1 = getNumName(i1.$name),
-                      n2 = getNumName(i2.$name);
-                    if (!isNaN(n1) && !isNaN(n2))
-                      return n1 - n2;
-                    else if ((isNaN(n1) && !isNaN(n2)))
-                      return 1;
-                    else if ((!isNaN(n1) && isNaN(n2)))
-                      return -1;
-                    else
-                      return i1.$name.localeCompare(i2.$name);
-                  });
-                  console.log('s',s)
                   return s;
                 });
               }
