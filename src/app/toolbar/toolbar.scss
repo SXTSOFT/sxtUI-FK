@@ -178,3 +178,30 @@
   }
 }
 
+  .repeat-top {
+    .md-virtual-repeat-container{
+      overflow: auto;
+    }
+      #vertical-container{
+        height: 292px;
+        width: 100%;
+      }
+    .repeated-item {
+      border-bottom: 1px solid #ddd;
+      box-sizing: border-box;
+      height: 40px;
+      padding-top: 10px; }
+    md-content {
+      margin: 16px; }
+    md-virtual-repeat-container {
+      .md-virtual-repeat-scroller{
+        overflow-x:auto;
+      }
+      .md-virtual-repeat-offsetter {
+
+  }
+
+    }
+    }
+
+
