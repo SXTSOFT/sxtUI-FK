@@ -102,7 +102,7 @@
           else {
             mks.forEach(function (marker) {
               marker.setIcon(L.icon({
-                iconUrl: 'assets/leaflet/images/L.png',
+                iconUrl: 'assets/leaflet/images/M.png',
                 iconSize: [70, 70],
                 iconAnchor: [35, 35]
               }));
