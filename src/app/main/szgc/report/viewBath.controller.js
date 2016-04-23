@@ -145,7 +145,7 @@
           }
           vm.baths = result.data;
 
-          console.log(" vm.baths ", result.data);
+          //console.log(" vm.baths ", result.data,vm.baths.Rows.length);
           if(vm.baths.Rows.length){
             vm.norecords = false;
           }else {
@@ -230,6 +230,9 @@
       }
       },500);
     }
+
+
+
     //区域改变
     $scope.$watch(function(){
       return vm.searBarHide;

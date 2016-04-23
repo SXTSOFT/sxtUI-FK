@@ -303,13 +303,13 @@
                   float:'none'
                 });
                 $('.swiper-container',o).width('100%');
-                $('.swiper-container', o).height((iSh/2) + 'px');
+                $('.swiper-container', o).height((iSh*0.6) + 'px');
 
-                $('.swiper-slide', o).height((iSh/2) + 'px');
-                $('.swiper-slide p', o).height((iSh/2) + 'px');//.css('line-height',iSh+'px');
-                $ ('.innermap', o).height ((iSh/2) + 'px');
+                $('.swiper-slide', o).height((iSh*0.6) + 'px');
+                $('.swiper-slide p', o).height((iSh*0.6) + 'px');//.css('line-height',iSh+'px');
+                $ ('.innermap', o).height ((iSh*0.4) + 'px');
                 $('.rotate',o).css({
-                  top:(iSh/2)+10
+                  top:(iSh*0.4)+10
                 });
               }
               else {
