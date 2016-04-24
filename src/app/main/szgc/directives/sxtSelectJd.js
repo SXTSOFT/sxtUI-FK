@@ -142,6 +142,7 @@
           }
         };
         scope.item_selected = function (item, index, noSync) {
+          if(!item)return;
           if(index==0){
             $rootScope.title = item.$name;
           }
@@ -173,6 +174,17 @@
               scope.$apply();
             }
           }
+        }
+        scope.querySearch = function(array, text) {
+          var k = [];
+          if (array) {
+            array.forEach(function (item) {
+              if (!text || text == '' || item.$name.indexOf(text) != -1 || item.$letter.indexOf(text) != -1) {
+                k.push(item);
+              }
+            })
+          }
+          return k;
         }
         scope.onQuery(0, newSt, scope.value,scope).then(function (result) {
           scope.selectors.push(result);

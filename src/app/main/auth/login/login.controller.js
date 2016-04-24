@@ -7,14 +7,14 @@
         .controller('LoginController', LoginController);
 
     /** @ngInject */
-    function LoginController(auth,utils,appCookie,versionUpdate)
+    function LoginController(auth,utils,appCookie)
     {
 
       var vm = this;
         // Data
 
         // Methods
-      console.log(versionUpdate.aa());
+      //console.log(versionUpdate.aa());
 
 
       vm.login = function(loginForm){
