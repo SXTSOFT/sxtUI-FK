@@ -169,7 +169,7 @@
               })
             }
             vm.baths = result.data;
-            console.log('a',vm.baths.Rows)
+            //console.log('a',vm.baths.Rows)
             //console.log(" vm.baths ", result.data,vm.baths.Rows.length);
             if(vm.baths.Rows.length){
               vm.norecords = false;
