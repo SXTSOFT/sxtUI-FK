@@ -9,9 +9,10 @@
     .service('versionUpdate', versionUpdate);
 
   function versionUpdate($mdDialog, $cordovaFileTransfer, $cordovaFile, $cordovaFileOpener2,$http){
+
     this.check = function() {
       //服务器上保存版本信息
-      $http.get('https://vkde.sxtsoft.com:4443/apps/ver.json')
+      $http.get('http://vkde.sxtsoft.com/api/vkapi/Version')
         .then(function (data) {
           var serverAppVersion = data.data.verInfo;//服务器 版本
           console.log("====>>服务器" + serverAppVersion);
@@ -22,15 +23,13 @@
 
 
               var confirm = $mdDialog.confirm()
-                .title('Would you like to delete your debt?')
-                .textContent('All of the banks have agreed to forgive you your debts.')
-                .ariaLabel('Lucky day')
-                .targetEvent(ev)
+                .title('发现新版本')
+                .textContent('是否更新新版本')
                 .ok('更新!')//Please do it!
                 .cancel('暂不更新');//Sounds like a scam
               $mdDialog.show(confirm).then(function () {
 
-                $scope.status = 'You decided to get rid of your debt.';//Please do it!点击更新的事件
+                // $scope.status = 'You decided to get rid of your debt.';//Please do it!点击更新的事件
                 var url = "https://vkde.sxtsoft.com:4443/apps/android-release.apk";
                 var targetPath = "file:///mnt/sdcard/Download/android-release.apk";
                 var trustHosts = true
@@ -56,7 +55,7 @@
                 });
 
               }, function () {
-                $scope.status = 'You decided to keep your debt.';//Sounds like a scam点击暂不更新的事件
+                //  $scope.status = 'You decided to keep your debt.';//Sounds like a scam点击暂不更新的事件
               });
 
 
@@ -68,8 +67,8 @@
           });
         });
 
+    }
 
-    };
 
 }
 

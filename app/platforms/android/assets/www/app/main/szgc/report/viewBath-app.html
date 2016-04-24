@@ -22,9 +22,51 @@
   </div>
   </div>
     </md-content>
-    <md-content class="md-padding"  ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')" layout="column" flex>
-      <md-virtual-repeat-container id="vertical-container" flex>
-        <div class="simple-table-container md-whiteframe-4dp fixedtable" style="position: relative;">
+<div style="color:#f00;height:40px;line-height: 40px;border-bottom: 1px solid #ddd;width:100%;padding-left:8px;" ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')">左右滑动查看全部数据</div>
+    <md-content class="md-padding repeat-top"  ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')" layout="column" flex>
+      <md-virtual-repeat-container flex id="vertical-container">
+        <div style="width:1200px;overflow-x: hidden;">
+        <div>
+          <div>
+            <div style="border-bottom: 1px solid #ccc;padding-left:0;position: relative;">
+              <div sxt-fixed-right="50" style="background: #fff;width:60px;">
+                <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">操作</span>
+              </div>
+              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">班组</span>
+              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">班组首验(%)</span>
+              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">班组再验(%)</span>
+              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">监理员</span>
+              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">查验时间</span>
+              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">万科抽检(%)</span>
+              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">符合率(%)</span>
+              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">检查员</span>
+              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">查验时间</span>
+            </div>
+          </div>
+
+          <div md-virtual-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey}" class="repeated-item" flex>
+            <div style="width:1200px;height: 40px;">
+              <div style=" position: relative;height: 40px;">
+                <div sxt-fixed-right="50" style="background: #fff;width:60px;">
+                  <a class="btn btn-white btn-xs" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">
+                    查看
+                  </a>
+                </div>
+              <span style="width:120px;display: inline-block;">{{item.GrpWokerName | filterGrpWokerName}}</span>
+              <span style="width:120px;display: inline-block;">{{item.JLFirst}}</span>
+              <span style="width:120px;display: inline-block;">{{item.JLLast}}</span>
+              <span style="width:120px;display: inline-block;">{{item.JLUser}}</span>
+              <span style="width:120px;display: inline-block;">{{item.JLDate}}</span>
+              <span style="width:120px;display: inline-block;">{{item.WKLast}}</span>
+              <span style="width:120px;display: inline-block;">{{item.AccordRatio}}</span>
+              <span style="width:120px;display: inline-block;">{{item.WKLastUser}}</span>
+              <span style="width:120px;display: inline-block;">{{item.VKDate}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+ <!--       <div class="simple-table-container md-whiteframe-4dp fixedtable" style="position: relative;display: none;">
           <table class="simple" ms-responsive-table>
             <thead>
             <tr>
@@ -48,7 +90,7 @@
             </tfoot>
 
             <tbody>
-            <tr ng-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey}">
+            <tr>
               <td class="name">{{item.GrpWokerName | filterGrpWokerName}}</td>
               <td class="position">{{item.JLFirst}}</td>
               <td class="name">{{item.JLLast}}</td>
@@ -80,7 +122,7 @@
             </tfoot>
 
             <tbody>
-            <tr ng-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey}">
+            <tr ng-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey}" >
               <td class="office">
                 <a class="btn btn-white btn-xs" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">
                   查看
@@ -89,10 +131,7 @@
             </tr>
             </tbody>
           </table>
-        </div>
-        <div flex="row" style="display: none;">
-          <a>上一页</a>
-        </div>
+        </div>-->
         <!--<md-card md-virtual-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey} " flex>-->
 
             <!--<md-card-title>-->
@@ -150,7 +189,6 @@
         <!--</md-card>-->
         <p ng-if="vm.norecords" style="text-align: center;font-size: 1.3rem;margin-top: 10px ;">暂无数据</p>
         </md-virtual-repeat-container>
-
     </md-content>
   <div style="position: absolute; top:0px; right:0px;">
     <md-button class="md-fab md-mini" ng-show="!vm.searBarHide && vm.isJdBack()" ng-click="vm.backJdSelect()">
