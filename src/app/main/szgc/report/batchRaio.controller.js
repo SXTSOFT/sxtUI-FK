@@ -182,6 +182,7 @@
             console.log('vm',vm.reportData)
             var Avg_JLLast, Avg_JLFirst;
             for (var i = 0; i < vm.reportData.length; i++) {
+              vm.reportData[i].rate = (vm.reportData[i].rate).toFixed(0);
               xAxis_data.push({
                 //x:format(vm.reportData[i].GrpName),
                 x:getName(vm.reportData[i].GrpName),

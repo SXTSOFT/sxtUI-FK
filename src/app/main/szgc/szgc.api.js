@@ -35,6 +35,9 @@
         queryByProjectAndProdure2:function(projectid,bathParens){
           return $http.get($http.url('/api/Project/' + projectid + '/baths', bathParens));
         },
+        queryByProjectAndProdure3: function (projectid, bathParens) {
+          return $http.get(utils.url('/api/Project/' + projectid + '/baths1', bathParens));
+        },
         delProcess:function(id){
           return $http.delete('/api/PPBatchRelation/' + id);
         },

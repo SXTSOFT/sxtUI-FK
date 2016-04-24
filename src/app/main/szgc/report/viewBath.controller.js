@@ -9,7 +9,7 @@
     .controller('viewBathController',viewBathController);
 
   /** @ngInject */
-  function viewBathController($scope,api,$q,$timeout,$state){
+  function viewBathController($scope,api,$q,$timeout,$state,utils){
     var vm = this;
     vm.is = function(route){
       return $state.is(route);
@@ -119,12 +119,12 @@
       vm.norecords = false;
       if(t1)
         $timeout.cancel(t1);
-      t1 = $timeout(function(){
-
-
       vm.baths = {};
       console.log(vm.project)
-      if (vm.project.pid) {
+
+
+      t1 = $timeout(function(){
+        if (vm.project.pid) {
         var batchParems = {
           isGetChilde: 1,
           produreId: vm.project.procedureId,
@@ -133,7 +133,9 @@
           regionIdTree: vm.project.idTree
         }
 
+
         api.szgc.addProcessService.queryByProjectAndProdure2(vm.project.projectId, batchParems).then(function(result) {
+          //cb(result.data);
           if (result.data.Rows.length > 0) {
             result.data.Rows.forEach(function(item) {
               if (item.AccordRatio > 0) {
@@ -144,7 +146,7 @@
             })
           }
           vm.baths = result.data;
-
+          console.log('a',vm.baths.Rows)
           //console.log(" vm.baths ", result.data,vm.baths.Rows.length);
           if(vm.baths.Rows.length){
             vm.norecords = false;
@@ -156,6 +158,11 @@
           var lastIndex = 0;
           vm.baths.Rows.forEach(function(item) {
             fishIndex = 0;
+            //var idx =item.JLFirst.split('.');
+            //if(idx[1]){
+            //  item.JLFirst = Number(item.JLFirst).toFixed(1);
+            //}
+
             if (item.GrpName) {
 
               fishIndex = item.GrpName.indexOf("(");
@@ -195,7 +202,7 @@
           rs.forEach(function(r) {
             r.data.Rows.forEach(function(item) {
               if (item.AccordRatio > 0) {
-                item.AccordRatio = item.AccordRatio * 100;
+                item.AccordRatio = (item.AccordRatio * 100).toFixed(1);
               } else {
                 item.AccordRatio = undefined;
               }
@@ -209,6 +216,7 @@
           //截取班组组长名称
           var fishIndex = 0;
           var lastIndex = 0;
+
           vm.baths.Rows.forEach(function(item) {
             // console.log("vm.GrpName", item.GrpName)
             if (item.GrpName) {

@@ -105,6 +105,7 @@
         if (vm.reportData) {
           var Avg_JLLast, Avg_JLFirst;
           for (var i = 0; i < vm.reportData.length; i++) {
+            vm.reportData[i].rate =(vm.reportData[i].rate).toFixed(0)
             var name=vm.reportData[i].ParentCompanyName;
             xAxis_data.push({
               //value: format(vm.reportData[i].ParentCompanyName),
