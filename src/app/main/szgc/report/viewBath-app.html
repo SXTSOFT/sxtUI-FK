@@ -29,9 +29,9 @@
         <div>
           <div>
             <div style="border-bottom: 1px solid #ccc;padding-left:0;position: relative;">
-              <div sxt-fixed-right="50" style="background: #fff;width:60px;">
-                <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">操作</span>
-              </div>
+              <!--<div sxt-fixed-right="50" style="background: #fff;width:60px;">-->
+                <!--<span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">操作</span>-->
+              <!--</div>-->
               <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">部位</span>
               <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">工序</span>
               <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">班组</span>
@@ -48,12 +48,12 @@
 
           <div md-virtual-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey}" class="repeated-item" flex>
             <div style="width:1500px;height: 40px;">
-              <div style=" position: relative;height: 40px;">
-                <div sxt-fixed-right="50" style="background: #fff;width:60px;">
-                  <a class="btn btn-white btn-xs" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">
-                    查看
-                  </a>
-                </div>
+              <div style=" position: relative;height: 40px;" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">
+                <!--<div sxt-fixed-right="50" style="background: #fff;width:60px;">-->
+                  <!--<a class="btn btn-white btn-xs" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">-->
+                    <!--查看-->
+                  <!--</a>-->
+                <!--</div>-->
                 <span style="width:120px;display: inline-block;white-space: nowrap;overflow:hidden;padding-right: 5px;text-overflow:ellipsis;">{{ item.RegionNameTree}} {{item.RegionName}}</span>
                 <span style="width:120px;display: inline-block;white-space: nowrap;overflow:hidden;">{{item.ProcedureName}}</span>
               <span style="width:120px;display: inline-block;">{{item.GrpWokerName | filterGrpWokerName}}</span>

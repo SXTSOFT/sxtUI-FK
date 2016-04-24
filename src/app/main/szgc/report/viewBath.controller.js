@@ -157,8 +157,6 @@
             companyId: vm.project.companyId,
             regionIdTree: vm.project.idTree
           }
-
-
           api.szgc.addProcessService.queryByProjectAndProdure3(vm.project.projectId, batchParems).then(function(result) {
             //cb(result.data);
             if (result.data.Rows.length > 0) {
