@@ -31,7 +31,7 @@
               $mdDialog.show(confirm).then(function () {
 
                 // $scope.status = 'You decided to get rid of your debt.';//Please do it!点击更新的事件
-                var url = "https://vkde.sxtsoft.com:4443/apps/android-release.apk";
+                var url = "https://vkde.sxtsoft.com:4443/apps/szgc.apk";
                 var targetPath = "file:///mnt/sdcard/Download/android-release.apk";
                 var trustHosts = true
                 var options = {};
