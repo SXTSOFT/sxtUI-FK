@@ -84,9 +84,9 @@
             m.push(fd);
           }
           if(item.IndexName=='结构立面垂直度')
-            item.IndexName=='垂直度';
+            item.IndexName='垂直度';
           if(item.IndexName=='结构表面平整度')
-            item.IndexName=='平整度';
+            item.IndexName='平整度';
 
 
           fd.cds.push(item);
@@ -104,9 +104,9 @@
             m.push(fd);
           }
           if (item.IndexName == '立面垂直度')
-            item.IndexName == '立面';
+            item.IndexName = '立面';
           if (item.IndexName == '表面平整度')
-            item.IndexName == '表面';
+            item.IndexName = '表面';
           fd.cds.push(item);
         }
         else if(item.IndexName=='阴阳角方正度度'|| item.IndexName=='阴阳角直线度度') {
