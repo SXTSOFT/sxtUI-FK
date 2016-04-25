@@ -161,7 +161,7 @@
             //}
 
             if (item.GrpName) {
-
+              item.firstName = item.GrpName.split("(")[0];
               fishIndex = item.GrpName.indexOf("(");
               lastIndex = item.GrpName.indexOf(")");
               if (fishIndex > 0 && lastIndex > 0) {
@@ -169,10 +169,11 @@
               } else {
                 item.GrpWokerName = "";
               }
-              if (item.GrpWokerName&&vm.workGroupSources.find(function (t) { return item.GrpWokerName == t.name; }) == null) {
+              if (item.firstName&&item.GrpWokerName&&vm.workGroupSources.find(function (t) { return item.firstName == t.firstName; }) == null) {
                 vm.workGroupSources.push({
                   id: item.GrpId,
                   name: item.GrpWokerName,
+                  firstName:item.firstName,
                   text: item.GrpWokerName,
                   selected: false
                 });
