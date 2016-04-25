@@ -1,5 +1,4 @@
 ﻿
-
 <div class="panel" style="border-top-width:0;" >
     <div class="panel-body">
      <!--<a class="btn btn-sm btn-white" style="padding: 5px 31px; float: right;margin-right: -4px;margin-bottom: 6px;margin-top: -6px;" ng-click="goback()">返回</a>-->
@@ -51,12 +50,15 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <ui-select ng-model="data.selected" theme="bootstrap" class="form-control">
-    <ui-select-match placeholder="请选择" >{{$select.selected.text}}</ui-select-match>
-    <ui-select-choices repeat="item in data.sources | propsFilter:{text: $select.search}">
-        {{item.text}}
-    </ui-select-choices>
-</ui-select>
+                                      <md-select placeholder="请选择" ng-model="data.selected" style="margin:3px 0">
+                                        <md-option ng-value="item" ng-repeat="item in data.sources">{{item.text}}</md-option>
+                                      </md-select>
+                                        <!--<ui-select ng-model="data.selected"  theme="selectize" class="form-control">-->
+    <!--<ui-select-match placeholder="请选择" >{{$select.selected.text}}</ui-select-match>-->
+    <!--<ui-select-choices repeat="item in data.sources | propsFilter:{text: $select.search}">-->
+        <!--{{item.text}}-->
+    <!--</ui-select-choices>-->
+<!--</ui-select>-->
                                     </td>
                                 </tr>
                                 <tr ng-repeat="n in data.selected.d.zk" >
@@ -98,12 +100,17 @@
                                 <tr>
                                     <td></td>
                                     <td></td>
-                                    <td colspan="3" align="center"><ui-select ng-model="data.selected" theme="bootstrap" class="form-control">
-    <ui-select-match placeholder="请选择">{{$select.selected.text}}</ui-select-match>
-    <ui-select-choices repeat="item in data.sources | propsFilter:{text: $select.search}">
-        {{item.text}}
-    </ui-select-choices>
-</ui-select></td>
+                                    <td colspan="3" align="center">
+                                      <md-select placeholder="请选择" ng-model="data.selected" style="margin:3px 0">
+                                        <md-option ng-value="item" ng-repeat="item in data.sources">{{item.text}}</md-option>
+                                      </md-select>
+                                      <!--<ui-select ng-model="data.selected" theme="bootstrap" class="form-control">-->
+    <!--<ui-select-match placeholder="请选择">{{$select.selected.text}}</ui-select-match>-->
+    <!--<ui-select-choices repeat="item in data.sources | propsFilter:{text: $select.search}">-->
+        <!--{{item.text}}-->
+    <!--</ui-select-choices>-->
+<!--</ui-select>-->
+                                    </td>
                                 </tr>
                                 <tr ng-repeat="n in data.selected.d.yb">
                                     <td rowspan="{{data.selected.d.info.ybLength}}" ng-if="$index==0" align="center">

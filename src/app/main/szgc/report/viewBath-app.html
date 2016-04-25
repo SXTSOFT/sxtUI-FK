@@ -9,10 +9,11 @@
   </md-list-item>
   <md-list-item>班组</md-list-item>
   <md-list-item>
-    <md-input-container style="width:100%" class="md-block" md-no-float >
-      <label>班组</label>
-      <input ng-model="vm.ddd.grpKey" >
-    </md-input-container>
+    <sxt-select ng-model="vm.workGroupkey" sources="vm.workGroupSources" text-field="name" value-field="id" style="width:100%;" class="mdselect"></sxt-select>
+    <!--<md-input-container style="width:100%" class="md-block" md-no-float >-->
+      <!--<label>班组</label>-->
+      <!--<input ng-model="vm.ddd.grpKey" >-->
+    <!--</md-input-container>-->
   </md-list-item>
 </md-list>
         </sxt-projects-jd>
@@ -25,29 +26,29 @@
 <div style="color:#f00;height:40px;line-height: 40px;border-bottom: 1px solid #ddd;width:100%;padding-left:8px;" ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')">左右滑动查看全部数据</div>
     <md-content class="md-padding repeat-top"  ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')" layout="column" flex>
       <md-virtual-repeat-container flex id="vertical-container">
-        <div style="width:1500px;overflow-x: hidden;">
+        <div style="width:880px;overflow-x: hidden;">
         <div>
           <div>
             <div style="border-bottom: 1px solid #ccc;padding-left:0;position: relative;">
               <!--<div sxt-fixed-right="50" style="background: #fff;width:60px;">-->
                 <!--<span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">操作</span>-->
               <!--</div>-->
-              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">部位</span>
-              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">工序</span>
-              <span style="width:80px;display: inline-block;height:40px;padding-top: 10px;">班组</span>
-              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">班组首验(%)</span>
-              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">班组再验(%)</span>
-              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">监理员</span>
-              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">查验时间</span>
-              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">万科抽检(%)</span>
-              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">符合率(%)</span>
-              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">检查员</span>
-              <span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">查验时间</span>
+              <span style="width:120px;display: inline-block;height:40px;padding-top: 18px;vertical-align: top">部位</span>
+              <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">工序</span>
+              <span style="width:55px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top;text-align: center;">班组</span>
+              <span style="width:36px;display: inline-block;height:40px;padding-top: 10px;">监理首验</span>
+              <span style="width:36px;display: inline-block;height:40px;padding-top: 10px;">监理再验</span>
+              <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">监理员</span>
+              <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">查验时间</span>
+              <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">万科抽检</span>
+              <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">符合率</span>
+              <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">检查员</span>
+              <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">查验时间</span>
             </div>
           </div>
 
-          <div md-virtual-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey}" class="repeated-item" flex>
-            <div style="width:1500px;height: 40px;">
+          <div md-virtual-repeat="item in vm.baths.Rows" class="repeated-item" flex>
+            <div style="width:880px;height: 40px;">
               <div style=" position: relative;height: 40px;" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">
                 <!--<div sxt-fixed-right="50" style="background: #fff;width:60px;">-->
                   <!--<a class="btn btn-white btn-xs" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">-->
@@ -55,16 +56,16 @@
                   <!--</a>-->
                 <!--</div>-->
                 <span style="width:120px;display: inline-block;white-space: nowrap;overflow:hidden;padding-right: 5px;text-overflow:ellipsis;">{{ item.RegionNameTree}} {{item.RegionName}}</span>
-                <span style="width:120px;display: inline-block;white-space: nowrap;overflow:hidden;">{{item.ProcedureName}}</span>
-              <span style="width:80px;display: inline-block;">{{item.GrpWokerName | filterGrpWokerName}}</span>
-              <span style="width:120px;display: inline-block;">{{item.JLFirst|number:1}}</span>
-              <span style="width:120px;display: inline-block;">{{item.JLLast|number:1}}</span>
-              <span style="width:120px;display: inline-block;">{{item.JLUser}}</span>
-              <span style="width:120px;display: inline-block;">{{item.JLDate}}</span>
-              <span style="width:120px;display: inline-block;">{{item.WKLast}}</span>
-              <span style="width:120px;display: inline-block;">{{item.AccordRatio|number:1}}</span>
-              <span style="width:120px;display: inline-block;">{{item.WKLastUser}}</span>
-              <span style="width:120px;display: inline-block;">{{item.VKDate}}</span>
+                <span style="width:80px;display: inline-block;white-space: nowrap;overflow:hidden;text-overflow:ellipsis;">{{item.ProcedureName}}</span>
+              <span style="width:55px;display: inline-block;text-align: center;">{{item.GrpWokerName | filterGrpWokerName}}</span>
+              <span style="width:36px;display: inline-block;">{{item.JLFirst|number:1}}</span>
+              <span style="width:36px;display: inline-block;">{{item.JLLast|number:1}}</span>
+              <span style="width:80px;display: inline-block;">{{item.JLUser}}</span>
+              <span style="width:80px;display: inline-block;">{{item.JLDate}}</span>
+              <span style="width:80px;display: inline-block;">{{item.WKLast}}</span>
+              <span style="width:80px;display: inline-block;">{{item.AccordRatio|number:1}}</span>
+              <span style="width:80px;display: inline-block;">{{item.WKLastUser}}</span>
+              <span style="width:80px;display: inline-block;">{{item.VKDate}}</span>
               </div>
             </div>
           </div>
