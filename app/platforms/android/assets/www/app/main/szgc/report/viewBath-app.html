@@ -9,10 +9,11 @@
   </md-list-item>
   <md-list-item>班组</md-list-item>
   <md-list-item>
-    <md-input-container style="width:100%" class="md-block" md-no-float >
-      <label>班组</label>
-      <input ng-model="vm.ddd.grpKey" >
-    </md-input-container>
+    <sxt-select ng-model="vm.workGroupkey" sources="vm.workGroupSources" text-field="name" value-field="id" style="width:100%;" class="mdselect"></sxt-select>
+    <!--<md-input-container style="width:100%" class="md-block" md-no-float >-->
+      <!--<label>班组</label>-->
+      <!--<input ng-model="vm.ddd.grpKey" >-->
+    <!--</md-input-container>-->
   </md-list-item>
 </md-list>
         </sxt-projects-jd>
