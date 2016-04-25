@@ -8,7 +8,7 @@
     .module('app.szgc')
     .service('versionUpdate', versionUpdate);
 
-  function versionUpdate($mdDialog, $cordovaFileTransfer, $cordovaFile, $cordovaFileOpener2,$http){
+  function versionUpdate($mdDialog, $cordovaFileTransfer, $cordovaFile, $cordovaFileOpener2,$http,$cordovaAppVersion){
 
     this.check = function() {
       //服务器上保存版本信息
@@ -16,7 +16,8 @@
         .then(function (data) {
           var serverAppVersion = data.data.verInfo;//服务器 版本
           console.log("====>>服务器" + serverAppVersion);
-          $cordovaAppVersion.getVersionNumber().then(function (version) {
+          //$cordovaAppVersion.getVersionNumber().then(function (version) {
+          var version = '1.3.3';
             console.log("version=====本机>>>" + version + "====>>服务器" + serverAppVersion);
             if (version != serverAppVersion) {
               //弹出选择框 是否进行更新
@@ -64,7 +65,7 @@
               //});
 
             }
-          });
+          //});
         });
 
     }
