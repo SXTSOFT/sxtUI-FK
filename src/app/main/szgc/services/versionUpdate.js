@@ -8,9 +8,12 @@
     .module('app.szgc')
     .service('versionUpdate', versionUpdate);
 
-  function versionUpdate($mdDialog, $cordovaFileTransfer, $cordovaFile, $cordovaFileOpener2,$http){
+  function versionUpdate($mdDialog, $cordovaFileTransfer, $cordovaAppVersion, $cordovaFileOpener2,$http){
 
     this.check = function() {
+
+
+
       //服务器上保存版本信息
       $http.get('http://vkde.sxtsoft.com/api/vkapi/Version')
         .then(function (data) {
