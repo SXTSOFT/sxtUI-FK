@@ -179,7 +179,7 @@
       vm.data.data = [ pageload ];
       $(window).resize(function(){
 
-      })
+    })
       //myChart3.setOption({
       //  title: {
       //    text: '班组验收合格率对比',

@@ -1461,7 +1461,8 @@ angular.module('angular-echarts.theme').factory('infographic', function () {
             itemStyle: {
                 normal: { borderRadius: 0 },
                 emphasis: { borderRadius: 0 }
-            }
+            },
+          barMaxWidth:20
         },
         // 折线图默认参数
         line: {
@@ -1795,7 +1796,8 @@ angular.module('angular-echarts.theme').factory('macarons', function () {
           itemStyle: {
             normal: { borderRadius: 0 },
             emphasis: { borderRadius: 0 }
-          }
+          },
+          barMaxWidth:20
         },
         // 折线图默认参数
         line: {

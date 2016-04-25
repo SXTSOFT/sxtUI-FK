@@ -212,6 +212,20 @@
         controller: 'projectMasterListController1 as vm',
         templateUrl: 'app/main/szgc/report/projectMasterList-app.html'
       })
+      .state('app.szgc.report.supCheckResult', {
+        title:'监理验收符合率统计',
+        url:'/supCheckResult',
+        controller: 'supCheckResultController as vm',
+        templateUrl: 'app/main/szgc/report/supCheckResult-app.html',
+        resolve: {
+          _projects:['api',function(api){
+            return api.szgc.vanke.projects({
+              page_size: 1000,
+              page_number: 1
+            })
+          }]
+        }
+      })
       .state('app.szgc.settings',{
         noBack:true,
         title:'设置',

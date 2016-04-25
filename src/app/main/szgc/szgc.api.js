@@ -73,6 +73,10 @@
         // 2.统计验收批情况表(工序总览)
         GetBatchDetails:function(args) {
           return $http.get($http.url('/api/Report/GetBatchDetails' , args));
+        },
+        //监理验收符合率表
+        GetSupervisorAccordRatio:function(args){
+          return $http.get($http.url('/api/Report/GetSupervisorAccordRatio', args));
         }
       },
       CheckStepService:{
