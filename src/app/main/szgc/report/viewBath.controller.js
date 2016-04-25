@@ -70,7 +70,7 @@
       ptype = vm.project.procedureTypeId;
       api.szgc.BatchSetService.getAll({status:4,batchType: t}).then(function(result) {
         var data = [];
-        console.log("BatchSetServiceresult", result);
+        //console.log("BatchSetServiceresult", result);
         result.data.Rows.forEach(function(item) {
           //if (vm.project.procedureTypeName != item.ProcedureType)
           //vm.project.ProcedureType = item.ProcedureType;
@@ -125,11 +125,11 @@
         var batchParems = {
           isGetChilde: 1,
           produreId: vm.project.procedureId,
-          workGropId: vm.project.workGroupId,
+          workGropId:vm.workGroupkey,// vm.project.workGroupId,
           companyId: vm.project.companyId,
           regionIdTree: vm.project.idTree
         }
-        // console.log('vm.project',vm.project,batchParems)
+         console.log('vm.project',batchParems)
         api.szgc.addProcessService.queryByProjectAndProdure3(vm.project.projectId, batchParems).then(function(result) {
           //cb(result.data);
           if (result.data.Rows.length > 0) {
@@ -152,6 +152,7 @@
           //截取班组组长名称
           var fishIndex = 0;
           var lastIndex = 0;
+          vm.workGroupSources = [];
           vm.baths.Rows.forEach(function(item) {
             fishIndex = 0;
             //var idx =item.JLFirst.split('.');
@@ -167,6 +168,14 @@
                 item.GrpWokerName = item.GrpName.substring(fishIndex + 1, lastIndex);
               } else {
                 item.GrpWokerName = "";
+              }
+              if (item.GrpWokerName&&vm.workGroupSources.find(function (t) { return item.GrpWokerName == t.name; }) == null) {
+                vm.workGroupSources.push({
+                  id: item.GrpId,
+                  name: item.GrpWokerName,
+                  text: item.GrpWokerName,
+                  selected: false
+                });
               }
             }
 
