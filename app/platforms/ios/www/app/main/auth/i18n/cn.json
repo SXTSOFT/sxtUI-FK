@@ -1,0 +1,17 @@
+{
+  "LOGIN": {
+    "TITLE": "登录您的帐号",
+    "USERNAME": "请输入用户名",
+    "PASSWORD": "请输入密码",
+    "REMEMBER_ME": "记住我",
+    "FORGOT_PASSWORD": "忘记密码?",
+    "LOG_IN": "登录",
+    "OR": "或",
+    "DONT_HAVE_ACCOUNT": "没有帐号?",
+    "CREATE_ACCOUNT": "创建帐号",
+    "ERRORS": {
+      "USERNAME_REQUIRED": "请输入用户名",
+      "PASSWORD_REQUIRED": "请输入密码"
+    }
+  }
+}
