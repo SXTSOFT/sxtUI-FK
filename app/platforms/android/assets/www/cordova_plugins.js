@@ -216,6 +216,14 @@ module.exports = [
         "clobbers": [
             "cordova.getAppVersion"
         ]
+    },
+    {
+        "file": "plugins/cordova-plugin-keyboard/www/keyboard.js",
+        "id": "cordova-plugin-keyboard.keyboard",
+        "pluginId": "cordova-plugin-keyboard",
+        "clobbers": [
+            "window.Keyboard"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -226,7 +234,8 @@ module.exports.metadata =
     "cordova-plugin-file-transfer": "1.5.0",
     "cordova-plugin-indexedDB": "0.1.2",
     "cordova-plugin-file-opener2": "2.0.2",
-    "cordova-plugin-app-version": "0.1.8"
+    "cordova-plugin-app-version": "0.1.8",
+    "cordova-plugin-keyboard": "1.1.4"
 }
 // BOTTOM OF METADATA
 });

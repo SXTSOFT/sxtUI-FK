@@ -416,11 +416,13 @@
             //}
           });
         }
-        element.on('click', ' button.yearlabel', function (e) {
+        element.find('button.yearlabel').click(function (e) {
           $(this).blur();
           var div = $('<div style="background:white"><div class="btn-toolbar" style="border-bottom:2px solid rgb(101, 101, 101);padding:4px 10px" role="toolbar"><div class="btn-group img-title" style="line-height:22px;font-weight:bold; "></div><div class="btn-group pull-right btn-group-xs" role="group"> <button type="button" class="btn btn-white btn-close">关闭</button></div></div><div class="content">正在加载……</div></div>');
+          div.appendTo(element);
+
           div.css({
-            position: 'absolute',
+            position:'relative', //'absolute',
             top: 0,
             left: 0,
             width: 0,
@@ -430,6 +432,7 @@
             height: element.height(),
             margin: 0
           }, function () {
+            $('.months').hide();
             div.find('.btn-toolbar button.btn-close').click(function () {
               div.empty();
               div.animate({

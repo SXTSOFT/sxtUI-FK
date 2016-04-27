@@ -89,7 +89,7 @@
 
                                         <div class="clearfix"></div>
                                     </td>
-                                    <td width="91" rowspan="2" align="center">允许偏差（mm）</td>
+                                    <td rowspan="2" align="center">允许偏差（mm）</td>
                                     <td align="center">检查点数</td>
                                     <td align="center">合格率</td>
                                     <td align="center">最大偏差</td>
@@ -121,7 +121,7 @@
                                     </td>
                                     <td ng-class="{'tdselectd':n.selected}" align="center">{{$index+1}}</td>
                                     <td ng-repeat="m in n.names" ng-click="data.selected.d.info.ybColSelected=$index" ng-if="m.rowspan!=0 && m.colspan!=0" rowspan="{{m.rowspan||1}}" colspan="{{m.colspan||1}}">{{m.name}}</td>
-                                    <td style="width:150px" align="center">
+                                    <td align="center">
                                         <span ng-if="n.getPassRatio">平均合格率</span> {{n.DeviationLimit}}
                                     </td>
                                     <td align="center">{{n.CheckNum}}</td>
@@ -134,7 +134,7 @@
 
                                 <tr ng-if="data.selected.d.yb.length">
                                     <td colspan="{{data.selected.d.yb[0].names.length+2}}"></td>
-                                    <td style="width:150px" align="center">
+                                    <td align="center">
                                     </td>
                                     <td align="center">主控：{{zkIsOk(data.selected.d.zk)?"合格":"不合格"}}</td>
                                     <td align="center">一般：{{ybIsOk(data.selected.d.yb)?"合格":"不合格"}}({{ybHGL(data.selected.d.yb)}}) 总体({{ybHGLPJ(data.selected.d.yb)|number:2}})</td>

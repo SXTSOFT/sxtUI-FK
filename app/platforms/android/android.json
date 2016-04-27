@@ -44,6 +44,16 @@
                         }
                     ]
                 }
+            },
+            "config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"Keyboard\"><param name=\"android-package\" onload=\"true\" value=\"org.apache.cordova.labs.keyboard.Keyboard\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
             }
         }
     },
@@ -64,6 +74,9 @@
             "PACKAGE_NAME": "com.sxt.szgc"
         },
         "cordova-plugin-app-version": {
+            "PACKAGE_NAME": "com.sxt.szgc"
+        },
+        "cordova-plugin-keyboard": {
             "PACKAGE_NAME": "com.sxt.szgc"
         }
     },
@@ -285,6 +298,14 @@
             "clobbers": [
                 "cordova.getAppVersion"
             ]
+        },
+        {
+            "file": "plugins/cordova-plugin-keyboard/www/keyboard.js",
+            "id": "cordova-plugin-keyboard.keyboard",
+            "pluginId": "cordova-plugin-keyboard",
+            "clobbers": [
+                "window.Keyboard"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -293,6 +314,7 @@
         "cordova-plugin-file-transfer": "1.5.0",
         "cordova-plugin-indexedDB": "0.1.2",
         "cordova-plugin-file-opener2": "2.0.2",
-        "cordova-plugin-app-version": "0.1.8"
+        "cordova-plugin-app-version": "0.1.8",
+        "cordova-plugin-keyboard": "1.1.4"
     }
 }
