@@ -12,10 +12,10 @@
       $scope.goBack = function(){
         history.go(-1);//返回
       }
-      remote.Project.Area.query().then(function(result){
+/*      remote.Project.Area.query().then(function(result){
         vm.Areas = result.data;
         vm.selectedArea = vm.Areas[0];
-      })
+      })*/
 
       vm.change = function(){
         $rootScope.$emit('areaSelect',vm.selectedArea)
