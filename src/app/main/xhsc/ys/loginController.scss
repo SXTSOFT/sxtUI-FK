@@ -1,7 +1,7 @@
 .login{
   height:768px;
   width:100%;
-  background: url(main/xhsc/images/bg1.jpg) no-repeat;
+  background: url(../app/main/xhsc/images/bg1.jpg) no-repeat;
   background-size:cover;
   md-input-container {
     .md-input{
@@ -25,7 +25,7 @@
 }
 @media (max-width: 768px){
   .login{
-    background: url(main/xhsc/images/bg2.jpg) no-repeat;
+    background: url(../app/main/xhsc/images/bg2.jpg) no-repeat;
     background-size:cover;
     height:1024px;
   }
