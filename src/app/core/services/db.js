@@ -112,6 +112,26 @@
       return wrapMethods(db, self.methods);
     };
   };
+
+  function toDoc(doc) {
+    if(doc instanceof Error)
+      return doc;
+    return doc;
+  }
+  function now() {
+    return new Date().toISOString();
+  }
+
+  function addTimestamps(object) {
+    object.updatedAt = now()
+    object.createdAt = object.createdAt || object.updatedAt
+
+    if (object._deleted) {
+      object.deletedAt = object.deletedAt || object.updatedAt
+    }
+
+    return object
+  }
 }
 
 })();
