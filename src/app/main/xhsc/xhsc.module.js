@@ -5,7 +5,7 @@
   'use strict';
 
   angular
-    .module('app.xhsc', ['app.core','pouchdb'])
+    .module('app.xhsc', ['app.core'])
     .config(config);
 
   /** @ngInject */
