@@ -140,6 +140,21 @@
           }
         }
       })
+      .state('app.xhsc.offline',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'lx',
+        url   :'/offline',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/offline/manage.html',
+            controller:'offlineController as vm'
+          }
+        }
+      })
+
 
     // Navigation
     msNavigationServiceProvider.saveItem('xhsc', {
