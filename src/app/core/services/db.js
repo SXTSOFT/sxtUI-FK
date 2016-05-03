@@ -33,8 +33,45 @@
       to: 'eventEmitter',
       from: 'eventEmitter'
     },
-    add:function(){
-      console.log('add',this,arguments);
+    add:function () {
+      var args = Array.prototype.slice.call(arguments);
+      this.create(args);
+    },
+    update:function () {
+      this.create(Array.prototype.slice.call(arguments));
+    },
+    create:function(obj){
+      if(!angular.isArray(obj)){
+        obj = [obj];
+      }
+      obj.forEach(function (o) {
+        if(!o._id)
+          o._id = o.id;
+      });
+      return this.bulkDocs(obj);
+    },
+    delete:function (id) {
+      var db = this;
+      db.get(id).then(function (doc) {
+        return db.remove(doc);
+      });
+    },
+    find:function (filter) {
+      return this.allDocs({include_docs:true}).then(function (result) {
+        var r = {
+          "total_rows":result.total_rows,
+          "offset":result.offset,
+          "rows":[],
+          "_id":result._id,
+          "_rev":result._rev
+        }
+        for(var i=0,l=result.rows.length;i<l;i++){
+          if(!filter || filter(result.rows[i].doc)!==false){
+            r.rows.push(result.rows[i].doc);
+          }
+        }
+        return r;
+      })
     }
   };
 
@@ -85,13 +122,14 @@
       for (var method in methods) {
         var wrapFunction = methods[method];
 
-        if (!angular.isString(wrapFunction)) {
-          wrapMethods(db, wrapFunction, method);
-          continue;
-        }
 
         if(angular.isFunction(wrapFunction)){
           db[method] = wrapFunction;
+          continue;
+        }
+
+        if (!angular.isString(wrapFunction)) {
+          wrapMethods(db, wrapFunction, method);
           continue;
         }
 

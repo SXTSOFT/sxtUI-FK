@@ -15,11 +15,16 @@
       var r = db('regions');
      var data = result.data;
       data._id='123';
-      r.put(vm.regions).then(function(){
-        r.allDocs({}).then(function(result){
+      //r.destroy();
+      //r.add(data);
+      //r.delete('123');
+      //r.create(data).then(function(){
+        r.find(function (doc) {
+          return doc._id=='123';
+        }).then(function(result){
           vm.regions = result;
         })
-      })
+      //})
 
     })
   }
