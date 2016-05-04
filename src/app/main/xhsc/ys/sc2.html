@@ -1,0 +1,25 @@
+<div layout="row" class="scTop">
+  <div flex="none" class="scleft">
+    <md-button class="md-fab md-mini" style="line-height: 24px" ng-click="vm.nextRegion(true)" aria-label="">
+    <md-icon  md-font-icon="icon-chevron-left" ></md-icon>
+      </md-button>
+    <span>{{ vm.info.name}}</span>
+    <md-button class="md-fab md-mini" style="line-height: 24px" ng-click="vm.nextRegion()" aria-label="">
+    <md-icon   md-font-icon="icon-chevron-right" ></md-icon>
+      </md-button>
+  </div>
+  <md-button class="md-link md-primary md-mini" ng-click="vm.submit()">
+    提交
+  </md-button>
+  <div flex class="scright"><span>{{vm.info.tips}}</span></div>
+</div>
+<div flex="none" layout="row" style="border-bottom: 1px solid rgba(0, 0, 0, 0.117647)">
+  <md-tabs md-dynamic-height flex  md-selected="vm.selectedIndex">
+    <md-tab ng-repeat="m in vm.MeasureIndexes" label="{{m.IndexName}}">
+    </md-tab>
+  </md-tabs>
+</div>
+<sxt-sc-map flex area-id="vm.info.areaId" project="vm.project" image-url="vm.info.imageUrl" region-id="vm.info.regionId" region-type="vm.info.regionType" acceptance-item="vm.info.acceptanceItemID" region-name="vm.info.name" tips="vm.info.tips" measure-indexes="vm.MeasureIndexes" current-index="vm.selectedIndex"></sxt-sc-map>
+<div style="display: none">
+<sxt-sc-map-popup></sxt-sc-map-popup>
+</div>

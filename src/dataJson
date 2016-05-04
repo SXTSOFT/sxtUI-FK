@@ -1,0 +1,38 @@
+//区域
+{
+    RegionID:"",
+    RegionName:"",
+    ParentID:"",
+    RegionType:"",
+    HouseTypeID:"",
+    HouseTypeName:"",
+    DrawingID:"",
+    DrawingName:""
+    DrawingImageUrl:""
+ }
+ //实测项
+{
+    AcceptanceItemID:"", //模板中的实测项
+    AcceptanceItemName:"",//实测项名称
+    Building:""   //模板
+}
+//指标项
+{
+    AcceptanceIndexID:"",
+    ParentAcceptanceIndexID:"",
+    AcceptanceItemID:"",
+    IndexName:"",
+    IndexType:"",
+    MeasureMethod:"",
+    QSKey:"",
+    QSCondition:"",
+    QSValue:"",
+    QSOtherValue:"",
+    PassYieldComputeMode:"",
+    GroupSign:"",
+    Weight:"",
+    SinglePassYield:"",
+    SummaryPassYield:"",
+    IconImage:"",
+    IconColor:""
+  }

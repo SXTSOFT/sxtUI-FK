@@ -12,7 +12,13 @@
   function config(apiProvider){
     var $http = apiProvider.$http,
       $q = apiProvider.$q;
-
+var r = function(data){
+  return $q(function(resolve){
+    resolve({
+      data:data
+    })
+  });
+}
     apiProvider.register('xhsc',{
 	    /**
        * 实测实量项
@@ -24,7 +30,93 @@
          * @param    {string}  areaID     分期
          * */
         query:function(areaID) {
-          return $http.get($http.url('/Api/MeasureInfo/MeasureQuery', {areaID: areaID}));
+          //return $http.get($http.url('/Api/MeasureInfo/MeasureQuery', {areaID: areaID}));
+          return r({
+            RegionID:"yq",
+            RegionName:"",
+            RegionType:"",
+            HouseTypeID:"",
+            HouseTypeName:"",
+            DrawingID:"",
+            DrawingName:"",
+            DrawingImageUrl:"",
+            Children:[
+              {
+                RegionID:"ld",
+                RegionName:"",
+                ParentID:"",
+                RegionType:"",
+                HouseTypeID:"",
+                HouseTypeName:"",
+                DrawingID:"",
+                DrawingName:"",
+                DrawingImageUrl:"",
+                Children:[
+                  {
+                    RegionID:"lc",
+                    RegionName:"",
+                    ParentID:"",
+                    RegionType:"",
+                    HouseTypeID:"",
+                    HouseTypeName:"",
+                    DrawingID:"",
+                    DrawingName:"",
+                    DrawingImageUrl:"",
+                    Children:[
+                      {
+                        RegionID:"room",
+                        RegionName:"",
+                        ParentID:"",
+                        RegionType:"",
+                        HouseTypeID:"",
+                        HouseTypeName:"",
+                        DrawingID:"",
+                        DrawingName:"",
+                        DrawingImageUrl:""
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                RegionID:"ld",
+                RegionName:"",
+                ParentID:"",
+                RegionType:"",
+                HouseTypeID:"",
+                HouseTypeName:"",
+                DrawingID:"",
+                DrawingName:"",
+                DrawingImageUrl:"",
+                Children:[
+                  {
+                    RegionID:"lc",
+                    RegionName:"",
+                    ParentID:"",
+                    RegionType:"",
+                    HouseTypeID:"",
+                    HouseTypeName:"",
+                    DrawingID:"",
+                    DrawingName:"",
+                    DrawingImageUrl:"",
+                    Children:[
+                      {
+                        RegionID:"room",
+                        RegionName:"",
+                        ParentID:"",
+                        RegionType:"",
+                        HouseTypeID:"",
+                        HouseTypeName:"",
+                        DrawingID:"",
+                        DrawingName:"",
+                        DrawingImageUrl:""
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          })
           /*return query (array ({
            AcceptanceItemID: 'string1',
            MeasureItemName: '测量项{0}',

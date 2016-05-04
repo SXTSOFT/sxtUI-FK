@@ -29,7 +29,7 @@ gulp.task('html-app', ['inject', 'partials'], function ()
     .pipe($.rev())
     .pipe(jsFilter)
     .pipe($.ngAnnotate())
-    //.pipe($.uglify({preserveComments: $.uglifySaveLicense})).on('error', conf.errorHandler('Uglify'))
+    .pipe($.uglify({preserveComments: $.uglifySaveLicense})).on('error', conf.errorHandler('Uglify'))
     .pipe(jsFilter.restore)
     .pipe(cssFilter)
     .pipe($.minifyCss({processImport: false}))
@@ -38,12 +38,12 @@ gulp.task('html-app', ['inject', 'partials'], function ()
     .pipe($.useref())
     .pipe($.revReplace())
     .pipe(htmlFilter)
-    //.pipe($.minifyHtml({
-    //  empty       : true,
-    //  spare       : true,
-    //  quotes      : true,
-    //  conditionals: true
-    //}))
+/*    .pipe($.minifyHtml({
+      empty       : true,
+      spare       : true,
+      quotes      : true,
+      conditionals: true
+    }))*/
     .pipe(htmlFilter.restore)
     .pipe(gulp.dest(path.join(conf.paths.app, '/')))
     .pipe($.size({

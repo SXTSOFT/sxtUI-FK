@@ -112,6 +112,20 @@
           }
         }
       })
+      .state('app.xhsc.sc2',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'实测',
+        url   :'/sc2/{acceptanceItemID}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/sc2.html',
+            controller:'sc2Controller as vm'
+          }
+        }
+      })
       .state('app.xhsc.scv',{
         noBack:false,
         sendBt:false,
@@ -154,6 +168,21 @@
           }
         }
       })
+      .state('app.xhsc.offline',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'lx',
+        url   :'/offline',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/offline/manage.html',
+            controller:'offlineController as vm'
+          }
+        }
+      })
+
 
     // Navigation
     msNavigationServiceProvider.saveItem('xhsc', {
