@@ -43,7 +43,7 @@
         .replace('十八', '18')
         .replace('十九', '19')
         .replace('二十', '20');
-      var n = parseInt(/\d+/.exec(str));
+      var n = parseInt(/[-]?\d+/.exec(str));
       return n;
     };
 

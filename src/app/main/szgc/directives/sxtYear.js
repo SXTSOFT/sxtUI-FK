@@ -23,7 +23,7 @@
   <button type="button" class="btn btn-white" ng-click="add(-1)"> <md-icon md-font-icon="icon-chevron-left"></md-icon></button>\
   <button type="button" class="btn btn-white yearlabel" data-day="{{year}}-1-1" data-type="3">{{year}}</button>\
   <button type="button" class="btn btn-white" ng-click="add(1)"><md-icon md-font-icon="icon-chevron-right"></md-icon></button>\
-</div> <button type="button"  class="btn btn-white yearlabel">全部</button><button type="button" ng-show="isLoading" class="btn btn-white"><i class="fa fa-refresh fa-spin"></i></button> </div><div style="overflow: auto;margin-top:34px;" class="clear months"><div ng-repeat="m in months" sxt-month="m"></div></div>',
+</div> <button type="button"  class="btn btn-white yearlabel" style="margin: -20px auto;display: block">全部</button><button type="button" ng-show="isLoading" class="btn btn-white"><i class="fa fa-refresh fa-spin"></i></button> </div><div style="overflow: auto;margin-top:34px;" class="clear months monthsscroll"><div ng-repeat="m in months" sxt-month="m"></div></div>',
       link: function (scope, element, attr, ctrl) {
         var map,curlay;
         element.addClass('sxtcalendar');
@@ -163,8 +163,8 @@
                 scope.isLoading = false;
                 $timeout(function(){
                   var m = moment();
-                  $('[sxt-year]').animate({
-                    scrollTop:$('[data-day="' + m.year() + '-' + (m.month()+1) + '-1"]', element).position().top-100
+                  $('.monthsscroll').animate({
+                    scrollTop:$('td[data-day="' + m.year() + '-' + (m.month()+1) + '-1"]').position().top-100
                   });
 
                 },500)
@@ -234,7 +234,7 @@
                 break;
             }
             //var days = scope.months[m.month()].d.find(function (dy) { return dy.day == m.date(); });
-            div.find('.img-title').html((dayType == 1 ? m.format("YYYY年MM月DD日") : dayType == 2 ? m.format("YYYY年MM月") : dayType == 3 ? m.format("YYYY年") : '全部') + (day ? "(" + images.length + "张)" : ""));
+            div.find('.img-title').html((dayType == 1 ? m.format("YYYY年MM月DD日") : dayType == 2 ? m.format("YYYY年MM月") : dayType == 3 ? m.format("YYYY年") : '') + (day ? "(" + images.length + "张)" : ""));
             el.empty();
             if (images.length) {
               var str = ['<div>'];
@@ -418,7 +418,7 @@
         }
         element.find('button.yearlabel').click(function (e) {
           $(this).blur();
-          var div = $('<div style="background:white"><div class="btn-toolbar" style="border-bottom:2px solid rgb(101, 101, 101);padding:4px 10px" role="toolbar"><div class="btn-group img-title" style="line-height:22px;font-weight:bold; "></div><div class="btn-group pull-right btn-group-xs" role="group"> <button type="button" class="btn btn-white btn-close">关闭</button></div></div><div class="content">正在加载……</div></div>');
+          var div = $('<div style="background:white"><div class="btn-toolbar" style="border-bottom:2px solid rgb(101, 101, 101);padding:20px 10px" role="toolbar"><div class="btn-group img-title" style="line-height:40px;font-weight:bold; "></div><div class="btn-group pull-right btn-group-xs" role="group"> <button type="button" class="btn btn-white btn-close">关闭</button></div></div><div class="content">正在加载……</div></div>');
           div.appendTo(element);
 
           div.css({
@@ -467,7 +467,7 @@
             top:element.scrollTop(),
             margin:0
           }, function () {
-            var table = $('table',n), div = $('<div style="display:none"><div class="btn-toolbar" style="border-bottom:2px solid rgb(101, 101, 101);padding:4px 10px;" role="toolbar"><div class="btn-group img-title" style="line-height:22px;font-weight:bold;"></div><div class="btn-group pull-right btn-group-xs" role="group"> <button type="button" class="btn btn-white btn-close">关闭</button></div></div><div class="content">正在加载……</div></div>');
+            var table = $('table',n), div = $('<div style="display:none"><div class="btn-toolbar" style="border-bottom:2px solid rgb(101, 101, 101);padding:4px 10px;" role="toolbar"><div class="btn-group img-title" style="line-height:40px;font-weight:bold;"></div><div class="btn-group pull-right btn-group-xs" role="group"> <button type="button" class="btn btn-white btn-close">关闭</button></div></div><div class="content">正在加载……</div></div>');
             div.appendTo(n);
             //table.css({ float: 'left' });
 
