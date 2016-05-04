@@ -172,8 +172,25 @@
         units: http.custom(function (arg) {
           return get(http.url('/common/v1/buildings/' + arg + '/units', arg));
         }),
-        rooms: http.custom(function (arg) {
-          return get(http.url('/common/v1/rooms', arg));
+        rooms: http.custom(function (arg,incHide) {
+         // return get(http.url('/common/v1/rooms', arg));
+          return get(http.url('/common/v1/buildings/'+arg.building_id+'/rooms',arg)).then(function(result){
+            result.data.data.forEach(function(item){
+              item.otype = item.type;
+              item.type=item.type &&item.type.type_id;
+              if(incHide!==true){
+                if(item.engineering.status=='hide'){
+                  var ix=result.data.data.indexOf(item);
+                  if(ix!=-1){
+                    result.data.data.splice(ix,1);
+                  }
+                }
+              }
+
+            })
+            return result;
+          })
+
         }),
         partners: http.custom(function (arg) {
           return get(http.url('/common/v1/partners', arg));
