@@ -1,15 +1,19 @@
 /**
  * Created by jiuyuong on 2016/1/21.
  */
-if(!Array.prototype.find) {
-  Array.prototype.find = function (fn) {
-    for (var i = 0, l = this.length; i < l; i++) {
-      if (fn(this[i]) === true) {
-        return this[i];
+(function(){
+  'use strict';
+  if(!Array.prototype.find) {
+    Array.prototype.find = function (fn) {
+      for (var i = 0, l = this.length; i < l; i++) {
+        if (fn(this[i]) === true) {
+          return this[i];
+        }
       }
-    }
-  };
-}
+    };
+  }
+
+})();
 
 (function(win) {
   'use strict';

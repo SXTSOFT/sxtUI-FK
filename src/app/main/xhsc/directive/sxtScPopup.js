@@ -7,7 +7,7 @@
     .module('app.xhsc')
     .directive('sxtScPopup',sxtScPopup);
   /** @ngInject */
-  function sxtScPopup(mapPopupSerivce,$timeout){
+  function sxtScPopup(mapPopupSerivce,$timeout,sxt){
     return {
       restrict:'E',
       scope:{
@@ -95,21 +95,42 @@
       scope.updateValue = function() {
         var context = scope.context;
 
-        if (!context.featureGroup.options.onUpdateData || context.featureGroup.options.onUpdateData (context) !== false) {
+        if (!context.featureGroup.options.onUpdateData || context.featureGroup.options.onUpdateData (context,scope.data.updates,scope) !== false) {
           scope.cancelEdit ();
         }
       };
       scope.apply = function() {
-        var context = scope.context;
-        var singleEdit=[],mutiEdit=[],floorEdit=[],sjzEdit=[],materEidt=[];
+        var context = scope.context,p = context.layer.getValue();
+        var singleEdit=[],mutiEdit=[],floorEdit=[],sjzEdit=[],materEidt=[],group;
+        scope.data.updates = [];
         scope.data.measureIndexes.forEach(function(m){
           var o={
             m:m,
-            v:{}
+            v:scope.data.values.find(function(o){
+              return o.MeasurePointID == p.$id
+              && o.AcceptanceIndexID == m.AcceptanceIndexID
+            })
           };
-          if(m.IndexType=='SelectMaterial'){
+          if(!o.v){
+            o.v = {
+              _id:sxt.uuid(),
+              MeasurePointID:p.$id,
+              CheckRegionID:scope.data.regionId,
+              RegionType:scope.data.regionType,
+              AcceptanceItemID:scope.data.acceptanceItem,
+              AcceptanceIndexID: m.AcceptanceIndexID
+            };
+            scope.data.values.push(o.v);
+          }
+          scope.data.updates.push(o);
+          if(m.IndexType == 'SelectMaterial'){
 
-          }else {
+          }else if(context.layer instanceof L.LineGroup || context.layer instanceof L.AreaGroup){
+            //o.v.children = [];
+            group = o;
+            
+          }
+          else {
             switch (m.QSKey) {
               case '1':
               case '3':
@@ -135,7 +156,8 @@
           mutiEdit:mutiEdit,
           floorEdit:floorEdit,
           sjzEdit:sjzEdit,
-          materEidt:materEidt
+          materEidt:materEidt,
+          group:group
         }
         if(scope.PointType=='LineGroup' || scope.PointType=='AreaGroup') {
           var ps = [];
