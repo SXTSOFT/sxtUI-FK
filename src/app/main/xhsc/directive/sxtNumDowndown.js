@@ -16,15 +16,16 @@
         ct:'='
       },
       link:link,
-      template:'<div class="sxtnumdowndown" style="position:relative"><span ng-click="toggleView()" style="display: block;">&nbsp;{{value}}</span><div class="numberpanel"  style="position: absolute;left:-56px;top:30px;width:auto;z-index:10005;" ><sxt-num-input ng-model="value" ok="ok()"></sxt-num-input></div></div>'
+      template:'<div class="sxtnumdowndown" style="position:relative"><span ng-click="toggleView()" style="display: block;">&nbsp;{{value}}</span><div class="numberpanel"  style="position: absolute;left:-56px;top:30px;width:auto;z-index:10005;display:none;" ><sxt-num-input ng-model="value" ok="ok()"></sxt-num-input></div></div>'
     }
 
     function link(scope,element,attr,ctrl){
       //ng-show="isView"
      $('.numberpanel').css('display','none');
-      if(scope.ct) {
+      if(typeof(scope.ct)=="object") {
+        if(scope.ct == undefined) return;
         scope.ct.show = function () {
-
+          //console.log('ele',$(element).parent().parent().parent())
           if ($(element).parent().parent().hasClass('addPanel')) {
             if($(element).parent().parent().parent().hasClass('stamp')){
               for(var i=0;i<$(element).parent().parent().parent().find('.addPanel').length;i++){
@@ -41,7 +42,7 @@
             $(element).parent().eq(0).find('.numberpanel').css('display', 'block');
           } else {
             $('.numberpanel').css('display', 'block');
-           // $(element).find('.numberpanel').css('display', 'block');
+            //$(element).find('.numberpanel').css('display', 'block');
           }
         };
       };
@@ -79,6 +80,7 @@
       $(document).bind("click",docClick);
 
       scope.$on('$destroy',function(){
+        $('.numberpanel').css('display','none');
         $(document).unbind("click",docClick);
       })
     }

@@ -18,7 +18,105 @@
   }
 
 }
+.subheader{
+  .md-tab{
+    position: relative;
+    padding:12px 50px;
+    &:after{
+      content:'/';
+      position: absolute;
+      right:0;
+      top:13px;
+      font-size:20px;
+    }
+  }
+  .lr{
+    color:#0fb2fb;
+  }
+  .md-subheader{
+    border-left:1px solid  #ccc;
+    border-right:1px solid  #ccc;
+    &.md-vanke-theme{
+      &.md-primary{
+        background: #e93030;
+        color:#fff;
+      }
+    }
+    .md-subheader-inner{
+      padding: 10px;
+      background: #e93030;
+      color:#fff;
+    }
+  }
+  .md-subheader-wrapper{
+    &:not(.md-sticky-no-effect)[sticky-state="active"]{
+      margin-top:88px;
+    }
+  }
+  .md-sticky-clone{
+    //left:-8px;
+    //right:16px;
+  }
+}
+.evaluate{
+  .evaluate-item{
+    .md-no-style{
+      padding: 0;
+    }
+    width: 50%;
+    float: left;
+    height:100px;
+    padding:0 16px;
+    margin-bottom: 32px;
+    .evaluate-itemwrap{
+      background: #fb4848 url(main/xhsc/images/evaluateBg.png) no-repeat right bottom;
+      width:100%;
+      display: table;
+      font-size:22px;
+      color:#fff;
+      text-shadow: 0 2px 2px #ccc;
+      padding: 14px 0;
+      border-radius:5px;
+      &>div{
+        display: table-cell;
+        vertical-align: middle;
+        height:68px;
 
+        p{
+          margin-bottom: 0;
+        }
+        &.left{
+          width: 150px;
+          text-align: center;
+          border-right:1px solid #e14141;
+
+        }
+      }
+      .md-list-item-text{
+        padding: 0 16px;
+        p{
+          font-size:24px !important;
+        }
+
+      }
+    }
+  }
+}
+.md-scroll-mask{
+    background: rgba(0,0,0,.6);
+  &>.md-scroll-mask-bar{
+    background:none;
+  }
+}
+.typeNumber{
+  .md-button{
+    background: #f67740;color:#fff;font-size:40px;text-align: center;border-radius:50%;box-shadow: 0 0 8px rgba(0,0,0,.5);
+    width:130px;
+    height:130px;
+    line-height: 130px;
+    margin:10px auto;
+  }
+}
 .mappopup{
   background:transparent;
   color:#fff;
@@ -684,7 +782,7 @@
   //table-layout: fixed;
   tr{
     th,td{
-      border:1px solid #ccc;
+      border:1px solid #d8d8d8;
       padding: 8px;
     }
     td{
@@ -711,6 +809,13 @@
       }
     }
 
+  }
+  &.fixtable{
+    tr{
+      th{
+        padding:10px 8px;
+      }
+    }
   }
 }
 

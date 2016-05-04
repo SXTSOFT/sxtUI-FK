@@ -65,10 +65,10 @@
   }
     vm.loadCircle = true;
     xhUtils.getRegion( vm.areaId, function(data){
-      //console.log('r',data.Children)
+     // console.log('r',data)
      vm.Region = data.Children;
       remote.MeasureCheckBatch.getStatus($stateParams.id,$stateParams.areaId,1).then(function(result){
-      // console.log('r',result)
+       //console.log('r',result)
         data.each(function(item){
           var find = result.data.find(function(r){return r.RegionID==item.RegionID;});
           if(find){
@@ -81,7 +81,6 @@
         })
         vm.loadCircle = false;
       })
-
       if(vm.Region.length) {
         vm.open(vm.Region[0]);
       }

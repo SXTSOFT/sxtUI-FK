@@ -58,19 +58,33 @@
           }
         }
       })
-      //.state('app.xhsc.check',{
-      //  noBack:true,
-      //  sendBt:true,
-      //  rightArrow:true,
-      //  leftArrow:true,
-      //  url   :'/check',
-      //  views :{
-      //    'content@app':{
-      //      templateUrl : 'app/main/xhsc/ys/login.html',
-      //      controller:'LoginController as vm'
-      //    }
-      //  }
-      //})
+
+      .state('app.xhsc.evaluate',{
+        noBack:true,
+        sendBt:true,
+        rightArrow:false,
+        leftArrow:false,
+        url   :'/evaluate',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/evaluate.html',
+            controller:'evaluateController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.evaluatelist',{
+        noBack:true,
+        sendBt:true,
+        rightArrow:false,
+        leftArrow:false,
+        url   :'/list',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/evaluatelist.html',
+            controller:'evaluatelistController as vm'
+          }
+        }
+      })
       .state('app.xhsc.check',{
         noBack:true,
         sendBt:true,
