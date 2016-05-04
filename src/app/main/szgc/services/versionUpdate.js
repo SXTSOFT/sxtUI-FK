@@ -23,7 +23,7 @@
          // $cordovaAppVersion.getVersionNumber().then(function (version) {
           //  console.log("version=====本机>>>" + version + "====>>服务器" + serverAppVersion);
 
-          var version='1.3.6'
+          var version='1.3.8'
             if (version != serverAppVersion) {
               //弹出选择框 是否进行更新
 
@@ -35,7 +35,7 @@
                 .cancel('暂不更新');//Sounds like a scam
               $mdDialog.show(confirm).then(function () {
 
-                window.location.replace("https://vkde.sxtsoft.com:4443/apps");
+                window.location.replace("https://m.vanke.com/pcStore/detailsPhone/vkappcan10102_1");
 
             //    // $scope.status = 'You decided to get rid of your debt.';//Please do it!点击更新的事件
             //    var url = "https://vkde.sxtsoft.com:4443/apps/android-release.apk";
