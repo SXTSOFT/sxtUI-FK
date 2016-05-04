@@ -9,18 +9,12 @@
     .controller('ChooseController',ChooseController);
 
   /** @ngInject */
-  function ChooseController($scope,$timeout,remote,$rootScope,xhUtils,Db){
+  function ChooseController($scope,$timeout,remote,$rootScope,xhUtils){
     var vm=this;
     function toggleRightEvent(){
       //$mdSidenav('right')
       //  .toggle();
     }
-    Db.area.allDocs({include_docs:true}).then(function(r){
-      console.log('r',r);
-    })
-    Db.area.get('1234').then(function(r){
-      console.log('1234',r);
-    })
 /*    var store = new Store('area', { remote: 'http://localhost:5984/areas',ajax:{
       withCredentials:false
     } })
