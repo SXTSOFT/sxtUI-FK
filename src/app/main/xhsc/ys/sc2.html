@@ -1,19 +1,22 @@
 <div layout="row" class="scTop">
-  <div flex="none" class="scleft">
-    <md-button class="md-fab md-mini" style="line-height: 24px" ng-click="vm.nextRegion(true)" aria-label="">
-    <md-icon  md-font-icon="icon-chevron-left" ></md-icon>
-      </md-button>
-    <span>{{ vm.info.name}}</span>
-    <md-button class="md-fab md-mini" style="line-height: 24px" ng-click="vm.nextRegion()" aria-label="">
-    <md-icon   md-font-icon="icon-chevron-right" ></md-icon>
-      </md-button>
+  <div flex class="scleft">
+    <span>当前测量项：</span><span ng-repeat="sc in vm.scStr" style="color:#f00;">{{sc.IndexName}},</span>
+    <md-button ng-click="vm.scChoose()"><img src="app/main/xhsc/images/pop.jpg" style="vertical-align: middle;"></md-button>
   </div>
-  <md-button class="md-link md-primary md-mini" ng-click="vm.submit()">
-    提交
-  </md-button>
-  <div flex class="scright"><span>{{vm.info.tips}}</span></div>
+  <!--<md-button class="md-link md-primary md-mini" ng-click="vm.submit()">-->
+    <!--提交-->
+  <!--</md-button>-->
+  <div flex="none" class="scright">
+    <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;" ng-click="vm.nextRegion(true)" aria-label="">
+      <md-icon  md-font-icon="icon-chevron-left" ></md-icon>
+    </md-button>
+    <span style="font-size:16px;display: inline-block;vertical-align: middle;">{{ vm.info.name}}</span>
+    <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;" ng-click="vm.nextRegion()" aria-label="">
+      <md-icon   md-font-icon="icon-chevron-right" ></md-icon>
+    </md-button>
+  </div>
 </div>
-<div flex="none" layout="row" style="border-bottom: 1px solid rgba(0, 0, 0, 0.117647)">
+<div flex="none" layout="row" style="border-bottom: 1px solid rgba(0, 0, 0, 0.117647);display: none;">
   <md-tabs md-dynamic-height flex  md-selected="vm.selectedIndex">
     <md-tab ng-repeat="m in vm.MeasureIndexes" label="{{m.IndexName}}">
     </md-tab>

@@ -61,9 +61,10 @@
 
       .state('app.xhsc.evaluate',{
         noBack:true,
-        sendBt:true,
+        sendBt:false,
         rightArrow:false,
         leftArrow:false,
+        title :'评估',
         url   :'/evaluate',
         views :{
           'content@app':{
@@ -74,7 +75,7 @@
       })
       .state('app.xhsc.evaluatelist',{
         noBack:true,
-        sendBt:true,
+        sendBt:false,
         rightArrow:false,
         leftArrow:false,
         url   :'/list',
@@ -87,7 +88,7 @@
       })
       .state('app.xhsc.check',{
         noBack:true,
-        sendBt:true,
+        sendBt:false,
         rightArrow:true,
         leftArrow:true,
         url   :'/check',
@@ -114,7 +115,7 @@
       })
       .state('app.xhsc.sc2',{
         noBack:true,
-        sendBt:false,
+        sendBt:true,
         rightArrow:false,
         leftArrow:false,
         title :'实测',

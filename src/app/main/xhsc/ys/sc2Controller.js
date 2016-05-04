@@ -34,7 +34,43 @@
         }
       });
       vm.MeasureIndexes = m;
+      vm.MeasureIndexes.forEach(function(t){
+        t.checked = false;
+      })
+      vm.scChoose();
     });
 
+    vm.scChoose = function(){
+      $mdDialog.show({
+          controller: DialogController,
+          templateUrl: 'app/main/xhsc/ys/scChoose.html',
+          parent: angular.element(document.body),
+          clickOutsideToClose:true
+        })
+        .then(function(answer) {
+          var scStr=[];
+          answer.forEach(function(t){
+            if(t.checked ==  true){
+              scStr.push(t);
+            }
+          })
+          vm.scStr = scStr;
+         });
+    }
+
+    function DialogController($scope, $mdDialog) {
+      console.log('sc',vm.MeasureIndexes)
+      $scope.scList = vm.MeasureIndexes;
+      $scope.hide = function () {
+        $mdDialog.hide();
+      };
+      $scope.cancel = function () {
+        $mdDialog.cancel();
+      };
+      $scope.answer = function (answer) {
+        console.log('ans',answer)
+        $mdDialog.hide(answer);
+      };
+    }
   }
 })();
