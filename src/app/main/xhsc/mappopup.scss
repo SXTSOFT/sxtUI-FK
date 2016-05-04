@@ -32,6 +32,12 @@
   }
   .lr{
     color:#0fb2fb;
+    .img{
+      margin-right:5px;
+      img{
+        margin-right: 5px;
+      }
+    }
   }
   .md-subheader{
     border-left:1px solid  #ccc;
@@ -310,19 +316,21 @@
 }
 .scTop{
   border-bottom: 1px solid rgba(0, 0, 0, 0.117647);padding:0 16px;
+  background: #fff;
   .scleft {
     span {
       display: inline-block;
       min-width: 50px;
       font-size: 16px;
       vertical-align: top;
-      line-height: 54px;
+      line-height: 56px;
       text-align: center;
     }
     .md-button{
       min-height:32px;
       padding: 0;
-      margin:10px 8px;
+      margin:10px 0;
+      min-width: 36px;
       &.md-fab{
         width:32px;
         height:32px;
@@ -330,10 +338,58 @@
     }
   }
     .scright{
-      span{
-        text-align: right;overflow: hidden;display:block;font-size:14px;line-height: 48px;white-space: nowrap;color:#ccc;font-style: italic;
+      text-align: right;
+      position: relative;
+      .md-button{
+        margin: 8px;
+      }
+      &:before{
+        content:"";
+        width:1px;
+        height:32px;
+        background: #d8d8d8;
+        position: absolute;
+        left:-10px;
+        top:11px;
+      }
+      //span{
+      //  text-align: right;overflow: hidden;display:block;font-size:14px;line-height: 48px;white-space: nowrap;color:#ccc;font-style: italic;
+      //}
+    }
+}
+.scchoose{
+  md-toolbar{
+    border-top:5px solid #ea5300;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    min-height: 58px;
+    border-bottom:1px solid #d8d8d8;
+    &:not(.md-menu-toolbar){
+      background-color: #fff;
+      color:rgb(211,47,47);
+      .md-button{
+        &:not(.md-raised){
+          color:rgb(211,47,47);
+        }
       }
     }
+    .md-toolbar-tools{
+      height:58px;
+      max-height: 58px;
+      &> .md-button{
+        &:last-child{
+          margin-right:16px;
+        }
+      }
+    }
+  }
+  min-width: 320px;
+  md-dialog-content{
+    padding:16px;
+  }
+  md-list{
+    padding:0;
+  }
 }
 .arrows{
   vertical-align:top;
