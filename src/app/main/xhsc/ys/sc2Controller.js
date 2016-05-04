@@ -21,34 +21,6 @@
         AcceptanceItemID:$stateParams.acceptanceItemID
       }
     };
-    vm.setRegionId = function(regionId,regionType){
-      switch (regionType) {
-        case '8':
-          remote.Project.getFloorDrawing(regionId).then(function (r) {
-            if(r.data.length) {
-              vm.info.imageUrl = r.data[0].DrawingImageUrl;
-              vm.info.regionId = regionId;
-              vm.info.regionType = regionType;
-            }
-            else{
-              utils.alert('未找到图纸');
-            }
-          });
-          break;
-        case '16':
-          remote.Project.getHouseDrawing(regionId).then(function (r) {
-            if(r.data.length) {
-              vm.info.imageUrl = r.data[0].DrawingImageUrl;
-              vm.info.regionId = regionId;
-              vm.info.regionType = regionType;
-            }
-            else{
-              utils.alert('未找到图纸');
-            }
-          });
-          break;
-      }
-    }
     remote.Measure.MeasureIndex.query (vm.info.acceptanceItemID).then (function (r) {
       var m=[];
       r.data.forEach(function(item) {
@@ -63,6 +35,6 @@
       });
       vm.MeasureIndexes = m;
     });
-    vm.setRegionId($stateParams.regionId,$stateParams.regionType);
+
   }
 })();
