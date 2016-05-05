@@ -21,6 +21,7 @@
         AcceptanceItemID:$stateParams.acceptanceItemID
       }
     };
+    console.log('name',vm.info)
     remote.Measure.MeasureIndex.query (vm.info.acceptanceItemID).then (function (r) {
       var m=[];
       r.data.forEach(function(item) {
@@ -34,9 +35,9 @@
         }
       });
       vm.MeasureIndexes = m;
-      vm.MeasureIndexes.forEach(function(t){
-        t.checked = false;
-      })
+      //vm.MeasureIndexes.forEach(function(t){
+      //  t.checked = false;
+      //})
       vm.scChoose();
     });
 
@@ -68,7 +69,7 @@
         $mdDialog.cancel();
       };
       $scope.answer = function (answer) {
-        console.log('ans',answer)
+       // console.log('ans',answer)
         $mdDialog.hide(answer);
       };
     }

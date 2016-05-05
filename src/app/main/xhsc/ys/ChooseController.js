@@ -9,7 +9,7 @@
     .controller('ChooseController',ChooseController);
 
   /** @ngInject */
-  function ChooseController($scope,$timeout,remote,$rootScope,xhUtils){
+  function ChooseController($scope,$timeout,db,$rootScope,xhUtils){
     var vm=this;
     function toggleRightEvent(){
       //$mdSidenav('right')

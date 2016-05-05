@@ -71,17 +71,27 @@
             <td>检查人</td>
             <td>检查人</td>
             <td width="50" align="center">2</td>
-            <td width="50" class="lr" align="center"><span ng-click="vm.getRecord($event)">录入</span></td>
+            <td width="50" class="lr" align="center">
+              <span ng-click="vm.getRecord($event)" ng-if="!vm.input">录入</span>
+              <span ng-click="vm.getRecord($event)" ng-if="vm.input">{{vm.input}}</span>
+            </td>
             <td width="50" align="center">2</td>
           </tr>
           <tr>
             <td colspan="5" class="lr">
-              <img ng-src="app/main/xhsc/images/text.png" style="margin-right:12px;margin-top:3px;"><span>备注：</span><md-icon style="padding-top:5px;"><img ng-src="app/main/xhsc/images/write.png"></md-icon>
+              <img ng-src="app/main/xhsc/images/text.png" style="margin-right:12px;margin-top:5px;"><span>备注：<i style="font-style: normal;color:#333;font-size:12px;margin-right:5px;">{{vm.evaluateNote}}</i></span><md-icon style="padding-top:8px;width:30px;height:30px;" ng-click="vm.showDialog($event)"><img ng-src="app/main/xhsc/images/write.png"></md-icon>
             </td>
           </tr>
           <tr>
             <td colspan="5" class="lr">
-              <img ng-src="app/main/xhsc/images/pic.png" style="margin-right:12px;margin-top:4px;">照片：<span style="margin-right: 5px;" class="img"><img src="assets/images/etc/plug.png" width="30"></span><md-icon style="width:30px;height:30px;"><img src="assets/images/etc/plug.png"></md-icon>
+              <img ng-src="app/main/xhsc/images/pic.png" style="margin-right:12px;margin-top:4px;">照片：
+              <!--<div>-->
+                <ul class="img" style="display: inline-block;" sxt-images="vm.images" ng-repeat="img in vm.images">
+                  <li><img ng-src="{{img.url}}"></li>
+                </ul>
+              <!--</div>-->
+              <!--<span class="img"><img src="assets/images/etc/plug.png" width="30"></span>-->
+              <md-icon style="width:30px;height:30px;"><img src="assets/images/etc/plug.png"></md-icon>
             </td>
           </tr>
           <tr>
@@ -170,3 +180,4 @@
     </div>
   </div>
 </md-content>
+
