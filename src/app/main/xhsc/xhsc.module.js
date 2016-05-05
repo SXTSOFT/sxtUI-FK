@@ -94,7 +94,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'下载详情列表',
-        url   :'/download',
+        url   :'/download/detail',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/ddetail.html',

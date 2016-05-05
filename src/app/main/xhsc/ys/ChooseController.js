@@ -16,10 +16,10 @@
       //  .toggle();
     }
     var area = db('db_');
-    area.addOrUpdate({
-      _id:'1233',
-      name:''
-    });
+    //area.addOrUpdate({
+    //  _id:'1233',
+    //  name:''
+    //});
 /*    var store = new Store('area', { remote: 'http://localhost:5984/areas',ajax:{
       withCredentials:false
     } })

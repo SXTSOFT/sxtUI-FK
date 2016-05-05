@@ -943,6 +943,9 @@
             background-color: #0185f1;
             &:not([disabled]){
               box-shadow: none;
+              &.md-focused{
+                background-color: #0185f1;
+              }
               &:hover{
                 background-color: #0185f1;
               }
@@ -1030,7 +1033,7 @@
       position: absolute;
       left:16px;
       top:50px;
-      bottom:50px;
+      bottom:100px;
     }
     p{
       font-size: 14px;
@@ -1050,6 +1053,16 @@
         color:#000;
         display: inline-block;
         min-width: 120px;
+      }
+    }
+    md-progress-linear{
+      .md-container{
+        background-color: rgb(170,209,249);
+      }
+      &.md-vanke-theme{
+        .md-bar{
+          background-color: rgb(16,108,200);
+        }
       }
     }
   }
@@ -1122,6 +1135,21 @@
       border-color: #f00;
     }
 
+  }
+}
+.viewer-invisible{
+  display: none;
+}
+.viewer-delete{
+  &:before{
+    content:"";
+    font-size: 0;
+    line-height: 0;
+    display: block;
+    width: 20px;
+    height: 20px;
+    color: transparent;
+    background:url(main/xhsc/images/del.png) no-repeat center center;
   }
 }
 .inner-footerbar{
