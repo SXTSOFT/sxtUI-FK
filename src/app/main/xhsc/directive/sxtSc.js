@@ -27,7 +27,7 @@
       link:link
     }
     function link(scope,element,attr,ctrl){
-      var map,tile,layer,toolbar,data = db('db_00001_sc'),points = db('db_00001_point');
+      var map,tile,fg,toolbar,data = db('db_00001_sc'),points = db('db_00001_point');
       var install = function(){
         if(!scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
         if(!map){
@@ -49,8 +49,8 @@
           tile.regionId = scope.regionId;
         }
 
-        if(layer)
-          map.removeLayer(layer);
+        if(fg)
+          map.removeLayer(fg);
 
 
         if(toolbar)
@@ -59,7 +59,7 @@
 
         map.addLayer(tile);
 
-        layer = new L.SvFeatureGroup({
+        fg = new L.SvFeatureGroup({
           onLoad:function(){
             var layer = this;
             if(layer.loaded)return;
@@ -71,13 +71,13 @@
                   return m.AcceptanceIndexID == o.AcceptanceIndexID;
                 });
             }).then(function(r){
-              layer.data = r.rows;
+              fg.data = r.rows;
               points.findAll(function(o){
                 return r.rows.find(function(i){
                   return i.MeasurePointID == o._id;
                 })!=null;
               }).then(function(p){
-                //layer.addLayer(p);
+                //fg.addLayer(p);
                 p.rows.forEach(function(geo){
                   layer.addData(geo.geometry);
                 })
@@ -91,7 +91,46 @@
               geometry:point
             };
             points.addOrUpdate(point);
-            console.log('layer',point);
+            if(isNew){
+              scope.measureIndexes.forEach(function (m) {
+                var v = {
+                  _id:sxt.uuid(),
+                  MeasurePointID:point._id,
+                  CheckRegionID:scope.regionId,
+                  RegionType:scope.regionType,
+                  AcceptanceItemID:scope.acceptanceItem,
+                  AcceptanceIndexID:m.AcceptanceIndexID
+                };
+                data.addOrUpdate(v);
+                fg.data.push(v);
+              })
+            }
+            if(group){
+              var groupId = group.getValue().$id,//添加或移出的groupId
+                measureIndexs = xhUtils.findAll(scope.measureIndexes,function (m) {
+                  return m.QSKey=='3'||m.QSKey=='4';
+                }),//需要组或区测量的指标
+                values = xhUtils.findAll(fg.data,function (d) {
+                  return d.MeasurePointID == point._id && !!measureIndexs.find(function (m) {
+                      return m.AcceptanceIndexID==d.AcceptanceIndexID;
+                    });
+                });//相关操作记录值
+              if(!point.geometry.properties.$groupId){//清除groupId
+                values.forEach(function (v) {
+                  v.ParentMeasureValueID = null;
+                  data.addOrUpdate(v);
+                })
+              }
+              else{//添加或更改groupId
+                values.forEach(function (v) {
+                  var parent = fg.data.find(function (m) {
+                    return m.AcceptanceIndexID == v.AcceptanceIndexID && m.MeasurePointID==groupId;
+                  });
+                  v.ParentMeasureValueID = parent._id;
+                  data.addOrUpdate(v);
+                })
+              }
+            }
           },
           onUpdateData:function(context,updates,scope){
             updates.forEach(function(m){
@@ -99,21 +138,32 @@
             });
             console.log('onUpdate',context,updates);
           },
+          onDelete:function (layer) {
+            var id = layer.getValue().$id,
+              values = xhUtils.findAll(fg.data,function (d) {
+              return d.MeasurePointID == id && !!scope.measureIndexes.find(function (m) {
+                  return m.AcceptanceIndexID==d.AcceptanceIndexID;
+                });
+            });
+            points.delete(id);
+            values.forEach(function (v) {
+              data.delete(v._id);
+            })
+          },
           onPopup:function(e){
             if(e.layer instanceof L.Stamp
               || e.layer instanceof L.AreaGroup
               || e.layer instanceof L.LineGroup)
               var edit = mapPopupSerivce.get('mapPopup');
             if(edit) {
-              //e.layer._value.seq =
+              //e.fg._value.seq =
               edit.scope.context = e;
               edit.scope.data = {
                 measureIndexes:scope.measureIndexes,
                 regionId:scope.regionId,
-                project:scope.project,
                 regionType:scope.regionType,
                 acceptanceItem:scope.acceptanceItem,
-                values:layer.data
+                values:fg.data
               };
               edit.scope.readonly = scope.readonly;
               edit.scope.apply && edit.scope.apply();
@@ -122,7 +172,15 @@
           }
         }).addTo(map);
         toolbar = new L.Control.Draw({
-          featureGroup:layer
+          featureGroup:fg,
+          group:{
+            lineGroup: !!scope.measureIndexes.find(function (m) {
+              return m.QSKey=='3'
+            }),
+            areaGroup:!!scope.measureIndexes.find(function (m) {
+              return m.QSKey=='4'
+            })
+          }
         }).addTo(map);
 
       };
