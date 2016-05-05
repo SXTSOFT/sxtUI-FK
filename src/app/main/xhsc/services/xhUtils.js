@@ -11,7 +11,8 @@
     var _areaId, cP,region;
     var o = {
       getProcedure:getProcedure,
-      getRegion:getRegion
+      getRegion:getRegion,
+      getMapPic:getMapPic
     };
     return o;
 
@@ -146,6 +147,18 @@
           }
         }
       }
+    }
+    function getMapPic(maxZoom){
+      //console.log('m',maxZoom,Math.pow(2,maxZoom))
+      var pics = [];
+      for(var z=0;z<=maxZoom;z++){
+        for(var x= 0,xl = Math.pow(2,z);x<xl;x++){
+          for(var y= 0,yl = xl;y<yl;y++){
+            pics.push(z+'_'+x+'_'+y)
+          }
+        }
+      }
+      return pics;
     }
   }
 })();

@@ -37,8 +37,26 @@
       var args = Array.prototype.slice.call(arguments);
       this.create(args);
     },
-    update:function () {
-      this.create(Array.prototype.slice.call(arguments));
+    addOrUpdate:function(obj){
+      var self = this;
+      if(obj._id){
+        return self.get(obj._id).then(function(doc){
+          obj._rev = doc._rev;
+          return self.put(obj);
+        }).catch(function(){
+          return self.put(obj);
+        });
+      }
+    },
+    update:function (obj) {
+      var self = this;
+      if(obj._id){
+        return self.get(obj._id).then(function(doc){
+          obj._rev = doc._rev;
+          return self.put(obj);
+        });
+      }
+      //this.create(Array.prototype.slice.call(arguments));
     },
     create:function(obj){
       if(!angular.isArray(obj)){
@@ -56,7 +74,7 @@
         return db.remove(doc);
       });
     },
-    find:function (filter) {
+    findAll:function (filter) {
       return this.allDocs({include_docs:true}).then(function (result) {
         var r = {
           "total_rows":result.total_rows,
