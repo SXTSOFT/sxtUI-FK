@@ -1,0 +1,79 @@
+<md-content class="download">
+  <div layout="column">
+    <md-subheader>已下载列表</md-subheader>
+    <md-list>
+      <md-list-item>
+        <img src="app/main/xhsc/images/icon-downed.png" class="md-avatar" />
+        <div class="md-list-item-text" layout="column">
+          <h3>星河智慧一期现场评估</h3>
+          <p>2016年 第一季度</p>
+        </div>
+        <div class="md-secondary md-hue-3">
+          <md-button ng-click="vm.showECs($event)" class="md-raised md-primary">
+            开始评估
+          </md-button>
+         <span style="display:inline-block;width:120px;text-align: center;">
+            <md-button ng-click="vm.upload()" class="md-raised upload-btn">
+              上传
+            </md-button>
+          </span>
+        </div>
+
+      </md-list-item>
+      <md-list-item>
+        <img src="app/main/xhsc/images/icon-downed.png" class="md-avatar" />
+        <div class="md-list-item-text" layout="column">
+          <h3>星河智慧一期现场评估</h3>
+          <p>2016年 第一季度</p>
+        </div>
+        <div class="md-secondary md-hue-3">
+          <md-button class="md-raised md-primary" ng-click="vm.showECs($event)">
+            开始评估
+          </md-button>
+          <span style="display:inline-block;width:120px;text-align: center;">
+            <md-button class="md-raised upload-btn" ng-click="vm.upload()">
+              上传
+            </md-button>
+          </span>
+
+        </div>
+      </md-list-item>
+    </md-list>
+    <md-subheader>未下载列表</md-subheader>
+    <md-list>
+      <md-list-item>
+        <img src="app/main/xhsc/images/icon-down.png" class="md-avatar" />
+        <div class="md-list-item-text" layout="column">
+          <h3>星河智慧一期现场评估</h3>
+          <p>2016年 第一季度</p>
+        </div>
+        <div class="md-secondary md-hue-3">
+         <span style="display:inline-block;width:120px;text-align: center;">
+            <md-button class="md-raised upload-btn" ng-click="vm.download()">
+              下载
+            </md-button>
+          </span>
+        </div>
+
+      </md-list-item>
+      <md-list-item>
+        <img src="app/main/xhsc/images/icon-down.png" class="md-avatar" />
+        <div class="md-list-item-text" layout="column">
+          <h3>星河智慧一期现场评估</h3>
+          <p>2016年 第一季度</p>
+        </div>
+        <div class="md-secondary md-hue-3">
+          <span style="display:inline-block;width:120px;text-align: center;">
+            <md-button ng-click="vm.download()" class="md-raised upload-btn" style="display: none;">
+              下载
+            </md-button>
+             <a style="position: relative;display: inline-block;" ng-click="vm.cancel()"><md-progress-circular md-mode="determinate" value="100"  md-diameter="30"></md-progress-circular>
+              <md-icon style="width:10px;height:10px;background: #0185f1;position: absolute;left:10px;top:10px;"></md-icon></a>
+              <md-button style="display: inline-block;vertical-align: middle;padding:5px;color:#0185f1;min-width:40px;" ui-sref="app.xhsc.ddetail">详情</md-button>
+          </span>
+
+        </div>
+      </md-list-item>
+    </md-list>
+  </div>
+</md-content>

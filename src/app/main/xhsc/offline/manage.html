@@ -1,1 +1,50 @@
-{{vm.regions}}
+<div  ng-cloak layout="column" flex layout-fill ng-cloak>
+  <md-content>
+    <md-toolbar md-scroll-shrink>
+      <div class="md-toolbar-tools">
+        <h3>
+          <span>离线数据管理</span>
+        </h3>
+        <span flex></span>
+        <md-button class="md-raised" ng-click="vm.download()">
+           下载
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-list>
+      <md-subheader class="md-no-sticky">区域信息</md-subheader>
+      <md-list-item class="secondary-button-padding" ng-repeat="region in regions">
+        <p>{{region.RegionName}}</p>
+        <md-button class="md-secondary" >
+          {{region.tate}}
+        </md-button>
+      </md-list-item>
+      <md-divider></md-divider>
+
+      <md-subheader class="md-no-sticky">实测实量项</md-subheader>
+      <md-list-item class="secondary-button-padding" ng-repeat="item in AcceptanceItems">
+        <p>{{item.AcceptanceItemName}}</p>
+        <md-button class="md-secondary" >
+         {{item.state}}
+        </md-button>
+      </md-list-item>
+      <md-divider></md-divider>
+
+      <md-subheader class="md-no-sticky">实测指标项</md-subheader>
+      <md-list-item class="secondary-button-padding" ng-repeat="index in AcceptanceIndexs">
+        <p>{{index.IndexName}}</p>
+        <md-button class="md-secondary" >
+          {{index.state}}
+        </md-button>
+      </md-list-item>
+      <md-divider></md-divider>
+
+      <md-subheader class="md-no-sticky">图纸</md-subheader>
+      <md-list-item class="secondary-button-padding" ng-if="false">
+        <p>实测指标项</p>
+        <md-button class="md-secondary" >More Info</md-button>
+      </md-list-item>
+      <md-divider></md-divider>
+    </md-list>
+  </md-content>
+</div>

@@ -30,7 +30,7 @@
           }
         }
       })
-      .state('app.xhsc.choose',{
+      .state('app.xhsc.ch2',{
         noBack:true,
         sendBt:false,
         rightArrow:false,
@@ -39,11 +39,25 @@
         url   :'/choose',
         views :{
           'content@app':{
-            templateUrl : 'app/main/xhsc/ys/choose.html',
+            templateUrl : 'app/main/xhsc/ys/ch2.html',
             controller:'ChooseController as vm'
           }
         }
       })
+      //.state('app.xhsc.choose',{
+      //  noBack:true,
+      //  sendBt:false,
+      //  rightArrow:false,
+      //  leftArrow:false,
+      //  title :'实测实量',
+      //  url   :'/choose',
+      //  views :{
+      //    'content@app':{
+      //      templateUrl : 'app/main/xhsc/ys/choose.html',
+      //      controller:'ChooseController as vm'
+      //    }
+      //  }
+      //})
       .state('app.xhsc.chooseHouse',{
         noBack:true,
         sendBt:false,
@@ -58,7 +72,36 @@
           }
         }
       })
-
+      .state('app.xhsc.download',{
+        noBack:true,
+        sendBt:false,
+        refreshBtn:true,
+        rightArrow:false,
+        leftArrow:false,
+        title :'现场评估',
+        url   :'/download',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/download.html',
+            controller:'downloadController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.ddetail',{
+        noBack:true,
+        sendBt:false,
+        refreshBtn:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'下载详情列表',
+        url   :'/download',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/ddetail.html',
+            controller:'downdetailController as vm'
+          }
+        }
+      })
       .state('app.xhsc.evaluate',{
         noBack:true,
         sendBt:false,

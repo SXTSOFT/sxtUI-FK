@@ -9,12 +9,17 @@
     .controller('ChooseController',ChooseController);
 
   /** @ngInject */
-  function ChooseController($scope,$timeout,remote,$rootScope,xhUtils){
+  function ChooseController($scope,$timeout,db,$rootScope,xhUtils){
     var vm=this;
     function toggleRightEvent(){
       //$mdSidenav('right')
       //  .toggle();
     }
+    var area = db('db_');
+    area.addOrUpdate({
+      _id:'1233',
+      name:''
+    });
 /*    var store = new Store('area', { remote: 'http://localhost:5984/areas',ajax:{
       withCredentials:false
     } })

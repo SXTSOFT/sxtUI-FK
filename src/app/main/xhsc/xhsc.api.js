@@ -12,14 +12,14 @@
   function config(apiProvider){
     var $http = apiProvider.$http,
       $q = apiProvider.$q;
-var r = function(data){
+  var r = function(data){
   return $q(function(resolve){
     resolve({
       data:data
     })
   });
 }
-    apiProvider.register('xhsc',{
+  apiProvider.register('xhsc',{
 	    /**
        * 实测实量项
        */
@@ -31,92 +31,15 @@ var r = function(data){
          * */
         query:function(areaID) {
           //return $http.get($http.url('/Api/MeasureInfo/MeasureQuery', {areaID: areaID}));
-          return r({
-            RegionID:"yq",
-            RegionName:"",
-            RegionType:"",
-            HouseTypeID:"",
-            HouseTypeName:"",
-            DrawingID:"",
-            DrawingName:"",
-            DrawingImageUrl:"",
-            Children:[
-              {
-                RegionID:"ld",
-                RegionName:"",
-                ParentID:"",
-                RegionType:"",
-                HouseTypeID:"",
-                HouseTypeName:"",
-                DrawingID:"",
-                DrawingName:"",
-                DrawingImageUrl:"",
-                Children:[
-                  {
-                    RegionID:"lc",
-                    RegionName:"",
-                    ParentID:"",
-                    RegionType:"",
-                    HouseTypeID:"",
-                    HouseTypeName:"",
-                    DrawingID:"",
-                    DrawingName:"",
-                    DrawingImageUrl:"",
-                    Children:[
-                      {
-                        RegionID:"room",
-                        RegionName:"",
-                        ParentID:"",
-                        RegionType:"",
-                        HouseTypeID:"",
-                        HouseTypeName:"",
-                        DrawingID:"",
-                        DrawingName:"",
-                        DrawingImageUrl:""
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                RegionID:"ld",
-                RegionName:"",
-                ParentID:"",
-                RegionType:"",
-                HouseTypeID:"",
-                HouseTypeName:"",
-                DrawingID:"",
-                DrawingName:"",
-                DrawingImageUrl:"",
-                Children:[
-                  {
-                    RegionID:"lc",
-                    RegionName:"",
-                    ParentID:"",
-                    RegionType:"",
-                    HouseTypeID:"",
-                    HouseTypeName:"",
-                    DrawingID:"",
-                    DrawingName:"",
-                    DrawingImageUrl:"",
-                    Children:[
-                      {
-                        RegionID:"room",
-                        RegionName:"",
-                        ParentID:"",
-                        RegionType:"",
-                        HouseTypeID:"",
-                        HouseTypeName:"",
-                        DrawingID:"",
-                        DrawingName:"",
-                        DrawingImageUrl:""
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          })
+          return r([{
+            AcceptanceItemID:"abc", //模板中的实测项
+            AcceptanceItemName:"土建",//实测项名称
+            Building:""   //模板
+          },{
+            AcceptanceItemID:"abc", //模板中的实测项
+            AcceptanceItemName:"抹灰",//实测项名称
+            Building:""   //模板
+          }])
           /*return query (array ({
            AcceptanceItemID: 'string1',
            MeasureItemName: '测量项{0}',
@@ -139,11 +62,156 @@ var r = function(data){
            *
            * @param  {string} acceptanceItemID 实测项ID
            * */
-          query:function(acceptanceItemID) {
-            return $http.get($http.url('/Api/MeasureInfo/GetMeasureIndex', {acceptanceItemID: acceptanceItemID}));
-
+          query:function() {
+            return r([{
+              AcceptanceIndexID:"",
+              ParentAcceptanceIndexID:"",
+              AcceptanceItemID:"",
+              IndexName:"门窗",
+              IndexType:"",
+              MeasureMethod:"",
+              QSKey:"",
+              QSCondition:"",
+              QSValue:"",
+              QSOtherValue:"",
+              PassYieldComputeMode:"",
+              GroupSign:"",
+              Weight:"",
+              SinglePassYield:"",
+              SummaryPassYield:"",
+              IconImage:"",
+              IconColor:""
+            },{
+              AcceptanceIndexID:"",
+              ParentAcceptanceIndexID:"",
+              AcceptanceItemID:"",
+              IndexName:"天花板",
+              IndexType:"",
+              MeasureMethod:"",
+              QSKey:"",
+              QSCondition:"",
+              QSValue:"",
+              QSOtherValue:"",
+              PassYieldComputeMode:"",
+              GroupSign:"",
+              Weight:"",
+              SinglePassYield:"",
+              SummaryPassYield:"",
+              IconImage:"",
+              IconColor:""
+            }])
           }
         }
+      },
+
+      region:{
+        query:function(areaID) {
+          return $http.get($http.url('http://ggroupem.sxtsoft.com:9191/Api/ProjectInfoApi/GetRegionTreeInfo',
+            {AreaID: areaID}));
+          //return $http.get($http.url('/Api/MeasureInfo/MeasureQuery', {areaID: areaID}));
+          //return r([{
+          //  RegionID:"yq",
+          //  RegionName:"天津三栋",
+          //  RegionType:"",
+          //  HouseTypeID:"",
+          //  HouseTypeName:"",
+          //  DrawingID:"",
+          //  DrawingName:"",
+          //  DrawingImageUrl:"",
+          //  Children:[
+          //    {
+          //      RegionID:"ld",
+          //      RegionName:"",
+          //      ParentID:"",
+          //      RegionType:"",
+          //      HouseTypeID:"",
+          //      HouseTypeName:"",
+          //      DrawingID:"",
+          //      DrawingName:"",
+          //      DrawingImageUrl:"",
+          //      Children:[
+          //        {
+          //          RegionID:"lc",
+          //          RegionName:"",
+          //          ParentID:"",
+          //          RegionType:"",
+          //          HouseTypeID:"",
+          //          HouseTypeName:"",
+          //          DrawingID:"",
+          //          DrawingName:"",
+          //          DrawingImageUrl:"",
+          //          Children:[
+          //            {
+          //              RegionID:"room",
+          //              RegionName:"",
+          //              ParentID:"",
+          //              RegionType:"",
+          //              HouseTypeID:"",
+          //              HouseTypeName:"",
+          //              DrawingID:"",
+          //              DrawingName:"",
+          //              DrawingImageUrl:""
+          //            }
+          //          ]
+          //        }
+          //      ]
+          //    },
+          //    {
+          //      RegionID:"ld",
+          //      RegionName:"",
+          //      ParentID:"",
+          //      RegionType:"",
+          //      HouseTypeID:"",
+          //      HouseTypeName:"",
+          //      DrawingID:"",
+          //      DrawingName:"",
+          //      DrawingImageUrl:"",
+          //      Children:[
+          //        {
+          //          RegionID:"lc",
+          //          RegionName:"",
+          //          ParentID:"",
+          //          RegionType:"",
+          //          HouseTypeID:"",
+          //          HouseTypeName:"",
+          //          DrawingID:"",
+          //          DrawingName:"",
+          //          DrawingImageUrl:"",
+          //          Children:[
+          //            {
+          //              RegionID:"room",
+          //              RegionName:"",
+          //              ParentID:"",
+          //              RegionType:"",
+          //              HouseTypeID:"",
+          //              HouseTypeName:"",
+          //              DrawingID:"",
+          //              DrawingName:"",
+          //              DrawingImageUrl:""
+          //            }
+          //          ]
+          //        }
+          //      ]
+          //    }
+          //  ]
+          //})
+          /*return query (array ({
+           AcceptanceItemID: 'string1',
+           MeasureItemName: '测量项{0}',
+           SpecialtyID: 'id1;id2',
+           SpecialtyName: '专业类型;专业类型',
+           /!**
+           * 1 、项目
+           * 2、 区域
+           * 4、 楼项
+           * 8、 楼层
+           * 16、 房间
+           * *!/
+           RegionType: 1 | 2 | 4 | 8 | 16
+           }
+           ))*/
+        }
+
       },
       /**
        * 项目

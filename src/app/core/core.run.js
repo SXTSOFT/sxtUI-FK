@@ -61,6 +61,7 @@
           $rootScope.subtitle = toState.subtitle;
           $rootScope.leftArrow = toState.leftArrow;
           $rootScope.rightArrow = toState.rightArrow;
+          $rootScope.refreshBtn = toState.refreshBtn;
           $rootScope.title = toState.title || $rootScope.title;
         }
         //console.log('toState',toState)
