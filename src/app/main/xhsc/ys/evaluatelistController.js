@@ -9,13 +9,18 @@
     .controller('evaluatelistController',evaluatelistController);
 
   /** @ngInject*/
-  function evaluatelistController($mdDialog){
+  function evaluatelistController($mdDialog,$rootScope){
     var vm = this;
     vm.images = [
       {url:'assets/images/etc/plug.png'},
       {url:'assets/images/etc/fallout.jpg'},
       {url:'assets/images/etc/plug.png'}
-    ]
+    ];
+    var deleteFn = function(d,data){
+      //vm.images.splice(data,1);
+      console.log('a',vm.images)
+    }
+    $rootScope.$on('delete',deleteFn);
     vm.getRecord = function(ev){
     $mdDialog.show({
         controller: DialogController,
@@ -28,7 +33,6 @@
         if(answer){
           vm.input = answer;
         }
-        console.log('answer',answer)
       });
     }
     vm.showDialog = function(ev){
@@ -38,7 +42,6 @@
           parent: angular.element(document.body),
           targetEvent: ev,
           clickOutsideToClose:true
-          //fullscreen: useFullScreen
         })
         .then(function(answer) {
           vm.evaluateNote = answer;

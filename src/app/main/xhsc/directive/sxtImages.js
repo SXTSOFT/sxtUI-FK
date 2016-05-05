@@ -8,7 +8,7 @@
     .directive('sxtImages',sxtImagesDirective);
 
   /** @ngInject */
-  function sxtImagesDirective(){
+  function sxtImagesDirective($rootScope){
     return {
       restrict:'ECMA',
       scope:{
@@ -18,11 +18,10 @@
     }
 
     function link(scope,element,attr,ctrl){
-      //
       var player,defaultIndex,viewer,o;
       var imagedata = scope.sxtImages;
       player = function(a,e){
-        console.log('element',scope)
+       // console.log('element',scope)
         defaultIndex = $('.img img').index($(a.target))
         if (defaultIndex == -1)
           defaultIndex = 0;
@@ -47,18 +46,19 @@
 
           },
           view:function(){
-
           }
         });
-       viewer.show();
+        viewer.show();
         viewer.view(defaultIndex);
         var str1 = [];
         str1.push('<li class="viewer-delete">删除</li>');
         $(str1.join('')).appendTo('.viewer-toolbar');
         $('.viewer-delete').on('click',function(){
           var nowIndex = viewer.index;
-          //imagedata = imagedata.splice(nowIndex,1);
-          console.log('de',imagedata.splice(nowIndex,1))
+          scope.sxtImages.splice(nowIndex,1);
+          viewer.update();
+          $rootScope.$broadcast('delete',nowIndex)
+          //console.log('de',imagedata)
         })
 
       }
