@@ -72,7 +72,36 @@
           }
         }
       })
-
+      .state('app.xhsc.download',{
+        noBack:true,
+        sendBt:false,
+        refreshBtn:true,
+        rightArrow:false,
+        leftArrow:false,
+        title :'现场评估',
+        url   :'/download',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/download.html',
+            controller:'downloadController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.ddetail',{
+        noBack:true,
+        sendBt:false,
+        refreshBtn:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'下载详情列表',
+        url   :'/download',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/ddetail.html',
+            controller:'downdetailController as vm'
+          }
+        }
+      })
       .state('app.xhsc.evaluate',{
         noBack:true,
         sendBt:false,
