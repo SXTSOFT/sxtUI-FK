@@ -1,0 +1,11 @@
+<md-dialog aria-label="添加拍照"  ng-cloak>
+  <md-toolbar ><div class="md-toolbar-tools"><h2>{{vm.project.item.full_name}}</h2></div></md-toolbar>
+  <md-dialog-content style="padding:0;" layout="column">
+    <div flex sxt-year style="overflow: auto;position:relative" layout="column" region-id="vm.project.pid" show="vm.data.isShow" room-type="vm.project.item.type" procedure-id="vm.data.procedureId" image-type="vm.data.imageType" partion="vm.data.partion" region-name="vm.project.item.full_name"></div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row" style="border-top:solid 2px red;z-index: 10000;">
+    <span flex></span>
+    <md-button  class="md-raised" ng-click="vm.answer()"  md-autofocus style="margin-right:20px;">确定</md-button>
+  </md-dialog-actions>
+</form>
+</md-dialog>
