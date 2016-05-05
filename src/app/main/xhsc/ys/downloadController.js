@@ -9,18 +9,85 @@
     .controller('downloadController',downloadController);
 
   /** @ngInject*/
-  function downloadController($mdDialog){
+  function downloadController($mdDialog,db,remote,localPack,xhUtils,$rootScope,$scope){
     var vm = this;
-    vm.upload = function(){
-      console.log('upload')
+    var pk = db('xcpk');
+    pk.get('xcpk').then(function (result) {
+      vm.data = result;
+      queryOnline();
+    }).catch(function (err) {
+      vm.data = {
+        _id:'xcpk',
+        rows:[]
+      };
+      queryOnline();
+    });
+    vm.download = function (item) {
+      item.progress = 0;
+      var pack =localPack.pack({
+        _id:item.AssessmentID,
+        name:item.AssessmentSubject,
+        tasks:[
+          {
+            _id:'GetMeasureItemInfoByAreaID',
+            name:'获取分期下所有指标',
+            url:'/Api/MeasureInfo/GetMeasureItemInfoByAreaID?areaID='+item.AreaID
+          },
+          {
+            _id:'GetRegionTreeInfo',
+            name:'获取区域信息',
+            url:'/Api/ProjectInfoApi/GetRegionTreeInfo?AreaID='+item.AreaID,
+            type:'ExRegion',
+            item:angular.copy(item)
+          }
+        ]
+      })
+      item.pack = pack;
+      $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
+        //console.log(arguments);
+        var p =pack.getProgress();
+        item.progress = parseInt(p.progress*100);
+        if(item.pack && item.pack.completed){
+          var ix = vm.onlines.indexOf(item);
+          if(ix!=-1)
+            vm.onlines.splice(ix,1);
+          ix = vm.offlines.indexOf(item);
+          if(ix==-1) {
+            vm.offlines.push(item);
+            delete item.pack;
+            vm.data.rows.push(item);
+            pk.addOrUpdate(vm.data);
+          }
+        }
+       // console.log('getProgress',  item.progress);
+
+      })
     }
-    vm.download = function(){
-      console.log('download')
+    function queryOnline() {
+      vm.onlines = [];
+      vm.offlines = [];
+      vm.data.rows.forEach(function (m) {
+        vm.offlines.push(m);
+      })
+      remote.Assessment.query().then(function (result) {
+        result.data.forEach(function (m) {
+          var fd = vm.data.rows.find(function (a) {
+            return a.AssessmentID==m.AssessmentID;
+          });
+          if(fd){
+
+          }
+          else{
+            vm.onlines.push(m);
+          }
+        })
+        //pk.addOrUpdate(vm.data);
+        //vm.onlines = result.data;
+      }).catch(function () {
+
+      });
     }
-    vm.cancel = function(){
-      console.log('cancel')
-    }
-    vm.showECs = function(ev) {
+    vm.showECs = function(ev,item) {
       //var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && vm.customFullscreen;
       // console.log('ev',parent)
       $mdDialog.show({
@@ -35,6 +102,7 @@
 
         });
       function DialogController($scope, $mdDialog) {
+        $scope.item = item;
         $scope.hide = function() {
           $mdDialog.hide();
         };
@@ -45,12 +113,7 @@
           $mdDialog.hide(answer);
         };
       }
-      // $timeout(function(){$('.md-scroll-mask').addClass('addlayer');},100);
-      //$scope.$watch(function() {
-      //  return $mdMedia('xs') || $mdMedia('sm');
-      //}, function(wantsFullScreen) {
-      //  $scope.customFullscreen = (wantsFullScreen === true);
-      //});
     };
+
   }
 })();

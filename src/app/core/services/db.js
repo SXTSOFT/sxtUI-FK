@@ -48,6 +48,18 @@
         });
       }
     },
+    getOrAdd:function (obj) {
+      var self = this;
+      if(obj._id){
+        return self.get(obj._id).then(function(doc){
+          return doc;
+        }).catch(function(){
+          return self.put(obj).then(function () {
+            return obj;
+          });
+        });
+      }
+    },
     update:function (obj) {
       var self = this;
       if(obj._id){

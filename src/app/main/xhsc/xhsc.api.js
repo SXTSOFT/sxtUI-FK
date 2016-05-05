@@ -20,6 +20,14 @@
   });
 }
   apiProvider.register('xhsc',{
+    Assessment:{
+      query:function () {
+        return $http.get($http.url('/Api/ProjectInfoApi/GetAssessmentProject'))
+      },
+      queryRegion:function (areaID) {
+        return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo',{AreaID:areaID}));
+      }
+    },
 	    /**
        * 实测实量项
        */

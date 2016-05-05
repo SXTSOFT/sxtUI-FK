@@ -5,7 +5,7 @@
   'use strict';
 
   angular
-    .module('app.xhsc', ['app.core'])
+    .module('app.xhsc', ['app.core','ngCordova'])
     .config(config);
 
   /** @ngInject */
@@ -36,7 +36,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'实测实量',
-        url   :'/choose',
+        url   :'/choose/{assessmentID}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/ch2.html',
@@ -87,14 +87,14 @@
           }
         }
       })
-      .state('app.xhsc.ddetail',{
+      .state('app.xhsc.xcpk',{
         noBack:true,
         sendBt:false,
         refreshBtn:false,
         rightArrow:false,
         leftArrow:false,
-        title :'下载详情列表',
-        url   :'/download',
+        title :'现场评估',
+        url   :'/xcpk',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/ddetail.html',

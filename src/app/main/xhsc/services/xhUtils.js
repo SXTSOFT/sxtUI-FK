@@ -13,7 +13,8 @@
       getProcedure:getProcedure,
       getRegion:getRegion,
       getMapPic:getMapPic,
-      findAll:findAll
+      findAll:findAll,
+      findRegion:findRegion
     };
     return o;
 
@@ -169,6 +170,19 @@
           buff.push(item);
       });
       return buff;
+    }
+
+    function findRegion(regions,id) {
+      if(!regions)return null;
+      var fd = regions.find(function (r) {
+        var len = r.RegionID.length;
+        return id.substring(0,len)==r.RegionID;
+      });
+      if(!fd)return null;
+      if(fd.RegionID!=id)
+        return findRegion(fd.Children,id);
+      else
+        return fd;
     }
   }
 })();
