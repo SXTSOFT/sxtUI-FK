@@ -7,7 +7,7 @@
     .module('app.xhsc')
     .directive('sxtScPopup',sxtScPopup);
   /** @ngInject */
-  function sxtScPopup(mapPopupSerivce,$timeout,sxt){
+  function sxtScPopup(mapPopupSerivce,$timeout,sxt,xhUtils){
     return {
       restrict:'E',
       scope:{
@@ -111,24 +111,15 @@
               && o.AcceptanceIndexID == m.AcceptanceIndexID
             })
           };
-          if(!o.v){
-            o.v = {
-              _id:sxt.uuid(),
-              MeasurePointID:p.$id,
-              CheckRegionID:scope.data.regionId,
-              RegionType:scope.data.regionType,
-              AcceptanceItemID:scope.data.acceptanceItem,
-              AcceptanceIndexID: m.AcceptanceIndexID
-            };
-            scope.data.values.push(o.v);
-          }
           scope.data.updates.push(o);
           if(m.IndexType == 'SelectMaterial'){
 
           }else if(context.layer instanceof L.LineGroup || context.layer instanceof L.AreaGroup){
             //o.v.children = [];
             group = o;
-            
+            o.v.children = xhUtils.findAll(scope.data.values, function (v) {
+              return v.ParentMeasureValueID == o.v._id;
+            });
           }
           else {
             switch (m.QSKey) {

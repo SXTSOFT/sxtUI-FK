@@ -12,7 +12,8 @@
     var o = {
       getProcedure:getProcedure,
       getRegion:getRegion,
-      getMapPic:getMapPic
+      getMapPic:getMapPic,
+      findAll:findAll
     };
     return o;
 
@@ -159,6 +160,15 @@
         }
       }
       return pics;
+    }
+
+    function findAll(array,fn) {
+      var buff=[];
+      array.forEach(function (item) {
+        if(fn(item)===true)
+          buff.push(item);
+      });
+      return buff;
     }
   }
 })();
