@@ -697,6 +697,7 @@
            width: 100%;
            p {
              margin-bottom: 0;
+
            }
            i{
              &.myselect{
@@ -765,7 +766,8 @@
           margin: 0;
           width:100%;
           p{
-            margin-bottom: 0;
+            padding: 0;
+            margin: 0;
           }
         }
       }
@@ -791,7 +793,8 @@
           border-color:#999;
         }
         p{
-          margin-bottom: 0;
+          padding: 0;
+          margin: 0;
         }
       }
     }
