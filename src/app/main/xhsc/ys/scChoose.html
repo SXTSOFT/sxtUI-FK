@@ -11,7 +11,7 @@
   <md-dialog-content>
     <md-list>
       <md-list-item ng-repeat="sc in scList" ng-click="checkSc(sc)">
-        <p>{{sc.IndexName}}</p>
+        <p ng-class="{'red':sc.checked}">{{sc.IndexName}}</p>
         <md-switch class="md-secondary" ng-model="sc.checked"></md-switch>
       </md-list-item>
     </md-list>

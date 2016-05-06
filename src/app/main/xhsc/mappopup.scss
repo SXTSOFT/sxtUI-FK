@@ -47,6 +47,11 @@
       }
     }
   }
+  .headspan{
+    span{
+      margin-right: 8px;
+    }
+  }
   .md-subheader{
     border-left:1px solid  #ccc;
     border-right:1px solid  #ccc;
@@ -120,6 +125,41 @@
     background: rgba(0,0,0,.6);
   &>.md-scroll-mask-bar{
     background:none;
+  }
+}
+//viewer样式更改
+.viewer-toolbar{
+  width:320px;
+  &>li{
+    &.viewer-play{
+      display: none;
+    }
+    width:30px;
+    height:30px;
+    &:before{
+      margin: 5px;
+    }
+  }
+}
+.viewer-invisible{
+  display: none;
+}
+.viewer-delete{
+  &:before{
+    content:"";
+    font-size: 0;
+    line-height: 0;
+    display: block;
+    width: 20px;
+    height: 20px;
+    color: transparent;
+    background:url(main/xhsc/images/del.png) no-repeat center center;
+  }
+}
+//topfresh
+.topfresh{
+  .md-button{
+    margin-right:-8px;
   }
 }
 .typeNumber{
@@ -326,7 +366,9 @@
 
 }
 .scTop{
-  border-bottom: 1px solid rgba(0, 0, 0, 0.117647);padding:0 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.117647);
+  padding:0 16px;
+  height: 56px;
   background: #fff;
   .scleft {
     span {
@@ -342,6 +384,8 @@
       padding: 0;
       margin: 0;
       min-width: 36px;
+      display: inline-block;
+      vertical-align:middle;
       &.font14{
         span{
           font-size:14px;
@@ -1300,6 +1344,17 @@
           p{
             margin-bottom: 0;
           }
+        }
+      }
+    }
+  }
+}
+@media (max-width: 800px){
+  .floor-list{
+    .right{
+      &.engineer{
+        md-list-item{
+          width:20%;
         }
       }
     }
