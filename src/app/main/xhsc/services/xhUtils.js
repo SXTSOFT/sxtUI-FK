@@ -14,7 +14,8 @@
       getRegion:getRegion,
       getMapPic:getMapPic,
       findAll:findAll,
-      findRegion:findRegion
+      findRegion:findRegion,
+      wrapRegion:wrapRegion
     };
     return o;
 
@@ -69,7 +70,7 @@
     }
 
     function getRegion(areaId,cb){
-      if(!areaId || areaId==_areaId &&region ) {
+      if((!areaId || areaId==_areaId &&region)) {
         cb(region);
         return;
       }
@@ -150,6 +151,81 @@
         }
       }
     }
+
+    function wrapRegion(target){
+        region = target;
+        region.find = find;
+        region.each = each;
+        //栋
+        region.Children && region.Children.forEach(function(d){
+          d.$parent = region;
+          d.find = find;
+          d.next = next;
+          d.prev = prev;
+          d.each = each;
+          d.Children && d.Children.forEach(function(l){
+            l.$parent = d;
+            l.find = find;
+            l.next = next;
+            l.prev = prev;
+            l.each = each;
+
+            l.Children && l.Children.forEach(function(r){
+              r.$parent = l;
+              r.find = find;
+              r.next = next;
+              r.prev = prev;
+              r.each = each;
+            })
+          })});
+        function each(fn){
+          fn(this);
+          this.Children && this.Children.forEach(function(item){
+            item.each(fn);
+          })
+        }
+        function find(id){
+          if(this.RegionID==id ||(typeof id==='function' && id(this)===true))
+            return this;
+
+          if(this.Children){
+            var fd;
+            this.Children.forEach(function(c){
+              if(!fd){
+                fd = c.find(id);
+              }
+            });
+            if(fd)
+              return fd;
+          }
+        }
+        function next(){
+          if(this.$parent) {
+            var ix = this.$parent.Children.indexOf(this);
+            var next = this.$parent.Children[ix + 1];
+            if (next)
+              return next;
+            var p = this.$parent.next && this.$parent.next();
+            if(p&& p.Children){
+              return p.Children[0];
+            }
+          }
+        }
+        function prev(){
+          if(this.$parent) {
+            var ix = this.$parent.Children.indexOf(this);
+            var next = this.$parent.Children[ix - 1];
+            if (next)
+              return next;
+            var p = this.$parent.prev &&  this.$parent.prev();
+            if(p && p.Children){
+              return p.Children[p.Children.length-1];
+            }
+          }
+        }
+        return region;
+    }
+
     function getMapPic(maxZoom){
       //console.log('m',maxZoom,Math.pow(2,maxZoom))
       var pics = [];
@@ -174,6 +250,9 @@
 
     function findRegion(regions,id,appendName) {
       if(!regions)return null;
+      if(!angular.isArray(regions)){
+        regions=[regions];
+      }
       var fd = regions.find(function (r) {
         var len = r.RegionID.length;
         return id.substring(0,len)==r.RegionID;
@@ -184,6 +263,19 @@
       else {
         fd.fullName = appendName+fd.RegionName;
         return fd;
+      }
+    }
+
+    function  upRegion(regions,current){
+      if(this.$parent) {
+        var ix = this.$parent.Children.indexOf(this);
+        var next = this.$parent.Children[ix - 1];
+        if (next)
+          return next;
+        var p = this.$parent.prev &&  this.$parent.prev();
+        if(p && p.Children){
+          return p.Children[p.Children.length-1];
+        }
       }
     }
   }
