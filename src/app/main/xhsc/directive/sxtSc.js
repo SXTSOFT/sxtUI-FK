@@ -13,23 +13,28 @@
 
     return {
       scope:{
+        db:'=',
         areaId:'=',
         acceptanceItem:'=',
         measureIndexes:'=',
         imageUrl:'=',
         regionId:'=',
         regionName:'=',
-        tips:'=',
-        project:'=',
         regionType:'=',
         readonly:'='
       },
       link:link
     }
     function link(scope,element,attr,ctrl){
-      var map,tile,fg,toolbar,data = db('db_00001_sc'),points = db('db_00001_point');
+      var map,tile,fg,toolbar,data,points;
       var install = function(){
-        if(!scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
+        if(!scope.db || !scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
+
+        if(!data)
+          data = db('pack'+scope.db+'_sc');
+        if(!points)
+          points = db('pack'+scope.db+'_point');
+
         if(!map){
           map = L.map(element[0],{
             crs: L.SXT.SXTCRS,
@@ -45,18 +50,16 @@
         if(!tile || tile.regionId!=scope.regionId) {
           if(tile)
             map.removeLayer(tile);
-          tile = offlineTileLayer.offlineTile(scope.imageUrl);
+          tile = offlineTileLayer.offlineTile(scope.db +'/' + scope.imageUrl);
           //tile = L.tileLayer(sxt.app.api+'/Api/Picture/Tile/{z}_{x}_{y}?path=/fs/UploadFiles/Framework/'+ scope.imageUrl, {attribution: false,noWrap: true});
           tile.regionId = scope.regionId;
         }
 
         if(fg)
           map.removeLayer(fg);
-
-
+        
         if(toolbar)
           map.removeControl(toolbar);
-
 
         map.addLayer(tile);
 
@@ -183,7 +186,6 @@
             })
           }
         }).addTo(map);
-
       };
       $timeout(function(){
         scope.$watchCollection('measureIndexes',function(){
