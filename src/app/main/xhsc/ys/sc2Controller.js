@@ -61,7 +61,7 @@
             if(t.checked ==  true){
               scStr.push(t);
             }
-          })
+          });
           vm.info.MeasureIndexes = scStr;
          });
     }
@@ -69,9 +69,9 @@
     vm.setRegionId = function(regionId,regionType){
       pack.get('GetRegionTreeInfo').then(function (result) {
         var region = xhUtils.findRegion([result.data],regionId);
-        vm.info.imageUrl = region.DrawingID;
-        vm.info.regionId = regionId;
-        vm.info.regionType;
+        vm.info.imageUrl = vm.info.db+'/543c5519138c4db5ab23412738b65c1d';
+        vm.info.regionId = region.RegionID;
+        vm.info.regionType = region.RegionType;
         vm.info.name = region.fullName;
       });
     }
@@ -81,8 +81,8 @@
       pack.get('GetRegionTreeInfo').then(function (result) {
         var region = xhUtils.findRegion([result.data],regionId);
         vm.info.imageUrl = region.DrawingID;
-        vm.info.regionId = regionId;
-        vm.info.regionType;
+        //vm.info.regionId = regionId;
+        //vm.info.regionType;
       });
     };
     vm.setRegionId($stateParams.regionId,$stateParams.regionType);
