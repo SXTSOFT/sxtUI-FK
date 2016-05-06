@@ -333,15 +333,20 @@
       display: inline-block;
       min-width: 50px;
       font-size: 16px;
-      vertical-align: top;
+      vertical-align: middle;
       line-height: 56px;
       text-align: center;
     }
     .md-button{
       min-height:32px;
       padding: 0;
-      margin:10px 0;
+      margin: 0;
       min-width: 36px;
+      &.font14{
+        span{
+          font-size:14px;
+        }
+      }
       &.md-fab{
         width:32px;
         height:32px;
@@ -405,6 +410,7 @@
     }
   }
 }
+
 .arrows{
   vertical-align:top;
   border:2px solid #e93030;
