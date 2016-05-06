@@ -9,7 +9,7 @@
     .directive('sxtSc', sxtSc);
 
   /** @Inject */
-  function sxtSc($timeout,mapPopupSerivce,db,$q,sxt,xhUtils){
+  function sxtSc($timeout,mapPopupSerivce,db,offlineTileLayer,sxt,xhUtils){
 
     return {
       scope:{
@@ -45,7 +45,8 @@
         if(!tile || tile.regionId!=scope.regionId) {
           if(tile)
             map.removeLayer(tile);
-          tile = L.tileLayer(sxt.app.api+'/Api/Picture/Tile/{z}_{x}_{y}?path=/fs/UploadFiles/Framework/'+ scope.imageUrl, {attribution: false,noWrap: true});
+          tile = offlineTileLayer.offlineTile(scope.imageUrl);
+          //tile = L.tileLayer(sxt.app.api+'/Api/Picture/Tile/{z}_{x}_{y}?path=/fs/UploadFiles/Framework/'+ scope.imageUrl, {attribution: false,noWrap: true});
           tile.regionId = scope.regionId;
         }
 
