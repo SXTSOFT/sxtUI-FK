@@ -66,48 +66,22 @@
     }
 
     vm.setRegionId = function(regionId,regionType){
-      switch (regionType) {
-        case '8':
-          remote.Project.getFloorDrawing(regionId).then(function (r) {
-            if(r.data.length) {
-              vm.info.imageUrl = r.data[0].DrawingImageUrl;
-              vm.info.regionId = regionId;
-              vm.info.regionType = regionType;
-            }
-            else{
-              utils.alert('未找到图纸');
-            }
-          });
-          break;
-        case '16':
-          remote.Project.getHouseDrawing(regionId).then(function (r) {
-            if(r.data.length) {
-              vm.info.imageUrl = r.data[0].DrawingImageUrl;
-              vm.info.regionId = regionId;
-              vm.info.regionType = regionType;
-            }
-            else{
-              utils.alert('未找到图纸');
-            }
-          });
-          break;
-      }
+      pack.get('GetRegionTreeInfo').then(function (result) {
+        var region = xhUtils.findRegion([result.data],regionId);
+        vm.info.imageUrl = region.DrawingID;
+        vm.info.regionId = regionId;
+        vm.info.regionType;
+        vm.info.name = region.fullName;
+      });
     }
 
     vm.nextRegion = function(prev){
-      xhUtils.getRegion(vm.info.areaId,function(r){
-        var find = r.find(vm.info.regionId);
-        if(find){
-          var next = prev?find.prev():find.next();
-          if(next) {
-            vm.info.name = next.FullName;
-            //vm.info.regionId = next.RegionID;
-            vm.setRegionId(next.RegionID,vm.info.regionType);
-          }
-          else{
-            utils.alert('未找到'+(prev?'上':'下')+'一位置');
-          }
-        }
+      //vm.info.regionId 当前
+      pack.get('GetRegionTreeInfo').then(function (result) {
+        var region = xhUtils.findRegion([result.data],regionId);
+        vm.info.imageUrl = region.DrawingID;
+        vm.info.regionId = regionId;
+        vm.info.regionType;
       });
     };
     vm.setRegionId($stateParams.regionId,$stateParams.regionType);
