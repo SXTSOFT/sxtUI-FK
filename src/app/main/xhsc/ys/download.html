@@ -4,9 +4,9 @@
     <md-list>
       <md-list-item ng-repeat="item in vm.offlines">
         <img src="app/main/xhsc/images/icon-downed.png" class="md-avatar" />
-        <div class="md-list-item-text" layout="column">
-          <h3>{{item.AssessmentSubject}}</h3>
-        </div>
+        <p layout="column" style="padding-right: 250px;font-size:18px;">
+          {{item.AssessmentSubject}}
+        </p>
         <div class="md-secondary md-hue-3">
           <md-button ng-click="vm.showECs($event,item)" class="md-raised md-primary">
             开始评估
@@ -25,9 +25,9 @@
     <md-list>
       <md-list-item ng-repeat="item in vm.onlines">
         <img src="app/main/xhsc/images/icon-down.png" class="md-avatar" />
-        <div class="md-list-item-text" layout="column">
-          <h3>{{item.AssessmentSubject}}</h3>
-        </div>
+        <p layout="column" style="font-size: 18px;padding-right: 120px;">
+          {{item.AssessmentSubject}}
+        </p>
         <div class="md-secondary md-hue-3">
          <span style="display:inline-block;width:120px;text-align: center;">
             <md-button ng-if="!item.pack.isDown" class="md-raised upload-btn" ng-click="vm.download(item)">
