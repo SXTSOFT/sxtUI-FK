@@ -1,7 +1,8 @@
 <div layout="row" class="scTop">
   <div flex class="scleft">
-    <span>当前测量项：</span><span ng-repeat="sc in vm.info.MeasureIndexes" style="color:#f00;">{{sc.IndexName}},</span>
-    <md-button ng-click="vm.scChoose()"><img src="app/main/xhsc/images/pop.jpg" style="vertical-align: middle;"></md-button>
+    <span>当前测量项：</span>
+    <md-button ng-click="vm.scChoose($event)"><span ng-repeat="sc in vm.info.MeasureIndexes" style="color:#f00;">{{sc.IndexName}},</span>
+    <img src="app/main/xhsc/images/pop.jpg" style="vertical-align: middle;"></md-button>
   </div>
   <!--<md-button class="md-link md-primary md-mini" ng-click="vm.submit()">-->
     <!--提交-->

@@ -162,7 +162,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'实测',
-        url   :'/sc2/{areaId}/{acceptanceItemID}/{regionId}/{regionType}/{name}/{pname}',
+        url   :'/sc2/{db}/{areaId}/{acceptanceItemID}/{regionId}/{regionType}/{name}/{pname}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/sc2.html',

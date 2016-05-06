@@ -68,7 +68,7 @@
       vm.offlines = [];
       vm.data.rows.forEach(function (m) {
         vm.offlines.push(m);
-      })
+      });
       remote.Assessment.query().then(function (result) {
         result.data.forEach(function (m) {
           var fd = vm.data.rows.find(function (a) {
@@ -91,28 +91,31 @@
       //var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && vm.customFullscreen;
       // console.log('ev',parent)
       $mdDialog.show({
-          controller: DialogController,
+          controller: ['$scope', '$mdDialog','item', function DialogController($scope, $mdDialog,item) {
+            $scope.item = item;
+            $scope.hide = function () {
+              $mdDialog.hide();
+            };
+            $scope.cancel = function () {
+              $mdDialog.cancel();
+            };
+            $scope.answer = function (answer) {
+              $mdDialog.hide(answer);
+            };
+          }],
           templateUrl: 'app/main/xhsc/ys/evaluateChoose.html',
           parent: angular.element(document.body),
           targetEvent: ev,
-          clickOutsideToClose:true
+        locals:{
+          item:item
+        },
+          clickOutsideToClose: true
           //fullscreen: useFullScreen
         })
         .then(function(answer) {
 
         });
-      function DialogController($scope, $mdDialog) {
-        $scope.item = item;
-        $scope.hide = function() {
-          $mdDialog.hide();
-        };
-        $scope.cancel = function() {
-          $mdDialog.cancel();
-        };
-        $scope.answer = function(answer) {
-          $mdDialog.hide(answer);
-        };
-      }
+
     };
 
   }

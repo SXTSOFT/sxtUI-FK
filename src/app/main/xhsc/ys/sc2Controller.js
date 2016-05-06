@@ -8,9 +8,10 @@
     .module('app.xhsc')
     .controller('sc2Controller',sc2Controller)
   /** @ngInject */
-  function sc2Controller($scope,remote,xhUtils,$stateParams,utils,$mdDialog,$state,$rootScope) {
+  function sc2Controller($scope,remote,xhUtils,$stateParams,utils,$mdDialog,db) {
     var vm = this;
     vm.info = {
+      db:$stateParams.db,
       name: $stateParams.name,
       areaId:$stateParams.areaId,
       acceptanceItemID: $stateParams.acceptanceItemID,
@@ -21,9 +22,14 @@
         AcceptanceItemID:$stateParams.acceptanceItemID
       }
     };
-    remote.Measure.MeasureIndex.query (vm.info.acceptanceItemID).then (function (r) {
+    var pack = db('pack'+vm.info.db);
+    pack.get('GetMeasureItemInfoByAreaID').then (function (r) {
+      //console.log('r',r)
+      var find = r.data.find(function (it) {
+        return it.AcceptanceItemID == vm.info.acceptanceItemID;
+      })
       var m=[];
-      r.data.forEach(function(item) {
+      find.MeasureIndexList.forEach(function(item) {
         if(item.Children && item.Children.length){
           item.Children.forEach(function (item2) {
             m.push(item2);
@@ -40,12 +46,13 @@
       vm.scChoose();
     });
 
-    vm.scChoose = function(){
+    vm.scChoose = function($event){
       $mdDialog.show({
           controller: DialogController,
+        targetEvent:$event,
           templateUrl: 'app/main/xhsc/ys/scChoose.html',
           parent: angular.element(document.body),
-          clickOutsideToClose:true
+          clickOutsideToClose:vm.info.MeasureIndexes
         })
         .then(function(answer) {
           var scStr=[];

@@ -172,7 +172,7 @@
       return buff;
     }
 
-    function findRegion(regions,id) {
+    function findRegion(regions,id,appendName) {
       if(!regions)return null;
       var fd = regions.find(function (r) {
         var len = r.RegionID.length;
@@ -180,9 +180,11 @@
       });
       if(!fd)return null;
       if(fd.RegionID!=id)
-        return findRegion(fd.Children,id);
-      else
+        return findRegion(fd.Children,id,(appendName||'')+fd.RegionName);
+      else {
+        fd.fullName = appendName+fd.RegionName;
         return fd;
+      }
     }
   }
 })();

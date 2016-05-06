@@ -6,7 +6,7 @@
 
   angular
     .module('app.core')
-    .provider('db',pouchDB)
+    .provider('db',pouchDB);
 /** @ngInject */
   function pouchDB() {
   var self = this;
@@ -105,7 +105,9 @@
     }
   };
 
-  self.$get = function ($window, $q) {
+  self.$get = $get;
+  /** @ngInject */
+  function $get($window, $q) {
     var pouchDBDecorators = {
       qify: function (fn) {
         return function () {
@@ -191,7 +193,7 @@
   }
 
   function addTimestamps(object) {
-    object.updatedAt = now()
+    object.updatedAt = now();
     object.createdAt = object.createdAt || object.updatedAt
 
     if (object._deleted) {
