@@ -22,18 +22,24 @@
     }
     Pack.prototype.down = function () {
       var self = this;
-      if(self.isDown)return;
+      if(!self.config || self.isDown)return;
       self.isDown = true;
       self.downTask();
+    }
+    Pack.prototype.reDown = function () {
+      var self = this;
+      if(self.config){
+
+      }
     }
     Pack.prototype.downTask = function () {
       var self = this;
       var task = self.config.tasks.find(function (t) {
-        return !t.completed && (!t.try || t.try<3);
+        return !t.completed && (!t.try || t.try<4);
       });
       if(!task){
         self.isDown = false;
-        self.completed = true;
+        self.completed = self.getProgress().progress==100;
         $rootScope.$emit('pack' + self.config._id, {
           name: 'allcomplete',
           config: self.config
@@ -53,6 +59,7 @@
             this.item.MeasureItems.forEach(function (m) {
               if(m.AssessmentAreas.length==0)return;
 
+              //TODO: 当前是以项目下载整个测试包，其实可能许多实现项是不需要测试的，数据多余，可以进一步优化
 /*              if(!gx.find(function (it) {
                   return it.MeasureItemID==m.MeasureItemID
                 })){
@@ -70,7 +77,7 @@
                   })){
                   var am = xhUtils.findRegion([data],a.AreaID);
                   //临时测试要去掉
-                  am.DrawingImageUrl='/fs/UploadFiles/Framework/a744a033f5eeec56549c440de2ddfbae.jpg';
+                  //am.DrawingImageUrl='/fs/UploadFiles/Framework/a744a033f5eeec56549c440de2ddfbae.jpg';
                   if(am && am.DrawingImageUrl && !areas.find(function (a) {
                       return a.DrawingImageUrl==am.DrawingImageUrl
                     })) {
@@ -100,8 +107,9 @@
                   config.tasks.push({
                     _id: area.RegionID + '_p_' + u,
                     type: 'file',
-                    //url:sxt.app.api+'/Api/Picture/Tile/'+u+'?path='+area.DrawingImageUrl
-                    url: 'http://ggem.sxtsoft.com:9191/Api/Picture/Tile/' + u + '?path=' + area.DrawingImageUrl + '&name=/' + area.DrawingID + u + '.png'
+                    url:sxt.app.api+'/Api/Picture/Tile/'+u+'?path='+area.DrawingImageUrl + '&name=/' + area.DrawingID +'_'+ u + '.png'
+                    //测试数据
+                    //url: 'http://ggem.sxtsoft.com:9191/Api/Picture/Tile/' + u + '?path=' + area.DrawingImageUrl + '&name=/' + area.DrawingID + u + '.png'
                   });
                 })
               });
@@ -116,6 +124,7 @@
         }
         if(task.type == 'file') {
           try {
+            //TODO: 下载的文章与业务ID做为目录，不能共享，需要共享优化
             var rootPath = cordova.file.dataDirectory+ self.config._id+'/',
               names = task.url.split('/'),
               name = names[names.length - 1];
