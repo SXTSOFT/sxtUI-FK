@@ -8,7 +8,7 @@
     .module('app.xhsc')
     .controller('sc2Controller',sc2Controller)
   /** @ngInject */
-  function sc2Controller($scope,remote,xhUtils,$stateParams,utils,$mdDialog,db) {
+  function sc2Controller($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db) {
     var vm = this;
     vm.info = {
       db:$stateParams.db,
@@ -22,6 +22,7 @@
         AcceptanceItemID:$stateParams.acceptanceItemID
       }
     };
+    $rootScope.title = vm.info.aItem.MeasureItemName;
     var pack = db('pack'+vm.info.db);
     pack.get('GetMeasureItemInfoByAreaID').then (function (r) {
       //console.log('r',r)
