@@ -97,6 +97,11 @@
         $scope.answer([sc]);
       };
       $scope.scList = vm.MeasureIndexes;
+      $scope.getIsChecked = function () {
+        return !$scope.scList.find(function (r) {
+          return r.checked;
+        })
+      }
       $scope.hide = function () {
         $mdDialog.hide();
       };
