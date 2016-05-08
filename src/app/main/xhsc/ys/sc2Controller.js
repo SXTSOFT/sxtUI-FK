@@ -71,7 +71,7 @@
     vm.setRegionId = function(regionId,regionType){
       pack.get('GetRegionTreeInfo').then(function (result) {
         var region = xhUtils.findRegion([result.data],regionId);
-        vm.info.imageUrl = vm.info.db+'/543c5519138c4db5ab23412738b65c1d';
+        vm.info.imageUrl = region.DrawingID;
         vm.info.regionId = region.RegionID;
         vm.info.regionType = region.RegionType;
         vm.info.name = region.fullName;
@@ -123,6 +123,11 @@
         $scope.answer([sc]);
       };
       $scope.scList = vm.MeasureIndexes;
+      $scope.getIsChecked = function () {
+        return !$scope.scList.find(function (r) {
+          return r.checked;
+        })
+      }
       $scope.hide = function () {
         $mdDialog.hide();
       };

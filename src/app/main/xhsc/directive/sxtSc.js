@@ -9,27 +9,44 @@
     .directive('sxtSc', sxtSc);
 
   /** @Inject */
-  function sxtSc($timeout,mapPopupSerivce,db,offlineTileLayer,sxt,xhUtils){
+  function sxtSc($timeout,mapPopupSerivce,db,offlineTileLayer,sxt,xhUtils,remotePack){
 
     return {
       scope:{
+        db:'=',
         areaId:'=',
         acceptanceItem:'=',
         measureIndexes:'=',
         imageUrl:'=',
         regionId:'=',
         regionName:'=',
-        tips:'=',
-        project:'=',
         regionType:'=',
         readonly:'='
       },
       link:link
     }
     function link(scope,element,attr,ctrl){
-      var map,tile,fg,toolbar,data = db('db_00001_sc'),points = db('db_00001_point');
+      var map,tile,fg,toolbar,data,points,pack;
       var install = function(){
-        if(!scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
+        if(!scope.db || !scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
+
+        if(!pack)
+          pack = remotePack.pack({
+            _id:scope.db,
+            db:{
+              sc: {
+                type: 'data'
+              },
+              point: {
+                type: 'data'
+              }
+            }
+          });
+        if(!data)
+          data = pack.sc.db;
+        if(!points)
+          points = pack.point.db;
+
         if(!map){
           map = L.map(element[0],{
             crs: L.SXT.SXTCRS,
@@ -45,7 +62,7 @@
         if(!tile || tile.regionId!=scope.regionId) {
           if(tile)
             map.removeLayer(tile);
-          tile = offlineTileLayer.offlineTile(scope.imageUrl);
+          tile = offlineTileLayer.offlineTile(scope.db +'/' + scope.imageUrl);
           //tile = L.tileLayer(sxt.app.api+'/Api/Picture/Tile/{z}_{x}_{y}?path=/fs/UploadFiles/Framework/'+ scope.imageUrl, {attribution: false,noWrap: true});
           tile.regionId = scope.regionId;
         }
@@ -53,10 +70,8 @@
         if(fg)
           map.removeLayer(fg);
 
-
         if(toolbar)
           map.removeControl(toolbar);
-
 
         map.addLayer(tile);
 
@@ -183,7 +198,6 @@
             })
           }
         }).addTo(map);
-
       };
       $timeout(function(){
         scope.$watchCollection('measureIndexes',function(){

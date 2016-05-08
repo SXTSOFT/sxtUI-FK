@@ -4,14 +4,14 @@
     <md-list>
       <md-list-item ng-repeat="item in vm.offlines">
         <img src="app/main/xhsc/images/icon-downed.png" class="md-avatar" />
-        <p layout="column" style="padding-right: 250px;font-size:18px;">
+        <p layout="column" style="padding-right: 230px;font-size:18px;">
           {{item.AssessmentSubject}}
         </p>
         <div class="md-secondary md-hue-3">
           <md-button ng-click="vm.showECs($event,item)" class="md-raised md-primary">
             开始评估
           </md-button>
-         <span style="display:inline-block;width:120px;text-align: center;">
+         <span style="display:inline-block;width:88px;text-align: center;">
             <md-button ng-click="vm.upload()" class="md-raised upload-btn">
               上传
             </md-button>
@@ -25,16 +25,16 @@
     <md-list>
       <md-list-item ng-repeat="item in vm.onlines">
         <img src="app/main/xhsc/images/icon-down.png" class="md-avatar" />
-        <p layout="column" style="font-size: 18px;padding-right: 120px;">
+        <p layout="column" style="font-size: 18px;padding-right: 100px;">
           {{item.AssessmentSubject}}
         </p>
         <div class="md-secondary md-hue-3">
-         <span style="display:inline-block;width:120px;text-align: center;">
+         <span style="display:inline-block;width:88px;text-align: center;">
             <md-button ng-if="!item.pack.isDown" class="md-raised upload-btn" ng-click="vm.download(item)">
               下载
             </md-button>
-           <a  ng-if="item.pack.isDown" style="position: relative;display: inline-block;" ng-click="vm.cancel()">
-             <md-progress-circular md-mode="determinate" value="{{item.progress}}"  md-diameter="30"></md-progress-circular>
+           <a  ng-if="item.pack.isDown" style="position: relative;display: inline-block;width:31px;height:31px;border:1px solid #f8f8f8;border-radius:50%" ng-click="vm.cancel()">
+             <md-progress-circular md-mode="determinate" value="10"  md-diameter="30"></md-progress-circular>
               <md-icon style="width:10px;height:10px;background: #0185f1;position: absolute;left:10px;top:10px;"></md-icon></a>
               <md-button  ng-if="item.pack.isDown" style="display: inline-block;vertical-align: middle;padding:5px;color:#0185f1;min-width:40px;" ui-sref="app.xhsc.ddetail">详情</md-button>
           </span>
