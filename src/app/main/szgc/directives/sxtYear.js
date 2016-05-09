@@ -51,8 +51,9 @@
             scope.months.forEach(function (m) {
               m.d.splice(0, m.d.length);
             });
-            scope.allfilter = [];
+            //scope.allfilter = [];
             scope.data.forEach(function (file) {
+              scope.allfilter = [];
               if (scope.procedureId && (!file.gx || file.gx.indexOf(scope.procedureId) == -1)) return;
               if (scope.partion && scope.partion.Id && file.GroupId.indexOf('-' + scope.partion.Id + '-14') == -1) return;
               scope.allfilter.push(file);
@@ -212,6 +213,7 @@
           }
           else {
             var m = moment(day,'YYYY-M-D'), images = [];
+            console.log(dayType)
             switch (dayType) {
               case '1':
                 var fd = scope.months[m.month()].d.find(function (dy) { return dy.day == m.date(); });
@@ -467,7 +469,7 @@
             top:element.scrollTop(),
             margin:0
           }, function () {
-            var table = $('table',n), div = $('<div style="display:none"><div class="btn-toolbar" style="border-bottom:2px solid rgb(101, 101, 101);padding:4px 10px;" role="toolbar"><div class="btn-group img-title" style="line-height:40px;font-weight:bold;"></div><div class="btn-group pull-right btn-group-xs" role="group"> </div></div><div class="content">正在加载……</div></div>');
+            var table = $('table',n), div = $('<div style="display:none"><div class="btn-toolbar" style="border-bottom:2px solid rgb(101, 101, 101);padding:4px 10px;" role="toolbar"><div class="btn-group img-title" style="line-height:40px;font-weight:bold;"></div><div class="btn-group pull-right btn-group-xs" role="group"> </div></div><div class="content1">正在加载……</div></div>');
             div.appendTo(n);
             //table.css({ float: 'left' });
 
