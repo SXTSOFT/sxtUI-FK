@@ -1,6 +1,6 @@
 <md-content class="download">
   <div layout="column">
-    <md-subheader>已下载列表</md-subheader>
+    <md-subheader ng-if="vm.offlines.length">已下载列表</md-subheader>
     <md-list>
       <md-list-item ng-repeat="item in vm.offlines">
         <img src="app/main/xhsc/images/icon-downed.png" class="md-avatar" />
@@ -21,7 +21,7 @@
       </md-list-item>
 
     </md-list>
-    <md-subheader>未下载列表</md-subheader>
+    <md-subheader ng-if="vm.onlines.length">未下载列表</md-subheader>
     <md-list>
       <md-list-item ng-repeat="item in vm.onlines">
         <img src="app/main/xhsc/images/icon-down.png" class="md-avatar" />
