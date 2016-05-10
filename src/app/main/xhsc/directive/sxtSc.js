@@ -9,7 +9,7 @@
     .directive('sxtSc', sxtSc);
 
   /** @Inject */
-  function sxtSc($timeout,mapPopupSerivce,db,offlineTileLayer,sxt,xhUtils,remotePack){
+  function sxtSc($timeout,mapPopupSerivce,db,offlineTileLayer,sxt,xhUtils,pack){
 
     return {
       scope:{
@@ -26,26 +26,16 @@
       link:link
     }
     function link(scope,element,attr,ctrl){
-      var map,tile,fg,toolbar,data,points,pack;
+      var map,tile,fg,toolbar,data,points,pk;
       var install = function(){
         if(!scope.db || !scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
 
-        if(!pack)
-          pack = remotePack.pack({
-            _id:scope.db,
-            db:{
-              sc: {
-                type: 'data'
-              },
-              point: {
-                type: 'data'
-              }
-            }
-          });
+        if(!pk)
+          pk = pack.sc.up(scope.db);
         if(!data)
-          data = pack.sc.db;
+          data = pk.sc.db;
         if(!points)
-          points = pack.point.db;
+          points = pk.point.db;
 
         if(!map){
           map = L.map(element[0],{
@@ -111,6 +101,8 @@
               scope.measureIndexes.forEach(function (m) {
                 var v = {
                   _id:sxt.uuid(),
+                  RecordType:4,
+                  RelationID:scope.db,
                   MeasurePointID:point._id,
                   CheckRegionID:scope.regionId,
                   RegionType:scope.regionType,
@@ -148,11 +140,32 @@
               }
             }
           },
+          onPopupClose:function (e) {
+            var self = this;
+            var edit = mapPopupSerivce.get('mapPopup'),
+              scope = edit.scope;
+            if(scope.data && scope.isSaveData!==false){
+              scope.isSaveData = false;
+              self.options.onUpdateData(scope.context,scope.data.updates,scope);
+            }
+          },
           onUpdateData:function(context,updates,scope){
             updates.forEach(function(m){
+              if(!m.v)return;
+              if(!m.v._id){
+                m.v = angular.extend({
+                  _id:sxt.uuid(),
+                  RelationID:scope.db,
+                  RecordType:4,
+                  MeasurePointID:scope.context.layer._value.$id,
+                  CheckRegionID:scope.regionId,
+                  RegionType:scope.regionType,
+                  AcceptanceItemID:scope.acceptanceItem,
+                  AcceptanceIndexID:m.AcceptanceIndexID
+                },m.v);
+              }
               data.addOrUpdate(m.v);
             });
-            console.log('onUpdate',context,updates);
           },
           onDelete:function (layer) {
             var id = layer.getValue().$id,

@@ -8,7 +8,7 @@
     .module('app.xhsc')
     .controller('sc2Controller',sc2Controller)
   /** @ngInject */
-  function sc2Controller($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,$state) {
+  function sc2Controller($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,remotePack,sxt) {
     var vm = this;
     vm.info = {
       db:$stateParams.db,
@@ -27,7 +27,7 @@
     pack.get('GetMeasureItemInfoByAreaID').then (function (r) {
       //console.log('r',r)
       var find = r.data.find(function (it) {
-        return it.AcceptanceItemID == vm.info.acceptanceItemID;
+        return it.MeasureItemID == vm.info.acceptanceItemID;
       })
       var m=[];
       find.MeasureIndexList.forEach(function(item) {
@@ -42,6 +42,7 @@
       });
       vm.MeasureIndexes = m;
       vm.MeasureIndexes.forEach(function(t){
+        t._id = sxt.uuid();//指标结构表
         t.checked = false;
       })
       vm.scChoose();
@@ -79,6 +80,39 @@
         vm.info.regionId = region.RegionID;
         vm.info.regionType = region.RegionType;
         vm.info.name = region.fullName;
+    }
+    vm.submit = function (ev) {
+      $mdDialog.show($mdDialog.confirm()
+        .title('提交？')
+        .textContent('确定完成提交当前指标测试数据吗？')
+        .ariaLabel('提交？')
+        .targetEvent(ev)
+        .ok('确定')
+        .cancel('取消')).then(function () {
+        var indexs = remotePack.pack({
+          _id:vm.info.db,
+          db:{
+            status:{
+              type:'data'
+            }
+          }
+        }).indexs.db;
+        vm.info.MeasureIndexes.forEach(function (m) {
+          indexs.addOrUpdate({
+            _id: m._id,
+            RegionId: vm.info.regionId,
+            RegionType:vm.info.regionType,
+            AcceptanceIndexID: m.AcceptanceIndexID,
+            AcceptanceItemID: vm.info.aItem.AcceptanceItemID,
+            RecordType:4,
+            RelationID:vm.info.db,
+            Status: 1
+          });
+        })
+      }, function () {
+
+      });
+
     }
 
     vm.nextRegion = function(prev){

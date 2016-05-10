@@ -93,13 +93,14 @@
 
       });
       scope.updateValue = function() {
-        var context = scope.context;
+        //var context = scope.context;
 
-        if (!context.featureGroup.options.onUpdateData || context.featureGroup.options.onUpdateData (context,scope.data.updates,scope) !== false) {
-          scope.cancelEdit ();
-        }
+        //if (!context.featureGroup.options.onUpdateData || context.featureGroup.options.onUpdateData (context,scope.data.updates,scope) !== false) {
+          scope.cancelEdit (true);
+        //}
       };
       scope.apply = function() {
+        scope.isSaveData = null;
         var context = scope.context,p = context.layer.getValue();
         var singleEdit=[],mutiEdit=[],floorEdit=[],sjzEdit=[],materEidt=[],group;
         scope.data.updates = [];
@@ -185,10 +186,12 @@
         scope.distinct(Array.prototype.splice.call(arguments));
       }
       scope.removeLayer = function(){
+        scope.isSaveData = false;
         var layer = scope.context.layer;
         layer._fg.removeLayer(layer);
       };
-      scope.cancelEdit = function(){
+      scope.cancelEdit = function(saveData){
+        scope.isSaveData = saveData||false;
         var layer = scope.context.layer;
         layer.editing && layer.editing.disable();
       };

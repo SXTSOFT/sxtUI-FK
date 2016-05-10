@@ -4,7 +4,7 @@
     <md-button class="md-mini" ng-click="vm.scChoose($event)">
       <label style="margin-bottom: 0;font-weight: normal;"><span ng-repeat="sc in vm.info.MeasureIndexes" style="color:#f00;">{{sc.IndexName}},</span></label>
     <img src="app/main/xhsc/images/pop.png" style="vertical-align: middle;margin-left: 10px;"></md-button>
-    <md-button class="md-raised md-mini" ng-click="vm.submit()">
+    <md-button class="md-raised md-mini" ng-click="vm.submit($event)">
       提交
     </md-button>
   </div>

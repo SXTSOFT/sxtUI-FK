@@ -26,11 +26,11 @@
       if(!self.config || self.isDown)return;
       self.isUp = true;
       self.tasks = [];
-      var when=[],urls=[];
+      var when=[],dbs=[];
       for(var k in self){
         var m = self[k];
         if(m.db){
-          urls.push[m.url];
+          dbs.push[m];
           when.push(m.db.findAll());
         }
       }
@@ -40,27 +40,32 @@
           r.rows.forEach(function (t) {
             self.tasks.push({
               data:t,
-              url:urls[i]
+              url:dbs[i].url,
+              index:dbs[i].index||0
             })
           });
           i++;
         });
-
+        self.tasks.sort(function (s1,s2) {
+          return s1.index - s2.index;
+        });
         self.upTask();
       });
     };
     Pack.prototype.getNexts = function () {
       var self = this,
-        url,tasks=[];
+        url,tasks=[],type;
       self.tasks.forEach(function (task) {
-        if(task.completed && (task.try && task.try>3 ))
+        if(task.completed || (task.try && task.try>3 ) ||(type && type=='file'))
           return;
         if(!url)
           url = task.url;
 
-        if(url==task.url &&  tasks.length<self.max){
+        if(url==task.url &&  tasks.length<self.max && (!type || type==task.type)){
           tasks.push(task);
         }
+        if(!type)
+          type = task.type;
       });
       return tasks;
     }
@@ -89,6 +94,7 @@
           tasks[0].try = (tasks[0].try||0)+1;
           self.upTask();
         },function (progress) {
+          tasks[0].progress = (progress.loaded / progress.total) * 100;
           // (progress.loaded / progress.total) * 100
         });
       }
@@ -96,7 +102,7 @@
         var data=[];
         tasks.forEach(function (item) {
           data.push(item);
-        })
+        });
         $http.post(url,data).then(function () {
           tasks.forEach(function (task) {
             task.completed = true;
