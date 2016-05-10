@@ -381,13 +381,16 @@
     }
     .md-button{
       min-height:32px;
-      padding: 0;
-      margin: 0;
       min-width: 36px;
+      line-height: 100%;
       display: inline-block;
       vertical-align:middle;
+      span{
+        line-height: 100%;
+      }
       &.font14{
         span{
+
           font-size:14px;
         }
       }
@@ -660,7 +663,7 @@
         height:18px;
       }
       .md-icon{
-        background: url(toolbar/images/check.png);
+        background: url(/app/toolbar/images/check.png);
         border-width:0;
         width:18px;
         height:18px;
@@ -670,7 +673,7 @@
       &.md-vanke-theme{
         &.md-checked {
           .md-icon{
-            background: url(toolbar/images/checked.png);
+            background: url(/app/toolbar/images/checked.png);
             background-color:transparent;
           }
         }
@@ -679,9 +682,9 @@
     i{
       &.myselect{
         display: inline-block;box-sizing:border-box;width:18px;height:18px;
-        background: url(toolbar/images/check.png);
+        background: url(/app/toolbar/images/check.png);
         &.selected{
-          background: url(toolbar/images/checked.png);
+          background: url(/app/toolbar/images/checked.png);
         }
       }
     }
@@ -695,7 +698,7 @@
         position: relative;
         .searchicon{
           width:14px;height:14px;display: inline-block;position: absolute;top:8px;left:50%;margin-left:-34px;
-          background: url(toolbar/images/search.jpg);
+          background: url(/app/toolbar/images/search.jpg);
           background-size:14px 14px;
         }
         .inputtext{
@@ -752,9 +755,9 @@
            i{
              &.myselect{
                display: inline-block;box-sizing:border-box;width:18px;height:18px;
-               background: url(toolbar/images/check.png);
+               background: url(../app/toolbar/images/check.png);
                &.selected{
-                 background: url(toolbar/images/checked.png);
+                 background: url(../app/toolbar/images/checked.png);
                }
              }
            }
@@ -829,7 +832,7 @@
         width:100%;
         border:2px solid #d8d8d8;
         border-radius:32px;
-        padding: 0;
+        padding: 0 10px;
         min-height: 32px;
         margin:8px;
         overflow: hidden;
@@ -855,7 +858,6 @@
         }
       }
       md-list-item{
-        width:12%;
       }
     }
   }

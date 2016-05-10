@@ -71,11 +71,14 @@
     vm.setRegionId = function(regionId,regionType){
       pack.get('GetRegionTreeInfo').then(function (result) {
         var region = xhUtils.findRegion([result.data],regionId);
+        vm.setRegion(region)
+      });
+    }
+    vm.setRegion = function(region){
         vm.info.imageUrl = region.DrawingID;
         vm.info.regionId = region.RegionID;
         vm.info.regionType = region.RegionType;
         vm.info.name = region.fullName;
-      });
     }
 
     vm.nextRegion = function(prev){
@@ -87,31 +90,13 @@
           var next=prev?region.prev():region.next();
           if (!next){
             utils.alert("查无数据!");
-            return;s
+            return;
           }
-          vm.MeasureIndexes.forEach(function(t){
-            t.checked = false;
-          });
-          vm.info.MeasureIndexes=[];
-          vm.setRegionId(next.RegionID,$stateParams.regionType);
-
-          //$state.go("app.xhsc.sc2",{
-          //  db:$stateParams.db,
-          //  RegionName:next.RegionName,
-          //  areaId:$stateParams.areaId,
-          //  regionId:next.RegionID,
-          //  regionType:$stateParams.regionType,
-          //  name:$stateParams.name,
-          //  acceptanceItemID:$stateParams.acceptanceItemID,
-          //  pname:$stateParams.pname
-          //});
+          vm.setRegion(next);
         }
-        //vm.info.imageUrl = region.DrawingID;
-        //vm.info.regionId = region.regionId;
-        //vm.info.region.regionType;
       });
     };
-    vm.setRegionId($stateParams.regionId,$stateParams.regionType);
+    vm.setRegionId($stateParams.regionId);
 
     function DialogController($scope, $mdDialog) {
       //console.log('sc',vm.MeasureIndexes);
