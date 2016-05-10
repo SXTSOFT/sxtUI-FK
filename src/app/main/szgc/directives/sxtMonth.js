@@ -23,8 +23,8 @@
           //head
           element.addClass('calendar-table');
           //html.push('<div class="calendar-table">');
-          html.push('<table class="table-condensed" style="width: 100%;">');
-          html.push('<thead><tr style="border-bottom:2px solid rgb(101, 101, 101);"><th></th><th colspan="5" style="cursor:pointer" data-day="' + m.format('YYYY-MM-1') + '" data-type="2" class="month">');
+          html.push('<table class="table-condensed" style="width: 100%;border-bottom:2px solid rgb(101, 101, 101);">');
+          html.push('<thead><tr ><th></th><th colspan="5" style="cursor:pointer" data-day="' + m.format('YYYY-MM-1') + '" data-type="2" class="month">');
           html.push(m.format('YYYY年MM月'));
           html.push('</th><th></th></tr>');
           html.push('<tr><th>日</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th></tr></thead>');

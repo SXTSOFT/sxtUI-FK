@@ -90,21 +90,21 @@
               }));
             })
           }
-          else if(zoom>=11 && zoom <=12) {
-            mks.forEach(function (marker) {
-              marker.setIcon(L.icon({
-                iconUrl: 'assets/leaflet/images/M.png',
-                iconSize: [39, 39],
-                iconAnchor: [20, 20]
-              }));
-            })
-          }
+          //else if(zoom>=11 && zoom <=12) {
+          //  mks.forEach(function (marker) {
+          //    marker.setIcon(L.icon({
+          //      iconUrl: 'assets/leaflet/images/M.png',
+          //      iconSize: [39, 39],
+          //      iconAnchor: [20, 20]
+          //    }));
+          //  })
+          //}
           else {
             mks.forEach(function (marker) {
               marker.setIcon(L.icon({
                 iconUrl: 'assets/leaflet/images/M.png',
-                iconSize: [70, 70],
-                iconAnchor: [35, 35]
+                iconSize: [24, 24],
+                iconAnchor: [12, 12]
               }));
             })
           }

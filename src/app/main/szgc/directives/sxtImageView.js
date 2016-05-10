@@ -82,7 +82,7 @@
           }
           imagedata.sort(function(s1,s2){
             if(s1.date && s2.date){
-              return s1.date.localeCompare(s2.date);
+              return s2.date.localeCompare(s1.date);
             }
             return 0;
           })

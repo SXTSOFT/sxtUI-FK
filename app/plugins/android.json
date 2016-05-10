@@ -24,6 +24,9 @@
         },
         "cordova-plugin-app-version": {
             "PACKAGE_NAME": "com.sxt.szgc"
+        },
+        "cordova-plugin-keyboard": {
+            "PACKAGE_NAME": "com.sxt.szgc"
         }
     },
     "dependent_plugins": {}
