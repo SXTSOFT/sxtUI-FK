@@ -975,6 +975,8 @@
       .md-avatar{
         width:56px;
         height:56px;
+        margin-top:11px;
+        margin-bottom:11px;
       }
       h3{
         font-size:18px;
@@ -1039,6 +1041,17 @@
     }
   }
 
+}
+.e-dialog{
+  a{
+    &.md-button{
+      &:not([disabled]){
+        &:hover{
+          background-color: transparent;
+        }
+      }
+    }
+  }
 }
 .ddetail{
   md-progress-circular{

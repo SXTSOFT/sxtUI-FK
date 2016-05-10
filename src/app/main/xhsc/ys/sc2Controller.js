@@ -8,15 +8,15 @@
     .module('app.xhsc')
     .controller('sc2Controller',sc2Controller)
   /** @ngInject */
-  function sc2Controller($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db) {
+  function sc2Controller($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,$state) {
     var vm = this;
     vm.info = {
       db:$stateParams.db,
       name: $stateParams.name,
       areaId:$stateParams.areaId,
       acceptanceItemID: $stateParams.acceptanceItemID,
-      //regionId: $stateParams.regionId,
-      //regionType: $stateParams.regionType,
+      regionId: $stateParams.regionId,
+      regionType: $stateParams.regionType,
       aItem:{
         MeasureItemName:$stateParams.pname,
         AcceptanceItemID:$stateParams.acceptanceItemID
@@ -45,6 +45,8 @@
         t.checked = false;
       })
       vm.scChoose();
+    },function(err){
+
     });
 
     vm.scChoose = function($event){
@@ -79,10 +81,34 @@
     vm.nextRegion = function(prev){
       //vm.info.regionId 当前
       pack.get('GetRegionTreeInfo').then(function (result) {
-        var region = xhUtils.findRegion([result.data],regionId);
-        vm.info.imageUrl = region.DrawingID;
-        //vm.info.regionId = regionId;
-        //vm.info.regionType;
+        var  rr=xhUtils.wrapRegion(result.data);
+        var region = xhUtils.findRegion([rr],vm.info.regionId);
+        if (region){
+          var next=prev?region.prev():region.next();
+          if (!next){
+            utils.alert("查无数据!");
+            return;s
+          }
+          vm.MeasureIndexes.forEach(function(t){
+            t.checked = false;
+          });
+          vm.info.MeasureIndexes=[];
+          vm.setRegionId(next.RegionID,$stateParams.regionType);
+
+          //$state.go("app.xhsc.sc2",{
+          //  db:$stateParams.db,
+          //  RegionName:next.RegionName,
+          //  areaId:$stateParams.areaId,
+          //  regionId:next.RegionID,
+          //  regionType:$stateParams.regionType,
+          //  name:$stateParams.name,
+          //  acceptanceItemID:$stateParams.acceptanceItemID,
+          //  pname:$stateParams.pname
+          //});
+        }
+        //vm.info.imageUrl = region.DrawingID;
+        //vm.info.regionId = region.regionId;
+        //vm.info.region.regionType;
       });
     };
     vm.setRegionId($stateParams.regionId,$stateParams.regionType);
