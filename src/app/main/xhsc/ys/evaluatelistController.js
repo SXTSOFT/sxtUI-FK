@@ -9,7 +9,7 @@
     .controller('evaluatelistController',evaluatelistController);
 
   /** @ngInject*/
-  function evaluatelistController($mdDialog,$rootScope){
+  function evaluatelistController($mdDialog,$rootScope,$scope){
     var vm = this;
     vm.images = [
       {url:'assets/images/etc/plug.png'},
@@ -18,7 +18,8 @@
     ];
     var deleteFn = function(d,data){
       //vm.images.splice(data,1);
-      console.log('a',vm.images)
+      $scope.$apply();
+     // console.log('a',vm.images)
     }
     $rootScope.$on('delete',deleteFn);
     vm.getRecord = function(ev){

@@ -102,6 +102,15 @@
         }
         return r;
       })
+    },
+    find:function (filter) {
+      return this.allDocs({include_docs:true}).then(function (result) {
+        for(var i=0,l=result.rows.length;i<l;i++){
+          if(!filter || filter(result.rows[i].doc)!==false){
+            return result.rows[i].doc;
+          }
+        }
+      })
     }
   };
 

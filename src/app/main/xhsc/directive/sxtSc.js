@@ -9,7 +9,7 @@
     .directive('sxtSc', sxtSc);
 
   /** @Inject */
-  function sxtSc($timeout,mapPopupSerivce,db,offlineTileLayer,sxt,xhUtils){
+  function sxtSc($timeout,mapPopupSerivce,db,offlineTileLayer,sxt,xhUtils,remotePack){
 
     return {
       scope:{
@@ -26,14 +26,26 @@
       link:link
     }
     function link(scope,element,attr,ctrl){
-      var map,tile,fg,toolbar,data,points;
+      var map,tile,fg,toolbar,data,points,pack;
       var install = function(){
         if(!scope.db || !scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
 
+        if(!pack)
+          pack = remotePack.pack({
+            _id:scope.db,
+            db:{
+              sc: {
+                type: 'data'
+              },
+              point: {
+                type: 'data'
+              }
+            }
+          });
         if(!data)
-          data = db('pack'+scope.db+'_sc');
+          data = pack.sc.db;
         if(!points)
-          points = db('pack'+scope.db+'_point');
+          points = pack.point.db;
 
         if(!map){
           map = L.map(element[0],{
@@ -57,7 +69,7 @@
 
         if(fg)
           map.removeLayer(fg);
-        
+
         if(toolbar)
           map.removeControl(toolbar);
 

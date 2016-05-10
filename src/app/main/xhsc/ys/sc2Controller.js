@@ -8,15 +8,15 @@
     .module('app.xhsc')
     .controller('sc2Controller',sc2Controller)
   /** @ngInject */
-  function sc2Controller($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db) {
+  function sc2Controller($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,$state) {
     var vm = this;
     vm.info = {
       db:$stateParams.db,
       name: $stateParams.name,
       areaId:$stateParams.areaId,
       acceptanceItemID: $stateParams.acceptanceItemID,
-      //regionId: $stateParams.regionId,
-      //regionType: $stateParams.regionType,
+      regionId: $stateParams.regionId,
+      regionType: $stateParams.regionType,
       aItem:{
         MeasureItemName:$stateParams.pname,
         AcceptanceItemID:$stateParams.acceptanceItemID
@@ -45,6 +45,8 @@
         t.checked = false;
       })
       vm.scChoose();
+    },function(err){
+
     });
 
     vm.scChoose = function($event){
@@ -69,23 +71,32 @@
     vm.setRegionId = function(regionId,regionType){
       pack.get('GetRegionTreeInfo').then(function (result) {
         var region = xhUtils.findRegion([result.data],regionId);
+        vm.setRegion(region)
+      });
+    }
+    vm.setRegion = function(region){
         vm.info.imageUrl = region.DrawingID;
         vm.info.regionId = region.RegionID;
         vm.info.regionType = region.RegionType;
         vm.info.name = region.fullName;
-      });
     }
 
     vm.nextRegion = function(prev){
       //vm.info.regionId 当前
       pack.get('GetRegionTreeInfo').then(function (result) {
-        var region = xhUtils.findRegion([result.data],regionId);
-        vm.info.imageUrl = region.DrawingID;
-        //vm.info.regionId = regionId;
-        //vm.info.regionType;
+        var  rr=xhUtils.wrapRegion(result.data);
+        var region = xhUtils.findRegion([rr],vm.info.regionId);
+        if (region){
+          var next=prev?region.prev():region.next();
+          if (!next){
+            utils.alert("查无数据!");
+            return;
+          }
+          vm.setRegion(next);
+        }
       });
     };
-    vm.setRegionId($stateParams.regionId,$stateParams.regionType);
+    vm.setRegionId($stateParams.regionId);
 
     function DialogController($scope, $mdDialog) {
       //console.log('sc',vm.MeasureIndexes);
@@ -97,6 +108,11 @@
         $scope.answer([sc]);
       };
       $scope.scList = vm.MeasureIndexes;
+      $scope.getIsChecked = function () {
+        return !$scope.scList.find(function (r) {
+          return r.checked;
+        })
+      }
       $scope.hide = function () {
         $mdDialog.hide();
       };
