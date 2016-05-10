@@ -9,7 +9,7 @@
     .controller('downloadController',downloadController);
 
   /** @ngInject*/
-  function downloadController($mdDialog,db,remote,localPack,xhUtils,$rootScope,$scope){
+  function downloadController($mdDialog,db,remote,localPack,xhUtils,$rootScope,$scope,pack,sxt){
     var vm = this;
     var pk = db('xcpk');
     pk.get('xcpk').then(function (result) {
@@ -63,6 +63,10 @@
 
       })
     }
+    vm.upload =function (item) {
+      var pk = pk.sc.down(item.AssessmentID);
+      pk.upload();
+    }
     function queryOnline() {
       vm.onlines = [];
       vm.offlines = [];
@@ -81,8 +85,6 @@
             vm.onlines.push(m);
           }
         })
-        //pk.addOrUpdate(vm.data);
-        //vm.onlines = result.data;
       }).catch(function () {
 
       });

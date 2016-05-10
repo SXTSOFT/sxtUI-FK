@@ -43,7 +43,7 @@
                 regionId:room.RegionID,
                 regionType:room.RegionType,
                 name:room.fullName,
-                acceptanceItemID:m.MeasureItemID,
+                measureItemID:m.MeasureItemID,
                 pname:m.MeasureItemName
               });
             }
