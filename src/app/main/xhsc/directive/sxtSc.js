@@ -109,6 +109,7 @@
                   AcceptanceItemID:scope.acceptanceItem,
                   AcceptanceIndexID:m.AcceptanceIndexID
                 };
+                v.MeasureValueId = v._id;
                 data.addOrUpdate(v);
                 fg.data.push(v);
               })
@@ -163,6 +164,7 @@
                   AcceptanceItemID:scope.acceptanceItem,
                   AcceptanceIndexID:m.AcceptanceIndexID
                 },m.v);
+                m.v.MeasureValueId = m.v._id;
               }
               data.addOrUpdate(m.v);
             });

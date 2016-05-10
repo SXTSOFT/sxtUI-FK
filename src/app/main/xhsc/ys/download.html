@@ -8,12 +8,12 @@
           {{item.AssessmentSubject}}
         </p>
         <div class="md-secondary md-hue-3">
-          <md-button ng-click="vm.showECs($event,item)" class="md-raised md-primary">
+          <md-button ng-hide="item.completed" ng-click="vm.showECs($event,item)" class="md-raised md-primary">
             开始评估
           </md-button>
          <span style="display:inline-block;width:88px;text-align: center;">
-            <md-button ng-click="vm.upload()" class="md-raised upload-btn">
-             <md-progress-circular md-mode="determinate" value="40"  md-diameter="20"></md-progress-circular> 同步
+            <md-button ng-click="vm.upload(item)" class="md-raised upload-btn">
+             <md-progress-circular ng-show="item.progress && item.progress!=100" value="{{item.progress}}"  md-diameter="20"></md-progress-circular> 同步
             </md-button>
           </span>
         </div>
