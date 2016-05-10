@@ -23,7 +23,7 @@
   <button type="button" class="btn btn-white" ng-click="add(-1)"> <md-icon md-font-icon="icon-chevron-left"></md-icon></button>\
   <button type="button" class="btn btn-white yearlabel" data-day="{{year}}-1-1" data-type="3">{{year}}</button>\
   <button type="button" class="btn btn-white" ng-click="add(1)"><md-icon md-font-icon="icon-chevron-right"></md-icon></button>\
-</div> <button type="button"  class="btn btn-white yearlabel" style="margin: -28px auto;display: block">全部</button><button type="button" ng-show="isLoading" class="btn btn-white"><i class="fa fa-refresh fa-spin"></i></button> </div><div style="overflow: auto;margin-top:34px;" class="clear months monthsscroll"><div ng-repeat="m in months" sxt-month="m" style="border-bottom: 2px solid rgb(101, 101, 101); "></div></div>',
+</div> <button type="button"  class="btn btn-white yearlabel allbtn" style="margin: -28px auto;display: block">全部</button><button type="button" ng-show="isLoading" class="btn btn-white"><i class="fa fa-refresh fa-spin"></i></button> </div><div style="overflow: auto;margin-top:34px;" class="clear months monthsscroll"><div ng-repeat="m in months" sxt-month="m" ></div></div>',
       link: function (scope, element, attr, ctrl) {
         var map,curlay;
         element.addClass('sxtcalendar');
@@ -51,9 +51,8 @@
             scope.months.forEach(function (m) {
               m.d.splice(0, m.d.length);
             });
-            //scope.allfilter = [];
+            scope.allfilter = [];
             scope.data.forEach(function (file) {
-              scope.allfilter = [];
               if (scope.procedureId && (!file.gx || file.gx.indexOf(scope.procedureId) == -1)) return;
               if (scope.partion && scope.partion.Id && file.GroupId.indexOf('-' + scope.partion.Id + '-14') == -1) return;
               scope.allfilter.push(file);
@@ -213,7 +212,6 @@
           }
           else {
             var m = moment(day,'YYYY-M-D'), images = [];
-            console.log(dayType)
             switch (dayType) {
               case '1':
                 var fd = scope.months[m.month()].d.find(function (dy) { return dy.day == m.date(); });
@@ -419,8 +417,10 @@
           });
         }
         element.find('button.yearlabel').click(function (e) {
+          var iWrapHeight = element.height();
+          if(element.find('.year-wrap')) element.find('.year-wrap').remove();
           $(this).blur();
-          var div = $('<div style="background:white"><div class="btn-toolbar" style="padding:20px 10px" role="toolbar"><div class="btn-group img-title" style="line-height:40px;font-weight:bold; "></div><div class="btn-group pull-right btn-group-xs" role="group"> </div></div><div class="content">正在加载……</div></div>');
+          var div = $('<div style="background:white" class="year-wrap"><div class="btn-toolbar" style="padding:20px 10px" role="toolbar"><div class="btn-group img-title" style="line-height:40px;font-weight:bold; "></div><div class="btn-group pull-right btn-group-xs" role="group"> </div></div><div class="content">正在加载……</div></div>');
           div.appendTo(element);
 
           div.css({
@@ -431,7 +431,7 @@
             height: 0
           }).appendTo(element).animate({
             width: element.width(),
-            height: element.height(),
+            height: iWrapHeight,//element.height(),
             margin: 0
           }, function () {
             $('.months').hide();
@@ -450,6 +450,8 @@
 
         });
         element.on('click', ' div.months div.calendar-table', function (e) {
+          console.log('a',element.find('.yearlabel'))
+          $('.allbtn').css('display','none');
           var self = $(this), n = self.clone(), offset = self.position(), target = e.target;
           var inHeight = $(window).height()- 100;
           //if (!$(target).hasClass('photo')) return;
@@ -469,7 +471,7 @@
             top:element.scrollTop(),
             margin:0
           }, function () {
-            var table = $('table',n), div = $('<div style="display:none"><div class="btn-toolbar" style="border-bottom:2px solid rgb(101, 101, 101);padding:4px 10px;" role="toolbar"><div class="btn-group img-title" style="line-height:40px;font-weight:bold;"></div><div class="btn-group pull-right btn-group-xs" role="group"> </div></div><div class="content1">正在加载……</div></div>');
+            var table = $('table',n), div = $('<div style="display:none"><div class="btn-toolbar" style="padding:20px 10px;" role="toolbar"><div class="btn-group img-title" style="line-height:40px;font-weight:bold;"></div><div class="btn-group pull-right btn-group-xs" role="group"> </div></div><div class="content">正在加载……</div></div>');
             div.appendTo(n);
             //table.css({ float: 'left' });
 
@@ -478,6 +480,7 @@
             });
             div.find('.btn-toolbar button.btn-close').click(function () {
               div.hide();
+              $(lement.find('.allbtn')).css('display','block');
               $('.months').show();
               n.animate({
                 top: offset.top,
