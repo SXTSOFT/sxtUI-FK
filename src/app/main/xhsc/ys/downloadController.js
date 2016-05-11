@@ -9,7 +9,7 @@
     .controller('downloadController',downloadController);
 
   /** @ngInject*/
-  function downloadController($mdDialog,db,remote,localPack,xhUtils,$rootScope,$scope,pack,sxt){
+  function downloadController($mdDialog,db,remote,localPack,xhUtils,$rootScope,$scope,pack,utils){
     var vm = this;
     var pk = db('xcpk');
     pk.get('xcpk').then(function (result) {
@@ -24,28 +24,11 @@
     });
     vm.download = function (item) {
       item.progress = 0;
-      var pack =localPack.pack({
-        _id:item.AssessmentID,
-        name:item.AssessmentSubject,
-        tasks:[
-          {
-            _id:'GetMeasureItemInfoByAreaID',
-            name:'获取分期下所有指标',
-            url:'/Api/MeasureInfo/GetMeasureItemInfoByAreaID?areaID='+item.AreaID
-          },
-          {
-            _id:'GetRegionTreeInfo',
-            name:'获取区域信息',
-            url:'/Api/ProjectInfoApi/GetRegionTreeInfo?AreaID='+item.AreaID,
-            type:'ExRegion',
-            item:angular.copy(item)
-          }
-        ]
-      })
-      item.pack = pack;
+      var pk = pack.sc.up(item);
+      item.pack = pk;
       $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
         //console.log(arguments);
-        var p =pack.getProgress();
+        var p = pk.getProgress();
         item.progress = parseInt(p.progress*100);
         if(item.pack && item.pack.completed){
           var ix = vm.onlines.indexOf(item);
@@ -64,13 +47,24 @@
       })
     }
     vm.upload =function (item) {
-      var pk = pk.sc.down(item.AssessmentID);
-      pk.upload();
+      var pk = pack.sc.up(item.AssessmentID);
+      pk.upload(function (proc) {
+        item.progress = proc;
+        if(proc==100) {
+          item.completed = pk.completed;
+          if(item.completed)
+            pk.addOrUpdate(item);
+          else {
+            utils.tips('同步未完成');
+          }
+        }
+      });
     }
     function queryOnline() {
       vm.onlines = [];
       vm.offlines = [];
       vm.data.rows.forEach(function (m) {
+        m.progress = 0;
         vm.offlines.push(m);
       });
       remote.Assessment.query().then(function (result) {
