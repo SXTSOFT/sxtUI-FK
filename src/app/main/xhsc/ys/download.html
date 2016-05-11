@@ -5,7 +5,7 @@
       <md-list-item ng-repeat="item in vm.offlines">
         <img src="app/main/xhsc/images/icon-downed.png" class="md-avatar" />
         <p layout="column" style="padding-right: 230px;font-size:18px;">
-          {{item.AssessmentSubject}}11{{item.completed}}
+          {{item.AssessmentSubject}}
         </p>
         <div class="md-secondary md-hue-3">
           <md-button ng-hide="item.completed" ng-click="vm.showECs($event,item)" class="md-raised md-primary">
