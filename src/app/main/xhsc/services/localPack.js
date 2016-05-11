@@ -39,7 +39,7 @@
       });
       if(!task){
         self.isDown = false;
-       self.completed = self.getProgress().progress==1;
+       self.completed = self.getProgress().progress==100;
         $rootScope.$emit('pack' + self.config._id, {
           name: 'allcomplete',
           config: self.config
@@ -205,7 +205,7 @@
       return {
         completed: completed,
         total: total,
-        progress: completed / total
+        progress: parseInt(completed / total *100)
       }
     }
 
@@ -215,8 +215,13 @@
     };
     return o;
     function pack(config) {
-      var pack = this.packages[config._id] = this.packages[config._id] || new Pack(config);
-      return pack;
+      if(!this.packages[config._id]) {
+        this.packages[config._id] = new Pack(config);
+      }
+      else{
+        this.packages[config._id].down();
+      }
+      return  this.packages[config._id];
     }
 
   }
