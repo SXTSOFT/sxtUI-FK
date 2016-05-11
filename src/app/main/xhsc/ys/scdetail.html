@@ -1,11 +1,4 @@
 <md-content class="subheader" style="position:relative;" layout-padding>
-  <div  layout="row" layout-align="left center">
-    <span>第</span>
-    <md-select ng-model="vm.info.t" style="margin:5px 0 10px 0;">
-      <md-option value="">1</md-option>
-    </md-select><span>次</span>
-  </div>
-
   <table cellspacing="0" cellpadding="0" border="0" width="100%" class="zdytable">
     <tr>
       <td colspan="{{vm.cols+6}}" style="text-align: center;" class="head">
@@ -30,9 +23,9 @@
     <tr ng-repeat="item in vm.newData">
       <td class="procedurename" rowspan="{{vm.newData.length}}" ng-if="$index == 0"><p>{{item.MeasureUserName}}</p></td>
       <td rowspan="{{item.rowspan}}" ng-if="!item.parent" colspan="2">{{item.IndexName}}</td>
-      <td rowspan="{{item.rowspan}}" ng-if="!item.parent">结果</td>
-      <td rowspan="{{item.rowspan}}" ng-if="!item.parent">结果</td>
-      <td rowspan="{{item.rowspan}}" ng-if="!item.parent">结果</td>
+      <td rowspan="{{item.rowspan}}" ng-if="!item.parent" class="normal" ng-class="{'redColor':item.ResultStatus == 2}">{{item.ResultStatus}}</td>
+      <td rowspan="{{item.rowspan}}" ng-if="!item.parent">{{item.MaximumDeviation}}</td>
+      <td rowspan="{{item.rowspan}}" ng-if="!item.parent">{{item.QualifiedRate}}</td>
       <td ng-repeat="point in item.points">{{point.MeasureValue}}</td>
     </tr>
     <!--<tr>-->

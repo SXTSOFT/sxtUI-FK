@@ -1,5 +1,5 @@
 <md-content class="subheader" style="position:relative;">
-  <div style="width: 100%;" layout="column">
+  <div style="width: 100%;display:none;" layout="column">
     <div style="position: fixed;top:44px;background: #fff;height:40px;left:8px;right:8px;z-index:10;padding-top: 5px;">
       <table cellspacing="0" cellpadding="0" border="0" width="100%"  class="zdytable" style="table-layout: fixed;margin-bottom: 0;">
         <thead >
@@ -29,7 +29,7 @@
     <div style="position: relative;padding:0 8px;">
       <div style="margin-top:40px;"></div>
       <div>
-        <md-subheader class="md-primary">标题一</md-subheader>
+        <md-subheader class="md-primary md-no-sticky">标题一</md-subheader>
         <table cellspacing="0" cellpadding="0" border="0" width="100%"  class="zdytable" style="table-layout: fixed;margin-bottom: 0;">
           <tbody>
           <tr>
@@ -88,7 +88,7 @@
         </table>
       </div>
       <div>
-        <md-subheader class="md-primary">标题二</md-subheader>
+        <md-subheader class="md-primary md-no-sticky">标题二</md-subheader>
         <table cellspacing="0" cellpadding="0" border="0" width="100%"  class="zdytable">
           <tbody>
           <tr>
@@ -120,6 +120,90 @@
       </div>
     </div>
   </div>
+  <div layout="row" flex style="margin-top: 20px;">
+    <div layout="column" flex>
+      <table cellspacing="0" cellpadding="0" border="0" class="zdytable" style="width:100%;">
+        <tr>
+          <td>内容</td>
+          <td style="width:100px;text-align: center;">位置</td>
+          <td align="center">结果</td>
+          <td align="center">最大偏差</td>
+          <td align="center">合格率</td>
+        </tr>
+        <tr>
+          <td rowspan="4" class="procedurename"><p>工程</p></td>
+          <td>abc</td>
+          <td>结果</td>
+          <td>结果</td>
+          <td>结果</td>
+        </tr>
+        <tr>
+          <td rowspan="2">abc</td>
+          <td rowspan="2">结果</td>
+          <td rowspan="2">结果</td>
+          <td rowspan="2">结果</td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+          <td>abc</td>
+          <td>结果</td>
+          <td>结果</td>
+          <td>结果</td>
+        </tr>
+        <!--<tr ng-repeat="item in vm.alItem">-->
+          <!--<td rowspan="{{vm.alItem.length+1}}" colspan="1" class="procedurename" ng-if="$index==0"><p>工程</p></td>-->
+          <!--<td rowspan="{{item.rowspan}}">{{item.IndexName}}</td>-->
+          <!--<td rowspan="{{item.rowspan}}"><span ng-if="item.rowspan == 1">结果</span></td>-->
+          <!--<td rowspan="{{item.rowspan}}"><span ng-if="item.rowspan == 1">结果</span></td>-->
+          <!--<td rowspan="{{item.rowspan}}"><span ng-if="item.rowspan == 1">结果</span></td>-->
+        <!--</tr>-->
+      </table>
+    </div>
+    <div layout="column" flex="none">
+      <table cellspacing="0" cellpadding="0" border="0" class="zdytable" style="table-layout: fixed;">
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+        </tr>
+        <!--<tr ng-repeat="item in vm.alItem[1].rowData">-->
+          <!--<td ng-repeat="point in item">{{point.value}}</td>-->
+        <!--</tr>-->
+      </table>
+      </div>
+  </div>
+
   <table cellspacing="0" cellpadding="0" border="0" width="100%" class="zdytable">
     <tr>
       <td colspan="{{vm.cols + 5}}" style="text-align: center;" class="head">
@@ -139,7 +223,10 @@
       <td align="center">结果</td>
       <td align="center">最大偏差</td>
       <td align="center">合格率</td>
-      <td ng-repeat="i in vm.alItem[0].Points">{{$index+1}}</td>
+      <td ng-repeat="i in vm.alItem[0].Points">
+        {{$index+1}}
+      </td>
+      <!--<td ng-repeat="i in vm.alItem[0].Points">{{$index+1}}</td>-->
     </tr>
     <!--<tr ng-repeat="item in vm.alItem">-->
     <!--<td>{{item.IndexName}}</td>-->
@@ -148,15 +235,65 @@
     <!--<td>合格率</td>-->
     <!--<td ng-repeat="point in item.Points">{{point.MeasureValue}}</td>-->
     <!--</tr>-->
-    <tr ng-repeat="item in vm.alItem">
-      <td rowspan="{{vm.alItem.length}}" colspan="1" class="procedurename" ng-if="$index==0"><p>工程</p></td>
-      <td>{{item.IndexName}}</td>
-      <td>结果</td>
-      <td>结果</td>
-      <td>结果</td>
-      <td ng-repeat="point in item.Points">{{point.MeasureValue}}</td>
+    <!--<tr ng-repeat="item in vm.alItem">-->
+    <!--<td rowspan="{{vm.alItem.length+1}}" colspan="1" class="procedurename" ng-if="$index==0"><p>工程</p></td>-->
+    <!--<td rowspan="{{item.rowspan}}">{{item.IndexName}}</td>-->
+    <!--<td rowspan="{{item.rowspan}}">结果</td>-->
+    <!--<td rowspan="{{item.rowspan}}">结果</td>-->
+    <!--<td rowspan="{{item.rowspan}}">结果</td>-->
+    <!--<td ng-repeat="point in item.Points">&lt;!&ndash;ng-repeat="point in item.Points"&ndash;&gt;-->
+      <!--{{point.MeasureValue}}-->
+    <!--</td>-->
+  <!--</tr>-->
+    <tr>
+      <td class="procedurename" rowspan="2"><p>工程</p></td>
+      <td rowspan="2">名称</td>
+      <td rowspan="2">结果</td>
+      <td rowspan="2">结果</td>
+      <td rowspan="2">结果</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
     </tr>
-
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
   </table>
 
 
@@ -279,9 +416,9 @@
           <tr>
             <td colspan="1" rowspan="2">顶棚表面水平度≤10mm</td>
             <td>客餐厅</td>
-            <td rowspan="2"></td>
-            <td rowspan="2"></td>
-            <td rowspan="2"></td>
+            <td rowspan="2">a</td>
+            <td rowspan="2">a</td>
+            <td rowspan="2">a</td>
             <td>1</td>
             <td>2</td>
             <td>3</td>

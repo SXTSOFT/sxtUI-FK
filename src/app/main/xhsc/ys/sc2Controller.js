@@ -49,7 +49,7 @@
         targetEvent:$event,
           templateUrl: 'app/main/xhsc/ys/scChoose.html',
           parent: angular.element(document.body),
-          clickOutsideToClose:vm.info.MeasureIndexes
+          clickOutsideToClose:vm.info.MeasureIndexes//&&vm.info.MeasureIndexes[0].checked
         })
         .then(function(answer) {
           var scStr=[];
@@ -125,9 +125,7 @@
       });
     };
     vm.setRegionId($stateParams.regionId);
-
     function DialogController($scope, $mdDialog) {
-      //console.log('sc',vm.MeasureIndexes);
       $scope.checkSc = function(sc){
         vm.MeasureIndexes.forEach(function (it) {
           it.checked =false;

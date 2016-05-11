@@ -58,8 +58,10 @@
             utils.tips('同步未完成');
           }
         }
-        console.log('item',item.completed)
       });
+    }
+    vm.delete = function(id){
+      pack.sc.remove(id);
     }
     function queryOnline() {
       vm.onlines = [];

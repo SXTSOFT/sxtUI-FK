@@ -9,13 +9,19 @@
     .controller('detailscController',detailscController);
 
   /** @ngInject*/
-  function detailscController(){
+  function detailscController($stateParams,remote){
     var vm = this;
     var iMax = 20;
+    remote.Assessment.getMeasure($stateParams.regionId,$stateParams.acceptanceItemID).then(function (result){
+      console.log('res',result)
+    })
     vm.scData = [{
       MeasureUserName:'aa',
       MeasureTime:2022-22-22,
       IndexName:'abc',
+      MaximumDeviation:1,
+      QualifiedRate:1,
+      ResultStatus:1,
       Points:[
         {
           MeasureValue:1
@@ -25,6 +31,9 @@
       MeasureUserName:'ab',
       MeasureTime:2022-22-22,
       IndexName:'abcd',
+      MaximumDeviation:1,
+      QualifiedRate:1,
+      ResultStatus:2,
       Points:[
         {
           MeasureValue:1
@@ -76,72 +85,7 @@
       ]
     }]
     var newData = [];
-    //vm.scData = [{
-    //  MeasureUserName:'aa',
-    //  MeasureTime:2022-22-22,
-    //  IndexName:'abc',
-    //  parent:false,
-    //  rowspan:1,
-    //  Points:[
-    //    {
-    //      MeasureValue:1
-    //    }
-    //  ]
-    //},{
-    //  MeasureUserName:'ab',
-    //  MeasureTime:2022-22-22,
-    //  IndexName:'abcd',
-    //  parent:false,
-    //  rowspan:2,
-    //  Points:[
-    //    {
-    //      MeasureValue:1
-    //    },
-    //    {
-    //      MeasureValue:2
-    //    },
-    //    {
-    //      MeasureValue:3
-    //    },{
-    //      MeasureValue:4
-    //    },
-    //    {
-    //      MeasureValue:5
-    //    },
-    //    {
-    //      MeasureValue:6
-    //    },{
-    //      MeasureValue:7
-    //    },{
-    //      MeasureValue:8
-    //    },{
-    //      MeasureValue:9
-    //    },{
-    //      MeasureValue:10
-    //    }
-    //  ]
-    //},
-    //  {
-    //    MeasureUserName: 'ab',
-    //    MeasureTime: 2022 - 22 - 22,
-    //    IndexName: 'abcd',
-    //    parent: true,
-    //    rowspan:2,
-    //    Points: [
-    //      {
-    //        MeasureValue: 11
-    //      }]
-    //  },{
-    //    MeasureUserName: 'ab',
-    //    MeasureTime: 2022 - 22 - 22,
-    //    IndexName: 'abcd',
-    //    parent: false,
-    //    rowspan:1,
-    //    Points: [
-    //      {
-    //        MeasureValue: 11
-    //      }]
-    //  }];
+
     vm.person = vm.scData[0].MeasureUserName;
     vm.time = vm.scData[0].MeasureTime;
     vm.rowslength = vm.scData.length;
@@ -161,14 +105,18 @@
             //item1.points = item.Points.slice(0,10);
             //item1.IndexName = item.IndexName;
             //item1.MeasureUserName = item.MeasureUserName;
-            newData.push({points:item.Points.slice(0,iMax),parent:false,rowspan:iSpan,IndexName:item.IndexName,MeasureUserName:item.MeasureUserName})
+            newData.push({points:item.Points.slice(0,iMax),parent:false,rowspan:iSpan,IndexName:item.IndexName,
+              MeasureUserName:item.MeasureUserName,MaximumDeviation:item.MaximumDeviation,QualifiedRate:item.QualifiedRate,
+              ResultStatus:item.ResultStatus})
           }else{
             //item1.parent = true;
             //item1.rowspan =iSpan;
             //item1.IndexName = item.IndexName;
             //item1.MeasureUserName = item.MeasureUserName;
             //item.points = item.Points.slice(i*10,i*10+10);
-            newData.push({points: item.Points.slice(i*iMax,i*iMax+iMax),parent:true,rowspan:iSpan,IndexName:item.IndexName,MeasureUserName:item.MeasureUserName})
+            newData.push({points: item.Points.slice(i*iMax,i*iMax+iMax),parent:true,rowspan:iSpan,IndexName:item.IndexName,
+              MeasureUserName:item.MeasureUserName,MaximumDeviation:item.MaximumDeviation,QualifiedRate:item.QualifiedRate,
+              ResultStatus:item.ResultStatus})
           }
 
         }
@@ -178,7 +126,10 @@
         //item1.rowspan =1;
         //item1.IndexName = item.IndexName;
         //item1.MeasureUserName = item.MeasureUserName;
-        newData.push({points:item.Points,parent:false,rowspan:1,IndexName:item.IndexName,MeasureUserName:item.MeasureUserName})
+
+        newData.push({points:item.Points,parent:false,rowspan:1,IndexName:item.IndexName,MeasureUserName:item.MeasureUserName,
+          MaximumDeviation:item.MaximumDeviation,QualifiedRate:item.QualifiedRate,ResultStatus:item.ResultStatus})
+
       }
     })
     vm.newData = newData;
@@ -193,52 +144,6 @@
     //    item.Points.push({});
     //  }
     //})
-    vm.rowData = [[
-      {
-        MeasureValue:1
-      },
-      {
-        MeasureValue:2
-      },
-      {
-        MeasureValue:3
-      },{
-        MeasureValue:4
-      },
-      {
-        MeasureValue:5
-      }
-    ],[
-      {
-        MeasureValue:1
-      },
-      {
-        MeasureValue:2
-      },
-      {
-        MeasureValue:3
-      },{
-        MeasureValue:4
-      },
-      {
-        MeasureValue:5
-      },
-      {
-        MeasureValue:6
-      },{
-        MeasureValue:7
-      },{
-        MeasureValue:8
-      },{
-        MeasureValue:9
-      },{
-        MeasureValue:10
-      }
-    ],[
-      {
-        MeasureValue:1
-      }
-    ]]
     vm.cols =l;
     if((vm.cols +6)%4 != 0){
       vm.twoCols = Math.floor((vm.cols +6)/4) +1;
