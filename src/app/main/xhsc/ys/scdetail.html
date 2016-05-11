@@ -1,96 +1,34 @@
 <md-content class="subheader" style="position:relative;" layout-padding>
   <table cellspacing="0" cellpadding="0" border="0" width="100%" class="zdytable">
     <tr>
-      <td colspan="{{vm.cols+6}}" style="text-align: center;" class="head">
-        abc
+      <td colspan="26" style="text-align: center;" class="head">
+        {{vm.info.pname}}
       </td>
     </tr>
     <tr>
-      <td colspan="{{vm.oneCols}}">
+      <td colspan="12">
         项目名称:{{vm.info.name}}
       </td>
-      <td colspan="{{vm.twoCols}}">检查人:{{vm.person}}</td>
-      <td colspan="{{vm.twoCols}}">检查日期:{{vm.time}}</td>
+      <td colspan="7">检查人:{{vm.person}}</td>
+      <td colspan="7">检查日期:{{vm.time}}</td>
     </tr>
     <tr>
-      <td>内容</td>
-      <td style="width:100px;text-align: center;" colspan="2">位置</td>
+
+      <td style="width:100px;text-align: center;" colspan="2">指标</td>
       <td align="center">结果</td>
-      <td align="center">最大偏差</td>
+<!--      <td align="center">最大偏差</td>-->
       <td align="center">合格率</td>
-      <td ng-repeat="i in vm.scData[0].Points">{{$index+1}}</td>
+      <td ng-repeat="i in vm.scData[0].rows[0]">{{$index+1}}</td>
     </tr>
-    <tr ng-repeat="item in vm.newData">
-      <td class="procedurename" rowspan="{{vm.newData.length}}" ng-if="$index == 0"><p>{{item.MeasureUserName}}</p></td>
-      <td rowspan="{{item.rowspan}}" ng-if="!item.parent" colspan="2">{{item.IndexName}}</td>
-      <td rowspan="{{item.rowspan}}" ng-if="!item.parent" class="normal" ng-class="{'redColor':item.ResultStatus == 2}">{{item.ResultStatus}}</td>
-      <td rowspan="{{item.rowspan}}" ng-if="!item.parent">{{item.MaximumDeviation}}</td>
-      <td rowspan="{{item.rowspan}}" ng-if="!item.parent">{{item.QualifiedRate}}</td>
-      <td ng-repeat="point in item.points">{{point.MeasureValue}}</td>
+    <tbody ng-repeat="item in vm.scData">
+    <tr ng-repeat="row in item.rows">
+      <td ng-if="$index == 0"rowspan="{{item.rows.length}}" colspan="2">{{item.AcceptanceIndexName}}</td>
+      <td ng-if="$index == 0"rowspan="{{item.rows.length}}" class="normal" ng-class="{'redColor':item.ResultStatus == 2}">{{item.ResultStatus}}</td>
+<!--      <td rowspan="{{item.rows.length}}" >{{item.MaximumDeviation}}</td>-->
+      <td ng-if="$index == 0"rowspan="{{item.rows.length}}" >{{item.QualifiedRate|number:2}}%</td>
+      <td ng-repeat="point in row">{{point.MeasureValue}}</td>
     </tr>
-    <!--<tr>-->
-      <!--<td class="procedurename" rowspan="2"><p>测试</p></td>-->
-      <!--<td rowspan="2">测试总称</td>-->
-      <!--<td>设计值</td>-->
-      <!--<td>结果</td>-->
-      <!--<td>结果</td>-->
-      <!--<td>结果</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-    <!--</tr>-->
-    <!--<tr>-->
-      <!--<td>测量值</td>-->
-      <!--<td>结果</td>-->
-      <!--<td>结果</td>-->
-      <!--<td>结果</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-    <!--</tr>-->
-    <!--<tr>-->
-      <!--<td class="procedurename" rowspan="2"><p>工程</p></td>-->
-      <!--<td rowspan="2">名称</td>-->
-      <!--<td rowspan="2">结果</td>-->
-      <!--<td rowspan="2">结果</td>-->
-      <!--<td rowspan="2">结果</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-    <!--</tr>-->
-    <!--<tr>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-      <!--<td>1</td>-->
-    <!--</tr>-->
+    </tbody>
   </table>
 
 </md-content>

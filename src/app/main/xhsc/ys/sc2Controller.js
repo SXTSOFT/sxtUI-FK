@@ -91,16 +91,30 @@
           }
         }).indexs.db;
         vm.info.MeasureIndexes.forEach(function (m) {
-          indexs.addOrUpdate({
-            _id: m._id,
-            RegionId: vm.info.regionId,
-            RegionType:vm.info.regionType,
-            AcceptanceIndexID: m.AcceptanceIndexID,
-            AcceptanceItemID: vm.info.acceptanceItemID,
-            IndexResultID:m._id,
-            RecordType:4,
-            RelationID:vm.info.db,
-            Status: 1
+          var ms = [];
+          if(m.Children && m.Children.length){
+            m.Children.forEach(function (it) {
+              ms.push(it);
+            })
+          }
+          else{
+            ms.push(m);
+          }
+          ms.forEach(function (m) {
+            if(!m._id)
+              m._id = sxt.uuid();
+            
+            indexs.addOrUpdate({
+              _id: m._id,
+              RegionId: vm.info.regionId,
+              RegionType:vm.info.regionType,
+              AcceptanceIndexID: m.AcceptanceIndexID,
+              AcceptanceItemID: vm.info.acceptanceItemID,
+              IndexResultID:m._id,
+              RecordType:4,
+              RelationID:vm.info.db,
+              Status: 1
+            });
           });
         })
       }, function () {

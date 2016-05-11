@@ -83,13 +83,18 @@
           cb(err);
         })
       },
-      destroyDir:function (path) {
-        $cordovaFile.removeDir(cordova.file.dataDirectory, path)
-          .then(function (success) {
-            cb();
-          }, function (error) {
-            cb(error);
-          });
+      destroyDir:function (path,cb) {
+        if(typeof cordova !== 'undefined') {
+          $cordovaFile.removeDir(cordova.file.dataDirectory, path)
+            .then(function (success) {
+              cb();
+            }, function (error) {
+              cb(error);
+            });
+        }
+        else{
+          cb();
+        }
       }
     };
     return p;
