@@ -5,11 +5,14 @@
       <md-list-item ng-repeat="item in vm.offlines">
         <img src="app/main/xhsc/images/icon-downed.png" class="md-avatar" />
         <p layout="column" style="padding-right: 230px;font-size:18px;">
-          {{item.AssessmentSubject}}
+          {{item.AssessmentSubject}}11{{item.completed}}
         </p>
         <div class="md-secondary md-hue-3">
           <md-button ng-hide="item.completed" ng-click="vm.showECs($event,item)" class="md-raised md-primary">
             开始评估
+          </md-button>
+          <md-button ng-show="item.completed" ui-sref="app.xhsc.ch2({assessmentID:item.AssessmentID})">
+            详情
           </md-button>
          <span style="display:inline-block;width:88px;text-align: center;">
             <md-button ng-click="vm.upload(item)" class="md-raised upload-btn">
