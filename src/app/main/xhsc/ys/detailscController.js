@@ -12,10 +12,40 @@
   function detailscController($stateParams,remote){
     var vm = this;
     var iMax = 20;
-    remote.Assessment.getMeasure($stateParams.regionId,$stateParams.acceptanceItemID).then(function (result){
+    vm.info={
+      pname: $stateParams.pname,
+      name:$stateParams.name
+    }
+    remote.Assessment.getMeasure({
+      RegionID:$stateParams.regionId,
+      AcceptanceItemID:$stateParams.measureItemID,
+      RecordType:4,
+      RelationID:'' //$stateParams.db //TODO: 后台暂未存此数据，后面要去掉
+    }).then(function (result){
+      var newD = [];
+      result.data.forEach(function (item) {
+        item.rows = [];
+        var ms = [];
+        item.MeasureValueList.forEach(function (m) {
+          if(ms.length<20) {
+            ms.push(m)
+          }
+          else{
+            item.rows.push(ms);
+            ms = [];
+          }
+        });
+        while (ms.length<20){
+          ms.push({});
+        }
+        item.rows.push(ms);
+        newD.push(item);
+      });
+
+      vm.scData = newD;
       console.log('res',result)
     })
-    vm.scData = [{
+   /* vm.scData = [{
       MeasureUserName:'aa',
       MeasureTime:2022-22-22,
       IndexName:'abc',
@@ -27,7 +57,8 @@
           MeasureValue:1
         }
       ]
-    },{
+    },
+      {
       MeasureUserName:'ab',
       MeasureTime:2022-22-22,
       IndexName:'abcd',
@@ -151,7 +182,7 @@
     }else{
       vm.twoCols = (vm.cols +6)/4;
       vm.oneCols = 2*vm.twoCols;
-    }
+    }*/
 
   }
 })();

@@ -51,6 +51,7 @@
 
         });
         vm.ms = ms;
+        console.log(ms)
       })
     })
 

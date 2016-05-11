@@ -60,8 +60,16 @@
         }
       });
     }
-    vm.delete = function(id){
-      pack.sc.remove(id);
+    vm.delete = function(item){
+      pack.sc.remove(item.AssessmentID,function () {
+        var idx = vm.data.rows.indexOf(item);
+
+        vm.data.rows.splice(idx,1);
+        idx = vm.offlines.indexOf(item);
+        vm.offlines.splice(idx,1);
+        xcpk.addOrUpdate(vm.data);
+        queryOnline();
+      });
     }
     function queryOnline() {
       vm.onlines = [];
