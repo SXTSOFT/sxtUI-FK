@@ -68,13 +68,14 @@
           url = task.url;
 
         if(url==task.url &&  tasks.length<self.max && (!type || type==task.type)){
-          p++;
+          //p++;
           tasks.push(task);
         }
         if(!type)
           type = task.type;
       });
       process && process(parseInt( p/self.tasks.length*100));
+
       return tasks;
     }
     Pack.prototype.upTask = function (process) {
@@ -82,10 +83,10 @@
         tasks = self.getNexts(process);
       if(!tasks.length){
         self.isUp = false;
-        self.completed = !!self.tasks.find(function (t) {
+        self.completed = !self.tasks.find(function (t) {
           return !t.completed;
         });
-        process && process(100);
+        process && process(-1);
         return;
       }
 
