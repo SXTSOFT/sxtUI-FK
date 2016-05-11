@@ -13,13 +13,17 @@
     return {
       scope:{
         value:'=ngModel',
-        ct:'='
+        ct:'=',
+        onChange:'&'
       },
       link:link,
-      template:'<div class="sxtnumdowndown" style="position:relative"><span ng-click="toggleView()" style="display: block;">&nbsp;{{value}}</span><div class="numberpanel"  style="position: absolute;left:-56px;top:30px;width:auto;z-index:10005;display:none;" ><sxt-num-input ng-model="value" ok="ok()"></sxt-num-input></div></div>'
+      template:'<div class="sxtnumdowndown" style="position:relative"><span ng-click="toggleView()" style="display: block;">&nbsp;{{value}}</span><div class="numberpanel"  style="position: absolute;left:-56px;top:30px;width:auto;z-index:10005;display:none;" ><sxt-num-input ng-model="value"  ok="ok()"></sxt-num-input></div></div>'
     }
 
     function link(scope,element,attr,ctrl){
+      scope.$watch('value',function () {
+        scope.onChange && scope.onChange();
+      });
       //ng-show="isView"
      $('.numberpanel').css('display','none');
       if(typeof(scope.ct)=="object") {

@@ -105,39 +105,52 @@
         var singleEdit=[],mutiEdit=[],floorEdit=[],sjzEdit=[],materEidt=[],group;
         scope.data.updates = [];
         scope.data.measureIndexes.forEach(function(m){
-          var o={
-            m:m,
-            v:scope.data.values.find(function(o){
-              return o.MeasurePointID == p.$id
-              && o.AcceptanceIndexID == m.AcceptanceIndexID
+          var ms = [];
+          if(m.Children && m.Children.length){
+            m.Children.forEach(function (it) {
+              it.QSKey = it.QSKey||m.QSKey;
+              ms.push(it);
             })
+          }
+          else{
+            ms.push(m);
           };
-          scope.data.updates.push(o);
-          if(m.IndexType == 'SelectMaterial'){
+          ms.forEach(function (m) {
+            var o={
+              m:m,
+              v:scope.data.values.find(function(o){
+                return o.MeasurePointID == p.$id
+                  && o.AcceptanceIndexID == m.AcceptanceIndexID
+              })
+            };
+            scope.data.updates.push(o);
+            if(m.IndexType == 'SelectMaterial'){
 
-          }else if(context.layer instanceof L.LineGroup || context.layer instanceof L.AreaGroup){
-            //o.v.children = [];
-            group = o;
-            o.v.children = xhUtils.findAll(scope.data.values, function (v) {
-              return v.ParentMeasureValueID == o.v._id;
-            });
-          }
-          else {
-            switch (m.QSKey) {
-              case '1':
-              case '3':
-              case '4':
-                mutiEdit.push(o);
-                break;
-              case '2':
-                sjzEdit.push(o);
-                break;
-              case '5':
-                floorEdit.push(o)
-                break;
+            }else if(context.layer instanceof L.LineGroup || context.layer instanceof L.AreaGroup){
+              //o.v.children = [];
+              group = o;
+              o.v.children = xhUtils.findAll(scope.data.values, function (v) {
+                return v.ParentMeasureValueID == o.v._id;
+              });
             }
+            else {
+              switch (m.QSKey) {
+                case '1':
+                case '3':
+                case '4':
+                  mutiEdit.push(o);
+                  break;
 
-          }
+                case '2':
+                  sjzEdit.push(o);
+                  break;
+                case '5':
+                  floorEdit.push(o)
+                  break;
+              }
+
+            }
+          })
         });
         if (mutiEdit.length == 1) {
           singleEdit = mutiEdit;
@@ -163,6 +176,26 @@
         $timeout(function(){scope.ct.show && scope.ct.show();},300);
         scope.$apply();
       };
+      scope.onMeasureValueChange = function (v) {
+        if(v && v.MeasureValue){
+          var str = v.MeasureValue.toString();
+          if(str.length>2) {
+            var xs = str.substr(str.length - 2, 2),
+              n = parseInt(xs),
+              l = str.substr(0,str.length-2);
+            if(!isNaN(n)){
+              if(n<50){
+                v.DesignValue = l+'00';
+              }
+              else{
+                v.DesignValue = l+'50';
+              }
+            }
+
+          }
+        }
+        //console.log(v);
+      }
       scope.distinct = function(array){
         if(!array || !array.forEach)return;
         var min=100000,max=-100000;

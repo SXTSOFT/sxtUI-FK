@@ -11,8 +11,8 @@
   /** @ngInject*/
   function downloadController($mdDialog,db,remote,localPack,xhUtils,$rootScope,$scope,pack,utils){
     var vm = this;
-    var pk = db('xcpk');
-    pk.get('xcpk').then(function (result) {
+    var xcpk = db('xcpk');
+    xcpk.get('xcpk').then(function (result) {
       vm.data = result;
       queryOnline();
     }).catch(function (err) {
@@ -39,7 +39,7 @@
             vm.offlines.push(item);
             delete item.pack;
             vm.data.rows.push(item);
-            pk.addOrUpdate(vm.data);
+            xcpk.addOrUpdate(vm.data);
           }
         }
        // console.log('getProgress',  item.progress);
@@ -50,16 +50,18 @@
       var pk = pack.sc.up(item.AssessmentID);
       pk.upload(function (proc) {
         item.progress = proc;
-        if(proc==100) {
+        if(proc==-1) {
           item.completed = pk.completed;
           if(item.completed)
-            pk.addOrUpdate(item);
+            xcpk.addOrUpdate(vm.data);
           else {
             utils.tips('同步未完成');
           }
         }
-        console.log('item',item.completed)
       });
+    }
+    vm.delete = function(id){
+      pack.sc.remove(id);
     }
     function queryOnline() {
       vm.onlines = [];

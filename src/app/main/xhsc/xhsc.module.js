@@ -44,6 +44,20 @@
           }
         }
       })
+      .state('app.xhsc.ch3',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'实测实量',
+        url   :'/scsl/{assessmentID}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/ch3.html',
+            controller:'ChooseController as vm'
+          }
+        }
+      })
       //.state('app.xhsc.choose',{
       //  noBack:true,
       //  sendBt:false,
@@ -129,7 +143,7 @@
           }
         }
       })
-      .state('app.xhsc.check',{
+      .state('app.xhsc.zg',{
         noBack:true,
         sendBt:false,
         rightArrow:true,
@@ -167,6 +181,20 @@
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/sc2.html',
             controller:'sc2Controller as vm'
+          }
+        }
+      })
+      .state('app.xhsc.sctb',{
+        noBack:true,
+        sendBt:true,
+        rightArrow:false,
+        leftArrow:false,
+        title :'实测详情',
+        url   :'/sctb/{db}/{areaId}/{measureItemID}/{regionId}/{regionType}/{name}/{pname}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/scdetail.html',
+            controller:'detailscController as vm'
           }
         }
       })

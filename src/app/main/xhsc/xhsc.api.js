@@ -26,6 +26,9 @@
       },
       queryRegion:function (areaID) {
         return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo',{AreaID:areaID}));
+      },
+      getMeasure:function(RegionID,AcceptanceItemID){
+        return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResult',{RegionID:RegionID,AcceptanceItemID:AcceptanceItemID,RecordType:4}));
       }
     },
 	    /**

@@ -14,12 +14,12 @@
       db:$stateParams.db,
       name: $stateParams.name,
       areaId:$stateParams.areaId,
-      acceptanceItemID: $stateParams.acceptanceItemID,
+      acceptanceItemID: $stateParams.measureItemID,
       regionId: $stateParams.regionId,
       regionType: $stateParams.regionType,
       aItem:{
         MeasureItemName:$stateParams.pname,
-        AcceptanceItemID:$stateParams.acceptanceItemID
+        AcceptanceItemID:$stateParams.measureItemID
       }
     };
     $rootScope.title = vm.info.aItem.MeasureItemName;
@@ -27,18 +27,11 @@
     pack.get('GetMeasureItemInfoByAreaID').then (function (r) {
       //console.log('r',r)
       var find = r.data.find(function (it) {
-        return it.MeasureItemID == vm.info.acceptanceItemID;
+        return it.MeasureID == vm.info.acceptanceItemID;
       })
       var m=[];
       find.MeasureIndexList.forEach(function(item) {
-        if(item.Children && item.Children.length){
-          item.Children.forEach(function (item2) {
-            m.push(item2);
-          })
-        }
-        else {
-          m.push(item);
-        }
+        m.push(item);
       });
       vm.MeasureIndexes = m;
       vm.MeasureIndexes.forEach(function(t){
@@ -56,7 +49,7 @@
         targetEvent:$event,
           templateUrl: 'app/main/xhsc/ys/scChoose.html',
           parent: angular.element(document.body),
-          clickOutsideToClose:vm.info.MeasureIndexes
+          clickOutsideToClose:vm.info.MeasureIndexes//&&vm.info.MeasureIndexes[0].checked
         })
         .then(function(answer) {
           var scStr=[];
@@ -103,7 +96,8 @@
             RegionId: vm.info.regionId,
             RegionType:vm.info.regionType,
             AcceptanceIndexID: m.AcceptanceIndexID,
-            AcceptanceItemID: vm.info.aItem.AcceptanceItemID,
+            AcceptanceItemID: vm.info.acceptanceItemID,
+            IndexResultID:m._id,
             RecordType:4,
             RelationID:vm.info.db,
             Status: 1
@@ -131,9 +125,7 @@
       });
     };
     vm.setRegionId($stateParams.regionId);
-
     function DialogController($scope, $mdDialog) {
-      //console.log('sc',vm.MeasureIndexes);
       $scope.checkSc = function(sc){
         vm.MeasureIndexes.forEach(function (it) {
           it.checked =false;

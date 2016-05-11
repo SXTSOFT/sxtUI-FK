@@ -74,7 +74,10 @@
               return o.CheckRegionID==scope.regionId
                && o.AcceptanceItemID==scope.acceptanceItem
                && !!scope.measureIndexes.find(function(m){
-                  return m.AcceptanceIndexID == o.AcceptanceIndexID;
+                  return m.AcceptanceIndexID == o.AcceptanceIndexID
+                    ||(m.Children && m.Children.find(function (m1) {
+                      return m1.AcceptanceIndexID == o.AcceptanceIndexID
+                    }));
                 });
             }).then(function(r){
               fg.data = r.rows;
@@ -99,19 +102,30 @@
             points.addOrUpdate(point);
             if(isNew){
               scope.measureIndexes.forEach(function (m) {
-                var v = {
-                  _id:sxt.uuid(),
-                  RecordType:4,
-                  RelationID:scope.db,
-                  MeasurePointID:point._id,
-                  CheckRegionID:scope.regionId,
-                  RegionType:scope.regionType,
-                  AcceptanceItemID:scope.acceptanceItem,
-                  AcceptanceIndexID:m.AcceptanceIndexID
-                };
-                v.MeasureValueId = v._id;
-                data.addOrUpdate(v);
-                fg.data.push(v);
+                var ms = [];
+                if (m.Children && m.Children.length) {
+                  m.Children.forEach(function (m1) {
+                    ms.push(m1);
+                  })
+                }
+                else {
+                  ms.push(m);
+                }
+                ms.forEach(function (m) {
+                  var v = {
+                    _id: sxt.uuid(),
+                    RecordType: 4,
+                    RelationID: scope.db,
+                    MeasurePointID: point._id,
+                    CheckRegionID: scope.regionId,
+                    RegionType: scope.regionType,
+                    AcceptanceItemID: scope.acceptanceItem,
+                    AcceptanceIndexID: m.AcceptanceIndexID
+                  };
+                  v.MeasureValueId = v._id;
+                  data.addOrUpdate(v);
+                  fg.data.push(v);
+                })
               })
             }
             if(group){
@@ -150,7 +164,7 @@
               self.options.onUpdateData(scope.context,scope.data.updates,scope);
             }
           },
-          onUpdateData:function(context,updates,scope){
+          onUpdateData:function(context,updates,editScope){
             updates.forEach(function(m){
               if(!m.v)return;
               if(!m.v._id){
@@ -158,11 +172,11 @@
                   _id:sxt.uuid(),
                   RelationID:scope.db,
                   RecordType:4,
-                  MeasurePointID:scope.context.layer._value.$id,
+                  MeasurePointID:editScope.context.layer._value.$id,
                   CheckRegionID:scope.regionId,
                   RegionType:scope.regionType,
                   AcceptanceItemID:scope.acceptanceItem,
-                  AcceptanceIndexID:m.AcceptanceIndexID
+                  AcceptanceIndexID:m.m.AcceptanceIndexID
                 },m.v);
                 m.v.MeasureValueId = m.v._id;
               }

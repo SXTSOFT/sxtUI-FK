@@ -44,16 +44,13 @@
                 type: 'data'
               },
               indexs:{
+                url:sxt.app.api+'/Api/MeasureValueApi/MeasureIndexSubmit',
                 type:'data'
               }
             }
           })
         },
         remove:function (id,cb,progress){
-          var down = db('pack'+id),
-            sc = db('Pack'+id+'sc'),
-            point = db('Pack'+id+'point'),
-            indexs = db('Pack'+id+'indexs');
 
           var totalStep = 5,
             fn = function (step) {

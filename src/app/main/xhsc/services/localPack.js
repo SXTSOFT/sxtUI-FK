@@ -107,7 +107,7 @@
                   config.tasks.push({
                     _id: area.RegionID + '_p_' + u,
                     type: 'file',
-                    url:sxt.app.api+'/Api/Picture/Tile/'+u+'?path='+area.DrawingImageUrl + '&name=/' + area.DrawingID +'_'+ u + '.png'
+                    url:sxt.app.fs+'/Api/Picture/Tile/'+u+'?path='+area.DrawingImageUrl + '&name=/' + area.DrawingID +'_'+ u + '.png'
                     //测试数据
                     //url: 'http://ggem.sxtsoft.com:9191/Api/Picture/Tile/' + u + '?path=' + area.DrawingImageUrl + '&name=/' + area.DrawingID + u + '.png'
                   });
