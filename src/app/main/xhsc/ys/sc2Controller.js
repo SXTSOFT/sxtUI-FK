@@ -14,12 +14,12 @@
       db:$stateParams.db,
       name: $stateParams.name,
       areaId:$stateParams.areaId,
-      acceptanceItemID: $stateParams.acceptanceItemID,
+      acceptanceItemID: $stateParams.measureItemID,
       regionId: $stateParams.regionId,
       regionType: $stateParams.regionType,
       aItem:{
         MeasureItemName:$stateParams.pname,
-        AcceptanceItemID:$stateParams.acceptanceItemID
+        AcceptanceItemID:$stateParams.measureItemID
       }
     };
     $rootScope.title = vm.info.aItem.MeasureItemName;
@@ -27,18 +27,11 @@
     pack.get('GetMeasureItemInfoByAreaID').then (function (r) {
       //console.log('r',r)
       var find = r.data.find(function (it) {
-        return it.MeasureItemID == vm.info.acceptanceItemID;
+        return it.MeasureID == vm.info.acceptanceItemID;
       })
       var m=[];
       find.MeasureIndexList.forEach(function(item) {
-        if(item.Children && item.Children.length){
-          item.Children.forEach(function (item2) {
-            m.push(item2);
-          })
-        }
-        else {
-          m.push(item);
-        }
+        m.push(item);
       });
       vm.MeasureIndexes = m;
       vm.MeasureIndexes.forEach(function(t){
@@ -103,7 +96,8 @@
             RegionId: vm.info.regionId,
             RegionType:vm.info.regionType,
             AcceptanceIndexID: m.AcceptanceIndexID,
-            AcceptanceItemID: vm.info.aItem.AcceptanceItemID,
+            AcceptanceItemID: vm.info.acceptanceItemID,
+            IndexResultID:m._id,
             RecordType:4,
             RelationID:vm.info.db,
             Status: 1
