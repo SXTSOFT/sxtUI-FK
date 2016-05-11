@@ -16,10 +16,6 @@
         if(typeof cordova !== 'undefined') {
           $cordovaFile.readAsDataURL(cordova.file.dataDirectory, this._url +'_' + tilePoint.z + '_' + tilePoint.x + '_' + tilePoint.y + '.png').then(function (success) {
             tile.src = success;
-            this.fire('tileloadstart', {
-              tile: tile,
-              url: tile.src
-            });
           }, function (error) {
             tile.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
             //console.log(error);
