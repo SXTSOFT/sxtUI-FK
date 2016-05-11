@@ -184,13 +184,13 @@
           }
         }
       })
-      .state('app.xhsc.table',{
+      .state('app.xhsc.sctb',{
         noBack:true,
         sendBt:true,
         rightArrow:false,
         leftArrow:false,
         title :'实测详情',
-        url   :'/scdetail',
+        url   :'/sctb/{db}/{areaId}/{measureItemID}/{regionId}/{regionType}/{name}/{pname}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/scdetail.html',
