@@ -50,7 +50,7 @@
       <tbody>
       <tr>
         <td  style="width:80px; text-align: center;">实测值</td>
-        <td  ng-repeat="item in edit.sjzEdit"><sxt-num-downdown ng-model="item.v.MeasureValue"></sxt-num-downdown>
+        <td  ng-repeat="item in edit.sjzEdit"><sxt-num-downdown on-change="onMeasureValueChange(item.v)" ng-model="item.v.MeasureValue"></sxt-num-downdown>
         </td>
       </tr>
       <tr>
@@ -61,7 +61,7 @@
       <tr>
         <td  style="width:80px; text-align: center;">结果</td>
         <td  ng-repeat="item in edit.sjzEdit">
-      <span>  {{item.v.CalculatedValue = (item.v.DesignValue?item.v.MeasureValue - item.v.DesignValue:null) }}</span>
+      <span style="line-height: 30px;">&nbsp;  {{item.v.CalculatedValue = (item.v.DesignValue?item.v.MeasureValue - item.v.DesignValue:null) }}</span>
         </td>
       </tr>
       </tbody>
