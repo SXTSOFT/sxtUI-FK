@@ -8,11 +8,28 @@
     .module('app.xhsc')
     .factory('pack',pack);
   /** @ngInject */
-  function pack(remotePack,sxt) {
+  function pack(localPack, remotePack,sxt,db,$cordovaFile) {
     var p ={
       sc:{
-        down:function (id) {
-
+        down:function (item) {
+          return localPack.pack({
+            _id:item.AssessmentID,
+            name:item.AssessmentSubject,
+            tasks:[
+              {
+                _id:'GetMeasureItemInfoByAreaID',
+                name:'获取分期下所有指标',
+                url:'/Api/MeasureInfo/GetMeasureItemInfoByAreaID?areaID='+item.AreaID
+              },
+              {
+                _id:'GetRegionTreeInfo',
+                name:'获取区域信息',
+                url:'/Api/ProjectInfoApi/GetRegionTreeInfo?AreaID='+item.AreaID,
+                type:'ExRegion',
+                item:angular.copy(item)
+              }
+            ]
+          });
         },
         up:function (id) {
           return remotePack.pack({
@@ -31,7 +48,51 @@
               }
             }
           })
+        },
+        remove:function (id,cb,progress){
+          var down = db('pack'+id),
+            sc = db('Pack'+id+'sc'),
+            point = db('Pack'+id+'point'),
+            indexs = db('Pack'+id+'indexs');
+
+          var totalStep = 5,
+            fn = function (step) {
+              progress && progress(parseInt(step/totalStep*100));
+          };
+          fn(0);
+          p.destroyDb('pack'+id,function () {
+            fn(1);
+            p.destroyDb('Pack'+id+'sc',function () {
+              fn(2);
+              p.destroyDb('Pack'+id+'point',function () {
+                fn(3);
+                p.destroyDb('Pack'+id+'indexs',function () {
+                  fn(4);
+                  p.destroyDir(id,function () {
+                    fn(5);
+                    cb();
+                  });
+                })
+              })
+            })
+          })
         }
+
+      },
+      destroyDb:function (dbKey,cb) {
+        db(dbKey).destroy().then(function () {
+          cb();
+        }).catch(function (err) {
+          cb(err);
+        })
+      },
+      destroyDir:function (path) {
+        $cordovaFile.removeDir(cordova.file.dataDirectory, path)
+          .then(function (success) {
+            cb();
+          }, function (error) {
+            cb(error);
+          });
       }
     };
     return p;

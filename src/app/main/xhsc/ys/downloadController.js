@@ -24,28 +24,11 @@
     });
     vm.download = function (item) {
       item.progress = 0;
-      var pack =localPack.pack({
-        _id:item.AssessmentID,
-        name:item.AssessmentSubject,
-        tasks:[
-          {
-            _id:'GetMeasureItemInfoByAreaID',
-            name:'获取分期下所有指标',
-            url:'/Api/MeasureInfo/GetMeasureItemInfoByAreaID?areaID='+item.AreaID
-          },
-          {
-            _id:'GetRegionTreeInfo',
-            name:'获取区域信息',
-            url:'/Api/ProjectInfoApi/GetRegionTreeInfo?AreaID='+item.AreaID,
-            type:'ExRegion',
-            item:angular.copy(item)
-          }
-        ]
-      })
-      item.pack = pack;
+      var pk = pack.sc.up(item);
+      item.pack = pk;
       $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
         //console.log(arguments);
-        var p =pack.getProgress();
+        var p = pk.getProgress();
         item.progress = parseInt(p.progress*100);
         if(item.pack && item.pack.completed){
           var ix = vm.onlines.indexOf(item);
