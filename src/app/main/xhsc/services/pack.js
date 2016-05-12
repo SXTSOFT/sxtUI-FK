@@ -51,7 +51,8 @@
           })
         },
         remove:function (id,cb,progress){
-
+          localPack.unPack(id);
+          remotePack.unPack(id);
           var totalStep = 5,
             fn = function (step) {
               progress && progress(parseInt(step/totalStep*100));

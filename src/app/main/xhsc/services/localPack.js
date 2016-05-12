@@ -211,7 +211,10 @@
 
     var o ={
       packages:{},
-      pack:pack
+      pack:pack,
+      unPack:function (id) {
+        delete o.packages[id];
+      }
     };
     return o;
     function pack(config) {

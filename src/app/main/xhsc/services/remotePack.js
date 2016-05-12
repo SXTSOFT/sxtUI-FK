@@ -128,6 +128,9 @@
       pack:function (config) {
         var pack = o.packages[config._id] = o.packages[config._id]||new Pack(config);
         return pack;
+      },
+      unPack:function (id) {
+        delete o.packages[id];
       }
     }
     return o;
