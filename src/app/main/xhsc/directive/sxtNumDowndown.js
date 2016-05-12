@@ -90,7 +90,7 @@
       $(document).bind("click",docClick);
 
       scope.$on('$destroy',function(){
-        $('.numberpanel').css('display','none');
+        $('.numberpanel',element).css('display','none');
         $(document).unbind("click",docClick);
       })
     }
