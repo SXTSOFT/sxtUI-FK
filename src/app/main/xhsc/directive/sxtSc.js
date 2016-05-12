@@ -43,7 +43,7 @@
             center: [.3, .2],
             zoom: 2,
             minZoom: 0,
-            maxZoom: 3,
+            maxZoom: scope.regionType == 8?4:3,
             scrollWheelZoom: true,
             annotationBar: false,
             attributionControl: false
