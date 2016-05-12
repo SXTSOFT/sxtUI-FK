@@ -29,6 +29,11 @@
       if(typeof(scope.ct)=="object") {
         if(scope.ct == undefined) return;
         scope.ct.show = function () {
+          if(scope.ct.isShow)return;
+          scope.ct.isShow = true;
+          $timeout(function () {
+            scope.ct.isShow = false;
+          },400);
           //console.log('ele',$(element).parent().parent().parent())
           if ($(element).parent().parent().hasClass('addPanel')) {
             if($(element).parent().parent().parent().hasClass('stamp')){
