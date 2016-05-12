@@ -25,12 +25,13 @@
         scope.onChange && scope.onChange();
       });
       //ng-show="isView"
-     $('.numberpanel').css('display','none');
+     $('.numberpanel',element).css('display','none');
       if(typeof(scope.ct)=="object") {
-        if(scope.ct == undefined) return;
+        if(scope.ct.isShow)return;
+        scope.ct.isShow = true;
         scope.ct.show = function () {
-          if(scope.ct.isShow)return;
-          scope.ct.isShow = true;
+          //if(scope.ct.isShow)return;
+          //scope.ct.isShow = true;
           $timeout(function () {
             scope.ct.isShow = false;
           },400);
@@ -50,7 +51,7 @@
           } else if ($(element).parent().hasClass('addPanel')) {
             $(element).parent().eq(0).find('.numberpanel').css('display', 'block');
           } else {
-            $('.numberpanel').css('display', 'block');
+            $('.numberpanel',element).css('display', 'block');
             //$(element).find('.numberpanel').css('display', 'block');
           }
         };
