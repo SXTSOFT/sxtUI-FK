@@ -10,7 +10,9 @@
 
   /** @Inject */
   function sxtSc($timeout,mapPopupSerivce,db,offlineTileLayer,sxt,xhUtils,pack){
-
+    function now() {
+      return new Date().toISOString();
+    }
     return {
       scope:{
         db:'=',
@@ -43,7 +45,7 @@
             center: [.3, .2],
             zoom: 2,
             minZoom: 0,
-            maxZoom: 3,
+            maxZoom: scope.regionType == 8?4:3,
             scrollWheelZoom: true,
             annotationBar: false,
             attributionControl: false
@@ -115,6 +117,7 @@
                   var v = {
                     _id: sxt.uuid(),
                     RecordType: 4,
+                    CreateTime:now(),
                     RelationID: scope.db,
                     MeasurePointID: point._id,
                     CheckRegionID: scope.regionId,
@@ -170,6 +173,7 @@
               if(!m.v._id){
                 m.v = angular.extend({
                   _id:sxt.uuid(),
+                  CreateTime:now(),
                   RelationID:scope.db,
                   RecordType:4,
                   MeasurePointID:editScope.context.layer._value.$id,
