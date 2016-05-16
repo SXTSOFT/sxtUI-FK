@@ -77,6 +77,9 @@
         //监理验收符合率表
         GetSupervisorAccordRatio:function(args){
           return $http.get($http.url('/api/Report/GetSupervisorAccordRatio', args));
+        },
+        getFileReportData: function (args) {
+          return $http.post('/api/Files/GetFileReportData', args);
         }
       },
       CheckStepService:{
