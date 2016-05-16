@@ -24,6 +24,7 @@
     if (!$state.is('app.szgc.report')) {
       vm.tabs.push({
         name: $state.is('app.szgc.report.viewBath')?'质量总表':
+            $state.is('app.szgc.report.ybgcResult')?'隐蔽工程照片统计':
             $state.is('app.szgc.report.supCheckResult') ? '监理验收符合率统计' :
             $state.is('app.szgc.report.batchCount') ? '项目填报情况统计表' :
               $state.is('app.szgc.report.batchRaio') ? '班组验收合格率对比' :

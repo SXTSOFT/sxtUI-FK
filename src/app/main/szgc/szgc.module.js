@@ -92,45 +92,45 @@
             resolve:{
               details:['$stateParams','api',function($stateParams,api){
                 return api.szgc.ProjectExService.building2($stateParams.pid + '>' + $stateParams.itemId + '>' + $stateParams.buildId).then(function (result) {
-                  var pageload = {
-                    name: '',
-                    datapoints: []
-                  }, gx = [
-                    //{ x: '主体', id: '953cea5b-b6fb-4eb7-b019-da391f090efd' },
-                    { x: '橱柜', id: '1c419fcc-24a9-4e38-9132-ce8076051e6a',color:'rgba(193,35,43,1)' },
-                    { x: '油漆', id: 'a3776dab-9d80-4ced-b229-e6bfc51f7988',color:'rgba(181,195,52,1)' },
-                    { x: '瓷砖', id: '702d964d-cd97-4217-8038-ce9b62d7584b',color:'rgba(252,206,16,1)' },
-                    { x: '墙板', id: '8bfc6626-c5ed-4267-ab8f-cb2294885c25', color:'rgba(193,35,43,1)'},
-                    { x: '门窗', id: '51bb20e2-92a2-4c9f-85a9-c4545e710cf0',color:'rgba(181,195,52,1)' }
-                    //{ x: '橱柜', id: '1c419fcc-24a9-4e38-9132-ce8076051e6a', color: 'rgba(193,35,43,1)' },
-                    //{ x: '油漆', id: 'a3776dab-9d80-4ced-b229-e6bfc51f7988', color: 'rgba(181,195,52,1)' },
-                    //{ x: '瓷砖', id: '702d964d-cd97-4217-8038-ce9b62d7584b', color: 'rgba(252,206,16,1)' },
-                    //{ x: '墙板', id: '8bfc6626-c5ed-4267-ab8f-cb2294885c25', color: 'rgba(193,35,43,1)' },
-                    //{ x: '门窗', id: '51bb20e2-92a2-4c9f-85a9-c4545e710cf0', color: 'rgba(181,195,52,1)' }
-                  ]
+                    var pageload = {
+                      name: '',
+                      datapoints: []
+                    }, gx = [
+                      //{ x: '主体', id: '953cea5b-b6fb-4eb7-b019-da391f090efd' },
+                      { x: '橱柜', id: '1c419fcc-24a9-4e38-9132-ce8076051e6a',color:'rgba(193,35,43,1)' },
+                      { x: '油漆', id: 'a3776dab-9d80-4ced-b229-e6bfc51f7988',color:'rgba(181,195,52,1)' },
+                      { x: '瓷砖', id: '702d964d-cd97-4217-8038-ce9b62d7584b',color:'rgba(252,206,16,1)' },
+                      { x: '墙板', id: '8bfc6626-c5ed-4267-ab8f-cb2294885c25', color:'rgba(193,35,43,1)'},
+                      { x: '门窗', id: '51bb20e2-92a2-4c9f-85a9-c4545e710cf0',color:'rgba(181,195,52,1)' }
+                      //{ x: '橱柜', id: '1c419fcc-24a9-4e38-9132-ce8076051e6a', color: 'rgba(193,35,43,1)' },
+                      //{ x: '油漆', id: 'a3776dab-9d80-4ced-b229-e6bfc51f7988', color: 'rgba(181,195,52,1)' },
+                      //{ x: '瓷砖', id: '702d964d-cd97-4217-8038-ce9b62d7584b', color: 'rgba(252,206,16,1)' },
+                      //{ x: '墙板', id: '8bfc6626-c5ed-4267-ab8f-cb2294885c25', color: 'rgba(193,35,43,1)' },
+                      //{ x: '门窗', id: '51bb20e2-92a2-4c9f-85a9-c4545e710cf0', color: 'rgba(181,195,52,1)' }
+                    ]
 
-                  result.data.Rows.forEach(function (r) {
-                    var g = gx.find(function (g) { return g.id == r.ProcedureId; });
-                    if (g) {
-                      g.y = r.gx1;
-                    }
-                  });
+                    result.data.Rows.forEach(function (r) {
+                      var g = gx.find(function (g) { return g.id == r.ProcedureId; });
+                      if (g) {
+                        g.y = r.gx1;
+                      }
+                    });
 
-                  //pageload.datapoints = gx;
-                  var tempdata = [];
-                  tempdata = gx;
+                    //pageload.datapoints = gx;
+                    var tempdata = [];
+                      tempdata = gx;
                   console.log(gx)
-                  tempdata.forEach(function(item){
-                    if(!item.y){
-                      // pageload.datapoints.push(item);
-                      item.color = null;
-                    }
-                    pageload.datapoints.push(item);
-                  })
-                  var char = angular.copy(pageload);
-                  //char.datapoints.splice(0, 1);
-                  return [char];
-                });
+                    tempdata.forEach(function(item){
+                      if(!item.y){
+                       // pageload.datapoints.push(item);
+                        item.color = null;
+                      }
+                      pageload.datapoints.push(item);
+                    })
+                    var char = angular.copy(pageload);
+                    //char.datapoints.splice(0, 1);
+                    return [char];
+                  });
               }]
             }
           }
@@ -138,6 +138,7 @@
       })
       .state('app.szgc.yhyd',{
         url   :'/home/yhyd/{pid}/{pname}',
+        //url:'/home/yhyd/{regionId}/{regionType}/{roomType}/{procedureId}/{regionName}',
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/link.html',
@@ -162,12 +163,25 @@
         controller: 'viewBathController as vm',
         templateUrl: 'app/main/szgc/report/viewBath-app.html'
       })
+      .state('app.szgc.report.ybgcResult', {
+        title :'隐蔽工程',
+        url: '/viewYbgc',
+        controller: 'ybgcController as vm',
+        templateUrl: 'app/main/szgc/report/ybgcResult.html'
+      })
+      .state('app.szgc.report.picView', {
+        title :'隐蔽工程详情',
+        url: '/picView/{regionId}/{regionType}/{roomType}/{procedureId}/{regionName}',
+        controller: 'ybgcyhydController as vm',
+        templateUrl: 'app/main/szgc/report/ybgcyhyd.html'
+      })
       .state('app.szgc.report.viewBath.view', {
         title :'查看详细',
         url: '/{bathid}',
         controller: 'viewBathDetailController as vm',
         templateUrl: 'app/main/szgc/report/viewBathDetail-app.html'
       })
+
       .state('app.szgc.report.batchCount', {
         title :'项目填报情况统计表',
         url:'/batchCount',
