@@ -211,6 +211,14 @@
             me.cbRow(targets.yb);
             return this.zyLength;
           },
+          ybCount: function () {
+            var me = this;
+            me.zyLength = targets.zk.length;
+            me.ybLength = targets.yb.length;
+            me.cbRow(targets.zk);
+            me.cbRow(targets.yb);
+            return this.ybLength;
+          },
           selected: function (n, iszk) {
             this.current[iszk ? 'zk' : 'yb'] = n;
             if (!iszk)
@@ -479,6 +487,7 @@
             });
           }
         });
+        //console.log('j1',jl)
         jl.forEach(function(item) {
           item.step = cbr.data.Rows.find(function(it) {
             return it.RoleId == 'jl' && it.CheckNo == item.ix;
@@ -499,7 +508,7 @@
             item.PassRatio = undefined;
           }
         });
-        // console.log('$scope.data.selected', $scope.data.selected.d.yb)
+        //console.log('$scope.data.selected', $scope.data.selected.d.yb)
         //$scope.targets = bingTargets(group[0]);
       });
     });
