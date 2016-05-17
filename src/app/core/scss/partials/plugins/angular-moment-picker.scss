@@ -34,6 +34,8 @@
 
             th {
                 border-radius: 0;
+                white-space: nowrap;
+                width: auto;
 
                 &:first-child,
                 &:last-child {

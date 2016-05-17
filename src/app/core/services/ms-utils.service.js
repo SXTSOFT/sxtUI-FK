@@ -55,117 +55,117 @@
             var browserData = [
                 {
                     string       : $window.navigator.userAgent,
-                    subString    : "Edge",
-                    versionSearch: "Edge",
-                    identity     : "Edge"
+                    subString    : 'Edge',
+                    versionSearch: 'Edge',
+                    identity     : 'Edge'
                 },
                 {
                     string   : $window.navigator.userAgent,
-                    subString: "Chrome",
-                    identity : "Chrome"
+                    subString: 'Chrome',
+                    identity : 'Chrome'
                 },
                 {
                     string       : $window.navigator.userAgent,
-                    subString    : "OmniWeb",
-                    versionSearch: "OmniWeb/",
-                    identity     : "OmniWeb"
+                    subString    : 'OmniWeb',
+                    versionSearch: 'OmniWeb/',
+                    identity     : 'OmniWeb'
                 },
                 {
                     string       : $window.navigator.vendor,
-                    subString    : "Apple",
-                    versionSearch: "Version",
-                    identity     : "Safari"
+                    subString    : 'Apple',
+                    versionSearch: 'Version',
+                    identity     : 'Safari'
                 },
                 {
                     prop    : $window.opera,
-                    identity: "Opera"
+                    identity: 'Opera'
                 },
                 {
                     string   : $window.navigator.vendor,
-                    subString: "iCab",
-                    identity : "iCab"
+                    subString: 'iCab',
+                    identity : 'iCab'
                 },
                 {
                     string   : $window.navigator.vendor,
-                    subString: "KDE",
-                    identity : "Konqueror"
+                    subString: 'KDE',
+                    identity : 'Konqueror'
                 },
                 {
                     string   : $window.navigator.userAgent,
-                    subString: "Firefox",
-                    identity : "Firefox"
+                    subString: 'Firefox',
+                    identity : 'Firefox'
                 },
                 {
                     string   : $window.navigator.vendor,
-                    subString: "Camino",
-                    identity : "Camino"
+                    subString: 'Camino',
+                    identity : 'Camino'
                 },
                 {
                     string   : $window.navigator.userAgent,
-                    subString: "Netscape",
-                    identity : "Netscape"
+                    subString: 'Netscape',
+                    identity : 'Netscape'
                 },
                 {
                     string       : $window.navigator.userAgent,
-                    subString    : "MSIE",
-                    identity     : "Explorer",
-                    versionSearch: "MSIE"
+                    subString    : 'MSIE',
+                    identity     : 'Explorer',
+                    versionSearch: 'MSIE'
                 },
                 {
                     string       : $window.navigator.userAgent,
-                    subString    : "Trident/7",
-                    identity     : "Explorer",
-                    versionSearch: "rv"
+                    subString    : 'Trident/7',
+                    identity     : 'Explorer',
+                    versionSearch: 'rv'
                 },
                 {
                     string       : $window.navigator.userAgent,
-                    subString    : "Gecko",
-                    identity     : "Mozilla",
-                    versionSearch: "rv"
+                    subString    : 'Gecko',
+                    identity     : 'Mozilla',
+                    versionSearch: 'rv'
                 },
                 {
                     string       : $window.navigator.userAgent,
-                    subString    : "Mozilla",
-                    identity     : "Netscape",
-                    versionSearch: "Mozilla"
+                    subString    : 'Mozilla',
+                    identity     : 'Netscape',
+                    versionSearch: 'Mozilla'
                 }
             ];
 
             var osData = [
                 {
                     string   : $window.navigator.platform,
-                    subString: "Win",
-                    identity : "Windows"
+                    subString: 'Win',
+                    identity : 'Windows'
                 },
                 {
                     string   : $window.navigator.platform,
-                    subString: "Mac",
-                    identity : "Mac"
+                    subString: 'Mac',
+                    identity : 'Mac'
                 },
                 {
                     string   : $window.navigator.platform,
-                    subString: "Linux",
-                    identity : "Linux"
+                    subString: 'Linux',
+                    identity : 'Linux'
                 },
                 {
                     string   : $window.navigator.platform,
-                    subString: "iPhone",
-                    identity : "iPhone"
+                    subString: 'iPhone',
+                    identity : 'iPhone'
                 },
                 {
                     string   : $window.navigator.platform,
-                    subString: "iPod",
-                    identity : "iPod"
+                    subString: 'iPod',
+                    identity : 'iPod'
                 },
                 {
                     string   : $window.navigator.platform,
-                    subString: "iPad",
-                    identity : "iPad"
+                    subString: 'iPad',
+                    identity : 'iPad'
                 },
                 {
                     string   : $window.navigator.platform,
-                    subString: "Android",
-                    identity : "Android"
+                    subString: 'Android',
+                    identity : 'Android'
                 }
             ];
 
@@ -182,7 +182,7 @@
 
                     if ( dataString )
                     {
-                        if ( dataString.indexOf(data[i].subString) != -1 )
+                        if ( dataString.indexOf(data[i].subString) !== -1 )
                         {
                             return data[i].identity;
 
@@ -199,7 +199,7 @@
             {
                 var index = dataString.indexOf(versionSearchString);
 
-                if ( index == -1 )
+                if ( index === -1 )
                 {
                     return;
                 }
@@ -207,9 +207,9 @@
                 return parseInt(dataString.substring(index + versionSearchString.length + 1));
             }
 
-            var browser = searchString(browserData) || "unknown-browser";
-            var version = searchVersion($window.navigator.userAgent) || searchVersion($window.navigator.appVersion) || "unknown-version";
-            var os = searchString(osData) || "unknown-os";
+            var browser = searchString(browserData) || 'unknown-browser';
+            var version = searchVersion($window.navigator.userAgent) || searchVersion($window.navigator.appVersion) || 'unknown-version';
+            var os = searchString(osData) || 'unknown-os';
 
             // Prepare and store the object
             browser = browser.toLowerCase();
@@ -234,7 +234,7 @@
         {
             var S4 = function ()
             {
-                return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+                return (((1 + Math.random()) * 0x10000) || 0).toString(16).substring(1);
             };
             return (S4() + S4() + S4() + S4() + S4() + S4());
         }
@@ -256,7 +256,7 @@
          */
         function toggleInArray(item, array)
         {
-            if ( array.indexOf(item) == -1 )
+            if ( array.indexOf(item) === -1 )
             {
                 array.push(item);
             }
@@ -266,4 +266,4 @@
             }
         }
     }
-})();
+}());

@@ -48,12 +48,18 @@ md-backdrop {
     }
 }
 
-// Button
-.md-button {
+// Card
+md-card {
 
-    // Fab
-    &.md-fab {
-        line-height: 1;
+    md-card-header {
+
+        md-card-avatar {
+
+            md-icon {
+                width: 40px;
+                height: 40px;
+            }
+        }
     }
 }
 
@@ -69,7 +75,11 @@ md-checkbox {
 md-datepicker {
 
     .md-datepicker-input-container {
-        margin-left: 2px;
+        margin-left: 0;
+
+        .md-datepicker-input {
+            background: transparent !important;
+        }
     }
 }
 
@@ -94,18 +104,6 @@ md-dialog {
 // Input
 md-input-container {
 
-    // fix ng-messages container underneath the
-    // input fields when we are using extra
-    // ng-show to hide error messages on untouched
-    // form elements
-    [ng-messages] {
-
-        &.ng-hide {
-            display: block !important;
-            visibility: hidden;
-        }
-    }
-
     &.no-errors-spacer {
 
         .md-errors-spacer {
@@ -128,6 +126,20 @@ md-list-item {
 // Menu
 .md-menu {
     padding: 0;
+}
+
+// Menubar
+.md-open-menu-container {
+
+    md-menu-content {
+
+        md-menu-item {
+
+            &.selected {
+                opacity: 0.4;
+            }
+        }
+    }
 }
 
 // IE fix
@@ -162,10 +174,12 @@ md-select {
 
             & *:first-child {
                 transform: none;
+                height: auto;
             }
 
             .md-select-icon {
                 transform: none;
+                font-size: 16px;
 
                 &:after {
                     top: 1px;

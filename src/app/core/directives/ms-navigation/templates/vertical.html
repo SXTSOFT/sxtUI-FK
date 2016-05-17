@@ -7,7 +7,7 @@
 <!-- Nested navigation template -->
 <script type="text/ng-template" id="navigation-nested.html">
 
-    <div ms-navigation-item layout="row">
+    <div ms-navigation-item layout="row" ng-if="!vm.isHidden()">
 
         <div class="ms-navigation-button" ng-if="!node.uisref && node.title">
             <i class="icon s16 {{node.icon}}" ng-if="node.icon"></i>
@@ -26,7 +26,7 @@
 
     </div>
 
-    <ul ng-if="vm.hasChildren">
+    <ul ng-if="vm.hasChildren && !vm.isHidden()">
         <li ng-repeat="node in node.children" ms-navigation-node="node"
             ng-class="{'collapsed': vm.collapsed, 'has-children': vm.hasChildren}"
             ng-include="'navigation-nested.html'"></li>

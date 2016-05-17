@@ -7,7 +7,7 @@
         .controller('QuickPanelController', QuickPanelController);
 
     /** @ngInject */
-    function QuickPanelController(api)
+    function QuickPanelController(msApi)
     {
         var vm = this;
 
@@ -19,20 +19,29 @@
             retro : true
         };
 
-        api.quickPanel.activities.get({}, function (response)
-        {
-            vm.activities = response.data;
-        });
+        msApi.request('quickPanel.activities@get', {},
+            // Success
+            function (response)
+            {
+                vm.activities = response.data;
+            }
+        );
 
-        api.quickPanel.events.get({}, function (response)
-        {
-            vm.events = response.data;
-        });
+        msApi.request('quickPanel.events@get', {},
+            // Success
+            function (response)
+            {
+                vm.events = response.data;
+            }
+        );
 
-        api.quickPanel.notes.get({}, function (response)
-        {
-            vm.notes = response.data;
-        });
+        msApi.request('quickPanel.notes@get', {},
+            // Success
+            function (response)
+            {
+                vm.notes = response.data;
+            }
+        );
 
         // Methods
 

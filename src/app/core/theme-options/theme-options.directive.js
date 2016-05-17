@@ -65,7 +65,7 @@
         return {
             restrict   : 'E',
             scope      : {
-                panelOpen: '='
+                panelOpen: '=?'
             },
             controller : 'MsThemeOptionsController as vm',
             templateUrl: 'app/core/theme-options/theme-options.html',

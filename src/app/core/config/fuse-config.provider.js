@@ -7,12 +7,12 @@
         .provider('fuseConfig', fuseConfigProvider);
 
     /** @ngInject */
-    function fuseConfigProvider($provide)
+    function fuseConfigProvider()
     {
         // Default configuration
         var fuseConfiguration = {
             'disableCustomScrollbars'        : false,
-            'disableMdInkRippleOnMobile'     : false,
+            'disableMdInkRippleOnMobile'     : true,
             'disableCustomScrollbarsOnMobile': true
         };
 
@@ -69,29 +69,6 @@
                 fuseConfiguration[configName] = configValue;
             }
         };
-
-        $provide.decorator('$exceptionHandler', extendExceptionHandler);
-
-        extendExceptionHandler.$inject = ['$delegate'];
-
-        function extendExceptionHandler($delegate) {
-            return function(exception, cause) {
-                $delegate(exception, cause);
-                var errorData = {
-                  exception: exception,
-                  cause: cause
-                };
-                /**
-                 * Could add the error to a service's collection,
-                 * add errors to $rootScope, log errors to remote web server,
-                 * or log locally. Or throw hard. It is entirely up to you.
-                 * throw exception;
-                 */
-                console.log('error:',exception)
-              //alert(exception);
-                //utils.error(exception.msg, errorData);
-            };
-        }
     }
 
 })();

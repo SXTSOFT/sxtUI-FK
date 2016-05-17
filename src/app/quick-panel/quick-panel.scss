@@ -1,4 +1,5 @@
 $quickPanelWidth: 330px;
+$quickPanelMobileWidth: 80%;
 
 #quick-panel {
     width: $quickPanelWidth;
@@ -44,5 +45,15 @@ $quickPanelWidth: 330px;
                 }
             }
         }
+    }
+}
+
+// RESPONSIVE
+@media screen and (max-width: $layout-breakpoint-xs) {
+
+    #quick-panel {
+        width: $quickPanelMobileWidth;
+        min-width: $quickPanelMobileWidth;
+        max-width: $quickPanelMobileWidth;
     }
 }

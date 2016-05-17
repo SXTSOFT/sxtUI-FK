@@ -7,7 +7,7 @@
         .controller('ChatTabController', ChatTabController);
 
     /** @ngInject */
-    function ChatTabController(api, $timeout)
+    function ChatTabController(msApi, $timeout)
     {
         var vm = this;
 
@@ -16,10 +16,13 @@
         vm.chatActive = false;
         vm.replyMessage = '';
 
-        api.quickPanel.contacts.get({}, function (response)
-        {
-            vm.contacts = response.data;
-        });
+        msApi.request('quickPanel.contacts@get', {},
+            // Success
+            function (response)
+            {
+                vm.contacts = response.data;
+            }
+        );
 
         // Methods
         vm.toggleChat = toggleChat;

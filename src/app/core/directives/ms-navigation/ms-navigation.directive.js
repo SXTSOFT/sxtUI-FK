@@ -275,7 +275,7 @@
 
                 if ( angular.isDefined(item.stateParams) && angular.isObject(item.stateParams) )
                 {
-                    uisref = uisref + '(' + angular.toString(item.stateParams) + ')';
+                    uisref = uisref + '(' + angular.toJson(item.stateParams) + ')';
                 }
             }
 
@@ -297,6 +297,7 @@
                 saveItem           : saveItem,
                 deleteItem         : deleteItem,
                 sort               : sortByWeight,
+                clearNavigation    : clearNavigation,
                 setActiveItem      : setActiveItem,
                 getActiveItem      : getActiveItem,
                 getNavigationObject: getNavigationObject,
@@ -311,6 +312,21 @@
             return service;
 
             //////////
+
+            /**
+             * Clear the entire navigation
+             */
+            function clearNavigation()
+            {
+                // Clear the navigation array
+                navigation = [];
+
+                // Clear the vm.navigation from main controller
+                if ( navigationScope )
+                {
+                    navigationScope.vm.navigation = [];
+                }
+            }
 
             /**
              * Set active item
@@ -1021,6 +1037,21 @@
         function getClass()
         {
             return vm.node.class;
+        }
+
+        /**
+         * Check if node should be hidden
+         *
+         * @returns {boolean}
+         */
+        function isHidden()
+        {
+            if ( angular.isDefined(vm.node.hidden) && angular.isFunction(vm.node.hidden) )
+            {
+                return vm.node.hidden();
+            }
+
+            return false;
         }
     }
 

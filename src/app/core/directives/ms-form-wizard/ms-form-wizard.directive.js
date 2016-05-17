@@ -22,10 +22,15 @@
 
         vm.previousStep = previousStep;
         vm.nextStep = nextStep;
+        vm.firstStep = firstStep;
+        vm.lastStep = lastStep;
+
+        vm.totalSteps = totalSteps;
         vm.isFirstStep = isFirstStep;
         vm.isLastStep = isLastStep;
 
         vm.currentStepInvalid = currentStepInvalid;
+        vm.previousStepInvalid = previousStepInvalid;
         vm.formsIncomplete = formsIncomplete;
         vm.resetForm = resetForm;
 
@@ -46,6 +51,11 @@
          */
         function previousStep()
         {
+            if ( isFirstStep() )
+            {
+                return;
+            }
+
             vm.selectedIndex--;
         }
 
@@ -54,7 +64,38 @@
          */
         function nextStep()
         {
+            if ( isLastStep() )
+            {
+                return;
+            }
+
             vm.selectedIndex++;
+        }
+
+        /**
+         * Go to first step
+         */
+        function firstStep()
+        {
+            vm.selectedIndex = 0;
+        }
+
+        /**
+         * Go to last step
+         */
+        function lastStep()
+        {
+            vm.selectedIndex = totalSteps() - 1;
+        }
+
+        /**
+         * Return total steps
+         *
+         * @returns {int}
+         */
+        function totalSteps()
+        {
+            return vm.forms.length;
         }
 
         /**
@@ -74,17 +115,27 @@
          */
         function isLastStep()
         {
-            return vm.selectedIndex === vm.forms.length - 1;
+            return vm.selectedIndex === totalSteps() - 1;
         }
 
         /**
          * Is current step invalid?
          *
-         * @returns {boolean|*}
+         * @returns {boolean}
          */
         function currentStepInvalid()
         {
             return angular.isDefined(vm.forms[vm.selectedIndex]) && vm.forms[vm.selectedIndex].$invalid;
+        }
+
+        /**
+         * Is previous step invalid?
+         *
+         * @returns {boolean}
+         */
+        function previousStepInvalid()
+        {
+            return vm.selectedIndex > 0 && angular.isDefined(vm.forms[vm.selectedIndex - 1]) && vm.forms[vm.selectedIndex - 1].$invalid;
         }
 
         /**
@@ -110,7 +161,7 @@
          */
         function resetForm()
         {
-            // Go back to first step
+            // Go back to the first step
             vm.selectedIndex = 0;
 
             // Make sure all the forms are back in the $pristine & $untouched status

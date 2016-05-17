@@ -7,22 +7,10 @@
         .config(config);
 
     /** @ngInject */
-    function config($ariaProvider, $logProvider, msScrollConfigProvider, $translateProvider, $provide, fuseConfigProvider, $httpProvider)
+    function config($ariaProvider, $logProvider, msScrollConfigProvider, $translateProvider, fuseConfigProvider)
     {
-      $httpProvider.interceptors.push('authToken');
-
-      // ng-aria configuration
-      $ariaProvider.config({
-          tabindex: false
-      });
-
       // Enable debug logging
       $logProvider.debugEnabled(true);
-
-      // msScroll configuration
-      msScrollConfigProvider.config({
-          wheelPropagation: true
-      });
 
       // toastr configuration
       toastr.options.timeOut = 3000;
@@ -30,58 +18,32 @@
       toastr.options.preventDuplicates = true;
       toastr.options.progressBar = true;
 
-
       // angular-translate configuration
       $translateProvider.useLoader('$translatePartialLoader', {
           urlTemplate: '{part}/i18n/{lang}.json'
       });
-      $translateProvider.preferredLanguage('cn');
+        $translateProvider.preferredLanguage('en');
       $translateProvider.useSanitizeValueStrategy('sanitize');
 
-      // Text Angular options
-      /*$provide.decorator('taOptions', [
-          '$delegate', function (taOptions)
-          {
-              taOptions.toolbar = [
-                  ['bold', 'italics', 'underline', 'ul', 'ol', 'quote']
-              ];
+        /*eslint-disable */
 
-              taOptions.classes = {
-                  focussed           : 'focussed',
-                  toolbar            : 'ta-toolbar',
-                  toolbarGroup       : 'ta-group',
-                  toolbarButton      : 'md-button',
-                  toolbarButtonActive: 'active',
-                  disabled           : '',
-                  textEditor         : 'form-control',
-                  htmlEditor         : 'form-control'
-              };
-
-              return taOptions;
-          }
-      ]);*/
-
-      // Text Angular tools
-      /*$provide.decorator('taTools', [
-          '$delegate', function (taTools)
-          {
-              taTools.bold.iconclass = 'icon-format-bold';
-              taTools.italics.iconclass = 'icon-format-italic';
-              taTools.underline.iconclass = 'icon-format-underline';
-              taTools.ul.iconclass = 'icon-format-list-bulleted';
-              taTools.ol.iconclass = 'icon-format-list-numbers';
-              taTools.quote.iconclass = 'icon-format-quote';
-
-              return taTools;
-          }
-      ]);*/
-
+        // ng-aria configuration
+        $ariaProvider.config({
+            tabindex: false
+        });
 
         // Fuse theme configurations
         fuseConfigProvider.config({
             'disableCustomScrollbars'        : false,
             'disableCustomScrollbarsOnMobile': true,
-            'disableMdInkRippleOnMobile'     : false
+            'disableMdInkRippleOnMobile'     : true
         });
+
+        // msScroll configuration
+        msScrollConfigProvider.config({
+            wheelPropagation: true
+        });
+
+        /*eslint-enable */
     }
 })();

@@ -7,10 +7,9 @@
         .config(config);
 
     /** @ngInject */
-    function config(authProvider,apiProvider)
+    function config()
     {
-
-
+        // Put your custom configurations here
     }
 
 })();
