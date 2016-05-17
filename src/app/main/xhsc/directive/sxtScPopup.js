@@ -102,7 +102,7 @@
       scope.apply = function() {
         scope.isSaveData = null;
         var context = scope.context,p = context.layer.getValue();
-        var singleEdit=[],mutiEdit=[],floorEdit=[],sjzEdit=[],materEidt=[],group;
+        var singleEdit=[],mutiEdit=[],floorEdit=[],sjzEdit=[],materEidt=[],group,groupEdit=[];
         scope.data.updates = [];
         scope.data.measureIndexes.forEach(function(m){
           var ms = [];
@@ -121,6 +121,7 @@
               v:scope.data.values.find(function(o){
                 return o.MeasurePointID == p.$id
                   && o.AcceptanceIndexID == m.AcceptanceIndexID
+                  && o.Hide !== true
               })
             };
             scope.data.updates.push(o);
@@ -136,13 +137,14 @@
             else {
               switch (m.QSKey) {
                 case '1':
-                case '3':
                 case '4':
                   mutiEdit.push(o);
                   break;
-
                 case '2':
                   sjzEdit.push(o);
+                  break;
+                case '3':
+                  groupEdit.push(o);
                   break;
                 case '5':
                   floorEdit.push(o)
@@ -162,7 +164,8 @@
           floorEdit:floorEdit,
           sjzEdit:sjzEdit,
           materEidt:materEidt,
-          group:group
+          group:group,
+          groupEdit:groupEdit
         }
         if(scope.PointType=='LineGroup' || scope.PointType=='AreaGroup') {
           var ps = [];
