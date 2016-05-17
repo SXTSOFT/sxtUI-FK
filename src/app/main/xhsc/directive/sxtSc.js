@@ -9,8 +9,7 @@
     .directive('sxtSc', sxtSc);
 
   /** @Inject */
-  function sxtSc($timeout,mapPopupSerivce,db,offlineTileLayer,sxt,xhUtils,pack){
-    var svgFiles = db('svgFiles');
+  function sxtSc($timeout,mapPopupSerivce,db,sxt,xhUtils,pack){
     function now() {
       return new Date().toISOString();
     }
@@ -44,17 +43,24 @@
           map = new L.SXT.Project(element[0]);
         }
         if(!tile || tile!=scope.regionId) {
-          svgFiles.get('123').then(function (data) {
-            map.loadSvgXml(data.svg,{
-              filterLine:function (line) {
-                //line.attrs.stroke = 'black';
-                //line.attrs['stroke-width'] = line.attrs['stroke-width']*4;
-              },
-              filterText:function (text) {
-                return false;
-              }
+          db('pack'+scope.db).get('GetDrawingByAreaID').then(function (data) {
+            var fd = data.data.find(function (d) {
+              return d.DrawingID == scope.imageUrl;
             });
-            map.center();
+            if(fd) {
+              if(fd.DrawingContent) {
+                map.loadSvgXml(fd.DrawingContent, {
+                  filterLine: function (line) {
+                    //line.attrs.stroke = 'black';
+                    //line.attrs['stroke-width'] = line.attrs['stroke-width']*4;
+                  },
+                  filterText: function (text) {
+                    return false;
+                  }
+                });
+                map.center();
+              }
+            }
           });
           tile = scope.regionId;
         }
