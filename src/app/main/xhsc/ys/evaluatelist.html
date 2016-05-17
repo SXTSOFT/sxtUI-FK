@@ -1,183 +1,1606 @@
-<md-content class="subheader">
-  <div style="position: fixed;top: 44px;left: 0;width: 100%;background: #fff;z-index: 45;">
-    <md-tabs md-dynamic-height flex>
-      <md-tab label="总包">
-      </md-tab>
-      <md-tab label="精装修">
-      </md-tab>
-      <md-tab label="门窗、栏杆">
-      </md-tab>
-      <md-tab label="防火门、入户门">
-      </md-tab>
-      <md-tab label="精装修">
-      </md-tab>
-      <md-tab label="门窗、栏杆">
-      </md-tab>
-      <md-tab label="防火门、入户门">
-      </md-tab>
-      <md-tab label="防火门、入户门">
-      </md-tab>
-      <md-tab label="精装修">
-      </md-tab>
-      <md-tab label="门窗、栏杆">
-      </md-tab>
-      <md-tab label="防火门、入户门">
-      </md-tab>
-    </md-tabs>
-  </div>
-  <div style="width: 100%;" layout="column">
-    <div style="position: fixed;top:92px;background: #f4f6f6;height:40px;left:0;right:0;z-index:10;padding-top: 0;">
-      <table cellspacing="0" cellpadding="0" border="0" width="100%"  class="zdytable fixtable" style="table-layout: fixed;margin-bottom: 0;">
-        <thead >
-        <tr>
-          <th colspan="4" width="204" align="center">
-            检测内容
-          </th>
-          <th>
+<md-tabs md-align-tabs="bottom" flex >
+  <md-tab label="总包">
+    <md-tab-content flex layout-fill layout="column">
+        <div flex="none" style="border-top: solid 1px silver">
+
+          <div layout="row" class="zlpkheader">
+            <div flex="30">
+              检测内容
+            </div><div flex="60">
             评判标准
-          </th>
-          <th>
+          </div><div flex="30">
             扣分标准
-          </th>
-          <th width="50" align="center">
+          </div><div flex="none" style="width:50px">
             权重
-          </th>
-          <th width="50" align="center">
+          </div><div flex="none" style="width:50px">
             扣分
-          </th>
-          <th width="50" align="center">
+          </div><div flex="none" style="width:50px">
             得分
-          </th>
-        </tr>
-        </thead>
-      </table>
-    </div>
-    <div style="position: relative;padding:0;">
-      <div style="margin-top:88px;"></div>
-      <div>
-        <md-subheader class="md-primary">
-          <span>标题一</span>
-          <span>扣分</span>
-          <span>扣分</span>
-          <span>扣分</span>
-        </md-subheader>
-        <table cellspacing="0" cellpadding="0" border="0" width="100%"  class="zdytable" style="table-layout: fixed;margin-bottom: 0;">
-          <tbody>
-          <tr>
-            <td rowspan="8" class="procedurename" width="28"><p>钢筋工程</p></td>
-            <td rowspan="8" class="procedurename" width="28"><p>钢筋工程</p></td>
-            <td rowspan="5" class="procedurename" width="28"><p>钢筋工程</p></td>
-            <td width="120" rowspan="3">钢筋工程</td>
-            <td>检查人</td>
-            <td>检查人</td>
-            <td width="50" align="center">2</td>
-            <td width="50" class="lr" align="center">
-              <span ng-click="vm.getRecord($event)" ng-if="!vm.input">录入</span>
-              <span ng-click="vm.getRecord($event)" ng-if="vm.input">{{vm.input}}</span>
-            </td>
-            <td width="50" align="center">2</td>
-          </tr>
-          <tr>
-            <td colspan="5" class="lr">
-              <img ng-src="app/main/xhsc/images/text.png" style="margin-right:12px;margin-top:5px;"><span>备注：<i style="font-style: normal;color:#333;font-size:12px;margin-right:5px;">{{vm.evaluateNote}}</i></span><md-icon style="padding-top:8px;width:30px;height:30px;" ng-click="vm.showDialog($event)"><img ng-src="app/main/xhsc/images/write.png"></md-icon>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="5" class="lr">
-              <img ng-src="app/main/xhsc/images/pic.png" style="margin-right:12px;margin-top:4px;">照片：
-              <!--<div>-->
-                <ul class="img" style="display: inline-block;" sxt-images="vm.images" ng-repeat="img in vm.images">
-                  <li><img ng-src="{{img.url}}"></li>
-                </ul>
-              <!--</div>-->
-              <!--<span class="img"><img src="assets/images/etc/plug.png" width="30"></span>-->
-              <md-icon style="width:30px;height:30px;"><img src="assets/images/etc/plug.png"></md-icon>
-            </td>
-          </tr>
-          <tr>
-            <td width="120">钢筋工程</td>
-            <td>检查人</td>
-            <td>检查人</td>
-            <td width="50">检查人</td>
-            <td width="50">检查人</td>
-            <td width="50">检查人</td>
-          </tr>
-          <tr>
-            <td width="120">钢筋工程</td>
-            <td>检查人</td>
-            <td>检查人</td>
-            <td width="50">检查人</td>
-            <td width="50">检查人</td>
-            <td width="50">检查人</td>
-          </tr>
-          <tr>
-            <td rowspan="3" class="procedurename" width="28"><p>钢筋工程</p></td>
-            <td width="120">钢筋工程</td>
-            <td>检查人</td>
-            <td>检查人</td>
-            <td width="50">检查人</td>
-            <td width="50">检查人</td>
-            <td width="50">检查人</td>
-          </tr>
-          <tr>
-            <td width="120">钢筋工程</td>
-            <td>检查人</td>
-            <td>检查人</td>
-            <td width="50">检查人</td>
-            <td width="50">检查人</td>
-            <td width="50">检查人</td>
-          </tr>
-          <tr>
-            <td width="120">钢筋工程</td>
-            <td>检查人</td>
-            <td>检查人</td>
-            <td width="50">检查人</td>
-            <td width="50">检查人</td>
-            <td width="50">检查人</td>
-          </tr>
-          </tbody>
-        </table>
+          </div>
+          </div>
+        </div>
+        <md-content flex layout="column" class="zlpksub">
+          <section>
+            <md-subheader>
+              <div layout="row" class="zlpksubheader">
+                <span>钢筋工程</span>
+                <span>扣分</span>
+                <span>扣分</span>
+                <span>扣分</span>
+              </div>
+            </md-subheader>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column"  layout-align="stretch space-around ">
+                  <md-grid-list flex
+                                md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                                md-row-height="1:1"
+                                md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准<br>扣分标准<br>扣分标准<br>扣分标准<br>扣分标准<br>扣分标准<br>扣分标准<br>扣分标准<br>扣分标准
+                  <br>扣分标准
+                  <br>扣分标准
+                  <br>扣分标准
+                  <br>扣分标准
+                  <br>扣分标准
+                  <br>扣分标准
+
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+          </section>
+          <section>
+            <md-subheader>
+              <div layout="row" class="zlpksubheader">
+                <span>模板工程</span>
+                <span>扣分</span>
+                <span>扣分</span>
+                <span>扣分</span>
+              </div>
+            </md-subheader>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+          </section>
+          <section>
+            <md-subheader>
+              <div layout="row" class="zlpksubheader">
+                <span>混凝土工程</span>
+                <span>扣分</span>
+                <span>扣分</span>
+                <span>扣分</span>
+              </div>
+            </md-subheader>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+            <md-list class="zlpklist">
+              <md-list-item layout="row"  layout-align="space-around stretch">
+                <div flex="30" layout="column">
+                  <md-grid-list
+                    md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                    md-row-height-gt-md="1:1" md-row-height="1:1"
+                    md-gutter="0" md-gutter-gt-sm="0" >
+                    <md-grid-tile class="gray"
+                                  md-colspan="2" md-rowspan="4">
+                      <h3>工序</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                      <h3>工序1</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                      <h3>工序2</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="blue"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序3</h3>
+                    </md-grid-tile>
+                    <md-grid-tile class="red"
+                                  md-rowspan="2" md-colspan="2">
+                      <h3>工序4</h3>
+                    </md-grid-tile>
+                  </md-grid-list>
+                </div>
+                <div flex="60" layout="column">
+                  扣分标准
+                </div>
+                <div flex="30">
+                  扣分标准
+                </div>
+                <!--<div flex>测试指标</div>-->
+                <!--<div flex>测试指标</div>-->
+                <div flex="none" style="width:50px">
+                  权重
+                </div><div flex="none" style="width:50px">
+                扣分
+              </div><div flex="none" style="width:50px">
+                得分
+              </div>
+              </md-list-item>
+            </md-list>
+          </section>
+        </md-content>
+    </md-tab-content>
+  </md-tab>
+  <md-tab label="精装修">
+    <md-tab-content flex layout-fill layout="column">
+      <div flex="none" style="border-top: solid 1px silver">
+
+        <div layout="row" class="zlpkheader">
+          <div flex="30">
+            检测内容
+          </div><div flex="60">
+          评判标准
+        </div><div flex="30">
+          扣分标准
+        </div><div flex="none" style="width:50px">
+          权重
+        </div><div flex="none" style="width:50px">
+          扣分
+        </div><div flex="none" style="width:50px">
+          得分
+        </div>
+        </div>
       </div>
-      <div>
-        <md-subheader class="md-primary">标题二</md-subheader>
-        <table cellspacing="0" cellpadding="0" border="0" width="100%"  class="zdytable">
-          <tbody>
-          <tr>
-            <td>检查人</td>
-            <td>检查人</td>
-          </tr>
-          <tr>
-            <td>检查人</td>
-            <td>检查人</td>
-          </tr>
-          <tr>
-            <td>检查人</td>
-            <td>检查人</td>
-          </tr>
-          <tr>
-            <td>检查人</td>
-            <td>检查人</td>
-          </tr>
-          <tr>
-            <td>检查人</td>
-            <td>检查人</td>
-          </tr>
-          <tr>
-            <td>检查人</td>
-            <td>检查人</td>
-          </tr>
-          <tr>
-            <td>检查人</td>
-            <td>检查人</td>
-          </tr>
-          <tr>
-            <td>检查人</td>
-            <td>检查人</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</md-content>
+      <md-content flex layout="column" class="zlpksub">
+        <section>
+          <md-subheader>
+            <div layout="row" class="zlpksubheader">
+              <span>标题一</span>
+              <span>扣分</span>
+              <span>扣分</span>
+              <span>扣分</span>
+            </div>
+          </md-subheader>
+          <md-list class="zlpklist">
+            <md-list-item layout="row"  layout-align="space-around stretch">
+              <div flex="30" layout="column"  layout-align="stretch space-around ">
+                <md-grid-list flex
+                              md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                              md-row-height="1:1"
+                              md-gutter="0" md-gutter-gt-sm="0" >
+                  <md-grid-tile class="gray"
+                                md-colspan="2" md-rowspan="4">
+                    <h3>工序</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                    <h3>工序1</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                    <h3>工序2</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="blue"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序3</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="red"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序4</h3>
+                  </md-grid-tile>
+                </md-grid-list>
+              </div>
+              <div flex="60" layout="column">
+                扣分标准<br>扣分标准<br>扣分标准<br>扣分标准<br>扣分标准<br>扣分标准<br>扣分标准<br>扣分标准<br>扣分标准
+                <br>扣分标准
+                <br>扣分标准
+                <br>扣分标准
+                <br>扣分标准
+                <br>扣分标准
+                <br>扣分标准
+
+              </div>
+              <div flex="30">
+                扣分标准
+              </div>
+              <!--<div flex>测试指标</div>-->
+              <!--<div flex>测试指标</div>-->
+              <div flex="none" style="width:50px">
+                权重
+              </div><div flex="none" style="width:50px">
+              扣分
+            </div><div flex="none" style="width:50px">
+              得分
+            </div>
+            </md-list-item>
+          </md-list>
+          <md-list class="zlpklist">
+            <md-list-item layout="row"  layout-align="space-around stretch">
+              <div flex="30" layout="column">
+                <md-grid-list
+                  md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                  md-row-height-gt-md="1:1" md-row-height="1:1"
+                  md-gutter="0" md-gutter-gt-sm="0" >
+                  <md-grid-tile class="gray"
+                                md-colspan="2" md-rowspan="4">
+                    <h3>工序</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                    <h3>工序1</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                    <h3>工序2</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="blue"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序3</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="red"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序4</h3>
+                  </md-grid-tile>
+                </md-grid-list>
+              </div>
+              <div flex="60" layout="column">
+                扣分标准
+              </div>
+              <div flex="30">
+                扣分标准
+              </div>
+              <!--<div flex>测试指标</div>-->
+              <!--<div flex>测试指标</div>-->
+              <div flex="none" style="width:50px">
+                权重
+              </div><div flex="none" style="width:50px">
+              扣分
+            </div><div flex="none" style="width:50px">
+              得分
+            </div>
+            </md-list-item>
+          </md-list>
+          <md-list class="zlpklist">
+            <md-list-item layout="row"  layout-align="space-around stretch">
+              <div flex="30" layout="column">
+                <md-grid-list
+                  md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                  md-row-height-gt-md="1:1" md-row-height="1:1"
+                  md-gutter="0" md-gutter-gt-sm="0" >
+                  <md-grid-tile class="gray"
+                                md-colspan="2" md-rowspan="4">
+                    <h3>工序</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                    <h3>工序1</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                    <h3>工序2</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="blue"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序3</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="red"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序4</h3>
+                  </md-grid-tile>
+                </md-grid-list>
+              </div>
+              <div flex="60" layout="column">
+                扣分标准
+              </div>
+              <div flex="30">
+                扣分标准
+              </div>
+              <!--<div flex>测试指标</div>-->
+              <!--<div flex>测试指标</div>-->
+              <div flex="none" style="width:50px">
+                权重
+              </div><div flex="none" style="width:50px">
+              扣分
+            </div><div flex="none" style="width:50px">
+              得分
+            </div>
+            </md-list-item>
+          </md-list>
+          <md-list class="zlpklist">
+            <md-list-item layout="row"  layout-align="space-around stretch">
+              <div flex="30" layout="column">
+                <md-grid-list
+                  md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                  md-row-height-gt-md="1:1" md-row-height="1:1"
+                  md-gutter="0" md-gutter-gt-sm="0" >
+                  <md-grid-tile class="gray"
+                                md-colspan="2" md-rowspan="4">
+                    <h3>工序</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                    <h3>工序1</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                    <h3>工序2</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="blue"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序3</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="red"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序4</h3>
+                  </md-grid-tile>
+                </md-grid-list>
+              </div>
+              <div flex="60" layout="column">
+                扣分标准
+              </div>
+              <div flex="30">
+                扣分标准
+              </div>
+              <!--<div flex>测试指标</div>-->
+              <!--<div flex>测试指标</div>-->
+              <div flex="none" style="width:50px">
+                权重
+              </div><div flex="none" style="width:50px">
+              扣分
+            </div><div flex="none" style="width:50px">
+              得分
+            </div>
+            </md-list-item>
+          </md-list>
+          <md-list class="zlpklist">
+            <md-list-item layout="row"  layout-align="space-around stretch">
+              <div flex="30" layout="column">
+                <md-grid-list
+                  md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                  md-row-height-gt-md="1:1" md-row-height="1:1"
+                  md-gutter="0" md-gutter-gt-sm="0" >
+                  <md-grid-tile class="gray"
+                                md-colspan="2" md-rowspan="4">
+                    <h3>工序</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                    <h3>工序1</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                    <h3>工序2</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="blue"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序3</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="red"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序4</h3>
+                  </md-grid-tile>
+                </md-grid-list>
+              </div>
+              <div flex="60" layout="column">
+                扣分标准
+              </div>
+              <div flex="30">
+                扣分标准
+              </div>
+              <!--<div flex>测试指标</div>-->
+              <!--<div flex>测试指标</div>-->
+              <div flex="none" style="width:50px">
+                权重
+              </div><div flex="none" style="width:50px">
+              扣分
+            </div><div flex="none" style="width:50px">
+              得分
+            </div>
+            </md-list-item>
+          </md-list>
+          <md-list class="zlpklist">
+            <md-list-item layout="row"  layout-align="space-around stretch">
+              <div flex="30" layout="column">
+                <md-grid-list
+                  md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                  md-row-height-gt-md="1:1" md-row-height="1:1"
+                  md-gutter="0" md-gutter-gt-sm="0" >
+                  <md-grid-tile class="gray"
+                                md-colspan="2" md-rowspan="4">
+                    <h3>工序</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                    <h3>工序1</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                    <h3>工序2</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="blue"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序3</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="red"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序4</h3>
+                  </md-grid-tile>
+                </md-grid-list>
+              </div>
+              <div flex="60" layout="column">
+                扣分标准
+              </div>
+              <div flex="30">
+                扣分标准
+              </div>
+              <!--<div flex>测试指标</div>-->
+              <!--<div flex>测试指标</div>-->
+              <div flex="none" style="width:50px">
+                权重
+              </div><div flex="none" style="width:50px">
+              扣分
+            </div><div flex="none" style="width:50px">
+              得分
+            </div>
+            </md-list-item>
+          </md-list>
+        </section>
+        <section>
+          <md-subheader>
+            <div layout="row" class="zlpksubheader">
+              <span>标题一233333</span>
+              <span>扣分</span>
+              <span>扣分</span>
+              <span>扣分</span>
+            </div>
+          </md-subheader>
+          <md-list class="zlpklist">
+            <md-list-item layout="row"  layout-align="space-around stretch">
+              <div flex="30" layout="column">
+                <md-grid-list
+                  md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                  md-row-height-gt-md="1:1" md-row-height="1:1"
+                  md-gutter="0" md-gutter-gt-sm="0" >
+                  <md-grid-tile class="gray"
+                                md-colspan="2" md-rowspan="4">
+                    <h3>工序</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                    <h3>工序1</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                    <h3>工序2</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="blue"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序3</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="red"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序4</h3>
+                  </md-grid-tile>
+                </md-grid-list>
+              </div>
+              <div flex="60" layout="column">
+                扣分标准
+              </div>
+              <div flex="30">
+                扣分标准
+              </div>
+              <!--<div flex>测试指标</div>-->
+              <!--<div flex>测试指标</div>-->
+              <div flex="none" style="width:50px">
+                权重
+              </div><div flex="none" style="width:50px">
+              扣分
+            </div><div flex="none" style="width:50px">
+              得分
+            </div>
+            </md-list-item>
+          </md-list>
+          <md-list class="zlpklist">
+            <md-list-item layout="row"  layout-align="space-around stretch">
+              <div flex="30" layout="column">
+                <md-grid-list
+                  md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                  md-row-height-gt-md="1:1" md-row-height="1:1"
+                  md-gutter="0" md-gutter-gt-sm="0" >
+                  <md-grid-tile class="gray"
+                                md-colspan="2" md-rowspan="4">
+                    <h3>工序</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                    <h3>工序1</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                    <h3>工序2</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="blue"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序3</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="red"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序4</h3>
+                  </md-grid-tile>
+                </md-grid-list>
+              </div>
+              <div flex="60" layout="column">
+                扣分标准
+              </div>
+              <div flex="30">
+                扣分标准
+              </div>
+              <!--<div flex>测试指标</div>-->
+              <!--<div flex>测试指标</div>-->
+              <div flex="none" style="width:50px">
+                权重
+              </div><div flex="none" style="width:50px">
+              扣分
+            </div><div flex="none" style="width:50px">
+              得分
+            </div>
+            </md-list-item>
+          </md-list>
+          <md-list class="zlpklist">
+            <md-list-item layout="row"  layout-align="space-around stretch">
+              <div flex="30" layout="column">
+                <md-grid-list
+                  md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                  md-row-height-gt-md="1:1" md-row-height="1:1"
+                  md-gutter="0" md-gutter-gt-sm="0" >
+                  <md-grid-tile class="gray"
+                                md-colspan="2" md-rowspan="4">
+                    <h3>工序</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                    <h3>工序1</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                    <h3>工序2</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="blue"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序3</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="red"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序4</h3>
+                  </md-grid-tile>
+                </md-grid-list>
+              </div>
+              <div flex="60" layout="column">
+                扣分标准
+              </div>
+              <div flex="30">
+                扣分标准
+              </div>
+              <!--<div flex>测试指标</div>-->
+              <!--<div flex>测试指标</div>-->
+              <div flex="none" style="width:50px">
+                权重
+              </div><div flex="none" style="width:50px">
+              扣分
+            </div><div flex="none" style="width:50px">
+              得分
+            </div>
+            </md-list-item>
+          </md-list>
+          <md-list class="zlpklist">
+            <md-list-item layout="row"  layout-align="space-around stretch">
+              <div flex="30" layout="column">
+                <md-grid-list
+                  md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                  md-row-height-gt-md="1:1" md-row-height="1:1"
+                  md-gutter="0" md-gutter-gt-sm="0" >
+                  <md-grid-tile class="gray"
+                                md-colspan="2" md-rowspan="4">
+                    <h3>工序</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                    <h3>工序1</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                    <h3>工序2</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="blue"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序3</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="red"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序4</h3>
+                  </md-grid-tile>
+                </md-grid-list>
+              </div>
+              <div flex="60" layout="column">
+                扣分标准
+              </div>
+              <div flex="30">
+                扣分标准
+              </div>
+              <!--<div flex>测试指标</div>-->
+              <!--<div flex>测试指标</div>-->
+              <div flex="none" style="width:50px">
+                权重
+              </div><div flex="none" style="width:50px">
+              扣分
+            </div><div flex="none" style="width:50px">
+              得分
+            </div>
+            </md-list-item>
+          </md-list>
+          <md-list class="zlpklist">
+            <md-list-item layout="row"  layout-align="space-around stretch">
+              <div flex="30" layout="column">
+                <md-grid-list
+                  md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                  md-row-height-gt-md="1:1" md-row-height="1:1"
+                  md-gutter="0" md-gutter-gt-sm="0" >
+                  <md-grid-tile class="gray"
+                                md-colspan="2" md-rowspan="4">
+                    <h3>工序</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                    <h3>工序1</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                    <h3>工序2</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="blue"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序3</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="red"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序4</h3>
+                  </md-grid-tile>
+                </md-grid-list>
+              </div>
+              <div flex="60" layout="column">
+                扣分标准
+              </div>
+              <div flex="30">
+                扣分标准
+              </div>
+              <!--<div flex>测试指标</div>-->
+              <!--<div flex>测试指标</div>-->
+              <div flex="none" style="width:50px">
+                权重
+              </div><div flex="none" style="width:50px">
+              扣分
+            </div><div flex="none" style="width:50px">
+              得分
+            </div>
+            </md-list-item>
+          </md-list>
+          <md-list class="zlpklist">
+            <md-list-item layout="row"  layout-align="space-around stretch">
+              <div flex="30" layout="column">
+                <md-grid-list
+                  md-cols-sm="6" md-cols-md="6" md-cols-gt-md="6"
+                  md-row-height-gt-md="1:1" md-row-height="1:1"
+                  md-gutter="0" md-gutter-gt-sm="0" >
+                  <md-grid-tile class="gray"
+                                md-colspan="2" md-rowspan="4">
+                    <h3>工序</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="green" md-rowspan="2" md-colspan="2">
+                    <h3>工序1</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="yellow" md-rowspan="2" md-colspan="2">
+                    <h3>工序2</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="blue"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序3</h3>
+                  </md-grid-tile>
+                  <md-grid-tile class="red"
+                                md-rowspan="2" md-colspan="2">
+                    <h3>工序4</h3>
+                  </md-grid-tile>
+                </md-grid-list>
+              </div>
+              <div flex="60" layout="column">
+                扣分标准
+              </div>
+              <div flex="30">
+                扣分标准
+              </div>
+              <!--<div flex>测试指标</div>-->
+              <!--<div flex>测试指标</div>-->
+              <div flex="none" style="width:50px">
+                权重
+              </div><div flex="none" style="width:50px">
+              扣分
+            </div><div flex="none" style="width:50px">
+              得分
+            </div>
+            </md-list-item>
+          </md-list>
+        </section>
+        <!--    <div style="position: fixed;top:92px;background: #f4f6f6;height:40px;left:0;right:0;z-index:10;padding-top: 0;">
+              <table cellspacing="0" cellpadding="0" border="0" width="100%"  class="zdytable fixtable" style="table-layout: fixed;margin-bottom: 0;">
+                <thead >
+                <tr>
+                  <th colspan="4" width="204" align="center">
+                    检测内容
+                  </th>
+                  <th>
+                    评判标准
+                  </th>
+                  <th>
+                    扣分标准
+                  </th>
+                  <th width="50" align="center">
+                    权重
+                  </th>
+                  <th width="50" align="center">
+                    扣分
+                  </th>
+                  <th width="50" align="center">
+                    得分
+                  </th>
+                </tr>
+                </thead>
+              </table>
+            </div>
+            <div style="position: relative;padding:0;">
+              <div style="margin-top:88px;"></div>
+              <div>
+                <md-subheader class="md-primary">
+                  <span>标题一</span>
+                  <span>扣分</span>
+                  <span>扣分</span>
+                  <span>扣分</span>
+                </md-subheader>
+                <table cellspacing="0" cellpadding="0" border="0" width="100%"  class="zdytable" style="table-layout: fixed;margin-bottom: 0;">
+                  <tbody>
+                  <tr>
+                    <td rowspan="8" class="procedurename" width="28"><p>钢筋工程</p></td>
+                    <td rowspan="8" class="procedurename" width="28"><p>钢筋工程</p></td>
+                    <td rowspan="5" class="procedurename" width="28"><p>钢筋工程</p></td>
+                    <td width="120" rowspan="3">钢筋工程</td>
+                    <td>检查人</td>
+                    <td>检查人</td>
+                    <td width="50" align="center">2</td>
+                    <td width="50" class="lr" align="center">
+                      <span ng-click="vm.getRecord($event)" ng-if="!vm.input">录入</span>
+                      <span ng-click="vm.getRecord($event)" ng-if="vm.input">{{vm.input}}</span>
+                    </td>
+                    <td width="50" align="center">2</td>
+                  </tr>
+                  <tr>
+                    <td colspan="5" class="lr">
+                      <img ng-src="app/main/xhsc/images/text.png" style="margin-right:12px;margin-top:5px;"><span>备注：<i style="font-style: normal;color:#333;font-size:12px;margin-right:5px;">{{vm.evaluateNote}}</i></span><md-icon style="padding-top:8px;width:30px;height:30px;" ng-click="vm.showDialog($event)"><img ng-src="app/main/xhsc/images/write.png"></md-icon>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="5" class="lr">
+                      <img ng-src="app/main/xhsc/images/pic.png" style="margin-right:12px;margin-top:4px;">照片：
+                      &lt;!&ndash;<div>&ndash;&gt;
+                        <ul class="img" style="display: inline-block;" sxt-images="vm.images" ng-repeat="img in vm.images">
+                          <li><img ng-src="{{img.url}}"></li>
+                        </ul>
+                      &lt;!&ndash;</div>&ndash;&gt;
+                      &lt;!&ndash;<span class="img"><img src="assets/images/etc/plug.png" width="30"></span>&ndash;&gt;
+                      <md-icon style="width:30px;height:30px;"><img src="assets/images/etc/plug.png"></md-icon>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="120">钢筋工程</td>
+                    <td>检查人</td>
+                    <td>检查人</td>
+                    <td width="50">检查人</td>
+                    <td width="50">检查人</td>
+                    <td width="50">检查人</td>
+                  </tr>
+                  <tr>
+                    <td width="120">钢筋工程</td>
+                    <td>检查人</td>
+                    <td>检查人</td>
+                    <td width="50">检查人</td>
+                    <td width="50">检查人</td>
+                    <td width="50">检查人</td>
+                  </tr>
+                  <tr>
+                    <td rowspan="3" class="procedurename" width="28"><p>钢筋工程</p></td>
+                    <td width="120">钢筋工程</td>
+                    <td>检查人</td>
+                    <td>检查人</td>
+                    <td width="50">检查人</td>
+                    <td width="50">检查人</td>
+                    <td width="50">检查人</td>
+                  </tr>
+                  <tr>
+                    <td width="120">钢筋工程</td>
+                    <td>检查人</td>
+                    <td>检查人</td>
+                    <td width="50">检查人</td>
+                    <td width="50">检查人</td>
+                    <td width="50">检查人</td>
+                  </tr>
+                  <tr>
+                    <td width="120">钢筋工程</td>
+                    <td>检查人</td>
+                    <td>检查人</td>
+                    <td width="50">检查人</td>
+                    <td width="50">检查人</td>
+                    <td width="50">检查人</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <md-subheader class="md-primary">标题二</md-subheader>
+                <table cellspacing="0" cellpadding="0" border="0" width="100%"  class="zdytable">
+                  <tbody>
+                  <tr>
+                    <td>检查人</td>
+                    <td>检查人</td>
+                  </tr>
+                  <tr>
+                    <td>检查人</td>
+                    <td>检查人</td>
+                  </tr>
+                  <tr>
+                    <td>检查人</td>
+                    <td>检查人</td>
+                  </tr>
+                  <tr>
+                    <td>检查人</td>
+                    <td>检查人</td>
+                  </tr>
+                  <tr>
+                    <td>检查人</td>
+                    <td>检查人</td>
+                  </tr>
+                  <tr>
+                    <td>检查人</td>
+                    <td>检查人</td>
+                  </tr>
+                  <tr>
+                    <td>检查人</td>
+                    <td>检查人</td>
+                  </tr>
+                  <tr>
+                    <td>检查人</td>
+                    <td>检查人</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>-->
+      </md-content>
+    </md-tab-content>
+  </md-tab>
+  <md-tab label="门窗、栏杆">
+  </md-tab>
+  <md-tab label="防火门、入户门">
+  </md-tab>
+  <md-tab label="精装修">
+  </md-tab>
+  <md-tab label="门窗、栏杆">
+  </md-tab>
+  <md-tab label="防火门、入户门">
+  </md-tab>
+  <md-tab label="防火门、入户门">
+  </md-tab>
+  <md-tab label="精装修">
+  </md-tab>
+  <md-tab label="门窗、栏杆">
+  </md-tab>
+  <md-tab label="防火门、入户门">
+  </md-tab>
+</md-tabs>
+
 

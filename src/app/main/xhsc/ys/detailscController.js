@@ -45,6 +45,95 @@
       vm.scData = newD;
       console.log('res',result)
     })
+    vm.testData = [{
+          MeasureUserName:'aa',
+          MeasureTime:2022-22-22,
+          IndexName:'abc',
+          MaximumDeviation:1,
+          QualifiedRate:1,
+          ResultStatus:1,
+          Points:[
+            [
+              {
+                MeasureValue:1
+              },
+              {
+                MeasureValue:2
+              }
+            ],[
+              {
+                MeasureValue:3
+              },{
+
+              }
+            ]
+        ]
+      },{
+      MeasureUserName:'门洞',
+      Children:[
+        {
+          MeasureTime:2022-22-22,
+          IndexName:'宽',
+          MaximumDeviation:1,
+          QualifiedRate:1,
+          ResultStatus:1,
+          Points:[
+              {
+                MeasureValue:1
+              },
+              {
+                MeasureValue:2
+              }
+          ]
+        },{
+          MeasureTime:2022-22-22,
+          IndexName:'高',
+          MaximumDeviation:1,
+          QualifiedRate:1,
+          ResultStatus:1,
+          Points:[
+              {
+                MeasureValue:3
+              },
+              {
+                MeasureValue:4
+              }
+          ]
+        },{
+          MeasureTime:2022-22-22,
+          IndexName:'厚',
+          MaximumDeviation:1,
+          QualifiedRate:1,
+          ResultStatus:1,
+          Points:[
+            {
+              MeasureValue:3
+            },
+            {
+              MeasureValue:4
+            }
+          ]
+        }
+      ]
+    },{
+      MeasureUserName:'aa',
+      MeasureTime:2022-22-22,
+      IndexName:'abc',
+      MaximumDeviation:1,
+      QualifiedRate:1,
+      ResultStatus:1,
+      Points:[
+        [
+          {
+            MeasureValue:1
+          },
+          {
+            MeasureValue:2
+          }
+        ]
+      ]
+    }
+    ]
    /* vm.scData = [{
       MeasureUserName:'aa',
       MeasureTime:2022-22-22,
