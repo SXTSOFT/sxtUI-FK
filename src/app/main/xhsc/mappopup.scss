@@ -1449,27 +1449,43 @@
 
 .zlpklist{
   padding: 0;
-  border:1px solid #d8d8d8;
   md-list-item{
     &.md-no-proxy{
       padding: 0;
     }
-    md-grid-list{
-      md-grid-tile{
-        border-right:1px solid #d8d8d8;
-        border-top:1px solid #d8d8d8;
+    .categorys{
+      div.title{
+        border-left:1px solid silver;
+        border-bottom:1px solid silver;
+        //&[layout="column"]:last-child{
+        //  border-bottom:0;
+        //}
+        &.title1{
+          border-bottom: 0;
+        }
       }
-    }
-    >div{
-      border-right:1px solid #d8d8d8;
+
     }
     table{
       border-collapse: collapse;
       tr{
+
         td{
-          border:solid 1px silver;
+          line-height: 200%;
+          border-right:1px solid #d8d8d8;
+          border-bottom:1px solid #d8d8d8;
+
+        }
+        &:last-child{
+          >td{
+            border-bottom: 0;
+          }
         }
       }
+    }
+    >table{
+      border-bottom:1px solid #d8d8d8;
+      border-left:1px solid #d8d8d8;
     }
   }
 
