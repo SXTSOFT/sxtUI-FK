@@ -10,6 +10,7 @@
 
   /** @Inject */
   function sxtSc($timeout,mapPopupSerivce,db,offlineTileLayer,sxt,xhUtils,pack){
+    var svgFiles = db('svgFiles');
     function now() {
       return new Date().toISOString();
     }
@@ -40,32 +41,30 @@
           points = pk.point.db;
 
         if(!map){
-          map = L.map(element[0],{
-            crs: L.SXT.SXTCRS,
-            center: [.3, .2],
-            zoom: 2,
-            minZoom: 0,
-            maxZoom: scope.regionType == 8?4:3,
-            scrollWheelZoom: true,
-            annotationBar: false,
-            attributionControl: false
-          });
+          map = new L.SXT.Project(element[0]);
         }
-        if(!tile || tile.regionId!=scope.regionId) {
-          if(tile)
-            map.removeLayer(tile);
-          tile = offlineTileLayer.offlineTile(scope.db +'/' + scope.imageUrl);
-          //tile = L.tileLayer(sxt.app.api+'/Api/Picture/Tile/{z}_{x}_{y}?path=/fs/UploadFiles/Framework/'+ scope.imageUrl, {attribution: false,noWrap: true});
-          tile.regionId = scope.regionId;
+        if(!tile || tile!=scope.regionId) {
+          svgFiles.get('123').then(function (data) {
+            map.loadSvgXml(data.svg,{
+              filterLine:function (line) {
+                //line.attrs.stroke = 'black';
+                //line.attrs['stroke-width'] = line.attrs['stroke-width']*4;
+              },
+              filterText:function (text) {
+                return false;
+              }
+            });
+            map.center();
+          });
+          tile = scope.regionId;
         }
 
         if(fg)
-          map.removeLayer(fg);
+          map._map.removeLayer(fg);
 
         if(toolbar)
-          map.removeControl(toolbar);
+          map._map.removeControl(toolbar);
 
-        map.addLayer(tile);
 
         fg = new L.SvFeatureGroup({
           onLoad:function(){
@@ -85,10 +84,17 @@
               fg.data = r.rows;
               points.findAll(function(o){
                 return r.rows.find(function(i){
-                  return i.MeasurePointID == o._id;
+                    if(i.MeasurePointID == o._id){
+                      o.CreateTime = moment(i.CreateTime).toDate();
+                      return true;
+                    }
+                  return false;
                 })!=null;
               }).then(function(p){
                 //fg.addLayer(p);
+                p.rows.sort(function (p1,p2) {
+                  return p1.CreateTime.getTime()-p2.CreateTime.getTime();
+                })
                 p.rows.forEach(function(geo){
                   layer.addData(geo.geometry);
                 })
@@ -96,6 +102,44 @@
             });
           },
           onUpdate:function(layer,isNew,group){
+            if(layer instanceof L.AreaGroup){
+              var b = layer.getBounds(),
+                x1 = b._northEast.lat,
+                y1 = b._northEast.lng,
+                x2 = b._southWest.lat,
+                y2 = b._southWest.lng;
+              var ps = [],ps1=[];
+              var offsetX = Math.abs(x2-x1)/8,
+                minX = Math.min(x2,x1),
+                offsetY = Math.abs(y2 - y1)/8,
+                minY = Math.min(y2,y2);
+              for(var i=1;i<=3;i++){
+                for(var j=1;j<=3;j++){
+                  ps.push([minX+offsetX*(i==1?1:i==2?4:7),minY+offsetY*(j==1?1:j==2?4:7)]);
+                }
+              }
+              ps1[0] = ps[0];
+              ps1[1] = ps[1];
+              ps1[2] = ps[2];
+              ps1[3] = ps[5];
+              ps1[4] = ps[8];
+              ps1[5] = ps[7];
+              ps1[6] = ps[6];
+              ps1[7] = ps[3];
+              ps1[8] = ps[4];
+
+              if(0){
+                ps1.splice(7,1);
+                ps1.splice(5,1);
+                ps1.splice(3,1);
+                ps1.splice(1,1);
+              }
+              //console.log(points);
+              ps1.forEach(function (p) {
+                fg.addLayer(new L.Stamp(p));
+              })
+            }
+            //return;
             var point = layer.toGeoJSON();
             point = {
               _id:point.properties.$id,
@@ -113,6 +157,7 @@
                 else {
                   ms.push(m);
                 }
+                console.log('ms',ms);
                 ms.forEach(function (m) {
                   var v = {
                     _id: sxt.uuid(),
@@ -128,13 +173,13 @@
                   v.MeasureValueId = v._id;
                   data.addOrUpdate(v);
                   fg.data.push(v);
-                })
+                });
               })
             }
             if(group){
               var groupId = group.getValue().$id,//添加或移出的groupId
                 measureIndexs = xhUtils.findAll(scope.measureIndexes,function (m) {
-                  return m.QSKey=='3'||m.QSKey=='4';
+                  return m.QSKey=='4';
                 }),//需要组或区测量的指标
                 values = xhUtils.findAll(fg.data,function (d) {
                   return d.MeasurePointID == point._id && !!measureIndexs.find(function (m) {
@@ -184,6 +229,36 @@
                 },m.v);
                 m.v.MeasureValueId = m.v._id;
               }
+              if(m.v.values){ //组测量
+                //m.v.MeasureValue = m.v.values[0];
+                var childValues = fg.data.filter(function (item) {
+                  return item.ParentMeasureValueID == m.v.MeasureValueId;
+                }),ix=0;
+                for(var k in m.v.values) {
+                  if (isNaN(parseInt(k)))return;
+                  var dv = m.v.values[k];
+                  if (!dv)return;
+                  var fd = childValues[ix++];
+                  if (!fd) {
+                    fd = {
+                      _id: sxt.uuid(),
+                      ParentMeasureValueID: m.v.MeasureValueId,
+                      CreateTime: now(),
+                      RelationID: scope.db,
+                      RecordType: 4,
+                      MeasurePointID: editScope.context.layer._value.$id,
+                      CheckRegionID: scope.regionId,
+                      RegionType: scope.regionType,
+                      AcceptanceItemID: scope.acceptanceItem,
+                      AcceptanceIndexID: m.m.AcceptanceIndexID,
+                      Hide: true
+                    };
+                    fd.MeasureValueId = fd._id;
+                  }
+                  fd.MeasureValue = dv;
+                  data.addOrUpdate(fd);
+                }
+              }
               data.addOrUpdate(m.v);
             });
           },
@@ -219,18 +294,17 @@
               return edit.el[0];
             }
           }
-        }).addTo(map);
+        }).addTo(map._map);
         toolbar = new L.Control.Draw({
           featureGroup:fg,
           group:{
-            lineGroup: !!scope.measureIndexes.find(function (m) {
-              return m.QSKey=='3'
-            }),
+            lineGroup: false,
             areaGroup:!!scope.measureIndexes.find(function (m) {
               return m.QSKey=='4'
             })
           }
-        }).addTo(map);
+        }).addTo(map._map);
+
       };
       $timeout(function(){
         scope.$watchCollection('measureIndexes',function(){
