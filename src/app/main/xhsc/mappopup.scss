@@ -1448,24 +1448,6 @@
 }
 
 .zlpklist{
-  padding: 0;
-  md-list-item{
-    &.md-no-proxy{
-      padding: 0;
-    }
-    .categorys{
-      div.title{
-        border-left:1px solid silver;
-        border-bottom:1px solid silver;
-        //&[layout="column"]:last-child{
-        //  border-bottom:0;
-        //}
-        &.title1{
-          border-bottom: 0;
-        }
-      }
-
-    }
     table{
       border-collapse: collapse;
       tr{
@@ -1487,6 +1469,5 @@
       border-bottom:1px solid #d8d8d8;
       border-left:1px solid #d8d8d8;
     }
-  }
 
 }
