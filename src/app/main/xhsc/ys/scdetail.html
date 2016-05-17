@@ -13,7 +13,6 @@
       <td colspan="7">检查日期：{{vm.time}}</td>
     </tr>
     <tr>
-
       <td style="width:100px;text-align: center;" colspan="2">指标</td>
       <td align="center">结果</td>
 <!--      <td align="center">最大偏差</td>-->
@@ -26,9 +25,131 @@
       <td ng-if="$index == 0"rowspan="{{item.rows.length}}" class="normal" ng-class="{'redColor':item.ResultStatus == 2}">{{item.ResultStatus}}</td>
 <!--      <td rowspan="{{item.rows.length}}" >{{item.MaximumDeviation}}</td>-->
       <td ng-if="$index == 0"rowspan="{{item.rows.length}}" >{{item.QualifiedRate|number:2}}%</td>
-      <td ng-repeat="point in row">{{point.MeasureValue}}</td>
+      <td ng-repeat="point in row" ng-class="{'yellow':point.MeasureStatus == 2,'red':point.MeasureStatus == 3}">{{point.MeasureValue}}</td>
     </tr>
     </tbody>
   </table>
+  <table width="100%" cellpadding="0" cellspacing="0" class="levelTable">
+    <thead>
+      <tr>
+        <th>指标</th>
+        <th>结果</th>
+        <th>合格率</th>
+        <th >1</th>
+        <th>2</th>
+      </tr>
+    </thead>
+    <tbody ng-repeat="item in vm.testData">
+      <tr ng-repeat="row in item.Points" ng-if="!item.Children">
+        <td rowspan="{{item.Points.length}}" ng-if="$index == 0" style="padding: 0;">
+          <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">
+            <tr>
+              <td>工序</td>
+            </tr>
+          </table>
+        </td>
+        <td rowspan="{{item.Points.length}}" ng-if="$index == 0">
+          结果
+          <!--<table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2" style="border-width:0px; border-style:hidden;">-->
+            <!--<tr>-->
+              <!--<td>-->
+                <!--结果-->
+              <!--</td>-->
+            <!--</tr>-->
+          <!--</table>-->
+        </td>
+        <td rowspan="{{item.Points.length}}" ng-if="$index == 0">1</td>
+        <td ng-repeat="point in row">{{point.MeasureValue}}</td>
+      </tr>
+      <tr ng-repeat="row in item.Children" ng-if="item.Children">
+        <td rowspan="{{item.Children.length}}" ng-if="$index == 0" style="padding: 0;">
+          <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">
+            <tr ng-repeat="row in item.Children">
+            <td rowspan="{{item.Children.length}}" ng-if="$index == 0">{{item.MeasureUserName}}</td>
+            <td>{{row.IndexName}}</td>
+            </tr>
+          </table>
+        </td>
+        <td rowspan="{{item.Children.length}}" ng-if="$index == 0">
+        结果
+        <!--<table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2" style="border-width:0px; border-style:hidden;">-->
+        <!--<tr>-->
+        <!--<td>-->
+        <!--结果-->
+        <!--</td>-->
+        <!--</tr>-->
+        <!--</table>-->
+        </td>
+        <td>1</td>
+        <td ng-repeat="point in row.Points">{{point.MeasureValue}}</td>
+        <!--<td ng-repeat="point in row">{{point.MeasureValue}}</td>-->
+      </tr>
+    </tbody>
+    <!--<tbody ng-repeat="item in vm.testData"ng-if="item.Children">-->
+      <!--<tr ng-repeat="row in item.Children">-->
+        <!--<td rowspan="{{item.Children.length}}" ng-if="$index == 0" style="padding: 0;">-->
+          <!--<table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">-->
+            <!--<tr ng-repeat="row in item.Children">-->
+              <!--<td rowspan="{{item.Children.length}}" ng-if="$index == 0">{{item.MeasureUserName}}</td>-->
+              <!--<td>{{row.IndexName}}</td>-->
+            <!--</tr>-->
 
+          <!--</table>-->
+        <!--</td>-->
+        <!--<td rowspan="{{item.Children.length}}" ng-if="$index == 0">-->
+          <!--结果-->
+          <!--&lt;!&ndash;<table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2" style="border-width:0px; border-style:hidden;">&ndash;&gt;-->
+            <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+              <!--&lt;!&ndash;<td>&ndash;&gt;-->
+                <!--&lt;!&ndash;结果&ndash;&gt;-->
+              <!--&lt;!&ndash;</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+          <!--&lt;!&ndash;</table>&ndash;&gt;-->
+        <!--</td>-->
+        <!--<td>1</td>-->
+        <!--<td ng-repeat="point in row.Points">{{point.MeasureValue}}</td>-->
+        <!--&lt;!&ndash;<td ng-repeat="point in row">{{point.MeasureValue}}</td>&ndash;&gt;-->
+      <!--</tr>-->
+    <!--</tbody>-->
+  </table>
+  <table width="100%" cellspacing="0" cellpadding="0" class="levelTable">
+    <thead>
+      <tr>
+        <th>列1</th>
+        <th>列2</th>
+        <th>列3</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 0">
+          <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">
+            <tbody>
+              <tr>
+                <td rowspan="2">列11</td>
+                <td style="padding: 0">
+                  <table width="100%" cellspacing="0" cellpadding="0"  class="levelTable leveltable2">
+                    <tbody>
+                      <tr>
+                        <td rowspan="2">1</td>
+                        <td>1</td>
+                      </tr>
+                      <tr>
+                        <td>1</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td>列22</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>1</td>
+        <td>1</td>
+      </tr>
+    </tbody>
+  </table>
 </md-content>
