@@ -17,7 +17,7 @@
         onChange:'&'
       },
       link:link,
-      template:'<div class="sxtnumdowndown" style="position:relative"><span ng-click="toggleView()" style="display: block;">&nbsp;{{value}}</span><div class="numberpanel"  style="position: absolute;left:-56px;top:30px;width:auto;z-index:10005;display:none;" ><sxt-num-input ng-model="value"  ok="ok()"></sxt-num-input></div></div>'
+      template:'<div class="sxtnumdowndown" style="position:relative"><span fast-click="toggleView()" style="display: block;">&nbsp;{{value}}</span><div class="numberpanel"  style="position: absolute;left:-56px;top:30px;width:auto;z-index:10005;display:none;" ><sxt-num-input ng-model="value"  ok="ok()"></sxt-num-input></div></div>'
     }
 
     function link(scope,element,attr,ctrl){
@@ -27,14 +27,14 @@
       //ng-show="isView"
      $('.numberpanel',element).css('display','none');
       if(typeof(scope.ct)=="object") {
-        if(scope.ct.isShow)return;
-        scope.ct.isShow = true;
+/*        if(scope.ct.isShow)return;
+        scope.ct.isShow = true;*/
         scope.ct.show = function () {
           //if(scope.ct.isShow)return;
           //scope.ct.isShow = true;
-          $timeout(function () {
+  /*        $timeout(function () {
             scope.ct.isShow = false;
-          },400);
+          },400);*/
           //console.log('ele',$(element).parent().parent().parent())
           if ($(element).parent().parent().hasClass('addPanel')) {
             if($(element).parent().parent().parent().hasClass('stamp')){
