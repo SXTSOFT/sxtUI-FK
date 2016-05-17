@@ -61,34 +61,16 @@
       });
     }
     vm.delete = function(item,ev){
-      var confirm = $mdDialog.confirm()
-        .title('需要您的确认')
-        .textContent('确认删除?')
-        .ariaLabel('Lucky day')
-        .targetEvent(ev)
-        .ok('确认')
-        .cancel('取消');
-      $mdDialog.show(confirm).then(function() {
-        pack.sc.remove(item.AssessmentID,function () {
-          var idx = vm.data.rows.indexOf(item);
-          vm.data.rows.splice(idx,1);
-          idx = vm.offlines.indexOf(item);
-          vm.offlines.splice(idx,1);
-          xcpk.addOrUpdate(vm.data);
-          queryOnline();
-        });
-      }, function() {
-
-      });
-      //pack.sc.remove(item.AssessmentID,function () {
-      //  var idx = vm.data.rows.indexOf(item);
-      //
-      //  vm.data.rows.splice(idx,1);
-      //  idx = vm.offlines.indexOf(item);
-      //  vm.offlines.splice(idx,1);
-      //  xcpk.addOrUpdate(vm.data);
-      //  queryOnline();
-      //});
+      utils.confirm('确认删除?',ev,'','').then(function(){
+          pack.sc.remove(item.AssessmentID,function () {
+            var idx = vm.data.rows.indexOf(item);
+            vm.data.rows.splice(idx, 1);
+            idx = vm.offlines.indexOf(item);
+            vm.offlines.splice(idx, 1);
+            xcpk.addOrUpdate(vm.data);
+            queryOnline();
+          })
+      })
     }
     function queryOnline() {
       vm.onlines = [];

@@ -27,46 +27,15 @@
       //ng-show="isView"
      $('.numberpanel',element).css('display','none');
       if(typeof(scope.ct)=="object") {
-/*        if(scope.ct.isShow)return;
-        scope.ct.isShow = true;*/
+        //if(scope.ct.isShow)return;
+        //scope.ct.isShow = true;
         scope.ct.show = function () {
-          //if(scope.ct.isShow)return;
-          //scope.ct.isShow = true;
-  /*        $timeout(function () {
-            scope.ct.isShow = false;
-          },400);*/
-          //console.log('ele',$(element).parent().parent().parent())
-          if ($(element).parent().parent().hasClass('addPanel')) {
-            if($(element).parent().parent().parent().hasClass('stamp')){
-              for(var i=0;i<$(element).parent().parent().parent().find('.addPanel').length;i++){
-                $(element).parent().parent().parent().find('.addPanel').eq(i).find('.numberpanel').css('display', 'none');
-              }
-              $(element).parent().parent().parent().find('.addPanel').eq(0).find('.numberpanel').css('display', 'block');
-
-            }else{
-               $(element).parent().parent().eq(0).find('.numberpanel').css('display', 'block');
-               $(element).find('.numberpanel').css('display', 'block');
-            }
-
-          } else if ($(element).parent().hasClass('addPanel')) {
-            $(element).parent().eq(0).find('.numberpanel').css('display', 'block');
-          } else {
-            $('.numberpanel',element).css('display', 'block');
-            //$(element).find('.numberpanel').css('display', 'block');
-          }
+          $(document).find('.numberpanel').eq(0).css('display','block');
         };
       };
       scope.toggleView = function(){
-        //console.log('a',$(element).parent().siblings().find('.numberpanel').length)
-        if($(element).parent().siblings().find('.numberpanel').length){
-          $('.addPanel .numberpanel').css('display','none');
-          $(element).parent().siblings().find('.numberpanel').css('display','none');
-          $(element).parent().parent().siblings().find('.numberpanel').css('display','none');
-        }else{
-          $(element).parent().parent().siblings().find('.numberpanel').css('display','none');
-          $('table .numberpanel').css('display','none');
-        }
         if($(element).find('.numberpanel').is(':hidden')){
+          $('.numberpanel').css('display','none');
           $(element).find('.numberpanel').css('display','block');
           var width = $('.sxt-num-input').width()-$(element).parent().width();
           $(element).find('.numberpanel').css('left',-width/2+'px');
