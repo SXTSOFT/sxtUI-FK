@@ -41,6 +41,7 @@
               t.rows=[];
               var ms = [];
               t.QualifiedRate = t.QualifiedRate * 100;
+              t.allDot = t.QualifiedPointNum + t.UnqualifiedPointNum;
               t.MeasureValueList.forEach(function (m) {
                 // if(m.MeasureValue !=0){
                 if(ms.length<20) {
@@ -70,6 +71,7 @@
           item.rows = [];
           var ms = [];
           item.QualifiedRate = item.QualifiedRate * 100;
+          item.allDot = item.QualifiedPointNum + item.UnqualifiedPointNum;
           item.MeasureValueList.forEach(function (m) {
             // if(m.MeasureValue !=0){
             if(ms.length<20) {

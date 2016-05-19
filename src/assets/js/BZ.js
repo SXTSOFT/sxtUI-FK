@@ -1,15 +1,15 @@
 /**
  * BZ 0.1
- *
- *
+ * 
+ * 
  * http://www.sxt.com.cn/
- *
+ * 
  * Copyright 2016, jiuyuong
- *
+ * 
  * http://www.sxt.com.cn/
- *
+ * 
  * Licensed under MIT
- *
+ * 
  * Released on: May 17, 2016
  */
 /*
@@ -10383,7 +10383,7 @@ L.Edit.Marker = L.Handler.extend({
 		if (!icon) {
 			return;
 		}
-
+		
 		// This is quite naughty, but I don't see another way of doing it. (short of setting a new icon)
 		icon.style.display = 'none';
 
@@ -11069,7 +11069,7 @@ L.Edit.SimpleShape = L.Handler.extend({
 		}
 
 		this._shape.redraw();
-
+		
 		// prevent touchcancel in IOS
 		// e.preventDefault();
 		return false;
@@ -13642,7 +13642,7 @@ L.Map.mergeOptions({
 				});
 			}
 			L.FeatureGroup.prototype.addLayer.call(self,layer);
-
+			
 			setTimeout(function() {
 				if (!layer._value || !layer._value.$id) {
 					layer.updateValue({
@@ -14004,8 +14004,8 @@ L.Map.mergeOptions({
         _updateStyle:function () {
             if(this.v.attrs){
                 for(var k in this.v.attrs){
-                    //if(this.v.attrs.hasOwnProperty(k))
-                    //   this._path.setAttribute(k,this.v.attrs[k]);
+                    if(this.v.attrs.hasOwnProperty(k))
+                        this._path.setAttribute(k,this.v.attrs[k]);
                 }
             }
         }
