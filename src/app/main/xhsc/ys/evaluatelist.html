@@ -29,43 +29,43 @@
               </div>
             </md-subheader>
             <table width="100%" cellspacing="0" cellpadding="0" class="zlpktables">
-                  <tr>
-                    <td style="width:6.25%;">
-                      <p>混凝土工程</p>
+                  <tr ng-repeat="e in c.AssessmentClassifys">
+                    <td style="width:{{vm.getWidth(1)}}%;">
+                      <p>{{e.AssessmentClassificationName}}</p>
                     </td>
                     <td>
                       <table width="100%" cellspacing="0" cellpadding="0">
-                        <tr>
-                          <td style="width:6.66%;">
-                            <p>混凝土工程</p>
+                        <tr ng-repeat="f in e.AssessmentClassifys">
+                          <td style="width:{{vm.getWidth(2)}}%;">
+                            <p>{{f.AssessmentClassificationName}}</p>
                           </td>
                           <td>
                             <table width="100%" cellspacing="0" cellpadding="0">
-                              <tr>
-                                <td style="width:7.14%;">
-                                  <p>混凝土工程</p>
+                              <tr ng-repeat="g in f.AssessmentClassifys">
+                                <td style="width:{{vm.getWidth(3)}}%;">
+                                  <p>{{g.AssessmentClassificationName}}</p>
                                 </td>
                                 <td>
                                   <table width="100%" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                      <td style="width:7.69%;">
-                                        <p>混凝土工程</p>
+                                    <tr ng-repeat="item in g.AssessmentItems">
+                                      <td style="width:6.25%;">
+                                        <p>{{item.AssessmentCheckItemName}}</p>
                                       </td>
                                       <td>
                                         <table width="100%" cellspacing="0" cellpadding="0">
                                           <tr>
                                             <td style="width:46.9%;">
-                                              <p>评判标准<br>评判标准<br>评判标准<br>11评判标准<br></p>
+                                              <p>{{item.EvaluationCriteria}}</p>
                                             </td>
                                             <td>
-                                              <p>评判标准</p>
+                                              <p>{{item.DeductionCriteria}}</p>
                                             </td>
                                             <td style="width: 50px;text-align: center;">
                                               2
                                             </td>
                                             <td style="width: 50px;text-align: center;" class="lr">
-                                              <span ng-click="vm.getRecord($event)" ng-if="!vm.input">录入</span>
-                                              <span ng-click="vm.getRecord($event)" ng-if="vm.input">{{vm.input}}</span>
+                                              <span ng-click="vm.check(item)" ng-if="!vm.input">录入</span>
+                                              <span ng-click="vm.check(item)" ng-if="vm.input">{{vm.input}}</span>
                                             </td>
                                             <td style="width: 50px;text-align: center;" class="lr">
                                               2
@@ -109,248 +109,254 @@
 
                                           </tr>
                                           <!--<tr>-->
-                                            <!--<td colspan="3">-->
-                                              <!--B T 评判标准-->
-                                            <!--</td>-->
-                                            <!--<td style="width: 50px">-->
-                                              <!--2-->
-                                            <!--</td>-->
-                                            <!--<td style="width: 50px">-->
-                                              <!--2-->
-                                            <!--</td>-->
+                                          <!--<td colspan="3">-->
+                                          <!--B T 评判标准-->
+                                          <!--</td>-->
+                                          <!--<td style="width: 50px">-->
+                                          <!--2-->
+                                          <!--</td>-->
+                                          <!--<td style="width: 50px">-->
+                                          <!--2-->
+                                          <!--</td>-->
                                           <!--</tr>-->
                                         </table>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td style="width:7.69%;">
-                                        <p>52</p>
-                                      </td>
-                                      <td>
-                                        <p>评判标准</p>
                                       </td>
                                     </tr>
                                   </table>
                                 </td>
                               </tr>
-                              <tr>
-                                <td style="width:7.14%;">
-                                  <p>42</p>
+                              <tr ng-repeat="item in e.AssessmentItems">
+                                <td style="width:6.25%;">
+                                  <p>{{item.AssessmentCheckItemName}}</p>
                                 </td>
                                 <td>
                                   <table width="100%" cellspacing="0" cellpadding="0">
                                     <tr>
-                                      <td style="width:7.69%;">
-                                        5
+                                      <td style="width:46.9%;">
+                                        <p>{{item.EvaluationCriteria}}</p>
                                       </td>
                                       <td>
-sss
+                                        <p>{{item.DeductionCriteria}}</p>
+                                      </td>
+                                      <td style="width: 50px;text-align: center;">
+                                        2
+                                      </td>
+                                      <td style="width: 50px;text-align: center;" class="lr">
+                                        <span ng-click="vm.check(item)" ng-if="!vm.input">录入</span>
+                                        <span ng-click="vm.check(item)" ng-if="vm.input">{{vm.input}}</span>
+                                      </td>
+                                      <td style="width: 50px;text-align: center;" class="lr">
+                                        2
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td style="width:7.69%;">
-                                        52
+                                      <td colspan="5">
+                                        <table width="100%" cellspacing="0" cellpadding="0">
+                                          <tr>
+                                            <td style="width:50px;text-align:center">13栋</td>
+                                            <td colspan="2" class="lr">
+                                              <table cellspacing="0" cellpadding="0" width="100%">
+                                                <tr>
+                                                  <td>
+                                                    &nbsp;&nbsp;照片：
+                                                    <ul class="img" style="display: inline-block;vertical-align:top;margin-top:3px;" sxt-images="vm.images" ng-repeat="img in vm.images">
+                                                      <li><img ng-src="{{img.url}}"></li>
+                                                    </ul>
+                                                    <md-icon style="width:30px;height:30px;"><img src="assets/images/etc/plug.png"></md-icon>
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>
+                                                    &nbsp;&nbsp;备注：
+                                                    <ul class="img" style="display: inline-block;vertical-align:top;">
+                                                      <li><span style="font-size: 24px;">T</span></li>
+                                                    </ul>
+                                                  </td>
+                                                </tr>
+                                              </table>
+                                            </td>
+                                            <td style="width: 50px;text-align: center;">
+                                              2
+                                            </td>
+                                            <td style="width: 50px;text-align: center;">
+                                              2
+                                            </td>
+                                          </tr>
+                                        </table>
                                       </td>
-                                      <td>
-                                        评判标准
-                                      </td>
+
                                     </tr>
+                                    <!--<tr>-->
+                                    <!--<td colspan="3">-->
+                                    <!--B T 评判标准-->
+                                    <!--</td>-->
+                                    <!--<td style="width: 50px">-->
+                                    <!--2-->
+                                    <!--</td>-->
+                                    <!--<td style="width: 50px">-->
+                                    <!--2-->
+                                    <!--</td>-->
+                                    <!--</tr>-->
                                   </table>
                                 </td>
                               </tr>
                             </table>
                           </td>
                         </tr>
+                        <tr ng-repeat="item in e.AssessmentItems">
+                          <td style="width:6.25%;">
+                            <p>{{item.AssessmentCheckItemName}}</p>
+                          </td>
+                          <td>
+                            <table width="100%" cellspacing="0" cellpadding="0">
+                              <tr>
+                                <td style="width:46.9%;">
+                                  <p>{{item.EvaluationCriteria}}</p>
+                                </td>
+                                <td>
+                                  <p>{{item.DeductionCriteria}}</p>
+                                </td>
+                                <td style="width: 50px;text-align: center;">
+                                  2
+                                </td>
+                                <td style="width: 50px;text-align: center;" class="lr">
+                                  <span ng-click="vm.check(item)" ng-if="!vm.input">录入</span>
+                                  <span ng-click="vm.check(item)" ng-if="vm.input">{{vm.input}}</span>
+                                </td>
+                                <td style="width: 50px;text-align: center;" class="lr">
+                                  2
+                                </td>
+                              </tr>
+                              <tr>
+                                <td colspan="5">
+                                  <table width="100%" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                      <td style="width:50px;text-align:center">13栋</td>
+                                      <td colspan="2" class="lr">
+                                        <table cellspacing="0" cellpadding="0" width="100%">
+                                          <tr>
+                                            <td>
+                                              &nbsp;&nbsp;照片：
+                                              <ul class="img" style="display: inline-block;vertical-align:top;margin-top:3px;" sxt-images="vm.images" ng-repeat="img in vm.images">
+                                                <li><img ng-src="{{img.url}}"></li>
+                                              </ul>
+                                              <md-icon style="width:30px;height:30px;"><img src="assets/images/etc/plug.png"></md-icon>
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td>
+                                              &nbsp;&nbsp;备注：
+                                              <ul class="img" style="display: inline-block;vertical-align:top;">
+                                                <li><span style="font-size: 24px;">T</span></li>
+                                              </ul>
+                                            </td>
+                                          </tr>
+                                        </table>
+                                      </td>
+                                      <td style="width: 50px;text-align: center;">
+                                        2
+                                      </td>
+                                      <td style="width: 50px;text-align: center;">
+                                        2
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </td>
+
+                              </tr>
+                              <!--<tr>-->
+                              <!--<td colspan="3">-->
+                              <!--B T 评判标准-->
+                              <!--</td>-->
+                              <!--<td style="width: 50px">-->
+                              <!--2-->
+                              <!--</td>-->
+                              <!--<td style="width: 50px">-->
+                              <!--2-->
+                              <!--</td>-->
+                              <!--</tr>-->
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr ng-repeat="item in c.AssessmentItems">
+                    <td style="width:{{vm.getWidth(1)}}%;">
+                      <p>{{item.AssessmentCheckItemName}}</p>
+                    </td>
+                    <td>
+                      <table width="100%" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td style="width:46.9%;">
+                            <p>{{item.EvaluationCriteria}}</p>
+                          </td>
+                          <td>
+                            <p>{{item.DeductionCriteria}}</p>
+                          </td>
+                          <td style="width: 50px;text-align: center;">
+                            2
+                          </td>
+                          <td style="width: 50px;text-align: center;" class="lr">
+                            <span ng-click="vm.check(item)" ng-if="!vm.input">录入</span>
+                            <span ng-click="vm.check(item)" ng-if="vm.input">{{vm.input}}</span>
+                          </td>
+                          <td style="width: 50px;text-align: center;" class="lr">
+                            2
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="5">
+                            <table width="100%" cellspacing="0" cellpadding="0">
+                              <tr>
+                                <td style="width:50px;text-align:center">13栋</td>
+                                <td colspan="2" class="lr">
+                                  <table cellspacing="0" cellpadding="0" width="100%">
+                                    <tr>
+                                      <td>
+                                        &nbsp;&nbsp;照片：
+                                        <ul class="img" style="display: inline-block;vertical-align:top;margin-top:3px;" sxt-images="vm.images" ng-repeat="img in vm.images">
+                                          <li><img ng-src="{{img.url}}"></li>
+                                        </ul>
+                                        <md-icon style="width:30px;height:30px;"><img src="assets/images/etc/plug.png"></md-icon>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        &nbsp;&nbsp;备注：
+                                        <ul class="img" style="display: inline-block;vertical-align:top;">
+                                          <li><span style="font-size: 24px;">T</span></li>
+                                        </ul>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </td>
+                                <td style="width: 50px;text-align: center;">
+                                  2
+                                </td>
+                                <td style="width: 50px;text-align: center;">
+                                  2
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+
+                        </tr>
                         <!--<tr>-->
-                          <!--<td style="width:6.66%;">-->
-                            <!--32-->
-                          <!--</td>-->
-                          <!--<td>-->
-                            <!--<table width="100%" cellspacing="0" cellpadding="0">-->
-                              <!--<tr>-->
-                                <!--<td style="width:7.14%;">-->
-                                  <!--4-->
-                                <!--</td>-->
-                                <!--<td>-->
-                                  <!--<table width="100%" cellspacing="0" cellpadding="0">-->
-                                    <!--<tr>-->
-                                      <!--<td style="width:7.69%;">-->
-                                        <!--5-->
-                                      <!--</td>-->
-                                      <!--<td>-->
-                                        <!--评判标准<br>评判标准<br>评判标准<br>11评判标准<br>-->
-                                      <!--</td>-->
-                                    <!--</tr>-->
-                                    <!--<tr>-->
-                                      <!--<td style="width:7.69%;">-->
-                                        <!--52-->
-                                      <!--</td>-->
-                                      <!--<td>-->
-                                        <!--评判标准-->
-                                      <!--</td>-->
-                                    <!--</tr>-->
-                                  <!--</table>-->
-                                <!--</td>-->
-                              <!--</tr>-->
-                              <!--<tr>-->
-                                <!--<td style="width:7.14%;">-->
-                                  <!--42-->
-                                <!--</td>-->
-                                <!--<td>-->
-                                  <!--<table width="100%" cellspacing="0" cellpadding="0">-->
-                                    <!--<tr>-->
-                                      <!--<td style="width:7.69%;">-->
-                                        <!--5-->
-                                      <!--</td>-->
-                                      <!--<td>-->
-                                        <!--评判标准<br>评判标准<br>评判标准<br>11评判标准<br>-->
-                                      <!--</td>-->
-                                    <!--</tr>-->
-                                    <!--<tr>-->
-                                      <!--<td style="width:7.69%;">-->
-                                        <!--52-->
-                                      <!--</td>-->
-                                      <!--<td>-->
-                                        <!--评判标准-->
-                                      <!--</td>-->
-                                    <!--</tr>-->
-                                  <!--</table>-->
-                                <!--</td>-->
-                              <!--</tr>-->
-                            <!--</table>-->
-                          <!--</td>-->
+                        <!--<td colspan="3">-->
+                        <!--B T 评判标准-->
+                        <!--</td>-->
+                        <!--<td style="width: 50px">-->
+                        <!--2-->
+                        <!--</td>-->
+                        <!--<td style="width: 50px">-->
+                        <!--2-->
+                        <!--</td>-->
                         <!--</tr>-->
                       </table>
                     </td>
                   </tr>
-                  <!--<tr>-->
-                    <!--<td style="width:6.25%;">-->
-                      <!--2-->
-                    <!--</td>-->
-                    <!--<td>-->
-                      <!--<table width="100%" cellspacing="0" cellpadding="0">-->
-                        <!--<tr>-->
-                          <!--<td style="width:6.66%;">-->
-                            <!--3-->
-                          <!--</td>-->
-                          <!--<td>-->
-                            <!--<table width="100%" cellspacing="0" cellpadding="0">-->
-                              <!--<tr>-->
-                                <!--<td style="width:7.14%;">-->
-                                  <!--4-->
-                                <!--</td>-->
-                                <!--<td>-->
-                                  <!--<table width="100%" cellspacing="0" cellpadding="0">-->
-                                    <!--<tr>-->
-                                      <!--<td style="width:7.69%;">-->
-                                        <!--5-->
-                                      <!--</td>-->
-                                      <!--<td>-->
-                                        <!--评判标准<br>评判标准<br>评判标准<br>11评判标准<br>-->
-                                      <!--</td>-->
-                                    <!--</tr>-->
-                                    <!--<tr>-->
-                                      <!--<td style="width:7.69%;">-->
-                                        <!--52-->
-                                      <!--</td>-->
-                                      <!--<td>-->
-                                        <!--评判标准-->
-                                      <!--</td>-->
-                                    <!--</tr>-->
-                                  <!--</table>-->
-                                <!--</td>-->
-                              <!--</tr>-->
-                              <!--<tr>-->
-                                <!--<td style="width:7.14%;">-->
-                                  <!--42-->
-                                <!--</td>-->
-                                <!--<td>-->
-                                  <!--<table width="100%" cellspacing="0" cellpadding="0">-->
-                                    <!--<tr>-->
-                                      <!--<td style="width:7.69%;">-->
-                                        <!--5-->
-                                      <!--</td>-->
-                                      <!--<td>-->
-                                        <!--评判标准<br>评判标准<br>评判标准<br>11评判标准<br>-->
-                                      <!--</td>-->
-                                    <!--</tr>-->
-                                    <!--<tr>-->
-                                      <!--<td style="width:7.69%;">-->
-                                        <!--52-->
-                                      <!--</td>-->
-                                      <!--<td>-->
-                                        <!--评判标准-->
-                                      <!--</td>-->
-                                    <!--</tr>-->
-                                  <!--</table>-->
-                                <!--</td>-->
-                              <!--</tr>-->
-                            <!--</table>-->
-                          <!--</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                          <!--<td style="width:6.66%;">-->
-                            <!--32-->
-                          <!--</td>-->
-                          <!--<td>-->
-                            <!--<table width="100%" cellspacing="0" cellpadding="0">-->
-                              <!--<tr>-->
-                                <!--<td style="width:7.14%;">-->
-                                  <!--4-->
-                                <!--</td>-->
-                                <!--<td>-->
-                                  <!--<table width="100%" cellspacing="0" cellpadding="0">-->
-                                    <!--<tr>-->
-                                      <!--<td style="width:7.69%;">-->
-                                        <!--5-->
-                                      <!--</td>-->
-                                      <!--<td>-->
-                                        <!--评判标准<br>评判标准<br>评判标准<br>11评判标准<br>-->
-                                      <!--</td>-->
-                                    <!--</tr>-->
-                                    <!--<tr>-->
-                                      <!--<td style="width:7.69%;">-->
-                                        <!--52-->
-                                      <!--</td>-->
-                                      <!--<td>-->
-                                        <!--评判标准-->
-                                      <!--</td>-->
-                                    <!--</tr>-->
-                                  <!--</table>-->
-                                <!--</td>-->
-                              <!--</tr>-->
-                              <!--<tr>-->
-                                <!--<td style="width:7.14%;">-->
-                                  <!--42-->
-                                <!--</td>-->
-                                <!--<td>-->
-                                  <!--<table width="100%" cellspacing="0" cellpadding="0">-->
-                                    <!--<tr>-->
-                                      <!--<td style="width:7.69%;">-->
-                                        <!--5-->
-                                      <!--</td>-->
-                                      <!--<td>-->
-                                        <!--评判标准<br>评判标准<br>评判标准<br>11评判标准<br>-->
-                                      <!--</td>-->
-                                    <!--</tr>-->
-                                    <!--<tr>-->
-                                      <!--<td style="width:7.69%;">-->
-                                        <!--52-->
-                                      <!--</td>-->
-                                      <!--<td>-->
-                                        <!--评判标准-->
-                                      <!--</td>-->
-                                    <!--</tr>-->
-                                  <!--</table>-->
-                                <!--</td>-->
-                              <!--</tr>-->
-                            <!--</table>-->
-                          <!--</td>-->
-                        <!--</tr>-->
-                      <!--</table>-->
-                    <!--</td>-->
-                  <!--</tr>-->
-                </table>
+            </table>
           </section>
 
 
