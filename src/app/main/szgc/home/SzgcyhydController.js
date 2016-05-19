@@ -21,7 +21,7 @@
       projectId: $stateParams.pid,
       projectName:$stateParams.pname
     };
-    appCookie.put('projects',JSON.stringify([{project_id:$stateParams.pid,name:$stateParams.pname}]))
+    //appCookie.put('projects',JSON.stringify([{project_id:$stateParams.pid,name:$stateParams.pname}]))
     //vm.$parent.data.pname = vm.data.projectName;
     $rootScope.title = vm.data.projectName;
 

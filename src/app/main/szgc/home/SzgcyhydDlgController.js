@@ -11,6 +11,7 @@
   function SzgcyhydDlgController(project,$mdDialog){
     var vm = this;
     vm.project = project;
+    vm.show = false;
     console.log('project',project);
 
     vm.answer = function () {
