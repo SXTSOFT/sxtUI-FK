@@ -11,7 +11,7 @@
   /** @ngInject */
   function SzgcyhydController(api,$mdDialog,$rootScope,$scope,utils,$stateParams,appCookie,viewImage)
   {
-    viewImage.view('http://szdp.vanke.com:8088/upload/2016/03/980012f8-e903-4b54-9222-bd53edee391c.jpg')
+    //viewImage.view('http://szdp.vanke.com:8088/upload/2016/03/980012f8-e903-4b54-9222-bd53edee391c.jpg')
     var vm = this;
     vm.project ={};
     vm.showImg = function () {
