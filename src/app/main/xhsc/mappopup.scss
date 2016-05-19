@@ -949,6 +949,9 @@ md-tabs[md-align-tabs="bottom"]{
       &.red{
         color:#f00;
       }
+      .red{
+        color:#f00;
+      }
       &.normal{
         color:#333;
         &.redColor{
@@ -1518,6 +1521,11 @@ md-tabs[md-align-tabs="bottom"]{
       .img {
         margin: 0;
         padding: 0;
+        *{
+          margin: 0;
+          padding: 0;
+        }
+
         li {
           display: inline-block;
           vertical-align: middle;

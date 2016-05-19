@@ -14,7 +14,7 @@
     vm.images = [
       {url:'assets/images/etc/plug.png'},
       {url:'assets/images/etc/fallout.jpg'},
-      {url:'app/main/xhsc/images/text.png'}
+      {url:'assets/images/etc/fallout.jpg'}
     ];
     var deleteFn = function(d,data){
       //vm.images.splice(data,1);
@@ -63,7 +63,7 @@
           vm.input = answer;
         },function(){
           vm.input = answer;
-          vm.images.push({url:'app/main/xhsc/images/text.png'})
+          //vm.images.push({url:'app/main/xhsc/images/text.png'})
         })
         //$mdDialog.hide(answer);
       };
