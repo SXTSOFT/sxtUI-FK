@@ -45,7 +45,7 @@
             api.szgc.FilesService.group(bid + '-' + type).then(function (r) {
               var fs = r.data.Files[0];
               if (fs) {
-                var map, layer, curClick, apiLayer, drawControl, itemId;
+                var map, layer, apiLayer, drawControl, itemId=[];
                 if (map)
                   map.remove();
 
@@ -83,21 +83,28 @@
                       }
                     }
                   });
-                  var line,itemName;
+                  var line,itemName,curClick;
                   overLayers.forEach(function (layer) {
                     itemName = layer.options.itemName || itemName;
-                    if (layer instanceof L.Polyline && !(layer instanceof L.Polygon)) {
-                      line = layer;
-                    };
-                    if (itemId != layer.options.itemId) {
+                    var idx = itemId.indexOf(layer.options.itemId);
+                    if (itemId.indexOf(layer.options.itemId)==-1) {
                       curClick = layer;
+                      itemId.push(layer.options.itemId);
                     }
                   });
-                  if (line) {
-                    curClick = line;
+                  if (!curClick && overLayers.length) {
+                    var curId = itemId.find(function (iid) {
+                      return !!overLayers.find(function (o) {
+                        return o.options.itemId == iid;
+                      });
+                    });
+                    curClick = overLayers.find(function (o) {
+                      return o.options.itemId == curId;
+                    })
+                    itemId.splice(itemId.indexOf(curId), 1);
+                    itemId.push(curClick.options.itemId);
                   }
                   if (curClick) {
-                    itemId = curClick.options.itemId;
                     curClick.setStyle({
                       color: 'green'
                     })
