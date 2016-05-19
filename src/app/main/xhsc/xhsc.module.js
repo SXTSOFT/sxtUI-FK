@@ -44,6 +44,20 @@
           }
         }
       })
+      .state('app.xhsc.ch1',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'实体质量',
+        url   :'/stzl/{assessmentID}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/ch1.html',
+            controller:'xtzlChooseController as vm'
+          }
+        }
+      })
       .state('app.xhsc.ch3',{
         noBack:true,
         sendBt:false,
@@ -135,7 +149,7 @@
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
-        url   :'/list',
+        url   :'/list/{AssessmentID}/{RegionID}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/evaluatelist.html',

@@ -1,0 +1,16 @@
+<md-content class="floor-list md-hue-1">
+  <div class="right engineer">
+    <div layout="column">
+      <div style="border-bottom: 1px solid #d8d8d8;">
+        <h2 class="md-title" style="color:#e93030;font-size:16px;margin:16px;">抽检区域</h2>
+      </div>
+      <md-list>
+        <md-list-item ng-repeat="b in vm.ms">
+          <md-button ui-sref="app.xhsc.evaluatelist">
+            <p>{{b.RegionName}}</p>
+          </md-button>
+        </md-list-item>
+      </md-list>
+    </div>
+  </div>
+</md-content>
