@@ -26,10 +26,17 @@
       var newD = [];
       var tempData = angular.copy(result.data);
       result.data.forEach(function (item) {
+
         if(!item.MeasureValueList.length){
           item.Children = [];
+          item.rows=[[]];
+          for(var i=0;i<20;i++){
+            item.rows[0].push({})
+          }
           result.data.forEach(function(t){
             if(item.AcceptanceIndexID == t.ParentAcceptanceIndexID){
+              var idx = result.data.indexOf(t);
+              //result.data.splice(idx,1);
               item.Children.push(t);
               t.rows=[];
               var ms = [];
@@ -48,12 +55,10 @@
                 ms.push({});
               }
               t.rows.push(ms);
-              var idx = result.data.indexOf(t);
-              result.data.splice(idx,1);
-              console.log(result.data)
+
             }
           })
-
+          newD.push(item);
           //var find = result.data.find(function(t){
           //  return item.AcceptanceIndexID == t.ParentAcceptanceIndexID;
           //})
@@ -61,7 +66,7 @@
           //  //item.Children.push(item);
           //  console.log(find)
           //}
-        }else{
+        }else if(!item.ParentAcceptanceIndexID){
           item.rows = [];
           var ms = [];
           item.QualifiedRate = item.QualifiedRate * 100;
@@ -81,13 +86,14 @@
             ms.push({});
           }
           item.rows.push(ms);
+          newD.push(item);
         }
 
-        newD.push(item);
+
       });
 
       vm.scData = newD;
-      //console.log('res',result)
+      console.log('res',newD)
     });
     vm.testData = [{
       MeasureUserName:'aa',
