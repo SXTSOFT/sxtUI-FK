@@ -149,7 +149,7 @@
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
-        url   :'/list/{AssessmentID}/{RegionID}',
+        url   :'/list/{AssessmentID}/{RegionID}/{RegionName}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/evaluatelist.html',
