@@ -18,6 +18,25 @@
   }
 
 }
+md-tabs[md-align-tabs="bottom"]{
+  &.zlpkwrap{
+    .md-tab{
+      position: relative;
+      padding:12px 50px;
+      &:after{
+        content:'/';
+        position: absolute;
+        right:0;
+        top:13px;
+        font-size:20px;
+      }
+    }
+    md-tabs-wrapper{
+      border-top: 1px solid #d8d8d8;
+    }
+  }
+}
+
 .subheader{
   .md-tab{
     position: relative;
@@ -912,22 +931,37 @@
      }
   }
 }
+
 .levelTable{
   border-collapse: collapse;
   tr{
     td,th{
       border:1px solid #d8d8d8;
-      padding: 4px;
+      padding: 6px;
     }
     th{
       padding: 8px;
+    }
+    td{
+      &.yellow{
+        color:#e6b900;
+      }
+      &.red{
+        color:#f00;
+      }
+      &.normal{
+        color:#333;
+        &.redColor{
+          color:#f00;
+        }
+      }
     }
   }
   &.leveltable2{
     border-width:0px; border-style:hidden;
     tr{
       td{
-        padding: 4px;
+        padding: 8px;
       }
     }
   }
@@ -1426,7 +1460,7 @@
   >div{
     height: 40px;
     line-height: 40px;
-    border-left: 1px solid #d8d8d8;
+    //border-left: 1px solid #d8d8d8;
     border-right: 1px solid #d8d8d8;
     text-align: center;
     &:first-child{
@@ -1439,7 +1473,7 @@
 }
 .zlpksub{
   .md-subheader{
-    background: red;
+    background: #e93030;
     .zlpksubheader{
       color:white;
     }
@@ -1450,13 +1484,15 @@
 .zlpklist{
     table{
       border-collapse: collapse;
-      tr{
 
+      tr{
         td{
-          line-height: 200%;
+          line-height: 36px;
           border-right:1px solid #d8d8d8;
           border-bottom:1px solid #d8d8d8;
-
+          &:last-child{
+            border-right:0;
+          }
         }
         &:last-child{
           >td{
@@ -1468,6 +1504,46 @@
     >table{
       border-bottom:1px solid #d8d8d8;
       border-left:1px solid #d8d8d8;
+      border-right:1px solid #d8d8d8;
     }
+
+}
+.zlpktables {
+  td {
+    p{
+      padding:4px;
+    }
+    &.lr {
+      color: #0fb2fb;
+      .img {
+        margin: 0;
+        padding: 0;
+        li {
+          display: inline-block;
+          vertical-align: middle;
+          list-style: none;
+        }
+        img {
+          margin-right: 5px;
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+  }
+}
+.questionlist{
+  md-list-item{
+    p{
+      padding-right: 150px;
+    }
+    md-input-container{
+      margin:0;
+      width:80px;
+      .md-errors-spacer{
+        min-height: 0;
+      }
+    }
+  }
 
 }

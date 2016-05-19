@@ -1,26 +1,27 @@
-<md-tabs md-align-tabs="bottom" flex md-swipe-content>
+<md-tabs md-align-tabs="bottom" flex md-swipe-content class="zlpkwrap">
   <md-tab label="总包">
     <md-tab-content flex layout-fill layout="column">
         <div flex="none" layout="row" style="border-top: solid 1px silver" class="zlpkheader">
-
-
             <div flex="25">
               检测内容
             </div><div flex="35">
             评判标准
-          </div><div flex="40" layout="row">
-            <div flex>扣分标准</div>
-          <div flex="none" style="width:50px">
-            权重
-          </div><div flex="none" style="width:50px">
-          扣分
-        </div><div flex="none" style="width:50px">
-          得分
-        </div>
+          </div>
+          <div flex="40" layout="row">
+            <div flex style=" border-right: 1px solid #d8d8d8;">扣分标准</div>
+            <div flex="none" style="width:50px; border-right: 1px solid #d8d8d8;text-align: center;">
+              权重
+            </div>
+            <div flex="none" style="width:50px; border-right: 1px solid #d8d8d8;text-align: center;">
+              扣分
+            </div>
+            <div flex="none" style="width:50px;text-align: center;">
+              得分
+            </div>
           </div>
         </div>
       <div flex layout="column" layout-fill>
-        <md-content flex >
+        <md-content flex  class="zlpksub">
           <section class="zlpklist">
             <md-subheader>
               <div layout="row" class="zlpksubheader">
@@ -30,80 +31,90 @@
                 <span>扣分</span>
               </div>
             </md-subheader>
-
-                <table width="100%" cellspacing="0" cellpadding="0">
+                <table width="100%" cellspacing="0" cellpadding="0" class="zlpktables">
                   <tr>
                     <td style="width:6.25%;">
-2
+                      <p>混凝土工程</p>
                     </td>
                     <td>
                       <table width="100%" cellspacing="0" cellpadding="0">
                         <tr>
                           <td style="width:6.66%;">
-3
+                            <p>混凝土工程</p>
                           </td>
                           <td>
                             <table width="100%" cellspacing="0" cellpadding="0">
                               <tr>
                                 <td style="width:7.14%;">
-4
+                                  <p>混凝土工程</p>
                                 </td>
                                 <td>
                                   <table width="100%" cellspacing="0" cellpadding="0">
                                     <tr>
                                       <td style="width:7.69%;">
-5
+                                        <p>混凝土工程</p>
                                       </td>
                                       <td>
                                         <table width="100%" cellspacing="0" cellpadding="0">
                                           <tr>
                                             <td style="width:46.9%;">
-                                              评判标准<br>评判标准<br>评判标准<br>11评判标准<br>
+                                              <p>评判标准<br>评判标准<br>评判标准<br>11评判标准<br></p>
                                             </td>
                                             <td>
-                                              评判标准
+                                              <p>评判标准</p>
                                             </td>
-                                            <td style="width: 50px">
+                                            <td style="width: 50px;text-align: center;">
                                               2
                                             </td>
-                                            <td style="width: 50px">
-                                              2
+                                            <td style="width: 50px;text-align: center;" class="lr">
+                                              <span ng-click="vm.getRecord($event)" ng-if="!vm.input">录入</span>
+                                              <span ng-click="vm.getRecord($event)" ng-if="vm.input">{{vm.input}}</span>
                                             </td>
-                                            <td style="width: 50px">
-                                              2
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <td colspan="3">
-                                             A T 评判标准
-                                            </td>
-                                            <td style="width: 50px">
-                                              2
-                                            </td>
-                                            <td style="width: 50px">
+                                            <td style="width: 50px;text-align: center;" class="lr">
                                               2
                                             </td>
                                           </tr>
                                           <tr>
-                                            <td colspan="3">
-                                              B T 评判标准
+                                            <td colspan="5">
+                                              <table width="100%" cellspacing="0" cellpadding="0">
+                                                <td style="width:50px;text-align:center">13栋</td>
+                                                <td colspan="2" class="lr">
+                                                  &nbsp;&nbsp;备注：
+                                                    <ul class="img" style="display: inline-block;vertical-align:top;margin-top:3px;" sxt-images="vm.images" ng-repeat="img in vm.images">
+                                                      <li><img ng-src="{{img.url}}"></li>
+                                                    </ul>
+                                                  <md-icon style="width:30px;height:30px;"><img src="assets/images/etc/plug.png"></md-icon>
+                                                </td>
+                                                <td style="width: 50px;text-align: center;">
+                                                  2
+                                                </td>
+                                                <td style="width: 50px;text-align: center;">
+                                                  2
+                                                </td>
+                                              </table>
                                             </td>
-                                            <td style="width: 50px">
-                                              2
-                                            </td>
-                                            <td style="width: 50px">
-                                              2
-                                            </td>
+
                                           </tr>
+                                          <!--<tr>-->
+                                            <!--<td colspan="3">-->
+                                              <!--B T 评判标准-->
+                                            <!--</td>-->
+                                            <!--<td style="width: 50px">-->
+                                              <!--2-->
+                                            <!--</td>-->
+                                            <!--<td style="width: 50px">-->
+                                              <!--2-->
+                                            <!--</td>-->
+                                          <!--</tr>-->
                                         </table>
                                       </td>
                                     </tr>
                                     <tr>
                                       <td style="width:7.69%;">
-                                        52
+                                        <p>52</p>
                                       </td>
                                       <td>
-                                        评判标准
+                                        <p>评判标准</p>
                                       </td>
                                     </tr>
                                   </table>
@@ -111,7 +122,7 @@
                               </tr>
                               <tr>
                                 <td style="width:7.14%;">
-                                  42
+                                  <p>42</p>
                                 </td>
                                 <td>
                                   <table width="100%" cellspacing="0" cellpadding="0">
@@ -338,7 +349,71 @@ sss
                 <span>扣分</span>
               </div>
             </md-subheader>
-
+                <table width="100%" cellpadding="0" cellspacing="0" class="zlpktables">
+                  <tr>
+                    <td style="width:8.33%;">1</td>
+                    <td>
+                      <table width="100%" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td style="width: 9.08%">2</td>
+                          <td>
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                              <tr>
+                                <td style="width: 9.99%">31</td>
+                                <td>
+                                  <table width="100%" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                      <td style="width:46.8%;">评估</td>
+                                      <td>评分标准</td>
+                                      <td style="width: 50px;text-align: center;">
+                                        2
+                                      </td>
+                                      <td style="width: 50px;text-align: center;" class="lr">
+                                        <span ng-click="vm.getRecord($event)" ng-if="!vm.input">录入</span>
+                                        <span ng-click="vm.getRecord($event)" ng-if="vm.input">{{vm.input}}</span>
+                                      </td>
+                                      <td style="width: 50px;text-align: center;" class="lr">
+                                        2
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="width: 9.08%">2</td>
+                          <td>
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                              <tr>
+                                <td style="width: 9.99%">32</td>
+                                <td>
+                                  <table width="100%" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                      <td style="width:46.8%;">评估</td>
+                                      <td>评分标准</td>
+                                      <td style="width: 50px;text-align: center;">
+                                        2
+                                      </td>
+                                      <td style="width: 50px;text-align: center;" class="lr">
+                                        <span ng-click="vm.getRecord($event)" ng-if="!vm.input">录入</span>
+                                        <span ng-click="vm.getRecord($event)" ng-if="vm.input">{{vm.input}}</span>
+                                      </td>
+                                      <td style="width: 50px;text-align: center;">
+                                        2
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
                 <table width="100%" cellspacing="0" cellpadding="0">
                   <tr>
                     <td style="width:6.25%;">
@@ -365,7 +440,7 @@ sss
                                       <td>
                                         <table width="100%" cellspacing="0" cellpadding="0">
                                           <tr>
-                                            <td style="width:46.9%;">
+                                            <td style="width:46.8%;">
                                               评判标准<br>评判标准<br>评判标准<br>11评判标准<br>
                                             </td>
                                             <td>
