@@ -115,6 +115,7 @@
   };
 
   self.$get = $get;
+
   /** @ngInject */
   function $get($window, $q) {
     var pouchDBDecorators = {

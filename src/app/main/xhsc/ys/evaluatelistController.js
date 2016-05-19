@@ -22,20 +22,6 @@
      // console.log('a',vm.images)
     }
     $rootScope.$on('delete',deleteFn);
-    vm.getRecord = function(ev){
-    $mdDialog.show({
-        controller: DialogController,
-        templateUrl: 'app/main/xhsc/ys/evaluateRecord.html',
-        parent: angular.element(document.body),
-        targetEvent: ev,
-        clickOutsideToClose:true
-      })
-      .then(function(answer) {
-        if(answer){
-          vm.input = answer;
-        }
-      });
-    }
     vm.showDialog = function(ev){
       $mdDialog.show({
           controller: DialogController,
