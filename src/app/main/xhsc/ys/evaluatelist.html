@@ -61,17 +61,17 @@
                                               <p>{{item.DeductionCriteria}}</p>
                                             </td>
                                             <td style="width: 50px;text-align: center;">
-                                              2
+                                              {{item.Weight}}
                                             </td>
                                             <td style="width: 50px;text-align: center;" class="lr">
                                               <span ng-click="vm.check(item)" ng-if="!vm.input">录入</span>
                                               <span ng-click="vm.check(item)" ng-if="vm.input">{{vm.input}}</span>
                                             </td>
                                             <td style="width: 50px;text-align: center;" class="lr">
-                                              2
+                                              {{item.TotalScore}}
                                             </td>
                                           </tr>
-                                          <tr">
+                                          <tr>
                                             <td colspan="5">
                                               <table width="100%" cellspacing="0" cellpadding="0">
                                                 <tr>
@@ -88,19 +88,7 @@
                                                 </tr>
                                               </table>
                                             </td>
-
                                           </tr>
-                                          <!--<tr>-->
-                                          <!--<td colspan="3">-->
-                                          <!--B T 评判标准-->
-                                          <!--</td>-->
-                                          <!--<td style="width: 50px">-->
-                                          <!--2-->
-                                          <!--</td>-->
-                                          <!--<td style="width: 50px">-->
-                                          <!--2-->
-                                          <!--</td>-->
-                                          <!--</tr>-->
                                         </table>
                                       </td>
                                     </tr>
@@ -121,14 +109,14 @@
                                         <p>{{item.DeductionCriteria}}</p>
                                       </td>
                                       <td style="width: 50px;text-align: center;">
-                                        2
+                                        {{item.Weight}}
                                       </td>
                                       <td style="width: 50px;text-align: center;" class="lr">
                                         <span ng-click="vm.check(item)" ng-if="!vm.input">录入</span>
                                         <span ng-click="vm.check(item)" ng-if="vm.input">{{vm.input}}</span>
                                       </td>
                                       <td style="width: 50px;text-align: center;" class="lr">
-                                        2
+                                        {{item.TotalScore}}
                                       </td>
                                     </tr>
                                     <tr>
@@ -150,17 +138,6 @@
                                       </td>
 
                                     </tr>
-                                    <!--<tr>-->
-                                    <!--<td colspan="3">-->
-                                    <!--B T 评判标准-->
-                                    <!--</td>-->
-                                    <!--<td style="width: 50px">-->
-                                    <!--2-->
-                                    <!--</td>-->
-                                    <!--<td style="width: 50px">-->
-                                    <!--2-->
-                                    <!--</td>-->
-                                    <!--</tr>-->
                                   </table>
                                 </td>
                               </tr>
@@ -181,14 +158,14 @@
                                   <p>{{item.DeductionCriteria}}</p>
                                 </td>
                                 <td style="width: 50px;text-align: center;">
-                                  2
+                                  {{item.Weight}}
                                 </td>
                                 <td style="width: 50px;text-align: center;" class="lr">
                                   <span ng-click="vm.check(item)" ng-if="!vm.input">录入</span>
                                   <span ng-click="vm.check(item)" ng-if="vm.input">{{vm.input}}</span>
                                 </td>
                                 <td style="width: 50px;text-align: center;" class="lr">
-                                  2
+                                  {{item.TotalScore}}
                                 </td>
                               </tr>
                               <tr>
@@ -208,7 +185,6 @@
                                     </tr>
                                   </table>
                                 </td>
-
                               </tr>
                             </table>
                           </td>
@@ -233,12 +209,11 @@
                             {{item.Weight}}
                           </td>
                           <td style="width: 50px;text-align: center;" class="lr">
-                            2
-                            <!--<button ng-click="vm.check(item,$event)" ng-if="!vm.input">录入</button>-->
-                            <!--<button ng-click="vm.check(item)" ng-if="vm.input">{{vm.input}}</button>-->
+                            <button ng-click="vm.check(item,$event)" ng-if="!vm.input">录入</button>
+                            <button ng-click="vm.check(item)" ng-if="vm.input">{{vm.input}}</button>
                           </td>
                           <td style="width: 50px;text-align: center;" class="lr">
-                            {{item.lastScore}}
+                            {{item.TotalScore}}
                           </td>
                         </tr>
                         <tr>
@@ -256,11 +231,6 @@
                                   <md-button class="md-button md-raised" ng-if="item.question.length==0" ng-click="item.done =true" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
                                 </td>
                                 <!--<td style="width: 50px;text-align: center;">-->
-                                  <!--2-->
-                                <!--</td>-->
-                                <!--<td style="width: 50px;text-align: center;">-->
-                                  <!--2-->
-                                <!--</td>-->
                               </tr>
                             </table>
                           </td>
@@ -272,7 +242,7 @@
           </section>
         </md-content>
         </div>
-      </md-tab-content>
+    </md-tab-content>
     </md-tab>
 </md-tabs>
 
