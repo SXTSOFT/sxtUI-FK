@@ -9,11 +9,21 @@
     .controller('ybgcController',ybgcController);
 
   /** @ngInject*/
-  function ybgcController($scope,api,$cookies,$q,$timeout,$mdDialog){
+  function ybgcController($scope,api,$stateParams,$q,$timeout,$mdDialog,appCookie,$state){
     var vm = this,query;
 
-    vm.project={};
+    vm.project ={
+      onQueryed:function () {
+        vm.searBarHide = true;
+        query();
+      }
+    }
+    if($stateParams.pid) {
+      vm.project.idTree = $stateParams.pid;
+      appCookie.put('projects', JSON.stringify([{project_id: $stateParams.pid, name: $stateParams.pname}]))
+    }
     query = function(){
+      console.log('vm.project',vm.project)
       var params = {
         regionTreeId: vm.project.idTree?vm.project.idTree:"",
         maximumRows:10000,
@@ -59,9 +69,17 @@
       })
     }
     $timeout(function(){
-      query();
+      //query();
     },500)
     vm.viewItem = function(item){
+      console.log('item',item);
+      $state.go('app.szgc.yhyd',{
+        pid:item.regionId,
+        pname:item.regionName,
+        idTree:item.idTree,
+        type:item.type
+      });
+      return;
       //
       //vm.project.n = n;
       item.n=2;

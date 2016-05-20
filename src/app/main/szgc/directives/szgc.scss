@@ -458,3 +458,10 @@ md-content{
   text-shadow: 0px 2px 3px #ff0000;
   font-size: 20px;
 }
+.newhouse {
+  .leaflet-div-label{
+    border:solid 1px black;
+    background:green;
+    padding:1px 5px;
+  }
+}

@@ -1,10 +1,10 @@
-<md-content flex layout="column" ng-show="!vm.searBarHide" class="menu-toggle-list">
+<!--<md-content flex layout="column" ng-show="!vm.searBarHide" class="menu-toggle-list">
     <sxt-projects-jd ng-model="vm.project.pid" object-scope="vm.project" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" >
       <div class="md-padding" layout="row">
         <md-button type="submit" ng-disabled="vm.project.type!=64" flex ng-click="vm.searBarHide=true"  class="md-raised md-primary"> 确定  </md-button>
       </div></sxt-projects-jd>
-  </md-content>
-<md-content flex layout="column" ng-show="vm.searBarHide" class="gridListyhyd">
+  </md-content>-->
+<md-content flex layout="column" class="gridListyhyd">
   <md-grid-list ng-hide="vm.showPlayer" md-cols-xs="2" md-gutter="8px" md-cols-sm="3" md-cols-md="3" md-row-height-gt-md="1:1" md-row-height="2:2">
     <md-grid-tile ng-disabled="true">
       <img src="assets/images/icon/icon-1.png" />
@@ -59,6 +59,6 @@
 
    </div>
  </div>
-  <div style="position: absolute; top:0px; right:0px;">
-    <toggle-menu inst="vm.searBarHide"></toggle-menu></div>
+<!--  <div style="position: absolute; top:0px; right:0px;">
+    <toggle-menu inst="vm.searBarHide"></toggle-menu></div>-->
 </md-content>

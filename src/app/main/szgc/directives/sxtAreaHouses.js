@@ -66,12 +66,14 @@
                   zoomControl: false,
                   attributionControl: false
                 });
+
                 map.on('click', function (e) {
+                  if (e.target.isEdit) return;
                   var p = e.latlng,// this._map.mouseEventToLatLng(e),
                     overLayers = [],
                     eb, isN = false;
                   map.eachLayer(function (layer) {
-                    if (layer.editing) {
+                    if (layer.editing && !layer.isEdit) {
                       layer.setStyle({
                         color: '#ff0000'
                       })
@@ -83,13 +85,112 @@
                       }
                     }
                   });
-                  var line,itemName,curClick;
+                  var colorLayer = overLayers.find(function (l) {
+                    return l.options.fillOpacity != 0;
+                  });
+                  if (!colorLayer) {
+                    colorLayer = overLayers.find(function (l) {
+                      return l instanceof L.Polygon || layer instanceof L.Rectangle;
+                    });
+                    if (colorLayer) {
+                      var groupLayer = [];
+                      map.eachLayer(function (layer) {
+                        if (layer.isEdit) {
+                          map.removeLayer(layer);
+                        }
+                        if (layer.editing && !layer.isEdit) {
+                          if (layer.options.itemName == colorLayer.options.itemName) {
+                            if (layer instanceof L.Rectangle || layer instanceof L.Polygon) {
+                              layer.setStyle({
+                                color: '#ff0000',
+                                stroke: false,
+                                fillOpacity: 0.2
+                              });
+                              groupLayer.push(layer);
+                            }
+                            else {
+                              layer.setStyle({
+                                color: '#ff0000',
+                                stroke: true
+                              });
+                            }
+                          }
+                          else {
+                            layer.setStyle({
+                              color: '#ff0000',
+                              stroke: false,
+                              fillOpacity: 0
+                            });
+                          }
+                        }
+                      });
+                      var layer = groupLayer.find(function (layer) {
+                        return layer.options.p == '1';
+                      });
+                      var layer2 = groupLayer.find(function (layer) {
+                        return layer.options.p == '5';
+                      });
+                      if (layer) {
+                        //console.log('b', layer.getBounds());
+                        var b = layer.getBounds(), p1 = new L.latLng(b._southWest.lat - 0.05, b._southWest.lng);
+                        L.marker(p1, {
+                          icon: new ST.L.LabelIcon({
+                            html: '楼板',
+                            color: 'black'
+                          }),
+                          saved: false,
+                          draggable: true,       // Allow label dragging...?
+                          zIndexOffset: 1000     // Make appear above other map features
+                        }).addTo(map).on('click', function () {
+                          layer.setStyle({
+                            color: 'green'
+                          })
+                          scope.itemName = (layer.options.itemName || itemName) + ' - ' + layer.options.t;
+                          scope.itemId = layer.options.itemId || '--';
+                          scope.$apply();
+                          layer2 && layer2.setStyle({
+                            color: '#ff0000'
+                          })
+                        }).isEdit = true;
+                      }
+
+                      if (layer2) {
+                        var b = layer2.getBounds(), p2 = L.latLng(b._southWest.lat - 0.05, b._southWest.lng + 0.09);
+                        L.marker(p2, {
+                          icon: new ST.L.LabelIcon({
+                            html: '天花',
+                            color: 'black'
+                          }),
+                          saved: false,
+                          draggable: true,       // Allow label dragging...?
+                          zIndexOffset: 1000     // Make appear above other map features
+                        }).addTo(map).on('click', function () {
+                          layer2.setStyle({
+                            color: 'green'
+                          })
+                          layer && layer.setStyle({
+                            color: '#ff0000'
+                          })
+                          scope.itemName = (layer2.options.itemName || itemName) + ' - ' + layer2.options.t;
+                          scope.itemId = layer2.options.itemId || '--';
+                          scope.$apply();
+
+                        }).isEdit = true;
+                      }
+
+                    }
+                    return;
+                  }
+                  var line, itemName, curClick;
                   overLayers.forEach(function (layer) {
                     itemName = layer.options.itemName || itemName;
                     var idx = itemId.indexOf(layer.options.itemId);
-                    if (itemId.indexOf(layer.options.itemId)==-1) {
+                    if (itemId.indexOf(layer.options.itemId) == -1) {
                       curClick = layer;
                       itemId.push(layer.options.itemId);
+                    }
+                    else {
+
                     }
                   });
                   if (!curClick && overLayers.length) {
@@ -104,13 +205,17 @@
                     itemId.splice(itemId.indexOf(curId), 1);
                     itemId.push(curClick.options.itemId);
                   }
+                  console.log(itemId)
                   if (curClick) {
+                    //itemId = curClick.options.itemId;
                     curClick.setStyle({
                       color: 'green'
                     })
-                    scope.itemName = curClick.options.itemName || itemName;
-                    scope.itemId = curClick.options.itemId ||'--';
+                    scope.itemName = (curClick.options.itemName || itemName)+' - '+ curClick.options.t;
+                    scope.itemId = curClick.options.itemId || '--';
                     scope.$apply();
+
+                    //console.log(curClick.toJSON())
                   }
                 });
 
@@ -137,16 +242,36 @@
                         areaLabel: false,
                         edit: false,
                         get: function (cb) {
-                          api.szgc.ProjectExService.get(bid + '-' + type +'-'+ m).then(function (r) {
+                          api.szgc.ProjectExService.get(bid + '-' + type + '-' + m).then(function (r) {
                             var project = r.data;
                             if (project && project.AreaRemark) {
                               try {
                                 var d = JSON.parse(project.AreaRemark);
+                                console.log('d', d);
                                 d.features.forEach(function (g) {
-                                  if (g.geometry.type == 'Polygon') {
-                                    g.options.stroke = false;
-                                    g.options.opacity = 0.01;
+                                  //if (g.geometry.type == 'Polygon') {
+                                  g.options.p = m;
+                                  switch (m) {
+                                    case '1':
+                                      g.options.t = '楼板';
+                                      break;
+                                    case '2':
+                                      g.options.t = '墙体';
+                                      break;
+                                    case '3':
+                                      g.options.t = '内墙板';
+                                      break;
+                                    case '4':
+                                      g.options.t = '轻钢龙骨';
+                                      break;
+                                    case '5':
+                                      g.options.t = '吊顶';
+                                      break;
                                   }
+                                  g.options.stroke = false;
+                                  //g.options.opacity = 0;
+                                  g.options.fillOpacity = 0;
+                                  //}
                                 })
                                 cb(d);
                               }

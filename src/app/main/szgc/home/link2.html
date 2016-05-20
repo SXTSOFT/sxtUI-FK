@@ -1,4 +1,4 @@
-<div flex layout="column" >
+<div flex layout="column" ui-view >
   <md-toolbar  id="subtoolbar">
     <div class="md-toolbar-tools">
       <!--<md-button aria-label="形象进度" ui-sref="app.szgc.jd2" style="min-width:10px!important;" flex>-->
@@ -13,7 +13,7 @@
         质量总表
       </md-button>
       <span class="hr"></span>
-      <md-button aria-label="一户一档" ui-sref="app.szgc.yhyd({pid:vm.data.projectId,pname:vm.data.projectName})" style="min-width:10px!important;" flex>
+      <md-button aria-label="一户一档" ui-sref="app.szgc.project.ybgcResultT({pid:vm.data.projectId,pname:vm.data.projectName})" style="min-width:10px!important;" flex>
         一户一档
       </md-button>
     </div>
@@ -30,3 +30,4 @@
     </md-button>
   </div>
 </div>-->
+</div>

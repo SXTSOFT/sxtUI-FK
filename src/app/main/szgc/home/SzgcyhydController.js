@@ -13,7 +13,6 @@
   {
     //viewImage.view('http://szdp.vanke.com:8088/upload/2016/03/980012f8-e903-4b54-9222-bd53edee391c.jpg')
     var vm = this;
-    vm.project ={};
     vm.showImg = function () {
       $rootScope.$emit('sxtImageViewAll',{data:true});
     }
@@ -21,13 +20,18 @@
       projectId: $stateParams.pid,
       projectName:$stateParams.pname
     };
-    appCookie.put('projects',JSON.stringify([{project_id:$stateParams.pid,name:$stateParams.pname}]))
+    //appCookie.put('projects',JSON.stringify([{project_id:$stateParams.pid,name:$stateParams.pname}]))
     //vm.$parent.data.pname = vm.data.projectName;
     $rootScope.title = vm.data.projectName;
 
     vm.sellLine = 0.6;
 
     vm.project = {
+      item:{
+        type:$stateParams.type
+      },
+      idTree:$stateParams.idTree,
+      pid: $stateParams.pid,
       onQueryed: function(data) {
         if (!vm.project.pid) {
           vm.project.data = data;
@@ -92,6 +96,7 @@
     }
     $scope.$on('goBack',whenBack);
     vm.playN = function(n){
+      console.log('vm.project',vm.project)
       api.szgc.FilesService.GetPrjFilesByFilter(vm.project.pid, { imageType: n }).then(function(r){
         if(r.data.Rows.length==0){
           utils.alert('暂无照片');
