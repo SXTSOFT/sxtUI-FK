@@ -52,6 +52,18 @@
               indexs:{
                 url:sxt.app.api+'/Api/MeasureValueApi/MeasureIndexSubmit',
                 type:'data'
+              },
+              stzl_item:{
+                url:sxt.app.api+'/Api/AssessmentApi/SubmitAssessmentResult',
+                type:'data'
+              },
+              stzl_question:{
+                url:sxt.app.api+'/Api/AssessmentApi/SubmitEductScoreItem',
+                type:'data'
+              },
+              stzl_images:{
+                url:sxt.app.api+'/Api/AssessmentApi/SubmitImage',
+                type:'data'
               }
             }
           })

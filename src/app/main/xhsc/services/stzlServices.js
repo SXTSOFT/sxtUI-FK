@@ -87,7 +87,7 @@
     function getAssessment(params,call1,call2){
      var q= $q.defer()
       var _db= db('stzl_'+params.AssessmentID);
-      _db.get(params.AssessmentID+"_"+params.RegionID).then(function(r){
+      _db.get(params.AssessmentID).then(function(r){
         if (angular.isFunction(call1)){
           call1(r);
         }
@@ -107,14 +107,67 @@
       return q.promise;
     }
 
+
+    function _convertItem(o){
+       return {
+         _id:o._id,
+         AssessmentResultID:o._id,
+         RegionID: o.regionID,
+         AssessmentCheckItemID: o.AssessmentCheckItemID,
+         TotalScore: o.TotalScore,
+       }
+    }
+
+    function _convertQuestion(o){
+      return{
+        _id:o._id,
+        DeducScoretItemID: o.DeducScoretItemID,
+        AssessmentResultID: o.AssessmentResultID,
+        ProblemID: o.ProblemID,
+        DeductionScore: o.DeductionScore
+      }
+    }
+
+    function  _convertImge(o){
+      return{
+
+      };
+    }
+
     function  preUpLoad(params){
       var q= $q.defer();
       var _db= db('stzl_'+params.AssessmentID);
-      _db.get(params.AssessmentID+"_"+params.RegionID).then(function(assment){
-          var  items=[],images=[],questions=[];
+      _db.get(params.AssessmentID).then(function(assment){
+        var  items=[],images=[],questions=[];
+        var  r_=getAllAssessItem(assment);
+        var tmp_question,tmp_img;
+        r_.forEach(function(r){
+          items.push(_convertItem(r));
+          tmp_question= r.question;
+          if (angular.isArray(tmp_question)){
+            tmp_question.forEach(function(t){
+              questions.push(_convertQuestion(t));
+              tmp_img= t.images;
+              if (angular.isArray(tmp_img)){
+                tmp_img.forEach(function(s){
+                  images.push(_convertImge(s))
+                })
+              }
+            })
+          }
+        });
+        var _db_item=db('stzl_item');
+        _db_item.bulkAddOrUpdate(items).then(function(r){
+           var _db_question=db('stzl_question');
+          _db_question.bulkAddOrUpdate(questions).then(function(t){
+            var _db_image=db('stzl_images');
+            _db_image.bulkAddOrUpdate(questions).then(function(m){
+               q.resolve(true);
+            })
+          })
+        })
 
-
-      }).catch(function(){
+      }).catch(function(r){
           q.resolve(false);
       })
       return q.promise;
@@ -126,7 +179,8 @@
       getAllAssessItem:getAllAssessItem,
       getRegionAssessItem:getRegionAssessItem,
       groupAssessItem:groupAssessItem,
-      getAssessment:getAssessment
+      getAssessment:getAssessment,
+      preUpLoad:preUpLoad
     }
   }
 })();

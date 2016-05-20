@@ -18,7 +18,7 @@
     }
     stzlServices.getAssessment(params,null,function(item){
       if (item){
-        item._id=params.AssessmentID+"_"+params.RegionID;
+        item._id=params.AssessmentID;
         item.data_Type="stzl_assessment";
         item.AssessmentClassifyRegions={
           RegionID:params.RegionID,
