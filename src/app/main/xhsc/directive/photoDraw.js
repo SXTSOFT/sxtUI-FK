@@ -77,7 +77,8 @@
           ctx.moveTo(prevX/radio, prevY/radio);
           ctx.lineTo(currX/radio, currY/radio);
           ctx.strokeStyle = scope.color;
-
+          //ctx.strokeStyle = x;
+          //ctx.lineWidth = y;
           ctx.stroke();
           ctx.closePath();
         }
@@ -95,20 +96,14 @@
         }
 
         function findxy(res, e) {
+          if(!e.clientX &&(!e.touches || !e.touches[0] ||!e.touches[0].clientX))return;
           if (res == 'down') {
             prevX = currX;
             prevY = currY;
             currX = (e.clientX || e.touches[0].clientX)- canvas.offsetLeft;
-            currY = (e.clientY || e.touches[0].clientY) - canvas.offsetTop;
+            currY = (e.clientY || e.touches[0].clientY) - canvas.offsetTop-offset;
             flag = true;
-            dot_flag = true;
-            if (dot_flag) {
-              ctx.beginPath();
-              ctx.fillStyle = scope.color;
-              ctx.fillRect(currX, currY, 2, 2);
-              ctx.closePath();
-              dot_flag = false;
-            }
+
           }
           if (res == 'up' || res == "out") {
             flag = false;
@@ -176,7 +171,7 @@
         scope.photo();
 
       },500);
-      
+
     }
 
   }
