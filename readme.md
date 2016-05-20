@@ -48,29 +48,30 @@
   
 评估项
  [
-   {
-       现场评估ID:"",
-       区域ID:"",
-       评估项ID："",
-       总得分:""，
-       id:"uuid"
-    }
+    AssessmentResultID:"",
+    RegionID:"",
+    AssessmentCheckItemID:"",
+    TotalScore:"",
+    CreateTime:""
  ]
 扣分项
 [
-      id:"uuid",
-      评估项ID,
-      问题库id,
-      时间："",
-      所扣分值：""
+      DeducScoretItemID:"",
+      AssessmentResultID:"",
+      ProblemID:"",
+      DeductionScore:"",
+      CreateTime：""
 ]
 照片
 [
-  id:"uuid",
-  照片URL数据:"",
-  扣分项ID:
-  时间：""
+  {
+      ImageID:"",
+      RelationID:"",
+      ImageUrl:"",
+      CreateTime:"",
+      ImageByte:""
+   }
 ]
 
 
-
+ 

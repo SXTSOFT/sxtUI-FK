@@ -33,7 +33,7 @@
     function setLastScore(item){
       if(angular.isArray(item.question)){
           if (item.question.length>2){
-            item.lastScore=0;
+            item.TotalScore=0;
           }else {
             var  score=item.Weight;
             item.question.forEach(function(o){
@@ -41,7 +41,7 @@
                 score= score-o.DeductValue;
               }
             });
-            item.lastScore=score;
+            item.TotalScore=score;
           }
       }
     }
@@ -107,19 +107,17 @@
       return q.promise;
     }
 
-    function upload(){
-      this.queue=[];
-    }
+    function  preUpLoad(params){
+      var q= $q.defer();
+      var _db= db('stzl_'+params.AssessmentID);
+      _db.get(params.AssessmentID+"_"+params.RegionID).then(function(assment){
+          var  items=[],images=[],questions=[];
 
-    upload.prototype.pushTask=function(task){
-        var self=this;
-        this.queue.push(task);
-    }
 
-    upload.prototype.trigger=function(){
-        if (queue.length>0&&!queue.find(function(o){ return o.complete })){
-
-        }
+      }).catch(function(){
+          q.resolve(false);
+      })
+      return q.promise;
     }
 
     return  {
@@ -128,8 +126,7 @@
       getAllAssessItem:getAllAssessItem,
       getRegionAssessItem:getRegionAssessItem,
       groupAssessItem:groupAssessItem,
-      getAssessment:getAssessment,
-      upload:upload
+      getAssessment:getAssessment
     }
   }
 })();

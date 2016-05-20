@@ -1,7 +1,8 @@
 <md-content flex layout="column" >
   <div flex style="text-align: center"><canvas></canvas></div>
   <div flex="none" layout="row" style="background:#efefef;border-top:1px solid silver;">
-    <md-button  class="md-primary md-raise" ng-click="erase()" >清除</md-button>
+    <md-button  class="md-primary md-raise" ng-click="cancel()" >取消</md-button>
+
     <span flex></span>
     <md-button class="md-icon-button" aria-label="red"  ng-click="setColor('red')" ng-style="{'border-bottom-width':is('red')}" style="border-bottom: solid 1px red;">
       <md-icon md-font-icon="icon-checkbox-blank-circle" style="color: red"></md-icon>
@@ -13,6 +14,7 @@
       <md-icon md-font-icon="icon-checkbox-blank-circle" style="color: black" ></md-icon>
       </md-button>
     <span flex></span>
-    <md-button  class="md-primary md-raise" ng-click="save()"  style="float: right">保存 </md-button>
+    <md-button  class="md-primary md-raise" ng-click="erase()" >清除</md-button>
+    <md-button  class="md-primary md-raised md-mini " ng-click="save()"  style="float: right">保存 </md-button>
   </div>
 </md-content>

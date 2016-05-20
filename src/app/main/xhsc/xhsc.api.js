@@ -22,7 +22,7 @@
   apiProvider.register('xhsc',{
     Assessment:{
       query:function () {
-        return $http.get($http.url('/Api/ProjectInfoApi/GetAssessmentProject'))
+        return $http.get($http.url('/Api/AssessmentApi/GetAssessmentProject'))
       },
       queryRegion:function (areaID) {
         return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo',{AreaID:areaID}));

@@ -1,6 +1,6 @@
-<md-tabs md-align-tabs="bottom" flex md-swipe-content class="zlpkwrap">
+<md-tabs md-align-tabs="bottom" flex md-swipe-content md-selected="vm.selectedIndex" class="zlpkwrap">
   <md-tab label="{{b.AssessmentClassificationName}}" ng-repeat="b in vm.Assessment.AssessmentClassifys">
-    <md-tab-content flex layout-fill layout="column">
+    <md-tab-content flex layout-fill layout="column" ng-if="vm.selectedIndex==$index">
       <div flex="none" layout="row" style="border-top: solid 1px silver" class="zlpkheader">
             <div flex="25">
               检测内容
@@ -291,7 +291,7 @@
                             <span ng-click="vm.check(item)" ng-if="vm.input">{{vm.input}}</span>
                           </td>
                           <td style="width: 50px;text-align: center;" class="lr">
-                            {{item.lastScore}}
+                            {{item.TotalScore}}
                           </td>
                         </tr>
                         <tr>
