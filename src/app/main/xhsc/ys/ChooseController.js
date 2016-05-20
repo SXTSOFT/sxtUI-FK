@@ -34,7 +34,7 @@
             ms.push(m1);
           }
           m.AssessmentAreas.forEach(function (area) {
-            var room = xhUtils.findRegion([result.data],area.AreaID);
+            var room = xhUtils.findRegion([result.data],area.RegionID);
             if(room){
               m1.Regions.push({
                 db:id,

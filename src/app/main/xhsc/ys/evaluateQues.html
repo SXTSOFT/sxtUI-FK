@@ -1,13 +1,22 @@
-
-<md-dialog aria-label="Mango (Fruit)"  ng-cloak style="max-width:90%;width:90%;" class="questionlist">
-  <md-dialog-actions>
+<md-dialog ng-cloak style="max-width:90%;width:90%;" class="questionlist">
+  <md-dialog-content layout="row">
+    <div layout="column" flex>
+    <div layout="row" flex>
+      <md-button class="md-button md-raised">其它</md-button>
+    </div>
+    <div layout="row" flex>
     <md-list flex>
-      <md-list-item flex layout="row" ng-repeat="e in Problems" ng-click="answer(e,$event)" md-auto-focus>
-        <p>{{e.ProblemDescription}}</p>
-        <md-button class="md-secondary">
-          分值:<span ng-if="!vm.show">{{e.DeductValue}}</span>
+      <md-list-item flex layout="row" ng-repeat="e in Problems" ng-click="answer(e,$event)">
+        <md-button class="md-secondary" ng-click="vm.show = true">
+          分值：<span ng-if="!vm.show">{{e.DeductValue}}</span>
+          <md-input-container ng-if="vm.show">
+            <input ng-model="e.DeductValue">
+          </md-input-container>
         </md-button>
+        <p>{{e.ProblemDescription}}</p>
       </md-list-item>
     </md-list>
-  </md-dialog-actions>
+    </div>
+    </div>
+  </md-dialog-content>
 </md-dialog>

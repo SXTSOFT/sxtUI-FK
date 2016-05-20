@@ -115,6 +115,7 @@
           templateUrl: 'app/main/xhsc/ys/evaluateChoose.html',
           parent: angular.element(document.body),
           targetEvent: ev,
+          focusOnOpen:false,
         locals:{
           item:item
         },
