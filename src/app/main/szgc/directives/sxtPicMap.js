@@ -28,7 +28,7 @@
             projection    :L.Projection.LonLat,
             transformation:new L.Transformation(1, 0, 1, 0),
             scale         :function(e) {
-              return 512 * Math.pow(2, e);
+              return 256 * Math.pow(2, e);
             }
           }),
           center:[.48531902026005, .5],
@@ -40,10 +40,10 @@
           attributionControl:false
         }),
           //layer = L.tileLayer(sxt.app.api + '/api/file/load?x={x}&y={y}&z={z}', {
-          layer = L.tileLayer('http://vkde.sxtsoft.com/api/picMap/load/{z}_{x}_{y}.png?path='+scope.picUrl, {
+          layer = L.tileLayer('http://vkde.sxtsoft.com/api/picMap/load/{z}_{x}_{y}.png?size=256&path='+scope.picUrl, {
             noWrap:true,
             continuousWorld:false,
-            tileSize:512
+            tileSize:256
           });
 
         layer.addTo(map);
