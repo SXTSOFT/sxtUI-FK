@@ -9,7 +9,7 @@
     .controller('evaluatelistController',evaluatelistController);
 
   /** @ngInject*/
-  function evaluatelistController($mdDialog,$rootScope,$scope,utils,$stateParams,db,sxt,stzlServices,xhUtils){
+  function evaluatelistController($mdDialog,$rootScope,$scope,utils,$stateParams,db,sxt,stzlServices,xhUtils,pack){
     var vm = this;
     var params={
         AssessmentID:$stateParams.AssessmentID,
@@ -81,37 +81,37 @@
     $rootScope.$on('delete',deleteFn);
     vm.check = function(item,ev){
       $mdDialog.show({
-          controller: DialogController,
+          controller: ['$scope', function($scope) {
+            $scope.Problems =item.Problems;
+            $scope.answer = function(answer,ev) {
+              var  question=angular.extend({
+                _id : sxt.uuid(),
+                DeducScoretItemID:this._id,
+                AssessmentResultID:item.AssessmentResultID,
+                data_Type:"stzl_question",
+                AssessmentCheckItemID:item.AssessmentCheckItemID,
+                DeductionScore:this.DeductValue
+              },answer);
+              item.question.push(question);
+              stzlServices.setLastScore(item);
+              item.isCheck=true;
+              var _db= db('stzl_'+params.AssessmentID);
+              _db.addOrUpdate(vm.Assessment).then(function(){
+                xhUtils.photo().then(function ($base64Url) {
+                  console.log($base64Url);
+                });
+              },function(){
+                utils.alert("数据保存失败!");
+              })
+            };
+          }],
           templateUrl:'app/main/xhsc/ys/evaluateQues.html',
           parent: angular.element(document.body),
           targetEvent: ev,
           clickOutsideToClose:true
         })
 
-      function DialogController($scope, $mdDialog) {
-        $scope.Problems =item.Problems;
-        $scope.answer = function(answer,ev) {
-          var  question=angular.extend({
-            _id : sxt.uuid(),
-            DeducScoretItemID:this._id,
-            AssessmentResultID:item.AssessmentResultID,
-            data_Type:"stzl_question",
-            AssessmentCheckItemID:item.AssessmentCheckItemID,
-            DeductionScore:this.DeductValue
-          },answer)
-          item.question.push(question);
-          stzlServices.setLastScore(item);
-          item.isCheck=true;
-          var _db= db('stzl_'+params.AssessmentID);
-          _db.addOrUpdate(vm.Assessment).then(function(){
-            xhUtils.photo().then(function ($base64Url) {
-              console.log($base64Url);
-            });
-          },function(){
-            utils.alert("数据保存失败!");
-          })
-          };
-      }
+
     }
   }
 })();
