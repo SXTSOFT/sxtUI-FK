@@ -20,6 +20,13 @@
 }
 md-tabs[md-align-tabs="bottom"]{
   &.zlpkwrap{
+      &.md-vanke-theme{
+        .md-tab{
+          &.md-active{
+            color:#e93030;
+          }
+        }
+      }
     .md-tab{
       position: relative;
       padding:12px 50px;
@@ -1561,6 +1568,7 @@ md-tabs[md-align-tabs="bottom"]{
 }
 .quesdetail{
   md-list-item{
+    border-bottom: 1px solid #d8d8d8;
     &.md-no-proxy{
       padding: 0;
     }

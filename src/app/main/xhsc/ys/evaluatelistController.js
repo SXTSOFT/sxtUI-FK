@@ -18,7 +18,7 @@
     }
     stzlServices.getAssessment(params,null,function(item){
       if (item){
-        item._id=params.AssessmentID+"_"+params.RegionID;
+        item._id=params.AssessmentID;
         item.data_Type="stzl_assessment";
         item.AssessmentClassifyRegions={
           RegionID:params.RegionID,
@@ -78,11 +78,30 @@
       $scope.$apply();
      // console.log('a',vm.images)
     }
+    vm.fit = function(item){
+      item.done =true;
+      item.TotalScore = item.Weight;
+      item.delValue = item.Weight - item.TotalScore;
+    }
     $rootScope.$on('delete',deleteFn);
-    vm.quesDetail = function(question){
+    vm.quesDetail = function(question,q,item){
       $mdDialog.show({
         controller:function($scope){
-          $scope.question= question;
+          $scope.question= q;
+          console.log(question)
+          $scope.delete = function(d){
+            var idx = question.indexOf(d)
+            stzlServices.setaddScore(item)
+            console.log(stzlServices)
+            question.splice(idx,1);
+
+            //if($scope.question.length <=0){
+              $mdDialog.hide()
+           // }
+          }
+          $scope.addPhoto = function(q){
+
+          }
         },
         templateUrl:'app/main/xhsc/ys/evaluateQuesDetail.html',
         parent: angular.element(document.body),
@@ -103,23 +122,47 @@
       function DialogController($scope, $mdDialog) {
         $scope.Problems =item.Problems;
         $scope.answer = function(answer,ev) {
+          var id=sxt.uuid();
           var question = angular.extend({
-            _id: sxt.uuid(),
-            DeducScoretItemID: this._id,
+            _id:id,
+            DeducScoretItemID: id,
             AssessmentResultID: item.AssessmentResultID,
             data_Type: "stzl_question",
             AssessmentCheckItemID: item.AssessmentCheckItemID,
-            DeductionScore: this.DeductValue
+            DeductionScore: this.DeductValue,
+            images:[]
           }, answer)
           item.question.push(question);
+          xhUtils.photo().then(function ($base64Url) {
+            question.images.push({
+              ImageID:sxt.uuid(),
+              RelationID:question._id,
+              ImageUrl:"",
+              ImageByte:$base64Url
+            });
+            _db.addOrUpdate(vm.Assessment).then(function () {
+            }, function () {
+              utils.alert("数据保存失败!");
+            });
+          },function(r){
+            question.images.push({
+              ImageID:sxt.uuid(),
+              RelationID:question._id,
+              ImageUrl:"app/main/xhsc/images/text.png",
+              ImageByte:""
+            });
+            _db.addOrUpdate(vm.Assessment).then(function (r) {
+            }, function (r) {
+              utils.alert("数据保存失败!");
+            });
+          });
+         // console.log(stzlServices)
           stzlServices.setLastScore(item);
           item.isCheck = true;
           var _db = db('stzl_' + params.AssessmentID);
           _db.addOrUpdate(vm.Assessment).then(function () {
-            xhUtils.photo().then(function ($base64Url) {
-              console.log($base64Url);
-            });
-          }, function () {
+
+          }, function (r) {
             utils.alert("数据保存失败!");
           })
         };
