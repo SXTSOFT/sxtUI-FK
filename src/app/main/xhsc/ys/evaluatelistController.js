@@ -18,7 +18,7 @@
     }
     stzlServices.getAssessment(params,null,function(item){
       if (item){
-        item._id=params.AssessmentID+"_"+params.RegionID;
+        item._id=params.AssessmentID;
         item.data_Type="stzl_assessment";
         item.AssessmentClassifyRegions={
           RegionID:params.RegionID,
@@ -112,19 +112,19 @@
       function DialogController($scope, $mdDialog) {
         $scope.Problems =item.Problems;
         $scope.answer = function(answer,ev) {
-          var  question=angular.extend({
-            _id : sxt.uuid(),
-            DeducScoretItemID:this._id,
-            AssessmentResultID:item.AssessmentResultID,
-            data_Type:"stzl_question",
-            AssessmentCheckItemID:item.AssessmentCheckItemID,
-            DeductionScore:this.DeductValue
-          },answer)
+          var question = angular.extend({
+            _id: sxt.uuid(),
+            DeducScoretItemID: this._id,
+            AssessmentResultID: item.AssessmentResultID,
+            data_Type: "stzl_question",
+            AssessmentCheckItemID: item.AssessmentCheckItemID,
+            DeductionScore: this.DeductValue
+          }, answer)
           item.question.push(question);
           stzlServices.setLastScore(item);
-          item.isCheck=true;
-          var _db= db('stzl_'+params.AssessmentID);
-          _db.addOrUpdate(vm.Assessment).then(function(){
+          item.isCheck = true;
+          var _db = db('stzl_' + params.AssessmentID);
+          _db.addOrUpdate(vm.Assessment).then(function () {
             xhUtils.photo().then(function ($base64Url) {
               //console.log($base64Url);
               item.image.push({
@@ -132,10 +132,10 @@
                 _id : sxt.uuid()
               })
             });
-          },function(){
+          }, function () {
             utils.alert("数据保存失败!");
           })
-          };
+        };
       }
     }
   }

@@ -48,6 +48,21 @@
         });
       }
     },
+    bulkAddOrUpdate:function(arr){
+     var self=this;
+     return this.findAll().then(function(o){
+         var  rows= o.rows,tmp;
+         arr.forEach(function(t){
+            if (t._id){
+              tmp=rows.find(function(e){ return t._id= e._id });
+              if (tmp){
+                t._rev=tmp._rev
+              }
+            }
+         })
+         return self.bulkDocs(arr);
+      });
+    },
     getOrAdd:function (obj) {
       var self = this;
       if(obj._id){
