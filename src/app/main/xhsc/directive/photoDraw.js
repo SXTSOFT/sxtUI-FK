@@ -166,7 +166,7 @@
 
 
           }, function (err) {
-
+            scope.cancel();
 
           });
         }
