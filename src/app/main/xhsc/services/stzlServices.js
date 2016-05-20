@@ -113,6 +113,7 @@
          _id:o._id,
          AssessmentResultID:o._id,
          RegionID: o.regionID,
+         AssessmentID: o.AssessmentID,
          AssessmentCheckItemID: o.AssessmentCheckItemID,
          TotalScore: o.TotalScore,
        }
@@ -124,14 +125,8 @@
         DeducScoretItemID: o.DeducScoretItemID,
         AssessmentResultID: o.AssessmentResultID,
         ProblemID: o.ProblemID,
-        DeductionScore: o.DeductionScore
+        DeductionScore: o.DeductValue
       }
-    }
-
-    function  _convertImge(o){
-      return{
-
-      };
     }
 
     function  preUpLoad(params){
@@ -150,18 +145,18 @@
               tmp_img= t.images;
               if (angular.isArray(tmp_img)){
                 tmp_img.forEach(function(s){
-                  images.push(_convertImge(s))
+                  images.push(s);
                 })
               }
             })
           }
         });
-        var _db_item=db('stzl_item');
+        var _db_item=db('Pack'+params.AssessmentID+  'stzl_item');
         _db_item.bulkAddOrUpdate(items).then(function(r){
-           var _db_question=db('stzl_question');
+           var _db_question=db('Pack'+params.AssessmentID+ 'stzl_question');
           _db_question.bulkAddOrUpdate(questions).then(function(t){
-            var _db_image=db('stzl_images');
-            _db_image.bulkAddOrUpdate(questions).then(function(m){
+            var _db_image=db('Pack'+params.AssessmentID+ 'stzl_images');
+            _db_image.bulkAddOrUpdate(images).then(function(m){
                q.resolve(true);
             })
           })

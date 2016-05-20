@@ -64,10 +64,6 @@
               stzl_images:{
                 url:sxt.app.api+'/Api/AssessmentApi/SubmitImage',
                 type:'data'
-              },
-              pics:{
-                url:sxt.app.api+'/Api/',
-                type:'fileurl'
               }
             }
           })

@@ -27,7 +27,7 @@
         delete item._rev;
         stzlServices.resultWrap(item,function(o){
           o._id = sxt.uuid();
-          o.AssessmentResultID= o.id;
+          o.AssessmentResultID= o._id;
           o.regionID=params.RegionID; //区域Id
           o.TotalScore=o.Weight;
           o.data_Type="stzl_item"
@@ -103,23 +103,40 @@
       function DialogController($scope, $mdDialog) {
         $scope.Problems =item.Problems;
         $scope.answer = function(answer,ev) {
+          var id=sxt.uuid();
           var question = angular.extend({
-            _id: sxt.uuid(),
-            DeducScoretItemID: this._id,
+            _id:id,
+            DeducScoretItemID: id,
             AssessmentResultID: item.AssessmentResultID,
             data_Type: "stzl_question",
             AssessmentCheckItemID: item.AssessmentCheckItemID,
-            DeductionScore: this.DeductValue
+            DeductionScore: this.DeductValue,
+            images:[]
           }, answer)
           item.question.push(question);
+          xhUtils.photo().then(function ($base64Url) {
+            question.images.push({
+              ImageID:sxt.uuid(),
+              RelationID:question._id,
+              ImageUrl:"",
+              ImageByte:$base64Url
+            });
+            _db.addOrUpdate(vm.Assessment).then(function () {
+            }, function () {
+              utils.alert("数据保存失败!");
+            });
+          },function(r){
+            _db.addOrUpdate(vm.Assessment).then(function (r) {
+            }, function (r) {
+              utils.alert("数据保存失败!");
+            });
+          });
           stzlServices.setLastScore(item);
           item.isCheck = true;
           var _db = db('stzl_' + params.AssessmentID);
           _db.addOrUpdate(vm.Assessment).then(function () {
-            xhUtils.photo().then(function ($base64Url) {
-              console.log($base64Url);
-            });
-          }, function () {
+
+          }, function (r) {
             utils.alert("数据保存失败!");
           })
         };
