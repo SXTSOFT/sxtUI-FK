@@ -54,7 +54,7 @@
                     projection: L.Projection.LonLat,
                     transformation: new L.Transformation(1, 0, 1, 0),
                     scale: function (e) {
-                      return 512 * Math.pow(2, e);
+                      return 256 * Math.pow(2, e);
                     }
                   }),
                   center: [.48531902026005, .5],
@@ -114,10 +114,10 @@
                   }
                 });
 
-                layer = L.tileLayer(sxt.app.api + '/api/picMap/load/{z}_{x}_{y}.png?path=' + fs.Url.replace('/s_', '/'), {
+                layer = L.tileLayer(sxt.app.api + '/api/picMap/load/{z}_{x}_{y}.png?size=256&path=' + fs.Url.replace('/s_', '/'), {
                   noWrap: true,
                   continuousWorld: false,
-                  tileSize: 512
+                  tileSize: 256
                 });
                 layer.addTo(map);
 
