@@ -39,26 +39,45 @@
       }
     }).then(function(item){
       if(item.AssessmentClassifys.length>20)
-          item.AssessmentClassifys.length =20;//TODO:
-      vm.Assessment=item;
-      vm.levels = getEvels(item,0);
-    })
-    vm.getWidth = function (level) {
+          item.AssessmentClassifys.length =20;
+      vm.Assessment = item;
+      vm.items = {
+        AssessmentClassifys:[]
+      };
+      item.AssessmentClassifys.forEach(function (m) {
+        vm.items.AssessmentClassifys.push({
+          AssessmentClassificationName:m.AssessmentClassificationName
+        });
+      });
+      console.log(vm.Assessment)
+      //vm.levels = getEvels(item,0);
+      $scope.$watch('vm.selectedIndex',function () {
+        if(typeof vm.selectedIndex!= 'undefined'){
+          var k = vm.items.AssessmentClassifys[vm.selectedIndex];
+          if(k.AssessmentClassifys==null){
+            k.AssessmentClassifys = vm.Assessment.AssessmentClassifys[vm.selectedIndex].AssessmentClassifys;
+            k.level = getEvels(k,1);
+          }
+        }
+      })
+    });
+
+    vm.getW = function (level,t) {
       if(level==1){
-        return 25.0/vm.levels;
+        return 25.0/t;
       }
       else{
-        return 25.0/vm.levels /(1 - vm.getWith(level-1));
+        return 25.0/t /(100 - vm.getW(level-1,t))*100;
       }
     }
 
     function getEvels(item,level) {
-      item.level = level+1;
       if(item.AssessmentClassifys && item.AssessmentClassifys.length){
         var levels = [],max=0;
         item.AssessmentClassifys.forEach(function (item) {
           levels.push(getEvels(item,level));
         });
+        console.log('levels',levels)
         levels.forEach(function (l) {
             if(max<l)
               max = l;

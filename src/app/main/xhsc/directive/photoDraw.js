@@ -137,8 +137,8 @@
             if (imageData) {
               image = new Image();
               image.onload = function() {
-                if(image.width>1280 || image.height>1280){
-                  var rd = 1280/Math.max(image.width,image.height);
+                if(image.width>800 || image.height>800){
+                  var rd = 800/Math.max(image.width,image.height);
                   srcWidth = image.width*rd;
                   srcHeight = image.height*rd;
                 }

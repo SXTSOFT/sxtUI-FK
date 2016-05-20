@@ -1,6 +1,6 @@
 <md-tabs md-align-tabs="bottom" flex md-swipe-content md-selected="vm.selectedIndex" class="zlpkwrap">
-  <md-tab label="{{b.AssessmentClassificationName}}" ng-repeat="b in vm.Assessment.AssessmentClassifys">
-    <md-tab-content flex layout-fill layout="column" ng-if="vm.selectedIndex==$index">
+  <md-tab label="{{b.AssessmentClassificationName}}" ng-repeat="b in vm.items.AssessmentClassifys">
+    <md-tab-content flex layout-fill layout="column"  >
       <div flex="none" layout="row" style="border-top: solid 1px silver" class="zlpkheader">
             <div flex="25">
               检测内容
@@ -30,31 +30,31 @@
             </md-subheader>
             <table width="100%" cellspacing="0" cellpadding="0" class="zlpktables">
                   <tr ng-repeat="e in c.AssessmentClassifys">
-                    <td style="width:{{vm.getWidth(1)}}%;">
-                      <p>{{e.AssessmentClassificationName}}{{vm.levels}}</p>
+                    <td style="width:{{vm.getW(1,2)}}%;">
+                      <p>{{e.AssessmentClassificationName}}{{b.level}}</p>
                     </td>
                     <td>
                       <table width="100%" cellspacing="0" cellpadding="0">
                         <tr ng-repeat="f in e.AssessmentClassifys">
-                          <td style="width:{{vm.getWidth(2)}}%;">
+                          <td style="width:{{vm.getWidth(2,b.level)}}%;">
                             <p>{{f.AssessmentClassificationName}}</p>
                           </td>
                           <td>
                             <table width="100%" cellspacing="0" cellpadding="0">
                               <tr ng-repeat="g in f.AssessmentClassifys">
-                                <td style="width:{{vm.getWidth(3)}}%;">
+                                <td style="width:{{vm.getWidth(3,b.level)}}%;">
                                   <p>{{g.AssessmentClassificationName}}</p>
                                 </td>
                                 <td>
                                   <table width="100%" cellspacing="0" cellpadding="0">
                                     <tr ng-repeat="item in g.AssessmentItems">
-                                      <td style="width:{{vm.getWidth(4)}}%">
+                                      <td style="width:{{vm.getWidth(4,b.level)}}%">
                                         <p>{{item.AssessmentCheckItemName}}</p>
                                       </td>
                                       <td>
                                         <table width="100%" cellspacing="0" cellpadding="0">
                                           <tr>
-                                            <td style="width:{{vm.getWidth(5)}}%">
+                                            <td style="width:{{vm.getWidth(5,b.level)}}%">
                                               <p>{{item.EvaluationCriteria}}</p>
                                             </td>
                                             <td>
@@ -71,7 +71,7 @@
                                               2
                                             </td>
                                           </tr>
-                                          <tr">
+                                          <tr>
                                             <td colspan="5">
                                               <table width="100%" cellspacing="0" cellpadding="0">
                                                 <tr>
@@ -82,25 +82,14 @@
                                                       <!--<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>-->
                                                       <md-button ng-if="item.question.length" class="md-icon-button" ng-click="vm.quesDetail(item.question)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
                                                     </span>
-                                                    <md-button ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="assets/images/etc/plug.png"></md-icon></md-button>
-                                                    <md-button class="md-button md-raised" ng-if="item.question.length==0" ng-click="item.done =true" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
+                                                    <md-button aria-label="" ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="assets/images/etc/plug.png"></md-icon></md-button>
+                                                    <md-button aria-label="" class="md-button md-raised" ng-if="item.question.length==0" ng-click="item.done =true" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
                                                   </td>
                                                 </tr>
                                               </table>
                                             </td>
 
                                           </tr>
-                                          <!--<tr>-->
-                                          <!--<td colspan="3">-->
-                                          <!--B T 评判标准-->
-                                          <!--</td>-->
-                                          <!--<td style="width: 50px">-->
-                                          <!--2-->
-                                          <!--</td>-->
-                                          <!--<td style="width: 50px">-->
-                                          <!--2-->
-                                          <!--</td>-->
-                                          <!--</tr>-->
                                         </table>
                                       </td>
                                     </tr>
@@ -142,25 +131,14 @@
                                     <!--<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>-->
                                     <md-button ng-if="item.question.length" class="md-icon-button" ng-click="vm.quesDetail(item.question)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
                                   </span>
-                                              <md-button ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="assets/images/etc/plug.png"></md-icon></md-button>
-                                              <md-button class="md-button md-raised" ng-if="item.question.length==0" ng-click="item.done =true" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
+                                              <md-button aria-label="" ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="assets/images/etc/plug.png"></md-icon></md-button>
+                                              <md-button aria-label="" class="md-button md-raised" ng-if="item.question.length==0" ng-click="item.done =true" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
                                             </td>
                                           </tr>
                                         </table>
                                       </td>
 
                                     </tr>
-                                    <!--<tr>-->
-                                    <!--<td colspan="3">-->
-                                    <!--B T 评判标准-->
-                                    <!--</td>-->
-                                    <!--<td style="width: 50px">-->
-                                    <!--2-->
-                                    <!--</td>-->
-                                    <!--<td style="width: 50px">-->
-                                    <!--2-->
-                                    <!--</td>-->
-                                    <!--</tr>-->
                                   </table>
                                 </td>
                               </tr>
@@ -168,7 +146,7 @@
                           </td>
                         </tr>
                         <tr ng-repeat="item in e.AssessmentItems">
-                          <td style="width:6.25%;">
+                          <td style="width:{{vm.getW(2,2)}}%">
                             <p>{{item.AssessmentCheckItemName}}</p>
                           </td>
                           <td>
@@ -202,8 +180,8 @@
                                     <!--<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>-->
                                     <md-button ng-if="item.question.length" class="md-icon-button" ng-click="vm.quesDetail(item.question)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
                                   </span>
-                                        <md-button ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="assets/images/etc/plug.png"></md-icon></md-button>
-                                        <md-button class="md-button md-raised" ng-if="item.question.length==0" ng-click="item.done =true" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
+                                        <md-button aria-label="" ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="assets/images/etc/plug.png"></md-icon></md-button>
+                                        <md-button aria-label="" class="md-button md-raised" ng-if="item.question.length==0" ng-click="item.done =true" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
                                       </td>
                                     </tr>
                                   </table>
@@ -217,7 +195,7 @@
                     </td>
                   </tr>
                   <tr ng-repeat="item in c.AssessmentItems">
-                    <td style="width:{{vm.getWidth(1)}}%;">
+                    <td style="width:25%;">
                       <p>{{item.AssessmentCheckItemName}}{{vm.levels}}</p>
                     </td>
                     <td>
@@ -252,8 +230,8 @@
                                     <!--<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>-->
                                     <md-button ng-if="item.question.length" class="md-icon-button" ng-click="vm.quesDetail(item.question,q,item)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
                                   </span>
-                                  <md-button ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="assets/images/etc/plug.png"></md-icon></md-button>
-                                  <md-button class="md-button md-raised" ng-if="item.question.length==0" ng-click="vm.fit(item)" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
+                                  <md-button aria-label="" ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="assets/images/etc/plug.png"></md-icon></md-button>
+                                  <md-button aria-label="" class="md-button md-raised" ng-if="item.question.length==0" ng-click="vm.fit(item)" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
                                 </td>
                                 <!--<td style="width: 50px;text-align: center;">-->
                                   <!--2-->
