@@ -71,38 +71,19 @@
                                               2
                                             </td>
                                           </tr>
-                                          <tr  ng-if="item.question.length || item.image.length">
+                                          <tr">
                                             <td colspan="5">
                                               <table width="100%" cellspacing="0" cellpadding="0">
                                                 <tr>
                                                   <td style="width:50px;text-align:center">11栋</td>
-                                                  <td colspan="2" class="lr">
+                                                  <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
                                                     &nbsp;&nbsp;扣分信息：
-                                                    <md-button ng-if="item.question.length" class="md-icon-button"  ng-click="vm.quesDetail(item.question)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>
-                                                    <md-button ng-if="item.image.length" class="md-icon-button" sxt-images="item.image"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
-                                                    <!--<table cellspacing="0" cellpadding="0" width="100%">-->
-                                                      <!--<tr>-->
-                                                        <!--<td>-->
-                                                          <!--&nbsp;&nbsp;扣分信息：-->
-                                                          <!--<md-button class="md-icon-button"  ng-click="vm.quesDetail(item.question)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>-->
-                                                          <!--<md-button class="md-icon-button" sxt-images="item.images"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>-->
-                                                        <!--</td>-->
-                                                      <!--</tr>-->
-                                                      <!--<tr>-->
-                                                        <!--<td>-->
-                                                          <!--&nbsp;&nbsp;备注：-->
-                                                          <!--<ul class="img" style="display: inline-block;vertical-align:top;">-->
-                                                            <!--<li><span style="font-size: 24px;">T</span></li>-->
-                                                          <!--</ul>-->
-                                                        <!--</td>-->
-                                                      <!--</tr>-->
-                                                    <!--</table>-->
-                                                  </td>
-                                                  <td style="width: 50px;text-align: center;">
-                                                    2
-                                                  </td>
-                                                  <td style="width: 50px;text-align: center;">
-                                                    2
+                                  <span>
+                                    <!--<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>-->
+                                    <md-button ng-if="item.question.length" class="md-icon-button" ng-click="vm.quesDetail(item.question)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
+                                  </span>
+                                                    <md-button ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="assets/images/etc/plug.png"></md-icon></md-button>
+                                                    <md-button class="md-button md-raised" ng-if="item.question.length==0" ng-click="item.done =true" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
                                                   </td>
                                                 </tr>
                                               </table>
@@ -150,21 +131,19 @@
                                         2
                                       </td>
                                     </tr>
-                                    <tr ng-if="item.question.length || item.image.length">
+                                    <tr>
                                       <td colspan="5">
                                         <table width="100%" cellspacing="0" cellpadding="0">
                                           <tr>
                                             <td style="width:50px;text-align:center">12栋</td>
-                                            <td colspan="2" class="lr">
+                                            <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
                                               &nbsp;&nbsp;扣分信息：
-                                              <md-button ng-if="item.question.length" class="md-icon-button"  ng-click="vm.quesDetail(item.question)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>
-                                              <md-button ng-if="item.image.length" class="md-icon-button" sxt-images="item.image"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
-                                            </td>
-                                            <td style="width: 50px;text-align: center;">
-                                              2
-                                            </td>
-                                            <td style="width: 50px;text-align: center;">
-                                              2
+                                  <span>
+                                    <!--<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>-->
+                                    <md-button ng-if="item.question.length" class="md-icon-button" ng-click="vm.quesDetail(item.question)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
+                                  </span>
+                                              <md-button ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="assets/images/etc/plug.png"></md-icon></md-button>
+                                              <md-button class="md-button md-raised" ng-if="item.question.length==0" ng-click="item.done =true" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
                                             </td>
                                           </tr>
                                         </table>
@@ -212,21 +191,19 @@
                                   2
                                 </td>
                               </tr>
-                              <tr ng-if="item.question.length || item.image.length">
+                              <tr>
                                 <td colspan="5">
                                   <table width="100%" cellspacing="0" cellpadding="0">
                                     <tr>
                                       <td style="width:50px;text-align:center">13栋</td>
-                                      <td colspan="2" class="lr">
+                                      <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
                                         &nbsp;&nbsp;扣分信息：
-                                        <md-button ng-if="item.question.length" class="md-icon-button"  ng-click="vm.quesDetail(item.question)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>
-                                        <md-button ng-if="item.image.length" class="md-icon-button" sxt-images="item.image"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
-                                      </td>
-                                      <td style="width: 50px;text-align: center;">
-                                        2
-                                      </td>
-                                      <td style="width: 50px;text-align: center;">
-                                        2
+                                  <span>
+                                    <!--<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>-->
+                                    <md-button ng-if="item.question.length" class="md-icon-button" ng-click="vm.quesDetail(item.question)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
+                                  </span>
+                                        <md-button ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="assets/images/etc/plug.png"></md-icon></md-button>
+                                        <md-button class="md-button md-raised" ng-if="item.question.length==0" ng-click="item.done =true" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
                                       </td>
                                     </tr>
                                   </table>
@@ -256,22 +233,27 @@
                             {{item.Weight}}
                           </td>
                           <td style="width: 50px;text-align: center;" class="lr">
-                            <button ng-click="vm.check(item,$event)" ng-if="!vm.input" ng-disable="{'true':item.question.length >= 3}">录入{{item.question.length}}</button>
-                            <button ng-click="vm.check(item)" ng-if="vm.input" ng-disable="{'true':item.question.length == 3}">{{vm.input}}</button>
+                            2
+                            <!--<button ng-click="vm.check(item,$event)" ng-if="!vm.input">录入</button>-->
+                            <!--<button ng-click="vm.check(item)" ng-if="vm.input">{{vm.input}}</button>-->
                           </td>
                           <td style="width: 50px;text-align: center;" class="lr">
                             {{item.lastScore}}
                           </td>
                         </tr>
-                        <tr ng-if="item.question.length || item.image.length">
+                        <tr>
                           <td colspan="5">
                             <table width="100%" cellspacing="0" cellpadding="0">
                               <tr>
                                 <td style="width:50px;text-align:center">14栋</td>
-                                <td colspan="4" class="lr">
+                                <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
                                   &nbsp;&nbsp;扣分信息：
-                                  <md-button ng-if="item.question.length" class="md-icon-button"  ng-click="vm.quesDetail(item.question)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>
-                                  <md-button ng-if="item.image.length" class="md-icon-button" sxt-images="item.image"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
+                                  <span>
+                                    <!--<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>-->
+                                    <md-button ng-if="item.question.length" class="md-icon-button" ng-click="vm.quesDetail(item.question)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
+                                  </span>
+                                  <md-button ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="assets/images/etc/plug.png"></md-icon></md-button>
+                                  <md-button class="md-button md-raised" ng-if="item.question.length==0" ng-click="item.done =true" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
                                 </td>
                                 <!--<td style="width: 50px;text-align: center;">-->
                                   <!--2-->
