@@ -83,6 +83,15 @@
       $mdDialog.show({
         controller:function($scope){
           $scope.question= question;
+          console.log(question)
+          $scope.delete = function(d){
+            var idx = $scope.question.indexOf(d)
+            //console.log($scope.question,idx)
+            $scope.question.splice(idx,1);
+            if($scope.question.length <=0){
+              $mdDialog.hide()
+            }
+          }
         },
         templateUrl:'app/main/xhsc/ys/evaluateQuesDetail.html',
         parent: angular.element(document.body),
@@ -117,7 +126,11 @@
           var _db= db('stzl_'+params.AssessmentID);
           _db.addOrUpdate(vm.Assessment).then(function(){
             xhUtils.photo().then(function ($base64Url) {
-              console.log($base64Url);
+              //console.log($base64Url);
+              item.image.push({
+                imageUrl:'app/main/xhsc/images/text.png',
+                _id : sxt.uuid()
+              })
             });
           },function(){
             utils.alert("数据保存失败!");

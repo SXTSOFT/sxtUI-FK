@@ -2,7 +2,12 @@
   <md-dialog-content>
     <md-list flex>
       <md-list-item flex layout="row" ng-repeat="q in question track by $index">
-        <span>{{q.ProblemDescription}}</span><md-button sxt-images="images" ng-if="q.images.length"><md-icon style="width: 16px;height: 16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
+        <p style="padding-right:100px;">
+          <span>{{q.ProblemDescription}}</span>
+          <md-button sxt-images="images" ng-if="q.images.length"><md-icon style="width: 16px;height: 16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
+          <md-button><md-icon><img src="assets/images/etc/plug.png"></md-icon></md-button>
+        </p>
+        <md-button class="md-button" ng-click="delete(q)"><md-icon><img src="app/main/xhsc/images/del1.png"></md-icon></md-button>
       </md-list-item>
     </md-list>
   </md-dialog-content>
