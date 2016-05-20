@@ -33,9 +33,12 @@
           prevY = 0,
           currY = 0,
           dot_flag = false,
+          radio =1,
           parent = $('canvas',element).parent(),
           width =parent.width(),height =parent.height(),
-          offset = $('#toptoolbar').height();
+          offset = $('#toptoolbar').height(),
+          srcWidth,srcHeight,
+          image;
 
         $('canvas',element).width(width)
           .height(height);
@@ -69,30 +72,26 @@
 
 
         function draw() {
+          //if(Math.abs(prevY/radio-currY/radio)>20)return;
           ctx.beginPath();
-          ctx.moveTo(prevX, prevY);
-          ctx.lineTo(currX, currY);
+          ctx.moveTo(prevX/radio, prevY/radio);
+          ctx.lineTo(currX/radio, currY/radio);
           ctx.strokeStyle = scope.color;
-          ctx.lineWidth = 2;
+
           ctx.stroke();
           ctx.closePath();
         }
 
         scope.erase = function () {
-          var m = confirm("确定删除?");
-          if (m) {
-
-            ctx.clearRect(0, 0, w, h);
-            //document.getElementById("canvasimg").style.display = "none";
-
+          if(image){
+            ctx.clearRect(0, 0, srcWidth, srcHeight);
+            ctx.drawImage(image, 0, 0,image.width,image.height,0,0,srcWidth,srcHeight);
           }
         }
 
         scope.save =  function () {
-          document.getElementById("img").style.border = "1px solid";
           var dataURL = canvas.toDataURL();
-          document.getElementById("img").src = dataURL;
-          document.getElementById("img").style.display = "inline";
+          console.log(dataURL);
         }
 
         function findxy(res, e) {
@@ -105,7 +104,7 @@
             dot_flag = true;
             if (dot_flag) {
               ctx.beginPath();
-              ctx.fillStyle = x;
+              ctx.fillStyle = scope.color;
               ctx.fillRect(currX, currY, 2, 2);
               ctx.closePath();
               dot_flag = false;
@@ -135,19 +134,34 @@
             quality: 50,
             destinationType: 0,
             sourceType: 1,
-            allowEdit: true,
+            allowEdit: false,
             encodingType: 0,
             saveToPhotoAlbum: false,
             correctOrientation: true
           }).then (function (imageData) {
             if (imageData) {
-              var image = new Image();
+              image = new Image();
 
               //element.append (image);
               //  imageData = imageData.replace('data:image/jpeg;base64,', '').replace('data:image/png;base64,', '');
 
               image.onload = function() {
-                ctx.drawImage(image, 0, 0);
+                if(image.width>1280 || image.height>1280){
+                  var rd = 1280/Math.max(image.width,image.height);
+                  srcWidth = image.width*rd;
+                  srcHeight = image.height*rd;
+                }
+                else{
+                  srcWidth = image.width;
+                  srcHeight = image.height;
+                }
+                radio = height/srcHeight;
+                width = srcWidth * radio;
+                $('canvas',element).width(width);
+                ctx.canvas.width = srcWidth;
+                ctx.canvas.height = srcHeight;
+                ctx.lineWidth =  srcWidth*2/350;
+                ctx.drawImage(image, 0, 0,image.width,image.height,0,0,srcWidth,srcHeight);
               }
               image.src = "data:image/jpeg;base64," + imageData;
             }
@@ -160,10 +174,9 @@
         }
 
         scope.photo();
-        
-      },500)
 
-
+      },500);
+      
     }
 
   }
