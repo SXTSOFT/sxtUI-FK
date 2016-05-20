@@ -52,7 +52,9 @@
                 map.loadSvgXml(fd.DrawingContent, {
                   filterLine: function (line) {
                     //line.attrs.stroke = 'black';
-                    //line.attrs['stroke-width'] = line.attrs['stroke-width']*4;
+                    line.options = line.options||{};
+                    line.options.color = 'white';
+                    line.attrs['stroke-width'] = line.attrs['stroke-width']*4;
                   },
                   filterText: function (text) {
                     return false;
@@ -108,43 +110,7 @@
             });
           },
           onUpdate:function(layer,isNew,group){
-            if(layer instanceof L.AreaGroup){
-              var b = layer.getBounds(),
-                x1 = b._northEast.lat,
-                y1 = b._northEast.lng,
-                x2 = b._southWest.lat,
-                y2 = b._southWest.lng;
-              var ps = [],ps1=[];
-              var offsetX = Math.abs(x2-x1)/8,
-                minX = Math.min(x2,x1),
-                offsetY = Math.abs(y2 - y1)/8,
-                minY = Math.min(y2,y2);
-              for(var i=1;i<=3;i++){
-                for(var j=1;j<=3;j++){
-                  ps.push([minX+offsetX*(i==1?1:i==2?4:7),minY+offsetY*(j==1?1:j==2?4:7)]);
-                }
-              }
-              ps1[0] = ps[0];
-              ps1[1] = ps[1];
-              ps1[2] = ps[2];
-              ps1[3] = ps[5];
-              ps1[4] = ps[8];
-              ps1[5] = ps[7];
-              ps1[6] = ps[6];
-              ps1[7] = ps[3];
-              ps1[8] = ps[4];
 
-              if(0){
-                ps1.splice(7,1);
-                ps1.splice(5,1);
-                ps1.splice(3,1);
-                ps1.splice(1,1);
-              }
-              //console.log(points);
-              ps1.forEach(function (p) {
-                fg.addLayer(new L.Stamp(p));
-              })
-            }
             //return;
             var point = layer.toGeoJSON();
             point = {
@@ -186,7 +152,7 @@
               var groupId = group.getValue().$id,//添加或移出的groupId
                 measureIndexs = xhUtils.findAll(scope.measureIndexes,function (m) {
                   return m.QSKey=='4';
-                }),//需要组或区测量的指标
+                }),//需要区测量的指标
                 values = xhUtils.findAll(fg.data,function (d) {
                   return d.MeasurePointID == point._id && !!measureIndexs.find(function (m) {
                       return m.AcceptanceIndexID==d.AcceptanceIndexID;
@@ -207,6 +173,43 @@
                   data.addOrUpdate(v);
                 })
               }
+            }
+            if(isNew && layer instanceof L.AreaGroup){
+              var b = layer.getBounds(),
+                x1 = b._northEast.lat,
+                y1 = b._northEast.lng,
+                x2 = b._southWest.lat,
+                y2 = b._southWest.lng;
+              var ps = [],ps1=[];
+              var offsetX = Math.abs(x2-x1)/8,
+                minX = Math.min(x2,x1),
+                offsetY = Math.abs(y2 - y1)/8,
+                minY = Math.min(y2,y2);
+              for(var i=1;i<=3;i++){
+                for(var j=1;j<=3;j++){
+                  ps.push([minX+offsetX*(i==1?1:i==2?4:7),minY+offsetY*(j==1?1:j==2?4:7)]);
+                }
+              }
+              ps1[0] = ps[0];
+              ps1[1] = ps[1];
+              ps1[2] = ps[2];
+              ps1[3] = ps[5];
+              ps1[4] = ps[8];
+              ps1[5] = ps[7];
+              ps1[6] = ps[6];
+              ps1[7] = ps[3];
+              ps1[8] = ps[4];
+
+              if(0){
+                ps1.splice(7,1);
+                ps1.splice(5,1);
+                ps1.splice(3,1);
+                ps1.splice(1,1);
+              }
+              //console.log(points);
+              ps1.forEach(function (p) {
+                fg.addLayer(new L.Stamp(p));
+              })
             }
           },
           onPopupClose:function (e) {
@@ -235,7 +238,8 @@
                 },m.v);
                 m.v.MeasureValueId = m.v._id;
               }
-              if(m.v.values){ //组测量
+              if(m.v.values){
+                //组测量
                 //m.v.MeasureValue = m.v.values[0];
                 var childValues = fg.data.filter(function (item) {
                   return item.ParentMeasureValueID == m.v.MeasureValueId;
@@ -265,6 +269,7 @@
                   data.addOrUpdate(fd);
                 }
               }
+
               data.addOrUpdate(m.v);
             });
           },
