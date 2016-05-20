@@ -1543,7 +1543,11 @@ md-tabs[md-align-tabs="bottom"]{
 .questionlist{
   md-list-item{
     p{
-      padding-right: 150px;
+      padding-left: 150px;
+    }
+    .md-secondary{
+      left:0;
+      right:auto;
     }
     md-input-container{
       margin:0;
@@ -1554,4 +1558,11 @@ md-tabs[md-align-tabs="bottom"]{
     }
   }
 
+}
+.quesdetail{
+  md-list-item{
+    &.md-no-proxy{
+      padding: 0;
+    }
+  }
 }

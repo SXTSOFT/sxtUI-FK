@@ -8,6 +8,8 @@
     return {
       restrict:'E',
       scope:{
+        onCancel:'&',
+        onAnswer:'&'
       },
       templateUrl:'app/main/xhsc/directive/photoDraw.html',
       link:link
@@ -21,10 +23,6 @@
       scope.setColor = function (color) {
         scope.color = color;
       }
-
-
-
-
 
       $timeout(function () {
         var canvas, ctx, flag = false,
@@ -77,11 +75,14 @@
           ctx.moveTo(prevX/radio, prevY/radio);
           ctx.lineTo(currX/radio, currY/radio);
           ctx.strokeStyle = scope.color;
-
+          //ctx.strokeStyle = x;
+          //ctx.lineWidth = y;
           ctx.stroke();
           ctx.closePath();
         }
-
+        scope.cancel = function () {
+          scope.onCancel && scope.onCancel();
+        }
         scope.erase = function () {
           if(image){
             ctx.clearRect(0, 0, srcWidth, srcHeight);
@@ -91,24 +92,18 @@
 
         scope.save =  function () {
           var dataURL = canvas.toDataURL();
-          console.log(dataURL);
+          scope.onAnswer && scope.onAnswer({$base64Url:dataURL});
         }
 
         function findxy(res, e) {
+          if(!e.clientX &&(!e.touches || !e.touches[0] ||!e.touches[0].clientX))return;
           if (res == 'down') {
             prevX = currX;
             prevY = currY;
             currX = (e.clientX || e.touches[0].clientX)- canvas.offsetLeft;
-            currY = (e.clientY || e.touches[0].clientY) - canvas.offsetTop;
+            currY = (e.clientY || e.touches[0].clientY) - canvas.offsetTop-offset;
             flag = true;
-            dot_flag = true;
-            if (dot_flag) {
-              ctx.beginPath();
-              ctx.fillStyle = scope.color;
-              ctx.fillRect(currX, currY, 2, 2);
-              ctx.closePath();
-              dot_flag = false;
-            }
+
           }
           if (res == 'up' || res == "out") {
             flag = false;
@@ -165,10 +160,13 @@
               }
               image.src = "data:image/jpeg;base64," + imageData;
             }
+            else{
+              scope.cancel();
+            }
 
 
           }, function (err) {
-
+            scope.cancel();
 
           });
         }
@@ -176,7 +174,7 @@
         scope.photo();
 
       },500);
-      
+
     }
 
   }

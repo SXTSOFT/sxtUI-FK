@@ -60,7 +60,7 @@
         url,tasks=[],type,p=0;
       self.tasks.forEach(function (task) {
 
-        if(task.completed || (task.try && task.try>3 ) ||(type && type=='file')) {
+        if(task.completed || (task.try && task.try>3 ) ||(type && type=='file') ||(type && type=='fileurl')) {
           p++;
           return;
         }

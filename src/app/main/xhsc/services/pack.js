@@ -64,6 +64,10 @@
               stzl_images:{
                 url:sxt.app.api+'/Api/AssessmentApi/SubmitImage',
                 type:'data'
+              },
+              pics:{
+                url:sxt.app.api+'/Api/',
+                type:'fileurl'
               }
             }
           })
@@ -71,7 +75,7 @@
         remove:function (id,cb,progress){
           localPack.unPack(id);
           remotePack.unPack(id);
-          var totalStep = 5,
+          var totalStep = 6,
             fn = function (step) {
               progress && progress(parseInt(step/totalStep*100));
           };
@@ -84,9 +88,12 @@
                 fn(3);
                 p.destroyDb('Pack'+id+'indexs',function () {
                   fn(4);
-                  p.destroyDir(id,function () {
+                  p.destroyDb('Pack'+id+'pics',function () {
                     fn(5);
-                    cb();
+                    p.destroyDir(id, function () {
+                      fn(6);
+                      cb();
+                    });
                   });
                 })
               })

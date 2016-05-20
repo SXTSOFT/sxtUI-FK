@@ -149,6 +149,7 @@
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
+        title:'实体质量评估',
         url   :'/list/{AssessmentID}/{RegionID}/{RegionName}',
         views :{
           'content@app':{
