@@ -136,13 +136,9 @@
           }).then (function (imageData) {
             if (imageData) {
               image = new Image();
-
-              //element.append (image);
-              //  imageData = imageData.replace('data:image/jpeg;base64,', '').replace('data:image/png;base64,', '');
-
               image.onload = function() {
-                if(image.width>1280 || image.height>1280){
-                  var rd = 1280/Math.max(image.width,image.height);
+                if(image.width>800 || image.height>800){
+                  var rd = 800/Math.max(image.width,image.height);
                   srcWidth = image.width*rd;
                   srcHeight = image.height*rd;
                 }
@@ -163,8 +159,6 @@
             else{
               scope.cancel();
             }
-
-
           }, function (err) {
             scope.cancel();
 

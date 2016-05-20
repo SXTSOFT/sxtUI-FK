@@ -45,8 +45,23 @@
               }
             });
             item.TotalScore=score;
+            item.delValue = item.Weight - score;
           }
       }
+    }
+    function setaddScore(item){
+      if(angular.isArray(item.question)){
+
+          var  score=item.Weight;
+          item.question.forEach(function(o){
+            if (angular.isNumber(o.DeductValue)){
+              score= score+o.DeductValue;
+            }
+          });
+          item.TotalScore=score;
+          item.delValue = item.Weight+ score;
+        }
+
     }
     function  getAllAssessItem(assessment){
       var  arr=[];
@@ -178,7 +193,8 @@
       getRegionAssessItem:getRegionAssessItem,
       groupAssessItem:groupAssessItem,
       getAssessment:getAssessment,
-      preUpLoad:preUpLoad
+      preUpLoad:preUpLoad,
+      setaddScore:setaddScore
     }
   }
 })();
