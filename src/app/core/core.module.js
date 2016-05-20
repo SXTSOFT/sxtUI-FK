@@ -22,5 +22,6 @@
                 'xeditable',
                 'moment-picker'
 
+
             ]);
 })();
