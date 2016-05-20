@@ -27,11 +27,11 @@
         delete item._rev;
         stzlServices.resultWrap(item,function(o){
           o._id = sxt.uuid();
-          o.Assessment_uuid= item._id;
+          o.AssessmentResultID= o.id;
+          o.regionID=params.RegionID; //区域Id
+          o.TotalScore=o.Weight;
           o.data_Type="stzl_item"
           o.isCheck=false;
-          o.lastScore=o.Weight; //最终得分
-          o.regionID=params.RegionID; //区域Id
           o.AssessmentID=params.AssessmentID; //评估项id
           o.question=[]; //扣分记录
           o.image=[];  //图片记录
@@ -91,13 +91,15 @@
       function DialogController($scope, $mdDialog) {
         $scope.Problems =item.Problems;
         $scope.answer = function(answer,ev) {
-          item.question.push(angular.extend({
+          var  question=angular.extend({
             _id : sxt.uuid(),
+            DeducScoretItemID:this._id,
+            AssessmentResultID:item.AssessmentResultID,
             data_Type:"stzl_question",
-            createTime:new Date().toDateString(),
-            AssessmentCheckItem_uuid:item._id,
-            AssessmentCheckItemID:item.AssessmentCheckItemID
-          },answer));
+            AssessmentCheckItemID:item.AssessmentCheckItemID,
+            DeductionScore:this.DeductValue
+          },answer)
+          item.question.push(question);
           stzlServices.setLastScore(item);
           item.isCheck=true;
           var _db= db('stzl_'+params.AssessmentID);

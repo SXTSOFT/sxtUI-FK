@@ -9,7 +9,7 @@
     .controller('downloadController',downloadController);
 
   /** @ngInject*/
-  function downloadController($mdDialog,db,remote,localPack,xhUtils,$rootScope,$scope,pack,utils){
+  function downloadController($mdDialog,db,remote,localPack,xhUtils,$rootScope,$scope,pack,utils,stzlServices){
     var vm = this;
     var xcpk = db('xcpk');
     xcpk.get('xcpk').then(function (result) {
@@ -47,6 +47,7 @@
       })
     }
     vm.upload =function (item) {
+
       var pk = pack.sc.up(item.AssessmentID);
       pk.upload(function (proc) {
         item.progress = proc;
