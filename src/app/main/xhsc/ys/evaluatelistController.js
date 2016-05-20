@@ -9,7 +9,7 @@
     .controller('evaluatelistController',evaluatelistController);
 
   /** @ngInject*/
-  function evaluatelistController($mdDialog,$rootScope,$scope,utils,$stateParams,db,sxt,stzlServices){
+  function evaluatelistController($mdDialog,$rootScope,$scope,utils,$stateParams,db,sxt,stzlServices,xhUtils){
     var vm = this;
     var params={
         AssessmentID:$stateParams.AssessmentID,
@@ -38,6 +38,8 @@
         });
       }
     }).then(function(item){
+      if(item.AssessmentClassifys.length>20)
+          item.AssessmentClassifys.length =20;//TODO:
       vm.Assessment=item;
       vm.levels = getEvels(item,0);
     })
@@ -100,9 +102,9 @@
           item.isCheck=true;
           var _db= db('stzl_'+params.AssessmentID);
           _db.addOrUpdate(vm.Assessment).then(function(){
-            utils.confirm('前往拍照或返回',ev,'拍照','').then(function(){
-            },function(r){
-            })
+            xhUtils.photo().then(function ($base64Url) {
+              console.log($base64Url)
+            });
           },function(){
             utils.alert("数据保存失败!");
           })

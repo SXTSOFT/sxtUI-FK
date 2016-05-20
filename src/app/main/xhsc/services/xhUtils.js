@@ -7,13 +7,14 @@
     .module('app.xhsc')
     .factory('xhUtils',xhUtils);
   /** @ngInject */
-  function xhUtils(remote,$rootScope,$q){
+  function xhUtils($mdDialog){
     var _areaId, cP,region;
     var o = {
       getMapPic:getMapPic,
       findAll:findAll,
       findRegion:findRegion,
-      wrapRegion:wrapRegion
+      wrapRegion:wrapRegion,
+      photo:photo
     };
     return o;
 
@@ -147,6 +148,26 @@
           return p.Children[p.Children.length-1];
         }
       }
+    }
+
+    function photo($event) {
+      return $mdDialog.show({
+        targetEvent: $event,
+        controller:['$scope', '$mdDialog',function ($scope, $mdDialog) {
+          $scope.cancel = function () {
+            $mdDialog.cancel();
+          }
+          $scope.answer = function ($base64Url) {
+            $mdDialog.hide($base64Url);
+          }
+        }],
+        fullscreen:true,
+        template: '<md-dialog style="width: 100%;max-width: 100%;height: 100%;max-height: 100%;" aria-label="List dialog">' +
+        '  <md-dialog-content flex layout="column" style="padding: 0">' +
+        '<photo-draw flex layout="column" on-cancel="cancel()" on-answer="answer($base64Url)"></photo-draw>' +
+        '  </md-dialog-content>'+
+        '</md-dialog>'
+      });
     }
   }
 })();

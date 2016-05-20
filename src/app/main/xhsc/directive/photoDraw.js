@@ -8,6 +8,8 @@
     return {
       restrict:'E',
       scope:{
+        onCancel:'&',
+        onAnswer:'&'
       },
       templateUrl:'app/main/xhsc/directive/photoDraw.html',
       link:link
@@ -21,10 +23,6 @@
       scope.setColor = function (color) {
         scope.color = color;
       }
-
-
-
-
 
       $timeout(function () {
         var canvas, ctx, flag = false,
@@ -81,7 +79,9 @@
           ctx.stroke();
           ctx.closePath();
         }
-
+        scope.cancel = function () {
+          scope.onCancel && scope.onCancel();
+        }
         scope.erase = function () {
           if(image){
             ctx.clearRect(0, 0, srcWidth, srcHeight);
@@ -91,7 +91,7 @@
 
         scope.save =  function () {
           var dataURL = canvas.toDataURL();
-          console.log(dataURL);
+          scope.onAnswer && scope.onAnswer({$base64Url:dataURL});
         }
 
         function findxy(res, e) {
@@ -165,6 +165,9 @@
               }
               image.src = "data:image/jpeg;base64," + imageData;
             }
+            else{
+              scope.cancel();
+            }
 
 
           }, function (err) {
@@ -176,7 +179,7 @@
         scope.photo();
 
       },500);
-      
+
     }
 
   }
