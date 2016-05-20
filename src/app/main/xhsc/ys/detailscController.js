@@ -21,7 +21,7 @@
       RegionID:$stateParams.regionId,
       AcceptanceItemID:$stateParams.measureItemID,
       RecordType:4,
-      RelationID:'' //$stateParams.db //TODO: 后台暂未存此数据，后面要去掉
+      RelationID:$stateParams.db //TODO: 后台暂未存此数据，后面要去掉
     }).then(function (result){
       var newD = [];
       var tempData = angular.copy(result.data);
@@ -95,7 +95,7 @@
       });
 
       vm.scData = newD;
-      console.log('res',newD)
+      console.log('res',result)
     });
     vm.testData = [{
       MeasureUserName:'aa',

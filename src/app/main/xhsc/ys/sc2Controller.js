@@ -103,7 +103,7 @@
           ms.forEach(function (m) {
             if(!m._id)
               m._id = sxt.uuid();
-            
+
             indexs.addOrUpdate({
               _id: m._id,
               RegionId: vm.info.regionId,
