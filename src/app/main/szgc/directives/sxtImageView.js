@@ -70,7 +70,7 @@
           if (!imagedata) {
             imagedata = [];
             $('img', element).each(function (index, el) {
-              imagedata.push({url:$(el)[0].src});
+              imagedata.push({url:$(el)[0].src,date:$(el).attr('date')});
             })
             defaultIndex = $('img', element).index($(a.target))
             if (defaultIndex == -1)

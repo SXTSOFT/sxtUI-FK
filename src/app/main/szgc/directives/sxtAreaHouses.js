@@ -111,7 +111,8 @@
                             else {
                               layer.setStyle({
                                 color: '#ff0000',
-                                stroke: true
+                                stroke: true,
+                                fillOpacity: 0.2
                               });
                             }
                           }

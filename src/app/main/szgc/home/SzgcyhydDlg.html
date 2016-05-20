@@ -17,7 +17,8 @@
     <div flex style="height: 375px;width: 100%" sxt-area-houses param="vm.project" item-id="vm.project.itemId" item-name="vm.project.itemName" >
     </div>
     <div flex>
-      <sxt-images-ybyd  item-id="vm.project.itemId" region-id="vm.project.idTree"></sxt-images-ybyd>
+      <div style="padding: 5px 10px;font-weight: bold;">{{vm.project.itemName}}</div>
+      <sxt-images-ybyd item-name="vm.project.itemName" item-id="vm.project.itemId" region-id="vm.project.idTree"></sxt-images-ybyd>
     </div>
     </div>
     <!--<div flex sxt-year style="overflow: auto;position:relative" layout="column" region-id="vm.project.regionId" show="vm.data.isShow" room-type="vm.project.roomType" procedure-id="vm.data.procedureId" image-type="vm.project.n" partion="vm.data.partion" region-name="vm.project.regionName"></div>-->
