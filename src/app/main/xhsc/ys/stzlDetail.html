@@ -1,0 +1,324 @@
+<md-tabs md-align-tabs="bottom" flex md-swipe-content class="zlpkwrap">
+  <md-tab label="{{b.AssessmentClassificationName}}" ng-repeat="b in vm.Assessment.AssessmentClassifys">
+    <md-tab-content flex layout-fill layout="column">
+      <div flex="none" layout="row" style="border-top: solid 1px silver" class="zlpkheader">
+        <div flex="25">
+          检测内容
+        </div><div flex="35">
+        评判标准
+      </div>
+        <div flex="40" layout="row">
+          <div flex style=" border-right: 1px solid #d8d8d8;">扣分标准</div>
+          <div flex="none" style="width:50px; border-right: 1px solid #d8d8d8;text-align: center;">
+            权重
+          </div>
+          <div flex="none" style="width:50px; border-right: 1px solid #d8d8d8;text-align: center;">
+            扣分
+          </div>
+          <div flex="none" style="width:50px;text-align: center;">
+            得分
+          </div>
+        </div>
+      </div>
+      <div flex layout="column" layout-fill>
+        <md-content flex  class="zlpksub">
+          <section class="zlpklist" ng-repeat="c in b.AssessmentClassifys">
+            <md-subheader>
+              <div layout="row" class="zlpksubheader">
+                <span>{{c.AssessmentClassificationName}}</span>
+              </div>
+            </md-subheader>
+            <table width="100%" cellspacing="0" cellpadding="0" class="zlpktables">
+              <tr ng-repeat="e in c.AssessmentClassifys">
+                <td style="width:{{vm.getWidth(1)}}%;">
+                  <p>{{e.AssessmentClassificationName}}</p>
+                </td>
+                <td>
+                  <table width="100%" cellspacing="0" cellpadding="0">
+                    <tr ng-repeat="f in e.AssessmentClassifys">
+                      <td style="width:{{vm.getWidth(2)}}%;">
+                        <p>{{f.AssessmentClassificationName}}</p>
+                      </td>
+                      <td>
+                        <table width="100%" cellspacing="0" cellpadding="0">
+                          <tr ng-repeat="g in f.AssessmentClassifys">
+                            <td style="width:{{vm.getWidth(3)}}%;">
+                              <p>{{g.AssessmentClassificationName}}</p>
+                            </td>
+                            <td>
+                              <table width="100%" cellspacing="0" cellpadding="0">
+                                <tr ng-repeat="item in g.AssessmentItems">
+                                  <td style="width:{{vm.getWidth(4)}}%">
+                                    <p>{{item.AssessmentCheckItemName}}</p>
+                                  </td>
+                                  <td>
+                                    <table width="100%" cellspacing="0" cellpadding="0">
+                                      <tr>
+                                        <td style="width:{{vm.getWidth(5)}}%">
+                                          <p>{{item.EvaluationCriteria}}</p>
+                                        </td>
+                                        <td>
+                                          <p>{{item.DeductionCriteria}}</p>
+                                        </td>
+                                        <td style="width: 50px;text-align: center;">
+                                          2
+                                        </td>
+                                        <td style="width: 50px;text-align: center;" class="lr">
+                                          <span ng-click="vm.check(item)" ng-if="!vm.input">录入</span>
+                                          <span ng-click="vm.check(item)" ng-if="vm.input">{{vm.input}}</span>
+                                        </td>
+                                        <td style="width: 50px;text-align: center;" class="lr">
+                                          2
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td colspan="5">
+                                          <table width="100%" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                              <td style="width:50px;text-align:center">13栋</td>
+                                              <td colspan="2" class="lr">
+                                                <table cellspacing="0" cellpadding="0" width="100%">
+                                                  <tr>
+                                                    <td>
+                                                      &nbsp;&nbsp;照片：
+                                                      <ul class="img" style="display: inline-block;vertical-align:top;margin-top:3px;" sxt-images="vm.images" ng-repeat="img in vm.images">
+                                                        <li><img ng-src="{{img.url}}"></li>
+                                                      </ul>
+                                                      <md-icon style="width:30px;height:30px;"><img src="assets/images/etc/plug.png"></md-icon>
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>
+                                                      &nbsp;&nbsp;备注：
+                                                      <ul class="img" style="display: inline-block;vertical-align:top;">
+                                                        <li><span style="font-size: 24px;">T</span></li>
+                                                      </ul>
+                                                    </td>
+                                                  </tr>
+                                                </table>
+                                              </td>
+                                              <td style="width: 50px;text-align: center;">
+                                                2
+                                              </td>
+                                              <td style="width: 50px;text-align: center;">
+                                                2
+                                              </td>
+                                            </tr>
+                                          </table>
+                                        </td>
+
+                                      </tr>
+                                      <!--<tr>-->
+                                      <!--<td colspan="3">-->
+                                      <!--B T 评判标准-->
+                                      <!--</td>-->
+                                      <!--<td style="width: 50px">-->
+                                      <!--2-->
+                                      <!--</td>-->
+                                      <!--<td style="width: 50px">-->
+                                      <!--2-->
+                                      <!--</td>-->
+                                      <!--</tr>-->
+                                    </table>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                          <tr ng-repeat="item in e.AssessmentItems">
+                            <td style="width:6.25%;">
+                              <p>{{item.AssessmentCheckItemName}}</p>
+                            </td>
+                            <td>
+                              <table width="100%" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td style="width:46.9%;">
+                                    <p>{{item.EvaluationCriteria}}</p>
+                                  </td>
+                                  <td>
+                                    <p>{{item.DeductionCriteria}}</p>
+                                  </td>
+                                  <td style="width: 50px;text-align: center;">
+                                    2
+                                  </td>
+                                  <td style="width: 50px;text-align: center;" class="lr">
+                                    <span ng-click="vm.check(item)" ng-if="!vm.input">录入</span>
+                                    <span ng-click="vm.check(item)" ng-if="vm.input">{{vm.input}}</span>
+                                  </td>
+                                  <td style="width: 50px;text-align: center;" class="lr">
+                                    2
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td colspan="5">
+                                    <table width="100%" cellspacing="0" cellpadding="0">
+                                      <tr>
+                                        <td style="width:50px;text-align:center">13栋</td>
+                                        <td colspan="2" class="lr">
+                                          <table cellspacing="0" cellpadding="0" width="100%">
+                                            <tr>
+                                              <td>
+                                                &nbsp;&nbsp;照片：
+                                                <ul class="img" style="display: inline-block;vertical-align:top;margin-top:3px;" sxt-images="vm.images" ng-repeat="img in vm.images">
+                                                  <li><img ng-src="{{img.url}}"></li>
+                                                </ul>
+                                                <md-icon style="width:30px;height:30px;"><img src="assets/images/etc/plug.png"></md-icon>
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td>
+                                                &nbsp;&nbsp;备注：
+                                                <ul class="img" style="display: inline-block;vertical-align:top;">
+                                                  <li><span style="font-size: 24px;">T</span></li>
+                                                </ul>
+                                              </td>
+                                            </tr>
+                                          </table>
+                                        </td>
+                                        <td style="width: 50px;text-align: center;">
+                                          2
+                                        </td>
+                                        <td style="width: 50px;text-align: center;">
+                                          2
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+
+                                </tr>
+                                <!--<tr>-->
+                                <!--<td colspan="3">-->
+                                <!--B T 评判标准-->
+                                <!--</td>-->
+                                <!--<td style="width: 50px">-->
+                                <!--2-->
+                                <!--</td>-->
+                                <!--<td style="width: 50px">-->
+                                <!--2-->
+                                <!--</td>-->
+                                <!--</tr>-->
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr ng-repeat="item in e.AssessmentItems">
+                      <td style="width:6.25%;">
+                        <p>{{item.AssessmentCheckItemName}}</p>
+                      </td>
+                      <td>
+                        <table width="100%" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td style="width:46.9%;">
+                              <p>{{item.EvaluationCriteria}}</p>
+                            </td>
+                            <td>
+                              <p>{{item.DeductionCriteria}}</p>
+                            </td>
+                            <td style="width: 50px;text-align: center;">
+                              2
+                            </td>
+                            <td style="width: 50px;text-align: center;" class="lr">
+                              <span ng-click="vm.check(item)" ng-if="!vm.input">录入</span>
+                              <span ng-click="vm.check(item)" ng-if="vm.input">{{vm.input}}</span>
+                            </td>
+                            <td style="width: 50px;text-align: center;" class="lr">
+                              2
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="5">
+                              <table width="100%" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td style="width:50px;text-align:center">13栋</td>
+                                  <td colspan="2" class="lr">
+                                    <table cellspacing="0" cellpadding="0" width="100%">
+                                      <tr>
+                                        <td>
+                                          &nbsp;&nbsp;照片：
+                                          <ul class="img" style="display: inline-block;vertical-align:top;margin-top:3px;" sxt-images="vm.images" ng-repeat="img in vm.images">
+                                            <li><img ng-src="{{img.url}}"></li>
+                                          </ul>
+                                          <md-icon style="width:30px;height:30px;"><img src="assets/images/etc/plug.png"></md-icon>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          &nbsp;&nbsp;备注：
+                                          <ul class="img" style="display: inline-block;vertical-align:top;">
+                                            <li><span style="font-size: 24px;">T</span></li>
+                                          </ul>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                  <td style="width: 50px;text-align: center;">
+                                    2
+                                  </td>
+                                  <td style="width: 50px;text-align: center;">
+                                    2
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr ng-repeat="item in c.AssessmentItems">
+                <td style="width:{{vm.getWidth(1)}}%;">
+                  <p>{{item.AssessmentCheckItemName}}</p>
+                </td>
+                <td>
+                  <table width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td style="width:46.9%;">
+                        <p>{{item.EvaluationCriteria}}</p>
+                      </td>
+                      <td>
+                        <p>{{item.DeductionCriteria}}</p>
+                      </td>
+                      <td style="width: 50px;text-align: center;">
+                        {{item.Weight}}
+                      </td>
+                      <td style="width: 50px;text-align: center;" class="lr">
+                        <span ng-click="vm.check(item,$event)" ng-if="!vm.input">录入</span>
+                        <span ng-click="vm.check(item)" ng-if="vm.input">{{vm.input}}</span>
+                      </td>
+                      <td style="width: 50px;text-align: center;" class="lr">
+                        {{item.lastScore}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="5">
+                        <table width="100%" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td style="width:50px;text-align:center">{{vm.Assessment.AssessmentClassifyRegions.RegionName}}</td>
+                            <td colspan="4" class="lr">
+                              &nbsp;&nbsp;照片：
+                              <ul class="img" style="display: inline-block;vertical-align:top;margin-top:3px;" sxt-images="vm.images" ng-repeat="img in vm.images">
+                                <li><img ng-src="{{img.url}}"></li>
+                              </ul>
+                              <md-icon style="width:30px;height:30px;"><img src="assets/images/etc/plug.png"></md-icon>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </section>
+        </md-content>
+      </div>
+    </md-tab-content>
+  </md-tab>
+</md-tabs>
+
+

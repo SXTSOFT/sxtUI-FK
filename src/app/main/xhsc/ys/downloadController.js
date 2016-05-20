@@ -125,6 +125,32 @@
         });
 
     };
+    vm.detail=function(ev,item){
+      $mdDialog.show({
+          controller: ['$scope', '$mdDialog','item', function DialogController($scope, $mdDialog,item) {
+            $scope.item = item;
+            $scope.hide = function () {
+              $mdDialog.hide();
+            };
+            $scope.cancel = function () {
+              $mdDialog.cancel();
+            };
+            $scope.answer = function (answer) {
+              $mdDialog.hide(answer);
+            };
+          }],
+          templateUrl: 'app/main/xhsc/ys/detailChoose.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          locals:{
+            item:item
+          },
+          clickOutsideToClose: true
+          //fullscreen: useFullScreen
+        })
+        .then(function(answer) {
 
+        });
+    }
   }
 })();

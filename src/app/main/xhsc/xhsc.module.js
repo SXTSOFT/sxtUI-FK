@@ -268,6 +268,21 @@
           }
         }
       })
+      .state('app.xhsc.stzlDetail',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'lx',
+        url   :'/stzlDetail/{AssessmentID}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/stzlDetail.html',
+            controller:'stzlDetailController as vm'
+          }
+        }
+      })
+
 
 
     // Navigation
