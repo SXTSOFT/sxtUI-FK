@@ -1,20 +1,22 @@
 /**
+ * Created by lss on 2016/5/20.
+ */
+/**
  * Created by emma on 2016/4/29.
  */
 (function(){
   'use strict';
-
   angular
     .module('app.xhsc')
-    .controller('evaluatelistController',evaluatelistController);
+    .controller('stzlDetailController',stzlDetailController);
 
   /** @ngInject*/
-  function evaluatelistController($mdDialog,$rootScope,$scope,utils,$stateParams,db,sxt,stzlServices,xhUtils){
+  function stzlDetailController($mdDialog,$rootScope,$scope,utils,$stateParams,db,sxt,stzlServices){
     var vm = this;
     var params={
-        AssessmentID:$stateParams.AssessmentID,
-        RegionID:$stateParams.RegionID,
-        RegionName:$stateParams.RegionName
+      AssessmentID:$stateParams.AssessmentID,
+      RegionID:$stateParams.RegionID,
+      RegionName:$stateParams.RegionName
     }
     stzlServices.getAssessment(params,null,function(item){
       if (item){
@@ -27,21 +29,19 @@
         delete item._rev;
         stzlServices.resultWrap(item,function(o){
           o._id = sxt.uuid();
-          o.AssessmentResultID= o.id;
-          o.regionID=params.RegionID; //区域Id
-          o.TotalScore=o.Weight;
+          o.Assessment_uuid= item._id;
           o.data_Type="stzl_item"
           o.isCheck=false;
+          o.lastScore=o.Weight; //最终得分
+          o.regionID=params.RegionID; //区域Id
           o.AssessmentID=params.AssessmentID; //评估项id
           o.question=[]; //扣分记录
           o.image=[];  //图片记录
         });
       }
     }).then(function(item){
-      if(item.AssessmentClassifys.length>20)
-          item.AssessmentClassifys.length =20;//TODO:
       vm.Assessment=item;
-      vm.levels = getEvels(item,0);
+      vm.levels =item? getEvels(item,0):0;
     })
     vm.getWidth = function (level) {
       if(level==1){
@@ -60,69 +60,55 @@
           levels.push(getEvels(item,level));
         });
         levels.forEach(function (l) {
-            if(max<l)
-              max = l;
+          if(max<l)
+            max = l;
         });
         return max;
       }
       return level+1;
     }
 
-    //vm.images = [
-    //  {url:'assets/images/etc/plug.png'},
-    //  {url:'assets/images/etc/fallout.jpg'},
-    //  {url:'assets/images/etc/fallout.jpg'}
-    //];
+    vm.images = [
+      {url:'assets/images/etc/plug.png'},
+      {url:'assets/images/etc/fallout.jpg'},
+      {url:'assets/images/etc/fallout.jpg'}
+    ];
     var deleteFn = function(d,data){
       //vm.images.splice(data,1);
       $scope.$apply();
-     // console.log('a',vm.images)
+      // console.log('a',vm.images)
     }
     $rootScope.$on('delete',deleteFn);
-    vm.quesDetail = function(question){
-      $mdDialog.show({
-        controller:function($scope){
-          $scope.question= question;
-        },
-        templateUrl:'app/main/xhsc/ys/evaluateQuesDetail.html',
-        parent: angular.element(document.body),
-        clickOutsideToClose:true,
-        focusOnOpen:false
-      })
-    }
     vm.check = function(item,ev){
       $mdDialog.show({
         controller: DialogController,
         templateUrl:'app/main/xhsc/ys/evaluateQues.html',
         parent: angular.element(document.body),
         targetEvent: ev,
-        clickOutsideToClose:true,
-        focusOnOpen:false
-        })
+        clickOutsideToClose:true
+      })
 
       function DialogController($scope, $mdDialog) {
         $scope.Problems =item.Problems;
         $scope.answer = function(answer,ev) {
-          var  question=angular.extend({
+          item.question.push(angular.extend({
             _id : sxt.uuid(),
-            DeducScoretItemID:this._id,
-            AssessmentResultID:item.AssessmentResultID,
             data_Type:"stzl_question",
-            AssessmentCheckItemID:item.AssessmentCheckItemID,
-            DeductionScore:this.DeductValue
-          },answer)
-          item.question.push(question);
+            createTime:new Date().toDateString(),
+            AssessmentCheckItem_uuid:item._id,
+            AssessmentCheckItemID:item.AssessmentCheckItemID
+          },answer));
           stzlServices.setLastScore(item);
           item.isCheck=true;
           var _db= db('stzl_'+params.AssessmentID);
           _db.addOrUpdate(vm.Assessment).then(function(){
-            xhUtils.photo().then(function ($base64Url) {
-              console.log($base64Url);
-            });
+            utils.confirm('前往拍照或返回',ev,'拍照','').then(function(){
+            },function(r){
+            })
           },function(){
             utils.alert("数据保存失败!");
           })
-          };
+        };
       }
     }
   }

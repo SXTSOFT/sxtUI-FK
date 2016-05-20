@@ -8,16 +8,27 @@
           {{item.AssessmentSubject}}
         </p>
         <div class="md-secondary md-hue-3">
-          <md-button ng-hide="item.completed" ng-click="vm.showECs($event,item)" class="md-raised md-primary" >
+          <!--<md-button ng-hide="item.completed" ng-click="vm.showECs($event,item)" class="md-raised md-primary" >-->
+            <!--开始评估-->
+          <!--</md-button>-->
+          <md-button  ng-click="vm.showECs($event,item)" class="md-raised md-primary" >
             开始评估
           </md-button>
           <md-button ng-show="item.completed" ng-click="vm.delete(item,$event)" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
             删除
           </md-button>
-          <md-button ng-show="item.completed" ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
+          <!--<md-button ng-show="item.completed" ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">-->
+            <!--详情-->
+          <!--</md-button>-->
+          <md-button ng-show="item.completed" ng-click="vm.detail($event,item)" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
             详情
           </md-button>
-          <span style="display:inline-block;text-align: center;" ng-hide="item.completed">
+           <!--<span style="display:inline-block;text-align: center;" ng-hide="item.completed">-->
+            <!--<md-button ng-click="vm.upload(item)" class="md-raised upload-btn">-->
+              <!--<md-progress-circular ng-show="item.progress && item.progress!=100" value="{{item.progress}}"  md-diameter="20"></md-progress-circular> 上传-->
+            <!--</md-button>-->
+          <!--</span>-->
+          <span style="display:inline-block;text-align: center;">
             <md-button ng-click="vm.upload(item)" class="md-raised upload-btn">
              <md-progress-circular ng-show="item.progress && item.progress!=100" value="{{item.progress}}"  md-diameter="20"></md-progress-circular> 上传
             </md-button>

@@ -1,0 +1,30 @@
+
+<md-dialog aria-label="1"  ng-cloak style="background:transparent;box-shadow: none;max-width:100%;width:100%;" class="e-dialog">
+  <md-dialog-actions>
+    <md-list flex layout="row">
+      <md-list-item flex>
+        <md-button ng-click="cancel()" ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" md-autofocus>
+          <img ng-src="app/main/xhsc/images/measure.png">
+        </md-button>
+      </md-list-item>
+      <md-list-item flex>
+        <!--<md-button ui-sref="app.xhsc.evaluatelist" ng-click="cancel()">-->
+        <!--<img ng-src="app/main/xhsc/images/quality.png">-->
+        <!--</md-button>-->
+        <md-button ui-sref="app.xhsc.stzlDetail({assessmentID:item.AssessmentID})"  ng-click="cancel()">
+          <img ng-src="app/main/xhsc/images/quality.png">
+        </md-button>
+      </md-list-item>
+      <md-list-item flex>
+        <md-button>
+          <img ng-src="app/main/xhsc/images/manage.png">
+        </md-button>
+      </md-list-item>
+      <md-list-item flex>
+        <md-button>
+          <img ng-src="app/main/xhsc/images/culture.png">
+        </md-button>
+      </md-list-item>
+    </md-list>
+  </md-dialog-actions>
+</md-dialog>

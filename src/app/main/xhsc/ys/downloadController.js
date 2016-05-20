@@ -9,7 +9,7 @@
     .controller('downloadController',downloadController);
 
   /** @ngInject*/
-  function downloadController($mdDialog,db,remote,localPack,xhUtils,$rootScope,$scope,pack,utils){
+  function downloadController($mdDialog,db,remote,localPack,xhUtils,$rootScope,$scope,pack,utils,stzlServices){
     var vm = this;
     var xcpk = db('xcpk');
     xcpk.get('xcpk').then(function (result) {
@@ -47,6 +47,7 @@
       })
     }
     vm.upload =function (item) {
+
       var pk = pack.sc.up(item.AssessmentID);
       pk.upload(function (proc) {
         item.progress = proc;
@@ -126,6 +127,32 @@
         });
 
     };
+    vm.detail=function(ev,item){
+      $mdDialog.show({
+          controller: ['$scope', '$mdDialog','item', function DialogController($scope, $mdDialog,item) {
+            $scope.item = item;
+            $scope.hide = function () {
+              $mdDialog.hide();
+            };
+            $scope.cancel = function () {
+              $mdDialog.cancel();
+            };
+            $scope.answer = function (answer) {
+              $mdDialog.hide(answer);
+            };
+          }],
+          templateUrl: 'app/main/xhsc/ys/detailChoose.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          locals:{
+            item:item
+          },
+          clickOutsideToClose: true
+          //fullscreen: useFullScreen
+        })
+        .then(function(answer) {
 
+        });
+    }
   }
 })();

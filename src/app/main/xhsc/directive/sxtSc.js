@@ -105,7 +105,12 @@
                 })
                 p.rows.forEach(function(geo){
                   layer.addData(geo.geometry);
-                })
+                });
+                if(p.rows.length == 0 && scope.measureIndexes.find(function (m) { //
+                    return m.QSKey == 5;
+                  })){
+                  
+                }
               })
             });
           },
