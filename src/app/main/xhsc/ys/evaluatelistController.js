@@ -27,7 +27,7 @@
         delete item._rev;
         stzlServices.resultWrap(item,function(o){
           o._id = sxt.uuid();
-          o.AssessmentResultID= o._id;
+          o.AssessmentResultID= o.id;
           o.regionID=params.RegionID; //区域Id
           o.TotalScore=o.Weight;
           o.data_Type="stzl_item"
@@ -78,19 +78,29 @@
       $scope.$apply();
      // console.log('a',vm.images)
     }
+    vm.fit = function(item){
+      item.done =true;
+      item.TotalScore = item.Weight;
+      item.delValue = item.Weight - item.TotalScore;
+    }
     $rootScope.$on('delete',deleteFn);
-    vm.quesDetail = function(question){
+    vm.quesDetail = function(question,q,item){
       $mdDialog.show({
         controller:function($scope){
-          $scope.question= question;
+          $scope.question= q;
           console.log(question)
           $scope.delete = function(d){
-            var idx = $scope.question.indexOf(d)
-            //console.log($scope.question,idx)
-            $scope.question.splice(idx,1);
-            if($scope.question.length <=0){
+            var idx = question.indexOf(d)
+            stzlServices.setaddScore(item)
+            console.log(stzlServices)
+            question.splice(idx,1);
+
+            //if($scope.question.length <=0){
               $mdDialog.hide()
-            }
+           // }
+          }
+          $scope.addPhoto = function(q){
+
           }
         },
         templateUrl:'app/main/xhsc/ys/evaluateQuesDetail.html',
@@ -135,11 +145,18 @@
               utils.alert("数据保存失败!");
             });
           },function(r){
+            question.images.push({
+              ImageID:sxt.uuid(),
+              RelationID:question._id,
+              ImageUrl:"app/main/xhsc/images/text.png",
+              ImageByte:""
+            });
             _db.addOrUpdate(vm.Assessment).then(function (r) {
             }, function (r) {
               utils.alert("数据保存失败!");
             });
           });
+         // console.log(stzlServices)
           stzlServices.setLastScore(item);
           item.isCheck = true;
           var _db = db('stzl_' + params.AssessmentID);
