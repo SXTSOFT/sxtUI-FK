@@ -105,7 +105,7 @@
           var _db= db('stzl_'+params.AssessmentID);
           _db.addOrUpdate(vm.Assessment).then(function(){
             xhUtils.photo().then(function ($base64Url) {
-              console.log($base64Url)
+              console.log($base64Url);
             });
           },function(){
             utils.alert("数据保存失败!");
