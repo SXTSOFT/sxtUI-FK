@@ -66,29 +66,42 @@
       return level+1;
     }
 
-    vm.images = [
-      {url:'assets/images/etc/plug.png'},
-      {url:'assets/images/etc/fallout.jpg'},
-      {url:'assets/images/etc/fallout.jpg'}
-    ];
+    //vm.images = [
+    //  {url:'assets/images/etc/plug.png'},
+    //  {url:'assets/images/etc/fallout.jpg'},
+    //  {url:'assets/images/etc/fallout.jpg'}
+    //];
     var deleteFn = function(d,data){
       //vm.images.splice(data,1);
       $scope.$apply();
      // console.log('a',vm.images)
     }
     $rootScope.$on('delete',deleteFn);
+    vm.quesDetail = function(question){
+      $mdDialog.show({
+        controller:function($scope){
+          $scope.question= question;
+        },
+        templateUrl:'app/main/xhsc/ys/evaluateQuesDetail.html',
+        parent: angular.element(document.body),
+        clickOutsideToClose:true,
+        focusOnOpen:false
+      })
+    }
     vm.check = function(item,ev){
       $mdDialog.show({
-          controller: DialogController,
-          templateUrl:'app/main/xhsc/ys/evaluateQues.html',
-          parent: angular.element(document.body),
-          targetEvent: ev,
-          clickOutsideToClose:true
+        controller: DialogController,
+        templateUrl:'app/main/xhsc/ys/evaluateQues.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose:true,
+        focusOnOpen:false
         })
 
       function DialogController($scope, $mdDialog) {
         $scope.Problems =item.Problems;
         $scope.answer = function(answer,ev) {
+
           item.question.push(angular.extend({
             _id : sxt.uuid(),
             data_Type:"stzl_question",
