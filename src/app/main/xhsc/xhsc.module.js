@@ -50,7 +50,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'实体质量',
-        url   :'/stzl/{assessmentID}',
+        url   :'/stzl/{assessmentID}/{AssessmentTypeID}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/ch1.html',

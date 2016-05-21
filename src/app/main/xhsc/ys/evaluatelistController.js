@@ -14,8 +14,10 @@
     var params={
         AssessmentID:$stateParams.AssessmentID,
         RegionID:$stateParams.RegionID,
-        RegionName:$stateParams.RegionName
+        RegionName:$stateParams.RegionName,
+        AssessmentTypeID:'7d179e8804a54819aad34b7a9398880d'
     }
+    //vm.AssessmentTypeID = '7d179e8804a54819aad34b7a9398880d'
     vm.RegionName = $stateParams.RegionName;
     stzlServices.getAssessment(params,null,function(item){
       if (item){
