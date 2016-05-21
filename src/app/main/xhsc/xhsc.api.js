@@ -29,6 +29,9 @@
       },
       getMeasure:function(param){
         return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResult',param));
+      },
+      queryResult:function (assessmentID) {
+        return $http.get($http.url('/Api/AssessmentApi/GetAssessmentItemResult',{AssessmentID:assessmentID}))
       }
     },
 	    /**
