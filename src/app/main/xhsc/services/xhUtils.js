@@ -7,14 +7,15 @@
     .module('app.xhsc')
     .factory('xhUtils',xhUtils);
   /** @ngInject */
-  function xhUtils($mdDialog){
+  function xhUtils($mdDialog,$q){
     var _areaId, cP,region;
     var o = {
       getMapPic:getMapPic,
       findAll:findAll,
       findRegion:findRegion,
       wrapRegion:wrapRegion,
-      photo:photo
+      photo:photo,
+      when:when
     };
     return o;
 
@@ -168,6 +169,16 @@
         '  </md-dialog-content>'+
         '</md-dialog>'
       });
+    }
+
+    function when(exec,result) {
+      return exec().then(function (r) {
+        if(result(r)!==false){
+          return exec();
+        }
+        else
+          return r;
+      })
     }
   }
 })();
