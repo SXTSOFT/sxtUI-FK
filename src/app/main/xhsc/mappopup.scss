@@ -42,6 +42,12 @@ md-tabs[md-align-tabs="bottom"]{
       border-top: 1px solid #d8d8d8;
     }
   }
+  .zdybtn{
+    position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;
+    &.done{
+      color:#e93030;
+    }
+  }
 }
 
 .subheader{
@@ -1467,6 +1473,7 @@ md-tabs[md-align-tabs="bottom"]{
 .zlpkheader{
   background:rgb(245,245,245);;
   border: 1px solid #d8d8d8;
+  font-size:16px;
   >div{
     height: 40px;
     line-height: 40px;
@@ -1482,6 +1489,7 @@ md-tabs[md-align-tabs="bottom"]{
   }
 }
 .zlpksub{
+  font-size:14px;
   .md-subheader{
     background: #e93030;
     .zlpksubheader{
@@ -1572,5 +1580,9 @@ md-tabs[md-align-tabs="bottom"]{
     &.md-no-proxy{
       padding: 0;
     }
+
+  }
+  .md-button{
+    min-width: 50px;
   }
 }
