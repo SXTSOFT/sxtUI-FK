@@ -16,6 +16,7 @@
         RegionID:$stateParams.RegionID,
         RegionName:$stateParams.RegionName
     }
+    vm.RegionName = $stateParams.RegionName;
     stzlServices.getAssessment(params,null,function(item){
       if (item){
         item._id=params.AssessmentID;
@@ -32,6 +33,7 @@
           o.TotalScore=o.Weight;
           o.data_Type="stzl_item"
           o.isCheck=false;
+          o.delValue = 0;
           o.AssessmentID=params.AssessmentID; //评估项id
           o.question=[]; //扣分记录
           o.image=[];  //图片记录
@@ -110,10 +112,9 @@
           console.log(question)
           $scope.delete = function(d){
             var idx = question.indexOf(d)
-            stzlServices.setaddScore(item)
-            console.log(stzlServices)
-            question.splice(idx,1);
 
+            question.splice(idx,1);
+            stzlServices.setaddScore(item)
             //if($scope.question.length <=0){
               $mdDialog.hide()
            // }
@@ -164,12 +165,12 @@
               utils.alert("数据保存失败!");
             });
           },function(r){
-            question.images.push({
-              ImageID:sxt.uuid(),
-              RelationID:question._id,
-              ImageUrl:"app/main/xhsc/images/text.png",
-              ImageByte:""
-            });
+            //question.images.push({
+            //  ImageID:sxt.uuid(),
+            //  RelationID:question._id,
+            //  ImageUrl:"app/main/xhsc/images/text.png",
+            //  ImageByte:""
+            //});
             _db.addOrUpdate(vm.Assessment).then(function (r) {
             }, function (r) {
               utils.alert("数据保存失败!");
