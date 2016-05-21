@@ -1,1 +1,666 @@
-<md-button ng-click="vm.photo()">button</md-button>
+<md-content class="subheader" style="position:relative;">
+  <div style="width: 100%;display:none;" layout="column">
+    <div style="position: fixed;top:44px;background: #fff;height:40px;left:8px;right:8px;z-index:10;padding-top: 5px;">
+      <table cellspacing="0" cellpadding="0" border="0" width="100%"  class="zdytable" style="table-layout: fixed;margin-bottom: 0;">
+        <thead >
+        <tr>
+          <th colspan="4" width="204">
+            检测内容
+          </th>
+          <th>
+            评判标准
+          </th>
+          <th>
+            扣分标准
+          </th>
+          <th width="50">
+            权重
+          </th>
+          <th width="50">
+            扣分
+          </th>
+          <th width="50">
+            得分
+          </th>
+        </tr>
+        </thead>
+      </table>
+    </div>
+    <div style="position: relative;padding:0 8px;">
+      <div style="margin-top:40px;"></div>
+      <div>
+        <md-subheader class="md-primary md-no-sticky">标题一</md-subheader>
+        <table cellspacing="0" cellpadding="0" border="0" width="100%"  class="zdytable" style="table-layout: fixed;margin-bottom: 0;">
+          <tbody>
+          <tr>
+            <td rowspan="6" class="procedurename" width="28"><p>钢筋工程</p></td>
+            <td rowspan="6" class="procedurename" width="28"><p>钢筋工程</p></td>
+            <td rowspan="3" class="procedurename" width="28"><p>钢筋工程</p></td>
+            <td width="120">钢筋工程</td>
+            <td>检查人</td>
+            <td>检查人</td>
+            <td width="50">检查人</td>
+            <td width="50">检查人</td>
+            <td width="50">检查人</td>
+          </tr>
+          <tr>
+            <td width="120">钢筋工程</td>
+            <td>检查人</td>
+            <td>检查人</td>
+            <td width="50">检查人</td>
+            <td width="50">检查人</td>
+            <td width="50">检查人</td>
+          </tr>
+          <tr>
+            <td width="120">钢筋工程</td>
+            <td>检查人</td>
+            <td>检查人</td>
+            <td width="50">检查人</td>
+            <td width="50">检查人</td>
+            <td width="50">检查人</td>
+          </tr>
+          <tr>
+            <td rowspan="3" class="procedurename" width="28"><p>钢筋工程</p></td>
+            <td width="120">钢筋工程</td>
+            <td>检查人</td>
+            <td>检查人</td>
+            <td width="50">检查人</td>
+            <td width="50">检查人</td>
+            <td width="50">检查人</td>
+          </tr>
+          <tr>
+            <td width="120">钢筋工程</td>
+            <td>检查人</td>
+            <td>检查人</td>
+            <td width="50">检查人</td>
+            <td width="50">检查人</td>
+            <td width="50">检查人</td>
+          </tr>
+          <tr>
+            <td width="120">钢筋工程</td>
+            <td>检查人</td>
+            <td>检查人</td>
+            <td width="50">检查人</td>
+            <td width="50">检查人</td>
+            <td width="50">检查人</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <md-subheader class="md-primary md-no-sticky">标题二</md-subheader>
+        <table cellspacing="0" cellpadding="0" border="0" width="100%"  class="zdytable">
+          <tbody>
+          <tr>
+            <td>检查人</td>
+            <td>检查人</td>
+          </tr>
+          <tr>
+            <td>检查人</td>
+            <td>检查人</td>
+          </tr>
+          <tr>
+            <td>检查人</td>
+            <td>检查人</td>
+          </tr>
+          <tr>
+            <td>检查人</td>
+            <td>检查人</td>
+          </tr>
+          <tr>
+            <td>检查人</td>
+            <td>检查人</td>
+          </tr>
+          <tr>
+            <td>检查人</td>
+            <td>检查人</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div layout="row" flex style="margin-top: 20px;">
+    <div layout="column" flex>
+      <table cellspacing="0" cellpadding="0" border="0" class="zdytable" style="width:100%;">
+        <tr>
+          <td>内容</td>
+          <td style="width:100px;text-align: center;">位置</td>
+          <td align="center">结果</td>
+          <td align="center">最大偏差</td>
+          <td align="center">合格率</td>
+        </tr>
+        <tr>
+          <td rowspan="4" class="procedurename"><p>工程</p></td>
+          <td>abc</td>
+          <td>结果</td>
+          <td>结果</td>
+          <td>结果</td>
+        </tr>
+        <tr>
+          <td rowspan="2">abc</td>
+          <td rowspan="2">结果</td>
+          <td rowspan="2">结果</td>
+          <td rowspan="2">结果</td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+          <td>abc</td>
+          <td>结果</td>
+          <td>结果</td>
+          <td>结果</td>
+        </tr>
+        <!--<tr ng-repeat="item in vm.alItem">-->
+        <!--<td rowspan="{{vm.alItem.length+1}}" colspan="1" class="procedurename" ng-if="$index==0"><p>工程</p></td>-->
+        <!--<td rowspan="{{item.rowspan}}">{{item.IndexName}}</td>-->
+        <!--<td rowspan="{{item.rowspan}}"><span ng-if="item.rowspan == 1">结果</span></td>-->
+        <!--<td rowspan="{{item.rowspan}}"><span ng-if="item.rowspan == 1">结果</span></td>-->
+        <!--<td rowspan="{{item.rowspan}}"><span ng-if="item.rowspan == 1">结果</span></td>-->
+        <!--</tr>-->
+      </table>
+    </div>
+    <div layout="column" flex="none">
+      <table cellspacing="0" cellpadding="0" border="0" class="zdytable" style="table-layout: fixed;">
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+        </tr>
+        <!--<tr ng-repeat="item in vm.alItem[1].rowData">-->
+        <!--<td ng-repeat="point in item">{{point.value}}</td>-->
+        <!--</tr>-->
+      </table>
+    </div>
+  </div>
+
+  <table cellspacing="0" cellpadding="0" border="0" width="100%" class="zdytable">
+    <tr>
+      <td colspan="{{vm.cols + 5}}" style="text-align: center;" class="head">
+        abc
+      </td>
+    </tr>
+    <tr>
+      <td colspan="{{vm.oneCols}}">
+        项目名称:{{vm.info.name}}
+      </td>
+      <td colspan="{{vm.twoCols}}">检查人:{{vm.person}}</td>
+      <td colspan="{{vm.twoCols}}">检查日期:{{vm.time}}</td>
+    </tr>
+    <tr>
+      <td>内容</td>
+      <td style="width:100px;text-align: center;">位置</td>
+      <td align="center">结果</td>
+      <td align="center">最大偏差</td>
+      <td align="center">合格率</td>
+      <td ng-repeat="i in vm.alItem[0].Points">
+        {{$index+1}}
+      </td>
+      <!--<td ng-repeat="i in vm.alItem[0].Points">{{$index+1}}</td>-->
+    </tr>
+    <!--<tr ng-repeat="item in vm.alItem">-->
+    <!--<td>{{item.IndexName}}</td>-->
+    <!--<td>结果</td>-->
+    <!--<td>最大偏差</td>-->
+    <!--<td>合格率</td>-->
+    <!--<td ng-repeat="point in item.Points">{{point.MeasureValue}}</td>-->
+    <!--</tr>-->
+    <!--<tr ng-repeat="item in vm.alItem">-->
+    <!--<td rowspan="{{vm.alItem.length+1}}" colspan="1" class="procedurename" ng-if="$index==0"><p>工程</p></td>-->
+    <!--<td rowspan="{{item.rowspan}}">{{item.IndexName}}</td>-->
+    <!--<td rowspan="{{item.rowspan}}">结果</td>-->
+    <!--<td rowspan="{{item.rowspan}}">结果</td>-->
+    <!--<td rowspan="{{item.rowspan}}">结果</td>-->
+    <!--<td ng-repeat="point in item.Points">&lt;!&ndash;ng-repeat="point in item.Points"&ndash;&gt;-->
+    <!--{{point.MeasureValue}}-->
+    <!--</td>-->
+    <!--</tr>-->
+    <tr>
+      <td class="procedurename" rowspan="2"><p>工程</p></td>
+      <td rowspan="2">名称</td>
+      <td rowspan="2">结果</td>
+      <td rowspan="2">结果</td>
+      <td rowspan="2">结果</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+  </table>
+
+
+  <table cellspacing="0" cellpadding="0" border="0" width="100%" class="zdytable">
+    <tr>
+      <td colspan="26" style="text-align: center;" class="head">实测工序名称</td>
+    </tr>
+    <tr>
+      <td colspan="6">项目名称:</td>
+      <td colspan="8">检查房号:</td>
+      <td colspan="6">检查人:</td>
+      <td colspan="6">检查日期:</td>
+    </tr>
+    <tr>
+      <td>内容</td>
+      <td colspan="2" style="width:100px;">位置</td>
+      <td>结果</td>
+      <td>最大偏差</td>
+      <td>合格率</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+      <td>11</td>
+      <td>12</td>
+      <td>13</td>
+      <td>14</td>
+      <td>15</td>
+      <td>16</td>
+      <td>17</td>
+      <td>18</td>
+      <td>19</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td rowspan="9" colspan="1" class="procedurename"><p>砼工程</p></td>
+      <td colspan="2">结构立面垂直度≤8mm</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+      <td>11</td>
+      <td>12</td>
+      <td>13</td>
+      <td>14</td>
+      <td>15</td>
+      <td>16</td>
+      <td>17</td>
+      <td>18</td>
+      <td>19</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td colspan="2">结构表面平整度≤8mm</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+      <td>11</td>
+      <td>12</td>
+      <td>13</td>
+      <td>14</td>
+      <td>15</td>
+      <td>16</td>
+      <td>17</td>
+      <td>18</td>
+      <td>19</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td colspan="2">结构截面尺寸+8,-5mm</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+      <td>11</td>
+      <td>12</td>
+      <td>13</td>
+      <td>14</td>
+      <td>15</td>
+      <td>16</td>
+      <td>17</td>
+      <td>18</td>
+      <td>19</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td colspan="1" rowspan="2">顶棚表面水平度≤10mm</td>
+      <td>客餐厅</td>
+      <td rowspan="2">a</td>
+      <td rowspan="2">a</td>
+      <td rowspan="2">a</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+      <td>11</td>
+      <td>12</td>
+      <td>13</td>
+      <td>14</td>
+      <td>15</td>
+      <td>16</td>
+      <td>17</td>
+      <td>18</td>
+      <td>19</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>餐厅</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+      <td>11</td>
+      <td>12</td>
+      <td>13</td>
+      <td>14</td>
+      <td>15</td>
+      <td>16</td>
+      <td>17</td>
+      <td>18</td>
+      <td>19</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td rowspan="2">楼板厚度+8,-5mm</td>
+      <td>设计值</td>
+      <td rowspan="2"></td>
+      <td rowspan="2"></td>
+      <td rowspan="2"></td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+      <td>11</td>
+      <td>12</td>
+      <td>13</td>
+      <td>14</td>
+      <td>15</td>
+      <td>16</td>
+      <td>17</td>
+      <td>18</td>
+      <td>19</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>测量值</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+      <td>11</td>
+      <td>12</td>
+      <td>13</td>
+      <td>14</td>
+      <td>15</td>
+      <td>16</td>
+      <td>17</td>
+      <td>18</td>
+      <td>19</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td colspan="2">建筑物周边方正度≤10mm</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+      <td>11</td>
+      <td>12</td>
+      <td>13</td>
+      <td>14</td>
+      <td>15</td>
+      <td>16</td>
+      <td>17</td>
+      <td>18</td>
+      <td>19</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td colspan="2">水电管线压槽深度≤15mm</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+      <td>11</td>
+      <td>12</td>
+      <td>13</td>
+      <td>14</td>
+      <td>15</td>
+      <td>16</td>
+      <td>17</td>
+      <td>18</td>
+      <td>19</td>
+      <td>20</td>
+    </tr>
+    </tr>
+  </table>
+  <table cellspacing="0" cellpadding="0" border="0" width="100%" class="zdytable">
+    <tr>
+      <td colspan="26" style="text-align: center;" class="head">实测工序名称</td>
+    </tr>
+    <tr>
+      <td colspan="6">项目名称:</td>
+      <td colspan="8">检查房号:</td>
+      <td colspan="6">检查人:</td>
+      <td colspan="6">检查日期:</td>
+    </tr>
+    <tr>
+      <td>内容</td>
+      <td colspan="2" style="width:100px;">位置</td>
+      <td>结果</td>
+      <td>最大偏差</td>
+      <td>合格率</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+      <td>11</td>
+      <td>12</td>
+      <td>13</td>
+      <td>14</td>
+      <td>15</td>
+      <td>16</td>
+      <td>17</td>
+      <td>18</td>
+      <td>19</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td rowspan="3" colspan="1" class="procedurename"><p>水泥砂浆地面</p></td>
+      <td colspan="2"></td>
+      <td>结果</td>
+      <td>最大偏差</td>
+      <td>合格率</td>
+      <td colspan="9">表面平整度≤4mm</td>
+      <td>合格率</td>
+      <td colspan="10">水平度≤10mm</td>
+    </tr>
+    <tr>
+      <td colspan="2">主卧室</td>
+      <td rowspan="2"></td>
+      <td rowspan="2"></td>
+      <td rowspan="2"></td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td rowspan="2"></td>
+      <td>11</td>
+      <td>12</td>
+      <td>13</td>
+      <td>14</td>
+      <td>15</td>
+      <td>16</td>
+      <td>17</td>
+      <td>18</td>
+      <td>19</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td colspan="2">主卧室</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>11</td>
+      <td>12</td>
+      <td>13</td>
+      <td>14</td>
+      <td>15</td>
+      <td>16</td>
+      <td>17</td>
+      <td>18</td>
+      <td>19</td>
+      <td>20</td>
+    </tr>
+  </table>
+</md-content>
