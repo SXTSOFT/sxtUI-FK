@@ -64,30 +64,31 @@
                                               {{item.Weight}}
                                             </td>
                                             <td style="width: 50px;text-align: center;" class="lr">
-                                              {{item.delValue}}
+                                              {{ vm.getDelValue(item) }}
                                             </td>
                                             <td style="width: 50px;text-align: center;" class="lr">
                                               {{item.TotalScore}}
                                             </td>
                                           </tr>
-                                          <tr>
+                                          <tr ng-repeat="region in item.regions">
                                             <td colspan="5">
                                               <table width="100%" cellspacing="0" cellpadding="0">
                                                 <tr>
-                                                  <td style="width:50px;text-align:center">{{vm.RegionName}}}</td>
+                                                  <td style="width:50px;text-align:center">{{region.RegionName}}</td>
                                                   <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
                                                     &nbsp;&nbsp;扣分信息：
-                                                    <span ng-repeat="q in item.question">
-                                                      <!--<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>-->
-                                                      <md-button ng-if="item.question.length" class="md-icon-button" ng-click="vm.quesDetail(item.question,q,item)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
+                                                    <p style="display: inline-block;margin-bottom: 0;padding-right: 90px;">
+                                                    <span ng-repeat="q in region.question">
+                                                      <md-button style="min-width: 50px;"  ng-click="vm.quesDetail(q,item,region.question)"><md-icon style="width:25px;height:25px;"><img src="app/main/xhsc/images/pic.png" width="25"></md-icon> {{q.DeductionScore}}</md-button>
                                                     </span>
-                                                    <md-button aria-label="" ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
-                                                    <md-button aria-label="" class="md-button md-raised" ng-if="item.question.length==0" ng-click="vm.fit(item)" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
+                                                      <md-button  style="min-width: 50px;" aria-label="" ng-if="!region.done" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
+                                                    </p>
+                                                    <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="!region.question || region.question.length==0" ng-click="vm.fit(region,item)" ng-class="{'done':region.done}">符合要求</md-button>
                                                   </td>
+
                                                 </tr>
                                               </table>
                                             </td>
-
                                           </tr>
                                         </table>
                                       </td>
@@ -112,30 +113,31 @@
                                         {{item.Weight}}
                                       </td>
                                       <td style="width: 50px;text-align: center;" class="lr">
-                                        {{item.delValue}}
+                                        {{ vm.getDelValue(item) }}
                                       </td>
                                       <td style="width: 50px;text-align: center;" class="lr">
                                         {{item.TotalScore}}
                                       </td>
                                     </tr>
-                                    <tr>
+                                    <tr ng-repeat="region in item.regions">
                                       <td colspan="5">
                                         <table width="100%" cellspacing="0" cellpadding="0">
                                           <tr>
-                                            <td style="width:50px;text-align:center">{{vm.RegionName}}</td>
+                                            <td style="width:50px;text-align:center">{{region.RegionName}}</td>
                                             <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
                                               &nbsp;&nbsp;扣分信息：
-                                              <span ng-repeat="q in item.question">
-                                                <!--<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>-->
-                                                <md-button ng-if="item.question.length" class="md-icon-button" ng-click="vm.quesDetail(item.question,q,item)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
-                                              </span>
-                                              <md-button aria-label="" ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
-                                              <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="item.question.length==0" ng-click="vm.fit(item)" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
+                                              <p style="display: inline-block;margin-bottom: 0;padding-right: 90px;">
+                                                <span ng-repeat="q in region.question">
+                                                  <md-button style="min-width: 50px;"  ng-click="vm.quesDetail(q,item,region.question)"><md-icon style="width:25px;height:25px;"><img src="app/main/xhsc/images/pic.png" width="25"></md-icon> {{q.DeductionScore}}</md-button>
+                                                </span>
+                                                <md-button  style="min-width: 50px;" aria-label="" ng-if="!region.done" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
+                                              </p>
+                                              <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="!region.question || region.question.length==0" ng-click="vm.fit(region,item)" ng-class="{'done':region.done}">符合要求</md-button>
                                             </td>
+
                                           </tr>
                                         </table>
                                       </td>
-
                                     </tr>
                                   </table>
                                 </td>
@@ -144,7 +146,7 @@
                           </td>
                         </tr>
                         <tr ng-repeat="item in e.AssessmentItems">
-                          <td style="width:14.1%;">
+                          <td style="width:{{vm.getW(2,2)}}%">
                             <p>{{item.AssessmentCheckItemName}}</p>
                           </td>
                           <td>
@@ -173,17 +175,38 @@
                                       <td style="width:50px;text-align:center">{{region.RegionName}}</td>
                                       <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
                                         &nbsp;&nbsp;扣分信息：
-                                  <span ng-repeat="q in region.question">
-                                    <md-button  ng-click="vm.quesDetail(q,region)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon>  {{q.DeductionScore}}</md-button>
-                                  </span>
-                                        <md-button aria-label="" ng-if="!region.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
-                                        <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="!region.question || region.question.length==0" ng-click="vm.fit(region)" ng-class="{'done':item.done}">符合要求</md-button>
+                                        <p style="display: inline-block;margin-bottom: 0;padding-right: 90px;">
+                                          <span ng-repeat="q in region.question">
+                                            <md-button style="min-width: 50px;"  ng-click="vm.quesDetail(q,item,region.question)"><md-icon style="width:25px;height:25px;"><img src="app/main/xhsc/images/pic.png" width="25"></md-icon> {{q.DeductionScore}}</md-button>
+                                          </span>
+                                          <md-button  style="min-width: 50px;" aria-label="" ng-if="!region.done" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
+                                        </p>
+                                        <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="!region.question || region.question.length==0" ng-click="vm.fit(region,item)" ng-class="{'done':region.done}">符合要求</md-button>
                                       </td>
 
                                     </tr>
                                   </table>
                                 </td>
                               </tr>
+                              <!--<tr>-->
+                                <!--<td colspan="5">-->
+                                  <!--<table width="100%" cellspacing="0" cellpadding="0">-->
+                                    <!--<tr>-->
+                                      <!--<td style="width:50px;text-align:center">{{vm.RegionName}}</td>-->
+                                      <!--<td colspan="4" class="lr" style="position: relative;padding:3px 0;">-->
+                                        <!--&nbsp;&nbsp;扣分信息：-->
+                                        <!--<span ng-repeat="q in item.question">-->
+                                          <!--&lt;!&ndash;<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>&ndash;&gt;-->
+                                          <!--<md-button ng-if="item.question.length" class="md-icon-button" ng-click="vm.quesDetail(item.question,q,item)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>-->
+                                        <!--</span>-->
+                                        <!--<md-button aria-label="" ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img  src="app/main/xhsc/images/plus.png"></md-icon></md-button>-->
+                                        <!--<md-button aria-label="" class="md-button md-raised" ng-if="item.question.length==0" ng-click="vm.fit(item)" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>-->
+                                      <!--</td>-->
+                                    <!--</tr>-->
+                                  <!--</table>-->
+                                <!--</td>-->
+
+                              <!--</tr>-->
                             </table>
                           </td>
                         </tr>
@@ -222,11 +245,13 @@
                                 <td style="width:50px;text-align:center">{{region.RegionName}}</td>
                                 <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
                                   &nbsp;&nbsp;扣分信息：
+                                  <p style="display: inline-block;margin-bottom: 0;padding-right: 90px;">
                                   <span ng-repeat="q in region.question">
-                                    <md-button  ng-click="vm.quesDetail(q,region)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon>  {{q.DeductionScore}}</md-button>
+                                    <md-button style="min-width: 50px;"  ng-click="vm.quesDetail(q,item,region.question)"><md-icon style="width:25px;height:25px;"><img src="app/main/xhsc/images/pic.png" width="25"></md-icon> {{q.DeductionScore}}</md-button>
                                   </span>
-                                  <md-button aria-label="" ng-if="!region.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
-                                  <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="!region.question || region.question.length==0" ng-click="vm.fit(region)" ng-class="{'done':item.done}">符合要求</md-button>
+                                  <md-button  style="min-width: 50px;" aria-label="" ng-if="!region.done" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
+                                  </p>
+                                  <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="!region.question || region.question.length==0" ng-click="vm.fit(region,item)" ng-class="{'done':region.done}">符合要求</md-button>
                                 </td>
 
                               </tr>
