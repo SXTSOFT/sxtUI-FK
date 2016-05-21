@@ -69,7 +69,7 @@
         var str = [];
         str.push('<ul>')
         angular.forEach(imagedata, function (data) {
-          var arl = data.url;
+          var arl = data.ImageByte;
           str.push('<li><img src="' + arl + '"></li>');
         });
         str.push('</ul>');

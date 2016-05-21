@@ -229,6 +229,7 @@
       scope.cancelEdit = function(saveData){
         scope.isSaveData = saveData||false;
         var layer = scope.context.layer;
+        console.log('saveData',saveData);
         layer.editing && layer.editing.disable();
       };
       mapPopupSerivce.set('mapPopup',{

@@ -11,8 +11,8 @@
   /** @ngInject */
   function ChooseController($scope,$stateParams,db,$rootScope,xhUtils){
     var vm=this,
-      id = $stateParams.assessmentID;
-
+      id = $stateParams.assessmentID,
+      AssessmentTypeID = $stateParams.AssessmentTypeID;
     var pk = db('xcpk');
     var data = db('pack'+id);
     pk.get('xcpk').then(function (pk) {
