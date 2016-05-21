@@ -51,10 +51,11 @@
               if(fd.DrawingContent) {
                 map.loadSvgXml(fd.DrawingContent, {
                   filterLine: function (line) {
-                    //line.attrs.stroke = 'black';
+                    line.attrs.stroke = 'black';
                     line.options = line.options||{};
-                    line.options.color = 'white';
-                    line.attrs['stroke-width'] = line.attrs['stroke-width']*4;
+                    //line.options.color = 'black';
+
+                    line.attrs['stroke-width'] = line.attrs['stroke-width']*6;
                   },
                   filterText: function (text) {
                     return false;
@@ -93,6 +94,9 @@
               points.findAll(function(o){
                 return r.rows.find(function(i){
                     if(i.MeasurePointID == o._id){
+                      if(i.MeasureValue || i.MeasureValue===0)
+                        o.geometry.options.color = 'blue';
+
                       o.CreateTime = moment(i.CreateTime).toDate();
                       return true;
                     }
@@ -102,14 +106,14 @@
                 //fg.addLayer(p);
                 p.rows.sort(function (p1,p2) {
                   return p1.CreateTime.getTime()-p2.CreateTime.getTime();
-                })
+                });
                 p.rows.forEach(function(geo){
                   layer.addData(geo.geometry);
                 });
                 if(p.rows.length == 0 && scope.measureIndexes.find(function (m) { //
                     return m.QSKey == 5;
                   })){
-                  
+
                 }
               })
             });
@@ -134,7 +138,7 @@
                 else {
                   ms.push(m);
                 }
-                console.log('ms',ms);
+                //console.log('ms',ms);
                 ms.forEach(function (m) {
                   var v = {
                     _id: sxt.uuid(),
@@ -176,7 +180,7 @@
                   });
                   v.ParentMeasureValueID = parent._id;
                   data.addOrUpdate(v);
-                })
+                });
               }
             }
             if(isNew && layer instanceof L.AreaGroup){
@@ -204,8 +208,10 @@
               ps1[6] = ps[6];
               ps1[7] = ps[3];
               ps1[8] = ps[4];
-
-              if(0){
+              var m5 = scope.measureIndexes.find(function (m) {
+                return m.QSKey=='4'
+              })
+              if(m5 && m5.QSOtherValue=='5'){
                 ps1.splice(7,1);
                 ps1.splice(5,1);
                 ps1.splice(3,1);
@@ -213,7 +219,7 @@
               }
               //console.log(points);
               ps1.forEach(function (p) {
-                fg.addLayer(new L.Stamp(p));
+                fg.addLayer(new L.Stamp(p),false);
               })
             }
           },
@@ -224,6 +230,21 @@
             if(scope.data && scope.isSaveData!==false){
               scope.isSaveData = false;
               self.options.onUpdateData(scope.context,scope.data.updates,scope);
+              if(scope.data.updates.find(function (m) {
+                return m.v &&(m.v.MeasureValue || m.v.MeasureValue===0);
+              })){
+                scope.context.layer.setStyle({
+                  color:'blue',
+                  fill:false
+                });
+              }
+              else{
+                scope.context.layer.setStyle({
+                  color:'red',
+                  fill:false
+                });
+              }
+
             }
           },
           onUpdateData:function(context,updates,editScope){
