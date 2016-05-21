@@ -31,7 +31,7 @@
             <table width="100%" cellspacing="0" cellpadding="0" class="zlpktables">
                   <tr ng-repeat="e in c.AssessmentClassifys">
                     <td style="width:{{vm.getW(1,2)}}%;">
-                      <p>{{e.AssessmentClassificationName}}{{b.level}}</p>
+                      <p>{{e.AssessmentClassificationName}}</p>
                     </td>
                     <td>
                       <table width="100%" cellspacing="0" cellpadding="0">
@@ -224,18 +224,12 @@
                                 <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
                                   &nbsp;&nbsp;扣分信息：
                                   <span ng-repeat="q in item.question">
-                                    <!--<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>-->
-                                    <md-button ng-if="item.question.length" class="md-icon-button" ng-click="vm.quesDetail(item.question,q,item)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
+                                    <md-button class="md-icon-button" ng-click="vm.quesDetail(item.question,q,item)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
                                   </span>
                                   <md-button aria-label="" ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
-                                  <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="item.question.length==0" ng-click="vm.fit(item)" ng-class="{'done':item.done = true}">符合要求</md-button>
+                                  <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="!item.question || item.question.length==0" ng-click="vm.fit(item)" ng-class="{'done':item.done}">符合要求</md-button>
                                 </td>
-                                <!--<td style="width: 50px;text-align: center;">-->
-                                  <!--2-->
-                                <!--</td>-->
-                                <!--<td style="width: 50px;text-align: center;">-->
-                                  <!--2-->
-                                <!--</td>-->
+
                               </tr>
                             </table>
                           </td>

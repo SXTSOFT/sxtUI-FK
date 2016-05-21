@@ -14,7 +14,8 @@
   /** @ngInject */
   function xtzlChooseController($scope,$stateParams,db,$rootScope,xhUtils,$timeout){
     var vm=this,
-      id = $stateParams.assessmentID;
+      id = $stateParams.assessmentID,
+      assessmentTypeID = $stateParams.AssessmentTypeID;
 
     vm.ms=[];
     var pk = db('xcpk');
@@ -26,7 +27,8 @@
       if (angular.isArray(item.AssessmentClassifyRegions)&&item.AssessmentClassifyRegions.length){
           item.AssessmentClassifyRegions.forEach(function(o){
             vm.ms.push(angular.extend({
-              AssessmentID:item.AssessmentID
+              AssessmentID:item.AssessmentID,
+              AssessmentTypeID:assessmentTypeID
             },o));
          });
       }

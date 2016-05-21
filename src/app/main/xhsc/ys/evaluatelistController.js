@@ -15,56 +15,44 @@
         AssessmentID:$stateParams.AssessmentID,
         RegionID:$stateParams.RegionID,
         RegionName:$stateParams.RegionName,
-        AssessmentTypeID:'7d179e8804a54819aad34b7a9398880d'
+        AssessmentTypeID:$stateParams.AssessmentTypeID
     }
     //vm.AssessmentTypeID = '7d179e8804a54819aad34b7a9398880d'
     vm.RegionName = $stateParams.RegionName;
-    stzlServices.getAssessment(params,null,function(item){
-      if (item){
-        item._id=params.AssessmentID;
-        item.data_Type="stzl_assessment";
-        item.AssessmentClassifyRegions={
-          RegionID:params.RegionID,
-          RegionName:params.RegionName
-        }
-        delete item._rev;
-        stzlServices.resultWrap(item,function(o){
-          o._id = sxt.uuid();
-          o.AssessmentResultID= o.id;
-          o.regionID=params.RegionID; //区域Id
-          o.TotalScore=o.Weight;
-          o.data_Type="stzl_item"
-          o.isCheck=false;
-          o.delValue = 0;
-          o.AssessmentID=params.AssessmentID; //评估项id
-          o.question=[]; //扣分记录
-          o.image=[];  //图片记录
-        });
-      }
-    }).then(function(item){
-      if(item.AssessmentClassifys.length>20)
-          item.AssessmentClassifys.length =20;
-      vm.Assessment = item;
+    db('xcpk').get('xcpk').then(function (list) {
+
+      var item = list.rows.find(function (it) {
+        return it.AssessmentID == params.AssessmentID;
+      });
+
       vm.items = {
         AssessmentClassifys:[]
       };
-      item.AssessmentClassifys.forEach(function (m) {
+
+      vm.Assessment = item.AssessmentTypes.find(function (t) {
+        return t.AssessmentTypeID== params.AssessmentTypeID;
+      });
+      vm.Assessment.AssessmentClassifys.forEach(function (cls) {
         vm.items.AssessmentClassifys.push({
-          AssessmentClassificationName:m.AssessmentClassificationName
+          AssessmentClassificationName:cls.AssessmentClassificationName
         });
       });
-      console.log(vm.Assessment)
-      //vm.levels = getEvels(item,0);
+
       $scope.$watch('vm.selectedIndex',function () {
         if(typeof vm.selectedIndex!= 'undefined'){
           var k = vm.items.AssessmentClassifys[vm.selectedIndex];
           if(k.AssessmentClassifys==null){
             k.AssessmentClassifys = vm.Assessment.AssessmentClassifys[vm.selectedIndex].AssessmentClassifys;
+            console.log(k)
             k.level = getEvels(k,1);
           }
         }
       })
+
     });
+
+
+
 
     vm.getW = function (level,t) {
       if(level==1){
@@ -133,62 +121,69 @@
     }
     vm.check = function(item,ev){
       $mdDialog.show({
-        controller: DialogController,
+        controller: ['$scope','$mdDialog',function ($scope, $mdDialog) {
+          $scope.Problems =item.Problems;
+          $scope.answer = function(answer,ev) {
+            var id=sxt.uuid();
+            var question = angular.extend({
+              _id:id,
+              DeducScoretItemID: id,
+              AssessmentResultID: item.AssessmentResultID,
+              data_Type: "stzl_question",
+              AssessmentCheckItemID: item.AssessmentCheckItemID,
+              DeductionScore: this.DeductValue,
+              images:[]
+            }, answer);
+            if(!item.regions){
+              item.regions = [];
+            }
+            var rn = item.regions.find(function (r) {
+              return r.RegionId == params.RegionId;
+            })
+            if(!item.question)
+              item.question=[];
+
+            item.question.push(question);
+            xhUtils.photo().then(function ($base64Url) {
+              question.images.push({
+                ImageID:sxt.uuid(),
+                RelationID:question._id,
+                ImageUrl:"",
+                ImageByte:$base64Url
+              });
+              _db.addOrUpdate(vm.Assessment).then(function () {
+              }, function () {
+                utils.alert("数据保存失败!");
+              });
+            },function(r){
+              //question.images.push({
+              //  ImageID:sxt.uuid(),
+              //  RelationID:question._id,
+              //  ImageUrl:"app/main/xhsc/images/text.png",
+              //  ImageByte:""
+              //});
+              _db.addOrUpdate(vm.Assessment).then(function (r) {
+              }, function (r) {
+                utils.alert("数据保存失败!");
+              });
+            });
+            // console.log(stzlServices)
+            stzlServices.setLastScore(item);
+            item.isCheck = true;
+            var _db = db('stzl_' + params.AssessmentID);
+            _db.addOrUpdate(vm.Assessment).then(function () {
+
+            }, function (r) {
+              utils.alert("数据保存失败!");
+            })
+          };
+        }],
         templateUrl:'app/main/xhsc/ys/evaluateQues.html',
         parent: angular.element(document.body),
         targetEvent: ev,
         clickOutsideToClose:true,
         focusOnOpen:false
         })
-
-      function DialogController($scope, $mdDialog) {
-        $scope.Problems =item.Problems;
-        $scope.answer = function(answer,ev) {
-          var id=sxt.uuid();
-          var question = angular.extend({
-            _id:id,
-            DeducScoretItemID: id,
-            AssessmentResultID: item.AssessmentResultID,
-            data_Type: "stzl_question",
-            AssessmentCheckItemID: item.AssessmentCheckItemID,
-            DeductionScore: this.DeductValue,
-            images:[]
-          }, answer)
-          item.question.push(question);
-          xhUtils.photo().then(function ($base64Url) {
-            question.images.push({
-              ImageID:sxt.uuid(),
-              RelationID:question._id,
-              ImageUrl:"",
-              ImageByte:$base64Url
-            });
-            _db.addOrUpdate(vm.Assessment).then(function () {
-            }, function () {
-              utils.alert("数据保存失败!");
-            });
-          },function(r){
-            //question.images.push({
-            //  ImageID:sxt.uuid(),
-            //  RelationID:question._id,
-            //  ImageUrl:"app/main/xhsc/images/text.png",
-            //  ImageByte:""
-            //});
-            _db.addOrUpdate(vm.Assessment).then(function (r) {
-            }, function (r) {
-              utils.alert("数据保存失败!");
-            });
-          });
-         // console.log(stzlServices)
-          stzlServices.setLastScore(item);
-          item.isCheck = true;
-          var _db = db('stzl_' + params.AssessmentID);
-          _db.addOrUpdate(vm.Assessment).then(function () {
-
-          }, function (r) {
-            utils.alert("数据保存失败!");
-          })
-        };
-      }
     }
   }
 })();

@@ -150,7 +150,7 @@
         rightArrow:false,
         leftArrow:false,
         title:'实体质量评估',
-        url   :'/list/{AssessmentID}/{RegionID}/{RegionName}',
+        url   :'/list/{AssessmentID}/{RegionID}/{RegionName}/{AssessmentTypeID}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/evaluatelist.html',

@@ -6,7 +6,7 @@
       </div>
       <md-list>
         <md-list-item ng-repeat="b in vm.ms">
-          <md-button ui-sref="app.xhsc.evaluatelist({AssessmentID:b.AssessmentID,RegionID:b.RegionID,RegionName:b.RegionName})">
+          <md-button ui-sref="app.xhsc.evaluatelist({AssessmentID:b.AssessmentID,RegionID:b.RegionID,RegionName:b.RegionName,AssessmentTypeID:b.AssessmentTypeID})">
             <p>{{b.RegionName}}</p>
           </md-button>
         </md-list-item>
