@@ -110,10 +110,22 @@
                 p.rows.forEach(function(geo){
                   layer.addData(geo.geometry);
                 });
+                //如果是上传楼层对比，尝试获取上一层的点
                 if(p.rows.length == 0 && scope.measureIndexes.find(function (m) { //
                     return m.QSKey == 5;
                   })){
-
+                  var mIndex = scope.measureIndexes.find(function (m) { //
+                    return m.QSKey == 5;
+                  });
+                  db('pack'+scope.db).get('GetRegionTreeInfo').then(function (result) {
+                    var parent = xhUtils.findRegion([result.data],scope.regionId.substring(0,scope.regionId.length-5));
+                    data.findAll(function(o){
+                      return o.AcceptanceItemID==scope.acceptanceItem
+                        && o.AcceptanceIndexID == mIndex
+                    }).then(function (data) {
+                      
+                    })
+                  });
                 }
               })
             });
