@@ -165,12 +165,12 @@
               utils.alert("数据保存失败!");
             });
           },function(r){
-            question.images.push({
-              ImageID:sxt.uuid(),
-              RelationID:question._id,
-              ImageUrl:"app/main/xhsc/images/text.png",
-              ImageByte:""
-            });
+            //question.images.push({
+            //  ImageID:sxt.uuid(),
+            //  RelationID:question._id,
+            //  ImageUrl:"app/main/xhsc/images/text.png",
+            //  ImageByte:""
+            //});
             _db.addOrUpdate(vm.Assessment).then(function (r) {
             }, function (r) {
               utils.alert("数据保存失败!");
