@@ -21,7 +21,6 @@
       var player,defaultIndex,viewer,delplayer,o;
       var imagedata = scope.sxtImages;
       player = function(a,e){
-       // console.log('element',scope)
         defaultIndex = $('.img img').index($(a.target))
         if (defaultIndex == -1)
           defaultIndex = 0;
