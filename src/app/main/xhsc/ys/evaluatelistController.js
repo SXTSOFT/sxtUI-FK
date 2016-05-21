@@ -88,17 +88,17 @@
           }
           else{
             var qs = [];
-            question.rows.forEach(function (item) {
+            question.rows.forEach(function (item2) {
               var q = qs.find(function (q) {
-                return q.ProblemID==item.ProblemID
-                && q.AssessmentCheckItemID == item.AssessmentCheckItemID
-                && q.RegionID == item.RegionID;
+                return q.ProblemID==item2.ProblemID
+                && q.AssessmentCheckItemID == item2.AssessmentCheckItemID
+                && q.RegionID == item2.RegionID;
               });
-              if(!q){
-                qs.push(item)
+              if(!q && item2.AssessmentCheckItemID==item.AssessmentCheckItemID){
+                qs.push(item2)
               }
-              else{
-                q.DeductionScore+=item.DeductionScore;
+              else if(q){
+                q.DeductionScore+=item2.DeductionScore;
               }
             });
             item.regions = [
