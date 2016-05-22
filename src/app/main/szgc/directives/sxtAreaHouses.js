@@ -146,7 +146,8 @@
                           layer.setStyle({
                             color: 'green'
                           })
-                          scope.itemName = (layer.options.itemName || itemName) + ' - ' + layer.options.t;
+                          scope.itemName = layer.options.t;
+                          //scope.itemName = (layer.options.itemName || itemName) + ' - ' + layer.options.t;
                           scope.itemId = layer.options.itemId || '--';
                           scope.$apply();
                           layer2 && layer2.setStyle({
@@ -159,7 +160,7 @@
                         var b = layer2.getBounds(), p2 = L.latLng(b._southWest.lat - 0.05, b._southWest.lng + 0.09);
                         L.marker(p2, {
                           icon: new ST.L.LabelIcon({
-                            html: '天花',
+                            html: '吊顶',
                             color: 'black'
                           }),
                           saved: false,
@@ -172,7 +173,8 @@
                           layer && layer.setStyle({
                             color: '#ff0000'
                           })
-                          scope.itemName = (layer2.options.itemName || itemName) + ' - ' + layer2.options.t;
+                          scope.itemName = layer2.options.t;
+                          //scope.itemName = (layer2.options.itemName || itemName) + ' - ' + layer2.options.t;
                           scope.itemId = layer2.options.itemId || '--';
                           scope.$apply();
 
@@ -212,7 +214,8 @@
                     curClick.setStyle({
                       color: 'green'
                     })
-                    scope.itemName = (curClick.options.itemName || itemName)+' - '+ curClick.options.t;
+                    scope.itemName = curClick.options.t;
+                    //scope.itemName = (curClick.options.itemName || itemName)+' - '+ curClick.options.t;
                     scope.itemId = curClick.options.itemId || '--';
                     scope.$apply();
 
