@@ -15,7 +15,8 @@
       findRegion:findRegion,
       wrapRegion:wrapRegion,
       photo:photo,
-      when:when
+      when:when,
+      playPhoto:playPhoto
     };
     return o;
 
@@ -133,7 +134,7 @@
       if(fd.RegionID!=id)
         return findRegion(fd.Children,id,(appendName||'')+fd.RegionName);
       else {
-        fd.fullName = appendName+fd.RegionName;
+        fd.fullName = (appendName||'')+fd.RegionName;
         return fd;
       }
     }
@@ -179,6 +180,33 @@
         else
           return r;
       })
+    }
+
+    function playPhoto(images,options) {
+      var str = [];
+      str.push('<ul>')
+      angular.forEach(images, function (data) {
+        str.push('<li><img src="' + data.url + '" alt="'+data.alt+'"></li>');
+      });
+      str.push('</ul>');
+      o = $(str.join('')).appendTo('body')
+
+      var viewer = new Viewer(o[0],{
+        button:true,
+        scalable:false,
+        hide:function(){
+          viewer.destroy();
+          o.remove();
+          viewer = o=null;
+        },
+        build:function(){
+
+        },
+        view:function(){
+        }
+      });
+      viewer.show();
+      return viewer;
     }
   }
 })();

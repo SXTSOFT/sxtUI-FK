@@ -1582,6 +1582,18 @@ md-tabs[md-align-tabs="bottom"]{
     }
 
   }
+  md-toolbar{
+    &.md-vanke-theme{
+      &:not(.md-menu-toolbar){
+        background-color: #e93030;
+      }
+    }
+    min-height: 40px;
+    .md-toolbar-tools{
+      height:40px;max-height: 40px;
+    }
+  }
+
   .md-button{
     min-width: 50px;
   }

@@ -4,9 +4,9 @@
     <!--<div layout="row" flex>-->
       <!--<md-button class="md-button md-raised">其它</md-button>-->
     <!--</div>-->
-    <div layout="row" flex>
+    <div layout="row" flex ng-if="Problems.length">
     <md-list flex>
-      <md-list-item flex layout="row" ng-repeat="e in Problems" ng-click="answer(e,$event)" ng-if="Problems.length">
+      <md-list-item flex layout="row" ng-repeat="e in Problems" ng-click="answer(e,$event)">
         <md-button class="md-secondary" ng-click="vm.show = true">
           分值：<span ng-if="!vm.show">{{e.DeductValue}}</span>
           <md-input-container ng-if="vm.show">
@@ -19,9 +19,9 @@
 
     </md-list>
     </div>
-      <div layout="row" flex>
+      <div layout="row" flex ng-if="!Problems.length">
         <div layout="column" flex>
-        <p layout="row" flex>暂无问题项，请输入问题</p>
+        <div layout="row" flex style="padding-left: 25px;font-size: 14px;min-height: 48px;line-height: 48px;">问题输入</div>
         <div layout="row" flex>
         <md-input-container flex>
           <input>

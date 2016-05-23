@@ -8,7 +8,7 @@
     .module('app.xhsc')
     .controller('sc2Controller',sc2Controller)
   /** @ngInject */
-  function sc2Controller($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,remotePack,sxt) {
+  function sc2Controller($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,remotePack,sxt,$state) {
     var vm = this;
     vm.info = {
       db:$stateParams.db,
@@ -43,13 +43,29 @@
 
     });
 
+    //var docClick = function(e){
+    //  var target = $(e.target);
+    //  if(target.closest("#scchoose").length == 0){
+    //    //$(element).find('.numberpanel').css('display','none');
+    //    history.go(-1);
+    //    $mdDialog.cancel();
+    //  }
+    //}
     vm.scChoose = function($event){
       $mdDialog.show({
           controller: DialogController,
-        targetEvent:$event,
+          targetEvent:$event,
           templateUrl: 'app/main/xhsc/ys/scChoose.html',
-          parent: angular.element(document.body),
-          clickOutsideToClose:vm.info.MeasureIndexes//&&vm.info.MeasureIndexes[0].checked
+          //parent: angular.element(document.body),
+          parent:angular.element('#content'),
+        //  onComplete:function(){
+        //  if(!vm.info.MeasureIndexes){
+        //    console.log('parent',parent)
+        //    $(document).find('.md-dialog-container').bind("click",docClick);
+        //
+        //  }
+        //},
+        clickOutsideToClose:vm.info.MeasureIndexes//&&vm.info.MeasureIndexes[0].checked
         })
         .then(function(answer) {
           var scStr=[];
@@ -138,8 +154,11 @@
         }
       });
     };
+
     vm.setRegionId($stateParams.regionId);
     function DialogController($scope, $mdDialog) {
+
+      console.log(vm.info.MeasureIndexes,$mdDialog)
       $scope.checkSc = function(sc){
         vm.MeasureIndexes.forEach(function (it) {
           it.checked =false;

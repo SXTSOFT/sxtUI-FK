@@ -3,7 +3,7 @@
   <md-dialog-actions>
     <md-list flex layout="row">
       <md-list-item flex>
-        <md-button ng-click="cancel()" ui-sref="app.xhsc.ch2({assessmentID:item.AssessmentID})">
+        <md-button ng-click="cancel()" ui-sref="app.xhsc.ch2({areaID:item.AreaID,areaName:item.AreaName,assessmentID:item.AssessmentID})">
           <img ng-src="app/main/xhsc/images/measure.png">
         </md-button>
       </md-list-item>
@@ -11,17 +11,17 @@
         <!--<md-button ui-sref="app.xhsc.evaluatelist" ng-click="cancel()">-->
           <!--<img ng-src="app/main/xhsc/images/quality.png">-->
         <!--</md-button>-->
-        <md-button ui-sref="app.xhsc.ch1({assessmentID:item.AssessmentID,AssessmentTypeID:'7d179e8804a54819aad34b7a9398880d'})"  ng-click="cancel()">
+        <md-button ui-sref="app.xhsc.ch1({areaID:item.AreaID,areaName:item.AreaName,assessmentID:item.AssessmentID,AssessmentTypeID:'7d179e8804a54819aad34b7a9398880d'})"  ng-click="cancel()">
           <img ng-src="app/main/xhsc/images/quality.png">
         </md-button>
       </md-list-item>
       <md-list-item flex>
-        <md-button>
+        <md-button ui-sref="app.xhsc.ch1({assessmentID:item.AssessmentID,AssessmentTypeID:'5c96685e88394ca1b663da5ff344ed76'})"  ng-click="cancel()">
           <img ng-src="app/main/xhsc/images/manage.png">
         </md-button>
       </md-list-item>
       <md-list-item flex>
-        <md-button>
+        <md-button ui-sref="app.xhsc.ch1({assessmentID:item.AssessmentID,AssessmentTypeID:'82666209a15647569f9bcaff50d324c2'})"  ng-click="cancel()">
           <img ng-src="app/main/xhsc/images/culture.png">
         </md-button>
       </md-list-item>
