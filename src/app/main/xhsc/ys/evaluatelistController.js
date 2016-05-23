@@ -55,7 +55,7 @@
             }).then(function (items) {
               upstzl_question.findAll(function (r) {
                 return !!items.rows.find(function (q) {
-                  return q.AssessmentResultID==r.AssessmentResultID;
+                  return q.AssessmentRegionItemResultID==r.AssessmentRegionItemResultID;
                 })
               }).then(function (questions) {
                 fillRegion(k,items,questions);
@@ -103,7 +103,7 @@
             });
             item.regions = [
               {
-                _id:q.AssessmentResultID,
+                _id:q.AssessmentRegionItemResultID,
                 RegionName: params.RegionName,
                 RegionID: params.RegionID,
                 question:qs
@@ -160,7 +160,7 @@
     vm.fit = function(item,it){
       it.done =true;
      //console.log(vm.getDelValue(item));
-      //item.delValue = item.Weight - item.TotalScore;
+      //item.delValue = item.Weight - item.Score;
     }
     vm.getDelValue = function (item) {
       //console.log('a')
@@ -177,16 +177,16 @@
         s=item.Weight;
       }
       if(s!=0) {
-        item.TotalScore = item.Weight - s;
-        if (item.TotalScore < 0)
-          item.TotalScore = 0;
+        item.Score = item.Weight - s;
+        if (item.Score < 0)
+          item.Score = 0;
         return s;
       }
       else if(item.done){
-        item.TotalScore = item.Weight;
+        item.Score = item.Weight;
         return 0;
       }
-      item.TotalScore = '';
+      item.Score = '';
       return ''
     }
     $rootScope.$on('delete',deleteFn);
@@ -195,7 +195,7 @@
         controller:function($scope){
           $scope.item = item;
           upstzl_question.findAll(function (q) {
-            return q.AssessmentResultID==item.AssessmentResultID
+            return q.AssessmentRegionItemResultID==item.AssessmentRegionItemResultID
             && q.ProblemID==item.ProblemID;
           }).then(function (r) {
             $scope.items = r.rows;
@@ -220,7 +220,7 @@
           $scope.delete = function(d){
             upstzl_question.findAll(function(it){
               return it.RegionID == d.RegionID
-              && it.AssessmentResultID== d.AssessmentResultID
+              && it.AssessmentRegionItemResultID== d.AssessmentRegionItemResultID
               && it.ProblemID== d.ProblemID
             }).then(function(r){
               r.rows.forEach(function(item){
@@ -270,7 +270,9 @@
             });
             upstzl_item.addOrUpdate({
               _id:rn._id,
-              AssessmentResultID:rn._id,
+              AssessmentRegionItemResultID:rn._id,
+              AssessmentID:params.AssessmentID,
+              Score:0,
               RegionID:rn.RegionID,
               AssessmentCheckItemID:item.AssessmentCheckItemID,
               CreateTime:new Date()
@@ -279,10 +281,11 @@
             var question = rn.question.find(function (p) {
               return p.ProblemID==answer.ProblemID;
             });
+            var _id=sxt.uuid();
             var dedu = {
-              _id:sxt.uuid(),
-              DeducScoretItemID:sxt.uuid(),
-              AssessmentResultID:rn._id,
+              _id:_id,
+              DeducScoretItemID:_id,
+              AssessmentRegionItemResultID:rn._id,
               RegionID:rn.RegionID,
               AssessmentCheckItemID:item.AssessmentCheckItemID,
               ProblemDescription:answer.ProblemDescription,
@@ -306,10 +309,12 @@
             //rn.question.push(question);
             xhUtils.photo().then(function ($base64Url) {
               if($base64Url) {
+                var _id=sxt.uuid();
                 upstzl_images.addOrUpdate({
-                  _id:sxt.uuid(),
+                  _id:_id,
                   ImageID: sxt.uuid(),
                   RelationID: dedu.DeducScoretItemID,
+                  ImageName:_id+".jpg",
                   ImageUrl: "",
                   ImageByte: $base64Url
                 }).then(function () {

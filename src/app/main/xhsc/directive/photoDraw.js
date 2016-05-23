@@ -89,7 +89,6 @@
             ctx.drawImage(image, 0, 0,image.width,image.height,0,0,srcWidth,srcHeight);
           }
         }
-
         scope.save =  function () {
           var dataURL = canvas.toDataURL();
           scope.onAnswer && scope.onAnswer({$base64Url:dataURL});
@@ -119,7 +118,6 @@
             }
           }
         }
-
         scope.photo = function ($event) {
           if ($event) {
             $event.preventDefault ();
@@ -164,12 +162,9 @@
 
           });
         }
-
         scope.photo();
 
       },500);
-
     }
-
   }
 })();

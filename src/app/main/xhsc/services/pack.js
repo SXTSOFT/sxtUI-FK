@@ -54,7 +54,7 @@
                 type:'data'
               },
               stzl_item:{
-                url:sxt.app.api+'/Api/AssessmentApi/SubmitAssessmentResult',
+                url:sxt.app.api+'/Api/AssessmentApi/SubmitAssessmentRegionItemResult',
                 type:'data'
               },
               stzl_question:{
