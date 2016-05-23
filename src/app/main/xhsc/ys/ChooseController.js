@@ -13,6 +13,10 @@
     var vm=this,
       id = $stateParams.assessmentID,
       AssessmentTypeID = $stateParams.AssessmentTypeID;
+      //vm.dareaId= $stateParams.areaID;
+      //vm.dareaName = $stateParams.areaName;
+
+    console.log('a',$stateParams)
     var pk = db('xcpk');
     var data = db('pack'+id);
     pk.get('xcpk').then(function (pk) {
@@ -36,6 +40,8 @@
           m.AssessmentAreas.forEach(function (area) {
             var room = xhUtils.findRegion([result.data],area.RegionID);
             if(room){
+              vm.dmeasureItemID = m.MeasureItemID;
+              vm.dmeasureItemName = m.MeasureItemName;
               m1.Regions.push({
                 db:id,
                 RegionName:room.RegionName,
@@ -44,14 +50,30 @@
                 regionType:room.RegionType,
                 name:room.fullName,
                 measureItemID:m.MeasureItemID,
-                pname:m.MeasureItemName
+                pname:m.MeasureItemName,
+                assessmentID:item.AssessmentID,
               });
             }
           })
 
         });
+        vm.fq ={
+          db:id,
+          //areaId:$stateParams.areaID,
+          areaId:item.AreaID,
+          regionId:item.AreaID,
+          //RegionName:$stateParams.areaName,
+          //regionId:$stateParams.areaID,
+          regionType:2,
+          RegionName:item.AreaName,
+          name:item.AreaName,
+          //name:$stateParams.areaName,
+          measureItemID:vm.dmeasureItemID,
+          assessmentID:item.AssessmentID,
+        }
         vm.ms = ms;
         console.log(ms)
+        console.log('item',vm.fq)
       })
     })
 

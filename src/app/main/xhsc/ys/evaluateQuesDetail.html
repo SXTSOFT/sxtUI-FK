@@ -16,8 +16,8 @@
       <md-button class="md-button" ng-click="delete(item)" style="margin:0;"><md-icon style="width: 28px;height:28px;"><img src="app/main/xhsc/images/del1.png"></md-icon></md-button>
     </div>
     <div flex layout="row" layout-wrap>
-      <div flex="50" ng-repeat="img in images" >
-        <img ng-src="{{img.ImageByte}}" style="width: 450px;" />
+      <div flex="50" ng-repeat="img in images" sxt-images="images" style="text-align: center;margin-bottom: 10px;">
+        <img ng-src="{{img.ImageByte}}" style="width: 450px;" flex="95" style="display: block;"/>
       </div>
     </div>
   </md-dialog-content>

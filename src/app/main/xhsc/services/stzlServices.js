@@ -39,6 +39,9 @@
             item.question.forEach(function(o){
               if (angular.isNumber(o.DeductValue)){
                 score= score-o.DeductValue;
+                if (score<0){
+                  score=0;
+                }
               }
             });
             item.TotalScore=score;

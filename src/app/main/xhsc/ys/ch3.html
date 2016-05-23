@@ -3,6 +3,14 @@
     <!--<div layout="column">-->
       <!--<h2>测量结果</h2>-->
     <!--</div>-->
+    <div layout="column">
+      <md-list>
+        <md-list-item>
+          <md-button class="md-button" ui-sref="app.pc.list({AssessmentID:vm.fq.assessmentID,RegionID:vm.fq.regionId,RegionName:vm.fq.RegionName,AssessmentTypeID:'82666209a15647569f9bcaff50d324c2'})">综合评估评分表</md-button>
+        </md-list-item>
+      </md-list>
+
+    </div>
     <div layout="column" ng-repeat="m in vm.ms">
       <div style="border-bottom: 1px solid #d8d8d8;">
         <h2 class="md-title" style="color:#e93030;font-size:16px;margin:16px;">{{m.TemplateName}}</h2>
