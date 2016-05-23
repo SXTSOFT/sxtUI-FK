@@ -9,7 +9,7 @@
     .controller('evaluatelistPcController',evaluatelistPcController);
 
   /** @ngInject*/
-  function evaluatelistPcController($mdDialog,$scope,$stateParams,sxt,xhUtils,pack,remote){
+  function evaluatelistPcController($scope,$stateParams,xhUtils,remote,$mdDialog,utils){
     var vm = this;
     vm.RegionName = $stateParams.RegionName;
     var params={
@@ -30,10 +30,6 @@
 
     });
 
-    var up = pack.sc.up(params.AssessmentID),
-      upstzl_item = up.stzl_item.db,
-      upstzl_question = up.stzl_question.db,
-      upstzl_images = up.stzl_images.db;
 
     function onQueryBase(item,result) {
       vm.items = {
@@ -50,26 +46,12 @@
           vm.caches.AssessmentClassifys.push(cls);
         });
       });
-
-
+      fillRegion(vm.caches,result);
       $scope.$watch('vm.selectedIndex',function () {
-        if(typeof vm.selectedIndex!= 'undefined'){
-          var k = vm.items.AssessmentClassifys[vm.selectedIndex];
+        if(vm.selectedIndex){
+          var k = vm.items.AssessmentClassifys[vm.selectedIndex-1];
           if(k.AssessmentClassifys==null){
-            k.AssessmentClassifys = vm.caches.AssessmentClassifys[vm.selectedIndex].AssessmentClassifys;
-            //
-            upstzl_item.findAll(function (r) {
-              return r.RegionID == params.RegionID;
-            }).then(function (items) {
-              upstzl_question.findAll(function (r) {
-                return !!items.rows.find(function (q) {
-                  return q.AssessmentResultID==r.AssessmentResultID;
-                })
-              }).then(function (questions) {
-                fillRegion(k,items,questions);
-              });
-            })
-
+            k.AssessmentClassifys = vm.caches.AssessmentClassifys[vm.selectedIndex-1].AssessmentClassifys;
             k.level = getEvels(k,1);
           }
         }
@@ -77,52 +59,28 @@
 
     }
 
-    function fillRegion(k,items,question) {
+    function fillRegion(k,result) {
       if(k.AssessmentItems){
         k.AssessmentItems.forEach(function (item) {
-          var q = items.rows.find(function (p) {
-            return p.RegionID == params.RegionID
-             && p.AssessmentCheckItemID==item.AssessmentCheckItemID
+          var resultItem = result.find(function (r) {
+            return r.AssessmentCheckItemID == item.AssessmentCheckItemID;
           });
-          if(!q) {
-            item.regions = [
-              {
-                _id: sxt.uuid(),
-                RegionName: params.RegionName,
-                RegionID: params.RegionID,
-                question: []
-              }
-            ];
-          }
-          else{
-            var qs = [];
-            question.rows.forEach(function (item2) {
-              var q = qs.find(function (q) {
-                return q.ProblemID==item2.ProblemID
-                && q.AssessmentCheckItemID == item2.AssessmentCheckItemID
-                && q.RegionID == item2.RegionID;
-              });
-              if(!q && item2.AssessmentCheckItemID==item.AssessmentCheckItemID){
-                qs.push(item2)
-              }
-              else if(q){
-                q.DeductionScore+=item2.DeductionScore;
-              }
-            });
-            item.regions = [
-              {
-                _id:q.AssessmentResultID,
-                RegionName: params.RegionName,
-                RegionID: params.RegionID,
-                question:qs
-              }
-            ]
+          if(resultItem){
+            item.TotalScore = resultItem.TotalScore;
+            item.ModifyScore = resultItem.ModifyScore;
+
+            if(!item.ModifyScore && item.ModifyScore!==0)
+              item.ModifyScore = item.TotalScore;
+
+
+            item.DelScore =  (item.ModifyScore===0 ||  item.ModifyScore)?item.Weight-item.ModifyScore:'';
+            item.regions = resultItem.AssessmentRegionItemResults;
           }
         });
       }
       if(k.AssessmentClassifys){
         k.AssessmentClassifys.forEach(function (c) {
-          fillRegion(c,items,question);
+          fillRegion(c,result);
         })
       }
     }
@@ -154,25 +112,56 @@
       return level+1;
     }
 
-    vm.quesDetail = function(item){
-      upstzl_question.findAll(function (q) {
-        return q.AssessmentResultID==item.AssessmentResultID
-          && q.ProblemID==item.ProblemID;
-      }).then(function (r) {
-        var images = [];
-        upstzl_images.findAll(function (img) {
-          return !!r.rows.find(function (r) {
-            return r.DeducScoretItemID==img.RelationID;
-          })
-        }).then(function (imgs) {
-          imgs.rows.forEach(function (img) {
-            images.push({
-              alt:'说明',
-              url:img.ImageByte
-            });
-          });
-          xhUtils.playPhoto(images);
-        })
+    vm.quesDetail = function(item) {
+      var images=[];
+      item.Images.forEach(function (img) {
+        images.push({
+          url:sxt.app.api+img.ImageUrl,
+          alt:item.ProblemDescription
+        });
+      })
+      if(images.length) {
+        xhUtils.playPhoto(images);
+      }
+    }
+
+    vm.deleteScoreItem = function (q) {
+      console.log('q',q)
+    }
+    vm.changeScore = function (item,$event) {
+      $mdDialog.show($mdDialog.prompt({
+        title:'修改分值',
+        textContent:'请输入新值，作为最终此项目的扣分值。０分为不扣分',
+        placeholder:item.DelScore,
+        ok:'确定',
+        cancel:'取消',
+        targetEvent:$event
+      })).then(function (result) {
+        if(result){
+          var r = parseInt(result);
+          if(!isNaN(result)){
+            if(item.Weight<result || result<0){
+              utils.alert('输入的值应该介于0 与 '+item.Weight + ' 之间');
+              return;
+            }
+
+
+            remote.Assessment.modifyScore({
+              AssessmentID:params.AssessmentID,
+              AssessmentCheckItemID:item.AssessmentCheckItemID,
+              ModifyScore:item.Weight -r
+            }).then(function () {
+              item.DelScore = r;
+              item.ModifyScore = item.Weight - item.DelScore;
+            }).catch(function () {
+              utils.alert('失败：服务器返回错误');
+            })
+          }
+          else{
+            utils.alert('应该输入半角数字');
+          }
+        }
+        console.log(result);
       })
     }
   }
