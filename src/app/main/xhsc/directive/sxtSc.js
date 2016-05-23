@@ -123,7 +123,7 @@
                       return o.AcceptanceItemID==scope.acceptanceItem
                         && o.AcceptanceIndexID == mIndex
                     }).then(function (data) {
-                      
+
                     })
                   });
                 }
