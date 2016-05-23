@@ -164,19 +164,24 @@
     }
     vm.getDelValue = function (item) {
       //console.log('a')
-      var s=0;
+      var s=0,time=0;
       if(item.regions){
         item.regions.forEach(function (r) {
           if(r.question){
             r.question.forEach(function (q) {
-              s+=(q.DeductionScore||0)
+              s+=(q.DeductionScore||0);
+              time++;
             });
           }
         });
         if(s >item.Weight)
         s=item.Weight;
       }
-      if(s!=0) {
+      if(item.MaxDeductNumber &&  time>=item.MaxDeductNumber){
+        item.TotalScore = 0;
+        return item.Weight;
+      }
+      else if(s!=0) {
         item.TotalScore = item.Weight - s;
         if (item.TotalScore < 0)
           item.TotalScore = 0;
