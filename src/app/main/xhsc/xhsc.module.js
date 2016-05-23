@@ -36,7 +36,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'实测实量',
-        url   :'/choose/{assessmentID}',
+        url   :'/choose/{areaID}/{areaName}/{assessmentID}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/ch2.html',
@@ -50,7 +50,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'实体质量',
-        url   :'/stzl/{assessmentID}/{AssessmentTypeID}',
+        url   :'/stzl/{assessmentID}/{AssessmentTypeID}/{aname}/{aid}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/ch1.html',
@@ -63,8 +63,8 @@
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
-        title :'实测实量',
-        url   :'/scsl/{assessmentID}',
+        title :'实测详情',
+        url   :'/scxq/{assessmentID}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/ch3.html',

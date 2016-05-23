@@ -101,7 +101,7 @@
     }
     vm.showECs = function(ev,item) {
       //var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && vm.customFullscreen;
-      // console.log('ev',parent)
+      console.log('ev',item)
       $mdDialog.show({
           controller: ['$scope', '$mdDialog','item', function DialogController($scope, $mdDialog,item) {
             $scope.item = item;

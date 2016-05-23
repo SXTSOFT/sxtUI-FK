@@ -167,6 +167,10 @@
       var s=0;
       if(item.regions){
         item.regions.forEach(function (r) {
+          if(r.question.length >=3){
+            s = 0;
+            return;
+          }
           if(r.question){
             r.question.forEach(function (q) {
               s+=(q.DeductionScore||0)
@@ -185,6 +189,9 @@
       else if(item.done){
         item.TotalScore = item.Weight;
         return 0;
+      }else if(s==0){
+        item.TotalScore = 0;
+        return item.Weight;
       }
       item.TotalScore = '';
       return ''
@@ -221,7 +228,7 @@
             upstzl_question.findAll(function(it){
               return it.RegionID == d.RegionID
               && it.AssessmentResultID== d.AssessmentResultID
-              && it.ProblemID== d.ProblemID
+              && it.ProblemID== d.ProblemID;
             }).then(function(r){
               r.rows.forEach(function(item){
                 upstzl_question.delete(item);
@@ -268,6 +275,7 @@
             var rn = item.regions.find(function (r) {
               return r.RegionID == params.RegionID;
             });
+            var newId = sxt.uuid();
             upstzl_item.addOrUpdate({
               _id:rn._id,
               AssessmentResultID:rn._id,
@@ -281,7 +289,7 @@
             });
             var dedu = {
               _id:sxt.uuid(),
-              DeducScoretItemID:sxt.uuid(),
+              DeducScoretItemID:rn._id,//sxt.uuid(),
               AssessmentResultID:rn._id,
               RegionID:rn.RegionID,
               AssessmentCheckItemID:item.AssessmentCheckItemID,
@@ -292,13 +300,15 @@
               hasPic:false
             };
 
-            if(!question){
-              question = angular.extend({},dedu);
-              rn.question.push(question);
-            }
-            else{
-              question.DeductionScore+=answer.DeductValue;
-            }
+            question = angular.extend({},dedu);
+            rn.question.push(question);
+            //if(!question){
+            //  question = angular.extend({},dedu);
+            //  rn.question.push(question);
+            //}
+            //else{
+            //  question.DeductionScore+=answer.DeductValue;
+            //}
 
 
             upstzl_question.addOrUpdate(dedu);

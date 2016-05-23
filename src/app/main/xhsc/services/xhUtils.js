@@ -134,7 +134,7 @@
       if(fd.RegionID!=id)
         return findRegion(fd.Children,id,(appendName||'')+fd.RegionName);
       else {
-        fd.fullName = appendName+fd.RegionName;
+        fd.fullName = (appendName||'')+fd.RegionName;
         return fd;
       }
     }

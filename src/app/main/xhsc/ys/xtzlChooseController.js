@@ -16,7 +16,9 @@
     var vm=this,
       id = $stateParams.assessmentID,
       assessmentTypeID = $stateParams.AssessmentTypeID;
-
+      vm.dareaId= $stateParams.areaID;
+      vm.dareaName = $stateParams.areaName;
+      //console.log('a',$stateParams)
     vm.ms=[];
     var pk = db('xcpk');
     var data = db('pack'+id);
@@ -31,6 +33,10 @@
               AssessmentTypeID:assessmentTypeID
             },o));
          });
+      }
+      vm.fq = {
+        RegionID:item.AreaID,
+        RegionName:item.AreaName
       }
     })
   }
