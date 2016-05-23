@@ -38,6 +38,9 @@
       },
       deleteScoreItem:function (deducScoretItemID) {
         return $http.delete('/Api/AssessmentApi/DeleteDeducScoretItem/'+deducScoretItemID);
+      },
+      queryResutTotal:function (assessmentID) {
+        return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResult',{AssessmentID:assessmentID}));
       }
     },
 	    /**
