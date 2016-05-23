@@ -97,7 +97,7 @@
     },
     delete:function (id) {
       var db = this;
-      db.get(id).then(function (doc) {
+      return db.get(id).then(function (doc) {
         return db.remove(doc);
       });
     },
