@@ -123,7 +123,7 @@
                       return o.AcceptanceItemID==scope.acceptanceItem
                         && o.AcceptanceIndexID == mIndex
                     }).then(function (data) {
-                      
+
                     })
                   });
                 }
@@ -234,6 +234,7 @@
                 fg.addLayer(new L.Stamp(p),false);
               })
             }
+
           },
           onPopupClose:function (e) {
             var self = this;
@@ -258,6 +259,8 @@
               }
 
             }
+            this._inPopup = false;
+            //toolbar._toolbars.lineGroup._modes.stamp.handler.enable();
           },
           onUpdateData:function(context,updates,editScope){
             updates.forEach(function(m){
@@ -324,6 +327,7 @@
             })
           },
           onPopup:function(e){
+            this._inPopup = true;
             if(e.layer instanceof L.Stamp
               || e.layer instanceof L.AreaGroup
               || e.layer instanceof L.LineGroup)

@@ -92,7 +92,8 @@
               var q = qs.find(function (q) {
                 return q.ProblemID==item2.ProblemID
                 && q.AssessmentCheckItemID == item2.AssessmentCheckItemID
-                && q.RegionID == item2.RegionID;
+                && q.RegionID == item2.RegionID
+                  && q.DeducScoretItemID == item2.DeducScoretItemID;
               });
               if(!q && item2.AssessmentCheckItemID==item.AssessmentCheckItemID){
                 qs.push(item2)
@@ -198,10 +199,12 @@
     vm.quesDetail = function(item,it,items){
       $mdDialog.show({
         controller:function($scope){
+          console.log('items',items)
           $scope.item = item;
           upstzl_question.findAll(function (q) {
             return q.AssessmentRegionItemResultID==item.AssessmentRegionItemResultID
-            && q.ProblemID==item.ProblemID;
+            && q.ProblemID==item.ProblemID
+              && q.DeducScoretItemID == item.DeducScoretItemID;
           }).then(function (r) {
             $scope.items = r.rows;
             $scope.images = [];
@@ -223,16 +226,25 @@
 
           //console.log(question)
           $scope.delete = function(d){
+            //upstzl_question.delete(item);
             upstzl_question.findAll(function(it){
               return it.RegionID == d.RegionID
               && it.AssessmentRegionItemResultID== d.AssessmentRegionItemResultID
               && it.ProblemID== d.ProblemID
+              && it.DeducScoretItemID == d.DeducScoretItemID;
             }).then(function(r){
+             // upstzl_question.delete(r);
               r.rows.forEach(function(item){
-                upstzl_question.delete(item);
+                upstzl_question.delete(item._id).then(function(){
+                  //console.log('ok')
+                }).catch(function(){
+                  console.log('error')
+                })
               });
               var idx = items.indexOf(item);
+              console.log('idx',items)
               items.splice(idx,1);
+              console.log('items',items)
             })
 
             //if($scope.question.length <=0){
@@ -299,14 +311,16 @@
               CreateTime:new Date(),
               hasPic:false
             };
-
-            if(!question){
               question = angular.extend({},dedu);
               rn.question.push(question);
-            }
-            else{
-              question.DeductionScore+=answer.DeductValue;
-            }
+
+            //if(!question){
+            //  question = angular.extend({},dedu);
+            //  rn.question.push(question);
+            //}
+            //else{
+            //  question.DeductionScore+=answer.DeductValue;
+            //}
 
 
             upstzl_question.addOrUpdate(dedu);
