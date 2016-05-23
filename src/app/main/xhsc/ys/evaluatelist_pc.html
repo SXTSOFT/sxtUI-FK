@@ -1,4 +1,9 @@
 <md-tabs md-align-tabs="bottom" flex md-swipe-content md-selected="vm.selectedIndex" class="zlpkwrap">
+  <md-tab label="项目评分汇总表">
+    <md-tab-content flex layout-fill layout="column">
+
+    </md-tab-content>
+  </md-tab>
   <md-tab label="{{b.AssessmentClassificationName}}" ng-repeat="b in vm.items.AssessmentClassifys">
     <md-tab-content flex layout-fill layout="column"  >
       <div flex="none" layout="row" style="border-top: solid 1px silver" class="zlpkheader">
@@ -64,10 +69,10 @@
                                               {{item.Weight}}
                                             </td>
                                             <td style="width: 50px;text-align: center;" class="lr">
-                                              {{item.delValue}}
+                                              <button ng-click="vm.changeScore(item,$event)"> {{item.DelScore}}</button>
                                             </td>
                                             <td style="width: 50px;text-align: center;" class="lr">
-                                              {{item.TotalScore}}
+                                              {{item.ModifyScore}}
                                             </td>
                                           </tr>
                                           <tr>
@@ -77,12 +82,10 @@
                                                   <td style="width:50px;text-align:center">{{vm.RegionName}}}</td>
                                                   <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
                                                     &nbsp;&nbsp;扣分信息：
-                                                    <span ng-repeat="q in item.question">
+                                                    <span ng-repeat="q in item.DeductScoreItems">
                                                       <!--<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>-->
-                                                      <md-button ng-if="item.question.length" class="md-icon-button" ng-click="vm.quesDetail(item.question,q,item)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
+                                                      <md-button ng-if="item.DeductScoreItems.length" class="md-icon-button" ng-click="vm.quesDetail(item.question,q,item)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
                                                     </span>
-                                                    <md-button aria-label="" ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
-                                                    <md-button aria-label="" class="md-button md-raised" ng-if="item.question.length==0" ng-click="vm.fit(item)" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
                                                   </td>
                                                 </tr>
                                               </table>
@@ -112,10 +115,10 @@
                                         {{item.Weight}}
                                       </td>
                                       <td style="width: 50px;text-align: center;" class="lr">
-                                        {{item.delValue}}
+                                        <button ng-click="vm.changeScore(item,$event)"> {{item.DelScore}}</button>
                                       </td>
                                       <td style="width: 50px;text-align: center;" class="lr">
-                                        {{item.TotalScore}}
+                                        {{item.ModifyScore}}
                                       </td>
                                     </tr>
                                     <tr>
@@ -160,10 +163,10 @@
                                   {{item.Weight}}
                                 </td>
                                 <td style="width: 50px;text-align: center;" class="lr">
-                                  {{ vm.getDelValue(item) }}
+                                <button ng-click="vm.changeScore(item,$event)"> {{item.DelScore}}</button>
                                 </td>
                                 <td style="width: 50px;text-align: center;" class="lr">
-                                  {{item.TotalScore}}
+                                  {{item.ModifyScore}}
                                 </td>
                               </tr>
                               <tr ng-repeat="region in item.regions">
@@ -173,11 +176,10 @@
                                       <td style="width:50px;text-align:center">{{region.RegionName}}</td>
                                       <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
                                         &nbsp;&nbsp;扣分信息：
-                                  <span ng-repeat="q in region.question">
-                                    <md-button  ng-click="vm.quesDetail(q,region)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon>  {{q.DeductionScore}}</md-button>
+                                  <span ng-repeat="q in region.DeductScoreItems">
+                                    <md-button  ng-click="vm.quesDetail(q,region)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon>
+                                    </md-button>
                                   </span>
-                                        <md-button aria-label="" ng-if="!region.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
-                                        <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="!region.question || region.question.length==0" ng-click="vm.fit(region)" ng-class="{'done':item.done}">符合要求</md-button>
                                       </td>
 
                                     </tr>
@@ -207,12 +209,10 @@
                             {{item.Weight}}
                           </td>
                           <td style="width: 50px;text-align: center;" class="lr">
-                            {{ vm.getDelValue(item) }}
-                            <!--<button ng-click="vm.check(item,$event)" ng-if="!vm.input">录入</button>-->
-                            <!--<button ng-click="vm.check(item)" ng-if="vm.input">{{vm.input}}</button>-->
+                            <button ng-click="vm.changeScore(item,$event)"> {{item.DelScore}}</button>
                           </td>
                           <td style="width: 50px;text-align: center;" class="lr">
-                            {{item.TotalScore}}
+                            {{item.ModifyScore}}
                           </td>
                         </tr>
                         <tr ng-repeat="region in item.regions">
@@ -222,11 +222,9 @@
                                 <td style="width:50px;text-align:center">{{region.RegionName}}</td>
                                 <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
                                   &nbsp;&nbsp;扣分信息：
-                                  <span ng-repeat="q in region.question">
+                                  <span ng-repeat="q in region.DeductScoreItems">
                                     <md-button  ng-click="vm.quesDetail(q,region)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon>  {{q.DeductionScore}}</md-button>
                                   </span>
-                                  <md-button aria-label="" ng-if="!region.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
-                                  <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="!region.question || region.question.length==0" ng-click="vm.fit(region)" ng-class="{'done':item.done}">符合要求</md-button>
                                 </td>
 
                               </tr>

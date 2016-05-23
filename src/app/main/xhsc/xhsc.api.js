@@ -32,6 +32,12 @@
       },
       queryResult:function (assessmentID) {
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentItemResult',{AssessmentID:assessmentID}))
+      },
+      modifyScore:function (data) {
+        return $http.post($http.url('/Api/AssessmentApi/SubmitAssessmentItemModifyScore'),data);
+      },
+      deleteScoreItem:function (deducScoretItemID) {
+        return $http.delete('/Api/AssessmentApi/DeleteDeducScoretItem/'+deducScoretItemID);
       }
     },
 	    /**
