@@ -62,7 +62,6 @@
               });
             })
 
-
             k.level = getEvels(k,1);
           }
         }
@@ -138,7 +137,7 @@
         item.AssessmentClassifys.forEach(function (item) {
           levels.push(getEvels(item,level));
         });
-        console.log('levels',levels)
+        //console.log('levels',levels)
         levels.forEach(function (l) {
             if(max<l)
               max = l;
@@ -158,12 +157,13 @@
       $scope.$apply();
      // console.log('a',vm.images)
     }
-    vm.fit = function(item){
-      item.done =true;
-      item.TotalScore = item.Weight;
-      item.delValue = item.Weight - item.TotalScore;
+    vm.fit = function(item,it){
+      it.done =true;
+     //console.log(vm.getDelValue(item));
+      //item.delValue = item.Weight - item.TotalScore;
     }
     vm.getDelValue = function (item) {
+      //console.log('a')
       var s=0;
       if(item.regions){
         item.regions.forEach(function (r) {
@@ -173,6 +173,8 @@
             });
           }
         });
+        if(s >item.Weight)
+        s=item.Weight;
       }
       if(s!=0) {
         item.TotalScore = item.Weight - s;
@@ -188,7 +190,7 @@
       return ''
     }
     $rootScope.$on('delete',deleteFn);
-    vm.quesDetail = function(item){
+    vm.quesDetail = function(item,it,items){
       $mdDialog.show({
         controller:function($scope){
           $scope.item = item;
@@ -216,13 +218,24 @@
 
           //console.log(question)
           $scope.delete = function(d){
-            v/*ar idx = question.indexOf(d)
+            upstzl_question.findAll(function(it){
+              return it.RegionID == d.RegionID
+              && it.AssessmentResultID== d.AssessmentResultID
+              && it.ProblemID== d.ProblemID
+            }).then(function(r){
+              r.rows.forEach(function(item){
+                upstzl_question.delete(item);
+              });
+              var idx = items.indexOf(item);
+              items.splice(idx,1);
+            })
 
-            question.splice(idx,1);
-            stzlServices.setaddScore(item)*/
             //if($scope.question.length <=0){
               $mdDialog.hide()
            // }
+          }
+          $scope.cancel = function(){
+            $mdDialog.hide()
           }
           $scope.addPhoto = function(q){
             xhUtils.photo().then(function (image) {

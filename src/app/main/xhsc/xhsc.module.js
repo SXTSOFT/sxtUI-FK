@@ -72,20 +72,6 @@
           }
         }
       })
-      //.state('app.xhsc.choose',{
-      //  noBack:true,
-      //  sendBt:false,
-      //  rightArrow:false,
-      //  leftArrow:false,
-      //  title :'实测实量',
-      //  url   :'/choose',
-      //  views :{
-      //    'content@app':{
-      //      templateUrl : 'app/main/xhsc/ys/choose.html',
-      //      controller:'ChooseController as vm'
-      //    }
-      //  }
-      //})
       .state('app.xhsc.chooseHouse',{
         noBack:true,
         sendBt:false,
@@ -158,19 +144,19 @@
           }
         }
       })
-      .state('app.xhsc.zg',{
-        noBack:true,
-        sendBt:false,
-        rightArrow:true,
-        leftArrow:true,
-        url   :'/check',
-        views :{
-          'content@app':{
-            templateUrl : 'app/main/xhsc/ys/checkHouse.html',
-            controller:'checkHouseController as vm'
-          }
-        }
-      })
+      //.state('app.xhsc.zg',{
+      //  noBack:true,
+      //  sendBt:false,
+      //  rightArrow:true,
+      //  leftArrow:true,
+      //  url   :'/check',
+      //  views :{
+      //    'content@app':{
+      //      templateUrl : 'app/main/xhsc/ys/checkHouse.html',
+      //      controller:'checkHouseController as vm'
+      //    }
+      //  }
+      //})
       .state('app.xhsc.sc',{
         noBack:false,
         sendBt:false,
@@ -283,8 +269,31 @@
           }
         }
       })
-
-
+      .state('app.pc', {
+        url:'/pc',
+        abstract:true,
+        views:{
+          'main@':{
+            controller:['$scope','$rootScope',function ($scope,$rootScope) {
+              $scope.$on('$viewContentAnimationEnded', function (event) {
+                if (event.targetScope.$id === $scope.$id) {
+                  $rootScope.$broadcast('msSplashScreen::remove');
+                }
+              });
+            }],
+            template:'<div layout="column" flex ui-view="content" ></div>'
+          }
+        }
+      })
+      .state('app.pc.list',{
+        url   :'/list/{AssessmentID}/{RegionID}/{RegionName}/{AssessmentTypeID}',
+        views :{
+          'content':{
+            templateUrl : 'app/main/xhsc/ys/evaluatelist_pc.html',
+            controller:'evaluatelistPcController as vm'
+          }
+        }
+      });
 
     // Navigation
     msNavigationServiceProvider.saveItem('xhsc', {

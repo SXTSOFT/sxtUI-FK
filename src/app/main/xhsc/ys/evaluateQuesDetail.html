@@ -1,22 +1,24 @@
 <md-dialog ng-cloak style="max-width:90%;width:90%;" class="quesdetail">
-  <md-dialog-content>
-    <div flex layout="row">
-      <p flex>
-      <span>{{question.ProblemDescription}}</span>
-      <md-button sxt-images="question.images" ng-if="question.images.length"><md-icon style="width: 16px;height: 16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
-      <md-button ng-click="addPhoto(question)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
-      </p>
-      <md-button class="md-button" ng-click="delete(question)" style="margin:0;"><md-icon><img src="app/main/xhsc/images/del1.png"></md-icon></md-button>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon class="icon s24" md-font-icon="icon-close"></md-icon>
+      </md-button>
     </div>
-    <!--<md-list flex>-->
-      <!--<md-list-item flex layout="row" ng-repeat="q in question track by $index">-->
-        <!--<p style="padding-right:100px;">-->
-          <!--<span>{{q.ProblemDescription}}</span>-->
-          <!--<md-button sxt-images="images" ng-if="q.images.length"><md-icon style="width: 16px;height: 16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>-->
-          <!--<md-button><md-icon><img src="assets/images/etc/plug.png"></md-icon></md-button>-->
-        <!--</p>-->
-        <!--<md-button class="md-button" ng-click="delete(q)"><md-icon><img src="app/main/xhsc/images/del1.png"></md-icon></md-button>-->
-      <!--</md-list-item>-->
-    <!--</md-list>-->
+  </md-toolbar>
+  <md-dialog-content>
+    <div flex layout="row" style="border-bottom: 1px solid #d8d8d8;margin-bottom: 10px;">
+      <p flex style="margin-bottom: 0">
+        <span>{{item.ProblemDescription}}</span>
+        <md-button ng-click="addPhoto(question)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
+      </p>
+      <md-button class="md-button" ng-click="delete(item)" style="margin:0;"><md-icon style="width: 28px;height:28px;"><img src="app/main/xhsc/images/del1.png"></md-icon></md-button>
+    </div>
+    <div flex layout="row" layout-wrap>
+      <div flex="50" ng-repeat="img in images" >
+        <img ng-src="{{img.ImageByte}}" style="width: 450px;" />
+      </div>
+    </div>
   </md-dialog-content>
 </md-dialog>
