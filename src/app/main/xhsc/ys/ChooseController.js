@@ -61,6 +61,7 @@
           db:id,
           //areaId:$stateParams.areaID,
           areaId:item.AreaID,
+          measureItemID:vm.dmeasureItemID,
           regionId:item.AreaID,
           //RegionName:$stateParams.areaName,
           //regionId:$stateParams.areaID,
@@ -68,7 +69,7 @@
           RegionName:item.AreaName,
           name:item.AreaName,
           //name:$stateParams.areaName,
-          measureItemID:vm.dmeasureItemID,
+          pname:vm.dmeasureItemName,
           assessmentID:item.AssessmentID,
         }
         vm.ms = ms;
