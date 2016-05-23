@@ -133,7 +133,7 @@
                       });
                       if (layer) {
                         //console.log('b', layer.getBounds());
-                        var b = layer.getBounds(), p1 = new L.latLng(b._southWest.lat - 0.05, b._southWest.lng);
+                        var b = layer.getBounds(), p1 = new L.latLng(b._southWest.lat - 0.1, b._southWest.lng-0.1);
                         L.marker(p1, {
                           icon: new ST.L.LabelIcon({
                             html: '楼板',
@@ -156,7 +156,7 @@
                       }
 
                       if (layer2) {
-                        var b = layer2.getBounds(), p2 = L.latLng(b._southWest.lat - 0.05, b._southWest.lng + 0.09);
+                        var b = layer2.getBounds(), p2 = L.latLng(b._southWest.lat - 0.1, b._southWest.lng + 0.1);
                         L.marker(p2, {
                           icon: new ST.L.LabelIcon({
                             html: '天花',
@@ -266,7 +266,7 @@
                                       g.options.t = '轻钢龙骨';
                                       break;
                                     case '5':
-                                      g.options.t = '吊顶';
+                                      g.options.t = '天花';
                                       break;
                                   }
                                   g.options.stroke = false;
