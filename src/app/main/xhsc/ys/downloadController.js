@@ -47,22 +47,18 @@
       })
     }
     vm.upload =function (item) {
-      stzlServices.preUpLoad({
-        AssessmentID:item.AssessmentID
-      }).then(function(){
-        var pk = pack.sc.up(item.AssessmentID);
-        pk.upload(function (proc) {
-          item.progress = proc;
-          if(proc==-1) {
-            item.completed = pk.completed;
-            if(item.completed)
-              xcpk.addOrUpdate(vm.data);
-            else {
-              utils.tips('同步未完成');
-            }
+      var pk = pack.sc.up(item.AssessmentID);
+      pk.upload(function (proc) {
+        item.progress = proc;
+        if(proc==-1) {
+          item.completed = pk.completed;
+          if(item.completed)
+            xcpk.addOrUpdate(vm.data);
+          else {
+            utils.tips('同步未完成');
           }
-        });
-      })
+        }
+      });
     }
     vm.delete = function(item,ev){
       utils.confirm('确认删除?',ev,'','').then(function(){
