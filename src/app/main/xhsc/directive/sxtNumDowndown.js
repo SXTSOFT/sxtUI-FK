@@ -30,15 +30,23 @@
         //if(scope.ct.isShow)return;
         //scope.ct.isShow = true;
         scope.ct.show = function () {
-          $(document).find('.numberpanel').eq(0).css('display','block');
+          var mpanel = $(document).find('.numberpanel').eq(0);
+          mpanel.css({
+            'display': 'block',
+            'left':$('.sxtnumdowndown',element).width()+'px',
+            'top':'0px'
+          });
         };
       };
       scope.toggleView = function(){
         if($(element).find('.numberpanel').is(':hidden')){
           $('.numberpanel').css('display','none');
-          $(element).find('.numberpanel').css('display','block');
-          var width = $('.sxt-num-input').width()-$(element).parent().width();
-          $(element).find('.numberpanel').css('left',-width/2+'px');
+          var mpanel = $(element).find('.numberpanel');
+          mpanel.css({
+            'display': 'block',
+            'left':$('.sxtnumdowndown',element).width()+'px',
+            'top':'0px'
+          });
           //scope.isView = true;
         }else{
           $(element).find('.numberpanel').css('display','none');
