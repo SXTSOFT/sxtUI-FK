@@ -286,14 +286,23 @@
         }
       })
       .state('app.pc.list',{
-        url   :'/list/{AssessmentID}/{RegionID}/{RegionName}/{AssessmentTypeID}',
+        url   :'/list/{AssessmentID}',
         views :{
           'content':{
             templateUrl : 'app/main/xhsc/ys/evaluatelist_pc.html',
             controller:'evaluatelistPcController as vm'
           }
         }
-      });
+      })
+    .state('app.xhsc.pkresult',{
+      url   :'/pkresult/{AssessmentID}/{RegionID}/{RegionName}/{AssessmentTypeID}',
+      views :{
+        'content@app':{
+          templateUrl : 'app/main/xhsc/ys/evaluatelist_pc.html',
+          controller:'evaluatelistPcController as vm'
+        }
+      }
+    });
 
     // Navigation
     msNavigationServiceProvider.saveItem('xhsc', {

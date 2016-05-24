@@ -29,6 +29,9 @@
       })
 
     });
+    remote.Assessment.queryResutTotal(params.AssessmentID).then(function (r) {
+      vm.totals = r.data;
+    });
 
 
     function onQueryBase(item,result) {

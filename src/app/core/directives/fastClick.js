@@ -24,6 +24,11 @@
         fn(scope,attr);
       });
 
+      element.on('click',function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+      })
       element.on('mousedown', function(event) {
         if(!scope._usingTouch)
           fn(scope,attr);
