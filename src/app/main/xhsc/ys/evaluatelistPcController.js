@@ -41,12 +41,36 @@
       vm.caches = {
         AssessmentClassifys:[]
       }
+
+      function  setshow(o){
+        o.show=false;
+        if(angular.isArray(o.AssessmentItems)&& o.AssessmentItems.length>0){
+          for(var i=0;i<o.AssessmentItems.length;i++){
+            var x=result.find(function(t){ return t.AssessmentCheckItemID== o.AssessmentItems[i].AssessmentCheckItemID})
+            if (x){
+              o.AssessmentItems[i].show=o.show=true;
+            }
+          }
+        }else {
+          if (angular.isArray(o.AssessmentClassifys)&& o.AssessmentClassifys.length>0){
+              for (var i=0;i<o.AssessmentClassifys.length;i++){
+                  if (setshow(o.AssessmentClassifys[i])){
+                    o.show=true;
+                    break;
+                  }
+              }
+          }
+        }
+        return o.show;
+      }
       item.AssessmentTypes.forEach(function (t) {
         t.AssessmentClassifys.forEach(function (cls) {
-          vm.items.AssessmentClassifys.push({
-            AssessmentClassificationName:cls.AssessmentClassificationName
-          });
-          vm.caches.AssessmentClassifys.push(cls);
+            vm.items.AssessmentClassifys.push({
+              AssessmentClassificationName:cls.AssessmentClassificationName,
+              show:true
+            });
+            cls.show=true;
+            vm.caches.AssessmentClassifys.push(cls);
         });
       });
       fillRegion(vm.caches,result);
@@ -54,12 +78,15 @@
         if(vm.selectedIndex){
           var k = vm.items.AssessmentClassifys[vm.selectedIndex-1];
           if(k.AssessmentClassifys==null){
-            k.AssessmentClassifys = vm.caches.AssessmentClassifys[vm.selectedIndex-1].AssessmentClassifys;
+            var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex-1].AssessmentClassifys;
+            assessmentClassifys.forEach(function(t){
+               setshow(t);
+            });
+            k.AssessmentClassifys =assessmentClassifys;
             k.level = getEvels(k,1);
           }
         }
       })
-
     }
 
     function fillRegion(k,result) {
@@ -75,7 +102,7 @@
             if(!item.ModifyScore && item.ModifyScore!==0)
               item.ModifyScore = item.TotalScore;
 
-
+            var len=item.Problems.length;
             item.DelScore =  (item.ModifyScore===0 ||  item.ModifyScore)?item.Weight-item.ModifyScore:'';
             item.regions = resultItem.AssessmentRegionItemResults;
           }

@@ -81,7 +81,6 @@
       </div>
 
 
-
     </md-tab-content>
   </md-tab>
   <md-tab label="{{b.AssessmentClassificationName}}" ng-repeat="b in vm.items.AssessmentClassifys">
@@ -107,32 +106,32 @@
         </div>
       <div flex layout="column" layout-fill>
         <md-content flex  class="zlpksub">
-          <section class="zlpklist" ng-repeat="c in b.AssessmentClassifys">
+          <section class="zlpklist" ng-if="c.show" ng-repeat="c in b.AssessmentClassifys">
             <md-subheader>
               <div layout="row" class="zlpksubheader">
                 <span>{{c.AssessmentClassificationName}}</span>
               </div>
             </md-subheader>
             <table width="100%" cellspacing="0" cellpadding="0" class="zlpktables">
-                  <tr ng-repeat="e in c.AssessmentClassifys">
+                  <tr  ng-if="e.show" ng-repeat="e in c.AssessmentClassifys">
                     <td style="width:{{vm.getW(1,2)}}%;">
                       <p>{{e.AssessmentClassificationName}}</p>
                     </td>
                     <td>
                       <table width="100%" cellspacing="0" cellpadding="0">
-                        <tr ng-repeat="f in e.AssessmentClassifys">
+                        <tr  ng-if="f.show" ng-repeat="f in e.AssessmentClassifys">
                           <td style="width:{{vm.getWidth(2,b.level)}}%;">
                             <p>{{f.AssessmentClassificationName}}</p>
                           </td>
                           <td>
                             <table width="100%" cellspacing="0" cellpadding="0">
-                              <tr ng-repeat="g in f.AssessmentClassifys">
+                              <tr ng-if="g.show" ng-repeat="g in f.AssessmentClassifys">
                                 <td style="width:{{vm.getWidth(3,b.level)}}%;">
                                   <p>{{g.AssessmentClassificationName}}</p>
                                 </td>
                                 <td>
                                   <table width="100%" cellspacing="0" cellpadding="0">
-                                    <tr ng-repeat="item in g.AssessmentItems">
+                                    <tr  ng-repeat="item in g.AssessmentItems">
                                       <td style="width:{{vm.getWidth(4,b.level)}}%">
                                         <p>{{item.AssessmentCheckItemName}}</p>
                                       </td>
@@ -178,7 +177,7 @@
                                   </table>
                                 </td>
                               </tr>
-                              <tr ng-repeat="item in e.AssessmentItems">
+                              <tr  ng-repeat="item in e.AssessmentItems">
                                 <td style="width:6.25%;">
                                   <p>{{item.AssessmentCheckItemName}}{{item}}</p>
                                 </td>
