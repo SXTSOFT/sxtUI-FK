@@ -182,20 +182,31 @@
       scope.onMeasureValueChange = function (v) {
         if(v && v.MeasureValue){
           var str = v.MeasureValue.toString();
-          if(str.length>2) {
+          if(str.length>1) {
             var xs = str.substr(str.length - 2, 2),
               n = parseInt(xs),
               l = str.substr(0,str.length-2);
             if(!isNaN(n)){
-              if(n<50){
+              if(n<25){
                 v.DesignValue = l+'00';
               }
-              else{
+              else if(n<75){
                 v.DesignValue = l+'50';
               }
+              else{
+                v.DesignValue = l.length?(parseInt(l)+1)*100:100;
+              }
             }
-
+            else{
+              v.DesignValue='';
+            }
           }
+          else{
+            v.DesignValue = 0;
+          }
+        }
+        else{
+          v.DesignValue= null;
         }
         //console.log(v);
       }
