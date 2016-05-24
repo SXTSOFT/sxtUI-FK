@@ -104,8 +104,9 @@
         var context = scope.context,p = context.layer.getValue();
         var singleEdit=[],mutiEdit=[],floorEdit=[],sjzEdit=[],materEidt=[],group,groupEdit=[];
         scope.data.updates = [];
+        var ms = [];
         scope.data.measureIndexes.forEach(function(m){
-          var ms = [];
+
           if(m.Children && m.Children.length){
             m.Children.forEach(function (it) {
               it.QSKey = it.QSKey||m.QSKey;
@@ -115,13 +116,14 @@
           else{
             ms.push(m);
           };
+        });
           ms.forEach(function (m) {
             var o={
               m:m,
               v:scope.data.values.find(function(o){
                 return o.MeasurePointID == p.$id
                   && o.AcceptanceIndexID == m.AcceptanceIndexID
-                  && o.Hide !== true
+                  //&& o.Hide !== true
               })
             };
             scope.data.updates.push(o);
@@ -153,7 +155,6 @@
 
             }
           })
-        });
         if (mutiEdit.length == 1) {
           singleEdit = mutiEdit;
           mutiEdit = [];
