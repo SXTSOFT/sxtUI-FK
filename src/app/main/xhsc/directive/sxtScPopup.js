@@ -106,12 +106,11 @@
         scope.data.updates = [];
         var ms = [];
         scope.data.measureIndexes.forEach(function(m){
-
           if(m.Children && m.Children.length){
             m.Children.forEach(function (it) {
               it.QSKey = it.QSKey||m.QSKey;
               ms.push(it);
-            })
+            });
           }
           else{
             ms.push(m);
