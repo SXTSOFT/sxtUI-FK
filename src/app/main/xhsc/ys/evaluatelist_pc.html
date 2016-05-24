@@ -131,7 +131,7 @@
                                 </td>
                                 <td>
                                   <table width="100%" cellspacing="0" cellpadding="0">
-                                    <tr  ng-repeat="item in g.AssessmentItems">
+                                    <tr ng-if="item.show"  ng-repeat="item in g.AssessmentItems">
                                       <td style="width:{{vm.getWidth(4,b.level)}}%">
                                         <p>{{item.AssessmentCheckItemName}}</p>
                                       </td>
@@ -177,9 +177,9 @@
                                   </table>
                                 </td>
                               </tr>
-                              <tr  ng-repeat="item in e.AssessmentItems">
+                              <tr ng-if="item.show"  ng-repeat="item in e.AssessmentItems">
                                 <td style="width:6.25%;">
-                                  <p>{{item.AssessmentCheckItemName}}{{item}}</p>
+                                  <p>{{item.AssessmentCheckItemName}}</p>
                                 </td>
                                 <td>
                                   <table width="100%" cellspacing="0" cellpadding="0">
@@ -225,7 +225,7 @@
                             </table>
                           </td>
                         </tr>
-                        <tr ng-repeat="item in e.AssessmentItems">
+                        <tr ng-if="item.show" ng-repeat="item in e.AssessmentItems">
                           <td style="width:14.1%;">
                             <p>{{item.AssessmentCheckItemName}}</p>
                           </td>
@@ -271,7 +271,7 @@
                       </table>
                     </td>
                   </tr>
-                  <tr ng-repeat="item in c.AssessmentItems">
+                  <tr ng-if="item.show" ng-repeat="item in c.AssessmentItems">
                     <td style="width:25%;">
                       <p>{{item.AssessmentCheckItemName}}{{vm.levels}}</p>
                     </td>
@@ -294,7 +294,7 @@
                             {{item.ModifyScore}}
                           </td>
                         </tr>
-                        <tr ng-repeat="region in item.regions">
+                        <tr ng-if="item.show" ng-repeat="region in item.regions">
                           <td colspan="5">
                             <table width="100%" cellspacing="0" cellpadding="0">
                               <tr>
