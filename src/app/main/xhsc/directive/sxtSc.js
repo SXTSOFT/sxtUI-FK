@@ -196,43 +196,54 @@
               }
             }
             if(isNew && layer instanceof L.AreaGroup){
-              var b = layer.getBounds(),
-                x1 = b._northEast.lat,
-                y1 = b._northEast.lng,
-                x2 = b._southWest.lat,
-                y2 = b._southWest.lng;
-              var ps = [],ps1=[];
-              var offsetX = Math.abs(x2-x1)/8,
-                minX = Math.min(x2,x1),
-                offsetY = Math.abs(y2 - y1)/8,
-                minY = Math.min(y2,y2);
-              for(var i=1;i<=3;i++){
-                for(var j=1;j<=3;j++){
-                  ps.push([minX+offsetX*(i==1?1:i==2?4:7),minY+offsetY*(j==1?1:j==2?4:7)]);
+              var p=null,b = layer.getBounds();
+              fg.eachLayer(function (ly) {
+                if(p===null && ly instanceof L.Stamp){
+                  if(L.SvFeatureGroup.isMiddleNumber(b._southWest.lat, b._northEast.lat,ly._latlng.lat)
+                    && L.SvFeatureGroup.isMiddleNumber(b._southWest.lng, b._northEast.lng,ly._latlng.lng)){
+                    p = ly;
+                  }
                 }
+              });
+              if(p==null) {
+                var b = layer.getBounds(),
+                  x1 = b._northEast.lat,
+                  y1 = b._northEast.lng,
+                  x2 = b._southWest.lat,
+                  y2 = b._southWest.lng;
+                var ps = [], ps1 = [];
+                var offsetX = Math.abs(x2 - x1) / 8,
+                  minX = Math.min(x2, x1),
+                  offsetY = Math.abs(y2 - y1) / 8,
+                  minY = Math.min(y2, y2);
+                for (var i = 1; i <= 3; i++) {
+                  for (var j = 1; j <= 3; j++) {
+                    ps.push([minX + offsetX * (i == 1 ? 1 : i == 2 ? 4 : 7), minY + offsetY * (j == 1 ? 1 : j == 2 ? 4 : 7)]);
+                  }
+                }
+                ps1[0] = ps[0];
+                ps1[1] = ps[1];
+                ps1[2] = ps[2];
+                ps1[3] = ps[5];
+                ps1[4] = ps[8];
+                ps1[5] = ps[7];
+                ps1[6] = ps[6];
+                ps1[7] = ps[3];
+                ps1[8] = ps[4];
+                var m5 = scope.measureIndexes.find(function (m) {
+                  return m.QSKey == '4'
+                })
+                if (m5 && m5.QSOtherValue == '5') {
+                  ps1.splice(7, 1);
+                  ps1.splice(5, 1);
+                  ps1.splice(3, 1);
+                  ps1.splice(1, 1);
+                }
+                //console.log(points);
+                ps1.forEach(function (p) {
+                  fg.addLayer(new L.Stamp(p), false);
+                })
               }
-              ps1[0] = ps[0];
-              ps1[1] = ps[1];
-              ps1[2] = ps[2];
-              ps1[3] = ps[5];
-              ps1[4] = ps[8];
-              ps1[5] = ps[7];
-              ps1[6] = ps[6];
-              ps1[7] = ps[3];
-              ps1[8] = ps[4];
-              var m5 = scope.measureIndexes.find(function (m) {
-                return m.QSKey=='4'
-              })
-              if(m5 && m5.QSOtherValue=='5'){
-                ps1.splice(7,1);
-                ps1.splice(5,1);
-                ps1.splice(3,1);
-                ps1.splice(1,1);
-              }
-              //console.log(points);
-              ps1.forEach(function (p) {
-                fg.addLayer(new L.Stamp(p),false);
-              })
             }
 
           },

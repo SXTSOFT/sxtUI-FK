@@ -58,7 +58,7 @@
       <tr>
         <td  style="width:80px; text-align: center;">结果</td>
         <td  ng-repeat="item in edit.sjzEdit">
-      <span style="line-height: 30px;">&nbsp;  {{item.v.CalculatedValue = (item.v.DesignValue?item.v.MeasureValue - item.v.DesignValue:null) }}</span>
+      <span style="line-height: 30px;">&nbsp;  {{item.v.CalculatedValue = (((item.v.DesignValue || item.v.DesignValue==0) &&( item.v.MeasureValue||item.v.MeasureValue==0))?item.v.MeasureValue - item.v.DesignValue:null) }}</span>
         </td>
       </tr>
       </tbody>
