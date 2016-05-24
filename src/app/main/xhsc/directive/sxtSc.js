@@ -150,7 +150,7 @@
                 else {
                   ms.push(m);
                 }
-                //console.log('ms',ms);
+                console.log('ms',ms);
                 ms.forEach(function (m) {
                   var v = {
                     _id: sxt.uuid(),
@@ -259,7 +259,6 @@
               }
 
             }
-            this._inPopup = false;
             //toolbar._toolbars.lineGroup._modes.stamp.handler.enable();
           },
           onUpdateData:function(context,updates,editScope){
@@ -327,12 +326,17 @@
             })
           },
           onPopup:function(e){
-            this._inPopup = true;
             if(e.layer instanceof L.Stamp
               || e.layer instanceof L.AreaGroup
               || e.layer instanceof L.LineGroup)
               var edit = mapPopupSerivce.get('mapPopup');
             if(edit) {
+              if(e.layer instanceof L.Stamp) {
+                $timeout(function () {
+                  fg._map.setView(e.layer._latlng);
+                },300);
+              }
+
               //e.fg._value.seq =
               edit.scope.context = e;
               edit.scope.data = {
