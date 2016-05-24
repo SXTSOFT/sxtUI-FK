@@ -40,7 +40,7 @@
         return $http.delete('/Api/AssessmentApi/DeleteDeducScoretItem/'+deducScoretItemID);
       },
       queryResutTotal:function (assessmentID) {
-        return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResult',{AssessmentID:assessmentID}));
+        return $http.get($http.url('/Api/AssessmentApi/GetAssessmentTotalReport',{AssessmentID:assessmentID}));
       }
     },
 	    /**
