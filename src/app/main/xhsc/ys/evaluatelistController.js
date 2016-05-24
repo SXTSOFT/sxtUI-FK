@@ -110,6 +110,8 @@
                 question:qs
               }
             ]
+            item.Score= q.Score;
+            item.done= q.Score==item.Weight
           }
         });
       }
@@ -159,7 +161,21 @@
      // console.log('a',vm.images)
     }
     vm.fit = function(item,it){
-      it.done =true;
+      it.done=true;
+      var rn = it.regions.find(function (r) {
+        return r.RegionID == params.RegionID;
+      });
+      upstzl_item.addOrUpdate({
+        _id:rn._id,
+        AssessmentRegionItemResultID:rn._id,
+        AssessmentID:params.AssessmentID,
+        RegionID:rn.RegionID,
+        Score: it.Weight,
+        AssessmentCheckItemID:it.AssessmentCheckItemID,
+        done:it.done,
+        CreateTime:new Date()
+      });
+
      //console.log(vm.getDelValue(item));
       //item.delValue = item.Weight - item.Score;
     }
@@ -285,16 +301,6 @@
             var rn = item.regions.find(function (r) {
               return r.RegionID == params.RegionID;
             });
-            upstzl_item.addOrUpdate({
-              _id:rn._id,
-              AssessmentRegionItemResultID:rn._id,
-              AssessmentID:params.AssessmentID,
-              Score:0,
-              RegionID:rn.RegionID,
-              AssessmentCheckItemID:item.AssessmentCheckItemID,
-              CreateTime:new Date()
-            });
-
             var question = rn.question.find(function (p) {
               return p.ProblemID==answer.ProblemID;
             });
@@ -333,8 +339,8 @@
                   _id:_id,
                   ImageID: sxt.uuid(),
                   RelationID: dedu.DeducScoretItemID,
-                  ImageName:_id+".jpg",
-                  ImageUrl: "",
+                  ImageName:_id+".Jpeg",
+                  ImageUrl:_id+".Jpeg",
                   ImageByte: $base64Url
                 }).then(function () {
                   question.hasPic = true;
@@ -346,7 +352,16 @@
                 });
               }
             });
-
+            vm.getDelValue(item);
+            upstzl_item.addOrUpdate({
+              _id:rn._id,
+              AssessmentRegionItemResultID:rn._id,
+              AssessmentID:params.AssessmentID,
+              RegionID:rn.RegionID,
+              Score:item.Score,
+              AssessmentCheckItemID:item.AssessmentCheckItemID,
+              CreateTime:new Date()
+            });
             item.isCheck = true;
           };
         }],
