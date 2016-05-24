@@ -241,7 +241,7 @@
                 }
                 //console.log(points);
                 ps1.forEach(function (p) {
-                  fg.addLayer(new L.Stamp(p), false);
+                  //fg.addLayer(new L.Stamp(p), false);
                 })
               }
             }
