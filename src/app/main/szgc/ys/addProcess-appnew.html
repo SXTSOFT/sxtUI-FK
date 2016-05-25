@@ -1,0 +1,138 @@
+<div class="ybxm" style="overflow: auto;position:relative;">
+  <md-content class="md-padding" style="position: relative;">
+    <form name="addForm" class="form-horizontal" ng-submit="save(addForm)">
+      <md-list>
+        <md-subheader class="md-no-sticky">项目</md-subheader>
+        <md-list-item>
+          <p>项目{{data.projectName}} {{data.rName}}</p>
+        </md-list-item>
+        <md-subheader class="md-no-sticky">工序</md-subheader>
+        <md-list-item>
+          <p>工序{{data.procedureName}}</p>
+        </md-list-item>
+        <md-subheader class="md-no-sticky">监理单位</md-subheader>
+        <md-list-item layout="row">
+          <sxt-select flex name="jldw" ng-disabled="!data.isFirst" required ng-model="data.curHistory.SupervisorCompanyId" name-value="data.curHistory.SupervisorCompanyName" sources="data.construction" text-field="UnitName" value-field="UnitId"></sxt-select>
+        </md-list-item>
+        <md-subheader class="md-no-sticky">验收人</md-subheader>
+        <md-list-item layout="row">
+          <sxt-select flex name="ysr" required ng-model="data.curStep.CheckWorker" obj-value="data.submitUser" name-value="data.curStep.CheckWorkerName" sources="data.submitUsers" text-field="name" value-field="id"></sxt-select>
+        </md-list-item>
+        <div ng-repeat="batch in data.batchs">
+
+          <md-subheader class="md-no-sticky">{{$index==0?'验收批':''}} <!--<button ng-if="$index==0 && data.isFirst" type="button" ng-click="addBatch()" class="btn btn-white btn-xs"><i class="fa fa-plus"></i></button>--></md-subheader>
+          <div class="col-sm-6 col-lg-7">
+            <div class="input-group">
+              <span class="input-group-addon" >验收批{{batch.BatchNo}}</span>
+              <input type="text" class="form-control" ng-disabled="!data.isFirst" ng-model="batch.Remark" placeholder="验收批描述" />
+              <span class="input-group-addon" ng-if="$index==0">第{{batch.Count}}次验收</span>
+              <span class="input-group-btn" ng-if="$index!=0"><button ng-click="removeBatch(batch)" type="button" class="btn btn-white"><i class="fa fa-times"></i></button></span>
+            </div>
+          </div>
+
+        </div>
+        <md-subheader class="md-no-sticky">总承包</md-subheader>
+        <md-list-item layout="row">
+          <sxt-select flex required name="zid"  ng-model="data.curHistory.ParentCompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.ParentCompanyName" sources="data.supervision1" text-field="UnitName" value-field="UnitId"></sxt-select>
+        </md-list-item>
+        <md-subheader class="md-no-sticky">专业承包</md-subheader>
+        <md-list-item layout="row">
+          <sxt-select flex required name="zid"  ng-model="data.curHistory.ParentCompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.ParentCompanyName" sources="data.supervision" text-field="UnitName" value-field="UnitId"></sxt-select>
+        </md-list-item>
+        <md-subheader class="md-no-sticky">施工班组</md-subheader>
+        <md-list-item layout="row">
+          <sxt-select flex required  ng-model="data.curHistory.GrpId" ng-disabled="!data.isFirst" name="gid" name-value="data.curHistory.GrpName" sources="data.groups" text-field="name" value-field="id"></sxt-select>
+        </md-list-item>
+      </md-list>
+
+
+      <div><div class="clearfix"></div></div>
+
+
+      <fieldset>
+        <legend>验收件</legend>
+        <span class="fs-display-1 display-block">附件</span>
+        <div> <small></small></div>
+        <sxt-images ng-model="data.curStep.GroupImg2"  project="data.projectInfo" edit="true"></sxt-images>
+      </fieldset>
+      <fieldset>
+        <legend>主控项目</legend>
+        <md-list>
+          <md-list-item ng-repeat="n in targets.zk" ng-click="n.checked && (n.isOK=!n.isOK)">
+            <md-checkbox ng-model="n.checked" ng-click="$event.stopPropagation()"></md-checkbox>
+            <div class="md-list-item-text" flex ng-class="{'text-disabled':!n.checked}" layout="column">
+              <h3>{{$index+1}}、{{n.TargetName}}</h3>
+              <p ng-if="n.Remark">
+                {{n.Remark}}
+              </p>
+            </div>
+            <md-switch ng-disabled="!n.checked" ng-click="$event.stopPropagation()" ng-model="n.isOK"></md-switch>
+          </md-list-item>
+        </md-list>
+      </fieldset>
+      <div class="h48"></div>
+      <fieldset ng-if="targets.yb && targets.yb.length">
+
+        <legend>
+          一般项目
+        </legend>
+        <div ng-repeat="n in targets.yb"  ng-class="{'bgc-red-A100':!ybIsOkRow(n)}">
+          <h3  ng-class="{'text-disabled':!n.checked}"><md-checkbox ng-model="n.checked" ng-click="$event.stopPropagation()"></md-checkbox>{{$index+1}}、{{n.TargetName}} 允许偏差（mm） :{{n.DeviationLimit}}</h3>
+          <!--<md-input-container class="md-block">-->
+            <!--<label>检查点数</label>-->
+            <!--<input type="number" ng-disabled="!n.checked" ng-model="n.CheckNum">-->
+          <!--</md-input-container>-->
+          <!--<md-input-container class="md-block">-->
+            <!--<label>合格率</label>-->
+            <!--<input  type="number" ng-disabled="!n.checked" step="0.01" max="100.0"  ng-model="n.PassRatio" >-->
+          <!--</md-input-container>-->
+          <!--<md-input-container class="md-block">-->
+            <!--<label>最大偏差</label>-->
+            <!--<input type="number" ng-disabled="!n.checked" step="0.01"  ng-model="n.MaxDeviation" >-->
+          <!--</md-input-container>-->
+          <div class="circles">
+            <div layout="row" layout-wrap>
+              <div flex="20"><div ng-class="{'done':1}"><span><sxt-number ng-model="user"></sxt-number></span></div></div>
+              <div flex="20"><div ng-class="{'done':0}"><span><sxt-number  ng-model="value"></sxt-number></span></div></div>
+              <div flex="20"><div ng-class="{'done':0}"><span><sxt-number  ng-model="value"></sxt-number></span></div></div>
+              <div flex="20"><div ng-class="{'done':0}"><span><sxt-number  ng-model="value"></sxt-number></span></div></div>
+              <div flex="20"><div ng-class="{'done':0}"><span><sxt-number  ng-model="value"></sxt-number></span></div></div>
+              <div flex="20"><div ng-class="{'done':0}"><span><sxt-number  ng-model="value"></sxt-number></span></div></div>
+              <div flex="20"><div ng-class="{'done':0}"><span><sxt-number></sxt-number></span></div></div>
+              <div flex="20" class="insertBefore"><div ng-click="addCircle(e)">+</div></div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <div layout="row">
+
+        <div >
+
+          主控：{{zkIsOk()?"合格":"不合格"}};
+
+        </div>
+
+        <div  ng-if="targets.yb && targets.yb.length">
+          一般：{{ybIsOk()?"合格":"不合格"}}({{ybHGL()}}) 总体({{ybHGLPJ()}});
+
+        </div>
+        <div class="col-md-2">
+          结果：{{zkIsOk()&&ybIsOk()?"合格":"不合格"}};
+
+        </div>
+      </div>
+
+      <div class="md-padding" layout="row">
+
+        <md-button type="submit" flex ng-disabled="isSaveing"  class="md-raised md-primary">{{ isSaveing ?'正在提交...':'提交'}}  </md-button>
+      </div>
+    </form>
+  </md-content>
+  <div style="position:fixed; top:0px; right:20px;">
+    <md-button class="md-fab md-mini" ng-click="back()">
+      <md-icon md-font-icon="icon-arrow-left"></md-icon>
+    </md-button>
+  </div>
+
+</div>
+

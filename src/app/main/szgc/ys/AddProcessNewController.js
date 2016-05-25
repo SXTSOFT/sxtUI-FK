@@ -1,22 +1,25 @@
 /**
+ * Created by emma on 2016/5/25.
+ */
+/**
  * Created by zhangzhaoyong on 16/2/1.
  */
 (function(){
   'use strict';
   angular
     .module('app.szgc')
-    .controller('AddProcessController',AddProcessController);
+    .controller('AddProcessNewController',AddProcessNewController);
 
   /** @ngInject */
-  function AddProcessController($scope, $filter, $stateParams, utils,  $q, api,auth,$state){
+  function AddProcessNewController($scope, $filter, $stateParams, utils,  $q, api,auth,$state){
 
 
     //给默认时间
     var dateFilter = $filter('date');
     $scope.m = {};
-$scope.back = function(){
-  history.back();
-}
+    $scope.back = function(){
+      history.back();
+    }
     $scope.m.CheckDateF = new Date();
     $scope.m.CheckDate = dateFilter($scope.m.CheckDateF, 'yyyy-MM-dd HH:dd:ss');
 
@@ -38,12 +41,9 @@ $scope.back = function(){
       $state.go('app.szgc.ys');
       return;
     }
-    $scope.animate = function(){
-      $('.ybxm').animate({scrollTop:100})
-    }
 
     var user=auth.current(),
-        initIng = true;
+      initIng = true;
     $scope.isPartner = api.szgc.vanke.isPartner();
     $scope.data = {
       pics: [],
@@ -631,7 +631,7 @@ $scope.back = function(){
         $scope.isSaveing = false;
         $scope.$parent.project.filter(true);
         utils.alert('提交完成').then(function () {
-            $state.go('app.szgc.ys');
+          $state.go('app.szgc.ys');
         });
       });
     }
@@ -659,6 +659,17 @@ $scope.back = function(){
     }
     $scope.value = 2;
     $scope.user = 1;
+    //$scope.numbers = function(e){
+    //  console.log('e',e)
+    //  //console.log('e',$(e.target).position(),$(e.target).closest('.circles').height())
+    //  $('.ybxm').animate({scrollTop:$(e.target).position().top-100});
+    //  $('.ybxm').css('padding-bottom','300px');
+    //  if($('.numberpanel').is(':hidden')){
+    //    $('.numberpanel').css({'position':'fixed','bottom':0,'left':0,width:'100%','height':'300px','display':'block'})
+    //  }
+    //
+    //}
+
     $scope.addCircle = function(i){
 
     }
