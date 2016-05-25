@@ -162,8 +162,8 @@
                                                   <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
                                                     &nbsp;&nbsp;扣分信息：
                                                     <span ng-repeat="q in item.DeductScoreItems">
-                                                      <!--<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>-->
-                                                      <md-button ng-if="item.DeductScoreItems.length" class="md-icon-button" ng-click="vm.quesDetail(item.question,q,item)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
+                                                     <md-button  ng-click="vm.quesDetail(q,region)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
+                                                     </md-button>
                                                     </span>
                                                   </td>
                                                 </tr>
@@ -209,7 +209,8 @@
                                               &nbsp;&nbsp;扣分信息：
                                               <span ng-repeat="q in item.question">
                                                 <!--<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>-->
-                                                <md-button ng-if="item.question.length" class="md-icon-button" ng-click="vm.quesDetail(item.question,q,item)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>
+                                                 <md-button  ng-click="vm.quesDetail(q,region)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
+                                                 </md-button>
                                               </span>
                                               <md-button aria-label="" ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
                                               <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="item.question.length==0" ng-click="vm.fit(item)" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
@@ -256,11 +257,10 @@
                                       <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
                                         &nbsp;&nbsp;扣分信息：
                                   <span ng-repeat="q in region.DeductScoreItems">
-                                    <md-button  ng-click="vm.quesDetail(q,region)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon>
+                                    <md-button  ng-click="vm.quesDetail(q,region)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
                                     </md-button>
                                   </span>
                                       </td>
-
                                     </tr>
                                   </table>
                                 </td>
@@ -302,7 +302,8 @@
                                 <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
                                   &nbsp;&nbsp;扣分信息：
                                   <span ng-repeat="q in region.DeductScoreItems">
-                                    <md-button  ng-click="vm.quesDetail(q,region)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon>  {{q.DeductionScore}}</md-button>
+                                   <md-button  ng-click="vm.quesDetail(q,region)"><md-icon style="width:16px;height:16px;" align="center"><img src="app/main/xhsc/images/pic.png"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
+                                   </md-button>
                                   </span>
                                 </td>
 
