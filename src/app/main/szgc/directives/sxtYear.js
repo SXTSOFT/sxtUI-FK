@@ -24,7 +24,7 @@
   <button type="button" class="btn btn-white" ng-click="add(-1)"> <md-icon md-font-icon="icon-chevron-left"></md-icon></button>\
   <button type="button" class="btn btn-white yearlabel" data-day="{{year}}-1-1" data-type="3">{{year}}</button>\
   <button type="button" class="btn btn-white" ng-click="add(1)"><md-icon md-font-icon="icon-chevron-right"></md-icon></button>\
-</div> <button type="button"  class="btn btn-white yearlabel allbtn" style="margin: -43px auto;display: block">全部</button><button type="button" ng-show="isLoading" class="btn btn-white"><i class="fa fa-refresh fa-spin"></i></button> </div><div style="overflow: auto;margin-top:34px;" class="clear months monthsscroll"><div ng-repeat="m in months" sxt-month="m" ></div></div>',
+</div> <button type="button"  class="btn btn-white yearlabel allbtn" style="margin: -29px auto;display: block">全部</button><button type="button" ng-show="isLoading" class="btn btn-white"><i class="fa fa-refresh fa-spin"></i></button> </div><div style="overflow: auto;margin-top:34px;" class="clear months monthsscroll"><div ng-repeat="m in months" sxt-month="m" ></div></div>',
       link: function (scope, element, attr, ctrl) {
         var map,curlay;
         element.addClass('sxtcalendar');
@@ -171,7 +171,7 @@
 
                 $timeout(function(){;
                   var m = moment();
-                  $('[sxt-year]').height($($window).height()-56).animate({
+                  $('[sxt-year],.monthsscroll').height($($window).height()-56).animate({
                     scrollTop:$('td[data-day="' + m.year() + '-' + (m.month()+1) + '-1"]').position().top-100
                   });
 
