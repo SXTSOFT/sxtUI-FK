@@ -8,7 +8,7 @@
     .module('app.xhsc')
     .controller('sc2Controller',sc2Controller)
   /** @ngInject */
-  function sc2Controller($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,remotePack,sxt,$state) {
+  function sc2Controller($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,pack,sxt,$state) {
     var vm = this;
     vm.info = {
       db:$stateParams.db,
@@ -20,11 +20,12 @@
       aItem:{
         MeasureItemName:$stateParams.pname,
         AcceptanceItemID:$stateParams.measureItemID
-      }
+      },
+      tooltip:''
     };
     $rootScope.title = vm.info.aItem.MeasureItemName;
-    var pack = db('pack'+vm.info.db);
-    pack.get('GetMeasureItemInfoByAreaID').then (function (r) {
+    var packdb = db('pack'+vm.info.db);
+    packdb.get('GetMeasureItemInfoByAreaID').then (function (r) {
       //console.log('r',r)
       var find = r.data.find(function (it) {
         return it.MeasureID == vm.info.acceptanceItemID;
@@ -75,11 +76,12 @@
             }
           });
           vm.info.MeasureIndexes = scStr;
+          vm.submit();
          });
     }
 
     vm.setRegionId = function(regionId,regionType){
-      pack.get('GetRegionTreeInfo').then(function (result) {
+      packdb.get('GetRegionTreeInfo').then(function (result) {
         var region = xhUtils.findRegion([result.data],regionId);
         vm.setRegion(region)
       });
@@ -91,21 +93,14 @@
         vm.info.name = region.fullName;
     }
     vm.submit = function (ev) {
-      $mdDialog.show($mdDialog.confirm()
+/*      $mdDialog.show($mdDialog.confirm()
         .title('提交？')
         .textContent('确定完成提交当前指标测试数据吗？')
         .ariaLabel('提交？')
         .targetEvent(ev)
         .ok('确定')
-        .cancel('取消')).then(function () {
-        var indexs = remotePack.pack({
-          _id:vm.info.db,
-          db:{
-            status:{
-              type:'data'
-            }
-          }
-        }).indexs.db;
+        .cancel('取消')).then(function () {*/
+        var indexs = pack.sc.up(vm.info.db).indexs.db;
         vm.info.MeasureIndexes.forEach(function (m) {
           var ms = [];
           if(m.Children && m.Children.length){
@@ -133,15 +128,15 @@
             });
           });
         })
-      }, function () {
+/*      }, function () {
 
-      });
+      });*/
 
     }
 
     vm.nextRegion = function(prev){
       //vm.info.regionId 当前
-      pack.get('GetRegionTreeInfo').then(function (result) {
+      packdb.get('GetRegionTreeInfo').then(function (result) {
         var  rr=xhUtils.wrapRegion(result.data);
         var region = xhUtils.findRegion([rr],vm.info.regionId);
         if (region){
