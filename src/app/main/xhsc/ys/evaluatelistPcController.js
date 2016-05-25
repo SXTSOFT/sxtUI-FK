@@ -54,10 +54,9 @@
         }else {
           if (angular.isArray(o.AssessmentClassifys)&& o.AssessmentClassifys.length>0){
               for (var i=0;i<o.AssessmentClassifys.length;i++){
-                  if (setshow(o.AssessmentClassifys[i])){
-                    o.show=true;
-                    break;
-                  }
+                if (setshow(o.AssessmentClassifys[i])){
+                  o.show=true;
+                }
               }
           }
         }
@@ -114,10 +113,6 @@
         })
       }
     }
-
-
-
-
     vm.getW = function (level,t) {
       if(level==1){
         return 25.0/t;
@@ -174,8 +169,6 @@
               utils.alert('输入的值应该介于0 与 '+item.Weight + ' 之间');
               return;
             }
-
-
             remote.Assessment.modifyScore({
               AssessmentID:params.AssessmentID,
               AssessmentCheckItemID:item.AssessmentCheckItemID,
