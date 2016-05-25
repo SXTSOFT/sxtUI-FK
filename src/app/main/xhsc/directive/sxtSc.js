@@ -23,7 +23,8 @@
         regionId:'=',
         regionName:'=',
         regionType:'=',
-        readonly:'='
+        readonly:'=',
+        tooltip:'='
       },
       link:link
     }
@@ -49,19 +50,23 @@
             });
             if(fd) {
               if(fd.DrawingContent) {
-                map.loadSvgXml(fd.DrawingContent, {
-                  filterLine: function (line) {
-                    line.attrs.stroke = 'black';
-                    line.options = line.options||{};
-                    //line.options.color = 'black';
+                scope.tooltip = '正在加载图形....';
+                $timeout(function () {
+                  map.loadSvgXml(fd.DrawingContent, {
+                    filterLine: function (line) {
+                      line.attrs.stroke = 'black';
+                      line.options = line.options||{};
+                      //line.options.color = 'black';
 
-                    line.attrs['stroke-width'] = line.attrs['stroke-width']*6;
-                  },
-                  filterText: function (text) {
-                    return false;
-                  }
-                });
-                map.center();
+                      line.attrs['stroke-width'] = line.attrs['stroke-width']*6;
+                    },
+                    filterText: function (text) {
+                      return false;
+                    }
+                  });
+                  map.center();
+                  scope.tooltip = '';
+                },0)
               }
             }
           });

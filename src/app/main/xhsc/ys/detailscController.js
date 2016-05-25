@@ -24,7 +24,6 @@
       RelationID:$stateParams.db
     }).then(function (result){
       var newD = [];
-      var tempData = angular.copy(result.data);
       result.data.forEach(function (item) {
 
         if(!item.MeasureValueList.length){
@@ -33,32 +32,6 @@
           for(var i=0;i<20;i++){
             item.rows[0].push({})
           }
-          result.data.forEach(function(t){
-            if(item.AcceptanceIndexID == t.ParentAcceptanceIndexID){
-              var idx = result.data.indexOf(t);
-              //result.data.splice(idx,1);
-              item.Children.push(t);
-              t.rows=[];
-              var ms = [];
-              t.QualifiedRate = t.QualifiedRate * 100;
-              t.allDot = t.QualifiedPointNum + t.UnqualifiedPointNum;
-              t.MeasureValueList.forEach(function (m) {
-                // if(m.MeasureValue !=0){
-                if(ms.length<20) {
-                  ms.push(m)
-                }
-                else{
-                  t.rows.push(ms);
-                  ms = [];
-                }
-              });
-              while (ms.length<20){
-                ms.push({});
-              }
-              t.rows.push(ms);
-
-            }
-          })
           newD.push(item);
           //var find = result.data.find(function(t){
           //  return item.AcceptanceIndexID == t.ParentAcceptanceIndexID;
@@ -69,25 +42,45 @@
           //}
         }else if(!item.ParentAcceptanceIndexID){
           item.rows = [];
-          var ms = [];
+          var ps=[];
           item.QualifiedRate = item.QualifiedRate * 100;
           item.allDot = item.QualifiedPointNum + item.UnqualifiedPointNum;
           item.MeasureValueList.forEach(function (m) {
-            // if(m.MeasureValue !=0){
-            if(ms.length<20) {
-              ms.push(m)
+            var p = ps.find(function (p1) {
+              return p1.ParentMeasureValueID == m.ParentMeasureValueID;
+            });
+            if(!p){
+              p = {
+                ParentMeasureValueID:m.ParentMeasureValueID,
+                ms:[]
+              };
+              ps.push(p);
+            }
+            p.ms.push(m);
+          });
+          ps.forEach(function (p) {
+            if(p.ms.length<=20){
+              item.rows.push(p.ms);
             }
             else{
+              var ms = [];
+              p.ms.forEach(function (m) {
+                if(ms.length<20){
+                  ms.push(m);
+                }
+                else{
+                  item.rows.push(ms);
+                  ms=[m];
+                }
+              });
               item.rows.push(ms);
-              ms = [];
             }
-            // }
-
           });
-          while (ms.length<20){
-            ms.push({});
-          }
-          item.rows.push(ms);
+          item.rows.forEach(function (ms) {
+            while (ms.length<20){
+              ms.push({});
+            }
+          })
           newD.push(item);
         }
 
