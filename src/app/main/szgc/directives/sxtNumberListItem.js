@@ -125,7 +125,7 @@
                 $(this).parent().parent().parent().append('<div flex="20" class="flex-20"><div class="point" ><span></span></div></div>');
               }
             }
-            else if(i<l){
+            else if(i>1&&i<l){
               if(!$(this).parent().hasClass('current'))
                 $(this).parent().parent().remove();
             }

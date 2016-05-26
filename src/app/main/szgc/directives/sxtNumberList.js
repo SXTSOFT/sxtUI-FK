@@ -25,7 +25,6 @@
         });
         var currentPoint = null;
         function pontTo(index){
-
           if(currentPoint){
               currentPoint.removeClass('current').addClass('done');
           }
@@ -44,13 +43,20 @@
         $rootScope.$on('keyboard:next',function(){
           var datas = $('.datas',element),eq=datas.index($(currentPoint.parents('.datas')[0]))+1;
           var nextItem = datas.eq(eq);
-          if(currentPoint && (!currentPoint.hasClass('current')||currentPoint.hasClass('done'))&&  !currentPoint.text().trim()){
-            currentPoint.parent().remove();
+          if(currentPoint.parent().parent().find('.point').length>1){
+            if(currentPoint && ((currentPoint.hasClass('current')))&&  !currentPoint.text().trim()){
+              currentPoint.parent().remove();
+            }
+          }else{
+            if(currentPoint && ((!currentPoint.hasClass('current')))&&  !currentPoint.text().trim()){
+              currentPoint.parent().remove();
+            }
           }
+
           if(eq<datas.length){
             pontTo($('div.point',element).index(nextItem.find('div.point').eq(0)));
           }else{
-            //currentPoint.removeClass('current').addClass('done');
+           // currentPoint.removeClass('current');
             scope.show = false;
           }
         });
