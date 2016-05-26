@@ -83,7 +83,7 @@
                                                     </span>
                                                       <md-button  style="min-width: 50px;" aria-label="" ng-if="!region.done" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
                                                     </p>
-                                                    <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="!region.question || region.question.length==0" ng-click="vm.fit(region,item)" ng-class="{'done':region.done}">符合要求</md-button>
+                                                    <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="(!region.question || region.question.length==0) && (item.Weight!=item.Score)" ng-click="vm.fit(region,item)" ng-class="{'done':region.done}">符合要求</md-button>
                                                   </td>
 
                                                 </tr>
@@ -132,7 +132,7 @@
                                                 </span>
                                                 <md-button  style="min-width: 50px;" aria-label="" ng-if="!region.done" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
                                               </p>
-                                              <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="!region.question || region.question.length==0" ng-click="vm.fit(region,item)" ng-class="{'done':region.done}">符合要求</md-button>
+                                              <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="(!region.question || region.question.length==0) && (item.Weight!=item.Score)" ng-click="vm.fit(region,item)" ng-class="{'done':region.done}">符合要求</md-button>
                                             </td>
 
                                           </tr>
@@ -181,7 +181,7 @@
                                           </span>
                                           <md-button  style="min-width: 50px;" aria-label="" ng-if="!region.done" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
                                         </p>
-                                        <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="!region.question || region.question.length==0" ng-click="vm.fit(region,item)" ng-class="{'done':region.done}">符合要求</md-button>
+                                        <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="(!region.question || region.question.length==0) && (item.Weight!=item.Score)" ng-click="vm.fit(region,item)" ng-class="{'done':region.done}">符合要求</md-button>
                                       </td>
 
                                     </tr>
@@ -251,7 +251,7 @@
                                   </span>
                                   <md-button  style="min-width: 50px;" aria-label="" ng-if="!region.done" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
                                   </p>
-                                  <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="!region.question || region.question.length==0" ng-click="vm.fit(region,item)" ng-class="{'done':region.done}">符合要求</md-button>
+                                  <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="(!region.question || region.question.length==0) && (item.Weight!=item.Score)" ng-click="vm.fit(region,item)" ng-class="{'done':region.done}">符合要求</md-button>
                                 </td>
 
                               </tr>
