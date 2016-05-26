@@ -221,9 +221,16 @@
         >span{
           display: block;height:50px;line-height: 50px;
         }
+
         &.done{
           border-color:#e93030;
+          background-color: #fff;
           color:#e93030;
+        }
+        &.current{
+          border-color:#e93030;
+          background:#e93030;
+          color:#fff;
         }
       }
     }
@@ -239,6 +246,9 @@
       padding: 0;
       height: 50px;
       line-height: 50px;
+      span{
+        color:#000;
+      }
     }
   }
 }

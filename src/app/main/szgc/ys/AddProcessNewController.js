@@ -12,7 +12,8 @@
 
   /** @ngInject */
   function AddProcessNewController($scope, $filter, $stateParams, utils,  $q, api,auth,$state){
-
+    var vm = this;
+    vm.keyboard = { show:false};
 
     //给默认时间
     var dateFilter = $filter('date');
@@ -520,8 +521,13 @@
       })
 
       //遍历获取一般项目数据
-      $scope.targets.yb.forEach(function (zkitem) {
+      $scope.targets.yb.forEach(function (zkitem,index) {
         if (zkitem.checked) {
+          //var arr =[];
+          //var points=$('.datas').eq(index).find('div.point');
+          //for(var i=0;i<points.length;i++){
+          //  arr.push(points.eq(i).find('span').text());
+          //}
           savetargets.push({
             CheckStepId: step.Id,
             TargetId: zkitem.Id,
@@ -536,12 +542,15 @@
             RoleId: step.RoleId,
             HistoryNo: step.CheckNo,
             Remark: zkitem.Remark,
-            CheckDate: $scope.m.CheckDate
+            CheckDate: $scope.m.CheckDate,
+           // datas:arr
           });
+
         }
       })
       return savetargets;
     }
+
     $scope.save = function(addForm) {
 
       var m = /(((20[0-9][0-9]-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|(20[0-3][0-9]-(0[2469]|11)-(0[1-9]|[12][0-9]|30))) (20|21|22|23|[0-1][0-9]):[0-5][0-9]:[0-5][0-9])/
@@ -550,10 +559,10 @@
         utils.alert('日期格式不对!(yyyy-MM-dd HH:dd:ss)');
         return;
       }
-      if ($scope.data.pics.length == 0) {
-        utils.alert('请上传原验收表扫描件');
-        return;
-      }
+      //if ($scope.data.pics.length == 0) {
+      //  utils.alert('请上传原验收表扫描件');
+      //  return;
+      //}
       utils.confirm(null, '确认向验收批：' + $scope.data.curHistory.BatchNo + ' 添加新记录吗?').then(function() {
         $scope._save(addForm);
       });
@@ -573,7 +582,7 @@
         utils.alert('请选择班组', function () {
           $scope.isSaveing = false;
         });
-        return;
+        //return;
       }
       step.RoleId = data.submitUser.type;
       step.CheckNo = batch.Count;
@@ -657,8 +666,6 @@
       return true;
 
     }
-    $scope.value = 2;
-    $scope.user = 1;
     //$scope.numbers = function(e){
     //  console.log('e',e)
     //  //console.log('e',$(e.target).position(),$(e.target).closest('.circles').height())

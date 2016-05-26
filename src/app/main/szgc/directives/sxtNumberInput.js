@@ -9,27 +9,32 @@
     .directive('sxtNumInput', sxtNumInput);
 
   /** @Inject */
-  function sxtNumInput($timeout){
+  function sxtNumInput($timeout,$rootScope){
     return {
       scope:{
-        user:'=ngModel'
+        value:'=ngModel',
+        show:'=',
+        onNext:'&'
       },
       link:link,
       templateUrl:'app/main/szgc/directives/sxtNumInput.html'
     }
 
     function link(scope,element,attr,ctrl){
-     // console.log('a',scope)
+      //console.log('a',scope.value)
+      $rootScope.$on('keyboard:setvalue',function(e,v){
+        scope.value = v;
+      })
       scope.ck = function(cmd,$event){
 
-        var str = (scope.user ||'').toString(),
+        var str = (scope.value ||'').toString(),
           num = parseFloat(str);
         if(isNaN(num)){
           num = 0;
         }
         switch (cmd) {
           case 'ok':
-            scope.user = isNaN(parseFloat(str))?'':parseFloat(str);
+            scope.value = isNaN(parseFloat(str))?'':parseFloat(str);
             scope.ok && scope.ok();
             return;
           case -1:
@@ -48,20 +53,28 @@
               str += '.';
             break;
           case 'close':
-            $('.numberpanel').css('display','none');
-            $('.ybxm').css('padding-bottom','0');
+            scope.show = false;
             break;
           case 'next':
-            $('.ybxm').animate({scrollTop:2400})
+            scope.value ='';
+            $rootScope.$emit('keyboard:next');
+            return;
             break;
           case 'nextpoint':
-            //$('.circles').children().children().eq(1).find('input').focus();
+            scope.value ='';
+            $rootScope.$emit('keyboard:nextpoint');
+            return;
             break;
+          case 'del':
+                $rootScope.$emit('keyboard:del');
+                return;
+          break;
           default:
             str += cmd;
             break;
         }
-        scope.user = str;
+        $rootScope.$emit('keyboard:value',str);
+        scope.value = str;
       }
     }
   }

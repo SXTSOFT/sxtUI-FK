@@ -50,7 +50,10 @@
         },
         getAll:function(batchId, parems) {
           return $http.get($http.url('/api/BatchSet/' + batchId + '/PPCheckDataList', parems));
-        }
+        },
+        postCheckData: function (data) {
+          return $http.post('/api/PPBatchRelation/CheckData', data);
+        },
       },
       BatchSetService:{
         getAll:function(args){
