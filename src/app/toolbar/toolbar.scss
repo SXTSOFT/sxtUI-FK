@@ -220,6 +220,9 @@
         white-space:nowrap;
         >span{
           display: block;height:50px;line-height: 50px;
+          &.n{
+            color:#d8d8d8;
+          }
         }
 
         &.done{

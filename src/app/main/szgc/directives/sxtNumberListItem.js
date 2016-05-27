@@ -46,8 +46,8 @@
           max = min;
           min = t11;
         }
-        abs = zdpc<min?max-zdpc:zdpc>max?zdpc-min:zdpc-min;
-
+        //abs = zdpc<min?max-zdpc:zdpc>max?zdpc-min:zdpc-min;
+        abs = zdpc<min?max-zdpc:zdpc>max?zdpc-min:zdpc-min>max-zdpc?zdpc-min:max-zdpc;
         if (op == '±') {
           min = -max;
           abs = Math.abs(zdpc);
@@ -111,7 +111,7 @@
            var  values = [],hgP= 0,maxpc=-10000,zdpc,els =element.find('.point span'), i= 0,l=els.length;
           els.each(function(){
             ++i;
-            var v = parseFloat($(this).text().trim());
+            var v = $(this).hasClass('n')?'': parseFloat($(this).text().trim());
             if(v|| v=='0') {
               var result = ybIsOkRow(scope.value,v)
               if(result) {
@@ -122,7 +122,7 @@
                 });
               }
               if(i==l){
-                $(this).parent().parent().parent().append('<div flex="20" class="flex-20"><div class="point" ><span></span></div></div>');
+                $(this).parent().parent().parent().append('<div flex="20" class="flex-20"><div class="point" ><span class="n">'+(values.length+1)+'</span></div></div>');
               }
             }
             else if(i>1&&i<l){
@@ -143,7 +143,7 @@
           });
           scope.value.CheckNum = values.length;
           scope.value.PassRatio = utils.math.div(hgP,scope.value.CheckNum);
-          scope.value.MaxDeviation = zdpc;
+          scope.value.MaxDeviation = (zdpc||zdpc ==0)?maxpc:null;
           scope.value.points = values;
         })
       }

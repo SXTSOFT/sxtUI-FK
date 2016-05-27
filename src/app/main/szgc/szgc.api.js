@@ -24,6 +24,9 @@
         },
         getAppImg:function(regionId,produceId,roleid){
           return $http.get('/api/projects/' + regionId + '/Procedure/' + produceId + '/APPImgs?roleId=' + roleid);
+        },
+        deleteAppImg: function (id) {
+          return $http.delete('/api/APPImgs/' + id);
         }
       },
       ProcedureTypeService:{
@@ -39,7 +42,7 @@
           return $http.get($http.url('/api/Project/' + projectid + '/baths1', bathParens));
         },
         delProcess:function(id){
-          return $http.delete('/api/PPBatchRelation/' + id);
+          return $http.delete($http.url('/api/PPBatchRelation/' + id));
         },
         //根据区域树获取验收批数据
         getBatchRelation: function(parems) {
@@ -52,7 +55,7 @@
           return $http.get($http.url('/api/BatchSet/' + batchId + '/PPCheckDataList', parems));
         },
         postCheckData: function (data) {
-          return $http.post('/api/PPBatchRelation/CheckData', data);
+          return $http.post($http.url('/api/PPBatchRelation/CheckData'), data);
         },
         getAllCheckDataValue:function(batchId, parems){
           return $http.get($http.url('/api/BatchSet/' + batchId + '/checkDataValues',parems));
