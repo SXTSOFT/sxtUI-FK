@@ -79,7 +79,8 @@
                                                     <span style="display: block;float: left;line-height: 36px;height: 36px;margin-top: 6px;margin-bottom: 6px;">&nbsp;&nbsp;扣分信息：</span>
                                                     <p style="margin: 0;padding-right: 95px;margin-left:75px;">
                                                     <span ng-repeat="q in region.question">
-                                                      <md-button style="min-width: 50px;"  ng-click="vm.quesDetail(q,item,region.question)"><md-icon style="width:25px;height:25px;"><img src="app/main/xhsc/images/pic.png" width="25"></md-icon> {{q.DeductionScore}}</md-button>
+                                                      <md-button style="min-width: 50px;"  ng-click="vm.quesDetail(q,item,region.question)"><md-icon style="width:25px;height:25px;"><img ng-src="{{ q.images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}" width="25"></md-icon> {{q.DeductionScore}}</md-button>
+
                                                     </span>
                                                       <md-button  style="min-width: 50px;" aria-label="" ng-if="!region.done" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
                                                     </p>
@@ -128,7 +129,7 @@
                                               <span style="display: block;float: left;line-height: 36px;height: 36px;margin-top: 6px;margin-bottom: 6px;">&nbsp;&nbsp;扣分信息：</span>
                                               <p style="margin: 0;padding-right: 95px;margin-left:75px;">
                                                 <span ng-repeat="q in region.question">
-                                                  <md-button style="min-width: 50px;"  ng-click="vm.quesDetail(q,item,region.question)"><md-icon style="width:25px;height:25px;"><img src="app/main/xhsc/images/pic.png" width="25"></md-icon> {{q.DeductionScore}}</md-button>
+                                                  <md-button style="min-width: 50px;"  ng-click="vm.quesDetail(q,item,region.question)"><md-icon style="width:25px;height:25px;"><img ng-src="{{ q.images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}" width="25"></md-icon> {{q.DeductionScore}}</md-button>
                                                 </span>
                                                 <md-button  style="min-width: 50px;" aria-label="" ng-if="!region.done" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
                                               </p>
@@ -177,7 +178,7 @@
                                         <span style="display: block;float: left;line-height: 36px;height: 36px;margin-top: 6px;margin-bottom: 6px;">&nbsp;&nbsp;扣分信息：</span>
                                         <p style="margin: 0;padding-right: 95px;margin-left:75px;">
                                           <span ng-repeat="q in region.question">
-                                            <md-button style="min-width: 50px;"  ng-click="vm.quesDetail(q,item,region.question)"><md-icon style="width:25px;height:25px;"><img src="app/main/xhsc/images/pic.png" width="25"></md-icon> {{q.DeductionScore}}</md-button>
+                                            <md-button style="min-width: 50px;"  ng-click="vm.quesDetail(q,item,region.question)"><md-icon style="width:25px;height:25px;"><img ng-src="{{ q.images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}" width="25"></md-icon> {{q.DeductionScore}}</md-button>
                                           </span>
                                           <md-button  style="min-width: 50px;" aria-label="" ng-if="!region.done" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
                                         </p>
@@ -247,7 +248,7 @@
                                   <span style="display: block;float: left;line-height: 36px;height: 36px;margin-top: 6px;margin-bottom: 6px;">&nbsp;&nbsp;扣分信息：</span>
                                   <p style="margin: 0;padding-right: 95px;margin-left:75px;">
                                   <span ng-repeat="q in region.question">
-                                    <md-button style="min-width: 50px;"  ng-click="vm.quesDetail(q,item,region.question)"><md-icon style="width:25px;height:25px;"><img src="app/main/xhsc/images/pic.png" width="25"></md-icon> {{q.DeductionScore}}</md-button>
+                                    <md-button style="min-width: 50px;"  ng-click="vm.quesDetail(q,item,region.question)"><md-icon style="width:25px;height:25px;"><img ng-src="{{ q.images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}" width="25"></md-icon> {{q.DeductionScore}}</md-button>
                                   </span>
                                   <md-button  style="min-width: 50px;" aria-label="" ng-if="!region.done" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
                                   </p>
