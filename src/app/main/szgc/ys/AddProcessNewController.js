@@ -1,22 +1,26 @@
 /**
+ * Created by emma on 2016/5/25.
+ */
+/**
  * Created by zhangzhaoyong on 16/2/1.
  */
 (function(){
   'use strict';
   angular
     .module('app.szgc')
-    .controller('AddProcessController',AddProcessController);
+    .controller('AddProcessNewController',AddProcessNewController);
 
   /** @ngInject */
-  function AddProcessController($scope, $filter, $stateParams, utils,  $q, api,auth,$state){
-
+  function AddProcessNewController($scope, $filter, $stateParams, utils,  $q, api,auth,$state){
+    var vm = this;
+    vm.keyboard = { show:false};
 
     //给默认时间
     var dateFilter = $filter('date');
     $scope.m = {};
-$scope.back = function(){
-  history.back();
-}
+    $scope.back = function(){
+      history.back();
+    }
     $scope.m.CheckDateF = new Date();
     $scope.m.CheckDate = dateFilter($scope.m.CheckDateF, 'yyyy-MM-dd HH:dd:ss');
 
@@ -38,12 +42,9 @@ $scope.back = function(){
       $state.go('app.szgc.ys');
       return;
     }
-    $scope.animate = function(){
-      $('.ybxm').animate({scrollTop:100})
-    }
 
     var user=auth.current(),
-        initIng = true;
+      initIng = true;
     $scope.isPartner = api.szgc.vanke.isPartner();
     $scope.data = {
       pics: [],
@@ -520,8 +521,13 @@ $scope.back = function(){
       })
 
       //遍历获取一般项目数据
-      $scope.targets.yb.forEach(function (zkitem) {
+      $scope.targets.yb.forEach(function (zkitem,index) {
         if (zkitem.checked) {
+          //var arr =[];
+          //var points=$('.datas').eq(index).find('div.point');
+          //for(var i=0;i<points.length;i++){
+          //  arr.push(points.eq(i).find('span').text());
+          //}
           savetargets.push({
             CheckStepId: step.Id,
             TargetId: zkitem.Id,
@@ -536,12 +542,16 @@ $scope.back = function(){
             RoleId: step.RoleId,
             HistoryNo: step.CheckNo,
             Remark: zkitem.Remark,
-            CheckDate: $scope.m.CheckDate
+            CheckDate: $scope.m.CheckDate,
+            Points:zkitem.points
+           // datas:arr
           });
+
         }
       })
       return savetargets;
     }
+
     $scope.save = function(addForm) {
 
       var m = /(((20[0-9][0-9]-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|(20[0-3][0-9]-(0[2469]|11)-(0[1-9]|[12][0-9]|30))) (20|21|22|23|[0-1][0-9]):[0-5][0-9]:[0-5][0-9])/
@@ -550,10 +560,10 @@ $scope.back = function(){
         utils.alert('日期格式不对!(yyyy-MM-dd HH:dd:ss)');
         return;
       }
-      if ($scope.data.pics.length == 0) {
-        utils.alert('请上传原验收表扫描件');
-        return;
-      }
+      //if ($scope.data.pics.length == 0) {
+      //  utils.alert('请上传原验收表扫描件');
+      //  return;
+      //}
       utils.confirm(null, '确认向验收批：' + $scope.data.curHistory.BatchNo + ' 添加新记录吗?').then(function() {
         $scope._save(addForm);
       });
@@ -573,7 +583,7 @@ $scope.back = function(){
         utils.alert('请选择班组', function () {
           $scope.isSaveing = false;
         });
-        return;
+        //return;
       }
       step.RoleId = data.submitUser.type;
       step.CheckNo = batch.Count;
@@ -631,7 +641,7 @@ $scope.back = function(){
         $scope.isSaveing = false;
         $scope.$parent.project.filter(true);
         utils.alert('提交完成').then(function () {
-            $state.go('app.szgc.ys');
+          $state.go('app.szgc.ys');
         });
       });
     }
@@ -657,8 +667,17 @@ $scope.back = function(){
       return true;
 
     }
-    $scope.value = 2;
-    $scope.user = 1;
+    //$scope.numbers = function(e){
+    //  console.log('e',e)
+    //  //console.log('e',$(e.target).position(),$(e.target).closest('.circles').height())
+    //  $('.ybxm').animate({scrollTop:$(e.target).position().top-100});
+    //  $('.ybxm').css('padding-bottom','300px');
+    //  if($('.numberpanel').is(':hidden')){
+    //    $('.numberpanel').css({'position':'fixed','bottom':0,'left':0,width:'100%','height':'300px','display':'block'})
+    //  }
+    //
+    //}
+
     $scope.addCircle = function(i){
 
     }
