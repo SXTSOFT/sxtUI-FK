@@ -506,7 +506,7 @@
           checkDataValues.data.Rows.forEach(function(it){
             if(it.CheckDataId==checkData.Id){
               if (row.length==20){
-                rows.push(row)
+                checkData.rows.push(row)
                 row=[];
                 row.push(it);
               }else {
@@ -515,7 +515,14 @@
             }
           });
           if (row.length>0){
-            rows.push(row);
+            var len=row.length;
+            while (len<20){
+              row.push({
+                Value:""
+              });
+              len++;
+            }
+            checkData.rows.push(row);
           }
 
 
@@ -552,36 +559,34 @@
             item.PassRatio = undefined;
           }
           setCheckValues(item);
-
         });
       });
-
       $scope.th=[]
       for (var i=1;i<=20;i++){
         $scope.th.push({
            aglin:"center",
-           val:i
+           Value:i
         })
       }
 
-      $scope.moni=[{
-        TargetName:"测试一般项",
-        PassRatio:100,
-        rows:[
-          [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
-          [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
-          [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
-          [{val:"70"},{val:"70"}]
-        ]
-      },{
-        TargetName:"测试一般项",
-        PassRatio:100,
-        rows:[
-          [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
-          [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
-          [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}]
-        ]
-      }]
+      //$scope.moni=[{
+      //  TargetName:"测试一般项",
+      //  PassRatio:100,
+      //  rows:[
+      //    [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
+      //    [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
+      //    [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
+      //    [{val:"70"},{val:"70"}]
+      //  ]
+      //},{
+      //  TargetName:"测试一般项",
+      //  PassRatio:100,
+      //  rows:[
+      //    [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
+      //    [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
+      //    [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}]
+      //  ]
+      //}]
 
       // console.log('123',$scope.jlTitol)
       ///api/BatchSet/{batchId}/PPCheckData

@@ -149,7 +149,8 @@
 
             </div>
         </div>
-        <div class="row" style="overflow-x:auto;margin-top:5px" ng-if="checkDataValues.length>0">
+      <!--ng-if="checkDataValues.length>0"-->
+        <div class="row" style="overflow-x:auto;margin-top:5px" >
           <table class="target" style="min-width: 600px;width:100%;border-collapse:collapse;" border="1" cellspacing="0">
             <tr>
               <th style="width:12%">一般项</th>
@@ -158,20 +159,20 @@
                 <table width="100%" border="0" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
                       <td  style="padding: 0px;width:5%;text-align: center;vertical-align: middle;border-right: 1px silver solid" ng-repeat="t in th">
-                        {{t.val}}
+                        {{t.Value}}
                       </td>
                     </tr>
                 </table>
               </th>
             </tr>
             <tr ng-repeat="x in data.selected.d.yb">
-              <td>{{x.TargetName}}</td>
+              <td style="width: 60px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{x.TargetName}}</td>
               <td style="text-align: center">{{x.PassRatio}}</td>
               <td colspan="20">
                 <table width="100%" border="0" cellspacing="0" style="border-collapse: collapse;">
                     <tr ng-repeat="y in x.rows" ng-class="{_tr:$index<x.rows.length-1}">
                        <td  style="padding: 0px;width:5%;text-align: center;vertical-align: middle;border-right: 1px silver solid" ng-repeat="z in y">
-                         {{z.val}}
+                         {{z.Value}}
                        </td>
                     </tr>
                 </table>
