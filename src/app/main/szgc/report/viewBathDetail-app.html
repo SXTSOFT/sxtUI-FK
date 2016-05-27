@@ -149,11 +149,11 @@
 
             </div>
         </div>
-        <div class="row" style="overflow-x:auto;margin-top:5px">
+        <div class="row" style="overflow-x:auto;margin-top:5px" ng-if="checkDataValues.length>0">
           <table class="target" style="min-width: 600px;width:100%;border-collapse:collapse;" border="1" cellspacing="0">
             <tr>
-              <th style="width:15%">一般项</th>
-              <th style="width:5%">合格率</th>
+              <th style="width:12%">一般项</th>
+              <th style="width:8%;text-align: center" >合格率</th>
               <th colspan="20"  >
                 <table width="100%" border="0" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
@@ -164,9 +164,9 @@
                 </table>
               </th>
             </tr>
-            <tr ng-repeat="x in moni">
+            <tr ng-repeat="x in data.selected.d.yb">
               <td>{{x.TargetName}}</td>
-              <td>{{x.PassRatio}}</td>
+              <td style="text-align: center">{{x.PassRatio}}</td>
               <td colspan="20">
                 <table width="100%" border="0" cellspacing="0" style="border-collapse: collapse;">
                     <tr ng-repeat="y in x.rows" ng-class="{_tr:$index<x.rows.length-1}">
