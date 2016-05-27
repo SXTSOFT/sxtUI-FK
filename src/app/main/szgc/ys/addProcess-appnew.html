@@ -95,15 +95,15 @@
           </md-input-container>
           <md-input-container class="md-block">
             <label>合格率</label>
-            <input  type="number" ng-disabled="!n.checked" step="0.01" max="100.0"  ng-model="n.PassRatio" >
+            <input ng-disabled="!n.checked" ng-model="n.PassRatio" >
           </md-input-container>
           <md-input-container class="md-block">
             <label>最大偏差</label>
-            <input type="number" ng-disabled="!n.checked" step="0.01"  ng-model="n.MaxDeviation" >
+            <input ng-disabled="!n.checked"  ng-model="n.MaxDeviation" >
           </md-input-container>
           <div class="circles" ng-if="n.checked" sxt-number-list-item ng-model="n">
             <div layout="row" layout-wrap>
-              <div flex="20"><div class="point" ng-if="n.checked"><span></span></div></div>
+              <div flex="20"><div class="point" ng-if="n.checked"><span class="n">1</span></div></div>
               <!--<div flex="20" class="insertBefore"><div ng-click="addCircle(e)">+</div></div>-->
             </div>
           </div>

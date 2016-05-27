@@ -11,7 +11,7 @@
     .controller('AddProcessNewController',AddProcessNewController);
 
   /** @ngInject */
-  function AddProcessNewController($scope, $filter, $stateParams, utils,  $q, api,auth,$state){
+  function AddProcessNewController($scope, $filter, $stateParams, utils,  $q, api,auth,$state,sxt){
     var vm = this;
     vm.keyboard = { show:false};
 
@@ -526,7 +526,7 @@
       $scope.targets.yb.forEach(function (zkitem,index) {
         if (zkitem.checked) {
           var yb={
-            Id:sxt.uuid(),
+            Id:'',
             CheckStepId: step.Id,
             TargetId: zkitem.Id,
             CheckNum: zkitem.CheckNum, //检查点数
@@ -540,24 +540,26 @@
             RoleId: step.RoleId,
             HistoryNo: step.CheckNo,
             Remark: zkitem.Remark,
-            CheckDate: $scope.m.CheckDate
+            CheckDate: $scope.m.CheckDate,
+            Tag:sxt.uuid()
           }
           savetargets.push(yb);
           zkitem.points.forEach(function(o){
             $scope.CheckDataValue.push({
-              Id:sxt.uuid(),
-              CheckDataId:yb.Id,
+              Id:'',
+              CheckDataId:yb.Tag,
               BathRelationId:"",
               TargetId:yb.TargetId,
-              DeviationValue: zdpc.value,
+              DeviationValue: o.zdpc,
               Value:o.value,
               Sort:sort,
               Result: o.isOK
             })
+            sort++;
           });
         }
       })
-      sort++;
+
       return savetargets;
     }
 
@@ -647,12 +649,18 @@
         CheckData: targets,
         CheckDataValue:$scope.CheckDataValue
       }).then(function (result) {
-        api.szgc.ProcedureService.deleteAppImg(step.GroupImg2);
-        $scope.isSaveing = false;
-        $scope.$parent.project.filter(true);
-        utils.alert('提交完成').then(function () {
-          $state.go('app.szgc.ys');
-        });
+        if(result){
+          api.szgc.ProcedureService.deleteAppImg(step.GroupImg2);
+          $scope.isSaveing = false;
+          $scope.$parent.project.filter(true);
+          utils.alert('提交完成').then(function () {
+            $state.go('app.szgc.ys');
+          });
+        }else{
+          utils.alert('提交失败').then(function () {
+
+          });
+        }
       });
     }
     $scope.rowIsOk = function(pc, hg, mk) {

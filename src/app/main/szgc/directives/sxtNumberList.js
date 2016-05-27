@@ -29,15 +29,21 @@
               currentPoint.removeClass('current').addClass('done');
           }
           scope.index = index;
-          var p = currentPoint = $('div.point',element).eq(index);
+
+          var p = currentPoint = $('div.point',element).eq(index),span = p.find('span');
+          if(span.hasClass('n'))
+           span.removeClass('n').empty();
+          console.log('p', p.hasClass('point'))
           if(!p){
           }
           else{
-            currentPoint.addClass('current');
-            $rootScope.$emit('keyboard:setvalue',currentPoint.text());
-            element.animate({
-              scrollTop: Math.abs($('.addform').position().top- p.position().top+100)
-            });
+            if(p.hasClass('point')){
+              currentPoint.addClass('current');
+              $rootScope.$emit('keyboard:setvalue',currentPoint.text());
+              element.animate({
+                scrollTop: Math.abs($('.addform').position().top- p.position().top+100)
+              });
+            }
           }
         }
         $rootScope.$on('keyboard:next',function(){
