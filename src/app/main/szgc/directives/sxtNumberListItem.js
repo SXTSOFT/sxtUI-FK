@@ -46,8 +46,8 @@
           max = min;
           min = t11;
         }
-        abs = zdpc<min?max-zdpc:zdpc>max?zdpc-min:zdpc-min;
-
+        //abs = zdpc<min?max-zdpc:zdpc>max?zdpc-min:zdpc-min;
+        abs = zdpc<min?max-zdpc:zdpc>max?zdpc-min:zdpc-min>max-zdpc?zdpc-min:max-zdpc;
         if (op == '±') {
           min = -max;
           abs = Math.abs(zdpc);
@@ -143,7 +143,7 @@
           });
           scope.value.CheckNum = values.length;
           scope.value.PassRatio = utils.math.div(hgP,scope.value.CheckNum);
-          scope.value.MaxDeviation = zdpc;
+          scope.value.MaxDeviation = (zdpc||zdpc ==0)?maxpc:null;
           scope.value.points = values;
         })
       }
