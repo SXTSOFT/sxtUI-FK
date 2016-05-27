@@ -588,12 +588,12 @@
       var data = $scope.data,
         step = data.curStep,
         batch = data.curHistory;
-      if (!batch.GrpId) {
-        utils.alert('请选择班组', function () {
-          $scope.isSaveing = false;
-        });
-        //return;
-      }
+      //if (!batch.GrpId) {
+      //  utils.alert('请选择班组', function () {
+      //    $scope.isSaveing = false;
+      //  });
+      //  //return;
+      //}
       step.RoleId = data.submitUser.type;
       step.CheckNo = batch.Count;
       step.MainResult = $scope.zkIsOk() ? 1 : 0;
@@ -649,7 +649,7 @@
         CheckData: targets,
         CheckDataValue:$scope.CheckDataValue
       }).then(function (result) {
-        if(result){
+        if(result.data == "ok"){
           api.szgc.ProcedureService.deleteAppImg(step.GroupImg2);
           $scope.isSaveing = false;
           $scope.$parent.project.filter(true);
@@ -728,13 +728,13 @@
         return item.isOK;
       }
       var zdpc = item.MaxDeviation;
-      //var pattern = /^[0-9]+([.]\d{1,2})?$/;
-      //if (zdpc) {
-      //    if (!pattern.test(zdpc)) {
-      //        item.isOK = false;
-      //        return false;
-      //    }
-      //}
+      var pattern = /^[0-9]+([.]\d{1,2})?$/;
+      if (zdpc) {
+          if (!pattern.test(zdpc)) {
+              item.isOK = false;
+              return false;
+          }
+      }
       zdpc = parseFloat(zdpc);
       var hgl = parseFloat(item.PassRatio),
         pc = item.DeviationLimit,
