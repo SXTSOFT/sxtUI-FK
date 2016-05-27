@@ -543,6 +543,7 @@
             HistoryNo: step.CheckNo,
             Remark: zkitem.Remark,
             CheckDate: $scope.m.CheckDate,
+            Points:zkitem.points
            // datas:arr
           });
 
