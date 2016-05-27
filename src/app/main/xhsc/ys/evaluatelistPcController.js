@@ -137,7 +137,7 @@
       return level+1;
     }
 
-    vm.quesDetail = function(item) {
+    vm.quesDetail = function(item,ev) {
       var images=[];
       item.Images.forEach(function (img) {
         images.push({
@@ -145,9 +145,28 @@
           alt:item.ProblemDescription
         });
       })
-      if(images.length) {
+      if(images.length)
+      {
         xhUtils.playPhoto(images);
       }
+     else
+      {
+        $mdDialog.show({
+          controller: ['$scope','$mdDialog',function ($scope, $mdDialog) {
+            $scope.ProblemDescription=item.ProblemDescription;
+
+            $scope.cancel = function(){
+              $mdDialog.hide()
+            }
+          }],
+          templateUrl:'app/main/xhsc/ys/pcQuestion.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose:true,
+          focusOnOpen:false
+        })
+      }
+
     }
 
     vm.deleteScoreItem = function (q) {
