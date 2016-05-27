@@ -498,6 +498,7 @@
     //批量保存
     var toSaveTargets = function(step) {
       var savetargets = [];
+      $scope.CheckDataValue=[];
       $scope.targets.zk.forEach(function (zkitem) {
         if (zkitem.checked) {
           //遍历获取主控数据
@@ -519,16 +520,13 @@
           });
         }
       })
-
+      $scope.CheckDataValue=[];
       //遍历获取一般项目数据
+      var sort=0;
       $scope.targets.yb.forEach(function (zkitem,index) {
         if (zkitem.checked) {
-          //var arr =[];
-          //var points=$('.datas').eq(index).find('div.point');
-          //for(var i=0;i<points.length;i++){
-          //  arr.push(points.eq(i).find('span').text());
-          //}
-          savetargets.push({
+          var yb={
+            Id:sxt.uuid(),
             CheckStepId: step.Id,
             TargetId: zkitem.Id,
             CheckNum: zkitem.CheckNum, //检查点数
@@ -542,13 +540,24 @@
             RoleId: step.RoleId,
             HistoryNo: step.CheckNo,
             Remark: zkitem.Remark,
-            CheckDate: $scope.m.CheckDate,
-            Points:zkitem.points
-           // datas:arr
+            CheckDate: $scope.m.CheckDate
+          }
+          savetargets.push(yb);
+          zkitem.points.forEach(function(o){
+            $scope.CheckDataValue.push({
+              Id:sxt.uuid(),
+              CheckDataId:yb.Id,
+              BathRelationId:"",
+              TargetId:yb.TargetId,
+              DeviationValue: zdpc.value,
+              Value:o.value,
+              Sort:sort,
+              Result: o.isOK
+            })
           });
-
         }
       })
+      sort++;
       return savetargets;
     }
 
@@ -572,8 +581,6 @@
 
 
     $scope._save = function (addForm) {
-
-
       $scope.isSaveing = true;
       //addForm
       var data = $scope.data,
@@ -629,13 +636,16 @@
           item.GrpName = batch.GrpName;
         }
       });
+
+
       var targets = toSaveTargets(step);
 
       //console.log('CheckData', targets)
       api.szgc.addProcessService.postCheckData({
         Batch: data.batchs,
         Step: step,
-        CheckData: targets
+        CheckData: targets,
+        CheckDataValue:$scope.CheckDataValue
       }).then(function (result) {
         api.szgc.ProcedureService.deleteAppImg(step.GroupImg2);
         $scope.isSaveing = false;
