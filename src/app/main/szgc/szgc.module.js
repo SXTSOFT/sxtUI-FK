@@ -6,7 +6,7 @@
   'use strict';
 
   angular
-    .module('app.szgc', ['app.core','angular-echarts'])
+    .module('app.szgc', ['app.core','angular-echarts','angularFileUpload'])
     .config(config);
 
   /** @ngInject */
