@@ -4,7 +4,7 @@
      <!--<a class="btn btn-sm btn-white" style="padding: 5px 31px; float: right;margin-right: -4px;margin-bottom: 6px;margin-top: -6px;" ng-click="goback()">返回</a>-->
  <h2>{{titol.ProcedureName}}验收记录表</h2>
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive vk" style="border: 0px">
         <div class="row">
             <div class="col-lg-12 target2">
                 <table class="target " width="100%" border="1" cellspacing="0" cellpadding="4" style="border-collapse: collapse;">
@@ -37,8 +37,7 @@
                         <td>{{titol.GrpName}}</td>
                     </tr>
                 </table>
-                <table class="target target2" border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse;width:100%;">
-
+                <table class="target target2" border="0" cellspacing="0" cellpadding="0" style="margin-top: 5px;border-collapse: collapse;width:100%;">
                     <tr>
                         <td style="padding:0;">
                             <table border="1" cellspacing="0" cellpadding="4" style="border-collapse: collapse;width:100%;">
@@ -150,16 +149,48 @@
 
             </div>
         </div>
-    </div><div img-fancy>
-    <fieldset  sxt-image-view is-container="true">
-        <legend>原验收表扫描件</legend>
-        <sxt-images  ng-model="data.selected.step.GroupImg" project="data.projectInfo" ></sxt-images>
+        <div class="row" style="overflow-x:auto;margin-top:5px">
+          <table class="target" style="min-width: 600px;width:100%;border-collapse:collapse;" border="1" cellspacing="0">
+            <tr>
+              <th style="width:15%">一般项</th>
+              <th style="width:5%">合格率</th>
+              <th colspan="20"  >
+                <table width="100%" border="0" cellspacing="0" style="border-collapse: collapse;">
+                    <tr>
+                      <td  style="padding: 0px;width:5%;text-align: center;vertical-align: middle;border-right: 1px silver solid" ng-repeat="t in th">
+                        {{t.val}}
+                      </td>
+                    </tr>
+                </table>
+              </th>
+            </tr>
+            <tr ng-repeat="x in moni">
+              <td>{{x.TargetName}}</td>
+              <td>{{x.PassRatio}}</td>
+              <td colspan="20">
+                <table width="100%" border="0" cellspacing="0" style="border-collapse: collapse;">
+                    <tr ng-repeat="y in x.rows" ng-class="{_tr:$index<x.rows.length-1}">
+                       <td  style="padding: 0px;width:5%;text-align: center;vertical-align: middle;border-right: 1px silver solid" ng-repeat="z in y">
+                         {{z.val}}
+                       </td>
+                    </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </div>
+    </div>
+    <div img-fancy>
+      <fieldset  sxt-image-view is-container="true">
+          <legend>原验收表扫描件</legend>
+          <sxt-images  ng-model="data.selected.step.GroupImg" project="data.projectInfo" ></sxt-images>
 
-    </fieldset>
-    <fieldset  sxt-image-view is-container="true">
-        <legend>附件</legend>
-        <sxt-images  ng-model="data.selected.step.GroupImg2" project="data.projectInfo"></sxt-images>
-    </fieldset></div>
+      </fieldset>
+      <fieldset  sxt-image-view is-container="true">
+          <legend>附件</legend>
+          <sxt-images  ng-model="data.selected.step.GroupImg2" project="data.projectInfo"></sxt-images>
+      </fieldset>
+    </div>
 
 
 </div>

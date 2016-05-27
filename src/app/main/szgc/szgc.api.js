@@ -57,6 +57,9 @@
         postCheckData: function (data) {
           return $http.post($http.url('/api/PPBatchRelation/CheckData', data));
         },
+        getAllCheckDataValue:function(batchId, parems){
+          return $http.get($http.url('/api/BatchSet/' + batchId + '/checkDataValues',parems));
+        }
       },
       BatchSetService:{
         getAll:function(args){

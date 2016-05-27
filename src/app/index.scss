@@ -26,5 +26,18 @@
     stroke-width: 2px;
     fill-rule: evenodd;
   }
-
 }
+.vk table,.vk td,.vk th{
+  padding: 0px;
+  margin: 0px;
+  border-color: silver;
+}
+.vk table{
+  border: 0px;
+  border-collapse: collapse;
+}
+
+.vk ._tr{
+  border-bottom: 1px solid silver;
+}
+
