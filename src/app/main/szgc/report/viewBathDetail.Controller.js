@@ -499,8 +499,26 @@
 
         $scope.data.sources = jl;
         $scope.data.selected = jl[jl.length - 1]; //取最后一次的验收数据
-        var checkDataValues=  res[1]?res[1]:[];
+        var checkDataValues=$scope.checkDataValues=   res[1]?res[1]:[];
         function setCheckValues(checkData){
+          checkData.rows=[];
+          var row=[];
+          checkDataValues.data.Rows.forEach(function(it){
+            if(it.CheckDataId==checkData.Id){
+              if (row.length==20){
+                rows.push(row)
+                row=[];
+                row.push(it);
+              }else {
+                row.push(it);
+              }
+            }
+          });
+          if (row.length>0){
+            rows.push(row);
+          }
+
+
           //var  rows=[];
           //var  len=Math.ceil(data.Rows.length/20);
           //var tmp;
@@ -552,7 +570,8 @@
         rows:[
           [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
           [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
-          [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}]
+          [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
+          [{val:"70"},{val:"70"}]
         ]
       },{
         TargetName:"测试一般项",
