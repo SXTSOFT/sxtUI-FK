@@ -588,12 +588,12 @@
       var data = $scope.data,
         step = data.curStep,
         batch = data.curHistory;
-      if (!batch.GrpId) {
-        utils.alert('请选择班组', function () {
-          $scope.isSaveing = false;
-        });
-        //return;
-      }
+      //if (!batch.GrpId) {
+      //  utils.alert('请选择班组', function () {
+      //    $scope.isSaveing = false;
+      //  });
+      //  //return;
+      //}
       step.RoleId = data.submitUser.type;
       step.CheckNo = batch.Count;
       step.MainResult = $scope.zkIsOk() ? 1 : 0;
@@ -649,7 +649,7 @@
         CheckData: targets,
         CheckDataValue:$scope.CheckDataValue
       }).then(function (result) {
-        if(result){
+        if(result == "ok"){
           api.szgc.ProcedureService.deleteAppImg(step.GroupImg2);
           $scope.isSaveing = false;
           $scope.$parent.project.filter(true);

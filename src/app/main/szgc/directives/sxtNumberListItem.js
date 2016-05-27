@@ -142,7 +142,7 @@
             }
           });
           scope.value.CheckNum = values.length;
-          scope.value.PassRatio = utils.math.div(hgP,scope.value.CheckNum);
+          if(scope.value.CheckNum) scope.value.PassRatio = utils.math.div(hgP,scope.value.CheckNum).toFixed(2);
           scope.value.MaxDeviation = (zdpc||zdpc ==0)?maxpc:null;
           scope.value.points = values;
         })
