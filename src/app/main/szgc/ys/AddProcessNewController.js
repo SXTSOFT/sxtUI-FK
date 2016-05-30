@@ -728,13 +728,13 @@
         return item.isOK;
       }
       var zdpc = item.MaxDeviation;
-      var pattern = /^[0-9]+([.]\d{1,2})?$/;
-      if (zdpc) {
-          if (!pattern.test(zdpc)) {
-              item.isOK = false;
-              return false;
-          }
-      }
+      //var pattern = /^[0-9]+([.]\d{1,2})?$/;
+      //if (zdpc) {
+      //    if (!pattern.test(zdpc)) {
+      //        item.isOK = false;
+      //        return false;
+      //    }
+      //}
       zdpc = parseFloat(zdpc);
       var hgl = parseFloat(item.PassRatio),
         pc = item.DeviationLimit,
@@ -742,6 +742,10 @@
       if (isNaN(hgl) || isNaN(zdpc)) {
         item.isOK = false;
         return true;
+      }
+      if (($scope.data.procedureName.indexOf('钢筋保护层') != -1 || item.TargetName.indexOf('保护层厚度') != -1) && hgl < 90) {
+        item.isOK = false;
+        return false;
       }
       if (hgl < 80) {
         item.isOK = false;
@@ -785,7 +789,7 @@
           max = utils.math.sub(max, 0.1);
           min = -10000000;
         }
-        max = utils.math.mul(max, 1.5);
+        max = utils.math.mul(max, (item.TargetName.indexOf('>悬挑板')!=-1||item.TargetName.indexOf('>板')!=-1)?2: 1.5);
         if (min > 0)
           min = utils.math.mul(min, 0.5);
         else
