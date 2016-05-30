@@ -47,15 +47,19 @@
           }
         }
         $rootScope.$on('keyboard:next',function(){
-          var datas = $('.datas',element),eq=datas.index($(currentPoint.parents('.datas')[0]))+1;
+          var datas = $('.datas',element),eq=datas.index($(currentPoint.parents('.datas')[0]))+ 1,curdata =datas.index($(currentPoint.parents('.datas')[0])) ;
           var nextItem = datas.eq(eq);
           if(currentPoint.parent().parent().find('.point').length>1){
             if(currentPoint && ((currentPoint.hasClass('current')))&&  !currentPoint.text().trim()){
               currentPoint.parent().remove();
             }
+            var ilen= datas.eq(curdata).find('.point').length;
+            datas.eq(curdata).find('.point').eq(ilen-1).find('span').text(ilen)
+            //console.log(datas.eq(curdata).find('.point'))
           }else{
             if(currentPoint && ((!currentPoint.hasClass('current')))&&  !currentPoint.text().trim()){
               currentPoint.parent().remove();
+
             }
           }
 
