@@ -84,7 +84,7 @@
         if(!scope.regionType)return;
         var t = scope.regionType;
 
-/*          switch (scope.regionType) {
+          switch (scope.regionType) {
             case 1:
               t = 2;
               break;
@@ -97,7 +97,7 @@
             case 32:
               t = 64;
               break;
-          }*/
+          }
 
         api.szgc.BatchSetService.getAll({status:4,batchType: t}).then(function(result) {
           var data = [];

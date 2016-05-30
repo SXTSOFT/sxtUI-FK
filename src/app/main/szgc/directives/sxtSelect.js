@@ -37,6 +37,7 @@
         var setIng = false;
         scope.data = {};
         var resetValue = function (value) {
+          if(!value)return;
           if (scope.valueField && scope.data.selected && scope.data.selected[scope.valueField] == scope.value) return;
 
           if (scope.value && scope.data.sources) {
@@ -49,7 +50,7 @@
               scope.data.selected = fd;
             }
             scope.value = scope.data.selected ? scope.data.selected[scope.valueField] : value || null;
-            scope.nameValue = scope.data.selected ? scope.data.selected[scope.textField] : null;
+            scope.nameValue = scope.data.selected ? scope.data.selected[scope.textField] : scope.objValue? null:scope.nameValue;
             scope.objValue = scope.data.selected;
           }
           else if (scope.data.selected) {
@@ -90,10 +91,11 @@
             scope.data.sources.push(item);
           });
 
-          resetValue();
+          resetValue(scope.value);
 
         });
         scope.$watch('data.selected', function () {
+          if(scope.data.selected)return;
           if (!setIng && scope.sources) {
             var value = scope.data.selected ? scope.data.selected[scope.valueField] : null;
             scope.nameValue = scope.data.selected ? scope.data.selected[scope.textField] : null;

@@ -161,9 +161,9 @@
             <!--<md-button class="md-button md-raised" ng-click="vm.showResult(th,data.selected.d.yb,$event)">查看验收结果表</md-button>-->
             <div ng-repeat="n in data.selected.d.yb">
               <h3 style="margin-top:10px;">{{$index+1}}、{{n.TargetName}} 允许偏差（mm） :{{n.DeviationLimit}}</h3>
-              <div class="circles">
-                <div layout="row" layout-wrap>
-                  <div flex="20" ng-repeat="point in n.points"><div class="point" ng-class="{'done':!point.Result}"><span>{{point.Value}}</span></div></div>
+              <div class="circle">
+                <div>
+                  <div ng-repeat="point in n.points"><div class="point" ng-class="{'done':!point.Result}"><span>{{point.Value}}</span></div></div>
                 </div>
               </div>
             </div>

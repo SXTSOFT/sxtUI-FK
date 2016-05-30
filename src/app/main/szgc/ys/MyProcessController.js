@@ -238,7 +238,7 @@
       if ($scope.project.type) {
         switch ($scope.project.type) {
           case 1:
-            t = 2;
+              t = 2;
             break;
           case 2:
             t = 8;
