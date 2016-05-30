@@ -95,7 +95,7 @@
 
         });
         scope.$watch('data.selected', function () {
-          if(scope.data.selected)return;
+          if(!scope.data.selected)return;
           if (!setIng && scope.sources) {
             var value = scope.data.selected ? scope.data.selected[scope.valueField] : null;
             scope.nameValue = scope.data.selected ? scope.data.selected[scope.textField] : null;
