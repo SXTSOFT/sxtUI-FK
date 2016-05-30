@@ -89,7 +89,7 @@
         </legend>
         <div ng-repeat="n in targets.yb"  ng-class="{'bgc-red-A100':!ybIsOkRow(n),'datas':n.checked}">
           <h3  ng-class="{'text-disabled':!n.checked}"><md-checkbox ng-model="n.checked" ng-click="$event.stopPropagation()"></md-checkbox>{{$index+1}}、{{n.TargetName}} 允许偏差（mm） :{{n.DeviationLimit}}</h3>
-         {{n.CheckNum}} ,{{n.PassRatio}},{{n.MaxDeviation}}
+
           <!--<md-input-container ng-if="false" class="md-block">-->
             <!--<label>检查点数</label>-->
             <!--<input type="number" ng-disabled="!n.checked" ng-model="n.CheckNum">-->

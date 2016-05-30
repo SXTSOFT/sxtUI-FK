@@ -645,9 +645,7 @@
                     yb.points.push(item);
                   }
                 })
-
               });
-              console.log('values', s.d.yb);
             })
           }
         }
