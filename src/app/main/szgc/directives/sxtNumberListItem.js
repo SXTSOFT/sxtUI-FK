@@ -73,18 +73,33 @@
           min = -10000000;
           abs = 0 - zdpc;
         }
-        max = utils.math.mul(max, 1.5);
+        //if (abs < min || zdpc > max) {
+        //  return {
+        //    result:false,
+        //    zdpc:abs
+        //  };
+        //}
+        var max1 = max,min1=min;
+        max1 = utils.math.mul(max, 1.5);
         if (min > 0)
-          min = utils.math.mul(min, 0.5);
+          min1 = utils.math.mul(min, 0.5);
         else
-          min = utils.math.mul(min, 1.5);
+          min1 = utils.math.mul(min, 1.5);
         //console.log(min, max, zdpc)
+        if (zdpc < min1 || zdpc > max1) {
+          return {
+            result:false,
+            allResult:false,
+            zdpc:abs
+          };
+        }
         if (zdpc < min || zdpc > max) {
           return {
             result:false,
             zdpc:abs
           };
         }
+
         return {
           result:true,
           zdpc:abs
@@ -111,10 +126,13 @@
            var  values = [],hgP= 0,maxpc=-10000,zdpc,els =element.find('.point span'), i= 0,l=els.length;
           els.each(function(){
             ++i;
-            var v = $(this).hasClass('n')?'': parseFloat($(this).text().trim());
+            var v = $(this).hasClass('n')?'': parseFloat($(this).text().trim()),isAllResult = true;
             if(v|| v=='0') {
               var result = ybIsOkRow(scope.value,v)
               if(result) {
+                if(result.allResult===false){
+                  isAllResult =false;
+                }
                 values.push({
                   isOK : result.result,
                   zdpc: result.zdpc,
@@ -126,8 +144,11 @@
               }
             }
             else if(i>1&&i<l){
-              if(!$(this).parent().hasClass('current'))
+              if(!$(this).parent().hasClass('current')){
                 $(this).parent().parent().remove();
+                //$(this).parent().parent().parent().find('span').eq(l-1).text(l)
+              }
+
             }
 
 
@@ -141,8 +162,12 @@
               hgP++;
             }
           });
+
           scope.value.CheckNum = values.length;
-          if(scope.value.CheckNum) scope.value.PassRatio = utils.math.div(hgP,scope.value.CheckNum).toFixed(2);
+          if(scope.value.CheckNum) {
+            scope.value.PassRatio = utils.math.div(hgP, scope.value.CheckNum).toFixed(2);
+            scope.value.isOK = isAllResult===false?false:scope.value.PassRatio>=0.8;
+          }
           scope.value.MaxDeviation = (zdpc||zdpc ==0)?maxpc:null;
           scope.value.points = values;
         })
