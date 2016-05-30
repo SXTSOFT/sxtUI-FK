@@ -123,10 +123,10 @@
         scope.$watch(function(){
           return element.text()
         },function(){
-           var  values = [],hgP= 0,maxpc=-10000,zdpc,els =element.find('.point span'), i= 0,l=els.length;
+           var  values = [],hgP= 0,maxpc=-10000,zdpc=null,els =element.find('.point span'), i= 0,l=els.length,isAllResult = true;
           els.each(function(){
             ++i;
-            var v = $(this).hasClass('n')?'': parseFloat($(this).text().trim()),isAllResult = true;
+            var v = $(this).hasClass('n')?'': parseFloat($(this).text().trim());
             if(v|| v=='0') {
               var result = ybIsOkRow(scope.value,v)
               if(result) {
@@ -165,10 +165,10 @@
 
           scope.value.CheckNum = values.length;
           if(scope.value.CheckNum) {
-            scope.value.PassRatio = utils.math.div(hgP, scope.value.CheckNum).toFixed(2);
-            scope.value.isOK = isAllResult===false?false:scope.value.PassRatio>=0.8;
+            scope.value.PassRatio = utils.math.mul(utils.math.div(hgP, scope.value.CheckNum),100).toFixed(2);
+            scope.value.isOK = isAllResult===false?false:scope.value.PassRatio>=80;
           }
-          scope.value.MaxDeviation = (zdpc||zdpc ==0)?maxpc:null;
+          scope.value.MaxDeviation = (zdpc||zdpc ==0)?zdpc:null;
           scope.value.points = values;
         })
       }

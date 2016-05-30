@@ -35,8 +35,7 @@
       nametree = $scope.$parent.project.nameTree || $stateParams.nameTree,
       token = $stateParams.token,
       flag = $stateParams.flag;
-
-    console.log('----传参数----', $stateParams);
+    
     $scope.flag = $stateParams.flag;
     if (!procedure) {
       $state.go('app.szgc.ys');

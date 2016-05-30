@@ -48,7 +48,7 @@
         </md-list-item>
         <md-subheader class="md-no-sticky">专业承包</md-subheader>
         <md-list-item layout="row">
-          <sxt-select flex required name="zid"  ng-model="data.curHistory.ParentCompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.ParentCompanyName" sources="data.supervision" text-field="UnitName" value-field="UnitId"></sxt-select>
+          <sxt-select flex required name="zid"  ng-model="data.curHistory.CompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.CompanyName" sources="data.supervision" text-field="UnitName" value-field="UnitId"></sxt-select>
         </md-list-item>
         <md-subheader class="md-no-sticky">施工班组</md-subheader>
         <md-list-item layout="row">
@@ -89,6 +89,7 @@
         </legend>
         <div ng-repeat="n in targets.yb"  ng-class="{'bgc-red-A100':!ybIsOkRow(n),'datas':n.checked}">
           <h3  ng-class="{'text-disabled':!n.checked}"><md-checkbox ng-model="n.checked" ng-click="$event.stopPropagation()"></md-checkbox>{{$index+1}}、{{n.TargetName}} 允许偏差（mm） :{{n.DeviationLimit}}</h3>
+         {{n.CheckNum}} ,{{n.PassRatio}},{{n.MaxDeviation}}
           <!--<md-input-container ng-if="false" class="md-block">-->
             <!--<label>检查点数</label>-->
             <!--<input type="number" ng-disabled="!n.checked" ng-model="n.CheckNum">-->

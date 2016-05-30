@@ -446,8 +446,7 @@
       });
 
       $q.all([
-        api.szgc.addProcessService.getAll($stateParams.bathid, {status: 4}),
-        api.szgc.addProcessService.getAllCheckDataValue($stateParams.bathid)
+        api.szgc.addProcessService.getAll($stateParams.bathid, {status: 4})
       ]).then(function(res){
         var group = [],
           gk = {},
@@ -620,7 +619,7 @@
           }
          // setCheckValues(item);
          // setCheckVauless(item);
-          getCheckV(item);
+          //getCheckV(item);
         });
       });
       $scope.th=[]
@@ -630,6 +629,29 @@
            Value:i
         })
       }
+      $scope.$watch('data.selected',function () {
+        if($scope.data.selected && $scope.data.selected.d){
+          var s = $scope.data.selected;
+          if(!s.load){
+            s.load = true;
+            api.szgc.addProcessService.getAllCheckDataValue(s.step.Id).then(function (result) {
+              if(result.data.Rows.length){
+                vm.showData = true;
+              }
+              s.d.yb.forEach(function (yb) {
+                yb.points=[];
+                result.data.Rows.forEach(function (item) {
+                  if(yb.Id==item.CheckDataId){
+                    yb.points.push(item);
+                  }
+                })
+
+              });
+              console.log('values', s.d.yb);
+            })
+          }
+        }
+      })
       //vm.showResult = function(rows,datas,ev){
       //
       //  $mdDialog.show({
