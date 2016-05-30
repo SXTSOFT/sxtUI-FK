@@ -35,7 +35,7 @@
       nametree = $scope.$parent.project.nameTree || $stateParams.nameTree,
       token = $stateParams.token,
       flag = $stateParams.flag;
-    
+
     $scope.flag = $stateParams.flag;
     if (!procedure) {
       $state.go('app.szgc.ys');
@@ -522,6 +522,7 @@
       $scope.CheckDataValue=[];
       //遍历获取一般项目数据
       var sort=0;
+      $scope.ybAllHasPoints = true;
       $scope.targets.yb.forEach(function (zkitem,index) {
         if (zkitem.checked) {
           var yb={
@@ -543,6 +544,9 @@
             Tag:sxt.uuid()
           }
           savetargets.push(yb);
+          if(!zkitem.points.length){
+            $scope.ybAllHasPoints = false;
+          }
           zkitem.points.forEach(function(o){
             $scope.CheckDataValue.push({
               Id:'',
@@ -638,9 +642,19 @@
         }
       });
 
+      if(!data.batchs[0]||!data.batchs[0].GrpId){
+        utils.alert('请选择班组')
+        $scope.isSaveing = false;
+        return;
+      }
 
       var targets = toSaveTargets(step);
 
+      if(!$scope.ybAllHasPoints){
+        utils.alert('已选择的检查项必须录入点');
+        $scope.isSaveing = false;
+        return;
+      }
       //console.log('CheckData', targets)
       api.szgc.addProcessService.postCheckData({
         Batch: data.batchs,
@@ -657,7 +671,7 @@
           });
         }else{
           utils.alert('提交失败').then(function () {
-
+            $scope.isSaveing = false;
           });
         }
       });
