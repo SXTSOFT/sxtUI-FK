@@ -218,6 +218,7 @@
         text-align: center;
         line-height: 50px;
         white-space:nowrap;
+        overflow: hidden;
         >span{
           display: block;height:50px;line-height: 50px;
           &.n{
