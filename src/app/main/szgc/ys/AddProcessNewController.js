@@ -819,7 +819,7 @@
           c++;
         }
       }
-      return c == 0 ? '' : utils.math.div(hgl, c);
+      return c == 0 ? '' : utils.math.div(hgl, c).toFixed(2);
     }
 
 

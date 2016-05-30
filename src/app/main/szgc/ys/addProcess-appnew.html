@@ -10,7 +10,7 @@
   <!--</div>-->
 <!--</md-content>-->
 
-  <md-content sxt-number-list show="vm.keyboard.show" class="md-padding selector">
+  <md-content flex sxt-number-list show="vm.keyboard.show" class="md-padding selector">
     <form name="addForm" class="form-horizontal addform" ng-submit="save(addForm)">
       <md-list>
         <md-subheader class="md-no-sticky">项目</md-subheader>
@@ -89,15 +89,15 @@
         </legend>
         <div ng-repeat="n in targets.yb"  ng-class="{'bgc-red-A100':!ybIsOkRow(n),'datas':n.checked}">
           <h3  ng-class="{'text-disabled':!n.checked}"><md-checkbox ng-model="n.checked" ng-click="$event.stopPropagation()"></md-checkbox>{{$index+1}}、{{n.TargetName}} 允许偏差（mm） :{{n.DeviationLimit}}</h3>
-          <md-input-container class="md-block">
+          <md-input-container ng-if="false" class="md-block">
             <label>检查点数</label>
             <input type="number" ng-disabled="!n.checked" ng-model="n.CheckNum">
           </md-input-container>
-          <md-input-container class="md-block">
+          <md-input-container ng-if="false" class="md-block">
             <label>合格率</label>
             <input ng-disabled="!n.checked" ng-model="n.PassRatio" >
           </md-input-container>
-          <md-input-container class="md-block">
+          <md-input-container ng-if="false" class="md-block">
             <label>最大偏差</label>
             <input ng-disabled="!n.checked"  ng-model="n.MaxDeviation" >
           </md-input-container>
@@ -133,7 +133,7 @@
       </div>
     </form>
   </md-content>
-<sxt-num-input ng-model="user" ng-show="vm.keyboard.show" show="vm.keyboard.show" on-next="onNext($point)" ></sxt-num-input>
+<sxt-num-input flex-auto ng-model="user" ng-show="vm.keyboard.show" show="vm.keyboard.show" on-next="onNext($point)" ></sxt-num-input>
   <div style="position:fixed; top:0px; right:20px;">
     <md-button class="md-fab md-mini" ng-click="back()">
       <md-icon md-font-icon="icon-arrow-left"></md-icon>

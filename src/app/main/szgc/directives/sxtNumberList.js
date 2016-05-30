@@ -41,7 +41,7 @@
               currentPoint.addClass('current');
               $rootScope.$emit('keyboard:setvalue',currentPoint.text());
               element.animate({
-                scrollTop: Math.abs($('.addform').position().top- p.position().top+100)
+                scrollTop: element.scrollTop()+ p.offset().top - element.height() + p.height() - element.offset().top
               });
             }
           }

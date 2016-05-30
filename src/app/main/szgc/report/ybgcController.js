@@ -14,7 +14,7 @@
 
     vm.project ={
       onQueryed:function () {
-        vm.searBarHide = true;
+        vm.searBarHide = false;
         query();
       }
     }
