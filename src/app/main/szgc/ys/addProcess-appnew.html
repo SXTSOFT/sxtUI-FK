@@ -89,18 +89,18 @@
         </legend>
         <div ng-repeat="n in targets.yb"  ng-class="{'bgc-red-A100':!ybIsOkRow(n),'datas':n.checked}">
           <h3  ng-class="{'text-disabled':!n.checked}"><md-checkbox ng-model="n.checked" ng-click="$event.stopPropagation()"></md-checkbox>{{$index+1}}、{{n.TargetName}} 允许偏差（mm） :{{n.DeviationLimit}}</h3>
-          <md-input-container ng-if="false" class="md-block">
-            <label>检查点数</label>
-            <input type="number" ng-disabled="!n.checked" ng-model="n.CheckNum">
-          </md-input-container>
-          <md-input-container ng-if="false" class="md-block">
-            <label>合格率</label>
-            <input ng-disabled="!n.checked" ng-model="n.PassRatio" >
-          </md-input-container>
-          <md-input-container ng-if="false" class="md-block">
-            <label>最大偏差</label>
-            <input ng-disabled="!n.checked"  ng-model="n.MaxDeviation" >
-          </md-input-container>
+          <!--<md-input-container ng-if="false" class="md-block">-->
+            <!--<label>检查点数</label>-->
+            <!--<input type="number" ng-disabled="!n.checked" ng-model="n.CheckNum">-->
+          <!--</md-input-container>-->
+          <!--<md-input-container ng-if="false" class="md-block">-->
+            <!--<label>合格率</label>-->
+            <!--<input ng-disabled="!n.checked" ng-model="n.PassRatio" >-->
+          <!--</md-input-container>-->
+          <!--<md-input-container ng-if="false" class="md-block">-->
+            <!--<label>最大偏差</label>-->
+            <!--<input ng-disabled="!n.checked"  ng-model="n.MaxDeviation" >-->
+          <!--</md-input-container>-->
           <div class="circles" ng-if="n.checked" sxt-number-list-item ng-model="n">
             <div layout="row" layout-wrap>
               <div flex="20"><div class="point" ng-if="n.checked"><span class="n">1</span></div></div>

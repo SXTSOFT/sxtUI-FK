@@ -465,3 +465,61 @@ md-content{
     padding:1px 5px;
   }
 }
+.selector{
+  fieldset{
+    md-list{
+      md-list-item{
+        h3{
+          margin-top: 10px;
+          margin-bottom: 5px;
+        }
+        p{
+          margin: 0;
+          line-height: 120%;
+        }
+      }
+    }
+  }
+}
+.reportT table{
+  border-collapse: collapse;
+  tr{
+    td,th{
+      border:1px solid #d8d8d8;
+    }
+    th{
+      padding:4px;
+      text-align: center;
+    }
+    td{
+      table{
+        tr{
+          &:first-child{
+            td{
+              &:first-child{
+                border-left:none;
+              }
+              &:last-child{
+                border-right:none
+              }
+              border-top:none;
+            }
+
+          }
+          &:last-child{
+            td{
+              &:first-child{
+                border-left:none;
+              }
+              &:last-child{
+                border-right:none
+              }
+              border-bottom:none;
+            }
+
+          }
+        }
+      }
+    }
+  }
+}
