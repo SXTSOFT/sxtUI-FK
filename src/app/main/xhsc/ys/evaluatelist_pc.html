@@ -22,64 +22,9 @@
             <td>{{t.TotalScore}}</td>
           </tr>
 
-         <!-- <tr>
-            <td style="font-weight: bold;">监理得分</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td style="font-weight: bold;">总包得分</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td colspan="2" style="font-weight: bold;">1.实测实量</td>
-          </tr>
-          </tbody>
-          <tbody>
-          <tr>
-            <td>1.1总包</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>1.2精装修</td>
-            <td></td>
-          </tr>
-          </tbody>
-          <tbody>
-          <tr>
-            <td colspan="2" style="font-weight: bold;">2.实体质量</td>
-          </tr>
-          <tr>
-            <td>2.1总包</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td style="font-weight: bold;">3.安全文明</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td colspan="2" style="font-weight: bold;">4.管理行为</td>
-          </tr>
-          <tr>
-            <td>4.1项目部</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>4.2监理单位</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>4.3施工单位</td>
-            <td></td>
-          </tr>-->
-
           </tbody>
         </table>
-        <!--<div class="simple-table-container" flex>-->
-        <!--<div class="ms-responsive-table-wrapper">-->
-        <!---->
-        <!--</div>-->
       </div>
-
 
     </md-tab-content>
   </md-tab>
@@ -154,23 +99,22 @@
                                               {{item.ModifyScore}}
                                             </td>
                                           </tr>
-                                          <tr>
+                                          <tr ng-repeat="region in item.regions">
                                             <td colspan="5">
                                               <table width="100%" cellspacing="0" cellpadding="0">
                                                 <tr>
-                                                  <td style="width:50px;text-align:center">{{vm.RegionName}}}</td>
+                                                  <td style="width:50px;text-align:center">{{region.RegionName}}</td>
                                                   <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
-                                                    <span ng-if="item.weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息：</span>
-                                                    <span ng-if="item.weight==item.ModifyScore">&nbsp;&nbsp;符合要求：</span>
-                                                    <span ng-repeat="q in item.DeductScoreItems">
-                                                     <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{ q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
-                                                     </md-button>
-                                                    </span>
+                                                    <span ng-if="item.Weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息0：</span>
+                                                    <span ng-if="item.Weight==item.ModifyScore">&nbsp;&nbsp;符合要求</span>
+                                  <span ng-repeat="q in region.DeductScoreItems">
+                                    <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
+                                    </md-button>
+                                  </span>
                                                   </td>
                                                 </tr>
                                               </table>
                                             </td>
-
                                           </tr>
                                         </table>
                                       </td>
@@ -201,26 +145,22 @@
                                         {{item.ModifyScore}}
                                       </td>
                                     </tr>
-                                    <tr>
+                                    <tr ng-repeat="region in item.regions">
                                       <td colspan="5">
                                         <table width="100%" cellspacing="0" cellpadding="0">
                                           <tr>
-                                            <td style="width:50px;text-align:center">{{vm.RegionName}}</td>
+                                            <td style="width:50px;text-align:center">{{region.RegionName}}</td>
                                             <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
-                                              <span ng-if="item.weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息：</span>
-                                              <span ng-if="item.weight==item.ModifyScore">&nbsp;&nbsp;符合要求：</span>
-                                              <span ng-repeat="q in item.question">
-                                                <!--<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>-->
-                                                 <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
-                                                 </md-button>
-                                              </span>
-                                              <md-button aria-label="" ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
-                                              <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="item.question.length==0" ng-click="vm.fit(item)" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>
+                                              <span ng-if="item.Weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息1：</span>
+                                              <span ng-if="item.Weight==item.ModifyScore">&nbsp;&nbsp;符合要求</span>
+                                  <span ng-repeat="q in region.DeductScoreItems">
+                                    <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
+                                    </md-button>
+                                  </span>
                                             </td>
                                           </tr>
                                         </table>
                                       </td>
-
                                     </tr>
                                   </table>
                                 </td>
@@ -257,10 +197,10 @@
                                     <tr>
                                       <td style="width:50px;text-align:center">{{region.RegionName}}</td>
                                       <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
-                                        <span ng-if="item.weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息：</span>
-                                        <span ng-if="item.weight==item.ModifyScore">&nbsp;&nbsp;符合要求：</span>
+                                        <span ng-if="item.Weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息2：</span>
+                                        <span ng-if="item.Weight==item.ModifyScore">&nbsp;&nbsp;符合要求</span>
                                   <span ng-repeat="q in region.DeductScoreItems">
-                                    <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{ q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
+                                    <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
                                     </md-button>
                                   </span>
                                       </td>
@@ -303,10 +243,10 @@
                               <tr>
                                 <td style="width:50px;text-align:center">{{region.RegionName}}</td>
                                 <td colspan="4" class="lr" style="position: relative;padding:3px 0;">
-                                  <span ng-if="item.weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息：</span>
-                                  <span ng-if="item.weight==item.ModifyScore">&nbsp;&nbsp;符合要求：</span>
+                                  <span ng-if="item.Weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息3：</span>
+                                  <span ng-if="item.Weight==item.ModifyScore">&nbsp;&nbsp;符合要求</span>
                                   <span ng-repeat="q in region.DeductScoreItems">
-                                  <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{ q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
+                                  <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{ q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
                                    </md-button>
                                   </span>
                                 </td>
