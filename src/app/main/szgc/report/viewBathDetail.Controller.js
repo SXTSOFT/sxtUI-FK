@@ -445,13 +445,10 @@
 
       });
 
-      $q.all([
-        api.szgc.addProcessService.getAll($stateParams.bathid, {status: 4})
-      ]).then(function(res){
+      api.szgc.addProcessService.getAll($stateParams.bathid, {status: 4}).then(function(result){
         var group = [],
           gk = {},
           eg;
-        var result=res[0]?res[0]:[];
         result.data.Rows.forEach(function(item) {
           var g = gk[item.CheckStepId];
           if (!g) {
@@ -491,114 +488,30 @@
             return it.RoleId == 'jl' && it.CheckNo == item.ix;
           });
           item.eg = eg ? cbr.data.Rows.find(function(it) {
-            return it.RoleId != 'jl' && it.CheckNo == eg[0].HistoryNo;
+            return it.RoleId != 'jl';
           }) : null;
+          if(item.eg && !item.eg.load) {
+            item.eg.load = true;
+            api.szgc.addProcessService.getAllCheckDataValue(item.eg.Id).then(function (result) {
+              item.eg.yb = [];
+              eg.forEach(function (yb) {
+                if(yb.TargetTypeId != '018C0866-1EFA-457B-9737-7DCEFEA148F6') { //不是主控
+                  yb.points = [];
+                  item.eg.yb.push(yb);
+                  result.data.Rows.forEach(function (item) {
+                    if (yb.Id == item.CheckDataId) {
+                      yb.points.push(item);
+                    }
+                  })
+                }
+              });
+            })
+          }
           item.text += '/共' + jl.length + '次'
         });
 
         $scope.data.sources = jl;
         $scope.data.selected = jl[jl.length - 1]; //取最后一次的验收数据
-        var checkDataValues=$scope.checkDataValues=   res[1]?res[1]:[];
-        function setCheckValues(checkData){
-          checkData.rows=[];
-          var row=[];
-          if(checkDataValues.data.Rows.length){
-            vm.showData = true;
-            checkDataValues.data.Rows.forEach(function(it){
-              if(it.CheckDataId==checkData.Id){
-                if (row.length==20){
-                  checkData.rows.push(row)
-                  row=[];
-                  row.push(it);
-                }else {
-                  row.push(it);
-                }
-              }
-            });
-            if (row.length>0){
-              var len=row.length;
-              while (len<20){
-                row.push({
-                  Value:""
-                });
-                len++;
-              }
-              checkData.rows.push(row);
-            }
-          }
-
-          //console.log('a',$scope.data.selected.d.yb)
-
-          //var  rows=[];
-          //var  len=Math.ceil(data.Rows.length/20);
-          //var tmp;
-          //for(var i=0;i<len;i++){
-          //  if (!angular.isArray(rows[i])){
-          //     row[i]=[];
-          //  }
-          //  for (var j=0;j<20;j++){
-          //     tmp= checkDataValues.data.Rows[j+i*20];
-          //      row[i].push(tmp?tmp:{});
-          //  }
-          //}
-          //checkDataValues.data.Rows.forEach(function(it){
-          //  if(it.CheckDataId==checkData.Id){
-          //    if (row.length=20){
-          //      rows.push(row);
-          //    }else {
-          //      row.push(it);
-          //    }
-          //  }
-          //});
-          //checkData.CheckDataValues=rows;
-          //return rows;
-        }
-
-        function setCheckVauless(checkData){
-          checkData.rowss=[];
-          var row=[];
-          if(checkDataValues.data.Rows.length) {
-
-            vm.showData = true;
-            checkDataValues.data.Rows.forEach(function (it) {
-              if (it.CheckDataId == checkData.Id) {
-                if (row.length == 10) {
-                  checkData.rowss.push(row)
-                  row = [];
-                  row.push(it);
-                } else {
-                  row.push(it);
-                }
-              }
-            });
-            if (row.length > 0) {
-              var len = row.length;
-              while (len < 10) {
-                row.push({
-                  Value: ""
-                });
-                len++;
-              }
-              checkData.rowss.push(row);
-            }
-          }
-          console.log('a',$scope.data.selected.d.yb)
-
-        }
-        function getCheckV(data){
-          data.points = [];
-          if(checkDataValues.data.Rows.length) {
-            vm.showData = true;
-            checkDataValues.data.Rows.forEach(function (it) {
-              if (it.CheckDataId == data.Id) {
-                data.points.push(it)
-              }
-            });
-          }else{
-            vm.showData = false;
-          }
-          console.log('a',$scope.data.selected.d.yb)
-        }
         var RemoveStr = function(str) {
           var strarr = str.split('>');
           var strarr2 = [];
@@ -617,9 +530,6 @@
             item.MaxDeviation = undefined;
             item.PassRatio = undefined;
           }
-         // setCheckValues(item);
-         // setCheckVauless(item);
-          //getCheckV(item);
         });
       });
       $scope.th=[]
@@ -650,125 +560,7 @@
           }
         }
       })
-      //vm.showResult = function(rows,datas,ev){
-      //
-      //  $mdDialog.show({
-      //      controller: ['$scope','procedureName',function($scope,procedureName){
-      //        $scope.rows = rows;
-      //        $scope.datas= datas;
-      //        function resize(){
-      //          var iWin = $(window).width();
-      //          //console.log(iWin)
-      //          if(iWin < 500){
-      //            $scope.rows = datas[0].rowss[0];
-      //            $scope.small = true;
-      //          }else{
-      //            $scope.rows = datas[0].rows[0];
-      //            $scope.small = false;
-      //          }
-      //        }
-      //        $(window).resize(function(){
-      //          resize();
-      //        })
-      //        resize();
-      //        $scope.procedureName = procedureName;
-      //        console.log($scope)
-      //      }],
-      //      templateUrl: 'app/main/szgc/report/reportResult.html',
-      //      parent: angular.element(document.body),
-      //      clickOutsideToClose:true,
-      //      targetEvent:ev,
-      //      locals:{procedureName : $scope.titol.ProcedureName}
-      //    })
-      //    .then(function() {
-      //    });
-      //}
-      //$scope.moni=[{
-      //  TargetName:"测试一般项",
-      //  PassRatio:100,
-      //  rows:[
-      //    [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
-      //    [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
-      //    [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
-      //    [{val:"70"},{val:"70"}]
-      //  ]
-      //},{
-      //  TargetName:"测试一般项",
-      //  PassRatio:100,
-      //  rows:[
-      //    [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
-      //    [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}],
-      //    [{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"},{val:"50"}]
-      //  ]
-      //}]
 
-      // console.log('123',$scope.jlTitol)
-      ///api/BatchSet/{batchId}/PPCheckData
-      //api.szgc.addProcessService.getAll($stateParams.bathid, {
-      //  status: 4
-      //}).then(function(result) {
-      //
-      //  var group = [],
-      //    gk = {},
-      //    eg;
-      //  result.data.Rows.forEach(function(item) {
-      //    var g = gk[item.CheckStepId];
-      //    if (!g) {
-      //      g = gk[item.CheckStepId] = [];
-      //      if (item.RoleId != 'jl') eg = g;
-      //      else if (!$scope.data.jl) {
-      //        $scope.data.jl = item.CheckWorker;
-      //        $scope.data.jldate = item.CreatedTime;
-      //      }
-      //      group.push(g);
-      //    }
-      //    g.push(item);
-      //  });
-      //
-      //  var jl = [];
-      //  $scope.data.vk = eg && eg[0].CheckWorker;
-      //  $scope.data.vkdate = eg && eg[0].CreatedTime;
-      //  group.forEach(function(item) {
-      //    if (item[0].RoleId == 'jl') {
-      //      var i = 0;
-      //      item.forEach(function(it) {
-      //        if (it.TargetTypeId != '018C0866-1EFA-457B-9737-7DCEFEA148F6') {
-      //          it.VKPassRatio = eg && eg[0].PassRatio;
-      //          it.FHL = eg && fhl(it.PassRatio, it.VKPassRatio);
-      //        };
-      //        i++;
-      //      });
-      //      jl.push({
-      //        ix: jl.length + 1,
-      //        text: '第' + (jl.length + 1) + '次',
-      //        d: bingTargets(item)
-      //      });
-      //    }
-      //  });
-      //  //console.log('j1',jl)
-      //  jl.forEach(function(item) {
-      //    item.step = cbr.data.Rows.find(function(it) {
-      //      return it.RoleId == 'jl' && it.CheckNo == item.ix;
-      //    });
-      //    item.eg = eg ? cbr.data.Rows.find(function(it) {
-      //      return it.RoleId != 'jl' && it.CheckNo == eg[0].HistoryNo;
-      //    }) : null;
-      //    item.text += '/共' + jl.length + '次'
-      //  });
-      //
-      //  $scope.data.sources = jl;
-      //  $scope.data.selected = jl[jl.length - 1]; //取最后一次的验收数据
-      //
-      //  $scope.data.selected.d.yb.forEach(function (item) {
-      //    if (item.CheckNum == 0 && item.MaxDeviation == 0 && item.PassRatio == 0) {
-      //      item.CheckNum = undefined;
-      //      item.MaxDeviation = undefined;
-      //      item.PassRatio = undefined;
-      //    }
-      //  });
-      //  //console.log('$scope.data.selected', $scope.data.selected.d.yb)
-      //  //$scope.targets = bingTargets(group[0]);
-      //});
     });
 
 

@@ -1,5 +1,5 @@
 ﻿﻿
-<div class="panel" style="border-top-width:0;" >
+<div class="panel" md-padding>
     <div class="panel-body">
      <!--<a class="btn btn-sm btn-white" style="padding: 5px 31px; float: right;margin-right: -4px;margin-bottom: 6px;margin-top: -6px;" ng-click="goback()">返回</a>-->
  <h2>{{titol.ProcedureName}}验收记录表</h2>
@@ -156,10 +156,20 @@
           <legend style="margin-bottom: 10px;">原验收表扫描件或验收结果列表</legend>
           <div ng-if="vm.showData" style="margin-bottom: 10px;">
             <p style="font-size:20px;">
-              一般项目
+              监理检查记录
             </p>
-            <!--<md-button class="md-button md-raised" ng-click="vm.showResult(th,data.selected.d.yb,$event)">查看验收结果表</md-button>-->
             <div ng-repeat="n in data.selected.d.yb">
+              <h3 style="margin-top:10px;">{{$index+1}}、{{n.TargetName}} 允许偏差（mm） :{{n.DeviationLimit}}</h3>
+              <div class="circle">
+                <div>
+                  <div ng-repeat="point in n.points"><div class="point" ng-class="{'done':!point.Result}"><span>{{point.Value}}</span></div></div>
+                </div>
+              </div>
+            </div>
+            <p style="font-size:20px;">
+              万科检查记录
+            </p>
+            <div ng-repeat="n in data.selected.eg.yb">
               <h3 style="margin-top:10px;">{{$index+1}}、{{n.TargetName}} 允许偏差（mm） :{{n.DeviationLimit}}</h3>
               <div class="circle">
                 <div>

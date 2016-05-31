@@ -15,9 +15,11 @@
     var vm = this;
     vm.keyboard = { show:false};
 
-    //给默认时间
+    //给默认时�?
     var dateFilter = $filter('date');
-    $scope.m = {};
+    $scope.m = {
+        isStash: false
+    };
     $scope.back = function(){
       history.back();
     }
@@ -35,7 +37,6 @@
       nametree = $scope.$parent.project.nameTree || $stateParams.nameTree,
       token = $stateParams.token,
       flag = $stateParams.flag;
-
     $scope.flag = $stateParams.flag;
     if (!procedure) {
       $state.go('app.szgc.ys');
@@ -65,6 +66,11 @@
       submitUsers: null,
       flag:flag
     };
+    if ($scope.data.isFirst) {
+        api.szgc.ProcedureBathSettingService.query().then(function (result) {
+            $scope.ProcedureBathSettings = result.data.Rows;
+        })
+    }
 
     var resetWorkRatio = function () {
       var bs = $scope.data.batchs,
@@ -162,14 +168,14 @@
           regionId: pid
         }).then(function (result) {
           //如果已经录入了把第一条BatchNo最大的返回取它的BatchNo，把Id制空
-          //没有Id才会插入一条数据
+          //没有Id才会插入一条数
           var b = result.data.Rows.length ? result.data.Rows[0] : null;
 
           if (b) {
             b.Id = null;
             b.BatchNo = parseInt(result.data.Rows[0].BatchNo) + 1;//第几次验收批
             b.Remark = '';//描述
-            b.Count = 1;//第几次验收
+            b.Count = 1;//第几次验收?
           }
           else
             flag = false;
@@ -236,11 +242,23 @@
           treeId: idtree,
           unitType: 1,
           includeChild: true
-        })
+                    }),
+                    //batchRelationId,roleId,batchNo,historyNo
+                    api.szgc.addProcessService.GetBatchsTargetByHistryNo({ batchRelationId: batch ? batch.Id : '', roleId: 'jl', batchNo: batch ? batch.BatchNo : 100, historyNo: 1 }),
+                    api.szgc.UserStashService.get(idtree + procedure + (batch ? batch.BatchNo : '1'))
       ]).then(function (results) {
 
         batch = batch || $scope.data.curHistory;
-
+                    var stash = results[5].data;
+                    stash = stash && stash.SValue ? JSON.parse(stash.SValue) : null;
+                    if (stash) {
+                        batch.CompanyId = stash.Batch[0].CompanyId;
+                        batch.ParentCompanyId = stash.Batch[0].ParentCompanyId;
+                        batch.GrpId = stash.Batch[0].GrpId;
+                        batch.SupervisorCompanyId = stash.Batch[0].SupervisorCompanyId;
+                        $scope.data.curStep.GroupImg = stash.Step.GroupImg;
+                        $scope.data.curStep.GroupImg2 = stash.Step.GroupImg2;
+                    }
         $scope.data.batchs.push(batch);
 
         var sm0 = [];
@@ -261,8 +279,6 @@
           }];
 
         }
-
-
         var sm1 = [];
         results[2].data.Rows.forEach(function (n) {
           if (sm1.find(function (n2) { return n2.UnitId == n.UnitId; }) == null) {
@@ -270,12 +286,10 @@
           }
         })
         $scope.data.supervision1 = sm1;
-
-
         if (isB && $scope.data.supervision1.length && !batch.ParentCompanyId) {
           batch.ParentCompanyId = $scope.data.supervision1[0].UnitId;
         }
-        if (api.szgc.vanke.isPartner(1) && !flag) {
+        if (api.szgc.vanke.isPartner(1)) {
           batch.Count = (batch.JLCount || 0) + 1;
           var fd = results[3].data.Rows.find(function(it) {
             return it.UnitId = api.szgc.vanke.getPartner()
@@ -304,9 +318,34 @@
         }
 
         results[0].data.Rows.forEach(function(item) {
+          if (stash) {
+            var _stash = stash.CheckData.find(function (it) {
+              return it.TargetId == item.Id;
+            });
+            if (_stash) {
+              item.MPCheckValue = _stash.MPCheckValue;
+              item.isOK = !!item.MPCheckValue;
+              item.CheckNum = _stash.CheckNum;
+              item.PassRatio = _stash.PassRatio;
+              item.MaxDeviation = _stash.MaxDeviation;
+            }
+          }
           item.TargetName = RemoveStr(item.TargetName);
-          item.checked = true;
+          item.checked = false;
+          if (results[4].data) {
+            if (results[4].data.Rows.length > 0) {
+              results[4].data.Rows.forEach(function (hItem) {
+                if (hItem.Sort == item.Sort) {
+                  item.checked = true;
+                }
 
+              });
+            } else {
+              item.checked = true;
+            }
+          } else {
+            item.checked = true;
+          }
           if (item.TargetTypeId == '018C0866-1EFA-457B-9737-7DCEFEA148F6') {
             $scope.targets.zk.push(item);
           } else {
@@ -316,7 +355,7 @@
           }
           //appConfig.procedureId
           if (procedure =='2814510f-0188-4993-a153-559b40d0b5e8') {
-            if ($scope.targets.yb.length == 3 || $scope.targets.yb.length == 7) {
+            if ($scope.targets.yb.length == 3 || $scope.targets.yb.length == 6) {
               $scope.targets.yb.push({
                 TargetName: '-',
                 DeviationLimit: '≥80',
@@ -333,7 +372,7 @@
                 getPassRatio: function () {
                   var sum=0,l=0;
                   this.items.forEach(function (item) {
-                    if (item.PassRatio) {
+                                            if (item.checked && item.PassRatio) {
                       sum = utils.math.sum(item.PassRatio, sum);
                       l++;
                     }
@@ -347,7 +386,7 @@
                 }
               });
             }
-            if ($scope.targets.yb.length == 8) {
+            if ($scope.targets.yb.length == 6) {
               $scope.targets.yb.push({
                 TargetName: '--',
                 DeviationLimit: '≥85',
@@ -355,7 +394,7 @@
                 getPassRatio: function () {
                   var sum = 0,l=0;
                   $scope.targets.yb.forEach(function (item) {
-                    if (!item.getPassRatio) {
+                                            if (item.checked && !item.getPassRatio) {
                       sum = utils.math.sum(item.PassRatio, sum);
                       l++;
                     }
@@ -416,55 +455,110 @@
       var g = [];
 
       $scope.data.groups = [];
-      $q.all([!$scope.data.isB && $scope.data.curHistory.CompanyId ? api.szgc.vanke.teams($scope.data.curHistory.CompanyId) : $q(function(resolve) {
+      $q.all([!$scope.data.isB && $scope.data.curHistory.CompanyId ? api.szgc.vanke.teams($scope.data.curHistory.CompanyId) : $q(function (resolve) {
 
         resolve({
           data: {
             data: []
           }
         })
-      }), !$scope.data.isB && $scope.data.curHistory.ParentCompanyId && $scope.data.curHistory.ParentCompanyId != $scope.data.curHistory.CompanyId ? api.szgc.vanke.teams($scope.data.curHistory.ParentCompanyId) : $q(function(resolve) {
+      }), !$scope.data.isB && $scope.data.curHistory.ParentCompanyId && $scope.data.curHistory.ParentCompanyId != $scope.data.curHistory.CompanyId ? api.szgc.vanke.teams($scope.data.curHistory.ParentCompanyId) : $q(function (resolve) {
         resolve({
           data: {
             data: []
           }
         })
-      })]).then(function(results) {
-        results[0].data.data.forEach(function(item) {
-          if (item && item.skills && item.skills.length&&$stateParams.procedureTypeId) {
-            if (item.skills.find(function (sk) { return sk.skill_id == $stateParams.procedureTypeId; }) == null) {
+      })]).then(function (results) {
+        results[0].data.data.forEach(function (item) {
+          if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
+            if (item.skills.find(function (sk) {
+                return sk.skill_id == $stateParams.procedureTypeId;
+              }) == null) {
               return;
             }
           }
           var ns = [];
-          item.managers.forEach(function(it) {
+          item.managers.forEach(function (it) {
             ns.push(it.name);
           });
           g.push({
             id: item.team_id,
-            name: $scope.data.curHistory.CompanyName + ' - ' + item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
+            name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
           });
         });
-        results[1].data.data.forEach(function(item) {
-          if (item && item.skills && item.skills.length&&$stateParams.procedureTypeId) {
-            if (item.skills.find(function (sk) { return sk.skill_id == $stateParams.procedureTypeId; }) == null) {
+        results[1].data.data.forEach(function (item) {
+          if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
+            if (item.skills.find(function (sk) {
+                return sk.skill_id == $stateParams.procedureTypeId;
+              }) == null) {
               return;
             }
           }
           var ns = [];
-          item.managers.forEach(function(it) {
+          item.managers.forEach(function (it) {
             ns.push(it.name);
           });
           g.push({
             id: item.team_id,
-            name: $scope.data.curHistory.ParentCompanyName + ' - ' + item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
+            name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
           });
         });
-        //console.log('----',$scope.data.groups);
-        if (g.length)
+
+        if (g.length) {
           $scope.data.groups = g;
+        } else {
+          $scope.data.groups = [];
+        }
+        //console.log('11',g)
 
-      })
+
+      });
+      if ($scope.flag) {
+        $q.all([$scope.data.isB && $scope.data.curHistory.CompanyId ? vkapi.teams($scope.data.curHistory.CompanyId) : $q(function (resolve) {
+          resolve({
+            data: {
+              data: []
+            }
+          })
+        }), $scope.data.curHistory.ParentCompanyId && $scope.data.curHistory.ParentCompanyId != $scope.data.curHistory.CompanyId ? vkapi.teams($scope.data.curHistory.ParentCompanyId) : $q(function (resolve) {
+          resolve({
+            data: {
+              data: []
+            }
+          })
+        })]).then(function (results) {
+
+          results[0].data.data.forEach(function (item) {
+            var ns = [];
+            item.managers.forEach(function (it) {
+              ns.push(it.name);
+            });
+            g.push({
+              id: item.team_id,
+              name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
+            });
+          });
+          results[1].data.data.forEach(function (item) {
+            var ns = [];
+            item.managers.forEach(function (it) {
+              ns.push(it.name);
+            });
+            g.push({
+              id: item.team_id,
+              name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
+            });
+          });
+
+          if (g.length) {
+            $scope.data.groups = g;
+          } else {
+            $scope.data.groups = []
+          }
+          //console.log('11',g)
+
+
+        })
+      }
 
     }
     $scope.$watch('data.curHistory.ParentCompanyId', resetGroup)
@@ -481,7 +575,7 @@
 
 
 
-    //移除重复项
+    //移除重复
     var RemoveStr = function(str) {
       var strarr = str.split('>');
       var strarr2 = [];
@@ -520,7 +614,7 @@
         }
       })
       $scope.CheckDataValue=[];
-      //遍历获取一般项目数据
+      //遍历获取一般项目数
       var sort=0;
       $scope.ybAllHasPoints = true;
       $scope.targets.yb.forEach(function (zkitem,index) {
@@ -529,9 +623,9 @@
             Id:'',
             CheckStepId: step.Id,
             TargetId: zkitem.Id,
-            CheckNum: zkitem.CheckNum, //检查点数
-            PassRatio: zkitem.PassRatio, //合格率
-            MaxDeviation: zkitem.MaxDeviation, //最大偏差
+            CheckNum: zkitem.CheckNum, //检查点�?
+            PassRatio: zkitem.PassRatio, //合格�?
+            MaxDeviation: zkitem.MaxDeviation, //最大偏�?
             ProcedureId: procedure,
             DeviationLimit: zkitem.DeviationLimit,
             TargetTypeId: zkitem.TargetTypeId,
@@ -555,10 +649,9 @@
               TargetId:yb.TargetId,
               DeviationValue: o.zdpc,
               Value:o.value,
-              Sort:sort,
+              Sort:++sort,
               Result: o.isOK
-            })
-            sort++;
+            });
           });
         }
       })
@@ -570,7 +663,7 @@
 
       var m = /(((20[0-9][0-9]-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|(20[0-3][0-9]-(0[2469]|11)-(0[1-9]|[12][0-9]|30))) (20|21|22|23|[0-1][0-9]):[0-5][0-9]:[0-5][0-9])/
       var s = $scope.m.CheckDate;
-      if(!m.test(s)){
+      if (!m.test(s)) {
         utils.alert('日期格式不对!(yyyy-MM-dd HH:dd:ss)');
         return;
       }
@@ -578,7 +671,7 @@
       //  utils.alert('请上传原验收表扫描件');
       //  return;
       //}
-      utils.confirm(null, '确认向验收批：' + $scope.data.curHistory.BatchNo + ' 添加新记录吗?').then(function() {
+      utils.confirm(null, '确认向验收批:' + $scope.data.curHistory.BatchNo + ' 添加新记录吗?').then(function () {
         $scope._save(addForm);
       });
 
@@ -651,7 +744,7 @@
       var targets = toSaveTargets(step);
 
       if(!$scope.ybAllHasPoints){
-        utils.alert('已选择的检查项必须录入点');
+        utils.alert('已选择的检查项必须录入!');
         $scope.isSaveing = false;
         return;
       }
@@ -725,7 +818,7 @@
       if (zdpc) {
         if (!pattern.test(zdpc)) {
           if (!pattern.test(zdpc)) {
-            utils.alert("您输入最大偏差值格式不正确！");
+            utils.alert('您输入最大偏差值格式不正确!');
             item.MaxDeviation = '';
           }
         }
@@ -765,7 +858,6 @@
         return false;
       }
       var isIn = pc.match(/(-?[\d.])+/g); //(\.\d{2})?：
-
       // console.log("isIn", isIn);
       if (isIn && isIn.length > 0) {
         var min = 0,

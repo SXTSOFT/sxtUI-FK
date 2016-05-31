@@ -59,6 +59,37 @@
         },
         getAllCheckDataValue:function(batchId, parems){
           return $http.get($http.url('/api/BatchSet/' + batchId + '/checkDataValues',parems));
+        },
+        GetBatchsTargetByHistryNo:function (parems) {
+          return $http.get($http.url('/api/PPCheckData/GetBatchsTargetByHistryNo', parems));
+        }
+      },
+      UserStashService:{
+        get: function (key) {
+          return $http.get('/api/UserStash?sKey=' + encodeURIComponent(key));
+        },
+        create: function (key, value) {
+          return $http.post('/api/UserStash', {
+            SKey: key,
+            SValue: value
+          })
+        },
+        delete: function (key) {
+          return $http.delete('/api/UserStash?sKey=' + encodeURIComponent(key));
+        }
+      },
+      ProcedureBathSettingService:{
+        create: function (setting) {
+          return $http.post('/api/ProcedureBathSetting', setting);
+        },
+        delete: function (id) {
+          return $http.delete('/api/ProcedureBathSetting/' + id);
+        },
+        query: function () {
+          return $http.get('/api/ProcedureBathSetting');
+        },
+        get: function (id) {
+          return $http.get('/api/ProcedureBathSetting/' + id);
         }
       },
       BatchSetService:{
