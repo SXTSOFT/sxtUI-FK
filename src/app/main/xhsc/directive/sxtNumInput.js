@@ -38,7 +38,7 @@
         switch (cmd) {
           case 'ok':
             scope.value = isNaN(parseFloat(str))?'':parseFloat(str);
-            $timeout(function(){scope.ok && scope.ok()},300);
+            $timeout(function(){scope.ok && scope.ok()},500);
             return;
           case -1:
             str = str.length > 0 ? str.substring (0, str.length - 1) : str;

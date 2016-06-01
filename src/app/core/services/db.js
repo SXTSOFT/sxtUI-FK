@@ -203,6 +203,11 @@
     }
 
     return function pouchDB(name, options) {
+      if($window.cordova){
+        options = options||{};
+        options.adapter = 'websql';
+        options.iosDatabaseLocation = 'default';
+      }
       var db = new $window.PouchDB(name, options);
       return wrapMethods(db, self.methods);
     };

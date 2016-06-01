@@ -209,7 +209,7 @@
           else{
             v.DesignValue= null;
           }
-        },100);
+        },0);
 
         //console.log(v);
       }
