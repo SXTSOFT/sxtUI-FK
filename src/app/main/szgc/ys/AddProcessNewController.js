@@ -623,9 +623,9 @@
             Id:'',
             CheckStepId: step.Id,
             TargetId: zkitem.Id,
-            CheckNum: zkitem.CheckNum, //检查点�?
-            PassRatio: zkitem.PassRatio, //合格�?
-            MaxDeviation: zkitem.MaxDeviation, //最大偏�?
+            CheckNum: zkitem.CheckNum, //检查点?
+            PassRatio: zkitem.PassRatio, //合格?
+            MaxDeviation: zkitem.MaxDeviation, //最大偏?
             ProcedureId: procedure,
             DeviationLimit: zkitem.DeviationLimit,
             TargetTypeId: zkitem.TargetTypeId,
