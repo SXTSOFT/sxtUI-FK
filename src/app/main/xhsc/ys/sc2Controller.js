@@ -29,7 +29,12 @@
       //console.log('r',r)
       var find = r.data.find(function (it) {
         return it.MeasureID == vm.info.acceptanceItemID;
-      })
+      });
+      if(!find){ //TODO:一般不可能找不到,找不到肯定后台有问题,这里可能需要提示并去掉
+        find = r.data.find(function () {
+          return true;
+        })
+      }
       var m=[];
       find.MeasureIndexList.forEach(function(item) {
         m.push(item);
