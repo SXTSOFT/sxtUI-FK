@@ -101,7 +101,6 @@
                     if(i.MeasurePointID == o._id){
                       if(i.MeasureValue || i.MeasureValue===0)
                         o.geometry.options.color = 'blue';
-
                       o.CreateTime = moment(i.CreateTime).toDate();
                       return true;
                     }
@@ -136,7 +135,37 @@
             });
           },
           onUpdate:function(layer,isNew,group){
-
+            if(layer instanceof L.Stamp){
+              var neaser = null,
+                p0 = layer.getLatLng();
+              layer._fg.eachLayer(function (ly) {
+                if(ly != layer && ly instanceof L.Stamp){
+                  if(!neaser ||
+                    Math.pow(neaser._latlng.lat-p0.lat,2)+Math.pow(neaser._latlng.lng-p0.lng,2)>
+                    Math.pow(ly._latlng.lat-p0.lat,2)+Math.pow(ly._latlng.lat-p0.lat,2)){
+                    neaser = ly;
+                  }
+                }
+              });
+              if(neaser){
+                var p1 = neaser.getLatLng(),
+                  point0 = neaser._map.latLngToLayerPoint(p0),
+                  point1 = neaser._map.latLngToLayerPoint(p1),
+                  radius = neaser._radius,
+                  dx = Math.abs(point0.x - point1.x),
+                  dy = Math.abs(point0.y - point1.y),
+                  min = Math.min(dx,dy);
+                if(min<radius){
+                  if(dx<dy){
+                    p0.lng = p1.lng;
+                  }
+                  else{
+                    p0.lat = p1.lat;
+                  }
+                  layer.setLatLng(p0);
+                }
+              }
+            }
             //return;
             var point = layer.toGeoJSON();
             point = {
@@ -150,12 +179,11 @@
                 if (m.Children && m.Children.length) {
                   m.Children.forEach(function (m1) {
                     ms.push(m1);
-                  })
+                  });
                 }
                 else {
                   ms.push(m);
                 }
-                console.log('ms',ms);
                 ms.forEach(function (m) {
                   var v = {
                     _id: sxt.uuid(),
@@ -163,6 +191,7 @@
                     CreateTime:now(),
                     RelationID: scope.db,
                     MeasurePointID: point._id,
+                    DrawingID:scope.imageUrl,
                     CheckRegionID: scope.regionId,
                     RegionType: scope.regionType,
                     AcceptanceItemID: scope.acceptanceItem,
@@ -237,7 +266,7 @@
                 ps1[8] = ps[4];
                 var m5 = scope.measureIndexes.find(function (m) {
                   return m.QSKey == '4'
-                })
+                });
                 if (m5 && m5.QSOtherValue == '5') {
                   ps1.splice(7, 1);
                   ps1.splice(5, 1);
@@ -286,6 +315,7 @@
                   CreateTime:now(),
                   RelationID:scope.db,
                   RecordType:4,
+                  DrawingID:scope.imageUrl,
                   MeasurePointID:editScope.context.layer._value.$id,
                   CheckRegionID:scope.regionId,
                   RegionType:scope.regionType,
@@ -295,8 +325,7 @@
                 m.v.MeasureValueId = m.v._id;
               }
               if(m.v.values){
-                //组测量
-                //m.v.MeasureValue = m.v.values[0];
+                //组测量(一个点多个值)
                 var childValues = fg.data.filter(function (item) {
                   return item.ParentMeasureValueID == m.v.MeasureValueId;
                 }),ix=0;
@@ -312,6 +341,7 @@
                       CreateTime: now(),
                       RelationID: scope.db,
                       RecordType: 4,
+                      DrawingID:scope.imageUrl,
                       MeasurePointID: editScope.context.layer._value.$id,
                       CheckRegionID: scope.regionId,
                       RegionType: scope.regionType,

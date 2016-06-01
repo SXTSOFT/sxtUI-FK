@@ -64,6 +64,8 @@
           p++;
           return;
         }
+        if(!task.url)
+          return;
         if(!url)
           url = task.url;
 
