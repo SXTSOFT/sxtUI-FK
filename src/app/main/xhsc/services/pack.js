@@ -19,7 +19,7 @@
               {
                 _id:'GetMeasureItemInfoByAreaID',
                 name:'获取分期下所有指标',
-                url:'/Api/MeasureInfo/GetMeasureItemInfoByAreaID?areaID='+item.AreaID
+                url:'/Api/MeasureInfo/GetMeasureItemInfo?areaID='+item.AreaID
               },
               {
                 _id:'GetRegionTreeInfo',

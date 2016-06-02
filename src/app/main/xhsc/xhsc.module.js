@@ -89,7 +89,6 @@
       .state('app.xhsc.download',{
         noBack:true,
         sendBt:false,
-        refreshBtn:true,
         rightArrow:false,
         leftArrow:false,
         title :'现场评估',
