@@ -153,5 +153,29 @@
 
         });
     }
+
+
+
+    vm.projects=[{
+        year:2016,
+        quart:1,
+        name:'星河天津项目',
+        projectId:'1'
+      },{
+      year:2016,
+      quart:1,
+      name:'星河银湖谷项目',
+      projectId:'2'
+    },{
+      year:2016,
+      quart:1,
+      name:'星河上海项目',
+      projectId:'3'
+    },{
+      year:2016,
+      quart:1,
+      name:'星河总部项目',
+      projectId:'4'
+    }]
   }
 })();

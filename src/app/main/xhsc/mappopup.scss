@@ -1648,6 +1648,7 @@ md-tabs[md-align-tabs="bottom"]{
   }
 }
 .zb{
+   background-color: white;
   table{
     border-collapse: collapse;
     font-size: 14px;
@@ -1662,3 +1663,38 @@ md-tabs[md-align-tabs="bottom"]{
     }
   }
 }
+
+.zb{
+  .reportWrap{
+    td{
+      padding: 0px;
+      text-align: center;
+    };
+    .td_left {
+      text-align: left;;
+    }
+  ;
+  }
+  .report{
+    border: 0px solid;
+    width: 100%;
+    margin: 0px;
+    td{
+      text-align: center;
+      padding: 0px;
+      border: 0px solid;
+      border-right: 1px solid #d8d8d8;
+    };
+    tr{
+      border-bottom: 1px solid #d8d8d8;
+    };
+    tr:last-of-type{
+      border-bottom: 0px solid;
+    };
+    td:last-of-type {
+      border-right: 0px solid ;
+    };
+  }
+}
+
+

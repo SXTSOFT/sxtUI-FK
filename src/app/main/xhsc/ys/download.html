@@ -1,66 +1,100 @@
-<md-content class="download">
-  <div layout="column">
-    <md-subheader ng-if="vm.offlines.length">已下载列表</md-subheader>
-    <md-list>
-      <md-list-item ng-repeat="item in vm.offlines">
-        <img src="app/main/xhsc/images/icon-downed.png" class="md-avatar" />
-        <p layout="column" style="padding-right: 230px;font-size:18px;">
-          {{item.AssessmentSubject}}
-        </p>
-        <div class="md-secondary md-hue-3">
-          <!--<md-button ng-hide="item.completed" ng-click="vm.showECs($event,item)" class="md-raised md-primary" >-->
-            <!--开始评估-->
-          <!--</md-button>-->
-          <md-button  ng-click="vm.showECs($event,item)" class="md-raised md-primary" >
-            开始评估
-          </md-button>
-          <md-button ng-show="item.completed" ng-click="vm.delete(item,$event)" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
-            删除
-          </md-button>
-          <!--<md-button ng-show="item.completed" ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">-->
-            <!--详情-->
-          <!--</md-button>-->
-          <md-button ng-show="item.completed" ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
-            详情
-          </md-button>
-          <!--<md-button ng-show="item.completed" ng-click="vm.detail($event,item)" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">-->
-            <!--详情-->
-          <!--</md-button>-->
-           <!--<span style="display:inline-block;text-align: center;" ng-hide="item.completed">-->
-            <!--<md-button ng-click="vm.upload(item)" class="md-raised upload-btn">-->
-              <!--<md-progress-circular ng-show="item.progress && item.progress!=100" value="{{item.progress}}"  md-diameter="20"></md-progress-circular> 上传-->
-            <!--</md-button>-->
-          <!--</span>-->
+<md-tabs md-align-tabs="bottom"   flex md-swipe-content>
+  <md-tab label="评估下载">
+    <md-tab-content  style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
+      <md-content class="download" style="padding: 0px">
+        <div layout="column">
+          <md-subheader ng-if="vm.offlines.length">已下载列表</md-subheader>
+          <md-list>
+            <md-list-item ng-repeat="item in vm.offlines">
+              <img src="app/main/xhsc/images/icon-downed.png" class="md-avatar" />
+              <p layout="column" style="padding-right: 230px;font-size:18px;">
+                {{item.AssessmentSubject}}
+              </p>
+              <div class="md-secondary md-hue-3">
+                <!--<md-button ng-hide="item.completed" ng-click="vm.showECs($event,item)" class="md-raised md-primary" >-->
+                <!--开始评估-->
+                <!--</md-button>-->
+                <md-button  ng-click="vm.showECs($event,item)" class="md-raised md-primary" >
+                  开始评估
+                </md-button>
+                <md-button ng-show="item.completed" ng-click="vm.delete(item,$event)" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
+                  删除
+                </md-button>
+                <!--<md-button ng-show="item.completed" ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">-->
+                <!--详情-->
+                <!--</md-button>-->
+                <md-button ng-show="item.completed" ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
+                  详情
+                </md-button>
+                <!--<md-button ng-show="item.completed" ng-click="vm.detail($event,item)" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">-->
+                <!--详情-->
+                <!--</md-button>-->
+                <!--<span style="display:inline-block;text-align: center;" ng-hide="item.completed">-->
+                <!--<md-button ng-click="vm.upload(item)" class="md-raised upload-btn">-->
+                <!--<md-progress-circular ng-show="item.progress && item.progress!=100" value="{{item.progress}}"  md-diameter="20"></md-progress-circular> 上传-->
+                <!--</md-button>-->
+                <!--</span>-->
           <span style="display:inline-block;text-align: center;">
             <md-button ng-click="vm.upload(item)" class="md-raised upload-btn">
-             <md-progress-circular ng-show="item.progress && item.progress!=100" value="{{item.progress}}"  md-diameter="20"></md-progress-circular> 上传
+              <md-progress-circular ng-show="item.progress && item.progress!=100" value="{{item.progress}}"  md-diameter="20"></md-progress-circular> 上传
             </md-button>
           </span>
-        </div>
+              </div>
 
-      </md-list-item>
+            </md-list-item>
 
-    </md-list>
-    <md-subheader ng-if="vm.onlines.length">未下载列表</md-subheader>
-    <md-list>
-      <md-list-item ng-repeat="item in vm.onlines">
-        <img src="app/main/xhsc/images/icon-down.png" class="md-avatar" />
-        <p layout="column" style="font-size: 18px;padding-right: 100px;">
-          {{item.AssessmentSubject}}
-        </p>
-        <div class="md-secondary md-hue-3">
+          </md-list>
+          <md-subheader ng-if="vm.onlines.length">未下载列表</md-subheader>
+          <md-list>
+            <md-list-item ng-repeat="item in vm.onlines">
+              <img src="app/main/xhsc/images/icon-down.png" class="md-avatar" />
+              <p layout="column" style="font-size: 18px;padding-right: 100px;">
+                {{item.AssessmentSubject}}
+              </p>
+              <div class="md-secondary md-hue-3">
          <span style="display:inline-block;width:95px;text-align: center;">
             <md-button ng-if="!item.pack.isDown" class="md-raised upload-btn" ng-click="vm.download(item)">
               下载
             </md-button>
            <a  ng-if="item.pack.isDown" style="position: relative;display: inline-block;width:31px;height:31px;border:1px solid #f8f8f8;border-radius:50%" ng-click="vm.cancel()">
              <md-progress-circular md-mode="determinate" value="{{item.progress}}"  md-diameter="30"></md-progress-circular>
-              <md-icon style="width:10px;height:10px;background: #0185f1;position: absolute;left:10px;top:10px;"></md-icon></a>
-              <!--<md-button  ng-if="item.pack.isDown" style="display: inline-block;vertical-align: middle;padding:5px;color:#0185f1;min-width:40px;" ui-sref="app.xhsc.ddetail">详情</md-button>-->
+             <md-icon style="width:10px;height:10px;background: #0185f1;position: absolute;left:10px;top:10px;"></md-icon></a>
+           <!--<md-button  ng-if="item.pack.isDown" style="display: inline-block;vertical-align: middle;padding:5px;color:#0185f1;min-width:40px;" ui-sref="app.xhsc.ddetail">详情</md-button>-->
           </span>
-        </div>
+              </div>
 
-      </md-list-item>
-    </md-list>
-   </div>
-</md-content>
+            </md-list-item>
+          </md-list>
+        </div>
+      </md-content>
+    </md-tab-content>
+  </md-tab>
+  <md-tab label="项目清单">
+    <md-tab-content  style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
+        <md-content class="download" style="padding: 0px">
+        <div layout="column">
+          <md-subheader ng-if="vm.offlines.length">所有项目</md-subheader>
+          <md-list>
+            <md-list-item ng-repeat="item in vm.projects">
+              <img src="app/main/xhsc/images/icon-downed.png" class="md-avatar" />
+              <p layout="column" style="padding-right: 230px;font-size:18px;">
+                {{item.name}}
+              </p>
+              <div class="md-secondary md-hue-3">
+               <span style="display:inline-block;text-align: center;">
+              <md-button ui-sref="" class="md-raised upload-btn">
+                 明细
+              </md-button>
+          </span>
+              </div>
+
+            </md-list-item>
+
+          </md-list>
+        </div>
+      </md-content>
+    </md-tab-content>
+  </md-tab>
+</md-tabs>
+
+

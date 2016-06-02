@@ -29,6 +29,163 @@
       })
 
     });
+
+    vm.summaryReport={
+        projectName:'2016年一季度银河谷',
+        Sections:[{
+          SectionID:"1",
+          SectionName:"2016年一季度银河谷一标"
+        },{
+          SectionID:"2",
+          SectionName:"2016年一季度银河谷二标"
+        },{
+          SectionID:"3",
+          SectionName:"2016年一季度银河谷三标"
+        }],
+        unit:[{ //单位
+            project:[{ //项目得分
+              SectionID:"1",
+              score:"50"
+            }, {
+              SectionID:"2",
+              score:"50"
+            }, {
+              SectionID:"3",
+              score:"50"
+            }]},{
+            Supervision:[{ //监理得分
+              SectionID:"1",
+              score:"50"
+            }, {
+              SectionID:"2",
+              score:"50"
+            },{
+              SectionID:"3",
+              score:"50%"
+            }]},{
+            manager:[{ //总包得分
+               SectionID:"1",
+               score:"50"
+             },{
+               SectionID:"2",
+               score:"50"
+            },{
+               SectionID:"3",
+               score:"50"
+           }]}],
+           category:[{ //类别，需要给出大的类别
+             root:"实测实量",
+             detail:[{
+                 ID:"1",
+                 name:"总包",
+                 parentId:"",
+                 Sections:[{
+                   SectionID:1,
+                   score:"50%"
+                 },{
+                   SectionID:2,
+                   score:"50%"
+                 },{
+                   SectionID:3,
+                   score:"50%"
+                 }]
+               },{
+               ID:"",
+               name:"1.1.1混凝土结构工",
+               Sections:[{
+                 SectionID:1,
+                 score:"50%"
+               },{
+                 SectionID:2,
+                 score:"50%"
+               },{
+                 SectionID:3,
+                 score:"50%"
+               }]
+             },{
+               ID:"",
+               name:"1）砼结构垂直度",
+               Sections:[{
+                 SectionID:1,
+                 score:"50%"
+               },{
+                 SectionID:2,
+                 score:"50%"
+               },{
+                 SectionID:3,
+                 score:"50%"
+               }]
+             },{
+               ID:"",
+               name:"3）截面尺寸",
+               Sections:[{
+                 SectionID:1,
+                 score:"50%"
+               },{
+                 SectionID:2,
+                 score:"50%"
+               },{
+                 SectionID:3,
+                 score:"50%"
+               }]
+             }]},{
+             root:"观感质量",
+             detail:[{
+               ID:"1",
+               name:"2.1土建",
+               parentId:"",
+               Sections:[{
+                 SectionID:1,
+                 score:"50"
+               },{
+                 SectionID:2,
+                 score:"50"
+               },{
+                 SectionID:3,
+                 score:"50"
+               }]
+             },{
+               ID:"",
+               name:"1）钢筋工程",
+               Sections:[{
+                 SectionID:1,
+                 score:"50%"
+               },{
+                 SectionID:2,
+                 score:"50%"
+               },{
+                 SectionID:3,
+                 score:"50%"
+               }]
+             },{
+               ID:"",
+               name:"2）混凝土工程",
+               Sections:[{
+                 SectionID:1,
+                 score:"50%"
+               },{
+                 SectionID:2,
+                 score:"50%"
+               },{
+                 SectionID:3,
+                 score:"50%"
+               }]
+             },{
+               ID:"",
+               name:"3）砌筑工程",
+               Sections:[{
+                 SectionID:1,
+                 score:"50"
+               },{
+                 SectionID:2,
+                 score:"50"
+               },{
+                 SectionID:3,
+                 score:"50"
+               }]
+             }]}]
+    }
+    console.log( vm.summaryReport);
     remote.Assessment.queryResutTotal(params.AssessmentID).then(function (r) {
       vm.totals = r.data;
     });
