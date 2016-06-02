@@ -11,25 +11,14 @@
   /** @ngInject*/
   function evaluatelistPcController($scope,$stateParams,xhUtils,remote,$mdDialog,utils){
     var vm = this;
-    vm.RegionName = $stateParams.RegionName;
     var params={
-      AssessmentID:$stateParams.AssessmentID,
-      RegionID:$stateParams.RegionID,
-      RegionName:$stateParams.RegionName,
-      AssessmentTypeID:$stateParams.AssessmentTypeID
-    };
-    remote.Assessment.query().then(function (m) {
-      remote.Assessment.queryResult(params.AssessmentID).then(function (r) {
-        var ass = m.data.find(function (item) {
-          return item.AssessmentID == params.AssessmentID
-        });
-        if(ass){
-          onQueryBase(ass,r.data);
-        }
-      })
-
+      year:$stateParams.year,
+      projectID:$stateParams.projectID,
+      quarter:$stateParams.quarter
+    }
+    remote.Assessment.queryReport(params.year,params.quarter,params.projectID).then(function(r){
+       onQueryBase(r.data);
     });
-
     vm.summaryReport={
         projectName:'2016年一季度银河谷',
         Sections:[{
@@ -185,13 +174,8 @@
                }]
              }]}]
     }
-    console.log( vm.summaryReport);
-    remote.Assessment.queryResutTotal(params.AssessmentID).then(function (r) {
-      vm.totals = r.data;
-    });
-
-
-    function onQueryBase(item,result) {
+    function onQueryBase(item) {
+      vm.sections=item.Assessments;
       vm.items = {
         AssessmentClassifys:[]
       };
@@ -203,8 +187,8 @@
         o.show=false;
         if(angular.isArray(o.AssessmentItems)&& o.AssessmentItems.length>0){
           for(var i=0;i<o.AssessmentItems.length;i++){
-            var x=result.find(function(t){ return t.AssessmentCheckItemID== o.AssessmentItems[i].AssessmentCheckItemID})
-            if (x){
+            var x= o.AssessmentItems[i].AssessmentItemResults;
+            if (angular.isArray(x)&& x.length>0){
               o.AssessmentItems[i].show=o.show=true;
             }
           }
@@ -229,7 +213,7 @@
             vm.caches.AssessmentClassifys.push(cls);
         });
       });
-      fillRegion(vm.caches,result);
+      fillRegion(vm.caches,item.Assessments);
       $scope.$watch('vm.selectedIndex',function () {
         if(vm.selectedIndex){
           var k = vm.items.AssessmentClassifys[vm.selectedIndex-1];
@@ -245,30 +229,73 @@
       })
     }
 
-    function fillRegion(k,result) {
+    function fillRegion(k,sections) {
       if(k.AssessmentItems){
         k.AssessmentItems.forEach(function (item) {
-          var resultItem = result.find(function (r) {
-            return r.AssessmentCheckItemID == item.AssessmentCheckItemID;
+          item.scoreList=[];
+          var resultItem = item.AssessmentItemResults;
+          var itemResult,tmp,sectionScore;
+          sections.forEach(function(t){
+            if (resultItem){
+              sectionScore={
+                sectionID: t.SectionID,
+                ModifyScore:"",
+                DelScore:""
+              }
+              itemResult=resultItem.find(function(k){
+                return k.SectionID== t.SectionID;
+              });
+              if (itemResult){
+                tmp=itemResult.ModifyScore;
+                if (!tmp&&tmp!==0){
+                  tmp=itemResult.TotalScore;
+                }
+                sectionScore.ModifyScore=tmp;
+                tmp=(itemResult.ModifyScore===0 ||  itemResult.ModifyScore)?item.Weight-itemResult.ModifyScore:'';
+                sectionScore.DelScore=tmp;
+                item.scoreList.push(sectionScore);
+              }
+            }
           });
-          if(resultItem){
-            item.TotalScore = resultItem.TotalScore;
-            item.ModifyScore = resultItem.ModifyScore;
+          //Assessments.first
 
-            if(!item.ModifyScore && item.ModifyScore!==0)
-              item.ModifyScore = item.TotalScore;
+          //item.TotalScore = resultItem.TotalScore;
+          //item.ModifyScore = resultItem.ModifyScore;
+          //
+          //if(!item.ModifyScore && item.ModifyScore!==0)
+          //  item.ModifyScore = item.TotalScore;
+          //
+          //var len=item.Problems.length;
+          //item.DelScore =  (item.ModifyScore===0 ||  item.ModifyScore)?item.Weight-item.ModifyScore:'';
+          //item.regions = resultItem.AssessmentRegionItemResults;
 
-            var len=item.Problems.length;
-            item.DelScore =  (item.ModifyScore===0 ||  item.ModifyScore)?item.Weight-item.ModifyScore:'';
-            item.regions = resultItem.AssessmentRegionItemResults;
-          }
         });
       }
       if(k.AssessmentClassifys){
         k.AssessmentClassifys.forEach(function (c) {
-          fillRegion(c,result);
+          fillRegion(c,sections);
         })
       }
+    }
+    vm.bindSectionScore=function(item,sectionID,field){
+        var scoreList=item.scoreList;
+        var score;
+        if (angular.isArray(scoreList)&&scoreList.length>0){
+          score= scoreList.find(function(t){
+            return t.sectionID==sectionID;
+          });
+          if (score){
+            return score[field];
+          }
+        }
+        return "";
+    }
+
+    vm.getSectionName=function(sectionID){
+        var section=vm.sections.find(function(o){
+            return o.SectionID==sectionID;
+        });
+        return section?section.SectionName:"";
     }
     vm.getW = function (level,t) {
       if(level==1){

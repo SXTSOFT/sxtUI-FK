@@ -77,60 +77,30 @@
             <div flex="10">
               检测内容
             </div>
-        <div flex="35" style=" border-left: 1px solid #d8d8d8;">
-            评判标准
-          </div>
-          <div flex="55" layout="row">
-            <div flex style=" border-left: 1px solid #d8d8d8;">扣分标准</div>
-            <div flex="none" style="width:50px; border-left: 1px solid #d8d8d8;border-right:1px solid #d8d8d8;text-align: center;">
-              权重
+            <div flex="35" style=" border-left: 1px solid #d8d8d8;">
+                评判标准
             </div>
-            <div flex="none" layout="column" class="bd">
-              <div flex="none" layout="row">
-                <div flex="none" class="bdtop">
-                  标段1
+            <div flex="55" layout="row">
+                <div flex style=" border-left: 1px solid #d8d8d8;">扣分标准</div>
+                <div flex="none" style="width:50px; border-left: 1px solid #d8d8d8;border-right:1px solid #d8d8d8;text-align: center;">
+                  权重
+                </div>
+                <div flex="none" ng-repeat="x in vm.sections" layout="column" class="bd">
+                  <div flex="none" layout="row">
+                    <div flex="none" class="bdtop">
+                       {{x.SectionName}}
+                    </div>
+                  </div>
+                  <div flex="none" layout="row">
+                    <div flex="none" style="width:50px;text-align: center;height:23px;line-height: 23px;">
+                      扣分
+                    </div>
+                    <div flex="none" style="width:50px; border-left: 1px solid #d8d8d8;text-align: center;height:23px;line-height: 23px;">
+                      得分
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div flex="none" layout="row">
-                <div flex="none" style="width:50px;text-align: center;height:23px;line-height: 23px;">
-                  扣分
-                </div>
-                <div flex="none" style="width:50px; border-left: 1px solid #d8d8d8;text-align: center;height:23px;line-height: 23px;">
-                  得分
-                </div>
-              </div>
-            </div>
-            <div flex="none" layout="column" class="bd">
-              <div flex="none" layout="row">
-                <div flex="none" class="bdtop">
-                  标段2
-                </div>
-              </div>
-              <div flex="none" layout="row">
-                <div flex="none" style="width:50px;text-align: center;height:23px;line-height: 23px;">
-                  扣分
-                </div>
-                <div flex="none" style="width:50px;text-align: center; border-left: 1px solid #d8d8d8;height:23px;line-height: 23px;">
-                  得分
-                </div>
-              </div>
-            </div>
-            <div flex="none" layout="column" class="bd">
-              <div flex="none" layout="row">
-                <div flex="none" class="bdtop">
-                  标段2
-                </div>
-              </div>
-              <div flex="none" layout="row">
-                <div flex="none" style="width:50px;text-align: center;height:23px;line-height: 23px;">
-                  扣分
-                </div>
-                <div flex="none" style="width:50px;text-align: center; border-left: 1px solid #d8d8d8;height:23px;line-height: 23px;">
-                  得分
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
         <div flex="none" fix-scrollbar-width="md-content.zlpksub">
         </div>
@@ -155,151 +125,53 @@
                             <p class="pname">{{f.AssessmentClassificationName}}</p>
                           </td>
                           <td>
-                            <table width="100%" cellspacing="0" cellpadding="0">
-                              <tr ng-if="g.show" ng-repeat="g in f.AssessmentClassifys">
-                                <td style="width:{{vm.getWidth(3,b.level)}}%;">
-                                  <p class="pname">{{g.AssessmentClassificationName}}</p>
+                            <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                              <tr>
+                                <td style="width:38.9%;">
+                                  <p>{{item.EvaluationCriteria}}</p>
                                 </td>
                                 <td>
-                                  <table width="100%" cellspacing="0" cellpadding="0">
-                                    <tr ng-if="item.show"  ng-repeat="item in g.AssessmentItems">
-                                      <td style="width:{{vm.getWidth(4,b.level)}}%">
-                                        <p class="pname">{{item.AssessmentCheckItemName}}</p>
+                                  <p>{{item.DeductionCriteria}}</p>
+                                </td>
+                                <td style="width: 50px;text-align: center;">
+                                  {{item.Weight}}
+                                </td>
+                                <td  ng-repeat="k in  vm.sections">
+                                  <table fit-table-height style="width: 100%">
+                                    <tr>
+                                      <td style="width: 50px;text-align: center;" class="lr">
+                                        {{vm.bindSectionScore(item,k.SectionID,"DelScore")}}
                                       </td>
-                                      <td>
-                                        <table width="100%" cellspacing="0" cellpadding="0">
-                                          <tr>
-                                            <td style="width:{{vm.getWidth(5,b.level)}}%">
-                                              <p>{{item.EvaluationCriteria}}</p>
-                                            </td>
-                                            <td>
-                                              <p>{{item.DeductionCriteria}}</p>
-                                            </td>
-                                            <td style="width: 50px;text-align: center;">
-                                              {{item.Weight}}
-                                            </td>
-                                            <td style="width: 50px;text-align: center;" class="lr">
-                                              <button ng-click="vm.changeScore(item,$event)"> {{item.DelScore}}</button>
-                                            </td>
-                                            <td style="width: 50px;text-align: center;" class="lr">
-                                              {{item.ModifyScore}}
-                                            </td>
-                                          </tr>
-                                          <tr ng-repeat="region in item.regions">
-                                            <td colspan="9">
-                                              <table width="100%" cellspacing="0" cellpadding="0">
-                                                <tr>
-                                                  <td style="width:50px;text-align:center">{{region.RegionName}}</td>
-                                                  <td>
-                                                    <table width="100%" cellspacing="0" cellpadding="0">
-                                                      <tr>
-                                                        <td style="width:50px;text-align:center"><p>一层</p></td>
-                                                        <td class="lr" style="position: relative;padding:3px 0;">
-                                                          <span ng-if="item.Weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息2：</span>
-                                                          <span ng-if="item.Weight==item.ModifyScore">&nbsp;&nbsp;符合要求</span>
-                                  <span ng-repeat="q in region.DeductScoreItems">
-                                    <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
-                                    </md-button>
-                                  </span>
-                                                        </td>
-                                                      </tr>
-                                                      <tr>
-                                                        <td style="width:50px;text-align:center"><p>一层</p></td>
-                                                        <td class="lr" style="position: relative;padding:3px 0;">
-                                                          <span ng-if="item.Weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息2：</span>
-                                                          <span ng-if="item.Weight==item.ModifyScore">&nbsp;&nbsp;符合要求</span>
-                                  <span ng-repeat="q in region.DeductScoreItems">
-                                    <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
-                                    </md-button>
-                                  </span>
-                                                        </td>
-                                                      </tr>
-                                                    </table>
-                                                  </td>
-                                                  <!--<td colspan="6" class="lr" style="position: relative;padding:3px 0;">-->
-                                                  <!--<span ng-if="item.Weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息2：</span>-->
-                                                  <!--<span ng-if="item.Weight==item.ModifyScore">&nbsp;&nbsp;符合要求</span>-->
-                                                  <!--<span ng-repeat="q in region.DeductScoreItems">-->
-                                                  <!--<md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>-->
-                                                  <!--</md-button>-->
-                                                  <!--</span>-->
-                                                  <!--</td>-->
-                                                </tr>
-                                              </table>
-                                            </td>
-                                          </tr>
-                                        </table>
+                                      <td style="width: 50px;text-align: center;" class="lr">
+                                        {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}
                                       </td>
                                     </tr>
                                   </table>
                                 </td>
                               </tr>
-                              <tr ng-if="item.show"  ng-repeat="item in e.AssessmentItems">
-                                <td style="width:5.26%;">
-                                  <p>{{item.AssessmentCheckItemName}}</p>
-                                </td>
-                                <td>
-                                  <table width="100%" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                      <td style="width:38.9%;">
-                                        <p>{{item.EvaluationCriteria}}</p>
-                                      </td>
-                                      <td>
-                                        <p>{{item.DeductionCriteria}}</p>
-                                      </td>
-                                      <td style="width: 50px;text-align: center;">
-                                        {{item.Weight}}
-                                      </td>
-                                      <td style="width: 50px;text-align: center;" class="lr">
-                                        <button ng-click="vm.changeScore(item,$event)"> {{item.DelScore}}</button>
-                                      </td>
-                                      <td style="width: 50px;text-align: center;" class="lr">
-                                        {{item.ModifyScore}}
-                                      </td>
-                                    </tr>
-                                    <tr ng-repeat="region in item.regions">
-                                      <td colspan="9">
-                                        <table width="100%" cellspacing="0" cellpadding="0">
-                                          <tr>
-                                            <td style="width:50px;text-align:center">{{region.RegionName}}</td>
-                                            <td>
-                                              <table width="100%" cellspacing="0" cellpadding="0">
-                                                <tr>
-                                                  <td style="width:50px;text-align:center"><p>一层</p></td>
-                                                  <td class="lr" style="position: relative;padding:3px 0;">
-                                                    <span ng-if="item.Weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息2：</span>
-                                                    <span ng-if="item.Weight==item.ModifyScore">&nbsp;&nbsp;符合要求</span>
-                                  <span ng-repeat="q in region.DeductScoreItems">
-                                    <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
-                                    </md-button>
-                                  </span>
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td style="width:50px;text-align:center"><p>一层</p></td>
-                                                  <td class="lr" style="position: relative;padding:3px 0;">
-                                                    <span ng-if="item.Weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息2：</span>
-                                                    <span ng-if="item.Weight==item.ModifyScore">&nbsp;&nbsp;符合要求</span>
-                                  <span ng-repeat="q in region.DeductScoreItems">
-                                    <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
-                                    </md-button>
-                                  </span>
-                                                  </td>
-                                                </tr>
-                                              </table>
-                                            </td>
-                                            <!--<td colspan="6" class="lr" style="position: relative;padding:3px 0;">-->
-                                            <!--<span ng-if="item.Weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息2：</span>-->
-                                            <!--<span ng-if="item.Weight==item.ModifyScore">&nbsp;&nbsp;符合要求</span>-->
-                                            <!--<span ng-repeat="q in region.DeductScoreItems">-->
-                                            <!--<md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>-->
-                                            <!--</md-button>-->
-                                            <!--</span>-->
-                                            <!--</td>-->
-                                          </tr>
-                                        </table>
-                                      </td>
-                                    </tr>
+                              <tr ng-repeat="m in item.AssessmentItemResults">
+                                <td colspan="{{3+vm.sections.length*2}}">
+                                  <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                    <td style="width:10%">{{vm.getSectionName(m.SectionID)}}</td>
+                                    <td>
+                                      <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                        <tr ng-repeat="region in m.AssessmentRegionItemResults">
+                                          <td>
+                                            <table  fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                              <tr>
+                                                <td style="width:50px;text-align:center">{{region.RegionName}}</td>
+                                                <td>
+                                                   <span ng-repeat="q in region.DeductScoreItems">
+                                                      <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
+                                                      </md-button>
+                                                    </span>
+                                                </td>
+                                              </tr>
+                                            </table>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </td>
                                   </table>
                                 </td>
                               </tr>
@@ -311,7 +183,7 @@
                             <p class="pname">{{item.AssessmentCheckItemName}}</p>
                           </td>
                           <td>
-                            <table width="100%" cellspacing="0" cellpadding="0">
+                            <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
                               <tr>
                                 <td style="width:38.9%;">
                                   <p>{{item.EvaluationCriteria}}</p>
@@ -322,57 +194,42 @@
                                 <td style="width: 50px;text-align: center;">
                                   {{item.Weight}}
                                 </td>
-                                <td style="width: 50px;text-align: center;" class="lr">
-                                  <button ng-click="vm.changeScore(item,$event)"> {{item.DelScore}}</button>
-                                </td>
-                                <td style="width: 50px;text-align: center;" class="lr">
-                                  {{item.ModifyScore}}
-                                </td>
-                                <td style="width: 50px;text-align: center;" class="lr">
-                                  a
-                                </td>
-                                <td style="width: 50px;text-align: center;" class="lr">
-                                  a
-                                </td>
-                                <td style="width: 50px;text-align: center;" class="lr">
-                                  a
-                                </td>
-                                <td style="width: 50px;text-align: center;" class="lr">
-                                  a
+                                <td  ng-repeat="k in  vm.sections">
+                                    <table fit-table-height style="width: 100%">
+                                      <tr>
+                                        <td style="width: 50px;text-align: center;" class="lr">
+                                            {{vm.bindSectionScore(item,k.SectionID,"DelScore")}}
+                                        </td>
+                                        <td style="width: 50px;text-align: center;" class="lr">
+                                          {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}
+                                        </td>
+                                      </tr>
+                                    </table>
                                 </td>
                               </tr>
-                              <tr ng-repeat="region in item.regions">
-                                <td colspan="9">
-                                  <table width="100%" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                      <td style="width:50px;text-align:center">{{region.RegionName}}</td>
+                              <tr ng-repeat="m in item.AssessmentItemResults">
+                                <td colspan="{{3+vm.sections.length*2}}">
+                                  <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                      <td style="width: 10%">{{vm.getSectionName(m.SectionID)}}</td>
                                       <td>
-                                        <table width="100%" cellspacing="0" cellpadding="0">
-                                          <tr>
-                                            <td style="width:50px;text-align:center"><p>一层</p></td>
-                                            <td class="lr" style="position: relative;padding:3px 0;">
-                                              <span ng-if="item.Weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息2：</span>
-                                              <span ng-if="item.Weight==item.ModifyScore">&nbsp;&nbsp;符合要求</span>
-                                  <span ng-repeat="q in region.DeductScoreItems">
-                                    <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
-                                    </md-button>
-                                  </span>
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <td style="width:50px;text-align:center"><p>一层</p></td>
-                                            <td class="lr" style="position: relative;padding:3px 0;">
-                                              <span ng-if="item.Weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息2：</span>
-                                              <span ng-if="item.Weight==item.ModifyScore">&nbsp;&nbsp;符合要求</span>
-                                  <span ng-repeat="q in region.DeductScoreItems">
-                                    <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
-                                    </md-button>
-                                  </span>
+                                        <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                          <tr ng-repeat="region in m.AssessmentRegionItemResults">
+                                            <td>
+                                              <table  fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                                <tr>
+                                                  <td style="width:50px;text-align:center">{{region.RegionName}}</td>
+                                                  <td>
+                                                     <span ng-repeat="q in region.DeductScoreItems">
+                                                        <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
+                                                        </md-button>
+                                                      </span>
+                                                  </td>
+                                                </tr>
+                                              </table>
                                             </td>
                                           </tr>
                                         </table>
                                       </td>
-                                    </tr>
                                   </table>
                                 </td>
                               </tr>
@@ -387,7 +244,7 @@
                       <p class="pname">{{item.AssessmentCheckItemName}}</p>
                     </td>
                     <td>
-                      <table width="100%" cellspacing="0" cellpadding="0">
+                      <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
                         <tr>
                           <td style="width:38.9%;">
                             <p>{{item.EvaluationCriteria}}</p>
@@ -398,53 +255,42 @@
                           <td style="width: 50px;text-align: center;">
                             {{item.Weight}}
                           </td>
-                          <td style="width: 50px;text-align: center;" class="lr">
-                            <button ng-click="vm.changeScore(item,$event)"> {{item.DelScore}}</button>
-                          </td>
-                          <td style="width: 50px;text-align: center;" class="lr">
-                            {{item.ModifyScore}}
+                          <td  ng-repeat="k in  vm.sections">
+                            <table fit-table-height style="width: 100%">
+                              <tr>
+                                <td style="width: 50px;text-align: center;" class="lr">
+                                  {{vm.bindSectionScore(item,k.SectionID,"DelScore")}}
+                                </td>
+                                <td style="width: 50px;text-align: center;" class="lr">
+                                  {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}
+                                </td>
+                              </tr>
+                            </table>
                           </td>
                         </tr>
-                        <tr ng-if="item.show" ng-repeat="region in item.regions">
-                          <td colspan="9">
-                            <table width="100%" cellspacing="0" cellpadding="0">
-                              <tr>
-                                <td style="width:50px;text-align:center">{{region.RegionName}}</td>
-                                <td>
-                                  <table width="100%" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                      <td style="width:50px;text-align:center"><p>一层</p></td>
-                                      <td class="lr" style="position: relative;padding:3px 0;">
-                                        <span ng-if="item.Weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息2：</span>
-                                        <span ng-if="item.Weight==item.ModifyScore">&nbsp;&nbsp;符合要求</span>
-                                  <span ng-repeat="q in region.DeductScoreItems">
-                                    <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
-                                    </md-button>
-                                  </span>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td style="width:50px;text-align:center"><p>一层</p></td>
-                                      <td class="lr" style="position: relative;padding:3px 0;">
-                                        <span ng-if="item.Weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息2：</span>
-                                        <span ng-if="item.Weight==item.ModifyScore">&nbsp;&nbsp;符合要求</span>
-                                  <span ng-repeat="q in region.DeductScoreItems">
-                                    <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
-                                    </md-button>
-                                  </span>
-                                      </td>
-                                    </tr>
-                                  </table>
-                                </td>
-                                <!--<td colspan="6" class="lr" style="position: relative;padding:3px 0;">-->
-                                <!--<span ng-if="item.Weight!=item.ModifyScore">&nbsp;&nbsp;扣分信息2：</span>-->
-                                <!--<span ng-if="item.Weight==item.ModifyScore">&nbsp;&nbsp;符合要求</span>-->
-                                <!--<span ng-repeat="q in region.DeductScoreItems">-->
-                                <!--<md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>-->
-                                <!--</md-button>-->
-                                <!--</span>-->
-                                <!--</td>-->
-                              </tr>
+                        <tr ng-repeat="m in item.AssessmentItemResults">
+                          <td colspan="{{3+vm.sections.length*2}}">
+                            <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                              <td style="width: 10%">{{vm.getSectionName(m.SectionID)}}</td>
+                              <td>
+                                <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                  <tr ng-repeat="region in m.AssessmentRegionItemResults">
+                                    <td>
+                                      <table  fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                          <td style="width:50px;text-align:center">{{region.RegionName}}</td>
+                                          <td>
+                                             <span ng-repeat="q in region.DeductScoreItems">
+                                                <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
+                                                </md-button>
+                                              </span>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
                             </table>
                           </td>
                         </tr>
