@@ -272,10 +272,10 @@
     }
     vm.getW = function (level,t) {
       if(level==1){
-        return 25.0/t;
+        return 10.0/t;
       }
       else{
-        return 25.0/t /(100 - vm.getW(level-1,t))*100;
+        return 10.0/t /(100 - vm.getW(level-1,t))*100;
       }
     }
 

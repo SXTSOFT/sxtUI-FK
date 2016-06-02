@@ -25,7 +25,7 @@
     }
 
     function resetWidth(p,el) {
-        var w = p.offsetWidth - p.clientWidth-1;
+        var w = p.offsetWidth - p.clientWidth;
         el.width(w);
     }
   }

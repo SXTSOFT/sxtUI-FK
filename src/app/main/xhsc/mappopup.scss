@@ -1520,11 +1520,17 @@ md-tabs[md-align-tabs="bottom"]{
   border: 1px solid #d8d8d8;
   font-size:16px;
   >div{
-    height: 40px;
-    line-height: 40px;
+    height: 46px;
+    line-height: 46px;
     //border-left: 1px solid #d8d8d8;
     border-right: 1px solid #d8d8d8;
     text-align: center;
+    .bd{
+      border-right: 1px solid #d8d8d8;margin-right:-1px;
+      .bdtop{
+        width:100px;text-align: center;height:23px;line-height: 23px;border-bottom: 1px solid #d8d8d8;
+      }
+    }
     &:first-child{
       border-left: 0;
     }
@@ -1539,6 +1545,15 @@ md-tabs[md-align-tabs="bottom"]{
     background: #e93030;
     .zlpksubheader{
       color:white;
+    }
+  }
+  table{
+    p{
+      &.pname{
+        width:20px;
+        margin: 0 auto;
+        padding: 0;
+      }
     }
   }
 
