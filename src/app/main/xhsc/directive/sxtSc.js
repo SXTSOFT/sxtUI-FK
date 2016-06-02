@@ -86,7 +86,7 @@
             if(layer.loaded)return;
             layer.loaded = true;
             data.findAll(function(o){
-              return o.CheckRegionID==scope.regionId
+              return o.DrawingID==scope.imageUrl
                && o.AcceptanceItemID==scope.acceptanceItem
                && !!scope.measureIndexes.find(function(m){
                   return m.AcceptanceIndexID == o.AcceptanceIndexID
@@ -95,18 +95,27 @@
                     }));
                 });
             }).then(function(r){
-              fg.data = r.rows;
+
               points.findAll(function(o){
                 return r.rows.find(function(i){
                     if(i.MeasurePointID == o._id){
-                      if(i.MeasureValue || i.MeasureValue===0)
+                      if(r.rows.find(function(i){
+                          return i.MeasurePointID == o._id && i.CheckRegionID==scope.regionId && i.MeasureValue || i.MeasureValue===0
+                        })) {
                         o.geometry.options.color = 'blue';
+                      }
+                      else{
+                        o.geometry.options.color = 'red';
+                      }
                       o.CreateTime = moment(i.CreateTime).toDate();
                       return true;
                     }
                   return false;
                 })!=null;
               }).then(function(p){
+                fg.data = r.rows.filter(function (row) {
+                  return row.CheckRegionID==scope.regionId;
+                });
                 //fg.addLayer(p);
                 p.rows.sort(function (p1,p2) {
                   return p1.CreateTime.getTime()-p2.CreateTime.getTime();
@@ -115,26 +124,63 @@
                   layer.addData(geo.geometry);
                 });
                 //如果是上传楼层对比，尝试获取上一层的点
-                if(p.rows.length == 0 && scope.measureIndexes.find(function (m) { //
+                if(fg.data.length == 0 && scope.measureIndexes.find(function (m) { //
                     return m.QSKey == 5;
                   })){
                   var mIndex = scope.measureIndexes.find(function (m) { //
                     return m.QSKey == 5;
                   });
                   db('pack'+scope.db).get('GetRegionTreeInfo').then(function (result) {
-                    var parent = xhUtils.findRegion([result.data],scope.regionId.substring(0,scope.regionId.length-5));
-                    data.findAll(function(o){
-                      return o.AcceptanceItemID==scope.acceptanceItem
-                        && o.AcceptanceIndexID == mIndex
-                    }).then(function (data) {
+                    var  rr =xhUtils.wrapRegion(result.data),
+                      room = xhUtils.findRegion([rr],scope.regionId),
+                      parent = xhUtils.findRegion([rr],scope.regionId.substring(0,scope.regionId.length-5));
+                    if(parent){
+                      var roomIndex = parent.Children.indexOf(room),
+                        prev = parent.prev(),
+                        prevRoom;
+                      while (prev && !prevRoom){
+                        if(prev.Children[roomIndex] && prev.Children[roomIndex].DrawingID==room.DrawingID){
+                          prevRoom = prev.Children[roomIndex];
+                        }
+                      }
+                      if(prevRoom){ //找到上一层同一图纸
+                        data.findAll(function(o){
+                          return o.AcceptanceItemID==scope.acceptanceItem
+                            && o.AcceptanceIndexID == mIndex.AcceptanceIndexID
+                            && o.CheckRegionID == prevRoom.RegionID
+                        }).then(function (ds) {
 
-                    })
+                          p.rows.forEach(function(geo) {
+                            var fd = ds.rows.find(function (o) {
+                              return o.MeasurePointID == geo._id;
+                            }), v = {
+                              _id: sxt.uuid(),
+                              RecordType: 4,
+                              CreateTime: now(),
+                              RelationID: scope.db,
+                              MeasurePointID: geo._id,
+                              DrawingID: scope.imageUrl,
+                              DesignValue: fd && fd.MeasureValue,
+                              CheckRegionID: scope.regionId,
+                              RegionType: scope.regionType,
+                              AcceptanceItemID: scope.acceptanceItem,
+                              AcceptanceIndexID: mIndex.AcceptanceIndexID
+                            };
+                            v.MeasureValueId = v._id;
+                            data.addOrUpdate(v);
+                            fg.data.push(v);
+                          });
+                        })
+                      }
+                    }
+
                   });
                 }
               })
             });
           },
           onUpdate:function(layer,isNew,group){
+            //这里是修正用户点的位置,尽可能在最近点的同一水平或竖直线上
             if(layer instanceof L.Stamp){
               var neaser = null,
                 p0 = layer.getLatLng();
@@ -166,7 +212,6 @@
                 }
               }
             }
-            //return;
             var point = layer.toGeoJSON();
             point = {
               _id:point.properties.$id,
@@ -229,6 +274,7 @@
                 });
               }
             }
+            //如果是画区域,而区域内没有点的话,默认生成9点或5个点
             if(isNew && layer instanceof L.AreaGroup){
               var p=null,b = layer.getBounds();
               fg.eachLayer(function (ly) {
@@ -264,19 +310,19 @@
                 ps1[6] = ps[6];
                 ps1[7] = ps[3];
                 ps1[8] = ps[4];
-                var m5 = scope.measureIndexes.find(function (m) {
-                  return m.QSKey == '4'
-                });
-                if (m5 && m5.QSOtherValue == '5') {
+                if (!scope.measureIndexes.find(function (m) {
+                    return m.QSKey == '4' && m.QSOtherValue == '9'
+                  }) && scope.measureIndexes.find(function (m) {
+                    return m.QSKey == '4' && m.QSOtherValue == '5';
+                  })) {
                   ps1.splice(7, 1);
                   ps1.splice(5, 1);
                   ps1.splice(3, 1);
                   ps1.splice(1, 1);
                 }
-                //console.log(points);
                 ps1.forEach(function (p) {
                   fg.addLayer(new L.Stamp(p), false);
-                })
+                });
               }
             }
 
@@ -292,14 +338,12 @@
                 return m.v &&(m.v.MeasureValue || m.v.MeasureValue===0);
               })){
                 scope.context.layer.setStyle({
-                  color:'blue',
-                  fill:false
+                  color:'blue'
                 });
               }
               else{
                 scope.context.layer.setStyle({
-                  color:'red',
-                  fill:false
+                  color:'red'
                 });
               }
 
