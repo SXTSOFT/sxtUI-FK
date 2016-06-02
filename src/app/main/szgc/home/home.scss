@@ -80,8 +80,19 @@
     line-height: 40px;
   }
 }
-#mydiv{
+.yhydDiv{
   .md-button{
+    text-align: center;
+   // height:30px;
+   min-width:47px;
+
+  }
+  .btn{
+
+    color: white;
+  }
+
+  div{
     text-align: center;
   }
 }
