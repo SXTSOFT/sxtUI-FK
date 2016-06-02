@@ -1,5 +1,5 @@
 <md-tabs md-align-tabs="bottom"   flex md-swipe-content>
-  <md-tab label="评估下载">
+  <md-tab label="评估列表">
     <md-tab-content  style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
       <md-content class="download" style="padding: 0px">
         <div layout="column">
@@ -69,20 +69,20 @@
       </md-content>
     </md-tab-content>
   </md-tab>
-  <md-tab label="项目清单">
+  <md-tab label="项目汇总列表">
     <md-tab-content  style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
         <md-content class="download" style="padding: 0px">
         <div layout="column">
-          <md-subheader ng-if="vm.offlines.length">所有项目</md-subheader>
+          <md-subheader ng-if="vm.offlines.length">项目汇总列表</md-subheader>
           <md-list>
             <md-list-item ng-repeat="item in vm.projects">
               <img src="app/main/xhsc/images/icon-downed.png" class="md-avatar" />
               <p layout="column" style="padding-right: 230px;font-size:18px;">
-                {{item.name}}
+                {{item.fullName}}
               </p>
               <div class="md-secondary md-hue-3">
                <span style="display:inline-block;text-align: center;">
-              <md-button ui-sref="" class="md-raised upload-btn">
+              <md-button class="md-raised upload-btn" ui-sref="app.xhsc.pkresult({year:item.Year,projectID:item.ProjectID,quarter:item.Quarter})">
                  明细
               </md-button>
           </span>

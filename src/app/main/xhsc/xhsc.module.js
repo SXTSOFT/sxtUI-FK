@@ -295,7 +295,8 @@
         }
       })
     .state('app.xhsc.pkresult',{
-      url   :'/pkresult/{AssessmentID}/{RegionID}/{RegionName}/{AssessmentTypeID}',
+      //url   :'/pkresult/{AssessmentID}/{RegionID}/{RegionName}/{AssessmentTypeID}',
+      url:'/pkresult/{year}/{projectID}/{quarter}',
       views :{
         'content@app':{
           templateUrl : 'app/main/xhsc/ys/evaluatelist_pc.html',
@@ -303,6 +304,7 @@
         }
       }
     });
+
 
     // Navigation
     msNavigationServiceProvider.saveItem('xhsc', {

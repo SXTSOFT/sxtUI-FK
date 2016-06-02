@@ -95,6 +95,12 @@
 
       });
     }
+    remote.Assessment.queryItemResults().then(function(result){
+      result.data.forEach(function(t){
+        t.fullName = ((t.Year+'年')||'') +'第'+t.Quarter +'季度'+ (t.ProjectName||'')+'项目得分汇总';
+      })
+      vm.projects = result.data;
+    })
     vm.showECs = function(ev,item) {
       //var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && vm.customFullscreen;
       console.log('ev',item)
@@ -156,26 +162,26 @@
 
 
 
-    vm.projects=[{
-        year:2016,
-        quart:1,
-        name:'星河天津项目',
-        projectId:'1'
-      },{
-      year:2016,
-      quart:1,
-      name:'星河银湖谷项目',
-      projectId:'2'
-    },{
-      year:2016,
-      quart:1,
-      name:'星河上海项目',
-      projectId:'3'
-    },{
-      year:2016,
-      quart:1,
-      name:'星河总部项目',
-      projectId:'4'
-    }]
+    //vm.projects=[{
+    //    year:2016,
+    //    quart:1,
+    //    name:'星河天津项目',
+    //    projectId:'1'
+    //  },{
+    //  year:2016,
+    //  quart:1,
+    //  name:'星河银湖谷项目',
+    //  projectId:'2'
+    //},{
+    //  year:2016,
+    //  quart:1,
+    //  name:'星河上海项目',
+    //  projectId:'3'
+    //},{
+    //  year:2016,
+    //  quart:1,
+    //  name:'星河总部项目',
+    //  projectId:'4'
+    //}]
   }
 })();

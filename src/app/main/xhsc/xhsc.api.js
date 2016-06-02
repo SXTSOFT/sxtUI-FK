@@ -43,18 +43,7 @@
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentTotalReport',{AssessmentID:assessmentID}));
       },
       queryItemResults:function () {
-        return $q(function (resolve) {
-          resolve({
-            data:[
-              {
-                year:2016,
-                season:1,
-                name:'银湖谷',
-                itemId:'1'
-              }
-            ]
-          })
-        })
+        return $http.get($http.url('/Api/AssessmentApi/GetAllAssessmentProject'));
       },
       queryItemRestultReport:function (year,season,itemId) {
         return $q(function (resolve) {
