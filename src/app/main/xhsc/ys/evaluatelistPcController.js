@@ -19,7 +19,6 @@
     remote.Assessment.queryReport(params.year,params.quarter,params.projectID).then(function(r){
        onQueryBase(r.data);
     });
-
     remote.Assessment.queryTotalReport(params.year,params.quarter,params.projectID).then(function(t){
         vm.toTalReport= t.data;
         setRoleScore();
@@ -35,8 +34,37 @@
         vm.jlScores.avg=avg(vm.jlScores);
         vm.zbScores.push(findRole(1, r.SectionID));
         vm.zbScores.avg=avg(vm.zbScores);
+        vm.toTalReport.AssessmentTypes.forEach(function(k){
+          SetTypeScore(k, r.SectionID);
+        });
       });
     }
+    function SetTypeScore(assessmentCategory,sectionID){
+        var sections=assessmentCategory.CategorySections;
+        if (angular.isArray(sections)){
+            var  z=[];
+            if (angular.isArray(assessmentCategory.sectionScore)){
+              z=assessmentCategory.sectionScore;
+            }
+            var  t=sections.find(function(t){
+               return t.SectionID==sectionID;
+            });
+            if (!t){
+              z.push({
+                SectionID:sectionID
+              });
+            }else {
+              z.push(t);
+            }
+            assessmentCategory.sectionScore=z;
+        }
+        if (angular.isArray(assessmentCategory.AssessmentCategorys)){
+          assessmentCategory.AssessmentCategorys.forEach(function(k){
+            SetTypeScore(k,sectionID);
+          });
+        }
+    }
+
     function avg(arr){
       var  score;
       if (angular.isArray(arr)){
@@ -64,6 +92,8 @@
     }
 
     function onQueryBase(item) {
+      //管理行为界面控制开关
+      vm.showfitObj=false;
       vm.sections=item.Assessments;
       vm.items = {
         AssessmentClassifys:[]
@@ -92,28 +122,53 @@
         }
         return o.show;
       }
+
+      function  gl_setshow(o){
+        o.show=false;
+        if(angular.isArray(o.AssessmentItems)&& o.AssessmentItems.length>0){
+          for(var i=0;i<o.AssessmentItems.length;i++){
+             o.AssessmentItems[i].show=o.show=true;
+          }
+        }else {
+          if (angular.isArray(o.AssessmentClassifys)&& o.AssessmentClassifys.length>0){
+            for (var i=0;i<o.AssessmentClassifys.length;i++){
+              if (setshow(o.AssessmentClassifys[i])){
+                o.show=true;
+              }
+            }
+          }
+        }
+        return o.show;
+      }
+
       item.AssessmentTypes.forEach(function (t) {
-        t.AssessmentClassifys.forEach(function (cls) {
+          t.AssessmentClassifys.forEach(function (cls) {
             vm.items.AssessmentClassifys.push({
               AssessmentClassificationName:cls.AssessmentClassificationName,
               show:true
             });
             cls.show=true;
             vm.caches.AssessmentClassifys.push(cls);
-        });
+          });
       });
       fillRegion(vm.caches,item.Assessments);
       $scope.$watch('vm.selectedIndex',function () {
         if(vm.selectedIndex){
           var k = vm.items.AssessmentClassifys[vm.selectedIndex-1];
-          if(k.AssessmentClassifys==null){
-            var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex-1].AssessmentClassifys;
+          var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex-1].AssessmentClassifys;
+          if (k.AssessmentClassificationName.indexOf("管理行为")>-1){
+            vm.showfitObj=true;
             assessmentClassifys.forEach(function(t){
-               setshow(t);
+              gl_setshow(t);
             });
-            k.AssessmentClassifys =assessmentClassifys;
-            k.level = getEvels(k,1);
+          }else {
+            vm.showfitObj=false;
+            assessmentClassifys.forEach(function(t){
+              setshow(t);
+            });
           }
+          k.AssessmentClassifys =assessmentClassifys;
+          k.level = getEvels(k,1);
         }
       })
     }
@@ -125,12 +180,12 @@
           var resultItem = item.AssessmentItemResults;
           var itemResult,tmp,sectionScore;
           sections.forEach(function(t){
-            if (resultItem){
-              sectionScore={
-                sectionID: t.SectionID,
-                ModifyScore:"",
-                DelScore:""
-              }
+            sectionScore={
+              sectionID: t.SectionID,
+              ModifyScore:"",
+              DelScore:""
+            }
+            if (angular.isArray(resultItem)&&resultItem.length>0){
               itemResult=resultItem.find(function(k){
                 return k.SectionID== t.SectionID;
               });
@@ -140,11 +195,14 @@
                   tmp=itemResult.TotalScore;
                 }
                 sectionScore.ModifyScore=tmp;
-                tmp=(itemResult.ModifyScore===0 ||  itemResult.ModifyScore)?item.Weight-itemResult.ModifyScore:'';
+                tmp=(itemResult.ModifyScore===0 ||  itemResult.ModifyScore)?item.Weight-itemResult.ModifyScore:0;
                 sectionScore.DelScore=tmp;
-                item.scoreList.push(sectionScore);
               }
+            }else {
+              sectionScore.ModifyScore= item.Weight
+              sectionScore.DelScore=0;
             }
+            item.scoreList.push(sectionScore);
           });
           //Assessments.first
 
@@ -245,7 +303,7 @@
     vm.deleteScoreItem = function (q) {
       console.log('q',q)
     }
-    vm.changeScore = function (item,$event) {
+    vm.changeScore = function (item,k,$event) {
       $mdDialog.show($mdDialog.prompt({
         title:'修改分值',
         textContent:'请输入新值，作为最终此项目的扣分值。０分为不扣分',
@@ -262,13 +320,20 @@
               return;
             }
             remote.Assessment.modifyScore({
-              AssessmentID:params.AssessmentID,
+              AssessmentID:k.AssessmentID,
               AssessmentCheckItemID:item.AssessmentCheckItemID,
               ModifyScore:item.Weight -r
-            }).then(function () {
-              item.DelScore = r;
-              item.ModifyScore = item.Weight - item.DelScore;
-            }).catch(function () {
+            }).then(function (z) {
+              if (z.data.ErrorCode==0){
+                var obj= item.scoreList.find(function(v){
+                  return v.sectionID== k.sectionID;
+                });
+                obj.DelScore = r;
+                obj.ModifyScore = item.Weight - item.DelScore;
+              }else {
+                utils.alert('失败：'+ z.data.ErrorMessage);
+              }
+            }).catch(function (z) {
               utils.alert('失败：服务器返回错误');
             })
           }

@@ -51,7 +51,7 @@
                 </tr>
                 <tr ng-repeat="m in k.AssessmentCategorys">
                   <td style="width: 30%" class="td_left">{{m.AssessmentClassificationName}}</td>
-                  <td style="width: 15%" ng-repeat="n in m.CategorySections">
+                  <td style="width: 15%" ng-repeat="n in m.sectionScore">
                     {{n.FinalScroe}}
                   </td>
                   <td></td>
@@ -76,6 +76,9 @@
             </div>
             <div flex="55" layout="row">
                 <div flex style=" border-left: 1px solid #d8d8d8;">扣分标准</div>
+                <div  style="width: 70px;border-left: 1px solid #d8d8d8;" ng-if="vm.showfitObj">
+                  评估对象
+                </div>
                 <div flex="none" style="width:50px; border-left: 1px solid #d8d8d8;border-right:1px solid #d8d8d8;text-align: center;">
                   权重
                 </div>
@@ -127,6 +130,9 @@
                                 <td>
                                   <p>{{item.DeductionCriteria}}</p>
                                 </td>
+                                <td style="width: 70px" ng-if="vm.showfitObj">
+                                    {{item.ApplicableObjectName}}
+                                </td>
                                 <td style="width: 50px;text-align: center;">
                                   {{item.Weight}}
                                 </td>
@@ -134,7 +140,7 @@
                                   <table fit-table-height style="width: 100px;">
                                     <tr>
                                       <td style="width: 50px;text-align: center;" class="lr">
-                                        <button ng-click="vm.changeScore(item,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
+                                        <button ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
                                       </td>
                                       <td style="width: 50px;text-align: center;" class="lr">
                                         {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}
@@ -143,8 +149,8 @@
                                   </table>
                                 </td>
                               </tr>
-                              <tr ng-repeat="m in item.AssessmentItemResults">
-                                <td colspan="{{3+vm.sections.length*2}}">
+                              <tr ng-if="!vm.showfitObj" ng-repeat="m in item.AssessmentItemResults">
+                                <td colspan="{{3+vm.sections.length*2+(vm.showfitObj?1:0)}}">
                                   <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
                                     <td style="width:10%">{{vm.getSectionName(m.SectionID)}}</td>
                                     <td>
@@ -185,6 +191,9 @@
                                 <td>
                                   <p>{{item.DeductionCriteria}}</p>
                                 </td>
+                                <td style="width:70px" ng-if="vm.showfitObj">
+                                  {{item.ApplicableObjectName}}
+                                </td>
                                 <td style="width: 50px;text-align: center;">
                                   {{item.Weight}}
                                 </td>
@@ -192,7 +201,7 @@
                                     <table fit-table-height style="width: 100px;">
                                       <tr>
                                         <td style="width: 50px;text-align: center;" class="lr">
-                                          <button ng-click="vm.changeScore(item,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
+                                          <button ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
                                         </td>
                                         <td style="width: 50px;text-align: center;" class="lr">
                                           {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}
@@ -201,8 +210,8 @@
                                     </table>
                                 </td>
                               </tr>
-                              <tr ng-repeat="m in item.AssessmentItemResults">
-                                <td colspan="{{3+vm.sections.length*2}}">
+                              <tr ng-if="!vm.showfitObj" ng-repeat="m in item.AssessmentItemResults">
+                                <td colspan="{{3+vm.sections.length*2+(vm.showfitObj?1:0)}}">
                                   <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
                                       <td style="width: 10%">{{vm.getSectionName(m.SectionID)}}</td>
                                       <td>
@@ -246,6 +255,9 @@
                           <td>
                             <p>{{item.DeductionCriteria}}</p>
                           </td>
+                          <td style="width:70px">
+                            {{item.ApplicableObjectName}}
+                          </td>
                           <td style="width: 50px;text-align: center;">
                             {{item.Weight}}
                           </td>
@@ -253,7 +265,7 @@
                             <table fit-table-height style="width: 100px;">
                               <tr>
                                 <td style="width: 50px;text-align: center;" class="lr">
-                                  <button ng-click="vm.changeScore(item,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
+                                  <button ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
                                 </td>
                                 <td style="width: 50px;text-align: center;" class="lr">
                                   {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}
@@ -262,8 +274,8 @@
                             </table>
                           </td>
                         </tr>
-                        <tr ng-repeat="m in item.AssessmentItemResults">
-                          <td colspan="{{3+vm.sections.length*2}}">
+                        <tr ng-if="!vm.showfitObj" ng-repeat="m in item.AssessmentItemResults">
+                          <td colspan="{{3+vm.sections.length*2+(vm.showfitObj?1:0)}}">
                             <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
                               <td style="width: 10%">{{vm.getSectionName(m.SectionID)}}</td>
                               <td>
