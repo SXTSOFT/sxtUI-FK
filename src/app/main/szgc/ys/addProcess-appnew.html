@@ -69,7 +69,7 @@
       <fieldset>
         <legend>主控项目</legend>
         <md-list>
-          <md-list-item ng-repeat="n in targets.zk" ng-click="n.checked && (n.isOK=!n.isOK)">
+          <md-list-item ng-repeat="n in targets.zk" md-ink-ripple fast-click="n.checked && (n.isOK=!n.isOK)">
             <md-checkbox ng-model="n.checked" ng-click="$event.stopPropagation()"></md-checkbox>
             <div class="md-list-item-text" flex ng-class="{'text-disabled':!n.checked}" layout="column">
               <h3>{{$index+1}}、{{n.TargetName}}</h3>

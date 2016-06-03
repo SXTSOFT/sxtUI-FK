@@ -470,13 +470,13 @@
         })
       })]).then(function (results) {
         results[0].data.data.forEach(function (item) {
-          if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
+/*          if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
             if (item.skills.find(function (sk) {
                 return sk.skill_id == $stateParams.procedureTypeId;
               }) == null) {
               return;
             }
-          }
+          }*/
           var ns = [];
           item.managers.forEach(function (it) {
             ns.push(it.name);

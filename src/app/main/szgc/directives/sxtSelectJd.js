@@ -132,6 +132,11 @@
           syncValue();
           var q = scope.onQuery(index, newSt, scope.selectors.length > 1 ? scope.selectors[index - 1].selected.$id : null,scope);
           if (q) {
+            scope.selectors[index] = {
+              label:'正在加载',
+              items:[{$name:'正在加载'}],
+              loading:true
+            };
             q.then(function (result) {
               var next = result;
               scope.selectors[index] = next;
@@ -154,6 +159,11 @@
 
           var q = scope.onQuery(index + 1, newSt, item.$id,scope);
           if (q) {
+            scope.selectors[index+1] = {
+              label:'正在加载',
+              items:[{$name:'正在加载'}],
+              loading:true
+            };
             q.then(function (result) {
               var next = result;
               scope.selectors[index + 1] = next;
