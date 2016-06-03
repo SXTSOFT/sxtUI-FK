@@ -48,6 +48,9 @@
       queryReport:function (year,quarter,projectID) {
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentItemStatisticsResult',{year:year,projectID:projectID,quarter:quarter}));
       },
+      queryTotalReport:function(year,quarter,projectID){
+        return $http.get($http.url('/Api/AssessmentApi/GetAssessmentTotalReport',{year:year,projectID:projectID,quarter:quarter}));
+      },
 	    /**
        * 实测实量项
        */

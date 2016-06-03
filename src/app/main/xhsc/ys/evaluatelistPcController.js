@@ -19,161 +19,50 @@
     remote.Assessment.queryReport(params.year,params.quarter,params.projectID).then(function(r){
        onQueryBase(r.data);
     });
-    vm.summaryReport={
-        projectName:'2016年一季度银河谷',
-        Sections:[{
-          SectionID:"1",
-          SectionName:"2016年一季度银河谷一标"
-        },{
-          SectionID:"2",
-          SectionName:"2016年一季度银河谷二标"
-        },{
-          SectionID:"3",
-          SectionName:"2016年一季度银河谷三标"
-        }],
-        unit:[{ //单位
-            project:[{ //项目得分
-              SectionID:"1",
-              score:"50"
-            }, {
-              SectionID:"2",
-              score:"50"
-            }, {
-              SectionID:"3",
-              score:"50"
-            }]},{
-            Supervision:[{ //监理得分
-              SectionID:"1",
-              score:"50"
-            }, {
-              SectionID:"2",
-              score:"50"
-            },{
-              SectionID:"3",
-              score:"50%"
-            }]},{
-            manager:[{ //总包得分
-               SectionID:"1",
-               score:"50"
-             },{
-               SectionID:"2",
-               score:"50"
-            },{
-               SectionID:"3",
-               score:"50"
-           }]}],
-           category:[{ //类别，需要给出大的类别
-             root:"实测实量",
-             detail:[{
-                 ID:"1",
-                 name:"总包",
-                 parentId:"",
-                 Sections:[{
-                   SectionID:1,
-                   score:"50%"
-                 },{
-                   SectionID:2,
-                   score:"50%"
-                 },{
-                   SectionID:3,
-                   score:"50%"
-                 }]
-               },{
-               ID:"",
-               name:"1.1.1混凝土结构工",
-               Sections:[{
-                 SectionID:1,
-                 score:"50%"
-               },{
-                 SectionID:2,
-                 score:"50%"
-               },{
-                 SectionID:3,
-                 score:"50%"
-               }]
-             },{
-               ID:"",
-               name:"1）砼结构垂直度",
-               Sections:[{
-                 SectionID:1,
-                 score:"50%"
-               },{
-                 SectionID:2,
-                 score:"50%"
-               },{
-                 SectionID:3,
-                 score:"50%"
-               }]
-             },{
-               ID:"",
-               name:"3）截面尺寸",
-               Sections:[{
-                 SectionID:1,
-                 score:"50%"
-               },{
-                 SectionID:2,
-                 score:"50%"
-               },{
-                 SectionID:3,
-                 score:"50%"
-               }]
-             }]},{
-             root:"观感质量",
-             detail:[{
-               ID:"1",
-               name:"2.1土建",
-               parentId:"",
-               Sections:[{
-                 SectionID:1,
-                 score:"50"
-               },{
-                 SectionID:2,
-                 score:"50"
-               },{
-                 SectionID:3,
-                 score:"50"
-               }]
-             },{
-               ID:"",
-               name:"1）钢筋工程",
-               Sections:[{
-                 SectionID:1,
-                 score:"50%"
-               },{
-                 SectionID:2,
-                 score:"50%"
-               },{
-                 SectionID:3,
-                 score:"50%"
-               }]
-             },{
-               ID:"",
-               name:"2）混凝土工程",
-               Sections:[{
-                 SectionID:1,
-                 score:"50%"
-               },{
-                 SectionID:2,
-                 score:"50%"
-               },{
-                 SectionID:3,
-                 score:"50%"
-               }]
-             },{
-               ID:"",
-               name:"3）砌筑工程",
-               Sections:[{
-                 SectionID:1,
-                 score:"50"
-               },{
-                 SectionID:2,
-                 score:"50"
-               },{
-                 SectionID:3,
-                 score:"50"
-               }]
-             }]}]
+
+    remote.Assessment.queryTotalReport(params.year,params.quarter,params.projectID).then(function(t){
+        vm.toTalReport= t.data;
+        setRoleScore();
+    });
+    function setRoleScore(){
+      vm.prjScores=[];
+      vm.jlScores=[];
+      vm.zbScores=[];
+      vm.toTalReport.Sections.forEach(function(r){
+        vm.prjScores.push(findRole(4, r.SectionID));
+        vm.prjScores.avg=avg(vm.prjScores);
+        vm.jlScores.push(findRole(2, r.SectionID));
+        vm.jlScores.avg=avg(vm.jlScores);
+        vm.zbScores.push(findRole(1, r.SectionID));
+        vm.zbScores.avg=avg(vm.zbScores);
+      });
     }
+    function avg(arr){
+      var  score;
+      if (angular.isArray(arr)){
+        arr.forEach(function(t){
+            if (angular.isNumber(t.Score)){
+              score=score?score+t.Score:t.Score;
+            }
+        });
+      }
+      if (angular.isNumber(score)){
+        return (score/arr.length).toFixed(2);
+      }
+      return "";
+    }
+    function findRole(roleType,sectionID){
+        var role= vm.toTalReport.AssessmentRoles.find(function(t){
+            return t.RoleType==roleType;
+        });
+        if (role){
+            return role.SectionScores.find(function(t){
+               return t.SectionID==sectionID;
+            })
+        }
+        return {};
+    }
+
     function onQueryBase(item) {
       vm.sections=item.Assessments;
       vm.items = {

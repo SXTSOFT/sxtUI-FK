@@ -2,14 +2,14 @@
   <md-tab label="项目评分汇总表">
     <md-tab-content  style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
       <div layout="row" style="text-align: center;font-size:20px;">
-        <div style="text-align: center;width:100%;">银河谷项目得分汇总表</div>
+        <div style="text-align: center;width:100%;">{{vm.toTalReport.projectName}}得分汇总表</div>
       </div>
       <div layout="row" flex style="padding: 0px">
         <table class="reportWrap"  width="100%" cellpadding="0" cellspacing="0">
           <thead>
           <tr>
             <th style="text-align: center;width:30%;font-size: 16px;font-family: 'Roboto'">检查评估项</th>
-            <th style="text-align: center;width:15%;font-size: 16px;font-family: 'Roboto'" ng-repeat="k in vm.summaryReport.Sections">
+            <th style="text-align: center;width:15%;font-size: 16px;font-family: 'Roboto'" ng-repeat="k in vm.toTalReport.Sections">
               {{k.SectionName}}
             </th>
             <th  style="text-align: center;font-size: 16px;font-family: 'Roboto'">
@@ -20,45 +20,39 @@
           <tbody>
           <tr>
             <td rowspan="2" class="td_left">项目部得分</td>
-            <td colspan="3">50</td>
+            <td colspan="{{vm.prjScores.length}}">{{vm.prjScores.avg}}</td>
             <td class="td_left"></td>
           </tr>
           <tr>
-            <td>{{vm.summaryReport.unit[0].project[0].score}}</td>
-            <td>{{vm.summaryReport.unit[0].project[1].score}}</td>
-            <td>{{vm.summaryReport.unit[0].project[2].score}}</td>
+            <td ng-repeat="k in vm.prjScores">{{k.Score}}</td>
             <td class="td_left"></td>
           </tr>
           <tr>
             <td rowspan="2" class="td_left">监理得分</td>
-            <td colspan="3">60</td>
+            <td colspan="{{vm.jlScores.length}}">{{vm.jlScores.avg}}</td>
             <td class="td_left"></td>
           </tr>
           <tr>
-            <td>{{vm.summaryReport.unit[1].Supervision[0].score}}</td>
-            <td>{{vm.summaryReport.unit[1].Supervision[1].score}}</td>
-            <td>{{vm.summaryReport.unit[1].Supervision[2].score}}</td>
+            <td ng-repeat="k in vm.jlScores">{{k.Score}}</td>
             <td class="td_left"></td>
           </tr>
           <tr>
             <td class="td_left">总包得分</td>
-            <td>{{vm.summaryReport.unit[2].manager[0].score}}</td>
-            <td>{{vm.summaryReport.unit[2].manager[1].score}}</td>
-            <td>{{vm.summaryReport.unit[2].manager[2].score}}</td>
+            <td ng-repeat="k in vm.zbScores">{{k.Score}}</td>
             <td class="td_left"></td>
           </tr>
-          <tr ng-repeat="k in vm.summaryReport.category">
+          <tr ng-repeat="k in vm.toTalReport.AssessmentTypes">
             <td colspan="5">
               <table class="report" style="width: 100%">
                 <tr>
                   <td style="text-align: left" colspan="5">
-                    <h3>{{k.root}}</h3>
+                    <h3>{{k.AssessmentTypeName}}</h3>
                   </td>
                 </tr>
-                <tr ng-repeat="m in k.detail">
-                  <td style="width: 30%" class="td_left">{{m.name}}</td>
-                  <td style="width: 15%" ng-repeat="n in m.Sections">
-                    {{n.score}}
+                <tr ng-repeat="m in k.AssessmentCategorys">
+                  <td style="width: 30%" class="td_left">{{m.AssessmentClassificationName}}</td>
+                  <td style="width: 15%" ng-repeat="n in m.CategorySections">
+                    {{n.FinalScroe}}
                   </td>
                   <td></td>
                 </tr>
@@ -140,7 +134,7 @@
                                   <table fit-table-height style="width: 100px;">
                                     <tr>
                                       <td style="width: 50px;text-align: center;" class="lr">
-                                        {{vm.bindSectionScore(item,k.SectionID,"DelScore")}}
+                                        <button ng-click="vm.changeScore(item,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
                                       </td>
                                       <td style="width: 50px;text-align: center;" class="lr">
                                         {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}
@@ -198,7 +192,7 @@
                                     <table fit-table-height style="width: 100px;">
                                       <tr>
                                         <td style="width: 50px;text-align: center;" class="lr">
-                                            {{vm.bindSectionScore(item,k.SectionID,"DelScore")}}
+                                          <button ng-click="vm.changeScore(item,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
                                         </td>
                                         <td style="width: 50px;text-align: center;" class="lr">
                                           {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}
@@ -259,7 +253,7 @@
                             <table fit-table-height style="width: 100px;">
                               <tr>
                                 <td style="width: 50px;text-align: center;" class="lr">
-                                  {{vm.bindSectionScore(item,k.SectionID,"DelScore")}}
+                                  <button ng-click="vm.changeScore(item,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
                                 </td>
                                 <td style="width: 50px;text-align: center;" class="lr">
                                   {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}
