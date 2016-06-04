@@ -197,7 +197,7 @@
                   tmp=itemResult.TotalScore;
                 }
                 sectionScore.ModifyScore=tmp;
-                tmp=(itemResult.ModifyScore===0 ||  itemResult.ModifyScore)?item.Weight-itemResult.ModifyScore:0;
+                tmp=item.Weight-sectionScore.ModifyScore;
                 sectionScore.DelScore=tmp;
                 sectionScore.Description=itemResult.Description;
               }
@@ -350,7 +350,7 @@
         }
       ).then(function (result) {
         if(result){
-          var r = parseInt(result.value);
+          var r = parseFloat(result.value);
           if(!isNaN(result.value)){
             if(item.Weight<result.value || result.value<0){
               utils.alert('输入的值应该介于0 与 '+item.Weight + ' 之间');
