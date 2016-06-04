@@ -130,6 +130,9 @@
       ProcProBatchRelationService:{
         getbyid:function(id){
           return $http.get('/api/PPBatchRelation/' + id);
+        },
+        getReport: function (regionTreeId) {
+          return $http.post('/api/PPBatchRelation/GetRelationReportData', { regionTreeId: regionTreeId })
         }
       },
       TargetService:{
@@ -227,6 +230,13 @@
       parentCompanyFitRateByFiter:{
         getParentCompanyFitRateByFiter: function (prjIds, fromDate, toDate) {
           return $http.post("/api/Report/GetParentCompanyFitRateByFiter/", { PrjIds: prjIds,FromDate: fromDate, ToDate: toDate });
+        }
+      },
+
+      GetFileReportNum:{
+
+        getFileReportData: function (params) {
+          return $http.post('/api/Files/GetFileReportData', params);
         }
       },
 
