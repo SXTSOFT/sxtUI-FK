@@ -61,7 +61,7 @@
                       line.attrs['stroke-width'] = line.attrs['stroke-width']*6;
                     },
                     filterText: function (text) {
-                      return false;
+                      //return false;
                     }
                   });
                   map.center();
