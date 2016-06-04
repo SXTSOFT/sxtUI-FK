@@ -19,6 +19,8 @@
       vm.dareaId= $stateParams.areaID;
       vm.dareaName = $stateParams.areaName;
       //console.log('a',$stateParams)
+    vm.id = id;
+    vm.assessmentTypeID= assessmentTypeID;
     vm.ms=[];
     var pk = db('xcpk');
     var data = db('pack'+id);

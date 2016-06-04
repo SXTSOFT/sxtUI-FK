@@ -218,7 +218,9 @@
               geometry:point
             };
             points.addOrUpdate(point);
-            if(isNew){
+            if(isNew || !fg.data.find(function (d) {
+                return d.MeasurePointID == point._id;
+              })){
               scope.measureIndexes.forEach(function (m) {
                 var ms = [];
                 if (m.Children && m.Children.length) {
