@@ -197,7 +197,7 @@
                   tmp=itemResult.TotalScore;
                 }
                 sectionScore.ModifyScore=tmp;
-                tmp=(itemResult.ModifyScore===0 ||  itemResult.ModifyScore)?item.Weight-itemResult.ModifyScore:0;
+                tmp=item.Weight-sectionScore.ModifyScore;
                 sectionScore.DelScore=tmp;
                 sectionScore.Description=itemResult.Description;
               }
