@@ -322,14 +322,16 @@
             remote.Assessment.modifyScore({
               AssessmentID:k.AssessmentID,
               AssessmentCheckItemID:item.AssessmentCheckItemID,
-              ModifyScore:item.Weight -r
+              ModifyScore:item.Weight -r,
+              Description:"abc"
+
             }).then(function (z) {
               if (z.data.ErrorCode==0){
                 var obj= item.scoreList.find(function(v){
-                  return v.sectionID== k.sectionID;
+                  return v.sectionID== k.SectionID;
                 });
                 obj.DelScore = r;
-                obj.ModifyScore = item.Weight - item.DelScore;
+              obj.ModifyScore = item.Weight - obj.DelScore;
               }else {
                 utils.alert('失败：'+ z.data.ErrorMessage);
               }
