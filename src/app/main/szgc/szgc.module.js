@@ -137,7 +137,7 @@
         }
       })
       .state('app.szgc.yhyd',{
-        url   :'/home/yhyd/{pid}/{pname}/{idTree}/{type}',
+        url   :'/home/yhyd/{pid}/{pname}/{idTree}/{type}/{seq}',
         //url:'/home/yhyd/{regionId}/{regionType}/{roomType}/{procedureId}/{regionName}',
         views :{
           'content@app':{

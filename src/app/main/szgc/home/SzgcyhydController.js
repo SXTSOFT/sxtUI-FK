@@ -122,6 +122,10 @@
       })
 
     }
+
+    if($stateParams.seq=='2'){
+      vm.playN(2);
+    }
     //vm.playN();
 
   }
