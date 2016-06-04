@@ -19,7 +19,6 @@
     remote.Assessment.queryReport(params.year,params.quarter,params.projectID).then(function(r){
        onQueryBase(r.data);
     });
-
     remote.Assessment.queryTotalReport(params.year,params.quarter,params.projectID).then(function(t){
         vm.toTalReport= t.data;
         setRoleScore();
@@ -35,8 +34,37 @@
         vm.jlScores.avg=avg(vm.jlScores);
         vm.zbScores.push(findRole(1, r.SectionID));
         vm.zbScores.avg=avg(vm.zbScores);
+        vm.toTalReport.AssessmentTypes.forEach(function(k){
+          SetTypeScore(k, r.SectionID);
+        });
       });
     }
+    function SetTypeScore(assessmentCategory,sectionID){
+        var sections=assessmentCategory.CategorySections;
+        if (angular.isArray(sections)){
+            var  z=[];
+            if (angular.isArray(assessmentCategory.sectionScore)){
+              z=assessmentCategory.sectionScore;
+            }
+            var  t=sections.find(function(t){
+               return t.SectionID==sectionID;
+            });
+            if (!t){
+              z.push({
+                SectionID:sectionID
+              });
+            }else {
+              z.push(t);
+            }
+            assessmentCategory.sectionScore=z;
+        }
+        if (angular.isArray(assessmentCategory.AssessmentCategorys)){
+          assessmentCategory.AssessmentCategorys.forEach(function(k){
+            SetTypeScore(k,sectionID);
+          });
+        }
+    }
+
     function avg(arr){
       var  score;
       if (angular.isArray(arr)){
@@ -64,6 +92,8 @@
     }
 
     function onQueryBase(item) {
+      //管理行为界面控制开关
+      vm.showfitObj=false;
       vm.sections=item.Assessments;
       vm.items = {
         AssessmentClassifys:[]
@@ -92,28 +122,53 @@
         }
         return o.show;
       }
+
+      function  gl_setshow(o){
+        o.show=false;
+        if(angular.isArray(o.AssessmentItems)&& o.AssessmentItems.length>0){
+          for(var i=0;i<o.AssessmentItems.length;i++){
+             o.AssessmentItems[i].show=o.show=true;
+          }
+        }else {
+          if (angular.isArray(o.AssessmentClassifys)&& o.AssessmentClassifys.length>0){
+            for (var i=0;i<o.AssessmentClassifys.length;i++){
+              if (gl_setshow(o.AssessmentClassifys[i])){
+                o.show=true;
+              }
+            }
+          }
+        }
+        return o.show;
+      }
+
       item.AssessmentTypes.forEach(function (t) {
-        t.AssessmentClassifys.forEach(function (cls) {
+          t.AssessmentClassifys.forEach(function (cls) {
             vm.items.AssessmentClassifys.push({
               AssessmentClassificationName:cls.AssessmentClassificationName,
               show:true
             });
             cls.show=true;
             vm.caches.AssessmentClassifys.push(cls);
-        });
+          });
       });
       fillRegion(vm.caches,item.Assessments);
       $scope.$watch('vm.selectedIndex',function () {
         if(vm.selectedIndex){
           var k = vm.items.AssessmentClassifys[vm.selectedIndex-1];
-          if(k.AssessmentClassifys==null){
-            var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex-1].AssessmentClassifys;
+          var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex-1].AssessmentClassifys;
+          if (k.AssessmentClassificationName.indexOf("管理行为")>-1){
             assessmentClassifys.forEach(function(t){
-               setshow(t);
+              gl_setshow(t);
             });
-            k.AssessmentClassifys =assessmentClassifys;
-            k.level = getEvels(k,1);
+            vm.showfitObj=true;
+          }else {
+            assessmentClassifys.forEach(function(t){
+              setshow(t);
+            });
+            vm.showfitObj=false;
           }
+          k.AssessmentClassifys =assessmentClassifys;
+          k.level = getEvels(k,1);
         }
       })
     }
@@ -125,12 +180,14 @@
           var resultItem = item.AssessmentItemResults;
           var itemResult,tmp,sectionScore;
           sections.forEach(function(t){
-            if (resultItem){
-              sectionScore={
-                sectionID: t.SectionID,
-                ModifyScore:"",
-                DelScore:""
-              }
+            sectionScore={
+              sectionID: t.SectionID,
+              ModifyScore:"",
+              DelScore:"",
+              Description:""
+            }
+            //Description
+            if (angular.isArray(resultItem)&&resultItem.length>0){
               itemResult=resultItem.find(function(k){
                 return k.SectionID== t.SectionID;
               });
@@ -140,11 +197,14 @@
                   tmp=itemResult.TotalScore;
                 }
                 sectionScore.ModifyScore=tmp;
-                tmp=(itemResult.ModifyScore===0 ||  itemResult.ModifyScore)?item.Weight-itemResult.ModifyScore:'';
+                tmp=(itemResult.ModifyScore===0 ||  itemResult.ModifyScore)?item.Weight-itemResult.ModifyScore:0;
                 sectionScore.DelScore=tmp;
-                item.scoreList.push(sectionScore);
+                sectionScore.Description=itemResult.Description;
               }
+            }else {
+              sectionScore.ModifyScore= 0;
             }
+            item.scoreList.push(sectionScore);
           });
           //Assessments.first
 
@@ -178,6 +238,11 @@
           }
         }
         return "";
+    }
+
+    vm.showkf=function(item,sectionID,field){
+      var kf= vm.bindSectionScore(item,sectionID,field);
+      return  angular.isNumber(kf);
     }
 
     vm.getSectionName=function(sectionID){
@@ -245,30 +310,67 @@
     vm.deleteScoreItem = function (q) {
       console.log('q',q)
     }
-    vm.changeScore = function (item,$event) {
-      $mdDialog.show($mdDialog.prompt({
-        title:'修改分值',
-        textContent:'请输入新值，作为最终此项目的扣分值。０分为不扣分',
-        placeholder:item.DelScore,
-        ok:'确定',
-        cancel:'取消',
-        targetEvent:$event
-      })).then(function (result) {
+    vm.changeScore = function (item,k,$event) {
+      var obj= item.scoreList.find(function(v){
+        return v.sectionID== k.SectionID;
+      });
+      $mdDialog.show(
+      //  $mdDialog.prompt({
+      //  title:'修改分值',
+      //  textContent:'请输入新值，作为最终此项目的扣分值。０分为不扣分',
+      //  placeholder:item.DelScore,
+      //  ok:'确定',
+      //  cancel:'取消',
+      //  targetEvent:$event
+      //})
+        {
+          controller: ['$scope','$mdDialog','showfitObj',function ($scope, $mdDialog,showfitObj) {
+            $scope.showfitObj = showfitObj;
+            $scope.cancel = function(){
+              $mdDialog.hide()
+            }
+            //item.value=obj.DelScore;
+            //item.reason=obj.Description;
+            $scope.item= {
+              value:obj.DelScore,
+              reason:obj.Description
+            }
+            $scope.delScore = function(result){
+              $mdDialog.hide(result)
+              item.kf = result.value;
+              item.des = result.reason;
+            }
+          }],
+          templateUrl:'app/main/xhsc/ys/glxwInput.html',
+          parent: angular.element(document.body),
+          targetEvent: $event,
+          clickOutsideToClose:false,
+          focusOnOpen:false,
+          locals :{showfitObj:vm.showfitObj}
+        }
+      ).then(function (result) {
         if(result){
-          var r = parseInt(result);
-          if(!isNaN(result)){
-            if(item.Weight<result || result<0){
+          var r = parseInt(result.value);
+          if(!isNaN(result.value)){
+            if(item.Weight<result.value || result.value<0){
               utils.alert('输入的值应该介于0 与 '+item.Weight + ' 之间');
               return;
             }
             remote.Assessment.modifyScore({
-              AssessmentID:params.AssessmentID,
+              AssessmentID:k.AssessmentID,
               AssessmentCheckItemID:item.AssessmentCheckItemID,
-              ModifyScore:item.Weight -r
-            }).then(function () {
-              item.DelScore = r;
-              item.ModifyScore = item.Weight - item.DelScore;
-            }).catch(function () {
+              ModifyScore:item.Weight -r,
+              Description:result.reason
+
+            }).then(function (z) {
+              if (z.data.ErrorCode==0){
+                obj.DelScore = r;
+                obj.ModifyScore = item.Weight - obj.DelScore;
+                obj.Description=result.reason;
+              }else {
+                utils.alert('失败：'+ z.data.ErrorMessage);
+              }
+            }).catch(function (z) {
               utils.alert('失败：服务器返回错误');
             })
           }

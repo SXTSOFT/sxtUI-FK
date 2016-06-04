@@ -1,0 +1,37 @@
+<md-dialog ng-cloak aria-label="修改分值信息" class="glxwdialog">
+  <md-dialog-content layout="column">
+    <div layout="row" flex></div>
+    <p class="md-title" style="margin-bottom: 10px;">修改分值</p>
+    <p>请输入新值，作为最终此项目的扣分值。0分为不扣分</p>
+    <div layout="row">
+      <md-input-container flex>
+        <input placeholder="" ng-model="item.value"  type="number">
+      </md-input-container>
+    </div>
+    <div ng-if="(item.value||item.value == 0)&& showfitObj">
+      <p>扣分原因</p>
+      <div layout="row">
+        <md-input-container flex>
+          <input ng-model="item.reason">
+        </md-input-container>
+      </div>
+    </div>
+    <!--<div ng-if="showfitObj">-->
+      <!--<p>扣分记录</p>-->
+      <!--<md-list>-->
+        <!--<md-list-item>-->
+          <!--<p>item.obj.Description</p>-->
+        <!--</md-list-item>-->
+      <!--</md-list>-->
+    <!--</div>-->
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <span flex></span>
+    <md-button class="md-raised" ng-click="cancel()" >
+      取消
+    </md-button>
+    <md-button class="md-raised" ng-click="delScore(item)" style="margin-right:20px;" >
+      确定
+    </md-button>
+  </md-dialog-actions>
+</md-dialog>
