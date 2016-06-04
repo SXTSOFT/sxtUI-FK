@@ -1711,4 +1711,23 @@ md-tabs[md-align-tabs="bottom"]{
   }
 }
 
+.glxwdialog{
+  max-width:60%;width:60%;
+  md-dialog-content{
+    padding-bottom: 0;padding-top:16px;
+    p{
+      margin-bottom: 0;
+    }
+    md-list{
+      md-list-item{
+        padding: 0;
+        p{
+          span{
+            display: inline-block;width: 65px;
+          }
+        }
+      }
+    }
+  }
 
+}
