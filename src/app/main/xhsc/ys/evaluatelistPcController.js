@@ -304,18 +304,42 @@
       console.log('q',q)
     }
     vm.changeScore = function (item,k,$event) {
-      $mdDialog.show($mdDialog.prompt({
-        title:'修改分值',
-        textContent:'请输入新值，作为最终此项目的扣分值。０分为不扣分',
-        placeholder:item.DelScore,
-        ok:'确定',
-        cancel:'取消',
-        targetEvent:$event
-      })).then(function (result) {
-        if(result){
-          var r = parseInt(result);
-          if(!isNaN(result)){
-            if(item.Weight<result || result<0){
+      $mdDialog.show(
+      //  $mdDialog.prompt({
+      //  title:'修改分值',
+      //  textContent:'请输入新值，作为最终此项目的扣分值。０分为不扣分',
+      //  placeholder:item.DelScore,
+      //  ok:'确定',
+      //  cancel:'取消',
+      //  targetEvent:$event
+      //})
+        {
+          controller: ['$scope','$mdDialog','showfitObj',function ($scope, $mdDialog,showfitObj) {
+            $scope.showfitObj = showfitObj;
+            $scope.cancel = function(){
+              $mdDialog.hide()
+            }
+            $scope.delScore = function(result){
+              $mdDialog.hide(result)
+              item.kf = result.value;
+              item.des = result.reason;
+              console.log('item',item)
+            }
+            console.log('item',vm.showfitObj)
+          }],
+          templateUrl:'app/main/xhsc/ys/glxwInput.html',
+          parent: angular.element(document.body),
+          targetEvent: $event,
+          clickOutsideToClose:false,
+          focusOnOpen:false,
+          locals :{showfitObj:vm.showfitObj}
+        }
+      ).then(function (result) {
+        console.log('result',result)
+        if(result && result.value){
+          var r = parseInt(result.value);
+          if(!isNaN(result.value)){
+            if(item.Weight<result.value || result.value<0){
               utils.alert('输入的值应该介于0 与 '+item.Weight + ' 之间');
               return;
             }
