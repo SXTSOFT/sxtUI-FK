@@ -132,7 +132,7 @@
         }else {
           if (angular.isArray(o.AssessmentClassifys)&& o.AssessmentClassifys.length>0){
             for (var i=0;i<o.AssessmentClassifys.length;i++){
-              if (setshow(o.AssessmentClassifys[i])){
+              if (gl_setshow(o.AssessmentClassifys[i])){
                 o.show=true;
               }
             }
@@ -157,15 +157,15 @@
           var k = vm.items.AssessmentClassifys[vm.selectedIndex-1];
           var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex-1].AssessmentClassifys;
           if (k.AssessmentClassificationName.indexOf("管理行为")>-1){
-            vm.showfitObj=true;
             assessmentClassifys.forEach(function(t){
               gl_setshow(t);
             });
+            vm.showfitObj=true;
           }else {
-            vm.showfitObj=false;
             assessmentClassifys.forEach(function(t){
               setshow(t);
             });
+            vm.showfitObj=false;
           }
           k.AssessmentClassifys =assessmentClassifys;
           k.level = getEvels(k,1);
@@ -183,8 +183,10 @@
             sectionScore={
               sectionID: t.SectionID,
               ModifyScore:"",
-              DelScore:""
+              DelScore:"",
+              Description:""
             }
+            //Description
             if (angular.isArray(resultItem)&&resultItem.length>0){
               itemResult=resultItem.find(function(k){
                 return k.SectionID== t.SectionID;
@@ -197,10 +199,10 @@
                 sectionScore.ModifyScore=tmp;
                 tmp=(itemResult.ModifyScore===0 ||  itemResult.ModifyScore)?item.Weight-itemResult.ModifyScore:0;
                 sectionScore.DelScore=tmp;
+                sectionScore.Description=itemResult.Description;
               }
             }else {
-              sectionScore.ModifyScore= item.Weight
-              sectionScore.DelScore=0;
+              sectionScore.ModifyScore= 0;
             }
             item.scoreList.push(sectionScore);
           });
@@ -236,6 +238,11 @@
           }
         }
         return "";
+    }
+
+    vm.showkf=function(item,sectionID,field){
+      var kf= vm.bindSectionScore(item,sectionID,field);
+      return  angular.isNumber(kf);
     }
 
     vm.getSectionName=function(sectionID){
@@ -304,6 +311,9 @@
       console.log('q',q)
     }
     vm.changeScore = function (item,k,$event) {
+      var obj= item.scoreList.find(function(v){
+        return v.sectionID== k.SectionID;
+      });
       $mdDialog.show(
       //  $mdDialog.prompt({
       //  title:'修改分值',
@@ -319,13 +329,17 @@
             $scope.cancel = function(){
               $mdDialog.hide()
             }
+            //item.value=obj.DelScore;
+            //item.reason=obj.Description;
+            $scope.item= {
+              value:obj.DelScore,
+              reason:obj.Description
+            }
             $scope.delScore = function(result){
               $mdDialog.hide(result)
               item.kf = result.value;
               item.des = result.reason;
-              console.log('item',item)
             }
-            console.log('item',vm.showfitObj)
           }],
           templateUrl:'app/main/xhsc/ys/glxwInput.html',
           parent: angular.element(document.body),
@@ -335,8 +349,7 @@
           locals :{showfitObj:vm.showfitObj}
         }
       ).then(function (result) {
-        console.log('result',result)
-        if(result && result.value){
+        if(result){
           var r = parseInt(result.value);
           if(!isNaN(result.value)){
             if(item.Weight<result.value || result.value<0){
@@ -347,15 +360,13 @@
               AssessmentID:k.AssessmentID,
               AssessmentCheckItemID:item.AssessmentCheckItemID,
               ModifyScore:item.Weight -r,
-              Description:"abc"
+              Description:result.reason
 
             }).then(function (z) {
               if (z.data.ErrorCode==0){
-                var obj= item.scoreList.find(function(v){
-                  return v.sectionID== k.SectionID;
-                });
                 obj.DelScore = r;
-              obj.ModifyScore = item.Weight - obj.DelScore;
+                obj.ModifyScore = item.Weight - obj.DelScore;
+                obj.Description=result.reason;
               }else {
                 utils.alert('失败：'+ z.data.ErrorMessage);
               }

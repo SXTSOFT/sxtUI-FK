@@ -140,7 +140,9 @@
                                   <table fit-table-height style="width: 100px;">
                                     <tr>
                                       <td style="width: 50px;text-align: center;" class="lr">
-                                        <button ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
+                                        <button  ng-if="vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
+                                        <button  ng-if="!vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">扣分</span> </button>
+
                                       </td>
                                       <td style="width: 50px;text-align: center;" class="lr">
                                         {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}
@@ -201,7 +203,8 @@
                                     <table fit-table-height style="width: 100px;">
                                       <tr>
                                         <td style="width: 50px;text-align: center;" class="lr">
-                                          <button ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
+                                          <button ng-if="vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
+                                          <button  ng-if="!vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">扣分</span> </button>
                                         </td>
                                         <td style="width: 50px;text-align: center;" class="lr">
                                           {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}
@@ -265,7 +268,8 @@
                             <table fit-table-height style="width: 100px;">
                               <tr>
                                 <td style="width: 50px;text-align: center;" class="lr">
-                                  <button ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
+                                  <button ng-if="vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
+                                  <button  ng-if="!vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">扣分</span> </button>
                                 </td>
                                 <td style="width: 50px;text-align: center;" class="lr">
                                   {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}

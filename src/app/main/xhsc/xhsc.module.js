@@ -240,17 +240,17 @@
           }
         }
       })
-      .state('app.xhsc.offline',{
+      .state('app.xhsc.glxwSetting',{
         noBack:true,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
-        title :'lx',
-        url   :'/offline',
+        title :'',
+        url   :'/glxwSetting/{AssessmentID}/{AssessmentTypeID}',
         views :{
           'content@app':{
-            templateUrl : 'app/main/xhsc/offline/manage.html',
-            controller:'offlineController as vm'
+            templateUrl : 'app/main/xhsc/ys/glxwSetting.html',
+            controller:'glxwSettingController as vm'
           }
         }
       })
