@@ -15,7 +15,8 @@
       link:function (scope,element) {
         $timeout(function(){
           var p =element.parent()[0];
-          element.css("min-height",p.offsetHeight);
+
+          element.css("min-height",p.offsetHeight>49?p.offsetHeight:49);
         });
         //scope.$watch(function () {
         //  return p.offsetHeight;

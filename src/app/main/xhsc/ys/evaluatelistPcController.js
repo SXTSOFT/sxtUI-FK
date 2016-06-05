@@ -9,16 +9,26 @@
     .controller('evaluatelistPcController',evaluatelistPcController);
 
   /** @ngInject*/
-  function evaluatelistPcController($scope,$stateParams,xhUtils,remote,$mdDialog,utils){
+  function evaluatelistPcController($scope,$stateParams,xhUtils,remote,$mdDialog,utils,$q){
     var vm = this;
     var params={
       year:$stateParams.year,
       projectID:$stateParams.projectID,
       quarter:$stateParams.quarter
     }
-    remote.Assessment.queryReport(params.year,params.quarter,params.projectID).then(function(r){
-       onQueryBase(r.data);
-    });
+    $q.all([
+      remote.Assessment.queryReport(params.year,params.quarter,params.projectID),
+      remote.Assessment.queryProjectRegionInfo(params.projectID)
+    ]).then(function(result){
+        var  r=result[0];
+        var  prj=result[1];
+        onQueryBase(r.data,prj.data)
+    },function(error){
+
+    })
+    //remote.Assessment.queryReport(params.year,params.quarter,params.projectID).then(function(r){
+    //   onQueryBase(r.data);
+    //});
     remote.Assessment.queryTotalReport(params.year,params.quarter,params.projectID).then(function(t){
         vm.toTalReport= t.data;
         setRoleScore();
@@ -91,7 +101,7 @@
         return {};
     }
 
-    function onQueryBase(item) {
+    function onQueryBase(item,region) {
       //管理行为界面控制开关
       vm.showfitObj=false;
       vm.sections=item.Assessments;
@@ -151,7 +161,7 @@
             vm.caches.AssessmentClassifys.push(cls);
           });
       });
-      fillRegion(vm.caches,item.Assessments);
+      fillRegion(vm.caches,item.Assessments,region);
       $scope.$watch('vm.selectedIndex',function () {
         if(vm.selectedIndex){
           var k = vm.items.AssessmentClassifys[vm.selectedIndex-1];
@@ -173,7 +183,17 @@
       })
     }
 
-    function fillRegion(k,sections) {
+    function setPath(item,_region,region){
+        var parent= region.find(function(t){
+            return _region.ParentID== t.RegionID&& t.RegionType>2;
+        });
+        if (parent){
+            item.RegionName=parent.RegionName+">"+item.RegionName;
+            setPath(item,parent,region);
+        }
+    }
+
+    function fillRegion(k,sections,region) {
       if(k.AssessmentItems){
         k.AssessmentItems.forEach(function (item) {
           item.scoreList=[];
@@ -200,6 +220,17 @@
                 tmp=item.Weight-sectionScore.ModifyScore;
                 sectionScore.DelScore=tmp;
                 sectionScore.Description=itemResult.Description;
+                if (angular.isArray(itemResult.AssessmentRegionItemResults)){
+                  var _region;
+                  itemResult.AssessmentRegionItemResults.forEach(function(q){
+                      _region=region.find(function(v){
+                          return v.RegionID==q.RegionID;
+                      })
+                      if (_region){
+                        setPath(q,_region,region);
+                      }
+                  })
+                }
               }
             }else {
               sectionScore.ModifyScore= 0;
@@ -222,7 +253,7 @@
       }
       if(k.AssessmentClassifys){
         k.AssessmentClassifys.forEach(function (c) {
-          fillRegion(c,sections);
+          fillRegion(c,sections,region);
         })
       }
     }
@@ -244,7 +275,10 @@
       var kf= vm.bindSectionScore(item,sectionID,field);
       return  angular.isNumber(kf);
     }
-
+    vm.showfitlogol=function(item,sectionID,field){
+      var kf= vm.bindSectionScore(item,sectionID,field);
+      return  angular.isNumber(kf)&&kf!=0;
+    }
     vm.getSectionName=function(sectionID){
         var section=vm.sections.find(function(o){
             return o.SectionID==sectionID;

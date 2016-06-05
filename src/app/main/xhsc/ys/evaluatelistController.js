@@ -37,36 +37,34 @@
       vm.Assessment = item.AssessmentTypes.find(function (t) {
         return t.AssessmentTypeID== params.AssessmentTypeID;
       });
-      vm.Assessment.AssessmentClassifys.forEach(function (cls) {
-        vm.items.AssessmentClassifys.push({
-          AssessmentClassificationName:cls.AssessmentClassificationName
+     if(vm.Assessment&&vm.Assessment.AssessmentClassifys){
+        vm.Assessment.AssessmentClassifys.forEach(function (cls) {
+          vm.items.AssessmentClassifys.push({
+            AssessmentClassificationName:cls.AssessmentClassificationName
+          });
         });
-      });
+        $scope.$watch('vm.selectedIndex',function () {
+          if(typeof vm.selectedIndex!= 'undefined'){
+            var k = vm.items.AssessmentClassifys[vm.selectedIndex];
+            if(k.AssessmentClassifys==null){
+              k.AssessmentClassifys = vm.Assessment.AssessmentClassifys[vm.selectedIndex].AssessmentClassifys;
+              upstzl_item.findAll(function (r) {
+                return r.RegionID == params.RegionID;
+              }).then(function (items) {
+                upstzl_question.findAll(function (r) {
+                  return !!items.rows.find(function (q) {
+                    return q.AssessmentRegionItemResultID==r.AssessmentRegionItemResultID;
+                  })
+                }).then(function (questions) {
+                  fillRegion(k,items,questions);
+                });
+              })
 
-      $scope.$watch('vm.selectedIndex',function () {
-        if(typeof vm.selectedIndex!= 'undefined'){
-          var k = vm.items.AssessmentClassifys[vm.selectedIndex];
-          if(k.AssessmentClassifys==null){
-            k.AssessmentClassifys = vm.Assessment.AssessmentClassifys[vm.selectedIndex].AssessmentClassifys;
-
-            //
-            upstzl_item.findAll(function (r) {
-              return r.RegionID == params.RegionID;
-            }).then(function (items) {
-              upstzl_question.findAll(function (r) {
-                return !!items.rows.find(function (q) {
-                  return q.AssessmentRegionItemResultID==r.AssessmentRegionItemResultID;
-                })
-              }).then(function (questions) {
-                fillRegion(k,items,questions);
-              });
-            })
-
-            k.level = getEvels(k,1);
+              k.level = getEvels(k,1);
+            }
           }
-        }
-      })
-
+        })
+      }
     });
 
     function fillRegion(k,items,question) {
