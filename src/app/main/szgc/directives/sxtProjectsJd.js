@@ -27,6 +27,7 @@
         onQuery: '=',
         onQueryed: '=',
         isMore: '=',
+        levels:'@',
         objectScope:'='
       },
       template: '<sxt-select-jd  ng-model="value" is-more="isMore" object-scope="objectScope" value-name="regionName" id-tree="idTree" name-tree="nameTree" on-query="onQueryInner" on-change="onChanged" ><div ng-transclude></div></sxt-select-jd>',
@@ -71,6 +72,11 @@
 
 
         scope.onQueryInner = function (index, st, value,innerScope) {
+          if (scope.levels && scope.levels <= index) {
+            init = false;
+            innerScope && scope.onChanged(innerScope);
+            return
+          };
           switch (index) {
             case 0:
 

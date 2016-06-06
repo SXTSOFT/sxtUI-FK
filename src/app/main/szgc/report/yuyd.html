@@ -1,0 +1,72 @@
+<md-content flex layout="column" ng-show="!vm.searBarHide" class="menu-toggle-list">
+  <div flex style="overflow: auto">
+    <sxt-projects-jd ng-model="vm.project.pid" object-scope="vm" levels="3" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" on-queryed="vm.project.onQueryed">
+    </sxt-projects-jd>
+    <div class="md-padding" layout="row">
+
+      <md-button ng-disabled="vm.project.type<8" type="submit" flex ng-click="vm.searBarHide=true"  class="md-raised md-primary"> 确定  </md-button>
+    </div></div>
+</md-content>
+<md-content flex ng-show="vm.searBarHide" layout="column" id="ybgc">
+  <!--<md-virtual-repeat-container flex id="vertical-container" style="height: 800px;">-->
+  <!--<div layout="row" style="border-bottom: 1px solid #d8d8d8">-->
+  <!--<span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: inline-block;text-align: center" flex>部位</span>-->
+  <!--<span style="width: 100px;display: inline-block;text-align: center">拍摄时间</span>-->
+  <!--<span style="width: 100px;display: inline-block;text-align: center">照片数量</span>-->
+  <!--</div>-->
+  <!--<div md-virtual-repeat="item in vm.rows|orderBy:vm.CreateTime:reverse" class="repeated-item" flex>-->
+  <!--<div layout="row" style="border-bottom: 1px solid #d8d8d8" ng-click="vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionTreeId,type:item.type})">-->
+  <!--<span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: inline-block; padding-left:5px; " flex>{{item.full_name.replace(vm.project.projectName,'')}}</span>-->
+  <!--<span style="width: 100px;display: inline-block;text-align: center">{{item.CreateTime}}</span>-->
+  <!--<span style="width: 100px;display: inline-block;text-align: center">{{item.FileNum}}</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--</md-virtual-repeat-container>-->
+
+  <div flex="none">
+      <div layout="column" style="padding: 5px 10px">
+        <div flex layout="row" style="font-size: xx-small;">
+    <span>
+    图例说明:
+    </span>
+          <table style="width: 20px ;height: 20px; border: none;background-color: #0b93d5 ;margin:10px 0px 0px 10px;">
+          </table>
+    <span style="margin-left: 5px;">
+   照片数量
+    </span>
+          <table style="width: 20px ;height: 20px; border: none;background-color: #0b93d5 ;margin:10px 0px 0px 10px;opacity: 0.5">
+          </table>
+    <span style="margin-left: 5px;">
+   验收表数量
+    </span>
+          <table style="width: 20px ;height: 20px; border: none;background-color:orange ;margin:10px 0px 0px 10px;">
+          </table>
+    <span style="margin-left: 5px;">
+   不合格
+    </span>
+        </div>
+      </div>
+  </div>
+<md-content flex layout="column">
+    <span flex ng-if="vm.project.rows.length==0 && !vm.project.loading" style="text-align: center;display: block;"> 暂无数据</span>
+    <md-list layout-padding>
+      <md-list-item>
+        <div class="yhyd" layout="row"  layout-wrap>
+          <div layout="column" class="btn" ng-repeat="item in vm.project.rows" ng-class="{'bhg':!item.hg}" >
+            <button class="btnUp" ng-click=" vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionIdTree,type:item.type})">{{item.ybNum}}</button>
+            <button class=" btnDown" ng-click="vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionIdTree,type:item.type})">{{item.ysNum}}</button>
+            <span >{{item.name}}</span>
+          </div>
+        </div>
+      </md-list-item>
+    </md-list>
+  </md-content>
+  </md-content>
+
+
+
+<div style="position: absolute; top:0px; right:0px;">
+  <toggle-menu inst="vm.searBarHide"></toggle-menu></div>
+
+
+

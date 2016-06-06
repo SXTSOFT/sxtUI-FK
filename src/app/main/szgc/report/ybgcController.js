@@ -77,12 +77,14 @@
         pid:item.regionId,
         pname:item.regionName,
         idTree:item.idTree,
-        type:item.type
+        type:item.type,
+        seq:2
       });
       return;
-      //
+
       //vm.project.n = n;
       item.n=2;
+
       $mdDialog.show ({
           locals: {
             project: item

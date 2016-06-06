@@ -137,7 +137,7 @@
         }
       })
       .state('app.szgc.yhyd',{
-        url   :'/home/yhyd/{pid}/{pname}/{idTree}/{type}',
+        url   :'/home/yhyd/{pid}/{pname}/{idTree}/{type}/{seq}',
         //url:'/home/yhyd/{regionId}/{regionType}/{roomType}/{procedureId}/{regionName}',
         views :{
           'content@app':{
@@ -172,8 +172,8 @@
       .state('app.szgc.project.ybgcResultT', {
         title :'隐蔽工程',
         url: '/viewYbgc',
-        controller: 'ybgcController as vm',
-        templateUrl: 'app/main/szgc/report/ybgcResult.html'
+        controller: 'yhydController as vm',
+        templateUrl: 'app/main/szgc/report/yuyd.html'
       })
       .state('app.szgc.report.picView', {
         title :'隐蔽工程详情',
