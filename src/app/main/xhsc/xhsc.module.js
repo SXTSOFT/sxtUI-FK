@@ -129,6 +129,20 @@
           }
         }
       })
+      .state('app.xhsc.fgxtest',{
+        noBack:true,
+        sendBt:true,
+        rightArrow:false,
+        leftArrow:false,
+        title :'工序',
+        url   :'/gxtest',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/procedure/fgxtest.html',
+            controller:'fgxtestController as vm'
+          }
+        }
+      })
       .state('app.xhsc.gxdetail',{
         noBack:true,
         sendBt:true,
