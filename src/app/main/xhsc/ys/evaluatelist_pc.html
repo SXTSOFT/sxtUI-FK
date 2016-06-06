@@ -271,11 +271,11 @@
         <table class="reportWrap"  width="100%" cellpadding="0" cellspacing="0">
           <thead>
           <tr>
-            <th style="text-align: center;width:30%;font-size: 16px;font-family: 'Roboto'">检查评估项</th>
-            <th style="text-align: center;width:15%;font-size: 16px;font-family: 'Roboto'" ng-repeat="k in vm.toTalReport.Sections">
+            <th style="text-align: center;font-size: 16px;font-family: 'Roboto'">检查评估项</th>
+            <th style="text-align: center;width:120px;font-size: 16px;font-family: 'Roboto'" ng-repeat="k in vm.toTalReport.Sections">
               {{k.SectionName}}
             </th>
-            <th  style="text-align: center;font-size: 16px;font-family: 'Roboto'">
+            <th  style="text-align: center;width:120px;font-size: 16px;font-family: 'Roboto'">
               备注
             </th>
           </tr>
@@ -313,11 +313,11 @@
                   </td>
                 </tr>
                 <tr ng-repeat="m in k.AssessmentCategorys">
-                  <td style="width: 30%" class="td_left">{{m.AssessmentClassificationName}}</td>
-                  <td style="width: 15%" ng-repeat="n in m.sectionScore">
+                  <td class="td_left">{{m.AssessmentClassificationName}}</td>
+                  <td style="width:120px;" ng-repeat="n in m.sectionScore">
                     {{n.ScroePercent|percentage:2}}
                   </td>
-                  <td></td>
+                  <td style="width:120px;"></td>
                 </tr>
               </table>
             </td>
