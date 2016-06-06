@@ -191,6 +191,10 @@
       var batch = result.data,
 
         isB = $scope.data.isB = !!batch;
+      var gp = {
+        id: batch.GrpId,
+        name: batch.GrpName
+      };//因为控件的BUG,会把名称清掉,这里保留一份
       if (flag) {
         batch.BatchNo = parseInt(batch.BatchNo);
         $scope.data.curHistory = batch;
@@ -281,10 +285,7 @@
           batch.CompanyId = $scope.data.supervision[0].UnitId;
         if (isB) {
           $scope.data.curHistory.GrpId = batch.GrpId;
-          $scope.data.groups = [{
-            id: batch.GrpId,
-            name: batch.GrpName
-          }];
+          $scope.data.groups = [gp];
 
         }
         var sm1 = [];
