@@ -15,10 +15,10 @@
       year:$stateParams.year,
       projectID:$stateParams.projectID,
       quarter:$stateParams.quarter,
-      assessmentStage:$stateParams.AssessmentStage
+      assessmentStage:$stateParams.assessmentStage
     }
     $q.all([
-      remote.Assessment.queryReport(params.year,params.quarter,params.projectID,params.AssessmentStage),
+      remote.Assessment.queryReport(params.year,params.quarter,params.projectID,params.assessmentStage),
       remote.Assessment.queryProjectRegionInfo(params.projectID)
     ]).then(function(result){
         var  r=result[0];
@@ -30,7 +30,7 @@
     //remote.Assessment.queryReport(params.year,params.quarter,params.projectID).then(function(r){
     //   onQueryBase(r.data);
     //});
-    remote.Assessment.queryTotalReport(params.year,params.quarter,params.projectID,params.AssessmentStage).then(function(t){
+    remote.Assessment.queryTotalReport(params.year,params.quarter,params.projectID,params.assessmentStage).then(function(t){
         vm.toTalReport= t.data;
         setRoleScore();
     });
@@ -164,9 +164,9 @@
       });
       fillRegion(vm.caches,item.Assessments,region);
       $scope.$watch('vm.selectedIndex',function () {
-        if(vm.selectedIndex){
-          var k = vm.items.AssessmentClassifys[vm.selectedIndex-1];
-          var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex-1].AssessmentClassifys;
+        if(vm.selectedIndex>=0){
+          var k = vm.items.AssessmentClassifys[vm.selectedIndex];
+          var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex].AssessmentClassifys;
           if (k.AssessmentClassificationName.indexOf("管理行为")>-1){
             assessmentClassifys.forEach(function(t){
               gl_setshow(t);
