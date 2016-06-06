@@ -501,7 +501,7 @@
         })
       })]).then(function (results) {
         results[0].data.data.forEach(function (item) {
-          if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
+          /*if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
             if (item.skills.find(function (sk) {
                 return sk.skill_id == $stateParams.procedureTypeId;
               }) == null) {
@@ -515,10 +515,14 @@
           g.push({
             id: item.team_id,
             name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
-          });
+          });*/
+          g.push({
+            id: item.id,
+            name:item.name
+          })
         });
         results[1].data.data.forEach(function (item) {
-          if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
+          /*if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
             if (item.skills.find(function (sk) {
                 return sk.skill_id == $stateParams.procedureTypeId;
               }) == null) {
@@ -532,7 +536,11 @@
           g.push({
             id: item.team_id,
             name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
-          });
+          });*/
+          g.push({
+            id: item.id,
+            name: item.name
+          })
         });
 
         if (g.length) {
@@ -545,13 +553,29 @@
 
       });
       if ($scope.flag) {
-        $q.all([$scope.data.isB && $scope.data.curHistory.CompanyId ? vkapi.teams($scope.data.curHistory.CompanyId) : $q(function (resolve) {
+        $q.all([$scope.data.isB && $scope.data.curHistory.CompanyId ? $q(function (resolve) {
+          resolve({
+            data: {
+              data: $scope.data.supervision.find(function (s) {
+                return s.UnitId == $scope.data.curHistory.CompanyId;
+              }).groups
+            }
+          })
+        }) : $q(function (resolve) {
           resolve({
             data: {
               data: []
             }
           })
-        }), $scope.data.curHistory.ParentCompanyId && $scope.data.curHistory.ParentCompanyId != $scope.data.curHistory.CompanyId ? vkapi.teams($scope.data.curHistory.ParentCompanyId) : $q(function (resolve) {
+        }), $scope.data.curHistory.ParentCompanyId && $scope.data.curHistory.ParentCompanyId != $scope.data.curHistory.CompanyId ?  $q(function (resolve) {
+          resolve({
+            data: {
+              data: $scope.data.supervision1.find(function (s) {
+                return s.UnitId == $scope.data.curHistory.ParentCompanyId;
+              }).groups
+            }
+          })
+        }) : $q(function (resolve) {
           resolve({
             data: {
               data: []
@@ -560,24 +584,32 @@
         })]).then(function (results) {
 
           results[0].data.data.forEach(function (item) {
-            var ns = [];
+            /*var ns = [];
             item.managers.forEach(function (it) {
               ns.push(it.name);
             });
             g.push({
               id: item.team_id,
               name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
-            });
+            });*/
+            g.push({
+              id: item.id,
+              name: item.name
+            })
           });
           results[1].data.data.forEach(function (item) {
-            var ns = [];
+            /*var ns = [];
             item.managers.forEach(function (it) {
               ns.push(it.name);
             });
             g.push({
               id: item.team_id,
               name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
-            });
+            });*/
+            g.push({
+              id: item.id,
+              name: item.name
+            })
           });
 
           if (g.length) {
