@@ -9,7 +9,7 @@
     .directive('sxtMaps',sxtMapsDirective);
 
   /** @ngInject */
-  function sxtMapsDirective($timeout){
+  function sxtMapsDirective($timeout,remote){
     return {
       scope:{
         markers:'=',
@@ -24,7 +24,7 @@
 
       $timeout(function () {
         var map = L.map(element[0], {
-            center: [39.193092,117.106007],
+            center: [22.632591,114.019304],
             zoom: 14,
             attributionControl: false
           }),
@@ -34,31 +34,47 @@
 
         layer.addTo(map);
         var mks = [];
-
-          scope.markers = [];
-
-
-              scope.markers.push({
-                projectId:'1234567',
-                title: '天津星河时代',
-                lat: '39.193092',
-                lng: '117.106007',
-                pinyin:'tjxhsd'
-              })
-
-
-          angular.forEach(scope.markers, function (o, k) {
+          //scope.markers = [];
+          //    scope.markers.push({
+          //      projectId:'1234567',
+          //      title: '天津星河时代',
+          //      lat: '39.193092',
+          //      lng: '117.106007',
+          //      pinyin:'tjxhsd'
+          //    })
+          //
+        remote.Assessment.Project.getMap().then(function(result){
+          console.log('map',result);
+          scope.markers=[];
+          result.data.filter(function(item) {
+            return !!item.Coordinate
+          }).forEach(function(m){
+            var latlngs = m.Coordinate.split(',');
             mks.push(L
-              .marker([o.lat, o.lng], L.extend({
+              .marker([parseFloat(latlngs[1]), parseFloat(latlngs[0])], L.extend({
                 icon: L.icon({
                   iconUrl: 'libs/leaflet/images/M.png',
                   iconSize: [27, 37],
                   iconAnchor: [20, 20]
                 })
-              }, o))
+              }))
               .on('click', markerClick)
               .addTo(map));
           })
+        })
+
+          //angular.forEach(scope.markers, function (o, k) {
+          //  mks.push(L
+          //    .marker([o.lat, o.lng], L.extend({
+          //      icon: L.icon({
+          //        iconUrl: 'libs/leaflet/images/M.png',
+          //        iconSize: [27, 37],
+          //        iconAnchor: [20, 20]
+          //      })
+          //    }, o))
+          //    .on('click', markerClick)
+          //    .addTo(map));
+         // })
 
         map.on('zoomend', function (e) {
           var zoom = map.getZoom();
