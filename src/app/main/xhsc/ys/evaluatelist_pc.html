@@ -278,25 +278,25 @@
           <tbody>
           <tr>
             <td rowspan="2" class="td_left">项目部得分</td>
-            <td colspan="{{vm.prjScores.length}}">{{vm.prjScores.avg}}</td>
+            <td colspan="{{vm.prjScores.length}}">{{vm.prjScores.avg/100|percentage:2}}</td>
             <td class="td_left"></td>
           </tr>
           <tr>
-            <td ng-repeat="k in vm.prjScores">{{k.Score}}</td>
+            <td ng-repeat="k in vm.prjScores">{{k.Score/100|percentage:2}}</td>
             <td class="td_left"></td>
           </tr>
           <tr>
             <td rowspan="2" class="td_left">监理得分</td>
-            <td colspan="{{vm.jlScores.length}}">{{vm.jlScores.avg}}</td>
+            <td colspan="{{vm.jlScores.length}}">{{vm.jlScores.avg/100|percentage:2}}</td>
             <td class="td_left"></td>
           </tr>
           <tr>
-            <td ng-repeat="k in vm.jlScores">{{k.Score}}</td>
+            <td ng-repeat="k in vm.jlScores">{{k.Score/100|percentage:2}}</td>
             <td class="td_left"></td>
           </tr>
           <tr>
             <td class="td_left">总包得分</td>
-            <td ng-repeat="k in vm.zbScores">{{k.Score}}</td>
+            <td ng-repeat="k in vm.zbScores">{{k.Score/100|percentage:2}}</td>
             <td class="td_left"></td>
           </tr>
           <tr ng-repeat="k in vm.toTalReport.AssessmentTypes">
@@ -310,7 +310,7 @@
                 <tr ng-repeat="m in k.AssessmentCategorys">
                   <td style="width: 30%" class="td_left">{{m.AssessmentClassificationName}}</td>
                   <td style="width: 15%" ng-repeat="n in m.sectionScore">
-                    {{n.FinalScroe}}
+                    {{n.ScroePercent|percentage:2}}
                   </td>
                   <td></td>
                 </tr>
