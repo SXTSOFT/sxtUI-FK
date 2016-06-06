@@ -156,23 +156,26 @@
                                   <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
                                     <td style="width:10%">{{vm.getSectionName(m.SectionID)}}</td>
                                     <td>
-                                      <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                      <table ng-if="m.AssessmentRegionItemResults.length" fit-table-height width="100%" cellspacing="0" cellpadding="0">
                                         <tr ng-repeat="region in m.AssessmentRegionItemResults">
                                           <td>
                                             <table  fit-table-height width="100%" cellspacing="0" cellpadding="0">
                                               <tr>
-                                                <td style="width:50px;text-align:center">{{region.RegionName}}</td>
+                                                <td style="width:120px;text-align:left">{{region.RegionName}}</td>
                                                 <td>
-                                                   <span ng-repeat="q in region.DeductScoreItems">
-                                                      <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
-                                                      </md-button>
-                                                    </span>
+                                                     <span ng-if="region.DeductScoreItems.length" ng-repeat="q in region.DeductScoreItems">
+                                                        <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
+                                                        </md-button>
+                                                      </span>
+                                                     <md-button ng-if="!region.DeductScoreItems.length&&!vm.showfitlogol(item,m.SectionID,'DelScore')" aria-label="" class="md-button md-raised ">符合要求</md-button>
                                                 </td>
                                               </tr>
                                             </table>
                                           </td>
                                         </tr>
                                       </table>
+                                      <!--<md-icon ng-if="!m.AssessmentRegionItemResults.length" style="width:16px;height:16px;margin-left:15px"><img ng-src="{{'app/main/xhsc/images/text.png'}}"></md-icon>-->
+                                      <md-button ng-if="!m.AssessmentRegionItemResults.length&&!vm.showfitlogol(item,m.SectionID,'DelScore')" aria-label="" class="md-button md-raised ">符合要求</md-button>
                                     </td>
                                   </table>
                                 </td>
@@ -218,23 +221,26 @@
                                   <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
                                       <td style="width: 10%">{{vm.getSectionName(m.SectionID)}}</td>
                                       <td>
-                                        <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                        <table ng-if="m.AssessmentRegionItemResults.length" fit-table-height width="100%" cellspacing="0" cellpadding="0">
                                           <tr ng-repeat="region in m.AssessmentRegionItemResults">
                                             <td>
                                               <table  fit-table-height width="100%" cellspacing="0" cellpadding="0">
                                                 <tr>
-                                                  <td style="width:50px;text-align:center">{{region.RegionName}}</td>
+                                                  <td style="width:120px;text-align:left">{{region.RegionName}}</td>
                                                   <td>
-                                                     <span ng-repeat="q in region.DeductScoreItems">
+                                                    <span ng-if="region.DeductScoreItems.length" ng-repeat="q in region.DeductScoreItems">
                                                         <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
                                                         </md-button>
                                                       </span>
+                                                    <md-button ng-if="!region.DeductScoreItems.length&&!vm.showfitlogol(item,m.SectionID,'DelScore')" aria-label="" class="md-button md-raised ">符合要求</md-button>
                                                   </td>
                                                 </tr>
                                               </table>
                                             </td>
                                           </tr>
                                         </table>
+                                        <!--<md-icon ng-if="!m.AssessmentRegionItemResults.length" style="width:16px;height:16px;margin-left:15px"><img ng-src="{{'app/main/xhsc/images/text.png'}}"></md-icon>-->
+                                        <md-button ng-if="!m.AssessmentRegionItemResults.length&&!vm.showfitlogol(item,m.SectionID,'DelScore')" aria-label="" class="md-button md-raised">符合要求</md-button>
                                       </td>
                                   </table>
                                 </td>
@@ -283,23 +289,26 @@
                             <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
                               <td style="width: 10%">{{vm.getSectionName(m.SectionID)}}</td>
                               <td>
-                                <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                <table ng-if="m.AssessmentRegionItemResults.length" fit-table-height width="100%" cellspacing="0" cellpadding="0">
                                   <tr ng-repeat="region in m.AssessmentRegionItemResults">
                                     <td>
                                       <table  fit-table-height width="100%" cellspacing="0" cellpadding="0">
                                         <tr>
-                                          <td style="width:50px;text-align:center">{{region.RegionName}}</td>
+                                          <td style="width:120px;text-align:left">{{region.RegionName}}</td>
                                           <td>
-                                             <span ng-repeat="q in region.DeductScoreItems">
-                                                <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
-                                                </md-button>
-                                              </span>
+                                             <span ng-if="region.DeductScoreItems.length" ng-repeat="q in region.DeductScoreItems">
+                                                        <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
+                                                        </md-button>
+                                                      </span>
+                                            <md-button ng-if="!region.DeductScoreItems.length&&!vm.showfitlogol(item,m.SectionID,'DelScore')" aria-label="" class="md-button md-raised ">符合要求</md-button>
                                           </td>
                                         </tr>
                                       </table>
                                     </td>
                                   </tr>
                                 </table>
+                                <!--<md-icon ng-if="!m.AssessmentRegionItemResults.length" style="width:16px;height:16px;margin-left:15px"><img ng-src="{{'app/main/xhsc/images/text.png'}}"></md-icon>-->
+                                <md-button ng-if="!m.AssessmentRegionItemResults.length&&!vm.showfitlogol(item,m.SectionID,'DelScore')" aria-label="" class="md-button md-raised">符合要求</md-button>
                               </td>
                             </table>
                           </td>
