@@ -315,18 +315,8 @@
               CreateTime:new Date(),
               hasPic:false
             };
-              question = angular.extend({},dedu);
-              rn.question.push(question);
-
-            //if(!question){
-            //  question = angular.extend({},dedu);
-            //  rn.question.push(question);
-            //}
-            //else{
-            //  question.DeductionScore+=answer.DeductValue;
-            //}
-
-
+            question = angular.extend({},dedu);
+            rn.question.push(question);
             upstzl_question.addOrUpdate(dedu);
 
             //rn.question.push(question);
