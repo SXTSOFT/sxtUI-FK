@@ -6,7 +6,7 @@
   if(!Array.prototype.find) {
     Array.prototype.find = function (fn) {
       for (var i = 0, l = this.length; i < l; i++) {
-        if (fn(this[i]) === true) {
+        if (fn(this[i],i,this) === true) {
           return this[i];
         }
       }
