@@ -282,40 +282,40 @@
           </thead>
           <tbody>
           <tr>
-            <td rowspan="2" class="td_left">项目部得分</td>
-            <td colspan="{{vm.prjScores.length}}">{{vm.prjScores.avg/100|percentage:2}}</td>
+            <td rowspan="2" class="td_left" style="padding-left: 10px;">项目部得分</td>
+            <td colspan="{{vm.prjScores.length}}">{{vm.prjScores.avg|number:2}} {{vm.prjScores.avg||vm.prjScores.avg===0?'%':''}}</td>
             <td class="td_left"></td>
           </tr>
           <tr>
-            <td ng-repeat="k in vm.prjScores">{{k.Score/100|percentage:2}}</td>
+            <td ng-repeat="k in vm.prjScores">{{k.Score|number:2}} {{k.Score||k.Score===0?'%':''}}</td>
             <td class="td_left"></td>
           </tr>
           <tr>
-            <td rowspan="2" class="td_left">监理得分</td>
-            <td colspan="{{vm.jlScores.length}}">{{vm.jlScores.avg/100|percentage:2}}</td>
+            <td rowspan="2" class="td_left" style="padding-left: 10px;">监理得分</td>
+            <td colspan="{{vm.jlScores.length}}">{{vm.jlScores.avg|number:2}} {{vm.jlScores||vm.jlScores===0?'%':''}}</td>
             <td class="td_left"></td>
           </tr>
           <tr>
-            <td ng-repeat="k in vm.jlScores">{{k.Score/100|percentage:2}}</td>
+            <td ng-repeat="k in vm.jlScores">{{k.Score|number:2}} {{k.Score||k.Score===0?'%':''}}</td>
             <td class="td_left"></td>
           </tr>
           <tr>
-            <td class="td_left">总包得分</td>
-            <td ng-repeat="k in vm.zbScores">{{k.Score/100|percentage:2}}</td>
+            <td class="td_left" style="padding-left: 10px;">总包得分</td>
+            <td ng-repeat="k in vm.zbScores">{{k.Score|number:2}} {{k.Score||k.Score===0?'%':''}}</td>
             <td class="td_left"></td>
           </tr>
           <tr ng-repeat="k in vm.toTalReport.AssessmentTypes">
             <td colspan="5">
               <table class="report" style="width: 100%">
                 <tr>
-                  <td style="text-align: left" colspan="5">
+                  <td style="text-align: left;padding-left: 10px;" colspan="5">
                     <h3>{{k.AssessmentTypeName}}</h3>
                   </td>
                 </tr>
                 <tr ng-repeat="m in k.AssessmentCategorys">
-                  <td class="td_left">{{m.AssessmentClassificationName}}</td>
+                  <td class="td_left" style="padding-left: 10px;">{{m.AssessmentClassificationName}}</td>
                   <td style="width:120px;" ng-repeat="n in m.sectionScore">
-                    {{n.ScroePercent|percentage:2}}
+                    {{n.ScroePercent * 100|number:2}} {{n.ScroePercent||n.ScroePercent===0?'%':''}}
                   </td>
                   <td style="width:120px;"></td>
                 </tr>

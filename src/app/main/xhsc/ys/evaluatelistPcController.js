@@ -378,6 +378,11 @@
               item.kf = result.value;
               item.des = result.reason;
             }
+            $scope.noScore = function(result){
+              item.kf = result.value = 0;
+              item.des = result.reason ='符合要求';
+              $mdDialog.hide(result);
+            }
           }],
           templateUrl:'app/main/xhsc/ys/glxwInput.html',
           parent: angular.element(document.body),

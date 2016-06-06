@@ -5,7 +5,7 @@
   'use strict';
 
   angular
-    .module('app.xhsc', ['app.core','ngCordova','percentage'])
+    .module('app.xhsc', ['app.core','ngCordova'])
     .config(config);
 
   /** @ngInject */
