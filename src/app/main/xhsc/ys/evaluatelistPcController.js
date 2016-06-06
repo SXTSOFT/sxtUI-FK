@@ -23,7 +23,7 @@
     ]).then(function(result){
         var  r=result[0];
         var  prj=result[1];
-        onQueryBase(r.data,prj.data)
+        onQueryBase(r.data,prj.data);
     },function(error){
 
     })
@@ -38,6 +38,9 @@
       vm.prjScores=[];
       vm.jlScores=[];
       vm.zbScores=[];
+      vm.toTalReport.Sections.sort(xhUtils.sort(function (s) {
+        return s.SectionName;
+      }));
       vm.toTalReport.Sections.forEach(function(r){
         vm.prjScores.push(findRole(4, r.SectionID));
         vm.prjScores.avg=avg(vm.prjScores);
@@ -105,6 +108,9 @@
     function onQueryBase(item,region) {
       //管理行为界面控制开关
       vm.showfitObj=false;
+      item.Assessments.sort(xhUtils.sort(function (s) {
+        return s.SectionName;
+      }));
       vm.sections=item.Assessments;
       vm.items = {
         AssessmentClassifys:[]
