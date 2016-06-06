@@ -21,6 +21,7 @@
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
+        showgrzx:true,
         title :'工程管理',
         url   :'/',
         views :{
@@ -83,6 +84,34 @@
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/chooseHouse.html',
             controller:'ChooseHouseController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.choose',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'抹灰工程',
+        url   :'/choose',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/choose.html',
+            controller:'ChooseController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.procedure',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'抹灰工程',
+        url   :'/choose',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/procedure/procedure.html',
+            controller:'procedureController as vm'
           }
         }
       })
@@ -194,6 +223,20 @@
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/scdetail.html',
+            controller:'detailscController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.temp',{
+        noBack:true,
+        sendBt:true,
+        rightArrow:false,
+        leftArrow:false,
+        title :'工序',
+        url   :'/temp',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/temp.html',
             controller:'detailscController as vm'
           }
         }

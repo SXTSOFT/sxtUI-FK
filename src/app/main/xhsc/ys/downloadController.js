@@ -161,7 +161,6 @@
     }
 
 
-
     //vm.projects=[{
     //    year:2016,
     //    quart:1,

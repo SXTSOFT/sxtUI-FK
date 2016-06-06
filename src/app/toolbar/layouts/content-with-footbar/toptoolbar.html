@@ -1,6 +1,9 @@
 <div class="md-toolbar-tools" style="padding: 0">
     <!--<md-icon md-font-icon="icon-chevron-left" style="color:white;" ng-click="goBack();" class="icon s32"></md-icon>-->
-  <md-button ng-click="goBack();" style="color:white;position: absolute;top:5px;left:10px;">返回</md-button>
+  <md-button ng-show="$rootScope.noBack" ng-click="goBack();" style="color:white;position: absolute;top:5px;left:10px;">返回</md-button>
+  <div  class="grzx" style="color:white;position: absolute;top:5px;left:0;" ng-show="$root.showgrzx">
+    <md-button><md-icon><img src="app/main/xhsc/images/grzx.png"></md-icon></md-button>
+  </div>
   <h2>
     <md-icon class="arrows icon s32" ng-show="$root.leftArrow===true" md-font-icon="icon-chevron-left" style="color:#fff;" ng-click="toLeft()"></md-icon>
     <span ng-class="{'subtitle':$root.leftArrow===true}">{{$root.subtitle||$root.title || '工程大数据'}}</span>
@@ -24,6 +27,9 @@
     <md-button class="md-link md-mini">
       <md-icon><img src="app/main/xhsc/images/refresh.png"></md-icon>
     </md-button>
+  </div>
+  <div style="position: absolute;top:5px;right:0;font-size:14px;" class="grzx" ng-show="$root.showgrzx">
+    <md-button><md-icon><img src="app/main/xhsc/images/msg.png"></md-icon></md-button>
   </div>
   <div style="position: absolute;top:5px;right:3px;font-size:14px;">
   <md-progress-circular id="toolbar-progress" ng-if="$root.loadingProgress"

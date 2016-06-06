@@ -10,7 +10,7 @@
     .controller('HomeController', HomeController);
 
   /** @ngInject */
-  function HomeController($scope,auth,$state,$rootScope,$timeout)
+  function HomeController($scope,auth,$state,$rootScope,$timeout, $mdBottomSheet)
   {
 
     var vm = this;
@@ -39,7 +39,19 @@
 
     function markerClick($current){
     //  appCookie.put('projects',JSON.stringify([{project_id:$current.projectId,name:$current.title}]))
-      $state.go('app.xhsc.choose',{pid:$current.projectId, pname:'天津星河时代'});
+      //$state.go('app.xhsc.choose',{pid:$current.projectId, pname:'天津星河时代'});
+      $mdBottomSheet.show({
+       //templateUrl: 'app/main/xhsc/home/homeBottom.html',
+        template: '<md-bottom-sheet>Hello!</md-bottom-sheet>',
+        controller: ['$scope','$mdBottomSheet',function($scope,$mdBottomSheet){
+          $scope.hide = function(){
+            $mdBottomSheet.hide();
+          }
+        }],
+        disableBackdrop:true
+      }).then(function(clickedItem) {
+        //$mdBottomSheet.hide(clickedItem);
+      });
     }
   }
 })();
