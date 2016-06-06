@@ -9,7 +9,7 @@
     .controller('evaluatelistPcController',evaluatelistPcController);
 
   /** @ngInject*/
-  function evaluatelistPcController($scope,$stateParams,xhUtils,remote,$mdDialog,utils,$q){
+  function evaluatelistPcController($scope,$stateParams,xhUtils,remote,$mdDialog,utils,$q,$timeout){
     var vm = this;
     var params={
       year:$stateParams.year,
@@ -170,28 +170,31 @@
       });
       fillRegion(vm.caches,item.Assessments,region);
       $scope.$watch('vm.selectedIndex',function () {
-        if(vm.selectedIndex>=0&&vm.selectedIndex<vm.items.AssessmentClassifys.length){
-          var k = vm.items.AssessmentClassifys[vm.selectedIndex];
-          var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex].AssessmentClassifys;
-          if (k.AssessmentClassificationName.indexOf("管理行为")>-1){
-            assessmentClassifys.forEach(function(t){
-              gl_setshow(t);
-            });
-            vm.showfitObj=true;
+        $timeout(function () {
+          if(vm.selectedIndex>=0&&vm.selectedIndex<vm.items.AssessmentClassifys.length){
+            var k = vm.items.AssessmentClassifys[vm.selectedIndex];
+            var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex].AssessmentClassifys;
+            if (k.AssessmentClassificationName.indexOf("管理行为")>-1){
+              assessmentClassifys.forEach(function(t){
+                gl_setshow(t);
+              });
+              vm.showfitObj=true;
+            }else {
+              assessmentClassifys.forEach(function(t){
+                setshow(t);
+              });
+              vm.showfitObj=false;
+            }
+            k.AssessmentClassifys =assessmentClassifys;
+            k.level = getEvels(k,1);
           }else {
-            assessmentClassifys.forEach(function(t){
-              setshow(t);
+            remote.Assessment.queryTotalReport(params.year,params.quarter,params.projectID,params.assessmentStage).then(function(t){
+              vm.toTalReport= t.data;
+              setRoleScore();
             });
-            vm.showfitObj=false;
           }
-          k.AssessmentClassifys =assessmentClassifys;
-          k.level = getEvels(k,1);
-        }else {
-          remote.Assessment.queryTotalReport(params.year,params.quarter,params.projectID,params.assessmentStage).then(function(t){
-            vm.toTalReport= t.data;
-            setRoleScore();
-          });
-        }
+        },800);
+
       })
     }
 
@@ -421,7 +424,6 @@
             utils.alert('应该输入半角数字');
           }
         }
-        console.log(result);
       })
     }
   }
