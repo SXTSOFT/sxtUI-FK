@@ -349,14 +349,6 @@
         return v.sectionID== k.SectionID;
       });
       $mdDialog.show(
-      //  $mdDialog.prompt({
-      //  title:'修改分值',
-      //  textContent:'请输入新值，作为最终此项目的扣分值。０分为不扣分',
-      //  placeholder:item.DelScore,
-      //  ok:'确定',
-      //  cancel:'取消',
-      //  targetEvent:$event
-      //})
         {
           controller: ['$scope','$mdDialog','showfitObj',function ($scope, $mdDialog,showfitObj) {
             $scope.showfitObj = showfitObj;
