@@ -41,8 +41,8 @@
     //  appCookie.put('projects',JSON.stringify([{project_id:$current.projectId,name:$current.title}]))
       //$state.go('app.xhsc.choose',{pid:$current.projectId, pname:'天津星河时代'});
       $mdBottomSheet.show({
-       //templateUrl: 'app/main/xhsc/home/homeBottom.html',
-        template: '<md-bottom-sheet>Hello!</md-bottom-sheet>',
+       templateUrl: 'app/main/xhsc/home/homeBottom.html',
+        //template: '<md-bottom-sheet>Hello!</md-bottom-sheet>',
         controller: ['$scope','$mdBottomSheet',function($scope,$mdBottomSheet){
           $scope.hide = function(){
             $mdBottomSheet.hide();

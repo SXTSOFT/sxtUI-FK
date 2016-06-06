@@ -21,6 +21,8 @@
 }
   apiProvider.register('xhsc',{
     Assessment:{
+
+
       query:function () {
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentProject'))
       },
@@ -254,6 +256,9 @@
        * 项目
        * */
       Project:{
+        getMap:function(){
+          return $http.get($http.url('/api/ProjectInfoApi/GetMapProjectList'))
+        },
         query:function(){
           return $http.get($http.url('/Api/ProjectInfoApi/GetProjectList'));
         },
@@ -305,7 +310,9 @@
         updateHouseDrawing:function(regionID,draw){
           return $http.post('/Api/MeasureInfo/ModifyHouseType',{regionID:regionID,draw:draw});
           /**return post(regionID,draw);**/
-        }
+        },
+
+
       },
 
       /**
