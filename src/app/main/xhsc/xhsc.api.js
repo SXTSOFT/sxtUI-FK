@@ -54,6 +54,9 @@
       queryProjectRegionInfo:function(projectID){
          return $http.get($http.url('/Api/ProjectInfoApi/GetProjectRegionRelationByProjectID',{projectID:projectID}));
       },
+      sumReportTotal:function(assessmentID){
+        return $http.post($http.url('/Api/AssessmentApi/SumReportTotal'),{assessmentID:assessmentID});
+      },
 	    /**
        * 实测实量项
        */
