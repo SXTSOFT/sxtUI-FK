@@ -475,17 +475,17 @@
           return s.UnitId == $scope.data.curHistory.CompanyId;
         }).groups,gps2=[];
         result.data.data.forEach(function (item) {
-          if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
-            if (item.skills.find(function (sk) {
-                return sk.skill_id == $stateParams.procedureTypeId;
-              }) == null) {
+          if (!item || !item.skills || !item.skills.length) return;
+          if ($stateParams.procedureTypeId) {
+            if (item.skills.find(function (sk) { return sk.skill_id == $stateParams.procedureTypeId; }) == null) {
               return;
-            }
-            ;
-            var fd = gps.find(function (g) {
-              return g.id == item.team_id;
-            });
-            if (!fd)return;
+            };
+          }
+          var fd = gps.find(function (g) {
+            return g.id == item.team_id;
+          });
+          if (!fd) {
+            return;
           }
           var ns = [];
           item.managers.forEach(function (it) {
@@ -511,18 +511,17 @@
             return s.UnitId == $scope.data.curHistory.ParentCompanyId;
           }).groups, gps2 = [];
           result.data.data.forEach(function (item) {
-            if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
-              if (item.skills.find(function (sk) {
-                  return sk.skill_id == $stateParams.procedureTypeId;
-                }) == null) {
+            if (!item || !item.skills || !item.skills.length) return;
+            if ($stateParams.procedureTypeId) {
+              if (item.skills.find(function (sk) { return sk.skill_id == $stateParams.procedureTypeId; }) == null) {
                 return;
-              }
-              var fd = gps.find(function (g) {
-                return g.id == item.team_id;
-              });
-              if(!fd){
-                return;
-              }
+              };
+            }
+            var fd = gps.find(function (g) {
+              return g.id == item.team_id;
+            });
+            if (!fd) {
+              return;
             }
 
             var ns = [];
