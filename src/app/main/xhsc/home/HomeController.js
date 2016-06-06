@@ -48,6 +48,7 @@
             $mdBottomSheet.hide();
           }
         }],
+        clickOutsideToClose:true,
         disableBackdrop:true
       }).then(function(clickedItem) {
         //$mdBottomSheet.hide(clickedItem);

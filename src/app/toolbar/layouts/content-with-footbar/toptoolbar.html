@@ -1,7 +1,7 @@
-<div class="md-toolbar-tools" style="padding: 0">
+<div class="md-toolbar-tools grzx" style="padding: 0">
     <!--<md-icon md-font-icon="icon-chevron-left" style="color:white;" ng-click="goBack();" class="icon s32"></md-icon>-->
-  <md-button ng-show="$root.noBack" ng-click="goBack();" style="color:white;position: absolute;top:5px;left:10px;">返回</md-button>
-  <div  class="grzx" style="color:white;position: absolute;top:5px;left:0;" ng-show="$root.showgrzx">
+  <md-button ng-show="$root.noBack" ng-click="goBack();" style="color:white;position: absolute;top:5px;left:0;">返回</md-button>
+  <div style="color:white;position: absolute;top:5px;left:0;" ng-show="$root.showgrzx">
     <md-button><md-icon><img src="app/main/xhsc/images/grzx.png"></md-icon></md-button>
   </div>
   <h2>
@@ -18,8 +18,8 @@
   <!--<div style="position: absolute;top:12px;right:25px;font-size:14px;" ng-click="toggleRight()">-->
     <!--星河智慧一期<md-icon class="icon s32" md-font-icon="icon-menu-down" style="color:#fff;"></md-icon>-->
     <!--</div>-->
-  <div style="position: absolute;top:5px;right:3px;font-size:14px;display: none;" ng-show="$root.sendBt===true">
-    <md-button class="md-link md-mini" ng-click="submit()">
+  <div style="position: absolute;top:5px;right:0;font-size:14px;" ng-show="$root.sendBt">
+    <md-button ui-sref="app.xhsc.procedure">
       提交
     </md-button>
   </div>
@@ -28,7 +28,7 @@
       <md-icon><img src="app/main/xhsc/images/refresh.png"></md-icon>
     </md-button>
   </div>
-  <div style="position: absolute;top:5px;right:0;font-size:14px;" class="grzx" ng-show="$root.showgrzx">
+  <div style="position: absolute;top:5px;right:0;font-size:14px;" ng-show="$root.showgrzx">
     <md-button><md-icon><img src="app/main/xhsc/images/msg.png"></md-icon></md-button>
   </div>
   <div style="position: absolute;top:5px;right:3px;font-size:14px;">

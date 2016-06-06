@@ -9,7 +9,7 @@
     .directive('slideMenu',slideMenuDirective);
 
   /**@ngInject*/
-  function slideMenuDirective(){
+  function slideMenuDirective($state){
     return {
       scope:{
         slideData:'=',
@@ -21,6 +21,24 @@
     }
 
     function link(scope,element,attr,ctrl){
+      var resize = function(){
+        var iHeight = $(element).parent().height();
+        var iWh= $(window).height();
+        var iToolbar = $('#toptoolbar').height();
+        var itbar = $('#toolbar2').height();
+        if(scope.halfHeight){
+          $('.list-left',element).css({'height':(iHeight)+'px','overflow':'auto'});
+          $('.list-right',element).css({'height':(iHeight)+'px','overflow':'auto'})
+        }else{
+          $('.list-left',element).css({'height':(iWh-iToolbar-itbar-6)+'px','overflow':'auto'});
+          $('.list-right',element).css({'height':(iWh-iToolbar-itbar-6)+'px','overflow':'auto'})
+        }
+      }
+      resize();
+      $(window).resize(function(){
+        resize();
+      })
+
       scope.selectProcedure = function(item){
         scope.gxlevels = null;
         scope.slideData.forEach(function(t){
@@ -31,7 +49,14 @@
         item.checked = true;
         scope.gxlevels = item.procedureCh;
       }
-      scope.selectProcedure(scope.slideData[0].children[0])
+      scope.selectProcedure(scope.slideData[0].children[0]);
+      scope.changeOrclick = function(item){
+        if(!scope.showCheck){
+          $state.go('app.xhsc.choose')
+        }else{
+          item.checked = !item.checked;
+        }
+      }
     }
   }
 })();
