@@ -17,7 +17,7 @@
         abstract:true
       })
       .state('app.xhsc.home',{
-        noBack:true,
+        noBack:false,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
@@ -112,6 +112,20 @@
           'content@app':{
             templateUrl : 'app/main/xhsc/procedure/procedure.html',
             controller:'procedureController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.gxtest',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'工序',
+        url   :'/gxtest',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/procedure/gxtest.html',
+            controller:'gxtestController as vm'
           }
         }
       })

@@ -13,7 +13,8 @@
     return {
       scope:{
         slideData:'=',
-        showCheck:'='
+        showCheck:'=',
+        halfHeight:'='
       },
       templateUrl:'app/main/xhsc/ys/slideMenu.html',
       link:link

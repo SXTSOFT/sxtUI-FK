@@ -53,7 +53,9 @@
         if(proc==-1) {
           item.completed = pk.completed;
           if(item.completed)
-            xcpk.addOrUpdate(vm.data);
+            remote.Assessment.sumReportTotal(item.AssessmentID).then(function(){
+              xcpk.addOrUpdate(vm.data);
+            })
           else {
             utils.tips('同步未完成');
           }
