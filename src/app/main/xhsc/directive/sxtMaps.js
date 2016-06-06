@@ -51,9 +51,9 @@
             mks.push(L
               .marker([o.lat, o.lng], L.extend({
                 icon: L.icon({
-                  iconUrl: 'libs/leaflet/images/L.png',
-                  iconSize: [70, 70],
-                  iconAnchor: [35, 35]
+                  iconUrl: 'libs/leaflet/images/M.png',
+                  iconSize: [27, 37],
+                  iconAnchor: [20, 20]
                 })
               }, o))
               .on('click', markerClick)
@@ -75,9 +75,9 @@
           else {
             mks.forEach(function (marker) {
               marker.setIcon(L.icon({
-                iconUrl: 'libs/leaflet/images/L.png',
-                iconSize: [70, 70],
-                iconAnchor: [35, 35]
+                iconUrl: 'libs/leaflet/images/M.png',
+                iconSize: [27, 37],
+                iconAnchor: [20, 20]
               }));
             })
           }
