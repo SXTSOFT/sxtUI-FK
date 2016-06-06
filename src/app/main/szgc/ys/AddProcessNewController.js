@@ -12,6 +12,7 @@
 
   /** @ngInject */
   function AddProcessNewController($scope, $filter, $stateParams, utils,  $q, api,auth,$state,sxt){
+
     var vm = this;
     vm.keyboard = { show:false};
 
@@ -263,9 +264,16 @@
 
         var sm0 = [];
         results[1].data.Rows.forEach(function (n) {
-          if (sm0.find(function (n2) { return n2.UnitId == n.UnitId; }) == null) {
+          var fd = sm0.find(function (n2) { return n2.UnitId == n.UnitId; });
+          if (fd == null) {
+            fd = n;
             sm0.push(n);
           }
+          fd.groups = fd.groups || [];
+          fd.groups.push({
+            id: n.GroupId,
+            name: n.GroupName
+          });
         })
 
         $scope.data.supervision = sm0;
@@ -281,9 +289,16 @@
         }
         var sm1 = [];
         results[2].data.Rows.forEach(function (n) {
-          if (sm1.find(function (n2) { return n2.UnitId == n.UnitId; }) == null) {
+          var fd = sm1.find(function (n2) { return n2.UnitId == n.UnitId; });
+          if (fd == null) {
+            fd = n;
             sm1.push(n);
           }
+          fd.groups = fd.groups || [];
+          fd.groups.push({
+            id: n.GroupId,
+            name: n.GroupName
+          });
         })
         $scope.data.supervision1 = sm1;
         if (isB && $scope.data.supervision1.length && !batch.ParentCompanyId) {
@@ -455,14 +470,30 @@
       var g = [];
 
       $scope.data.groups = [];
-      $q.all([!$scope.data.isB && $scope.data.curHistory.CompanyId ? api.szgc.vanke.teams($scope.data.curHistory.CompanyId) : $q(function (resolve) {
+      $q.all([!$scope.data.isB && $scope.data.curHistory.CompanyId ?  $q(function (resolve) {
+        resolve({
+          data: {
+            data: $scope.data.supervision.find(function (s) {
+              return s.UnitId == $scope.data.curHistory.CompanyId;
+            }).groups
+          }
+        })
+      })  : $q(function (resolve) {
 
         resolve({
           data: {
             data: []
           }
         })
-      }), !$scope.data.isB && $scope.data.curHistory.ParentCompanyId && $scope.data.curHistory.ParentCompanyId != $scope.data.curHistory.CompanyId ? api.szgc.vanke.teams($scope.data.curHistory.ParentCompanyId) : $q(function (resolve) {
+      }), !$scope.data.isB && $scope.data.curHistory.ParentCompanyId && $scope.data.curHistory.ParentCompanyId != $scope.data.curHistory.CompanyId ?  $q(function (resolve) {
+        resolve({
+          data: {
+            data: $scope.data.supervision1.find(function (s) {
+              return s.UnitId == $scope.data.curHistory.ParentCompanyId;
+            }).groups
+          }
+        })
+      }) : $q(function (resolve) {
         resolve({
           data: {
             data: []
@@ -470,13 +501,13 @@
         })
       })]).then(function (results) {
         results[0].data.data.forEach(function (item) {
-/*          if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
+          if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
             if (item.skills.find(function (sk) {
                 return sk.skill_id == $stateParams.procedureTypeId;
               }) == null) {
               return;
             }
-          }*/
+          }
           var ns = [];
           item.managers.forEach(function (it) {
             ns.push(it.name);
