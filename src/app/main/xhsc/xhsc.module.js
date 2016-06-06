@@ -381,6 +381,7 @@
     .state('app.xhsc.pkresult',{
       //url   :'/pkresult/{AssessmentID}/{RegionID}/{RegionName}/{AssessmentTypeID}',
       url:'/pkresult/{year}/{projectID}/{quarter}/{assessmentStage}',
+      noBack:true,
       views :{
         'content@app':{
           templateUrl : 'app/main/xhsc/ys/evaluatelist_pc.html',
