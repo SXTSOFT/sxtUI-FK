@@ -19,7 +19,7 @@
 
     </md-list>
     </div>
-      <div layout="row" flex ng-if="!Problems.length">
+      <div layout="row" flex ng-if="Problems.length">
         <div layout="column" flex>
         <div layout="row" flex style="padding-left: 25px;font-size: 14px;min-height: 48px;line-height: 48px;">问题输入</div>
         <div layout="row" flex>
@@ -31,4 +31,13 @@
       </div>
     </div>
   </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <span flex></span>
+    <md-button ng-click="answer()">
+      取消
+    </md-button>
+    <md-button ng-click="answer()" style="margin-right:20px;">
+      确定
+    </md-button>
+  </md-dialog-actions>
 </md-dialog>

@@ -1,3 +1,26 @@
+<div flex="none" layout="column" style="max-height:96px;height:96px;width:100%;z-index: 10;">
+  <md-list  flex layout="row" style="background:#fff;padding:0;border-bottom: 1px solid #d8d8d8;height:48px;">
+    <md-list-item flex="25"><md-button><span>全部</span><span>(15)</span></md-button></md-list-item>
+    <md-list-item flex="25"><md-button><span class="yet">已验</span><span>(15)</span></md-button></md-list-item>
+    <md-list-item flex="25"><md-button><span class="ing">待验</span><span>(15)</span></md-button></md-list-item>
+    <md-list-item flex="25"><md-button><span class="done">未检验</span><span>(15)</span></md-button></md-list-item>
+  </md-list>
+  <md-list flex layout="row" style="height: 48px;padding: 0;background: rgb(245,245,245)">
+    <span flex></span>
+    <md-list-item flex><md-button class="md-button" style="border:1px solid #d8d8d8;">未整改</md-button></md-list-item>
+    <md-list-item flex><md-button class="md-button" style="border:1px solid #d8d8d8;">已整改</md-button></md-list-item>
+    <span flex></span>
+  </md-list>
+</div>
+<md-content flex ng-cloak>
+  <h2>星河银河谷项目一期</h2>
+  <div class="floor-list">
+    <div class="xm">
+      <md-button class="md-button" style="border:1px solid #d8d8d8;" ui-sref="app.xhsc.procedure">未整改</md-button>
+    </div>
+  </div>
+</md-content>
+
 <!--<md-tabs md-border-bottom flex layout="column" md-selected="vm.data.selectedIndex">-->
   <!--<md-tab label="实测实量" md-on-select="vm.onNavList()">-->
     <!--<md-tab-content flex layout-fill layout="column">-->
@@ -46,25 +69,25 @@
             <!--<p>幕墙工程</p>-->
           <!--</md-list-item>-->
 
-<div layout="column" ng-cloak="">
+<!--<div layout="column" ng-cloak="">-->
 
-  <md-content class="main-padding md-hue-1" layout="column">
-    <div class="selectArea" style="position: fixed;z-index: 10;top:44px;left:0;width:100%;padding:10px 16px 0 16px;background:rgb(245,245,245);margin-bottom:10px;">
-      <md-select ng-model="vm.selectedArea" style="margin-bottom: 0">
-          <md-option ng-value="area" ng-repeat="area in vm.Areas">{{area.ProjectName}}{{area.AreaName}}</md-option>
-      </md-select>
-    </div>
-    <div  style="margin-top: 60px;"></div>
-    <md-list class="procedure-list" ng-repeat="procdure in vm.xhMeasure">
-    <h2 class="md-title" style="color:#e93030;font-size:16px;margin:16px 0;">{{procdure.$name}}<span ng-if="procdure.children[0].$name"> > </span> {{procdure.children[0].$name}}</h2>
-    <md-list-item class="veggie-option" layout="row" layout-wrap="" ui-sref="app.xhsc.chooseHouse({id:subpro.measureItemID,areaId:vm.selectedArea.AreaID,pname:subpro.MeasureItemName})" ng-repeat="subpro in procdure.ps">
-      <div class="md-item-text">
-        <p class="md-primary">{{subpro.MeasureItemName}}{{subpro.measureItemID}}</p>
-      </div>
-    </md-list-item>
-  </md-list>
-  </md-content>
-</div>
+  <!--<md-content class="main-padding md-hue-1" layout="column">-->
+    <!--<div class="selectArea" style="position: fixed;z-index: 10;top:44px;left:0;width:100%;padding:10px 16px 0 16px;background:rgb(245,245,245);margin-bottom:10px;">-->
+      <!--<md-select ng-model="vm.selectedArea" style="margin-bottom: 0">-->
+          <!--<md-option ng-value="area" ng-repeat="area in vm.Areas">{{area.ProjectName}}{{area.AreaName}}</md-option>-->
+      <!--</md-select>-->
+    <!--</div>-->
+    <!--<div  style="margin-top: 60px;"></div>-->
+    <!--<md-list class="procedure-list" ng-repeat="procdure in vm.xhMeasure">-->
+    <!--<h2 class="md-title" style="color:#e93030;font-size:16px;margin:16px 0;">{{procdure.$name}}<span ng-if="procdure.children[0].$name"> > </span> {{procdure.children[0].$name}}</h2>-->
+    <!--<md-list-item class="veggie-option" layout="row" layout-wrap="" ui-sref="app.xhsc.chooseHouse({id:subpro.measureItemID,areaId:vm.selectedArea.AreaID,pname:subpro.MeasureItemName})" ng-repeat="subpro in procdure.ps">-->
+      <!--<div class="md-item-text">-->
+        <!--<p class="md-primary">{{subpro.MeasureItemName}}{{subpro.measureItemID}}</p>-->
+      <!--</div>-->
+    <!--</md-list-item>-->
+  <!--</md-list>-->
+  <!--</md-content>-->
+<!--</div>-->
 
 
 

@@ -90,6 +90,83 @@
       vm.scData = newD;
       console.log('res',result)
     });
+    vm.procedureData = [{
+      procedureName:'机电1',
+      children:[{
+        name:'消防',
+        procedureCh:[{
+          name:'铝合金1'
+        },{
+          name:'铝合金2'
+        },{
+          name:'铝合金2'
+        },{
+          name:'铝合金2'
+        },{
+          name:'铝合金2'
+        },{
+          name:'铝合金2'
+        },{
+          name:'铝合金2'
+        },{
+          name:'铝合金2'
+        },{
+          name:'铝合金2'
+        },{
+          name:'铝合金2'
+        },{
+          name:'铝合金2'
+        },{
+          name:'铝合金2'
+        }]
+      },{
+        name:'空调',
+        procedureCh:[{
+          name:'空调1'
+        },{
+          name:'空调2'
+        },{
+          name:'空调2'
+        },{
+          name:'空调2'
+        },{
+          name:'空调2'
+        },{
+          name:'空调2'
+        }]
+      },{
+        name:'弱电',
+        procedureCh:[{
+          name:'空调1'
+        },{
+          name:'空调2'
+        }]
+      }]
+    },{
+      procedureName:'土建',
+      children:[{
+        name:'幕墙',
+        procedureCh:[{
+          name:'空调1'
+        },{
+          name:'空调2'
+        }]
+      },{
+        name:'钢筋',
+        procedureCh:[{
+          name:'空调1'
+        },{
+          name:'空调2'
+        }]
+      },{
+        name:'栏杆',
+        procedureCh:[{
+          name:'空调1'
+        },{
+          name:'空调2'
+        }]
+      }]
+    }]
     vm.testData = [{
       MeasureUserName:'aa',
       MeasureTime:2022-22-22,

@@ -63,6 +63,7 @@
           $rootScope.rightArrow = toState.rightArrow;
           $rootScope.refreshBtn = toState.refreshBtn;
           $rootScope.title = toState.title || $rootScope.title;
+          $rootScope.showgrzx =  toState.showgrzx;
         }
         //console.log('toState',toState)
       });
