@@ -202,7 +202,11 @@
           return get(http.url('/common/v1/partners/'+arg+'/employees'));
         }),
         teams: http.custom(function (arg) {
-          return get(http.url('/common/v1/partners/' + arg + '/teams'));
+
+          return get(http.url('/common/v1/partners/' + arg + '/teams',angular.extend({
+            page_size: 0,
+            page_number: 1
+          },arg)));
         }),
         buildingsInfo:http.custom(function(type, typeId){
           if(type == 2) {
