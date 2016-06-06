@@ -323,7 +323,7 @@
                 }
               });
             }],
-            template:'<div layout="column" flex ui-view="content" ></div>'
+            template:'<div layout="column" fullscreen="" flex ui-view="content" ></div>'
           }
         }
       })
@@ -341,6 +341,15 @@
       url:'/pkresult/{year}/{projectID}/{quarter}',
       views :{
         'content@app':{
+          templateUrl : 'app/main/xhsc/ys/evaluatelist_pc.html',
+          controller:'evaluatelistPcController as vm'
+        }
+      }
+    })
+    .state('app.pc.pkresult',{
+      url:'/pkresult/{year}/{projectID}/{quarter}',
+      views :{
+        'content':{
           templateUrl : 'app/main/xhsc/ys/evaluatelist_pc.html',
           controller:'evaluatelistPcController as vm'
         }
