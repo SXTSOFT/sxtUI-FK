@@ -470,14 +470,34 @@
       var g = [];
 
       $scope.data.groups = [];
-      $q.all([!$scope.data.isB && $scope.data.curHistory.CompanyId ?  $q(function (resolve) {
-        resolve({
-          data: {
-            data: $scope.data.supervision.find(function (s) {
-              return s.UnitId == $scope.data.curHistory.CompanyId;
-            }).groups
+      $q.all([!$scope.data.isB && $scope.data.curHistory.CompanyId ?  api.szgc.vanke.teams($scope.data.curHistory.CompanyId).then(function (result) {
+        var gps = $scope.data.supervision.find(function (s) {
+          return s.UnitId == $scope.data.curHistory.CompanyId;
+        }).groups,gps2=[];
+        result.data.data.forEach(function (item) {
+          if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
+            if (item.skills.find(function (sk) {
+                return sk.skill_id == $stateParams.procedureTypeId;
+              }) == null) {
+              return;
+            }
+            ;
+            var fd = gps.find(function (g) {
+              return g.id == item.team_id;
+            });
+            if (!fd)return;
           }
-        })
+          var ns = [];
+          item.managers.forEach(function (it) {
+            ns.push(it.name);
+          });
+          gps2.push({
+            id: item.team_id,
+            name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
+          });
+
+        });
+        return {data:{data:gps2}};
       })  : $q(function (resolve) {
 
         resolve({
@@ -485,15 +505,39 @@
             data: []
           }
         })
-      }), !$scope.data.isB && $scope.data.curHistory.ParentCompanyId && $scope.data.curHistory.ParentCompanyId != $scope.data.curHistory.CompanyId ?  $q(function (resolve) {
-        resolve({
-          data: {
-            data: $scope.data.supervision1.find(function (s) {
-              return s.UnitId == $scope.data.curHistory.ParentCompanyId;
-            }).groups
-          }
-        })
-      }) : $q(function (resolve) {
+      }), !$scope.data.isB && $scope.data.curHistory.ParentCompanyId && $scope.data.curHistory.ParentCompanyId != $scope.data.curHistory.CompanyId ?
+        api.szgc.vanke.teams($scope.data.curHistory.ParentCompanyId).then(function (result) {
+          var gps = $scope.data.supervision1.find(function (s) {
+            return s.UnitId == $scope.data.curHistory.ParentCompanyId;
+          }).groups, gps2 = [];
+          result.data.data.forEach(function (item) {
+            if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
+              if (item.skills.find(function (sk) {
+                  return sk.skill_id == $stateParams.procedureTypeId;
+                }) == null) {
+                return;
+              }
+              var fd = gps.find(function (g) {
+                return g.id == item.team_id;
+              });
+              if(!fd){
+                return;
+              }
+            }
+
+            var ns = [];
+            item.managers.forEach(function (it) {
+              ns.push(it.name);
+            });
+            gps2.push({
+              id: item.team_id,
+              name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
+            });
+
+          });
+          return {data: {data: gps2}};
+          ;
+        }) : $q(function (resolve) {
         resolve({
           data: {
             data: []
@@ -595,7 +639,7 @@
             g.push({
               id: item.id,
               name: item.name
-            })
+            });
           });
           results[1].data.data.forEach(function (item) {
             /*var ns = [];
