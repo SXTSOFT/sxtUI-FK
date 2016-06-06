@@ -129,6 +129,20 @@
           }
         }
       })
+      .state('app.xhsc.fgxtest',{
+        noBack:true,
+        sendBt:true,
+        rightArrow:false,
+        leftArrow:false,
+        title :'工序',
+        url   :'/gxtest',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/procedure/fgxtest.html',
+            controller:'fgxtestController as vm'
+          }
+        }
+      })
       .state('app.xhsc.gxdetail',{
         noBack:true,
         sendBt:true,
@@ -367,6 +381,7 @@
     .state('app.xhsc.pkresult',{
       //url   :'/pkresult/{AssessmentID}/{RegionID}/{RegionName}/{AssessmentTypeID}',
       url:'/pkresult/{year}/{projectID}/{quarter}/{assessmentStage}',
+      noBack:true,
       views :{
         'content@app':{
           templateUrl : 'app/main/xhsc/ys/evaluatelist_pc.html',
