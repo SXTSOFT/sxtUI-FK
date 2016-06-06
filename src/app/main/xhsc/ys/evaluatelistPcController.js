@@ -14,10 +14,11 @@
     var params={
       year:$stateParams.year,
       projectID:$stateParams.projectID,
-      quarter:$stateParams.quarter
+      quarter:$stateParams.quarter,
+      assessmentStage:$stateParams.AssessmentStage
     }
     $q.all([
-      remote.Assessment.queryReport(params.year,params.quarter,params.projectID),
+      remote.Assessment.queryReport(params.year,params.quarter,params.projectID,params.AssessmentStage),
       remote.Assessment.queryProjectRegionInfo(params.projectID)
     ]).then(function(result){
         var  r=result[0];
@@ -29,7 +30,7 @@
     //remote.Assessment.queryReport(params.year,params.quarter,params.projectID).then(function(r){
     //   onQueryBase(r.data);
     //});
-    remote.Assessment.queryTotalReport(params.year,params.quarter,params.projectID).then(function(t){
+    remote.Assessment.queryTotalReport(params.year,params.quarter,params.projectID,params.AssessmentStage).then(function(t){
         vm.toTalReport= t.data;
         setRoleScore();
     });
