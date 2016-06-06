@@ -164,9 +164,9 @@
       });
       fillRegion(vm.caches,item.Assessments,region);
       $scope.$watch('vm.selectedIndex',function () {
-        if(vm.selectedIndex){
-          var k = vm.items.AssessmentClassifys[vm.selectedIndex-1];
-          var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex-1].AssessmentClassifys;
+        if(vm.selectedIndex>=0){
+          var k = vm.items.AssessmentClassifys[vm.selectedIndex];
+          var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex].AssessmentClassifys;
           if (k.AssessmentClassificationName.indexOf("管理行为")>-1){
             assessmentClassifys.forEach(function(t){
               gl_setshow(t);
