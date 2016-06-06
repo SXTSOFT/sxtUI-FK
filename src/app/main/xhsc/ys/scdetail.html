@@ -33,9 +33,6 @@
       <td rowspan="{{item.rows.length}}" ng-if="$index == 0" align="center">
         {{item.QualifiedPointNum}}/{{item.allDot}}
       </td>
-      <!--<td rowspan="{{item.rows.length}}" ng-if="$index == 0" align="center">-->
-        <!--<span class="red">{{item.UnqualifiedPointNum}}</span>/{{item.allDot}}-->
-      <!--</td>-->
       <td rowspan="{{item.rows.length}}" ng-if="$index == 0">{{item.QualifiedRate|number:2}}%</td>
       <td ng-repeat="point in row"  ng-class="{'yellow':point.MeasureStatus == 2,'red':point.MeasureStatus == 3}">{{point.MeasureValue}}</td>
     </tr>

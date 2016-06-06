@@ -19,25 +19,37 @@
       vm.dareaId= $stateParams.areaID;
       vm.dareaName = $stateParams.areaName;
       //console.log('a',$stateParams)
+    vm.id = id;
+    vm.assessmentTypeID= assessmentTypeID;
     vm.ms=[];
     var pk = db('xcpk');
     var data = db('pack'+id);
-    pk.get('xcpk').then(function (pk) {
-      var item = pk.rows.find(function (it) {
-        return it.AssessmentID == id;
-      });
-      if (angular.isArray(item.AssessmentClassifyRegions)&&item.AssessmentClassifyRegions.length){
-          item.AssessmentClassifyRegions.forEach(function(o){
-            vm.ms.push(angular.extend({
-              AssessmentID:item.AssessmentID,
-              AssessmentTypeID:assessmentTypeID
-            },o));
-         });
-      }
-      vm.fq = {
-        RegionID:item.AreaID,
-        RegionName:item.AreaName
-      }
-    })
+    data.get('GetRegionTreeInfo').then(function (result) {
+      var  rr=xhUtils.wrapRegion(result.data);
+
+
+      pk.get('xcpk').then(function (pk) {
+        var item = pk.rows.find(function (it) {
+          return it.AssessmentID == id;
+        });
+
+        if (angular.isArray(item.AssessmentClassifyRegions)&&item.AssessmentClassifyRegions.length){
+            item.AssessmentClassifyRegions.forEach(function(o){
+              var region = xhUtils.findRegion([rr], o.RegionID);
+
+              vm.ms.push(angular.extend({
+                AssessmentID:item.AssessmentID,
+                AssessmentTypeID:assessmentTypeID,
+                fullName: region.fullName
+              },o));
+           });
+        }
+        vm.fq = {
+          RegionID:item.AreaID,
+          RegionName:item.AreaName
+        }
+      })
+
+    });
   }
 })();
