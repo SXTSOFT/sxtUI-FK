@@ -991,13 +991,16 @@ md-tabs[md-align-tabs="bottom"]{
     transform: translate3d(0,0,0);
   }
 }
-.lddq{
+.gxtest{
   md-list{
     border:1px solid #d8d8d8;
     margin-top: 10px;
     background: #fff;
-    padding: 0;
+    padding: 0 8px;
     md-list-item{
+      &.md-no-proxy,.md-no-style{
+        padding:0;
+      }
       >p{
         font-size:14px;
       }
@@ -1022,6 +1025,13 @@ md-tabs[md-align-tabs="bottom"]{
   }
 }
 .grzx{
+  &.md-toolbar-tools{
+    >.md-button{
+      &:first-child{
+        margin-left: 0;
+      }
+    }
+  }
   .md-button{
     min-width: 50px;
     margin: 0;

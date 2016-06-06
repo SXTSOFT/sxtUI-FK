@@ -106,8 +106,8 @@
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
-        title :'抹灰工程',
-        url   :'/choose',
+        title :'工序结果',
+        url   :'/procedure',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/procedure/procedure.html',
@@ -117,7 +117,7 @@
       })
       .state('app.xhsc.gxtest',{
         noBack:true,
-        sendBt:false,
+        sendBt:true,
         rightArrow:false,
         leftArrow:false,
         title :'工序',
@@ -126,6 +126,20 @@
           'content@app':{
             templateUrl : 'app/main/xhsc/procedure/gxtest.html',
             controller:'gxtestController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.gxdetail',{
+        noBack:true,
+        sendBt:true,
+        rightArrow:false,
+        leftArrow:false,
+        title :'工序',
+        url   :'/gxdetail',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/procedure/gxdetail.html',
+            controller:'gxdetailController as vm'
           }
         }
       })
@@ -352,7 +366,7 @@
       })
     .state('app.xhsc.pkresult',{
       //url   :'/pkresult/{AssessmentID}/{RegionID}/{RegionName}/{AssessmentTypeID}',
-      url:'/pkresult/{year}/{projectID}/{quarter}',
+      url:'/pkresult/{year}/{projectID}/{quarter}/{assessmentStage}',
       views :{
         'content@app':{
           templateUrl : 'app/main/xhsc/ys/evaluatelist_pc.html',

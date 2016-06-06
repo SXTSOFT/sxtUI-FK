@@ -15,7 +15,6 @@
     }
 
     function link(scope,element,attr,ctrl){
-      console.log('el',$(element).parent().parent().parent().parent().height())
       var setHeight = function(){
         var iHeight=$(window).height();
         var iToolbar = $('#toptoolbar').height();
@@ -25,7 +24,7 @@
       $(window).resize(function(){
         setHeight();
       })
-      setHeight();
+      setHeight()
       //var iHeight=$(window).height();
       //var iToolbar = $('#toptoolbar').height();
       //var itbar = $('#toolbar2').height();

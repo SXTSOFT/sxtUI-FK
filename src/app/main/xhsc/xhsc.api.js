@@ -47,11 +47,11 @@
       queryItemResults:function () {
         return $http.get($http.url('/Api/AssessmentApi/GetAllAssessmentProject'));
       },
-      queryReport:function (year,quarter,projectID) {
-        return $http.get($http.url('/Api/AssessmentApi/GetAssessmentItemStatisticsResult',{year:year,projectID:projectID,quarter:quarter}));
+      queryReport:function (year,quarter,projectID,assessmentStage) {
+        return $http.get($http.url('/Api/AssessmentApi/GetAssessmentItemStatisticsResult',{year:year,projectID:projectID,quarter:quarter,assessmentStage:assessmentStage}));
       },
-      queryTotalReport:function(year,quarter,projectID){
-        return $http.get($http.url('/Api/AssessmentApi/GetAssessmentTotalReport',{year:year,projectID:projectID,quarter:quarter}));
+      queryTotalReport:function(year,quarter,projectID,assessmentStage){
+        return $http.get($http.url('/Api/AssessmentApi/GetAssessmentTotalReport',{year:year,projectID:projectID,quarter:quarter,assessmentStage:assessmentStage}));
       },
       queryProjectRegionInfo:function(projectID){
          return $http.get($http.url('/Api/ProjectInfoApi/GetProjectRegionRelationByProjectID',{projectID:projectID}));
