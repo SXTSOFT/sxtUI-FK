@@ -186,6 +186,11 @@
           }
           k.AssessmentClassifys =assessmentClassifys;
           k.level = getEvels(k,1);
+        }else {
+          remote.Assessment.queryTotalReport(params.year,params.quarter,params.projectID,params.assessmentStage).then(function(t){
+            vm.toTalReport= t.data;
+            setRoleScore();
+          });
         }
       })
     }
