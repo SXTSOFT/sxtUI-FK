@@ -390,7 +390,7 @@
       }
     })
     .state('app.pc.pkresult',{
-      url:'/pkresult/{year}/{projectID}/{quarter}',
+      url:'/pkresult/{year}/{projectID}/{quarter}/{assessmentStage}',
       views :{
         'content':{
           templateUrl : 'app/main/xhsc/ys/evaluatelist_pc.html',
