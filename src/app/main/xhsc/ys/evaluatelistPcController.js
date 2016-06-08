@@ -81,16 +81,18 @@
     }
 
     function avg(arr){
-      var  score;
+      var score=0,l=0;
       if (angular.isArray(arr)){
-        arr.forEach(function(t){
-            if (angular.isNumber(t.Score)){
-              score=score?score+t.Score:t.Score;
-            }
+        arr.forEach(function(t) {
+          if (t.Score === 0)t.Score = '';
+          if (t.Score) {
+            l++;
+            score = score ? score + t.Score : t.Score;
+          }
         });
       }
-      if (angular.isNumber(score)){
-        return (score/arr.length).toFixed(2);
+      if (score){
+        return (score/l).toFixed(4);
       }
       return "";
     }
@@ -101,7 +103,7 @@
         if (role){
             return role.SectionScores.find(function(t){
                return t.SectionID==sectionID;
-            })
+            });
         }
         return {};
     }
