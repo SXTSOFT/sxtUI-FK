@@ -9,7 +9,7 @@
   /** @ngInject */
   function config(apiProvider){
     var partner = [
-      'xugt','v-zhangqy03'
+      'xugt'
     ],procedureId = '2814510f-0188-4993-a153-559b40d0b5e8';
 
     var $http,$q,auth,api;
@@ -86,8 +86,18 @@
               if (p1)
                 resolve(p1);
               else {
-                console.log('me',me)
-                me.root.szgc.ProjectSettings.query({ unitId: getAuth().current().Partner,groupId: getAuth().current().TeamId }).then(function (result) {
+                var teamIds = getAuth().current().TeamId.split(',');
+                var ps = [];
+                for (var i = 0; i < teamIds.length; i++) {
+                  ps.push(me.root.szgc.ProjectSettingsSevice.query({ unitId: getAuth().current().Partner, groupId: teamIds[i] }));
+                };
+                $q.all(ps).then(function (results) {
+                  var result = results[0];
+                  for (var ix = 1; ix < results.length; ix++) {
+                    results[ix].data.Rows.forEach(function (r) {
+                      result.data.Rows.push(r);
+                    })
+                  }
                   permission = result.data;
                   me._projects(arg).then(function (result) {
                     var p = permission;
@@ -110,8 +120,81 @@
             });
           }
         }),
+        _filter:function(regionType){
+          var me = this;
+          return me.root.szgc.ProjectSettings.getAllSatus(regionType);
+        },
         project_items: http.custom(function (arg) {
+          var s = this;
           return get(http.url('/common/v1/project_items', arg)).then(function (result) {
+            var defer = $q.defer();
+            if (!arg._filter) {
+              s._filter(2).then(function (r) {
+                var arr = [];
+                if (r.status == 200 && r.data.Rows) {
+                  arr = r.data.Rows;
+                }
+                if (arr.length > 0) {
+                  for (var i = result.data.data.length - 1; i >= 0; i--) {
+                    var item = result.data.data[i],
+                      st = arr.find(function (it) { return it.RegionId == item.project_item_id; });
+                    switch (item.project_item_id) {
+                      case "547fc0e7699731702f9cf308":
+                        item.name = '三区商务公寓';
+                        break;
+                      case "547fc0e7699731702f9cf306":
+                        item.name = '三区配套';
+                        break;
+                    }
+                    if (st) {
+                      if (!st.IsEnable) {
+                        result.data.data.splice(i, 1);
+                      }
+                    }
+                  };
+                }
+                defer.resolve(result);
+              })
+            } else {
+              defer.resolve(result);
+            }
+            return defer.promise;
+          }).then(function (result) {
+            result.data.data.sort(function (i1, i2) {
+              var n1 = getNumName(i1.name),
+                n2 = getNumName(i2.name);
+              if (!isNaN(n1) && !isNaN(n2))
+                return n1 - n2;
+              else if ((isNaN(n1) && !isNaN(n2)))
+                return 1;
+              else if ((!isNaN(n1) && isNaN(n2)))
+                return -1;
+              else
+                return i1.name.localeCompare(i2.name);
+            });
+            var p = permission;
+            if (p) {
+
+              for (var i = result.data.data.length - 1; i >= 0; i--) {
+                var item = result.data.data[i];
+                var fd = p.Rows.find(function (it) {
+                  return it.RegionIdTree.indexOf(item.project_item_id) != -1
+                });
+                if (!fd) {
+                  result.data.data.splice(i, 1);
+                }
+              }
+            }
+            for (var i = result.data.data.length - 1; i >= 0; i--) {
+              var item = result.data.data[i];
+              if (item.project_item_id == '5514f7b471fe65ac066cb09b' || item.project_item_id == '5514f7b471fe65ac066cb09c') {
+                // console.log(item)
+                result.data.data.splice(i, 1);
+              }
+            }
+            return result;
+          });
+          /*return get(http.url('/common/v1/project_items', arg)).then(function (result) {
             var p = permission;
             result.data.data.sort(function (i1, i2) {
               var n1 = getNumName(i1.name),
@@ -147,7 +230,7 @@
             }
             return result;
           });
-          return result;
+          return result;*/
         }),
         buildings: http.custom(function (arg) {
           return get(http.url('/common/v1/buildings', arg)).then(function (result) {

@@ -153,7 +153,11 @@
                 init = false;
                 innerScope && scope.onChanged(innerScope);
                 return api.szgc.vanke.rooms({ page_number: 1, page_size: 1000, building_id: value.split('-')[0], floor: value.split('-')[1] }).then(function (result) {
-                  //scope.onQueryed && scope.onQueryed(result.data);
+                  result.data.data.forEach(function (r) {
+                    if (r.unit) {
+                      r.name = r.unit + '-' + r.name;
+                    }
+                  });
                   var s = new st(index, 'room_id', 'name', result.data.data, '户');
                   scope.onQueryed && scope.onQueryed(s);
                   return s;

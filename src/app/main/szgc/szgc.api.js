@@ -14,6 +14,9 @@
 
     apiProvider.register('szgc',{
       ProjectSettings:{
+        getAllSatus:function (regionType) {
+          return $http.get($http.url('/api/tblRegionState', { regionType: regionType }));
+        },
         query:function(args) {
           return $http.get($http.url('/api/ProjectSetting', args));
         }
