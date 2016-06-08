@@ -13,6 +13,7 @@
       },
       templateUrl:'app/main/xhsc/directive/photoDraw.html',
       link:link
+      
     }
     function  link(scope,element,attr,ctrl){
 
