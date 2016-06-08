@@ -129,13 +129,27 @@
           }
         }
       })
+      .state('app.xhsc.jlgxtest',{
+        noBack:true,
+        sendBt:true,
+        rightArrow:false,
+        leftArrow:false,
+        title :'工序',
+        url   :'/jlgxtest',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/procedure/gxtest-jl.html',
+            controller:'jlgxtestController as vm'
+          }
+        }
+      })
       .state('app.xhsc.fgxtest',{
         noBack:true,
         sendBt:true,
         rightArrow:false,
         leftArrow:false,
         title :'工序',
-        url   :'/gxtest',
+        url   :'/fgxtest',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/procedure/fgxtest.html',
@@ -154,6 +168,20 @@
           'content@app':{
             templateUrl : 'app/main/xhsc/procedure/gxdetail.html',
             controller:'gxdetailController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.center',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'消息中心',
+        url   :'/center',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/center/center.html',
+            controller:'centerController as vm'
           }
         }
       })

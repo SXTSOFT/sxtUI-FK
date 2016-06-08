@@ -1,26 +1,57 @@
-<div flex="none" layout="column" style="max-height:96px;height:96px;width:100%;z-index: 10;">
-  <md-list  flex layout="row" style="background:#fff;padding:0;border-bottom: 1px solid #d8d8d8;height:48px;">
-    <md-list-item flex="25"><md-button><span>全部</span><span>(15)</span></md-button></md-list-item>
-    <md-list-item flex="25"><md-button><span class="yet">已验</span><span>(15)</span></md-button></md-list-item>
-    <md-list-item flex="25"><md-button><span class="ing">待验</span><span>(15)</span></md-button></md-list-item>
-    <md-list-item flex="25"><md-button><span class="done">未检验</span><span>(15)</span></md-button></md-list-item>
-  </md-list>
-  <md-list flex layout="row" style="height: 48px;padding: 0;background: rgb(245,245,245)">
-    <span flex></span>
-    <md-list-item flex><md-button class="md-button" style="border:1px solid #d8d8d8;">未整改</md-button></md-list-item>
-    <md-list-item flex><md-button class="md-button" style="border:1px solid #d8d8d8;">已整改</md-button></md-list-item>
-    <span flex></span>
+<div flex="none" layout="column" style="max-height:60px;height:60px;width:100%;z-index: 10;" class="gxxz">
+  <md-list  flex layout="row" style="background:#fff;padding:0;border-bottom: 1px solid #d8d8d8;">
+    <md-list-item flex="20" style="border-bottom: 2px solid #ff3434"><md-button ng-click="vm.filter()"><span>全部</span><span>(15)</span></md-button></md-list-item>
+    <md-list-item flex="20"><md-button ng-click="vm.filter()"><span><i  class="pass"></i>合格</span><span>(15)</span></md-button></md-list-item>
+    <md-list-item flex="20"><md-button ng-click="vm.filter()"><span><i class="ng"></i>不合格</span><span>(15)</span></md-button></md-list-item>
+    <md-list-item flex="20"><md-button ng-click="vm.filter()"><span><i class="wait"></i>待验</span><span>(15)</span></md-button></md-list-item>
+    <md-list-item flex="20"><md-button ng-click="vm.filter()"><span><i class="yet"></i>未报验</span><span>(15)</span></md-button></md-list-item>
   </md-list>
 </div>
 <md-content flex ng-cloak>
-  <h2>星河银河谷项目一期</h2>
-  <div class="floor-list">
-    <div class="xm">
-      <md-button class="md-button" style="border:1px solid #d8d8d8;" ui-sref="app.xhsc.gxtest">未整改</md-button>
+  <p style="font-size:12px;background: #f4f4f6;padding:10px;">星河银河谷项目一期</p>
+  <div class="floor-list gxroomlist">
+    <div>
+      <md-list style="padding:0 10px;">
+        <md-list-item>
+          <div flex>
+            <div flex style="border-bottom: 1px solid #d8d8d8;position: relative;text-align: right;"><span style="display:block;position: absolute;left: 10px;line-height: 36px;">A栋</span><md-button ng-click="vm.zk()" style="color:#49affe;min-width: 50px;">展开</md-button></div>
+            <md-list>
+              <md-list-item>
+                <div flex>
+                  <div flex style="border-bottom: 1px solid #d8d8d8;position: relative;text-align: right;"><span style="display:block;position: absolute;left: 10px;line-height: 36px;">A栋</span><md-button ng-click="vm.zk()" style="color:#49affe;min-width: 50px;">展开</md-button></div>
+                  <md-list flex class="roomllist">
+                    <md-list-item>
+                      <md-button ng-click="vm.showmyDialog = true" class="pass">101</md-button>
+                    </md-list-item>
+                    <md-list-item>
+                      <md-button>101</md-button>
+                    </md-list-item>
+                    <md-list-item>
+                      <md-button>101</md-button>
+                    </md-list-item>
+                    <md-list-item>
+                      <md-button>101</md-button>
+                    </md-list-item>
+                    <md-list-item>
+                      <md-button>101</md-button>
+                    </md-list-item>
+                    <md-list-item>
+                      <md-button>101</md-button>
+                    </md-list-item>
+                    <md-list-item>
+                      <md-button>101</md-button>
+                    </md-list-item>
+                  </md-list>
+                </div>
+              </md-list-item>
+            </md-list>
+          </div>
+        </md-list-item>
+      </md-list>
     </div>
   </div>
 </md-content>
-
+<my-dialog dialog-show="vm.showmyDialog" ng-show="vm.showmyDialog"></my-dialog>
 <!--<md-tabs md-border-bottom flex layout="column" md-selected="vm.data.selectedIndex">-->
   <!--<md-tab label="实测实量" md-on-select="vm.onNavList()">-->
     <!--<md-tab-content flex layout-fill layout="column">-->
