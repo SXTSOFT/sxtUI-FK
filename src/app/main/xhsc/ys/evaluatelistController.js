@@ -292,6 +292,23 @@
       $mdDialog.show({
         controller: ['$scope','$mdDialog',function ($scope, $mdDialog) {
           $scope.Problems =item.Problems;
+          $scope.addQuestion = function(){
+            $mdDialog.show({
+              controller:['$scope',function($scope){
+                $scope.cancel = function(){
+                  $mdDialog.hide();
+                }
+                $scope.submit = function(){
+                  xhUtils.photo().then(function ($base64Url) {
+                    if($base64Url) {
+
+                    }
+                  });
+                }
+              }],
+              templateUrl:'app/main/xhsc/ys/addQuestion.html'
+            })
+          }
           $scope.answer = function(answer,ev) {
             if(!item.regions){
               item.regions = [];

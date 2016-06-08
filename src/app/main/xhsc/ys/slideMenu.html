@@ -16,7 +16,11 @@
       <div class="floors" layout="column">
         <md-list>
           <md-list-item layout="row" ng-repeat="gxc in gxlevels" ng-click="changeOrclick(gxc)">
-            <p> {{gxc.name}}</p>
+            <p>{{gxc.name}}</p>
+            <md-switch class="md-secondary" ng-model="gxc.checked" ng-if="showCheck"></md-switch>
+          </md-list-item>
+          <md-list-item ng-if="showCheck">
+            <p>其它</p>
             <md-switch class="md-secondary" ng-model="gxc.checked" ng-if="showCheck"></md-switch>
           </md-list-item>
         </md-list>

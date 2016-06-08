@@ -1,1 +1,70 @@
-<div>aaa</div>
+<div flex="none" style="position: relative;border-bottom: 1px solid #d8d8d8;">
+  <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;left:10px;top:0;" >
+    <md-icon md-font-icon="icon-chevron-left" ></md-icon>
+  </md-button>
+  <p style="font-size:14px;padding:0 10px;text-align: center;margin-bottom: 0;line-height:48px;width:70%;margin-left:auto;margin-right:auto;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+    深圳星河银河谷项目>一期>A栋>203
+  </p>
+  <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;right:10px;top:0">
+    <md-icon md-font-icon="icon-chevron-right" ></md-icon>
+  </md-button>
+</div>
+<div class="gxtest gxtestdetail">
+  <md-list class="gxque">
+    <md-list-item>
+      <p>交流单芯电缆不得单独穿于钢导管内</p>
+    </md-list-item>
+    <md-list-item>
+      <span style="width:60px;display: block;">说明</span>
+      <p>交流单芯电缆不得单独穿于钢导管内交流单芯电缆不得单独穿于钢导管内交流单芯电缆不得单独穿于钢导管内交流单芯电缆不得单独穿于钢导管内</p>
+    </md-list-item>
+    <md-list-item>
+      <span style="width:60px;display: block;">照片</span>
+      <p>
+        <span class="photo">
+            <i>照片</i><i>2</i>
+          </span>
+        <md-button style="min-width: 40px;" class="addphoto"><img src="app/main/xhsc/images/plus.png" width="40"></md-button>
+      </p>
+    </md-list-item>
+    <md-list-item>
+      <span style="width:60px;display: block;">备注</span>
+      <p><input style="border:none;width:100%;"></p>
+    </md-list-item>
+    <md-list-item>
+      <span>验收意见</span>
+      <p style="text-align: right;margin-right:70px;">
+        {{vm.value}}<md-switch ng-model="vm.value" ng-true-value="'符合'" ng-init="vm.value='不符合'" ng-false-value="'不符合'" class="md-secondary"></md-switch>
+      </p>
+    </md-list-item>
+  </md-list>
+  <md-list class="gxque">
+    <md-list-item>
+      <p ui-sref="app.xhsc.jlgxtest">交流单芯电缆不得单独穿于钢导管内</p>
+    </md-list-item>
+    <md-list-item>
+      <span style="width:60px;display: block;">说明</span>
+      <p>交流单芯电缆不得单独穿于钢导管内交流单芯电缆不得单独穿于钢导管内交流单芯电缆不得单独穿于钢导管内交流单芯电缆不得单独穿于钢导管内</p>
+    </md-list-item>
+    <md-list-item>
+      <span style="width:60px;display: block;">照片</span>
+      <p>
+        <span class="photo">
+            <i>照片</i><i>2</i>
+          </span>
+        <md-button style="min-width: 40px;" class="addphoto"><img src="app/main/xhsc/images/plus.png" width="40"></md-button>
+      </p>
+    </md-list-item>
+    <md-list-item>
+      <span style="width:60px;display: block;">备注</span>
+      <p><input style="border:none;width:100%;"></p>
+    </md-list-item>
+    <md-list-item>
+      <span>验收意见</span>
+      <p style="text-align: right;margin-right:70px;">
+        {{vm.value}}<md-switch ng-model="vm.value" ng-true-value="'合格'" ng-init="vm.value='不合格'" ng-false-value="'不合格'" class="md-secondary"></md-switch>
+      </p>
+    </md-list-item>
+  </md-list>
+</div>
+
