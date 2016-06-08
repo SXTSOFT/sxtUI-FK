@@ -13,10 +13,11 @@
       },
       templateUrl:'app/main/xhsc/directive/photoDraw.html',
       link:link
+      
     }
     function  link(scope,element,attr,ctrl){
 
-      scope.color = 'black';
+      scope.color = 'red';
       scope.is = function (color) {
         return scope.color == color ?'1px':'0';
       };
@@ -121,7 +122,7 @@
           })
         }
         scope.save =  function () {
-          var dataURL = canvas.toDataURL();
+          var dataURL = canvas.toDataURL('image/jpeg',1);
           scope.onAnswer && scope.onAnswer({$base64Url:dataURL});
           $mdDialog.show({
             controller:['$scope',function($scope){
@@ -177,8 +178,8 @@
             if (imageData) {
               image = new Image();
               image.onload = function() {
-                if(image.width>800 || image.height>800){
-                  var rd = 800/Math.max(image.width,image.height);
+                if(image.width>400 || image.height>400){
+                  var rd = 400/Math.max(image.width,image.height);
                   srcWidth = image.width*rd;
                   srcHeight = image.height*rd;
                 }

@@ -9,28 +9,29 @@
     .controller('evaluatelistPcController',evaluatelistPcController);
 
   /** @ngInject*/
-  function evaluatelistPcController($scope,$stateParams,xhUtils,remote,$mdDialog,utils,$q){
+  function evaluatelistPcController($scope,$stateParams,xhUtils,remote,$mdDialog,utils,$q,$timeout){
     var vm = this;
     var params={
       year:$stateParams.year,
       projectID:$stateParams.projectID,
       quarter:$stateParams.quarter,
-      assessmentStage:$stateParams.AssessmentStage
-    }
+      assessmentStage:$stateParams.assessmentStage
+    };
+    vm.params =params;
     $q.all([
-      remote.Assessment.queryReport(params.year,params.quarter,params.projectID,params.AssessmentStage),
+      remote.Assessment.queryReport(params.year,params.quarter,params.projectID,params.assessmentStage),
       remote.Assessment.queryProjectRegionInfo(params.projectID)
     ]).then(function(result){
         var  r=result[0];
         var  prj=result[1];
-        onQueryBase(r.data,prj.data)
+        onQueryBase(r.data,prj.data);
     },function(error){
 
     })
     //remote.Assessment.queryReport(params.year,params.quarter,params.projectID).then(function(r){
     //   onQueryBase(r.data);
     //});
-    remote.Assessment.queryTotalReport(params.year,params.quarter,params.projectID,params.AssessmentStage).then(function(t){
+    remote.Assessment.queryTotalReport(params.year,params.quarter,params.projectID,params.assessmentStage).then(function(t){
         vm.toTalReport= t.data;
         setRoleScore();
     });
@@ -38,6 +39,9 @@
       vm.prjScores=[];
       vm.jlScores=[];
       vm.zbScores=[];
+      vm.toTalReport.Sections.sort(xhUtils.sort(function (s) {
+        return s.SectionName;
+      }));
       vm.toTalReport.Sections.forEach(function(r){
         vm.prjScores.push(findRole(4, r.SectionID));
         vm.prjScores.avg=avg(vm.prjScores);
@@ -77,16 +81,18 @@
     }
 
     function avg(arr){
-      var  score;
+      var score=0,l=0;
       if (angular.isArray(arr)){
-        arr.forEach(function(t){
-            if (angular.isNumber(t.Score)){
-              score=score?score+t.Score:t.Score;
-            }
+        arr.forEach(function(t) {
+          if (t.Score === 0)t.Score = '';
+          if (t.Score) {
+            l++;
+            score = score ? score + t.Score : t.Score;
+          }
         });
       }
-      if (angular.isNumber(score)){
-        return (score/arr.length).toFixed(2);
+      if (score){
+        return (score/l).toFixed(4);
       }
       return "";
     }
@@ -97,7 +103,7 @@
         if (role){
             return role.SectionScores.find(function(t){
                return t.SectionID==sectionID;
-            })
+            });
         }
         return {};
     }
@@ -105,6 +111,9 @@
     function onQueryBase(item,region) {
       //管理行为界面控制开关
       vm.showfitObj=false;
+      item.Assessments.sort(xhUtils.sort(function (s) {
+        return s.SectionName;
+      }));
       vm.sections=item.Assessments;
       vm.items = {
         AssessmentClassifys:[]
@@ -164,23 +173,33 @@
       });
       fillRegion(vm.caches,item.Assessments,region);
       $scope.$watch('vm.selectedIndex',function () {
-        if(vm.selectedIndex){
-          var k = vm.items.AssessmentClassifys[vm.selectedIndex-1];
-          var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex-1].AssessmentClassifys;
-          if (k.AssessmentClassificationName.indexOf("管理行为")>-1){
-            assessmentClassifys.forEach(function(t){
-              gl_setshow(t);
-            });
-            vm.showfitObj=true;
+        $timeout(function () {
+          if(vm.selectedIndex>=0&&vm.selectedIndex<vm.items.AssessmentClassifys.length){
+            var k = vm.items.AssessmentClassifys[vm.selectedIndex];
+            if (!k.AssessmentClassifys){
+              var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex].AssessmentClassifys;
+              if (k.AssessmentClassificationName.indexOf("管理行为")>-1){
+                assessmentClassifys.forEach(function(t){
+                  gl_setshow(t);
+                });
+                vm.showfitObj=true;
+              }else {
+                assessmentClassifys.forEach(function(t){
+                  setshow(t);
+                });
+                vm.showfitObj=false;
+              }
+              k.AssessmentClassifys =assessmentClassifys;
+              k.level = getEvels(k,1);
+            }
           }else {
-            assessmentClassifys.forEach(function(t){
-              setshow(t);
+            remote.Assessment.queryTotalReport(params.year,params.quarter,params.projectID,params.assessmentStage).then(function(t){
+              vm.toTalReport= t.data;
+              setRoleScore();
             });
-            vm.showfitObj=false;
           }
-          k.AssessmentClassifys =assessmentClassifys;
-          k.level = getEvels(k,1);
-        }
+        },800);
+
       })
     }
 
@@ -367,6 +386,11 @@
               item.kf = result.value;
               item.des = result.reason;
             }
+            $scope.noScore = function(result){
+              item.kf = result.value = 0;
+              item.des = result.reason ='符合要求';
+              $mdDialog.hide(result);
+            }
           }],
           templateUrl:'app/main/xhsc/ys/glxwInput.html',
           parent: angular.element(document.body),
@@ -405,7 +429,6 @@
             utils.alert('应该输入半角数字');
           }
         }
-        console.log(result);
       })
     }
   }

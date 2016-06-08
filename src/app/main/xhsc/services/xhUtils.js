@@ -16,10 +16,52 @@
       wrapRegion:wrapRegion,
       photo:photo,
       when:when,
-      playPhoto:playPhoto
+      playPhoto:playPhoto,
+      sort:sort
     };
     return o;
 
+    function getNumName(str) {
+      str = str.replace('十', '10')
+        .replace('九', '9')
+        .replace('八', '8')
+        .replace('七', '7')
+        .replace('六', '6')
+        .replace('五', '5')
+        .replace('四', '4')
+        .replace('三', '3')
+        .replace('二', '2')
+        .replace('一', '1')
+        .replace('十一', '11')
+        .replace('十二', '12')
+        .replace('十三', '13')
+        .replace('十四', '14')
+        .replace('十五', '15')
+        .replace('十六', '16')
+        .replace('十七', '17')
+        .replace('十八', '18')
+        .replace('十九', '19')
+        .replace('二十', '20');
+      var n = parseInt(/[-]?\d+/.exec(str));
+      return n;
+    };
+    function sort(fn) {
+      return function (s1,s2) {
+        var a1 = fn(s1),
+          a2 = fn(s2);
+
+        var n1 = getNumName(a1),
+          n2 = getNumName(a2);
+        if (!isNaN(n1) && !isNaN(n2))
+          return n1 - n2;
+        else if ((isNaN(n1) && !isNaN(n2)))
+          return 1;
+        else if ((!isNaN(n1) && isNaN(n2)))
+          return -1;
+        else
+          return a1.localeCompare(a2);
+      }
+    }
 
     function wrapRegion(target){
         region = target;

@@ -1,4 +1,4 @@
-/**
+ /**
  * Created by jiuyuong on 2016/5/10.
  */
 (function () {
@@ -71,7 +71,7 @@
         remove:function (id,cb,progress){
           localPack.unPack(id);
           remotePack.unPack(id);
-          var totalStep = 6,
+          var totalStep = 9,
             fn = function (step) {
               progress && progress(parseInt(step/totalStep*100));
           };
@@ -88,7 +88,16 @@
                     fn(5);
                     p.destroyDir(id, function () {
                       fn(6);
-                      cb();
+                      p.destroyDb('Pack'+id+'stzl_item',function () {
+                        fn(7);
+                        p.destroyDb('Pack'+id+'stzl_question',function () {
+                          fn(8);
+                          p.destroyDir('Pack'+id+'stzl_images', function () {
+                            fn(9);
+                            cb();
+                          });
+                        });
+                      })
                     });
                   });
                 })
