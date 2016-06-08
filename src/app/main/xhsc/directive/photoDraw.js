@@ -16,7 +16,7 @@
     }
     function  link(scope,element,attr,ctrl){
 
-      scope.color = 'black';
+      scope.color = 'red';
       scope.is = function (color) {
         return scope.color == color ?'1px':'0';
       };

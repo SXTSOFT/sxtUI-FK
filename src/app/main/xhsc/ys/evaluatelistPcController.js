@@ -16,7 +16,8 @@
       projectID:$stateParams.projectID,
       quarter:$stateParams.quarter,
       assessmentStage:$stateParams.assessmentStage
-    }
+    };
+    vm.params =params;
     $q.all([
       remote.Assessment.queryReport(params.year,params.quarter,params.projectID,params.assessmentStage),
       remote.Assessment.queryProjectRegionInfo(params.projectID)
