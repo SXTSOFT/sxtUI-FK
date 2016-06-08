@@ -1,4 +1,4 @@
-<md-tabs md-align-tabs="bottom" flex md-swipe-content md-selected="vm.selectedIndex" class="zlpkwrap">
+<md-tabs md-align-tabs="bottom" flex md-selected="vm.selectedIndex" class="zlpkwrap">
   <md-tab label="{{b.AssessmentClassificationName}}" ng-repeat="b in vm.items.AssessmentClassifys">
     <md-tab-content flex layout-fill layout="column"  >
       <div flex="none" layout="row" style="border-right:0" class="zlpkheader">
@@ -285,25 +285,30 @@
           <tbody>
           <tr>
             <td rowspan="2" class="td_left" style="padding-left: 10px;">项目部得分</td>
-            <td colspan="{{vm.prjScores.length}}">{{vm.prjScores.avg|number:2}} {{vm.prjScores.avg||vm.prjScores.avg===0?'%':''}}</td>
+            <td colspan="{{vm.prjScores.length}}">
+              <span ng-if="vm.prjScores.avg">{{vm.prjScores.avg|number:2}} %</span></td>
             <td class="td_left" style="width:120px"></td>
           </tr>
           <tr>
-            <td style="width:120px" ng-repeat="k in vm.prjScores">{{k.Score|number:2}} {{k.Score||k.Score===0?'%':''}}</td>
+            <td style="width:120px" ng-repeat="k in vm.prjScores">
+              <span ng-if="k.Score">{{k.Score|number:2}} %</span></td>
             <td class="td_left"></td>
           </tr>
           <tr>
             <td rowspan="2" class="td_left" style="padding-left: 10px;">监理得分</td>
-            <td colspan="{{vm.jlScores.length}}">{{vm.jlScores.avg|number:2}} {{vm.jlScores||vm.jlScores===0?'%':''}}</td>
+            <td colspan="{{vm.jlScores.length}}">
+              <span ng-if="vm.jlScores.avg">{{vm.jlScores.avg|number:2}} %</span></td>
             <td class="td_left"></td>
           </tr>
           <tr>
-            <td ng-repeat="k in vm.jlScores">{{k.Score|number:2}} {{k.Score||k.Score===0?'%':''}}</td>
+            <td ng-repeat="k in vm.jlScores">
+              <span ng-if="k.Score">{{k.Score|number:2}} %</span></td>
             <td class="td_left"></td>
           </tr>
           <tr>
             <td class="td_left" style="padding-left: 10px;">总包得分</td>
-            <td ng-repeat="k in vm.zbScores">{{k.Score|number:2}} {{k.Score||k.Score===0?'%':''}}</td>
+            <td ng-repeat="k in vm.zbScores">
+              <span ng-if="k.Score">{{k.Score|number:2}} %</span></td>
             <td class="td_left"></td>
           </tr>
           </tbody>
