@@ -174,20 +174,22 @@
         $timeout(function () {
           if(vm.selectedIndex>=0&&vm.selectedIndex<vm.items.AssessmentClassifys.length){
             var k = vm.items.AssessmentClassifys[vm.selectedIndex];
-            var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex].AssessmentClassifys;
-            if (k.AssessmentClassificationName.indexOf("管理行为")>-1){
-              assessmentClassifys.forEach(function(t){
-                gl_setshow(t);
-              });
-              vm.showfitObj=true;
-            }else {
-              assessmentClassifys.forEach(function(t){
-                setshow(t);
-              });
-              vm.showfitObj=false;
+            if (!k.AssessmentClassifys){
+              var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex].AssessmentClassifys;
+              if (k.AssessmentClassificationName.indexOf("管理行为")>-1){
+                assessmentClassifys.forEach(function(t){
+                  gl_setshow(t);
+                });
+                vm.showfitObj=true;
+              }else {
+                assessmentClassifys.forEach(function(t){
+                  setshow(t);
+                });
+                vm.showfitObj=false;
+              }
+              k.AssessmentClassifys =assessmentClassifys;
+              k.level = getEvels(k,1);
             }
-            k.AssessmentClassifys =assessmentClassifys;
-            k.level = getEvels(k,1);
           }else {
             remote.Assessment.queryTotalReport(params.year,params.quarter,params.projectID,params.assessmentStage).then(function(t){
               vm.toTalReport= t.data;
