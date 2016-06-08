@@ -149,12 +149,14 @@
     border-bottom-left-radius:4px
 
   }
-  &.bhg {
+  .bhg {
+
     .btnUp{
-      background-color:orange ; color: white;
+      color: orange;
     }
     .btnDown{
-      color: orange;
+      background-color:orange ; color: white;
+
     }
   }
 }

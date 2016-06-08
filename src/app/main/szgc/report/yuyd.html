@@ -49,6 +49,7 @@
   </div>
 <md-content flex layout="column">
     <span flex ng-if="vm.project.rows.length==0 && !vm.project.loading" style="text-align: center;display: block;"> 暂无数据</span>
+   <span flex style="text-align: center;display: block;" ng-if="vm.project.loading&&vm.project.rows.length!=0">正在加载数据......</span>
     <md-list layout-padding>
       <md-list-item>
         <div class="yhyd" layout="row"  layout-wrap>
