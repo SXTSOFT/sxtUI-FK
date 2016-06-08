@@ -90,7 +90,7 @@
           }
         }
         scope.save =  function () {
-          var dataURL = canvas.toDataURL();
+          var dataURL = canvas.toDataURL('image/jpeg',1);
           scope.onAnswer && scope.onAnswer({$base64Url:dataURL});
         }
 
