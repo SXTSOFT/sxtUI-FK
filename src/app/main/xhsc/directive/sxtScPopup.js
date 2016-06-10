@@ -84,6 +84,9 @@
           mutiEdit = [];
         }
         scope.edit ={
+          plasterDepth:sjzEdit.find(function (item) {
+            return item.m.plasterDepth
+          }),
           singleEdit:singleEdit,
           mutiEdit:mutiEdit,
           floorEdit:floorEdit,

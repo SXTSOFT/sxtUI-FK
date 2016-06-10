@@ -48,7 +48,7 @@
         <td  ng-repeat="item in edit.sjzEdit"><sxt-num-downdown ct="ct" on-change="onMeasureValueChange(item.v,item)" ng-model="item.v.MeasureValue"></sxt-num-downdown>
         </td>
       </tr>
-      <tr>
+      <tr ng-if="edit.plasterDepth">
         <td style="width:80px; text-align: center;">抹灰厚度</td>
         <td ng-repeat="item in edit.sjzEdit" style="line-height: 30px; text-align: center">
           {{item.m.plasterDepth}}

@@ -97,7 +97,7 @@
               };
               ps.push(p);
             }
-            if(m.ExtendedField1 || m.ExtendedField1.indexOf(',')){
+            if(m.ExtendedField1 && m.ExtendedField1.indexOf(',')){
               var ms = m.ExtendedField1.split(',');
               ms.forEach(function (v) {
                 p.ms.push({

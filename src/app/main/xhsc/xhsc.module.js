@@ -117,7 +117,7 @@
       })
       .state('app.xhsc.gxtest',{
         noBack:true,
-        sendBt:true,
+        sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'工序',
@@ -131,7 +131,7 @@
       })
       .state('app.xhsc.jlgxtest',{
         noBack:true,
-        sendBt:true,
+        sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'工序',
@@ -145,7 +145,7 @@
       })
       .state('app.xhsc.fgxtest',{
         noBack:true,
-        sendBt:true,
+        sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'工序',
@@ -159,7 +159,7 @@
       })
       .state('app.xhsc.gxdetail',{
         noBack:true,
-        sendBt:true,
+        sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'工序',
@@ -285,7 +285,7 @@
       })
       .state('app.xhsc.sctb',{
         noBack:true,
-        sendBt:true,
+        sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'实测详情',
@@ -299,7 +299,7 @@
       })
       .state('app.xhsc.temp',{
         noBack:true,
-        sendBt:true,
+        sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'工序',
