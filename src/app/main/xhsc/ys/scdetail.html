@@ -34,7 +34,7 @@
         {{item.QualifiedPointNum}}/{{item.allDot}}
       </td>
       <td rowspan="{{item.rows.length}}" ng-if="$index == 0">{{item.QualifiedRate|number:2}}%</td>
-      <td ng-repeat="point in row"  ng-class="{'yellow':point.MeasureStatus == 2,'red':point.MeasureStatus == 3}">{{point.MeasureValue}}</td>
+      <td ng-repeat="point in row"  ng-class="{'yellow':point.MeasureStatus == 2,'red':point.MeasureStatus == 3}" ng-bind-html="point.MeasureValue"></td>
     </tr>
     <tr ng-repeat="row in item.Children" ng-if="item.Children">
       <td rowspan="{{item.Children.length}}" ng-if="$index == 0" style="padding: 0;">
@@ -45,14 +45,14 @@
           </tr>
         </table>
       </td>
-      <td align="center">
-        {{row.QualifiedPointNum}}/{{row.allDot}}
+      <td align="center" rowspan="{{item.rowSpan}}" ng-if="$index==0">
+        {{item.QualifiedPointNum}}/{{item.allDot}}
       </td>
       <!--<td align="center">-->
         <!--<span class="red">{{row.UnqualifiedPointNum}}</span>/{{row.allDot}}-->
       <!--</td>-->
-      <td>{{row.QualifiedRate|number:2}}%</td>
-      <td ng-repeat="point in row.rows[0]">{{point.MeasureValue}}</td>
+      <td  rowspan="{{item.rowSpan}}" ng-if="$index==0">{{item.QualifiedPointNum*100.0/item.allDot|number:2}}%</td>
+      <td ng-repeat="point in row.rows[0]" ng-class="{'yellow':point.MeasureStatus == 2,'red':point.MeasureStatus == 3}" ng-bind-html="point.MeasureValue"></td>
       <!--<td ng-repeat="point in row">{{point.MeasureValue}}</td>-->
     </tr>
     </tbody>
