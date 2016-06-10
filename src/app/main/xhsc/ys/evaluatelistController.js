@@ -331,6 +331,7 @@
             var dedu = {
               _id:_id,
               DeducScoretItemID:_id,
+              AssessmentID:params.AssessmentID,
               AssessmentRegionItemResultID:rn._id,
               RegionID:rn.RegionID,
               AssessmentCheckItemID:item.AssessmentCheckItemID,
