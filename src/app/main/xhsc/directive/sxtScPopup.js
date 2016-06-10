@@ -26,7 +26,7 @@
       scope.apply = function() {
         scope.isSaveData = null;
         var context = scope.context,p = context.layer.getValue();
-        var singleEdit=[],mutiEdit=[],floorEdit=[],sjzEdit=[],materEidt=[],group,groupEdit=[];
+        var singleEdit=[],mutiEdit=[],floorEdit=[],sjzEdit=[],materEidt=[],group= null,groupEdit=[];
         scope.data.updates = [];
         var ms = [];
         scope.data.measureIndexes.forEach(function(m){
@@ -85,7 +85,7 @@
         }
         scope.edit ={
           plasterDepth:sjzEdit.find(function (item) {
-            return item.m.plasterDepth
+            return !!item.m.plasterDepth
           }),
           singleEdit:singleEdit,
           mutiEdit:mutiEdit,
