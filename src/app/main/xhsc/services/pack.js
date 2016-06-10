@@ -92,7 +92,7 @@
                         fn(7);
                         p.destroyDb('Pack'+id+'stzl_question',function () {
                           fn(8);
-                          p.destroyDir('Pack'+id+'stzl_images', function () {
+                          p.destroyDb('Pack'+id+'stzl_images', function () {
                             fn(9);
                             cb();
                           });
