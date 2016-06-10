@@ -9,7 +9,7 @@
     .controller('downloadController',downloadController);
 
   /** @ngInject*/
-  function downloadController($mdDialog,db,remote,localPack,xhUtils,$rootScope,$scope,pack,utils,stzlServices){
+  function downloadController($mdDialog,db,remote,localPack,xhUtils,$rootScope,$scope,pack,utils,stzlServices,$mdBottomSheet){
     var vm = this;
     var xcpk = db('xcpk');
     xcpk.get('xcpk').then(function (result) {

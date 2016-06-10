@@ -1,0 +1,25 @@
+<md-dialog ng-cloak style="max-width:50%;width:50%;" class="questionlist">
+  <md-dialog-content layout="row">
+    <div layout="column" flex>
+      <div layout="row">部位</div>
+      <div layout="row" flex>
+        <md-input-container class="md-block" flex>
+          <input>
+        </md-input-container>
+      </div>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions>
+    <md-button class="md-raised" ng-click="cancel()">取消</md-button>
+    <md-button class="md-raised" ng-click="submit()">确定</md-button>
+  </md-dialog-actions>
+  <!--<md-dialog-actions layout="row" ng-if="Problems.length">-->
+  <!--<span flex></span>-->
+  <!--<md-button ng-click="answer()">-->
+  <!--取消-->
+  <!--</md-button>-->
+  <!--<md-button ng-click="answer()" style="margin-right:20px;">-->
+  <!--确定-->
+  <!--</md-button>-->
+  <!--</md-dialog-actions>-->
+</md-dialog>

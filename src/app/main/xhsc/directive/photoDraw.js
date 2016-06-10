@@ -4,7 +4,7 @@
     .directive('photoDraw',photoDraw);
 
   /** @Inject */
-  function photoDraw($cordovaCamera,$timeout){
+  function photoDraw($cordovaCamera,$timeout,$mdDialog){
     return {
       restrict:'E',
       scope:{
@@ -13,10 +13,11 @@
       },
       templateUrl:'app/main/xhsc/directive/photoDraw.html',
       link:link
+      
     }
     function  link(scope,element,attr,ctrl){
 
-      scope.color = 'black';
+      scope.color = 'red';
       scope.is = function (color) {
         return scope.color == color ?'1px':'0';
       };
@@ -82,16 +83,58 @@
         }
         scope.cancel = function () {
           scope.onCancel && scope.onCancel();
+          //$mdDialog.show(
+          //    $mdDialog.prompt({
+          //    title:'部位描述',
+          //    textContent:'部位描述',
+          //    placeholder:'部位描述',
+          //    ok:'确定',
+          //    cancel:'取消'
+          //  })
+          //)
+          $mdDialog.show({
+            controller:['$scope',function($scope){
+              $scope.cancel = function(){
+                $mdDialog.hide();
+              }
+              $scope.submit = function(){
+                $mdDialog.hide();
+              }
+            }],
+            templateUrl:'app/main/xhsc/ys/addPartDescription.html'
+          })
         }
         scope.erase = function () {
           if(image){
             ctx.clearRect(0, 0, srcWidth, srcHeight);
             ctx.drawImage(image, 0, 0,image.width,image.height,0,0,srcWidth,srcHeight);
           }
+          $mdDialog.show({
+            controller:['$scope',function($scope){
+              $scope.cancel = function(){
+                $mdDialog.hide();
+              }
+              $scope.submit = function(){
+                $mdDialog.hide();
+              }
+            }],
+            templateUrl:'app/main/xhsc/ys/addPartDescription.html'
+          })
         }
         scope.save =  function () {
-          var dataURL = canvas.toDataURL();
+          var dataURL = canvas.toDataURL('image/jpeg',1);
           scope.onAnswer && scope.onAnswer({$base64Url:dataURL});
+          $mdDialog.show({
+            controller:['$scope',function($scope){
+              $scope.cancel = function(){
+                $mdDialog.hide();
+              }
+              $scope.submit = function(){
+                $mdDialog.hide();
+              }
+            }],
+            templateUrl:'app/main/xhsc/ys/addPartDescription.html'
+          })
         }
 
         function findxy(res, e) {
@@ -135,8 +178,8 @@
             if (imageData) {
               image = new Image();
               image.onload = function() {
-                if(image.width>800 || image.height>800){
-                  var rd = 800/Math.max(image.width,image.height);
+                if(image.width>400 || image.height>400){
+                  var rd = 400/Math.max(image.width,image.height);
                   srcWidth = image.width*rd;
                   srcHeight = image.height*rd;
                 }

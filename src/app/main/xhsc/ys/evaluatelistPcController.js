@@ -81,16 +81,18 @@
     }
 
     function avg(arr){
-      var  score;
+      var score=0,l=0;
       if (angular.isArray(arr)){
-        arr.forEach(function(t){
-            if (angular.isNumber(t.Score)){
-              score=score?score+t.Score:t.Score;
-            }
+        arr.forEach(function(t) {
+          if (t.Score === 0)t.Score = '';
+          if (t.Score) {
+            l++;
+            score = score ? score + t.Score : t.Score;
+          }
         });
       }
-      if (angular.isNumber(score)){
-        return (score/arr.length).toFixed(2);
+      if (score){
+        return (score/l).toFixed(4);
       }
       return "";
     }
@@ -101,7 +103,7 @@
         if (role){
             return role.SectionScores.find(function(t){
                return t.SectionID==sectionID;
-            })
+            });
         }
         return {};
     }
@@ -174,20 +176,22 @@
         $timeout(function () {
           if(vm.selectedIndex>=0&&vm.selectedIndex<vm.items.AssessmentClassifys.length){
             var k = vm.items.AssessmentClassifys[vm.selectedIndex];
-            var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex].AssessmentClassifys;
-            if (k.AssessmentClassificationName.indexOf("管理行为")>-1){
-              assessmentClassifys.forEach(function(t){
-                gl_setshow(t);
-              });
-              vm.showfitObj=true;
-            }else {
-              assessmentClassifys.forEach(function(t){
-                setshow(t);
-              });
-              vm.showfitObj=false;
+            if (!k.AssessmentClassifys){
+              var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex].AssessmentClassifys;
+              if (k.AssessmentClassificationName.indexOf("管理行为")>-1){
+                assessmentClassifys.forEach(function(t){
+                  gl_setshow(t);
+                });
+                vm.showfitObj=true;
+              }else {
+                assessmentClassifys.forEach(function(t){
+                  setshow(t);
+                });
+                vm.showfitObj=false;
+              }
+              k.AssessmentClassifys =assessmentClassifys;
+              k.level = getEvels(k,1);
             }
-            k.AssessmentClassifys =assessmentClassifys;
-            k.level = getEvels(k,1);
           }else {
             remote.Assessment.queryTotalReport(params.year,params.quarter,params.projectID,params.assessmentStage).then(function(t){
               vm.toTalReport= t.data;
