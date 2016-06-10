@@ -13,7 +13,7 @@
       },
       templateUrl:'app/main/xhsc/directive/photoDraw.html',
       link:link
-      
+
     }
     function  link(scope,element,attr,ctrl){
 
@@ -83,58 +83,16 @@
         }
         scope.cancel = function () {
           scope.onCancel && scope.onCancel();
-          //$mdDialog.show(
-          //    $mdDialog.prompt({
-          //    title:'部位描述',
-          //    textContent:'部位描述',
-          //    placeholder:'部位描述',
-          //    ok:'确定',
-          //    cancel:'取消'
-          //  })
-          //)
-          $mdDialog.show({
-            controller:['$scope',function($scope){
-              $scope.cancel = function(){
-                $mdDialog.hide();
-              }
-              $scope.submit = function(){
-                $mdDialog.hide();
-              }
-            }],
-            templateUrl:'app/main/xhsc/ys/addPartDescription.html'
-          })
         }
         scope.erase = function () {
           if(image){
             ctx.clearRect(0, 0, srcWidth, srcHeight);
             ctx.drawImage(image, 0, 0,image.width,image.height,0,0,srcWidth,srcHeight);
           }
-          $mdDialog.show({
-            controller:['$scope',function($scope){
-              $scope.cancel = function(){
-                $mdDialog.hide();
-              }
-              $scope.submit = function(){
-                $mdDialog.hide();
-              }
-            }],
-            templateUrl:'app/main/xhsc/ys/addPartDescription.html'
-          })
         }
         scope.save =  function () {
           var dataURL = canvas.toDataURL('image/jpeg',1);
           scope.onAnswer && scope.onAnswer({$base64Url:dataURL});
-          $mdDialog.show({
-            controller:['$scope',function($scope){
-              $scope.cancel = function(){
-                $mdDialog.hide();
-              }
-              $scope.submit = function(){
-                $mdDialog.hide();
-              }
-            }],
-            templateUrl:'app/main/xhsc/ys/addPartDescription.html'
-          })
         }
 
         function findxy(res, e) {

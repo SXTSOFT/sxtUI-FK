@@ -5,11 +5,11 @@
       <div layout="row" flex>
         <md-input-container class="md-block" flex="none">
           <label>分值</label>
-          <input>
+          <input ng-model="data.DeductValue">
         </md-input-container>
-        <md-input-container class="md-block" flex>
+        <md-input-container required="" class="md-block" flex>
           <label>描述</label>
-          <input>
+          <input ng-model="data.ProblemDescription">
         </md-input-container>
       </div>
     </div>
