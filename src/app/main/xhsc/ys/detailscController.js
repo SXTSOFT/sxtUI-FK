@@ -16,7 +16,6 @@
       pname: $stateParams.pname,
       name:$stateParams.name
     }
-    //console.log('stat',$stateParams)
     remote.Assessment.getMeasure({
       RegionID:$stateParams.regionId,
       AcceptanceItemID:$stateParams.measureItemID,
@@ -25,22 +24,64 @@
     }).then(function (result){
       var newD = [];
       result.data.forEach(function (item) {
-
         if(!item.MeasureValueList.length){
-          item.Children = [];
-          item.rows=[[]];
-          for(var i=0;i<20;i++){
-            item.rows[0].push({})
-          }
+          var rowSpan = 0,t1=0,t2 = 0;
+          item.Children = result.data.filter(function (r) {
+            if(r.ParentAcceptanceIndexID==item.AcceptanceIndexID){
+              r.rows = [];
+              var ps=[];
+              r.QualifiedRate = r.QualifiedRate * 100;
+              r.allDot = r.QualifiedPointNum + r.UnqualifiedPointNum;
+              t1 += r.QualifiedPointNum;
+              t2 += r.allDot;
+              r.MeasureValueList.forEach(function (m) {
+                var p = ps.find(function (p1) {
+                  return p1.ParentMeasureValueID == m.ParentMeasureValueID;
+                });
+                if(!p){
+                  p = {
+                    ParentMeasureValueID:m.ParentMeasureValueID,
+                    ms:[]
+                  };
+                  ps.push(p);
+                }
+                p.ms.push(m);
+              });
+              ps.forEach(function (p) {
+                if(p.ms.length<=20){
+                  r.rows.push(p.ms);
+                }
+                else{
+                  var ms = [];
+                  p.ms.forEach(function (m) {
+                    if(ms.length<20){
+                      ms.push(m);
+                    }
+                    else{
+                      item.rows.push(ms);
+                      ms=[m];
+                    }
+                  });
+                  r.rows.push(ms);
+                }
+              });
+              r.rows.forEach(function (ms) {
+                while (ms.length<20){
+                  ms.push({});
+                }
+              });
+              rowSpan+=r.rows.length;
+              return true;
+            }
+            return false;
+          });
+
+          item.QualifiedPointNum = t1;
+          item.rowSpan = rowSpan;
+          item.allDot = t2;
           newD.push(item);
-          //var find = result.data.find(function(t){
-          //  return item.AcceptanceIndexID == t.ParentAcceptanceIndexID;
-          //})
-          //if(find){
-          //  //item.Children.push(item);
-          //  console.log(find)
-          //}
-        }else if(!item.ParentAcceptanceIndexID){
+        }
+        else if(!item.ParentAcceptanceIndexID){
           item.rows = [];
           var ps=[];
           item.QualifiedRate = item.QualifiedRate * 100;
@@ -56,7 +97,24 @@
               };
               ps.push(p);
             }
-            p.ms.push(m);
+            if(m.ExtendedField1 || m.ExtendedField1.indexOf(',')){
+              var ms = m.ExtendedField1.split(',');
+              ms.forEach(function (v) {
+                p.ms.push({
+                  MeasureStatus:m.MeasureStatus,
+                  MeasureValue:v,
+                  MeasureValueId:m.MeasureValueId
+                });
+              });
+              p.ParentMeasureValueID = m.MeasureValueId;
+            }
+            else {
+              p.ms.push(m);
+              if (item.AcceptanceIndexName.indexOf('尺寸一致性') != -1) {
+                m.MeasureValue = m.MeasureValue + '<br/>' + m.DesignValue;
+              }
+              ;
+            }
           });
           ps.forEach(function (p) {
             if(p.ms.length<=20){
@@ -84,328 +142,9 @@
           newD.push(item);
         }
 
-
       });
 
       vm.scData = newD;
-      console.log('res',result)
     });
-    vm.procedureData = [{
-      procedureName:'机电1',
-      children:[{
-        name:'消防',
-        procedureCh:[{
-          name:'铝合金1'
-        },{
-          name:'铝合金2'
-        },{
-          name:'铝合金2'
-        },{
-          name:'铝合金2'
-        },{
-          name:'铝合金2'
-        },{
-          name:'铝合金2'
-        },{
-          name:'铝合金2'
-        },{
-          name:'铝合金2'
-        },{
-          name:'铝合金2'
-        },{
-          name:'铝合金2'
-        },{
-          name:'铝合金2'
-        },{
-          name:'铝合金2'
-        }]
-      },{
-        name:'空调',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        },{
-          name:'空调2'
-        },{
-          name:'空调2'
-        },{
-          name:'空调2'
-        },{
-          name:'空调2'
-        }]
-      },{
-        name:'弱电',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      }]
-    },{
-      procedureName:'土建',
-      children:[{
-        name:'幕墙',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      },{
-        name:'钢筋',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      },{
-        name:'栏杆',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      }]
-    },{
-      procedureName:'土建',
-      children:[{
-        name:'幕墙',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      },{
-        name:'钢筋',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      },{
-        name:'栏杆',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      }]
-    },{
-      procedureName:'土建',
-      children:[{
-        name:'幕墙',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      },{
-        name:'钢筋',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      },{
-        name:'栏杆',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      }]
-    },{
-      procedureName:'土建',
-      children:[{
-        name:'幕墙',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      },{
-        name:'钢筋',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      },{
-        name:'栏杆',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      }]
-    },{
-      procedureName:'土建',
-      children:[{
-        name:'幕墙',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      },{
-        name:'钢筋',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      },{
-        name:'栏杆',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      }]
-    },{
-      procedureName:'土建',
-      children:[{
-        name:'幕墙',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      },{
-        name:'钢筋',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      },{
-        name:'栏杆',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      }]
-    },{
-      procedureName:'土建',
-      children:[{
-        name:'幕墙',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      },{
-        name:'钢筋',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      },{
-        name:'栏杆',
-        procedureCh:[{
-          name:'空调1'
-        },{
-          name:'空调2'
-        }]
-      }]
-    }]
-    vm.testData = [{
-      MeasureUserName:'aa',
-      MeasureTime:2022-22-22,
-      IndexName:'abc',
-      MaximumDeviation:1,
-      QualifiedRate:1,
-      ResultStatus:1,
-      Points:[
-        [
-          {
-            MeasureValue:1
-          },
-          {
-            MeasureValue:2
-          }
-        ],[
-          {
-            MeasureValue:3
-          },{
-
-          }
-        ]
-      ]
-    },{
-      MeasureUserName:'门洞',
-      Children:[
-        {
-          MeasureTime:2022-22-22,
-          IndexName:'宽',
-          MaximumDeviation:1,
-          QualifiedRate:1,
-          ResultStatus:1,
-          Points:[[
-            {
-              MeasureValue:1
-            },
-            {
-              MeasureValue:2
-            }
-          ],[
-            {
-              MeasureValue:3
-            },
-            {
-              MeasureValue:4
-            }
-          ]]
-        },{
-          MeasureTime:2022-22-22,
-          IndexName:'高',
-          MaximumDeviation:1,
-          QualifiedRate:1,
-          ResultStatus:1,
-          Points:[[
-            {
-              MeasureValue:3
-            },
-            {
-              MeasureValue:4
-            }
-          ]]
-        },{
-          MeasureTime:2022-22-22,
-          IndexName:'厚',
-          MaximumDeviation:1,
-          QualifiedRate:1,
-          ResultStatus:1,
-          Points:[[
-            {
-              MeasureValue:3
-            },
-            {
-              MeasureValue:4
-            }
-          ]]
-        }
-      ]
-    },{
-      MeasureUserName:'aa',
-      MeasureTime:2022-22-22,
-      IndexName:'abc',
-      MaximumDeviation:1,
-      QualifiedRate:1,
-      ResultStatus:1,
-      Points:[
-        [
-          {
-            MeasureValue:1
-          },
-          {
-            MeasureValue:2
-          }
-        ]
-      ]
-    }
-    ]
   }
 })();

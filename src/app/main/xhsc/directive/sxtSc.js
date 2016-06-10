@@ -33,12 +33,15 @@
       var install = function(){
         if(!scope.db || !scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
 
+
+
         if(!pk)
           pk = pack.sc.up(scope.db);
         if(!data)
           data = pk.sc.db;
         if(!points)
           points = pk.point.db;
+        
 
         if(!map){
           map = new L.SXT.Project(element[0]);
@@ -348,9 +351,7 @@
                   color:'red'
                 });
               }
-
             }
-            //toolbar._toolbars.lineGroup._modes.stamp.handler.enable();
           },
           onUpdateData:function(context,updates,editScope){
             updates.forEach(function(m){
@@ -371,8 +372,20 @@
                 m.v.MeasureValueId = m.v._id;
               }
               if(m.v.values){
+                var minV=1000000,maxV=-1000000,vs=[];
+                for(var k in m.v.values){
+                  var v = m.v.values[k];
+                  if(m.v.values.hasOwnProperty(k) && v) {
+                    minV = Math.min(minV, v);
+                    maxV = Math.max(maxV,v);
+                    vs.push(v);
+                  }
+                };
+                m.v.MeasureValue = maxV;
+                m.v.DesignValue = minV;
+                m.v.ExtendedField1 = vs.join(',');
                 //组测量(一个点多个值)
-                var childValues = fg.data.filter(function (item) {
+/*                var childValues = fg.data.filter(function (item) {
                   return item.ParentMeasureValueID == m.v.MeasureValueId;
                 }),ix=0;
                 for(var k in m.v.values) {
@@ -399,7 +412,7 @@
                   }
                   fd.MeasureValue = dv;
                   data.addOrUpdate(fd);
-                }
+                }*/
               }
 
               data.addOrUpdate(m.v);
@@ -425,11 +438,10 @@
             if(edit) {
               if(e.layer instanceof L.Stamp) {
                 $timeout(function () {
-                  fg._map.setView(e.layer._latlng);
+                  var center = fg._map.getCenter();
+                  fg._map.setView([center.lat,e.layer._latlng.lng]);
                 },300);
-              }
-
-              //e.fg._value.seq =
+              };
               edit.scope.context = e;
               edit.scope.data = {
                 measureIndexes:scope.measureIndexes,

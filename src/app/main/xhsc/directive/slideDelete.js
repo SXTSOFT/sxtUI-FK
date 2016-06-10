@@ -36,7 +36,7 @@
         if(Math.abs(idiff)>100){
           console.log('idiff',idiff)
           if(idiff>100){
-            $(event.target).parents('md-list-item').css('transform','translate3d(-150px,0,0)')
+            $(event.target).parents('md-list-item').css('transform','translate3d(-160px,0,0)')
           }else{
             $(event.target).parents('md-list-item').css('transform','translate3d(0,0,0)')
           }

@@ -59,7 +59,10 @@
                   fillRegion(k,items,questions);
                 });
               })
-
+              //var
+              //k.AssessmentClassifys.push({
+              //
+              //})
               k.level = getEvels(k,1);
             }
           }

@@ -1330,13 +1330,37 @@ md-tabs[md-align-tabs="bottom"]{
 }
 .slidelist{
   width:100%;
+  display: table;
   >div{
     //display: inline-block;
     //vertical-align: middle;
+    display: table-cell;
+    vertical-align: middle;
     &.circle{
       width:60px;
       height:60px;
-      background: #f5f5f5;
+      span{
+        width:60px;
+        height:60px;
+        display: block;
+        background: #f00;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 60px;
+        white-space: nowrap;
+        overflow: hidden;
+        color:#fff;
+        margin-right: 20px;
+      }
+    }
+    h3{
+      font-size: 17px;
+      color:#333;
+    }
+    p{
+      font-size: 14px;
+      color:#999;
+      margin-bottom: 0;
     }
   }
 }
