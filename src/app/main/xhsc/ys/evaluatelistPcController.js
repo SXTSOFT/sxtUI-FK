@@ -173,6 +173,8 @@
       });
       fillRegion(vm.caches,item.Assessments,region);
       $scope.$watch('vm.selectedIndex',function () {
+        vm.loading = true;
+        vm.showfitObj =false;
         $timeout(function () {
           if(vm.selectedIndex>=0&&vm.selectedIndex<vm.items.AssessmentClassifys.length){
             var k = vm.items.AssessmentClassifys[vm.selectedIndex];
@@ -187,7 +189,6 @@
                 assessmentClassifys.forEach(function(t){
                   setshow(t);
                 });
-                vm.showfitObj=false;
               }
               k.AssessmentClassifys =assessmentClassifys;
               k.level = getEvels(k,1);
@@ -198,6 +199,9 @@
               setRoleScore();
             });
           }
+          $timeout(function () {
+            vm.loading = false;
+          },200);
         },800);
 
       })

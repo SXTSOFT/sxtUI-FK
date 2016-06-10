@@ -71,7 +71,7 @@
                                 <td style="width: 50px;text-align: center;">
                                   {{item.Weight}}
                                 </td>
-                                <td  ng-repeat="k in  vm.sections">
+                                <td style="width:100px" ng-repeat="k in  vm.sections">
                                   <table fit-table-height style="width: 100px;">
                                     <tr>
                                       <td style="width: 50px;text-align: center;" class="lr">
@@ -131,13 +131,13 @@
                                 <td>
                                   <p>{{item.DeductionCriteria}}</p>
                                 </td>
-                                <td style="width:70px" ng-if="vm.showfitObj">
+                                <td style="width:70px;text-align: center" ng-if="vm.showfitObj">
                                   {{item.ApplicableObjectName}}
                                 </td>
                                 <td style="width: 50px;text-align: center;">
                                   {{item.Weight}}
                                 </td>
-                                <td  ng-repeat="k in  vm.sections">
+                                <td style="width:100px" ng-repeat="k in  vm.sections">
                                     <table fit-table-height style="width: 100px;">
                                       <tr>
                                         <td style="width: 50px;text-align: center;" class="lr">
@@ -199,13 +199,13 @@
                           <td>
                             <p>{{item.DeductionCriteria}}</p>
                           </td>
-                          <td style="width:70px">
+                          <td style="width:70px;text-align: center;" ng-if="vm.showfitObj">
                             {{item.ApplicableObjectName}}
                           </td>
                           <td style="width: 50px;text-align: center;">
                             {{item.Weight}}
                           </td>
-                          <td  ng-repeat="k in  vm.sections">
+                          <td style="width:100px;"  ng-repeat="k in  vm.sections">
                             <table fit-table-height style="width: 100px;">
                               <tr>
                                 <td style="width: 50px;text-align: center;" class="lr">
@@ -255,7 +255,7 @@
           </section>
         </md-content>
         </div>
-      </md-tab-content>
+    </md-tab-content>
     </md-tab>
   <md-tab label="项目评分汇总表">
     <md-tab-content  style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
@@ -286,29 +286,29 @@
           <tr>
             <td rowspan="2" class="td_left" style="padding-left: 10px;">项目部得分</td>
             <td colspan="{{vm.prjScores.length}}">
-              <span ng-if="vm.prjScores.avg">{{vm.prjScores.avg|number:2}} %</span></td>
+              <span ng-if="vm.prjScores.avg">{{vm.prjScores.avg*100|number:2}} %</span></td>
             <td class="td_left" style="width:120px"></td>
           </tr>
           <tr>
             <td style="width:120px" ng-repeat="k in vm.prjScores">
-              <span ng-if="k.Score">{{k.Score|number:2}} %</span></td>
+              <span ng-if="k.Score">{{k.Score*100|number:2}} %</span></td>
             <td class="td_left"></td>
           </tr>
           <tr>
             <td rowspan="2" class="td_left" style="padding-left: 10px;">监理得分</td>
             <td colspan="{{vm.jlScores.length}}">
-              <span ng-if="vm.jlScores.avg">{{vm.jlScores.avg|number:2}} %</span></td>
+              <span ng-if="vm.jlScores.avg">{{vm.jlScores.avg*100|number:2}} %</span></td>
             <td class="td_left"></td>
           </tr>
           <tr>
             <td ng-repeat="k in vm.jlScores">
-              <span ng-if="k.Score">{{k.Score|number:2}} %</span></td>
+              <span ng-if="k.Score">{{k.Score*100|number:2}} %</span></td>
             <td class="td_left"></td>
           </tr>
           <tr>
             <td class="td_left" style="padding-left: 10px;">总包得分</td>
             <td ng-repeat="k in vm.zbScores">
-              <span ng-if="k.Score">{{k.Score|number:2}} %</span></td>
+              <span ng-if="k.Score">{{k.Score*100|number:2}} %</span></td>
             <td class="td_left"></td>
           </tr>
           </tbody>
@@ -338,5 +338,7 @@
     </md-tab-content>
   </md-tab>
 </md-tabs>
-
+<div flex="none" style="position: absolute;top:45%;left:45%;">
+  <md-progress-circular md-mode="indeterminate" ng-show="vm.loading"></md-progress-circular>
+</div>
 
