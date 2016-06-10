@@ -334,7 +334,7 @@
       item.Images.forEach(function (img) {
         images.push({
           url:sxt.app.api+img.ImageUrl,
-          alt:item.ProblemDescription
+          alt:item.ProblemDescription + (item.PartDescriptioin?'(部位:'+ item.PartDescriptioin+')':'')
         });
       })
       if(images.length)
