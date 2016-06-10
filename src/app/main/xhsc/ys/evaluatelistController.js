@@ -176,18 +176,21 @@
         done:it.done,
         CreateTime:new Date()
       });
-
-     //console.log(vm.getDelValue(item));
-      //item.delValue = item.Weight - item.Score;
+    }
+    vm.unfit = function(item,it){
+      it.done=false;
+      var rn = it.regions.find(function (r) {
+        return r.RegionID == params.RegionID;
+      });
+      upstzl_item.delete(rn._id);
     }
     vm.getDelValue = function (item) {
-      //console.log('a')
       var s=0,time=0;
       if(item.regions){
         item.regions.forEach(function (r) {
           if(r.question){
             r.question.forEach(function (q) {
-              s+=(q.DeductionScore||0);
+              s = utils.math.sum(parseFloat(q.DeductionScore)||0,s);
               time++;
             });
           }
@@ -199,7 +202,7 @@
         item.Score = 0;
         return item.Weight;
       }
-      else if(s!=0) {
+      else if(s!=0 || time!=0) {
         item.Score = item.Weight - s;
         if (item.Score < 0)
           item.Score = 0;
@@ -216,7 +219,6 @@
     vm.quesDetail = function(item,it,items){
       $mdDialog.show({
         controller:function($scope){
-          console.log('items',items)
           $scope.item = item;
           upstzl_question.findAll(function (q) {
             return q.AssessmentRegionItemResultID==item.AssessmentRegionItemResultID
@@ -239,9 +241,8 @@
                 $scope.images.push(img);
               });
             })
-          })
+          });
 
-          //console.log(question)
           $scope.delete = function(d){
             //upstzl_question.delete(item);
             upstzl_question.findAll(function(it){
@@ -254,14 +255,11 @@
               r.rows.forEach(function(item){
                 upstzl_question.delete(item._id).then(function(){
                   //console.log('ok')
-                }).catch(function(){
-                  console.log('error')
-                })
+                }).catch(function(){}
+                )
               });
               var idx = items.indexOf(item);
-              console.log('idx',items)
               items.splice(idx,1);
-              console.log('items',items)
             })
 
             //if($scope.question.length <=0){
@@ -295,17 +293,22 @@
       $mdDialog.show({
         controller: ['$scope','$mdDialog',function ($scope, $mdDialog) {
           $scope.Problems =item.Problems;
+          var pScope = $scope;
           $scope.addQuestion = function(){
             $mdDialog.show({
               controller:['$scope',function($scope){
                 $scope.cancel = function(){
                   $mdDialog.hide();
+                };
+                $scope.data={
+                  ProblemID:sxt.uuid()
                 }
                 $scope.submit = function(){
-                  xhUtils.photo().then(function ($base64Url) {
-                    if($base64Url) {
-
-                    }
+                  pScope.Problems.push($scope.data);
+                  pScope.answer({
+                    ProblemID:$scope.data.ProblemID,
+                    ProblemDescription:$scope.data.ProblemDescription,
+                    DeductValue:$scope.data.DeductValue || 0
                   });
                 }
               }],
@@ -339,38 +342,56 @@
             rn.question.push(question);
             upstzl_question.addOrUpdate(dedu);
 
-            //rn.question.push(question);
-            xhUtils.photo().then(function ($base64Url) {
-              if($base64Url) {
-                var _id=sxt.uuid();
-                upstzl_images.addOrUpdate({
-                  _id:_id,
-                  ImageID: sxt.uuid(),
-                  RelationID: dedu.DeducScoretItemID,
-                  ImageName:_id+".Jpeg",
-                  ImageUrl:_id+".Jpeg",
-                  ImageByte: $base64Url
-                }).then(function () {
-                  question.hasPic = true;
-                  dedu.hasPic = true;
-                  upstzl_question.addOrUpdate(dedu);
+            $mdDialog.show({
+              controller:['$scope',function($scope){
+                $scope.data ={
 
-                }, function () {
-                  utils.alert("数据保存失败!");
-                });
-              }
+                };
+                $scope.cancel = function(){
+                  $mdDialog.hide();
+                }
+                $scope.submit = function(){
+                  vm.getDelValue(item);
+                  dedu.PartDescriptioin = question.PartDescriptioin = $scope.data.PartDescriptioin;
+
+                  upstzl_question.addOrUpdate(dedu);
+                  upstzl_item.addOrUpdate({
+                    _id:rn._id,
+                    AssessmentRegionItemResultID:rn._id,
+                    AssessmentID:params.AssessmentID,
+                    RegionID:rn.RegionID,
+                    Score:item.Score,
+                    PartDescriptioin:$scope.data.PartDescriptioin,
+                    AssessmentCheckItemID:item.AssessmentCheckItemID,
+                    CreateTime:new Date()
+                  });
+                  item.isCheck = true;
+                  $mdDialog.hide();
+                }
+              }],
+              templateUrl:'app/main/xhsc/ys/addPartDescription.html'
+            }).then(function () {
+              xhUtils.photo().then(function ($base64Url) {
+                if($base64Url) {
+                  var _id=sxt.uuid();
+                  upstzl_images.addOrUpdate({
+                    _id:_id,
+                    ImageID: sxt.uuid(),
+                    RelationID: dedu.DeducScoretItemID,
+                    ImageName:_id+".jpeg",
+                    ImageUrl:_id+".jpeg",
+                    ImageByte: $base64Url
+                  }).then(function () {
+                    question.hasPic = true;
+                    dedu.hasPic = true;
+                    upstzl_question.addOrUpdate(dedu);
+
+                  }, function () {
+                    utils.alert("数据保存失败!");
+                  });
+                }
+              });
             });
-            vm.getDelValue(item);
-            upstzl_item.addOrUpdate({
-              _id:rn._id,
-              AssessmentRegionItemResultID:rn._id,
-              AssessmentID:params.AssessmentID,
-              RegionID:rn.RegionID,
-              Score:item.Score,
-              AssessmentCheckItemID:item.AssessmentCheckItemID,
-              CreateTime:new Date()
-            });
-            item.isCheck = true;
           };
         }],
         templateUrl:'app/main/xhsc/ys/evaluateQues.html',

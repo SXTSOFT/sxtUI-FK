@@ -345,7 +345,7 @@
       {
         $mdDialog.show({
           controller: ['$scope','$mdDialog',function ($scope, $mdDialog) {
-            $scope.ProblemDescription=item.ProblemDescription;
+            $scope.item=item;
 
             $scope.cancel = function(){
               $mdDialog.hide()

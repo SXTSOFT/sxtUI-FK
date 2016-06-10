@@ -113,7 +113,6 @@
               if (item.AcceptanceIndexName.indexOf('尺寸一致性') != -1) {
                 m.MeasureValue = m.MeasureValue + '<br/>' + m.DesignValue;
               }
-              ;
             }
           });
           ps.forEach(function (p) {

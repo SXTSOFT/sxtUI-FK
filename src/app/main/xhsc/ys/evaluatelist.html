@@ -1,4 +1,4 @@
-<md-tabs md-align-tabs="bottom" flex md-swipe-content md-selected="vm.selectedIndex" class="zlpkwrap">
+<md-tabs md-align-tabs="bottom" flex  md-selected="vm.selectedIndex" class="zlpkwrap">
   <md-tab label="{{b.AssessmentClassificationName}}" ng-repeat="b in vm.items.AssessmentClassifys">
     <md-tab-content flex layout-fill layout="column"  >
       <div flex="none" layout="row" style="border-top: solid 1px silver" class="zlpkheader">
@@ -134,6 +134,7 @@
                                                 <md-button  style="min-width: 50px;" aria-label="" ng-if="!region.done" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
                                               </p>
                                               <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="(!region.question || region.question.length==0) && (item.Weight!=item.Score)" ng-click="vm.fit(region,item)" ng-class="{'done':region.done}">符合要求</md-button>
+                                              <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="region.question.length==0 && item.Weight==item.Score" ng-click="vm.unfit(region,item)" ng-class="{'done':region.done}">撤消</md-button>
                                             </td>
 
                                           </tr>
@@ -183,31 +184,13 @@
                                           <md-button  style="min-width: 50px;" aria-label="" ng-if="!region.done" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
                                         </p>
                                         <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="(!region.question || region.question.length==0) && (item.Weight!=item.Score)" ng-click="vm.fit(region,item)" ng-class="{'done':region.done}">符合要求</md-button>
+                                        <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="region.question.length==0 && item.Weight==item.Score" ng-click="vm.unfit(region,item)" ng-class="{'done':region.done}">撤消</md-button>
                                       </td>
 
                                     </tr>
                                   </table>
                                 </td>
                               </tr>
-                              <!--<tr>-->
-                                <!--<td colspan="5">-->
-                                  <!--<table width="100%" cellspacing="0" cellpadding="0">-->
-                                    <!--<tr>-->
-                                      <!--<td style="width:50px;text-align:center">{{vm.RegionName}}</td>-->
-                                      <!--<td colspan="4" class="lr" style="position: relative;padding:3px 0;">-->
-                                        <!--&nbsp;&nbsp;扣分信息：-->
-                                        <!--<span ng-repeat="q in item.question">-->
-                                          <!--&lt;!&ndash;<md-button ng-if="item.question.length" class="md-icon-button"  ><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/text.png"></md-icon></md-button>&ndash;&gt;-->
-                                          <!--<md-button ng-if="item.question.length" class="md-icon-button" ng-click="vm.quesDetail(item.question,q,item)"><md-icon style="width:16px;height:16px;"><img src="app/main/xhsc/images/pic.png"></md-icon></md-button>-->
-                                        <!--</span>-->
-                                        <!--<md-button aria-label="" ng-if="!item.done" class="md-icon-button" ng-click=" vm.check(item,$event)"><md-icon><img  src="app/main/xhsc/images/plus.png"></md-icon></md-button>-->
-                                        <!--<md-button aria-label="" class="md-button md-raised" ng-if="item.question.length==0" ng-click="vm.fit(item)" style="position: absolute;top:50%;right:5px;transform: translate(0 ,-50%);margin:0;font-size:12px;">符合要求</md-button>-->
-                                      <!--</td>-->
-                                    <!--</tr>-->
-                                  <!--</table>-->
-                                <!--</td>-->
-
-                              <!--</tr>-->
                             </table>
                           </td>
                         </tr>
@@ -253,6 +236,7 @@
                                   <md-button  style="min-width: 50px;" aria-label="" ng-if="!region.done" ng-click=" vm.check(item,$event)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
                                   </p>
                                   <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="(!region.question || region.question.length==0) && (item.Weight!=item.Score)" ng-click="vm.fit(region,item)" ng-class="{'done':region.done}">符合要求</md-button>
+                                  <md-button aria-label="" class="md-button md-raised zdybtn" ng-if="region.question.length==0 && item.Weight==item.Score" ng-click="vm.unfit(region,item)" ng-class="{'done':region.done}">撤消</md-button>
                                 </td>
 
                               </tr>
