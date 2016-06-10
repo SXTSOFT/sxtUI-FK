@@ -43,6 +43,7 @@
           r.rows.forEach(function (t) {
             self.tasks.push({
               data:t,
+              type:dbs[i].type,
               url:dbs[i].url,
               index:dbs[i].index||0
             })
