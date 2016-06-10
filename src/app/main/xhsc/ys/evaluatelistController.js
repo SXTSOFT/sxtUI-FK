@@ -272,11 +272,13 @@
           $scope.addPhoto = function(q){
             xhUtils.photo().then(function (image) {
               if(image){
+                var _id = sxt.uuid();
                 upstzl_images.addOrUpdate({
-                  _id:sxt.uuid(),
+                  _id:_id,
                   ImageID: sxt.uuid(),
                   RelationID: item.DeducScoretItemID,
-                  ImageUrl: "",
+                  ImageName:_id+".jpeg",
+                  ImageUrl:_id+".jpeg",
                   ImageByte: image
                 });
               }

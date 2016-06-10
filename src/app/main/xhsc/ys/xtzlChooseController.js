@@ -19,6 +19,7 @@
       vm.dareaId= $stateParams.areaID;
       vm.dareaName = $stateParams.areaName;
       //console.log('a',$stateParams)
+    $rootScope.title = $stateParams.typename;
     vm.id = id;
     vm.assessmentTypeID= assessmentTypeID;
     vm.ms=[];

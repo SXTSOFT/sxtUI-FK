@@ -51,7 +51,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'实体质量',
-        url   :'/stzl/{assessmentID}/{AssessmentTypeID}/{aname}/{aid}',
+        url   :'/stzl/{assessmentID}/{AssessmentTypeID}/{aname}/{aid}/{typename}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/ch1.html',
@@ -233,7 +233,6 @@
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
-        title:'实体质量评估',
         url   :'/list/{AssessmentID}/{RegionID}/{RegionName}/{AssessmentTypeID}',
         views :{
           'content@app':{
