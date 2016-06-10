@@ -44,6 +44,7 @@
             self.tasks.push({
               type:dbs[i].type,
               data:t,
+              type:dbs[i].type,
               url:dbs[i].url,
               index:dbs[i].index||0
             })
