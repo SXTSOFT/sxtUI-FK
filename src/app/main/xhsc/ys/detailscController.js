@@ -97,10 +97,24 @@
               };
               ps.push(p);
             }
-            p.ms.push(m);
-            if(item.AcceptanceIndexName.indexOf('尺寸一致性')!=-1){
-              m.MeasureValue = m.MeasureValue+'<br/>'+m.DesignValue;
-            };
+            if(m.ExtendedField1 || m.ExtendedField1.indexOf(',')){
+              var ms = m.ExtendedField1.split(',');
+              ms.forEach(function (v) {
+                p.ms.push({
+                  MeasureStatus:m.MeasureStatus,
+                  MeasureValue:v,
+                  MeasureValueId:m.MeasureValueId
+                });
+              });
+              p.ParentMeasureValueID = m.MeasureValueId;
+            }
+            else {
+              p.ms.push(m);
+              if (item.AcceptanceIndexName.indexOf('尺寸一致性') != -1) {
+                m.MeasureValue = m.MeasureValue + '<br/>' + m.DesignValue;
+              }
+              ;
+            }
           });
           ps.forEach(function (p) {
             if(p.ms.length<=20){
