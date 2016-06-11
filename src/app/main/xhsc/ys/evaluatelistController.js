@@ -351,7 +351,7 @@
 
                 };
                 $scope.cancel = function(){
-                  $mdDialog.hide();
+                  $scope.submit();
                 }
                 $scope.submit = function(){
                   vm.getDelValue(item);
