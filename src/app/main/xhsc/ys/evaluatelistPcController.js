@@ -172,6 +172,7 @@
           });
       });
       fillRegion(vm.caches,item.Assessments,region);
+
       $scope.$watch('vm.selectedIndex',function () {
         vm.loading = true;
         vm.showfitObj =false;
