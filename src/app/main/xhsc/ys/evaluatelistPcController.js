@@ -179,13 +179,14 @@
         $timeout(function () {
           if(vm.selectedIndex>=0&&vm.selectedIndex<vm.items.AssessmentClassifys.length){
             var k = vm.items.AssessmentClassifys[vm.selectedIndex];
+            vm.showfitObj=k.AssessmentClassificationName.indexOf("管理行为")!=-1;
             if (!k.AssessmentClassifys){
               var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex].AssessmentClassifys;
               if (k.AssessmentClassificationName.indexOf("管理行为")>-1){
                 assessmentClassifys.forEach(function(t){
                   gl_setshow(t);
                 });
-                vm.showfitObj=true;
+                //vm.showfitObj=true;
               }else {
                 assessmentClassifys.forEach(function(t){
                   setshow(t);

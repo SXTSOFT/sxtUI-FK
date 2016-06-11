@@ -48,13 +48,13 @@
             <table width="100%" cellspacing="0" cellpadding="0" class="zlpktables">
                   <tr  ng-if="e.show" ng-repeat="e in c.AssessmentClassifys">
                     <td style="width:{{vm.getW(1,2)}}%;">
-                      <p class="pname">{{e.AssessmentClassificationName}}</p>
+                      <p>{{e.AssessmentClassificationName}}</p>
                     </td>
                     <td>
                       <table width="100%" cellspacing="0" cellpadding="0">
                         <tr  ng-if="f.show" ng-repeat="f in e.AssessmentClassifys">
                           <td style="width:{{vm.getWidth(2,b.level)}}%;">
-                            <p class="pname">{{f.AssessmentClassificationName}}</p>
+                            <p >{{f.AssessmentClassificationName}}</p>
                           </td>
                           <td>
                             <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
@@ -89,14 +89,15 @@
                               <tr ng-if="!vm.showfitObj" ng-repeat="m in item.AssessmentItemResults">
                                 <td colspan="{{3+vm.sections.length*2+(vm.showfitObj?1:0)}}">
                                   <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
-                                    <td style="width:10%">{{vm.getSectionName(m.SectionID)}}</td>
+                                    <td style="width:10%"><p>{{vm.getSectionName(m.SectionID)}}</p></td>
                                     <td>
                                       <table ng-if="m.AssessmentRegionItemResults.length" fit-table-height width="100%" cellspacing="0" cellpadding="0">
                                         <tr ng-repeat="region in m.AssessmentRegionItemResults">
                                           <td>
                                             <table  fit-table-height width="100%" cellspacing="0" cellpadding="0">
                                               <tr>
-                                                <td style="width:120px;text-align:left">{{region.RegionName}}</td>
+                                                <td style="width:120px;text-align:left">
+                                                  <p>{{region.RegionName}}</p></td>
                                                 <td>
                                                      <span ng-if="region.DeductScoreItems.length" ng-repeat="q in region.DeductScoreItems">
                                                         <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
@@ -120,7 +121,7 @@
                         </tr>
                         <tr ng-if="item.show" ng-repeat="item in e.AssessmentItems">
                           <td style="width:5.26%;">
-                            <p class="pname">{{item.AssessmentCheckItemName}}</p>
+                            <p>{{item.AssessmentCheckItemName}}</p>
                           </td>
                           <td>
                             <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
@@ -154,14 +155,14 @@
                               <tr ng-if="!vm.showfitObj" ng-repeat="m in item.AssessmentItemResults">
                                 <td colspan="{{3+vm.sections.length*2+(vm.showfitObj?1:0)}}">
                                   <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
-                                      <td style="width: 10%">{{vm.getSectionName(m.SectionID)}}</td>
+                                      <td style="width: 10%"><p>{{vm.getSectionName(m.SectionID)}}</p></td>
                                       <td>
                                         <table ng-if="m.AssessmentRegionItemResults.length" fit-table-height width="100%" cellspacing="0" cellpadding="0">
                                           <tr ng-repeat="region in m.AssessmentRegionItemResults">
                                             <td>
                                               <table  fit-table-height width="100%" cellspacing="0" cellpadding="0">
                                                 <tr>
-                                                  <td style="width:120px;text-align:left">{{region.RegionName}}</td>
+                                                  <td style="width:120px;text-align:left"><p>{{region.RegionName}}</p></td>
                                                   <td>
                                                     <span ng-if="region.DeductScoreItems.length" ng-repeat="q in region.DeductScoreItems">
                                                         <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
@@ -222,14 +223,14 @@
                         <tr ng-if="!vm.showfitObj" ng-repeat="m in item.AssessmentItemResults">
                           <td colspan="{{3+vm.sections.length*2+(vm.showfitObj?1:0)}}">
                             <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
-                              <td style="width: 10%">{{vm.getSectionName(m.SectionID)}}</td>
+                              <td style="width: 10%"><p>{{vm.getSectionName(m.SectionID)}}</p></td>
                               <td>
                                 <table ng-if="m.AssessmentRegionItemResults.length" fit-table-height width="100%" cellspacing="0" cellpadding="0">
                                   <tr ng-repeat="region in m.AssessmentRegionItemResults">
                                     <td>
                                       <table  fit-table-height width="100%" cellspacing="0" cellpadding="0">
                                         <tr>
-                                          <td style="width:120px;text-align:left">{{region.RegionName}}</td>
+                                          <td style="width:120px;text-align:left"><p>{{region.RegionName}}</p></td>
                                           <td>
                                              <span ng-if="region.DeductScoreItems.length" ng-repeat="q in region.DeductScoreItems">
                                                         <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
