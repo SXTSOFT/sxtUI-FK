@@ -1,4 +1,4 @@
-<md-tabs md-align-tabs="bottom" flex md-swipe-content md-selected="vm.selectedIndex" class="zlpkwrap">
+<md-tabs md-align-tabs="bottom" flex  md-selected="vm.selectedIndex" class="zlpkwrap">
   <md-tab label="{{b.AssessmentClassificationName}}" ng-repeat="b in vm.items.AssessmentClassifys">
     <md-tab-content flex layout-fill layout="column"  >
       <div flex="none" layout="row" style="border-right:0" class="zlpkheader">
@@ -10,8 +10,8 @@
                 评判标准
             </div>
             <div flex="55" layout="row">
-                <div flex style=" border-left: 1px solid #d8d8d8;">扣分标准</div>
-                <div  style="width: 70px;border-left: 1px solid #d8d8d8;" ng-if="vm.showfitObj">
+                <div flex style=" border-left: 1px solid #d8d8d8;">{{vm.isAddScore?'加':'扣'}}分标准</div>
+                <div  style="width: 70px;border-left: 1px solid #d8d8d8;" ng-if="vm.showfitObj && !(vm.isAddScore||vm.isDScore)">
                   评估对象
                 </div>
                 <div flex="none" style="width:50px; border-left: 1px solid #d8d8d8;border-right:1px solid #d8d8d8;text-align: center;">
@@ -25,7 +25,7 @@
                   </div>
                   <div flex="none" layout="row">
                     <div flex="none" style="width:50px;text-align: center;height:23px;line-height: 23px;">
-                      扣分
+                      {{vm.isAddScore?'加':'扣'}}分
                     </div>
                     <div flex="none" style="width:50px; border-left: 1px solid #d8d8d8;text-align: center;height:23px;line-height: 23px;">
                       得分
@@ -65,7 +65,7 @@
                                 <td>
                                   <p>{{item.DeductionCriteria}}</p>
                                 </td>
-                                <td style="width: 70px" ng-if="vm.showfitObj">
+                                <td style="width: 70px" ng-if="vm.showfitObj && !(vm.isAddScore||vm.isDScore)">
                                     {{item.ApplicableObjectName}}
                                 </td>
                                 <td style="width: 50px;text-align: center;">
@@ -132,7 +132,7 @@
                                 <td>
                                   <p>{{item.DeductionCriteria}}</p>
                                 </td>
-                                <td style="width:70px;text-align: center" ng-if="vm.showfitObj">
+                                <td style="width:70px;text-align: center" ng-if="vm.showfitObj && !(vm.isAddScore||vm.isDScore)">
                                   {{item.ApplicableObjectName}}
                                 </td>
                                 <td style="width: 50px;text-align: center;">
@@ -143,7 +143,7 @@
                                       <tr>
                                         <td style="width: 50px;text-align: center;" class="lr">
                                           <button ng-if="vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
-                                          <button  ng-if="!vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">扣分</span> </button>
+                                          <button  ng-if="!vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.isAddScore?'加':'扣'}}分</span> </button>
                                         </td>
                                         <td style="width: 50px;text-align: center;" class="lr">
                                           {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}
@@ -200,7 +200,7 @@
                           <td>
                             <p>{{item.DeductionCriteria}}</p>
                           </td>
-                          <td style="width:70px;text-align: center;" ng-if="vm.showfitObj">
+                          <td style="width:70px;text-align: center;" ng-if="vm.showfitObj && !(vm.isAddScore||vm.isDScore)">
                             {{item.ApplicableObjectName}}
                           </td>
                           <td style="width: 50px;text-align: center;">
@@ -211,7 +211,7 @@
                               <tr>
                                 <td style="width: 50px;text-align: center;" class="lr">
                                   <button ng-if="vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
-                                  <button  ng-if="!vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">扣分</span> </button>
+                                  <button  ng-if="!vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.isAddScore?'加':'扣'}}分</span> </button>
                                 </td>
                                 <td style="width: 50px;text-align: center;" class="lr">
                                   {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}
@@ -282,7 +282,7 @@
       </div>
       <div flex layout="column" layout-fill style="padding: 0 8px;">
       <md-content flex class="zlpksub">
-        <table class="reportWrap"  width="100%" cellpadding="0" cellspacing="0">
+        <table class="reportWrap"  width="99.9%" cellpadding="0" cellspacing="0">
           <tbody>
           <tr>
             <td rowspan="2" class="td_left" style="padding-left: 10px;">项目部得分</td>
