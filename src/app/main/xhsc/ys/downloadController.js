@@ -41,6 +41,7 @@
             vm.data.rows.push(item);
             xcpk.addOrUpdate(vm.data);
           }
+          utils.tips('下载完成');
         }
        // console.log('getProgress',  item.progress);
 
@@ -55,6 +56,9 @@
           if(item.completed)
             remote.Assessment.sumReportTotal(item.AssessmentID).then(function(){
               xcpk.addOrUpdate(vm.data);
+              item.progress = 100;
+              //utils.tips('同步完成');
+              utils.alert('同步完成')
             })
           else {
             utils.tips('同步未完成');
