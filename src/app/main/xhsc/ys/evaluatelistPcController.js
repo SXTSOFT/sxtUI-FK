@@ -179,10 +179,15 @@
         $timeout(function () {
           if(vm.selectedIndex>=0&&vm.selectedIndex<vm.items.AssessmentClassifys.length){
             var k = vm.items.AssessmentClassifys[vm.selectedIndex];
-            vm.showfitObj=k.AssessmentClassificationName.indexOf("管理行为")!=-1;
+
+            vm.isAddScore=k.AssessmentClassificationName.indexOf("加分")!=-1;
+            vm.isDScore = k.AssessmentClassificationName.indexOf("扣分")!=-1;
+            vm.showfitObj= vm.isAddScore || vm.isDScore || k.AssessmentClassificationName.indexOf("管理行为")!=-1;
             if (!k.AssessmentClassifys){
               var assessmentClassifys= vm.caches.AssessmentClassifys[vm.selectedIndex].AssessmentClassifys;
-              if (k.AssessmentClassificationName.indexOf("管理行为")>-1){
+              if (k.AssessmentClassificationName.indexOf("管理行为")!=-1
+              ||k.AssessmentClassificationName.indexOf("加分")!=-1 ||k.AssessmentClassificationName.indexOf("扣分")!=-1
+              ){
                 assessmentClassifys.forEach(function(t){
                   gl_setshow(t);
                 });
@@ -263,17 +268,6 @@
             }
             item.scoreList.push(sectionScore);
           });
-          //Assessments.first
-
-          //item.TotalScore = resultItem.TotalScore;
-          //item.ModifyScore = resultItem.ModifyScore;
-          //
-          //if(!item.ModifyScore && item.ModifyScore!==0)
-          //  item.ModifyScore = item.TotalScore;
-          //
-          //var len=item.Problems.length;
-          //item.DelScore =  (item.ModifyScore===0 ||  item.ModifyScore)?item.Weight-item.ModifyScore:'';
-          //item.regions = resultItem.AssessmentRegionItemResults;
 
         });
       }
@@ -291,6 +285,13 @@
             return t.sectionID==sectionID;
           });
           if (score){
+            if(field=='DelScore'){
+              if(vm.isAddScore || vm.isDScore){
+                field = 'ModifyScore';
+              }
+            }else if(field=='ModifyScore'){
+              if(vm.isDScore) return '';
+            }
             return score[field];
           }
         }
@@ -371,6 +372,7 @@
       console.log('q',q)
     }
     vm.changeScore = function (item,k,$event) {
+      console.log(item);
       var obj= item.scoreList.find(function(v){
         return v.sectionID== k.SectionID;
       });
@@ -381,11 +383,11 @@
             $scope.cancel = function(){
               $mdDialog.hide()
             }
-            //item.value=obj.DelScore;
-            //item.reason=obj.Description;
             $scope.item= {
-              value:obj.DelScore,
-              reason:obj.Description
+              //value:obj.DelScore,
+              reason:obj.Description,
+              isAddScore:vm.isAddScore,
+              isDScore:vm.isDScore
             }
             $scope.delScore = function(result){
               $mdDialog.hide(result)
@@ -407,7 +409,8 @@
         }
       ).then(function (result) {
         if(result){
-          var r = parseFloat(result.value);
+          var r = parseFloat(result.value),
+          r1 = (vm.isAddScore || vm.isDScore) ?r :  item.Weight -r
           if(!isNaN(result.value)){
             if(item.Weight<result.value || result.value<0){
               utils.alert('输入的值应该介于0 与 '+item.Weight + ' 之间');
@@ -416,13 +419,13 @@
             remote.Assessment.modifyScore({
               AssessmentID:k.AssessmentID,
               AssessmentCheckItemID:item.AssessmentCheckItemID,
-              ModifyScore:item.Weight -r,
+              ModifyScore: r1,
               Description:result.reason
 
             }).then(function (z) {
               if (z.data.ErrorCode==0){
                 obj.DelScore = r;
-                obj.ModifyScore = item.Weight - obj.DelScore;
+                obj.ModifyScore = r1;
                 obj.Description=result.reason;
               }else {
                 utils.alert('失败：'+ z.data.ErrorMessage);

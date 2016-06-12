@@ -1,15 +1,15 @@
 <md-dialog ng-cloak aria-label="修改分值信息" class="glxwdialog">
   <md-dialog-content layout="column">
     <div layout="row" flex></div>
-    <p class="md-title" style="margin-bottom: 10px;">修改分值</p>
-    <p>请输入新值，作为最终此项目的扣分值。0分为不扣分</p>
+    <p class="md-title" style="margin-bottom: 10px;">分值</p>
+    <p>请输入分值，作为最终此项目的{{item.isAddScore?'加':'扣'}}分值。0分为不{{item.isAddScore?'加':'扣'}}分</p>
     <div layout="row">
       <md-input-container flex>
         <input placeholder="" ng-model="item.value"  type="number">
       </md-input-container>
     </div>
-    <div ng-if="(item.value||item.value == 0)&& showfitObj">
-      <p>扣分原因</p>
+    <div ng-if="(item.value||item.value === 0) && showfitObj">
+      <p>{{item.isAddScore?'加':'扣'}}分原因</p>
       <div layout="row">
         <md-input-container flex>
           <input ng-model="item.reason">
@@ -26,7 +26,7 @@
     <!--</div>-->
   </md-dialog-content>
   <md-dialog-actions layout="row">
-    <md-button class="md-raised"  ng-click="noScore(item)" >
+    <md-button class="md-raised" ng-hide="item.isAddScore||item.isDScore"  ng-click="noScore(item)" >
       符合要求
     </md-button>
     <span flex></span>
