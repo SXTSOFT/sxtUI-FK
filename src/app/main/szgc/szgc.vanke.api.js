@@ -153,46 +153,76 @@
                       }
                     };
                   }
+                  result.data.data.sort(function (i1, i2) {
+                    var n1 = getNumName(i1.name),
+                      n2 = getNumName(i2.name);
+                    if (!isNaN(n1) && !isNaN(n2))
+                      return n1 - n2;
+                    else if ((isNaN(n1) && !isNaN(n2)))
+                      return 1;
+                    else if ((!isNaN(n1) && isNaN(n2)))
+                      return -1;
+                    else
+                      return i1.name.localeCompare(i2.name);
+                  });
+                  var p = permission;
+                  if (p) {
+
+                    for (var i = result.data.data.length - 1; i >= 0; i--) {
+                      var item = result.data.data[i];
+                      var fd = p.Rows.find(function (it) {
+                        return it.RegionIdTree.indexOf(item.project_item_id) != -1
+                      });
+                      if (!fd) {
+                        result.data.data.splice(i, 1);
+                      }
+                    }
+                  }
+                  for (var i = result.data.data.length - 1; i >= 0; i--) {
+                    var item = result.data.data[i];
+                    if (item.project_item_id == '5514f7b471fe65ac066cb09b' || item.project_item_id == '5514f7b471fe65ac066cb09c') {
+                      // console.log(item)
+                      result.data.data.splice(i, 1);
+                    }
+                  }
                   resolve(result);
                 })
               }
               else {
-                resolve(result);
-              }
-            }).then(function (result) {
-              result.data.data.sort(function (i1, i2) {
-                var n1 = getNumName(i1.name),
-                  n2 = getNumName(i2.name);
-                if (!isNaN(n1) && !isNaN(n2))
-                  return n1 - n2;
-                else if ((isNaN(n1) && !isNaN(n2)))
-                  return 1;
-                else if ((!isNaN(n1) && isNaN(n2)))
-                  return -1;
-                else
-                  return i1.name.localeCompare(i2.name);
-              });
-              var p = permission;
-              if (p) {
+                result.data.data.sort(function (i1, i2) {
+                  var n1 = getNumName(i1.name),
+                    n2 = getNumName(i2.name);
+                  if (!isNaN(n1) && !isNaN(n2))
+                    return n1 - n2;
+                  else if ((isNaN(n1) && !isNaN(n2)))
+                    return 1;
+                  else if ((!isNaN(n1) && isNaN(n2)))
+                    return -1;
+                  else
+                    return i1.name.localeCompare(i2.name);
+                });
+                var p = permission;
+                if (p) {
 
+                  for (var i = result.data.data.length - 1; i >= 0; i--) {
+                    var item = result.data.data[i];
+                    var fd = p.Rows.find(function (it) {
+                      return it.RegionIdTree.indexOf(item.project_item_id) != -1
+                    });
+                    if (!fd) {
+                      result.data.data.splice(i, 1);
+                    }
+                  }
+                }
                 for (var i = result.data.data.length - 1; i >= 0; i--) {
                   var item = result.data.data[i];
-                  var fd = p.Rows.find(function (it) {
-                    return it.RegionIdTree.indexOf(item.project_item_id) != -1
-                  });
-                  if (!fd) {
+                  if (item.project_item_id == '5514f7b471fe65ac066cb09b' || item.project_item_id == '5514f7b471fe65ac066cb09c') {
+                    // console.log(item)
                     result.data.data.splice(i, 1);
                   }
                 }
+                resolve(result);
               }
-              for (var i = result.data.data.length - 1; i >= 0; i--) {
-                var item = result.data.data[i];
-                if (item.project_item_id == '5514f7b471fe65ac066cb09b' || item.project_item_id == '5514f7b471fe65ac066cb09c') {
-                  // console.log(item)
-                  result.data.data.splice(i, 1);
-                }
-              }
-              resolve(result);
             });
           })
 
