@@ -16,7 +16,6 @@
       //vm.dareaId= $stateParams.areaID;
       //vm.dareaName = $stateParams.areaName;
 
-    console.log('a',$stateParams)
     var pk = db('xcpk');
     var data = db('pack'+id);
     pk.get('xcpk').then(function (pk) {
