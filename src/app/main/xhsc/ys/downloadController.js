@@ -36,14 +36,17 @@
             vm.onlines.splice(ix,1);
           ix = vm.offlines.indexOf(item);
           if(ix==-1) {
-            vm.offlines.push(item);
+
             delete item.pack;
-            vm.data.rows.push(item);
-            xcpk.addOrUpdate(vm.data);
+            remote.Assessment.queryById(item.AssessmentID).then(function (result) {
+              vm.data.rows.push(result.data);
+              vm.offlines.push(item);
+              xcpk.addOrUpdate(vm.data).then(function () {
+                utils.alert('下载完成');
+              })
+            })
           }
-          utils.tips('下载完成');
         }
-       // console.log('getProgress',  item.progress);
 
       })
     }

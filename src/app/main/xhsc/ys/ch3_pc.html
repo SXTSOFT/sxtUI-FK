@@ -4,7 +4,6 @@
       <!--<h2>测量结果</h2>-->
     <!--</div>-->
 
-
     <div layout="column" ng-repeat="m in vm.ms">
       <div style="border-bottom: 1px solid #d8d8d8;">
         <h2 class="md-title" style="color:#e93030;font-size:16px;margin:16px;">{{m.TemplateName}}</h2>
@@ -15,7 +14,7 @@
         <!--</md-list-item>-->
         <md-list-item ng-repeat="b in m.Regions">
 
-          <md-button ui-sref="app.xhsc.sctb(b)">
+          <md-button ui-sref="app.pc.sctb(b)">
             <p>{{b.name}}</p>
           </md-button>
         </md-list-item>

@@ -384,7 +384,7 @@
               $mdDialog.hide()
             }
             $scope.item= {
-              //value:obj.DelScore,
+              value:  obj.DelScore,
               reason:obj.Description,
               isAddScore:vm.isAddScore,
               isDScore:vm.isDScore

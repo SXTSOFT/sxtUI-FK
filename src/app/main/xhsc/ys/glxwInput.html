@@ -8,7 +8,7 @@
         <input placeholder="" ng-model="item.value"  type="number">
       </md-input-container>
     </div>
-    <div ng-if="(item.value||item.value === 0) && showfitObj">
+    <div ng-if="((item.value||item.value === 0) && showfitObj)||item.reason">
       <p>{{item.isAddScore?'加':'扣'}}分原因</p>
       <div layout="row">
         <md-input-container flex>

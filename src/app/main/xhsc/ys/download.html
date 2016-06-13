@@ -17,13 +17,13 @@
                 <md-button  ng-click="vm.showECs($event,item)" class="md-raised md-primary" >
                   开始评估
                 </md-button>
-                <md-button ng-show="item.completed" ng-click="vm.delete(item,$event)" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
+                <md-button  ng-click="vm.delete(item,$event)" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
                   删除
                 </md-button>
                 <!--<md-button ng-show="item.completed" ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">-->
                 <!--详情-->
                 <!--</md-button>-->
-                <md-button ng-show="item.completed" ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
+                <md-button  ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
                   详情
                 </md-button>
                 <!--<md-button ng-show="item.completed" ng-click="vm.detail($event,item)" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">-->
@@ -52,7 +52,10 @@
                 {{item.AssessmentSubject}}
               </p>
               <div class="md-secondary md-hue-3">
-         <span style="display:inline-block;width:95px;text-align: center;">
+         <span style="display:inline-block;width:250px;text-align: center;">
+                <md-button ng-if="!item.pack.isDown"  ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
+                  详情
+                </md-button>
             <md-button ng-if="!item.pack.isDown" class="md-raised upload-btn" ng-click="vm.download(item)">
               下载
             </md-button>

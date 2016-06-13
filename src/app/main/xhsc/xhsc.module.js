@@ -405,6 +405,34 @@
           }
         }
       })
+      .state('app.pc.ch3',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'实测详情',
+        url   :'/scxq/{assessmentID}',
+        views :{
+          'content':{
+            templateUrl : 'app/main/xhsc/ys/ch3_pc.html',
+            controller:'ChooseController as vm'
+          }
+        }
+      })
+      .state('app.pc.sctb',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'实测详情',
+        url   :'/sctb/{db}/{areaId}/{measureItemID}/{regionId}/{regionType}/{name}/{pname}',
+        views :{
+          'content':{
+            templateUrl : 'app/main/xhsc/ys/scdetail.html',
+            controller:'detailscController as vm'
+          }
+        }
+      })
     .state('app.xhsc.pkresult',{
       //url   :'/pkresult/{AssessmentID}/{RegionID}/{RegionName}/{AssessmentTypeID}',
       url:'/pkresult/{year}/{projectID}/{quarter}/{assessmentStage}',
