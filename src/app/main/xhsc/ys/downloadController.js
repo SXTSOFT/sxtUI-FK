@@ -51,23 +51,31 @@
       })
     }
     vm.upload =function (item) {
-      var pk = pack.sc.up(item.AssessmentID);
-      pk.upload(function (proc) {
-        item.progress = proc;
-        if(proc==-1) {
-          item.completed = pk.completed;
-          if(item.completed)
-            remote.Assessment.sumReportTotal(item.AssessmentID).then(function(){
-              xcpk.addOrUpdate(vm.data);
-              item.progress = 100;
-              //utils.tips('同步完成');
-              utils.alert('同步完成')
-            })
-          else {
-            utils.tips('同步未完成');
-          }
+      remote.Assessment.GetAssessmentStatus(item.AssessmentID).then(function (result) {
+        if(result.data.ErrorCode==0){
+          var pk = pack.sc.up(item.AssessmentID);
+          pk.upload(function (proc) {
+            item.progress = proc;
+            if(proc==-1) {
+              item.completed = pk.completed;
+              if(item.completed)
+                remote.Assessment.sumReportTotal(item.AssessmentID).then(function(){
+                  xcpk.addOrUpdate(vm.data);
+                  item.progress = 100;
+                  //utils.tips('同步完成');
+                  utils.alert('同步完成')
+                })
+              else {
+                utils.tips('同步未完成');
+              }
+            }
+          });
         }
-      });
+        else{
+          utils.alert(result.data.ErrorMessage);
+        }
+      })
+
     }
     vm.delete = function(item,ev){
       utils.confirm('确认删除?',ev,'','').then(function(){
@@ -89,17 +97,22 @@
         vm.offlines.push(m);
       });
       remote.Assessment.query().then(function (result) {
-        result.data.forEach(function (m) {
-          var fd = vm.data.rows.find(function (a) {
-            return a.AssessmentID==m.AssessmentID;
-          });
-          if(fd){
+        if(result.data.length==0){
+          utils.alert('暂无待评估项目！');
+        }
+        else {
+          result.data.forEach(function (m) {
+            var fd = vm.data.rows.find(function (a) {
+              return a.AssessmentID == m.AssessmentID;
+            });
+            if (fd) {
 
-          }
-          else{
-            vm.onlines.push(m);
-          }
-        })
+            }
+            else {
+              vm.onlines.push(m);
+            }
+          });
+        }
       }).catch(function () {
 
       });
