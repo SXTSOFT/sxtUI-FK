@@ -18,7 +18,8 @@
         procedureTypeId: '=',
         regionType:'=',
         value:'=ngModel',
-        nameValue:'='
+        nameValue:'=',
+        inc :'@'
       },
       template:'<div layout="row">' +
       '<md-input-container flex md-no-float class="md-block"><label>可选工序({{Plength}})</label><input  ng-model="nameValue" readonly></md-input-container>'+
@@ -81,25 +82,42 @@
         scope.value = null;
         scope.nameValue = null;
         ctrl.$setViewValue();
-        if(!scope.regionType)return;
-        var t = scope.regionType;
+        if(!scope.regionType && !scope.inc)return;
+        var t = 1,ex=[1],q={
+          status:4
+        };
 
-          switch (scope.regionType) {
-            case 1:
-              t = 2;
-              break;
-            case 2:
-              t = 8;
-              break;
-            case 8:
-              t = 32;
-              break;
-            case 32:
-              t = 64;
-              break;
-          }
+        switch (scope.regionType) {
+          case 1:
+            t = 2;
+            ex = ex.concat([2,8,32,64]);
+            break;
+          case 2:
+            t = 8;
+            ex = ex.concat([ 8,32,64])
+            break;
+          case 8:
+            t = 32;
+            ex = ex.concat([32,64])
+            break;
+          case 32:
+            t = 64;
+            ex = ex.concat([64])
+            break;
+          default:
+            ex = ex.concat([2, 8, 32, 64]);
+            break;
+        }
 
-        api.szgc.BatchSetService.getAll({status:4,batchType: t}).then(function(result) {
+        if (scope.inc) {
+          t = 0;
+          q.isGetChilde=1;
+          q.batchTypeList = ex.join(',');
+          //q = '&isGetChilde=1&batchTypeList='+ex.join(',')
+        }
+        q.batchType = t;
+
+        api.szgc.BatchSetService.getAll(q).then(function(result) {
           var data = [];
           result.data.Rows.forEach(function(item) {
               data.push(item);
