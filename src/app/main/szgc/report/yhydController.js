@@ -180,9 +180,9 @@
               row.ysNum = ys ? ys.YsNum : 0;
               row.hg = ys ? ys.MainResult == 0 ? false : true : true;
               row.RegionIdTree = yb ? yb.RegionTreeId : ys ? ys.RegionTreeId : ''
-              if (row.ybNum != 0 || row.ysNum != 0) {
-                rows.push(row);
-              }
+              //if (row.ybNum != 0 || row.ysNum != 0) {
+               rows.push(row);
+              //}
             });
             vm.project.rows = rows;
             console.log('a',vm.project);
