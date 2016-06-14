@@ -28,6 +28,7 @@
           var rowSpan = 0,t1=0,t2 = 0;
           item.Children = result.data.filter(function (r) {
             if(r.ParentAcceptanceIndexID==item.AcceptanceIndexID){
+              if(r.MeasureValueList.length==0)return false;
               r.rows = [];
               var ps=[];
               r.QualifiedRate = r.QualifiedRate * 100;
