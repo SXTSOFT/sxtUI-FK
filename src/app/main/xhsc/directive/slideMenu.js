@@ -14,9 +14,11 @@
       scope:{
         slideData:'=',
         showCheck:'=',
-        halfHeight:'='
+        halfHeight:'=',
+        level:'=',
+        projectId:'='
       },
-      templateUrl:'app/main/xhsc/ys/slideMenu.html',
+      templateUrl:'app/main/xhsc/directive/slideMenu.html',
       link:link
     }
 
@@ -38,21 +40,24 @@
       $(window).resize(function(){
         resize();
       })
-
       scope.selectProcedure = function(item){
         scope.gxlevels = null;
         scope.slideData.forEach(function(t){
-          t.children.forEach(function(_t){
+          t.SpecialtyChildren.forEach(function(_t){
             _t.checked = false;
           })
         })
         item.checked = true;
-        scope.gxlevels = item.procedureCh;
+        scope.gxlevels = item.WPAcceptanceList;
       }
-      scope.selectProcedure(scope.slideData[0].children[0]);
+      scope.$watch('slideData',function(){
+        if(!scope.slideData) return;
+        scope.selectProcedure(scope.slideData[0].SpecialtyChildren[0]);
+      })
       scope.changeOrclick = function(item){
+        console.log(item)
         if(!scope.showCheck){
-          $state.go('app.xhsc.choose')
+          $state.go('app.xhsc.choose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName})
         }else{
           item.checked = !item.checked;
         }

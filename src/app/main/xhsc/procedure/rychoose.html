@@ -1,0 +1,82 @@
+
+
+<div flex layout="column" class="ryxz">
+  <div style="width:100%;">
+    <div style="padding:8px;color:#f00;background: #fff;border-bottom: 1px solid #d8d8d8;" ng-show="vm.choosed.length">
+      已选：<span class="labs" ng-repeat="item in vm.choosed">{{item.name}}<i ng-click="vm.rydel(item)"></i></span>
+    </div>
+  </div>
+  <md-content flex layout="row" class="gx-list" style="margin-bottom: 40px;overflow: hidden;">
+  <div flex="40" layout="column" style="background: #f0f0f0;overflow: auto;">
+  <div class="list-left" style="background: #f0f0f0;">
+  <md-list ng-cloak style="padding-top:0;">
+  <md-list-item ng-repeat="ry in vm.persons" ng-class="{'active':ry.checked}">
+    <md-button flex ng-click="vm.choosery(ry)"> {{ry.unit}}</md-button>
+  </md-list-item>
+  </md-list>
+  </div>
+  </div>
+  <div flex="60" layout="column" style="background: #fff;position:relative;overflow: auto;">
+  <div class="list-right">
+  <div class="floors" layout="column">
+  <md-list>
+  <md-list-item layout="row" ng-repeat="user in vm.current.users" ng-click="vm.choose(user)">
+  <p>{{user.name}}</p>
+  <md-checkbox class="md-secondary" ng-checked="user.checked" ng-click="vm.choose(user)"></md-checkbox>
+  </md-list-item>
+  </md-list>
+  </div>
+  </div>
+  </div>
+  </md-content>
+  <div class="inner-footerbar">
+  <md-toolbar  >
+  <md-button>确定</md-button>
+  </md-toolbar>
+  </div>
+</div>
+
+
+<!--<md-dialog ng-cloak style="max-width:100%;width:100%;">-->
+  <!--<md-dialog-content layout="row">-->
+    <!--<div flex layout="column" class="ryxz">-->
+    <!--<div layout="row" flex="initial">-->
+    <!--<div flex style="padding:8px;color:#f00;background: #fff;border-bottom: 1px solid #d8d8d8;" ng-show="choosed.length">-->
+    <!--已选项：<span class="labs" ng-repeat="item in choosed">{{item.name}}<i ng-click="rydel(item)"></i></span>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<md-content flex layout="row" class="gx-list">-->
+    <!--<div flex="40" layout="column" style="background: #f0f0f0;">-->
+    <!--<div class="list-left" style="background: #f0f0f0;">-->
+    <!--<md-list ng-cloak style="padding:0;">-->
+    <!--<md-list-item ng-repeat="ry in persons" ng-class="{'active':ry.checked}">-->
+    <!--<md-button flex ng-click="choosery(ry)"> {{ry.unit}}</md-button>-->
+    <!--</md-list-item>-->
+    <!--</md-list>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div flex="60" layout="column" style="background: #fff;position:relative;">-->
+    <!--<div class="list-right">-->
+    <!--<div class="floors" layout="column">-->
+    <!--<md-list>-->
+    <!--<md-list-item layout="row" ng-repeat="user in rylevels" ng-click="choose(user)">-->
+    <!--<p>{{user.name}}</p>-->
+    <!--<md-checkbox class="md-secondary" ng-checked="user.checked" ng-click="choose(user)"></md-checkbox>-->
+    <!--</md-list-item>-->
+    <!--</md-list>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</md-content>-->
+    <!--</div>-->
+  <!--</md-dialog-content>-->
+  <!--<md-dialog-actions layout="row">-->
+    <!--<span flex></span>-->
+    <!--<md-button class="md-raised" ng-click="cancel()">-->
+      <!--取消-->
+    <!--</md-button>-->
+    <!--<md-button class="md-raised" ng-click="answer(choosed)" style="margin-right:20px;">-->
+      <!--确定-->
+    <!--</md-button>-->
+  <!--</md-dialog-actions>-->
+<!--</md-dialog>-->

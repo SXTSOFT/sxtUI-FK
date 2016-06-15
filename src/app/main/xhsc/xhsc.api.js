@@ -59,6 +59,12 @@
       sumReportTotal:function(assessmentID){
         return $http.post($http.url('/Api/AssessmentApi/SumReportTotal'),{assessmentID:assessmentID});
       },
+      queryProcedure:function(){
+        return $http.get($http.url('/Api/WPAcceptanceApi/GetWPAcceptanceInfo'));
+      },
+      queryAllBulidings:function (projectId) {
+        return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByid',{projectId:projectId}));
+      },
 	    /**
        * 实测实量项
        */

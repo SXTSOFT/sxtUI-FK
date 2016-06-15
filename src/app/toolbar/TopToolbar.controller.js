@@ -20,7 +20,9 @@
       vm.change = function(){
         $rootScope.$emit('areaSelect',vm.selectedArea)
       }
-
+      vm.sendGxResult = function(){
+        $rootScope.$emit('sendGxResult')
+      }
     }
 
 

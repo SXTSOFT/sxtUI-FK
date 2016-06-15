@@ -1,16 +1,16 @@
 <div flex="none" style="position: relative;">
-  <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;left:10px;top:0;" >
+  <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;left:10px;top:0;" ng-click="vm.nextRegion(true)">
     <md-icon md-font-icon="icon-chevron-left" ></md-icon>
   </md-button>
   <p style="font-size:14px;padding:0 10px;text-align: center;margin-bottom: 0;line-height:48px;width:70%;margin-left:auto;margin-right:auto;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-    深圳星河银河谷项目>一期>A栋>203
+    {{vm.RegionFullName}}
   </p>
-  <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;right:10px;top:0">
+  <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;right:10px;top:0" ng-click="vm.nextRegion()">
     <md-icon md-font-icon="icon-chevron-right" ></md-icon>
   </md-button>
 </div>
-<div flex>aaaa</div>
+<div flex>图纸</div>
 <div style="height:200px;overflow: hidden;" flex="none">
-  <slide-menu slide-data="vm.procedureData" show-check="true" half-height="true"></slide-menu>
+  <slide-menu slide-data="vm.procedureData" show-check="true" half-height="true" level="2"></slide-menu>
 </div>
 

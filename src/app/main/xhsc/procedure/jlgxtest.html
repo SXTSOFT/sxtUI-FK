@@ -1,5 +1,5 @@
 
-<div class="gxtest gxtestdetail" style="position:relative;">
+<div class="gxtest gxtestdetail">
   <div style="margin-top: 20px;padding-left:8px;"><span>基本信息</span></div>
   <md-list>
     <md-list-item>
@@ -168,10 +168,10 @@
     </md-content>
   </div>
   <div style="margin-top: 20px;padding:0 8px;" flex layout="row"><span>原位标注</span></div>
-  <div flex>aaa</div>
+  <div flex>图纸</div>
 
   <md-button flex style="display: block;width:100%;margin:10px 0;padding:6px;border:1px solid #d8d8d8;background: #fff;" ng-click="vm.showTop()">提交复检报告</md-button>
-
+  <!--ng-class="{'slidedown':vm.show}"-->
   <div class="slideTop" ng-show="vm.show" ng-class="{'slidedown':vm.show}">
     <md-list style="margin-top: 0">
       <md-list-item>
@@ -207,6 +207,7 @@
     </md-list>
     <md-button flex style="display: block;width:100%;padding:0px;background: #fff;" ng-click="vm.show = false">确定</md-button>
   </div>
-</div>
 
+
+</div>
 
