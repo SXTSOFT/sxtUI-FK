@@ -7,9 +7,17 @@
       </md-button>
     </div>
   </md-toolbar>
-  <md-dialog-content layout="row">
-    <div layout="column" flex flex layout="row" style="border-bottom: 1px solid #d8d8d8;margin-bottom: 10px;">
-      <span style="margin-bottom: 16px;">{{ProblemDescription}}</span>
+  <md-dialog-content>
+    <div flex layout="row" style="border-bottom: 1px solid #d8d8d8;margin-bottom: 10px;">
+      <p flex style="margin-bottom: 0">
+        <span>{{item.ProblemDescription}}</span>
+      </p>
     </div>
+    <div flex layout="row" layout-wrap>
+      <div flex="50" ng-repeat="img in item.images" sxt-images="images" style="text-align: center;margin-bottom: 10px;">
+        <img ng-src="{{img.ImageUrl}}" style="width: 450px;" flex="95" style="display: block;"/>
+      </div>
+    </div>
+    <div>{{item.PartDescriptioin ? '部位: ' + item.PartDescriptioin:''}}</div>
   </md-dialog-content>
 </md-dialog>

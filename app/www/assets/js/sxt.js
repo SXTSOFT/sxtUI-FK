@@ -22,9 +22,9 @@
     version: '1.1.12',
     app: {
       couchDb:'http://ggem.sxtsoft.com:5984',
-      api:'http://s1511f9225.51mypc.cn:9090',
-      //api:'http://localhost:80',
-      fs:'http://s1511f9225.51mypc.cn:9090'
+      api:'http://xhszgc.sxtsoft.com:9090',
+      //api:'http://localhost:8107',
+      fs:'http://xhszgc.sxtsoft.com:9090'
       //api:'http://10.245.9.164:8107',
     },
     angular:{

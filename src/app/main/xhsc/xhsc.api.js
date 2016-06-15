@@ -21,10 +21,14 @@
 }
   apiProvider.register('xhsc',{
     Assessment:{
-
-
       query:function () {
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentProject'))
+      },
+      queryById:function (assessmentID) {
+        return $http.get($http.url('/Api/AssessmentApi/GetAssessmentProjectSingle',{assessmentID:assessmentID}))
+      },
+      GetAssessmentStatus:function (assessmentID) {
+        return $http.get($http.url('/Api/AssessmentApi/GetAssessmentStatus',{assessmentID:assessmentID}))
       },
       queryRegion:function (areaID) {
         return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo',{AreaID:areaID}));

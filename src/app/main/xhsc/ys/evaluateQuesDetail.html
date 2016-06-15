@@ -10,7 +10,7 @@
   <md-dialog-content>
     <div flex layout="row" style="border-bottom: 1px solid #d8d8d8;margin-bottom: 10px;">
       <p flex style="margin-bottom: 0">
-        <span>{{item.ProblemDescription}} {{item.PartDescriptioin}}</span>
+        <span>{{item.ProblemDescription}}</span>
         <md-button ng-click="addPhoto(question)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
       </p>
       <md-button class="md-button" ng-click="delete(item)" style="margin:0;"><md-icon style="width: 28px;height:28px;"><img src="app/main/xhsc/images/del1.png"></md-icon></md-button>
@@ -18,8 +18,9 @@
     <div flex layout="row" layout-wrap>
       <div flex="50" ng-repeat="img in images" sxt-images="images" style="text-align: center;margin-bottom: 10px;">
         <img ng-src="{{img.ImageByte}}" style="width: 450px;" flex="95" style="display: block;"/>
-        <p style="height:20px;line-height: 20px;">{{img.PartDescriptioin}}</p>
+        <!--<p style="height:20px;line-height: 20px;">{{img.PartDescriptioin}}</p>-->
       </div>
     </div>
+    <div>{{item.PartDescriptioin ? '部位: ' + item.PartDescriptioin:''}}</div>
   </md-dialog-content>
 </md-dialog>

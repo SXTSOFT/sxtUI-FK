@@ -51,7 +51,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'实体质量',
-        url   :'/stzl/{assessmentID}/{AssessmentTypeID}/{aname}/{aid}',
+        url   :'/stzl/{assessmentID}/{AssessmentTypeID}/{aname}/{aid}/{typename}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/ch1.html',
@@ -130,7 +130,7 @@
       })
       .state('app.xhsc.gxtest',{
         noBack:true,
-        sendBt:true,
+        sendBt:false,
         rightArrow:false,
         leftArrow:false,
         url   :'/gxtest/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}',
@@ -157,7 +157,7 @@
       })
       .state('app.xhsc.fgxtest',{
         noBack:true,
-        sendBt:true,
+        sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'工序',
@@ -287,7 +287,6 @@
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
-        title:'实体质量评估',
         url   :'/list/{AssessmentID}/{RegionID}/{RegionName}/{AssessmentTypeID}',
         views :{
           'content@app':{
@@ -339,7 +338,7 @@
       })
       .state('app.xhsc.sctb',{
         noBack:true,
-        sendBt:true,
+        sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'实测详情',
@@ -457,6 +456,34 @@
           'content':{
             templateUrl : 'app/main/xhsc/ys/evaluatelist_pc.html',
             controller:'evaluatelistPcController as vm'
+          }
+        }
+      })
+      .state('app.pc.ch3',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'实测详情',
+        url   :'/scxq/{assessmentID}',
+        views :{
+          'content':{
+            templateUrl : 'app/main/xhsc/ys/ch3_pc.html',
+            controller:'ChooseController as vm'
+          }
+        }
+      })
+      .state('app.pc.sctb',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'实测详情',
+        url   :'/sctb/{db}/{areaId}/{measureItemID}/{regionId}/{regionType}/{name}/{pname}',
+        views :{
+          'content':{
+            templateUrl : 'app/main/xhsc/ys/scdetail.html',
+            controller:'detailscController as vm'
           }
         }
       })

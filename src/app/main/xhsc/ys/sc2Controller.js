@@ -81,14 +81,33 @@
             }
           });
           vm.info.MeasureIndexes = scStr;
+          var ms=[];
+
+          vm.info.MeasureIndexes.forEach(function (m) {
+            ms.push(m);
+            if(m.Children && m.Children.length){
+              m.Children.forEach(function (m1) {
+                ms.push(m1);
+              });
+            }
+          });
+          ms.forEach(function (m) {
+            //系统中仅有"门洞尺寸"的"厚"和"宽"需要处理抹灰厚度问题
+            if(m.AcceptanceIndexID=='8043e1a4efa942babdb87c5ad5116737'||m.AcceptanceIndexID=='500dc59be8d44458b6fd7940d2c54adc'){
+              m.plasterDepth = vm.plasterDepth;
+              m.plasterDepthMethod = m.AcceptanceIndexID=='8043e1a4efa942babdb87c5ad5116737'?'+':'-'
+            }
+          });
           vm.submit();
          });
     }
 
     vm.setRegionId = function(regionId,regionType){
       packdb.get('GetRegionTreeInfo').then(function (result) {
-        var region = xhUtils.findRegion([result.data],regionId);
-        vm.setRegion(region)
+        var region = xhUtils.findRegion([result.data],regionId),
+          ld = xhUtils.findRegion([result.data],regionId.substring(0,15));
+        vm.plasterDepth = ld?ld.PlasterDepth:0;
+        vm.setRegion(region);
       });
     }
     vm.setRegion = function(region){

@@ -20,7 +20,7 @@
             "type": "registry",
             "id": "cordova-plugin-file"
         },
-        "is_top_level": false,
+        "is_top_level": true,
         "variables": {}
     },
     "cordova-plugin-file-transfer": {
@@ -44,7 +44,7 @@
             "type": "registry",
             "id": "cordova-plugin-compat"
         },
-        "is_top_level": false,
+        "is_top_level": true,
         "variables": {}
     },
     "cordova-plugin-camera": {

@@ -18,27 +18,7 @@
       <div layout="row">
         <md-button ng-click="addQuestion()"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
       </div>
-      <div layout="row" flex ng-if="!Problems.length">
-        <div layout="column" flex>
-          <md-input-container class="md-block">
-            <label>分数</label>
-            <input required>
-          </md-input-container>
-          <md-input-container class="md-block">
-            <label>描述</label>
-            <input required>
-          </md-input-container>
-        </div>
-        </div>
     </div>
   </md-dialog-content>
-  <md-dialog-actions layout="row" ng-if="!Problems.length">
-    <span flex></span>
-    <md-button class="md-raised" ng-click="">
-      取消
-    </md-button>
-    <md-button class="md-raised" ng-click="" style="margin-right:20px;">
-      确定
-    </md-button>
-  </md-dialog-actions>
+
 </md-dialog>

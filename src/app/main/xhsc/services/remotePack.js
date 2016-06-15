@@ -42,7 +42,9 @@
         results.forEach(function (r) {
           r.rows.forEach(function (t) {
             self.tasks.push({
+              type:dbs[i].type,
               data:t,
+             // type:dbs[i].type,
               url:dbs[i].url,
               index:dbs[i].index||0
             })
@@ -69,12 +71,14 @@
         if(!url)
           url = task.url;
 
-        if(url==task.url &&  tasks.length<self.max && (!type || type==task.type)){
+
+        if(url==task.url &&  tasks.length<self.max  && (!type || type==task.type)){
           //p++;
           tasks.push(task);
         }
         if(!type)
           type = task.type;
+
       });
       process && process(parseInt( p/self.tasks.length*100));
 

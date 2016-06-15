@@ -33,12 +33,15 @@
       var install = function(){
         if(!scope.db || !scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
 
+
+
         if(!pk)
           pk = pack.sc.up(scope.db);
         if(!data)
           data = pk.sc.db;
         if(!points)
           points = pk.point.db;
+
 
         if(!map){
           map = new L.SXT.Project(element[0]);
@@ -124,58 +127,7 @@
                   layer.addData(geo.geometry);
                 });
                 //如果是上传楼层对比，尝试获取上一层的点
-                if(fg.data.length == 0 && scope.measureIndexes.find(function (m) { //
-                    return m.QSKey == 5;
-                  })){
-                  var mIndex = scope.measureIndexes.find(function (m) { //
-                    return m.QSKey == 5;
-                  });
-                  db('pack'+scope.db).get('GetRegionTreeInfo').then(function (result) {
-                    var  rr =xhUtils.wrapRegion(result.data),
-                      room = xhUtils.findRegion([rr],scope.regionId),
-                      parent = xhUtils.findRegion([rr],scope.regionId.substring(0,scope.regionId.length-5));
-                    if(parent){
-                      var roomIndex = parent.Children.indexOf(room),
-                        prev = parent.prev(),
-                        prevRoom;
-                      while (prev && !prevRoom){
-                        if(prev.Children[roomIndex] && prev.Children[roomIndex].DrawingID==room.DrawingID){
-                          prevRoom = prev.Children[roomIndex];
-                        }
-                      }
-                      if(prevRoom){ //找到上一层同一图纸
-                        data.findAll(function(o){
-                          return o.AcceptanceItemID==scope.acceptanceItem
-                            && o.AcceptanceIndexID == mIndex.AcceptanceIndexID
-                            && o.CheckRegionID == prevRoom.RegionID
-                        }).then(function (ds) {
 
-                          p.rows.forEach(function(geo) {
-                            var fd = ds.rows.find(function (o) {
-                              return o.MeasurePointID == geo._id;
-                            }), v = {
-                              _id: sxt.uuid(),
-                              RecordType: 4,
-                              CreateTime: now(),
-                              RelationID: scope.db,
-                              MeasurePointID: geo._id,
-                              DrawingID: scope.imageUrl,
-                              DesignValue: fd && fd.MeasureValue,
-                              CheckRegionID: scope.regionId,
-                              RegionType: scope.regionType,
-                              AcceptanceItemID: scope.acceptanceItem,
-                              AcceptanceIndexID: mIndex.AcceptanceIndexID
-                            };
-                            v.MeasureValueId = v._id;
-                            data.addOrUpdate(v);
-                            fg.data.push(v);
-                          });
-                        })
-                      }
-                    }
-
-                  });
-                }
               })
             });
           },
@@ -348,9 +300,7 @@
                   color:'red'
                 });
               }
-
             }
-            //toolbar._toolbars.lineGroup._modes.stamp.handler.enable();
           },
           onUpdateData:function(context,updates,editScope){
             updates.forEach(function(m){
@@ -371,8 +321,20 @@
                 m.v.MeasureValueId = m.v._id;
               }
               if(m.v.values){
+                var minV=1000000,maxV=-1000000,vs=[];
+                for(var k in m.v.values){
+                  var v = m.v.values[k];
+                  if(m.v.values.hasOwnProperty(k) && v) {
+                    minV = Math.min(minV, v);
+                    maxV = Math.max(maxV,v);
+                    vs.push(v);
+                  }
+                };
+                m.v.MeasureValue = maxV;
+                m.v.DesignValue = minV;
+                m.v.ExtendedField1 = vs.join(',');
                 //组测量(一个点多个值)
-                var childValues = fg.data.filter(function (item) {
+/*                var childValues = fg.data.filter(function (item) {
                   return item.ParentMeasureValueID == m.v.MeasureValueId;
                 }),ix=0;
                 for(var k in m.v.values) {
@@ -399,7 +361,7 @@
                   }
                   fd.MeasureValue = dv;
                   data.addOrUpdate(fd);
-                }
+                }*/
               }
 
               data.addOrUpdate(m.v);
@@ -425,11 +387,10 @@
             if(edit) {
               if(e.layer instanceof L.Stamp) {
                 $timeout(function () {
-                  fg._map.setView(e.layer._latlng);
+                  var center = fg._map.getCenter();
+                  fg._map.setView([center.lat,e.layer._latlng.lng]);
                 },300);
-              }
-
-              //e.fg._value.seq =
+              };
               edit.scope.context = e;
               edit.scope.data = {
                 measureIndexes:scope.measureIndexes,
