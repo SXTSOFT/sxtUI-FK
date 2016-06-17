@@ -18,7 +18,7 @@
     vm.is = function (state) {
       return vm.includes(state);
     }
-    //vm.markerClick = markerClick;
+    vm.markerClick = markerClick;
     vm.querySearch = function(text){
       var k=[];
       if(vm.markers){
@@ -55,19 +55,20 @@
       });
 
     }
-    vm.markerClick = function(){
-     // vm.showBot = true;
-      $mdBottomSheet.show({
-        templateUrl: 'app/main/xhsc/home/homeBottom.html',
-        controller: ['$scope',function($scope){
-          $scope.hide = function(){
-            $mdBottomSheet.hide();
-          }
-
-        }]
-      }).then(function(){
-
-      })
-    }
+    //vm.markerClick = function(){
+    // // vm.showBot = true;
+    //  $mdBottomSheet.show({
+    //    templateUrl: 'app/main/xhsc/home/homeBottom.html',
+    //    controller: ['$scope',function($scope){
+    //      $scope.hide = function(){
+    //        $mdBottomSheet.hide();
+    //      }
+    //
+    //    }],
+    //    disableBackdrop:true
+    //  }).then(function(){
+    //
+    //  })
+    //}
   }
 })();

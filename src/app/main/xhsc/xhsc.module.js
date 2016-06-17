@@ -37,7 +37,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'实测实量',
-        url   :'/choose/{areaID}/{areaName}/{assessmentID}',
+        url   :'/choose2/{areaID}/{areaName}/{assessmentID}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/ch2.html',
@@ -92,8 +92,7 @@
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
-        title :'抹灰工程',
-        url   :'/choose',
+        url   :'/choose/{acceptanceItemID}/{projectId}/{acceptanceItemName}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/choose.html',
@@ -101,17 +100,31 @@
           }
         }
       })
-      .state('app.xhsc.procedure',{
+      .state('app.xhsc.gxresult',{
         noBack:true,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'工序结果',
-        url   :'/procedure',
+        url   :'/gxresult/{acceptanceItemName}/{name}',
         views :{
           'content@app':{
-            templateUrl : 'app/main/xhsc/procedure/procedure.html',
-            controller:'procedureController as vm'
+            templateUrl : 'app/main/xhsc/procedure/gxresult.html',
+            controller:'gxresultController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.bdchoose',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'标段选择',
+        url   :'/bdchoose',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/procedure/bdchoose.html',
+            controller:'bdchooseController as vm'
           }
         }
       })
@@ -120,8 +133,7 @@
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
-        title :'工序',
-        url   :'/gxtest',
+        url   :'/gxtest/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/procedure/gxtest.html',
@@ -138,7 +150,7 @@
         url   :'/jlgxtest',
         views :{
           'content@app':{
-            templateUrl : 'app/main/xhsc/procedure/gxtest-jl.html',
+            templateUrl : 'app/main/xhsc/procedure/jlgxtest.html',
             controller:'jlgxtestController as vm'
           }
         }
@@ -171,17 +183,59 @@
           }
         }
       })
-      .state('app.xhsc.center',{
+      .state('app.xhsc.gxlist',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'工序选择',
+        url   :'/gxlist/{projectId}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/procedure/gxlist.html',
+            controller:'gxlistController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.rychoose',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'人员选择',
+        url   :'/rychoose',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/procedure/rychoose.html',
+            controller:'rychooseController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.mcenter',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'个人中心',
+        url   :'/mcenter',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/center/mcenter.html',
+            controller:'mcenterController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.pcenter',{
         noBack:true,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'消息中心',
-        url   :'/center',
+        url   :'/pcenter',
         views :{
           'content@app':{
-            templateUrl : 'app/main/xhsc/center/center.html',
-            controller:'centerController as vm'
+            templateUrl : 'app/main/xhsc/center/pcenter.html',
+            controller:'pcenterController as vm'
           }
         }
       })

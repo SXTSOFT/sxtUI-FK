@@ -6,10 +6,10 @@
 
   angular
     .module('app.xhsc')
-    .controller('centerController',centerController);
+    .controller('mcenterController',mcenterController);
 
   /**@ngInject*/
-  function centerController($scope){
+  function mcenterController($scope){
     var vm = this;
   }
 })();

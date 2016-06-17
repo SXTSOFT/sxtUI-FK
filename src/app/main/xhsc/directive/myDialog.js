@@ -9,29 +9,44 @@
     .directive('myDialog',myDialogDirective);
 
   /**@ngInject*/
-  function myDialogDirective($state){
+  function myDialogDirective($state,$timeout){
     return {
       //templateUrl:'app/main/xhsc/directive/mydialog.html',
       scope:{
-        dialogShow:'='
+        dialogShow:'=',
+        dialogData:'=',
+        dialogSure:'@',
+        dialogMsg:'@'
       },
       template:'<div class="my-dialog-mask">\
       <div class="my-dialog"><div class="dialog-top">\
-      <p>深圳市星河银河谷项目 》 1期 》 1栋 》1001，铝合金工序，是否报检？</p>\
-    <md-button flex style="width:100%;" ng-click="submit()">报检</md-button>\
+      <p>{{dialogMsg}}</p>\
+    <md-button flex style="width:100%;" ng-click="submit()">{{dialogSure}}</md-button>\
     </div><div class="dialog-bottom"><md-button flex style="width:100%;" ng-click="cancel()">取消</md-button></div></div></div>',
       link:link
     }
     function link(scope,element,attr,ctrl){
       $(element).appendTo('body');
       $('.my-dialog-mask').css('display','block');
+      scope.$watch('dialogData',function(){
+        if(!scope.dialogData) return;
+        $('.my-dialog-mask').css('display','block');
+        console.log(scope.dialogData)
+        if(!scope.dialogMsg){
+          scope.dialogMsg = scope.dialogData.name + ',' + scope.dialogData.acceptanceItemName + '工序，是否报检？';
+        }
+      })
       scope.cancel= function(){
         //$('.my-dialog-mask').css('display','none');
         scope.dialogShow = false;
       }
       scope.submit = function(){
         scope.dialogShow = false;
-        $state.go('app.xhsc.gxtest');
+        if(scope.dialogSure == '报检'){
+          $timeout(function(){
+            $state.go('app.xhsc.gxtest',{acceptanceItemID:scope.dialogData.acceptanceItemID,acceptanceItemName:scope.dialogData.acceptanceItemName,name:scope.dialogData.name,regionId:scope.dialogData.regionId,projectId:scope.dialogData.projectId});
+          },100)
+        }
 
       }
     }

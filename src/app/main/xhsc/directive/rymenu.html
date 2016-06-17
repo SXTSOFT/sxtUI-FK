@@ -1,0 +1,27 @@
+<div layout="row">
+  已选项：
+</div>
+<div flex layout="row" class="gx-list">
+  <div flex="40" layout="column">
+    <div class="list-left" style="background: #f0f0f0;">
+      <md-list ng-cloak>
+        <md-list-item ng-repeat="ry in ryData">
+          <md-button flex> {{ry.unit}}</md-button>
+        </md-list-item>
+      </md-list>
+    </div>
+  </div>
+  <div flex="60" layout="column" style="background: #fff;position:relative;">
+    <div class="list-right">
+      <div class="floors" layout="column">
+        <md-list>
+          <md-list-item layout="row">
+            <p>aaa</p>
+            <md-checkbox class="md-secondary"></md-checkbox>
+          </md-list-item>
+        </md-list>
+      </div>
+    </div>
+  </div>
+</div>
+

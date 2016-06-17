@@ -2,7 +2,7 @@
     <!--<md-icon md-font-icon="icon-chevron-left" style="color:white;" ng-click="goBack();" class="icon s32"></md-icon>-->
   <md-button ng-show="$root.noBack" ng-click="goBack();" style="color:white;position: absolute;top:5px;left:0;">返回</md-button>
   <div style="color:white;position: absolute;top:5px;left:0;" ng-show="$root.showgrzx">
-    <md-button ui-sref="app.xhsc.center"><md-icon><img src="app/main/xhsc/images/grzx.png"></md-icon></md-button>
+    <md-button ui-sref="app.xhsc.pcenter"><md-icon><img src="app/main/xhsc/images/grzx.png"></md-icon></md-button>
   </div>
   <h2>
     <md-icon class="arrows icon s32" ng-show="$root.leftArrow===true" md-font-icon="icon-chevron-left" style="color:#fff;" ng-click="toLeft()"></md-icon>
@@ -19,7 +19,7 @@
     <!--星河智慧一期<md-icon class="icon s32" md-font-icon="icon-menu-down" style="color:#fff;"></md-icon>-->
     <!--</div>-->
   <div style="position: absolute;top:5px;right:0;font-size:14px;" ng-show="$root.sendBt" class="submit-btn">
-    <md-button ui-sref="app.xhsc.procedure">
+    <md-button ng-click="vm.sendGxResult()">
       提交
     </md-button>
   </div>
@@ -29,7 +29,7 @@
     </md-button>
   </div>
   <div style="position: absolute;top:5px;right:0;font-size:14px;" ng-show="$root.showgrzx">
-    <md-button><md-icon><img src="app/main/xhsc/images/msg.png"></md-icon></md-button>
+    <md-button ui-sref="app.xhsc.mcenter"><md-icon><img src="app/main/xhsc/images/msg.png"></md-icon></md-button>
   </div>
   <div style="position: absolute;top:5px;right:3px;font-size:14px;">
   <md-progress-circular id="toolbar-progress" ng-if="$root.loadingProgress"
