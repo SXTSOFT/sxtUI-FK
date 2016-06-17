@@ -11,8 +11,7 @@
             <h2 class="md-title" style="color:#e93030;font-size:16px;margin:16px;">{{m.MeasureItemName}}</h2>
           </div>
           <md-list>
-
-              <md-button ng-repeat="b in m.ExtractionRegions" class="md-raised" ui-sref="app.pc.sctb({db:s.AssessmentID,regionId:b.RegionID,measureItemID:m.AcceptanceItemID,name:b.FullRegionName,pname:m.MeasureItemName})">
+              <md-button ng-repeat="b in m.ExtractionRegions" class="md-raised" ui-sref="app.xhsc.sctb({db:s.AssessmentID,regionId:b.RegionID,measureItemID:m.AcceptanceItemID,name:b.FullRegionName,pname:m.MeasureItemName})">
                 {{b.FullRegionName}}
               </md-button>
           </md-list>

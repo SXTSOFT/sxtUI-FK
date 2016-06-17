@@ -405,17 +405,31 @@
           }
         }
       })
+      .state('app.xhsc.ch31',{
+        noBack:false,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'实测详情',
+        url   :'/scxq/{year}/{projectID}/{quarter}/{assessmentStage}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/ch31.html',
+            controller:'ChoosePcController as vm'
+          }
+        }
+      })
       .state('app.pc.ch3',{
         noBack:true,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'实测详情',
-        url   :'/scxq/{assessmentID}',
+        url   :'/scxq/{year}/{projectID}/{quarter}/{assessmentStage}',
         views :{
           'content':{
             templateUrl : 'app/main/xhsc/ys/ch3_pc.html',
-            controller:'ChooseController as vm'
+            controller:'ChoosePcController as vm'
           }
         }
       })
@@ -428,8 +442,36 @@
         url   :'/sctb/{db}/{areaId}/{measureItemID}/{regionId}/{regionType}/{name}/{pname}',
         views :{
           'content':{
-            templateUrl : 'app/main/xhsc/ys/scdetail.html',
+            templateUrl : 'app/main/xhsc/ys/scdetail_pc.html',
             controller:'detailscController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.sctbdetail',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'实测详情',
+        url   :'/sctbdetail/{recordId}/{itemId}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/ys/sctbdetail.html',
+            controller:'sctbdetailController as vm'
+          }
+        }
+      })
+      .state('app.pc.sctbdetail',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'实测详情',
+        url   :'/sctbdetail/{recordId}/{itemId}',
+        views :{
+          'content':{
+            templateUrl : 'app/main/xhsc/ys/sctbdetail_pc.html',
+            controller:'sctbdetailController as vm'
           }
         }
       })

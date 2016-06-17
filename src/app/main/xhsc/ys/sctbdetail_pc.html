@@ -1,0 +1,13 @@
+<div flex layout="column">
+  <md-toolbar>
+    <div class="md-toolbar-tools" layout="row">
+     <h2 class="md-flex">{{vm.data.Region.FullRegionName}}({{vm.data.Region.HouseTypeName}})</h2>
+      <span flex></span>
+      <md-button  class="md-raised  md-warn" ng-click="vm.back()">返回</md-button>
+    </div>
+  </md-toolbar>
+  <md-content flex layout="column">
+    <sxt-sc-view data="vm.data" flex></sxt-sc-view>
+  </md-content>
+</div>
+

@@ -6,37 +6,28 @@
           <md-subheader ng-if="vm.offlines.length">已下载列表</md-subheader>
           <md-list>
             <md-list-item ng-repeat="item in vm.offlines">
+
               <img src="app/main/xhsc/images/icon-downed.png" class="md-avatar" />
               <p layout="column" style="padding-right: 230px;font-size:18px;">
                 {{item.AssessmentSubject}}
               </p>
               <div class="md-secondary md-hue-3">
-                <!--<md-button ng-hide="item.completed" ng-click="vm.showECs($event,item)" class="md-raised md-primary" >-->
-                <!--开始评估-->
-                <!--</md-button>-->
                 <md-button  ng-click="vm.showECs($event,item)" class="md-raised md-primary" >
                   开始评估
                 </md-button>
                 <md-button  ng-click="vm.delete(item,$event)" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
                   删除
                 </md-button>
-                <!--<md-button ng-show="item.completed" ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">-->
-                <!--详情-->
-                <!--</md-button>-->
                 <md-button  ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
                   详情
                 </md-button>
-                <!--<md-button ng-show="item.completed" ng-click="vm.detail($event,item)" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">-->
-                <!--详情-->
-                <!--</md-button>-->
-                <!--<span style="display:inline-block;text-align: center;" ng-hide="item.completed">-->
-                <!--<md-button ng-click="vm.upload(item)" class="md-raised upload-btn">-->
-                <!--<md-progress-circular ng-show="item.progress && item.progress!=100" value="{{item.progress}}"  md-diameter="20"></md-progress-circular> 上传-->
-                <!--</md-button>-->
-                <!--</span>-->
+                <md-button  class="md-raised upload-btn" ng-click="vm.download(item)">
+                  <md-progress-circular ng-show="item.downloading && item.progress && item.progress!=100" md-mode="determinate" value="{{item.progress}}"  md-diameter="20"></md-progress-circular>
+                  重下
+                </md-button>
           <span style="display:inline-block;text-align: center;">
             <md-button ng-click="vm.upload(item)" class="md-raised upload-btn">
-              <md-progress-circular ng-show="item.progress && item.progress!=100" value="{{item.progress}}"  md-diameter="20"></md-progress-circular> 上传
+              <md-progress-circular ng-show="item.uploading && item.progress && item.progress!=100" value="{{item.progress}}"  md-diameter="20"></md-progress-circular> 上传
             </md-button>
           </span>
               </div>
@@ -85,8 +76,11 @@
               </p>
               <div class="md-secondary md-hue-3">
                <span style="display:inline-block;text-align: center;">
+                  <md-button class="md-raised upload-btn" ui-sref="app.xhsc.ch31({year:item.Year,projectID:item.ProjectID,quarter:item.Quarter,assessmentStage:item.AssessmentStage})">
+                 实测
+              </md-button>
               <md-button class="md-raised upload-btn" ui-sref="app.xhsc.pkresult({year:item.Year,projectID:item.ProjectID,quarter:item.Quarter,assessmentStage:item.AssessmentStage})">
-                 明细
+                 总表
               </md-button>
           </span>
               </div>
