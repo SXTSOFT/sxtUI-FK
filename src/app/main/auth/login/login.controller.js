@@ -22,9 +22,9 @@
         else {
           vm.logining = '正在登录';
           auth.login (vm.form).then (function () {
-            if(vm.show) {
-              utils.tips ('登录成功');
-            }
+            //if(vm.show) {
+            //  utils.tips ('登录成功');
+            //}
             vm.logining = null;
           }, function (reject) {
             utils.tips ('用户名或密码错误');

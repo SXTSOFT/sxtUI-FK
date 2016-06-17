@@ -35,8 +35,8 @@
       <md-content>\
       <section ng-repeat="c in g.children|sxtProcedureS">\
       <md-subheader class="md-primary">{{c.name}}({{c.ps.length}})</md-subheader>\
-      <md-list layout-padding>\
-      <md-list-item ng-click="sett(p)" ng-repeat="p in c.ps">\
+      <md-list style="padding:0;" class="newheight">\
+      <md-list-item ng-click="sett(p)" ng-repeat="p in c.ps"  style="padding:0;">\
       {{p.ProcedureName}}\
       </md-list-item>\
       </md-list>\

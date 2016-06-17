@@ -523,3 +523,10 @@ md-content{
     }
   }
 }
+.newheight{
+  md-list-item{
+    .md-list-item-inner{
+      min-height: 40px;
+    }
+  }
+}
