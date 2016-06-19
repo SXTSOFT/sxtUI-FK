@@ -460,7 +460,7 @@
         }
       })
       .state('app.xhsc.ch31',{
-        noBack:false,
+        noBack:true,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,

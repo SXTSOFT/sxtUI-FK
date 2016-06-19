@@ -65,7 +65,7 @@
                     geo.options.color = 'black';
                     break;
                   case 2:
-                    geo.options.color = 'yellow';
+                    geo.options.color = '#eb7400';
                     break;
                 }
                 layer.addData(geo);
