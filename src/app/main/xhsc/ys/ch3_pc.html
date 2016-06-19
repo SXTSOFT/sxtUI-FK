@@ -11,10 +11,13 @@
             <h2 class="md-title" style="color:#e93030;font-size:16px;margin:16px;">{{m.MeasureItemName}}</h2>
           </div>
           <md-list>
-
-              <md-button ng-repeat="b in m.ExtractionRegions" class="md-raised" ui-sref="app.pc.sctb({db:s.AssessmentID,regionId:b.RegionID,measureItemID:m.AcceptanceItemID,name:b.FullRegionName,pname:m.MeasureItemName})">
-                {{b.FullRegionName}}
-              </md-button>
+            <div layout="row" layout-wrap>
+              <div flex="33" ng-repeat="b in m.ExtractionRegions">
+                <md-button class="md-raised md-block" style="display: block; text-align:left;" ui-sref="app.pc.sctb({db:s.AssessmentID,regionId:b.RegionID,measureItemID:m.AcceptanceItemID,name:b.FullRegionName,pname:m.MeasureItemName})">
+                  {{b.FullRegionName}}
+                </md-button>
+              </div>
+            </div>
           </md-list>
         </div>
       </div>

@@ -53,6 +53,7 @@
                   return value.MeasurePointID == point.MeasurePointID;
                 });
               if(v) {
+                if(geo.geometry.type=='Stamp' && !v.MeasureValue && v.MeasureValue!==0)return;
                 if(!v.ExtendedField1 && v.DesignValue){
                   v.ExtendedField1 = v.MeasureValue+','+v.DesignValue;
                 }
@@ -72,8 +73,7 @@
             });
             layer.eachLayer(function (layer) {
               if(layer.options.MeasureValue || layer.options.MeasureValue===0) {
-                layer.updateValue({seq: layer.options.MeasureValue});
-                //layer.on('mous')
+                layer.updateValue({seq: ''+layer.options.MeasureValue});
                 layer.on('mouseover',function (e) {
                   if(!layer.popup) {
                     layer.popup = L.popup({
