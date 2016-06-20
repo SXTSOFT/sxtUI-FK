@@ -79,6 +79,28 @@
     height:40px;
     line-height: 40px;
   }
+  .tlsm{
+    .span{
+      display: inline-block;background:#0b93d5;color:#fff;padding:0 10px;border-radius:5px;
+      height:30px;
+      line-height: 30px;
+      margin-top:5px;
+    }
+    .tl-wrap{
+      position: absolute;left:0;top:50px;z-index:10;padding:20px;background: #fff;margin-left:-50px;box-shadow: 0 0 20px #999;
+      width:160px;
+      &:before{
+        content:"";
+        border-bottom:10px solid #fff;
+        border-left:10px solid transparent;
+        border-right:10px solid transparent;
+        position: absolute;
+        left:50%;
+        top:-9px;
+        margin-left:-5px;
+      }
+    }
+  }
 }
 //.yhydDiv{
 //  .md-button{

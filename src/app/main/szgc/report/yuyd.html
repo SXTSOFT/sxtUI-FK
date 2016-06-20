@@ -23,27 +23,25 @@
   <!--</div>-->
   <!--</md-virtual-repeat-container>-->
 
-  <div flex="none">
-      <div layout="column" style="padding: 5px 10px">
-        <div flex layout="row" style="font-size: xx-small;">
-    <span>
-    图例说明:
-    </span>
-          <table style="width: 20px ;height: 20px; border: none;background-color: #0b93d5 ;margin:10px 0px 0px 10px;">
-          </table>
-    <span style="margin-left: 5px;">
-   照片数量
-    </span>
-          <table style="width: 20px ;height: 20px; border: none;background-color: #0b93d5 ;margin:10px 0px 0px 10px;opacity: 0.5">
-          </table>
-    <span style="margin-left: 5px;">
-   验收表数量
-    </span>
-          <table style="width: 20px ;height: 20px; border: none;background-color:orange ;margin:10px 0px 0px 10px;">
-          </table>
-    <span style="margin-left: 5px;">
-   不合格
-    </span>
+  <div flex="none" ng-init="vm.showSm =false">
+      <div layout="column" style="padding: 5px 10px;border-bottom: 1px solid #d8d8d8;">
+        <div layout="row">
+        <div flex="initial" class="dingw"><span>当前楼栋：</span><span style="color:#0b93d5;">{{vm.project.typeName}}</span></div><div style="position: relative;" flex="none" class="tlsm"><span ng-click="vm.showSm = !vm.showSm" class="span">图例说明</span>
+        <div class="tl-wrap" ng-show="vm.showSm">
+          <div style="margin-bottom: 12px;font-size:14px;">图例说明</div>
+          <div style="margin-bottom: 12px;">
+            <span style="display:inline-block;width: 20px ;height: 20px; border: none;background-color: #0b93d5;vertical-align: top;margin-right:10px;"></span>
+            <span style="display: inline-block;line-height: 20px;height:20px;vertical-align: top;">照片数量</span>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <span style="display:inline-block;width: 20px ;height: 20px; border: none;background-color: #0b93d5;opacity: 0.5;vertical-align: top;margin-right:10px;"></span>
+            <span style="display: inline-block;line-height: 20px;height:20px;vertical-align: top;">验收表数量</span></div>
+          <div>
+            <span style="display:inline-block;width: 20px ;height: 20px; border: none;background-color: orange;vertical-align: top;margin-right:10px;"></span>
+            <span style="display: inline-block;line-height: 20px;height:20px;vertical-align: top;">不合格</span>
+          </div>
+        </div>
+        </div>
         </div>
       </div>
   </div>
