@@ -122,6 +122,7 @@
         return item.v.CalculatedValue;
       }
       scope.onMeasureValueChange = function (v,item) {
+        if(v.isDesignValueInput)return;
         $timeout(function () {
           if(v && v.MeasureValue){
             var str = v.MeasureValue.toString();
@@ -158,6 +159,9 @@
           }
         },0);
 
+      }
+      scope.onDesignValueToggle = function (v,item) {
+        v.isDesignValueInput = true;
       }
       scope.distinct = function(array){
         if(!array || !array.forEach)return;
