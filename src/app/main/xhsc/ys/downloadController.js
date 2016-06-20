@@ -41,8 +41,16 @@
           }
           delete item.pack;
           remote.Assessment.queryById(item.AssessmentID).then(function (result) {
-            vm.data.rows.push(result.data);
-            vm.offlines.push(item);
+            var fd = vm.data.rows.find(function (a) {
+              return a.AssessmentID == result.data.AssessmentID;
+            }),ix=fd?vm.data.rows.indexOf(fd):-1;
+            if(ix==-1) {
+              vm.data.rows.push(result.data);
+              vm.offlines.push(item);
+            }
+            else{
+              vm.data.rows[ix] = result.data;
+            }
             xcpk.addOrUpdate(vm.data).then(function () {
               item.downloading = false;
               utils.alert('下载完成');
