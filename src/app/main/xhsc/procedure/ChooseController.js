@@ -15,19 +15,27 @@
       AssessmentTypeID = $stateParams.AssessmentTypeID,
       projectId = $stateParams.projectId,
       acceptanceItemID=$stateParams.acceptanceItemID,
-      acceptanceItemName = $stateParams.acceptanceItemName;
+      acceptanceItemName = $stateParams.acceptanceItemName,
+      areaId = $stateParams.areaId;
       //vm.data={
       //  acceptanceItemName:acceptanceItemName,
       //  acceptanceItemID:acceptanceItemID
       //}
+    //console.log(areaId)
     $rootScope.title = $stateParams.acceptanceItemName;
     $timeout(function(){
-
-
     remote.Assessment.queryAllBulidings(projectId).then(function(result){
       //var projectName = result.data.ProjectName;
       vm.loading = true;
-      result.data.RegionRelations.forEach(function(d){
+      vm.fitHouse = [];
+      var f=result.data.RegionRelations.find(function(t){
+        return t.RegionID ===areaId;
+      })
+      if(f){
+        vm.fitHouse.push(f);
+      }
+      //console.log('house',vm.fitHouse)
+      vm.fitHouse.forEach(function(d){
         d.projectTree =  d.RegionName;
         d.Children && d.Children.forEach(function(c){
           c.projectTree = d.projectTree + c.RegionName;
@@ -39,10 +47,10 @@
           })
         })
       })
-      vm.houses = result.data.RegionRelations[0];
+      vm.houses = vm.fitHouse[0];
       vm.projectTitle = result.data.ProjectName + result.data.RegionRelations[0].RegionName;
      // vm.projectTitle =  result.data.RegionRelations[0].RegionName;
-      //console.log(vm.houses)
+     // console.log(vm.houses)
     })
 
     },500)

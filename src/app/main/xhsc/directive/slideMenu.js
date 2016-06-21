@@ -16,7 +16,8 @@
         showCheck:'=',
         halfHeight:'=',
         level:'=',
-        projectId:'='
+        projectId:'=',
+        areaId:'='
       },
       templateUrl:'app/main/xhsc/directive/slideMenu.html',
       link:link
@@ -57,7 +58,7 @@
       scope.changeOrclick = function(item){
         console.log(item)
         if(!scope.showCheck){
-          $state.go('app.xhsc.bdchoose.choose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName})
+          $state.go('app.xhsc.bdchoose.choose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId})
         }else{
           item.checked = !item.checked;
         }

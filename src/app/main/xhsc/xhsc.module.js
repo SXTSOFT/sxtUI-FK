@@ -191,7 +191,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'工序选择',
-        url   :'/gxlist/{projectId}',
+        url   :'/gxlist/{projectId}/{areaID}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/procedure/gxlist.html',
@@ -204,7 +204,7 @@
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
-        url   :'/choose/{acceptanceItemID}/{projectId}/{acceptanceItemName}',
+        url   :'/choose/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/procedure/choose.html',

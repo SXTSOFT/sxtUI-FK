@@ -27,10 +27,10 @@
                     <div flex class="gxrooms"><span class="roomname">{{c.RegionName}}</span><md-button ng-click="vm.zk(c)" style="color:#49affe;min-width: 50px;"><span ng-show="c.show">展开</span><span ng-show="!c.show">折叠</span></md-button></div>
                       <md-list class="roomllist" slide-up-down ng-value="!c.show">
                         <md-list-item ng-repeat="r in c.Children">
-                          <!--<div style=" height: 20px;background: #ebebeb;border: 1px solid #d8d8d8;border-radius: 4px;position: relative;overflow: hidden;text-align: center;width:100%;">-->
-                            <!--<div style="width: 60%;background: #f00;height:100%;"></div><span style="display: block;width:100%;position: absolute;top:0;">{{r.RegionName}}</span>-->
-                          <!--</div>-->
-                          <md-button ng-click="vm.chroom(r)">{{r.RegionName}}</md-button>
+                          <div style=" height: 32px;border: 1px solid #ff3434;border-radius: 4px;position: relative;overflow: hidden;text-align: center;width:100%;" ng-click="vm.chroom(r)">
+                            <div style="width: 60%;background: #ffebea;height:100%;"></div><span style="display: block;width:100%;position: absolute;top:0;line-height: 32px;color:#ff3434;">{{r.RegionName}}</span>
+                          </div>
+                          <!--<md-button ng-click="vm.chroom(r)">{{r.RegionName}}</md-button>-->
                         </md-list-item>
                       </md-list>
                   </div>
