@@ -29,7 +29,11 @@
     Pack.prototype.reDown = function () {
       var self = this;
       if(self.config){
-
+        self.config.tasks.forEach(function (item) {
+          item.try=0;
+          item.completed =false;
+        });
+        self.down();
       }
     }
     Pack.prototype.downTask = function () {
@@ -222,7 +226,7 @@
         this.packages[config._id] = new Pack(config);
       }
       else{
-        this.packages[config._id].down();
+        this.packages[config._id].reDown();
       }
       return  this.packages[config._id];
     }

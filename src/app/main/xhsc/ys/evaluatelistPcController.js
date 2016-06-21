@@ -249,6 +249,7 @@
                 }
                 sectionScore.ModifyScore=tmp;
                 tmp=item.Weight-sectionScore.ModifyScore;
+                sectionScore.Weight = item.Weight;
                 sectionScore.DelScore=tmp;
                 sectionScore.Description=itemResult.Description;
                 if (angular.isArray(itemResult.AssessmentRegionItemResults)){
@@ -387,7 +388,7 @@
               $mdDialog.hide()
             }
             $scope.item= {
-              value:  obj.DelScore,
+              value: (vm.isAddScore||vm.isDScore)?obj.ModifyScore: obj.DelScore,
               reason:obj.Description,
               isAddScore:vm.isAddScore,
               isDScore:vm.isDScore
@@ -427,8 +428,8 @@
 
             }).then(function (z) {
               if (z.data.ErrorCode==0){
-                obj.DelScore = r;
-                obj.ModifyScore = r1;
+                  obj.DelScore = r;
+                  obj.ModifyScore = r1;
                 obj.Description=result.reason;
               }else {
                 utils.alert('失败：'+ z.data.ErrorMessage);

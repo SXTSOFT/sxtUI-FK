@@ -21,6 +21,12 @@
 }
   apiProvider.register('xhsc',{
     Assessment:{
+      queryRegions:function (arg) {
+        return $http.get($http.url('/Api/AssessmentApi/GetAssessmentSectionExtractRegion',arg))
+      },
+      GetMeasureIndexMeasureInfo:function (recordId,itemId) {
+        return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfo',{measureRecordID:recordId,acceptanceIndexID:itemId}));
+      },
       query:function () {
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentProject'))
       },

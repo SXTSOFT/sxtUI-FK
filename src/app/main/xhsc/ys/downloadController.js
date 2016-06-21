@@ -23,6 +23,7 @@
       queryOnline();
     });
     vm.download = function (item) {
+      item.downloading = true;
       item.progress = 0;
       item.pack = pack.sc.down(item);
       $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
@@ -30,27 +31,37 @@
         if(!item.pack)return;
         var p = item.pack.getProgress();
         item.progress = parseInt(p.progress);
-        if(item.pack && item.pack.completed){
+        if(item.pack && item.pack.completed) {
           var ix = vm.onlines.indexOf(item);
-          if(ix!=-1)
-            vm.onlines.splice(ix,1);
+          if (ix != -1)
+            vm.onlines.splice(ix, 1);
           ix = vm.offlines.indexOf(item);
-          if(ix==-1) {
-
-            delete item.pack;
-            remote.Assessment.queryById(item.AssessmentID).then(function (result) {
+          if(ix!=0){
+            vm.offlines.splice(ix,1);
+          }
+          delete item.pack;
+          remote.Assessment.queryById(item.AssessmentID).then(function (result) {
+            var fd = vm.data.rows.find(function (a) {
+              return a.AssessmentID == result.data.AssessmentID;
+            }),ix=fd?vm.data.rows.indexOf(fd):-1;
+            if(ix==-1) {
               vm.data.rows.push(result.data);
               vm.offlines.push(item);
-              xcpk.addOrUpdate(vm.data).then(function () {
-                utils.alert('下载完成');
-              })
+            }
+            else{
+              vm.data.rows[ix] = result.data;
+            }
+            xcpk.addOrUpdate(vm.data).then(function () {
+              item.downloading = false;
+              utils.alert('下载完成');
             })
-          }
+          })
         }
 
       })
     }
     vm.upload =function (item) {
+      item.uploading = true;
       remote.Assessment.GetAssessmentStatus(item.AssessmentID).then(function (result) {
         if(result.data.ErrorCode==0){
           var pk = pack.sc.up(item.AssessmentID);
@@ -63,10 +74,12 @@
                   xcpk.addOrUpdate(vm.data);
                   item.progress = 100;
                   //utils.tips('同步完成');
-                  utils.alert('同步完成')
+                  utils.alert('同步完成');
+                  item.uploading = true;
                 })
               else {
-                utils.tips('同步未完成');
+                utils.alert('同步未完成');
+                item.uploading = true;
               }
             }
           });
@@ -75,6 +88,9 @@
           utils.alert(result.data.ErrorMessage);
         }
       })
+        .catch(function () {
+          utils.alert('网络越野')
+        })
 
     }
     vm.delete = function(item,ev){

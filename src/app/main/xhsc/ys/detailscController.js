@@ -9,12 +9,16 @@
     .controller('detailscController',detailscController);
 
   /** @ngInject*/
-  function detailscController($stateParams,remote){
+  function detailscController($stateParams,remote,$rootScope){
     var vm = this;
     var iMax = 20;
     vm.info={
       pname: $stateParams.pname,
       name:$stateParams.name
+    };
+    $rootScope.title = vm.info.name+'('+vm.info.pname+')';
+    vm.back = function () {
+      history.back();
     }
     remote.Assessment.getMeasure({
       RegionID:$stateParams.regionId,

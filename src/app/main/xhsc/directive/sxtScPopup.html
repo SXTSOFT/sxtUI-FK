@@ -56,7 +56,7 @@
       </tr>
       <tr>
         <td  style="width:80px; text-align: center;">设计值</td>
-        <td  ng-repeat="item in edit.sjzEdit"><sxt-num-downdown ng-model="item.v.DesignValue"></sxt-num-downdown>
+        <td  ng-repeat="item in edit.sjzEdit"><sxt-num-downdown ng-model="item.v.DesignValue" on-toggle="onDesignValueToggle(item.v,item)"></sxt-num-downdown>
         </td>
       </tr>
       <tr>

@@ -8,10 +8,13 @@
     .directive('fullscreen',fullscreen);
   /** @ngInject */
   function fullscreen($window,$mdDialog) {
+    var isSetting =false;
     return {
       link:link
     }
     function link(scope,element){
+      if(isSetting)return;
+      isSetting = true;
       var document = element[0].ownerDocument;
       if (!document.fullscreenElement &&
         !document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods

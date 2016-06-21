@@ -14,7 +14,8 @@
       scope:{
         value:'=ngModel',
         ct:'=',
-        onChange:'&'
+        onChange:'&',
+        onToggle:'&'
       },
       link:link,
       template:'<div class="sxtnumdowndown" style="position:relative"><span fast-click="toggleView()" style="display: block;">&nbsp;{{value}}</span><div class="numberpanel"  style="position: absolute;left:-56px;top:30px;width:auto;z-index:10005;display:none;" ><sxt-num-input ng-model="value"  ok="ok()"></sxt-num-input></div></div>'
@@ -39,6 +40,7 @@
         };
       };
       scope.toggleView = function(){
+        scope.onToggle && scope.onToggle();
         if($(element).find('.numberpanel').is(':hidden')){
           $('.numberpanel').css('display','none');
           var mpanel = $(element).find('.numberpanel');
@@ -47,10 +49,8 @@
             'left':$('.sxtnumdowndown',element).width()+'px',
             'top':'0px'
           });
-          //scope.isView = true;
         }else{
           $(element).find('.numberpanel').css('display','none');
-          //$('.numberpanel').css('display','none');
         }
       }
       scope.ok = function(){
