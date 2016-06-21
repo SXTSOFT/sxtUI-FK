@@ -9,9 +9,10 @@
     </md-list-item>
     <md-list-item>
       <p>手机号码</p>
-      <p class="md-secondary" ng-click="vm.changeTel()">1111</p>
+      <md-button class="md-secondary" ng-click="vm.changeTel(vm.tel)">{{vm.tel}}</md-button>
     </md-list-item>
   </md-list>
   <div flex><md-button style="display: block;width:100%;margin-left:0;margin-right:0;background:#fff;border:1px solid #d8d8d8;min-height:48px;line-height:48px;" ng-click="vm.logout()">退出登录</md-button></div>
 </div>
-<my-dialog dialog-show="vm.showmyDialog" ng-show="vm.showmyDialog" dialog-sure="确定" dialog-msg="确定退出登录"></my-dialog>
+<!--ng-show="vm.showmyDialog"-->
+<my-dialog dialog-show="vm.showmyDialog" dialog-sure="确定" dialog-msg="确定退出登录"></my-dialog>

@@ -26,11 +26,20 @@
       link:link
     }
     function link(scope,element,attr,ctrl){
+      //console.log(element)
       $(element).appendTo('body');
-      $('.my-dialog-mask').css('display','block');
+      //$('.my-dialog-mask').css('display','block');
+     // $('.my-dialog-mask').fadeIn(2000);
+      $('.my-dialog-mask',element).fadeOut();
+      scope.$watch('dialogShow',function(){
+        if(scope.dialogShow){
+          $('.my-dialog-mask',element).fadeIn();
+        }
+      })
       scope.$watch('dialogData',function(){
         if(!scope.dialogData) return;
-        $('.my-dialog-mask').css('display','block');
+        //$('.my-dialog-mask').css('display','block');
+        //$('.my-dialog-mask').fadeIn();
         console.log(scope.dialogData)
         if(!scope.dialogMsg){
           scope.dialogMsg = scope.dialogData.name + ',' + scope.dialogData.acceptanceItemName + '工序，是否报检？';
@@ -39,9 +48,11 @@
       scope.cancel= function(){
         //$('.my-dialog-mask').css('display','none');
         scope.dialogShow = false;
+        $('.my-dialog-mask',element).fadeOut();
       }
       scope.submit = function(){
         scope.dialogShow = false;
+        $('.my-dialog-mask',element).fadeOut();
         if(scope.dialogSure == '报检'){
           $timeout(function(){
             $state.go('app.xhsc.gxtest',{acceptanceItemID:scope.dialogData.acceptanceItemID,acceptanceItemName:scope.dialogData.acceptanceItemName,name:scope.dialogData.name,regionId:scope.dialogData.regionId,projectId:scope.dialogData.projectId});
@@ -49,6 +60,9 @@
         }
 
       }
+      scope.$on('$destroy', function () {
+        $(element).remove()
+      });
     }
   }
 })();

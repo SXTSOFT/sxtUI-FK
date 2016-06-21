@@ -11,14 +11,17 @@
   /**@ngInject*/
   function pcenterController($scope,$mdDialog){
     var vm = this;
-    vm.changeTel = function(){
+    vm.tel=13112345678;
+    vm.changeTel = function(tel){
       $mdDialog.show({
         controller:['$scope',function($scope){
+            $scope.tel = vm.tel;
             $scope.cancel = function(){
               $mdDialog.hide();
             }
-          $scope.submit = function(){
-            $mdDialog.hide();
+          $scope.submit = function(tel){
+            $mdDialog.hide(tel);
+            vm.tel = tel;
           }
         }],
         templateUrl: 'app/main/xhsc/center/changeTel.html',

@@ -1,12 +1,10 @@
-
-
-<div flex layout="column" class="ryxz">
+<div flex layout="column" class="ryxz" window-height>
   <div style="width:100%;">
     <div style="padding:8px;color:#f00;background: #fff;border-bottom: 1px solid #d8d8d8;" ng-show="vm.choosed.length">
       已选：<span class="labs" ng-repeat="item in vm.choosed">{{item.name}}<i ng-click="vm.rydel(item)"></i></span>
     </div>
   </div>
-  <md-content flex layout="row" class="gx-list" style="margin-bottom: 40px;overflow: hidden;">
+  <md-content flex layout="row" class="gx-list" style="overflow: hidden;">
   <div flex="40" layout="column" style="background: #f0f0f0;overflow: auto;">
   <div class="list-left" style="background: #f0f0f0;">
   <md-list ng-cloak style="padding-top:0;">
@@ -29,9 +27,9 @@
   </div>
   </div>
   </md-content>
-  <div class="inner-footerbar">
+  <div class="inner-footerbar" ng-show="vm.choosed.length" flex="none">
   <md-toolbar  >
-  <md-button>确定</md-button>
+  <md-button ng-click="vm.userSubmit(vm.choosed)">确定</md-button>
   </md-toolbar>
   </div>
 </div>

@@ -52,7 +52,9 @@
                   iconUrl: 'libs/leaflet/images/M.png',
                   iconSize: [27, 37],
                   iconAnchor: [20, 20]
-                })
+                }),
+                projectId: m.ProjectID,
+                title: m.ProjectName
               }))
               .on('click', markerClick)
               .addTo(map));
@@ -99,7 +101,7 @@
       }, 500)
 
       function markerClick(e){
-        //console.log('e.target.options',e.target.options)
+        //console.log('e.target.options',e)
         scope.markerClick( {$current : e.target.options,pid: e.target.options.projectId, pname: e.target.options.title});
 
       }

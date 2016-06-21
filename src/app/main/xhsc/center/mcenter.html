@@ -1,26 +1,19 @@
-<div slide-delete>
-  <md-list style="overflow: hidden;background: #fff;" class="slide-del">
+<md-content flex>
+  <div layout="row" class="mbtn" style="background:#e93030;">
+    <span flex>&nbsp;</span>
+    <div flex="none">
+      <button>待办</button><button class="active">其它</button>
+    </div>
+    <span flex></span>
+  </div>
+  <md-list style="overflow: hidden;" class="slide-del" ng-repeat="item in vm.msgList">
     <md-list-item layout="row" class="slideli">
-      <div class="slidelist" layout="row" ui-sref="app.xhsc.temp">
-      <div class="circle" flex="none"><span>甲方</span></div>
-      <div flex>
-        <h3>报验通知</h3>
-        <p style="color:#333;">深圳市星河银河谷项目 》 1期 》 1栋 》1001，铝合金工序</p>
-        <p>深圳市星河银河谷项目 》 1期 》 1栋 》1001，铝合金工序</p>
-      </div>
-      </div>
-      <div style="position: absolute;right:-160px;top:0;height:100%;overflow: hidden;">
-        <md-button style="min-width:80px;height: 100%;background: #c8c7cd;color:#fff;padding:0;margin:0;font-size:0;-webkit-text-size-adjust:none;border-radius: 0;"><img src="app/main/xhsc/images/plus.png"><div style="font-size: 14px;">更多</div>
-        </md-button><md-button style="min-width:81px;height: 100%;background: #ff3534;color:#fff;padding:0;margin:0;font-size:0;-webkit-text-size-adjust:none;border-radius:0;"><img src="app/main/xhsc/images/plus.png"><div style="font-size: 14px;">删除</div></md-button>
-      </div>
-    </md-list-item>
-    <md-list-item layout="row" class="slideli">
+      <md-checkbox style="margin-right:0;" ng-show="vm.showCheck" ng-model="item.checked"></md-checkbox>
       <div class="slidelist" layout="row">
-        <div class="circle" flex="none"><span>甲方</span></div>
+        <div class="circle" flex="none"><span>{{item.name}}</span></div>
         <div flex>
-          <h3>报验通知<span class="time">2016/6/6</span></h3>
-          <p style="color:#333;">深圳市星河银河谷项目 》 1期 》 1栋 》1001，铝合金工序</p>
-          <p>深圳市星河银河谷项目 》 1期 》 1栋 》1001，铝合金工序</p>
+          <h3>{{item.title}}</h3>
+          <p>{{item.description}}</p>
         </div>
       </div>
       <div style="position: absolute;right:-160px;top:0;height:100%;overflow: hidden;">
@@ -29,4 +22,9 @@
       </div>
     </md-list-item>
   </md-list>
+</md-content>
+<div class="inner-footerbar" flex="none" ng-show="vm.showSend && vm.showCheck">
+  <md-toolbar>
+    <md-button ui-sref="app.xhsc.rychoose">转发</md-button>
+  </md-toolbar>
 </div>

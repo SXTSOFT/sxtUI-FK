@@ -8,11 +8,14 @@
   </md-list>
 </div>
 <md-content flex ng-cloak>
-  <p style="font-size:12px;background: #f4f4f6;padding:10px;">{{vm.projectTitle }}</p>
+  <div layout="row" layout-sm="column" layout-align="space-around" ng-show="!vm.loading">
+    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+  </div>
+  <p style="font-size:12px;background: #f4f4f6;padding:10px;" ng-show="vm.loading">{{vm.projectTitle }}</p>
   <!--<div style=" height: 20px;background: #ebebeb;border: 1px solid #d8d8d8;border-radius: 4px;position: relative;overflow: hidden;text-align: center;">-->
     <!--<div style="width: 60%;background: #f00;height:100%;"></div><span style="display: block;width:100%;position: absolute;top:0;">60%</span>-->
   <!--</div>-->
-  <div class="floor-list gxroomlist">
+  <div class="floor-list gxroomlist" ng-show="vm.loading">
     <div>
       <md-list style="padding:0 10px;">
         <md-list-item ng-repeat="d in vm.houses.Children">

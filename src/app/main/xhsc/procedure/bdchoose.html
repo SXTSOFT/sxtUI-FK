@@ -33,12 +33,23 @@
 <div layout="column" class="gxdownload">
   <md-subheader ng-if="vm.offlines.length">已下载列表</md-subheader>
   <md-list>
-    <md-list-item ng-repeat="item in vm.offlines">
+    <md-list-item ng-repeat="item in vm.sections">
+      <p layout="column" style="padding-right: 100px;font-size:16px;">
+        {{item.title}}
+      </p>
+      <div class="md-secondary md-hue-3" style="right:0;">
+        <md-button  ui-sref="app.xhsc.bdchoose.gxlist({projectId:vm.projectId})" class="md-raised md-primary" >
+          工序验收
+        </md-button>
+      </div>
+
+    </md-list-item>
+    <md-list-item ng-repeat="item in vm.offlines" ng-hide="true">
       <p layout="column" style="padding-right: 100px;font-size:16px;">
         {{item.AssessmentSubject}}
       </p>
       <div class="md-secondary md-hue-3" style="right:0;">
-        <md-button  ui-sref="app.xhsc.gxlist({projectId:item.ProjectID})" class="md-raised md-primary" >
+        <md-button  ui-sref="app.xhsc.bdchoose.gxlist({projectId:item.ProjectID})" class="md-raised md-primary" >
           工序验收
         </md-button>
         <!--<md-button ng-show="item.completed" ng-click="vm.delete(item,$event)" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">-->
@@ -64,8 +75,8 @@
         {{item.AssessmentSubject}}
       </p>
       <div class="md-secondary md-hue-3">
-         <span style="display:inline-block;width:95px;text-align: center;">
-            <md-button ng-if="!item.pack.isDown" class="md-raised upload-btn" ng-click="vm.download(item)">
+         <span style="display:inline-block;width:50px;text-align: center;">
+            <md-button ng-if="!item.pack.isDown" class="md-raised upload-btn" ng-click="vm.download(item)" style="min-width: 50px;">
               下载
             </md-button>
            <a  ng-if="item.pack.isDown" style="position: relative;display: inline-block;width:31px;height:31px;border:1px solid #f8f8f8;border-radius:50%" ng-click="vm.cancel()">
@@ -78,5 +89,5 @@
     </md-list-item>
   </md-list>
 </div>
-
+<ui-view></ui-view>
 

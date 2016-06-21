@@ -9,8 +9,17 @@
     .controller('bdchooseController',bdchooseController);
 
   /**@ngInject*/
-  function bdchooseController(db,remote,localPack,xhUtils,$rootScope,$scope,pack,utils,stzlServices){
+  function bdchooseController(db,remote,localPack,xhUtils,$rootScope,$scope,pack,utils,stzlServices,$stateParams){
     var vm = this;
+    vm.projectId = $stateParams.projectId;
+    remote.Assessment.queryAllBulidings(vm.projectId).then(function(result){
+      console.log(result)
+      var mainTitle = result.data.ProjectName;
+      result.data.Sections.forEach(function(t){
+        t.title = (mainTitle||'') + t.SectionName;
+      })
+      vm.sections = result.data.Sections;
+    })
     var xcpk = db('xcpk');
     xcpk.get('xcpk').then(function (result) {
       vm.data = result;

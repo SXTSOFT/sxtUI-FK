@@ -81,12 +81,32 @@
         id:9
       }]
     }]
+
     vm.persons.forEach(function(p){
       p.users.forEach(function(u){
         u.checked = false;
       })
     })
     vm.choosed = [];
+    if($scope.$parent.vm.responsers){
+      $scope.$parent.vm.responsers.forEach(function(_t){
+        console.log('-t',_t)
+        vm.persons.forEach(function(t){
+          var f = t.users.find(function(u){
+            return u.id === _t.id;
+          })
+          console.log('f',f)
+          if(f){
+            //console.log(f)
+            f.checked = true;
+            vm.choosed.push(f)
+          }
+        })
+
+      })
+
+    }
+
     vm.choosery = function(it){
       //vm.rylevels = null;
       vm.current = it;
@@ -131,5 +151,12 @@
       })
     }
     vm.choosery(vm.persons[0])
+
+    //console.log($scope.$parent.vm.responsers)
+    vm.userSubmit = function(user){
+      history.go(-1);
+      $scope.$parent.vm.responsers = user;
+      //console.log($scope.$parent)
+    }
   }
 })();
