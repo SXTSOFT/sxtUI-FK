@@ -15,31 +15,6 @@
     }
 
     function link(scope,element,attr,ctrl){
-
-      var istartx,istarty,iendx,idiff,flag;
-      //function touchstart(event){
-      //  istartx = event.touches[0].clientX;
-      //  istarty=event.touches[0].clientY;
-      //}
-      //function touchmove(event){
-      //  iendx = event.touches[0].clientX;
-      //}
-      //function touchend(event){
-      //  idiff = istartx - iendx;
-      //  if(idiff>0){
-      //    $(event.target).parents('md-list-item').css('transform','translate3d(0,0,0)')
-      //  }else{
-      //    var l = Math.abs(idiff);
-      //    $(event.target).parents('md-list-item').css('transform','translate3d(' + -l + 'px)');
-      //    if(l>160){
-      //      l=160;
-      //      $(event.target).parents('md-list-item').css('transform','translate3d(' + -l + 'px)');
-      //    }
-      //  }
-      //}
-      //document.addEventListener('touchstart',touchstart,false)
-      //document.addEventListener('touchmove',touchmove,false)
-      //document.addEventListener('touchend',touchend,false)
       var initX;
       var moveX;
       var X = 0;

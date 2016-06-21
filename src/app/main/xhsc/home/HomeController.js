@@ -38,12 +38,15 @@
     }
 
     function markerClick($current){
+      console.log('current',JSON.stringify([{project_id:$current.projectId,name:$current.title}]))
+
     //  appCookie.put('projects',JSON.stringify([{project_id:$current.projectId,name:$current.title}]))
       //$state.go('app.xhsc.choose',{pid:$current.projectId, pname:'天津星河时代'});
       $mdBottomSheet.show({
        templateUrl: 'app/main/xhsc/home/homeBottom.html',
-        //template: '<md-bottom-sheet>Hello!</md-bottom-sheet>',
         controller: ['$scope',function($scope){
+          $scope.name = $current.title;
+          $scope.projectId = $current.projectId;
           $scope.hide = function(){
             $mdBottomSheet.hide();
           }

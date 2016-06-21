@@ -23,6 +23,9 @@
       vm.sendGxResult = function(){
         $rootScope.$emit('sendGxResult')
       }
+      vm.operateMsg = function(){
+        $rootScope.$emit('operateMsg');
+      }
     }
 
 

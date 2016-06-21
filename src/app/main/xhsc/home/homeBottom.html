@@ -1,6 +1,6 @@
 <md-bottom-sheet ng-cloak style="padding:0">
   <div class="homeTab" >
-    <h2>星河银河谷项目</h2>
+    <h2>{{name}}</h2>
     <md-content>
       <md-tabs style="margin-bottom: 20px;">
         <md-tab label="项目信息">
@@ -12,7 +12,7 @@
                 </md-button>
               </md-list-item>
               <md-list-item flex>
-                <md-button ui-sref="app.xhsc.bdchoose" ng-click="hide()"><img src="app/main/xhsc/images/gx-icon.png" style="margin:0 auto;max-width: 100%;width:75%">
+                <md-button ui-sref="app.xhsc.bdchoose({projectId:projectId})" ng-click="hide()"><img src="app/main/xhsc/images/gx-icon.png" style="margin:0 auto;max-width: 100%;width:75%">
                   <div class="md-grid-text">工序验收</div>
                 </md-button>
               </md-list-item>

@@ -120,7 +120,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'标段选择',
-        url   :'/bdchoose',
+        url   :'/bdchoose/{projectId}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/procedure/bdchoose.html',
@@ -130,7 +130,7 @@
       })
       .state('app.xhsc.gxtest',{
         noBack:true,
-        sendBt:false,
+        sendBt:true,
         rightArrow:false,
         leftArrow:false,
         url   :'/gxtest/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}',
@@ -169,21 +169,23 @@
           }
         }
       })
-      .state('app.xhsc.gxdetail',{
+      .state('app.xhsc.gxresult.gxdetail',{
         noBack:true,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'工序',
         url   :'/gxdetail',
-        views :{
-          'content@app':{
-            templateUrl : 'app/main/xhsc/procedure/gxdetail.html',
-            controller:'gxdetailController as vm'
-          }
-        }
+        templateUrl : 'app/main/xhsc/procedure/gxdetail.html',
+        controller:'gxdetailController as vm'
+        //views :{
+        //  'content@app':{
+        //    templateUrl : 'app/main/xhsc/procedure/gxdetail.html',
+        //    controller:'gxdetailController as vm'
+        //  }
+        //}
       })
-      .state('app.xhsc.gxlist',{
+      .state('app.xhsc.bdchoose.gxlist',{
         noBack:true,
         sendBt:false,
         rightArrow:false,
@@ -197,25 +199,41 @@
           }
         }
       })
-      .state('app.xhsc.rychoose',{
+      .state('app.xhsc.bdchoose.choose',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        url   :'/choose/{acceptanceItemID}/{projectId}/{acceptanceItemName}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/procedure/choose.html',
+            controller:'ChooseController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.gxresult.rychoose',{
         noBack:true,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'人员选择',
         url   :'/rychoose',
-        views :{
-          'content@app':{
-            templateUrl : 'app/main/xhsc/procedure/rychoose.html',
-            controller:'rychooseController as vm'
-          }
-        }
+        templateUrl : 'app/main/xhsc/procedure/rychoose.html',
+        controller:'rychooseController as vm'
+        //views :{
+        //  'content@app':{
+        //    templateUrl : 'app/main/xhsc/procedure/rychoose.html',
+        //    controller:'rychooseController as vm'
+        //  }
+        //}
       })
       .state('app.xhsc.mcenter',{
         noBack:true,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
+        opBtn:true,
         title :'个人中心',
         url   :'/mcenter',
         views :{

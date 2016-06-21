@@ -18,12 +18,12 @@
     }
 
     function link(scope,element,attr,ctrl){
-      //console.log(scope)
+
       scope.$watch('ngValue',function(){
         if(scope.ngValue){
-          $(element).slideDown()
+          $(element).slideDown();
         }else{
-          $(element).slideUp()
+          $(element).slideUp();
         }
       })
 

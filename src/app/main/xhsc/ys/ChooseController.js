@@ -9,7 +9,7 @@
     .controller('ChooseController',ChooseController);
 
   /** @ngInject */
-  function ChooseController($scope,$stateParams,db,$rootScope,xhUtils,remote){
+  function ChooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout){
     var vm=this,
       id = $stateParams.assessmentID,
       AssessmentTypeID = $stateParams.AssessmentTypeID,
@@ -21,10 +21,14 @@
       //  acceptanceItemID:acceptanceItemID
       //}
     $rootScope.title = $stateParams.acceptanceItemName;
-    remote.Assessment.queryAllBulidings(projectId).then(function(result){
+    $timeout(function(){
 
+
+    remote.Assessment.queryAllBulidings(projectId).then(function(result){
+      //var projectName = result.data.ProjectName;
+      //vm.load = true;
       result.data.RegionRelations.forEach(function(d){
-        d.projectTree = d.RegionName;
+        d.projectTree =  d.RegionName;
         d.Children && d.Children.forEach(function(c){
           c.projectTree = d.projectTree + c.RegionName;
           c.Children && c.Children.forEach(function(r){
@@ -36,12 +40,12 @@
         })
       })
       vm.houses = result.data.RegionRelations[0];
-      //vm.projectTitle = result.data.ProjectName + result.data.RegionRelations[0].RegionName;
-      vm.projectTitle =  result.data.RegionRelations[0].RegionName;
+      vm.projectTitle = result.data.ProjectName + result.data.RegionRelations[0].RegionName;
+     // vm.projectTitle =  result.data.RegionRelations[0].RegionName;
       //console.log(vm.houses)
     })
 
-
+    },500)
     vm.chroom = function(r){
       vm.showmyDialog = true;
       vm.data = {
@@ -56,7 +60,6 @@
     }
     vm.zk = function(item){
       item.show = !item.show;
-      //$('.roomllist').slideUp()
     }
     var pk = db('xcpk');
     var data = db('pack'+id);
