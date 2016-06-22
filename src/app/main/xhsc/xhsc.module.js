@@ -41,7 +41,7 @@
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/ch2.html',
-            controller:'ChooseController as vm'
+            controller:'ChooseScController as vm'
           }
         }
       })
