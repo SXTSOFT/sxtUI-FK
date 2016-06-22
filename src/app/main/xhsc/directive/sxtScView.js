@@ -57,8 +57,11 @@
                 if(!v.ExtendedField1 && v.DesignValue){
                   v.ExtendedField1 = v.MeasureValue+','+v.DesignValue;
                 }
+
                 geo.options.MeasureValue = v.MeasureValue;
                 geo.options.ExtendedField1 = v.ExtendedField1;
+                geo.options.seq = v.MeasureValue;
+                geo.options.customSeq = true;
                 switch(v.MeasureStatus) {
                   case 1:
                     //geo.options.
@@ -73,7 +76,7 @@
             });
             layer.eachLayer(function (layer) {
               if(layer.options.MeasureValue || layer.options.MeasureValue===0) {
-                layer.updateValue({seq: ''+layer.options.MeasureValue});
+                //layer.updateValue({seq: ''+layer.options.MeasureValue});
                 layer.on('mouseover',function (e) {
                   if(!layer.popup) {
                     layer.popup = L.popup({

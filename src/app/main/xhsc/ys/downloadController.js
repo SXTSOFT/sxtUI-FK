@@ -36,8 +36,8 @@
           if (ix != -1)
             vm.onlines.splice(ix, 1);
           ix = vm.offlines.indexOf(item);
-          if(ix!=0){
-            vm.offlines.splice(ix,1);
+          if(ix==-1){
+            vm.offlines.push(item);
           }
           delete item.pack;
           remote.Assessment.queryById(item.AssessmentID).then(function (result) {
