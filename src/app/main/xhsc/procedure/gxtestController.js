@@ -52,7 +52,7 @@
     })
     console.log('state',$stateParams)
     function sendResult(){
-      $state.go('app.xhsc.gxmain.gxresult',{acceptanceItemName:acceptanceItemName,name:vm.RegionFullName,areaId:areaId,projectId:projectId});
+      $state.go('app.xhsc.gx.gxresult',{acceptanceItemName:acceptanceItemName,name:vm.RegionFullName,areaId:areaId,projectId:projectId});
     }
     $rootScope.$on('sendGxResult',sendResult);
     vm.setRegion = function(region){

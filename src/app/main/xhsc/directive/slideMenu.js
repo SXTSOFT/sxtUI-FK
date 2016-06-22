@@ -61,7 +61,7 @@
       scope.changeOrclick = function(item){
         console.log(item)
         if(!scope.showCheck){
-          $state.go('app.xhsc.gxmain.gxhousechoose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId})
+          $state.go('app.xhsc.gx.gxhousechoose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId})
         }else{
           item.checked = !item.checked;
         }

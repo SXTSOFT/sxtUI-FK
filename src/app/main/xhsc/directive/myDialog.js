@@ -55,7 +55,7 @@
         $('.my-dialog-mask',element).fadeOut();
         if(scope.dialogSure == '报检'){
           $timeout(function(){
-            $state.go('app.xhsc.gxmain.gxtest',{acceptanceItemID:scope.dialogData.acceptanceItemID,acceptanceItemName:scope.dialogData.acceptanceItemName,name:scope.dialogData.name,regionId:scope.dialogData.regionId,projectId:scope.dialogData.projectId,areaId:scope.dialogData.areaId});
+            $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:scope.dialogData.acceptanceItemID,acceptanceItemName:scope.dialogData.acceptanceItemName,name:scope.dialogData.name,regionId:scope.dialogData.regionId,projectId:scope.dialogData.projectId,areaId:scope.dialogData.areaId});
           },100)
         }
 
