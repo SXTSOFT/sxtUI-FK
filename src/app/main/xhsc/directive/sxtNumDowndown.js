@@ -18,18 +18,22 @@
         onToggle:'&'
       },
       link:link,
-      template:'<div class="sxtnumdowndown" style="position:relative"><span ng-click="toggleView()" style="display: block;">&nbsp;{{value}}</span><div class="numberpanel"  style="position: absolute;left:-56px;top:30px;width:auto;z-index:10005;display:none;" ><sxt-num-input ng-model="value"  ok="ok()"></sxt-num-input></div></div>'
+      template:'<div class="sxtnumdowndown" style="position:relative"><span fast-click="toggleView()" style="display: block;">&nbsp;{{value}}</span><div class="numberpanel"  style="position: absolute;left:-56px;top:30px;width:auto;z-index:10005;display:none;" ><sxt-num-input ng-model="value"  ok="ok()"></sxt-num-input></div></div>'
     }
 
     function link(scope,element,attr,ctrl){
       scope.$watch('value',function () {
-        scope.onChange && scope.onChange();
+        if(scope.isToggleView){
+          scope.value = scope.oValue;
+          scope.isToggleView =false;
+        }
+        else {
+          scope.onChange && scope.onChange();
+        }
       });
       //ng-show="isView"
      $('.numberpanel',element).css('display','none');
       if(typeof(scope.ct)=="object") {
-        //if(scope.ct.isShow)return;
-        //scope.ct.isShow = true;
         scope.ct.show = function () {
           var mpanel = $(document).find('.numberpanel').eq(0);
           mpanel.css({
@@ -40,6 +44,11 @@
         };
       };
       scope.toggleView = function(){
+        scope.isToggleView = true;
+        scope.oValue =  angular.copy(scope.value);
+        $timeout(function () {
+          scope.isToggleView =false;
+        },300);
         scope.onToggle && scope.onToggle();
         if($(element).find('.numberpanel').is(':hidden')){
           $('.numberpanel').css('display','none');
@@ -54,18 +63,15 @@
         }
       }
       scope.ok = function(){
-        //$(element).find('.numberpanel').css('display','none');
         $('.numberpanel').css('display','none');
       }
       var docClick = function(e){
         var target = $(e.target);
         if(target.closest(".sxtnumdowndown").length == 0){
-          //$(element).find('.numberpanel').css('display','none');
           $('.numberpanel').css('display','none');
         }
       }
       $(document).bind("click",docClick);
-
       scope.$on('$destroy',function(){
         $('.numberpanel',element).css('display','none');
         $(document).unbind("click",docClick);
