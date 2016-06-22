@@ -72,6 +72,10 @@
           });
         }),
         _projects: http.custom(function (arg) {
+          arg = angular.extend({
+            page_size: 0,
+            page_number: 1
+          },arg);
           return get(http.url('/common/v1/projects', arg));
         }),
         //getGrpFitRateByFiter: function (prjIds, skillIds, fromDate, toDate) {
