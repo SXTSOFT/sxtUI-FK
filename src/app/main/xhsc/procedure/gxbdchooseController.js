@@ -6,10 +6,10 @@
 
   angular
     .module('app.xhsc')
-    .controller('bdchooseController',bdchooseController);
+    .controller('gxbdchooseController',gxbdchooseController);
 
   /**@ngInject*/
-  function bdchooseController(db,remote,localPack,xhUtils,$rootScope,$scope,pack,utils,stzlServices,$stateParams){
+  function gxbdchooseController(db,remote,localPack,xhUtils,$rootScope,$scope,pack,utils,stzlServices,$stateParams){
     var vm = this;
     vm.projectId = $stateParams.projectId;
     remote.Assessment.queryAllBulidings(vm.projectId).then(function(result){

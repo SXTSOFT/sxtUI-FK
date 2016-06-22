@@ -40,7 +40,7 @@
         if(!scope.dialogData) return;
         //$('.my-dialog-mask').css('display','block');
         //$('.my-dialog-mask').fadeIn();
-        console.log(scope.dialogData)
+
         if(!scope.dialogMsg){
           scope.dialogMsg = scope.dialogData.name + ',' + scope.dialogData.acceptanceItemName + '工序，是否报检？';
         }
@@ -55,7 +55,7 @@
         $('.my-dialog-mask',element).fadeOut();
         if(scope.dialogSure == '报检'){
           $timeout(function(){
-            $state.go('app.xhsc.gxtest',{acceptanceItemID:scope.dialogData.acceptanceItemID,acceptanceItemName:scope.dialogData.acceptanceItemName,name:scope.dialogData.name,regionId:scope.dialogData.regionId,projectId:scope.dialogData.projectId});
+            $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:scope.dialogData.acceptanceItemID,acceptanceItemName:scope.dialogData.acceptanceItemName,name:scope.dialogData.name,regionId:scope.dialogData.regionId,projectId:scope.dialogData.projectId,areaId:scope.dialogData.areaId});
           },100)
         }
 
