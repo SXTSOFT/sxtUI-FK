@@ -13,7 +13,8 @@
     var vm = this;
     var acceptanceItemID = $stateParams.acceptanceItemID,
       acceptanceItemName =  $stateParams.acceptanceItemName,
-      projectId = $stateParams.projectId;
+      projectId = $stateParams.projectId,
+      areaId = $stateParams.areaId;
       vm.RegionFullName =  $stateParams.name;
 
     vm.info = {
@@ -47,12 +48,11 @@
           })
         })
       });
-
-
-      console.log('vm',vm.procedureData)
+      //console.log('vm',vm.procedureData)
     })
+    console.log('state',$stateParams)
     function sendResult(){
-      $state.go('app.xhsc.gxresult',{acceptanceItemName:acceptanceItemName,name:vm.RegionFullName});
+      $state.go('app.xhsc.gxmain.gxresult',{acceptanceItemName:acceptanceItemName,name:vm.RegionFullName,areaId:areaId,projectId:projectId});
     }
     $rootScope.$on('sendGxResult',sendResult);
     vm.setRegion = function(region){

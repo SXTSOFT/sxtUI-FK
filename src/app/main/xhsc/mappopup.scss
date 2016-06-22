@@ -1744,7 +1744,7 @@ md-tabs[md-align-tabs="bottom"]{
       .md-button{
         padding:6px 10px;
         line-height: 20px;
-        min-height: 0;
+        min-height: 20px;
         &.md-vanke-theme{
           &.md-raised{
             background-color: #0185f1;
@@ -2390,41 +2390,49 @@ md-bottom-sheet{
 .gxxz{
   font-size: 12px;
   md-list{
-    md-list-item{
-      .md-button{
-        line-height: 20px;
-        min-width: 60px;
-        margin:6px 0;
-        font-size: 12px;
-        span{
-          display: block;
-          text-align: center;
-          i{
-            display: inline-block;
-            width:14px;
-            height:14px;
-            border:1px solid #fff;
-            border-radius: 3px;
-            margin-right: 5px;
-            vertical-align: middle;
-            &.pass{
-              border:1px solid #169e49;
-              background: #ddffea;
-            }
-            &.ng{
-              border:1px solid #ff3434;
-              background: #ffebea;
-            }
-            &.yet{
-              border:1px solid #d8d8d8;
-              background: #f6f9f9;
-            }
-            &.wait{
-              border:1px solid #d8d8d8;
-              background: #fff;
+    &.gxfilter{
+      background:#fff;padding:0;border-bottom: 1px solid #d8d8d8;
+      md-list-item{
+        border-bottom: 2px solid #fff;
+        &.active{
+          border-bottom: 2px solid #ff3434
+        }
+        .md-button{
+          line-height: 20px;
+          min-width: 60px;
+          margin:6px 0;
+          font-size: 12px;
+          span{
+            display: block;
+            text-align: center;
+            i{
+              display: inline-block;
+              width:14px;
+              height:14px;
+              border:1px solid #fff;
+              border-radius: 3px;
+              margin-right: 5px;
+              vertical-align: middle;
+              &.pass{
+                border:1px solid #169e49;
+                background: #ddffea;
+              }
+              &.ng{
+                border:1px solid #ff3434;
+                background: #ffebea;
+              }
+              &.yet{
+                border:1px solid #d8d8d8;
+                background: #f6f9f9;
+              }
+              &.wait{
+                border:1px solid #d8d8d8;
+                background: #fff;
+              }
             }
           }
         }
+
       }
 
     }

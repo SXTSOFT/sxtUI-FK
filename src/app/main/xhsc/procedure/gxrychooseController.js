@@ -6,10 +6,10 @@
 
   angular
     .module('app.xhsc')
-    .controller('rychooseController',rychooseController);
+    .controller('gxrychooseController',gxrychooseController);
 
   /**@ngInject*/
-  function rychooseController($scope){
+  function gxrychooseController($scope){
     var vm = this;
     vm.persons = [{
       unit:'甲方',

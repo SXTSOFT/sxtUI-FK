@@ -53,12 +53,15 @@
       }
       scope.$watch('slideData',function(){
         if(!scope.slideData) return;
+        console.log('data',scope.areaId)
+        if(scope.slideData[0].SpecialtyChildren.length)
         scope.selectProcedure(scope.slideData[0].SpecialtyChildren[0]);
       })
+
       scope.changeOrclick = function(item){
         console.log(item)
         if(!scope.showCheck){
-          $state.go('app.xhsc.bdchoose.choose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId})
+          $state.go('app.xhsc.gxmain.gxhousechoose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId})
         }else{
           item.checked = !item.checked;
         }
