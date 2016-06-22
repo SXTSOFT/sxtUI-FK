@@ -52,6 +52,7 @@
       vanke:{
         profile:http.custom(function(){
           p1 = null;
+          permission = null;
           return get('/common/v1/profile');
         }),
         isPartner:http.custom(function(f){
@@ -171,7 +172,7 @@
                       return i1.name.localeCompare(i2.name);
                   });
                   var p = permission;
-                  if (p) {
+                  if (s.isPartner(1) && p) {
 
                     for (var i = result.data.data.length - 1; i >= 0; i--) {
                       var item = result.data.data[i];
