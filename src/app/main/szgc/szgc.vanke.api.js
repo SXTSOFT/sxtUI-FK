@@ -51,6 +51,7 @@
     apiProvider.register('szgc',{
       vanke:{
         profile:http.custom(function(){
+          p1 = null;
           return get('/common/v1/profile');
         }),
         isPartner:http.custom(function(f){
