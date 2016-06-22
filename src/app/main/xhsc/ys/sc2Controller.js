@@ -8,7 +8,7 @@
     .module('app.xhsc')
     .controller('sc2Controller',sc2Controller)
   /** @ngInject */
-  function sc2Controller($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,pack,sxt,$state) {
+  function sc2Controller($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,pack,sxt,$timeout) {
     var vm = this;
     vm.info = {
       db:$stateParams.db,
@@ -44,7 +44,10 @@
         t._id = sxt.uuid();//指标结构表
         t.checked = false;
       })
-      vm.scChoose();
+      $timeout(function () {
+        vm.scChoose();
+      },500);
+
     },function(err){
 
     });
@@ -59,18 +62,33 @@
     //}
     vm.scChoose = function($event){
       $mdDialog.show({
-          controller: DialogController,
+          controller: ['$scope','$mdDialog',function($scope, $mdDialog) {
+            $scope.checkSc = function(sc){
+              vm.MeasureIndexes.forEach(function (it) {
+                it.checked =false;
+              })
+              sc.checked = true;
+              $scope.answer([sc]);
+            };
+            $scope.scList = vm.MeasureIndexes;
+            $scope.getIsChecked = function () {
+              return !$scope.scList.find(function (r) {
+                return r.checked;
+              })
+            }
+            $scope.hide = function () {
+              $mdDialog.hide();
+            };
+            $scope.cancel = function () {
+              $mdDialog.cancel();
+            };
+            $scope.answer = function (answer) {
+              $mdDialog.hide(answer);
+            };
+          }],
           targetEvent:$event,
           templateUrl: 'app/main/xhsc/ys/scChoose.html',
-          //parent: angular.element(document.body),
           parent:angular.element('#content'),
-        //  onComplete:function(){
-        //  if(!vm.info.MeasureIndexes){
-        //    console.log('parent',parent)
-        //    $(document).find('.md-dialog-container').bind("click",docClick);
-        //
-        //  }
-        //},
         clickOutsideToClose:vm.info.MeasureIndexes//&&vm.info.MeasureIndexes[0].checked
         })
         .then(function(answer) {
@@ -175,31 +193,6 @@
     };
 
     vm.setRegionId($stateParams.regionId);
-    function DialogController($scope, $mdDialog) {
 
-      console.log(vm.info.MeasureIndexes,$mdDialog)
-      $scope.checkSc = function(sc){
-        vm.MeasureIndexes.forEach(function (it) {
-          it.checked =false;
-        })
-        sc.checked = true;
-        $scope.answer([sc]);
-      };
-      $scope.scList = vm.MeasureIndexes;
-      $scope.getIsChecked = function () {
-        return !$scope.scList.find(function (r) {
-          return r.checked;
-        })
-      }
-      $scope.hide = function () {
-        $mdDialog.hide();
-      };
-      $scope.cancel = function () {
-        $mdDialog.cancel();
-      };
-      $scope.answer = function (answer) {
-        $mdDialog.hide(answer);
-      };
-    }
   }
 })();
