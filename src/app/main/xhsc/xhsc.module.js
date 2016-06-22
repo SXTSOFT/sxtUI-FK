@@ -41,7 +41,7 @@
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/ch2.html',
-            controller:'ChooseController as vm'
+            controller:'ChooseScController as vm'
           }
         }
       })
@@ -382,19 +382,6 @@
           }
         }
       })
-      //.state('app.xhsc.zg',{
-      //  noBack:true,
-      //  sendBt:false,
-      //  rightArrow:true,
-      //  leftArrow:true,
-      //  url   :'/check',
-      //  views :{
-      //    'content@app':{
-      //      templateUrl : 'app/main/xhsc/ys/checkHouse.html',
-      //      controller:'checkHouseController as vm'
-      //    }
-      //  }
-      //})
       .state('app.xhsc.sc',{
         noBack:false,
         sendBt:false,
@@ -616,7 +603,7 @@
           }
         }
       })
-    .state('app.xhsc.pkresult',{
+      .state('app.xhsc.pkresult',{
       //url   :'/pkresult/{AssessmentID}/{RegionID}/{RegionName}/{AssessmentTypeID}',
       url:'/pkresult/{year}/{projectID}/{quarter}/{assessmentStage}',
       noBack:true,
@@ -627,15 +614,15 @@
         }
       }
     })
-    .state('app.pc.pkresult',{
-      url:'/pkresult/{year}/{projectID}/{quarter}/{assessmentStage}',
-      views :{
-        'content':{
-          templateUrl : 'app/main/xhsc/ys/evaluatelist_pc.html',
-          controller:'evaluatelistPcController as vm'
+      .state('app.pc.pkresult', {
+        url: '/pkresult/{year}/{projectID}/{quarter}/{assessmentStage}',
+        views: {
+          'content': {
+            templateUrl: 'app/main/xhsc/ys/evaluatelist_pc.html',
+            controller: 'evaluatelistPcController as vm'
+          }
         }
-      }
-    });
+      });
 
 
     // Navigation

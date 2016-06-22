@@ -6,7 +6,7 @@
 
   angular
     .module('app.xhsc')
-    .controller('ChooseController',ChooseController);
+    .controller('ChooseScController',ChooseController);
 
   /** @ngInject */
   function ChooseController($scope,$stateParams,db,$rootScope,xhUtils,remote){
