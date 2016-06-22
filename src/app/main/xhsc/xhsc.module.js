@@ -100,13 +100,67 @@
           }
         }
       })
-      .state('app.xhsc.gxresult',{
+      .state('app.xhsc.gxmain',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title:'工序验收',
+        url   :'/gxmain',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/procedure/gxmain.html',
+            controller:'gxmainController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.gxmain.gxlist',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'工序选择',
+        url   :'/gxlist/{projectId}/{areaID}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/procedure/gxlist.html',
+            controller:'gxlistController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.gxmain.gxhousechoose',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        url   :'/gxhousechoose/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/procedure/gxhousechoose.html',
+            controller:'gxhousechooseController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.gxmain.gxtest',{
+        noBack:true,
+        sendBt:true,
+        rightArrow:false,
+        leftArrow:false,
+        url   :'/gxtest/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}/{areaId}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/procedure/gxtest.html',
+            controller:'gxtestController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.gxmain.gxresult',{
         noBack:true,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'工序结果',
-        url   :'/gxresult/{acceptanceItemName}/{name}',
+        url   :'/gxresult/{acceptanceItemName}/{name}/{areaId}/{projectId}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/procedure/gxresult.html',
@@ -114,26 +168,27 @@
           }
         }
       })
-      .state('app.xhsc.bdchoose',{
-        noBack:true,
-        sendBt:false,
-        rightArrow:false,
-        leftArrow:false,
-        title :'标段选择',
-        url   :'/bdchoose/{projectId}',
-        views :{
-          'content@app':{
-            templateUrl : 'app/main/xhsc/procedure/bdchoose.html',
-            controller:'bdchooseController as vm'
-          }
-        }
-      })
+      //.state('app.xhsc.gxresult',{
+      //  noBack:true,
+      //  sendBt:false,
+      //  rightArrow:false,
+      //  leftArrow:false,
+      //  title :'工序结果',
+      //  url   :'/gxresult/{acceptanceItemName}/{name}/{areaId}/{projectId}',
+      //  views :{
+      //    'content@app':{
+      //      templateUrl : 'app/main/xhsc/procedure/gxresult.html',
+      //      controller:'gxresultController as vm'
+      //    }
+      //  }
+      //})
+
       .state('app.xhsc.gxtest',{
         noBack:true,
         sendBt:true,
         rightArrow:false,
         leftArrow:false,
-        url   :'/gxtest/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}',
+        url   :'/gxtest/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}/{areaId}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/procedure/gxtest.html',
@@ -169,7 +224,7 @@
           }
         }
       })
-      .state('app.xhsc.gxresult.gxdetail',{
+      .state('app.xhsc.gxmain.gxresult.gxdetail',{
         noBack:true,
         sendBt:false,
         rightArrow:false,
@@ -185,7 +240,21 @@
         //  }
         //}
       })
-      .state('app.xhsc.bdchoose.gxlist',{
+      .state('app.xhsc.gxbdchoose',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'标段选择',
+        url   :'/bdchoose/{projectId}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/procedure/gxbdchoose.html',
+            controller:'gxbdchooseController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.gxbdchoose.gxlist',{
         noBack:true,
         sendBt:false,
         rightArrow:false,
@@ -199,28 +268,28 @@
           }
         }
       })
-      .state('app.xhsc.bdchoose.choose',{
+      .state('app.xhsc.gxbdchoose.gxhousechoose',{
         noBack:true,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
-        url   :'/choose/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
+        url   :'/gxhousechoose/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
         views :{
           'content@app':{
-            templateUrl : 'app/main/xhsc/procedure/choose.html',
-            controller:'ChooseController as vm'
+            templateUrl : 'app/main/xhsc/procedure/gxhousechoose.html',
+            controller:'gxhousechooseController as vm'
           }
         }
       })
-      .state('app.xhsc.gxresult.rychoose',{
+      .state('app.xhsc.gxmain.gxresult.gxrychoose',{
         noBack:true,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
         title :'人员选择',
         url   :'/rychoose',
-        templateUrl : 'app/main/xhsc/procedure/rychoose.html',
-        controller:'rychooseController as vm'
+        templateUrl : 'app/main/xhsc/procedure/gxrychoose.html',
+        controller:'gxrychooseController as vm'
         //views :{
         //  'content@app':{
         //    templateUrl : 'app/main/xhsc/procedure/rychoose.html',
