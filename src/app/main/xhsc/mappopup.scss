@@ -1260,8 +1260,13 @@ md-tabs[md-align-tabs="bottom"]{
   }
   .floors{
     md-list{
-      padding: 0 8px;
+      padding: 0;
       md-list-item{
+        button{
+          p{
+            padding:0 8px;
+          }
+        }
         border-bottom: 1px solid #d8d8d8;
         a{
           color:#000;
