@@ -43,7 +43,7 @@
       });
       if(!task){
         self.isDown = false;
-       self.completed = self.getProgress().progress==100;
+        self.completed = self.getProgress().progress==100;
         $rootScope.$emit('pack' + self.config._id, {
           name: 'allcomplete',
           config: self.config

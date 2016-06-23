@@ -41,7 +41,7 @@
         rightArrow: false,
         leftArrow: false,
         title: '工序选择',
-        url: '/gxlist/{projectId}/{areaID}',
+        url: '/gxlist/{projectId}',
         templateUrl: 'app/main/xhsc/procedure/gxlist.html',
         controller: 'gxlistController as vm'
       })
@@ -103,7 +103,7 @@
         templateUrl : 'app/main/xhsc/procedure/gxdetail.html',
         controller:'gxdetailController as vm'
       })
-      .state('aapp.xhsc.gx.gxbdchoose', {
+      .state('app.xhsc.gx.gxbdchoose', {
         noBack: true,
         sendBt: false,
         rightArrow: false,
@@ -119,7 +119,7 @@
         rightArrow: false,
         leftArrow: false,
         title: '工序选择',
-        url: '/gxlist/{projectId}/{areaID}',
+        url: '/gxbdchoose/{projectId}',
         templateUrl: 'app/main/xhsc/procedure/gxlist.html',
         controller: 'gxlistController as vm'
       })

@@ -75,6 +75,9 @@
       queryAllBulidings:function (projectId) {
         return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByid',{projectId:projectId}));
       },
+      postInspection:function(AcceptanceItemID,AreaID){
+        return $http.post($http.url('/api/InspectionApi/insert'), {AcceptanceItemID:AcceptanceItemID,AreaID:AreaID})
+      },
 	    /**
        * 实测实量项
        */
