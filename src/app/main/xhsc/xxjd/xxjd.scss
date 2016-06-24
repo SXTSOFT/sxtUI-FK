@@ -1,0 +1,117 @@
+#subtoolbar{
+  height:50px;
+  line-height:50px;
+  background:#f8f8f8;
+  border-bottom:1px solid #b2b2b2;
+  .md-button{
+    margin:6px 1px;
+    padding:0;
+    min-width:68px;
+    color:#e93030;
+    &.md-vanke-theme:not([disabled]):hover{
+      background:none;
+    }
+    &:not([disabled]):hover{
+      background:none;
+    }
+  }
+  .hr{
+    background:#bfbfbf;
+    width:1px;
+    height:20px;
+  }
+}
+.floor-layer1{
+  text-align: center;
+  position: relative;
+  .item{
+    position: absolute;
+    bottom:0;
+    width:100%;
+    margin:0 auto;
+    a{
+      color:#333;
+      p{
+        white-space: nowrap;
+        overflow: hidden;
+        margin:0;
+      }
+      .whole{
+        position:relative; width: 180px; margin: 0 auto;
+        .whole-progress{
+          position:absolute; bottom:0;
+        }
+        ul{
+          position: absolute;
+          bottom: 0;
+          -webkit-padding-start:0;
+          li{
+            list-style: none;
+          }
+        }
+        .whole-target{
+          .wall-t,.wall-m,.build-b{
+            filter:alpha(opacity=20); opacity:0.2;
+          }
+        }
+        .build-t{ position:relative; background-image:url(../app/main/szgc/images/build-t.png); width:184px; height:107px; margin: 0 0 -89px 0;}
+        .build-m{ position:relative; background-image:url(../app/main/szgc/images/build-m.png); width:184px; height:109px; margin: 0 0 -92px 0;}
+        .build-b{ position:relative; background-image:url(../app/main/szgc/images/build-b.png); width:184px; height:129px; margin: -95px 0 0 0; }
+        .wall-t{ position:relative; background-image:url(../app/main/szgc/images/wall-t.png); width:184px; height:107px; margin: 0 0 -89px 0;}
+        .wall-m{ position:relative; background-image:url(../app/main/szgc/images/wall-m.png); width:184px; height:109px; margin: 0 0 -92px 0;}
+        .build-m-presell{ position:relative; background-image:url(../app/main/szgc/images/build-m-red.png); width:184px; height:109px; margin: 0 0 -92px 0}
+        .wall-m-presell{ position:relative; background-image:url(../app/main/szgc/images/wall-m-red.png); width:184px; height:109px; margin: 0 0 -92px 0}
+      }
+    }
+
+  }
+}
+.floor-layer{
+  //width:20%;
+  //display: inline-block;
+  text-align: center;
+  position: relative;
+  //overflow:hidden;
+  .item{
+    position: absolute;
+    bottom:0;
+    width:100%;
+    margin:0 auto;
+    a{
+      color:#333;
+      &:hover{
+        color:#f00;
+      }
+      p{
+        white-space: nowrap;
+        overflow: hidden;
+        margin:0;
+      }
+      .whole{
+        position:relative; width: 180px; margin: 0 auto;overflow: hidden;
+        .whole-progress{
+          position:absolute; bottom:0;
+        }
+        ul{
+          -webkit-padding-start:0;
+          li{
+            list-style: none;
+          }
+        }
+        .whole-target{
+          .wall-t,.wall-m,.build-b{
+            filter:alpha(opacity=20); opacity:0.2;
+          }
+        }
+        .build-t{ position:relative; background-image:url(../app/main/xhsc/images/build-t.png); width:184px; height:107px; margin: 0 0 -89px 0;}
+        .build-m{ position:relative; background-image:url(../app/main/xhsc/images/build-m.png); width:184px; height:109px; margin: 0 0 -92px 0;}
+        .build-b{ position:relative; background-image:url(../app/main/xhsc/images/build-b.png); width:184px; height:129px; margin: -95px 0 0 0; }
+        .wall-t{ position:relative; background-image:url(../app/main/xhsc/images/wall-t.png); width:184px; height:107px; margin: 0 0 -89px 0;}
+        .wall-m{ position:relative; background-image:url(../app/main/xhsc/images/wall-m.png); width:184px; height:109px; margin: 0 0 -92px 0;}
+        .build-m-presell{ position:relative; background-image:url(../app/main/xhsc/images/build-m-red.png); width:184px; height:109px; margin: 0 0 -92px 0}
+        .wall-m-presell{ position:relative; background-image:url(../app/main/xhsc/images/wall-m-red.png); width:184px; height:109px; margin: 0 0 -92px 0}
+      }
+    }
+
+  }
+}
