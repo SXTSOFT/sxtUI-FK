@@ -8,46 +8,58 @@
 
   /** @ngInject */
   function apiProvider() {
-    var api = {},provider = this,injector,binds = [],dbs=[],pouchdb;
+    var api = {},provider = this,injector,dbs=[],pouchdb;
     provider.register = register;
     provider.getNetwork = getNetwork;
     provider.$http = angular.extend(bindHttp({
       url:url,
       db:function (cfg) {
-        binds.push(cfg);
-        return bindHttp(cfg, function (args,result) {
-          var lodb = dbs.find(function (b) {
-            return b._id==cfg._id;
-          });
-          if(!lodb){
-            lodb = pouchdb(cfg._id);
-            dbs.push(lodb);
-          }
-          var data = result.data,
-            id = function (d) {
-              d._id = angular.isFunction(cfg.idField)? cfg.idField(d):d[cfg.idField];
-              return d._id;
-            };
-          if(angular.isArray(data)){
-            data.forEach(function (d) {
-              if(id(d)){
-                lodb.addOrUpdate(d);
-              }
-            })
-          }
-          else{
-            if(id(data)){
-              lodb.addOrUpdate(d);
+        return bindHttp(cfg, function (args, result) {
+          if (result) {
+            var lodb = dbs.find(function (b) {
+              return b._id == cfg._id;
+            });
+            if (!lodb) {
+              lodb = pouchdb(cfg._id);
+              dbs.push(lodb);
             }
-            else if(data.rows && angular.isArray(data.rows)) {
-              data.rows.forEach(function (d) {
+            var data = result.data,
+              id = function (d) {
+                d._id = angular.isFunction(cfg.idField) ? cfg.idField(d) : d[cfg.idField];
+                return d._id;
+              };
+            if (angular.isArray(data)) {
+              data.forEach(function (d) {
                 if (id(d)) {
                   lodb.addOrUpdate(d);
                 }
               })
             }
+            else {
+              if (id(data)) {
+                lodb.addOrUpdate(d);
+              }
+              else if (data.rows && angular.isArray(data.rows)) {
+                data.rows.forEach(function (d) {
+                  if (id(d)) {
+                    lodb.addOrUpdate(d);
+                  }
+                })
+              }
+            }
+            return result;
           }
-          return result;
+          else {
+            var uploadDb = '_upload',
+              upDb = dbs.find(function (b) {
+                return b._id == uploadDb;
+              });
+            if (!lodb) {
+              upDb = pouchdb(uploadDb);
+              dbs.push(upDb);
+            }
+            upDb.addOrUpdate(args);
+          }
         });
       }
     }));
@@ -113,47 +125,60 @@
         var self = this;
         if(provider.getNetwork()==1 && self._id){
           return provider.$q.$q(function (resolve,reject) {
-            var db = dbs.find(function (d) {
-              return d._id==self._id;
-            });
-            if(!db){
-              db = pouchdb(self._id);
-              dbs.push(db);
-            }
-            var result = {
-              data:null
-            };
-            if(db){
-              db.findAll(self.filter).then(function (r) {
-                switch(self.dataType) {
+            if(method=='get') {
+              var db = dbs.find(function (d) {
+                return d._id == self._id;
+              });
+              if (!db) {
+                db = pouchdb(self._id);
+                dbs.push(db);
+              }
+              var result = {
+                data: null
+              };
+              if (db) {
+                db.findAll(self.filter).then(function (r) {
+                  switch (self.dataType) {
+                    case 1:
+                      result.data = r.rows;
+                      break;
+                    case 2:
+                      result.data = {rows: r.rows};
+                      break;
+                    case 3:
+                      result.data = r.rows[0];
+                      break;
+                  }
+                  resolve(result);
+                });
+              }
+              else {
+                switch (self.dataType) {
                   case 1:
-                    result.data = r.rows;
+                    result.data = [];
                     break;
                   case 2:
-                    result.data = {rows: r.rows};
+                    result.data = {rows: []};
                     break;
                   case 3:
-                    result.data = r.rows[0];
+                    result.data = null;
                     break;
                 }
                 resolve(result);
-              });
-            }
-            else{
-              switch(self.dataType) {
-                case 1:
-                  result.data = [];
-                  break;
-                case 2:
-                  result.data = {rows: []};
-                  break;
-                case 3:
-                  result.data = null;
-                  break;
               }
-              resolve(result);
             }
-
+            else {
+              var args = Array.prototype.slice.call(arguments),
+                url = args[0],id = function (d) {
+                  d._id = angular.isFunction(cfg.idField)? cfg.idField(d):d[cfg.idField];
+                  return d._id;
+                },_id = id(args[1]);
+              self.url = url;
+              resolve(fn({
+                _id:url+(_id?_id:''),
+                args:args
+              }));
+            }
           })
         }
         else {
@@ -229,9 +254,8 @@
         return result;
       }
     }
-
     function getNetwork() {
-     return 1;
+     return 0;
     }
 
   }
