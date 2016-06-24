@@ -13,14 +13,8 @@
     var vm = this;
     remote.Assessment.Project.getMap().then(function(result){
       vm.projects = result.data;
-      //console.log('map',result.data)
+      console.log('map',result)
     })
-
-    vm.download = function(item){
-
-
-
-    }
 
 
   }
