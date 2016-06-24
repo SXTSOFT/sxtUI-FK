@@ -140,7 +140,7 @@
         title :'人员选择',
         url   :'/rychoose',
         templateUrl : 'app/main/xhsc/procedure/gxrychoose.html',
-        controller:'gxrychooseController as vm'
+        controller:'gxrychooseController as vm',
       })
 
   }
