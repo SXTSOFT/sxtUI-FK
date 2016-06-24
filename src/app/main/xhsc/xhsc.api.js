@@ -28,7 +28,11 @@
         return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfo',{measureRecordID:recordId,acceptanceIndexID:itemId}));
       },
       query:function () {
-        return $http.get($http.url('/Api/AssessmentApi/GetAssessmentProject'))
+        return $http.db({
+          _id:'projects',
+          idField:'AssessmentID',
+          dataType:1
+        }).get($http.url('/Api/AssessmentApi/GetAssessmentProject'))
       },
       queryById:function (assessmentID) {
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentProjectSingle',{assessmentID:assessmentID}))
@@ -55,7 +59,11 @@
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentTotalReport',{AssessmentID:assessmentID}));
       },
       queryItemResults:function () {
-        return $http.get($http.url('/Api/AssessmentApi/GetAllAssessmentProject'));
+        return $http.db({
+          _id:'AssessmentProject',
+          idField:'ProjectID',
+          dataType:1
+        }).get($http.url('/Api/AssessmentApi/GetAllAssessmentProject'));
       },
       queryReport:function (year,quarter,projectID,assessmentStage) {
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentItemStatisticsResult',{year:year,projectID:projectID,quarter:quarter,assessmentStage:assessmentStage}));
@@ -74,6 +82,12 @@
       },
       queryAllBulidings:function (projectId) {
         return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByid',{projectId:projectId}));
+      },
+      postInspection:function(AcceptanceItemID,AreaID){
+        return $http.post($http.url('/api/InspectionApi/insert'), {AcceptanceItemID:AcceptanceItemID,AreaID:AreaID})
+      },
+      getRegionStatus:function(projectId){
+        return $http.get($http.url('/Api/InspectionApi/GetUserInspectionInfo',{projectId:projectId}));
       },
 	    /**
        * 实测实量项
@@ -324,7 +338,11 @@
          * @returns {*}
          * **/
         updateHouseDrawing:function(regionID,draw){
-          return $http.post('/Api/MeasureInfo/ModifyHouseType',{regionID:regionID,draw:draw});
+          return $http.db({
+          _id:'updateHouseDrawing',
+            data:1,
+            idField:'regionID'
+          }).post('/Api/MeasureInfo/ModifyHouseType',{regionID:regionID,draw:draw});
           /**return post(regionID,draw);**/
         },
 

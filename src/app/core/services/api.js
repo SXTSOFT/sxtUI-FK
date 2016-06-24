@@ -8,18 +8,61 @@
 
   /** @ngInject */
   function apiProvider() {
-    var api = {},provider = this,injector;
+    var api = {},provider = this,injector,dbs=[],pouchdb;
     provider.register = register;
-    provider.$http = {
+    provider.getNetwork = getNetwork;
+    provider.$http = angular.extend(bindHttp({
       url:url,
-      get:cfg('get'),
-      post:cfg('post'),
-      delete:cfg('delete'),
-      options:cfg('options'),
-      head:cfg('head'),
-      resource:cfg('resource'),
-      custom:cfg('custom')
-    };
+      db:function (cfg) {
+        return bindHttp(cfg, function (args, result) {
+          if (result) {
+            var lodb = dbs.find(function (b) {
+              return b._id == cfg._id;
+            });
+            if (!lodb) {
+              lodb = pouchdb(cfg._id);
+              dbs.push(lodb);
+            }
+            var data = result.data,
+              id = function (d) {
+                d._id = angular.isFunction(cfg.idField) ? cfg.idField(d) : d[cfg.idField];
+                return d._id;
+              };
+            if (angular.isArray(data)) {
+              data.forEach(function (d) {
+                if (id(d)) {
+                  lodb.addOrUpdate(d);
+                }
+              })
+            }
+            else {
+              if (id(data)) {
+                lodb.addOrUpdate(d);
+              }
+              else if (data.rows && angular.isArray(data.rows)) {
+                data.rows.forEach(function (d) {
+                  if (id(d)) {
+                    lodb.addOrUpdate(d);
+                  }
+                })
+              }
+            }
+            return result;
+          }
+          else {
+            var uploadDb = '_upload',
+              upDb = dbs.find(function (b) {
+                return b._id == uploadDb;
+              });
+            if (!lodb) {
+              upDb = pouchdb(uploadDb);
+              dbs.push(upDb);
+            }
+            upDb.addOrUpdate(args);
+          }
+        });
+      }
+    }));
     provider.$q = function(){
       return provider.$q.$q.apply(provider,Array.prototype.slice.call(arguments));
     }
@@ -29,16 +72,17 @@
     provider.$get = getApi;
     provider.get = getServer;
 
-    getApi.$injector = ['$resource','$http','$injector','$q'];
+    getApi.$injector = ['$resource','$http','$injector','$q','db'];
 
     function getServer(name){
       return injector.get(name);
     }
 
-    function getApi($resource,$http,$injector,$q){
+    function getApi($resource,$http,$injector,$q,db){
       injector = $injector;
       provider.$http.$http = $http;
       provider.$q.$q = $q;
+      pouchdb = db;
       resolveApi(api,$resource,$http);
       return api;
     }
@@ -50,7 +94,7 @@
         if(k === 'root' || !angular.isObject(o))return;
         if(o.method && o.args){
           if(o.method == 'custom'){
-            p[k] = custom(o.args[0],p);
+            p[k] = custom(o.args[0],p,o.fn);
           }
           else if(o.method == 'resource'){
             p[k] = $resource(o.args[0]);
@@ -67,28 +111,98 @@
       api[name] = angular.extend(api[name]||{},apiObj);
     }
 
-    function cfg(method){
+    function cfg(method,fn){
       if(method == 'custom' || method=='resource'){
         return function (){
           return {
             method : method,
-            args: Array.prototype.slice.call(arguments)
+            args: Array.prototype.slice.call(arguments),
+            fn:fn
           };
         }
       }
       return function () {
-        var args = Array.prototype.slice.call(arguments),
-          url = args[0];
-        if(url.indexOf('http')==-1)
-          args[0] = sxt.app.api+url;
-        return provider.$http.$http[method].apply(this,args);
+        var self = this;
+        if(provider.getNetwork()==1 && self._id){
+          return provider.$q.$q(function (resolve,reject) {
+            if(method=='get') {
+              var db = dbs.find(function (d) {
+                return d._id == self._id;
+              });
+              if (!db) {
+                db = pouchdb(self._id);
+                dbs.push(db);
+              }
+              var result = {
+                data: null
+              };
+              if (db) {
+                db.findAll(self.filter).then(function (r) {
+                  switch (self.dataType) {
+                    case 1:
+                      result.data = r.rows;
+                      break;
+                    case 2:
+                      result.data = {rows: r.rows};
+                      break;
+                    case 3:
+                      result.data = r.rows[0];
+                      break;
+                  }
+                  resolve(result);
+                });
+              }
+              else {
+                switch (self.dataType) {
+                  case 1:
+                    result.data = [];
+                    break;
+                  case 2:
+                    result.data = {rows: []};
+                    break;
+                  case 3:
+                    result.data = null;
+                    break;
+                }
+                resolve(result);
+              }
+            }
+            else {
+              var args = Array.prototype.slice.call(arguments),
+                url = args[0],id = function (d) {
+                  d._id = angular.isFunction(cfg.idField)? cfg.idField(d):d[cfg.idField];
+                  return d._id;
+                },_id = id(args[1]);
+              self.url = url;
+              resolve(fn({
+                _id:url+(_id?_id:''),
+                args:args
+              }));
+            }
+          })
+        }
+        else {
+          var args = Array.prototype.slice.call(arguments),
+            url = args[0];
+          if (url.indexOf('http') == -1)
+            args[0] = sxt.app.api + url;
+          return fn ? provider.$http.$http[method].apply(self, args).then(function (result) {
+            return fn(args, result);
+          }) :
+            provider.$http.$http[method].apply(self, args);
+        }
       };
     }
 
 
-    function custom(fn,scope){
+    function custom(fn,scope,cb){
       return function (){
-        return fn.apply(scope,Array.prototype.slice.call(arguments));
+        var args = Array.prototype.slice.call(arguments);
+        return cb ?
+          fn.apply(scope,args).then(function (result) {
+            return cb(args,result);
+          }):
+          fn.apply(scope,args);
       }
     }
 
@@ -123,6 +237,25 @@
     function url(path,args) {
       if (!args) return path;
       return path + ((path.indexOf('?') == -1) ? '?' : '&') + params(args);
+    }
+
+    function bindHttp(obj,fn) {
+      return angular.extend(obj,{
+        get:cfg('get',callback),
+        post:cfg('post',callback),
+        delete:cfg('delete',callback),
+        options:cfg('options',callback),
+        head:cfg('head',callback),
+        resource:cfg('resource',callback),
+        custom:cfg('custom',callback)
+      });
+      function callback(args,result) {
+        fn && fn(args,result);
+        return result;
+      }
+    }
+    function getNetwork() {
+     return 0;
     }
 
   }

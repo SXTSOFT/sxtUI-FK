@@ -9,7 +9,7 @@
     .directive('myDialog',myDialogDirective);
 
   /**@ngInject*/
-  function myDialogDirective($state,$timeout){
+  function myDialogDirective($state,$timeout,remote,utils){
     return {
       //templateUrl:'app/main/xhsc/directive/mydialog.html',
       scope:{
@@ -42,7 +42,7 @@
         //$('.my-dialog-mask').fadeIn();
 
         if(!scope.dialogMsg){
-          scope.dialogMsg = scope.dialogData.name + ',' + scope.dialogData.acceptanceItemName + '工序，是否报检？';
+          scope.dialogMsg = scope.dialogData.name + ',' + scope.dialogData.acceptanceItemName + '工序已完成，请监理验收';
         }
       })
       scope.cancel= function(){
@@ -52,8 +52,19 @@
       }
       scope.submit = function(){
         scope.dialogShow = false;
+        console.log(scope.dialogData)
+        var params ={
+          acceptancetemID:scope.dialogData.acceptanceItemID,
+          areaID:scope.dialogData.regionId
+        }
         $('.my-dialog-mask',element).fadeOut();
         if(scope.dialogSure == '报检'){
+          remote.Assessment.postInspection(scope.dialogData.acceptanceItemID,scope.dialogData.regionId).then(function(result){
+            //console.log('a')
+            $timeout(function(){
+              utils.alert('报检成功');
+            },200);
+          })
           $timeout(function(){
             $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:scope.dialogData.acceptanceItemID,acceptanceItemName:scope.dialogData.acceptanceItemName,name:scope.dialogData.name,regionId:scope.dialogData.regionId,projectId:scope.dialogData.projectId,areaId:scope.dialogData.areaId});
           },100)

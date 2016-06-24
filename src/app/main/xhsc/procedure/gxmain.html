@@ -1,28 +1,27 @@
-
-<div layout="column" class="gxdownload">
-  <md-subheader ng-if="vm.offlines.length">已下载列表</md-subheader>
-  <md-list>
-    <md-list-item ng-repeat="item in vm.offlines">
-      <p layout="column" style="padding-right: 100px;font-size:16px;">
-        {{item.AssessmentSubject}}
-      </p>
-      <div class="md-secondary md-hue-3" style="right:0;">
-        <md-button  ui-sref="app.xhsc.gx.gxlist({projectId:item.ProjectID,areaID:item.AreaID})" class="md-raised md-primary" style="margin-top:7px;
-        margin-bottom: 4px;">
-          工序验收
-        </md-button>
-      </div>
-
-    </md-list-item>
-
-  </md-list>
-  <md-subheader ng-if="vm.onlines.length">未下载列表</md-subheader>
-  <md-list>
-    <md-list-item ng-repeat="item in vm.onlines">
-      <p layout="column" style="padding-right: 100px;font-size:16px;">
-        {{item.AssessmentSubject}}
-      </p>
-      <div class="md-secondary md-hue-3">
+<md-tabs flex md-border-bottom>
+  <md-tab label="工序验收列表">
+    <md-content>
+      <div layout="column" class="gxdownload">
+        <md-subheader>已下载列表</md-subheader>
+        <md-list>
+          <md-list-item ng-repeat="item in vm.projects">
+            <p layout="column" style="padding-right: 100px;font-size:16px;padding-left:8px;">
+              {{item.ProjectName}}
+            </p>
+            <div class="md-secondary md-hue-3" style="right:0;">
+              <md-button  ui-sref="app.xhsc.gx.gxlist({projectId:item.ProjectID})" class="md-raised md-primary" style="margin-top:7px;margin-bottom: 4px;">
+                工序验收
+              </md-button>
+            </div>
+          </md-list-item>
+        </md-list>
+        <md-subheader>未下载列表</md-subheader>
+        <md-list>
+          <md-list-item ng-repeat="item in vm.projects">
+            <p layout="column" style="padding-right: 100px;font-size:16px;padding-left:8px;">
+              {{item.ProjectName}}
+            </p>
+            <div class="md-secondary md-hue-3" style="right:0;">
          <span style="display:inline-block;width:100px;text-align: center;">
             <md-button ng-if="!item.pack.isDown" class="md-raised upload-btn" ng-click="vm.download(item)">
               下载
@@ -32,8 +31,17 @@
              <md-icon style="width:10px;height:10px;background: #0185f1;position: absolute;left:10px;top:10px;"></md-icon></a>
            <!--<md-button  ng-if="item.pack.isDown" style="display: inline-block;vertical-align: middle;padding:5px;color:#0185f1;min-width:40px;" ui-sref="app.xhsc.ddetail">详情</md-button>-->
           </span>
-      </div>
+            </div>
 
-    </md-list-item>
-  </md-list>
-</div>
+          </md-list-item>
+        </md-list>
+      </div>
+    </md-content>
+  </md-tab>
+  <md-tab label="上传列表">
+    <md-content>
+
+    </md-content>
+  </md-tab>
+</md-tabs>
+
