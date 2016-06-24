@@ -12,7 +12,7 @@
   function gxlistController($scope,remote,$stateParams){
     var vm=this;
     vm.projectId = $stateParams.projectId;
-    remote.Assessment.queryProcedure().then(function(result){
+    remote.Procedure.queryProcedure().then(function(result){
      // console.log(result);
       //vm.procedureData = result.data;
       vm.procedureData = [];

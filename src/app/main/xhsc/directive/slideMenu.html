@@ -15,9 +15,11 @@
     <md-content class="list-right" flex>
       <div class="floors" layout="column">
         <md-list>
-          <md-list-item layout="row" ng-repeat="gxc in gxlevels" ng-click="changeOrclick(gxc)">
-            <p ng-class="{'active':gxc.checked}">{{gxc.AcceptanceItemName}}</p>
-            <md-switch class="md-secondary" ng-model="gxc.checked" ng-if="showCheck"></md-switch>
+          <md-list-item layout="row" ng-repeat="gxc in gxlevels" ng-click="goToLink(gxc)">
+            <p ng-class="{'active':gxc.checked}"><md-checkbox ng-if="showCheck" ng-model="gxc.checked"  ng-click="changeOrclick(gxc)"></md-checkbox>{{gxc.AcceptanceItemName}}</p>
+            <md-button ng-show="gxc.hasProblem" class="md-icon-button md-accent md-secondary md-mini" aria-label="Favorite">
+              <md-icon md-font-icon="icon-eye" class="icon s16"></md-icon>
+            </md-button>
           </md-list-item>
           <!--<md-list-item ng-if="showCheck">-->
             <!--<p>其它</p>-->

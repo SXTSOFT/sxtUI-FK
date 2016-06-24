@@ -17,7 +17,8 @@
         halfHeight:'=',
         level:'=',
         projectId:'=',
-        areaId:'='
+        areaId:'=',
+        current:'='
       },
       templateUrl:'app/main/xhsc/directive/slideMenu.html',
       link:link
@@ -42,11 +43,23 @@
       })
 
       scope.changeOrclick = function(item){
-        console.log(item)
+        if(item.checked){
+          scope.current = null;
+        }
+        else{
+          scope.gxlevels.forEach(function (it) {
+            if(item!==it)
+              it.checked = false;
+          });
+          scope.current = item;
+        }
+
+      }
+      scope.goToLink = function (item) {
         if(!scope.showCheck){
           $state.go('app.xhsc.gx.gxhousechoose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId})
         }else{
-          item.checked = !item.checked;
+          //item.checked = !item.checked;
         }
       }
     }

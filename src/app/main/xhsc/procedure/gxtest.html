@@ -9,10 +9,10 @@
     <md-icon md-font-icon="icon-chevron-right" ></md-icon>
   </md-button>
 </div>
-<div flex>
-  图纸
+<div flex sxt-map-check="vm.current" project-id="vm.info.projectId" procedure="vm.info.acceptanceItemID" region-id="vm.info.regionId">
+
 </div>
-<slide-menu flex layout="column" slide-data="vm.procedureData" show-check="true"  level="2"></slide-menu>
+<slide-menu flex layout="column" slide-data="vm.procedureData" current="vm.current" show-check="true"  level="2"></slide-menu>
 
 
 

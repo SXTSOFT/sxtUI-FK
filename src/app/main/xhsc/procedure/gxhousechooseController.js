@@ -19,13 +19,13 @@
       areaId = $stateParams.areaId;
     $rootScope.title = $stateParams.acceptanceItemName;
     $q.all([
-      remote.Assessment.queryAllBulidings(projectId),
-      remote.Assessment.getRegionStatus(projectId)
+      remote.Project.queryAllBulidings(projectId),
+      remote.Procedure.getRegionStatus(projectId)
     ]).then(function(res){
       vm.loading = true;
       var result=res[0];
       var status=res[1]&&res[1].data?res[1].data:[];
-      result.data.RegionRelations.forEach(function(d){
+      result.data[0].RegionRelations.forEach(function(d){
         d.projectTree =  d.RegionName;
         d.projectTitle = result.data.ProjectName + d.RegionName;
         d.Children && d.Children.forEach(function(c){
@@ -40,7 +40,7 @@
           })
         })
       })
-      vm.houses =  result.data.RegionRelations;
+      vm.houses =  result.data[0].RegionRelations;
     });
 
     function wrap(status,region){

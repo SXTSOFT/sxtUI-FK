@@ -28,7 +28,7 @@
                 d._id = angular.isFunction(cfg.idField) ? cfg.idField(d) : d[cfg.idField];
                 return d._id;
               };
-            if (angular.isArray(data)) {
+            if (cfg.dataType==1) {
               data.forEach(function (d) {
                 if (id(d)) {
                   lodb.addOrUpdate(d);
@@ -36,8 +36,8 @@
               })
             }
             else {
-              if (id(data)) {
-                lodb.addOrUpdate(d);
+              if (cfg.dataType==3) {
+                lodb.addOrUpdate(data);
               }
               else if (data.rows && angular.isArray(data.rows)) {
                 data.rows.forEach(function (d) {
@@ -71,6 +71,7 @@
 
     provider.$get = getApi;
     provider.get = getServer;
+    provider.setting = setting
 
     getApi.$injector = ['$resource','$http','$injector','$q','db'];
 
@@ -84,6 +85,7 @@
       provider.$q.$q = $q;
       pouchdb = db;
       resolveApi(api,$resource,$http);
+      api.setting = setting;
       return api;
     }
 
@@ -254,8 +256,38 @@
         return result;
       }
     }
+
+    function setting(key,value) {
+      return provider.$q(function (resolve) {
+        var settingdb='systemstting',
+          lodb = dbs.find(function (b) {
+            return b._id == settingdb;
+          });
+        if (!lodb) {
+          lodb = pouchdb(settingdb);
+          dbs.push(lodb);
+        }
+        if(value){
+          lodb.addOrUpdate({
+            _id:key,
+            value:value
+          }).then(function () {
+            resolve(value);
+          });
+        }
+        else{
+          lodb.get(key).then(function (result) {
+            resolve(result);
+          }).catch(function () {
+            resolve(null);
+          });
+        }
+      })
+    }
+
+
     function getNetwork() {
-     return 0;
+     return 1;
     }
 
   }
