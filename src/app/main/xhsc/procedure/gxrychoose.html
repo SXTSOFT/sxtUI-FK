@@ -1,11 +1,12 @@
 <div flex layout="column" class="ryxz" window-height>
   <div style="width:100%;">
-    <div style="padding:8px;color:#f00;background: #fff;border-bottom: 1px solid #d8d8d8;" ng-show="vm.choosed.length">
-      已选：<span class="labs" ng-repeat="item in vm.choosed">{{item.name}}<i ng-click="vm.rydel(item)"></i></span>
+    <div style="padding:0 8px;color:#f00;background: #fff;border-bottom: 1px solid #d8d8d8;" ng-show="vm.choosed.length">
+      <span style="display: block;width:50px;float: left;margin-top:15px;">已选：</span><div style="margin-left:50px;"><span class="labs" ng-repeat="item in vm.choosed">{{item.name}}<i ng-click="vm.rydel(item)"></i></span></div>
     </div>
+    <div style="clear:both;"></div>
   </div>
   <md-content flex layout="row" class="gx-list" style="overflow: hidden;">
-  <div flex="40" layout="column" style="background: #f0f0f0;overflow: auto;">
+  <div flex="40" layout="column" style="background: #f0f0f0;overflow: auto;border-right:1px solid #dedede;">
   <div class="list-left" style="background: #f0f0f0;">
   <md-list ng-cloak style="padding-top:0;">
   <md-list-item ng-repeat="ry in vm.persons" ng-class="{'active':ry.checked}">
@@ -19,7 +20,7 @@
   <div class="floors" layout="column">
   <md-list>
   <md-list-item layout="row" ng-repeat="user in vm.current.users" ng-click="vm.choose(user)">
-  <p>{{user.name}}</p>
+  <p ng-class="{'active':user.checked}">{{user.name}}</p>
   <md-checkbox class="md-secondary" ng-checked="user.checked" ng-click="vm.choose(user)"></md-checkbox>
   </md-list-item>
   </md-list>
@@ -27,7 +28,7 @@
   </div>
   </div>
   </md-content>
-  <div class="inner-footerbar" flex="none">
+  <div class="inner-footerbar" ng-show="vm.choosed.length" flex="none">
   <md-toolbar  >
   <md-button ng-click="vm.userSubmit(vm.choosed)">确定</md-button>
   </md-toolbar>

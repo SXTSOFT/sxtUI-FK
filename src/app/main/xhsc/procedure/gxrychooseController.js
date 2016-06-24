@@ -9,8 +9,14 @@
     .controller('gxrychooseController',gxrychooseController);
 
   /**@ngInject*/
-  function gxrychooseController($scope){
+  function gxrychooseController($scope,$stateParams,remote){
     var vm = this;
+    console.log('a',$stateParams)
+    remote.Assessment.queryAllBulidings($stateParams.projectId).then(function (result) {
+      result.data.Sections.forEach(function(t){
+
+      })
+    })
     vm.persons = [{
       unit:'甲方',
       users:[{

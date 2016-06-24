@@ -1,9 +1,9 @@
 <div flex layout="row" class="gx-list">
   <div flex="40" layout="column">
-    <md-content flex class="list-left" style="background: #f0f0f0;">
+    <md-content class="list-left" flex style="background: #f0f0f0;border-right:1px solid #dedede;">
       <div ng-repeat="gx in slideData">
-        <label style="display: block;height:48px;line-height: 48px;text-align: center;margin-bottom: 0;" ng-hide="level == 2">{{gx.SpecialtyName}}</label>
-        <md-list ng-cloak style="padding-top:0;">
+        <label style="display: block;height:49px;line-height: 49px;text-align: center;margin-bottom: 0;border-bottom: 1px solid #dedede;" ng-hide="level == 2">{{gx.SpecialtyName}}</label>
+        <md-list ng-cloak style="padding-top:0;padding-bottom: 0;">
           <md-list-item ng-class="{'active':gx1.checked}" ng-repeat="gx1 in gx.SpecialtyChildren">
             <md-button flex ng-click="selectProcedure(gx1)"> {{gx1.SpecialtyName}}</md-button>
           </md-list-item>
@@ -12,11 +12,11 @@
     </md-content>
   </div>
   <div flex="60" layout="column" style="background: #fff;position:relative;">
-    <md-content flex class="list-right">
+    <md-content class="list-right" flex>
       <div class="floors" layout="column">
         <md-list>
           <md-list-item layout="row" ng-repeat="gxc in gxlevels" ng-click="changeOrclick(gxc)">
-            <p>{{gxc.AcceptanceItemName}}</p>
+            <p ng-class="{'active':gxc.checked}">{{gxc.AcceptanceItemName}}</p>
             <md-switch class="md-secondary" ng-model="gxc.checked" ng-if="showCheck"></md-switch>
           </md-list-item>
           <!--<md-list-item ng-if="showCheck">-->

@@ -1,35 +1,3 @@
-<!--<div layout="column" layout-padding>-->
-  <!--<p>星河银河谷项目</p>-->
-  <!--<md-list>-->
-    <!--<md-list-item style="border-bottom: 1px solid #d8d8d8;">-->
-      <!--<p layout="column" style="padding-right:100px;">-->
-         <!--项目标段-->
-      <!--</p>-->
-      <!--<div class="md-secondary md-hue-3" style="right:0;">-->
-        <!--<span style="display:inline-block;text-align: center;">-->
-          <!--<md-button class="md-raised upload-btn" ui-sref="app.xhsc.gxlist">-->
-            <!--验收-->
-          <!--</md-button>-->
-        <!--</span>-->
-      <!--</div>-->
-
-    <!--</md-list-item>-->
-    <!--<md-list-item style="border-bottom: 1px solid #d8d8d8;">-->
-      <!--<p layout="column" style="padding-right:100px;">-->
-        <!--项目标段二标-->
-      <!--</p>-->
-      <!--<div class="md-secondary md-hue-3" style="right:0;">-->
-        <!--<span style="display:inline-block;text-align: center;">-->
-          <!--<md-button class="md-raised upload-btn" ui-sref="app.xhsc.gxlist">-->
-            <!--验收-->
-          <!--</md-button>-->
-        <!--</span>-->
-      <!--</div>-->
-
-    <!--</md-list-item>-->
-
-  <!--</md-list>-->
-  <!--</div>-->
 <div layout="column" class="gxdownload">
   <md-subheader ng-if="vm.offlines.length">已下载列表</md-subheader>
   <md-list>
@@ -38,7 +6,7 @@
         {{item.title}}
       </p>
       <div class="md-secondary md-hue-3" style="right:0;">
-        <md-button  ui-sref="aapp.xhsc.gx.gxbdchoose.gxlist({projectId:vm.projectId,areaID:item.AreaID})" class="md-raised md-primary" >
+        <md-button  ui-sref="app.xhsc.gx.gxlist({projectId:vm.projectId,areaID:item.AreaID})" class="md-raised md-primary" >
           工序验收
         </md-button>
       </div>
@@ -49,20 +17,9 @@
         {{item.AssessmentSubject}}
       </p>
       <div class="md-secondary md-hue-3" style="right:0;">
-        <md-button  ui-sref="aapp.xhsc.gx.gxbdchoose.gxlist({projectId:item.ProjectID})" class="md-raised md-primary" >
+        <md-button  ui-sref="app.xhsc.gx.gxbdchoose.gxlist({projectId:item.ProjectID})" class="md-raised md-primary" >
           工序验收
         </md-button>
-        <!--<md-button ng-show="item.completed" ng-click="vm.delete(item,$event)" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">-->
-          <!--删除-->
-        <!--</md-button>-->
-        <!--<md-button ng-show="item.completed" ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">-->
-          <!--详情-->
-        <!--</md-button>-->
-          <!--<span style="display:inline-block;text-align: center;">-->
-            <!--<md-button ng-click="vm.upload(item)" class="md-raised upload-btn">-->
-              <!--<md-progress-circular ng-show="item.progress && item.progress!=100" value="{{item.progress}}"  md-diameter="20"></md-progress-circular> 上传-->
-            <!--</md-button>-->
-          <!--</span>-->
       </div>
 
     </md-list-item>
@@ -89,5 +46,3 @@
     </md-list-item>
   </md-list>
 </div>
-<ui-view></ui-view>
-

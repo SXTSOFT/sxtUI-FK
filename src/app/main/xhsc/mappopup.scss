@@ -783,8 +783,53 @@ md-tabs[md-align-tabs="bottom"]{
     .gxrooms{
       border-bottom: 1px solid #d8d8d8;position: relative;text-align: right;padding:6px 0;
       .roomname{
-        display:block;position: absolute;left: 10px;line-height: 36px;
+        display:block;position: absolute;left: 15px;line-height: 36px;
       }
+    }
+    .room-st{
+      height: 32px;width:100%;border: 1px solid #dedede;border-radius: 4px;position: relative;overflow: hidden;text-align: center;
+      >span{
+        display: block;width:100%;position: absolute;top:0;line-height: 32px;
+      }
+      &.dy{
+        border:1px solid #DCDCDC;
+        color:	#0a0a0a;
+        >div{
+          background:#00b0e8;
+        }
+      }
+      &.pass{
+        border:1px solid #169e49;
+        color:#169e49;
+        >div{
+          background: #ddffea;
+        }
+      }
+      &.ng{
+        border:1px solid #ff3434;
+        color:#ff3434;
+        >div{
+          background: #ffebea;
+        }
+      }
+      &.yet{
+        border:1px solid #d8d8d8;
+        color:#333;
+        >div{
+          background: #f6f9f9;
+        }
+      }
+      &.wait{
+        border:1px solid #d8d8d8;
+        color:#333;
+        >div{
+          background: #fff;
+        }
+      }
+      //>div{
+      //
+      //}
+
     }
     .md-button{
       font-size:12px;
@@ -1012,6 +1057,7 @@ md-tabs[md-align-tabs="bottom"]{
     transition: all 0.5s linear;
     &.active{
       background: #fff;
+      color:#e93030;
     }
     .md-button{
       margin: 0;
@@ -1075,8 +1121,11 @@ md-tabs[md-align-tabs="bottom"]{
   }
   .list-left{
     background: #f0f0f0;
+    md-list-item{
+      border-bottom:1px solid #dedede;
+    }
     .md-button{
-      padding:4px 0;
+      padding:6px 0;
       &.md-vanke-theme{
         &:not([disabled]){
           &:hover{
@@ -1203,7 +1252,7 @@ md-tabs[md-align-tabs="bottom"]{
         }
       }
       .md-no-style{
-        border:1px solid #d8d8d8;
+        border:1px solid #dedede;
         border-radius:32px;
         padding: 0;
         min-height: 32px;
@@ -1262,20 +1311,27 @@ md-tabs[md-align-tabs="bottom"]{
     md-list{
       padding: 0;
       md-list-item{
-        button{
-          p{
-            padding:0 8px;
+        border-bottom: 1px solid #dedede;
+        a{
+          color:#333;
+        }
+        p{
+          padding:0 8px;
+          &.active{
+            color:#e93030;
           }
         }
-        border-bottom: 1px solid #d8d8d8;
-        a{
-          color:#000;
-        }
+
       }
     }
   }
 }
 .list-right{
+  p{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .ng-enter,.ng-leave {
     -webkit-transition:all .5s cubic-bezier(.35,0,.25,1);
     transition:all .5s cubic-bezier(.35,0,.25,1);
@@ -1711,7 +1767,7 @@ md-tabs[md-align-tabs="bottom"]{
 .gxdownload{
   .md-subheader{
     font-size:12px;
-    border-bottom: 1px solid #d8d8d8;
+    border-bottom: 1px solid #dedede;
     .md-subheader-inner{
       padding:16px 10px;
     }
@@ -1721,9 +1777,9 @@ md-tabs[md-align-tabs="bottom"]{
   }
   md-list{
     padding:0 10px;
-    border-bottom: 1px solid #d8d8d8;
+    border-bottom: 1px solid #dedede;
     md-list-item{
-      border-bottom: 1px solid #d8d8d8;
+      border-bottom: 1px solid #dedede;
       margin-bottom: -1px;
       padding:8px 0;
       &.md-no-proxy{
@@ -2419,6 +2475,10 @@ md-bottom-sheet{
               border-radius: 3px;
               margin-right: 5px;
               vertical-align: middle;
+              &.dy{
+                border:1px solid #DCDCDC;
+                background:#00b0e8;
+              }
               &.pass{
                 border:1px solid #169e49;
                 background: #ddffea;
@@ -2451,7 +2511,7 @@ md-bottom-sheet{
     min-height: 32px;
     float: left;
     width:20%;
-    margin:10px 0 0;
+    margin:10px 0;
     &.md-no-proxy{
       padding: 0 5px;
     }
@@ -2665,7 +2725,7 @@ md-bottom-sheet{
     padding:5px 15px;
     display: inline-block;
     position: relative;
-    margin:10px;
+    margin:8px;
     i{
       display: inline-block;
       position: absolute;
