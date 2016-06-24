@@ -33,5 +33,6 @@
             stateChangeStartEvent();
             stateChangeSuccessEvent();
         })
+      window.plugins.jPushPlugin.init();
     }
 })();

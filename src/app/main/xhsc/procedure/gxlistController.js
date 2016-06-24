@@ -24,7 +24,7 @@
           }
         }
       })
-     console.log('vm',vm.procedureData)
+     console.log('vm',result)
     })
 
   }

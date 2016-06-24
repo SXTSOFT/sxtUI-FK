@@ -107,35 +107,6 @@
         }
 
       },
-      gx:{
-        down:function(item){
-          return localPack.pack({
-            _id:item.ProjectID,
-            name:item.ProjectName,
-            tasks:[
-              {
-                _id:'GetProcedureList',
-                name:'获取项目下所有工序',
-                url:'/Api/WPAcceptanceApi/GetWPAcceptanceInfo'
-              },
-              {
-                _id:'GetProjectTreeInfo',
-                name:'获取项目区域信息',
-                url:'/Api/ProjectInfoApi/GetProjectListByid?projectId='+item.ProjectID,
-                type:'data',
-                item:angular.copy(item)
-              },
-              {
-                _id:'GetRegionStatus',
-                name:'获取区域状态信息',
-                url:'/Api/InspectionApi/GetUserInspectionInfo?projectId='+item.ProjectID,
-                type:'data',
-                item:angular.copy(item)
-              }
-            ]
-          });
-        }
-      },
       destroyDb:function (dbKey,cb) {
         db(dbKey).destroy().then(function () {
           cb();
