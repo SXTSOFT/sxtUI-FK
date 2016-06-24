@@ -20,6 +20,76 @@
   });
 }
   apiProvider.register('xhsc',{
+    Project:{
+      getMap:function(){
+        return $http.db({
+          _id:'mapPoroject',
+          idField:'ProjectID',
+          dataType:1
+        }).get($http.url('/api/ProjectInfoApi/GetMapProjectList'))
+      },
+      getDrawingRelations:function (projectId) {
+        return $http.db({
+          _id:'DrawingRelation',
+          idField:'ID',
+          dataType:1
+
+        }).get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation',{projectId:projectId}));
+      },
+      getDrawingRelation:function (acceptanceItemID) {
+        return $http.db({
+          _id:'DrawingRelation',
+          idField:'ID',
+          dataType:1
+        }).get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation',{projectId:projectId}));
+      },
+      getDrawings:function (projectId) {
+        return $http.db({
+          _id:'Drawing',
+          idField:'DrawingID',
+          dataType:1,
+        }).get($http.url('/Api/WPAcceptanceApi/GetGxDrawingList',{projectId:projectId}));
+      },
+      getDrawing:function (drawingId) {
+        return $http.db({
+          _id:'Drawing',
+          idField:'DrawingID',
+          dataType:3,
+          offline:1
+        }).get($http.url('/Api/WPAcceptanceApi/GetGxDrawing',{drawingId:drawingId}));
+      },
+      queryAllBulidings:function (projectId) {
+        return $http.db({
+          _id:'Projects',
+          idField:'ProjectID',
+          dataType:1,
+          filter:function (item) {
+            return item.ProjectID==projectId;
+          }
+        }).get($http.url('/api/ProjectInfoApi/GetProjectListByid',{projectId:projectId}));
+      }
+    },
+    Procedure:{
+      queryProcedure:function(){
+        return $http.db({
+          _id: 'Procedure',
+          idField: 'SpecialtyID',
+          dataType: 1
+        }).get($http.url('/Api/WPAcceptanceApi/GetWPAcceptanceInfo'));
+      },
+      getRegionStatus:function(projectId){
+        return $http.db({
+          _id:'project_status',
+          idField:function (item) {
+            return item.AcceptanceItemID+item.AreaID;
+          },
+          dataType:1
+        }).get($http.url('/Api/InspectionApi/GetUserInspectionInfo',{projectId:projectId}));
+      },
+      postInspection:function(AcceptanceItemID,AreaID){
+        return $http.post($http.url('/api/InspectionApi/insert'), {AcceptanceItemID:AcceptanceItemID,AreaID:AreaID})
+      }
+    },
     Assessment:{
       queryRegions:function (arg) {
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentSectionExtractRegion',arg))
@@ -59,11 +129,7 @@
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentTotalReport',{AssessmentID:assessmentID}));
       },
       queryItemResults:function () {
-        return $http.db({
-          _id:'AssessmentProject',
-          idField:'ProjectID',
-          dataType:1
-        }).get($http.url('/Api/AssessmentApi/GetAllAssessmentProject'));
+        return $http.get($http.url('/Api/AssessmentApi/GetAllAssessmentProject'));
       },
       queryReport:function (year,quarter,projectID,assessmentStage) {
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentItemStatisticsResult',{year:year,projectID:projectID,quarter:quarter,assessmentStage:assessmentStage}));
@@ -77,21 +143,7 @@
       sumReportTotal:function(assessmentID){
         return $http.post($http.url('/Api/AssessmentApi/SumReportTotal'),{assessmentID:assessmentID});
       },
-      queryProcedure:function(){
-        return $http.get($http.url('/Api/WPAcceptanceApi/GetWPAcceptanceInfo'));
-      },
-      queryAllBulidings:function (projectId) {
-        return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByid',{projectId:projectId}));
-      },
-      postInspection:function(AcceptanceItemID,AreaID){
-        return $http.post($http.url('/api/InspectionApi/insert'), {AcceptanceItemID:AcceptanceItemID,AreaID:AreaID})
-      },
-      getRegionStatus:function(projectId){
-        return $http.get($http.url('/Api/InspectionApi/GetUserInspectionInfo',{projectId:projectId}));
-      },
-	    /**
-       * 实测实量项
-       */
+
       Measure:{
         /**
          * 获取本人所有实测项目(并非自定义的，而是系统基础项)
@@ -177,108 +229,6 @@
         query:function(areaID) {
           return $http.get($http.url('http://ggroupem.sxtsoft.com:9191/Api/ProjectInfoApi/GetRegionTreeInfo',
             {AreaID: areaID}));
-          //return $http.get($http.url('/Api/MeasureInfo/MeasureQuery', {areaID: areaID}));
-          //return r([{
-          //  RegionID:"yq",
-          //  RegionName:"天津三栋",
-          //  RegionType:"",
-          //  HouseTypeID:"",
-          //  HouseTypeName:"",
-          //  DrawingID:"",
-          //  DrawingName:"",
-          //  DrawingImageUrl:"",
-          //  Children:[
-          //    {
-          //      RegionID:"ld",
-          //      RegionName:"",
-          //      ParentID:"",
-          //      RegionType:"",
-          //      HouseTypeID:"",
-          //      HouseTypeName:"",
-          //      DrawingID:"",
-          //      DrawingName:"",
-          //      DrawingImageUrl:"",
-          //      Children:[
-          //        {
-          //          RegionID:"lc",
-          //          RegionName:"",
-          //          ParentID:"",
-          //          RegionType:"",
-          //          HouseTypeID:"",
-          //          HouseTypeName:"",
-          //          DrawingID:"",
-          //          DrawingName:"",
-          //          DrawingImageUrl:"",
-          //          Children:[
-          //            {
-          //              RegionID:"room",
-          //              RegionName:"",
-          //              ParentID:"",
-          //              RegionType:"",
-          //              HouseTypeID:"",
-          //              HouseTypeName:"",
-          //              DrawingID:"",
-          //              DrawingName:"",
-          //              DrawingImageUrl:""
-          //            }
-          //          ]
-          //        }
-          //      ]
-          //    },
-          //    {
-          //      RegionID:"ld",
-          //      RegionName:"",
-          //      ParentID:"",
-          //      RegionType:"",
-          //      HouseTypeID:"",
-          //      HouseTypeName:"",
-          //      DrawingID:"",
-          //      DrawingName:"",
-          //      DrawingImageUrl:"",
-          //      Children:[
-          //        {
-          //          RegionID:"lc",
-          //          RegionName:"",
-          //          ParentID:"",
-          //          RegionType:"",
-          //          HouseTypeID:"",
-          //          HouseTypeName:"",
-          //          DrawingID:"",
-          //          DrawingName:"",
-          //          DrawingImageUrl:"",
-          //          Children:[
-          //            {
-          //              RegionID:"room",
-          //              RegionName:"",
-          //              ParentID:"",
-          //              RegionType:"",
-          //              HouseTypeID:"",
-          //              HouseTypeName:"",
-          //              DrawingID:"",
-          //              DrawingName:"",
-          //              DrawingImageUrl:""
-          //            }
-          //          ]
-          //        }
-          //      ]
-          //    }
-          //  ]
-          //})
-          /*return query (array ({
-           AcceptanceItemID: 'string1',
-           MeasureItemName: '测量项{0}',
-           SpecialtyID: 'id1;id2',
-           SpecialtyName: '专业类型;专业类型',
-           /!**
-           * 1 、项目
-           * 2、 区域
-           * 4、 楼项
-           * 8、 楼层
-           * 16、 房间
-           * *!/
-           RegionType: 1 | 2 | 4 | 8 | 16
-           }
-           ))*/
         }
 
       },
@@ -286,9 +236,6 @@
        * 项目
        * */
       Project:{
-        getMap:function(){
-          return $http.get($http.url('/api/ProjectInfoApi/GetMapProjectList'))
-        },
         query:function(){
           return $http.get($http.url('/Api/ProjectInfoApi/GetProjectList'));
         },

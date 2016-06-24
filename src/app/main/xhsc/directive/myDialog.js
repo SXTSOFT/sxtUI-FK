@@ -59,7 +59,7 @@
         }
         $('.my-dialog-mask',element).fadeOut();
         if(scope.dialogSure == '报检'){
-          remote.Assessment.postInspection(scope.dialogData.acceptanceItemID,scope.dialogData.regionId).then(function(result){
+          remote.Procedure.postInspection(scope.dialogData.acceptanceItemID,scope.dialogData.regionId).then(function(result){
             //console.log('a')
             $timeout(function(){
               utils.alert('报检成功');

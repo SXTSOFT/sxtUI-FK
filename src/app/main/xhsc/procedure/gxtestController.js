@@ -18,31 +18,29 @@
       vm.RegionFullName =  $stateParams.name;
 
     vm.info = {
+      projectId:projectId,
+      acceptanceItemID:acceptanceItemID,
       regionId:$stateParams.regionId
     };
     $rootScope.title = $stateParams.acceptanceItemName;
-    remote.Assessment.queryProcedure().then(function(result){
+    remote.Procedure.queryProcedure().then(function(result){
       // console.log(result);
       vm.procedureData = [];
       result.data.forEach(function(it){
         it.SpecialtyChildren.forEach(function(t){
-          //t.WPAcceptanceList.forEach(function(_t){
-          //  return _t.AcceptanceItemID === acceptanceItemID;
-          //})
           var p = t.WPAcceptanceList.find(function(a){
             return a.AcceptanceItemID === acceptanceItemID;
           })
           if(p){
             vm.procedureData.push(p);
           }
-          //vm.procedureData.SpecialtyChildren = vm.procedureData;
           vm.procedureData.forEach(function(t){
             t.SpecialtyChildren = t.ProblemClassifyList;
             t.ProblemClassifyList.forEach(function(_t){
               _t.WPAcceptanceList = _t.ProblemLibraryList;
               _t.SpecialtyName = _t.ProblemClassifyName;
               _t.ProblemLibraryList.forEach(function(_tt){
-                _tt.AcceptanceItemName = _tt.ProblemSortName;
+                _tt.AcceptanceItemName = _tt.ProblemDescription;
               })
             })
           })
