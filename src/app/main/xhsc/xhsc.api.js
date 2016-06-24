@@ -86,6 +86,9 @@
       postInspection:function(AcceptanceItemID,AreaID){
         return $http.post($http.url('/api/InspectionApi/insert'), {AcceptanceItemID:AcceptanceItemID,AreaID:AreaID})
       },
+      getRegionStatus:function(projectId){
+        return $http.get($http.url('/Api/InspectionApi/GetUserInspectionInfo',{projectId:projectId}));
+      },
 	    /**
        * 实测实量项
        */
