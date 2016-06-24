@@ -18,7 +18,8 @@
         level:'=',
         projectId:'=',
         areaId:'=',
-        current:'='
+        current:'=',
+        role:'='
       },
       templateUrl:'app/main/xhsc/directive/slideMenu.html',
       link:link
@@ -57,7 +58,15 @@
       }
       scope.goToLink = function (item) {
         if(!scope.showCheck){
-          $state.go('app.xhsc.gx.gxhousechoose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId})
+          switch (scope.role){
+            case "zb":
+              $state.go('app.xhsc.gx.gxhousechoose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId})
+                  break;
+            case "jl":
+              $state.go('app.xhsc.gx.JlGxhousechoose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId})
+                  break;
+          }
+
         }else{
           //item.checked = !item.checked;
         }

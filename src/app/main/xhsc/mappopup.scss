@@ -791,9 +791,16 @@ md-tabs[md-align-tabs="bottom"]{
       >span{
         display: block;width:100%;position: absolute;top:0;line-height: 32px;
       }
+      &.wy{
+        border:1px solid #CDDC39;
+        color:	#6e4f1c;
+        >div{
+          background:#CDDC39;
+        }
+      }
       &.dy{
         border:1px solid #00b0e8;
-        color:	#95D1E8;
+        color:#0b93d5;
         >div{
           background:#00b0e8;
         }
@@ -2475,6 +2482,10 @@ md-bottom-sheet{
               border-radius: 3px;
               margin-right: 5px;
               vertical-align: middle;
+              &.wy{
+                border:1px solid #CDDC39;
+                background:#CDDC39;
+              }
               &.dy{
                 border:1px solid #DCDCDC;
                 background:#00b0e8;

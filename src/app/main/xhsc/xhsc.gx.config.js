@@ -41,9 +41,18 @@
         rightArrow: false,
         leftArrow: false,
         title: '工序选择',
-        url: '/gxlist/{projectId}',
+        url: '/gxlist/{role}/{projectId}',
         templateUrl: 'app/main/xhsc/procedure/gxlist.html',
         controller: 'gxlistController as vm'
+      })
+      .state('app.xhsc.gx.JlGxhousechoose', {
+        noBack: true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        url: '/JlGxhousechoose/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
+        templateUrl: 'app/main/xhsc/procedure/JlGxhousechoose.html',
+        controller: 'JlGxhousechooseController as vm'
       })
       .state('app.xhsc.gx.gxhousechoose', {
         noBack: true,

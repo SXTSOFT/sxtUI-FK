@@ -1,4 +1,7 @@
 /**
+ * Created by lss on 2016/6/24.
+ */
+/**
  * Created by jiuyuong on 2016/3/30.
  */
 (function(){
@@ -6,10 +9,10 @@
 
   angular
     .module('app.xhsc')
-    .controller('gxhousechooseController',gxhousechooseController);
+    .controller('JlGxhousechooseController',JlGxhousechooseController);
 
   /** @ngInject */
-  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q){
+  function JlGxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q){
     var vm=this,
       id = $stateParams.assessmentID,
       AssessmentTypeID = $stateParams.AssessmentTypeID,
@@ -48,7 +51,7 @@
         status=[status];
       }
       var  status=status.find(function(o){
-          return o.AcceptanceItemID==acceptanceItemID&& o.AreaId==region.RegionID;
+        return o.AcceptanceItemID==acceptanceItemID&& o.AreaId==region.RegionID;
       });
 
       if (status){
@@ -62,29 +65,29 @@
     }
 
     function ConvertClass(status){
-        var style;
-        switch (status){
-          case 0:
-            style="wy";
-                break;
-          case 1:
-            style="dy";
-            break;
-          case 2:
-            style="pass";
-            break;
-          case 4:
-            style="ng";
-            break;
-          case 8:
-            style="yet";
-            break;
-          case 16:
-            style="wait";
-            break;
-          default:
-            break;
-        }
+      var style;
+      switch (status){
+        case 0:
+          style="wy";
+          break;
+        case 1:
+          style="dy";
+          break;
+        case 2:
+          style="pass";
+          break;
+        case 4:
+          style="ng";
+          break;
+        case 8:
+          style="yet";
+          break;
+        case 16:
+          style="wait";
+          break;
+        default:
+          break;
+      }
       return style;
     }
 
@@ -116,31 +119,31 @@
     }
 
     vm.regionfilterByStatus=function(region){
-       if (vm.filterNum==-1){
-         return true;
-       }
-       if (region.Children){
-         for (var  i=0;i<region.Children.length;i++){
-           if (vm.regionfilterByStatus(region.Children[i])){
-             return true;
-           }
-         }
-         return false;
-       }else {
-         return region.status== vm.filterNum;
-       }
+      if (vm.filterNum==-1){
+        return true;
+      }
+      if (region.Children){
+        for (var  i=0;i<region.Children.length;i++){
+          if (vm.regionfilterByStatus(region.Children[i])){
+            return true;
+          }
+        }
+        return false;
+      }else {
+        return region.status== vm.filterNum;
+      }
     }
 
     vm.statusRight=function(status){
-        switch (status){
-          //case 1:
-          case  4:
-            return false;
-            break;
-          default:
-            return true;
-            break;
-        }
+      switch (status){
+        //case 1:
+        case  4:
+          return false;
+          break;
+        default:
+          return true;
+          break;
+      }
     }
   }
 })();
