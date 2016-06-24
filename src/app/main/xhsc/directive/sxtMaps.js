@@ -39,7 +39,7 @@
           //      pinyin:'tjxhsd'
           //    })
           //
-        remote.Assessment.Project.getMap().then(function(result){
+        remote.Project.getMap().then(function(result){
           console.log('map',result);
           scope.markers=[];
           result.data.filter(function(item) {

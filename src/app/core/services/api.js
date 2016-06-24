@@ -287,7 +287,7 @@
 
 
     function getNetwork() {
-     return 1;
+     return 0;
     }
 
   }
