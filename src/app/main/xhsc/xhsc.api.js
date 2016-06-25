@@ -265,7 +265,240 @@
       sumReportTotal:function(assessmentID){
         return $http.post($http.url('/Api/AssessmentApi/SumReportTotal'),{assessmentID:assessmentID});
       },
+      queryProcessBuildings:function(regionId){
+        return $http.get($http.url('/api/ImageSignApi/GetBuildingList'),{stageId:regionId})
+      },
+      EngineeringProcess:{
+        getWorkingMap:function(projectId){
+          return $q(function(resolve){
+              resolve({
+                data:{
+                  Application: null,
+                  AreaImage: "a13d7f27-f320-40ed-aa43-242075e6c4cf",
+                  AreaRemark: {"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[0.5732421875,0.4951171875]},"options":{"icon":{"options":{"className":"","shadowUrl":null,"iconAnchor":[15,15],"iconSize":[30,30],"iconUrl":"/dp/libs/leaflet/images/photo.png","color":"#ff0000"},"_initHooksCalled":true},"title":"","alt":"","clickable":true,"draggable":false,"keyboard":true,"zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250,"gid":"e5bf57b4-7d71-4161-9b4f-c460766e7398"}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[0.21875,0.49609375]},"options":{"icon":{"options":{"className":"","shadowUrl":null,"iconAnchor":[15,15],"iconSize":[30,30],"iconUrl":"/dp/libs/leaflet/images/photo.png","color":"#ff0000"},"_initHooksCalled":true},"title":"","alt":"","clickable":true,"draggable":false,"keyboard":true,"zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250,"gid":"0f8696fa-f1e7-4f08-be50-5228eaddf32f"}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[0.3975830078125,0.3734130859375]},"options":{"icon":{"options":{"className":"leaflet-div-label","html":"万科时代广场一期","color":"#ff0000"},"_initHooksCalled":true,"_div":{"_leaflet_pos":{"x":568,"y":193}}},"title":"","alt":"","clickable":true,"draggable":true,"keyboard":true,"zIndexOffset":1000,"opacity":1,"riseOnHover":false,"riseOffset":250,"saved":false}},{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[0.15966796875,0.338623046875],[0.2236328125,0.338134765625],[0.223388671875,0.347412109375],[0.22314453125,0.353759765625],[0.2236328125,0.357666015625],[0.22607421875,0.364501953125],[0.231201171875,0.3740234375],[0.2392578125,0.380126953125],[0.24462890625,0.382568359375],[0.249755859375,0.384033203125],[0.255615234375,0.384521484375],[0.264404296875,0.3837890625],[0.2705078125,0.381591796875],[0.27978515625,0.375],[0.28466796875,0.3662109375],[0.2880859375,0.35693359375],[0.2890625,0.35107421875],[0.28759765625,0.3447265625],[0.2880859375,0.3388671875],[0.35107421875,0.3388671875],[0.35205078125,0.370361328125],[0.365966796875,0.37060546875],[0.375244140625,0.361328125],[0.41552734375,0.36083984375],[0.439697265625,0.3505859375],[0.56591796875,0.21533203125],[0.56591796875,0.2001953125],[0.61474609375,0.199951171875],[0.635498046875,0.218994140625],[0.330078125,0.541015625],[0.2822265625,0.546875],[0.16015625,0.5234375],[0.15966796875,0.338623046875]]]},"options":{"stroke":true,"color":"#ff0000","dashArray":null,"lineCap":null,"lineJoin":null,"weight":4,"opacity":0.5,"fill":true,"fillColor":null,"fillOpacity":0.2,"clickable":true,"smoothFactor":1,"noClip":false,"itemId":"5514f7a571fe65ac066cb091","itemName":"万科时代广场一期","areaLabel":{"text":"万科时代广场一期","id":"5514f7a571fe65ac066cb091","lat":0.3734130859375,"lng":0.3975830078125}}}]},
+                  BuildArea: 0,
+                  CreatedId: "e2f0e8396443beab00eaa1f7cb6c2cf7ad8a346a",
+                  CreatedTime: "2016-03-02",
+                  GreenArea: 0,
+                  LandUseType: 0,
+                  Latitude: "22.7172406798959",
+                  Longitude: "114.250833392143",
+                  ModefiedId: "d51474c887fe38b89cf6f4eff740309789f93034",
+                  ModefiedTime: "2016-06-14",
+                  ProjectId: "5513e1c7493fdce42f42d9b1",
+                  ProjectNo: "深圳万科时代广场",
+                  SellLine: "66.7%",
+                  Status: 4,
+                  TotalArea: 0
+                }
+              })
+            })
 
+        },
+        getWorkingMapDetail:function(imageId){
+          return $q(function(resolve){
+            resolve({
+              data:{
+                Files:[
+                  {
+                    CreateDate: "2016-05-03",
+                    CreatedId: "13f93de383e643f7b586493c2b9045bb37888a34",
+                    FileName: "2016三馆、龙城合并运营图20160503.jpg",
+                    FileSize: 6918748,
+                    FileType: null,
+                    GroupId: "a13d7f27-f320-40ed-aa43-242075e6c4cf",
+                    Id: "2b220029-1a90-4727-b1b7-98ac20c073d7",
+                    IsOK: null,
+                    PartionID: 0,
+                    Project: null,
+                    Remark: null,
+                    Status: null,
+                    Url: "~/upload/2016/05/s_2b220029-1a90-4727-b1b7-98ac20c073d7.jpg"
+                  }
+                ],
+                Group: "a13d7f27-f320-40ed-aa43-242075e6c4cf"
+              }
+            })
+          })
+        },
+        getWorkingProcess:function(){
+          return $q(function(resolve){
+            resolve({
+              data:{
+                Rows:[{
+                  Application: null,
+                  AreaImage: null,
+                  AreaRemark: null,
+                  BuildArea: 0,
+                  CreatedId: null,
+                  CreatedTime: "0001-01-01",
+                  GreenArea: 0,
+                  LandUseType: 0,
+                  Latitude: null,
+                  Longitude: null,
+                  ModefiedId: null,
+                  ModefiedTime: "0001-01-01",
+                  ProcedureId: "2dfbde19-52be-43b9-b5d1-d03e2f828c9d",
+                  ProcedureName: "预埋电气安装首次验收",
+                  ProjectId: null,
+                  ProjectNo: null,
+                  SellLine: null,
+                  Status: 0,
+                  TotalArea: 0,
+                  gx1: 34
+                },{
+                  Application: null,
+                  AreaImage: null,
+                  AreaRemark: null,
+                  BuildArea: 0,
+                  CreatedId: null,
+                  CreatedTime: "0001-01-01",
+                  GreenArea: 0,
+                  LandUseType: 0,
+                  Latitude: null,
+                  Longitude: null,
+                  ModefiedId: null,
+                  ModefiedTime: "0001-01-01",
+                  ProcedureId: "51bb20e2-92a2-4c9f-85a9-c4545e710cf0",
+                  ProcedureName: "铝合金门窗首次验收",
+                  ProjectId: null,
+                  ProjectNo: null,
+                  SellLine: null,
+                  Status: 0,
+                  TotalArea: 0,
+                  gx1: 23
+                },{
+                  Application: null,
+                  AreaImage: null,
+                  AreaRemark: null,
+                  BuildArea: 0,
+                  CreatedId: null,
+                  CreatedTime: "0001-01-01",
+                  GreenArea: 0,
+                  LandUseType: 0,
+                  Latitude: null,
+                  Longitude: null,
+                  ModefiedId: null,
+                  ModefiedTime: "0001-01-01",
+                  ProcedureId: "65b20868-7e00-44c3-b8a2-09e4b6602ef2",
+                  ProcedureName: "砼结构外观首次验收",
+                  ProjectId: null,
+                  ProjectNo: null,
+                  SellLine: null,
+                  Status: 0,
+                  TotalArea: 0,
+                  gx1: 32
+                },{
+                  Application: null,
+                  AreaImage: null,
+                  AreaRemark: null,
+                  BuildArea: 0,
+                  CreatedId: null,
+                  CreatedTime: "0001-01-01",
+                  GreenArea: 0,
+                  LandUseType: 0,
+                  Latitude: null,
+                  Longitude: null,
+                  ModefiedId: null,
+                  ModefiedTime: "0001-01-01",
+                  ProcedureId: "7ceb4043-d1c6-4454-8546-a2bf6630d887",
+                  ProcedureName: "预埋水暖（含燃气、新风、空调）安装首次验收",
+                  ProjectId: null,
+                  ProjectNo: null,
+                  SellLine: null,
+                  Status: 0,
+                  TotalArea: 0,
+                  gx1: 33
+                },{
+                  Application: null,
+                  AreaImage: null,
+                  AreaRemark: null,
+                  BuildArea: 0,
+                  CreatedId: null,
+                  CreatedTime: "0001-01-01",
+                  GreenArea: 0,
+                  LandUseType: 0,
+                  Latitude: null,
+                  Longitude: null,
+                  ModefiedId: null,
+                  ModefiedTime: "0001-01-01",
+                  ProcedureId: "8bfc6626-c5ed-4267-ab8f-cb2294885c25",
+                  ProcedureName: "预制内墙板首次验收",
+                  ProjectId: null,
+                  ProjectNo: null,
+                  SellLine: null,
+                  Status: 0,
+                  TotalArea: 0,
+                  gx1: 12
+                },{
+                  Application: null,
+                  AreaImage: null,
+                  AreaRemark: null,
+                  BuildArea: 0,
+                  CreatedId: null,
+                  CreatedTime: "0001-01-01",
+                  GreenArea: 0,
+                  LandUseType: 0,
+                  Latitude: null,
+                  Longitude: null,
+                  ModefiedId: null,
+                  ModefiedTime: "0001-01-01",
+                  ProcedureId: "953cea5b-b6fb-4eb7-b019-da391f090efd",
+                  ProcedureName: "主体钢筋（墙柱）",
+                  ProjectId: null,
+                  ProjectNo: null,
+                  SellLine: null,
+                  Status: 0,
+                  TotalArea: 0,
+                  gx1: 34
+                },{
+                  Application: null,
+                  AreaImage: null,
+                  AreaRemark: null,
+                  BuildArea: 0,
+                  CreatedId: null,
+                  CreatedTime: "0001-01-01",
+                  GreenArea: 0,
+                  LandUseType: 0,
+                  Latitude: null,
+                  Longitude: null,
+                  ModefiedId: null,
+                  ModefiedTime: "0001-01-01",
+                  ProcedureId: "a17156db-da3c-4878-b3de-2a03169f094e",
+                  ProcedureName: "主体钢筋（梁板）",
+                  ProjectId: null,
+                  ProjectNo: null,
+                  SellLine: null,
+                  Status: 0,
+                  TotalArea: 0,
+                  gx1: 35
+                },{
+                  Application: null,
+                  AreaImage: null,
+                  AreaRemark: null,
+                  BuildArea: 0,
+                  CreatedId: null,
+                  CreatedTime: "0001-01-01",
+                  GreenArea: 0,
+                  LandUseType: 0,
+                  Latitude: null,
+                  Longitude: null,
+                  ModefiedId: null,
+                  ModefiedTime: "0001-01-01",
+                  ProcedureId: "abd6a825-91aa-4d34-9426-68d96579c0cf",
+                  ProcedureName: "给水管道及配件安装",
+                  ProjectId: null,
+                  ProjectNo: null,
+                  SellLine: null,
+                  Status: 0,
+                  TotalArea: 0,
+                  gx1: 27
+                }]
+              }
+            })
+          })
+        }
+      },
       Measure:{
         /**
          * 获取本人所有实测项目(并非自定义的，而是系统基础项)

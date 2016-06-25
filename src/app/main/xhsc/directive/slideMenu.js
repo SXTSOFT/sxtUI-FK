@@ -42,7 +42,8 @@
       }
       scope.$watch('slideData',function(){
         if(!scope.slideData) return;
-        console.log('data',scope.areaId)
+        console.log('data',scope.slideData)
+        if(!scope.slideData.length) return;
         if(scope.slideData[0].SpecialtyChildren.length)
         scope.selectProcedure(scope.slideData[0].SpecialtyChildren[0]);
       })

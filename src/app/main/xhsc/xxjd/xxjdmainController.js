@@ -9,7 +9,12 @@
     .controller('xxjdmainController',xxjdmainController);
 
   /**@ngInject*/
-  function xxjdmainController(){
+  function xxjdmainController($rootScope,$stateParams){
     var vm = this;
+    $rootScope.title=$stateParams.projectName;
+    vm.project={
+      projectId:$stateParams.projectId,
+      projectName:$stateParams.projectName
+    }
   }
 })();

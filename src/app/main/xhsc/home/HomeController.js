@@ -37,26 +37,29 @@
 
     }
 
+    //function markerClick($current){
+    //  console.log('current',JSON.stringify([{project_id:$current.projectId,name:$current.title}]))
+    //
+    ////  appCookie.put('projects',JSON.stringify([{project_id:$current.projectId,name:$current.title}]))
+    //  //$state.go('app.xhsc.choose',{pid:$current.projectId, pname:'天津星河时代'});
+    //  $mdBottomSheet.show({
+    //   templateUrl: 'app/main/xhsc/home/homeBottom.html',
+    //    controller: ['$scope',function($scope){
+    //      $scope.name = $current.title;
+    //      $scope.projectId = $current.projectId;
+    //      $scope.hide = function(){
+    //        $mdBottomSheet.hide();
+    //      }
+    //    }],
+    //    clickOutsideToClose:true,
+    //    disableBackdrop:true
+    //  }).then(function(clickedItem) {
+    //    //$mdBottomSheet.hide(clickedItem);
+    //  });
+    //
+    //}
     function markerClick($current){
-      console.log('current',JSON.stringify([{project_id:$current.projectId,name:$current.title}]))
-
-    //  appCookie.put('projects',JSON.stringify([{project_id:$current.projectId,name:$current.title}]))
-      //$state.go('app.xhsc.choose',{pid:$current.projectId, pname:'天津星河时代'});
-      $mdBottomSheet.show({
-       templateUrl: 'app/main/xhsc/home/homeBottom.html',
-        controller: ['$scope',function($scope){
-          $scope.name = $current.title;
-          $scope.projectId = $current.projectId;
-          $scope.hide = function(){
-            $mdBottomSheet.hide();
-          }
-        }],
-        clickOutsideToClose:true,
-        disableBackdrop:true
-      }).then(function(clickedItem) {
-        //$mdBottomSheet.hide(clickedItem);
-      });
-
+      $state.go('app.xhsc.xxjd.xxjdmain',{projectId:$current.projectId, projectName:$current.title});
     }
     //vm.markerClick = function(){
     // // vm.showBot = true;

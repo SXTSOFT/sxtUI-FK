@@ -39,7 +39,13 @@
       })
       scope.$watch('dialogData',function(){
         if(!scope.dialogData) return;
-        scope.dialogMsg = scope.dialogData.name + ',' + scope.dialogData.acceptanceItemName + '工序已完成，请监理验收';
+        console.log('scopedata',scope.dialogData)
+        var msg='';
+        scope.dialogData.Rows.forEach(function(t){
+          msg += t.projectTree+',';
+        })
+        scope.dialogMsg = msg + scope.dialogData.acceptanceItemName+ '工序已完成，请监理验收';
+       // scope.dialogMsg = scope.dialogData.name + ',' + scope.dialogData.acceptanceItemName + '工序已完成，请监理验收';
       })
       scope.cancel= function(){
         //$('.my-dialog-mask').css('display','none');

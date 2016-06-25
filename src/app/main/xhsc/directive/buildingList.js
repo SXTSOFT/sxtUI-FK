@@ -13,7 +13,8 @@
     return {
       scope:{
         data:'=sxtfloor',
-        floorNum:'=floorNum'
+        floorNum:'=floorNum',
+        buildsLen:'='
       },
       link:link
     }
@@ -21,10 +22,19 @@
     function link(scope,element,attr,ctrl){
       scope.$watch('data',function(){
         if(!scope.data) return;
-        //console.log('floorNum',scope.floorNum)
-        var sellLine = scope.data.sellLine, gx1 = scope.data.gx1, gx2 = scope.data.gx2;
+        //console.log('floorNum',scope.data)
+        var sellFloor = scope.data.sellLine, gx1 = scope.data.gx1, gx2 = scope.data.gx2,sellLine;
         if (gx1 > scope.data.floors) gx1 = scope.data.floors;
-        if (gx2 > scope.data.floors) gx2 = scope.data.floors;
+        if (gx2 && gx2 > scope.data.floors){
+          gx2 = scope.data.floors
+        }else{
+          gx2 = 0;
+        }
+        if(sellFloor < 1 ){
+          sellLine = parseInt(scope.data.floors * sellFloor);
+        }else{
+          sellLine = sellFloor;
+        }
         var str=[];
         var iFloorHeight= 0,itemp,iWinHeight;
         var zoom=0;
@@ -67,7 +77,7 @@
         iWinHeight = $(window).height()-130;
         var newobj={},iflayerWidth=0;
         //console.log(api)
-        newobj = api.xhsc.Assessment.sxtHouseService.getZ(iWinWidth,iWinHeight,scope.data.length,500,itemp);
+        newobj = api.xhsc.Assessment.sxtHouseService.getZ(iWinWidth,iWinHeight,scope.buildsLen,500,itemp);
         //zoom = newobj.z;
         zoom = iWinHeight/newobj.y/itemp;
         iflayerWidth = (1/newobj.x)*iWinWidth;
@@ -76,6 +86,7 @@
         //console.log('heights',itemp,iFloorHeight,iWinHeight,newobj.z,zoom)
         $('.floor-layer').css({'height':iFloorHeight+'px','width':iflayerWidth+'px'});
         var iFh=(iFloorHeight-50)/itemp;
+        //console.log('a',scope.buildsLen)
         $('.whole',element).css({'zoom':iFh});
         scope.$on('$destroy',function(){
           o.remove();

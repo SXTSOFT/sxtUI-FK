@@ -12,7 +12,7 @@
   function gxrychooseController($scope,$stateParams,remote){
     var vm = this;
     console.log('a',$stateParams)
-    remote.Assessment.queryAllBulidings($stateParams.projectId).then(function (result) {
+    remote.Project.queryAllBulidings($stateParams.projectId).then(function (result) {
       result.data.Sections.forEach(function(t){
 
       })

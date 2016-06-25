@@ -5,7 +5,7 @@
   'use strict';
 
   angular
-    .module('app.xhsc', ['app.core','ngCordova'])
+    .module('app.xhsc', ['app.core','angular-echarts','ngCordova'])
     .config(config);
 
   /** @ngInject */

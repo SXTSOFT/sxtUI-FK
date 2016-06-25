@@ -1,0 +1,11 @@
+<div layout="column" flex>
+  <bar-chart config="vm.data.config" data="vm.data.data"></bar-chart>
+  <!--<div flex>-->
+    <!--<bar-chart style="height:220px;" config="vm.data.config" data="vm.data.data"></bar-chart>-->
+  <!--</div>-->
+  <div flex style="position: relative;">
+    <div layout="row" style="position: absolute;bottom:0;left:50%;transform: translateX(-50%)" flex>
+      <building-detail build-data="vm.build" build-len="vm.buildLen" bdetail-data="vm.data.data"></building-detail>
+    </div>
+  </div>
+</div>
