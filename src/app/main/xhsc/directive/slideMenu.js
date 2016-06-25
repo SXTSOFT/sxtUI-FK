@@ -25,6 +25,9 @@
     }
 
     function link(scope,element,attr,ctrl){
+      scope.info = {
+
+      };
       scope.selectProcedure = function(item){
         scope.gxlevels = null;
         scope.slideData.forEach(function(t){
@@ -34,6 +37,7 @@
         })
         item.checked = true;
         scope.gxlevels = item.WPAcceptanceList;
+        console.log('scope.gxlevels',scope.gxlevels)
       }
       scope.$watch('slideData',function(){
         if(!scope.slideData) return;
@@ -53,8 +57,13 @@
           });
           scope.current = item;
         }
-
       }
+      scope.$watch('info.current',function () {
+        scope.current = scope.info.current;
+      });
+      scope.$watch('current',function () {
+        scope.info.current = scope.current;
+      });
       scope.goToLink = function (item) {
         if(!scope.showCheck){
           $state.go('app.xhsc.gx.gxhousechoose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId})

@@ -12,82 +12,74 @@
   function config(apiProvider){
     var $http = apiProvider.$http,
       $q = apiProvider.$q;
-  var r = function(data){
-  return $q(function(resolve){
-    resolve({
-      data:data
-    })
-  });
-}
+  var r = function(data) {
+    return $q(function (resolve) {
+      resolve({
+        data: data
+      })
+    });
+  }
   apiProvider.register('xhsc',{
-    Project:{
-      getMap:function(){
-        return $http.db({
-          _id:'mapPoroject',
-          idField:'ProjectID',
-          dataType:1
-        }).get($http.url('/api/ProjectInfoApi/GetMapProjectList'))
-      },
-      getDrawingRelations:function (projectId) {
-        return $http.db({
-          _id:'DrawingRelation',
-          idField:'ID',
-          dataType:1
-
-        }).get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation',{projectId:projectId}));
-      },
-      getDrawingRelation:function (acceptanceItemID) {
-        return $http.db({
-          _id:'DrawingRelation',
-          idField:'ID',
-          dataType:1
-        }).get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation',{projectId:projectId}));
-      },
-      getDrawings:function (projectId) {
-        return $http.db({
-          _id:'Drawing',
-          idField:'DrawingID',
-          dataType:1,
-        }).get($http.url('/Api/WPAcceptanceApi/GetGxDrawingList',{projectId:projectId}));
-      },
-      getDrawing:function (drawingId) {
-        return $http.db({
-          _id:'Drawing',
-          idField:'DrawingID',
-          dataType:3,
-          offline:1
-        }).get($http.url('/Api/WPAcceptanceApi/GetGxDrawing',{drawingId:drawingId}));
-      },
-      queryAllBulidings:function (projectId) {
-        return $http.db({
-          _id:'Projects',
-          idField:'ProjectID',
-          dataType:1,
-          filter:function (item) {
-            return item.ProjectID==projectId;
-          }
-        }).get($http.url('/api/ProjectInfoApi/GetProjectListByid',{projectId:projectId}));
-      }
+    Project: {
+      getMap: $http.db({
+        _id: 'mapPoroject',
+        idField: 'ProjectID',
+        dataType: 1
+      }).bind(function () {
+        return $http.get($http.url('/api/ProjectInfoApi/GetMapProjectList'))
+      }),
+      getDrawingRelations: $http.db({
+        _id: 'DrawingRelation',
+        idField: 'ID',
+        dataType: 1
+      }).bind(function (projectId) {
+        return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation', {projectId: projectId}));
+      }),
+      getDrawings: $http.db({
+        _id: 'Drawing',
+        idField: 'DrawingID',
+        dataType: 1,
+      }).bind(function (projectId) {
+        return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingList', {projectId: projectId}));
+      }),
+      getDrawing: $http.db({
+        _id: 'Drawing',
+        idField: 'DrawingID',
+        dataType: 3,
+        offline: 1
+      }).bind(function (drawingId) {
+        return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawing', {drawingId: drawingId}));
+      }),
+      queryAllBulidings: $http.db({
+        _id: 'Projects',
+        idField: 'ProjectID',
+        dataType: 1,
+        filter: function (item,projectId) {
+          return item.ProjectID == projectId;
+        }
+      }).bind(function (projectId) {
+        return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByid', {projectId: projectId}));
+      })
     },
     Procedure:{
-      queryProcedure:function(){
-        return $http.db({
+      queryProcedure:$http.db({
           _id: 'Procedure',
           idField: 'SpecialtyID',
           dataType: 1
-        }).get($http.url('/Api/WPAcceptanceApi/GetWPAcceptanceInfo'));
-      },
-      getRegionStatus:function(projectId){
-        return $http.db({
+        }).bind(function(){
+        return $http.get($http.url('/Api/WPAcceptanceApi/GetWPAcceptanceInfo'));
+      }),
+      getRegionStatus:$http.db({
           _id:'project_status',
           idField:function (item) {
             return item.AcceptanceItemID+item.AreaID;
           },
           dataType:1
-        }).get($http.url('/Api/InspectionApi/GetUserInspectionInfo',{projectId:projectId}));
-      },
+        }).bind(function(projectId) {
+        return $http.get($http.url('/Api/InspectionApi/GetUserInspectionInfo', {projectId: projectId}));
+      }),
       postInspection:function(AcceptanceItemID,AreaID){
-        return $http.post($http.url('/api/InspectionApi/insert'), {AcceptanceItemID:AcceptanceItemID,AreaID:AreaID})
+        return $http.post($http.url('/Api/InspectionApi/insert'), {AcceptanceItemID:AcceptanceItemID,AreaID:AreaID})
       }
     },
     Assessment:{
@@ -97,13 +89,13 @@
       GetMeasureIndexMeasureInfo:function (recordId,itemId) {
         return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfo',{measureRecordID:recordId,acceptanceIndexID:itemId}));
       },
-      query:function () {
-        return $http.db({
+      query:$http.db({
           _id:'projects',
           idField:'AssessmentID',
           dataType:1
-        }).get($http.url('/Api/AssessmentApi/GetAssessmentProject'))
-      },
+        }).bind(function () {
+        return $http.get($http.url('/Api/AssessmentApi/GetAssessmentProject'));
+      }),
       queryById:function (assessmentID) {
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentProjectSingle',{assessmentID:assessmentID}))
       },

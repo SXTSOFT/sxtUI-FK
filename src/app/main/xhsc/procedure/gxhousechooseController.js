@@ -27,7 +27,7 @@
       var status=res[1]&&res[1].data?res[1].data:[];
       result.data[0].RegionRelations.forEach(function(d){
         d.projectTree =  d.RegionName;
-        d.projectTitle = result.data.ProjectName + d.RegionName;
+        d.projectTitle = result.data[0].ProjectName + d.RegionName;
         d.Children && d.Children.forEach(function(c){
           c.projectTree = d.projectTree + c.RegionName;
           c.Children && c.Children.forEach(function(r){
