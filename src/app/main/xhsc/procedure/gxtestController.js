@@ -18,10 +18,16 @@
       vm.RegionFullName =  $stateParams.name;
 
     vm.info = {
+      current:null,
       projectId:projectId,
       acceptanceItemID:acceptanceItemID,
       regionId:$stateParams.regionId
     };
+    vm.cancelCurrent = function ($event) {
+      //$event.stopPropagation();
+      //$event.preventDefault();
+      vm.info.current = null;
+    }
     $rootScope.title = $stateParams.acceptanceItemName;
     remote.Procedure.queryProcedure().then(function(result){
       // console.log(result);
@@ -62,8 +68,8 @@
     }
     vm.nextRegion = function(prev){
       //vm.info.regionId 当前
-      remote.Assessment.queryAllBulidings(projectId).then(function(result){
-          var  rr=xhUtils.wrapRegion(result.data.RegionRelations[0]);
+      remote.Project.queryAllBulidings(projectId).then(function(result){
+          var  rr=xhUtils.wrapRegion(result.data[0].RegionRelations[0]);
           //console.log('data',result.data)
           var region = xhUtils.findRegion([rr],vm.info.regionId);
           if (region){

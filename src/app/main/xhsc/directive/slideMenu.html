@@ -14,18 +14,20 @@
   <div flex="60" layout="column" style="background: #fff;position:relative;">
     <md-content class="list-right" flex>
       <div class="floors" layout="column">
-        <md-list>
+        <md-list ng-if="!showCheck">
           <md-list-item layout="row" ng-repeat="gxc in gxlevels" ng-click="goToLink(gxc)">
-            <p ng-class="{'active':gxc.checked}"><md-checkbox ng-if="showCheck" ng-model="gxc.checked"  ng-click="changeOrclick(gxc)"></md-checkbox>{{gxc.AcceptanceItemName}}</p>
-            <md-button ng-show="gxc.hasProblem" class="md-icon-button md-accent md-secondary md-mini" aria-label="Favorite">
-              <md-icon md-font-icon="icon-eye" class="icon s16"></md-icon>
-            </md-button>
+            <p >{{gxc.AcceptanceItemName}}</p>
           </md-list-item>
-          <!--<md-list-item ng-if="showCheck">-->
-            <!--<p>其它</p>-->
-            <!--<md-switch class="md-secondary" ng-model="gxc.checked" ng-if="showCheck"></md-switch>-->
-          <!--</md-list-item>-->
         </md-list>
+        <md-radio-group ng-if="showCheck" ng-model="info.current">
+          <div style="height:49px;overflow: hidden;line-height: 49px;padding: 0 5px; border-bottom: 1px solid rgb(222, 222, 222);" ng-repeat="gxc in gxlevels">
+          <md-radio-button ng-value="gxc"
+                           aria-label="{{gxc.AcceptanceItemName}}">
+            {{gxc.AcceptanceItemName}}
+          </md-radio-button>
+
+          </div>
+        </md-radio-group>
       </div>
     </md-content>
   </div>

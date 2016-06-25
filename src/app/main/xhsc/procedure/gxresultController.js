@@ -60,16 +60,14 @@
       }]
     }]
     //console.log('s',$stateParams)
-    //remote.Project.queryAllBulidings($stateParams.projectId).then(function(result){
-    //  vm.allRelations = [];
-    //  var f = result.data.Sections.find(function(t){
-    //    return t.AreaID ===  $stateParams.areaId;
-    //  })
-    //  if(f){
-    //    vm.allRelations.push(f);
-    //  }
-    //})
-
-    //console.log($scope)
+    remote.Project.queryAllBulidings($stateParams.projectId).then(function(result){
+      vm.allRelations = [];
+      var f = result.data[0].Sections.find(function(t){
+        return t.AreaID ===  $stateParams.areaId;
+      })
+      if(f){
+        vm.allRelations.push(f);
+      }
+    })
   }
 })();

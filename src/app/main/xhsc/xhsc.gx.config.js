@@ -41,7 +41,7 @@
         rightArrow: false,
         leftArrow: false,
         title: '工序选择',
-        url: '/gxlist/{projectId}',
+        url: '/gxlist/{role}/{projectId}',
         templateUrl: 'app/main/xhsc/procedure/gxlist.html',
         controller: 'gxlistController as vm'
       })
@@ -50,7 +50,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url: '/gxhousechoose/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
+        url: '/gxhousechoose/{role}/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
         templateUrl: 'app/main/xhsc/procedure/gxhousechoose.html',
         controller: 'gxhousechooseController as vm'
       })

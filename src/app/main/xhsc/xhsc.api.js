@@ -12,82 +12,208 @@
   function config(apiProvider){
     var $http = apiProvider.$http,
       $q = apiProvider.$q;
-  var r = function(data){
-  return $q(function(resolve){
-    resolve({
-      data:data
-    })
-  });
-}
+  var r = function(data) {
+    return $q(function (resolve) {
+      resolve({
+        data: data
+      })
+    });
+  }
   apiProvider.register('xhsc',{
-    Project:{
-      getMap:function(){
-        return $http.db({
-          _id:'mapPoroject',
-          idField:'ProjectID',
-          dataType:1
-        }).get($http.url('/api/ProjectInfoApi/GetMapProjectList'))
-      },
-      getDrawingRelations:function (projectId) {
-        return $http.db({
-          _id:'DrawingRelation',
-          idField:'ID',
-          dataType:1
-
-        }).get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation',{projectId:projectId}));
-      },
-      getDrawingRelation:function (acceptanceItemID) {
-        return $http.db({
-          _id:'DrawingRelation',
-          idField:'ID',
-          dataType:1
-        }).get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation',{projectId:projectId}));
-      },
-      getDrawings:function (projectId) {
-        return $http.db({
-          _id:'Drawing',
-          idField:'DrawingID',
-          dataType:1,
-        }).get($http.url('/Api/WPAcceptanceApi/GetGxDrawingList',{projectId:projectId}));
-      },
-      getDrawing:function (drawingId) {
-        return $http.db({
-          _id:'Drawing',
-          idField:'DrawingID',
-          dataType:3,
-          offline:1
-        }).get($http.url('/Api/WPAcceptanceApi/GetGxDrawing',{drawingId:drawingId}));
-      },
-      queryAllBulidings:function (projectId) {
-        return $http.db({
-          _id:'Projects',
-          idField:'ProjectID',
-          dataType:1,
-          filter:function (item) {
-            return item.ProjectID==projectId;
-          }
-        }).get($http.url('/api/ProjectInfoApi/GetProjectListByid',{projectId:projectId}));
-      }
+    Project: {
+      getMap: $http.db({
+        _id: 'mapPoroject',
+        idField: 'ProjectID',
+        dataType: 1
+      }).bind(function () {
+        return $http.get($http.url('/api/ProjectInfoApi/GetMapProjectList'))
+      }),
+      getDrawingRelations: $http.db({
+        _id: 'DrawingRelation',
+        idField: 'ID',
+        dataType: 1
+      }).bind(function (projectId) {
+        return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation', {projectId: projectId}));
+      }),
+      getDrawings: $http.db({
+        _id: 'Drawing',
+        idField: 'DrawingID',
+        dataType: 1,
+      }).bind(function (projectId) {
+        return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingList', {projectId: projectId}));
+      }),
+      getDrawing: $http.db({
+        _id: 'Drawing',
+        idField: 'DrawingID',
+        dataType: 3,
+        offline: 1
+      }).bind(function (drawingId) {
+        return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawing', {drawingId: drawingId}));
+      }),
+      queryAllBulidings: $http.db({
+        _id: 'Projects',
+        idField: 'ProjectID',
+        dataType: 1,
+        filter: function (item,projectId) {
+          return item.ProjectID == projectId;
+        }
+      }).bind(function (projectId) {
+        return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByid', {projectId: projectId}));
+      })
     },
     Procedure:{
-      queryProcedure:function(){
-        return $http.db({
+      queryProcedure:$http.db({
           _id: 'Procedure',
           idField: 'SpecialtyID',
           dataType: 1
-        }).get($http.url('/Api/WPAcceptanceApi/GetWPAcceptanceInfo'));
+        }).bind(function(){
+        return $http.get($http.url('/Api/WPAcceptanceApi/GetWPAcceptanceInfo'));
+      }),
+      InspectionPoint:$http.db({
+        _id:'InspectionPoint',
+        idField:'MeasurePointID',
+        methods:{
+          query:{
+            dataType:1
+          },
+          create:{
+            upload:true,
+            fn:function (point) {
+              return $http.post('/Api/MeasurePointApi/CreatePoint',[point]);
+            }
+          },
+          delete:{
+
+          }
+        }
+      }),
+/*      InspectionPoint:{
+        query:$http.db({
+          _id:'InspectionPoint',
+          idField:'MeasurePointID',
+          dataType:1
+        }).bind(),
+        create:$http.db({
+          _id:'InspectionPoint',
+          idField:'MeasurePointID',
+          upload:true
+        }).bind(function (point) {
+          return $http.post('/Api/MeasurePointApi/CreatePoint',[point]);
+        }),
+        delete:$http.db({
+
+        })
+      },*/
+      InspectionIndex:{
+        query:$http.db({
+          _id:'EMBDInspectionIndex',
+          idField:'InspectionIndexID',
+          dataType:1,
+          filter:function (item,areaID,acceptanceItemID,userID,count) {
+            return item.AreaID==areaID
+              && item.AcceptanceItemID==acceptanceItemID
+              && item.UserID==userID
+              && item.Count==count
+          }
+        }).bind(function (areaID,acceptanceItemID,userID,count) {
+          return $http.get($http.url('/Api/InspectionApi/GetInspectionIndex', {AreaID: areaID,AcceptanceItemID:acceptanceItemID,UserID:userID,Count:count}));
+        }),
+        create:$http.db({
+          _id:'EMBDInspectionIndex',
+          idField:'InspectionIndexID',
+          upload:true,
+          local:true
+        }).bind(function (inspectionIndex) {
+          return $http.post($http.url('/Api/InspectionApi/CreateInspectionIndex', inspectionIndex));
+        }),
+        delete:$http.db({
+          _id:'EMBDInspectionIndex',
+          idField:'InspectionIndexID',
+          delete:true,
+          local:true
+        }).bind()
       },
-      getRegionStatus:function(projectId){
-        return $http.db({
+      InspectionCheckpoint:{
+        query:$http.db({
+          _id:'InspectionCheckpoint',
+          idField:'CheckpointID',
+          local:true,
+          dataType:1,
+          filter:function (item,AcceptanceItemID,AreaID) {
+            return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID;
+          }
+        }).bind(),
+        create:$http.db({
+          _id:'InspectionCheckpoint',
+          idField:'CheckpointID',
+          upload:true,
+          dataType:3
+        }).bind(function (InspectionCheckpoint) {
+          return $http.post('/Api/InspectionCheckpointApi/CreateInspectionCheckpoint',InspectionCheckpoint);
+        }),
+        delete:$http.db({
+          _id:'InspectionCheckpoint',
+          idField:'CheckpointID',
+          delete:true,
+          local:true
+        }).bind()
+      },
+      InspectionProblemRecord:{
+        query:$http.db({
+          _id:'InspectionProblemRecord',
+          idField:'ProblemRecordID',
+          local:true,
+          filter:function (item,CheckpointID) {
+            return item.CheckpointID==CheckpointID;
+          }
+        }).bind(),
+        create:$http.db({
+          _id:'InspectionProblemRecord',
+          idField:'ProblemRecordID',
+          upload:true
+        }).bind(function (InspectionProblemRecord) {
+          return $http.post('/Api/InspectionProblemRecordApi/CreateInspectionProblemRecord',InspectionProblemRecord);
+        }),
+        delete:$http.db({
+          _id:'InspectionProblemRecord',
+          idField:'ProblemRecordID',
+          local:true,
+          delete:true
+        }).bind()
+      },
+      InspectionProblemRecordFile:{
+        query:$http.db({
+          _id:'InspectionProblemRecordFile',
+          idField:'ProblemRecordFileID',
+          local:true,
+          filter:function (item,ProblemRecordID,CheckpointID) {
+            return item.ProblemRecordID==ProblemRecordID && item.CheckpointID==CheckpointID;
+          }
+        }).bind(),
+        create:$http.db({
+          _id:'InspectionProblemRecordFile',
+          idField:'ProblemRecordFileID',
+          upload:true
+        }).bind(function (InspectionProblemRecordFile) {
+          return $http.post('/Api/InspectionProblemRecordFileApi/CreateInspectionProblemRecordFile',InspectionProblemRecordFile);
+        }),
+        delete:$http.db({
+          _id:'InspectionProblemRecordFile',
+          idField:'ProblemRecordFileID',
+          delete:true
+        }).bind()
+      },
+      getRegionStatus:$http.db({
           _id:'project_status',
           idField:function (item) {
             return item.AcceptanceItemID+item.AreaID;
           },
           dataType:1
-        }).get($http.url('/Api/InspectionApi/GetUserInspectionInfo',{projectId:projectId}));
-      },
+        }).bind(function(projectId) {
+        return $http.get($http.url('/Api/InspectionApi/GetUserInspectionInfo', {projectId: projectId}));
+      }),
       postInspection:function(AcceptanceItemID,AreaID){
-        return $http.post($http.url('/api/InspectionApi/insert'), {AcceptanceItemID:AcceptanceItemID,AreaID:AreaID})
+        return $http.post($http.url('/Api/InspectionApi/insert'), {AcceptanceItemID:AcceptanceItemID,AreaID:AreaID})
       }
     },
     Assessment:{
@@ -97,13 +223,13 @@
       GetMeasureIndexMeasureInfo:function (recordId,itemId) {
         return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfo',{measureRecordID:recordId,acceptanceIndexID:itemId}));
       },
-      query:function () {
-        return $http.db({
+      query:$http.db({
           _id:'projects',
           idField:'AssessmentID',
           dataType:1
-        }).get($http.url('/Api/AssessmentApi/GetAssessmentProject'))
-      },
+        }).bind(function () {
+        return $http.get($http.url('/Api/AssessmentApi/GetAssessmentProject'));
+      }),
       queryById:function (assessmentID) {
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentProjectSingle',{assessmentID:assessmentID}))
       },

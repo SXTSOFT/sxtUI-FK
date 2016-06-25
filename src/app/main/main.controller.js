@@ -15,7 +15,6 @@
       });
       $scope.$on('hidebar', function () {
         $scope.isHideBar = true;
-        console.log('b')
       });
       //$scope.$on('hidefootbar', function () {
       //  $scope.hideFBar = false;

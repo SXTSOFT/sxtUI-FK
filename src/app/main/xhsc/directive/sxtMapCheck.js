@@ -6,7 +6,7 @@
     .module('app.xhsc')
     .directive('sxtMapCheck',sxtMapCheck);
   /** @ngInject */
-  function sxtMapCheck($timeout,remote) {
+  function sxtMapCheck($timeout,remote,mapPopupSerivce,sxt) {
     return {
       scope:{
         item:'=sxtMapCheck',
@@ -18,67 +18,150 @@
     };
 
     function link(scope,element,attr,ctrl) {
+      var map,fg,stamp;
       var install =function () {
-        console.log('scope',scope);
-        var map = new L.SXT.Project(element[0],{
-           map:{
-             zoomControl:false
-           }
-        }),
-          fg = new L.SvFeatureGroup({
-          onLoad: function () {
-
-          },
-          onUpdate: function (layer, isNew, group) {
-
-          },
-          onPopupClose: function (e) {
-
-          },
-          onUpdateData: function (context, updates, editScope) {
-
-          },
-          onDelete: function (layer) {
-
-          },
-          onPopup: function (e) {
-          }
-        }).addTo(map._map);
-        $timeout(function () {
-          remote.Project.getDrawingRelations(scope.projectId).then(function (result) {
-            var imgId = result.data.find(function (item) {
-              return item.AcceptanceItemID==scope.procedure && item.FloorID==scope.regionId;
-            });
-            if(imgId) {
-              remote.Project.getDrawing(imgId.DrawingID).then(function (result) {
-                map.loadSvgXml(result.data.DrawingContent, {
-                  filterLine: function (line) {
-                    line.attrs.stroke = 'black';
-                    line.options = line.options || {};
-                    //line.options.color = 'black';
-
-                    line.attrs['stroke-width'] = line.attrs['stroke-width'] * 6;
-                  },
-                  filterText: function (text) {
-                    //return false;
-                  }
-                });
-                map.center();
-              })
+        if (!map) {
+          map = new L.SXT.Project(element[0], {
+            map: {
+              zoomControl: false
             }
           });
+          map._map.removeControl(map._map.zoomControl);
+          fg = new L.SvFeatureGroup({
+            onLoad: function () {
+              remote.Procedure.InspectionCheckpoint.query(scope.procedure,scope.regionId).then(function (r) {
+                remote.Procedure.InspectionPoint.query().then(function (r1) {
+                  fg.data = r.data;
+                  r.data.forEach(function (c) {
+                    var p = r1.data.find(function (p1) {
+                      return p1.MeasurePointID==c.PositionID;
+                    });
+                    if(p){
+                      p.geometry.options.customSeq = true;
+                      p.geometry.options.seq = c.ProblemSortName;
+                      p.geometry.options.v = c;
+                      fg.addData(p.geometry);
+                    }
+                  })
+                });
+              });
+            },
+            onUpdate: function (layer, isNew, group) {
+              var point = layer.toGeoJSON();
+              if(isNew){
+                layer.setValue({
+                  seq: scope.item.ProblemSortName
+                });
+              }
+              point = {
+                MeasurePointID:point.properties.$id,
+                geometry:point
+              };
+              remote.Procedure.InspectionPoint.create(point);
+              if(isNew || !fg.data.find(function (d) {
+                  return d.PositionID == point.MeasurePointID;
+                })) {
+                var v = {
+                  CheckpointID:sxt.uuid(),
+                  IndexID:scope.item.ProblemID,
+                  AreaID:scope.regionId,
+                  AcceptanceItemID:scope.procedure,
+                  PositionID:point.MeasurePointID,
+                  MeasureValue:0,
+                  ProblemSortName:scope.item.ProblemSortName,
+                  ProblemDescription:scope.item.ProblemSortName
+                }
+                fg.data.push(v);
+                remote.Procedure.InspectionCheckpoint.create(v);
+              }
+            },
+            onPopupClose: function (e) {
+              var self = this;
+              var edit = mapPopupSerivce.get('mapCheckMapPopup'),
+                scope = edit.scope;
+              if(scope.data && scope.isSaveData!==false){
+                scope.isSaveData = false;
+                self.options.onUpdateData(scope.context,scope.data.updates,scope);
+              }
+            },
+            onUpdateData: function (context, updates, editScope) {
 
-        },0);
-        map._map.removeControl(map._map.zoomControl);
-      }
+            },
+            onDelete: function (layer) {
+              var id = layer.getValue().$id;
+              remote.Procedure.InspectionPoint.delete({MeasurePointID:id}).then(function () {
+                var v = fg.data.find(function (d) {
+                  return d.PositionID == id;
+                }),ix = fg.data.indexOf(v);
+                fg.data.splice(ix,1);
+                remote.Procedure.InspectionCheckpoint.delete(v);
+              });
+            },
+            onPopup: function (e) {
+              if(e.layer instanceof L.Stamp)
+                var edit = mapPopupSerivce.get('mapCheckMapPopup');
+              if(edit) {
+                if(e.layer instanceof L.Stamp) {
+                  $timeout(function () {
+                    var center = fg._map.getCenter();
+                    fg._map.setView([center.lat,e.layer._latlng.lng]);
+                  },300);
+                };
+                edit.scope.context = e;
+                edit.scope.data = {
+
+                };
+                edit.scope.readonly = scope.readonly;
+                edit.scope.apply && edit.scope.apply();
+                return edit.el[0];
+              }
+            }
+          }).addTo(map._map),
+          stamp = new L.Draw.Stamp(map._map);
+          map._map.on('draw:created',function (e) {
+            if(this._map){
+              this.addLayer(e.layer);
+            }
+          },fg);
+          $timeout(function () {
+            remote.Project.getDrawingRelations(scope.projectId).then(function (result) {
+              var imgId = result.data.find(function (item) {
+                return item.AcceptanceItemID == scope.procedure && item.FloorID == scope.regionId;
+              });
+              if (imgId) {
+                remote.Project.getDrawing(imgId.DrawingID).then(function (result) {
+                  map.loadSvgXml(result.data.DrawingContent, {
+                    filterLine: function (line) {
+                      line.attrs.stroke = 'black';
+                      line.options = line.options || {};
+                      line.attrs['stroke-width'] = line.attrs['stroke-width'] * 6;
+                    },
+                    filterText: function (text) {
+                    }
+                  });
+                  map.center();
+                  map._map.setZoom(1);
+                })
+              }
+            });
+          }, 0);
+        }
+      };
       $timeout(function () {
-        scope.$watch('item',function () {
-          //console.log('item',scope.item);
-        })
         scope.$watch('regionId', function () {
           if(scope.regionId && scope.procedure)
             install();
         });
+        scope.$watch('item',function () {
+          if(stamp) {
+            if (scope.item) {
+              stamp.enable();
+            }
+            else {
+              stamp.disable();
+            }
+          }
+        })
       }, 500);
     }
   }
