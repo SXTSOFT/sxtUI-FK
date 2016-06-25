@@ -47,7 +47,7 @@
       })
       .state('app.xhsc.gx.gxhousechoose', {
         noBack: true,
-        sendBt: false,
+        sendBt: true,
         rightArrow: false,
         leftArrow: false,
         url: '/gxhousechoose/{role}/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
