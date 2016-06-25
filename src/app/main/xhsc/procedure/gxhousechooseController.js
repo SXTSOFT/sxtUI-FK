@@ -20,7 +20,9 @@
       areaId = $stateParams.areaId;
 
     $rootScope.title = $stateParams.acceptanceItemName;
-
+    if(role == "zb"){
+      $rootScope.sendBt = true;
+    }
     function  load(){
       function wrap(status,region){
         if(!angular.isArray(status)){
@@ -102,8 +104,33 @@
     vm.callBack=function(){
       load();
     };
-    vm.selected = function(item){
-      item.checked = !item.checked;
+    vm.selected = function(r){
+
+      switch (r.status){
+        case 0:
+          if (role=="zb"){
+            r.checked = !r.checked;
+            //vm.selected=r;
+            //vm.showmyDialog = true;
+            //vm.data = {
+            //  name: r.projectTree,
+            //  regionId: r.RegionID,
+            //  projectId:projectId,
+            //  areaId:areaId,
+            //  acceptanceItemName:acceptanceItemName,
+            //  acceptanceItemID:acceptanceItemID
+            //}
+          }
+          break;
+        case 1:
+          if (role=="jl"||role=="jf"){
+            $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
+              regionId:r.RegionID,projectId:projectId,areaId:areaId});
+          }
+          break;
+        default:
+          break;
+      }
     }
     vm.chroom = function(r){
       switch (r.status){
