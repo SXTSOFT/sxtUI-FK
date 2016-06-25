@@ -17,6 +17,7 @@
                 'ui.router',
                 'ui.sortable',
                 'ng-sortable',
-                'moment-picker'
+                'moment-picker',
+                'chart.js'
             ]);
 })();
