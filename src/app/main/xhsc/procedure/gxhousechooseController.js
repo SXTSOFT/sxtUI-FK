@@ -99,6 +99,8 @@
     vm.chroom = function(r){
       switch (r.status){
         case 0:
+          $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
+            regionId:r.RegionID,projectId:projectId,areaId:areaId});
           if (role=="zb"){
             vm.selected=r;
             vm.showmyDialog = true;
@@ -113,7 +115,7 @@
           }
           break;
         case 1:
-          if (role=="jl"||role=="jf"){
+          if (1 || role=="jl"||role=="jf"){
             $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
               regionId:r.RegionID,projectId:projectId,areaId:areaId});
           }
@@ -164,10 +166,10 @@
           show=[0,2,8,16];
           break;
         case  "jl":
-          show=[1,2,8,16];
+          show=[0,1,2,8,16];
           break;
         case  "jf":
-          show=[1,2,0,4];
+          show=[0,1,2,4];
           break;
       }
       return show.indexOf(status)>-1;

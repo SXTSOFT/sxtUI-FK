@@ -126,8 +126,13 @@
           $timeout(function () {
             remote.Project.getDrawingRelations(scope.projectId).then(function (result) {
               var imgId = result.data.find(function (item) {
-                return item.AcceptanceItemID == scope.procedure && item.FloorID == scope.regionId;
+                return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
               });
+              if(!imgId){
+                imgId = result.data.find(function (item) {
+                  return item.RegionId == scope.regionId;
+                });
+              }
               if (imgId) {
                 remote.Project.getDrawing(imgId.DrawingID).then(function (result) {
                   map.loadSvgXml(result.data.DrawingContent, {

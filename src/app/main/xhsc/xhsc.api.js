@@ -133,31 +133,27 @@
           local:true
         }).bind()
       },
-      InspectionCheckpoint:{
-        query:$http.db({
-          _id:'InspectionCheckpoint',
-          idField:'CheckpointID',
-          local:true,
-          dataType:1,
-          filter:function (item,AcceptanceItemID,AreaID) {
-            return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID;
+      InspectionCheckpoint:$http.db({
+        _id:'InspectionCheckpoint',
+        idField:'CheckpointID',
+        methods:{
+          query:{
+            dataType:1,
+            filter:function (item,AcceptanceItemID,AreaID) {
+              return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID;
+            }
+          },
+          create:{
+            upload:true,
+            fn:function (InspectionCheckpoint) {
+              return $http.post('/Api/InspectionCheckpointApi/CreateInspectionCheckpoint',InspectionCheckpoint);
+            }
+          },
+          delete:{
+            delete:true
           }
-        }).bind(),
-        create:$http.db({
-          _id:'InspectionCheckpoint',
-          idField:'CheckpointID',
-          upload:true,
-          dataType:3
-        }).bind(function (InspectionCheckpoint) {
-          return $http.post('/Api/InspectionCheckpointApi/CreateInspectionCheckpoint',InspectionCheckpoint);
-        }),
-        delete:$http.db({
-          _id:'InspectionCheckpoint',
-          idField:'CheckpointID',
-          delete:true,
-          local:true
-        }).bind()
-      },
+        }
+      }),
       InspectionProblemRecord:{
         query:$http.db({
           _id:'InspectionProblemRecord',

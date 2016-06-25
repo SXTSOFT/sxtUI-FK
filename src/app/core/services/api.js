@@ -209,7 +209,7 @@
           var args = toArray(arguments),
             lodb = cfg.db;
           if(!lodb)
-            lodb = cfg.db = pouchdb(cfg._id)
+            lodb = cfg.db = pouchdb(cfg._id);
 
           if(cfg.local || !cfg.fn || provider.getNetwork()==1){
             return provider.$q.$q(function (resolve,reject) {
@@ -287,7 +287,7 @@
     }
 
     function getNetwork() {
-     return 1;
+     return 0;
     }
 
     function toArray(args) {
