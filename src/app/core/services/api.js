@@ -20,12 +20,6 @@
       url:url,
       db:bindDb
     });
-    provider.upload = function (filter,progress,complete) {
-      var scope = {
-        tasks:[]
-      };
-      appendTasks(scope.tasks,filter);
-    };
     provider.$q = function(){
       return provider.$q.$q.apply(provider,toArray(arguments));
     }
@@ -49,6 +43,8 @@
       pouchdb = db;
       resolveApi(api,$resource,$http);
       api.setting = setting;
+      api.task = task;
+      api.upload = upload;
       return api;
     }
 
@@ -66,7 +62,6 @@
           }
         }
         else{
-
           resolveApi(o,$resource,$http);
         }
       });
@@ -170,20 +165,35 @@
         }
       })
     }
-
-    function appendTasks(tasks,filter) {
+    function upload(filter,progress,complete,fail) {
+      var tasks = [],
+        self =this,
+        groups = [];
+      appendTasks(tasks,groups,filter);
+      self.task(tasks)(progress,complete,fail);
+      return groups;
+    }
+    function appendTasks(tasks,groups,filter) {
       cfgs.forEach(function (cfg) {
         if(cfg.upload){
+          var name = cfg.name ||'其它',
+            group = {
+              name:name,
+              start:tasks.length
+            };
+          groups.push(group);
           cfg.db.findAll(function (item) {
             if(filter)return filter(cfg,item);
             return true;
           }).then(function (result) {
             result.rows.forEach(function (row) {
-              tasks.push({
-                cfg:cfg,
-                row:row
-              });
+              var task = function () {
+                cfg.fn.call(cfg,row);
+              };
+              task.name = cfg.name ||'其它';
+              tasks.push(task);
             });
+            group.end = tasks.length;
           });
         }
       });
@@ -232,24 +242,35 @@
                 var result = {
                   data: null
                 };
-                lodb.findAll(function(item) {
-                  if (cfg.filter)
-                    return cfg.filter.apply(cfg, [item].concat(args));
-                  return true;
-                }).then(function (r) {
-                  switch (cfg.dataType) {
-                    case 1:
-                      result.data = r.rows;
-                      break;
-                    case 2:
-                      result.data = {rows: r.rows};
-                      break;
-                    case 3:
-                      result.data = r.rows[0];
-                      break;
-                  }
-                  resolve(result);
-                });
+                if(cfg.dataType == 3 && args.length==1){
+                  lodb.get(args[0]).then(function (r) {
+                    result.data = r;
+                    resolve(result);
+                  }).catch(function (r) {
+                    result.data = r;
+                    reject(result);
+                  });
+                }
+                else {
+                  lodb.findAll(function (item) {
+                    if (cfg.filter)
+                      return cfg.filter.apply(cfg, [item].concat(args));
+                    return true;
+                  }).then(function (r) {
+                    switch (cfg.dataType) {
+                      case 1:
+                        result.data = r.rows;
+                        break;
+                      case 2:
+                        result.data = {rows: r.rows};
+                        break;
+                      case 3:
+                        result.data = r.rows[0];
+                        break;
+                    }
+                    resolve(result);
+                  });
+                }
               }
             })
           }
@@ -290,14 +311,35 @@
       }
     }
 
-    function getNetwork() {
-     return 1;
+    function task(tasks) {
+      var args = tasks,
+        l = args.length;
+      return function start(progress,success,fail) {
+        run(0,progress,success,fail);
+      }
+      function run(i,progress,success,fail) {
+        var fn = args[i];
+        if(!fn){
+          progress(i*1.0/l,i,l,'success')
+          success && success();
+        }
+        else {
+          progress(i*1.0/l,i,l,fn.name)
+          fn().then(function () {
+            run(i+1,progress,success,fail)
+          }).catch(function () {
+            fail && fail();
+          });
+        }
+      }
     }
 
+    function getNetwork() {
+     return 0;
+    }
     function toArray(args) {
       return Array.prototype.slice.call(args);
     }
-
   }
 
 })();

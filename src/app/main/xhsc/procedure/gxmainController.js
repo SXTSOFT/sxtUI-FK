@@ -30,7 +30,27 @@
       item.isDown = true;
       var ix=1,len = 7;
       item.progress = ix/len;
-      remote.Project.getDrawings(item.ProjectID).then(function () {
+      api.task([function () {
+        return remote.Project.getDrawings(item.ProjectID)
+      },function () {
+        return remote.Project.getDrawingRelations(item.ProjectID);
+      },function () {
+        return remote.Project.queryAllBulidings(item.ProjectID);
+      },function () {
+        return remote.Procedure.getRegionStatus(item.ProjectID);
+      },function () {
+        return remote.Procedure.queryProcedure();
+      },function () {
+        return api.setting('project:'+item.ProjectID,{ProjectID:item.ProjectID,date:new Date()});
+      }])(function (persent,current,total,tips) {
+        item.progress = persent*100;
+      },function () {
+        item.progress = 100;
+        item.isOffline = true;
+      },function () {
+
+      });
+/*      remote.Project.getDrawings(item.ProjectID).then(function () {
         ix++;item.progress = ix/len;
         remote.Project.getDrawingRelations(item.ProjectID).then(function () {
           ix++;item.progress = ix/len;
@@ -48,7 +68,7 @@
             });
           })
         })
-      });
+      });*/
     }
 
   }

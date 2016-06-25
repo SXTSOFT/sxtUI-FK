@@ -51,7 +51,6 @@
         _id: 'Drawing',
         idField: 'DrawingID',
         dataType: 3,
-        offline: 1,
         filter:function (item,drawingId) {
           return item.DrawingID == drawingId;
         }
@@ -91,27 +90,10 @@
             }
           },
           delete:{
-
+            delete:true
           }
         }
       }),
-/*      InspectionPoint:{
-        query:$http.db({
-          _id:'InspectionPoint',
-          idField:'MeasurePointID',
-          dataType:1
-        }).bind(),
-        create:$http.db({
-          _id:'InspectionPoint',
-          idField:'MeasurePointID',
-          upload:true
-        }).bind(function (point) {
-          return $http.post('/Api/MeasurePointApi/CreatePoint',[point]);
-        }),
-        delete:$http.db({
-
-        })
-      },*/
       InspectionIndex:{
         query:$http.db({
           _id:'EMBDInspectionIndex',
@@ -127,6 +109,7 @@
           return $http.get($http.url('/Api/InspectionApi/GetInspectionIndex', {AreaID: areaID,AcceptanceItemID:acceptanceItemID,UserID:userID,Count:count}));
         }),
         create:$http.db({
+          name:'检查点',
           _id:'EMBDInspectionIndex',
           idField:'InspectionIndexID',
           upload:true,
@@ -152,6 +135,7 @@
             }
           },
           create:{
+            name:'检查记录',
             upload:true,
             fn:function (InspectionCheckpoint) {
               return $http.post('/Api/InspectionCheckpointApi/CreateInspectionCheckpoint',InspectionCheckpoint);
@@ -172,6 +156,7 @@
           }
         }).bind(),
         create:$http.db({
+          name:'问题记录',
           _id:'InspectionProblemRecord',
           idField:'ProblemRecordID',
           upload:true
@@ -195,6 +180,7 @@
           }
         }).bind(),
         create:$http.db({
+          name:'照片',
           _id:'InspectionProblemRecordFile',
           idField:'ProblemRecordFileID',
           upload:true
