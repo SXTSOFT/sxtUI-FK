@@ -13,9 +13,11 @@
       injector,
       cfgs=[],
       pouchdb,
-      settingDb;
+      settingDb,
+      networkState = 1;
     provider.register = register;
     provider.getNetwork = getNetwork;
+    provider.setNetwork = function (state) { networkState = state;};
     provider.$http = bindHttp({
       url:url,
       db:bindDb
@@ -198,6 +200,32 @@
         }
       });
     }
+    function task(tasks) {
+      var oNetworkState = networkState;
+      networkState = 0;
+      var args = tasks,
+        l = args.length;
+      return function start(progress,success,fail) {
+        run(0,progress,success,fail);
+      }
+      function run(i,progress,success,fail) {
+        var fn = args[i];
+        if(!fn){
+          networkState = oNetworkState;
+          progress(i*1.0/l,i,l,'success');
+          success && success();
+        }
+        else {
+          progress(i*1.0/l,i,l,fn.name)
+          fn().then(function () {
+            run(i+1,progress,success,fail)
+          }).catch(function () {
+            networkState = oNetworkState;
+            fail && fail();
+          });
+        }
+      }
+    }
 
     function bindDb (cfg) {
       if(cfg.methods){
@@ -311,31 +339,9 @@
       }
     }
 
-    function task(tasks) {
-      var args = tasks,
-        l = args.length;
-      return function start(progress,success,fail) {
-        run(0,progress,success,fail);
-      }
-      function run(i,progress,success,fail) {
-        var fn = args[i];
-        if(!fn){
-          progress(i*1.0/l,i,l,'success')
-          success && success();
-        }
-        else {
-          progress(i*1.0/l,i,l,fn.name)
-          fn().then(function () {
-            run(i+1,progress,success,fail)
-          }).catch(function () {
-            fail && fail();
-          });
-        }
-      }
-    }
 
     function getNetwork() {
-     return 0;
+     return networkState;
     }
     function toArray(args) {
       return Array.prototype.slice.call(args);
