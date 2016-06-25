@@ -9,64 +9,42 @@
     .controller('gxhousechooseController',gxhousechooseController);
 
   /** @ngInject */
-  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q){
+  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state){
     var vm=this,
       id = $stateParams.assessmentID,
       AssessmentTypeID = $stateParams.AssessmentTypeID,
       projectId = $stateParams.projectId,
       acceptanceItemID=$stateParams.acceptanceItemID,
       acceptanceItemName = $stateParams.acceptanceItemName,
+      role=$stateParams.role,
       areaId = $stateParams.areaId;
+
     $rootScope.title = $stateParams.acceptanceItemName;
-    $q.all([
-      remote.Project.queryAllBulidings(projectId),
-      remote.Procedure.getRegionStatus(projectId)
-    ]).then(function(res){
-      vm.loading = true;
-      var result=res[0];
-      var status=res[1]&&res[1].data?res[1].data:[];
-      result.data[0].RegionRelations.forEach(function(d){
-        d.projectTree =  d.RegionName;
-        d.projectTitle = result.data[0].ProjectName + d.RegionName;
-        d.Children && d.Children.forEach(function(c){
-          c.projectTree = d.projectTree + c.RegionName;
-          c.Children && c.Children.forEach(function(r){
-            r.projectTree = c.projectTree + r.RegionName;
-            wrap(status,r);
-            r.Children && r.Children.forEach(function(_r){
-              _r.projectTree = r.projectTree + _r.RegionName;
-              wrap(status,_r);
-            })
-          })
-        })
-      })
-      vm.houses =  result.data[0].RegionRelations;
-    });
 
-    function wrap(status,region){
-      if(!angular.isArray(status)){
-        status=[status];
-      }
-      var  status=status.find(function(o){
+    function  load(){
+      function wrap(status,region){
+        if(!angular.isArray(status)){
+          status=[status];
+        }
+        var  status=status.find(function(o){
           return o.AcceptanceItemID==acceptanceItemID&& o.AreaId==region.RegionID;
-      });
+        });
 
-      if (status){
-        region.status=status.Status;
-        region.Percentage=status.Percentage;
-      }else {
-        region.status=0;
-        region.Percentage=0;
+        if (status){
+          region.status=status.Status;
+          region.Percentage=status.Percentage;
+        }else {
+          region.status=0;
+          region.Percentage=0;
+        }
+        region.style=ConvertClass(region.status);
       }
-      region.style=ConvertClass(region.status);
-    }
-
-    function ConvertClass(status){
+      function ConvertClass(status){
         var style;
         switch (status){
           case 0:
-            style="wy";
-                break;
+            style="wait";
+            break;
           case 1:
             style="dy";
             break;
@@ -77,35 +55,73 @@
             style="ng";
             break;
           case 8:
-            style="yet";
+            style="wy";
             break;
           case 16:
-            style="wait";
+            style="yet";
             break;
           default:
             break;
         }
-      return style;
+        return style;
+      }
+      $q.all([
+        remote.Project.queryAllBulidings(projectId),
+        remote.Procedure.getRegionStatus(projectId)
+      ]).then(function(res){
+        vm.loading = true;
+        var result=res[0];
+        var status=res[1]&&res[1].data?res[1].data:[];
+        result.data[0].RegionRelations.forEach(function(d){
+          d.projectTree =  d.RegionName;
+          d.projectTitle = result.data[0].ProjectName + d.RegionName;
+          d.Children && d.Children.forEach(function(c){
+            c.projectTree = d.projectTree + c.RegionName;
+            c.Children && c.Children.forEach(function(r){
+              r.projectTree = c.projectTree + r.RegionName;
+              wrap(status,r);
+              r.Children && r.Children.forEach(function(_r){
+                _r.projectTree = r.projectTree + _r.RegionName;
+                wrap(status,_r);
+              })
+            })
+          })
+        })
+        vm.houses =  result.data[0].RegionRelations;
+      });
     }
 
+    load();
+
+    vm.callBack=function(){
+      load();
+    };
     vm.chroom = function(r){
       switch (r.status){
         case 0:
-          vm.showmyDialog = true;
-          vm.data = {
-            name: r.projectTree,
-            regionId: r.RegionID,
-            projectId:projectId,
-            areaId:areaId,
-            acceptanceItemName:acceptanceItemName,
-            acceptanceItemID:acceptanceItemID
+          if (role=="zb"){
+            vm.selected=r;
+            vm.showmyDialog = true;
+            vm.data = {
+              name: r.projectTree,
+              regionId: r.RegionID,
+              projectId:projectId,
+              areaId:areaId,
+              acceptanceItemName:acceptanceItemName,
+              acceptanceItemID:acceptanceItemID
+            }
+          }
+          break;
+        case 1:
+          if (role=="jl"||role=="jf"){
+            $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
+              regionId:r.RegionID,projectId:projectId,areaId:areaId});
           }
           break;
         default:
           break;
       }
     }
-
 
     vm.zk = function(item){
       item.show = !item.show;
@@ -115,32 +131,46 @@
       vm.filterNum = num;
     }
 
+    function compare(region,operator){
+      if (region.Children){
+        for (var  i=0;i<region.Children.length;i++){
+          if (vm.regionfilterByStatus(region.Children[i])){
+            if (vm.regionfilterByStatus(region.Children[i],operator)){
+              return true;
+            }
+          }
+        }
+        return  operator(region.status);
+      }else {
+        return  operator(region.status);
+      }
+    }
+
     vm.regionfilterByStatus=function(region){
        if (vm.filterNum==-1){
-         return true;
+           return compare(region,function(status){
+              return vm.statusRight(status);
+           });
        }
-       if (region.Children){
-         for (var  i=0;i<region.Children.length;i++){
-           if (vm.regionfilterByStatus(region.Children[i])){
-             return true;
-           }
-         }
-         return false;
-       }else {
-         return region.status== vm.filterNum;
-       }
+       return compare(region,function(status){
+         return status== vm.filterNum
+       });
     }
 
     vm.statusRight=function(status){
-        switch (status){
-          //case 1:
-          case  4:
-            return false;
-            break;
-          default:
-            return true;
-            break;
-        }
+      var show=[0,1,2,4,8,16];
+      switch (role){
+        case "zb":
+          show=[0,2,8,16];
+          break;
+        case  "jl":
+          show=[1,2,8,16];
+          break;
+        case  "jf":
+          show=[1,2,0,4];
+          break;
+      }
+      return show.indexOf(status)>-1;
     }
   }
 })();

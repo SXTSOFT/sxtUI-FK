@@ -67,15 +67,7 @@
       });
       scope.goToLink = function (item) {
         if(!scope.showCheck){
-          switch (scope.role){
-            case "zb":
-              $state.go('app.xhsc.gx.gxhousechoose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId})
-                  break;
-            case "jl":
-              $state.go('app.xhsc.gx.JlGxhousechoose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId})
-                  break;
-          }
-
+          $state.go('app.xhsc.gx.gxhousechoose',{role:scope.role,acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId})
         }else{
           //item.checked = !item.checked;
         }

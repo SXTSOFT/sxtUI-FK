@@ -45,21 +45,12 @@
         templateUrl: 'app/main/xhsc/procedure/gxlist.html',
         controller: 'gxlistController as vm'
       })
-      .state('app.xhsc.gx.JlGxhousechoose', {
-        noBack: true,
-        sendBt: false,
-        rightArrow: false,
-        leftArrow: false,
-        url: '/JlGxhousechoose/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
-        templateUrl: 'app/main/xhsc/procedure/JlGxhousechoose.html',
-        controller: 'JlGxhousechooseController as vm'
-      })
       .state('app.xhsc.gx.gxhousechoose', {
         noBack: true,
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url: '/gxhousechoose/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
+        url: '/gxhousechoose/{role}/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
         templateUrl: 'app/main/xhsc/procedure/gxhousechoose.html',
         controller: 'gxhousechooseController as vm'
       })

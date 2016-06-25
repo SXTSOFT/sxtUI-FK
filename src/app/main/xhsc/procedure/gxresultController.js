@@ -68,9 +68,6 @@
       if(f){
         vm.allRelations.push(f);
       }
-      //console.log(vm.allRelations)
     })
-
-    //console.log($scope)
   }
 })();
