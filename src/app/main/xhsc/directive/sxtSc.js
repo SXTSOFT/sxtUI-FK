@@ -126,8 +126,6 @@
                 p.rows.forEach(function(geo){
                   layer.addData(geo.geometry);
                 });
-                //如果是上传楼层对比，尝试获取上一层的点
-
               })
             });
           },

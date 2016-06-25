@@ -6,7 +6,7 @@
     .module('app.xhsc')
     .directive('sxtMapCheck',sxtMapCheck);
   /** @ngInject */
-  function sxtMapCheck($timeout,remote,mapPopupSerivce) {
+  function sxtMapCheck($timeout,remote,mapPopupSerivce,sxt) {
     return {
       scope:{
         item:'=sxtMapCheck',
@@ -29,21 +29,73 @@
           map._map.removeControl(map._map.zoomControl);
           fg = new L.SvFeatureGroup({
             onLoad: function () {
-
-            },
-            onUpdate: function (layer, isNew, group) {
-              layer.setValue({
-                seq:scope.item.ProblemSortName
+              remote.Procedure.InspectionCheckpoint.query(scope.procedure,scope.regionId).then(function (r) {
+                remote.Procedure.InspectionPoint.query().then(function (r1) {
+                  fg.data = r.data;
+                  r.data.forEach(function (c) {
+                    var p = r1.data.find(function (p1) {
+                      return p1.MeasurePointID==c.PositionID;
+                    });
+                    if(p){
+                      p.geometry.options.customSeq = true;
+                      p.geometry.options.seq = c.ProblemSortName;
+                      p.geometry.options.v = c;
+                      fg.addData(p.geometry);
+                    }
+                  })
+                });
               });
             },
+            onUpdate: function (layer, isNew, group) {
+              var point = layer.toGeoJSON();
+              if(isNew){
+                layer.setValue({
+                  seq: scope.item.ProblemSortName
+                });
+              }
+              point = {
+                MeasurePointID:point.properties.$id,
+                geometry:point
+              };
+              remote.Procedure.InspectionPoint.create(point);
+              if(isNew || !fg.data.find(function (d) {
+                  return d.PositionID == point.MeasurePointID;
+                })) {
+                var v = {
+                  CheckpointID:sxt.uuid(),
+                  IndexID:scope.item.ProblemID,
+                  AreaID:scope.regionId,
+                  AcceptanceItemID:scope.procedure,
+                  PositionID:point.MeasurePointID,
+                  MeasureValue:0,
+                  ProblemSortName:scope.item.ProblemSortName,
+                  ProblemDescription:scope.item.ProblemSortName
+                }
+                fg.data.push(v);
+                remote.Procedure.InspectionCheckpoint.create(v);
+              }
+            },
             onPopupClose: function (e) {
-
+              var self = this;
+              var edit = mapPopupSerivce.get('mapCheckMapPopup'),
+                scope = edit.scope;
+              if(scope.data && scope.isSaveData!==false){
+                scope.isSaveData = false;
+                self.options.onUpdateData(scope.context,scope.data.updates,scope);
+              }
             },
             onUpdateData: function (context, updates, editScope) {
 
             },
             onDelete: function (layer) {
-
+              var id = layer.getValue().$id;
+              remote.Procedure.InspectionPoint.delete({MeasurePointID:id}).then(function () {
+                var v = fg.data.find(function (d) {
+                  return d.PositionID == id;
+                }),ix = fg.data.indexOf(v);
+                fg.data.splice(ix,1);
+                remote.Procedure.InspectionCheckpoint.delete(v);
+              });
             },
             onPopup: function (e) {
               if(e.layer instanceof L.Stamp)

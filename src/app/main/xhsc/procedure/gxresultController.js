@@ -60,9 +60,9 @@
       }]
     }]
     //console.log('s',$stateParams)
-    remote.Assessment.queryAllBulidings($stateParams.projectId).then(function(result){
+    remote.Project.queryAllBulidings($stateParams.projectId).then(function(result){
       vm.allRelations = [];
-      var f = result.data.Sections.find(function(t){
+      var f = result.data[0].Sections.find(function(t){
         return t.AreaID ===  $stateParams.areaId;
       })
       if(f){

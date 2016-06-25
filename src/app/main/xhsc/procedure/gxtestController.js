@@ -23,6 +23,11 @@
       acceptanceItemID:acceptanceItemID,
       regionId:$stateParams.regionId
     };
+    vm.cancelCurrent = function ($event) {
+      //$event.stopPropagation();
+      //$event.preventDefault();
+      vm.info.current = null;
+    }
     $rootScope.title = $stateParams.acceptanceItemName;
     remote.Procedure.queryProcedure().then(function(result){
       // console.log(result);

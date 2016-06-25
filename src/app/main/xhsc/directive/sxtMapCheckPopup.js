@@ -37,6 +37,13 @@
         var layer = scope.context.layer;
         layer.editing && layer.editing.disable();
       };
+      scope.addPhoto = function () {
+        xhUtils.photo().then(function (image) {
+          if(image){
+            
+          }
+        })
+      }
       mapPopupSerivce.set('mapCheckMapPopup',{
         el:element,
         scope:scope
