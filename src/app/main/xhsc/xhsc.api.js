@@ -30,7 +30,9 @@
       }),
       getDrawingRelations: $http.db({
         _id: 'DrawingRelation',
-        idField: 'ID',
+        idField: function (d) {
+          return d.RegionId+(d.AcceptanceItemID?d.AcceptanceItemID:'');
+        },
         dataType: 1
       }).bind(function (projectId) {
         return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation', {projectId: projectId}));
@@ -39,6 +41,9 @@
         _id: 'Drawing',
         idField: 'DrawingID',
         dataType: 1,
+        filter:function (item,projectId) {
+          return item.ProjectID==projectId;
+        }
       }).bind(function (projectId) {
         return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingList', {projectId: projectId}));
       }),
@@ -46,7 +51,10 @@
         _id: 'Drawing',
         idField: 'DrawingID',
         dataType: 3,
-        offline: 1
+        offline: 1,
+        filter:function (item,drawingId) {
+          return item.DrawingID == drawingId;
+        }
       }).bind(function (drawingId) {
         return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawing', {drawingId: drawingId}));
       }),

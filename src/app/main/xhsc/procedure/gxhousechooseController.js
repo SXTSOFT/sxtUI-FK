@@ -108,6 +108,8 @@
 
       switch (r.status){
         case 0:
+          $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
+            regionId:r.RegionID,projectId:projectId,areaId:areaId});
           if (role=="zb"){
             r.checked = !r.checked;
             //vm.selected=r;

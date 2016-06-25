@@ -207,7 +207,8 @@
         cfg.fn = fn;
         return function () {
           var args = toArray(arguments),
-            lodb = cfg.db;
+            lodb = cfg.db,
+            _id;
           if(!lodb)
             lodb = cfg.db = pouchdb(cfg._id);
 
@@ -215,14 +216,15 @@
             return provider.$q.$q(function (resolve,reject) {
               if(cfg.delete){
                 args.forEach(function (d) {
-                  var _id = id(d)||d;
+                  _id = id(d)||d;
                   lodb.delete(_id);
                 })
               }
               else if(cfg.upload) {
                 args.forEach(function (d) {
-                  if(id(d)){
-                    lodb.addOrUpdate(d);
+                  _id = id(d);
+                  if(_id){
+                    lodb.addOrUpdate(angular.extend({_id:_id},d));
                   }
                 });
               }
@@ -258,8 +260,9 @@
                 var data = result.data;
                 if (cfg.dataType == 1) {
                   data.forEach(function (d) {
-                    if (id(d)) {
-                      lodb.addOrUpdate(d);
+                    _id = id(d);
+                    if (_id) {
+                      lodb.addOrUpdate(angular.extend({_id:_id},d));
                     }
                   })
                 }
@@ -269,8 +272,9 @@
                   }
                   else if (data.rows && angular.isArray(data.rows)) {
                     data.rows.forEach(function (d) {
-                      if (id(d)) {
-                        lodb.addOrUpdate(d);
+                      _id = id(d);
+                      if (_id) {
+                        lodb.addOrUpdate(angular.extend({_id:_id},d));
                       }
                     })
                   }
@@ -281,13 +285,13 @@
         }
       }
       function id(d) {
-        d._id = angular.isFunction(cfg.idField) ? cfg.idField(d) : d[cfg.idField];
-        return d._id;
+        var _id = angular.isFunction(cfg.idField) ? cfg.idField(d) : d[cfg.idField];
+        return _id;
       }
     }
 
     function getNetwork() {
-     return 0;
+     return 1;
     }
 
     function toArray(args) {
