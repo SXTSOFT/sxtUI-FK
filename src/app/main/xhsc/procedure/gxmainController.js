@@ -23,7 +23,6 @@
         });
         vm.projects = result.data;
       });
-
     });
 
     vm.download = function(item){
@@ -51,25 +50,6 @@
         item.isDown = false;
         utils.alert('下载失败,请检查网络');
       });
-/*      remote.Project.getDrawings(item.ProjectID).then(function () {
-        ix++;item.progress = ix/len;
-        remote.Project.getDrawingRelations(item.ProjectID).then(function () {
-          ix++;item.progress = ix/len;
-          remote.Project.queryAllBulidings(item.ProjectID).then(function () {
-            ix++;item.progress = ix/len;
-            remote.Procedure.getRegionStatus(item.ProjectID).then(function () {
-              ix++;item.progress = ix/len;
-              remote.Procedure.queryProcedure().then(function () {
-                api.setting('project:'+item.ProjectID,{ProjectID:item.ProjectID,date:new Date()}).then(function () {
-                  ix++;
-                  item.progress = ix/len;
-                  item.isOffline = true;
-                })
-              });
-            });
-          })
-        })
-      });*/
     }
 
   }

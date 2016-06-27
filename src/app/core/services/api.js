@@ -172,15 +172,26 @@
         self =this,
         groups = [];
       appendTasks(tasks,groups,filter);
-      self.task(tasks)(progress,complete,fail);
+      self.task(tasks)(function (percent,current,total,tips) {
+        groups.forEach(function (g) {
+          if(current>=g.end)
+            g.percent = 1;
+          else if(current<=g.start)
+            g.percent = 0;
+          else {
+            g.current = current - g.start;
+            g.percent = g.current * 1.0 / g.total;
+          }
+        });
+        progress && progress(percent,current,total,tips);
+      },complete,fail);
       return groups;
     }
     function appendTasks(tasks,groups,filter) {
       cfgs.forEach(function (cfg) {
         if(cfg.upload){
-          var name = cfg.name ||'其它',
-            group = {
-              name:name,
+          var group = {
+              name:cfg.name ||'其它-'+cfg._id,
               start:tasks.length
             };
           groups.push(group);
@@ -189,13 +200,13 @@
             return true;
           }).then(function (result) {
             result.rows.forEach(function (row) {
-              var task = function () {
+              tasks.push(function () {
                 cfg.fn.call(cfg,row);
-              };
-              task.name = cfg.name ||'其它';
-              tasks.push(task);
+              });
             });
             group.end = tasks.length;
+            group.current = 0;
+            group.total = group.end - g.start;
           });
         }
       });
@@ -212,11 +223,11 @@
         var fn = args[i];
         if(!fn){
           networkState = oNetworkState;
-          progress(i*1.0/l,i,l,'success');
+          progress(i*1.0/l,i,l);
           success && success();
         }
         else {
-          progress(i*1.0/l,i,l,fn.name)
+          progress(i*1.0/l,i,l,fn)
           fn().then(function () {
             run(i+1,progress,success,fail)
           }).catch(function () {

@@ -18,7 +18,7 @@
     };
 
     function link(scope,element,attr,ctrl) {
-      var map,fg,stamp;
+      var map,fg,stamp,regionId;
       var install =function () {
         if (!map) {
           map = new L.SXT.Project(element[0], {
@@ -27,6 +27,11 @@
             }
           });
           map._map.removeControl(map._map.zoomControl);
+          if(fg && scope.regionId!=regionId){
+            stamp.disable();
+            map._map.removeLayer(fg);
+          }
+          regionId = scope.regionId;
           fg = new L.SvFeatureGroup({
             onLoad: function () {
               remote.Procedure.InspectionCheckpoint.query(scope.procedure,scope.regionId).then(function (r) {
@@ -105,10 +110,14 @@
                   $timeout(function () {
                     var center = fg._map.getCenter();
                     fg._map.setView([center.lat,e.layer._latlng.lng]);
-                  },300);
+                  },500);
                 };
                 edit.scope.context = e;
                 edit.scope.data = {
+                  item:scope.item,
+                  projectId:scope.projectId,
+                  procedure:scope.procedure,
+                  regionId:scope.regionId,
 
                 };
                 edit.scope.readonly = scope.readonly;
@@ -135,6 +144,10 @@
               }
               if (imgId) {
                 remote.Project.getDrawing(imgId.DrawingID).then(function (result) {
+                  if(!result.data.DrawingContent){
+                    utils.alert('未找到图纸,请与管理员联系!(2)');
+                    return;
+                  }
                   map.loadSvgXml(result.data.DrawingContent, {
                     filterLine: function (line) {
                       line.attrs.stroke = 'black';
@@ -147,6 +160,12 @@
                   map.center();
                   map._map.setZoom(1);
                 })
+              }
+              else{
+                if(!result.data.DrawingContent){
+                  utils.alert('未找到图纸,请与管理员联系!(1)')
+                  return;
+                }
               }
             });
           }, 0);
@@ -168,6 +187,11 @@
           }
         })
       }, 500);
+      scope.$on('destroy',function () {
+        if(map){
+          map._map.remove();
+        }
+      })
     }
   }
 })();
