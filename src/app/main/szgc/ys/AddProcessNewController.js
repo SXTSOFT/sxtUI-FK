@@ -308,7 +308,7 @@
         if (api.szgc.vanke.isPartner(1)) {
           batch.Count = (batch.JLCount || 0) + 1;
           var fd = results[3].data.Rows.find(function(it) {
-            return it.UnitId = api.szgc.vanke.getPartner()
+            return it.UnitId == api.szgc.vanke.getPartner()
           });
           var nn = [];
           if (fd) {
