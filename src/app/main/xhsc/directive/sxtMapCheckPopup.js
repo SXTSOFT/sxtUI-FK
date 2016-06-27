@@ -7,7 +7,7 @@
     .module('app.xhsc')
     .directive('sxtMapCheckPopup',sxtMapCheckPopup);
   /** @ngInject */
-  function sxtMapCheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils){
+  function sxtMapCheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote){
     return {
       restrict:'E',
       scope:{
@@ -23,8 +23,29 @@
       };
       scope.apply = function() {
         scope.isSaveData = null;
-        var context = scope.context;
         scope.$apply();
+        remote.Procedure.InspectionProblemRecord.query(scope.data.v.CheckpointID).then(function (r) {
+          var p = null;
+          if (r.data.length) {
+            p = r.data[0];
+          }
+          else {
+            p = {
+              ProblemRecordID: sxt.uuid(),
+              CheckpointID: scope.data.v.CheckpointID,
+              Describe: scope.data.v.ProblemDescription,
+              DescRole: 'jl'
+            };
+            remote.Procedure.InspectionProblemRecord.create(p);
+          }
+          scope.data.p = p;
+          remote.Procedure.InspectionProblemRecordFile.query(p.ProblemRecordID, scope.data.v.PositionID).then(function (r) {
+            scope.data.images = r.data;
+            if (scope.data.v.isNew) {
+              scope.addPhoto();
+            }
+          });
+        })
       };
 
       scope.removeLayer = function(){
@@ -38,11 +59,17 @@
         layer.editing && layer.editing.disable();
       };
       scope.addPhoto = function () {
+        scope.data.v.isNew = false;
         xhUtils.photo().then(function (image) {
           if(image){
-            
+            scope.data.images.push({
+              ProblemRecordFileID:sxt.uuid(),
+              ProblemRecordID:scope.p.ProblemRecordID,
+              CheckpointID:scope.v.CheckpointID,
+              FileID:image
+            });
           }
-        })
+        });
       }
       mapPopupSerivce.set('mapCheckMapPopup',{
         el:element,
@@ -50,7 +77,7 @@
       });
       scope.$on('$destroy',function(){
         mapPopupSerivce.remove('mapCheckMapPopup');
-      })
+      });
     }
   }
 })();

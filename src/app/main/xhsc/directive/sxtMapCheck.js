@@ -10,6 +10,7 @@
     return {
       scope:{
         item:'=sxtMapCheck',
+        items:'=',
         projectId:'=',
         procedure:'=',
         regionId:'='
@@ -54,7 +55,7 @@
             onUpdate: function (layer, isNew, group) {
               var point = layer.toGeoJSON();
               if(isNew){
-                layer.setValue({
+                layer.updateValue({
                   seq: scope.item.ProblemSortName
                 });
               }
@@ -74,7 +75,8 @@
                   PositionID:point.MeasurePointID,
                   MeasureValue:0,
                   ProblemSortName:scope.item.ProblemSortName,
-                  ProblemDescription:scope.item.ProblemSortName
+                  ProblemDescription:scope.item.ProblemDescription,
+                  isNew:true
                 }
                 fg.data.push(v);
                 remote.Procedure.InspectionCheckpoint.create(v);
@@ -86,11 +88,17 @@
                 scope = edit.scope;
               if(scope.data && scope.isSaveData!==false){
                 scope.isSaveData = false;
-                self.options.onUpdateData(scope.context,scope.data.updates,scope);
+                self.options.onUpdateData(scope.context,scope.data,scope);
               }
             },
-            onUpdateData: function (context, updates, editScope) {
-
+            onUpdateData: function (context, data, editScope) {
+              remote.Procedure.InspectionCheckpoint.create(data.v);
+              data.images.forEach(function (img) {
+                if(!img._id){
+                  img._id = sxt.uuid();
+                  remote.Procedure.InspectionProblemRecordFile.create(img);
+                };
+              })
             },
             onDelete: function (layer) {
               var id = layer.getValue().$id;
@@ -118,8 +126,11 @@
                   projectId:scope.projectId,
                   procedure:scope.procedure,
                   regionId:scope.regionId,
-
+                  v:fg.data.find(function (d) {
+                    return d.PositionID == e.layer._value.$id;
+                  })
                 };
+
                 edit.scope.readonly = scope.readonly;
                 edit.scope.apply && edit.scope.apply();
                 return edit.el[0];
