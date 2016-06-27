@@ -9,15 +9,13 @@
     .controller('SzgcSettingsController',SzgcSettingsController);
 
   /** @ngInject */
-  function SzgcSettingsController(profile,auth,$http, $cordovaAppVersion){
+  function SzgcSettingsController(profile,auth,$http, $cordovaAppVersion,api){
 
     var vm = this;
     vm.profile = profile.data.data;
     vm.logout = function(){
       auth.logout();
     }
-    console.log('profile',profile);
-
     //服务器上保存版本信息
     $http.get('http://vkde.sxtsoft.com/api/vkapi/Version')
       .then(function (data) {
