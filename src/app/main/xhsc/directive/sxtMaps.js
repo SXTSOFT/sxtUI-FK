@@ -9,7 +9,7 @@
     .directive('sxtMaps',sxtMapsDirective);
 
   /** @ngInject */
-  function sxtMapsDirective($timeout,remote){
+  function sxtMapsDirective($timeout,remote,markerCulster){
     return {
       scope:{
         markers:'=',
@@ -30,58 +30,70 @@
           });
         layer.addTo(map);
         var mks = [];
-          //scope.markers = [];
-          //    scope.markers.push({
-          //      projectId:'1234567',
-          //      title: '天津星河时代',
-          //      lat: '39.193092',
-          //      lng: '117.106007',
-          //      pinyin:'tjxhsd'
-          //    })
-          //
         remote.Project.getMap().then(function(result){
-          console.log('map',result);
+          //console.log('map',result);
           scope.markers=[];
           result.data.filter(function(item) {
             return !!item.Coordinate
-          }).forEach(function(m){
+          }).forEach(function(m) {
             var latlngs = m.Coordinate.split(',');
-            mks.push(L
-              .marker([parseFloat(latlngs[1]), parseFloat(latlngs[0])], L.extend({
-                icon: L.icon({
-                  iconUrl: 'libs/leaflet/images/M.png',
-                  iconSize: [27, 37],
-                  iconAnchor: [20, 20]
-                }),
-                projectId: m.ProjectID,
-                title: m.ProjectName
-              }))
-              .on('click', markerClick)
-              .addTo(map));
+            scope.markers.push({
+              projectId: m.ProjectID,
+              title: m.ProjectName,
+              lat: parseFloat(latlngs[1]),
+              lng: parseFloat(latlngs[0]),
+              center: function () {
+                map.setView(new L.latLng([parseFloat(latlngs[1]), parseFloat(latlngs[0])]), 14)
+              }
+            })
           })
-        })
-          //angular.forEach(scope.markers, function (o, k) {
-          //  mks.push(L
-          //    .marker([o.lat, o.lng], L.extend({
-          //      icon: L.icon({
-          //        iconUrl: 'libs/leaflet/images/M.png',
-          //        iconSize: [27, 37],
-          //        iconAnchor: [20, 20]
-          //      })
-          //    }, o))
-          //    .on('click', markerClick)
-          //    .addTo(map));
-         // })
+            //mks.push(L
+            //  .marker([parseFloat(latlngs[1]), parseFloat(latlngs[0])], L.extend({
+            //    icon: L.icon({
+            //      iconUrl: 'libs/leaflet/images/M.png',
+            //      iconSize: [27, 37],
+            //      iconAnchor: [20, 20]
+            //    }),
+            //    projectId: m.ProjectID,
+            //    title: m.ProjectName
+            //  }))
+            //  .on('click', markerClick)
+            //  .addTo(map)
+            //);
+            var parentGroup = L.markerClusterGroup();
+            angular.forEach(scope.markers, function (o, k) {
+              var mk = L
+                .marker([o.lat, o.lng], L.extend({
+                  icon: L.icon({
+                    iconUrl: 'libs/leaflet/images/M.png',
+                    iconSize: [27, 37],
+                    iconAnchor: [20, 20]
+                  })
+                }, o))
+                .on('click', markerClick);
+              mks.push(mk);
+              parentGroup.addLayer(mk);
 
+            });
+            parentGroup.addTo(map);
+        })
         map.on('zoomend', function (e) {
           var zoom = map.getZoom();
-
-          if(zoom <=12) {
+          console.log('zoom',zoom)
+          if(zoom <10) {
             mks.forEach(function (marker) {
               marker.setIcon(L.icon({
-                iconUrl: 'libs/leaflet/images/M.png',
-                iconSize: [27, 37],
-                iconAnchor: [20, 20]
+                iconUrl: 'libs/leaflet/images/S1.png',
+                iconSize: [17, 23],
+                iconAnchor: [9, 9]
+              }));
+            })
+          }else if(zoom<11){
+            mks.forEach(function (marker) {
+              marker.setIcon(L.icon({
+                iconUrl: 'libs/leaflet/images/S.png',
+                iconSize: [24, 27],
+                iconAnchor: [12, 12]
               }));
             })
           }

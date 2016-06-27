@@ -44,7 +44,7 @@
         scope.dialogData.Rows.forEach(function(t){
           msg += t.projectTree+',';
         })
-        scope.dialogMsg = msg + scope.dialogData.acceptanceItemName+ '工序已完成，请监理验收';
+        scope.dialogMsg = msg + scope.dialogData.acceptanceItemName + '工序已完成，请监理验收';
        // scope.dialogMsg = scope.dialogData.name + ',' + scope.dialogData.acceptanceItemName + '工序已完成，请监理验收';
       })
       scope.cancel= function(){

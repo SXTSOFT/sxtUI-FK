@@ -9,7 +9,7 @@
     .controller('gxhousechooseController',gxhousechooseController);
 
   /** @ngInject */
-  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state){
+  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,utils){
     var vm=this,
       id = $stateParams.assessmentID,
       AssessmentTypeID = $stateParams.AssessmentTypeID,
@@ -105,11 +105,10 @@
       load();
     };
     vm.selected = function(r){
-
       switch (r.status){
         case 0:
-          $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
-            regionId:r.RegionID,projectId:projectId,areaId:areaId});
+          //$state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
+          //  regionId:r.RegionID,projectId:projectId,areaId:areaId});
           if (role=="zb"){
             r.checked = !r.checked;
             //vm.selected=r;
@@ -213,7 +212,7 @@
       return show.indexOf(status)>-1;
     }
     function sendResult(){
-      vm.showmyDialog = true;
+
       vm.data = {
         //name: r.projectTree,
         //regionId: r.RegionID,
@@ -241,6 +240,12 @@
           })
         })
       })
+
+      if(vm.data.Rows.length){
+        vm.showmyDialog = true;
+      }else{
+        utils.alert('请选择验收部位')
+      }
     }
     $rootScope.$on('sendGxResult',sendResult);
   }

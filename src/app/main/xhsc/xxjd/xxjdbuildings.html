@@ -1,4 +1,5 @@
 <div id="floorlayer" style="margin:10px 0;position:relative;">{{sxtfloor}}
-  <building-list style="float:left;"  ng-repeat="sxtfloor in vm.builds.builds" sxtfloor="sxtfloor" floor-num="vm.builds.floorNum" ng-click="vm.setBuild(sxtfloor)" builds-len="vm.buildLen" ui-sref="app.xhsc.xxjd.xxjdbuilding({name:sxtfloor.name,id:sxtfloor.buildingId})"></building-list>
+  <!--<building-list style="float:left;"  ng-repeat="sxtfloor in vm.builds" sxtfloor="sxtfloor" floor-num="vm.builds.floorNum" ng-click="vm.setBuild(sxtfloor)" builds-len="vm.buildLen" ui-sref="app.xhsc.xxjd.xxjdbuilding({name:sxtfloor.name,id:sxtfloor.buildingId})"></building-list>-->
+  <building-list style="float:left;"  ng-repeat="sxtfloor in vm.builds" sxtfloor="sxtfloor" floor-num="vm.builds.floorNum" builds-len="vm.buildLen"></building-list>
   <div style="clear:both;display:table;"></div>
 </div>

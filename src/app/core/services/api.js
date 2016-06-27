@@ -249,7 +249,7 @@
             _id;
           if(!lodb)
             lodb = cfg.db = pouchdb(cfg._id);
-
+          //console.log('network',provider.getNetwork())
           if(cfg.local || !cfg.fn || provider.getNetwork()==1){
             return provider.$q.$q(function (resolve,reject) {
               if(cfg.delete){

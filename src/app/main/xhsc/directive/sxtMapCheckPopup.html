@@ -1,14 +1,13 @@
 <div class="md-padding" style="width: 120px;">
-<div layout="row" layout-wrap>
-
-  <div flex="50" ng-repeat="img in images"><img src=""></div>
-  <div flex="50"><md-button class="md-fab md-mini" ng-click="addPhoto()">+</md-button></div>
-</div>
-<div class="leaflet-draw-subbuttom sure" >
-  <ul  layout="row">
-    <li ng-if="!readonly"><a class="" href="javascript:void(0)" ng-click="removeLayer()">删除</a></li>
-    <li flex></li><!--
-    <li ng-if="!readonly"><a class="" href="javascript:void(0)" ng-click="updateValue()">确定</a></li>-->
-  </ul>
-</div>
+  <div layout="row" layout-wrap>
+    <div flex="50" ng-repeat="img in images"><img src=""></div>
+    <div flex="50"><md-button class="md-fab md-mini" ng-click="addPhoto()">+</md-button></div>
+  </div>
+  <div class="leaflet-draw-subbuttom sure">
+    <ul  layout="row">
+      <li ng-if="!readonly"><a class="" href="javascript:void(0)" ng-click="removeLayer()">删除</a></li>
+      <li flex></li><!--
+      <li ng-if="!readonly"><a class="" href="javascript:void(0)" ng-click="updateValue()">确定</a></li>-->
+    </ul>
+  </div>
 </div>
