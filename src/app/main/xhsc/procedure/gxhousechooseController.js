@@ -18,10 +18,44 @@
       acceptanceItemName = $stateParams.acceptanceItemName,
       role=$stateParams.role,
       areaId = $stateParams.areaId;
-
+      vm.nums={
+        qb:0, //全部
+        wtj:0,//未提交
+        dy:0,//待验收
+        hg:0, //合格
+        bhg:0,//不合格
+        yzg:0,//已整改
+        wzg:0//未整改
+      }
     $rootScope.title = $stateParams.acceptanceItemName;
 
     function  load(){
+
+      function  setNum(status){
+        vm.nums.qb++;
+        switch (status){
+          case  0:
+            vm.nums.wtj++;
+          break;
+          case  1:
+            vm.nums.dy++;
+            break;
+          case  2:
+            vm.nums.hg++;
+            break;
+          case  4:
+            vm.nums.bhg++;
+            break;
+          case  8:
+            vm.nums.yzg++;
+            break;
+          case  16:
+            vm.nums.wzg++;
+            break;
+        }
+
+      }
+
       function wrap(status,region){
         if(!angular.isArray(status)){
           status=[status];
@@ -38,6 +72,7 @@
           region.Percentage=0;
         }
         region.style=ConvertClass(region.status);
+        setNum(region.status);
       }
       function ConvertClass(status){
         var style;
