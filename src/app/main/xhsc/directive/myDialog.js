@@ -11,7 +11,6 @@
   /**@ngInject*/
   function myDialogDirective($state,$timeout,remote,utils){
     return {
-      //templateUrl:'app/main/xhsc/directive/mydialog.html',
       scope:{
         dialogShow:'=',
         dialogData:'=',
@@ -19,48 +18,55 @@
         dialogMsg:'@',
         callBack:"&"
       },
-      template:'<div class="my-dialog-mask">\
-      <div class="my-dialog"><div class="dialog-top">\
-      <p>{{dialogMsg}}</p>\
-    <md-button flex style="width:100%;" ng-click="submit($event)">{{dialogSure}}</md-button>\
-    </div><div class="dialog-bottom"><md-button flex style="width:100%;" ng-click="cancel($event)">取消</md-button></div></div></div>',
-      link:link
+      templateUrl:"app/main/xhsc/directive/mydialog.html",
+      link:link,
+      controller:function($scope){
+        $scope.description="";
+        $scope. percentage="";
+      }
     }
     function link(scope,element,attr,ctrl){
-      //console.log(element)
       $(element).appendTo('body');
-      //$('.my-dialog-mask').css('display','block');
-     // $('.my-dialog-mask').fadeIn(2000);
       $('.my-dialog-mask',element).fadeOut();
       scope.$watch('dialogShow',function(){
         if(scope.dialogShow){
           $('.my-dialog-mask',element).fadeIn();
+          scope.description="";
+          scope. percentage="";
         }
       })
       scope.$watch('dialogData',function(){
         if(!scope.dialogData) return;
-        console.log('scopedata',scope.dialogData)
         var msg='';
         scope.dialogData.Rows.forEach(function(t){
           msg += t.projectTree+',';
         })
-        scope.dialogMsg = msg + scope.dialogData.acceptanceItemName + '工序已完成，请监理验收';
-       // scope.dialogMsg = scope.dialogData.name + ',' + scope.dialogData.acceptanceItemName + '工序已完成，请监理验收';
+        scope.dialogMsg = msg + scope.dialogData.acceptanceItemName+ '工序已自检完毕，请监理验收';
       })
       scope.cancel= function(){
-        //$('.my-dialog-mask').css('display','none');
         scope.dialogShow = false;
         $('.my-dialog-mask',element).fadeOut();
       }
       scope.submit = function(evt){
         scope.dialogShow = false;
+        scope.areaIds=[];
+        scope.dialogData.Rows.forEach(function(t){
+          scope.areaIds.push( {
+            RegionID:t.RegionID,
+            description:scope.description,
+            percentage:scope.percentage
+          });
+        })
         var params ={
           acceptancetemID:scope.dialogData.acceptanceItemID,
-          areaID:scope.dialogData.regionId
+          areaID:scope.areaIds,
+          description:scope.description,
+          percentage:scope.percentage
         }
+        //{AcceptanceItemID:AcceptanceItemID,AreaID:AreaID, description:description,percentage:percentage}
         $('.my-dialog-mask',element).fadeOut();
         if(scope.dialogSure == '报检'){
-          remote.Procedure.postInspection(scope.dialogData.acceptanceItemID,scope.dialogData.regionId).then(function(result){
+          remote.Procedure.postInspection(params).then(function(result){
             $timeout(function(){
               utils.alert('报检成功',evt,scope.callBack);
             },200);

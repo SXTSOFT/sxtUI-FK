@@ -9,7 +9,7 @@
     .controller('gxhousechooseController',gxhousechooseController);
 
   /** @ngInject */
-  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,utils){
+  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state){
     var vm=this,
       id = $stateParams.assessmentID,
       AssessmentTypeID = $stateParams.AssessmentTypeID,
@@ -18,12 +18,46 @@
       acceptanceItemName = $stateParams.acceptanceItemName,
       role=$stateParams.role,
       areaId = $stateParams.areaId;
-
+      vm.nums={
+        qb:0, //全部
+        wtj:0,//未提交
+        dy:0,//待验收
+        hg:0, //合格
+        bhg:0,//不合格
+        yzg:0,//已整改
+        wzg:0//未整改
+      }
     $rootScope.title = $stateParams.acceptanceItemName;
     if(role == "zb"){
       $rootScope.sendBt = true;
     }
     function  load(){
+
+      function  setNum(status){
+        vm.nums.qb++;
+        switch (status){
+          case  0:
+            vm.nums.wtj++;
+          break;
+          case  1:
+            vm.nums.dy++;
+            break;
+          case  2:
+            vm.nums.hg++;
+            break;
+          case  4:
+            vm.nums.bhg++;
+            break;
+          case  8:
+            vm.nums.yzg++;
+            break;
+          case  16:
+            vm.nums.wzg++;
+            break;
+        }
+
+      }
+
       function wrap(status,region){
         if(!angular.isArray(status)){
           status=[status];
@@ -40,6 +74,7 @@
           region.Percentage=0;
         }
         region.style=ConvertClass(region.status);
+        setNum(region.status);
       }
       function ConvertClass(status){
         var style;
@@ -105,22 +140,20 @@
       load();
     };
     vm.selected = function(r){
+
       switch (r.status){
         case 0:
           //$state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
           //  regionId:r.RegionID,projectId:projectId,areaId:areaId});
+
           if (role=="zb"){
             r.checked = !r.checked;
-            //vm.selected=r;
-            //vm.showmyDialog = true;
-            //vm.data = {
-            //  name: r.projectTree,
-            //  regionId: r.RegionID,
-            //  projectId:projectId,
-            //  areaId:areaId,
-            //  acceptanceItemName:acceptanceItemName,
-            //  acceptanceItemID:acceptanceItemID
-            //}
+          }
+          else {
+            $state.go('app.xhsc.gx.gxtest', {
+              acceptanceItemID: acceptanceItemID, acceptanceItemName: acceptanceItemName, name: r.projectTree,
+              regionId: r.RegionID, projectId: projectId, areaId: areaId
+            });
           }
           break;
         case 1:
@@ -174,9 +207,9 @@
       if (region.Children){
         for (var  i=0;i<region.Children.length;i++){
           if (vm.regionfilterByStatus(region.Children[i])){
-            if (vm.regionfilterByStatus(region.Children[i],operator)){
+            //if (vm.regionfilterByStatus(region.Children[i],operator)){
               return true;
-            }
+            //}
           }
         }
         return  operator(region.status);
@@ -211,13 +244,10 @@
       }
       return show.indexOf(status)>-1;
     }
-    function sendResult(){
 
+    function sendResult(){
       vm.data = {
-        //name: r.projectTree,
-        //regionId: r.RegionID,
         projectId:projectId,
-        //areaId:areaId,
         Rows:[],
         acceptanceItemName:acceptanceItemName,
         acceptanceItemID:acceptanceItemID
@@ -240,11 +270,8 @@
           })
         })
       })
-
       if(vm.data.Rows.length){
         vm.showmyDialog = true;
-      }else{
-        utils.alert('请选择验收部位')
       }
     }
     $rootScope.$on('sendGxResult',sendResult);
