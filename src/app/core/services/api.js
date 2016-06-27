@@ -13,19 +13,15 @@
       injector,
       cfgs=[],
       pouchdb,
-      settingDb;
+      settingDb,
+      networkState = 1;
     provider.register = register;
     provider.getNetwork = getNetwork;
+    provider.setNetwork = function (state) { networkState = state;};
     provider.$http = bindHttp({
       url:url,
       db:bindDb
     });
-    provider.upload = function (filter,progress,complete) {
-      var scope = {
-        tasks:[]
-      };
-      appendTasks(scope.tasks,filter);
-    };
     provider.$q = function(){
       return provider.$q.$q.apply(provider,toArray(arguments));
     }
@@ -49,6 +45,8 @@
       pouchdb = db;
       resolveApi(api,$resource,$http);
       api.setting = setting;
+      api.task = task;
+      api.upload = upload;
       return api;
     }
 
@@ -66,7 +64,6 @@
           }
         }
         else{
-
           resolveApi(o,$resource,$http);
         }
       });
@@ -170,23 +167,64 @@
         }
       })
     }
-
-    function appendTasks(tasks,filter) {
+    function upload(filter,progress,complete,fail) {
+      var tasks = [],
+        self =this,
+        groups = [];
+      appendTasks(tasks,groups,filter);
+      self.task(tasks)(progress,complete,fail);
+      return groups;
+    }
+    function appendTasks(tasks,groups,filter) {
       cfgs.forEach(function (cfg) {
         if(cfg.upload){
+          var name = cfg.name ||'其它',
+            group = {
+              name:name,
+              start:tasks.length
+            };
+          groups.push(group);
           cfg.db.findAll(function (item) {
             if(filter)return filter(cfg,item);
             return true;
           }).then(function (result) {
             result.rows.forEach(function (row) {
-              tasks.push({
-                cfg:cfg,
-                row:row
-              });
+              var task = function () {
+                cfg.fn.call(cfg,row);
+              };
+              task.name = cfg.name ||'其它';
+              tasks.push(task);
             });
+            group.end = tasks.length;
           });
         }
       });
+    }
+    function task(tasks) {
+      var oNetworkState = networkState;
+      networkState = 0;
+      var args = tasks,
+        l = args.length;
+      return function start(progress,success,fail) {
+        run(0,progress,success,fail);
+      }
+      function run(i,progress,success,fail) {
+        var fn = args[i];
+        if(!fn){
+          networkState = oNetworkState;
+          progress(i*1.0/l,i,l,'success');
+          success && success();
+        }
+        else {
+          progress(i*1.0/l,i,l,fn.name)
+          fn().then(function () {
+            run(i+1,progress,success,fail)
+          }).catch(function () {
+            networkState = oNetworkState;
+            fail && fail();
+          });
+        }
+      }
     }
 
     function bindDb (cfg) {
@@ -207,22 +245,24 @@
         cfg.fn = fn;
         return function () {
           var args = toArray(arguments),
-            lodb = cfg.db;
+            lodb = cfg.db,
+            _id;
           if(!lodb)
-            lodb = cfg.db = pouchdb(cfg._id)
+            lodb = cfg.db = pouchdb(cfg._id);
 
           if(cfg.local || !cfg.fn || provider.getNetwork()==1){
             return provider.$q.$q(function (resolve,reject) {
               if(cfg.delete){
                 args.forEach(function (d) {
-                  var _id = id(d)||d;
+                  _id = id(d)||d;
                   lodb.delete(_id);
                 })
               }
               else if(cfg.upload) {
                 args.forEach(function (d) {
-                  if(id(d)){
-                    lodb.addOrUpdate(d);
+                  _id = id(d);
+                  if(_id){
+                    lodb.addOrUpdate(angular.extend({_id:_id},d));
                   }
                 });
               }
@@ -230,24 +270,35 @@
                 var result = {
                   data: null
                 };
-                lodb.findAll(function(item) {
-                  if (cfg.filter)
-                    return cfg.filter.apply(cfg, [item].concat(args));
-                  return true;
-                }).then(function (r) {
-                  switch (cfg.dataType) {
-                    case 1:
-                      result.data = r.rows;
-                      break;
-                    case 2:
-                      result.data = {rows: r.rows};
-                      break;
-                    case 3:
-                      result.data = r.rows[0];
-                      break;
-                  }
-                  resolve(result);
-                });
+                if(cfg.dataType == 3 && args.length==1){
+                  lodb.get(args[0]).then(function (r) {
+                    result.data = r;
+                    resolve(result);
+                  }).catch(function (r) {
+                    result.data = r;
+                    reject(result);
+                  });
+                }
+                else {
+                  lodb.findAll(function (item) {
+                    if (cfg.filter)
+                      return cfg.filter.apply(cfg, [item].concat(args));
+                    return true;
+                  }).then(function (r) {
+                    switch (cfg.dataType) {
+                      case 1:
+                        result.data = r.rows;
+                        break;
+                      case 2:
+                        result.data = {rows: r.rows};
+                        break;
+                      case 3:
+                        result.data = r.rows[0];
+                        break;
+                    }
+                    resolve(result);
+                  });
+                }
               }
             })
           }
@@ -258,8 +309,9 @@
                 var data = result.data;
                 if (cfg.dataType == 1) {
                   data.forEach(function (d) {
-                    if (id(d)) {
-                      lodb.addOrUpdate(d);
+                    _id = id(d);
+                    if (_id) {
+                      lodb.addOrUpdate(angular.extend({_id:_id},d));
                     }
                   })
                 }
@@ -269,8 +321,9 @@
                   }
                   else if (data.rows && angular.isArray(data.rows)) {
                     data.rows.forEach(function (d) {
-                      if (id(d)) {
-                        lodb.addOrUpdate(d);
+                      _id = id(d);
+                      if (_id) {
+                        lodb.addOrUpdate(angular.extend({_id:_id},d));
                       }
                     })
                   }
@@ -281,19 +334,18 @@
         }
       }
       function id(d) {
-        d._id = angular.isFunction(cfg.idField) ? cfg.idField(d) : d[cfg.idField];
-        return d._id;
+        var _id = angular.isFunction(cfg.idField) ? cfg.idField(d) : d[cfg.idField];
+        return _id;
       }
     }
 
-    function getNetwork() {
-     return 1;
-    }
 
+    function getNetwork() {
+     return networkState;
+    }
     function toArray(args) {
       return Array.prototype.slice.call(args);
     }
-
   }
 
 })();

@@ -30,7 +30,9 @@
       }),
       getDrawingRelations: $http.db({
         _id: 'DrawingRelation',
-        idField: 'ID',
+        idField: function (d) {
+          return d.RegionId+(d.AcceptanceItemID?d.AcceptanceItemID:'');
+        },
         dataType: 1
       }).bind(function (projectId) {
         return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation', {projectId: projectId}));
@@ -39,6 +41,9 @@
         _id: 'Drawing',
         idField: 'DrawingID',
         dataType: 1,
+        filter:function (item,projectId) {
+          return item.ProjectID==projectId;
+        }
       }).bind(function (projectId) {
         return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingList', {projectId: projectId}));
       }),
@@ -46,7 +51,9 @@
         _id: 'Drawing',
         idField: 'DrawingID',
         dataType: 3,
-        offline: 1
+        filter:function (item,drawingId) {
+          return item.DrawingID == drawingId;
+        }
       }).bind(function (drawingId) {
         return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawing', {drawingId: drawingId}));
       }),
@@ -83,27 +90,10 @@
             }
           },
           delete:{
-
+            delete:true
           }
         }
       }),
-/*      InspectionPoint:{
-        query:$http.db({
-          _id:'InspectionPoint',
-          idField:'MeasurePointID',
-          dataType:1
-        }).bind(),
-        create:$http.db({
-          _id:'InspectionPoint',
-          idField:'MeasurePointID',
-          upload:true
-        }).bind(function (point) {
-          return $http.post('/Api/MeasurePointApi/CreatePoint',[point]);
-        }),
-        delete:$http.db({
-
-        })
-      },*/
       InspectionIndex:{
         query:$http.db({
           _id:'EMBDInspectionIndex',
@@ -119,6 +109,7 @@
           return $http.get($http.url('/Api/InspectionApi/GetInspectionIndex', {AreaID: areaID,AcceptanceItemID:acceptanceItemID,UserID:userID,Count:count}));
         }),
         create:$http.db({
+          name:'检查点',
           _id:'EMBDInspectionIndex',
           idField:'InspectionIndexID',
           upload:true,
@@ -133,31 +124,28 @@
           local:true
         }).bind()
       },
-      InspectionCheckpoint:{
-        query:$http.db({
-          _id:'InspectionCheckpoint',
-          idField:'CheckpointID',
-          local:true,
-          dataType:1,
-          filter:function (item,AcceptanceItemID,AreaID) {
-            return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID;
+      InspectionCheckpoint:$http.db({
+        _id:'InspectionCheckpoint',
+        idField:'CheckpointID',
+        methods:{
+          query:{
+            dataType:1,
+            filter:function (item,AcceptanceItemID,AreaID) {
+              return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID;
+            }
+          },
+          create:{
+            name:'检查记录',
+            upload:true,
+            fn:function (InspectionCheckpoint) {
+              return $http.post('/Api/InspectionCheckpointApi/CreateInspectionCheckpoint',InspectionCheckpoint);
+            }
+          },
+          delete:{
+            delete:true
           }
-        }).bind(),
-        create:$http.db({
-          _id:'InspectionCheckpoint',
-          idField:'CheckpointID',
-          upload:true,
-          dataType:3
-        }).bind(function (InspectionCheckpoint) {
-          return $http.post('/Api/InspectionCheckpointApi/CreateInspectionCheckpoint',InspectionCheckpoint);
-        }),
-        delete:$http.db({
-          _id:'InspectionCheckpoint',
-          idField:'CheckpointID',
-          delete:true,
-          local:true
-        }).bind()
-      },
+        }
+      }),
       InspectionProblemRecord:{
         query:$http.db({
           _id:'InspectionProblemRecord',
@@ -168,6 +156,7 @@
           }
         }).bind(),
         create:$http.db({
+          name:'问题记录',
           _id:'InspectionProblemRecord',
           idField:'ProblemRecordID',
           upload:true
@@ -191,6 +180,7 @@
           }
         }).bind(),
         create:$http.db({
+          name:'照片',
           _id:'InspectionProblemRecordFile',
           idField:'ProblemRecordFileID',
           upload:true

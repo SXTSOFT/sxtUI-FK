@@ -11,7 +11,7 @@
   /**@ngInject*/
   function xxjdbuildingsController(builds,remote,$scope,$stateParams,$rootScope){
     var vm = this;
-    //$rootScope.title = $stateParams.projectName
+    $rootScope.title = $stateParams.projectName
     remote.Assessment.queryProcessBuildings('0000100002').then(function(result){
      // vm.builds = builds;
       console.log('res',result)
