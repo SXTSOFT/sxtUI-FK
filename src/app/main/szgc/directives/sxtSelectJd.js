@@ -10,7 +10,7 @@
     .directive('sxtSelectJd', sxtSelectJdDirective);
 
   /** @ngInject */
-  function sxtSelectJdDirective($rootScope)
+  function sxtSelectJdDirective($rootScope,$timeout)
   {
     var joinArr = function (arr) {
       var n = [];
@@ -83,6 +83,12 @@
       link: function (scope, element, attr, ctrl) {
         scope.selectors = [];
         scope.isMore = true;
+        scope.resetUI = function(){
+          $('md-list-item',element).css('display','inline');
+          $timeout(function(){
+            $('md-list-item',element).css('display','flex');
+          },100);
+        }
         var syncValue = function () {
           if (!scope.selectors.length || !scope.selectors[0].selected) {
             scope.value =
@@ -108,6 +114,7 @@
           scope.onChange && scope.onChange(scope);
           if(!$rootScope.$$phase){
             scope.$apply();
+            scope.resetUI();
           }
         }
         if(scope.objectScope){
@@ -142,6 +149,7 @@
               scope.selectors[index] = next;
               if(!$rootScope.$$phase){
                 scope.$apply();
+                scope.resetUI();
               }
             });
           }
@@ -175,6 +183,7 @@
 
               if(!$rootScope.$$phase){
                 scope.$apply();
+                scope.resetUI();
               }
             });
           }
@@ -182,6 +191,7 @@
             syncValue();
             if(!$rootScope.$$phase){
               scope.$apply();
+              scope.resetUI();
             }
           }
         }
@@ -202,6 +212,7 @@
             scope.item_selected(result.selected, scope.selectors.length - 1, false);
           if(!$rootScope.$$phase){
             scope.$apply();
+            scope.resetUI();
           }
         });
       }
