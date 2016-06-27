@@ -1,7 +1,13 @@
-<div class="md-padding" style="width: 120px;">
+<div class="md-padding" style="width: 180px;">
+  <div ng-if="data.v.ProblemSortName=='T'"  class="mappopup">
+  <md-input-container>
+    <label>问题描述(T)</label>
+    <input ng-model="data.v.ProblemDescription">
+  </md-input-container>
+</div>
 <div layout="row" layout-wrap>
 
-  <div flex="50" ng-repeat="img in images"><img src=""></div>
+  <div flex="50" ng-repeat="img in data.images"><img src=""></div>
   <div flex="50"><md-button class="md-fab md-mini" ng-click="addPhoto()">+</md-button></div>
 </div>
 <div class="leaflet-draw-subbuttom sure" >

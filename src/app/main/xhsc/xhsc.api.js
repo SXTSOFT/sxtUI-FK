@@ -151,6 +151,7 @@
           _id:'InspectionProblemRecord',
           idField:'ProblemRecordID',
           local:true,
+          dataType:1,
           filter:function (item,CheckpointID) {
             return item.CheckpointID==CheckpointID;
           }
@@ -175,6 +176,7 @@
           _id:'InspectionProblemRecordFile',
           idField:'ProblemRecordFileID',
           local:true,
+          dataType:1,
           filter:function (item,ProblemRecordID,CheckpointID) {
             return item.ProblemRecordID==ProblemRecordID && item.CheckpointID==CheckpointID;
           }

@@ -18,11 +18,6 @@
       acceptanceItemName = $stateParams.acceptanceItemName,
       role=$stateParams.role,
       areaId = $stateParams.areaId;
-    $rootScope.title = $stateParams.acceptanceItemName;
-    if(role == "zb"){
-      $rootScope.sendBt = true;
-    }
-    function  load(){
       vm.nums={
         qb:0, //全部
         wtj:0,//未提交
@@ -32,6 +27,11 @@
         yzg:0,//已整改
         wzg:0//未整改
       }
+    $rootScope.title = $stateParams.acceptanceItemName;
+    if(role == "zb"){
+      $rootScope.sendBt = true;
+    }
+    function  load(){
 
       function  setNum(status){
         vm.nums.qb++;
@@ -130,6 +130,7 @@
           })
         })
         vm.houses =  result.data[0].RegionRelations;
+        //console.log('vmh',vm.houses)
       });
     }
 
@@ -144,18 +145,15 @@
         case 0:
           //$state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
           //  regionId:r.RegionID,projectId:projectId,areaId:areaId});
+
           if (role=="zb"){
             r.checked = !r.checked;
-            //vm.selected=r;
-            //vm.showmyDialog = true;
-            //vm.data = {
-            //  name: r.projectTree,
-            //  regionId: r.RegionID,
-            //  projectId:projectId,
-            //  areaId:areaId,
-            //  acceptanceItemName:acceptanceItemName,
-            //  acceptanceItemID:acceptanceItemID
-            //}
+          }
+          else {
+            $state.go('app.xhsc.gx.gxtest', {
+              acceptanceItemID: acceptanceItemID, acceptanceItemName: acceptanceItemName, name: r.projectTree,
+              regionId: r.RegionID, projectId: projectId, areaId: areaId
+            });
           }
           break;
         case 1:
@@ -254,6 +252,7 @@
         acceptanceItemName:acceptanceItemName,
         acceptanceItemID:acceptanceItemID
       }
+      console.log('vmhouse',vm.houses)
       vm.houses.forEach(function(t){
         t.Children.forEach(function(_t){
           if(_t.checked){

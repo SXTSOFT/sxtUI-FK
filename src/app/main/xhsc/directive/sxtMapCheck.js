@@ -10,6 +10,7 @@
     return {
       scope:{
         item:'=sxtMapCheck',
+        items:'=',
         projectId:'=',
         procedure:'=',
         regionId:'='
@@ -18,7 +19,7 @@
     };
 
     function link(scope,element,attr,ctrl) {
-      var map,fg,stamp;
+      var map,fg,stamp,regionId;
       var install =function () {
         if (!map) {
           map = new L.SXT.Project(element[0], {
@@ -27,6 +28,11 @@
             }
           });
           map._map.removeControl(map._map.zoomControl);
+          if(fg && scope.regionId!=regionId){
+            stamp.disable();
+            map._map.removeLayer(fg);
+          }
+          regionId = scope.regionId;
           fg = new L.SvFeatureGroup({
             onLoad: function () {
               remote.Procedure.InspectionCheckpoint.query(scope.procedure,scope.regionId).then(function (r) {
@@ -49,7 +55,7 @@
             onUpdate: function (layer, isNew, group) {
               var point = layer.toGeoJSON();
               if(isNew){
-                layer.setValue({
+                layer.updateValue({
                   seq: scope.item.ProblemSortName
                 });
               }
@@ -69,7 +75,8 @@
                   PositionID:point.MeasurePointID,
                   MeasureValue:0,
                   ProblemSortName:scope.item.ProblemSortName,
-                  ProblemDescription:scope.item.ProblemSortName
+                  ProblemDescription:scope.item.ProblemDescription,
+                  isNew:true
                 }
                 fg.data.push(v);
                 remote.Procedure.InspectionCheckpoint.create(v);
@@ -81,11 +88,17 @@
                 scope = edit.scope;
               if(scope.data && scope.isSaveData!==false){
                 scope.isSaveData = false;
-                self.options.onUpdateData(scope.context,scope.data.updates,scope);
+                self.options.onUpdateData(scope.context,scope.data,scope);
               }
             },
-            onUpdateData: function (context, updates, editScope) {
-
+            onUpdateData: function (context, data, editScope) {
+              remote.Procedure.InspectionCheckpoint.create(data.v);
+              data.images.forEach(function (img) {
+                if(!img._id){
+                  img._id = sxt.uuid();
+                  remote.Procedure.InspectionProblemRecordFile.create(img);
+                };
+              })
             },
             onDelete: function (layer) {
               var id = layer.getValue().$id;
@@ -105,12 +118,19 @@
                   $timeout(function () {
                     var center = fg._map.getCenter();
                     fg._map.setView([center.lat,e.layer._latlng.lng]);
-                  },300);
+                  },500);
                 };
                 edit.scope.context = e;
                 edit.scope.data = {
-
+                  item:scope.item,
+                  projectId:scope.projectId,
+                  procedure:scope.procedure,
+                  regionId:scope.regionId,
+                  v:fg.data.find(function (d) {
+                    return d.PositionID == e.layer._value.$id;
+                  })
                 };
+
                 edit.scope.readonly = scope.readonly;
                 edit.scope.apply && edit.scope.apply();
                 return edit.el[0];
@@ -135,6 +155,10 @@
               }
               if (imgId) {
                 remote.Project.getDrawing(imgId.DrawingID).then(function (result) {
+                  if(!result.data.DrawingContent){
+                    utils.alert('未找到图纸,请与管理员联系!(2)');
+                    return;
+                  }
                   map.loadSvgXml(result.data.DrawingContent, {
                     filterLine: function (line) {
                       line.attrs.stroke = 'black';
@@ -147,6 +171,12 @@
                   map.center();
                   map._map.setZoom(1);
                 })
+              }
+              else{
+                if(!result.data.DrawingContent){
+                  utils.alert('未找到图纸,请与管理员联系!(1)')
+                  return;
+                }
               }
             });
           }, 0);
@@ -168,6 +198,11 @@
           }
         })
       }, 500);
+      scope.$on('destroy',function () {
+        if(map){
+          map._map.remove();
+        }
+      })
     }
   }
 })();
