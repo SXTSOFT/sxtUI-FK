@@ -1,12 +1,12 @@
 <div flex="none" layout="column" style="max-height:50px;height:50px;width:100%;z-index: 10;" class="gxxz">
   <md-list flex layout="row" class="gxfilter">
-    <md-list-item flex ng-class="{'active':vm.filterNum == -1}"><md-button ng-click="vm.filter(-1)" style="margin:6px auto;"><span>全部</span><span>(15)</span></md-button></md-list-item>
-    <md-list-item ng-if="vm.statusRight(0)"  flex ng-class="{'active':vm.filterNum == 0}"><md-button ng-click="vm.filter(0)" style="margin:6px auto;"><span><i class="wait"></i>未报验</span><span>(15)</span></md-button></md-list-item>
-    <md-list-item ng-if="vm.statusRight(1)" flex ng-class="{'active':vm.filterNum == 1}"><md-button ng-click="vm.filter(1)" style="margin:6px auto;"><span><i  class="dy"></i>待验</span><span>(15)</span></md-button></md-list-item>
-    <md-list-item ng-if="vm.statusRight(2)" flex ng-class="{'active':vm.filterNum == 2}"><md-button ng-click="vm.filter(2)" style="margin:6px auto;"><span><i  class="pass"></i>合格</span><span>(15)</span></md-button></md-list-item>
-    <md-list-item ng-if="vm.statusRight(4)" flex ng-if="false" ng-class="{'active':vm.filterNum == 4}"><md-button ng-click="vm.filter(4)" style="margin:6px auto;"><span><i class="ng"></i>不合格</span><span>(15)</span></md-button></md-list-item>
-    <md-list-item ng-if="vm.statusRight(8)" flex ng-class="{'active':vm.filterNum == 8}"><md-button ng-click="vm.filter(8)" style="margin:6px auto;"><span><i class="wy"></i>未整改</span><span>(15)</span></md-button></md-list-item>
-    <md-list-item ng-if="vm.statusRight(16)" flex ng-class="{'active':vm.filterNum == 16}"><md-button ng-click="vm.filter(16)" style="margin:6px auto;"><span><i class="yet"></i>已整改</span><span>(15)</span></md-button></md-list-item>
+    <md-list-item flex ng-class="{'active':vm.filterNum == -1}"><md-button ng-click="vm.filter(-1)" style="margin:6px auto;"><span>全部</span><span>{{vm.nums.qb}}</span></md-button></md-list-item>
+    <md-list-item ng-if="vm.statusRight(0)"  flex ng-class="{'active':vm.filterNum == 0}"><md-button ng-click="vm.filter(0)" style="margin:6px auto;"><span><i class="wait"></i>未报验</span><span>{{vm.nums.wby}}</span></md-button></md-list-item>
+    <md-list-item ng-if="vm.statusRight(1)" flex ng-class="{'active':vm.filterNum == 1}"><md-button ng-click="vm.filter(1)" style="margin:6px auto;"><span><i  class="dy"></i>待验</span><span>{{vm.nums.dy}}</span></md-button></md-list-item>
+    <md-list-item ng-if="vm.statusRight(2)" flex ng-class="{'active':vm.filterNum == 2}"><md-button ng-click="vm.filter(2)" style="margin:6px auto;"><span><i  class="pass"></i>合格</span><span>{{vm.nums.hg}}</span></md-button></md-list-item>
+    <md-list-item ng-if="vm.statusRight(4)" flex ng-if="false" ng-class="{'active':vm.filterNum == 4}"><md-button ng-click="vm.filter(4)" style="margin:6px auto;"><span><i class="ng"></i>不合格</span><span>{{vm.nums.bhg}}</span></md-button></md-list-item>
+    <md-list-item ng-if="vm.statusRight(8)" flex ng-class="{'active':vm.filterNum == 8}"><md-button ng-click="vm.filter(8)" style="margin:6px auto;"><span><i class="wy"></i>未整改</span><span>{{vm.nums.wzg}}</span></md-button></md-list-item>
+    <md-list-item ng-if="vm.statusRight(16)" flex ng-class="{'active':vm.filterNum == 16}"><md-button ng-click="vm.filter(16)" style="margin:6px auto;"><span><i class="yet"></i>已整改</span><span>{{vm.nums.yzg}}</span></md-button></md-list-item>
   </md-list>
 </div>
 <md-content flex ng-cloak  style="background:#f4f4f4;">
