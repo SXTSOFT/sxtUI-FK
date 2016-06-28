@@ -60,7 +60,7 @@
       };
       scope.playImage = function () {
         var imgs = [];
-        scope.data.image.forEach(function (img) {
+        scope.data.images.forEach(function (img) {
           imgs.push({
             src:img.FileID,
             alt:''

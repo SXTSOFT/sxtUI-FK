@@ -225,6 +225,7 @@
     }
 
     function playPhoto(images,options) {
+      if(!images || !images.length)return;
       var str = [];
       str.push('<ul>')
       angular.forEach(images, function (data) {
