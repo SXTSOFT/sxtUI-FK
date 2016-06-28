@@ -14,7 +14,7 @@
       cfgs=[],
       pouchdb,
       settingDb,
-      networkState = 1;
+      networkState = 0;
     provider.register = register;
     provider.getNetwork = getNetwork;
     provider.setNetwork = function (state) { networkState = state;};
@@ -30,7 +30,7 @@
 
     provider.$get = getApi;
     provider.get = getServer;
-    provider.setting = setting
+        provider.setting = setting
 
     getApi.$injector = ['$resource','$http','$injector','$q','db'];
 
