@@ -256,9 +256,9 @@
           })
         })
       })
-      if(vm.data.Rows.length){
+      //if(vm.data.Rows.length){
         vm.showmyDialog = true;
-      }
+      //}
     }
     $rootScope.$on('sendGxResult',sendResult);
   }
