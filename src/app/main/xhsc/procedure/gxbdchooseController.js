@@ -12,10 +12,10 @@
   function gxbdchooseController(db,remote,localPack,xhUtils,$rootScope,$scope,pack,utils,stzlServices,$stateParams){
     var vm = this;
     vm.projectId = $stateParams.projectId;
-    remote.Assessment.queryAllBulidings(vm.projectId).then(function(result){
+    remote.Project.queryAllBulidings(vm.projectId).then(function(result){
       console.log(result)
       var mainTitle = result.data.ProjectName;
-      result.data.Sections.forEach(function(t){
+      result.data[0].Sections.forEach(function(t){
         t.title = (mainTitle||'') + t.SectionName;
       })
       vm.sections = result.data.Sections;
