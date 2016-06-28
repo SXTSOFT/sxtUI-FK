@@ -78,8 +78,7 @@
         return function (){
           return {
             method : method,
-            args: toArray(arguments),
-            fn:fn
+            args: toArray(arguments)
           };
         }
       }
