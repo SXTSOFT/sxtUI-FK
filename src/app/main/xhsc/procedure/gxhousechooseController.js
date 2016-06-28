@@ -57,15 +57,26 @@
         }
 
       }
-
-      function wrap(status,region){
+      //状态设置与用户区域权限
+      function filterOrSetting(status,region){
+        if (region.RegionType>4){
+          statusSetting(status,region);
+        }
+        var st=status.find(function(o){
+          return o.AreaId==region.RegionID;
+        });
+        if (st){
+          region.hasShowRight=true;
+        }
+      }
+      //状态设置
+      function statusSetting(status,region){
         if(!angular.isArray(status)){
           status=[status];
         }
         var  st=status.find(function(o){
           return o.AcceptanceItemID==acceptanceItemID&& o.AreaId==region.RegionID;
         });
-
         if (st){
           region.status=st.Status;
           region.Percentage=st.Percentage;
@@ -110,27 +121,26 @@
         var result=res[0];
         var status=res[1]&&res[1].data?res[1].data:[];
         result.data[0].RegionRelations.forEach(function(d){
+          filterOrSetting(status,d)
           d.projectTree =  d.RegionName;
           d.projectTitle = result.data[0].ProjectName + d.RegionName;
           d.Children && d.Children.forEach(function(c){
+            filterOrSetting(status,c)
             c.projectTree = d.projectTree + c.RegionName;
             c.checked = false;
             c.Children && c.Children.forEach(function(r){
               r.projectTree = c.projectTree + r.RegionName;
               r.checked = false;
-              wrap(status,r);
-
+              filterOrSetting(status,r);
               r.Children && r.Children.forEach(function(_r){
                 _r.projectTree = r.projectTree + _r.RegionName;
                 _r.checked = false;
-                wrap(status,_r);
-
+                filterOrSetting(status,_r);
               })
             })
           })
         })
         vm.houses =  result.data[0].RegionRelations;
-        //console.log('vmh',vm.houses)
       });
     }
 
@@ -140,59 +150,38 @@
       load();
     };
     vm.selected = function(r){
-
-      switch (r.status){
-        case 0:
-          //$state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
-          //  regionId:r.RegionID,projectId:projectId,areaId:areaId});
-
-          if (role=="zb"){
-            r.checked = !r.checked;
-          }
-          else {
-            $state.go('app.xhsc.gx.gxtest', {
-              acceptanceItemID: acceptanceItemID, acceptanceItemName: acceptanceItemName, name: r.projectTree,
-              regionId: r.RegionID, projectId: projectId, areaId: areaId
-            });
-          }
+      switch (role){
+        case "zb":
+          zbSelected(r);
           break;
-        case 1:
-          if (role=="jl"||role=="jf"){
-            $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
-              regionId:r.RegionID,projectId:projectId,areaId:areaId});
-          }
+        case "jl":
+          jlSelected(r);
           break;
         default:
+          jfSelect();
           break;
       }
     }
-    vm.chroom = function(r){
+    //总包点击事件
+    function zbSelected(r){
+        switch (r.status){
+          case 0:
+            r.checked = !r.checked;
+          break;
+        }
+    }
+    //监理点击事件
+    function jlSelected(r){
       switch (r.status){
-        case 0:
+        case 1:
           $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
             regionId:r.RegionID,projectId:projectId,areaId:areaId});
-          if (role=="zb"){
-            vm.selected=r;
-            vm.showmyDialog = true;
-            vm.data = {
-              name: r.projectTree,
-              regionId: r.RegionID,
-              projectId:projectId,
-              areaId:areaId,
-              acceptanceItemName:acceptanceItemName,
-              acceptanceItemID:acceptanceItemID
-            }
-          }
-          break;
-        case 1:
-          if (1 || role=="jl"||role=="jf"){
-            $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
-              regionId:r.RegionID,projectId:projectId,areaId:areaId});
-          }
-          break;
-        default:
           break;
       }
+    }
+    //甲方点击事件
+    function  jfSelect(){
+
     }
 
     vm.zk = function(item){
@@ -207,9 +196,7 @@
       if (region.Children){
         for (var  i=0;i<region.Children.length;i++){
           if (vm.regionfilterByStatus(region.Children[i])){
-            //if (vm.regionfilterByStatus(region.Children[i],operator)){
               return true;
-            //}
           }
         }
         return  operator(region.status);
@@ -252,7 +239,6 @@
         acceptanceItemName:acceptanceItemName,
         acceptanceItemID:acceptanceItemID
       }
-      console.log('vmhouse',vm.houses)
       vm.houses.forEach(function(t){
         t.Children.forEach(function(_t){
           if(_t.checked){
