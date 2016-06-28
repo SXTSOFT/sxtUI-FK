@@ -58,7 +58,7 @@
     function sendResult(){
       $state.go('app.xhsc.gx.gxresult',{acceptanceItemName:acceptanceItemName,name:vm.RegionFullName,areaId:areaId,projectId:projectId});
     }
-    $rootScope.$on('sendGxResult',sendResult);
+    //$rootScope.$on('sendGxResult',sendResult);
     vm.setRegion = function(region){
       //console.log('region',region)
      // vm.info.imageUrl = region.DrawingID;
