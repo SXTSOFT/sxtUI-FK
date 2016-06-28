@@ -65,6 +65,7 @@
       });
       scope.$watch('current',function () {
         scope.info.current = scope.current;
+       // console.log('current',scope.current)
       });
       scope.goToLink = function (item) {
         if(!scope.showCheck){
