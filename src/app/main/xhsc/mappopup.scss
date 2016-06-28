@@ -1369,6 +1369,15 @@ md-tabs[md-align-tabs="bottom"]{
     opacity:1;
     transform: translate3d(0,0,0);
   }
+  md-radio-button{
+    .md-label{
+      white-space: nowrap;
+      max-width: 100%;
+      padding-right:40px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }
 .gxtest{
   md-list{
@@ -1826,6 +1835,8 @@ md-tabs[md-align-tabs="bottom"]{
         padding:6px 10px;
         line-height: 20px;
         min-height: 20px;
+        min-width:50px;
+        margin:6px 8px 6px 0;
         &.md-vanke-theme{
           &.md-raised{
             background-color: #0185f1;
@@ -2215,6 +2226,18 @@ md-tabs[md-align-tabs="bottom"]{
       }
     }
   }
+  .photodraw{
+    .photo-btn{
+      .md-button{
+        min-width:44px;
+        margin-left:3px;
+        margin-right:3px;
+        &.md-icon-button{
+          width:30px;
+        }
+      }
+    }
+  }
 }
 @media (min-width: 600px){
   #rightsidenav{
@@ -2535,7 +2558,7 @@ md-bottom-sheet{
     min-height: 32px;
     float: left;
     width:20%;
-    margin:10px 0;
+    margin:0 0 10px;
     &.md-no-proxy{
       padding: 0 5px;
     }
@@ -2808,5 +2831,10 @@ md-slider{
         }
       }
     }
+  }
+}
+.mapcheck{
+  .leaflet-popup-content{
+    margin:13px 5px;
   }
 }
