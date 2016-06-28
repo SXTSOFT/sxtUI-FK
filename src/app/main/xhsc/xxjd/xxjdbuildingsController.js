@@ -9,24 +9,27 @@
     .controller('xxjdbuildingsController',xxjdbuildingsController);
 
   /**@ngInject*/
-  function xxjdbuildingsController(builds,remote,$scope,$stateParams,$rootScope){
+  function xxjdbuildingsController(remote,$scope,$stateParams,$rootScope){
     var vm = this;
     $rootScope.title = $stateParams.projectName
-    remote.Assessment.queryProcessBuildings('0000100002').then(function(result){
-     // vm.builds = builds;
-      console.log('res',result)
+    vm.stageId = '0000100002';
+    remote.Assessment.queryProcessBuildings(vm.stageId).then(function(result){
+     vm.builds = result.data;
+
+      vm.builds.floorNum = 0;
+      vm.builds.forEach(function(t){
+        if(vm.builds.floorNum < t.floors){
+          vm.builds.floorNum = t.floors;
+        }
+      })
+      vm.buildLen = vm.builds.length;
+      console.log('res',vm.builds)
     })
-    vm.builds = builds;
-    vm.builds.floorNum = 0;
-    vm.builds.builds.forEach(function(t){
-      if(vm.builds.floorNum < t.floors){
-        vm.builds.floorNum = t.floors;
-      }
-    })
-   vm.buildLen = vm.builds.builds.length;
+    //vm.builds = builds;
+
     vm.setBuild = function(item){
       $scope.$parent.current = item;
     }
-    console.log('builds',vm.builds)
+    //console.log('builds',vm.builds)
   }
 })();

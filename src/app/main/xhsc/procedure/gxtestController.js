@@ -30,7 +30,7 @@
     }
     $rootScope.title = $stateParams.acceptanceItemName;
     remote.Procedure.queryProcedure().then(function(result){
-      // console.log(result);
+       console.log(result);
       vm.procedureData = [];
       result.data.forEach(function(it){
         it.SpecialtyChildren.forEach(function(t){
