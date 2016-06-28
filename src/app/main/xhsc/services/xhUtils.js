@@ -231,7 +231,7 @@
         str.push('<li><img src="' + data.url + '" alt="'+data.alt+'"></li>');
       });
       str.push('</ul>');
-      o = $(str.join('')).appendTo('body')
+      o = $(str.join('')).appendTo('body');
 
       var viewer = new Viewer(o[0],{
         button:true,

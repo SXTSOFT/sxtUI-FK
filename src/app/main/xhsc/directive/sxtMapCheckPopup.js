@@ -58,6 +58,16 @@
         var layer = scope.context.layer;
         layer.editing && layer.editing.disable();
       };
+      scope.playImage = function () {
+        var imgs = [];
+        scope.data.image.forEach(function (img) {
+          imgs.push({
+            src:img.FileID,
+            alt:''
+          });
+        })
+        xhUtils.playPhoto(imgs);
+      }
       scope.addPhoto = function () {
         scope.data.v.isNew = false;
         xhUtils.photo().then(function (image) {
