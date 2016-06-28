@@ -74,8 +74,8 @@
           if(image){
             scope.data.images.push({
               ProblemRecordFileID:sxt.uuid(),
-              ProblemRecordID:scope.p.ProblemRecordID,
-              CheckpointID:scope.v.CheckpointID,
+              ProblemRecordID:scope.data.p.ProblemRecordID,
+              CheckpointID:scope.data.v.CheckpointID,
               FileID:image
             });
           }
