@@ -30,7 +30,7 @@
     }
     $rootScope.title = $stateParams.acceptanceItemName;
     remote.Procedure.queryProcedure().then(function(result){
-      // console.log(result);
+       console.log(result);
       vm.procedureData = [];
       result.data.forEach(function(it){
         it.SpecialtyChildren.forEach(function(t){
@@ -58,7 +58,7 @@
     function sendResult(){
       $state.go('app.xhsc.gx.gxresult',{acceptanceItemName:acceptanceItemName,name:vm.RegionFullName,areaId:areaId,projectId:projectId});
     }
-    $rootScope.$on('sendGxResult',sendResult);
+    //$rootScope.$on('sendGxResult',sendResult);
     vm.setRegion = function(region){
       //console.log('region',region)
      // vm.info.imageUrl = region.DrawingID;

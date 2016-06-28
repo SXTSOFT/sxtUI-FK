@@ -262,7 +262,7 @@
         return $http.post($http.url('/Api/AssessmentApi/SumReportTotal'),{assessmentID:assessmentID});
       },
       queryProcessBuildings:function(regionId){
-        return $http.get($http.url('/api/ImageSignApi/GetBuildingList'),{stageId:regionId})
+        return $http.get($http.url('/api/ImageSignApi/GetBuildingList?stageId='+regionId))
       },
       EngineeringProcess:{
         getWorkingMap:function(projectId){
@@ -317,182 +317,8 @@
             })
           })
         },
-        getWorkingProcess:function(){
-          return $q(function(resolve){
-            resolve({
-              data:{
-                Rows:[{
-                  Application: null,
-                  AreaImage: null,
-                  AreaRemark: null,
-                  BuildArea: 0,
-                  CreatedId: null,
-                  CreatedTime: "0001-01-01",
-                  GreenArea: 0,
-                  LandUseType: 0,
-                  Latitude: null,
-                  Longitude: null,
-                  ModefiedId: null,
-                  ModefiedTime: "0001-01-01",
-                  ProcedureId: "2dfbde19-52be-43b9-b5d1-d03e2f828c9d",
-                  ProcedureName: "预埋电气安装首次验收",
-                  ProjectId: null,
-                  ProjectNo: null,
-                  SellLine: null,
-                  Status: 0,
-                  TotalArea: 0,
-                  gx1: 34
-                },{
-                  Application: null,
-                  AreaImage: null,
-                  AreaRemark: null,
-                  BuildArea: 0,
-                  CreatedId: null,
-                  CreatedTime: "0001-01-01",
-                  GreenArea: 0,
-                  LandUseType: 0,
-                  Latitude: null,
-                  Longitude: null,
-                  ModefiedId: null,
-                  ModefiedTime: "0001-01-01",
-                  ProcedureId: "51bb20e2-92a2-4c9f-85a9-c4545e710cf0",
-                  ProcedureName: "铝合金门窗首次验收",
-                  ProjectId: null,
-                  ProjectNo: null,
-                  SellLine: null,
-                  Status: 0,
-                  TotalArea: 0,
-                  gx1: 23
-                },{
-                  Application: null,
-                  AreaImage: null,
-                  AreaRemark: null,
-                  BuildArea: 0,
-                  CreatedId: null,
-                  CreatedTime: "0001-01-01",
-                  GreenArea: 0,
-                  LandUseType: 0,
-                  Latitude: null,
-                  Longitude: null,
-                  ModefiedId: null,
-                  ModefiedTime: "0001-01-01",
-                  ProcedureId: "65b20868-7e00-44c3-b8a2-09e4b6602ef2",
-                  ProcedureName: "砼结构外观首次验收",
-                  ProjectId: null,
-                  ProjectNo: null,
-                  SellLine: null,
-                  Status: 0,
-                  TotalArea: 0,
-                  gx1: 32
-                },{
-                  Application: null,
-                  AreaImage: null,
-                  AreaRemark: null,
-                  BuildArea: 0,
-                  CreatedId: null,
-                  CreatedTime: "0001-01-01",
-                  GreenArea: 0,
-                  LandUseType: 0,
-                  Latitude: null,
-                  Longitude: null,
-                  ModefiedId: null,
-                  ModefiedTime: "0001-01-01",
-                  ProcedureId: "7ceb4043-d1c6-4454-8546-a2bf6630d887",
-                  ProcedureName: "预埋水暖（含燃气、新风、空调）安装首次验收",
-                  ProjectId: null,
-                  ProjectNo: null,
-                  SellLine: null,
-                  Status: 0,
-                  TotalArea: 0,
-                  gx1: 33
-                },{
-                  Application: null,
-                  AreaImage: null,
-                  AreaRemark: null,
-                  BuildArea: 0,
-                  CreatedId: null,
-                  CreatedTime: "0001-01-01",
-                  GreenArea: 0,
-                  LandUseType: 0,
-                  Latitude: null,
-                  Longitude: null,
-                  ModefiedId: null,
-                  ModefiedTime: "0001-01-01",
-                  ProcedureId: "8bfc6626-c5ed-4267-ab8f-cb2294885c25",
-                  ProcedureName: "预制内墙板首次验收",
-                  ProjectId: null,
-                  ProjectNo: null,
-                  SellLine: null,
-                  Status: 0,
-                  TotalArea: 0,
-                  gx1: 12
-                },{
-                  Application: null,
-                  AreaImage: null,
-                  AreaRemark: null,
-                  BuildArea: 0,
-                  CreatedId: null,
-                  CreatedTime: "0001-01-01",
-                  GreenArea: 0,
-                  LandUseType: 0,
-                  Latitude: null,
-                  Longitude: null,
-                  ModefiedId: null,
-                  ModefiedTime: "0001-01-01",
-                  ProcedureId: "953cea5b-b6fb-4eb7-b019-da391f090efd",
-                  ProcedureName: "主体钢筋（墙柱）",
-                  ProjectId: null,
-                  ProjectNo: null,
-                  SellLine: null,
-                  Status: 0,
-                  TotalArea: 0,
-                  gx1: 34
-                },{
-                  Application: null,
-                  AreaImage: null,
-                  AreaRemark: null,
-                  BuildArea: 0,
-                  CreatedId: null,
-                  CreatedTime: "0001-01-01",
-                  GreenArea: 0,
-                  LandUseType: 0,
-                  Latitude: null,
-                  Longitude: null,
-                  ModefiedId: null,
-                  ModefiedTime: "0001-01-01",
-                  ProcedureId: "a17156db-da3c-4878-b3de-2a03169f094e",
-                  ProcedureName: "主体钢筋（梁板）",
-                  ProjectId: null,
-                  ProjectNo: null,
-                  SellLine: null,
-                  Status: 0,
-                  TotalArea: 0,
-                  gx1: 35
-                },{
-                  Application: null,
-                  AreaImage: null,
-                  AreaRemark: null,
-                  BuildArea: 0,
-                  CreatedId: null,
-                  CreatedTime: "0001-01-01",
-                  GreenArea: 0,
-                  LandUseType: 0,
-                  Latitude: null,
-                  Longitude: null,
-                  ModefiedId: null,
-                  ModefiedTime: "0001-01-01",
-                  ProcedureId: "abd6a825-91aa-4d34-9426-68d96579c0cf",
-                  ProcedureName: "给水管道及配件安装",
-                  ProjectId: null,
-                  ProjectNo: null,
-                  SellLine: null,
-                  Status: 0,
-                  TotalArea: 0,
-                  gx1: 27
-                }]
-              }
-            })
-          })
+        getWorkingProcess:function(regionId){
+          return $http.get($http.url('api/ImageSignApi/GetBuildingDetailed?buildingId='+regionId));
         }
       },
       Measure:{
@@ -877,6 +703,5 @@
         }
       }
     }});
-
   }
 })();
