@@ -18,6 +18,12 @@
       acceptanceItemName = $stateParams.acceptanceItemName,
       role=$stateParams.role,
       areaId = $stateParams.areaId;
+
+    $rootScope.title = $stateParams.acceptanceItemName;
+    if(role == "zb"){
+      $rootScope.sendBt = true;
+    }
+    function  load(){
       vm.nums={
         qb:0, //全部
         wtj:0,//未提交
@@ -27,12 +33,6 @@
         yzg:0,//已整改
         wzg:0//未整改
       }
-    $rootScope.title = $stateParams.acceptanceItemName;
-    if(role == "zb"){
-      $rootScope.sendBt = true;
-    }
-    function  load(){
-
       function  setNum(status){
         vm.nums.qb++;
         switch (status){
@@ -62,13 +62,13 @@
         if(!angular.isArray(status)){
           status=[status];
         }
-        var  status=status.find(function(o){
+        var  st=status.find(function(o){
           return o.AcceptanceItemID==acceptanceItemID&& o.AreaId==region.RegionID;
         });
 
-        if (status){
-          region.status=status.Status;
-          region.Percentage=status.Percentage;
+        if (st){
+          region.status=st.Status;
+          region.Percentage=st.Percentage;
         }else {
           region.status=0;
           region.Percentage=0;

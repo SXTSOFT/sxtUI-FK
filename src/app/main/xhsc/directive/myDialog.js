@@ -50,26 +50,29 @@
       scope.submit = function(evt){
         scope.dialogShow = false;
         scope.areaIds=[];
+        var percentage= scope.percentage?scope.percentage:100
         scope.dialogData.Rows.forEach(function(t){
           scope.areaIds.push( {
-            RegionID:t.RegionID,
-            description:scope.description,
-            percentage:scope.percentage
+            AreaID:t.RegionID,
+            Describe:scope.description,
+            Percentage:percentage
           });
         })
         var params ={
-          acceptancetemID:scope.dialogData.acceptanceItemID,
-          areaID:scope.areaIds,
-          description:scope.description,
-          percentage:scope.percentage
+          AcceptanceItemID:scope.dialogData.acceptanceItemID,
+          AreaList:scope.areaIds,
+          Describe:scope.description,
+          Percentage:percentage
         }
-        //{AcceptanceItemID:AcceptanceItemID,AreaID:AreaID, description:description,percentage:percentage}
+
         $('.my-dialog-mask',element).fadeOut();
         if(scope.dialogSure == '报检'){
           remote.Procedure.postInspection(params).then(function(result){
-            $timeout(function(){
-              utils.alert('报检成功',evt,scope.callBack);
-            },200);
+            if (result.data.ErrorCode==0){
+              $timeout(function(){
+                utils.alert('报检成功',evt,scope.callBack);
+              },200);
+            }
           })
         }
       }
