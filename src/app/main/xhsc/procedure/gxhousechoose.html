@@ -31,7 +31,7 @@
                       </div>
                     </div>
                     <md-button ng-click="vm.zk(c)" style="color:#49affe;min-width: 50px;"><span ng-show="c.show">展开</span><span ng-show="!c.show">收起</span></md-button></div>
-                    <md-list class="roomllist" slide-up-down ng-value="!c.show" style="border-bottom: 1px solid #dedede;">
+                    <md-list class="roomllist" slide-up-down ng-value="!c.show" style="border-bottom: 1px solid #dedede;margin-top:10px;">
                       <md-list-item ng-if="r.hasShowRight&&vm.regionfilterByStatus(r)" ng-repeat="r in c.Children">
                         <div class="room-st {{r.style}}" ng-click="vm.selected(r)" ng-class="{'checked':r.checked}">
                           <div style="height:100%;width:{{r.Percentage}}%;"></div><span>{{r.RegionName}}</span>

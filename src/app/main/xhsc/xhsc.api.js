@@ -66,6 +66,13 @@
         }
       }).bind(function (projectId) {
         return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByid', {projectId: projectId}));
+      }),
+      getInspectionList:$http.db({
+        _id:'Inspection',
+        idField:'InspectionId',
+        dataType:1
+      }).bind(function(projectId){
+        return $http.get($http.url('/api/InspectionApi/GetInspectionInfoList',{projectId:projectId}));
       })
     },
     Procedure:{

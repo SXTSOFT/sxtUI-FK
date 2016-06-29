@@ -44,11 +44,14 @@
   <md-tab label="工序验收列表">
     <md-content>
       <div layout="column" class="gxdownload">
-        <md-list>
+        <md-list ng-repeat="item in vm.gxList">
           <md-list-item>
-            <p layout="column" style="padding-right: 120px;font-size:16px;">
-              工序验收项
-            </p>
+            <div class="md-list-item-text" layout="column">
+              <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;">
+                {{item.AcceptanceItemName}}
+              </p>
+              <p style="color:#999;padding-right: 120px;margin:0;">区域：<span ng-repeat="area in item.Children"> {{area.newName}} </span></p>
+            </div>
             <div class="md-secondary md-hue-3" style="right:0;margin:0;">
               <md-button class="md-raised md-primary">
                 验收

@@ -31,7 +31,7 @@
         layer.addTo(map);
         var mks = [];
         remote.Project.getMap().then(function(result){
-          //console.log('map',result);
+          console.log('map',result);
           scope.markers=[];
           result.data.filter(function(item) {
             return !!item.Coordinate
