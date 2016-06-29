@@ -21,13 +21,37 @@
         result.data.forEach(function (item) {
           item.isOffline = rs[ix++]?true:false;
         });
+        vm.gxList=[];
+
+        result.data.forEach(function(item){
+
+          if(item.isOffline){
+            remote.Project.getInspectionList(item.ProjectID).then(function(res){
+              res.data.forEach(function(r){
+                r.Children.forEach(function(_r){
+                  remote.Project.queryAllBulidings(item.ProjectID).then(function(_res){
+                    var tempName = xhUtils.findRegion(_res.data[0].RegionRelations[0],_r.AreaID);
+                    _r.newName = item.ProjectName + tempName.fullName + _r.Describe;
+                  })
+                  //_r.NewName = xhUtils.findRegion()
+                 // _r.RegionName = item.ProjectName + _r.RegionName;
+                  //console.log('_res',_r)
+                })
+                vm.gxList.push(r);
+              })
+
+              //console.log('data',vm.gxList)
+            })
+          }
+        });
         vm.projects = result.data;
+        //console.log('result',vm.gxList)
+
       });
     });
-
     vm.download = function(item){
       item.isDown = true;
-      var ix=1,len = 7;
+      var ix=1,len = 8;
       item.progress = ix/len;
       api.task([function () {
         return remote.Project.getDrawings(item.ProjectID)
@@ -39,6 +63,8 @@
         return remote.Procedure.getRegionStatus(item.ProjectID);
       },function () {
         return remote.Procedure.queryProcedure();
+      },function(){
+        return remote.Project.getInspectionList(item.ProjectID);
       },function () {
         return api.setting('project:'+item.ProjectID,{ProjectID:item.ProjectID,date:new Date()});
       }])(function (persent) {

@@ -157,7 +157,10 @@
           }
           break;
         case 1:
-          if (role=="jl"||role=="jf"){
+          if (role=="zb"){
+            r.checked = !r.checked;
+          }
+          else if (role=="jl"||role=="jf"){
             $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
               regionId:r.RegionID,projectId:projectId,areaId:areaId});
           }
@@ -245,14 +248,15 @@
       return show.indexOf(status)>-1;
     }
 
-    function sendResult(){
+    var sendgxResult =$rootScope.$on('sendGxResult',function(){
       vm.data = {
         projectId:projectId,
         Rows:[],
         acceptanceItemName:acceptanceItemName,
         acceptanceItemID:acceptanceItemID
       }
-      console.log('vmhouse',vm.houses)
+      vm.showmyDialog = true;
+      //console.log('vmhouse',vm.houses)
       vm.houses.forEach(function(t){
         t.Children.forEach(function(_t){
           if(_t.checked){
@@ -270,10 +274,13 @@
           })
         })
       })
+      console.log('length',vm.data.Rows.length)
       if(vm.data.Rows.length){
-        vm.showmyDialog = true;
+
       }
-    }
-    $rootScope.$on('sendGxResult',sendResult);
+    });
+    $scope.$on("$destroy",function(){
+      sendgxResult();
+    });
   }
 })();

@@ -55,10 +55,16 @@
       //console.log('vm',vm.procedureData)
     })
     console.log('state',$stateParams)
-    function sendResult(){
+    //function sendResult(){
+    //  $state.go('app.xhsc.gx.gxresult',{acceptanceItemName:acceptanceItemName,name:vm.RegionFullName,areaId:areaId,projectId:projectId});
+    //}
+    //$rootScope.$on('sendGxResult',sendResult);
+    var sendResult = $rootScope.$on('sendGxResult',function(){
       $state.go('app.xhsc.gx.gxresult',{acceptanceItemName:acceptanceItemName,name:vm.RegionFullName,areaId:areaId,projectId:projectId});
-    }
-    $rootScope.$on('sendGxResult',sendResult);
+    })
+    $scope.$on("$destroy",function(){
+      sendResult();
+    });
     vm.setRegion = function(region){
       //console.log('region',region)
      // vm.info.imageUrl = region.DrawingID;
