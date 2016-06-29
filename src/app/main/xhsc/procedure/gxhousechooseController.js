@@ -176,7 +176,7 @@
     function jlSelected(r){
       switch (r.status){
         case 1:
-          $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
+          $state.go('app.xhsc.gx.gxtest',{InspectionId: r.InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
             regionId:r.RegionID,projectId:projectId,areaId:areaId});
           break;
       }
@@ -262,7 +262,7 @@
           })
         })
       })
-      console.log('length',vm.data.Rows.length)
+      //console.log('length',vm.data.Rows.length)
       if(vm.data.Rows.length){
 
       }
