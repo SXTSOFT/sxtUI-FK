@@ -225,13 +225,14 @@
     }
 
     function playPhoto(images,options) {
+      if(!images || !images.length)return;
       var str = [];
       str.push('<ul>')
       angular.forEach(images, function (data) {
         str.push('<li><img src="' + data.url + '" alt="'+data.alt+'"></li>');
       });
       str.push('</ul>');
-      o = $(str.join('')).appendTo('body')
+      o = $(str.join('')).appendTo('body');
 
       var viewer = new Viewer(o[0],{
         button:true,

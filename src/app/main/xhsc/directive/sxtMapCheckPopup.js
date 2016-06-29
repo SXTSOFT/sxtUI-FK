@@ -58,14 +58,24 @@
         var layer = scope.context.layer;
         layer.editing && layer.editing.disable();
       };
+      scope.playImage = function () {
+        var imgs = [];
+        scope.data.images.forEach(function (img) {
+          imgs.push({
+            src:img.FileID,
+            alt:''
+          });
+        })
+        xhUtils.playPhoto(imgs);
+      }
       scope.addPhoto = function () {
         scope.data.v.isNew = false;
         xhUtils.photo().then(function (image) {
           if(image){
             scope.data.images.push({
               ProblemRecordFileID:sxt.uuid(),
-              ProblemRecordID:scope.p.ProblemRecordID,
-              CheckpointID:scope.v.CheckpointID,
+              ProblemRecordID:scope.data.p.ProblemRecordID,
+              CheckpointID:scope.data.v.CheckpointID,
               FileID:image
             });
           }

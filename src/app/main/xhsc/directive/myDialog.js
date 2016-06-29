@@ -32,7 +32,7 @@
         if(scope.dialogShow){
           $('.my-dialog-mask',element).fadeIn();
           scope.description="";
-          scope. percentage="";
+          scope. percentage=100;
         }
       })
       scope.$watch('dialogData',function(){
