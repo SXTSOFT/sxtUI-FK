@@ -6,7 +6,7 @@
     .module('app.xhsc')
     .directive('sxtMapCheck',sxtMapCheck);
   /** @ngInject */
-  function sxtMapCheck($timeout,remote,mapPopupSerivce,sxt,utils ) {
+  function sxtMapCheck($timeout,remote,mapPopupSerivce,sxt,utils) {
     return {
       scope:{
         item:'=sxtMapCheck',
