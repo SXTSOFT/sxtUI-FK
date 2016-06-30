@@ -59,7 +59,7 @@
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
-        url: '/gxtest/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}/{areaId}',
+        url: '/gxtest/{InspectionId}/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}/{areaId}',
         templateUrl: 'app/main/xhsc/procedure/gxtest.html',
         controller: 'gxtestController as vm'
       })
