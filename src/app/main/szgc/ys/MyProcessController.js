@@ -280,5 +280,84 @@
       }
 
     });
+
+    //以下离线相关
+    api.szgc.vanke.projects().then(function (r) {
+      $scope.project.projects = r.data.data;
+      $scope.project.projects.forEach(function (p) {
+        api.setting('p_'+p.$id).then(function (d) {
+          p.online = d?1:0;
+        });
+      })
+    });
+    $scope.download =function (project) {
+      api.task([
+        //项目区域/合作伙伴
+        function (tasks) {
+          return api.szgc.vanke.projects().then(function (result) {
+            result.data.data.forEach(function (p) {
+              tasks.push(function () {
+                return api.szgc.vanke.project_items({
+                  project_id: p.project_id,
+                  page_size: 0,
+                  page_number: 1
+                }).then(function (result) {
+                  result.data.data.forEach(function (item) {
+                    tasks.push(function () {
+                      return api.szgc.vanke.buildings({
+                        project_id: item.project_id,
+                        project_item_id: item.project_item_id,
+                        page_size: 0,
+                        page_number: 1
+                      }).then(function (result) {
+                        result.data.data.forEach(function (build) {
+                          tasks.push(function () {
+                            return api.szgc.vanke.rooms({
+                              building_id: build.building_id,
+                              page_size: 0,
+                              page_number: 1
+                            });
+                          })
+                        });
+                      })
+                    });
+                  })
+                });
+              });
+              tasks.push(function () {
+                return api.szgc.addProcessService.getBatchRelation({regionIdTree:p.project_id});
+              });
+              tasks.push(function () {
+                return api.szgc.CheckStepService.cache(p.project_id);
+              })
+            })
+          });
+        },
+        //专业
+        function () {
+          return api.szgc.vanke.skills({page_size:0,page_number:1});
+        },
+        //工序级别关系
+        function () {
+          return api.szgc.BatchSetService.getAll({status:4,batchType:255})
+        },
+        //专业分类关系
+        function () {
+          return api.szgc.ProcedureTypeService.getAll({startrowIndex:0,maximumRows:100,Status:5});
+        },
+        //工序验收批设置
+        function () {
+          return api.szgc.ProcedureBathSettingService.query();
+        },
+        //工序验收表
+        function () {
+          return api.szgc.TargetService.getAll()
+        }
+      ])(function (percent,current,total,context) {
+        project.percent = parseInt(percent *100) +' %';
+        project.current = current;
+        project.total = total;
+      })
+    }
   }
 })();

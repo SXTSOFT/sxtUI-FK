@@ -38,7 +38,8 @@
     "jquery-flipster": "https://github.com/drien/jquery-flipster.git#^1.1.2",
     "angular-ui-tree": "^2.15.0",
     "viewerjs": "fengyuanchen/viewerjs#^0.4.0",
-    "ui-select": "angular-ui-select#^0.16.1"
+    "ui-select": "angular-ui-select#^0.16.1",
+    "pouchdb":"5.3.2"
   },
   "devDependencies": {
     "angular-mocks": "1.4.8"

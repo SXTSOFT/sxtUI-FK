@@ -87,7 +87,6 @@
           headers: { 'Authorization': authToken.getToken() },
           autoUpload: false,
           onSuccessItem: function (item, response, status, headers) {
-
             if (status==200) {
               $scope.imgOK = true;
             }else{
@@ -143,55 +142,19 @@
         var gid;
         scope.$watch('gid', function () {
           if (gid && gid == scope.gid) return;
-          uploader.queue.length = 0;
           gid = scope.gid;
 
-          if (gid != '') {
-            uploader.url =sxt.app.api+ '/api/Files/' + gid + '?project=' + (scope.project||'');
-            angular.forEach(uploader.queue, function (item) { item.url = uploader.url });
-          }
           scope.inputChange = function(){
             scope.imgOK = false;
             scope.imgFail = false;
           }
 
-          api.szgc.FilesService.group(scope.gid || '').success(function (data) {
-            if (gid != data.Group) {
-              gid = scope.gid = data.Group;
-              uploader.url = sxt.app.api+'/api/Files/' + gid + '?project=' + (scope.project || '');
-              angular.forEach(uploader.queue, function (item) { item.url = uploader.url });
-            }
+          api.szgc.FilesService.group(scope.gid || '').then(function (result) {
+            var data = result.data;
             if (data.Files) {
               data.Files.forEach(function (att) {
                 if (angular.isArray(scope.files))
                   scope.files.push(att.Url);
-
-                uploader.queue.push({
-                  file: {
-                    Id: att.Id,
-                    name: att.FileName,
-                    size: att.FileSize,
-                    Url: att.Url,
-                    UserID: att.UserID,
-                    Remark:att.Remark,
-                    CreateDate: att.CreateDate
-                  },
-                  remove: function () {
-                    var me = this;
-                    api.szgc.FilesService.delete(me.file.Id).then(function (r) {
-                      uploader.queue.splice(uploader.queue.indexOf(me), 1);
-                    });
-                  },
-                  progress: 100,
-                  isServer: true,
-                  isSuccess: true,
-                  isCancel: false,
-                  isError: false,
-                  isReady: false,
-                  isUploading: true,
-                  isUploaded: true,
-                  index: null
-                });
               });
             }
           })

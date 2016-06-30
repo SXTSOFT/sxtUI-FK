@@ -16,7 +16,6 @@
     var vm = this;
     vm.keyboard = { show:false};
 
-    //给默认时�?
     var dateFilter = $filter('date');
     $scope.m = {
         isStash: false
@@ -38,6 +37,10 @@
       nametree = $scope.$parent.project.nameTree || $stateParams.nameTree,
       token = $stateParams.token,
       flag = $stateParams.flag;
+
+    var tid = procedure+idtree,
+      tname = nametree+'-'+procedureName;
+
     $scope.flag = $stateParams.flag;
     if (!procedure) {
       $state.go('app.szgc.ys');
@@ -141,7 +144,9 @@
     api.szgc.ProcedureService.getAppImg(pid, procedure, api.szgc.vanke.isPartner(1) ? 'partner' : '').then(function (r) {
       if (r.data) {
         $scope.data.curStep.GroupImg2 = r.data.Id;
-
+      }
+      else{
+        $scope.data.curStep.GroupImg2 = tid;
       }
     });
 
@@ -202,7 +207,7 @@
       }
       else if (batch && !flag) {
 
-        batch.Count = batch.Count + 1;
+        batch.Count = (batch.Count||0) + 1;
         $scope.data.curHistory = batch;
       }
       $q.all([
@@ -380,7 +385,7 @@
                   for (var i = $scope.targets.yb.length - 1; i >= 0; i--) {
                     var n = $scope.targets.yb[i];
                     if (n.TargetName && n.TargetName.substring(0, 1) == '-') break;
-                    ns.push(n)
+                    ns.push(n);
                   };
                   return ns;
                 })(),
@@ -472,9 +477,8 @@
 
       $scope.data.groups = [];
       $q.all([!$scope.data.isB && $scope.data.curHistory.CompanyId ?  api.szgc.vanke.teams($scope.data.curHistory.CompanyId).then(function (result) {
-        var gps = $scope.data.supervision.find(function (s) {
-          return s.UnitId == $scope.data.curHistory.CompanyId;
-        }).groups,gps2=[];
+        var gps = getGroups($scope.data.supervision,'UnitId',$scope.data.curHistory.CompanyId)
+          ,gps2=[];
         result.data.data.forEach(function (item) {
           if (!item || !item.skills || !item.skills.length) return;
           if ($stateParams.procedureTypeId) {
@@ -508,9 +512,8 @@
         })
       }), !$scope.data.isB && $scope.data.curHistory.ParentCompanyId && $scope.data.curHistory.ParentCompanyId != $scope.data.curHistory.CompanyId ?
         api.szgc.vanke.teams($scope.data.curHistory.ParentCompanyId).then(function (result) {
-          var gps = $scope.data.supervision1.find(function (s) {
-            return s.UnitId == $scope.data.curHistory.ParentCompanyId;
-          }).groups, gps2 = [];
+          var gps = getGroups($scope.data.supervision1,'UnitId',$scope.data.curHistory.ParentCompanyId),
+            gps2 = [];
           result.data.data.forEach(function (item) {
             if (!item || !item.skills || !item.skills.length) return;
             if ($stateParams.procedureTypeId) {
@@ -606,9 +609,7 @@
         $q.all([$scope.data.isB && $scope.data.curHistory.CompanyId ? $q(function (resolve) {
           resolve({
             data: {
-              data: $scope.data.supervision.find(function (s) {
-                return s.UnitId == $scope.data.curHistory.CompanyId;
-              }).groups
+              data: getGroups($scope.data.supervision,'UnitId',$scope.data.curHistory.CompanyId)
             }
           })
         }) : $q(function (resolve) {
@@ -620,9 +621,7 @@
         }), $scope.data.curHistory.ParentCompanyId && $scope.data.curHistory.ParentCompanyId != $scope.data.curHistory.CompanyId ?  $q(function (resolve) {
           resolve({
             data: {
-              data: $scope.data.supervision1.find(function (s) {
-                return s.UnitId == $scope.data.curHistory.ParentCompanyId;
-              }).groups
+              data: getGroups($scope.data.supervision1,'UnitId',$scope.data.curHistory.ParentCompanyId)
             }
           })
         }) : $q(function (resolve) {
@@ -677,6 +676,13 @@
     $scope.$watch('data.curHistory.ParentCompanyId', resetGroup)
     $scope.$watch('data.curHistory.CompanyId', resetGroup);
 
+    function getGroups(sp,field,v) {
+      if(!sp)return [];
+      var gp = sp.find(function (s) {
+        return s[field] == v;
+      });
+      return gp?gp.groups:[]
+    }
     $scope.targets = {
       zk: [],
       yb: []
@@ -861,8 +867,10 @@
         $scope.isSaveing = false;
         return;
       }
+
       //console.log('CheckData', targets)
       api.szgc.addProcessService.postCheckData({
+        Id:tid,
         Batch: data.batchs,
         Step: step,
         CheckData: targets,
@@ -872,6 +880,10 @@
           api.szgc.ProcedureService.deleteAppImg(step.GroupImg2);
           $scope.isSaveing = false;
           $scope.$parent.project.filter(true);
+          api.uploadTask({
+            _id:tid,
+            name:tname
+          });
           utils.alert('提交完成').then(function () {
             $state.go('app.szgc.ys');
           });

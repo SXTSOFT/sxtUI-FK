@@ -75,6 +75,30 @@
 
     </md-tab-content>
   </md-tab>
+  <md-tab label="离线项目">
+    <md-tab-content flex layout-fill layout="column">
+<md-content flex layout="column">
+<md-list md-cloak>
+  <md-subheader class="md-no-sticky">已下载</md-subheader>
+  <md-list-item ng-repeat="project in project.projects|filter:{online:1}">
+    <p> {{ project.name }} </p>
+  </md-list-item>
+  <md-subheader class="md-no-sticky">未下载</md-subheader>
+  <md-list-item class="" ng-repeat="project in project.projects|filter:{online:0}">
+    <p> {{ project.name }} {{project.percent}} ({{project.current}}/{{project.total}}) </p>
+    <md-button class="md-secondary md-primary md-raised" ng-click="download(project)">下载</md-button>
+  </md-list-item>
+</md-list>
+</md-content>
+    </md-tab-content>
+  </md-tab>
+  <md-tab label="上传">
+    <md-tab-content flex layout-fill layout="column">
+      <md-content flex layout="column">
+
+      </md-content>
+    </md-tab-content>
+  </md-tab>
 </md-tabs>
 
 

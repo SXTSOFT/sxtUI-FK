@@ -14,6 +14,7 @@
       cfgs=[],
       pouchdb,
       settingDb,
+      uploadDb,
       networkState = 1;
     provider.register = register;
     provider.getNetwork = getNetwork;
@@ -47,6 +48,7 @@
       api.setting = setting;
       api.task = task;
       api.upload = upload;
+      api.uploadTask = uploadTask;
       return api;
     }
 
@@ -171,7 +173,7 @@
         self =this,
         groups = [];
       appendTasks(tasks,groups,filter);
-      self.task(tasks)(function (percent,current,total,tips) {
+      self.task(tasks)(function (percent,current,total) {
         groups.forEach(function (g) {
           if(current>=g.end)
             g.percent = 1;
@@ -182,13 +184,14 @@
             g.percent = g.current * 1.0 / g.total;
           }
         });
-        progress && progress(percent,current,total,tips);
+        progress && progress(percent,current,total);
       },complete,fail);
       return groups;
     }
     function appendTasks(tasks,groups,filter) {
       cfgs.forEach(function (cfg) {
         if(cfg.upload){
+          if(filter && filter(cfg)===false)return;
           var group = {
             name:cfg.name ||'其它-'+cfg._id,
             start:tasks.length
@@ -213,28 +216,45 @@
     function task(tasks) {
       var oNetworkState = networkState;
       networkState = 0;
-      var args = tasks,
-        l = args.length;
       return function start(progress,success,fail) {
-        run(0,progress,success,fail);
+        run(0,progress,success,fail,null);
       }
       function run(i,progress,success,fail) {
-        var fn = args[i];
-        if(!fn){
-          networkState = oNetworkState;
-          progress(i*1.0/l,i,l);
-          success && success();
-        }
-        else {
-          progress(i*1.0/l,i,l,fn)
-          fn().then(function () {
-            run(i+1,progress,success,fail)
-          }).catch(function () {
+        var len = tasks.length,fn = tasks[i];
+        if (progress(i * 1.0 / len, i, len) !== false) {
+          if (!fn) {
             networkState = oNetworkState;
-            fail && fail();
-          });
+            success && success();
+          }
+          else {
+            fn(tasks).then(function () {
+              run(i + 1, progress, success, fail);
+            }).catch(function () {
+              networkState = oNetworkState;
+              fail && fail();
+            });
+          }
         }
       }
+    }
+    function uploadTask(itemOrFilter) {
+      return provider.$q(function (resolve) {
+        if (!uploadDb) {
+          uploadDb = pouchdb('systemupload');
+        }
+        if(!angular.isFunction(itemOrFilter)){
+          uploadDb.addOrUpdate(itemOrFilter).then(function () {
+            resolve(item);
+          });
+        }
+        else{
+          uploadDb.findAll(itemOrFilter).then(function (result) {
+            resolve(result);
+          }).catch(function () {
+            resolve(null);
+          });
+        }
+      })
     }
 
     function bindDb (cfg) {
@@ -248,104 +268,144 @@
       }
       else {
         cfgs.push(cfg);
-        cfg.bind = bind;
+        cfg.bind = function (fn,cb) {
+          cfg.fn = fn;
+          return function () {
+            var args = toArray(arguments),
+              lodb = cfg.db,
+              caller = this;
+            if(!lodb && cfg._id)
+              lodb = cfg.db = pouchdb(cfg._id);
+
+            if(cfg.local || !cfg.fn || provider.getNetwork()==1){
+              var p2 = provider.$q.$q(function (resolve,reject) {
+                if(!cfg._id){
+                  resolve(bindData({},[],cfg));
+                }
+                else if(cfg.delete){
+                  args.forEach(function (d) {
+                    lodb.delete(id(d)||d);
+                  });
+                  resolve(args);
+                }
+                else if(cfg.upload) {
+                  args.forEach(function (d) {
+                    id(d,lodb,args,cfg);
+                  });
+                  resolve(args);
+                }
+                else{
+                  var result = {};
+                  if(cfg.dataType == 3){
+                    if(args.length==1 && !cfg.filter) {
+                      lodb.get(args[0]).then(function (r) {
+                        result.data = r;
+                        resolve(result);
+                      }).catch(function (r) {
+                        result.data = r;
+                        reject(result);
+                      });
+                    }
+                    else{
+                      lodb.findAll(function (item) {
+                        if (cfg.filter)
+                          return cfg.filter.apply(cfg, [item].concat(args));
+                        return true;
+                      }).then(function (r) {
+                        result.data = r.rows[0];
+                        resolve(result);
+                      })
+                    }
+                  }
+                  else {
+                    lodb.findAll(function (item) {
+                      if (cfg.filter)
+                        return cfg.filter.apply(cfg, [item].concat(args));
+                      return true;
+                    }).then(function (r) {
+                      bindData(result,r.rows,cfg);
+                      resolve(result);
+                    });
+                  }
+                }
+              });
+              return cb? p2.then(function (result) {
+                return cb.call(caller,result,cfg,args);
+              }):p2;
+            }
+            else
+            {
+              var p = fn && fn.apply(caller,args),
+                p1 = p && p.then(function (result) {
+                    if(result && result.data) {
+                      var data = result.data;
+                      if (cfg.dataType == 1) {
+                        data.forEach(function (d) {
+                          id(d, lodb, args,cfg);
+                        })
+                      }
+                      else {
+                        if (cfg.dataType == 3) {
+                          id(data, lodb, args,cfg);
+                        }
+                        else if (data.rows && angular.isArray(data.rows)) {
+                          data.rows.forEach(function (d) {
+                            id(d, lodb, args,cfg);
+                          })
+                        }
+                        else if (data.data && angular.isArray(data.data)) {
+                          data.data.forEach(function (d) {
+                            id(d, lodb, args,cfg);
+                          })
+                        }
+                        else if (data.Rows && angular.isArray(data.Rows)) {
+                          data.Rows.forEach(function (d) {
+                            id(d, lodb, args,cfg);
+                          })
+                        }
+                      }
+                    }
+                    return result;
+                  });
+              return p1 && cb ? p1.then(function (result) {
+                return cb.call(caller,result,cfg,args);
+              }):p1;
+            }
+          }
+        };
         return cfg;
       }
-      function bind(fn) {
-        cfg.fn = fn;
-        return function () {
-          var args = toArray(arguments),
-            lodb = cfg.db,
-            _id;
-          if(!lodb)
-            lodb = cfg.db = pouchdb(cfg._id);
 
-          if(cfg.local || !cfg.fn || provider.getNetwork()==1){
-            return provider.$q.$q(function (resolve,reject) {
-              if(cfg.delete){
-                args.forEach(function (d) {
-                  _id = id(d)||d;
-                  lodb.delete(_id);
-                })
-              }
-              else if(cfg.upload) {
-                args.forEach(function (d) {
-                  _id = id(d);
-                  if(_id){
-                    lodb.addOrUpdate(angular.extend({_id:_id},d));
-                  }
-                });
-              }
-              else{
-                var result = {
-                  data: null
-                };
-                if(cfg.dataType == 3 && args.length==1){
-                  lodb.get(args[0]).then(function (r) {
-                    result.data = r;
-                    resolve(result);
-                  }).catch(function (r) {
-                    result.data = r;
-                    reject(result);
-                  });
-                }
-                else {
-                  lodb.findAll(function (item) {
-                    if (cfg.filter)
-                      return cfg.filter.apply(cfg, [item].concat(args));
-                    return true;
-                  }).then(function (r) {
-                    switch (cfg.dataType) {
-                      case 1:
-                        result.data = r.rows;
-                        break;
-                      case 2:
-                        result.data = {rows: r.rows};
-                        break;
-                      case 3:
-                        result.data = r.rows[0];
-                        break;
-                    }
-                    resolve(result);
-                  });
-                }
-              }
-            })
-          }
-          else
-          {
-            var p = fn && fn.apply(this,args);
-            return p && p.then(function (result) {
-                var data = result.data;
-                if (cfg.dataType == 1) {
-                  data.forEach(function (d) {
-                    _id = id(d);
-                    if (_id) {
-                      lodb.addOrUpdate(angular.extend({_id:_id},d));
-                    }
-                  })
-                }
-                else {
-                  if (cfg.dataType == 3) {
-                    lodb.addOrUpdate(data);
-                  }
-                  else if (data.rows && angular.isArray(data.rows)) {
-                    data.rows.forEach(function (d) {
-                      _id = id(d);
-                      if (_id) {
-                        lodb.addOrUpdate(angular.extend({_id:_id},d));
-                      }
-                    })
-                  }
-                }
-                return result;
-              });
-          }
-        }
-      }
-      function id(d) {
+      function id(d,db,args,cfg) {
         var _id = angular.isFunction(cfg.idField) ? cfg.idField(d) : d[cfg.idField];
+        if(_id && db){
+          db.addOrUpdate(cfg.data?cfg.data.apply(cfg,[angular.extend({_id:_id},d)].concat(args)):angular.extend({_id:_id},d));
+        }
         return _id;
+      }
+      function bindData(result,rows,cfg) {
+        switch (cfg.dataType) {
+          case 1:
+            result.data = rows;
+            break;
+          case 2:
+            result.data = {rows: rows};
+            break;
+          case 3:
+            result.data = rows[0];
+            break;
+          case 4:
+            result.data = {
+              data: rows
+            };
+            break;
+          case 5:
+            result.data = {
+              Rows: rows
+            };
+            break;
+        }
+        return result;
       }
     }
 
