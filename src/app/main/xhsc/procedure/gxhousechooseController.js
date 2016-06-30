@@ -81,6 +81,7 @@
         if (st){
           region.status=st.Status;
           region.Percentage=st.Percentage;
+          region.InspectionId=st.InspectionId;
         }else {
           region.status=0;
           region.Percentage=0;
@@ -174,6 +175,7 @@
     }
     //监理点击事件
     function jlSelected(r){
+      console.log(r);
       switch (r.status){
         case 1:
           $state.go('app.xhsc.gx.gxtest',{InspectionId: r.InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,

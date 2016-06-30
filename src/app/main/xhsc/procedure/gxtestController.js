@@ -24,6 +24,27 @@
       acceptanceItemID:acceptanceItemID,
       regionId:$stateParams.regionId
     };
+
+    vm.btBatch=[];
+
+    remote.Project.getInspectionList(projectId).then(function(res){
+      var r= res.data.find(function(o){
+         return o.InspectionId==vm.InspectionId;
+      });
+      //res.data.forEach(function(r){
+      //r.Children.forEach(function(_r){
+      //  remote.Project.queryAllBulidings(projectId).then(function(_res){
+      //    var tempName = xhUtils.findRegion(_res.data[0].RegionRelations[0],_r.AreaID);
+      //    _r.newName = item.ProjectName + tempName.fullName + _r.Describe;
+      //})
+        //})
+      //  vm.btBatch.push(r);
+      //})
+
+      //console.log('data',vm.gxList)
+    })
+
+
     vm.cancelCurrent = function ($event) {
       //$event.stopPropagation();
       //$event.preventDefault();
