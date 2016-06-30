@@ -69,59 +69,22 @@
           region.hasShowRight=true;
         }
       }
-
       //状态设置
       function statusSetting(status,region){
         if(!angular.isArray(status)){
           status=[status];
         }
+        var  st=status.find(function(o){
+          return o.AcceptanceItemID==acceptanceItemID&& o.AreaId==region.RegionID;
+        });
 
-        var st1 = [],st2=[];
-        //var  st=status.find(function(o){
-        //  return o.AcceptanceItemID==acceptanceItemID&& o.AreaId==region.RegionID;
-        //});
-        region.inspectionRows=[];
-        status.forEach(function(t){
-          if(t.AcceptanceItemID==acceptanceItemID && t.AreaId == region.RegionID){
-            st1.push(t)
-          }else{
-              region.status=0;
-              region.Percentage=0;
-          }
-        })
-        st1.forEach(function(m){
-          //m.inspectionRows=[];
-          var p= st2.find(function(n){
-            return m.AreaId == n.AreaId;
-          })
-          if(!p){
-            p = m;
-
-            st2.push(p);
-            region.status=m.Status;
-            region.Percentage= p.Percentage;
-          }else{
-            p.Percentage += m.Percentage;
-            //console.log('p',p)
-            if(p.Percentage >=100){
-              region.status=m.Status;
-              region.Percentage=100;
-            }else{
-              region.status=m.Status;
-              region.Percentage= p.Percentage;
-            }
-          }
-          region.inspectionRows.push(p)
-        })
-        //console.log('st',st1)
-        //if (st){
-        //  region.status=st.Status;
-        //  region.Percentage=st.Percentage;
-        //}else {
-        //  region.status=0;
-        //  region.Percentage=0;
-        //}
-
+        if (st){
+          region.status=st.Status;
+          region.Percentage=st.Percentage;
+        }else {
+          region.status=0;
+          region.Percentage=0;
+        }
         region.style=ConvertClass(region.status);
         setNum(region.status);
       }
@@ -206,26 +169,17 @@
         switch (r.status){
           case 0:
             r.checked = !r.checked;
-           break;
-          case 1:
-            r.checked = !r.checked;
           break;
         }
     }
     //监理点击事件
     function jlSelected(r){
-      console.log('r',r)
-      if(r.inspectionRows.length >1){
-
-      }else{
-        switch (r.status){
-          case 1:
-            $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
-              regionId:r.RegionID,projectId:projectId,areaId:areaId});
-            break;
-        }
+      switch (r.status){
+        case 1:
+          $state.go('app.xhsc.gx.gxtest',{InspectionId: r.InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
+            regionId:r.RegionID,projectId:projectId,areaId:areaId});
+          break;
       }
-
     }
     //甲方点击事件
     function  jfSelect(){
@@ -308,7 +262,7 @@
           })
         })
       })
-      console.log('length',vm.data.Rows.length)
+      //console.log('length',vm.data.Rows.length)
       if(vm.data.Rows.length){
 
       }

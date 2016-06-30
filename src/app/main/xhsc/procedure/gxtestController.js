@@ -16,6 +16,7 @@
       projectId = $stateParams.projectId,
       areaId = $stateParams.areaId;
       vm.RegionFullName =  $stateParams.name;
+      vm.InspectionId=$stateParams.InspectionId;
 
     vm.info = {
       current:null,
@@ -62,8 +63,6 @@
       sendResult();
     });
     vm.setRegion = function(region){
-      //console.log('region',region)
-     // vm.info.imageUrl = region.DrawingID;
       vm.info.regionId = region.RegionID;
       vm.info.regionType = region.RegionType;
       vm.RegionFullName = region.fullName;

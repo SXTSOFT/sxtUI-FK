@@ -208,6 +208,8 @@
           }
           $timeout(function () {
             vm.loading = false;
+            if(!vm.inited)
+              vm.inited = true;
           },200);
         },800);
 
