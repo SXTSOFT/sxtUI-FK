@@ -1,7 +1,8 @@
 <div class="my-dialog-mask">
   <div class="my-dialog" >
     <div class="dialog-top" layout="column" ng-cloak>
-        <p style="padding: 20px 0px 20px 0px">{{dialogMsg}}</p>
+      <div class="dialog-msg" layout="column" style="border-bottom: 1px solid #dedede;padding:20px;">
+        <p>{{dialogMsg}}</p>
         <md-input-container>
           <label>描述</label>
           <input   md-no-asterisk name="description" ng-model="description">
@@ -10,15 +11,16 @@
           <span flex="none" style="display:inline-block;padding-right: 10px">百分比</span>
           <md-slider flex min="0" max="100" ng-model="percentage" aria-label="red" id="red-slider">
           </md-slider>
-          <md-input-container style="width:35px;">
-            <input  type="number" ng-model="percentage" aria-label="red" aria-controls="red-slider">
+          <md-input-container style="width:40px;">
+            <input type="number" ng-model="percentage" aria-label="red" aria-controls="red-slider">
           </md-input-container>
         </md-slider-container>
         <!--<md-input-container>-->
           <!--<label>百分比</label>-->
           <!--<input  type="number"  md-no-asterisk name="description" ng-model="percentage">-->
         <!--</md-input-container>-->
-        <md-button  flex style="width:100%;margin:-30px 0px 0px -12px" ng-click="submit($event)">{{dialogSure}}</md-button>
+      </div>
+        <md-button  flex style="width:100%;" ng-click="submit($event)">{{dialogSure}}</md-button>
     </div>
     <div class="dialog-bottom"><md-button flex style="width:100%;" ng-click="cancel($event)">取消</md-button></div>
   </div>

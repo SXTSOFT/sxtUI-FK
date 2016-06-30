@@ -55,10 +55,6 @@
       //console.log('vm',vm.procedureData)
     })
     console.log('state',$stateParams)
-    //function sendResult(){
-    //  $state.go('app.xhsc.gx.gxresult',{acceptanceItemName:acceptanceItemName,name:vm.RegionFullName,areaId:areaId,projectId:projectId});
-    //}
-    //$rootScope.$on('sendGxResult',sendResult);
     var sendResult = $rootScope.$on('sendGxResult',function(){
       $state.go('app.xhsc.gx.gxresult',{acceptanceItemName:acceptanceItemName,name:vm.RegionFullName,areaId:areaId,projectId:projectId});
     })
