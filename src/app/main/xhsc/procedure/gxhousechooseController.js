@@ -77,6 +77,7 @@
         var  st=status.find(function(o){
           return o.AcceptanceItemID==acceptanceItemID&& o.AreaId==region.RegionID;
         });
+
         if (st){
           region.status=st.Status;
           region.Percentage=st.Percentage;
@@ -141,6 +142,7 @@
           })
         })
         vm.houses =  result.data[0].RegionRelations;
+        //console.log('vmh',vm.houses)
       });
     }
 
@@ -174,7 +176,7 @@
     function jlSelected(r){
       switch (r.status){
         case 1:
-          $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
+          $state.go('app.xhsc.gx.gxtest',{InspectionId: r.InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
             regionId:r.RegionID,projectId:projectId,areaId:areaId});
           break;
       }
@@ -196,7 +198,9 @@
       if (region.Children){
         for (var  i=0;i<region.Children.length;i++){
           if (vm.regionfilterByStatus(region.Children[i])){
+            //if (vm.regionfilterByStatus(region.Children[i],operator)){
               return true;
+            //}
           }
         }
         return  operator(region.status);
@@ -232,13 +236,15 @@
       return show.indexOf(status)>-1;
     }
 
-    function sendResult(){
+    var sendgxResult =$rootScope.$on('sendGxResult',function(){
       vm.data = {
         projectId:projectId,
         Rows:[],
         acceptanceItemName:acceptanceItemName,
         acceptanceItemID:acceptanceItemID
       }
+      vm.showmyDialog = true;
+      //console.log('vmhouse',vm.houses)
       vm.houses.forEach(function(t){
         t.Children.forEach(function(_t){
           if(_t.checked){
@@ -256,10 +262,13 @@
           })
         })
       })
-      //if(vm.data.Rows.length){
-        vm.showmyDialog = true;
-      //}
-    }
-    $rootScope.$on('sendGxResult',sendResult);
+      //console.log('length',vm.data.Rows.length)
+      if(vm.data.Rows.length){
+
+      }
+    });
+    $scope.$on("$destroy",function(){
+      sendgxResult();
+    });
   }
 })();

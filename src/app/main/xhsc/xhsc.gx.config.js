@@ -50,7 +50,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url: '/gxhousechoose/{role}/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
+        url: '/gxhousechoose/{InspectionId}/{role}//{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
         templateUrl: 'app/main/xhsc/procedure/gxhousechoose.html',
         controller: 'gxhousechooseController as vm'
       })
@@ -59,7 +59,7 @@
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
-        url: '/gxtest/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}/{areaId}',
+        url: '/gxtest/{InspectionId}/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}/{areaId}',
         templateUrl: 'app/main/xhsc/procedure/gxtest.html',
         controller: 'gxtestController as vm'
       })

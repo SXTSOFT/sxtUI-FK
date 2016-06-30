@@ -16,6 +16,7 @@
       projectId = $stateParams.projectId,
       areaId = $stateParams.areaId;
       vm.RegionFullName =  $stateParams.name;
+      vm.InspectionId=$stateParams.InspectionId;
 
     vm.info = {
       current:null,
@@ -55,13 +56,13 @@
       //console.log('vm',vm.procedureData)
     })
     console.log('state',$stateParams)
-    function sendResult(){
+    var sendResult = $rootScope.$on('sendGxResult',function(){
       $state.go('app.xhsc.gx.gxresult',{acceptanceItemName:acceptanceItemName,name:vm.RegionFullName,areaId:areaId,projectId:projectId});
-    }
-    //$rootScope.$on('sendGxResult',sendResult);
+    })
+    $scope.$on("$destroy",function(){
+      sendResult();
+    });
     vm.setRegion = function(region){
-      //console.log('region',region)
-     // vm.info.imageUrl = region.DrawingID;
       vm.info.regionId = region.RegionID;
       vm.info.regionType = region.RegionType;
       vm.RegionFullName = region.fullName;
