@@ -151,6 +151,8 @@
               r.projectTree = c.projectTree + r.RegionName;
               r.checked = false;
               filterOrSetting(status,r);
+              vm.floors=vm.floors?vm.floors:[];
+              vm.floors.push(r);
               r.Children && r.Children.forEach(function(_r){
                 _r.projectTree = r.projectTree + _r.RegionName;
                 _r.checked = false;
@@ -160,7 +162,6 @@
           })
         })
         vm.houses =  result.data[0].RegionRelations;
-        //console.log('vmh',vm.houses)
       });
     }
 
@@ -184,14 +185,35 @@
     }
     //总包点击事件
     function zbSelected(r){
+        function validateChecked(r){
+           switch(r.RegionType){
+             case 8:
+               r.Children.forEach(function(m){
+                  if (m.checked){
+                    r.checked=false;
+                  }
+               });
+              break;
+             case 16:
+               var parent=vm.floors.find(function(m){
+                 return r.RegionID.indexOf(m.RegionID)>-1;
+               });
+               if (parent&&parent.checked){
+                 r.checked=false;
+               }
+               break;
+           }
+        }
+
         switch (r.status){
           case 0:
             r.checked = !r.checked;
           break;
           case 1:
-            r.checked = !r.checked;
+            r.checked = r.Percentage==100?false:(!r.checked);
             break;
         }
+        validateChecked(r);
     }
     //监理点击事件
     function jlSelected(r){
@@ -242,9 +264,7 @@
       if (region.Children){
         for (var  i=0;i<region.Children.length;i++){
           if (vm.regionfilterByStatus(region.Children[i])){
-            //if (vm.regionfilterByStatus(region.Children[i],operator)){
               return true;
-            //}
           }
         }
         return  operator(region.status);
@@ -268,7 +288,7 @@
       var show=[0,1,2,4,8,16];
       switch (role){
         case "zb":
-          show=[0,2,8,16];
+          show=[0,1,2,8,16];
           break;
         case  "jl":
           show=[0,1,2,8,16];
