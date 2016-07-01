@@ -71,7 +71,6 @@
       }
       var st2 =[];
       function setInspection(region){
-       // console.log('st1',st1)
         var percentage= 0,status=0;
         if(region.inspectionRows.length){
           region.inspectionRows && region.inspectionRows.forEach(function(t){
@@ -105,20 +104,7 @@
             region.Percentage=0;
           }
         })
-        setInspection(region)
-        //var  st=status.find(function(o){
-        //  return o.AcceptanceItemID==acceptanceItemID&& o.AreaId==region.RegionID;
-        //});
-        //
-        //if (st){
-        //  region.status=st.Status;
-        //  region.Percentage=st.Percentage;
-        //}else {
-        //  region.status=0;
-        //  region.Percentage=0;
-        //}
-        //region.style=ConvertClass(region.status);
-        //setNum(region.status);
+        setInspection(region);
       }
       function ConvertClass(status){
         var style;
@@ -153,7 +139,6 @@
         vm.loading = true;
         var result=res[0];
         var status=res[1]&&res[1].data?res[1].data:[];
-        //console.log('status',status)
         result.data[0].RegionRelations.forEach(function(d){
           filterOrSetting(status,d);
           d.projectTree =  d.RegionName;
