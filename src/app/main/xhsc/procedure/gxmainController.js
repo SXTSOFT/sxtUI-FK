@@ -13,8 +13,24 @@
     var vm = this;
     function setGxList(gxdata){
       vm.gxList=[];
+      var promises;
       gxdata.forEach(function(item){
         if(item.isOffline){
+          promises=[
+            remote.Project.getInspectionList(item.ProjectID),
+            remote.Project.queryAllBulidings(item.ProjectID)
+          ];
+          $q.all(promises).then(function(rtn){
+            var res=rtn[0],_res=rtn[1];
+            res.data.forEach(function(r){
+              r.Children.forEach(function(_r){
+                  var tempName = xhUtils.findRegion(_res.data[0].RegionRelations[0],_r.AreaID);
+                  _r.newName = item.ProjectName + tempName.fullName + _r.Describe;
+                  _r.projcetId = item.ProjectID;
+              })
+              vm.gxList.push(r);
+            })
+          });
           remote.Project.getInspectionList(item.ProjectID).then(function(res){
             res.data.forEach(function(r){
               r.Children.forEach(function(_r){
@@ -26,8 +42,6 @@
               })
               vm.gxList.push(r);
             })
-
-           // console.log('data',vm.gxList)
           })
         }
       });
