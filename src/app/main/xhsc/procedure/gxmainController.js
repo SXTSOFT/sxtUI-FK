@@ -31,18 +31,6 @@
               vm.gxList.push(r);
             })
           });
-          remote.Project.getInspectionList(item.ProjectID).then(function(res){
-            res.data.forEach(function(r){
-              r.Children.forEach(function(_r){
-                remote.Project.queryAllBulidings(item.ProjectID).then(function(_res){
-                  var tempName = xhUtils.findRegion(_res.data[0].RegionRelations[0],_r.AreaID);
-                  _r.newName = item.ProjectName + tempName.fullName + _r.Describe;
-                  _r.projectId = item.ProjectID;
-                })
-              })
-              vm.gxList.push(r);
-            })
-          })
         }
       });
     }
