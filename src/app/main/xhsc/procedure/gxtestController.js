@@ -14,7 +14,7 @@
     var acceptanceItemID = $stateParams.acceptanceItemID,
       acceptanceItemName =  $stateParams.acceptanceItemName,
       projectId = $stateParams.projectId,
-      areaId = $stateParams.areaId;
+      areaId = $stateParams.areaId?$stateParams.areaId:$stateParams.regionId;
     vm.RegionFullName =  $stateParams.name;
     vm.InspectionId=$stateParams.InspectionId;
 
@@ -22,7 +22,7 @@
       current:null,
       projectId:projectId,
       acceptanceItemID:acceptanceItemID,
-      regionId:$stateParams.regionId
+      regionId:areaId
     };
 
     vm.btBatch;
@@ -80,10 +80,9 @@
       //$event.preventDefault();
       vm.info.current = null;
     }
-    $rootScope.title = $stateParams.acceptanceItemName;
+    $rootScope.title = acceptanceItemName;
 
     remote.Procedure.queryProcedure().then(function(result){
-       console.log(result);
       vm.procedureData = [];
       result.data.forEach(function(it){
         it.SpecialtyChildren.forEach(function(t){

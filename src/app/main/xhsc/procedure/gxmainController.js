@@ -26,7 +26,7 @@
               r.Children.forEach(function(_r){
                   var tempName = xhUtils.findRegion(_res.data[0].RegionRelations[0],_r.AreaID);
                   _r.newName = item.ProjectName + tempName.fullName + _r.Describe;
-                  _r.projcetId = item.ProjectID;
+                  _r.projectId = item.ProjectID;
               })
               vm.gxList.push(r);
             })
@@ -37,7 +37,7 @@
                 remote.Project.queryAllBulidings(item.ProjectID).then(function(_res){
                   var tempName = xhUtils.findRegion(_res.data[0].RegionRelations[0],_r.AreaID);
                   _r.newName = item.ProjectName + tempName.fullName + _r.Describe;
-                  _r.projcetId = item.ProjectID;
+                  _r.projectId = item.ProjectID;
                 })
               })
               vm.gxList.push(r);
@@ -64,7 +64,7 @@
     });
     vm.ys = function(item){
       $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
-        projectId:item.projectId,areaId:item.AreaId,inspectionId:item.InspectionId})
+        projectId:item.Children[0].projectId,areaId:item.Children[0].AreaID,InspectionId:item.InspectionId})
     }
     vm.download = function(item){
       item.isDown = true;
