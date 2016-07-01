@@ -9,7 +9,7 @@
     .controller('gxhousechooseController',gxhousechooseController);
 
   /** @ngInject */
-  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state){
+  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog){
     var vm=this,
       id = $stateParams.assessmentID,
       AssessmentTypeID = $stateParams.AssessmentTypeID,
@@ -69,25 +69,56 @@
           region.hasShowRight=true;
         }
       }
+      var st2 =[];
+      function setInspection(region){
+       // console.log('st1',st1)
+        var percentage= 0,status=0;
+        if(region.inspectionRows.length){
+          region.inspectionRows && region.inspectionRows.forEach(function(t){
+            percentage += t.Percentage;
+            status = t.Status;
+          })
+        }else{
+          percentage = region.percentage;
+          status = 0;
+        }
+        if(percentage > 100){
+          percentage = 100;
+        }
+        region.Percentage = percentage;
+        region.status = status;
+        region.style=ConvertClass(status);
+        setNum(status);
+      }
       //状态设置
       function statusSetting(status,region){
         if(!angular.isArray(status)){
           status=[status];
         }
-        var  st=status.find(function(o){
-          return o.AcceptanceItemID==acceptanceItemID&& o.AreaId==region.RegionID;
-        });
-
-        if (st){
-          region.status=st.Status;
-          region.Percentage=st.Percentage;
-          region.InspectionId=st.InspectionId;
-        }else {
-          region.status=0;
-          region.Percentage=0;
-        }
-        region.style=ConvertClass(region.status);
-        setNum(region.status);
+        var st1 = [];
+        region.inspectionRows=[];
+        status.forEach(function(t){
+          if(t.AcceptanceItemID==acceptanceItemID && t.AreaId == region.RegionID){
+            region.inspectionRows.push(t);
+          }else{
+            region.status=0;
+            region.Percentage=0;
+          }
+        })
+        setInspection(region)
+        //var  st=status.find(function(o){
+        //  return o.AcceptanceItemID==acceptanceItemID&& o.AreaId==region.RegionID;
+        //});
+        //
+        //if (st){
+        //  region.status=st.Status;
+        //  region.Percentage=st.Percentage;
+        //}else {
+        //  region.status=0;
+        //  region.Percentage=0;
+        //}
+        //region.style=ConvertClass(region.status);
+        //setNum(region.status);
       }
       function ConvertClass(status){
         var style;
@@ -105,10 +136,10 @@
             style="ng";
             break;
           case 8:
-            style="wy";
+            style="ng";
             break;
           case 16:
-            style="yet";
+            style="yzg";
             break;
           default:
             break;
@@ -122,8 +153,9 @@
         vm.loading = true;
         var result=res[0];
         var status=res[1]&&res[1].data?res[1].data:[];
+        //console.log('status',status)
         result.data[0].RegionRelations.forEach(function(d){
-          filterOrSetting(status,d)
+          filterOrSetting(status,d);
           d.projectTree =  d.RegionName;
           d.projectTitle = result.data[0].ProjectName + d.RegionName;
           d.Children && d.Children.forEach(function(c){
@@ -171,17 +203,38 @@
           case 0:
             r.checked = !r.checked;
           break;
+          case 1:
+            r.checked = !r.checked;
+            break;
         }
     }
     //监理点击事件
     function jlSelected(r){
-      console.log(r);
-      switch (r.status){
-        case 1:
-          $state.go('app.xhsc.gx.gxtest',{InspectionId: r.InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
-            regionId:r.RegionID,projectId:projectId,areaId:areaId});
-          break;
+      console.log('r',r)
+      if(r.inspectionRows.length>1){
+        $mdDialog.show({
+          controller:['$scope','$state',function($scope,$state){
+            $scope.lists = r;
+            $scope.goTo = function(item){
+              $state.go('app.xhsc.gx.gxmain')
+              $mdDialog.hide();
+            }
+          }],
+          template: '<md-dialog><md-dialog-content style="padding:10px;"><md-list>' +
+          '<md-list-item ng-repeat="item in lists.inspectionRows" ng-click="goTo(item)">{{$index+1}}、{{lists.projectTree}}{{item.Describe}}</md-list-item></md-list></md-dialog-content></md-dialog>',
+          parent: angular.element(document.body),
+          focusOnOpen:false,
+          clickOutsideToClose:true
+        })
+      }else{
+        switch (r.status){
+          case 1:
+            $state.go('app.xhsc.gx.gxtest',{InspectionId: r.InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
+              regionId:r.RegionID,projectId:projectId,areaId:areaId});
+            break;
+        }
       }
+
     }
     //甲方点击事件
     function  jfSelect(){

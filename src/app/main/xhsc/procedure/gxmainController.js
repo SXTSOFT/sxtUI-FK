@@ -96,5 +96,9 @@
       });
     }
 
+    vm.zg = function(){
+      $state.go('app.xhsc.gx.gxzg')
+    }
+
   }
 })();
