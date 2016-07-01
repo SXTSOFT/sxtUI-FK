@@ -49,8 +49,9 @@
       });
     });
     vm.ys = function(item){
-      $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
-        projectId:item.projectId,areaId:item.AreaId,inspectionId:item.InspectionId})
+      console.log('item',item)
+      $state.go('app.xhsc.gx.gxtest',{InspectionId:item.InspectionId,acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
+        regionId:'',projectId:item.projectId,areaId:item.AreaId})
     }
     vm.download = function(item){
       item.isDown = true;
@@ -80,6 +81,10 @@
         item.isDown = false;
         utils.alert('下载失败,请检查网络');
       });
+    }
+
+    vm.zg = function(){
+      $state.go('app.xhsc.gx.gxzg')
     }
 
   }

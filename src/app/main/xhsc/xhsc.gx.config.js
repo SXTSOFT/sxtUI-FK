@@ -132,6 +132,16 @@
         templateUrl: 'app/main/xhsc/procedure/gxhousechoose.html',
         controller: 'gxhousechooseController as vm'
       })
+      .state('app.xhsc.gx.gxzg',{
+        noBack: true,
+        sendBt: true,
+        rightArrow: false,
+        leftArrow: false,
+        title: '工序',
+        url: '/gxzg',
+        templateUrl: 'app/main/xhsc/procedure/gxzg.html',
+        controller: 'gxzgController as vm'
+      })
       .state('app.xhsc.gx.gxresult.gxrychoose',{
         noBack:true,
         sendBt:false,

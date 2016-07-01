@@ -798,11 +798,23 @@ md-tabs[md-align-tabs="bottom"]{
           background:#CDDC39;
         }
       }
-      &.dy{
-        border:1px solid #00b0e8;
-        color:#000000;
+      &.yzg{
+        border:1px solid #fed189;
+        color:#fed189;
         >div{
-          background:#00b0e8;
+          background: #fff3e6;
+        }
+      }
+      &.dy{
+        //border:1px solid #4bb9f3;
+        //color:#4bb9f3;
+        //>div{
+        //  background:#d2eefc;
+        //}
+        border:1px solid #d6d6d6;
+        color:#333;
+        >div{
+          background: #f6f6f9;
         }
       }
       &.pass{
@@ -827,7 +839,7 @@ md-tabs[md-align-tabs="bottom"]{
         }
       }
       &.wait{
-        border:1px solid #d8d8d8;
+        border:1px solid #dedede;
         color:#333;
         >div{
           background: #fff;
@@ -840,7 +852,7 @@ md-tabs[md-align-tabs="bottom"]{
           position: absolute;
           right:1px;
           top:1px;
-          background:url(/main/xhsc/images/circle-v.png) no-repeat;
+          background:url(main/xhsc/images/circle-v.png) no-repeat;
           background-size: 12px auto;
           width:12px;
           height:12px;
@@ -1381,7 +1393,8 @@ md-tabs[md-align-tabs="bottom"]{
 }
 .gxtest{
   md-list{
-    border:1px solid #d8d8d8;
+    border-top:1px solid #dedede;
+    border-bottom:1px solid #dedede;
     margin-top: 10px;
     background: #fff;
     padding: 0 10px;
@@ -1393,7 +1406,7 @@ md-tabs[md-align-tabs="bottom"]{
         font-size:14px;
         color:#999;
       }
-      border-bottom: 1px solid #d8d8d8;
+      border-bottom: 1px solid #dedede;
       &:last-child{
         border-bottom: none;
       }
@@ -2488,6 +2501,7 @@ md-bottom-sheet{
   transform: translate3d(0,-100%,0);
   border:1px solid #d8d8d8;
   box-shadow: 0 0 20px rgba(0,0,0,.5);
+  z-index:30;
   &.slidedown{
     transform: translate3d(0,0,0);
   }
@@ -2516,15 +2530,17 @@ md-bottom-sheet{
               height:14px;
               border:1px solid #fff;
               border-radius: 3px;
-              margin-right: 5px;
+              margin-right: 3px;
               vertical-align: middle;
               &.wy{
                 border:1px solid #CDDC39;
                 background:#CDDC39;
               }
               &.dy{
-                border:1px solid #DCDCDC;
-                background:#00b0e8;
+                //border:1px solid #DCDCDC;
+                //background:#00b0e8;
+                border:1px solid #d6d6d6;
+                background: #f6f6f9;
               }
               &.pass{
                 border:1px solid #169e49;
@@ -2537,6 +2553,10 @@ md-bottom-sheet{
               &.yet{
                 border:1px solid #d8d8d8;
                 background: #7ea2b4;
+              }
+              &.yzg{
+                border:1px solid #fed189;
+                background: #fff3e6;
               }
               &.wait{
                 border:1px solid #d8d8d8;
@@ -2594,7 +2614,7 @@ md-bottom-sheet{
       min-width: 50px;
       margin: 0;
       width:100%;
-      border:2px solid #d8d8d8;
+      border:2px solid #dedede;
       border-radius:6px;
       padding: 0;
       min-height: 32px;
@@ -2609,11 +2629,11 @@ md-bottom-sheet{
         background: #ffebea;
       }
       &.yet{
-        border:1px solid #d8d8d8;
+        border:1px solid #dedede;
         background: #f6f9f9;
       }
       &.wait{
-        border:1px solid #d8d8d8;
+        border:1px solid #dedede;
         background: #fff;
       }
       p{
