@@ -65,7 +65,7 @@
     vm.ys = function(item){
       console.log('item',item)
       $state.go('app.xhsc.gx.gxtest',{InspectionId:item.InspectionId,acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
-        regionId:'',projectId:item.projectId,areaId:item.AreaId})
+        regionId:item.Children[0].AreaID,projectId:item.projectId,areaId:item.AreaId})
     }
     vm.download = function(item){
       item.isDown = true;

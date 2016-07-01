@@ -213,11 +213,14 @@
       console.log('r',r)
       if(r.inspectionRows.length>1){
         $mdDialog.show({
-          controller:['$scope','$state',function($scope,$state){
+          controller:['$scope','$state','$timeout',function($scope,$state,$timeout){
             $scope.lists = r;
             $scope.goTo = function(item){
-              $state.go('app.xhsc.gx.gxmain')
               $mdDialog.hide();
+              $timeout(function(){
+                $state.go('app.xhsc.gx.gxtest',{InspectionId: item.InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:$scope.lists.projectTree,
+                  regionId:$scope.lists.RegionID,projectId:projectId,areaId:item.AreaId})
+              })
             }
           }],
           template: '<md-dialog><md-dialog-content style="padding:10px;"><md-list>' +
@@ -227,6 +230,7 @@
           clickOutsideToClose:true
         })
       }else{
+        //console.log('area',areaId)
         switch (r.status){
           case 1:
             $state.go('app.xhsc.gx.gxtest',{InspectionId: r.InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
