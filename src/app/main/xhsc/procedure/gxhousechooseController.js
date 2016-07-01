@@ -218,7 +218,7 @@
         //console.log('area',areaId)
         switch (r.status){
           case 1:
-            $state.go('app.xhsc.gx.gxtest',{InspectionId: r.InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
+            $state.go('app.xhsc.gx.gxtest',{InspectionId: r.inspectionRows[0].InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
               regionId:r.RegionID,projectId:projectId,areaId:areaId});
             break;
         }

@@ -46,7 +46,7 @@
         });
         setGxList(result.data);
         vm.projects = result.data;
-       // console.log('result',vm.gxList)
+
 
       });
     });
