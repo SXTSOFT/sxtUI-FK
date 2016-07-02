@@ -230,7 +230,7 @@
               })
             }
           }],
-          template: '<md-dialog><md-dialog-content style="padding:10px;"><md-list>' +
+          template: '<md-dialog><md-dialog-content style="padding:10px;"><p style="padding-left:10px;">验收批列表</p><md-list>' +
           '<md-list-item ng-repeat="item in lists.inspectionRows" ng-click="goTo(item)">{{$index+1}}、{{lists.projectTree}}{{item.Describe}}</md-list-item></md-list></md-dialog-content></md-dialog>',
           parent: angular.element(document.body),
           focusOnOpen:false,

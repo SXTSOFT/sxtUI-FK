@@ -112,7 +112,7 @@
     })
 
     $scope.$on("$destroy",function(){
-      sendResult();
+      //sendResult();
       sendResult = null;
     });
     vm.setRegion = function(region){

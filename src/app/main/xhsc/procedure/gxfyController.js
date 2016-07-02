@@ -6,12 +6,12 @@
 
   angular
     .module('app.xhsc')
-    .controller('gxzgController',gxzgController);
+    .controller('gxfyController',gxfyController);
 
   /** @ngInject */
-  function gxzgController($state,$rootScope,$scope,$mdDialog){
+  function gxfyController($state,$rootScope,$scope,$mdDialog){
     var vm = this;
-    vm.role = 'zg';
+
     vm.showTop = function(){
       vm.slideShow = true;
     }
@@ -24,6 +24,10 @@
       vm.RegionFullName = item.name;
       vm.qyslideShow = false;
     }
+    vm.qyslide = function(){
+      vm.qyslideShow = !vm.qyslideShow;
+    }
+    vm.role = 'fy';
     vm.showBaseInfor = function(){
       $mdDialog.show({
         controller:['$scope',function($scope){
@@ -35,12 +39,7 @@
         clickOutsideClose:true
       })
     }
-
-    vm.qyslide = function(){
-      vm.qyslideShow = !vm.qyslideShow;
-    }
-    var gxzgChanged = function(){
-      //console.log('changed')
+    var gxfyChanged = function(){
       $mdDialog.show({
         controller:['$scope',function($scope){
           $scope.times = [{
@@ -80,11 +79,11 @@
         clickOutsideClose:true
       })
     }
-    $rootScope.$on('sendGxResult',gxzgChanged);
+    $rootScope.$on('sendGxResult',gxfyChanged);
 
     $scope.$on('$destroy', function () {
-      //gxzgChanged();
-      gxzgChanged = null;
+      //gxfyChanged();
+      gxfyChanged = null;
     })
   }
 })();

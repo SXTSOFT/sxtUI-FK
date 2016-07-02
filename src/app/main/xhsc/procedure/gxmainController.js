@@ -88,5 +88,9 @@
       $state.go('app.xhsc.gx.gxzg')
     }
 
+    vm.fy = function(){
+      $state.go('app.xhsc.gx.gxfy')
+    }
+
   }
 })();
