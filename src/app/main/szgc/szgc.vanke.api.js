@@ -52,10 +52,17 @@
       vanke:{
         profile:http.db({
           _id:'v_profile',
-          idFiled:'Id',
-          dataType:3
+          idField:'Id',
+          dataType:3,
+          raiseError:true,
+          filter:function () {
+            return true;
+          }
         }).bind(function(){
-          return get('/common/v1/profile');
+          return get('/common/v1/profile').then(function (result) {
+            result.data.Id = result.data.data.employee_id;
+            return result;
+          });
         },function (result) {
           p1 = null;
           permission = null;
@@ -150,7 +157,10 @@
         project_items: http.db({
           _id:'v_project_items',
           idField:'project_item_id',
-          dataType:4
+          dataType:4,
+          filter:function (item,arg) {
+            return item.project.project_id == arg.project_id;
+          }
         }).bind(function (arg) {
           var s = this;
           return get(http.url('/common/v1/project_items', arg)).then(function (result) {

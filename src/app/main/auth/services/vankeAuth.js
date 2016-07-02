@@ -7,7 +7,7 @@
     .factory('vankeAuth', vankeAuth);
 
   /** @ngInject */
-  function vankeAuth($http,$q,appConfig,sxt,appCookie,$rootScope)
+  function vankeAuth($http,$q,api,sxt,appCookie,$rootScope)
   {
     var service = {
       token   : token,
@@ -15,7 +15,8 @@
     };
     $rootScope.$on('user:logout',function(){
       appCookie.remove('auth');
-    })
+    });
+
     return service;
 
     function token(user){
@@ -65,13 +66,11 @@
 
       if(!token || !token.username) {
         return $q (function (resolve, reject) {
-          $http
-            .get (sxt.app.api + '/api/Security/Account/UserInfo', {t: new Date ().getTime ()})
-            .then (function (d) {
-              resolve (d && d.data);
-            }, function () {
-              reject (token);
-            });
+          $http.get(sxt.app.api + '/api/Security/Account/UserInfo', {t: new Date().getTime()}).then(function (d) {
+            resolve(d && d.data);
+          }, function () {
+            reject(token);
+          });
         });
       }
       else{

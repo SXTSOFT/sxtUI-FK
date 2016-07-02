@@ -7,7 +7,7 @@
     .module('app.core')
     .factory('authToken',authToken);
   /** @ngInject */
-  function authToken($cookies,$rootScope){
+  function authToken($cookies,$rootScope,$injector){
     var token,tokenInjector;
 
     tokenInjector = {
@@ -42,11 +42,12 @@
 
     function onHttpResponseError(rejection){
       if(rejection.status == 401){
-        $rootScope.$emit ('user:needlogin');
-        //$rootScope.$emit('')
-        //document.location = '#/auth/login'
-        //$state.go('')
-        //setToken(null);
+        $rootScope.$emit('user:needlogin');
+      }
+      else{
+        $injector.invoke(['utils',function (utils) {
+          utils.alert(rejection.data && rejection.data.Message?rejection.data.Message:'网络错误');
+        }]);
       }
     }
 

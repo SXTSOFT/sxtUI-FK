@@ -13,7 +13,35 @@
       $q = apiProvider.$q;
 
     apiProvider.register('szgc',{
+      version:$http.db({
+        _id:'s_version',
+        idField:'Id',
+        dataType:3,
+        filter:function () {
+          return true
+        }
+      }).bind(function () {
+        return $http.get('http://vkde.sxtsoft.com/api/vkapi/Version').then(function (r) {
+          r.data.Id = 'version';
+          return r;
+        })
+      }),
       ProjectSettings:{
+        offline:$http.db({
+          _id:'s_offline',
+          idField:'Id',
+          methods:{
+            query:{
+              dataType:1
+            },
+            create:{
+              upload:true
+            },
+            delete:{
+              delete:true
+            }
+          }
+        }),
         getAllSatus:function (regionType) {
           return $http.get($http.url('/api/tblRegionState', { regionType: regionType }));
         },
@@ -236,7 +264,12 @@
           },
           dataType:5,
           filter:function (item,args) {
-            return item.UnitId==args.unitId;
+            if(args.projectId){
+              return args.projectId.indexOf(item.RegionIdTree)!=-1 &&
+                args.unitType==item.UnitType;
+            }
+            else
+              return item.UnitId==args.unitId;
           }
         }).bind(function(args){
           return $http.get($http.url('/api/ProjectSetting', args));
@@ -251,7 +284,7 @@
           idField:'Id',
           dataType:5,
           filter:function (item,group) {
-            return item.group==group;
+            return item.GroupId==group;
           }
         }).bind(function (group) {
           return $http.get('/api/Files?group=' + group).then(function (result) {
@@ -260,9 +293,18 @@
           });
         },function (result,cfg,args) {
           return {
-            Group:args[0],
-            Files:result.Rows
+            data: {
+              Group: args[0],
+              Files: result.data.Rows
+            }
           };
+        }),
+        post:$http.db({
+          _id:'s_files',
+          idField:'Id',
+          upload:true
+        }).bind(function (file) {
+          return $http.post('/api/Files/base64',file);
         }),
         delete: function (id) {
           return $http.delete('/api/Files/' + id);

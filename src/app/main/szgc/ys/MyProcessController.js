@@ -284,55 +284,51 @@
     //以下离线相关
     api.szgc.vanke.projects().then(function (r) {
       $scope.project.projects = r.data.data;
-      $scope.project.projects.forEach(function (p) {
-        api.setting('p_'+p.$id).then(function (d) {
-          p.online = d?1:0;
-        });
-      })
     });
-    $scope.download =function (project) {
-      api.task([
-        //项目区域/合作伙伴
+    var queryOffline = function () {
+      return api.szgc.ProjectSettings.offline.query().then(function (result) {
+        $scope.project.offlines = result.data;
+      });
+    }
+    queryOffline();
+    api.uploadTask(function () {
+      return true
+    }).then(function (result) {
+      $scope.project.tasks = result.rows;
+    });
+    $scope.download =function ($event,project,item) {
+      item.downloading = true;
+      var idTree = project.project_id+'>'+item.project_item_id;
+      api.download([
+        //项目区域
         function (tasks) {
-          return api.szgc.vanke.projects().then(function (result) {
-            result.data.data.forEach(function (p) {
+          return api.szgc.vanke.buildings({
+            project_id: item.project_id,
+            project_item_id: item.project_item_id,
+            page_size: 0,
+            page_number: 1
+          }).then(function (result) {
+            result.data.data.forEach(function (build) {
               tasks.push(function () {
-                return api.szgc.vanke.project_items({
-                  project_id: p.project_id,
+                return api.szgc.vanke.rooms({
+                  building_id: build.building_id,
                   page_size: 0,
                   page_number: 1
-                }).then(function (result) {
-                  result.data.data.forEach(function (item) {
-                    tasks.push(function () {
-                      return api.szgc.vanke.buildings({
-                        project_id: item.project_id,
-                        project_item_id: item.project_item_id,
-                        page_size: 0,
-                        page_number: 1
-                      }).then(function (result) {
-                        result.data.data.forEach(function (build) {
-                          tasks.push(function () {
-                            return api.szgc.vanke.rooms({
-                              building_id: build.building_id,
-                              page_size: 0,
-                              page_number: 1
-                            });
-                          })
-                        });
-                      })
-                    });
-                  })
                 });
-              });
-              tasks.push(function () {
-                return api.szgc.addProcessService.getBatchRelation({regionIdTree:p.project_id});
-              });
-              tasks.push(function () {
-                return api.szgc.CheckStepService.cache(p.project_id);
               })
-            })
+            });
           });
         },
+        //验收状态
+        function () {
+          return api.szgc.addProcessService.getBatchRelation({regionIdTree:idTree});
+        },
+        //检查项目
+        function () {
+          return api.szgc.CheckStepService.cache(idTree);
+        }
+      ].concat( //如果原来没有全局基础数据,也要加上
+        $scope.project.offlines && $scope.project.offlines.length? []:[
         //专业
         function () {
           return api.szgc.vanke.skills({page_size:0,page_number:1});
@@ -352,12 +348,59 @@
         //工序验收表
         function () {
           return api.szgc.TargetService.getAll()
-        }
-      ])(function (percent,current,total,context) {
-        project.percent = parseInt(percent *100) +' %';
-        project.current = current;
-        project.total = total;
-      })
+        }]))(function (percent,current,total) {
+        item.percent = parseInt(percent *100) +' %';
+        item.current = current;
+        item.total = total;
+      },function () {
+        item.downloading = false;
+        api.szgc.ProjectSettings.offline.create({
+          Id:idTree,
+          name:project.name+'>'+item.name,
+          project:project,
+          item:item
+        }).then(function () {
+          queryOffline().then(function () {
+            utils.alert('下载完成');
+          });
+        })
+
+      },function () {
+        item.downloading = false;
+        utils.alert('下载失败');
+      });
+    };
+    $scope.upload =function (task) {
+      api.upload(function (cfg,item) {
+        return !item || item.Id==task._id || item.GroupId==task._id;
+      },function (percent,current,total) {
+        task.percent = parseInt(percent *100) +' %';
+        task.current = current;
+        task.total = total;
+      },function () {
+        task.uploaded = 1;
+        utils.alert('上传完成');
+      },function () {
+        task.uploaded = 0;
+        utils.alert('上传失败');
+      });
+    }
+    $scope.deleteItem = function ($event,project,item) {
+
+    }
+    $scope.loadProject_items= function (project) {
+      if(!project.items){
+        return api.szgc.vanke.project_items({
+          project_id: project .project_id,
+          page_size: 0,
+          page_number: 1
+        }).then(function (result) {
+          project.items = result.data.data;
+        });
+      }
+      else{
+        project.items = null;
+      }
     }
   }
 })();

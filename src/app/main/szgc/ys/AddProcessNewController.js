@@ -876,8 +876,8 @@
         CheckData: targets,
         CheckDataValue:$scope.CheckDataValue
       }).then(function (result) {
-        if(result.data == "ok"){
-          api.szgc.ProcedureService.deleteAppImg(step.GroupImg2);
+        if(result.data == "ok" || result.data.Id){
+          //api.szgc.ProcedureService.deleteAppImg(step.GroupImg2);
           $scope.isSaveing = false;
           $scope.$parent.project.filter(true);
           api.uploadTask({

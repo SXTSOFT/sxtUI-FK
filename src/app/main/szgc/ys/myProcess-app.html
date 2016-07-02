@@ -80,22 +80,47 @@
 <md-content flex layout="column">
 <md-list md-cloak>
   <md-subheader class="md-no-sticky">已下载</md-subheader>
-  <md-list-item ng-repeat="project in project.projects|filter:{online:1}">
-    <p> {{ project.name }} </p>
-  </md-list-item>
-  <md-subheader class="md-no-sticky">未下载</md-subheader>
-  <md-list-item class="" ng-repeat="project in project.projects|filter:{online:0}">
-    <p> {{ project.name }} {{project.percent}} ({{project.current}}/{{project.total}}) </p>
-    <md-button class="md-secondary md-primary md-raised" ng-click="download(project)">下载</md-button>
+  <md-list-item ng-repeat="project in project.offlines">
+    <p style="padding: 0 14px;"> {{ project.name }} <b ng-if="project.item.downloading"> {{project.item.percent}} ({{project.item.current}}/{{project.item.total}})</b> </p>
+    <div class="md-secondary">
+    <md-button class="md-primary md-icon-button" ng-click="download($event,project.project,project.item)">
+      <md-icon md-font-icon="icon-cloud-download" ></md-icon>
+    </md-button>
+<!--    <md-button class="md-primary md-icon-button" ng-click="deleteItem($event,project.project,project.item)">
+      <md-icon md-font-icon="icon-delete" ></md-icon>
+    </md-button>-->
+    </div>
+    <md-divider></md-divider>
   </md-list-item>
 </md-list>
+  <md-list md-cloak>
+  <md-subheader class="md-no-sticky">下载</md-subheader>
+  <div class="" ng-repeat="p in project.projects">
+
+   <div flex layout="column"> <md-button  ng-click="loadProject_items(p)" style="text-align: left"> {{ p.name }} </md-button>
+     <md-list-item ng-repeat="item in p.items" style="line-height: 50px">
+       <p style="padding-left: 15px">{{item.name}}  <b ng-if="item.downloading"> {{item.percent}} ({{item.current}}/{{item.total}})</b> </p>
+       <md-button class="md-icon-button md-primary md-secondary" aria-label="download" ng-click="download($event, p,item)" >
+       <md-icon md-font-icon="icon-download" ></md-icon>
+       </md-button>
+     </md-list-item>
+   </div>
+    <md-divider></md-divider>
+  </div>
+  </md-list>
 </md-content>
     </md-tab-content>
   </md-tab>
   <md-tab label="上传">
     <md-tab-content flex layout-fill layout="column">
       <md-content flex layout="column">
-
+        <md-list md-cloak>
+          <md-subheader class="md-no-sticky"><md-button class="md-secondary md-primary md-raised" ng-click="upload()">上传</md-button></md-subheader>
+          <md-list-item ng-repeat="task in project.tasks">
+            <p> {{ task.name }} </p>
+            <md-button class="md-secondary md-primary md-raised" ng-click="upload(task)">上传</md-button>
+          </md-list-item>
+        </md-list>
       </md-content>
     </md-tab-content>
   </md-tab>

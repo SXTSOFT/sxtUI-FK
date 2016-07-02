@@ -16,6 +16,8 @@
       settingDb,
       uploadDb,
       networkState = 1;
+
+
     provider.register = register;
     provider.getNetwork = getNetwork;
     provider.setNetwork = function (state) { networkState = state;};
@@ -33,13 +35,13 @@
     provider.get = getServer;
     provider.setting = setting
 
-    getApi.$injector = ['$resource','$http','$injector','$q','db'];
+    getApi.$injector = ['$resource','$http','$injector','$q','db','$rootScope','$cordovaNetwork','$window','$cordovaFileTransfer'];
 
     function getServer(name){
       return injector.get(name);
     }
 
-    function getApi($resource,$http,$injector,$q,db){
+    function getApi($resource,$http,$injector,$q,db,$rootScope,$cordovaNetwork,$window,$cordovaFileTransfer){
       injector = $injector;
       provider.$http.$http = $http;
       provider.$q.$q = $q;
@@ -49,6 +51,39 @@
       api.task = task;
       api.upload = upload;
       api.uploadTask = uploadTask;
+      api.setNetwork = provider.setNetwork;
+      api.getNetwork = provider.getNetwork;
+
+      $rootScope.$on('$cordovaNetwork:online', function(event, state){
+        //console.log('$window.navigator',$window.navigator);
+        var type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
+        switch (type) {
+          case 'unknown':
+          case 'ethernet':
+          case 'wifi':
+          case 'none':
+            networkState = 0;
+            break;
+          case '2g':
+          case '3g':
+          case '4g':
+          case 'cellular':
+            networkState = 1;
+            break;
+          default:
+            networkState = 0;
+            break;
+        }
+        console.log('type',type,networkState);
+      });
+      $rootScope.$on('$cordovaNetwork:offline', function(event, state){
+        networkState =1;
+      });
+      $rootScope.$emit('$cordovaNetwork:online');
+
+      api.db = provider.$http.db;
+      api.clearDb = clearDb;
+      api.download = download;
       return api;
     }
 
@@ -134,6 +169,11 @@
       return path + ((path.indexOf('?') == -1) ? '?' : '&') + params(args);
     }
 
+    /**
+     *
+     * @param obj
+     * @returns {Object}
+       */
     function bindHttp(obj) {
       return angular.extend(obj,{
         get:cfg('get'),
@@ -172,50 +212,78 @@
       var tasks = [],
         self =this,
         groups = [];
-      appendTasks(tasks,groups,filter);
-      self.task(tasks)(function (percent,current,total) {
-        groups.forEach(function (g) {
-          if(current>=g.end)
-            g.percent = 1;
-          else if(current<=g.start)
-            g.percent = 0;
-          else {
-            g.current = current - g.start;
-            g.percent = g.current * 1.0 / g.total;
-          }
-        });
-        progress && progress(percent,current,total);
-      },complete,fail);
+      appendTasks(tasks,groups,filter).then(function (tasks) {
+        self.task(tasks)(function (percent,current,total) {
+          groups.forEach(function (g) {
+            if(current>=g.end)
+              g.percent = 1;
+            else if(current<=g.start)
+              g.percent = 0;
+            else {
+              g.current = current - g.start;
+              g.percent = g.current * 1.0 / g.total;
+            }
+          });
+          progress && progress(percent,current,total);
+        },complete,fail);
+      });
       return groups;
     }
     function appendTasks(tasks,groups,filter) {
-      cfgs.forEach(function (cfg) {
-        if(cfg.upload){
-          if(filter && filter(cfg)===false)return;
-          var group = {
-            name:cfg.name ||'其它-'+cfg._id,
-            start:tasks.length
-          };
-          groups.push(group);
-          cfg.db.findAll(function (item) {
-            if(filter)return filter(cfg,item);
-            return true;
-          }).then(function (result) {
+      return provider.$q.$q(function(resolve,reject) {
+        var p=[];
+        cfgs.forEach(function (cfg) {
+          if (cfg.upload) {
+            if (filter && filter(cfg) === false)return;
+            var group = {
+              name: cfg.name || '其它-' + cfg._id,
+              start: tasks.length,
+              cfg:cfg
+            };
+            groups.push(group);
+            p.push(initDb(cfg).findAll(function (item) {
+              if (filter)return filter(cfg, item);
+              return true;
+            }));
+          }
+        });
+        provider.$q.$q.all(p).then(function (rs) {
+          var i=0;
+          rs.forEach(function (result) {
+            var group = groups[i++],cfg = group.cfg;
             result.rows.forEach(function (row) {
               tasks.push(function () {
-                cfg.fn.call(cfg,row);
+                return cfg.fn.call(cfg, row);
               });
             });
             group.end = tasks.length;
             group.current = 0;
-            group.total = group.end - g.start;
+            group.total = group.end - group.start;
           });
-        }
+          resolve(tasks);
+        })
       });
     }
-    function task(tasks) {
+    function download(tasks) {
       var oNetworkState = networkState;
       networkState = 0;
+      var t = task(tasks);
+
+      return function (progress,success,fail) {
+        return t(progress,function () {
+          networkState = oNetworkState;
+          success && success();
+        },function () {
+          networkState = oNetworkState;
+          fail && fail();
+        });
+      };
+    }
+    function donwfile(uname,url) {
+      var rootPath = cordova.file.dataDirectory + '/';
+      return $cordovaFileTransfer.download(url, rootPath + uname);
+    }
+    function task(tasks) {
       return function start(progress,success,fail) {
         run(0,progress,success,fail,null);
       }
@@ -223,14 +291,12 @@
         var len = tasks.length,fn = tasks[i];
         if (progress(i * 1.0 / len, i, len) !== false) {
           if (!fn) {
-            networkState = oNetworkState;
             success && success();
           }
           else {
-            fn(tasks).then(function () {
+            fn(tasks,donwfile).then(function () {
               run(i + 1, progress, success, fail);
             }).catch(function () {
-              networkState = oNetworkState;
               fail && fail();
             });
           }
@@ -244,7 +310,7 @@
         }
         if(!angular.isFunction(itemOrFilter)){
           uploadDb.addOrUpdate(itemOrFilter).then(function () {
-            resolve(item);
+            resolve(itemOrFilter);
           });
         }
         else{
@@ -257,6 +323,11 @@
       })
     }
 
+    /**
+     * 绑定配置
+     * @param cfg
+       * @returns {*}
+       */
     function bindDb (cfg) {
       if(cfg.methods){
         var o = {},methods = cfg.methods;
@@ -272,10 +343,8 @@
           cfg.fn = fn;
           return function () {
             var args = toArray(arguments),
-              lodb = cfg.db,
+              lodb = initDb(cfg),
               caller = this;
-            if(!lodb && cfg._id)
-              lodb = cfg.db = pouchdb(cfg._id);
 
             if(cfg.local || !cfg.fn || provider.getNetwork()==1){
               var p2 = provider.$q.$q(function (resolve,reject) {
@@ -289,18 +358,28 @@
                   resolve(args);
                 }
                 else if(cfg.upload) {
+                  var updates = [];
                   args.forEach(function (d) {
-                    id(d,lodb,args,cfg);
+                    id(d,lodb,args,cfg,function (defer) {
+                      updates.push(defer);
+                    });
                   });
-                  resolve(args);
+                  provider.$q.$q.all(updates).then(function () {
+                    resolve(args);
+                  });
                 }
                 else{
                   var result = {};
                   if(cfg.dataType == 3){
                     if(args.length==1 && !cfg.filter) {
                       lodb.get(args[0]).then(function (r) {
-                        result.data = r;
-                        resolve(result);
+                        if(r || !cfg.raiseError) {
+                          result.data = r;
+                          resolve(result);
+                        }
+                        else {
+                          reject();
+                        }
                       }).catch(function (r) {
                         result.data = r;
                         reject(result);
@@ -313,7 +392,10 @@
                         return true;
                       }).then(function (r) {
                         result.data = r.rows[0];
-                        resolve(result);
+                        if (!cfg.raiseError || result.data)
+                          resolve(result);
+                        else
+                          reject(result);
                       })
                     }
                   }
@@ -376,10 +458,11 @@
         return cfg;
       }
 
-      function id(d,db,args,cfg) {
+      function id(d,db,args,cfg,cb) {
         var _id = angular.isFunction(cfg.idField) ? cfg.idField(d) : d[cfg.idField];
         if(_id && db){
-          db.addOrUpdate(cfg.data?cfg.data.apply(cfg,[angular.extend({_id:_id},d)].concat(args)):angular.extend({_id:_id},d));
+          var defer = db.addOrUpdate(cfg.data?cfg.data.apply(cfg,[angular.extend({_id:_id},d)].concat(args)):angular.extend({_id:_id},d));
+          if(cb && cb(defer));
         }
         return _id;
       }
@@ -409,7 +492,11 @@
       }
     }
 
-
+    function initDb(cfg) {
+      if(cfg.db) return cfg.db;
+      if(!cfg._id)return;
+      return (cfg.db = pouchdb(cfg._id));
+    }
     function getNetwork() {
       return networkState;
     }
@@ -417,7 +504,23 @@
       return Array.prototype.slice.call(args);
     }
 
-    //to vanke
+    function clearDb(progress,complete,fail) {
+      var tasks = [];
+       cfgs.forEach(function (cfg) {
+         var db = initDb(cfg);
+         if(db) {
+           tasks.push(function () {
+             return db.destroy().then(function (result) {
+               cfg.db = null;
+               return result;
+             }).catch(function (err) {
+               console.log(err)
+             });
+           })
+         }
+       });
+      return task(tasks)(progress,complete,fail);
+    }
   }
 
 })();
