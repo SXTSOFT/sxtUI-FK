@@ -2886,3 +2886,12 @@ md-slider{
     border-left: 5px solid transparent;
   }
 }
+.choose-datepicker{
+  md-datepicker{
+    margn-right:0;
+    padding-right: 0;
+    .md-datepicker-input{
+      min-width:150px;
+    }
+  }
+}

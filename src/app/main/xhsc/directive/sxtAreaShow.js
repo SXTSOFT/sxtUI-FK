@@ -67,7 +67,7 @@
                 //    "coordinates":[0.5732421875,0.4951171875]
                 //  }
                 //};
-                //L.geoJson(feature).addTo(map);
+                L.geoJson(feature).addTo(map);
               //  L.geoJson(feature,{
               //    pointToLayer:function(feature, latlng) {
               //      var smallIcon = L.icon({
