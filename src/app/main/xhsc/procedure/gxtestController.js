@@ -113,6 +113,7 @@
 
     $scope.$on("$destroy",function(){
       sendResult();
+      sendResult = null;
     });
     vm.setRegion = function(region){
       vm.info.regionId = region.RegionID;

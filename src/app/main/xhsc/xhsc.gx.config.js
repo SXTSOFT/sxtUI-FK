@@ -137,7 +137,7 @@
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
-        title: '工序',
+        title: '整改',
         url: '/gxzg',
         templateUrl: 'app/main/xhsc/procedure/gxzg.html',
         controller: 'gxzgController as vm'

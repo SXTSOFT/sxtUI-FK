@@ -1,3 +1,4 @@
+<!--<div style="position: fixed;top:0;left:0;bottom:0;right:0;background: #fff;"></div>-->
 <div class="slideTop" ng-class="{'slidedown':slideShow}">
   <md-list style="margin-top: 0">
     <md-list-item>
@@ -25,11 +26,17 @@
       </p>
     </md-list-item>
     <md-list-item>
+      <label>备注</label>
+      <p>
+        <input placeholder="备注" style="border: none;">
+      </p>
+    </md-list-item>
+    <md-list-item>
       <label>复验意见</label>
       <p style="text-align: right;margin-right:70px;">
         {{vm.value}}<md-switch ng-model="vm.value" ng-true-value="'合格'" ng-init="vm.value='不合格'" ng-false-value="'不合格'" class="md-secondary"></md-switch>
       </p>
     </md-list-item>
   </md-list>
-  <md-button flex ng-click="slideShow = false">确定</md-button>
+  <md-button flex ng-click="slideShow = false" style="width: 100%;">确定</md-button>
 </div>

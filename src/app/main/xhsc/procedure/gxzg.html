@@ -1,22 +1,26 @@
-<md-content style="background: transparent;">
-  <div flex="none" style="position: relative;border-bottom: 1px solid #d8d8d8;height:48px;">
-    <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;left:10px;top:0;" ng-click="vm.nextRegion(true)">
-      <md-icon md-font-icon="icon-chevron-left" ></md-icon>
-    </md-button>
-    <p style="font-size:14px;padding:0 10px;text-align: center;margin: 0;height:48px;line-height:48px;width:70%;margin-left:auto;margin-right:auto;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-      名称
-    </p>
-    <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;right:10px;top:0" ng-click="vm.nextRegion()">
-      <md-icon md-font-icon="icon-chevron-right" ></md-icon>
-    </md-button>
+<div flex="none" style="position: relative;">
+    <div layout="row" flex style="height:48px;border-bottom: 1px solid #d8d8d8;position: relative;z-index: 10;background: rgb(245,245,245);">
+      <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;left:10px;top:0;" ng-click="vm.nextRegion(true)">
+        <md-icon md-font-icon="icon-chevron-left"></md-icon>
+      </md-button>
+      <p ng-click="vm.qyslide()" style="font-size:14px;padding:0 10px;text-align: center;margin: 0;height:48px;line-height:48px;width:70%;margin-left:auto;margin-right:auto;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+        {{vm.RegionFullName||'名称'}} <span class="caret"></span>
+      </p>
+      <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;right:10px;top:0" ng-click="vm.nextRegion()">
+        <md-icon md-font-icon="icon-chevron-right"></md-icon>
+      </md-button>
+    </div>
+    <div flex layout="row" class="gxtest qyslide" ng-class="{'qydown':vm.qyslideShow}">
+      <md-list layout="column" flex class="gxplist">
+        <md-list-item flex ng-repeat="p in vm.pareaList">
+          <p ng-click="vm.selectQy(p)">{{p.name}}</p>
+        </md-list-item>
+      </md-list>
+    </div>
   </div>
-  <div flex layout="row">
-    <md-list>
-      <md-list-item>
-        <p>区域名称</p>
-      </md-list-item>
-    </md-list>
-  </div>
+<md-content flex style="background: transparent;">
+
+
   <div class="mapcheck">
     原位图纸
   </div>
@@ -34,8 +38,8 @@
         <span flex="none" style="width:50px;text-align: right;">3处</span>
       </md-list-item>
     </md-list>
-    <div style="margin-top: 20px;padding-left:10px;padding-right:10px;" flex layout="row"><span>基本信息</span><span flex></span><span ng-click="vm.showdetail = !vm.showdetail">展开</span></div>
-    <md-list ng-show="vm.showdetail">
+    <div style="margin-top: 20px;padding-left:10px;padding-right:10px;" flex layout="row"><span>基本信息</span><span flex></span></div>
+    <md-list>
       <md-list-item>
         <label>工序</label>
         <p>工序名称</p>
@@ -99,6 +103,6 @@
     <slide-top-view slide-show="vm.slideShow"></slide-top-view>
 
   </div>
+  </md-content>
 
-</md-content>
 
