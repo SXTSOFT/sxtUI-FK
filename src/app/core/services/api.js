@@ -35,16 +35,18 @@
     provider.get = getServer;
     provider.setting = setting
 
-    getApi.$injector = ['$resource','$http','$injector','$q','db','$rootScope','$cordovaNetwork','$window','$cordovaFileTransfer'];
+    getApi.$injector = ['$resource','$http','$injector','$q','db','$rootScope','$cordovaNetwork','$window','$cordovaFileTransfer','$timeout'];
 
     function getServer(name){
       return injector.get(name);
     }
 
-    function getApi($resource,$http,$injector,$q,db,$rootScope,$cordovaNetwork,$window,$cordovaFileTransfer){
+    function getApi($resource,$http,$injector,$q,db,$rootScope,$cordovaNetwork,$window,$cordovaFileTransfer,$timeout){
       injector = $injector;
       provider.$http.$http = $http;
       provider.$q.$q = $q;
+      provider.$cordovaFileTransfer = $cordovaFileTransfer;
+      provider.$timeout = $timeout;
       pouchdb = db;
       resolveApi(api,$resource,$http);
       api.setting = setting;
@@ -74,7 +76,6 @@
             networkState = 0;
             break;
         }
-        console.log('type',type,networkState);
       });
       $rootScope.$on('$cordovaNetwork:offline', function(event, state){
         networkState =1;
@@ -281,24 +282,36 @@
     }
     function donwfile(uname,url) {
       var rootPath = cordova.file.dataDirectory + '/';
-      return $cordovaFileTransfer.download(url, rootPath + uname);
+      return provider.$cordovaFileTransfer.download(url, rootPath + uname);
     }
     function task(tasks) {
-      return function start(progress,success,fail) {
-        run(0,progress,success,fail,null);
+      return function start(progress,success,fail,options) {
+        run(0,progress,success,fail,options);
       }
-      function run(i,progress,success,fail) {
+      function run(i,progress,success,fail,options) {
         var len = tasks.length,fn = tasks[i];
         if (progress(i * 1.0 / len, i, len) !== false) {
           if (!fn) {
             success && success();
           }
           else {
+            var d = new Date().getTime(),next = function () {
+              run(i + 1, progress, success, fail, options);
+            };
             fn(tasks,donwfile).then(function () {
-              run(i + 1, progress, success, fail);
+              if(d) {
+                d = 0;
+                next();
+              }
             }).catch(function () {
+              d = 0;
               fail && fail();
             });
+            provider.$timeout(function () {
+              if(d){
+                next();
+              }
+            },options && options.timeout?options.timeout:3000);
           }
         }
       }

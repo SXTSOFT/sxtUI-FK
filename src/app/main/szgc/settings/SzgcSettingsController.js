@@ -9,7 +9,7 @@
     .controller('SzgcSettingsController',SzgcSettingsController);
 
   /** @ngInject */
-  function SzgcSettingsController(profile,auth,api,$scope,utils){
+  function SzgcSettingsController(profile,auth,api,$scope,utils,$rootScope){
 
     var vm = this;
     vm.profile = profile.data.data;
@@ -19,6 +19,12 @@
     //服务器上保存版本信息
     api.szgc.version().then(function (r) {
       vm.serverAppVersion = r.data.verInfo;
+    });
+    $rootScope.$on('$cordovaNetwork:online', function(event, state){
+      vm.networkState = api.getNetwork();
+    });
+    $rootScope.$on('$cordovaNetwork:offline', function(event, state){
+      vm.networkState = api.getNetwork();
     });
     vm.networkState = api.getNetwork();
     $scope.$watch(function () {
