@@ -9,9 +9,26 @@
     .controller('gxzgController',gxzgController);
 
   /** @ngInject */
-  function gxzgController($state,$rootScope,$scope,$mdDialog){
-    var vm = this;
+  function gxzgController($state,$rootScope,$scope,$mdDialog,remote){
+    var vm = this,
+    ProjectID=$state.params.ProjectID,
+      InspectionID=$state.params.InspectionID,
+      AcceptanceItemID=$state.params.AcceptanceItemID,
+      RectificationID=$state.params.RectificationID;
     vm.role = 'zg';
+    remote.Procedure.getRegionByInspectionID(InspectionID).then(function(r){
+      vm.pareaList = r.data;
+      if (angular.isArray(vm.pareaList)&&vm.pareaList.length){
+        vm.regionSelect= r.data[0];
+        load();
+      }
+    });
+
+    function load(){
+      //if(){
+      //
+      //}
+    }
     vm.showTop = function(){
       vm.slideShow = true;
     }
@@ -21,7 +38,7 @@
       name:'二区'
     }];
     vm.selectQy = function(item){
-      vm.RegionFullName = item.name;
+      vm.regionSelect = item;
       vm.qyslideShow = false;
     }
     vm.showBaseInfor = function(){
