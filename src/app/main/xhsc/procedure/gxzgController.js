@@ -9,7 +9,7 @@
     .controller('gxzgController',gxzgController);
 
   /** @ngInject */
-  function gxzgController($state,$rootScope,$scope,remote){
+  function gxzgController($state,$rootScope,$scope,remote,$q){
     var vm = this,
       ProjectID=$state.params.ProjectID,
       InspectionID=$state.params.InspectionID,
@@ -29,14 +29,40 @@
     });
 
     function load(){
-      //if(){
-      //
-      //}
+      if (!vm.regionSelect){
+        return;
+      }
+      var promises=[
+        remote.Procedure.getReginQues(vm.regionSelect.AreaID,AcceptanceItemID),
+        remote.Procedure.getPoints(vm.regionSelect.AreaID,AcceptanceItemID)
+      ]
+      vm.ques=[];
+      $q.all(promises).then(function(res){
+        var ques=res[0].data;
+        vm.points=res[1].data;
+            if (ques&&ques.length){
+              ques.forEach(function(t){
+                if (vm.points&&vm.points.length){
+                  vm.points.forEach(function(m){
+                    if (t.IndexPointID== m.IndexPointID){
+                      if (!t.points){
+                        t.points=[];
+                      }
+                      t.points.push(m);
+                    }
+                  });
+                }
+                vm.ques.push(t);
+              });
+          }
+        console.log(vm.ques);
+      })
     }
 
     vm.selectQy = function(item){
       vm.regionSelect = item;
       vm.qyslideShow = false;
+      load();
     }
     vm.qyslide = function(){
       vm.qyslideShow = !vm.qyslideShow;
@@ -51,6 +77,4 @@
       gxChanged = null;
     })
   }
-
-
 })();
