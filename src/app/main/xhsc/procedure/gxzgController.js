@@ -57,11 +57,6 @@
     vm.showTop = function(){
       vm.slideShow = true;
     }
-    vm.pareaList =[{
-      name:'一区'
-    },{
-      name:'二区'
-    }];
     vm.selectQy = function(item){
       vm.regionSelect = item;
       vm.qyslideShow = false;
