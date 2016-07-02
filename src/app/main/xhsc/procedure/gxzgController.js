@@ -9,7 +9,7 @@
     .controller('gxzgController',gxzgController);
 
   /** @ngInject */
-  function gxzgController($state,$rootScope,$scope,$mdDialog,remote,$timeout){
+  function gxzgController($state,$rootScope,$scope,$mdDialog,remote,$timeout,$q){
     var vm = this,
       ProjectID=$state.params.ProjectID,
       InspectionID=$state.params.InspectionID,
