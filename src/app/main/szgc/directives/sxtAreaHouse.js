@@ -8,7 +8,7 @@
     .directive('sxtAreaHouse',sxtAreaHouse);
 
   /** @ngInject */
-  function sxtAreaHouse($timeout,$rootScope,api,sxt,$mdDialog,$http){
+  function sxtAreaHouse($timeout,$rootScope,api,sxt,$mdDialog,$http,tileLayer){
     return {
       scope: {
         show:'=',
@@ -135,7 +135,7 @@
           if (!scope.show) return;
           //var crs = ;
           if (map && map.gid == scope.gid) return;
-          if (map && scope.files && scope.files[0] != map.pic) {
+          if (map && scope.files && scope.files[0].Url != map.pic) {
             map.remove ();
             map = null;
           }
@@ -164,14 +164,16 @@
               zoomControl: false,
               attributionControl: false
             });
-            map.pic = scope.files[0];
-
+            map.pic = scope.files[0].Url;
+            scope.files[0].api = sxt.app.api;
+            scope.files[0].Url = scope.files[0].Url.replace ('/s_', '/');
+            layer = tileLayer.tile(scope.files[0]);
             //layer = L.tileLayer(sxt.app.api + '/api/file/load?x={x}&y={y}&z={z}', {
-            layer = L.tileLayer (sxt.app.api + '/api/picMap/load/{z}_{x}_{y}.png?size=256&path=' + scope.files[0].replace ('/s_', '/'), {
+/*            layer = L.tileLayer (sxt.app.api + '/api/picMap/load/{z}_{x}_{y}.png?size=256&path=' + scope.files[0].Url.replace ('/s_', '/'), {
               noWrap: true,
               continuousWorld: false,
               tileSize: 256
-            });
+            });*/
             map.gid = scope.gid;
             layer.addTo (map);
 

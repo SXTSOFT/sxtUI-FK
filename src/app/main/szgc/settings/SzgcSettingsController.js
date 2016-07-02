@@ -43,6 +43,9 @@
         },function () {
           vm.cacheInfo = null;
           utils.alert('清除失败');
+        },{
+          exclude:['v_profile'],
+          timeout:3000
         })
       })
 

@@ -298,7 +298,7 @@
             return item;
           }
         }).bind(function (building_id) {
-          return get(http.url('/common/v1/rooms',{building_id:building_id,page_size:0,page_number:1}));
+          return get(http.url('/common/v1/buildings/'+building_id+'/rooms',{page_size:0,page_number:1}));
         },function (result) {
           var floors = [];
           result.data.data.forEach(function (room) {
@@ -342,7 +342,17 @@
             return item;
           }
         }).bind(function (arg,incHide) {
-          return get(http.url('/common/v1/rooms', {building_id: arg.building_id, floor:arg.floor, page_size: 0, page_number: 1}));
+          return get(http.url('/common/v1/buildings/'+arg.building_id+'/rooms', {building_id: arg.building_id, floor:arg.floor, page_size: 0, page_number: 1}));
+        }),
+        room_types: http.db({
+          _id:'v_types',
+          idField:'type_id',
+          dataType:4,
+          filter:function (item,project_item_id) {
+            return item.project_item.project_item_id==project_item_id;
+          }
+        }).bind(function (project_item_id) {
+          return get(http.url('/common/v1/types', { project_item_id: project_item_id, page_size: 0, page_number:1}));
         }),
         partners: http.custom(function (arg) {
           return get(http.url('/common/v1/partners', arg));

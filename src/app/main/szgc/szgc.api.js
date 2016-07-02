@@ -357,9 +357,13 @@
         update: function (data) {
           return $http.put('/api/ProjectEx/' + data.ProjectId, data);
         },
-        get: function (id) {
+        get: $http.db({
+          _id:'s_projectEx',
+          idField:'ProjectId',
+          dataType:3
+        }).bind(function (id) {
           return $http.get('/api/ProjectEx/'+id);
-        },
+        }),
         query: function (status) {
           return $http.get('/api/ProjectEx?status=' + status);
         },

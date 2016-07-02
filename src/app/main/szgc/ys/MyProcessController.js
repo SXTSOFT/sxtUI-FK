@@ -12,7 +12,7 @@
     .controller('MyProcessController',MyProcessController);
 
   /** @ngInject */
-  function MyProcessController($scope, api, utils, $state){
+  function MyProcessController($scope, api, utils, $state,$q,sxt,xhUtils){
 
     var vm = this;
     $scope.is = function(route){
@@ -317,6 +317,38 @@
                 });
               })
             });
+          });
+        },//下载户型
+        function (tasks,downFile) {
+          return $q(function (resolve,reject) {
+            api.szgc.vanke.room_types(item.project_item_id).then(function (result) {
+              var tk = [];
+              result.data.data.forEach(function (type) {
+                tk.push(api.szgc.FilesService.group(item.project_item_id+'-'+type.type_id));
+                //5类工序
+                [1,2,3,4,5].forEach(function (m) {
+                  tasks.push(function () {
+                    return api.szgc.ProjectExService.get(item.project_item_id+'-'+type.type_id+'-'+m)
+                  });
+                });
+              });
+              //图纸
+              $q.all(tk).then(function (rs) {
+                var pics = xhUtils.getMapPic(3);
+                rs.forEach(function (r) {
+                  if(r.data.Files && r.data.Files.length){
+                    var f = r.data.Files[0];
+                    //f.Url = f.Url.replace('~/','/');
+                    pics.forEach(function (tile) {
+                      tasks.push(function () {
+                        return downFile('tile_'+f.Id+'_'+tile+'.jpg',sxt.app.api+'/api/picMap/load/'+tile+'.png?path='+f.Url.replace('/s_','/')+'&size=256');
+                      });
+                    })
+                  }
+                });
+                resolve();
+              }).catch(reject);
+            })
           });
         },
         //验收状态

@@ -47,6 +47,7 @@
       provider.$q.$q = $q;
       provider.$cordovaFileTransfer = $cordovaFileTransfer;
       provider.$timeout = $timeout;
+      provider.$window = $window;
       pouchdb = db;
       resolveApi(api,$resource,$http);
       api.setting = setting;
@@ -281,8 +282,16 @@
       };
     }
     function donwfile(uname,url) {
-      var rootPath = cordova.file.dataDirectory + '/';
-      return provider.$cordovaFileTransfer.download(url, rootPath + uname);
+      if(provider.$window.cordova) {
+        var rootPath = provider.$window.cordova.file.dataDirectory + '/';
+        return provider.$cordovaFileTransfer.download(url, rootPath + uname);
+      }
+      else{
+        return provider.$q.$q(function (resolve) {
+          console.log('down',uname,url);
+          resolve();
+        })
+      }
     }
     function task(tasks) {
       return function start(progress,success,fail,options) {
@@ -517,9 +526,10 @@
       return Array.prototype.slice.call(args);
     }
 
-    function clearDb(progress,complete,fail) {
+    function clearDb(progress,complete,fail,options) {
       var tasks = [];
        cfgs.forEach(function (cfg) {
+         if(options.exclude && options.exclude.indexOf(cfg._id)!=-1)return;
          var db = initDb(cfg);
          if(db) {
            tasks.push(function () {
@@ -532,7 +542,7 @@
            })
          }
        });
-      return task(tasks)(progress,complete,fail);
+      return task(tasks)(progress,complete,fail,options);
     }
   }
 
