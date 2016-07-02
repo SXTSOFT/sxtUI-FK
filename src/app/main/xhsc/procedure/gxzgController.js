@@ -16,6 +16,13 @@
       AcceptanceItemID=$state.params.AcceptanceItemID,
       RectificationID=$state.params.RectificationID;
     vm.role = 'zg';
+
+    vm.info={
+      projectId:ProjectID,
+      procedure:"",
+      regionId:"",
+      regionName:""
+    };
     remote.Procedure.getRegionByInspectionID(InspectionID).then(function(r){
       vm.pareaList = r.data;
       if (angular.isArray(vm.pareaList)&&vm.pareaList.length){
@@ -122,8 +129,37 @@
 
     $scope.$on('$destroy', function () {
       gxzgChanged();
-      //console.log('destroy')
       gxzgChanged = null;
     })
+
+    vm.nextRegion = function(prev){
+      function setNext(regions){
+        var region=regions.find(function(o){
+          return vm.info.regionId== o.RegionID;
+        });
+        var index=regions.indexOf(region);
+        if (prev){
+          if ((index-1)>=0){
+            vm.setRegion(regions[index-1]);
+            return;
+          }
+        }else {
+          if ((index+1)<regions.length){
+            vm.setRegion(regions[index+1]);
+            return;
+          }
+        }
+        utils.alert("查无数据!");
+      }
+
+      if(vm.pareaList){
+        setNext(vm.pareaList);
+      }else {
+        remote.Procedure.getRegionByInspectionID(InspectionID).then(function(r){
+          vm.pareaList = r.data;
+          setNext(vm.pareaList);
+        });
+      }
+    };
   }
 })();
