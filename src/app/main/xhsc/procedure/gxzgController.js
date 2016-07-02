@@ -22,9 +22,15 @@
           vm.regionSelect= r.data[0];
           load();
       }
+      vm.mapInfo = {
+        projectId:ProjectID,
+        acceptanceItemId:AcceptanceItemID,
+        areaId:vm.pareaList[0].AreaID
+      }
     });
 
     function load(){
+
       if (!vm.regionSelect){
         return;
       }
@@ -60,6 +66,7 @@
     vm.selectQy = function(item){
       vm.regionSelect = item;
       vm.qyslideShow = false;
+      vm.mapInfo.areaId = item.AreaID;
       load();
     }
     vm.showBaseInfor = function(){
