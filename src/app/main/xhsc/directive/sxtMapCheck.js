@@ -184,8 +184,13 @@
       };
       $timeout(function () {
         scope.$watch('regionId', function () {
-          if(scope.regionId && scope.procedure)
+          if(scope.regionId && scope.procedure) {
+            if(map){
+              map._map.remove();
+              map = null;
+            }
             install();
+          }
         });
         scope.$watch('item',function () {
           if(stamp) {
@@ -201,6 +206,7 @@
       scope.$on('destroy',function () {
         if(map){
           map._map.remove();
+          map = null;
         }
       })
     }

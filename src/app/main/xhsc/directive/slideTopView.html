@@ -32,7 +32,7 @@
       </p>
     </md-list-item>
     <md-list-item ng-if="role == 'zg'">
-      <label>整改意见</label>
+      <label>整改状态</label>
       <p style="text-align: right;margin-right:70px;">
         {{vm.value}}<md-switch ng-model="vm.value" ng-true-value="'整改'" ng-init="vm.value='未整改'" ng-false-value="'未整改'" class="md-secondary"></md-switch>
       </p>
@@ -63,7 +63,7 @@
       </p>
     </md-list-item>
     <md-list-item ng-if="role == 'fy'">
-      <label>复验意见</label>
+      <label>复验状态</label>
       <p style="text-align: right;margin-right:70px;">
         {{vm.value}}<md-switch ng-model="vm.value" ng-true-value="'合格'" ng-init="vm.value='不合格'" ng-false-value="'不合格'" class="md-secondary"></md-switch>
       </p>

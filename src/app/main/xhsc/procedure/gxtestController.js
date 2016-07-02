@@ -106,7 +106,14 @@
       });
       //console.log('vm',vm.procedureData)
     })
-
+    vm.qyslide = function(){
+      vm.qyslideShow = !vm.qyslideShow;
+    }
+    vm.selectQy = function(item){
+      vm.RegionFullName = item.fullName;
+      vm.qyslideShow = false;
+      vm.setRegion(item);
+    }
     var sendResult = $rootScope.$on('sendGxResult',function(){
       $state.go('app.xhsc.gx.gxresult',{acceptanceItemName:acceptanceItemName,name:vm.RegionFullName,areaId:areaId,projectId:projectId});
     })
