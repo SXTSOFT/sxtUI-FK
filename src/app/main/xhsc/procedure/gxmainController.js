@@ -84,9 +84,14 @@
       });
     }
 
-    vm.zg = function(){
-      $state.go('app.xhsc.gx.gxzg')
-    }
+    var projectID="00018";
+    remote.Procedure.getZGlistbyProjectId(projectID).then(function(r){
+        vm.zglist= r.data;
+    });
 
+
+    vm.zg = function(r){
+      $state.go('app.xhsc.gx.gxzg',{ProjectID:projectID,InspectionID: r.InspectionID,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID});
+    }
   }
 })();
