@@ -9,7 +9,7 @@
     .controller('gxzgController',gxzgController);
 
   /** @ngInject */
-  function gxzgController($state,$rootScope,$scope,$mdDialog,remote){
+  function gxzgController($state,$rootScope,$scope,$mdDialog,remote,$timeout){
     var vm = this,
     ProjectID=$state.params.ProjectID,
       InspectionID=$state.params.InspectionID,
@@ -56,51 +56,52 @@
     vm.qyslide = function(){
       vm.qyslideShow = !vm.qyslideShow;
     }
-    var gxzgChanged = function(){
-      //console.log('changed')
-      $mdDialog.show({
-        controller:['$scope',function($scope){
-          $scope.times = [{
-            time:'6小时'
-          },{
-            time:'12小时'
-          },{
-            time:'一天'
-          },{
-            time:'二天'
-          },{
-            time:'三天'
-          },{
-            time:'四天'
-          },{
-            time:'五天'
-          },{
-            time:'六天'
-          },{
-            time:'一周'
-          },{
-            time:'二周'
-          },{
-            time:'三周'
-          },{
-            time:'一个月'
-          },{
-            time:'二个月'
-          },{
-            time:'三个月'
-          }]
-          $scope.submit = function(){
-            $mdDialog.hide();
-          }
-        }],
-        templateUrl:'app/main/xhsc/procedure/ngTemp.html',
-        clickOutsideClose:true
-      })
-    }
-    $rootScope.$on('sendGxResult',gxzgChanged);
+
+    var gxzgChanged = $rootScope.$on('sendGxResult',function(){
+      console.log('changed')
+          $mdDialog.show({
+            controller:['$scope',function($scope){
+              $scope.times = [{
+                time:'6小时'
+              },{
+                time:'12小时'
+              },{
+                time:'一天'
+              },{
+                time:'二天'
+              },{
+                time:'三天'
+              },{
+                time:'四天'
+              },{
+                time:'五天'
+              },{
+                time:'六天'
+              },{
+                time:'一周'
+              },{
+                time:'二周'
+              },{
+                time:'三周'
+              },{
+                time:'一个月'
+              },{
+                time:'二个月'
+              },{
+                time:'三个月'
+              }]
+              $scope.submit = function(){
+                $mdDialog.hide();
+              }
+            }],
+            templateUrl:'app/main/xhsc/procedure/ngTemp.html',
+            clickOutsideClose:true
+          })
+    });
 
     $scope.$on('$destroy', function () {
-      //gxzgChanged();
+      gxzgChanged();
+      //console.log('destroy')
       gxzgChanged = null;
     })
   }

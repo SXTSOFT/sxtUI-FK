@@ -333,6 +333,7 @@
     });
     $scope.$on("$destroy",function(){
       sendgxResult();
+      sendgxResult=null;
     });
   }
 })();

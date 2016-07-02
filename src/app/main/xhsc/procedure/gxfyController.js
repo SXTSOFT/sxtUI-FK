@@ -39,7 +39,7 @@
         clickOutsideClose:true
       })
     }
-    var gxfyChanged = function(){
+    var gxfyChanged = $rootScope.$on('sendGxResult',function(){
       $mdDialog.show({
         controller:['$scope',function($scope){
           $scope.times = [{
@@ -78,11 +78,12 @@
         templateUrl:'app/main/xhsc/procedure/ngTemp.html',
         clickOutsideClose:true
       })
-    }
-    $rootScope.$on('sendGxResult',gxfyChanged);
+    });
+
 
     $scope.$on('$destroy', function () {
-      //gxfyChanged();
+      gxfyChanged();
+      console.log('destroy')
       gxfyChanged = null;
     })
   }
