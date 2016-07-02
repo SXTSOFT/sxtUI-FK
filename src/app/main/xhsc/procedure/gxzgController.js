@@ -9,9 +9,9 @@
     .controller('gxzgController',gxzgController);
 
   /** @ngInject */
-  function gxzgController($state,$rootScope,$scope,$mdDialog,remote,$timeout){
+  function gxzgController($state,$rootScope,$scope,$mdDialog,remote,$timeout,$q){
     var vm = this,
-    ProjectID=$state.params.ProjectID,
+      ProjectID=$state.params.ProjectID,
       InspectionID=$state.params.InspectionID,
       AcceptanceItemID=$state.params.AcceptanceItemID,
       RectificationID=$state.params.RectificationID;
@@ -19,34 +19,48 @@
     remote.Procedure.getRegionByInspectionID(InspectionID).then(function(r){
       vm.pareaList = r.data;
       if (angular.isArray(vm.pareaList)&&vm.pareaList.length){
-        vm.regionSelect= r.data[0];
-        load();
-      }
-      console.log('vm',vm.pareaList)
-      vm.mapInfo = {
-        projectId:ProjectID,
-        acceptanceItemId:AcceptanceItemID,
-        areaId:vm.pareaList[0].AreaID
+          vm.regionSelect= r.data[0];
+          load();
       }
     });
 
     function load(){
-      //if(){
-      //
-      //}
+      if (!vm.regionSelect){
+        return;
+      }
+      var promises=[
+        remote.Procedure.getReginQues(vm.regionSelect.AreaID,AcceptanceItemID),
+        remote.Procedure.getPoints(vm.regionSelect.AreaID,AcceptanceItemID)
+      ]
+      vm.ques=[];
+      $q.all(promises).then(function(res){
+        var ques=res[0].data;
+        vm.points=res[1].data;
+            if (ques&&ques.length){
+              ques.forEach(function(t){
+                if (vm.points&&vm.points.length){
+                  vm.points.forEach(function(m){
+                    if (t.IndexPointID== m.IndexPointID){
+                      if (!t.points){
+                        t.points=[];
+                      }
+                      t.points.push(m);
+                    }
+                  });
+                }
+                vm.ques.push(t);
+              });
+          }
+        console.log(vm.ques);
+      })
     }
     vm.showTop = function(){
       vm.slideShow = true;
     }
-    //vm.pareaList =[{
-    //  name:'一区'
-    //},{
-    //  name:'二区'
-    //}];
     vm.selectQy = function(item){
       vm.regionSelect = item;
       vm.qyslideShow = false;
-      vm.mapInfo.areaId = item.AreaID;
+      load();
     }
     vm.showBaseInfor = function(){
       $mdDialog.show({
@@ -61,9 +75,7 @@
     }
 
     vm.qyslide = function(){
-      if(vm.pareaList.length>1){
-        vm.qyslideShow = !vm.qyslideShow;
-      }
+      vm.qyslideShow = !vm.qyslideShow;
     }
 
     var gxzgChanged = $rootScope.$on('sendGxResult',function(){

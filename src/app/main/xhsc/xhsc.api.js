@@ -219,8 +219,13 @@
       },
       getRegionByInspectionID:function(inspectionId){
         return $http.get($http.url('/api/InspectionAreaApi/ByInspectionId',{inspectionId:inspectionId}))
+      },
+      getReginQues:function(areaId,acceptanceItemId){
+        return $http.get($http.url('/api/InspectionIndexApi/ByAreaIdAndAcceptanceItemId',{areaId:areaId,acceptanceItemId:acceptanceItemId}))
+      },
+      getPoints:function(areaId,acceptanceItemId){
+        return $http.get($http.url('/api/InspectionCheckpointApi/ByAreaIdAndAcceptanceItemId',{areaId:areaId,acceptanceItemId:acceptanceItemId}))
       }
-
     },
     Assessment:{
       queryRegions:function (arg) {

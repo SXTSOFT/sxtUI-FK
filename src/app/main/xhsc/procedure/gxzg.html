@@ -24,21 +24,21 @@
   <div class="gxtest gxtestdetail" flex>
     <div style="margin-top: 20px;padding:0 8px;" flex layout="row"><span flex>问题列表</span><span flex></span><span ng-click="vm.showBaseInfor()">基本信息</span></div>
     <md-list class="gxque">
-      <md-list-item>
-        <span flex="none" style="width:100px;">2号问题</span>
-        <span flex>二号问题描述二号问题描述二号问题描述二号问题描述</span>
-        <span flex="none" style="width:50px;text-align: right;">3处</span>
+      <md-list-item ng-repeat="k in vm.ques">
+        <!--<span flex="none" style="width:100px;">2号问题</span>-->
+        <span flex>{{k.IndexDesc}}</span>
+        <span flex="none" style="text-align: right;padding-right:20px">{{k.points.length}}处</span>
       </md-list-item>
-      <md-list-item>
-        <span flex="none" style="width:100px;">2号问题</span>
-        <span flex>二号问题描述二号问题描述</span>
-        <span flex="none" style="width:50px;text-align: right;">3处</span>
-      </md-list-item>
-      <md-list-item>
-        <span flex="none" style="width:100px;">2号问题</span>
-        <span flex>二号问题描述二号问题描述</span>
-        <span flex="none" style="width:50px;text-align: right;">3处</span>
-      </md-list-item>
+      <!--<md-list-item>-->
+        <!--<span flex="none" style="width:100px;">2号问题</span>-->
+        <!--<span flex>二号问题描述二号问题描述</span>-->
+        <!--<span flex="none" style="width:50px;text-align: right;">3处</span>-->
+      <!--</md-list-item>-->
+      <!--<md-list-item>-->
+        <!--<span flex="none" style="width:100px;">2号问题</span>-->
+        <!--<span flex>二号问题描述二号问题描述</span>-->
+        <!--<span flex="none" style="width:50px;text-align: right;">3处</span>-->
+      <!--</md-list-item>-->
     </md-list>
 
     <md-button flex style="display: block;width:100%;margin:10px 0;padding:6px;border:1px solid #d8d8d8;background: #fff;" ng-click="vm.showTop()">提交复检报告{{vm.role}}</md-button>
