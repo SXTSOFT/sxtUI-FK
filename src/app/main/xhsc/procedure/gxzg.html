@@ -13,12 +13,12 @@
   <div flex layout="row" class="gxtest qyslide" ng-class="{'qydown':vm.qyslideShow}">
     <md-list layout="column" flex class="gxplist">
       <md-list-item flex ng-repeat="p in vm.pareaList">
-        <p ng-click="vm.selectQy(p)">{{p.name}}</p>
+        <p ng-click="vm.selectQy(p)">{{p.AreaName}}</p>
       </md-list-item>
     </md-list>
   </div>
 </div>
-<div class="mapcheck" flex sxt-map-check project-id="'00018'" procedure="'438b49cfd5bd4681a589a94901c7e880'" region-id="'0001800000000000000000019'">
+<div class="mapcheck" flex sxt-map-check project-id="vm.mapInfo.projectId" procedure="vm.mapInfo.acceptanceItemId" region-id="vm.mapInfo.areaId">
 </div>
 <md-content flex style="background: transparent;">
   <div class="gxtest gxtestdetail" flex>

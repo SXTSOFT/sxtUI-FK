@@ -22,6 +22,12 @@
         vm.regionSelect= r.data[0];
         load();
       }
+      console.log('vm',vm.pareaList)
+      vm.mapInfo = {
+        projectId:ProjectID,
+        acceptanceItemId:AcceptanceItemID,
+        areaId:vm.pareaList[0].AreaID
+      }
     });
 
     function load(){
@@ -32,14 +38,15 @@
     vm.showTop = function(){
       vm.slideShow = true;
     }
-    vm.pareaList =[{
-      name:'一区'
-    },{
-      name:'二区'
-    }];
+    //vm.pareaList =[{
+    //  name:'一区'
+    //},{
+    //  name:'二区'
+    //}];
     vm.selectQy = function(item){
       vm.regionSelect = item;
       vm.qyslideShow = false;
+      vm.mapInfo.areaId = item.AreaID;
     }
     vm.showBaseInfor = function(){
       $mdDialog.show({
@@ -54,7 +61,9 @@
     }
 
     vm.qyslide = function(){
-      vm.qyslideShow = !vm.qyslideShow;
+      if(vm.pareaList.length>1){
+        vm.qyslideShow = !vm.qyslideShow;
+      }
     }
 
     var gxzgChanged = $rootScope.$on('sendGxResult',function(){
