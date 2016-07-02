@@ -213,7 +213,14 @@
       }),
       postInspection:function(params){
         return $http.post($http.url('/Api/InspectionApi/insert'),params )
+      },
+      getZGlistbyProjectId: function (projectID) {
+        return $http.get($http.url('/api/InspectionRectificationApi/List',{projectId:projectID}))
+      },
+      getRegionByInspectionID:function(inspectionId){
+        return $http.get($http.url('/api/InspectionAreaApi/ByInspectionId',{inspectionId:inspectionId}))
       }
+
     },
     Assessment:{
       queryRegions:function (arg) {

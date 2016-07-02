@@ -70,12 +70,12 @@
       <div layout="column" class="gxdownload">
         <md-subheader>已下载整改单</md-subheader>
         <md-list>
-          <md-list-item>
+          <md-list-item  ng-repeat="r in vm.zglist">
             <p layout="column" style="padding-right: 125px;font-size:16px;padding-left:8px;">
-              整改单名称
+              {{r.RectificationName}}
             </p>
             <div class="md-secondary md-hue-3" style="right:0;margin:0;">
-              <md-button class="md-raised md-primary" style="margin-top:7px;margin-bottom: 4px;" ng-click="vm.zg()">
+              <md-button class="md-raised md-primary" style="margin-top:7px;margin-bottom: 4px;" ng-click="vm.zg(r)">
                 整改
               </md-button>
               <md-button class="md-raised md-primary" style="margin-top:7px;margin-bottom: 4px;">
