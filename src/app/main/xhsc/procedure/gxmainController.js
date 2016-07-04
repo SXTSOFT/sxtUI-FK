@@ -87,6 +87,7 @@
     var projectID="00018";
     remote.Procedure.getZGlistbyProjectId(projectID).then(function(r){
         vm.zglist= r.data;
+      console.log('vm', r.data)
     });
 
     vm.fy = function(r){
