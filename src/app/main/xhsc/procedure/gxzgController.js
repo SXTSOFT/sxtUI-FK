@@ -9,20 +9,14 @@
     .controller('gxzgController',gxzgController);
 
   /** @ngInject */
-  function gxzgController($state,$rootScope,$scope,$mdDialog,remote,$timeout,$q){
-    var vm = this,
-      ProjectID=$state.params.ProjectID,
-      InspectionID=$state.params.InspectionID,
-      AcceptanceItemID=$state.params.AcceptanceItemID,
-      RectificationID=$state.params.RectificationID;
+  function gxzgController($state,$rootScope,$scope,$mdDialog,remote,$timeout,$q,utils){
+    var vm = this;
+      vm.ProjectID=$state.params.ProjectID;
+      var InspectionID=$state.params.InspectionID;
+      vm.AcceptanceItemID=$state.params.AcceptanceItemID;
+      var RectificationID=$state.params.RectificationID;
     vm.role = 'zg';
 
-    vm.info={
-      projectId:ProjectID,
-      procedure:"",
-      regionId:"",
-      regionName:""
-    };
     remote.Procedure.getRegionByInspectionID(InspectionID).then(function(r){
       vm.pareaList = r.data;
       if (angular.isArray(vm.pareaList)&&vm.pareaList.length){
@@ -35,6 +29,7 @@
         areaId:vm.pareaList[0].AreaID
       }
     });
+
     function setChina(r) {
       switch (r) {
         case 0:
@@ -56,8 +51,8 @@
         return;
       }
       var promises=[
-        remote.Procedure.getReginQues(vm.regionSelect.AreaID,AcceptanceItemID),
-        remote.Procedure.getPoints(vm.regionSelect.AreaID,AcceptanceItemID)
+        remote.Procedure.getReginQues(vm.regionSelect.AreaID,vm.AcceptanceItemID),
+        remote.Procedure.getPoints(vm.regionSelect.AreaID,vm.AcceptanceItemID)
       ]
       vm.ques=[];
       $q.all(promises).then(function(res){
@@ -155,37 +150,24 @@
 
     $scope.$on('$destroy', function () {
       gxzgChanged();
-      //console.log('destroy')
       gxzgChanged = null;
     })
 
     vm.nextRegion = function(prev){
-      function setNext(regions){
-        var region=regions.find(function(o){
-          return vm.info.regionId== o.RegionID;
-        });
-        var index=regions.indexOf(region);
-        if (prev){
-          if ((index-1)>=0){
-            vm.setRegion(regions[index-1]);
-            return;
+      if (angular.isArray(vm.pareaList)&&vm.pareaList.length>0){
+          var  index=vm.pareaList.indexOf(vm.regionSelect);
+          if (prev){
+            if ((index-1)>=0){
+              vm.regionSelect=vm.pareaList[index-1];
+              return;
+            }
+          }else {
+            if ((index+1)<vm.pareaList.length){
+              vm.regionSelect=vm.pareaList[index+1];
+              return;
+            }
           }
-        }else {
-          if ((index+1)<regions.length){
-            vm.setRegion(regions[index+1]);
-            return;
-          }
-        }
-        utils.alert("查无数据!");
-      }
-
-      if(vm.pareaList){
-        setNext(vm.pareaList);
-      }else {
-        remote.Procedure.getRegionByInspectionID(InspectionID).then(function(r){
-          vm.pareaList = r.data;
-          setNext(vm.pareaList);
-        });
+          utils.alert("查无数据!");
       }
     };
   }
