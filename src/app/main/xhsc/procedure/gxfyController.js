@@ -9,9 +9,14 @@
     .controller('gxfyController',gxfyController);
 
   /** @ngInject */
-  function gxfyController($state,$rootScope,$scope,$mdDialog){
-    var vm = this;
-    vm.role = 'fy';
+  function gxfyController($state,$rootScope,$scope,$mdDialog,$stateParams){
+    var vm = this,
+      ProjectID=$stateParams.ProjectID,
+      InspectionID=$stateParams.InspectionID,
+      AcceptanceItemID=$stateParams.AcceptanceItemID,
+      RectificationID=$stateParams.RectificationID;
+      vm.role = 'fy';
+
     vm.showTop = function(){
       vm.slideShow = true;
     }

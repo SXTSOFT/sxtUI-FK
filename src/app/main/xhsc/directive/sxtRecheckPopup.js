@@ -70,7 +70,8 @@
       }
       scope.submit = function(){
         scope.slideShow = false;
-
+        var layer = scope.context.layer;
+        console.log('layer',layer)
       }
       mapPopupSerivce.set('mapRecheckMapPopup',{
         el:element,
