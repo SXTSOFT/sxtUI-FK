@@ -15,7 +15,7 @@
       InspectionID=$state.params.InspectionID,
       AcceptanceItemID=$state.params.AcceptanceItemID,
       RectificationID=$state.params.RectificationID;
-    vm.role = 'zg';
+      vm.role = 'zg';
     remote.Procedure.getRegionByInspectionID(InspectionID).then(function(r){
       vm.pareaList = r.data;
       if (angular.isArray(vm.pareaList)&&vm.pareaList.length){
@@ -28,9 +28,23 @@
         areaId:vm.pareaList[0].AreaID
       }
     });
-
+    function setChina(r) {
+      switch (r) {
+        case 0:
+          return '合格';
+          break;
+        case 1:
+          return '未整改';
+          break;
+      }
+    }
+    remote.Procedure.getRectification(RectificationID).then(function(r){
+      vm.baseInfor = r.data;
+      console.log('base',r)
+      vm.baseInfor.zwStatus = setChina(r.data.Status);
+    })
     function load(){
-
+      //console.log('vm.pareaList',vm.pareaList)
       if (!vm.regionSelect){
         return;
       }
@@ -57,12 +71,12 @@
                 vm.ques.push(t);
               });
           }
-        console.log(vm.ques);
+        //console.log(vm.ques);
       })
     }
-    vm.showTop = function(){
-      vm.slideShow = true;
-    }
+    //vm.showTop = function(){
+    //  vm.slideShow = true;
+    //}
     vm.selectQy = function(item){
       vm.regionSelect = item;
       vm.qyslideShow = false;
@@ -70,14 +84,17 @@
       load();
     }
     vm.showBaseInfor = function(){
+      console.log('baseInfor',vm.baseInfor)
       $mdDialog.show({
         controller:['$scope',function($scope){
+          $scope.baseInfo = vm.baseInfor;
+          $scope.area = vm.regionSelect;
           $scope.submit = function(){
             $mdDialog.hide();
           }
         }],
         templateUrl:'app/main/xhsc/procedure/baseInforTemp.html',
-        clickOutsideClose:true
+        clickOutsideToClose:true
       })
     }
 
@@ -86,7 +103,6 @@
     }
 
     var gxzgChanged = $rootScope.$on('sendGxResult',function(){
-      console.log('changed')
           $mdDialog.show({
             controller:['$scope',function($scope){
               $scope.times = [{
@@ -117,13 +133,16 @@
                 time:'二个月'
               },{
                 time:'三个月'
-              }]
+              }];
+              $scope.cancel = function(){
+                $mdDialog.hide();
+              }
               $scope.submit = function(){
                 $mdDialog.hide();
               }
             }],
             templateUrl:'app/main/xhsc/procedure/ngTemp.html',
-            clickOutsideClose:true
+            clickOutsideToClose:true
           })
     });
 

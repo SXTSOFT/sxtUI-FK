@@ -225,6 +225,9 @@
       },
       getPoints:function(areaId,acceptanceItemId){
         return $http.get($http.url('/api/InspectionCheckpointApi/ByAreaIdAndAcceptanceItemId',{areaId:areaId,acceptanceItemId:acceptanceItemId}))
+      },
+      getRectification:function(rectificationId){
+        return $http.get($http.url('/api/InspectionApi/ByRectificationId',{rectificationId:rectificationId}))
       }
     },
     Assessment:{

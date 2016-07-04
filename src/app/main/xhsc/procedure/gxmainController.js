@@ -89,8 +89,8 @@
         vm.zglist= r.data;
     });
 
-    vm.fy = function(){
-      $state.go('app.xhsc.gx.gxfy')
+    vm.fy = function(r){
+      $state.go('app.xhsc.gx.gxfy',{ProjectID:projectID,InspectionID: r.InspectionID,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID})
     }
 
 
