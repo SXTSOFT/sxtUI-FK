@@ -1,13 +1,33 @@
-<div flex="none" style="position: relative;border-bottom: 1px solid #d8d8d8;height:48px;">
-  <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;left:10px;top:0;" ng-click="vm.nextRegion(true)">
-    <md-icon md-font-icon="icon-chevron-left" ></md-icon>
-  </md-button>
-  <p style="font-size:14px;padding:0 10px;text-align: center;margin: 0;height:48px;line-height:48px;width:70%;margin-left:auto;margin-right:auto;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-    {{vm.RegionFullName}}
-  </p>
-  <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;right:10px;top:0" ng-click="vm.nextRegion()">
-    <md-icon md-font-icon="icon-chevron-right" ></md-icon>
-  </md-button>
+<!--<div flex="none" style="position: relative;border-bottom: 1px solid #d8d8d8;height:48px;">-->
+  <!--<md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;left:10px;top:0;" ng-click="vm.nextRegion(true)">-->
+    <!--<md-icon md-font-icon="icon-chevron-left" ></md-icon>-->
+  <!--</md-button>-->
+  <!--<p style="font-size:14px;padding:0 10px;text-align: center;margin: 0;height:48px;line-height:48px;width:70%;margin-left:auto;margin-right:auto;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">-->
+    <!--{{vm.RegionFullName}}-->
+  <!--</p>-->
+  <!--<md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;right:10px;top:0" ng-click="vm.nextRegion()">-->
+    <!--<md-icon md-font-icon="icon-chevron-right" ></md-icon>-->
+  <!--</md-button>-->
+<!--</div>-->
+<div flex="none" style="position: relative;" class="downcaret">
+  <div layout="row" flex style="height:48px;border-bottom: 1px solid #d8d8d8;position: relative;z-index: 10;background: rgb(245,245,245);">
+    <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;left:10px;top:0;" ng-click="vm.nextRegion(true)">
+      <md-icon md-font-icon="icon-chevron-left"></md-icon>
+    </md-button>
+    <p ng-click="vm.qyslide()" style="font-size:14px;padding:0 10px;text-align: center;margin: 0;height:48px;line-height:48px;width:70%;margin-left:auto;margin-right:auto;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+      {{vm.RegionFullName}} <span class="caret"></span>
+    </p>
+    <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;right:10px;top:0" ng-click="vm.nextRegion()">
+      <md-icon md-font-icon="icon-chevron-right"></md-icon>
+    </md-button>
+  </div>
+  <div flex layout="row" class="gxtest qyslide" ng-class="{'qydown':vm.qyslideShow}">
+    <md-list layout="column" flex class="gxplist">
+      <md-list-item flex ng-repeat="p in vm.btBatch">
+        <p ng-click="vm.selectQy(p)">{{p.fullName}}</p>
+      </md-list-item>
+    </md-list>
+  </div>
 </div>
 <div class="mapcheck" flex sxt-map-check="vm.info.current"  project-id="vm.info.projectId" procedure="vm.info.acceptanceItemID" region-id="vm.info.regionId">
   <div style="position: absolute;z-index: 79;bottom: 10px;right: 10px" ng-show="vm.info.current"><md-button class="md-raised md-mini md-green" fast-click="vm.cancelCurrent($event)">取消</md-button></div>

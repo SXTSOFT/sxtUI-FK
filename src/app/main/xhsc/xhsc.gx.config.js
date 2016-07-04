@@ -132,6 +132,26 @@
         templateUrl: 'app/main/xhsc/procedure/gxhousechoose.html',
         controller: 'gxhousechooseController as vm'
       })
+      .state('app.xhsc.gx.gxzg',{
+        noBack: true,
+        sendBt: true,
+        rightArrow: false,
+        leftArrow: false,
+        title: '整改',
+        url: '/gxzg/{ProjectID}/{InspectionID}/{AcceptanceItemID}/{RectificationID}',
+        templateUrl: 'app/main/xhsc/procedure/gxzg.html',
+        controller: 'gxzgController as vm'
+      })
+      .state('app.xhsc.gx.gxfy',{
+        noBack: true,
+        sendBt: true,
+        rightArrow: false,
+        leftArrow: false,
+        title: '复验',
+        url: '/gxfy/{ProjectID}/{InspectionID}/{AcceptanceItemID}/{RectificationID}',
+        templateUrl: 'app/main/xhsc/procedure/gxfy.html',
+        controller: 'gxfyController as vm'
+      })
       .state('app.xhsc.gx.gxresult.gxrychoose',{
         noBack:true,
         sendBt:false,

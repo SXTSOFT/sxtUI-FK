@@ -798,11 +798,23 @@ md-tabs[md-align-tabs="bottom"]{
           background:#CDDC39;
         }
       }
-      &.dy{
-        border:1px solid #00b0e8;
-        color:#000000;
+      &.yzg{
+        border:1px solid #fed189;
+        color:#fed189;
         >div{
-          background:#00b0e8;
+          background: #fff3e6;
+        }
+      }
+      &.dy{
+        //border:1px solid #4bb9f3;
+        //color:#4bb9f3;
+        //>div{
+        //  background:#d2eefc;
+        //}
+        border:1px solid #d6d6d6;
+        color:#333;
+        >div{
+          background: #f6f6f9;
         }
       }
       &.pass{
@@ -827,7 +839,7 @@ md-tabs[md-align-tabs="bottom"]{
         }
       }
       &.wait{
-        border:1px solid #d8d8d8;
+        border:1px solid #dedede;
         color:#333;
         >div{
           background: #fff;
@@ -840,7 +852,7 @@ md-tabs[md-align-tabs="bottom"]{
           position: absolute;
           right:1px;
           top:1px;
-          background:url(../app/main/xhsc/images/circle-v.jpg) no-repeat;
+          background:url(main/xhsc/images/circle-v.png) no-repeat;
           background-size: 12px auto;
           width:12px;
           height:12px;
@@ -1380,8 +1392,15 @@ md-tabs[md-align-tabs="bottom"]{
   }
 }
 .gxtest{
+  &.qyslide{
+    position:absolute;top:48px;left:0;background:#fff;width: 100%;z-index: 9;box-shadow: 0 5px 5px #ccc;transform:translateY(-120%);transition: transform .3s ease;
+    &.qydown{
+      transform:translateY(0);
+    }
+  }
   md-list{
-    border:1px solid #d8d8d8;
+    border-top:1px solid #dedede;
+    border-bottom:1px solid #dedede;
     margin-top: 10px;
     background: #fff;
     padding: 0 10px;
@@ -1393,7 +1412,7 @@ md-tabs[md-align-tabs="bottom"]{
         font-size:14px;
         color:#999;
       }
-      border-bottom: 1px solid #d8d8d8;
+      border-bottom: 1px solid #dedede;
       &:last-child{
         border-bottom: none;
       }
@@ -1411,6 +1430,14 @@ md-tabs[md-align-tabs="bottom"]{
         text-align-last:justify;/* ie9*/
         -moz-text-align-last:justify;/*ff*/
         -webkit-text-align-last:justify;/*chrome 20+*/
+      }
+    }
+    &.gxplist{
+      margin-top: -1px;
+      md-list-item{
+        p{
+          text-align: center;line-height: 46px;
+        }
       }
     }
   }
@@ -2483,11 +2510,12 @@ md-bottom-sheet{
   }
 }
 .slideTop{
-  position: fixed;top:0px;left: 0;width:100%;background:#fff;
+  position: fixed;top:44px;left: 0;width:100%;background:#fff;
   transition: all .5s ease;
-  transform: translate3d(0,-100%,0);
-  border:1px solid #d8d8d8;
-  box-shadow: 0 0 20px rgba(0,0,0,.5);
+  transform: translate3d(0,-120%,0);
+  border-bottom:1px solid #d8d8d8;
+  box-shadow: 0 10px 10px rgba(0,0,0,.3);
+  z-index:30;
   &.slidedown{
     transform: translate3d(0,0,0);
   }
@@ -2516,15 +2544,17 @@ md-bottom-sheet{
               height:14px;
               border:1px solid #fff;
               border-radius: 3px;
-              margin-right: 5px;
+              margin-right: 3px;
               vertical-align: middle;
               &.wy{
                 border:1px solid #CDDC39;
                 background:#CDDC39;
               }
               &.dy{
-                border:1px solid #DCDCDC;
-                background:#00b0e8;
+                //border:1px solid #DCDCDC;
+                //background:#00b0e8;
+                border:1px solid #d6d6d6;
+                background: #f6f6f9;
               }
               &.pass{
                 border:1px solid #169e49;
@@ -2537,6 +2567,10 @@ md-bottom-sheet{
               &.yet{
                 border:1px solid #d8d8d8;
                 background: #7ea2b4;
+              }
+              &.yzg{
+                border:1px solid #fed189;
+                background: #fff3e6;
               }
               &.wait{
                 border:1px solid #d8d8d8;
@@ -2594,7 +2628,7 @@ md-bottom-sheet{
       min-width: 50px;
       margin: 0;
       width:100%;
-      border:2px solid #d8d8d8;
+      border:2px solid #dedede;
       border-radius:6px;
       padding: 0;
       min-height: 32px;
@@ -2609,11 +2643,11 @@ md-bottom-sheet{
         background: #ffebea;
       }
       &.yet{
-        border:1px solid #d8d8d8;
+        border:1px solid #dedede;
         background: #f6f9f9;
       }
       &.wait{
-        border:1px solid #d8d8d8;
+        border:1px solid #dedede;
         background: #fff;
       }
       p{
@@ -2654,7 +2688,7 @@ md-bottom-sheet{
       }
     }
     .dialog-top{
-      padding:20px;
+      //padding:20px;
       color:#fe6767;
       p{
         //margin-bottom: 5px;
@@ -2689,7 +2723,7 @@ md-bottom-sheet{
 }
 .md-button{
   &.addphoto{
-    margin:0 4px;
+    margin:0 10px;
     padding:0;
   }
 }
@@ -2798,6 +2832,7 @@ md-bottom-sheet{
   }
 }
 .changetel{
+  width: 80%;
   .new-btn{
     text-align: center;border-right:1px solid #d8d8d8;min-height:40px;font-size:14px;line-height: 40px;color:#333;
     text-decoration: none;
@@ -2836,5 +2871,28 @@ md-slider{
 .mapcheck{
   .leaflet-popup-content{
     margin:13px 5px;
+  }
+}
+
+.downcaret{
+  .caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 5px;
+    vertical-align: middle;
+    border-top: 5px dashed;
+    border-top: 5px solid \9;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+  }
+}
+.choose-datepicker{
+  md-datepicker{
+    margn-right:0;
+    padding-right: 0;
+    .md-datepicker-input{
+      min-width:150px;
+    }
   }
 }

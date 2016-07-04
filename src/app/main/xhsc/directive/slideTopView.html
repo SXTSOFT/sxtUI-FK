@@ -1,0 +1,73 @@
+<!--<div style="position: fixed;top:0;left:0;bottom:0;right:0;background: #fff;"></div>-->
+<div class="slideTop" ng-class="{'slidedown':slideShow}">
+  <md-list style="margin-top: 0">
+    <md-list-item>
+      <label>问题描述</label>
+      <p>{{disQues.ProblemDescription}}</p>
+    </md-list-item>
+    <md-list-item ng-if="role == 'zg'">
+      <label>首验照片</label>
+      <p>
+          <span class="photo" ng-click="playImage(data.images)">
+            <i>照片</i><i>{{data.images.length}}</i>
+          </span>
+          <!--<span class="photo">-->
+            <!--<i>照片</i><i>2</i>-->
+          <!--</span>-->
+      </p>
+    </md-list-item>
+    <md-list-item ng-if="role == 'zg'">
+      <label>整改照片</label>
+      <p>
+          <span class="photo" ng-click="playImage()">
+            <i>照片</i><i>2</i>
+          </span>
+        <md-button style="min-width: 40px;" class="addphoto" ng-click="addPhoto()"><img src="app/main/xhsc/images/plus.png" width="40"></md-button>
+      </p>
+    </md-list-item>
+    <md-list-item ng-if="role == 'zg'">
+      <label>备注</label>
+      <p>
+        <input placeholder="备注" style="border: none;" ng-model="disQues.note">
+      </p>
+    </md-list-item>
+    <md-list-item ng-if="role == 'zg'">
+      <label>整改状态</label>
+      <p style="text-align: right;margin-right:70px;">
+        {{disQues.value}}<md-switch ng-model="disQues.value" ng-true-value="'整改'" ng-false-value="'未整改'" class="md-secondary"></md-switch>
+      </p>
+    </md-list-item>
+    <md-list-item ng-if="role == 'fy'">
+      <label>整改前照片</label>
+      <p>
+          <span class="photo" ng-click="playImage()">
+            <i>照片</i><i>1</i>
+          </span>
+        <!--<span class="photo">-->
+        <!--<i>照片</i><i>2</i>-->
+        <!--</span>-->
+      </p>
+    </md-list-item>
+    <md-list-item ng-if="role == 'fy'">
+      <label>整改后照片</label>
+      <p>
+          <span class="photo" ng-click="playImage()">
+            <i>照片</i><i>2</i>
+          </span>
+      </p>
+    </md-list-item>
+    <md-list-item ng-if="role == 'fy'">
+      <label>备注</label>
+      <p>
+        备注
+      </p>
+    </md-list-item>
+    <md-list-item ng-if="role == 'fy'">
+      <label>复验状态</label>
+      <p style="text-align: right;margin-right:70px;">
+        {{value}}<md-switch ng-model="value" ng-true-value="'合格'" ng-init="value='不合格'" ng-false-value="'不合格'" class="md-secondary"></md-switch>
+      </p>
+    </md-list-item>
+  </md-list>
+  <md-button flex ng-click="submit()" style="width: 100%;padding:6px 0;margin:0;">确定</md-button>
+</div>

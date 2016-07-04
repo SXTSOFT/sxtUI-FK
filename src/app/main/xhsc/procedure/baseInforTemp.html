@@ -1,0 +1,56 @@
+<md-dialog class="changetel">
+  <md-dialog-content style="padding:20px 0;border-bottom: 1px solid #dedede;">
+    <div class="gxtest gxtestdetail">
+      <p style="padding-left:10px;">基本信息</p>
+      <md-list>
+        <md-list-item>
+          <label>工序</label>
+          <p>工序名称</p>
+        </md-list-item>
+        <md-list-item>
+          <label>部位</label>
+          <p>{{area.AreaName}}</p>
+        </md-list-item>
+        <!--<md-list-item>-->
+          <!--<label>监理单位</label>-->
+          <!--<p>工序名称</p>-->
+        <!--</md-list-item>-->
+        <md-list-item>
+          <label>验收人员</label>
+          <p>{{baseInfo.InspectionUser}}</p>
+        </md-list-item>
+        <!--<md-list-item>-->
+          <!--<label>施工单位</label>-->
+          <!--<p>工序名称</p>-->
+        <!--</md-list-item>-->
+        <!--<md-list-item>-->
+          <!--<label>责任人</label>-->
+          <!--<p>工序名称</p>-->
+        <!--</md-list-item>-->
+        <md-list-item>
+          <label>验收进度</label>
+          <p>{{baseInfo.Percentage}}%</p>
+        </md-list-item>
+        <md-list-item>
+          <label>验收时间</label>
+          <p>{{baseInfo.InspectionTime}}</p>
+        </md-list-item>
+        <!--<md-list-item>-->
+          <!--<label style="width:100px;">最迟整改时间</label>-->
+          <!--<p>工序名称</p>-->
+        <!--</md-list-item>-->
+        <md-list-item>
+          <label>备注信息</label>
+          <p>{{baseInfo.Describe}}</p>
+        </md-list-item>
+        <md-list-item>
+          <label>验收状态</label>
+          <p>{{baseInfo.zwStatus}}</p>
+        </md-list-item>
+      </md-list>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions style="padding-top:0;padding-bottom:0;min-height: 40px;">
+    <a flex class="new-btn noborder" ng-click="submit()">确定</a>
+  </md-dialog-actions>
+</md-dialog>

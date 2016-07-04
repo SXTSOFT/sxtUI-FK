@@ -13,22 +13,24 @@
     var vm = this;
     function setGxList(gxdata){
       vm.gxList=[];
+      var promises;
       gxdata.forEach(function(item){
         if(item.isOffline){
-          remote.Project.getInspectionList(item.ProjectID).then(function(res){
+          promises=[
+            remote.Project.getInspectionList(item.ProjectID),
+            remote.Project.queryAllBulidings(item.ProjectID)
+          ];
+          $q.all(promises).then(function(rtn){
+            var res=rtn[0],_res=rtn[1];
             res.data.forEach(function(r){
               r.Children.forEach(function(_r){
-                remote.Project.queryAllBulidings(item.ProjectID).then(function(_res){
                   var tempName = xhUtils.findRegion(_res.data[0].RegionRelations[0],_r.AreaID);
                   _r.newName = item.ProjectName + tempName.fullName + _r.Describe;
-                  _r.projcetId = item.ProjectID;
-                })
+                  _r.projectId = item.ProjectID;
               })
               vm.gxList.push(r);
             })
-
-           // console.log('data',vm.gxList)
-          })
+          });
         }
       });
     }
@@ -44,13 +46,13 @@
         });
         setGxList(result.data);
         vm.projects = result.data;
-       // console.log('result',vm.gxList)
+
 
       });
     });
     vm.ys = function(item){
       $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
-        projectId:item.projectId,areaId:item.AreaId,inspectionId:item.InspectionId})
+        projectId:item.Children[0].projectId,areaId:item.Children[0].AreaID,InspectionId:item.InspectionId})
     }
     vm.download = function(item){
       item.isDown = true;
@@ -82,5 +84,19 @@
       });
     }
 
+    var projectID="00018";
+    remote.Procedure.getZGlistbyProjectId(projectID).then(function(r){
+        vm.zglist= r.data;
+      console.log('vm', r.data)
+    });
+
+    vm.fy = function(r){
+      $state.go('app.xhsc.gx.gxfy',{ProjectID:projectID,InspectionID: r.InspectionID,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID})
+    }
+
+
+    vm.zg = function(r){
+      $state.go('app.xhsc.gx.gxzg',{ProjectID:projectID,InspectionID: r.InspectionID,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID});
+    }
   }
 })();
