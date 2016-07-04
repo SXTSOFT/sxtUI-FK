@@ -343,6 +343,20 @@
           }
         }).bind(function (arg,incHide) {
           return get(http.url('/common/v1/buildings/'+arg.building_id+'/rooms', {building_id: arg.building_id, floor:arg.floor, page_size: 0, page_number: 1}));
+        },function (result) {
+          result.data.data.sort (function (i1, i2) {
+            var n1 = getNumName (i1.name),
+              n2 = getNumName (i2.name);
+            if (!isNaN (n1) && !isNaN (n2))
+              return n1 - n2;
+            else if ((isNaN (n1) && !isNaN (n2)))
+              return 1;
+            else if ((!isNaN (n1) && isNaN (n2)))
+              return -1;
+            else
+              return i1.name.localeCompare (i2.name);
+          });
+          return result;
         }),
         room_types: http.db({
           _id:'v_types',

@@ -486,10 +486,9 @@
               return;
             };
           }
-          var fd = gps.find(function (g) {
-            return g.id == item.team_id;
-          });
-          if (!fd) {
+          if(!(item.partner_id == $scope.data.curHistory.CompanyId || gps.find(function (g) {
+              return g.id == item.team_id;
+            }))){
             return;
           }
           var ns = [];
@@ -521,12 +520,12 @@
                 return;
               };
             }
-            var fd = gps.find(function (g) {
-              return g.id == item.team_id;
-            });
-            if (!fd) {
+            if(!(item.partner_id == $scope.data.curHistory.ParentCompanyId || gps.find(function (g) {
+                return g.id == item.team_id;
+              }))){
               return;
             }
+
 
             var ns = [];
             item.managers.forEach(function (it) {
@@ -870,13 +869,13 @@
 
       //console.log('CheckData', targets)
       api.szgc.addProcessService.postCheckData({
-        Id:tid,
+        Id:sxt.uuid(),
         Batch: data.batchs,
         Step: step,
         CheckData: targets,
         CheckDataValue:$scope.CheckDataValue
       }).then(function (result) {
-        if(result.data == "ok" || result.data.Id){
+        if(result){
           //api.szgc.ProcedureService.deleteAppImg(step.GroupImg2);
           $scope.isSaveing = false;
           $scope.$parent.project.filter(true);

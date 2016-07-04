@@ -291,10 +291,10 @@
       });
     }
     queryOffline();
-    api.uploadTask(function () {
+    api.uploadTask(function (cfg,item) {
       return true
     }).then(function (result) {
-      $scope.project.tasks = result.rows;
+      //$scope.project.tasks = result.rows;
     });
     $scope.download =function ($event,project,item) {
       item.downloading = true;
@@ -341,7 +341,7 @@
                     //f.Url = f.Url.replace('~/','/');
                     pics.forEach(function (tile) {
                       tasks.push(function () {
-                        return downFile('tile_'+f.Id+'_'+tile+'.jpg',sxt.app.api+'/api/picMap/load/'+tile+'.png?path='+f.Url.replace('/s_','/')+'&size=256');
+                        return downFile('map','tile_'+f.Id+'_'+tile+'.jpg',sxt.app.api+'/api/picMap/load/'+tile+'.png?path='+f.Url.replace('/s_','/')+'&size=256');
                       });
                     })
                   }
@@ -350,6 +350,15 @@
               }).catch(reject);
             })
           });
+        },
+        function () {
+          return api.szgc.ProjectSettingsSevice.query({treeId:idTree,unitType:1,includeChild:true});
+        },
+        function () {
+          return api.szgc.ProjectSettingsSevice.query({treeId:idTree,unitType:2,includeChild:true});
+        },
+        function () {
+          return api.szgc.ProjectSettingsSevice.query({treeId:idTree,unitType:3,includeChild:true});
         },
         //验收状态
         function () {
@@ -400,21 +409,31 @@
       },function () {
         item.downloading = false;
         utils.alert('下载失败');
-      });
+      },{timeout:20000});
     };
-    $scope.upload =function (task) {
+    $scope.upload =function () {
       api.upload(function (cfg,item) {
-        return !item || item.Id==task._id || item.GroupId==task._id;
+        if(cfg._id=='s_files' && item && item.Url.indexOf('base64')==-1){
+          return false;
+        }
+        return true;
       },function (percent,current,total) {
-        task.percent = parseInt(percent *100) +' %';
-        task.current = current;
-        task.total = total;
+        $scope.project.percent = parseInt(percent *100) +' %';
+        $scope.project.current = current;
+        $scope.project.total = total;
       },function () {
-        task.uploaded = 1;
+        $scope.project.uploaded = 1;
+        api.uploadTask(function () {
+          return true
+        },null);
         utils.alert('上传完成');
       },function () {
-        task.uploaded = 0;
+        $scope.project.uploaded = 0;
         utils.alert('上传失败');
+      },{
+        uploaded:function (cfg,row,result) {
+          cfg.db.delete(row._id);
+        }
       });
     }
     $scope.deleteItem = function ($event,project,item) {

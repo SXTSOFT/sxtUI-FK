@@ -38,6 +38,11 @@
                   Url:base64
                 };
                 api.szgc.FilesService.post(att);
+                var d = new Date();
+                api.uploadTask({
+                  _id:sxt.uuid(),
+                  name:'照片('+ d.getMonth()+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds()+')'
+                });
                 scope.files.push(att);
               }
             })

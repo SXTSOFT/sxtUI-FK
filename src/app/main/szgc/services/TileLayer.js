@@ -15,7 +15,7 @@
         this._adjustTilePoint(tilePoint);
         //console.log(this._url);
         if(typeof cordova !== 'undefined') {
-          $cordovaFile.readAsDataURL(cordova.file.dataDirectory, 'tile_'+this._url.Id +'_' + tilePoint.z + '_' + tilePoint.x + '_' + tilePoint.y + '.jpg').then(function (success) {
+          $cordovaFile.readAsDataURL(cordova.file.dataDirectory+'/map', 'tile_'+this._url.Id +'_' + tilePoint.z + '_' + tilePoint.x + '_' + tilePoint.y + '.jpg').then(function (success) {
             tile.src = success;
           }, function (error) {
             tile.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";

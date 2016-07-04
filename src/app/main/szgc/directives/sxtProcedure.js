@@ -111,9 +111,12 @@
 
         if (scope.inc) {
           t = 0;
-          q.isGetChilde=1;
+/*          q.isGetChilde=1;
           q.batchTypeList = ex.join(',');
-          //q = '&isGetChilde=1&batchTypeList='+ex.join(',')
+          //q = '&isGetChilde=1&batchTypeList='+ex.join(',')*/
+          ex.forEach(function (t1) {
+            t = t | t1;
+          })
         }
         q.batchType = t;
 

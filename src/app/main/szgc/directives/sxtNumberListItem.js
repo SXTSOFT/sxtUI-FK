@@ -90,19 +90,19 @@
           return {
             result:false,
             allResult:false,
-            zdpc:abs
+            zdpc:zdpc
           };
         }
         if (zdpc < min || zdpc > max) {
           return {
             result:false,
-            zdpc:abs
+            zdpc:zdpc
           };
         }
 
         return {
           result:true,
-          zdpc:abs
+          zdpc:zdpc
         };
       } else {
         return {

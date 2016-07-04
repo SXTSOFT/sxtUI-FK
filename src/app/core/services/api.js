@@ -201,6 +201,13 @@
             resolve(value);
           });
         }
+        else if(value===null){
+          settingDb.delete(key).then(function (result) {
+            result(result);
+          }).catch(function () {
+            resolve(null);
+          })
+        }
         else{
           settingDb.get(key).then(function (result) {
             resolve(result);
@@ -210,11 +217,11 @@
         }
       })
     }
-    function upload(filter,progress,complete,fail) {
+    function upload(filter,progress,complete,fail,options) {
       var tasks = [],
         self =this,
         groups = [];
-      appendTasks(tasks,groups,filter).then(function (tasks) {
+      appendTasks(tasks,groups,filter,options).then(function (tasks) {
         self.task(tasks)(function (percent,current,total) {
           groups.forEach(function (g) {
             if(current>=g.end)
@@ -227,11 +234,11 @@
             }
           });
           progress && progress(percent,current,total);
-        },complete,fail);
+        },complete,fail,options);
       });
       return groups;
     }
-    function appendTasks(tasks,groups,filter) {
+    function appendTasks(tasks,groups,filter,options) {
       return provider.$q.$q(function(resolve,reject) {
         var p=[];
         cfgs.forEach(function (cfg) {
@@ -255,7 +262,9 @@
             var group = groups[i++],cfg = group.cfg;
             result.rows.forEach(function (row) {
               tasks.push(function () {
-                return cfg.fn.call(cfg, row);
+                return cfg.fn.call(cfg, row).then(function (result) {
+                  options.uploaded && options.uploaded(cfg,row,result);
+                });
               });
             });
             group.end = tasks.length;
@@ -271,27 +280,32 @@
       networkState = 0;
       var t = task(tasks);
 
-      return function (progress,success,fail) {
+      return function (progress,success,fail,options) {
         return t(progress,function () {
           networkState = oNetworkState;
           success && success();
         },function () {
           networkState = oNetworkState;
           fail && fail();
-        });
+        },options);
       };
     }
-    function donwfile(uname,url) {
-      if(provider.$window.cordova) {
-        var rootPath = provider.$window.cordova.file.dataDirectory + '/';
-        return provider.$cordovaFileTransfer.download(url, rootPath + uname);
-      }
-      else{
-        return provider.$q.$q(function (resolve) {
-          console.log('down',uname,url);
+    function donwfile(dir,uname,url) {
+
+      return provider.$q.$q(function (resolve) {
+        if (provider.$window.cordova) {
+          var rootPath = provider.$window.cordova.file.dataDirectory + '/' + dir + '/';
+          provider.$cordovaFileTransfer.download(url, rootPath + uname).then(function (r) {
+            resolve();
+          }).catch(function (err) {
+            console.log('downerr',err);
+            resolve();
+          });
+        }
+        else {
           resolve();
-        })
-      }
+        }
+      })
     }
     function task(tasks) {
       return function start(progress,success,fail,options) {
@@ -301,23 +315,27 @@
         var len = tasks.length,fn = tasks[i];
         if (progress(i * 1.0 / len, i, len) !== false) {
           if (!fn) {
-            success && success();
+            success && success(tasks);
           }
           else {
             var d = new Date().getTime(),next = function () {
               run(i + 1, progress, success, fail, options);
             };
             fn(tasks,donwfile).then(function () {
-              if(d) {
+              if(d && !next.r) {
                 d = 0;
+                next.r = true;
                 next();
               }
-            }).catch(function () {
+            }).catch(function (err) {
+              console.log('derr',err);
               d = 0;
               fail && fail();
             });
             provider.$timeout(function () {
-              if(d){
+              if(d && !next.r){
+                d = 0;
+                next.r = true;
                 next();
               }
             },options && options.timeout?options.timeout:3000);
@@ -325,7 +343,7 @@
         }
       }
     }
-    function uploadTask(itemOrFilter) {
+    function uploadTask(itemOrFilter,value) {
       return provider.$q(function (resolve) {
         if (!uploadDb) {
           uploadDb = pouchdb('systemupload');
@@ -337,6 +355,11 @@
         }
         else{
           uploadDb.findAll(itemOrFilter).then(function (result) {
+            if(value===null){
+              result.rows.forEach(function (row) {
+                uploadDb.remove(row);
+              });
+            }
             resolve(result);
           }).catch(function () {
             resolve(null);

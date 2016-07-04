@@ -7,7 +7,7 @@
     .factory('vankeAuth', vankeAuth);
 
   /** @ngInject */
-  function vankeAuth($http,$q,api,sxt,appCookie,$rootScope)
+  function vankeAuth($http,$q,api,sxt,appCookie,$rootScope,utils)
   {
     var service = {
       token   : token,
@@ -16,7 +16,16 @@
     $rootScope.$on('user:logout',function(){
       appCookie.remove('auth');
     });
-
+    var userInfo = api.db({
+      _id:'s_userinfo',
+      idField:'Id',
+      filter:function () {
+        return true;
+      },
+      dataType:3
+    }).bind(function () {
+      return $http.get(sxt.app.api + '/api/Security/Account/UserInfo', {t: new Date().getTime()});
+    });
     return service;
 
     function token(user){
@@ -66,9 +75,11 @@
 
       if(!token || !token.username) {
         return $q (function (resolve, reject) {
-          $http.get(sxt.app.api + '/api/Security/Account/UserInfo', {t: new Date().getTime()}).then(function (d) {
+          userInfo().then(function (d) {
             resolve(d && d.data);
-          }, function () {
+          }, function (rejection) {
+
+            utils.alert(rejection.data && rejection.data.Message?rejection.data.Message:'网络错误');
             reject(token);
           });
         });

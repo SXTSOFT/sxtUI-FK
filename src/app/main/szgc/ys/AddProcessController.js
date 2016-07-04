@@ -623,6 +623,7 @@ $scope.back = function(){
 
       //console.log('CheckData', targets)
       api.szgc.addProcessService.postCheckData({
+        Id:sxt.uuid(),
         Batch: data.batchs,
         Step: step,
         CheckData: targets
