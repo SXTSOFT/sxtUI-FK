@@ -128,7 +128,8 @@
                   regionId:scope.regionId,
                   v:fg.data.find(function (d) {
                     return d.PositionID == e.layer._value.$id;
-                  })
+                  }),
+
                 };
 
                 edit.scope.readonly = scope.readonly;
