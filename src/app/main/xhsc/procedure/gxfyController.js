@@ -11,7 +11,7 @@
   /** @ngInject */
   function gxfyController($state,$rootScope,$scope,$mdDialog){
     var vm = this;
-
+    vm.role = 'fy';
     vm.showTop = function(){
       vm.slideShow = true;
     }
@@ -27,7 +27,7 @@
     vm.qyslide = function(){
       vm.qyslideShow = !vm.qyslideShow;
     }
-    vm.role = 'fy';
+
     vm.showBaseInfor = function(){
       $mdDialog.show({
         controller:['$scope',function($scope){
@@ -83,7 +83,6 @@
 
     $scope.$on('$destroy', function () {
       gxfyChanged();
-      console.log('destroy')
       gxfyChanged = null;
     })
   }

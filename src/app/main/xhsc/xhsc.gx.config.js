@@ -148,7 +148,7 @@
         rightArrow: false,
         leftArrow: false,
         title: '复验',
-        url: '/gxfy',
+        url: '/gxfy/{ProjectID}/{InspectionID}/{AcceptanceItemID}/{RectificationID}',
         templateUrl: 'app/main/xhsc/procedure/gxfy.html',
         controller: 'gxfyController as vm'
       })

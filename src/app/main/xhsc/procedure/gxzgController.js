@@ -35,7 +35,21 @@
         areaId:vm.pareaList[0].AreaID
       }
     });
-
+    function setChina(r) {
+      switch (r) {
+        case 0:
+          return '合格';
+          break;
+        case 1:
+          return '未整改';
+          break;
+      }
+    }
+    remote.Procedure.getRectification(RectificationID).then(function(r){
+      vm.baseInfor = r.data;
+      console.log('base',r)
+      vm.baseInfor.zwStatus = setChina(r.data.Status);
+    })
     function load(){
 
       if (!vm.regionSelect){
@@ -79,12 +93,14 @@
     vm.showBaseInfor = function(){
       $mdDialog.show({
         controller:['$scope',function($scope){
+          $scope.baseInfo = vm.baseInfor;
+          $scope.area = vm.regionSelect;
           $scope.submit = function(){
             $mdDialog.hide();
           }
         }],
         templateUrl:'app/main/xhsc/procedure/baseInforTemp.html',
-        clickOutsideClose:true
+        clickOutsideToClose:true
       })
     }
 
@@ -124,18 +140,22 @@
                 time:'二个月'
               },{
                 time:'三个月'
-              }]
+              }];
+              $scope.cancel = function(){
+                $mdDialog.hide();
+              }
               $scope.submit = function(){
                 $mdDialog.hide();
               }
             }],
             templateUrl:'app/main/xhsc/procedure/ngTemp.html',
-            clickOutsideClose:true
+            clickOutsideToClose:true
           })
     });
 
     $scope.$on('$destroy', function () {
       gxzgChanged();
+      //console.log('destroy')
       gxzgChanged = null;
     })
 
