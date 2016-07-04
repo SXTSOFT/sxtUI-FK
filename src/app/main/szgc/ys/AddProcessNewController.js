@@ -141,15 +141,6 @@
 
     }
 
-    api.szgc.ProcedureService.getAppImg(pid, procedure, api.szgc.vanke.isPartner(1) ? 'partner' : '').then(function (r) {
-      if (r.data) {
-        $scope.data.curStep.GroupImg2 = r.data.Id;
-      }
-      else{
-        $scope.data.curStep.GroupImg2 = tid;
-      }
-    });
-
 
 
 
@@ -182,6 +173,7 @@
             b.BatchNo = parseInt(result.data.Rows[0].BatchNo) + 1;//第几次验收批
             b.Remark = '';//描述
             b.Count = 1;//第几次验收?
+            b.JLCount = 0;
           }
           else
             flag = false;
@@ -259,16 +251,19 @@
       ]).then(function (results) {
 
         batch = batch || $scope.data.curHistory;
-                    var stash = results[5].data;
-                    stash = stash && stash.SValue ? JSON.parse(stash.SValue) : null;
-                    if (stash) {
-                        batch.CompanyId = stash.Batch[0].CompanyId;
-                        batch.ParentCompanyId = stash.Batch[0].ParentCompanyId;
-                        batch.GrpId = stash.Batch[0].GrpId;
-                        batch.SupervisorCompanyId = stash.Batch[0].SupervisorCompanyId;
-                        $scope.data.curStep.GroupImg = stash.Step.GroupImg;
-                        $scope.data.curStep.GroupImg2 = stash.Step.GroupImg2;
-                    }
+        var stash = results[5].data;
+        stash = stash && stash.SValue ? JSON.parse(stash.SValue) : null;
+        if (stash) {
+          batch.CompanyId = stash.Batch[0].CompanyId;
+          batch.ParentCompanyId = stash.Batch[0].ParentCompanyId;
+          batch.GrpId = stash.Batch[0].GrpId;
+          batch.SupervisorCompanyId = stash.Batch[0].SupervisorCompanyId;
+          $scope.data.curStep.GroupImg = stash.Step.GroupImg;
+          $scope.data.curStep.GroupImg2 = stash.Step.GroupImg2;
+        }
+        if($scope.data.curStep.GroupImg2){
+          $scope.data.curStep.GroupImg2 = sxt.uuid();
+        }
         $scope.data.batchs.push(batch);
 
         var sm0 = [];
@@ -288,7 +283,7 @@
         $scope.data.supervision = sm0;
         if (isB && $scope.data.supervision.length && !batch.CompanyId)
           batch.CompanyId = $scope.data.supervision[0].UnitId;
-        if (isB) {
+        if (isB && gp) {
           $scope.data.curHistory.GrpId = batch.GrpId;
           $scope.data.groups = [gp];
 
@@ -472,7 +467,7 @@
       }
     })
     var resetGroup = function() {
-      //console.log('111')
+      if (!$scope.data.supervision || !$scope.data.supervision1) return;
       var g = [];
 
       $scope.data.groups = [];
