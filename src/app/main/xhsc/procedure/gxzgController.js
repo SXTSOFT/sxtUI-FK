@@ -23,11 +23,6 @@
         vm.regionSelect= r.data[0];
         load();
       }
-      vm.mapInfo = {
-        projectId:ProjectID,
-        acceptanceItemId:AcceptanceItemID,
-        areaId:vm.pareaList[0].AreaID
-      }
     });
 
     function setChina(r) {
@@ -82,7 +77,6 @@
     vm.selectQy = function(item){
       vm.regionSelect = item;
       vm.qyslideShow = false;
-      vm.mapInfo.areaId = item.AreaID;
       load();
     }
     vm.showBaseInfor = function(){
