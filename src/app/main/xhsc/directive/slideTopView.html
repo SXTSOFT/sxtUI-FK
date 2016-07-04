@@ -8,8 +8,8 @@
     <md-list-item ng-if="role == 'zg'">
       <label>首验照片</label>
       <p>
-          <span class="photo" ng-click="playImage()">
-            <i>照片</i><i>1</i>
+          <span class="photo" ng-click="playImage(data.images)">
+            <i>照片</i><i>{{data.images.length}}</i>
           </span>
           <!--<span class="photo">-->
             <!--<i>照片</i><i>2</i>-->
@@ -69,5 +69,5 @@
       </p>
     </md-list-item>
   </md-list>
-  <md-button flex ng-click="submit()" style="width: 100%;">确定</md-button>
+  <md-button flex ng-click="submit()" style="width: 100%;padding:6px 0;margin:0;">确定</md-button>
 </div>

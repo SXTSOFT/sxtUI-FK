@@ -153,11 +153,13 @@
           if (prev){
             if ((index-1)>=0){
               vm.regionSelect=vm.pareaList[index-1];
+              load();
               return;
             }
           }else {
             if ((index+1)<vm.pareaList.length){
               vm.regionSelect=vm.pareaList[index+1];
+              load();
               return;
             }
           }

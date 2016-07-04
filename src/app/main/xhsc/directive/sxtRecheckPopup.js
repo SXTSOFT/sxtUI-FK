@@ -25,7 +25,6 @@
 
       })
       scope.apply = function(){
-        console.log('scope',scope)
         remote.Procedure.getPoints(scope.data.regionId,scope.data.procedure).then(function(res){
           console.log('res',res)
           var find = res.data.find(function(d){
@@ -37,8 +36,16 @@
             scope.disQues.note='';
           }
         })
+        scope.data.images = [{
+          url:'app/main/xhsc/images/bg.png',
+          alt:'aa'
+        },{
+          url:'app/main/xhsc/images/bg.png',
+          alt:'aa'
+        }];
       }
-      scope.playImage = function () {
+
+      scope.playImage = function (imgs) {
         //var imgs = [];
         //scope.data.images.forEach(function (img) {
         //  imgs.push({
@@ -46,13 +53,6 @@
         //    alt:''
         //  });
         //})
-        var imgs = [{
-          url:'app/main/xhsc/images/bg.png',
-          alt:'aa'
-        },{
-          url:'app/main/xhsc/images/bg.png',
-          alt:'aa'
-        }];
         xhUtils.playPhoto(imgs);
       }
       scope.addPhoto = function () {
@@ -70,8 +70,9 @@
       }
       scope.submit = function(){
         scope.slideShow = false;
+        scope.context.featureGroup.options.onUpdate()&&scope.context.featureGroup.options.onUpdate()
         var layer = scope.context.layer;
-        console.log('layer',layer)
+        console.log('layer',scope)
       }
       mapPopupSerivce.set('mapRecheckMapPopup',{
         el:element,

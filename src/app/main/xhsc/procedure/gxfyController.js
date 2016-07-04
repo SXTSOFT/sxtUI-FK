@@ -9,41 +9,94 @@
     .controller('gxfyController',gxfyController);
 
   /** @ngInject */
-  function gxfyController($state,$rootScope,$scope,$mdDialog,$stateParams){
-    var vm = this,
-      ProjectID=$stateParams.ProjectID,
-      InspectionID=$stateParams.InspectionID,
-      AcceptanceItemID=$stateParams.AcceptanceItemID,
-      RectificationID=$stateParams.RectificationID;
+  function gxfyController($state,$rootScope,$scope,$mdDialog,$stateParams,remote,$q,utils){
+    var vm = this;
+    vm.ProjectID=$state.params.ProjectID;
+    var InspectionID=$state.params.InspectionID;
+    vm.AcceptanceItemID=$state.params.AcceptanceItemID;
+    var RectificationID=$state.params.RectificationID;
       vm.role = 'fy';
 
+    remote.Procedure.getRegionByInspectionID(InspectionID).then(function(r){
+      vm.pareaList = r.data;
+      if (angular.isArray(vm.pareaList)&&vm.pareaList.length){
+        vm.regionSelect= r.data[0];
+        load();
+      }
+    });
+
+    function setChina(r) {
+      switch (r) {
+        case 0:
+          return '合格';
+          break;
+        case 1:
+          return '未整改';
+          break;
+      }
+    }
+    remote.Procedure.getRectification(RectificationID).then(function(r){
+      vm.baseInfor = r.data;
+      console.log('base',r)
+      vm.baseInfor.zwStatus = setChina(r.data.Status);
+    })
+    function load(){
+
+      if (!vm.regionSelect){
+        return;
+      }
+      var promises=[
+        remote.Procedure.getReginQues(vm.regionSelect.AreaID,vm.AcceptanceItemID),
+        remote.Procedure.getPoints(vm.regionSelect.AreaID,vm.AcceptanceItemID)
+      ]
+      vm.ques=[];
+      $q.all(promises).then(function(res){
+        var ques=res[0].data;
+        vm.points=res[1].data;
+        if (ques&&ques.length){
+          ques.forEach(function(t){
+            if (vm.points&&vm.points.length){
+              vm.points.forEach(function(m){
+                if (t.IndexPointID== m.IndexPointID){
+                  if (!t.points){
+                    t.points=[];
+                  }
+                  t.points.push(m);
+                }
+              });
+            }
+            vm.ques.push(t);
+          });
+        }
+        console.log(vm.ques);
+      })
+    }
     vm.showTop = function(){
       vm.slideShow = true;
     }
-    vm.pareaList =[{
-      name:'一区'
-    },{
-      name:'二区'
-    }];
     vm.selectQy = function(item){
-      vm.RegionFullName = item.name;
+      vm.regionSelect = item;
       vm.qyslideShow = false;
+      load();
     }
-    vm.qyslide = function(){
-      vm.qyslideShow = !vm.qyslideShow;
-    }
-
     vm.showBaseInfor = function(){
       $mdDialog.show({
         controller:['$scope',function($scope){
+          $scope.baseInfo = vm.baseInfor;
+          $scope.area = vm.regionSelect;
           $scope.submit = function(){
             $mdDialog.hide();
           }
         }],
         templateUrl:'app/main/xhsc/procedure/baseInforTemp.html',
-        clickOutsideClose:true
+        clickOutsideToClose:true
       })
     }
+
+    vm.qyslide = function(){
+      vm.qyslideShow = !vm.qyslideShow;
+    }
+
     var gxfyChanged = $rootScope.$on('sendGxResult',function(){
       $mdDialog.show({
         controller:['$scope',function($scope){
@@ -90,5 +143,25 @@
       gxfyChanged();
       gxfyChanged = null;
     })
+
+    vm.nextRegion = function(prev){
+      if (angular.isArray(vm.pareaList)&&vm.pareaList.length>0){
+        var  index=vm.pareaList.indexOf(vm.regionSelect);
+        if (prev){
+          if ((index-1)>=0){
+            vm.regionSelect=vm.pareaList[index-1];
+            load();
+            return;
+          }
+        }else {
+          if ((index+1)<vm.pareaList.length){
+            vm.regionSelect=vm.pareaList[index+1];
+            load();
+            return;
+          }
+        }
+        utils.alert("查无数据!");
+      }
+    };
   }
 })();

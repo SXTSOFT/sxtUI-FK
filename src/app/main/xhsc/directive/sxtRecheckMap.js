@@ -90,10 +90,10 @@
              // this.addData(feature.geometry);
             },
             onUpdate: function (layer, isNew, group) {
-              //console.log('a')
+              console.log('a')
             },
             onUpdateData: function (context, data, editScope) {
-              //console.log('b')
+              console.log('b')
             },
             onPopup: function (e) {
               console.log('e',e)
