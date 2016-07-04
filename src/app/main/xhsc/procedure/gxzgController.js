@@ -15,7 +15,14 @@
       InspectionID=$state.params.InspectionID,
       AcceptanceItemID=$state.params.AcceptanceItemID,
       RectificationID=$state.params.RectificationID;
-      vm.role = 'zg';
+    vm.role = 'zg';
+
+    vm.info={
+      projectId:ProjectID,
+      procedure:"",
+      regionId:"",
+      regionName:""
+    };
     remote.Procedure.getRegionByInspectionID(InspectionID).then(function(r){
       vm.pareaList = r.data;
       if (angular.isArray(vm.pareaList)&&vm.pareaList.length){
@@ -44,7 +51,7 @@
       vm.baseInfor.zwStatus = setChina(r.data.Status);
     })
     function load(){
-      //console.log('vm.pareaList',vm.pareaList)
+
       if (!vm.regionSelect){
         return;
       }
@@ -71,12 +78,12 @@
                 vm.ques.push(t);
               });
           }
-        //console.log(vm.ques);
+        console.log(vm.ques);
       })
     }
-    //vm.showTop = function(){
-    //  vm.slideShow = true;
-    //}
+    vm.showTop = function(){
+      vm.slideShow = true;
+    }
     vm.selectQy = function(item){
       vm.regionSelect = item;
       vm.qyslideShow = false;
@@ -84,7 +91,6 @@
       load();
     }
     vm.showBaseInfor = function(){
-      console.log('baseInfor',vm.baseInfor)
       $mdDialog.show({
         controller:['$scope',function($scope){
           $scope.baseInfo = vm.baseInfor;
@@ -103,6 +109,7 @@
     }
 
     var gxzgChanged = $rootScope.$on('sendGxResult',function(){
+      console.log('changed')
           $mdDialog.show({
             controller:['$scope',function($scope){
               $scope.times = [{
@@ -151,5 +158,35 @@
       //console.log('destroy')
       gxzgChanged = null;
     })
+
+    vm.nextRegion = function(prev){
+      function setNext(regions){
+        var region=regions.find(function(o){
+          return vm.info.regionId== o.RegionID;
+        });
+        var index=regions.indexOf(region);
+        if (prev){
+          if ((index-1)>=0){
+            vm.setRegion(regions[index-1]);
+            return;
+          }
+        }else {
+          if ((index+1)<regions.length){
+            vm.setRegion(regions[index+1]);
+            return;
+          }
+        }
+        utils.alert("查无数据!");
+      }
+
+      if(vm.pareaList){
+        setNext(vm.pareaList);
+      }else {
+        remote.Procedure.getRegionByInspectionID(InspectionID).then(function(r){
+          vm.pareaList = r.data;
+          setNext(vm.pareaList);
+        });
+      }
+    };
   }
 })();
