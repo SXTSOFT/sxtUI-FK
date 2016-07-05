@@ -291,7 +291,7 @@
               root.szgc.ProjectSettings.offline.query().then(function (result) {
                 var ps = [];
                 result.data.forEach(function (r) {
-                  if (args.project_id == r.project.project_id)
+                  if (args[0].project_id == r.project.project_id)
                     ps.push(r.item);
                 });
                 resolve({data:{data:ps}});
