@@ -35,7 +35,9 @@
       });
     };
 
-
+    $scope.getNetwork = function () {
+      return api.getNetwork();
+    }
 
 
     $scope.isPartner = api.szgc.vanke.isPartner();
@@ -367,9 +369,7 @@
         //检查项目
         function () {
           return api.szgc.CheckStepService.cache(idTree);
-        }
-      ].concat( //如果原来没有全局基础数据,也要加上
-        $scope.project.offlines && $scope.project.offlines.length? []:[
+        },
         //专业
         function () {
           return api.szgc.vanke.skills({page_size:0,page_number:1});
@@ -389,7 +389,7 @@
         //工序验收表
         function () {
           return api.szgc.TargetService.getAll()
-        }]))(function (percent,current,total) {
+        }])(function (percent,current,total) {
         item.percent = parseInt(percent *100) +' %';
         item.current = current;
         item.total = total;

@@ -169,10 +169,12 @@
       BatchSetService:{
         getAll:$http.db({
           _id:'s_ProcedureBatchSet',
-          idField:'Id',
+          idField:function (item) {
+            return item.BatchType+'-'+item.ProcedureId
+          },
           dataType:5,
           filter:function (item,args) {
-            return item.BatchType==args.batchType;
+            return (item.BatchType|args.batchType)==item.BatchType;
           }
         }).bind(function(args){
           return $http.get($http.url('/api/ProcedureBatchSet' , args));

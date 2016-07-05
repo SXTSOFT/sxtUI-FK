@@ -110,45 +110,68 @@
               resolve();
             })
           }
-        },function (result,cfg,args) {
-          var me = this,arg=args[0];
-          if(!me.isPartner(1))return result;
-          return $q(function (resolve, reject) {
-            if (p1)
-              resolve(p1);
-            else {
-              var teamIds = getAuth().current().TeamId.split(',');
-              var ps = [];
-              for (var i = 0; i < teamIds.length; i++) {
-                ps.push(me.root.szgc.ProjectSettingsSevice.query({ unitId: getAuth().current().Partner, groupId: teamIds[i] }));
-              };
-              $q.all(ps).then(function (results) {
-                var result = results[0];
-                for (var ix = 1; ix < results.length; ix++) {
-                  results[ix].data.Rows.forEach(function (r) {
-                    result.data.Rows.push(r);
-                  })
+        },
+          function (result,cfg,args) {
+          var me = this,arg=args[0],root = me.root;
+          if(root.getNetwork()==1){
+            return $q(function (resolve,reject) {
+              root.szgc.ProjectSettings.offline.query().then(function (result) {
+                var ps = [];
+                result.data.forEach(function (r) {
+                  if (!ps.find(function (p) {
+                      return p.project_id == r.project.project_id;
+                    })) {
+                    ps.push(r.project);
+                  }
+                });
+                resolve({data:{data:ps}});
+              });
+            })
+          }
+          else {
+            //console.log('me',me.root);
+            if (!me.isPartner(1))return result;
+            return $q(function (resolve, reject) {
+              if (p1)
+                resolve(p1);
+              else {
+                var teamIds = getAuth().current().TeamId.split(',');
+                var ps = [];
+                for (var i = 0; i < teamIds.length; i++) {
+                  ps.push(me.root.szgc.ProjectSettingsSevice.query({
+                    unitId: getAuth().current().Partner,
+                    groupId: teamIds[i]
+                  }));
                 }
-                permission = result.data;
-                me._projects(arg).then(function (result) {
-                  var p = permission;
-                  if (p) {
-                    for (var i = result.data.data.length - 1; i >= 0; i--) {
-                      var item = result.data.data[i];
-                      var fd = p.Rows.find(function (it) {
-                        return it.RegionIdTree.indexOf(item.project_id) != -1
-                      });
-                      if (!fd) {
-                        result.data.data.splice(i, 1);
+                ;
+                $q.all(ps).then(function (results) {
+                  var result = results[0];
+                  for (var ix = 1; ix < results.length; ix++) {
+                    results[ix].data.Rows.forEach(function (r) {
+                      result.data.Rows.push(r);
+                    })
+                  }
+                  permission = result.data;
+                  me._projects(arg).then(function (result) {
+                    var p = permission;
+                    if (p) {
+                      for (var i = result.data.data.length - 1; i >= 0; i--) {
+                        var item = result.data.data[i];
+                        var fd = p.Rows.find(function (it) {
+                          return it.RegionIdTree.indexOf(item.project_id) != -1
+                        });
+                        if (!fd) {
+                          result.data.data.splice(i, 1);
+                        }
                       }
                     }
-                  }
-                  p1 = result;
-                  resolve(p1);
+                    p1 = result;
+                    resolve(p1);
+                  });
                 });
-              });
-            }
-          });
+              }
+            });
+          }
         }),
         _filter:function(regionType){
           var me = this;
@@ -261,6 +284,23 @@
               }
             return result;
             });
+        },function (result,cfg,args) {
+          var root = this.root;
+          if(root.getNetwork()==1){
+            return $q(function (resolve,reject) {
+              root.szgc.ProjectSettings.offline.query().then(function (result) {
+                var ps = [];
+                result.data.forEach(function (r) {
+                  if (args.project_id == r.project.project_id)
+                    ps.push(r.item);
+                });
+                resolve({data:{data:ps}});
+              });
+            })
+          }
+          else{
+            return result;
+          }
         }),
         buildings: http.db({
           _id:'v_buildings',
