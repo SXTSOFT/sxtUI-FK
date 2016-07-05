@@ -242,7 +242,7 @@
       return provider.$q.$q(function(resolve,reject) {
         var p=[];
         cfgs.forEach(function (cfg) {
-          if (cfg.upload) {
+          if (cfg.upload && cfg.fn) {
             if (filter && filter(cfg) === false)return;
             var group = {
               name: cfg.name || '其它-' + cfg._id,

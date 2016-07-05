@@ -296,7 +296,7 @@
     api.uploadTask(function (cfg,item) {
       return true
     }).then(function (result) {
-      //$scope.project.tasks = result.rows;
+      $scope.project.tasks = result.rows;
     });
     $scope.download =function ($event,project,item) {
       item.downloading = true;
