@@ -9,7 +9,7 @@
     .directive('sxtImages', sxtImagesDirective);
 
   /** @ngInject */
-  function sxtImagesDirective(api, xhUtils,sxt){
+  function sxtImagesDirective(api, xhUtils,sxt,$cordovaCamera){
     return {
       restrict: 'E',
       require: "?ngModel",
@@ -30,7 +30,32 @@
           gid = scope.gid;
           scope.files = [];
           scope.inputChange = function(){
-            xhUtils.photo().then(function (base64) {
+            $cordovaCamera.getPicture ({
+              quality: 50,
+              destinationType: 0,
+              sourceType: 1,
+              allowEdit: false,
+              encodingType: 0,
+              saveToPhotoAlbum: false,
+              correctOrientation: true
+            }).then (function (base64) {
+              if (base64) {
+                var att = {
+                  Id: sxt.uuid(),
+                  GroupId: scope.gid,
+                  Url: base64
+                };
+                api.szgc.FilesService.post(att);
+                var d = new Date();
+                api.uploadTask({
+                  _id: sxt.uuid(),
+                  name: '照片(' + d.getMonth() + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ')'
+                });
+                scope.files.push(att);
+              }
+            }, function (err) {
+            });
+            /*xhUtils.photo().then(function (base64) {
               if(base64){
                 var att = {
                   Id:sxt.uuid(),
@@ -45,7 +70,7 @@
                 });
                 scope.files.push(att);
               }
-            })
+            })*/
           }
 
           api.szgc.FilesService.group(scope.gid || '').then(function (result) {
