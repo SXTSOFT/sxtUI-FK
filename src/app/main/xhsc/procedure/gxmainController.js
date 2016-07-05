@@ -25,7 +25,7 @@
             res.data.forEach(function(r){
               r.Children.forEach(function(_r){
                   var tempName = xhUtils.findRegion(_res.data[0].RegionRelations[0],_r.AreaID);
-                  _r.newName = item.ProjectName + tempName.fullName + _r.Describe;
+                  _r.newName = tempName.fullName + _r.Describe;//item.ProjectName +
                   _r.projectId = item.ProjectID;
               })
               vm.gxList.push(r);

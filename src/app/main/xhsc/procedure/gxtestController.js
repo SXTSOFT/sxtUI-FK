@@ -67,7 +67,7 @@
                vm.btBatch.push({
                  RegionID:tt.AreaID,
                  RegionType:getRegionType( tt.AreaID),
-                 fullName:region.fullName
+                 fullName:region.fullName+tt.Describe
                });
             });
           }

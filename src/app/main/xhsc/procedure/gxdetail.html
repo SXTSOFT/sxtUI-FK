@@ -25,10 +25,10 @@
   <div class="gxtest gxtestdetail" flex>
     <div style="margin-top: 20px;padding:0 8px;" flex layout="row"><span flex>问题列表</span><span flex></span></div>
     <md-list class="gxque">
-      <md-list-item>
+      <md-list-item ng-repeat="question in vm.pList">
         <!--<span flex="none" style="width:100px;">2号问题</span>-->
-        <span flex>2号问题及描述</span>
-        <span flex="none" style="text-align: right;padding-right:20px">2处</span>
+        <span flex style="padding-left:8px;">{{question.ProblemDescription}}</span>
+        <span flex="none" style="text-align: right;padding-right:8px">{{question.rows.length}}处</span>
       </md-list-item>
     </md-list>
   </div>
