@@ -69,7 +69,7 @@
         rightArrow: false,
         leftArrow: false,
         title: '工序结果',
-        url: '/gxresult/{acceptanceItemName}/{name}/{areaId}/{projectId}',
+        url: '/gxresult/{acceptanceItemName}/{acceptanceItemID}/{name}/{areaId}/{projectId}/{InspectionId}',
         templateUrl: 'app/main/xhsc/procedure/gxresult.html',
         controller: 'gxresultController as vm'
       })
@@ -98,7 +98,7 @@
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
-        title :'工序',
+        title :'工序详情',
         url   :'/gxdetail',
         templateUrl : 'app/main/xhsc/procedure/gxdetail.html',
         controller:'gxdetailController as vm'

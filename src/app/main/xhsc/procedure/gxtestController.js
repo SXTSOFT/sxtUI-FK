@@ -115,7 +115,7 @@
       vm.setRegion(item);
     }
     var sendResult = $rootScope.$on('sendGxResult',function(){
-      $state.go('app.xhsc.gx.gxresult',{acceptanceItemName:acceptanceItemName,name:vm.RegionFullName,areaId:areaId,projectId:projectId});
+      $state.go('app.xhsc.gx.gxresult',{acceptanceItemName:acceptanceItemName,acceptanceItemID:acceptanceItemID,name:vm.RegionFullName,areaId:areaId,projectId:projectId,InspectionId:vm.InspectionId});
     })
 
     $scope.$on("$destroy",function(){

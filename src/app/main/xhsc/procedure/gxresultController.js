@@ -69,5 +69,8 @@
         vm.allRelations.push(f);
       }
     })
+    vm.submitResult = function(){
+
+    }
   }
 })();

@@ -1,14 +1,14 @@
-<ui-view>
+<ui-view layout="column" flex>
 <div class="gxtest">
   <md-list>
     <md-list-item>
       <label>工序</label>
       <p>{{vm.gxname}}{{vm.is('app.xhsc.gxresult.gxdetail')}}</p>
     </md-list-item>
-    <md-list-item>
-      <label>部位</label>
-      <p>{{vm.bwname}}</p>
-    </md-list-item>
+    <!--<md-list-item>-->
+      <!--<label>部位</label>-->
+      <!--<p>{{vm.bwname}}</p>-->
+    <!--</md-list-item>-->
     <md-list-item>
       <label>监理单位</label>
       <p>{{vm.allRelations[0].MainContractorOUName}}</p>
@@ -34,29 +34,30 @@
       <label>验收人员</label>
       <p ui-sref="app.xhsc.gx.gxresult.gxrychoose">&nbsp;<span ng-repeat="res in vm.responsers"> {{res.name}} </span></p>
     </md-list-item>
-    <md-list-item>
-        <label>验收进度</label>
-        <div flex>
-          <div layout>
-          <md-slider flex min="0" max="100" ng-model="vm.jd" aria-label="red" id="red-slider" class="myslider">
-          </md-slider>
-          <div layout layout-align="center center" style="width:40px;">
-            <input style="border:none;border-bottom: 1px solid #d8d8d8;text-align: center;" flex type="number" ng-model="vm.jd" aria-label="red" aria-controls="red-slider">%
-          </div>
-          </div>
-        </div>
+    <!--<md-list-item>-->
+        <!--<label>验收进度</label>-->
+        <!--<div flex>-->
+          <!--<div layout>-->
+          <!--<md-slider flex min="0" max="100" ng-model="vm.jd" aria-label="red" id="red-slider" class="myslider">-->
+          <!--</md-slider>-->
+          <!--<div layout layout-align="center center" style="width:40px;">-->
+            <!--<input style="border:none;border-bottom: 1px solid #d8d8d8;text-align: center;" flex type="number" ng-model="vm.jd" aria-label="red" aria-controls="red-slider">%-->
+          <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
 
-    </md-list-item>
+    <!--</md-list-item>-->
     <md-list-item>
       <label style="width: 100px;">最迟整改时间</label>
-      <p style="text-align: right;">
-        <md-input-container class="md-block" style="margin:0">
-          <md-select ng-model="time">
-            <md-option ng-repeat="time in vm.times" ng-value="time">
-              {{time.time}}
-            </md-option>
-          </md-select>
-        </md-input-container>
+      <p>
+        7天
+        <!--<md-input-container class="md-block" style="margin:0">-->
+          <!--<md-select ng-model="time">-->
+            <!--<md-option ng-repeat="time in vm.times" ng-value="time">-->
+              <!--{{time.time}}-->
+            <!--</md-option>-->
+          <!--</md-select>-->
+        <!--</md-input-container>-->
       </p>
     </md-list-item>
     <md-list-item>
@@ -66,12 +67,13 @@
       </p>
     </md-list-item>
     <md-list-item>
-      <label>验收意见</label>
+      <label>验收状态</label>
       <p style="text-align: right;margin-right:70px;">
         {{vm.value}}<md-switch ng-model="vm.value" ng-true-value="'合格'" ng-init="vm.value='不合格'" ng-false-value="'不合格'" class="md-secondary"></md-switch>
       </p>
     </md-list-item>
   </md-list>
-  <md-button flex style="display: block;width:100%;margin:10px 0;padding:6px;border:1px solid #d8d8d8;background: #fff;" ui-sref="app.xhsc.gx.fgxtest">确认提交</md-button>
+  <md-button flex style="display: block;width:100%;margin:10px 0;padding:6px;border:1px solid #d8d8d8;background: #fff;" ng-clik="vm.submitResult()">确认提交</md-button>
+  <!--<md-button flex style="display: block;width:100%;margin:10px 0;padding:6px;border:1px solid #d8d8d8;background: #fff;" ui-sref="app.xhsc.gx.fgxtest">确认提交</md-button>-->
 </div>
 </ui-view>
