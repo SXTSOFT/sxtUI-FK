@@ -145,7 +145,7 @@
             name:'检查记录',
             upload:true,
             fn:function (InspectionCheckpoint) {
-              return $http.post('/Api/InspectionCheckpointApi/CreateInspectionCheckpoint',InspectionCheckpoint);
+              return $http.post('/Api/InspectionCheckpointApi/Insert',InspectionCheckpoint);
             }
           },
           delete:{
@@ -169,7 +169,7 @@
           idField:'ProblemRecordID',
           upload:true
         }).bind(function (InspectionProblemRecord) {
-          return $http.post('/Api/InspectionProblemRecordApi/CreateInspectionProblemRecord',InspectionProblemRecord);
+          return $http.post('/Api/InspectionProblemRecordApi/Insert',InspectionProblemRecord);
         }),
         delete:$http.db({
           _id:'InspectionProblemRecord',
@@ -228,6 +228,9 @@
       },
       getRectification:function(rectificationId){
         return $http.get($http.url('/api/InspectionApi/ByRectificationId',{rectificationId:rectificationId}))
+      },
+      createZGReceipt:function(InspectionID,Remarks,Day){
+        return $http.post($http.url('/api/InspectionRectificationApi/Insert'),{InspectionID:InspectionID,Remarks:Remarks,Day:Day})
       }
     },
     Assessment:{

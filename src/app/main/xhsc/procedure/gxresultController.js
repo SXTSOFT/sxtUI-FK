@@ -9,12 +9,12 @@
     .controller('gxresultController',gxresultController);
 
   /** @ngInject*/
-  function gxresultController($mdDialog,$stateParams,$state,$scope,remote){
+  function gxresultController($mdDialog,$stateParams,$state,$scope,remote,utils){
     var vm = this;
     vm.params = $stateParams;
     vm.gxname = $stateParams.acceptanceItemName;
     vm.bwname = $stateParams.name;
-
+    var  InspectionId=$stateParams.InspectionId;
     vm.times = [{
       time:'一天'
     },{
@@ -68,9 +68,22 @@
       if(f){
         vm.allRelations.push(f);
       }
-    })
-    vm.submitResult = function(){
+    });
 
+    vm.params={
+          InspectionID:InspectionId,
+          Remarks:"",
+          Day:7
+    }
+
+    vm.Isfail=true;
+    vm.submitResult = function(){
+      remote.Procedure.createZGReceipt(vm.params.InspectionID,vm.params.Remarks,vm.params.Day).then(function(r){
+          if (r.data.ErrorCode==0){
+            utils.alert("保存成功");
+            vm.Isfail=false;
+          }
+      })
     }
   }
 })();

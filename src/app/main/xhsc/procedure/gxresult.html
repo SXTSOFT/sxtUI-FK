@@ -51,19 +51,12 @@
       <label style="width: 100px;">最迟整改时间</label>
       <p>
         7天
-        <!--<md-input-container class="md-block" style="margin:0">-->
-          <!--<md-select ng-model="time">-->
-            <!--<md-option ng-repeat="time in vm.times" ng-value="time">-->
-              <!--{{time.time}}-->
-            <!--</md-option>-->
-          <!--</md-select>-->
-        <!--</md-input-container>-->
       </p>
     </md-list-item>
     <md-list-item>
       <label>备注</label>
       <p>
-        <input style="border:none;width:100%;" ng-model="vm.bz" placeholder="备注">
+        <input style="border:none;width:100%;" ng-model="vm.params.Remark" placeholder="备注">
       </p>
     </md-list-item>
     <md-list-item>
@@ -73,7 +66,7 @@
       </p>
     </md-list-item>
   </md-list>
-  <md-button flex style="display: block;width:100%;margin:10px 0;padding:6px;border:1px solid #d8d8d8;background: #fff;" ng-clik="vm.submitResult()">确认提交</md-button>
+  <md-button flex style="display: block;width:100%;margin:10px 0;padding:6px;border:1px solid #d8d8d8;background: #fff;" ng-disabled="!vm.Isfail" ng-click="vm.submitResult()">确认提交</md-button>
   <!--<md-button flex style="display: block;width:100%;margin:10px 0;padding:6px;border:1px solid #d8d8d8;background: #fff;" ui-sref="app.xhsc.gx.fgxtest">确认提交</md-button>-->
 </div>
 </ui-view>
