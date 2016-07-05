@@ -61,6 +61,7 @@
           });
         }
         vm.current = vm.btBatch[0];
+        load();
         return vm.btBatch;
       })
     }
@@ -71,6 +72,47 @@
     vm.selectQy = function(item){
       vm.qyslideShow = false;
       vm.current = item;
+      load();
     }
+
+    function load(){
+      remote.Procedure.InspectionCheckpoint.query(vm.acceptanceItemID,vm.current.RegionID).then(function (r) {
+        remote.Procedure.InspectionPoint.query().then(function (r1) {
+          //fg.data = r.data;
+          r.data.forEach(function (c) {
+            var p = r1.data.find(function (p1) {
+              return p1.MeasurePointID==c.PositionID;
+            });
+
+            //if(p){
+            //  p.geometry.options.customSeq = true;
+            //  p.geometry.options.seq = c.ProblemSortName;
+            //  p.geometry.options.v = c;
+            //  fg.addData(p.geometry);
+            //}
+          })
+        });
+        console.log('p',r)
+        vm.pList = [];
+        r.data.forEach(function(t){
+          var find = vm.pList.find(function(p){
+            return p.id == t.IndexID;
+          })
+          if(!find){
+            var f = {
+              id:t.IndexID,
+              ProblemDescription: t.ProblemDescription,
+              rows:[]
+            };
+            f.rows.push(t)
+            vm.pList.push(f)
+          }else{
+            find.rows.push(t)
+          }
+        })
+        console.log('find',vm.pList)
+      });
+    }
+
   }
 })();
