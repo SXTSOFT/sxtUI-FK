@@ -43,7 +43,7 @@
                 var att = {
                   Id: sxt.uuid(),
                   GroupId: scope.gid,
-                  Url: base64
+                  Url: "data:image/jpeg;base64," +base64
                 };
                 api.szgc.FilesService.post(att);
                 var d = new Date();
