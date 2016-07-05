@@ -61,12 +61,12 @@
         //console.log('$window.navigator',$window.navigator);
         var type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
         switch (type) {
-          case 'unknown':
           case 'ethernet':
           case 'wifi':
-          case 'none':
             networkState = 0;
             break;
+          case 'unknown':
+          case 'none':
           case '2g':
           case '3g':
           case '4g':
