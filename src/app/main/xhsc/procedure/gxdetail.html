@@ -5,7 +5,7 @@
       <md-icon md-font-icon="icon-chevron-left"></md-icon>
     </md-button>
     <p ng-click="vm.qyslide()" style="font-size:14px;padding:0 10px;text-align: center;margin: 0;height:48px;line-height:48px;width:70%;margin-left:auto;margin-right:auto;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-      {{vm.current.fullName}} <span class="caret"></span>
+      {{vm.current.RegionName}} <span class="caret"></span>
     </p>
     <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;right:10px;top:0" ng-click="vm.nextRegion()">
       <md-icon md-font-icon="icon-chevron-right"></md-icon>
@@ -14,12 +14,12 @@
   <div flex layout="row" class="gxtest qyslide" ng-class="{'qydown':vm.qyslideShow}">
     <md-list layout="column" flex class="gxplist">
       <md-list-item flex ng-repeat="p in vm.btBatch">
-        <p ng-click="vm.selectQy(p)">{{p.fullName}}</p>
+        <p ng-click="vm.selectQy(p)">{{p.RegionName}}</p>
       </md-list-item>
     </md-list>
   </div>
 </div>
-<div class="mapcheck" flex sxt-map-check="false"  project-id="vm.projectId" procedure="vm.acceptanceItemID" region-id="vm.current.RegionID">
+<div class="mapcheck" flex sxt-map-check="false"  project-id="vm.projectId" procedure="vm.acceptanceItemID" region-id="vm.current.AreaID">
 </div>
 <md-content flex style="background: transparent;">
   <div class="gxtest gxtestdetail" flex>

@@ -40,26 +40,12 @@
         return regionType;
       }
       var promises=[
-        remote.Project.getInspectionList(vm.projectId),
-        remote.Project.queryAllBulidings(vm.projectId)
+        remote.Project.getInspectionList(InspectionId)
       ];
       vm.btBatch=[];
       return $q.all(promises).then(function(rtv){
-        var  r=rtv[0].data.find(function(o){
-          return o.InspectionId==InspectionId;
-        });
-        var regions=rtv[1].data[0].RegionRelations[0];
-        if (angular.isArray(r.Children)){
-          var region;
-          r.Children.forEach(function(tt){
-            region = xhUtils.findRegion(regions,tt.AreaID);
-            vm.btBatch.push({
-              RegionID:tt.AreaID,
-              RegionType:getRegionType( tt.AreaID),
-              fullName:region.fullName
-            });
-          });
-        }
+        vm.Inspection = rtv[0].data[0];
+        vm.btBatch = vm.Inspection.Children;
         vm.current = vm.btBatch[0];
         load();
         return vm.btBatch;
@@ -76,23 +62,7 @@
     }
 
     function load(){
-      remote.Procedure.InspectionCheckpoint.query(vm.acceptanceItemID,vm.current.RegionID).then(function (r) {
-        remote.Procedure.InspectionPoint.query(vm.acceptanceItemID,vm.current.RegionID).then(function (r1) {
-          //fg.data = r.data;
-          r.data.forEach(function (c) {
-            var p = r1.data.find(function (p1) {
-              return p1.MeasurePointID==c.PositionID;
-            });
-
-            //if(p){
-            //  p.geometry.options.customSeq = true;
-            //  p.geometry.options.seq = c.ProblemSortName;
-            //  p.geometry.options.v = c;
-            //  fg.addData(p.geometry);
-            //}
-          })
-        });
-        console.log('p',r)
+      remote.Procedure.InspectionCheckpoint.query(vm.acceptanceItemID,vm.current.AreaID).then(function (r) {
         vm.pList = [];
         r.data.forEach(function(t){
           var find = vm.pList.find(function(p){
