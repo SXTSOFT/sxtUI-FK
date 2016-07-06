@@ -17,14 +17,6 @@
       var RectificationID=$state.params.RectificationID;
     vm.role = 'zg';
 
-/*    remote.Procedure.getRegionByInspectionID(InspectionID).then(function(r){
-      vm.pareaList = r.data;
-      if (angular.isArray(vm.pareaList)&&vm.pareaList.length){
-        vm.regionSelect= r.data[0];
-        load();
-      }
-    });*/
-
     remote.Procedure.getZGById(RectificationID).then(function (r) {
       vm.Rectification = r.data;
       vm.pareaList = vm.Rectification.Children;
@@ -44,7 +36,6 @@
     }
     remote.Procedure.getRectification(RectificationID).then(function(r){
       vm.baseInfor = r.data;
-      console.log('base',r)
       vm.baseInfor.zwStatus = setChina(r.data.Status);
     })
     function load(){
@@ -58,7 +49,7 @@
       ]
       vm.ques=[];
       $q.all(promises).then(function(res){
-
+        vm.items = res.data;
         res[0].data.forEach(function (item) {
           var fd = vm.ques.find(function (it) {
             return it.IndexPointID==item.IndexPointID;
@@ -72,23 +63,7 @@
             fd.Points++;
           }
         })
-        /*var ques=res[0].data;
-        vm.points=res[1].data;
-        if (ques&&ques.length){
-          ques.forEach(function(t){
-            if (vm.points&&vm.points.length){
-              vm.points.forEach(function(m){
-                if (t.IndexPointID== m.IndexPointID){
-                  if (!t.points){
-                    t.points=[];
-                  }
-                  t.points.push(m);
-                }
-              });
-            }
-            vm.ques.push(t);
-          });
-        }*/
+
       })
     }
     vm.showTop = function(){
@@ -118,37 +93,38 @@
     }
 
     var gxzgChanged = $rootScope.$on('sendGxResult',function(){
-      console.log('changed')
       $mdDialog.show({
         controller:['$scope',function($scope){
           $scope.times = [{
+            value:6,
             time:'6小时'
           },{
+            value:12,
             time:'12小时'
           },{
-            time:'一天'
+            value:24,
+            time:'1天'
           },{
-            time:'二天'
+            value:24*2,
+            time:'2天'
           },{
-            time:'三天'
+            value:24*3,
+            time:'3天'
           },{
-            time:'四天'
+            value:24*4,
+            time:'4天'
           },{
-            time:'五天'
+            value:24*5,
+            time:'5天'
           },{
-            time:'六天'
+            value:24*6,
+            time:'6天'
           },{
-            time:'一周'
+            value:24*7,
+            time:'7天'
           },{
-            time:'二周'
-          },{
-            time:'三周'
-          },{
-            time:'一个月'
-          },{
-            time:'二个月'
-          },{
-            time:'三个月'
+            value:24*15,
+            time:'15天'
           }];
           $scope.cancel = function(){
             $mdDialog.hide();
@@ -156,6 +132,9 @@
           $scope.submit = function(){
             $mdDialog.hide();
           }
+          remote.Procedure.getZGReginQues(vm.regionSelect.AreaID,RectificationID).then(function (r) {
+            $scope.status = {}
+          })
         }],
         templateUrl:'app/main/xhsc/procedure/ngTemp.html',
         clickOutsideToClose:true

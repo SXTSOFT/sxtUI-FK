@@ -14,7 +14,7 @@
         <p class="md-secondary">
           <md-input-container class="md-block" style="margin:0">
             <md-select ng-model="time">
-              <md-option ng-repeat="time in times" ng-value="time">
+              <md-option ng-repeat="time in times" ng-value="time.value">
                 {{time.time}}
               </md-option>
             </md-select>
