@@ -1,15 +1,11 @@
 <md-dialog class="changetel">
   <md-dialog-content style="padding:10px;border-bottom: 1px solid #dedede;">
     <md-list>
-      <md-list-item>
-        <p>未整改：</p>
-        <p class="md-secondary">1处</p>
+      <md-list-item ng-repeat="s in status|filter:{visible:1}">
+        <p>{{s.name}}：</p>
+        <p class="md-secondary">{{s.num}}处</p>
       </md-list-item>
-      <md-list-item>
-        <p>不合格：</p>
-        <p class="md-secondary">1处</p>
-      </md-list-item>
-      <md-list-item>
+      <md-list-item ng-if="">
         <p>最迟整改时间：</p>
         <p class="md-secondary">
           <md-input-container class="md-block" style="margin:0">

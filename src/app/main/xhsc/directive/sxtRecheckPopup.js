@@ -45,7 +45,7 @@
               CheckpointID:scope.data.value.CheckpointID,
               RectificationID:scope.data.item,
               Describe:'',
-              DescRole:'zb',
+              DescRole:scope.role,
               Remark:''
             };
           }
@@ -96,9 +96,9 @@
       }
       scope.submit = function(){
 
-        if(scope.role=='zg'){
-          scope.data.Status = scope.data.Status==8?8:1;
-          if(scope.data.Status==8 &&(!scope.Record.zb.images || scope.Record.zb.images.length==0)){
+        if(scope.role=='zb'){
+          scope.data.value.Status = scope.data.value.Status==8?8:1;
+          if(scope.data.value.Status==8 &&(!scope.Record.zb.images || scope.Record.zb.images.length==0)){
             utils.alert('请上传整改后照片');
             return;
           }

@@ -75,6 +75,7 @@
                   AcceptanceItemID:scope.procedure,
                   PositionID:point.MeasurePointID,
                   MeasureValue:0,
+                  Status:1,
                   ProblemSortName:scope.item.ProblemSortName,
                   ProblemDescription:scope.item.ProblemDescription,
                   isNew:true

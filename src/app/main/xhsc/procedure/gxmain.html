@@ -32,9 +32,6 @@
               <md-button class="md-raised md-primary" ng-click="vm.ys(item)">
                 验收
               </md-button>
- <!--             <md-button class="md-raised md-primary"  ng-click="vm.upload()">
-                上传
-              </md-button>-->
             </div>
           </md-list-item>
         </md-list>
@@ -45,7 +42,7 @@
     <md-content>
       <div layout="column" class="gxdownload">
           <md-list>
-        <md-list-item ng-repeat="item in vm.zglist">
+        <md-list-item ng-repeat="item in vm.zglist|filter:{Status:2}">
           <div class="md-list-item-text" layout="column">
             <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
               {{item.AcceptanceItemName}}
@@ -56,9 +53,6 @@
             <md-button class="md-raised md-primary" ng-click="vm.zg(item)">
               整改
             </md-button>
-            <!--             <md-button class="md-raised md-primary"  ng-click="vm.upload()">
-                           上传
-                         </md-button>-->
           </div>
         </md-list-item>
 </md-list>
@@ -67,6 +61,25 @@
   </md-tab>
   <md-tab label="监理复验">
     <md-content>
+      <div layout="column" class="gxdownload">
+        <md-list>
+          <md-list-item ng-repeat="item in vm.zglist|filter:{Status:4}">
+            <div class="md-list-item-text" layout="column">
+              <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
+                {{item.AcceptanceItemName}}
+              </p>
+              <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>
+            </div>
+            <div class="md-secondary md-hue-3" style="right:0;margin:0;">
+              <md-button class="md-raised md-primary" ng-click="vm.fy(item)">
+                复验
+              </md-button>
+            </div>
+          </md-list-item>
+        </md-list>
+      </div>
+    </md-content>
+<!--    <md-content>
       <div layout="column" class="gxdownload">
         <md-subheader>已下载复验单</md-subheader>
         <md-list>
@@ -104,7 +117,7 @@
           </md-list-item>
         </md-list>
       </div>
-    </md-content>
+    </md-content>-->
   </md-tab>
   <md-tab label="离线包">
     <md-content>

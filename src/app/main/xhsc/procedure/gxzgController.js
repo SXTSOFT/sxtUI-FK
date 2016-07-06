@@ -15,7 +15,7 @@
       var InspectionID=$state.params.InspectionID;
       vm.AcceptanceItemID=$state.params.AcceptanceItemID;
       var RectificationID=$state.params.RectificationID;
-    vm.role = 'zg';
+    vm.role = $state.params.Role;
 
     remote.Procedure.getZGById(RectificationID).then(function (r) {
       vm.Rectification = r.data;
@@ -130,10 +130,28 @@
             $mdDialog.hide();
           }
           $scope.submit = function(){
+            if(vm.role=='zb'){
+
+            }
             $mdDialog.hide();
           }
-          remote.Procedure.getZGReginQues(vm.regionSelect.AreaID,RectificationID).then(function (r) {
-            $scope.status = {}
+          remote.Procedure.getZGReginQues(null,RectificationID).then(function (r) {
+            $scope.status = [
+              {status:1,name:'未整改',num:0,visible:1},
+              {status:2,name:'合格',num:0,visible:vm.role=='jl'?1:0},
+              {status:4,name:'不合格',num:0,visible:vm.role=='jl'?1:0},
+              {status:8,name:'已整改',num:0,visible:vm.role=='zb'?1:0}];
+
+            r.data.forEach(function (item) {
+              var s = $scope.status.find(function (s1) {
+                return s1.status == item.Status;
+              });
+              if(s)s.num++;
+            });
+
+            if($scope.status[3].num>0 && vm.role=='jl') {
+              utils.alert('还有 (' + $scope.status[3].num + '处) 未检查 ，不能提交');
+            }
           })
         }],
         templateUrl:'app/main/xhsc/procedure/ngTemp.html',

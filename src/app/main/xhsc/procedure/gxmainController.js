@@ -71,12 +71,12 @@
     }
 
     vm.fy = function(r){
-      $state.go('app.xhsc.gx.gxfy',{ProjectID:projectID,InspectionID: r.InspectionID,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID})
+      $state.go('app.xhsc.gx.gxzg',{Role:'jl',InspectionID: r.InspectionID,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID})
     }
 
 
     vm.zg = function(r){
-      $state.go('app.xhsc.gx.gxzg',{InspectionID: r.InspectionID,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID});
+      $state.go('app.xhsc.gx.gxzg',{Role:'zb',InspectionID: r.InspectionID,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID});
     }
   }
 })();

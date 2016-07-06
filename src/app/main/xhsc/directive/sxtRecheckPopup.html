@@ -5,7 +5,7 @@
       <label>问题描述</label>
       <p>{{data.value.ProblemDescription}}</p>
     </md-list-item>
-    <md-list-item ng-if="role == 'zg'">
+    <md-list-item ng-if="role == 'zb'">
       <label>首验照片</label>
       <p>
           <span class="photo" ng-click="playImage(Record.jl.images)">
@@ -13,7 +13,7 @@
           </span>
       </p>
     </md-list-item>
-    <md-list-item ng-if="role == 'zg'">
+    <md-list-item ng-if="role == 'zb'">
       <label>整改照片</label>
       <p>
           <span ng-if="Record.zb && Record.zb.images" class="photo" ng-click="playImage(Record.zb.images)">
@@ -22,44 +22,44 @@
         <md-button style="min-width: 40px;" class="addphoto" ng-click="addPhoto()"><img src="app/main/xhsc/images/plus.png" width="40"></md-button>
       </p>
     </md-list-item>
-    <md-list-item ng-if="role == 'zg'">
+    <md-list-item ng-if="role == 'zb'">
       <label>备注</label>
       <p>
         <input placeholder="备注" style="border: none;" ng-model="Record.zb.Remark">
       </p>
     </md-list-item>
-    <md-list-item ng-if="role == 'zg'">
+    <md-list-item ng-if="role == 'zb'">
       <label>整改状态</label>
       <p style="text-align: right;margin-right:70px;">
         {{data.value.Status==8?'已整改':'未整改'}}<md-switch ng-model="data.value.Status" ng-true-value="8" ng-false-value="1" class="md-secondary"></md-switch>
       </p>
     </md-list-item>
-    <md-list-item ng-if="role == 'fy'">
+    <md-list-item ng-if="role == 'jl'">
       <label>整改前照片</label>
       <p>
-          <span class="photo" ng-click="playImage()">
-            <i>照片</i><i>1</i>
+          <span class="photo" ng-click="playImage(Record.jl.images)">
+            <i>照片</i><i>{{Record.jl.images.length}}</i>
           </span>
         <!--<span class="photo">-->
         <!--<i>照片</i><i>2</i>-->
         <!--</span>-->
       </p>
     </md-list-item>
-    <md-list-item ng-if="role == 'fy'">
+    <md-list-item ng-if="role == 'jl'">
       <label>整改后照片</label>
       <p>
-          <span class="photo" ng-click="playImage()">
-            <i>照片</i><i>2</i>
+          <span class="photo" ng-click="playImage(Record.zb.images)">
+            <i>照片</i><i>{{Record.zb.images.length}}</i>
           </span>
       </p>
     </md-list-item>
-    <md-list-item ng-if="role == 'fy'">
+    <md-list-item ng-if="role == 'jl'">
       <label>备注</label>
       <p>
         备注
       </p>
     </md-list-item>
-    <md-list-item ng-if="role == 'fy'">
+    <md-list-item ng-if="role == 'jl'">
       <label>复验状态</label>
       <p style="text-align: right;margin-right:70px;">
         {{data.value.Status==2?'合格':'不合格'}}<md-switch ng-model="data.value.Status" ng-true-value="2"  ng-false-value="4" class="md-secondary"></md-switch>
