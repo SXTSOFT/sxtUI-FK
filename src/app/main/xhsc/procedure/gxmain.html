@@ -1,5 +1,23 @@
 <md-tabs flex md-border-bottom>
-  <md-tab label="项目列表">
+  <md-tab label="总包报验">
+    <md-content>
+      <div layout="column" class="gxdownload">
+        <md-list style="overflow: hidden;">
+          <md-list-item ng-repeat="item in vm.projects">
+            <p layout="column" style="padding-right: 125px;font-size:16px;padding-left:8px;">
+              {{item.ProjectName}}
+            </p>
+            <div class="md-secondary md-hue-3" style="right:0;margin:0;">
+              <md-button  ui-sref="app.xhsc.gx.gxlist({role:'zb',projectId:item.ProjectID})" class="md-raised md-primary" style="margin-top:7px;margin-bottom: 4px;">
+                报验
+              </md-button>
+            </div>
+          </md-list-item>
+        </md-list>
+      </div>
+    </md-content>
+  </md-tab>
+  <md-tab label="监理离线包">
     <md-content>
       <div layout="column" class="gxdownload">
         <md-subheader>已下载列表</md-subheader>
@@ -9,11 +27,8 @@
               {{item.ProjectName}}
             </p>
             <div class="md-secondary md-hue-3" style="right:0;margin:0;">
-              <md-button  ui-sref="app.xhsc.gx.gxlist({role:'zb',projectId:item.ProjectID})" class="md-raised md-primary" style="margin-top:7px;margin-bottom: 4px;">
-                总包
-              </md-button>
               <md-button  ui-sref="app.xhsc.gx.gxlist({role:'jl',projectId:item.ProjectID})" class="md-raised md-primary" style="margin-top:7px;margin-bottom: 4px;">
-                监理
+                验收
               </md-button>
             </div>
           </md-list-item>
@@ -41,7 +56,7 @@
       </div>
     </md-content>
   </md-tab>
-  <md-tab label="工序验收列表" ng-if="vm.gxList.length">
+  <md-tab label="监理验收" ng-if="vm.gxList.length">
     <md-content>
       <div layout="column" class="gxdownload">
         <md-list>
@@ -65,7 +80,7 @@
       </div>
     </md-content>
   </md-tab>
-  <md-tab label="工序整改单列表">
+  <md-tab label="总包整改">
     <md-content>
       <div layout="column" class="gxdownload">
         <md-subheader>已下载整改单</md-subheader>
@@ -106,7 +121,7 @@
       </div>
     </md-content>
   </md-tab>
-  <md-tab label="工序复验列表">
+  <md-tab label="监理复验">
     <md-content>
       <div layout="column" class="gxdownload">
         <md-subheader>已下载复验单</md-subheader>
