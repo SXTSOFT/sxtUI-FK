@@ -21,8 +21,6 @@
     function link(scope,element,attr,ctrl){
       scope.$watch('slideRole',function(){
         scope.role = scope.slideRole;
-        // console.log('role',scope.role)
-
       })
       scope.apply = function(){
         remote.Procedure.getPoints(scope.data.regionId,scope.data.procedure).then(function(res){
@@ -36,23 +34,9 @@
             scope.disQues.note='';
           }
         })
-        scope.data.images = [{
-          url:'app/main/xhsc/images/bg.png',
-          alt:'aa'
-        },{
-          url:'app/main/xhsc/images/bg.png',
-          alt:'aa'
-        }];
       }
 
       scope.playImage = function (imgs) {
-        //var imgs = [];
-        //scope.data.images.forEach(function (img) {
-        //  imgs.push({
-        //    src:img.FileID,
-        //    alt:''
-        //  });
-        //})
         xhUtils.playPhoto(imgs);
       }
       scope.addPhoto = function () {
