@@ -49,8 +49,14 @@
     <!--</md-list-item>-->
     <md-list-item>
       <label style="width: 100px;">最迟整改时间</label>
-      <p>
-        7天
+      <p style="text-align: right;">
+        <md-input-container class="md-block" style="margin:0">
+          <md-select ng-model="vm.time">
+            <md-option ng-repeat="time in vm.times" ng-value="time">
+              {{time.time}}
+            </md-option>
+          </md-select>
+        </md-input-container>
       </p>
     </md-list-item>
     <md-list-item>
