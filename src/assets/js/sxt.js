@@ -22,8 +22,8 @@
     version: '1.1.12',
     app: {
       couchDb:'http://ggem.sxtsoft.com:5984',
-      //api:'http://xhszgc.sxtsoft.com:8090',
-      api:'http://localhost:8107',
+      api:'http://xhszgc.sxtsoft.com:8090',
+     // api:'http://localhost:8107',
       fs:'http://xhszgc.sxtsoft.com:8090'
       //api:'http://10.245.9.164:8107',
     },
