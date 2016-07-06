@@ -62,7 +62,7 @@
         var imgs = [];
         scope.data.images.forEach(function (img) {
           imgs.push({
-            url:img.FileID,
+            url:img.FileUrl||img.FileContent,
             alt:''
           });
         })
@@ -71,13 +71,17 @@
       scope.addPhoto = function () {
         scope.data.v.isNew = false;
         xhUtils.photo().then(function (image) {
+
           if(image){
-            scope.data.images.push({
+            var img = {
               ProblemRecordFileID:sxt.uuid(),
+              FileID:sxt.uuid()+".jpg",
               ProblemRecordID:scope.data.p.ProblemRecordID,
               CheckpointID:scope.data.v.CheckpointID,
-              FileID:image
-            });
+              FileContent:image
+            };
+            remote.Procedure.InspectionProblemRecordFile.create(img);
+            scope.data.images.push(img);
           }
         });
       }

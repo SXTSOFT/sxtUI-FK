@@ -15,7 +15,7 @@
       acceptanceItemName =  $stateParams.acceptanceItemName,
       projectId = $stateParams.projectId,
       areaId = $stateParams.areaId?$stateParams.areaId:$stateParams.regionId;
-    vm.RegionFullName =  $stateParams.name;
+    //vm.RegionFullName =  $stateParams.name;
     vm.InspectionId=$stateParams.InspectionId;
 
     vm.info = {
@@ -51,26 +51,22 @@
         return regionType;
       }
       var promises=[
-        remote.Project.getInspectionList(projectId),
-        remote.Project.queryAllBulidings(projectId)
+        remote.Project.getInspectionList(vm.InspectionId)
       ];
       vm.btBatch=[];
       return $q.all(promises).then(function(rtv){
         var  r=rtv[0].data.find(function(o){
             return o.InspectionId==vm.InspectionId;
           });
-        var regions=rtv[1].data[0].RegionRelations[0];
         if (angular.isArray(r.Children)){
-            var region;
             r.Children.forEach(function(tt){
-               region = xhUtils.findRegion(regions,tt.AreaID);
-               vm.btBatch.push({
+               vm.btBatch.push(angular.extend({
                  RegionID:tt.AreaID,
-                 RegionType:getRegionType( tt.AreaID),
-                 fullName:region.fullName+tt.Describe
-               });
+                 RegionType:getRegionType( tt.AreaID)
+               },tt));
             });
           }
+        vm.selectQy(vm.btBatch[0]);
         return vm.btBatch;
       })
     }
@@ -110,10 +106,12 @@
       vm.qyslideShow = !vm.qyslideShow;
     }
     vm.selectQy = function(item){
-      vm.RegionFullName = item.fullName;
+      vm.info.selected = item;
+      //vm.RegionName = item.RegionName;
       vm.qyslideShow = false;
       vm.setRegion(item);
     }
+
     var sendResult = $rootScope.$on('sendGxResult',function(){
       $state.go('app.xhsc.gx.gxresult',{acceptanceItemName:acceptanceItemName,acceptanceItemID:acceptanceItemID,name:vm.RegionFullName,areaId:areaId,projectId:projectId,InspectionId:vm.InspectionId});
     })
@@ -155,5 +153,6 @@
         })
       }
     };
+
   }
 })();

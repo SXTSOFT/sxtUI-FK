@@ -6,7 +6,7 @@
     .module('app.xhsc')
     .directive('sxtRecheckMap',sxtRecheckMap);
   /** @ngInject */
-  function sxtRecheckMap($timeout,remote,mapPopupSerivce,sxt,utils,$q) {
+  function sxtRecheckMap($timeout,remote,mapPopupSerivce,sxt,utils,$q,$window) {
     return {
       scope:{
         item:'=sxtRecheckMap',
@@ -38,56 +38,21 @@
           fg = new L.SvFeatureGroup({
             onLoad: function () {
               var promises=[
-                remote.Procedure.getReginQues(scope.regionId,scope.procedure),
-                remote.Procedure.getPoints(scope.regionId,scope.procedure)
+                remote.Procedure.getZGReginQues(scope.regionId,scope.item),
+                remote.Procedure.getZGReginQuesPoint(scope.regionId,scope.item)
               ]
               $q.all(promises).then(function(res){
-                var ques=res[0].data;
-                scope.points=res[1].data;
-                if (ques&&ques.length){
-                  ques.forEach(function(t){
-                    if (scope.points&&scope.points.length){
-                      scope.points.forEach(function(m){
-                        if (t.IndexPointID== m.IndexPointID){
-                          if (!t.points){
-                            t.points=[];
-                          }
-                          t.points.push(m);
-                        }
-                      });
-                    }
-                    scope.ques.push(t);
+                res[0].data.forEach(function (item) {
+                  var p = res[1].data.find(function (pt) {
+                    return pt.MeasurePointID==item.PositionID;
                   });
-                }
-                var features = [];
-                scope.ques.forEach(function(t){
-                  var feature ={"type":"Feature","properties":{"seq":1,"$id":"9f04f4e54ae54858ba5cc30670491818"},"options":{"stroke":true,"color":"red","dashArray":"","lineCap":null,"lineJoin":null,"weight":1,"opacity":1,"fill":true,"fillColor":null,"fillOpacity":0.2,"clickable":true,"font-family":"Helvetica","font-style":"normal","font-weight":"bold","letter-spacing":"0.05em","stroke-width":2,"text-decoration":"none","multiSelect":false,"repeatMode":true},"geometry":{"type":"Stamp","coordinates":[0.7236328125,0.681640625],options:{customSeq:true,seq:t.IndexName,v:t}}};
-                  features.push({"type":"Feature","properties":{"seq":1,"$id":"9f04f4e54ae54858ba5cc30670491818"},"options":{"stroke":true,"color":"red","dashArray":"","lineCap":null,"lineJoin":null,"weight":1,"opacity":1,"fill":true,"fillColor":null,"fillOpacity":0.2,"clickable":true,"font-family":"Helvetica","font-style":"normal","font-weight":"bold","letter-spacing":"0.05em","stroke-width":2,"text-decoration":"none","multiSelect":false,"repeatMode":true},"geometry":{"type":"Stamp","coordinates":[0.7236328125,0.681640625],options:{customSeq:true,seq:t.IndexName}}})
-                  fg.addData(feature.geometry);
+                  if(p){
+                    var geo = $window.JSON.parse(p.Geometry);
+                    fg.addData(geo);
+                  }
                 })
-
               })
-              //remote.Procedure.InspectionCheckpoint.query(scope.procedure,scope.regionId).then(function (r) {
-              //  remote.Procedure.InspectionPoint.query().then(function (r1) {
-              //    fg.data = r.data;
-              //    r.data.forEach(function (c) {
-              //      var p = r1.data.find(function (p1) {
-              //        return p1.MeasurePointID==c.PositionID;
-              //      });
-              //      if(p){
-              //        p.geometry.options.customSeq = true;
-              //        p.geometry.options.seq = c.ProblemSortName;
-              //        p.geometry.options.v = c;
-              //        fg.addData(p.geometry);
-              //      }
-              //    })
-              //
-              //  });
-              //
-              //
-              //});
-             // var feature ={"type":"Feature","properties":{"seq":1,"$id":"9f04f4e54ae54858ba5cc30670491818"},"options":{"stroke":true,"color":"red","dashArray":"","lineCap":null,"lineJoin":null,"weight":1,"opacity":1,"fill":true,"fillColor":null,"fillOpacity":0.2,"clickable":true,"font-family":"Helvetica","font-style":"normal","font-weight":"bold","letter-spacing":"0.05em","stroke-width":2,"text-decoration":"none","multiSelect":false,"repeatMode":true},"geometry":{"type":"Stamp","coordinates":[0.7236328125,0.681640625],options:{customSeq:true,seq:1}}};
-             // this.addData(feature.geometry);
+
             },
             onUpdate: function (layer, isNew, group) {
               console.log('a')
@@ -123,7 +88,7 @@
             }
           },fg);
           $timeout(function () {
-            remote.Project.getDrawingRelations(scope.projectId).then(function (result) {
+            remote.Project.getDrawingRelations(scope.regionId.substring(0,5)).then(function (result) {
               var imgId = result.data.find(function (item) {
                 return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
               });

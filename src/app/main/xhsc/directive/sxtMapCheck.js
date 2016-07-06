@@ -6,7 +6,7 @@
     .module('app.xhsc')
     .directive('sxtMapCheck',sxtMapCheck);
   /** @ngInject */
-  function sxtMapCheck($timeout,remote,mapPopupSerivce,sxt,utils) {
+  function sxtMapCheck($timeout,remote,mapPopupSerivce,sxt,utils,$window) {
     return {
       scope:{
         item:'=sxtMapCheck',
@@ -36,20 +36,21 @@
           fg = new L.SvFeatureGroup({
             onLoad: function () {
               remote.Procedure.InspectionCheckpoint.query(scope.procedure,scope.regionId).then(function (r) {
-                remote.Procedure.InspectionPoint.query().then(function (r1) {
+                remote.Procedure.InspectionPoint.query(scope.procedure, scope.regionId).then(function (r1) {
                   fg.data = r.data;
                   r.data.forEach(function (c) {
                     var p = r1.data.find(function (p1) {
-                      return p1.MeasurePointID==c.PositionID;
+                      return p1.MeasurePointID == c.PositionID;
                     });
-                    if(p){
+                    if (p) {
+                      p.geometry = $window.JSON.parse(p.Geometry);
                       p.geometry.options.customSeq = true;
                       p.geometry.options.seq = c.ProblemSortName;
                       p.geometry.options.v = c;
                       fg.addData(p.geometry);
                     }
                   })
-                });
+                })
               });
             },
             onUpdate: function (layer, isNew, group) {
@@ -69,7 +70,7 @@
                 })) {
                 var v = {
                   CheckpointID:sxt.uuid(),
-                  IndexID:scope.item.ProblemID,
+                  IndexPointID:scope.item.ProblemID,
                   AreaID:scope.regionId,
                   AcceptanceItemID:scope.procedure,
                   PositionID:point.MeasurePointID,
@@ -92,13 +93,7 @@
               }
             },
             onUpdateData: function (context, data, editScope) {
-              remote.Procedure.InspectionCheckpoint.create(data.v);
-              data.images.forEach(function (img) {
-                if(!img._id){
-                  img._id = sxt.uuid();
-                  remote.Procedure.InspectionProblemRecordFile.create(img);
-                };
-              })
+              //remote.Procedure.InspectionCheckpoint.create(data.v);
             },
             onDelete: function (layer) {
               var id = layer.getValue().$id;
@@ -107,7 +102,7 @@
                   return d.PositionID == id;
                 }),ix = fg.data.indexOf(v);
                 fg.data.splice(ix,1);
-                remote.Procedure.InspectionCheckpoint.delete(v);
+                remote.Procedure.InspectionCheckpoint.delete(v.CheckpointID);
               });
             },
             onPopup: function (e) {
@@ -145,7 +140,7 @@
             }
           },fg);
           $timeout(function () {
-            remote.Project.getDrawingRelations(scope.projectId).then(function (result) {
+            remote.Project.getDrawingRelations(scope.regionId.substring(0,5)).then(function (result) {
               var imgId = result.data.find(function (item) {
                 return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
               });

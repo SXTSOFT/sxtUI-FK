@@ -17,12 +17,19 @@
       var RectificationID=$state.params.RectificationID;
     vm.role = 'zg';
 
-    remote.Procedure.getRegionByInspectionID(InspectionID).then(function(r){
+/*    remote.Procedure.getRegionByInspectionID(InspectionID).then(function(r){
       vm.pareaList = r.data;
       if (angular.isArray(vm.pareaList)&&vm.pareaList.length){
         vm.regionSelect= r.data[0];
         load();
       }
+    });*/
+
+    remote.Procedure.getZGById(RectificationID).then(function (r) {
+      vm.Rectification = r.data;
+      vm.pareaList = vm.Rectification.Children;
+      vm.regionSelect = vm.pareaList[0];
+      load();
     });
 
     function setChina(r) {
@@ -46,12 +53,26 @@
         return;
       }
       var promises=[
-        remote.Procedure.getReginQues(vm.regionSelect.AreaID,vm.AcceptanceItemID),
-        remote.Procedure.getPoints(vm.regionSelect.AreaID,vm.AcceptanceItemID)
+        remote.Procedure.getZGReginQues(vm.regionSelect.AreaID,RectificationID)/*,
+        remote.Procedure.getZGReginQuesPoint(vm.regionSelect.AreaID,RectificationID)*/
       ]
       vm.ques=[];
       $q.all(promises).then(function(res){
-        var ques=res[0].data;
+
+        res[0].data.forEach(function (item) {
+          var fd = vm.ques.find(function (it) {
+            return it.IndexPointID==item.IndexPointID;
+          });
+          if(!fd){
+            fd = item;
+            vm.ques.push(fd);
+            fd.Points = 1;
+          }
+          else{
+            fd.Points++;
+          }
+        })
+        /*var ques=res[0].data;
         vm.points=res[1].data;
         if (ques&&ques.length){
           ques.forEach(function(t){
@@ -67,8 +88,7 @@
             }
             vm.ques.push(t);
           });
-        }
-        console.log(vm.ques);
+        }*/
       })
     }
     vm.showTop = function(){

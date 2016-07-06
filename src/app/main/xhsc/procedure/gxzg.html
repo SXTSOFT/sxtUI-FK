@@ -4,7 +4,7 @@
       <md-icon md-font-icon="icon-chevron-left"></md-icon>
     </md-button>
     <p ng-click="vm.qyslide()" style="font-size:14px;padding:0 10px;text-align: center;margin: 0;height:48px;line-height:48px;width:70%;margin-left:auto;margin-right:auto;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-      {{vm.regionSelect.AreaName||'区域'}} <span class="caret"></span>
+      {{vm.regionSelect.RegionName||'区域'}} <span class="caret"></span>
     </p>
     <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;right:10px;top:0" ng-click="vm.nextRegion()">
       <md-icon md-font-icon="icon-chevron-right"></md-icon>
@@ -13,12 +13,12 @@
   <div flex layout="row" class="gxtest qyslide" ng-class="{'qydown':vm.qyslideShow}">
     <md-list layout="column" flex class="gxplist">
       <md-list-item flex ng-repeat="p in vm.pareaList">
-        <p ng-click="vm.selectQy(p)">{{p.AreaName}}</p>
+        <p ng-click="vm.selectQy(p)">{{p.RegionName}}</p>
       </md-list-item>
     </md-list>
   </div>
 </div>
-<div class="mapcheck" flex sxt-recheck-map="" sxt-map-show="vm.slideShow" project-id="vm.ProjectID" procedure="vm.AcceptanceItemID" region-id="vm.regionSelect.AreaID">
+<div class="mapcheck" flex sxt-recheck-map="vm.Rectification.RectificationID" sxt-map-show="vm.slideShow" project-id="vm.regionSelect.AreaID" procedure="vm.Rectification.AcceptanceItemID" region-id="vm.regionSelect.AreaID">
 </div>
 <md-content flex style="background: transparent;">
   <div class="gxtest gxtestdetail" flex>
@@ -26,8 +26,8 @@
     <md-list class="gxque">
       <md-list-item ng-repeat="k in vm.ques">
         <!--<span flex="none" style="width:100px;">2号问题</span>-->
-        <span flex style="padding-left:8px;">{{k.IndexDesc}}</span>
-        <span flex="none" style="text-align: right;padding-right:8px">{{k.points.length}}处</span>
+        <span flex style="padding-left:8px;">{{k.ProblemDescription}}</span>
+        <span flex="none" style="text-align: right;padding-right:8px">{{k.Points}}处</span>
       </md-list-item>
     </md-list>
 

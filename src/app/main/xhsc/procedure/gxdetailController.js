@@ -77,7 +77,7 @@
 
     function load(){
       remote.Procedure.InspectionCheckpoint.query(vm.acceptanceItemID,vm.current.RegionID).then(function (r) {
-        remote.Procedure.InspectionPoint.query().then(function (r1) {
+        remote.Procedure.InspectionPoint.query(vm.acceptanceItemID,vm.current.RegionID).then(function (r1) {
           //fg.data = r.data;
           r.data.forEach(function (c) {
             var p = r1.data.find(function (p1) {
@@ -96,11 +96,11 @@
         vm.pList = [];
         r.data.forEach(function(t){
           var find = vm.pList.find(function(p){
-            return p.id == t.IndexID;
+            return p.id == t.IndexPointID;
           })
           if(!find){
             var f = {
-              id:t.IndexID,
+              id:t.IndexPointID,
               ProblemDescription: t.ProblemDescription,
               rows:[]
             };

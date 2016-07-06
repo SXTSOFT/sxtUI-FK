@@ -63,7 +63,7 @@
               ProblemRecordFileID:sxt.uuid(),
               ProblemRecordID:scope.data.p.ProblemRecordID,
               CheckpointID:scope.data.v.CheckpointID,
-              FileID:image
+              FileContent:image
             });
           }
         });
