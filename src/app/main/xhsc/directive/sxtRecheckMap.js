@@ -48,6 +48,7 @@
                   });
                   if(p){
                     var geo = $window.JSON.parse(p.Geometry);
+                    geo.options.v = item;
                     fg.addData(geo);
                   }
                 })
@@ -61,23 +62,18 @@
               console.log('b')
             },
             onPopup: function (e) {
-              console.log('e',e)
-              if(e.layer instanceof L.Stamp)
-              var edit = mapPopupSerivce.get('mapRecheckMapPopup');
-              if(edit){
-                scope.sxtMapShow = true;
-                edit.scope.context = e;
-                edit.scope.data = {
-                  item: scope.item,
-                  projectId: scope.projectId,
-                  procedure: scope.procedure,
-                  regionId: scope.regionId,
-                  indexPointID: e.layer.options.v.IndexPointID
-                  //v:fg.data.find(function (d) {
-                  //  return d.PositionID == e.layer._value.$id;
-                  //})
+
+              if(e.layer instanceof L.Stamp) {
+                var edit = mapPopupSerivce.get('mapRecheckMapPopup');
+                if (edit) {
+                  scope.sxtMapShow = true;
+                  edit.scope.context = e;
+                  edit.scope.data = {
+                    item: scope.item,
+                    value: e.layer.options.v
+                  }
+                  edit.scope.apply && edit.scope.apply();
                 }
-                edit.scope.apply && edit.scope.apply();
               }
             }
           }).addTo(map._map),

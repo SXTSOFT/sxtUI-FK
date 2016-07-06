@@ -7,56 +7,113 @@
     .module('app.xhsc')
     .directive('sxtRecheckPopup',sxtRecheckPopup);
   /** @ngInject */
-  function sxtRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote){
+  function sxtRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote,$q,utils){
     return {
       restrict:'E',
       scope:{
         slideShow:'=',
         slideRole:'='
       },
-      templateUrl:'app/main/xhsc/directive/slideTopView.html',
+      templateUrl:'app/main/xhsc/directive/sxtRecheckPopup.html',
       link:link
     }
 
     function link(scope,element,attr,ctrl){
       scope.$watch('slideRole',function(){
         scope.role = scope.slideRole;
+        // console.log('role',scope.role)
+
       })
       scope.apply = function(){
-        remote.Procedure.getPoints(scope.data.regionId,scope.data.procedure).then(function(res){
-          console.log('res',res)
-          var find = res.data.find(function(d){
-            return d.IndexPointID === scope.data.indexPointID;
-          })
-          if(find){
-            scope.disQues = find;
-            scope.disQues.value = '未整改';
-            scope.disQues.note='';
+        remote.Procedure.InspectionProblemRecord.query(scope.data.value.CheckpointID).then(function(r){
+          r.data.forEach(function (p) {
+            remote.Procedure.InspectionProblemRecordFile.query(p.ProblemRecordID).then(function (r2) {
+              p.images = r2.data;
+            });
+          });
+
+          scope.Record = {
+            jl:r.data.find(function (p) {
+              return p.DescRole=='jl'
+            }),
+            zb:r.data.find(function (p) {
+              return p.DescRole=='zb'
+            })
+          };
+          if(!scope.Record.zb){
+            scope.Record.zb = {
+              CheckpointID:scope.data.value.CheckpointID,
+              RectificationID:scope.data.item,
+              Describe:'',
+              DescRole:'zb',
+              Remark:''
+            };
           }
+          //remote.Procedure.
         })
       }
 
       scope.playImage = function (imgs) {
+        imgs.forEach(function (img) {
+          img.url = img.FileUrl || img.FileContent;
+          img.alt = ' ';
+        })
         xhUtils.playPhoto(imgs);
       }
+      function createZb(update) {
+        return $q(function (resolve) {
+          if(!scope.Record.zb.ProblemRecordID||update===true){
+            scope.Record.zb.ProblemRecordID = scope.Record.zb.ProblemRecordID || sxt.uuid();
+            remote.Procedure.InspectionProblemRecord.create(scope.Record.zb).then(function () {
+              resolve();
+            })
+          }
+          else{
+            resolve()
+          }
+        })
+      }
       scope.addPhoto = function () {
-        //scope.data.v.isNew = false;
         xhUtils.photo().then(function (image) {
           if(image){
-            scope.data.images.push({
-              ProblemRecordFileID:sxt.uuid(),
-              ProblemRecordID:scope.data.p.ProblemRecordID,
-              CheckpointID:scope.data.v.CheckpointID,
-              FileContent:image
-            });
+            createZb().then(function () {
+              var img = {
+                ProblemRecordFileID:sxt.uuid(),
+                ProblemRecordID:scope.Record.zb.ProblemRecordID,
+                CheckpointID:scope.Record.zb.CheckpointID,
+                FileID:sxt.uuid()+'.jpg',
+                FileContent:image
+              }
+              remote.Procedure.InspectionProblemRecordFile.create(img).then(function () {
+                var imgs = scope.Record.zb.images = (scope.Record.zb.images || []);
+                imgs.push(img);
+              })
+
+            })
+
           }
         });
       }
       scope.submit = function(){
-        scope.slideShow = false;
-        scope.context.featureGroup.options.onUpdate()&&scope.context.featureGroup.options.onUpdate()
-        var layer = scope.context.layer;
-        console.log('layer',scope)
+
+        if(scope.role=='zg'){
+          scope.data.Status = scope.data.Status==8?8:1;
+          if(scope.data.Status==8 &&(!scope.Record.zb.images || scope.Record.zb.images.length==0)){
+            utils.alert('请上传整改后照片');
+            return;
+          }
+          createZb(true).then(function () {
+            remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
+              scope.slideShow = false;
+            });
+          });
+        }
+        else{
+          scope.data.Status = scope.data.Status==2?2:4;
+          remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
+            scope.slideShow = false;
+          });
+        }
       }
       mapPopupSerivce.set('mapRecheckMapPopup',{
         el:element,
