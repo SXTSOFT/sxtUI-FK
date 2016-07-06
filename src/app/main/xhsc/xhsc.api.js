@@ -260,6 +260,9 @@
       },
       createZGReceipt:function(InspectionID,Remarks,Day){
         return $http.post($http.url('/api/InspectionRectificationApi/Insert'),{InspectionID:InspectionID,Remarks:Remarks,Day:Day})
+      },
+      InspectionRectificationUpdateStatus:function (rectificationId,status) {
+        return $http.post($http.url('/api/InspectionRectificationApi/UpdateStatus'),{RectificationId:rectificationId,Status:status})
       }
     },
     Assessment:{

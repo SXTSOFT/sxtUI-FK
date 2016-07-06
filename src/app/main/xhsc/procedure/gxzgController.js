@@ -131,9 +131,17 @@
           }
           $scope.submit = function(){
             if(vm.role=='zb'){
-
+              remote.Procedure.InspectionRectificationUpdateStatus(RectificationID,4).then(function () {
+                utils.alert('提交成功');
+                $mdDialog.hide();
+              })
             }
-            $mdDialog.hide();
+            else{
+
+              //TODO:可能要生成新的整改单,或完成整改
+              utils.alert('提交成功');
+              $mdDialog.hide();
+            }
           }
           remote.Procedure.getZGReginQues(null,RectificationID).then(function (r) {
             $scope.status = [
