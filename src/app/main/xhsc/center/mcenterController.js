@@ -9,7 +9,7 @@
     .controller('mcenterController',mcenterController);
 
   /**@ngInject*/
-  function mcenterController($scope,$rootScope){
+  function mcenterController($scope,$rootScope,$http,xhUtils){
     var vm = this;
     vm.msgList = [{
       id:1,
@@ -58,5 +58,7 @@
       vm.showCheck = !vm.showCheck;
     }
     $rootScope.$on('operateMsg',operateMsg);
+
+
   }
 })();
