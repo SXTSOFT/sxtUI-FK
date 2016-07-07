@@ -121,14 +121,15 @@
       sendResult = null;
     });
     vm.setRegion = function(region){
-      vm.info.regionId = region.RegionID;
-      vm.info.regionType = region.RegionType;
-      vm.RegionFullName = region.fullName;
+      //vm.info.regionId = region.AreaID;
+      //vm.info.regionType = region.RegionType;
+      //vm.RegionFullName = region.RegionName;
+      vm.info.selected = region;
     }
     vm.nextRegion = function(prev){
       function setNext(regions){
         var region=regions.find(function(o){
-            return vm.info.regionId== o.RegionID;
+            return vm.info.regionId== o.AreaID;
         });
         var index=regions.indexOf(region);
         if (prev){
