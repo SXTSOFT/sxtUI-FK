@@ -66,5 +66,9 @@
       </p>
     </md-list-item>
   </md-list>
-  <md-button flex ng-click="submit()" style="width: 100%;padding:6px 0;margin:0;">确定</md-button>
+  <div layout="row">
+    <md-button flex ng-click="cancel()" style="padding:6px 0;margin:0;border-right:1px solid #dedede;border-radius:0;">取消</md-button>
+    <md-button flex ng-click="submit()" style="padding:6px 0;margin:0;">确定</md-button>
+  </div>
+  <!--<md-button flex ng-click="submit()" style="width: 100%;padding:6px 0;margin:0;">确定</md-button>-->
 </div>

@@ -66,11 +66,11 @@
         }
 
         $('.my-dialog-mask',element).fadeOut();
-        if(scope.dialogSure == '报检'){
+        if(scope.dialogSure == '报验'){
           remote.Procedure.postInspection(params).then(function(result){
             if (result.data.ErrorCode==0){
               $timeout(function(){
-                utils.alert('报检成功',evt,scope.callBack);
+                utils.alert('报验成功',evt,scope.callBack);
               },200);
             }
           })

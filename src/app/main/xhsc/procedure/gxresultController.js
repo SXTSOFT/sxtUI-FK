@@ -74,7 +74,7 @@
       vm.allRelations = [];
       $stateParams.areaId;
       var tmp=[];
-       result.data[0].Sections.forEach(function(t){
+      result.data[0].Sections.forEach(function(t){
         tmp= t.SectionRegionIDs.split(',');
         var  d;
         if (angular.isArray(tmp)){
@@ -87,6 +87,7 @@
         }
       })
     });
+
 
     vm.params={
           InspectionID:InspectionId,

@@ -94,6 +94,9 @@
           }
         });
       }
+      scope.cancel = function(){
+        scope.slideShow = false;
+      }
       scope.submit = function(){
 
         if(scope.role=='zb'){
