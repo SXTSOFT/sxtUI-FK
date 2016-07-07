@@ -127,33 +127,51 @@
       vm.info.selected = region;
     }
     vm.nextRegion = function(prev){
-      function setNext(regions){
-        var region=regions.find(function(o){
-            return vm.info.regionId== o.AreaID;
-        });
-        var index=regions.indexOf(region);
-        if (prev){
-          if ((index-1)>=0){
-            vm.setRegion(regions[index-1]);
-            return;
+      var idx = vm.btBatch.indexOf(vm.info.selected);
+      if(idx != -1){
+        if(prev){
+          if(idx>0){
+            vm.setRegion(vm.btBatch[idx-1]);
+          }else{
+            utils.alert('查无数据');
           }
-        }else {
-          if ((index+1)<regions.length){
-            vm.setRegion(regions[index+1]);
-            return;
+        }else{
+          if(idx<vm.btBatch.length-1){
+            vm.setRegion(vm.btBatch[idx+1])
+          }else{
+            utils.alert('查无数据');
           }
         }
-        utils.alert("查无数据!");
       }
-
-      if(vm.btBatch){
-        setNext(vm.btBatch);
-      }else {
-        initBtBatch().then(function(arr){
-          setNext(arr);
-        })
-      }
-    };
+    }
+    //vm.nextRegion = function(prev){
+    //  function setNext(regions){
+    //    var region=regions.find(function(o){
+    //        return vm.info.regionId== o.AreaID;
+    //    });
+    //    var index=regions.indexOf(region);
+    //    if (prev){
+    //      if ((index-1)>=0){
+    //        vm.setRegion(regions[index-1]);
+    //        return;
+    //      }
+    //    }else {
+    //      if ((index+1)<regions.length){
+    //        vm.setRegion(regions[index+1]);
+    //        return;
+    //      }
+    //    }
+    //    utils.alert("查无数据!");
+    //  }
+    //
+    //  if(vm.btBatch){
+    //    setNext(vm.btBatch);
+    //  }else {
+    //    initBtBatch().then(function(arr){
+    //      setNext(arr);
+    //    })
+    //  }
+    //};
 
   }
 })();
