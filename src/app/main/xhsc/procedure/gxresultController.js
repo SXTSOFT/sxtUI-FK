@@ -15,7 +15,8 @@
     vm.gxname = $stateParams.acceptanceItemName;
     vm.bwname = $stateParams.name;
     var  InspectionId=$stateParams.InspectionId;
-    vm.times = [,{
+
+    vm.times = [{
       time:'一天',
       val:1
     },{
@@ -96,7 +97,7 @@
     vm.Isfail=true;
     vm.submitResult = function(){
       //console.log('time',vm.time)
-      remote.Procedure.createZGReceipt(vm.params.InspectionID,vm.params.Remarks,7).then(function(r){
+      remote.Procedure.createZGReceipt(vm.params.InspectionID,vm.params.Remarks,vm.time).then(function(r){
           if (r.data.ErrorCode==0){
             utils.alert("保存成功");
             vm.Isfail=false;

@@ -9,7 +9,7 @@
     .controller('gxhousechooseController',gxhousechooseController);
 
   /** @ngInject */
-  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog){
+  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils){
     var vm=this,
       id = $stateParams.assessmentID,
       AssessmentTypeID = $stateParams.AssessmentTypeID,
@@ -307,7 +307,7 @@
         acceptanceItemName:acceptanceItemName,
         acceptanceItemID:acceptanceItemID
       }
-      vm.showmyDialog = true;
+
       //console.log('vmhouse',vm.houses)
       vm.houses.forEach(function(t){
         t.Children.forEach(function(_t){
@@ -328,7 +328,9 @@
       })
       //console.log('length',vm.data.Rows.length)
       if(vm.data.Rows.length){
-
+        vm.showmyDialog = true;
+      }else{
+        utils.alert('请选择区域');
       }
     });
     $scope.$on("$destroy",function(){
