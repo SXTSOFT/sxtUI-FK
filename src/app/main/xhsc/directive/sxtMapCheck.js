@@ -98,7 +98,7 @@
             },
             onDelete: function (layer) {
               var id = layer.getValue().$id;
-              remote.Procedure.InspectionPoint.delete({MeasurePointID:id}).then(function () {
+              remote.Procedure.InspectionPoint.delete({measurePointID:id}).then(function () {
                 var v = fg.data.find(function (d) {
                   return d.PositionID == id;
                 }),ix = fg.data.indexOf(v);

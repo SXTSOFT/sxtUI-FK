@@ -102,7 +102,7 @@
           delete:{
             delete:true,
             fn:function(measurePointID) {
-              return $http.post($http.url('/Api/MeasurePointApi/DeletePoint', {measurePointID: measurePointID}))
+              return $http.post($http.url('/Api/MeasurePointApi/DeletePoint',  measurePointID))
             }
           }
         }
