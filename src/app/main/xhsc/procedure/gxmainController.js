@@ -67,7 +67,7 @@
 
     vm.ys = function(item){
       $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
-        projectId:item.Children[0].projectId,areaId:item.Children[0].AreaID,InspectionId:item.InspectionId})
+        projectId:item.ProjectID,areaId:item.Children[0].AreaID,InspectionId:item.InspectionId})
     }
 
     vm.fy = function(r){

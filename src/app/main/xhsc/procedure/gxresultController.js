@@ -71,12 +71,20 @@
     //console.log('s',$stateParams)
     remote.Project.queryAllBulidings($stateParams.projectId).then(function(result){
       vm.allRelations = [];
-      var f = result.data[0].Sections.find(function(t){
-        return t.AreaID ===  $stateParams.areaId;
+      $stateParams.areaId;
+      var tmp=[];
+       result.data[0].Sections.forEach(function(t){
+        tmp= t.SectionRegionIDs.split(',');
+        var  d;
+        if (angular.isArray(tmp)){
+          d= tmp.find(function(x){
+            return t.AreaID.indexOf(x)>-1;
+          });
+          if (d){
+            vm.allRelations.push(t);
+          }
+        }
       })
-      if(f){
-        vm.allRelations.push(f);
-      }
     });
 
     vm.params={
