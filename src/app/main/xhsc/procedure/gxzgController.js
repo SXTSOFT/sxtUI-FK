@@ -21,6 +21,7 @@
       vm.Rectification = r.data;
       vm.pareaList = vm.Rectification.Children;
       vm.regionSelect = vm.pareaList[0];
+      vm.regionSelect.hasCheck=true;
       load();
     });
 
@@ -71,6 +72,7 @@
     }
     vm.selectQy = function(item){
       vm.regionSelect = item;
+      vm.regionSelect.hasCheck=true;
       vm.qyslideShow = false;
       load();
     }
@@ -93,6 +95,17 @@
     }
 
     var gxzgChanged = $rootScope.$on('sendGxResult',function(){
+      var  msg=[];
+      vm.pareaList.forEach(function(r){
+        if (!r.hasCheck){
+          msg.push(r.RegionName);
+        }
+      });
+      if (msg.length){
+        utils.alert(msg.join(",")+'尚未查看!');
+        return;
+      };
+
       $mdDialog.show({
         controller:['$scope',function($scope){
           $scope.InspectionID  = InspectionID;
@@ -186,12 +199,14 @@
           if (prev){
             if ((index-1)>=0){
               vm.regionSelect=vm.pareaList[index-1];
+              vm.regionSelect.hasCheck=true;
               load();
               return;
             }
           }else {
             if ((index+1)<vm.pareaList.length){
               vm.regionSelect=vm.pareaList[index+1];
+              vm.regionSelect.hasCheck=true;
               load();
               return;
             }

@@ -106,6 +106,7 @@
       vm.qyslideShow = !vm.qyslideShow;
     }
     vm.selectQy = function(item){
+      item.hasCheck=true;
       vm.info.selected = item;
       //vm.RegionName = item.RegionName;
       vm.qyslideShow = false;
@@ -113,6 +114,16 @@
     }
 
     var sendResult = $rootScope.$on('sendGxResult',function(){
+      var  msg=[];
+      vm.btBatch.forEach(function(r){
+          if (!r.hasCheck){
+            msg.push(r.RegionName);
+          }
+      });
+      if (msg.length){
+        utils.alert(msg.join(",")+'尚未验收查看!');
+        return;
+      };
       $state.go('app.xhsc.gx.gxresult',{acceptanceItemName:acceptanceItemName,acceptanceItemID:acceptanceItemID,name:vm.RegionFullName,areaId:areaId,projectId:projectId,InspectionId:vm.InspectionId});
     })
 
