@@ -72,6 +72,16 @@
         templateUrl: 'app/main/xhsc/procedure/gxtest.html',
         controller: 'gxtestController as vm'
       })
+      .state('app.xhsc.gx.gxzjcheck', {
+        noBack: true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '工序自检',
+        url: '/gxzjcheck/{acceptanceItemID}/{acceptanceItemName}/{name}/{areaId}/{projectId}/{InspectionId}',
+        templateUrl: 'app/main/xhsc/procedure/gxzjcheck.html',
+        controller: 'gxzjcheckController as vm'
+      })
       .state('app.xhsc.gx.gxresult', {
         noBack: true,
         sendBt: false,
