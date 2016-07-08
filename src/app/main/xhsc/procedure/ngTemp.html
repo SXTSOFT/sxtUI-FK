@@ -1,6 +1,6 @@
 <md-dialog class="changetel">
-  <md-dialog-content style="padding:10px;border-bottom: 1px solid #dedede;">
-    <md-list>
+  <md-dialog-content style="padding:10px;padding-bottom: 0;">
+    <md-list style="padding-bottom: 0;">
       <md-list-item ng-repeat="s in status|filter:{visible:1}">
         <p>{{s.name}}：</p>
         <p class="md-secondary">{{s.num}}处</p>
@@ -11,9 +11,9 @@
           <input placeholder="备注" style="border:none;" ng-model="remark">
         </p>
       </md-list-item>
-      <md-list-item ng-if="status[0].num >0">
+      <md-list-item>
         <p>最迟整改时间：</p>
-        <p class="md-secondary">
+        <p>
           <md-input-container class="md-block" style="margin:0">
             <md-select ng-model="time">
               <md-option ng-repeat="time in times" ng-value="time.value">
@@ -24,10 +24,11 @@
         </p>
       </md-list-item>
     </md-list>
-
   </md-dialog-content>
-  <md-dialog-actions style="padding-top:0;padding-bottom:0;min-height: 40px;">
-    <a flex class="new-btn" ng-click="cancel()">取消</a>
-    <a flex class="new-btn noborder" ng-click="submit()">确定</a>
+  <md-dialog-actions style="padding:0;" layout="column">
+    <div layout="row" style="min-height: 44px;border-top: 1px solid #dedede;width: 100%">
+      <a flex class="new-btn" ng-click="cancel()">取消</a>
+      <a flex class="new-btn noborder" ng-click="submit()">确定</a>
+    </div>
   </md-dialog-actions>
 </md-dialog>
