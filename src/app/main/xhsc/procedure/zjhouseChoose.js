@@ -291,15 +291,16 @@
       })
       if(vm.data.AreaList.length){
         remote.Procedure.postInspection(vm.data).then(function(result){
+          console.log(result);
           if (result.data.ErrorCode==0){
             $state.go('app.xhsc.gx.gxzjcheck',
               {
                 acceptanceItemID:acceptanceItemID,
                 acceptanceItemName:acceptanceItemName,
-                name: vm.data.AreaList[0].newName,
+                //name: vm.data.AreaList[0].newName,
                 projectId:projectId,
-                areaId:vm.data.AreaList[0].AreaID,
-                InspectionId:result.data.InspectionId
+                //areaId:vm.data.AreaList[0].AreaID,
+                InspectionId:result.data.Data.InspectionID
               });
           }
         });
