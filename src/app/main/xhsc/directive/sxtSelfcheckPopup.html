@@ -1,0 +1,20 @@
+<div class="recheck" style="position: fixed;top:0;left:0;bottom:0;right:0;background: transparent;z-index:30;" ng-show="slideShow"></div>
+<div class="slideTop" ng-class="{'slidedown':slideShow}">
+  <md-list style="margin-top: 0">
+    <md-list-item>
+      <label>问题描述</label>
+      <p>{{data[0].Describe}}</p>
+    </md-list-item>
+    <md-list-item ng-if="role=='zj'">
+      <label>状态 </label>
+      <p style="text-align: right;margin-right:70px;">
+        {{data.Status==2?'合格':'不合格'}}<md-switch ng-model="data.Status" ng-true-value="2"  ng-false-value="4" class="md-secondary"></md-switch>
+      </p>
+    </md-list-item>
+  </md-list>
+  <div layout="row">
+    <md-button flex ng-click="cancel()" style="padding:6px 0;margin:0;border-right:1px solid #dedede;border-radius:0;">取消</md-button>
+    <md-button flex ng-click="submit()" style="padding:6px 0;margin:0;">确定</md-button>
+  </div>
+  <!--<md-button flex ng-click="submit()" style="width: 100%;padding:6px 0;margin:0;">确定</md-button>-->
+</div>

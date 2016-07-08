@@ -74,7 +74,7 @@
       })
       .state('app.xhsc.gx.gxzjcheck', {
         noBack: true,
-        sendBt: false,
+        sendBt: true,
         rightArrow: false,
         leftArrow: false,
         title: '工序自检',
