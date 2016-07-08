@@ -95,6 +95,7 @@
     var gxzgChanged = $rootScope.$on('sendGxResult',function(){
       $mdDialog.show({
         controller:['$scope',function($scope){
+          $scope.InspectionID  = InspectionID;
           $scope.times = [{
             value:6,
             time:'6小时'
@@ -137,10 +138,17 @@
               })
             }
             else{
-
+              console.log('time',$scope.time)
+              //remote.Procedure.createZGReceipt($scope.InspectionID,$scope.remark,$scope.timevalue).then(function(r){
+              //  if (r.data.ErrorCode==0){
+              //    utils.alert("提交成功");
+              //    vm.Isfail=false;
+              //    $mdDialog.hide();
+              //  }
+              //})
               //TODO:可能要生成新的整改单,或完成整改
-              utils.alert('提交成功');
-              $mdDialog.hide();
+
+
             }
           }
           remote.Procedure.getZGReginQues(null,RectificationID).then(function (r) {
