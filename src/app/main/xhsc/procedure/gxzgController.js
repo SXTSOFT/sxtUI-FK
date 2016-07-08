@@ -11,6 +11,7 @@
   /** @ngInject */
   function gxzgController($state,$rootScope,$scope,$mdDialog,remote,$timeout,$q,utils){
     var vm = this;
+    $rootScope.title = $state.params.Role == 'zb'?'整改':'复验';
       vm.ProjectID=$state.params.ProjectID;
       var InspectionID=$state.params.InspectionID;
       vm.AcceptanceItemID=$state.params.AcceptanceItemID;
