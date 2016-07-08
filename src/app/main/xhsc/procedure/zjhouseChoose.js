@@ -18,11 +18,8 @@
       acceptanceItemName = $stateParams.acceptanceItemName,
       role=$stateParams.role,
       areaId = $stateParams.areaId;
-
     $rootScope.title = $stateParams.acceptanceItemName;
-    if(role == "zb"){
-      $rootScope.sendBt = true;
-    }
+    $rootScope.sendBt = true;
     function  load(){
       vm.nums={
         qb:0, //全部
@@ -171,17 +168,7 @@
       load();
     };
     vm.selected = function(r){
-      switch (role){
-        case "zb":
-          zbSelected(r);
-          break;
-        case "jl":
-          jlSelected(r);
-          break;
-        default:
-          jfSelect();
-          break;
-      }
+      zbSelected(r);
     }
     //总包点击事件
     function zbSelected(r){
@@ -214,42 +201,6 @@
           break;
       }
       validateChecked(r);
-    }
-    //监理点击事件
-    function jlSelected(r){
-      console.log('r',r)
-      if(r.inspectionRows.length>1){
-        $mdDialog.show({
-          controller:['$scope','$state','$timeout',function($scope,$state,$timeout){
-            $scope.lists = r;
-            $scope.goTo = function(item){
-              $mdDialog.hide();
-              $timeout(function(){
-                $state.go('app.xhsc.gx.gxtest',{InspectionId: item.InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:$scope.lists.projectTree,
-                  regionId:$scope.lists.RegionID,projectId:projectId,areaId:item.AreaId})
-              })
-            }
-          }],
-          template: '<md-dialog><md-dialog-content style="padding:10px;"><p style="padding-left:10px;margin:10px 0 0;font-size:14px;">验收批列表</p><md-list>' +
-          '<md-list-item ng-repeat="item in lists.inspectionRows" ng-click="goTo(item)">{{$index+1}}、{{lists.projectTree}}{{item.Describe}}</md-list-item></md-list></md-dialog-content></md-dialog>',
-          parent: angular.element(document.body),
-          focusOnOpen:false,
-          clickOutsideToClose:true
-        })
-      }else{
-        //console.log('area',areaId)
-        switch (r.status){
-          case 1:
-            $state.go('app.xhsc.gx.gxtest',{InspectionId: r.inspectionRows[0].InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
-              regionId:r.RegionID,projectId:projectId,areaId:areaId});
-            break;
-        }
-      }
-
-    }
-    //甲方点击事件
-    function  jfSelect(){
-
     }
 
     vm.zk = function(item){
@@ -302,37 +253,61 @@
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
       vm.data = {
-        projectId:projectId,
-        Rows:[],
-        acceptanceItemName:acceptanceItemName,
-        acceptanceItemID:acceptanceItemID
+        Percentage:100,
+        AreaList:[],
+        Describe:'',
+        Sign:8,
+        AcceptanceItemID:acceptanceItemID
       }
 
-      //console.log('vmhouse',vm.houses)
       vm.houses.forEach(function(t){
         t.Children.forEach(function(_t){
           if(_t.checked){
-            vm.data.Rows.push(_t);
+            vm.data.AreaList.push({
+              AreaID:_t.RegionID,
+              Describe:"",
+              Percentage:100
+            });
           }
           _t.Children.forEach(function(_tt){
             if(_tt.checked){
-              vm.data.Rows.push(_tt);
+              vm.data.AreaList.push({
+                AreaID:_tt.RegionID,
+                Describe:"",
+                Percentage:100
+              });
             }
             _tt.Children.forEach(function(l){
               if(l.checked){
-                vm.data.Rows.push(l)
+                vm.data.AreaList.push({
+                  AreaID:l.RegionID,
+                  Describe:"",
+                  Percentage:100
+                })
               }
             })
           })
         })
       })
-      //console.log('length',vm.data.Rows.length)
-      if(vm.data.Rows.length){
-        vm.showmyDialog = true;
+      if(vm.data.AreaList.length){
+        remote.Procedure.postInspection(vm.data).then(function(result){
+          if (result.data.ErrorCode==0){
+            $state.go('app.xhsc.gx.gxzjcheck',
+              {
+                acceptanceItemID:acceptanceItemID,
+                acceptanceItemName:acceptanceItemName,
+                name: vm.data.AreaList[0].newName,
+                projectId:projectId,
+                areaId:vm.data.AreaList[0].AreaID,
+                InspectionId:result.data.InspectionId
+              });
+          }
+        });
       }else{
         utils.alert('请选择区域');
       }
     });
+
     $scope.$on("$destroy",function(){
       sendgxResult();
       sendgxResult=null;

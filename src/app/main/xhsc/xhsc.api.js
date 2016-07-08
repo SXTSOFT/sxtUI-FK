@@ -223,7 +223,10 @@
           },
           dataType:1
         }).bind(function(projectId) {
-        return $http.get($http.url('/Api/InspectionApi/GetUserInspectionInfo', {projectId: projectId}));
+        return $http.get($http.url('/Api/InspectionApi/GetUserInspectionInfo', {
+          projectId: projectId,
+          Sign:"8"
+        }));
       }),
       postInspection:function(params){
         return $http.post($http.url('/Api/InspectionApi/insert'),params )
