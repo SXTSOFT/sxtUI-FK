@@ -106,6 +106,7 @@
       vm.qyslideShow = !vm.qyslideShow;
     }
     vm.selectQy = function(item){
+      item.hasCheck=true;
       vm.info.selected = item;
       //vm.RegionName = item.RegionName;
       vm.qyslideShow = false;
@@ -113,6 +114,16 @@
     }
 
     var sendResult = $rootScope.$on('sendGxResult',function(){
+      var  msg=[];
+      vm.btBatch.forEach(function(r){
+          if (!r.hasCheck){
+            msg.push(r.RegionName);
+          }
+      });
+      if (msg.length){
+        utils.alert(msg.join(",")+'尚未验收查看!');
+        return;
+      };
       $state.go('app.xhsc.gx.gxresult',{acceptanceItemName:acceptanceItemName,acceptanceItemID:acceptanceItemID,name:vm.RegionFullName,areaId:areaId,projectId:projectId,InspectionId:vm.InspectionId});
     })
 
@@ -127,33 +138,51 @@
       vm.info.selected = region;
     }
     vm.nextRegion = function(prev){
-      function setNext(regions){
-        var region=regions.find(function(o){
-            return vm.info.regionId== o.AreaID;
-        });
-        var index=regions.indexOf(region);
-        if (prev){
-          if ((index-1)>=0){
-            vm.setRegion(regions[index-1]);
-            return;
+      var idx = vm.btBatch.indexOf(vm.info.selected);
+      if(idx != -1){
+        if(prev){
+          if(idx>0){
+            vm.setRegion(vm.btBatch[idx-1]);
+          }else{
+            utils.alert('查无数据');
           }
-        }else {
-          if ((index+1)<regions.length){
-            vm.setRegion(regions[index+1]);
-            return;
+        }else{
+          if(idx<vm.btBatch.length-1){
+            vm.setRegion(vm.btBatch[idx+1])
+          }else{
+            utils.alert('查无数据');
           }
         }
-        utils.alert("查无数据!");
       }
-
-      if(vm.btBatch){
-        setNext(vm.btBatch);
-      }else {
-        initBtBatch().then(function(arr){
-          setNext(arr);
-        })
-      }
-    };
+    }
+    //vm.nextRegion = function(prev){
+    //  function setNext(regions){
+    //    var region=regions.find(function(o){
+    //        return vm.info.regionId== o.AreaID;
+    //    });
+    //    var index=regions.indexOf(region);
+    //    if (prev){
+    //      if ((index-1)>=0){
+    //        vm.setRegion(regions[index-1]);
+    //        return;
+    //      }
+    //    }else {
+    //      if ((index+1)<regions.length){
+    //        vm.setRegion(regions[index+1]);
+    //        return;
+    //      }
+    //    }
+    //    utils.alert("查无数据!");
+    //  }
+    //
+    //  if(vm.btBatch){
+    //    setNext(vm.btBatch);
+    //  }else {
+    //    initBtBatch().then(function(arr){
+    //      setNext(arr);
+    //    })
+    //  }
+    //};
 
   }
 })();

@@ -21,6 +21,7 @@
       vm.Rectification = r.data;
       vm.pareaList = vm.Rectification.Children;
       vm.regionSelect = vm.pareaList[0];
+      vm.regionSelect.hasCheck=true;
       load();
     });
 
@@ -71,6 +72,7 @@
     }
     vm.selectQy = function(item){
       vm.regionSelect = item;
+      vm.regionSelect.hasCheck=true;
       vm.qyslideShow = false;
       load();
     }
@@ -93,8 +95,20 @@
     }
 
     var gxzgChanged = $rootScope.$on('sendGxResult',function(){
+      var  msg=[];
+      vm.pareaList.forEach(function(r){
+        if (!r.hasCheck){
+          msg.push(r.RegionName);
+        }
+      });
+      if (msg.length){
+        utils.alert(msg.join(",")+'尚未查看!');
+        return;
+      };
+
       $mdDialog.show({
         controller:['$scope',function($scope){
+          $scope.InspectionID  = InspectionID;
           $scope.times = [{
             value:6,
             time:'6小时'
@@ -137,10 +151,17 @@
               })
             }
             else{
-
+              console.log('time',$scope.time)
+              //remote.Procedure.createZGReceipt($scope.InspectionID,$scope.remark,$scope.timevalue).then(function(r){
+              //  if (r.data.ErrorCode==0){
+              //    utils.alert("提交成功");
+              //    vm.Isfail=false;
+              //    $mdDialog.hide();
+              //  }
+              //})
               //TODO:可能要生成新的整改单,或完成整改
-              utils.alert('提交成功');
-              $mdDialog.hide();
+
+
             }
           }
           remote.Procedure.getZGReginQues(null,RectificationID).then(function (r) {
@@ -178,12 +199,14 @@
           if (prev){
             if ((index-1)>=0){
               vm.regionSelect=vm.pareaList[index-1];
+              vm.regionSelect.hasCheck=true;
               load();
               return;
             }
           }else {
             if ((index+1)<vm.pareaList.length){
               vm.regionSelect=vm.pareaList[index+1];
+              vm.regionSelect.hasCheck=true;
               load();
               return;
             }

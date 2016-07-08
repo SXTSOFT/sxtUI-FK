@@ -71,7 +71,7 @@
     }
 
     vm.fy = function(r){
-      $state.go('app.xhsc.gx.gxzg',{Role:'jl',InspectionID: r.InspectionID,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID})
+      $state.go('app.xhsc.gx.gxzg',{Role:'jl',InspectionID: r.InspectionId,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID})
     }
 
 

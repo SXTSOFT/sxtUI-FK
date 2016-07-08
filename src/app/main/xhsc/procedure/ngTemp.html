@@ -5,7 +5,13 @@
         <p>{{s.name}}：</p>
         <p class="md-secondary">{{s.num}}处</p>
       </md-list-item>
-      <md-list-item ng-if="">
+      <md-list-item>
+        <p>备注：</p>
+        <p class="md-secondary">
+          <input placeholder="备注" style="border:none;" ng-model="remark">
+        </p>
+      </md-list-item>
+      <md-list-item ng-if="status[0].num >0">
         <p>最迟整改时间：</p>
         <p class="md-secondary">
           <md-input-container class="md-block" style="margin:0">
