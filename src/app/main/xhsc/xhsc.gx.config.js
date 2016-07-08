@@ -50,9 +50,18 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url: '/gxhousechoose/{InspectionId}/{role}//{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
+        url: '/gxhousechoose/{InspectionId}/{role}/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
         templateUrl: 'app/main/xhsc/procedure/gxhousechoose.html',
         controller: 'gxhousechooseController as vm'
+      })
+      .state('app.xhsc.gx.zjhouseChoose', {
+        noBack: true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        url: '/zjhouseChoose/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
+        templateUrl: 'app/main/xhsc/procedure/zjhouseChoose.html',
+        controller: 'zjhouseChooseController as vm'
       })
       .state('app.xhsc.gx.gxtest', {
         noBack: true,
