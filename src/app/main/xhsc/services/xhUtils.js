@@ -450,7 +450,7 @@
         targetEvent: $event,
         controller:['$scope', '$mdDialog',function ($scope, $mdDialog) {
           $scope.cancel = function () {
-            $mdDialog.cancel(base64);
+            $mdDialog.hide();
             //$mdDialog.hide(base64);
             //$scope.answer(base64);
           }

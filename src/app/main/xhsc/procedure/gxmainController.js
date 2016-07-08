@@ -70,6 +70,11 @@
         projectId:item.ProjectID,areaId:item.Children[0].AreaID,InspectionId:item.InspectionId})
     }
 
+    vm.zj = function(item){
+      $state.go('app.xhsc.gx.gxzjcheck',{acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
+        projectId:item.ProjectID,areaId:item.Children[0].AreaID,InspectionId:item.InspectionId})
+    }
+
     vm.fy = function(r){
       $state.go('app.xhsc.gx.gxzg',{Role:'jl',InspectionID: r.InspectionId,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID})
     }
