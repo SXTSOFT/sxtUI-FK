@@ -49,14 +49,14 @@
       <label>整改后照片</label>
       <p>
           <span class="photo" ng-click="playImage(Record.zb.images)">
-            <i>照片</i><i>{{Record.zb.images.length}}</i>
+            <i>照片</i><i>{{Record.zb.images.length||0}}</i>
           </span>
       </p>
     </md-list-item>
     <md-list-item ng-if="role == 'jl'">
       <label>备注</label>
       <p>
-        备注
+        {{Record.Remark || '无'}}
       </p>
     </md-list-item>
     <md-list-item ng-if="role == 'jl'">

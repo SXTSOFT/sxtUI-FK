@@ -24,7 +24,9 @@
         // console.log('role',scope.role)
 
       })
+      $(element).appendTo('body');
       scope.apply = function(){
+
         remote.Procedure.InspectionProblemRecord.query(scope.data.value.CheckpointID).then(function(r){
           r.data.forEach(function (p) {
             remote.Procedure.InspectionProblemRecordFile.query(p.ProblemRecordID).then(function (r2) {

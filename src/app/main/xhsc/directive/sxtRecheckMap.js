@@ -49,6 +49,9 @@
                   if(p){
                     var geo = $window.JSON.parse(p.Geometry);
                     geo.options.v = item;
+                    geo.geometry.options={};
+                    geo.options.customSeq = true;
+                    geo.options.seq = item.ProblemSortName;
                     fg.addData(geo);
                   }
                 })
@@ -66,6 +69,7 @@
               if(e.layer instanceof L.Stamp) {
                 var edit = mapPopupSerivce.get('mapRecheckMapPopup');
                 if (edit) {
+
                   scope.sxtMapShow = true;
                   edit.scope.context = e;
                   edit.scope.data = {
