@@ -34,22 +34,16 @@
         vm.nums.qb++;
         switch (status){
           case  0:
-            vm.nums.wtj++;
-            break;
           case  1:
-            vm.nums.dy++;
+            vm.nums.wtj++;
             break;
           case  2:
             vm.nums.hg++;
             break;
           case  4:
-            vm.nums.bhg++;
-            break;
           case  8:
-            vm.nums.yzg++;
-            break;
           case  16:
-            vm.nums.wzg++;
+            vm.nums.bhg++;
             break;
         }
 
@@ -107,22 +101,16 @@
         var style;
         switch (status){
           case 0:
-            style="wait";
-            break;
           case 1:
-            style="dy";
+            style="wait";
             break;
           case 2:
             style="pass";
             break;
           case 4:
-            style="ng";
-            break;
           case 8:
-            style="ng";
-            break;
           case 16:
-            style="yzg";
+            style="ng";
             break;
           default:
             break;
@@ -191,15 +179,7 @@
             break;
         }
       }
-
-      switch (r.status){
-        case 0:
-          r.checked = !r.checked;
-          break;
-        case 1:
-          r.checked = r.Percentage==100?false:(!r.checked);
-          break;
-      }
+      r.checked = !r.checked;
       validateChecked(r);
     }
 
@@ -226,26 +206,27 @@
 
     vm.regionfilterByStatus=function(region){
       if (vm.filterNum==-1){
-        return compare(region,function(status){
-          return vm.statusRight(status);
-        });
+         return true;
       }
       return compare(region,function(status){
-        return status== vm.filterNum
+        return vm.statusRight(status);
       });
     }
 
     vm.statusRight=function(status){
       var show=[0,1,2,4,8,16];
-      switch (role){
-        case "zb":
-          show=[0,1,2,8,16];
+      switch (vm.filterNum){
+        case 0:
+        case 1:
+          show=[0,1];
           break;
-        case  "jl":
-          show=[0,1,2,8,16];
+        case 2:
+          show=[2];
           break;
-        case  "jf":
-          show=[0,1,2,4];
+        case 4:
+        case 8:
+        case 16:
+          show=[4,8,16];
           break;
       }
       return show.indexOf(status)>-1;
