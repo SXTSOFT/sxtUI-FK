@@ -11,8 +11,7 @@
   /**@ngInject*/
   function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state){
     var vm = this;
-
-
+    
     remote.Project.getMap().then(function(result){
       var w = [];
       result.data.forEach(function (item) {
