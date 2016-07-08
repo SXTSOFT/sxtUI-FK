@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin id="com.sxt.cordova" version="0.0.1"
+        xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+  <name>sxt plugin</name>
+  <description>公司自定插件</description>
+  <js-module name="ExtraInfo" src="www/sxt.cordova.js">
+    <clobbers target="cordova.plugins.sxt"/>
+  </js-module>
+  <platform name="android">
+    <config-file parent="/*" target="res/xml/config.xml">
+      <feature name="sxt">
+        <param name="android-package" value="com.sxt.cordova"/>
+      </feature>
+    </config-file>
+    <source-file src="src/android/sxt.java" target-dir="src/com/sxt/cordova"/>
+  </platform>
+</plugin>
