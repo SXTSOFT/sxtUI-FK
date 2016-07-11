@@ -60,7 +60,7 @@
         vm.Inspections= r.data;
     });
 
-    remote.Procedure.getZGlist(15).then(function (r) {
+    remote.Procedure.getZGlist(31).then(function (r) {
       vm.zglist = r.data;
     });
 
@@ -77,6 +77,7 @@
       $state.go('app.xhsc.gx.gxzg',{Role:'jl',InspectionID: r.InspectionId,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID})
     };
 
+    //vm.selectedIndex = 2;
 
     vm.zg = function(r){
       $state.go('app.xhsc.gx.gxzg',{Role:'zb',InspectionID: r.InspectionID,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID});

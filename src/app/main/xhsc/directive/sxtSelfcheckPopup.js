@@ -14,7 +14,8 @@
         slideShow: '=',
         slideRole: '=',
         slideId:'=',
-        slideInspection:'='
+        slideInspection:'=',
+        slideContext:'='
       },
       templateUrl: 'app/main/xhsc/directive/sxtSelfcheckPopup.html',
       link: link
@@ -27,10 +28,16 @@
       $(element).appendTo('body');
       scope.$watch('slideId',function(){
         if(!scope.slideId) return;
+        console.log('scope',scope)
         remote.Procedure.InspectionProblemRecord.query(scope.slideId).then(function(r){
           console.log('r',r)
           scope.data = r.data;
           r.data.forEach(function (p) {
+            //if(p.Status == 2){
+            //  scope.slideContext.layer.options.color='#169e49';
+            //}else{
+            //  scope.slideContext.layer.options.color='red';
+            //}
             remote.Procedure.InspectionProblemRecordFile.query(p.ProblemRecordID).then(function (r2) {
               p.images = r2.data;
             });
@@ -49,6 +56,12 @@
         remote.Procedure.updataZjPoint(scope.slideId,scope.data[0].Status).then(function (r) {
           if(r.data.ErrorCode == 0){
             scope.slideShow = false;
+            if(scope.data[0].Status == 2){
+              scope.slideContext.layer.options.color='#169e49';
+            }else{
+              scope.slideContext.layer.options.color='red';
+            }
+            scope.slideContext.layer.redraw();
           }
         });
       }
