@@ -50,6 +50,12 @@
                     var geo = $window.JSON.parse(p.Geometry);
                     geo.options.v = item;
                     geo.geometry.options={};
+                    if(item.Status == 2){
+                      geo.options.color ='green';
+                    }
+                    if(item.Status == 8){
+                      geo.options.color = '#faa526';
+                    }
                     geo.options.customSeq = true;
                     geo.options.seq = item.ProblemSortName;
                     fg.addData(geo);
@@ -134,6 +140,13 @@
             install();
           }
         });
+        //scope.$watch('sxtMapShow',function(){
+        //  if(map){
+        //    map._map.remove();
+        //    map = null;
+        //  }
+        //  install();
+        //})
         scope.$watch('item',function () {
           if(stamp) {
             if (scope.item) {

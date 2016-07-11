@@ -27,6 +27,7 @@
       $(element).appendTo('body');
       scope.$watch('slideId',function(){
         if(!scope.slideId) return;
+        console.log('scope',scope)
         remote.Procedure.InspectionProblemRecord.query(scope.slideId).then(function(r){
           console.log('r',r)
           scope.data = r.data;

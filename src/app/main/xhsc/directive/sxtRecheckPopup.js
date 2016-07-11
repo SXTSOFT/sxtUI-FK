@@ -109,14 +109,25 @@
           createZb(true).then(function () {
             remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
               scope.slideShow = false;
+              if(scope.data.value.Status == 8){
+                scope.context.layer.options.color = '#faa526';
+              }else{
+                scope.context.layer.options.color = 'red';
+              }
+              scope.apply();
             });
           });
         }
         else{
-          scope.data.value.Status = scope.value.data.Status==2?2:4;
+          scope.data.value.Status = scope.data.value.Status==2?2:4;
           remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
             scope.slideShow = false;
-           // scope.context.layer.options.color = 'green';
+            if(scope.data.value.Status == 2){
+              scope.context.layer.options.color = 'green';
+            }else{
+              scope.context.layer.options.color = 'red';
+            }
+            scope.apply();
 
           });
         }

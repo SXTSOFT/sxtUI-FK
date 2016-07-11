@@ -50,7 +50,6 @@
       scope.viewDetail = function(){
         scope.$parent.vm.slideShow = true;
         scope.$parent.vm.pid = scope.data.v.CheckpointID;
-        console.log('scopea',scope)
 
       }
       scope.removeLayer = function(){
