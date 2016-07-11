@@ -59,6 +59,13 @@
       api.resetNetwork = function () {
         $rootScope.$emit('$cordovaNetwork:online');
       };
+      api.useNetwork = function (state) {
+        api.oNetwork = networkState;
+        networkState = state;
+      };
+      api.resolveNetwork = function () {
+        networkState = api.oNetwork;
+      };
 
       $rootScope.$on('$cordovaNetwork:online', function(event, state){
         //console.log('$window.navigator',$window.navigator);
