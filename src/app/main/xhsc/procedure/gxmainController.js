@@ -60,7 +60,7 @@
         vm.Inspections= r.data;
     });
 
-    remote.Procedure.getZGlist(15).then(function (r) {
+    remote.Procedure.getZGlist(31).then(function (r) {
       vm.zglist = r.data;
     });
 

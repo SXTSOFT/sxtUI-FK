@@ -179,7 +179,7 @@
           }
           $scope.submit = function(){
             if(vm.role=='zb'){
-              remote.Procedure.InspectionRectificationUpdateStatus(RectificationID,4).then(function () {
+              remote.Procedure.InspectionRectificationUpdateStatus(RectificationID,16).then(function () {
                 utils.alert('提交成功');
                 $mdDialog.hide();
               })

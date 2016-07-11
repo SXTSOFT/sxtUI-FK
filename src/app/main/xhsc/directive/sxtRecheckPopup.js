@@ -113,7 +113,7 @@
           });
         }
         else{
-          scope.data.value.Status = scope.value.data.Status==2?2:4;
+          scope.data.value.Status = scope.data.value.Status==2?2:4;
           remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
             scope.slideShow = false;
            // scope.context.layer.options.color = 'green';
