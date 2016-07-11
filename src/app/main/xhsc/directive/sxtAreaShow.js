@@ -68,12 +68,17 @@
                   iconAnchor: [20, 20]
                 });
                 L.marker([0.345703125,0.44921875], {icon: myIcon}).addTo(map).on('click',function () {
-                  ys7.getToken().then(function (token) {
+                  ys7.token().then(function (token) {
                     sxt.plugin.playYs7([token,'d5576863efc74427a297d17d157b2843']);
                   });
                 });
-                L.marker([0.498046875,0.31640625], {icon: myIcon}).addTo(map).on('click',function () {
-                  ys7.getToken().then(function (token) {
+                var myIcon2 = L.icon({
+                  iconUrl: 'assets/js/images/marker-icon-2x.png',
+                  iconSize: [40, 40],
+                  iconAnchor: [20, 20]
+                });
+                L.marker([0.498046875,0.31640625], {icon: myIcon2}).addTo(map).on('click',function () {
+                  ys7.token().then(function (token) {
                     sxt.plugin.playYs7([token,'a231ce71fdd84b43a541526f2eb6cbec']);
                   });
                 });;
