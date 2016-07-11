@@ -51,7 +51,7 @@
                     geo.options.v = item;
                     geo.geometry.options={};
                     if(item.Status == 2){
-                      geo.options.color ='green';
+                      geo.options.color ='#169e49';
                     }
                     if(item.Status == 8){
                       geo.options.color = '#faa526';

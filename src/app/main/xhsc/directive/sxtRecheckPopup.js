@@ -114,7 +114,7 @@
               }else{
                 scope.context.layer.options.color = 'red';
               }
-              scope.apply();
+              scope.context.layer.redraw();
             });
           });
         }
@@ -123,12 +123,11 @@
           remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
             scope.slideShow = false;
             if(scope.data.value.Status == 2){
-              scope.context.layer.options.color = 'green';
+              scope.context.layer.options.color = '#169e49';
             }else{
               scope.context.layer.options.color = 'red';
             }
-            scope.apply();
-
+            scope.context.layer.redraw();
           });
         }
       }
