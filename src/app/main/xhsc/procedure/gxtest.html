@@ -29,7 +29,7 @@
     </md-list>
   </div>
 </div>
-<div class="mapcheck" flex sxt-map-check="vm.info.current"  project-id="vm.info.selected.AreaID" procedure="vm.info.acceptanceItemID" region-id="vm.info.selected.AreaID">
+<div class="mapcheck" flex sxt-map-check="vm.info.current" inspection-id="vm.InspectionId" project-id="vm.info.selected.AreaID" procedure="vm.info.acceptanceItemID" region-id="vm.info.selected.AreaID">
   <div style="position: absolute;z-index: 79;bottom: 10px;right: 10px" ng-show="vm.info.current"><md-button class="md-raised md-mini md-green" fast-click="vm.cancelCurrent($event)">取消</md-button></div>
 </div>
 <slide-menu flex="none" style="height: 200px" layout="column" slide-data="vm.procedureData" current="vm.info.current" show-check="true"  level="2"></slide-menu>
