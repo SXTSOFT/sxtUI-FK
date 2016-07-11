@@ -272,6 +272,9 @@
       },
       updataZjPoint:function(CheckpointID,Status){
         return $http.post($http.url('/api/InspectionCheckpointApi/UpdateStatus'),{CheckpointID:CheckpointID,Status:Status})
+      },
+      getInspectionInfoBySign:function(sign){
+        return $http.get($http.url('/Api/InspectionApi/BySign',{sign:sign}))
       }
     },
     Assessment:{
