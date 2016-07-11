@@ -9,13 +9,13 @@
     .controller('SzgcSettingsController',SzgcSettingsController);
 
   /** @ngInject */
-  function SzgcSettingsController(profile,auth,api,$scope,utils,$rootScope){
+  function SzgcSettingsController(profile,auth,api,$scope,utils,$rootScope,appCookie){
 
     var vm = this;
     vm.profile = profile.data.data;
     vm.logout = function(){
       utils.confirm('退出将清除当前人所有缓存数据，确定退出吗？').then(function (result) {
-
+        appCookie.remove('projects');
         api.clearDb(function (persent) {
           vm.cacheInfo = parseInt(persent*100)+'%';
         },function () {
@@ -25,7 +25,6 @@
           vm.cacheInfo = null;
           //utils.alert('清除失败');
         },{
-          exclude:['v_profile'],
           timeout:3000
         });
         auth.logout();
