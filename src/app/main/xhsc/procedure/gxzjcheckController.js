@@ -16,7 +16,7 @@
     vm.acceptanceItemName = $stateParams.acceptanceItemName;
     vm.areaId = $stateParams.areaId;
     vm.projectId = $stateParams.projectId;
-    console.log('state',$stateParams)
+    //console.log('state',$stateParams)
     vm.info={
       current:null
     }
