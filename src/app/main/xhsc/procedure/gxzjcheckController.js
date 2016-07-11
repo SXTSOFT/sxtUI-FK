@@ -117,6 +117,11 @@
       }
     }
 
+    vm.cancelCurrent = function ($event) {
+      //$event.stopPropagation();
+      //$event.preventDefault();
+      vm.info.current = null;
+    }
     vm.qyslide = function(){
       vm.qyslideShow = !vm.qyslideShow;
     }
