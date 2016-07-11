@@ -142,8 +142,8 @@
       $mdDialog.show({
         controller:['$scope',function($scope){
           $scope.InspectionID  = InspectionID;
-          $scope.remark = 'abcd';
-          $scope.time = 12;
+          $scope.remark = '';
+          $scope.time= 24*7;
           $scope.times = [{
             value:6,
             time:'6小时'

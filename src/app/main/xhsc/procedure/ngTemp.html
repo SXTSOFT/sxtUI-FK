@@ -1,60 +1,39 @@
 <md-dialog class="changetel">
-  <md-dialog-content style="padding:10px;padding-bottom: ">
-    <md-list>
+  <md-dialog-content style="padding:10px;padding-bottom:0; ">
+    <md-list style="padding:0;">
       <md-list-item ng-repeat="s in status|filter:{visible:1}">
         <p>{{s.name}}：</p>
         <p class="md-secondary">{{s.num}}处</p>
       </md-list-item>
-      <md-list-item ng-if="status[0].num >0">
-        <p>备注：</p>
-        <p class="md-secondary">
-          <input placeholder="备注" style="border:none;" ng-model="remark">
-        </p>
-      </md-list-item>
-      <!--<md-list-item ng-if="status[0].num >0">-->
-        <!--<p>最迟整改时间：</p>-->
-        <!--<p class="md-secondary">-->
-          <!--<md-input-container class="md-block" style="margin:0">-->
-            <!--<md-select ng-model="time">-->
-              <!--<md-option ng-repeat="time in times" ng-value="time">-->
-                <!--{{time.time}}-->
-              <!--</md-option>-->
-            <!--</md-select>-->
-          <!--</md-input-container>-->
-        <!--</p>-->
-      <!--</md-list-item>-->
     </md-list>
-    <div layout="row" flex ng-if="status[0].num >0">
-      <p style="padding-left:16px;margin:0;padding-top:16px;" flex>最迟整改时间：</p>
-      <md-input-container class="md-block" style="margin:0" flex>
-        <md-select ng-model="time">
-          <md-option ng-repeat="time in times" ng-value="time.value">
-            {{time.time}}
-          </md-option>
-        </md-select>
-      </md-input-container>
-    </div>
   </md-dialog-content>
+
   <md-dialog-actions style="padding:0;" layout="column">
-    <!--<div layout="row" style="width: 100%;">-->
-      <!--<md-list flex>-->
-        <!--<md-list-item ng-if="status[0].num >0">-->
-        <!--<p>最迟整改时间：</p>-->
-        <!--<p class="md-secondary">-->
-          <!--<md-input-container class="md-block" style="margin:0">-->
-            <!--<md-select ng-model="time">-->
-              <!--<md-option ng-repeat="time in times" ng-value="time.value">-->
-                <!--{{time.time}}-->
-              <!--</md-option>-->
-            <!--</md-select>-->
-          <!--</md-input-container>-->
-        <!--</p>-->
-        <!--</md-list-item>-->
-      <!--</md-list>-->
-    <!--</div>-->
+    <div layout="row" style="width: 100%;" ng-if="status[0].num >0||status[3].num >0">
+      <md-list flex style="padding:0 10px;">
+        <md-list-item style="padding-left: 16px;">
+          <p>备注：</p>
+          <p class="md-secondary">
+            <input placeholder="备注" style="border:none;" ng-model="remark">
+          </p>
+        </md-list-item>
+        <md-list-item >
+        <p>最迟整改时间：</p>
+        <p class="md-secondary">
+          <md-input-container class="md-block" style="margin:0">
+            <md-select ng-model="time">
+              <md-option ng-repeat="time in times" ng-value="time.value">
+                {{time.time}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+        </p>
+        </md-list-item>
+      </md-list>
+    </div>
     <div layout="row" style="min-height: 44px;border-top: 1px solid #dedede;width: 100%">
       <a flex class="new-btn" ng-click="cancel()">取消</a>
-      <a flex class="new-btn noborder" ng-click="submit()">确定{{time.value}}</a>
+      <a flex class="new-btn noborder" ng-click="submit()">确定</a>
     </div>
   </md-dialog-actions>
 </md-dialog>
