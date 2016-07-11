@@ -76,12 +76,6 @@
       //$event.preventDefault();
       vm.info.current = null;
     }
-    vm.takePhoto = function(){
-      vm.info.current = {
-        ProblemID:sxt.uuid(),
-        ProblemSortName:'P'
-      }
-    }
     $rootScope.title = acceptanceItemName;
 
     remote.Procedure.queryProcedure().then(function(result){
@@ -161,34 +155,6 @@
         }
       }
     }
-    //vm.nextRegion = function(prev){
-    //  function setNext(regions){
-    //    var region=regions.find(function(o){
-    //        return vm.info.regionId== o.AreaID;
-    //    });
-    //    var index=regions.indexOf(region);
-    //    if (prev){
-    //      if ((index-1)>=0){
-    //        vm.setRegion(regions[index-1]);
-    //        return;
-    //      }
-    //    }else {
-    //      if ((index+1)<regions.length){
-    //        vm.setRegion(regions[index+1]);
-    //        return;
-    //      }
-    //    }
-    //    utils.alert("查无数据!");
-    //  }
-    //
-    //  if(vm.btBatch){
-    //    setNext(vm.btBatch);
-    //  }else {
-    //    initBtBatch().then(function(arr){
-    //      setNext(arr);
-    //    })
-    //  }
-    //};
 
   }
 })();

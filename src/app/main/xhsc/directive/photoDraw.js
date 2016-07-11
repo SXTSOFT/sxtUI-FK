@@ -109,7 +109,7 @@
             flag = false;
           }
           if (res == 'move') {
-            console.log('e.touches[0].x,y',e.touches[0].clientX,e.touches[0].clientY)
+            //console.log('e.touches[0].x,y',e.touches[0].clientX,e.touches[0].clientY)
             if (flag) {
               prevX = currX;
               prevY = currY;
