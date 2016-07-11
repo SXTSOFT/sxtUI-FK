@@ -9,7 +9,7 @@
     .controller('pcenterController',pcenterController);
 
   /**@ngInject*/
-  function pcenterController($scope,$mdDialog,$http,ys7){
+  function pcenterController($scope,$mdDialog,sxt,ys7){
     var vm = this;
     vm.tel=13112345678;
     vm.changeTel = function(tel){
@@ -39,9 +39,13 @@
       )
     }
 
-    ys7.post('cameraList',{pageSize:200,pageStart:0}).then(function (result) {
+    sxt.plugin.playYs7(['at.9bqcatcc9fufzpdcak6g3lyo0nlrt1vx-1sbphy33b4-08io12i-mvctkmsal','de7e39a6802a41b49a037518cffa684d'])
+/*    ys7.post('cameraList',{pageSize:200,pageStart:0}).then(function (result) {
+      ys7.getToken().then(function (token) {
+        sxt.plugin.playYs7([token,])
+      });
       console.log(result);
-    });
+    });*/
 /*
 
     var id= 123455,api='https://open.ys7.com/api/method',key='346249221d154bac9ba686873c2dffec';
