@@ -98,12 +98,15 @@
             },
             onDelete: function (layer) {
               var id = layer.getValue().$id;
-              remote.Procedure.InspectionPoint.delete({measurePointID:id}).then(function () {
-                var v = fg.data.find(function (d) {
-                  return d.PositionID == id;
-                }),ix = fg.data.indexOf(v);
-                fg.data.splice(ix,1);
-                remote.Procedure.InspectionCheckpoint.delete(v.CheckpointID);
+              remote.Procedure.InspectionPoint.delete({measurePointID:id}).then(function (r) {
+                console.log('r',r)
+                if(r.data.ErrorCode == 0){
+                  var v = fg.data.find(function (d) {
+                    return d.PositionID == id;
+                  }),ix = fg.data.indexOf(v);
+                  fg.data.splice(ix,1);
+                  remote.Procedure.InspectionCheckpoint.delete(v.CheckpointID);
+                }
               });
             },
             onPopup: function (e) {

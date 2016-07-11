@@ -41,12 +41,12 @@
         scope.slideShow = false;
       }
       scope.submit = function(){
-        scope.data.Status = scope.data.Status==2?2:4;
+        scope.data[0].Status = scope.data[0].Status==2?2:4;
         var params={
           CheckpointID:scope.slideId,
           Status:scope.data.Status
         }
-        remote.Procedure.updataZjPoint(scope.slideId,scope.data.Status).then(function (r) {
+        remote.Procedure.updataZjPoint(scope.slideId,scope.data[0].Status).then(function (r) {
           if(r.data.ErrorCode == 0){
             scope.slideShow = false;
           }

@@ -8,7 +8,7 @@
     <md-list-item ng-if="role=='zj'">
       <label>状态 </label>
       <p style="text-align: right;margin-right:70px;">
-        {{data.Status==2?'合格':'不合格'}}<md-switch ng-model="data.Status" ng-true-value="2"  ng-false-value="4" class="md-secondary"></md-switch>
+        {{data[0].Status==2?'合格':'不合格'}}<md-switch ng-model="data[0].Status" ng-true-value="2"  ng-false-value="4" class="md-secondary"></md-switch>
       </p>
     </md-list-item>
   </md-list>
