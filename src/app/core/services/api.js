@@ -60,8 +60,28 @@
         $rootScope.$emit('$cordovaNetwork:online');
       };
       api.useNetwork = function (state) {
-        api.oNetwork = networkState;
-        networkState = state;
+        var cState,type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
+        switch (type) {
+          case 'ethernet':
+          case 'wifi':
+          case '2g':
+          case '3g':
+          case '4g':
+            cState = 0;
+            break;
+          case 'unknown':
+          case 'none':
+          case 'cellular':
+            cState = 1;
+            break;
+          default:
+            cState = 0;
+            break;
+        }
+        if(state!=0 || cState==0) {
+          api.oNetwork = networkState;
+          networkState = state;
+        }
       };
       api.resolveNetwork = function () {
         networkState = api.oNetwork;
