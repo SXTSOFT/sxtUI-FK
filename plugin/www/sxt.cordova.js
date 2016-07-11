@@ -3,6 +3,6 @@
  */
 var exec = require('cordova/exec');
 
-exports.getExtra = function(success, error, options) {
+exports.playYs7 = function(success, error, options) {
   exec(success, error, "sxt", "playYs7", options);
 };
