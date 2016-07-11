@@ -4,12 +4,12 @@
 (function () {
   angular
     .module('app.xhsc')
-    .directive('sxtMapCheck',sxtMapCheck);
+    .directive('sxtMapSelfCheck',sxtMapSelfCheck);
   /** @ngInject */
-  function sxtMapCheck($timeout,remote,mapPopupSerivce,sxt,utils,$window) {
+  function sxtMapSelfCheck($timeout,remote,mapPopupSerivce,sxt,utils,$window) {
     return {
       scope:{
-        item:'=sxtMapCheck',
+        item:'=sxtMapSelfCheck',
         items:'=',
         projectId:'=',
         procedure:'=',
@@ -88,7 +88,7 @@
             },
             onPopupClose: function (e) {
               var self = this;
-              var edit = mapPopupSerivce.get('mapCheckMapPopup'),
+              var edit = mapPopupSerivce.get('mapSelfCheckMapPopup'),
                 scope = edit.scope;
               if(scope.data && scope.isSaveData!==false){
                 scope.isSaveData = false;
@@ -100,17 +100,20 @@
             },
             onDelete: function (layer) {
               var id = layer.getValue().$id;
-              remote.Procedure.InspectionPoint.delete({measurePointID:id}).then(function () {
-                var v = fg.data.find(function (d) {
-                  return d.PositionID == id;
-                }),ix = fg.data.indexOf(v);
-                fg.data.splice(ix,1);
-                remote.Procedure.InspectionCheckpoint.delete(v.CheckpointID);
+              remote.Procedure.InspectionPoint.delete({measurePointID:id}).then(function (r) {
+                console.log('r',r)
+                if(r.data.ErrorCode == 0){
+                  var v = fg.data.find(function (d) {
+                    return d.PositionID == id;
+                  }),ix = fg.data.indexOf(v);
+                  fg.data.splice(ix,1);
+                  remote.Procedure.InspectionCheckpoint.delete(v.CheckpointID);
+                }
               });
             },
             onPopup: function (e) {
               if(e.layer instanceof L.Stamp)
-                var edit = mapPopupSerivce.get('mapCheckMapPopup');
+                var edit = mapPopupSerivce.get('mapSelfCheckMapPopup');
               if(edit) {
                 if(e.layer instanceof L.Stamp) {
                   $timeout(function () {
@@ -129,14 +132,12 @@
                   }),
 
                 };
-
-                edit.scope.readonly = scope.readonly;
                 edit.scope.apply && edit.scope.apply();
                 return edit.el[0];
               }
             }
           }).addTo(map._map),
-          stamp = new L.Draw.Stamp(map._map);
+            stamp = new L.Draw.Stamp(map._map);
           map._map.on('draw:created',function (e) {
             if(this._map){
               this.addLayer(e.layer);

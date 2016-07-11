@@ -22,11 +22,10 @@
       scope.$watch('slideRole',function(){
         scope.role = scope.slideRole;
         // console.log('role',scope.role)
-
       })
       $(element).appendTo('body');
       scope.apply = function(){
-
+        console.log('scope',scope)
         remote.Procedure.InspectionProblemRecord.query(scope.data.value.CheckpointID).then(function(r){
           r.data.forEach(function (p) {
             remote.Procedure.InspectionProblemRecordFile.query(p.ProblemRecordID).then(function (r2) {
@@ -98,9 +97,9 @@
       }
       scope.cancel = function(){
         scope.slideShow = false;
+        //scope.apply();
       }
       scope.submit = function(){
-
         if(scope.role=='zb'){
           scope.data.value.Status = scope.data.value.Status==8?8:1;
           if(scope.data.value.Status==8 &&(!scope.Record.zb.images || scope.Record.zb.images.length==0)){
@@ -114,12 +113,19 @@
           });
         }
         else{
-          scope.data.Status = scope.data.Status==2?2:4;
+          scope.data.value.Status = scope.value.data.Status==2?2:4;
           remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
             scope.slideShow = false;
+           // scope.context.layer.options.color = 'green';
+
           });
         }
       }
+      $('body').on('click',function(e){
+        if($(e.target).closest('.recheck').length == 1){
+          scope.slideShow = false;
+        }
+      })
       mapPopupSerivce.set('mapRecheckMapPopup',{
         el:element,
         scope:scope

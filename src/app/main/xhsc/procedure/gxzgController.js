@@ -11,6 +11,7 @@
   /** @ngInject */
   function gxzgController($state,$rootScope,$scope,$mdDialog,remote,$timeout,$q,utils){
     var vm = this;
+    $rootScope.title = $state.params.Role == 'zb'?'整改':'复验';
       vm.ProjectID=$state.params.ProjectID;
       var InspectionID=$state.params.InspectionID;
       vm.AcceptanceItemID=$state.params.AcceptanceItemID;
@@ -93,8 +94,39 @@
     vm.qyslide = function(){
       vm.qyslideShow = !vm.qyslideShow;
     }
-
+    $scope.times = [{
+      value:6,
+      time:'6小时'
+    },{
+      value:12,
+      time:'12小时'
+    },{
+      value:24,
+      time:'1天'
+    },{
+      value:24*2,
+      time:'2天'
+    },{
+      value:24*3,
+      time:'3天'
+    },{
+      value:24*4,
+      time:'4天'
+    },{
+      value:24*5,
+      time:'5天'
+    },{
+      value:24*6,
+      time:'6天'
+    },{
+      value:24*7,
+      time:'7天'
+    },{
+      value:24*15,
+      time:'15天'
+    }];
     var gxzgChanged = $rootScope.$on('sendGxResult',function(){
+      console.log('time',$scope)
       var  msg=[];
       vm.pareaList.forEach(function(r){
         if (!r.hasCheck){
@@ -109,6 +141,8 @@
       $mdDialog.show({
         controller:['$scope',function($scope){
           $scope.InspectionID  = InspectionID;
+          $scope.remark = '';
+          $scope.time = '';
           $scope.times = [{
             value:6,
             time:'6小时'
@@ -151,17 +185,15 @@
               })
             }
             else{
-              console.log('time',$scope.time)
-              //remote.Procedure.createZGReceipt($scope.InspectionID,$scope.remark,$scope.timevalue).then(function(r){
-              //  if (r.data.ErrorCode==0){
-              //    utils.alert("提交成功");
-              //    vm.Isfail=false;
-              //    $mdDialog.hide();
-              //  }
-              //})
+              console.log('time',$scope)
+              remote.Procedure.createZGReceipt($scope.InspectionID,$scope.remark,$scope.time).then(function(r){
+                if (r.data.ErrorCode==0){
+                  utils.alert("提交成功");
+                  vm.Isfail=false;
+                  $mdDialog.hide();
+                }
+              })
               //TODO:可能要生成新的整改单,或完成整改
-
-
             }
           }
           remote.Procedure.getZGReginQues(null,RectificationID).then(function (r) {

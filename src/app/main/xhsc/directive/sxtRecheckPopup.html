@@ -1,4 +1,4 @@
-<!--<div style="position: fixed;top:0;left:0;bottom:0;right:0;background: #fff;"></div>-->
+<div class="recheck" style="position: fixed;top:0;left:0;bottom:0;right:0;background: transparent;z-index:30;" ng-show="slideShow"></div>
 <div class="slideTop" ng-class="{'slidedown':slideShow}">
   <md-list style="margin-top: 0">
     <md-list-item>
@@ -61,6 +61,20 @@
     </md-list-item>
     <md-list-item ng-if="role == 'jl'">
       <label>复验状态</label>
+      <p style="text-align: right;margin-right:70px;">
+        {{data.value.Status==2?'合格':'不合格'}}<md-switch ng-model="data.value.Status" ng-true-value="2"  ng-false-value="4" class="md-secondary"></md-switch>
+      </p>
+    </md-list-item>
+    <!--<md-list-item ng-if="role == 'zj'">-->
+      <!--<label>整改后照片</label>-->
+      <!--<p>-->
+          <!--<span class="photo" ng-click="playImage()">-->
+            <!--<i>照片</i><i>{{Record.zb.images.length||0}}</i>-->
+          <!--</span>-->
+      <!--</p>-->
+    <!--</md-list-item>-->
+    <md-list-item ng-if="role=='zj'">
+      <label>状态 </label>
       <p style="text-align: right;margin-right:70px;">
         {{data.value.Status==2?'合格':'不合格'}}<md-switch ng-model="data.value.Status" ng-true-value="2"  ng-false-value="4" class="md-secondary"></md-switch>
       </p>

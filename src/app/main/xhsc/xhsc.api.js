@@ -222,8 +222,11 @@
             return item.AcceptanceItemID+item.AreaID;
           },
           dataType:1
-        }).bind(function(projectId) {
-        return $http.get($http.url('/Api/InspectionApi/GetUserInspectionInfo', {projectId: projectId}));
+        }).bind(function(projectId,Sign) {
+        return $http.get($http.url('/Api/InspectionApi/GetUserInspectionInfo', {
+          projectId: projectId,
+          Sign:!Sign? "":Sign
+        }));
       }),
       postInspection:function(params){
         return $http.post($http.url('/Api/InspectionApi/insert'),params )
@@ -263,6 +266,15 @@
       },
       InspectionRectificationUpdateStatus:function (rectificationId,status) {
         return $http.post($http.url('/api/InspectionRectificationApi/UpdateStatus'),{RectificationId:rectificationId,Status:status})
+      },
+      updataZjStatus:function(inspectionId){
+        return $http.get($http.url('/api/InspectionRectificationApi/UpdateInfo',{inspectionId:inspectionId}))
+      },
+      updataZjPoint:function(CheckpointID,Status){
+        return $http.post($http.url('/api/InspectionCheckpointApi/UpdateStatus'),{CheckpointID:CheckpointID,Status:Status})
+      },
+      getInspectionInfoBySign:function(sign){
+        return $http.get($http.url('/Api/InspectionApi/BySign',{sign:sign}))
       }
     },
     Assessment:{

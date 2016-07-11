@@ -9,7 +9,7 @@
     .controller('gxdetailController',gxdetailController);
 
   /**@ngInject*/
-  function gxdetailController($scope,$stateParams,remote,$q,xhUtils){
+  function gxdetailController($scope,$stateParams,remote,$q,xhUtils,utils){
     var vm = this,
       acceptanceItemName = $stateParams.acceptanceItemName,
       InspectionId = $stateParams.InspectionId,
@@ -58,8 +58,33 @@
     vm.selectQy = function(item){
       vm.qyslideShow = false;
       vm.current = item;
+      vm.setRegion(item);
+
+    }
+
+    vm.setRegion = function(region){
+      vm.current = region;
       load();
     }
+    vm.nextRegion = function(prev){
+      var idx = vm.btBatch.indexOf(vm.current);
+      if(idx != -1){
+        if(prev){
+          if(idx>0){
+            vm.setRegion(vm.btBatch[idx-1]);
+          }else{
+            utils.alert('查无数据');
+          }
+        }else{
+          if(idx<vm.btBatch.length-1){
+            vm.setRegion(vm.btBatch[idx+1])
+          }else{
+            utils.alert('查无数据');
+          }
+        }
+      }
+    }
+
 
     function load(){
       remote.Procedure.InspectionCheckpoint.query(vm.acceptanceItemID,vm.current.AreaID).then(function (r) {

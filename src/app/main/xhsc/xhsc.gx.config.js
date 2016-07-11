@@ -50,9 +50,18 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url: '/gxhousechoose/{InspectionId}/{role}//{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
+        url: '/gxhousechoose/{InspectionId}/{role}/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
         templateUrl: 'app/main/xhsc/procedure/gxhousechoose.html',
         controller: 'gxhousechooseController as vm'
+      })
+      .state('app.xhsc.gx.zjhouseChoose', {
+        noBack: true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        url: '/zjhouseChoose/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
+        templateUrl: 'app/main/xhsc/procedure/zjhouseChoose.html',
+        controller: 'zjhouseChooseController as vm'
       })
       .state('app.xhsc.gx.gxtest', {
         noBack: true,
@@ -62,6 +71,16 @@
         url: '/gxtest/{InspectionId}/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}/{areaId}',
         templateUrl: 'app/main/xhsc/procedure/gxtest.html',
         controller: 'gxtestController as vm'
+      })
+      .state('app.xhsc.gx.gxzjcheck', {
+        noBack: true,
+        sendBt: true,
+        rightArrow: false,
+        leftArrow: false,
+        title: '工序自检',
+        url: '/gxzjcheck/{acceptanceItemID}/{acceptanceItemName}/{name}/{areaId}/{projectId}/{InspectionId}',
+        templateUrl: 'app/main/xhsc/procedure/gxzjcheck.html',
+        controller: 'gxzjcheckController as vm'
       })
       .state('app.xhsc.gx.gxresult', {
         noBack: true,

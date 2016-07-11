@@ -59,17 +59,15 @@
 
             },
             onUpdate: function (layer, isNew, group) {
-              console.log('a')
+              //console.log('a')
             },
             onUpdateData: function (context, data, editScope) {
-              console.log('b')
+              //console.log('b')
             },
             onPopup: function (e) {
-
               if(e.layer instanceof L.Stamp) {
                 var edit = mapPopupSerivce.get('mapRecheckMapPopup');
                 if (edit) {
-
                   scope.sxtMapShow = true;
                   edit.scope.context = e;
                   edit.scope.data = {

@@ -106,7 +106,6 @@
       vm.qyslideShow = !vm.qyslideShow;
     }
     vm.selectQy = function(item){
-      item.hasCheck=true;
       vm.info.selected = item;
       //vm.RegionName = item.RegionName;
       vm.qyslideShow = false;
@@ -135,6 +134,7 @@
       //vm.info.regionId = region.AreaID;
       //vm.info.regionType = region.RegionType;
       //vm.RegionFullName = region.RegionName;
+      region.hasCheck=true;
       vm.info.selected = region;
     }
     vm.nextRegion = function(prev){
@@ -155,34 +155,6 @@
         }
       }
     }
-    //vm.nextRegion = function(prev){
-    //  function setNext(regions){
-    //    var region=regions.find(function(o){
-    //        return vm.info.regionId== o.AreaID;
-    //    });
-    //    var index=regions.indexOf(region);
-    //    if (prev){
-    //      if ((index-1)>=0){
-    //        vm.setRegion(regions[index-1]);
-    //        return;
-    //      }
-    //    }else {
-    //      if ((index+1)<regions.length){
-    //        vm.setRegion(regions[index+1]);
-    //        return;
-    //      }
-    //    }
-    //    utils.alert("查无数据!");
-    //  }
-    //
-    //  if(vm.btBatch){
-    //    setNext(vm.btBatch);
-    //  }else {
-    //    initBtBatch().then(function(arr){
-    //      setNext(arr);
-    //    })
-    //  }
-    //};
 
   }
 })();
