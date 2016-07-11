@@ -275,6 +275,9 @@
       },
       getInspectionInfoBySign:function(sign){
         return $http.get($http.url('/Api/InspectionApi/BySign',{sign:sign}))
+      },
+      insertJlfy:function(InspectionID,Remarks,Day){
+        return $http.post($http.url('/api/InspectionRectificationApi/ReviewInsert'),{InspectionID:InspectionID,Remarks:Remarks,Day:Day})
       }
     },
     Assessment:{
