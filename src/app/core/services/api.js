@@ -56,6 +56,9 @@
       api.uploadTask = uploadTask;
       api.setNetwork = provider.setNetwork;
       api.getNetwork = provider.getNetwork;
+      api.resetNetwork = function () {
+        $rootScope.$emit('$cordovaNetwork:online');
+      };
 
       $rootScope.$on('$cordovaNetwork:online', function(event, state){
         //console.log('$window.navigator',$window.navigator);
@@ -81,7 +84,7 @@
       $rootScope.$on('$cordovaNetwork:offline', function(event, state){
         networkState =1;
       });
-      $rootScope.$emit('$cordovaNetwork:online');
+      api.resetNetwork();
 
       api.db = provider.$http.db;
       api.clearDb = clearDb;

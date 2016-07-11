@@ -256,7 +256,11 @@
             templateUrl:'app/main/szgc/settings/settings.html',
             resolve:{
               profile:['api',function(api){
-                return api.szgc.vanke.profile();
+                api.setNetwork(0);
+                return api.szgc.vanke.profile().then(function (r) {
+                  api.resetNetwork();
+                  return r;
+                });
               }]
             }
           }

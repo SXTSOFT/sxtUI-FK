@@ -81,7 +81,7 @@
               $rootScope.$emit('user:needlogin');
             }
             resolve(d && d.data);
-            $rootScope.$emit('$cordovaNetwork:online');
+            api.resetNetwork();
           }, function (rejection) {
 
             utils.alert(rejection.data && rejection.data.Message?rejection.data.Message:'网络错误');
