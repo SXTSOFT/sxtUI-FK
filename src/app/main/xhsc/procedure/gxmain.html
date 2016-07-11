@@ -43,7 +43,7 @@
       <div layout="column" class="gxdownload">
         <!--<md-subheader>已下载工序列表</md-subheader>-->
         <md-list>
-          <md-list-item ng-repeat="item in vm.Inspections|filter:{Status:1}">
+          <md-list-item ng-repeat="item in vm.fyList">
             <div class="md-list-item-text" layout="column">
               <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
                 {{item.AcceptanceItemName}}
@@ -51,8 +51,8 @@
               <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>
             </div>
             <div class="md-secondary md-hue-3" style="right:0;margin:0;">
-              <md-button class="md-raised md-primary" ng-click="vm.ys(item)">
-                验收
+              <md-button class="md-raised md-primary" ng-click="vm.fj(item)">
+                复检
               </md-button>
             </div>
           </md-list-item>
@@ -107,7 +107,7 @@
     <md-content>
       <div layout="column" class="gxdownload">
         <md-list>
-          <md-list-item ng-repeat="item in vm.zglist|filter:{Status:8}">
+          <md-list-item ng-repeat="item in vm.zglist|filter:{Status:16}">
             <div class="md-list-item-text" layout="column">
               <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
                 {{item.AcceptanceItemName}}
