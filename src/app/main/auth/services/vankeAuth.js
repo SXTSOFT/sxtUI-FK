@@ -75,6 +75,7 @@
 
       if(!token || !token.username) {
         return $q (function (resolve, reject) {
+          $rootScope.$emit('$cordovaNetwork:online');
           userInfo().then(function (d) {
             if(!d.status && !d.data){
               $rootScope.$emit('user:needlogin');
