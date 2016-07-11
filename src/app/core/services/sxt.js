@@ -50,12 +50,17 @@
 
     function playYs7(options) {
       var q = $q.defer();
-      $window.cordova.plugins.sxt.playYs7(
-        function (result) {
-          q.resolve(result);
-        }, function (result) {
-          q.reject(result);
-        },options);
+      if($window.cordova) {
+        $window.cordova.plugins.sxt.playYs7(
+          function (result) {
+            q.resolve(result);
+          }, function (result) {
+            q.reject(result);
+          }, options);
+      }
+      else{
+        q.reject({error:'no cordova'});
+      }
       return q.promise;
     }
   }
