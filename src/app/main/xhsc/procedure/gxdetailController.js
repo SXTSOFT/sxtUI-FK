@@ -15,7 +15,8 @@
       areaId = $stateParams.areaId;
       vm.projectId = $stateParams.projectId;
       vm.acceptanceItemID = $stateParams.acceptanceItemID;
-    vm.InspectionId = $stateParams.InspectionId,
+    vm.InspectionId = $stateParams.InspectionId;
+    console.log('state',$stateParams)
     function initBtBatch(){
 
       function getRegionType(regionID){
