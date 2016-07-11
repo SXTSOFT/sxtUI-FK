@@ -90,20 +90,26 @@
     function load(){
       remote.Procedure.InspectionCheckpoint.query(vm.acceptanceItemID,vm.current.AreaID).then(function (r) {
         vm.pList = [];
+        vm.templist = [];
         r.data.forEach(function(t){
+          if(t.InspectionID == vm.InspectionId){
+            vm.templist.push(t);
+          }
+        })
+        vm.templist.forEach(function(_t){
           var find = vm.pList.find(function(p){
-            return p.id == t.IndexPointID;
+            return p.id == _t.IndexPointID;
           })
           if(!find){
             var f = {
-              id:t.IndexPointID,
-              ProblemDescription: t.ProblemDescription,
+              id:_t.IndexPointID,
+              ProblemDescription: _t.ProblemDescription,
               rows:[]
             };
-            f.rows.push(t)
+            f.rows.push(_t)
             vm.pList.push(f)
           }else{
-            find.rows.push(t)
+            find.rows.push(_t)
           }
         })
         console.log('find',vm.pList)

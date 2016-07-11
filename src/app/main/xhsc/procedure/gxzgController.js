@@ -143,7 +143,7 @@
         controller:['$scope',function($scope){
           $scope.InspectionID  = InspectionID;
           $scope.role = vm.role;
-          $scope.remark = '';
+          $scope.remark = '备注';
           $scope.time= 24*7;
           $scope.times = [{
             value:6,

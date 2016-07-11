@@ -134,6 +134,7 @@
       $('body').on('click',function(e){
         if($(e.target).closest('.recheck').length == 1){
           scope.slideShow = false;
+          console.log('a')
         }
       })
       mapPopupSerivce.set('mapRecheckMapPopup',{
@@ -142,6 +143,7 @@
       });
       scope.$on('$destroy',function(){
         mapPopupSerivce.remove('mapRecheckMapPopup');
+        $(element).remove();
       });
     }
   }
