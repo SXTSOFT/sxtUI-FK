@@ -141,8 +141,8 @@
       $mdDialog.show({
         controller:['$scope',function($scope){
           $scope.InspectionID  = InspectionID;
-          $scope.remark = '';
-          $scope.time = '';
+          $scope.remark = 'abcd';
+          $scope.time = 12;
           $scope.times = [{
             value:6,
             time:'6小时'
@@ -186,7 +186,7 @@
             }
             else{
               console.log('time',$scope)
-              remote.Procedure.createZGReceipt($scope.InspectionID,$scope.remark,$scope.time).then(function(r){
+              remote.Procedure.insertJlfy($scope.InspectionID,$scope.remark,$scope.time).then(function(r){
                 if (r.data.ErrorCode==0){
                   utils.alert("提交成功");
                   vm.Isfail=false;
