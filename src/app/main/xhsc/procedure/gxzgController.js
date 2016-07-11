@@ -182,17 +182,21 @@
           $scope.submit = function(){
             if(vm.role=='zb'){
               remote.Procedure.InspectionRectificationUpdateStatus(RectificationID,16).then(function () {
-                utils.alert('提交成功');
-                $mdDialog.hide();
+                utils.alert('提交成功',null,function(){
+                  $mdDialog.hide();
+                  $state.go("app.xhsc.gx.gxmain");
+                });
               })
             }
             else{
               console.log('time',$scope)
               remote.Procedure.insertJlfy($scope.InspectionID,$scope.remark,$scope.time).then(function(r){
                 if (r.data.ErrorCode==0){
-                  utils.alert("提交成功");
-                  vm.Isfail=false;
-                  $mdDialog.hide();
+                  utils.alert("提交成功",null,function(){
+                    vm.Isfail=false;
+                    $mdDialog.hide();
+                    $state.go("app.xhsc.gx.gxmain");
+                  });
                 }
               })
               //TODO:可能要生成新的整改单,或完成整改
