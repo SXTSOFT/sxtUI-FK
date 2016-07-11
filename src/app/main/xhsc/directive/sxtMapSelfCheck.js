@@ -70,7 +70,7 @@
                   return d.PositionID == point.MeasurePointID;
                 })) {
                 var v = {
-                  InspectionId:scope.inspectionId,
+                  InspectionID:scope.inspectionId,
                   CheckpointID:sxt.uuid(),
                   IndexPointID:scope.item.ProblemID,
                   AreaID:scope.regionId,
