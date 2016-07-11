@@ -87,6 +87,10 @@
                   ProblemDescription:scope.item.ProblemDescription,
                   isNew:true
                 }
+                if(!v.IndexPointID){
+                  v.Status = 2;
+                  point.geometry.options.color='#169e49';
+                }
                 fg.data.push(v);
                 remote.Procedure.InspectionCheckpoint.create(v);
               }
