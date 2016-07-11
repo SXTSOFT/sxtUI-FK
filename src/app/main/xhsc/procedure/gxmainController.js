@@ -54,7 +54,7 @@
         item.isDown = false;
         utils.alert('下载失败,请检查网络');
       });
-    }
+    };
 
     remote.Procedure.getInspections(1).then(function(r){
         vm.Inspections= r.data;
@@ -71,15 +71,28 @@
     vm.ys = function(item){
       $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
         projectId:item.ProjectID,areaId:item.Children[0].AreaID,InspectionId:item.InspectionId})
-    }
+    };
 
     vm.fy = function(r){
       $state.go('app.xhsc.gx.gxzg',{Role:'jl',InspectionID: r.InspectionId,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID})
-    }
+    };
 
 
     vm.zg = function(r){
       $state.go('app.xhsc.gx.gxzg',{Role:'zb',InspectionID: r.InspectionID,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID});
+    };
+
+    vm.fj = function (r) {
+      $state.go('app.xhsc.gx.gxzjcheck',
+        {
+          acceptanceItemID:r.AcceptanceItemID,
+          acceptanceItemName:r.AcceptanceItemName,
+          //name: vm.data.AreaList[0].newName,
+          projectId:r.ProjectID,
+          //areaId:vm.data.AreaList[0].AreaID,
+          InspectionId:r.InspectionId
+        }
+      )
     }
   }
 })();
