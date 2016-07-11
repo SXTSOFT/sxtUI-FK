@@ -114,7 +114,7 @@
               }else{
                 scope.context.layer.options.color = 'red';
               }
-             // scope.context.layer.redraw();
+              scope.context.layer.redraw();
             });
           });
         }
