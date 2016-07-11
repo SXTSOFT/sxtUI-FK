@@ -222,10 +222,10 @@
             return item.AcceptanceItemID+item.AreaID;
           },
           dataType:1
-        }).bind(function(projectId) {
+        }).bind(function(projectId,Sign) {
         return $http.get($http.url('/Api/InspectionApi/GetUserInspectionInfo', {
           projectId: projectId,
-          Sign:"8"
+          Sign:!Sign? "":Sign
         }));
       }),
       postInspection:function(params){

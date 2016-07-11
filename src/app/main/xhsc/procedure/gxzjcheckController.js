@@ -134,7 +134,7 @@
 
     var sendZjResult = $rootScope.$on('sendGxResult',function() {
       remote.Procedure.updataZjStatus(vm.InspectionId).then(function(r){
-        if(r.data.ErrorCode){
+        if(!r.data.ErrorCode){
           utils.alert('保存成功');
         }
       })
