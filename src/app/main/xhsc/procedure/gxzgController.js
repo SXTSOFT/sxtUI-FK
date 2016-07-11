@@ -17,6 +17,7 @@
       vm.AcceptanceItemID=$state.params.AcceptanceItemID;
       var RectificationID=$state.params.RectificationID;
     vm.role = $state.params.Role;
+    vm.InspectionID = $state.params.InspectionID;
 
     remote.Procedure.getZGById(RectificationID).then(function (r) {
       vm.Rectification = r.data;
@@ -223,7 +224,6 @@
     $scope.$on('$destroy', function () {
       gxzgChanged();
       gxzgChanged = null;
-      vm.slideShow = false;
     })
 
     vm.nextRegion = function(prev){

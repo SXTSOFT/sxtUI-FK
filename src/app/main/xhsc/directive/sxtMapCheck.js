@@ -43,7 +43,7 @@
                     var p = r1.data.find(function (p1) {
                       return p1.MeasurePointID == c.PositionID;
                     });
-                    if (p) {
+                    if (p&&p) {
                       p.geometry = $window.JSON.parse(p.Geometry);
                       p.geometry.options.customSeq = true;
                       p.geometry.options.seq = c.ProblemSortName;
@@ -81,6 +81,10 @@
                   ProblemSortName:scope.item.ProblemSortName,
                   ProblemDescription:scope.item.ProblemDescription,
                   isNew:true
+                }
+                if(!v.IndexPointID){
+                  v.Status = 2;
+                  point.geometry.options.color='#169e49';
                 }
                 fg.data.push(v);
                 remote.Procedure.InspectionCheckpoint.create(v);

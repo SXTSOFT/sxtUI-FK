@@ -9,7 +9,7 @@
     .controller('pcenterController',pcenterController);
 
   /**@ngInject*/
-  function pcenterController($scope,$mdDialog,sxt,ys7){
+  function pcenterController($scope,$mdDialog,sxt){
     var vm = this;
     vm.tel=13112345678;
     vm.changeTel = function(tel){
