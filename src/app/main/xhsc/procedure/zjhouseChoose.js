@@ -119,7 +119,7 @@
       }
       $q.all([
         remote.Project.queryAllBulidings(projectId),
-        remote.Procedure.getRegionStatus(projectId)
+        remote.Procedure.getRegionStatus(projectId,8)
       ]).then(function(res){
         vm.loading = true;
         var result=res[0];
@@ -161,6 +161,9 @@
     //总包点击事件
     function zbSelected(r){
       function validateChecked(r){
+        if (r.status!=0&& r.status!=1){
+          r.checked=false;
+        }
         switch(r.RegionType){
           case 8:
             r.Children.forEach(function(m){
