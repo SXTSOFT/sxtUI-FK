@@ -223,6 +223,7 @@
     $scope.$on('$destroy', function () {
       gxzgChanged();
       gxzgChanged = null;
+      vm.slideShow = false;
     })
 
     vm.nextRegion = function(prev){

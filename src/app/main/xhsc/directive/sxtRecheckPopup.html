@@ -1,4 +1,4 @@
-<div class="recheck" style="position: fixed;top:0;left:0;bottom:0;right:0;background: transparent;z-index:30;" ng-show="slideShow"></div>
+<div class="recheck" style="position: fixed;top:0;left:0;bottom:0;right:0;background: transparent;z-index:50;" ng-show="slideShow"></div>
 <div class="slideTop" ng-class="{'slidedown':slideShow}">
   <md-list style="margin-top: 0">
     <md-list-item>
@@ -19,7 +19,7 @@
           <span ng-if="Record.zb && Record.zb.images" class="photo" ng-click="playImage(Record.zb.images)">
             <i>照片</i><i>{{Record.zb.images.length}}</i>
           </span>
-        <md-button style="min-width: 40px;" class="addphoto" ng-click="addPhoto()"><img src="app/main/xhsc/images/plus.png" width="40"></md-button>
+        <md-button style="min-width: 40px;" class="addphoto" ng-click="addPhoto()"><img src="app/main/xhsc/images/plus-gx.png" width="40"></md-button>
       </p>
     </md-list-item>
     <md-list-item ng-if="role == 'zb'">

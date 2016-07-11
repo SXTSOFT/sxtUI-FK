@@ -77,6 +77,7 @@
       $state.go('app.xhsc.gx.gxzg',{Role:'jl',InspectionID: r.InspectionId,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID})
     };
 
+    //vm.selectedIndex = 2;
 
     vm.zg = function(r){
       $state.go('app.xhsc.gx.gxzg',{Role:'zb',InspectionID: r.InspectionID,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID});
