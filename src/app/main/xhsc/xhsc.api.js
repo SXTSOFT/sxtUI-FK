@@ -89,8 +89,8 @@
         methods:{
           query:{
             dataType:1,
-            fn:function (acceptanceItemId,areaId) {
-              return $http.get($http.url('/api/InspectionCheckpointApi/GetMeasurePoint',{areaId:areaId,acceptanceItemId:acceptanceItemId}));
+            fn:function (inspectionId,acceptanceItemId,areaId) {
+              return $http.get($http.url('/api/InspectionCheckpointApi/GetMeasurePoint',{inspectionId:inspectionId,areaId:areaId,acceptanceItemId:acceptanceItemId}));
             }
           },
           create:{

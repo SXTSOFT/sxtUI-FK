@@ -14,7 +14,8 @@
         slideShow: '=',
         slideRole: '=',
         slideId:'=',
-        slideInspection:'='
+        slideInspection:'=',
+        slideContext:'='
       },
       templateUrl: 'app/main/xhsc/directive/sxtSelfcheckPopup.html',
       link: link
@@ -50,6 +51,12 @@
         remote.Procedure.updataZjPoint(scope.slideId,scope.data[0].Status).then(function (r) {
           if(r.data.ErrorCode == 0){
             scope.slideShow = false;
+            if(scope.data[0].Status == 2){
+              scope.slideContext.layer.options.color='#169e49';
+            }else{
+              scope.slideContext.layer.options.color='red';
+            }
+            scope.slideContext.layer.redraw();
           }
         });
       }

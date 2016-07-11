@@ -37,7 +37,7 @@
           fg = new L.SvFeatureGroup({
             onLoad: function () {
               remote.Procedure.InspectionCheckpoint.query(scope.procedure,scope.regionId).then(function (r) {
-                remote.Procedure.InspectionPoint.query(scope.procedure, scope.regionId).then(function (r1) {
+                remote.Procedure.InspectionPoint.query(scope.inspectionId,scope.procedure, scope.regionId).then(function (r1) {
                   fg.data = r.data;
                   r.data.forEach(function (c) {
                     var p = r1.data.find(function (p1) {
