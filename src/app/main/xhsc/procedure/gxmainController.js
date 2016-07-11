@@ -11,7 +11,7 @@
   /**@ngInject*/
   function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state){
     var vm = this;
-    
+
     remote.Project.getMap().then(function(result){
       var w = [];
       result.data.forEach(function (item) {
@@ -66,11 +66,6 @@
 
     vm.ys = function(item){
       $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
-        projectId:item.ProjectID,areaId:item.Children[0].AreaID,InspectionId:item.InspectionId})
-    }
-
-    vm.zj = function(item){
-      $state.go('app.xhsc.gx.gxzjcheck',{acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
         projectId:item.ProjectID,areaId:item.Children[0].AreaID,InspectionId:item.InspectionId})
     }
 

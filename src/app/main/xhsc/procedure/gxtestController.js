@@ -76,6 +76,12 @@
       //$event.preventDefault();
       vm.info.current = null;
     }
+    vm.takePhoto = function(){
+      vm.info.current = {
+        ProblemID:sxt.uuid(),
+        ProblemSortName:'P'
+      }
+    }
     $rootScope.title = acceptanceItemName;
 
     remote.Procedure.queryProcedure().then(function(result){

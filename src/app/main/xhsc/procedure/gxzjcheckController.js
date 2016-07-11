@@ -9,7 +9,7 @@
     .controller('gxzjcheckController',gxzjcheckController);
 
   /**@ngInject*/
-  function gxzjcheckController($stateParams,remote,$rootScope,$q){
+  function gxzjcheckController($stateParams,remote,$rootScope,$q,$scope,utils){
     var vm = this;
     vm.InspectionId = $stateParams.InspectionId;
     vm.acceptanceItemID = $stateParams.acceptanceItemID
@@ -95,7 +95,50 @@
       });
       //console.log('vm',vm.procedureData)
     })
+    vm.setRegion = function(region){
+      vm.info.selected = region;
+    }
+    vm.nextRegion = function(prev){
+      var idx = vm.btBatch.indexOf(vm.info.selected);
+      if(idx != -1){
+        if(prev){
+          if(idx>0){
+            vm.setRegion(vm.btBatch[idx-1]);
+          }else{
+            utils.alert('查无数据');
+          }
+        }else{
+          if(idx<vm.btBatch.length-1){
+            vm.setRegion(vm.btBatch[idx+1])
+          }else{
+            utils.alert('查无数据');
+          }
+        }
+      }
+    }
 
+    vm.qyslide = function(){
+      vm.qyslideShow = !vm.qyslideShow;
+    }
+    vm.selectQy = function(item){
+      item.hasCheck=true;
+      vm.info.selected = item;
+      vm.qyslideShow = false;
+      vm.setRegion(item);
+    }
+
+    var sendZjResult = $rootScope.$on('sendGxResult',function() {
+      remote.Procedure.updataZjStatus(vm.InspectionId).then(function(r){
+        if(r.data.ErrorCode){
+          utils.alert('保存成功');
+        }
+      })
+    });
+
+    $scope.$on("$destroy",function(){
+      sendZjResult();
+      sendZjResult = null;
+    });
 
   }
 })();

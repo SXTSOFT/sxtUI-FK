@@ -4,7 +4,7 @@
       <md-icon md-font-icon="icon-chevron-left"></md-icon>
     </md-button>
     <p ng-click="vm.qyslide()" style="font-size:14px;padding:0 10px;text-align: center;margin: 0;height:48px;line-height:48px;width:70%;margin-left:auto;margin-right:auto;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-      {{vm.info.selected.RegionName}}{{vm.slideShow}} <span class="caret"></span>
+      {{vm.info.selected.RegionName}} <span class="caret"></span>
     </p>
     <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;right:10px;top:0" ng-click="vm.nextRegion()">
       <md-icon md-font-icon="icon-chevron-right"></md-icon>
@@ -25,7 +25,7 @@
 <div style="display: none">
   <sxt-map-self-check-popup></sxt-map-self-check-popup>
 </div>
-<sxt-selfcheck-popup slide-id="vm.pid" slide-show="vm.slideShow" slide-role="'zj'"></sxt-selfcheck-popup>
+<sxt-selfcheck-popup slide-id="vm.pid" slide-show="vm.slideShow" slide-role="'zj'" slide-inspection="vm.InspectionId"></sxt-selfcheck-popup>
 
 
 

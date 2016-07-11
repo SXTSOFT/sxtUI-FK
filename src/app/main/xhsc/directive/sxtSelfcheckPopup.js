@@ -13,7 +13,8 @@
       scope: {
         slideShow: '=',
         slideRole: '=',
-        slideId:'='
+        slideId:'=',
+        slideInspection:'='
       },
       templateUrl: 'app/main/xhsc/directive/sxtSelfcheckPopup.html',
       link: link
@@ -39,7 +40,16 @@
         scope.slideShow = false;
       }
       scope.submit = function(){
-
+        scope.data.Status = scope.data.Status==2?2:4;
+        var params={
+          CheckpointID:scope.slideId,
+          Status:scope.data.Status
+        }
+        remote.Procedure.updataZjPoint(scope.slideId,scope.data.Status).then(function (r) {
+          if(r.data.ErrorCode == 0){
+            scope.slideShow = false;
+          }
+        });
       }
     }
   }

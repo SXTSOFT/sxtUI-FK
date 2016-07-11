@@ -111,13 +111,11 @@
             });
           });
         }
-        else if(role == 'jl'){
+        else{
           scope.data.Status = scope.data.Status==2?2:4;
           remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
             scope.slideShow = false;
           });
-        }else{
-
         }
       }
       $('body').on('click',function(e){

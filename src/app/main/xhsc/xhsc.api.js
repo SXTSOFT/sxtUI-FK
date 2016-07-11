@@ -266,6 +266,12 @@
       },
       InspectionRectificationUpdateStatus:function (rectificationId,status) {
         return $http.post($http.url('/api/InspectionRectificationApi/UpdateStatus'),{RectificationId:rectificationId,Status:status})
+      },
+      updataZjStatus:function(inspectionId){
+        return $http.get($http.url('/api/InspectionRectificationApi/UpdateInfo',{inspectionId:inspectionId}))
+      },
+      updataZjPoint:function(CheckpointID,Status){
+        return $http.post($http.url('/api/InspectionCheckpointApi/UpdateStatus'),{CheckpointID:CheckpointID,Status:Status})
       }
     },
     Assessment:{
