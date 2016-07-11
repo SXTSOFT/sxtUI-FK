@@ -48,6 +48,11 @@
                       p.geometry.options.customSeq = true;
                       p.geometry.options.seq = c.ProblemSortName;
                       p.geometry.options.v = c;
+                      if(c.Status == 2){
+                        p.geometry.options.color='#169e49';
+                      }else{
+                        p.geometry.options.color='red';
+                      }
                       fg.addData(p.geometry);
                     }
                   })

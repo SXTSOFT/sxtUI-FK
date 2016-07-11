@@ -33,6 +33,11 @@
           console.log('r',r)
           scope.data = r.data;
           r.data.forEach(function (p) {
+            //if(p.Status == 2){
+            //  scope.slideContext.layer.options.color='#169e49';
+            //}else{
+            //  scope.slideContext.layer.options.color='red';
+            //}
             remote.Procedure.InspectionProblemRecordFile.query(p.ProblemRecordID).then(function (r2) {
               p.images = r2.data;
             });
