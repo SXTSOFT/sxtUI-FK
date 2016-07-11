@@ -9,7 +9,7 @@
   </md-dialog-content>
 
   <md-dialog-actions style="padding:0;" layout="column">
-    <div layout="row" style="width: 100%;" ng-if="status[0].num >0||status[3].num >0">
+    <div layout="row" style="width: 100%;" ng-if="(status[0].num >0||status[3].num >0)&&(role =='jl')">
       <md-list flex style="padding:0 10px;">
         <md-list-item style="padding-left: 16px;">
           <p>备注：</p>

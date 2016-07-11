@@ -142,6 +142,7 @@
       $mdDialog.show({
         controller:['$scope',function($scope){
           $scope.InspectionID  = InspectionID;
+          $scope.role = vm.role;
           $scope.remark = '';
           $scope.time= 24*7;
           $scope.times = [{
