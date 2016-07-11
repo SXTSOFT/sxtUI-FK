@@ -139,6 +139,9 @@
             map.remove ();
             map = null;
           }
+          if(apiLayer && map)
+            map.removeLayer(apiLayer);
+          
           if (!scope.files || !scope.files.length) return;
 
 
