@@ -59,11 +59,12 @@
       vm.qyslideShow = false;
       vm.current = item;
       vm.setRegion(item);
-      load();
+
     }
 
     vm.setRegion = function(region){
       vm.current = region;
+      load();
     }
     vm.nextRegion = function(prev){
       var idx = vm.btBatch.indexOf(vm.current);
@@ -83,7 +84,6 @@
         }
       }
     }
-
 
 
     function load(){
