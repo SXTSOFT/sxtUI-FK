@@ -13,7 +13,8 @@
         items:'=',
         projectId:'=',
         procedure:'=',
-        regionId:'='
+        regionId:'=',
+        inspectionId:'='
       },
       link:link
     };
@@ -69,6 +70,7 @@
                   return d.PositionID == point.MeasurePointID;
                 })) {
                 var v = {
+                  InspectionID:scope.inspectionId,
                   CheckpointID:sxt.uuid(),
                   IndexPointID:scope.item.ProblemID,
                   AreaID:scope.regionId,

@@ -25,6 +25,7 @@
       })
       $(element).appendTo('body');
       scope.apply = function(){
+        console.log('scope',scope)
         remote.Procedure.InspectionProblemRecord.query(scope.data.value.CheckpointID).then(function(r){
           r.data.forEach(function (p) {
             remote.Procedure.InspectionProblemRecordFile.query(p.ProblemRecordID).then(function (r2) {
@@ -112,9 +113,11 @@
           });
         }
         else{
-          scope.data.Status = scope.data.Status==2?2:4;
+          scope.data.value.Status = scope.value.data.Status==2?2:4;
           remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
             scope.slideShow = false;
+           // scope.context.layer.options.color = 'green';
+
           });
         }
       }

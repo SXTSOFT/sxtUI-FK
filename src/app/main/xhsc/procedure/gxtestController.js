@@ -106,7 +106,6 @@
       vm.qyslideShow = !vm.qyslideShow;
     }
     vm.selectQy = function(item){
-      item.hasCheck=true;
       vm.info.selected = item;
       //vm.RegionName = item.RegionName;
       vm.qyslideShow = false;
@@ -135,6 +134,7 @@
       //vm.info.regionId = region.AreaID;
       //vm.info.regionType = region.RegionType;
       //vm.RegionFullName = region.RegionName;
+      region.hasCheck=true;
       vm.info.selected = region;
     }
     vm.nextRegion = function(prev){
