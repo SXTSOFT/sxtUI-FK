@@ -308,9 +308,13 @@
         }).bind(function (file) {
           return $http.post('/api/Files/base64',file);
         }),
-        delete: function (id) {
+        delete: $http.db({
+          _id:'s_files',
+          idField:'Id',
+          delete:true
+        }).bind(function (id) {
           return $http.delete('/api/Files/' + id);
-        },
+        }),
         update: function (file) {
           return $http.put('/api/Files/' + file.Id, file);
         },

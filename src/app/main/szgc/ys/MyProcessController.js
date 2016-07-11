@@ -284,9 +284,11 @@
     });
 
     //以下离线相关
-    api.szgc.vanke.projects().then(function (r) {
-      $scope.project.projects = r.data.data;
-    });
+    if(api.getNetwork()==0) {
+      api.szgc.vanke.projects().then(function (r) {
+        $scope.project.projects = r.data.data;
+      });
+    }
     var queryOffline = function () {
       return api.szgc.ProjectSettings.offline.query().then(function (result) {
         $scope.project.offlines = result.data;
@@ -298,6 +300,11 @@
     }).then(function (result) {
       $scope.project.tasks = result.rows;
     });
+    $scope.isOffline = function (item) {
+      return !!$scope.project.offlines.find(function (t) {
+        return t._id.indexOf(item.project_item_id)!=-1;
+      });
+    }
     $scope.download =function ($event,project,item) {
       item.downloading = true;
       var idTree = project.project_id+'>'+item.project_item_id;
@@ -328,7 +335,7 @@
               result.data.data.forEach(function (type) {
                 tk.push(api.szgc.FilesService.group(item.project_item_id+'-'+type.type_id));
                 //5类工序
-                [1,2,3,4,5].forEach(function (m) {
+                [1,2,3,4,5,6].forEach(function (m) {
                   tasks.push(function () {
                     return api.szgc.ProjectExService.get(item.project_item_id+'-'+type.type_id+'-'+m)
                   });
@@ -336,7 +343,7 @@
               });
               //图纸
               $q.all(tk).then(function (rs) {
-                var pics = xhUtils.getMapPic(3);
+                var pics = xhUtils.getMapPic(2);
                 rs.forEach(function (r) {
                   if(r.data.Files && r.data.Files.length){
                     var f = r.data.Files[0];
@@ -412,6 +419,7 @@
       },{timeout:20000});
     };
     $scope.upload =function () {
+      $scope.uploading = true;
       api.upload(function (cfg,item) {
         if(cfg._id=='s_files' && item && item.Url.indexOf('base64')==-1){
           return false;
@@ -427,9 +435,12 @@
           return true
         },null);
         utils.alert('上传完成');
+        $scope.project.tasks = [];
+        $scope.uploading= false;
       },function () {
         $scope.project.uploaded = 0;
         utils.alert('上传失败');
+        $scope.uploading =false;
       },{
         uploaded:function (cfg,row,result) {
           cfg.db.delete(row._id);

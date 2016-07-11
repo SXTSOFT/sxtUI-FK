@@ -158,7 +158,7 @@
               center: [.48531902026005, .5],
               zoom: 0,
               minZoom: 0,
-              maxZoom: 3,
+              maxZoom: 2,
               scrollWheelZoom: true,
               annotationBar: false,
               zoomControl: false,
@@ -303,7 +303,7 @@
                </md-dialog-content>\
                 <md-dialog-actions layout="row" style="border-top:solid 2px red">\
               <span flex></span>\
-                <md-button  class="md-raised md-primary" ng-click="answer()"  md-autofocus style="margin-right:20px;margin-top: 20px">确定</md-button>\
+                <md-button  class="md-raised md-primary" ng-click="answer()"  md-autofocus style="margin-right:20px;margin-top: 20px">关闭</md-button>\
                   </md-dialog-actions>\
                   </form>\
                   </md-dialog>',

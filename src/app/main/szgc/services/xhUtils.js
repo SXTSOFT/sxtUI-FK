@@ -85,6 +85,7 @@
         targetEvent: $event,
         controller:['$scope', '$mdDialog',function ($scope, $mdDialog) {
           $scope.cancel = function () {
+            //$mdDialog.hide('base');
             $mdDialog.cancel();
           }
           $scope.answer = function ($base64Url) {

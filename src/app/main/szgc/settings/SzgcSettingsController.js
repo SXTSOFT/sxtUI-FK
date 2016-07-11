@@ -14,7 +14,23 @@
     var vm = this;
     vm.profile = profile.data.data;
     vm.logout = function(){
-      auth.logout();
+      utils.confirm('退出将清除当前人所有缓存数据，确定退出吗？').then(function (result) {
+
+        api.clearDb(function (persent) {
+          vm.cacheInfo = parseInt(persent*100)+'%';
+        },function () {
+          vm.cacheInfo = null;
+          //utils.alert('清除成功');
+        },function () {
+          vm.cacheInfo = null;
+          //utils.alert('清除失败');
+        },{
+          exclude:['v_profile'],
+          timeout:3000
+        });
+        auth.logout();
+      })
+
     }
     //服务器上保存版本信息
     api.szgc.version().then(function (r) {

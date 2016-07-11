@@ -353,7 +353,7 @@
     var fhl = function (jl, vk) {
       if (jl == vk) return '100';
       //var r = ((1 - accDiv(Math.abs(jl - vk), jl)) * 100).toString();
-      var r = ((1 - utils.math.div((jl - vk), jl)) * 100).toString();
+      var r = ((1 - utils.math.div(Math.abs(jl - vk), jl)) * 100).toString();
       var rs = r.split('.');
       if (rs.length == 2 && rs[1].length > 2) {
         return rs[0] + '.' + rs[1].substring(0, 2);

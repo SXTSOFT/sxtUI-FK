@@ -10,7 +10,7 @@
     .controller('SzgcReportController', SzgcReportController);
 
   /** @ngInject */
-  function SzgcReportController($scope,$state)
+  function SzgcReportController($scope,$state,api,utils)
   {
 
     var vm = this;
@@ -38,6 +38,10 @@
     });
 
     vm.goToReport = function (name, path, $event) {
+      if(api.getNetwork()==1){
+        utils.alert('离线模式下无法统计')
+        return;
+      }
       if (vm.tabs.length == 0) {
         vm.tabs.push({
           name: name
