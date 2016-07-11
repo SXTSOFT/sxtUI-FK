@@ -141,8 +141,8 @@
       $mdDialog.show({
         controller:['$scope',function($scope){
           $scope.InspectionID  = InspectionID;
-          $scope.remark = '';
-          $scope.time = '';
+          $scope.remark = 'abcd';
+          $scope.time = 12;
           $scope.times = [{
             value:6,
             time:'6小时'
@@ -179,14 +179,14 @@
           }
           $scope.submit = function(){
             if(vm.role=='zb'){
-              remote.Procedure.InspectionRectificationUpdateStatus(RectificationID,4).then(function () {
+              remote.Procedure.InspectionRectificationUpdateStatus(RectificationID,16).then(function () {
                 utils.alert('提交成功');
                 $mdDialog.hide();
               })
             }
             else{
               console.log('time',$scope)
-              remote.Procedure.createZGReceipt($scope.InspectionID,$scope.remark,$scope.time).then(function(r){
+              remote.Procedure.insertJlfy($scope.InspectionID,$scope.remark,$scope.time).then(function(r){
                 if (r.data.ErrorCode==0){
                   utils.alert("提交成功");
                   vm.Isfail=false;
@@ -223,6 +223,7 @@
     $scope.$on('$destroy', function () {
       gxzgChanged();
       gxzgChanged = null;
+      vm.slideShow = false;
     })
 
     vm.nextRegion = function(prev){

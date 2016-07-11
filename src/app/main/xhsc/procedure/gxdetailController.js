@@ -12,10 +12,11 @@
   function gxdetailController($scope,$stateParams,remote,$q,xhUtils,utils){
     var vm = this,
       acceptanceItemName = $stateParams.acceptanceItemName,
-      InspectionId = $stateParams.InspectionId,
       areaId = $stateParams.areaId;
       vm.projectId = $stateParams.projectId;
       vm.acceptanceItemID = $stateParams.acceptanceItemID;
+    vm.InspectionId = $stateParams.InspectionId;
+    console.log('state',$stateParams)
     function initBtBatch(){
 
       function getRegionType(regionID){
@@ -40,7 +41,7 @@
         return regionType;
       }
       var promises=[
-        remote.Project.getInspectionList(InspectionId)
+        remote.Project.getInspectionList(vm.InspectionId)
       ];
       vm.btBatch=[];
       return $q.all(promises).then(function(rtv){
