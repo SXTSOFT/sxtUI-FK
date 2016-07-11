@@ -71,9 +71,7 @@
       vm.zglist = [];
       if (angular.isArray(r.data)){
         r.data.forEach(function(o){
-          if (o.Status==4){
             vm.zglist.push(o);
-          }
         });
       }
 
