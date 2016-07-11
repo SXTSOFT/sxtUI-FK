@@ -18,14 +18,15 @@ public class sxt extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext)
     throws JSONException {
+    //EZOpenSDK.initLib(this.getApplication(),"346249221d154bac9ba686873c2dffec","");
+
         Activity activity = this.cordova.getActivity();
         if (action.equals("playYs7")) {
             Intent i = activity.getIntent();
-            if (i.hasExtra(Intent.EXTRA_TEXT)) {
-                callbackContext.success(i.getStringExtra(Intent.EXTRA_TEXT));
-            } else {
-                callbackContext.error("");
-            }
+            Intent myIntent = new Intent(activity, PlayActivity.class);
+            myIntent.putExtra("token", args.getString(0)); //Optional parameters
+            myIntent.putExtra("cameraId", args.getString(1));
+            activity.startActivity(myIntent);
             return true;
         }
         return false;
