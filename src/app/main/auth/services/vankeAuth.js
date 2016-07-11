@@ -75,12 +75,13 @@
 
       if(!token || !token.username) {
         return $q (function (resolve, reject) {
-          $rootScope.$emit('$cordovaNetwork:online');
+          api.setNetwork(0);
           userInfo().then(function (d) {
             if(!d.status && !d.data){
               $rootScope.$emit('user:needlogin');
             }
             resolve(d && d.data);
+            $rootScope.$emit('$cordovaNetwork:online');
           }, function (rejection) {
 
             utils.alert(rejection.data && rejection.data.Message?rejection.data.Message:'网络错误');
