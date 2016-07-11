@@ -76,6 +76,9 @@
       if(!token || !token.username) {
         return $q (function (resolve, reject) {
           userInfo().then(function (d) {
+            if(!d.status && !d.data){
+              $rootScope.$emit('user:needlogin');
+            }
             resolve(d && d.data);
           }, function (rejection) {
 
