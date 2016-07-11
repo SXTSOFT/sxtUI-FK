@@ -10,10 +10,13 @@
     .module('app.core')
     .factory('sxt',sxtServe);
   /** @ngInject */
-  function sxtServe($q){
+  function sxtServe($q,$window){
     var s = window.sxt||{},forEach = angular.forEach;
     s.invoke = invokeFn;
     s.uuid = uuidfn;
+    s.plugin = {
+      playYs7:playYs7
+    };
     return s;
 
     function invokeFn(array,name, config){
@@ -43,6 +46,17 @@
         return (c=='x' ? r : (r&0x3|0x8)).toString(16);
       });
       return uuid;
+    }
+
+    function playYs7(options) {
+      var q = $q.defer();
+      $window.cordova.plugins.sxt.playYs7(
+        function (result) {
+          q.resolve(result);
+        }, function (result) {
+          q.reject(result);
+        },options);
+      return q.promise;
     }
   }
 })();
