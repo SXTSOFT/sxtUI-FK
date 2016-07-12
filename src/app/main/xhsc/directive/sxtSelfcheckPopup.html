@@ -3,7 +3,7 @@
   <md-list style="margin-top: 0">
     <md-list-item>
       <label>问题描述</label>
-      <p>{{ZjRecord.zj.Describe}}</p>
+      <p>{{slideContext.layer.options.v.ProblemDescription||ZjRecord.zj.Describe}}</p>
     </md-list-item>
     <md-list-item ng-if="role=='zj'">
       <label>状态 </label>

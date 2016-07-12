@@ -23,9 +23,7 @@
       vm.Rectification = r.data;
       vm.pareaList = vm.Rectification.Children;
       vm.regionSelect = vm.pareaList[0];
-      if(vm.regionSelect && vm.regionSelect.length){
-        vm.regionSelect.hasCheck=true;
-      }
+      vm.regionSelect.hasCheck=true;
       load();
     });
 
