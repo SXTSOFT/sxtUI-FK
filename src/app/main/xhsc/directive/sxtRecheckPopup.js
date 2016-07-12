@@ -25,7 +25,7 @@
       })
       $(element).appendTo('body');
       scope.apply = function(){
-        console.log('scope',scope)
+        //console.log('scope',scope)
         remote.Procedure.InspectionProblemRecord.query(scope.data.value.CheckpointID).then(function(r){
           r.data.forEach(function (p) {
             remote.Procedure.InspectionProblemRecordFile.query(p.ProblemRecordID).then(function (r2) {
@@ -52,6 +52,10 @@
           }
           //remote.Procedure.
         })
+        //$timeout(function(){
+        //  scope.slideShowbg = true;
+        //},200)
+        scope.value =scope.data.value.Status;
       }
 
       scope.playImage = function (imgs) {
@@ -97,7 +101,7 @@
       }
       scope.cancel = function(){
         scope.slideShow = false;
-        //scope.apply();
+        scope.data.value.Status = scope.value;
       }
       scope.submit = function(){
         if(scope.role=='zb'){
@@ -109,12 +113,15 @@
           createZb(true).then(function () {
             remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
               scope.slideShow = false;
+              //scope.slideShowbg = false;
               if(scope.data.value.Status == 8){
                 scope.context.layer.options.color = '#faa526';
+                scope.context.layer.setStyle('color','#faa526');
               }else{
                 scope.context.layer.options.color = 'red';
+                scope.context.layer.setStyle('color','red');
               }
-              scope.context.layer.redraw();
+              //scope.context.layer.redraw();
             });
           });
         }
@@ -122,19 +129,28 @@
           scope.data.value.Status = scope.data.value.Status==2?2:4;
           remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
             scope.slideShow = false;
+            //scope.slideShowbg = false;
             if(scope.data.value.Status == 2){
               scope.context.layer.options.color = '#169e49';
+              scope.context.layer.setStyle('color','#169e49');
             }else{
               scope.context.layer.options.color = 'red';
+              scope.context.layer.setStyle('color','red');
             }
-            scope.context.layer.redraw();
+            //scope.context.layer.redraw();
           });
         }
       }
       $('body').on('click',function(e){
-        if($(e.target).closest('.recheck').length == 1){
-          scope.slideShow = false;
+        var evt = window.event ? window.event: e,
+          target = evt.srcElement || evt.target;
+        if($('.slideTop').hasClass('slidedown')){
+          if(target.id == 'recheck'){
+            scope.slideShow = false;
+            scope.$apply()
+          }
         }
+
       })
       mapPopupSerivce.set('mapRecheckMapPopup',{
         el:element,
@@ -142,6 +158,7 @@
       });
       scope.$on('$destroy',function(){
         mapPopupSerivce.remove('mapRecheckMapPopup');
+        $(element).remove();
       });
     }
   }

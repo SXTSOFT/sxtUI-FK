@@ -13,9 +13,6 @@
     var vm = this;
     console.log('a',$stateParams)
     remote.Project.queryAllBulidings($stateParams.projectId).then(function (result) {
-      result.data.Sections.forEach(function(t){
-
-      })
     })
     vm.persons = [{
       unit:'甲方',

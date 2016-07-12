@@ -57,11 +57,24 @@
     };
 
     remote.Procedure.getInspections(1).then(function(r){
-        vm.Inspections= r.data;
+      vm.Inspections= [];
+      if (angular.isArray( r.data)){
+        r.data.forEach(function(o){
+            if (o.Sign==1){
+              vm.Inspections.push(o);
+            }
+        });
+      }
     });
 
     remote.Procedure.getZGlist(31).then(function (r) {
-      vm.zglist = r.data;
+      vm.zglist = [];
+      if (angular.isArray(r.data)){
+        r.data.forEach(function(o){
+            vm.zglist.push(o);
+        });
+      }
+
     });
 
     remote.Procedure.getInspectionInfoBySign(8).then(function (r) {

@@ -304,19 +304,29 @@
       vm.data = {
         projectId:projectId,
         Rows:[],
+        Sign:1,
         acceptanceItemName:acceptanceItemName,
         acceptanceItemID:acceptanceItemID
       }
 
       //console.log('vmhouse',vm.houses)
       vm.houses.forEach(function(t){
+        if (!t.Children){
+          t.Children=[];
+        }
         t.Children.forEach(function(_t){
           if(_t.checked){
             vm.data.Rows.push(_t);
           }
+          if (!_t.Children){
+            _t.Children=[];
+          }
           _t.Children.forEach(function(_tt){
             if(_tt.checked){
               vm.data.Rows.push(_tt);
+            }
+            if (!_tt.Children){
+              _tt.Children=[];
             }
             _tt.Children.forEach(function(l){
               if(l.checked){
@@ -326,7 +336,6 @@
           })
         })
       })
-      //console.log('length',vm.data.Rows.length)
       if(vm.data.Rows.length){
         vm.showmyDialog = true;
       }else{

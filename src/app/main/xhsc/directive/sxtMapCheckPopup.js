@@ -91,6 +91,7 @@
       });
       scope.$on('$destroy',function(){
         mapPopupSerivce.remove('mapCheckMapPopup');
+        $(element).remove();
       });
     }
   }
