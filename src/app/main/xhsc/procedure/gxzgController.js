@@ -33,7 +33,19 @@
           return '合格';
           break;
         case 1:
-          return '未整改';
+          return '待验';
+          break;
+        case 2:
+              return '合格';
+        break;
+        case 4:
+          return '不合格';
+        break;
+        case 8:
+              return '未整改';
+        break;
+        case 16:
+          return '已整改';
           break;
       }
     }

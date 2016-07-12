@@ -100,7 +100,10 @@
               }
             },
             onUpdateData: function (context, data, editScope) {
-              //remote.Procedure.InspectionCheckpoint.create(data.v);
+             // console.log('update',context,data,editScope)
+              if(data.v.ProblemSortName == 'T'){
+                remote.Procedure.InspectionCheckpoint.create(data.v);
+              }
             },
             onDelete: function (layer) {
               var id = layer.getValue().$id;
