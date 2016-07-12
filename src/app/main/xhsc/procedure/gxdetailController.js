@@ -103,6 +103,7 @@
           if(!find){
             var f = {
               id:_t.IndexPointID,
+              ProblemSortName:_t.ProblemSortName,
               ProblemDescription: _t.ProblemDescription,
               rows:[]
             };

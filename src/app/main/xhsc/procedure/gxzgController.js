@@ -23,7 +23,9 @@
       vm.Rectification = r.data;
       vm.pareaList = vm.Rectification.Children;
       vm.regionSelect = vm.pareaList[0];
-      vm.regionSelect.hasCheck=true;
+      if(vm.regionSelect && vm.regionSelect.length){
+        vm.regionSelect.hasCheck=true;
+      }
       load();
     });
 
@@ -33,7 +35,19 @@
           return '合格';
           break;
         case 1:
-          return '未整改';
+          return '待验';
+          break;
+        case 2:
+              return '合格';
+        break;
+        case 4:
+          return '不合格';
+        break;
+        case 8:
+              return '未整改';
+        break;
+        case 16:
+          return '已整改';
           break;
       }
     }

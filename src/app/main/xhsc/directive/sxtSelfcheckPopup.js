@@ -28,9 +28,9 @@
       $(element).appendTo('body');
       scope.$watch('slideId',function(){
         if(!scope.slideId) return;
-        console.log('scope',scope)
+        //console.log('scope',scope)
         remote.Procedure.InspectionProblemRecord.query(scope.slideId).then(function(r){
-          console.log('r',r)
+          //console.log('r',r)
           scope.data = r.data;
           r.data.forEach(function (p) {
             //if(p.Status == 2){
@@ -42,29 +42,43 @@
               p.images = r2.data;
             });
           });
+          scope.ZjRecord = {
+            zj:r.data.find(function (p) {
+              return p.DescRole=='zj'
+            })
+          };;
+          scope.zjStatus = scope.ZjRecord.zj.Status?scope.ZjRecord.zj.Status:4;
         })
+
       })
       scope.cancel = function(){
         scope.slideShow = false;
+        scope.ZjRecord.zj.Status = scope.zjStatus;
       }
       scope.submit = function(){
-        scope.data[0].Status = scope.data[0].Status==2?2:4;
+       // scope.data[0].Status = scope.data[0].Status==2?2:4;
+        scope.ZjRecord.zj.Status = scope.ZjRecord.zj.Status == 2?2:4
         var params={
           CheckpointID:scope.slideId,
           Status:scope.data.Status
         }
-        remote.Procedure.updataZjPoint(scope.slideId,scope.data[0].Status).then(function (r) {
+        remote.Procedure.updataZjPoint(scope.slideId,scope.ZjRecord.zj.Status).then(function (r) {
           if(r.data.ErrorCode == 0){
             scope.slideShow = false;
-            if(scope.data[0].Status == 2){
+            if(scope.ZjRecord.zj.Status == 2){
               scope.slideContext.layer.options.color='#169e49';
+              scope.slideContext.layer.setStyle('color','#169e49');
             }else{
               scope.slideContext.layer.options.color='red';
+              scope.slideContext.layer.setStyle('color','red');
             }
-            scope.slideContext.layer.redraw();
+            //scope.slideContext.layer.redraw();
           }
         });
       }
+      scope.$on('$destroy',function(){
+        $(element).remove();
+      });
     }
   }
   })();
