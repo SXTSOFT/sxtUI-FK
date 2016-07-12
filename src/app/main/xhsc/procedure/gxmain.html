@@ -123,45 +123,6 @@
         </md-list>
       </div>
     </md-content>
-<!--    <md-content>
-      <div layout="column" class="gxdownload">
-        <md-subheader>已下载复验单</md-subheader>
-        <md-list>
-          <md-list-item ng-repeat="item in vm.zglist">
-            <p layout="column" style="padding-right: 125px;font-size:16px;padding-left:8px;">
-              {{item.RectificationName}}
-            </p>
-            <div class="md-secondary md-hue-3" style="right:0;margin:0;">
-              <md-button class="md-raised md-primary" style="margin-top:7px;margin-bottom: 4px;" ng-click="vm.fy(item)">
-                复验
-              </md-button>
-              <md-button class="md-raised md-primary" style="margin-top:7px;margin-bottom: 4px;">
-                上传
-              </md-button>
-            </div>
-          </md-list-item>
-        </md-list>
-        <md-subheader>未下载复验单</md-subheader>
-        <md-list>
-          <md-list-item>
-            <p layout="column" style="padding-right: 125px;font-size:16px;padding-left:8px;">
-              复验单名称
-            </p>
-            <div class="md-secondary md-hue-3" style="right:0;margin:0;">
-            <span style="display:inline-block;width:58px;text-align: center;">
-              <md-button ng-if="!item.isDown" class="md-raised upload-btn" ng-click="vm.downloadZg()">
-                下载
-              </md-button>
-              <a  ng-if="item.isDown" style="position: relative;display: inline-block;width:31px;height:31px;border:1px solid #f8f8f8;border-radius:50%" ng-click="vm.cancel()">
-                <md-progress-circular md-mode="determinate" value="{{item.progress}}"  md-diameter="30"></md-progress-circular>
-                <md-icon style="width:10px;height:10px;background: #0185f1;position: absolute;left:10px;top:10px;"></md-icon>
-              </a>
-              </span>
-            </div>
-          </md-list-item>
-        </md-list>
-      </div>
-    </md-content>-->
   </md-tab>
   <md-tab label="离线包">
     <md-content>

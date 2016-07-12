@@ -304,6 +304,7 @@
       vm.data = {
         projectId:projectId,
         Rows:[],
+        Sign:1,
         acceptanceItemName:acceptanceItemName,
         acceptanceItemID:acceptanceItemID
       }
