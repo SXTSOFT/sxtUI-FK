@@ -60,7 +60,7 @@
       vm.Inspections= [];
       if (angular.isArray( r.data)){
         r.data.forEach(function(o){
-            if (o.Sign!=8){
+            if (o.Sign==1){
               vm.Inspections.push(o);
             }
         });
@@ -78,7 +78,6 @@
     });
 
     remote.Procedure.getInspectionInfoBySign(8).then(function (r) {
-
       vm.fyList = r.data;
     });
 

@@ -100,8 +100,9 @@
       //console.log('time',vm.time)
       remote.Procedure.createZGReceipt(vm.params.InspectionID,vm.params.Remarks,vm.time).then(function(r){
           if (r.data.ErrorCode==0){
-            utils.alert("保存成功");
-            vm.Isfail=false;
+            utils.alert("保存成功",null,function(){
+              $state.go("app.xhsc.gx.gxmain",{index:0});
+            });
           }
       })
     }
