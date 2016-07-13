@@ -19,12 +19,16 @@
       }).then(function (result) {
         if(result.rows.length){
           utils.confirm('您有'+result.rows.length+'条数据未上传，确定清除所有缓存数据并退出吗？').then(function (result) {
+            appCookie.remove('projects');
             vm.trueClear([]);
+            auth.logout();
           })
         }
         else {
           utils.confirm('退出将清除当前人所有缓存数据，确定退出吗?').then(function (result) {
+            appCookie.remove('projects');
             vm.trueClear([]);
+            auth.logout();
           });
         }
       });
