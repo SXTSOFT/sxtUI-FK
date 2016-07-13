@@ -344,7 +344,12 @@
             return item;
           }
         }).bind(function (building_id) {
-          return get(http.url('/common/v1/buildings/'+building_id+'/rooms',{page_size:0,page_number:1}));
+          return get(http.url('/common/v1/buildings/'+building_id+'/rooms',{page_size:0,page_number:1})).then(function (result) {
+            result.data.data.forEach(function (item) {
+              item.building_id=building_id;
+            })
+            return result;
+          });
         },function (result) {
           var floors = [];
           result.data.data.forEach(function (room) {
