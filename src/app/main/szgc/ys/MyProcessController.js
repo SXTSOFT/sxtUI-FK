@@ -351,6 +351,9 @@
                     })
                   }
                 });
+                api.setNetwork(1);
+                api.szgc.vanke.floors('run index');
+                api.setNetwork(0);
                 resolve();
               }).catch(reject);
             })

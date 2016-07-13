@@ -14,22 +14,20 @@
     var vm = this;
     vm.profile = profile.data.data;
     vm.logout = function(){
-      utils.confirm('退出将清除当前人所有缓存数据，确定退出吗？').then(function (result) {
-        appCookie.remove('projects');
-        api.clearDb(function (persent) {
-          vm.cacheInfo = parseInt(persent*100)+'%';
-        },function () {
-          vm.cacheInfo = null;
-          //utils.alert('清除成功');
-        },function () {
-          vm.cacheInfo = null;
-          //utils.alert('清除失败');
-        },{
-          timeout:3000
-        });
-        auth.logout();
-      })
-
+      api.uploadTask(function (cfg,item) {
+        return true
+      }).then(function (result) {
+        if(result.rows.length){
+          utils.confirm('您有'+result.rows.length+'条数据未上传，确定清除所有缓存数据并退出吗？').then(function (result) {
+            vm.trueClear([]);
+          })
+        }
+        else {
+          utils.confirm('退出将清除当前人所有缓存数据，确定退出吗?').then(function (result) {
+            vm.trueClear([]);
+          });
+        }
+      });
     }
     //服务器上保存版本信息
     api.szgc.version().then(function (r) {
@@ -47,23 +45,36 @@
     },function () {
       api.setNetwork(vm.networkState);
     });
-    vm.clearCache = function () {
-      utils.confirm('确定清除所有缓存数据吗?').then(function (result) {
-        console.log('r',result);
-        api.clearDb(function (persent) {
-          vm.cacheInfo = parseInt(persent*100)+'%';
-        },function () {
-          vm.cacheInfo = null;
-          utils.alert('清除成功');
-        },function () {
-          vm.cacheInfo = null;
-          utils.alert('清除失败');
-        },{
-          exclude:['v_profile'],
-          timeout:3000
-        })
+    vm.trueClear = function (exclude) {
+      api.clearDb(function (persent) {
+        vm.cacheInfo = parseInt(persent * 100) + '%';
+      }, function () {
+        vm.cacheInfo = null;
+        utils.alert('清除成功');
+      }, function () {
+        vm.cacheInfo = null;
+        utils.alert('清除失败');
+      }, {
+        exclude: exclude,
+        timeout: 3000
       })
-
+    }
+    vm.clearCache = function () {
+      api.uploadTask(function (cfg,item) {
+        return true
+      }).then(function (result) {
+        if(result.rows.length){
+          utils.confirm('您有'+result.rows.length+'条数据未上传，确定清除所有缓存数据吗？').then(function (result) {
+            //console.log('r', result);
+            vm.trueClear(['v_profile']);
+          })
+        }
+      else {
+          utils.confirm('确定清除所有缓存数据吗?').then(function (result) {
+            vm.trueClear(['v_profile']);
+          });
+        }
+      });
     }
   }
 
