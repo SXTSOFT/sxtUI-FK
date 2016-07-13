@@ -379,9 +379,14 @@
           uploadDb = pouchdb('systemupload');
         }
         if(!angular.isFunction(itemOrFilter)){
-          uploadDb.addOrUpdate(itemOrFilter).then(function () {
+          if(networkState==1) {
+            uploadDb.addOrUpdate(itemOrFilter).then(function () {
+              resolve(itemOrFilter);
+            });
+          }
+          else{
             resolve(itemOrFilter);
-          });
+          }
         }
         else{
           uploadDb.findAll(itemOrFilter).then(function (result) {
