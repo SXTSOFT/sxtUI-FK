@@ -261,8 +261,11 @@
           $scope.data.curStep.GroupImg = stash.Step.GroupImg;
           $scope.data.curStep.GroupImg2 = stash.Step.GroupImg2;
         }
-        if($scope.data.curStep.GroupImg2){
+        if(!$scope.data.curStep.GroupImg2){
           $scope.data.curStep.GroupImg2 = sxt.uuid();
+        }
+        if(!$scope.data.curStep.GroupImg){
+          $scope.data.curStep.GroupImg = sxt.uuid();
         }
         $scope.data.batchs.push(batch);
 
@@ -316,6 +319,13 @@
             if (!batch.SupervisorCompanyId)
               batch.SupervisorCompanyId = fd.UnitId;
             $scope.data.construction = nn;
+          }
+          else{
+            nn = nn.concat(results[3].data.Rows);
+            if(nn.length){
+              batch.SupervisorCompanyId = nn[0].UnitId;
+              $scope.data.construction = nn;
+            }
           }
         } else {
           batch.Count = (batch.WKCount || 0) + 1;

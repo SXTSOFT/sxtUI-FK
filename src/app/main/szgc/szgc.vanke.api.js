@@ -329,7 +329,12 @@
         }),
         floors: http.db({
           _id:'v_rooms',
-          idField:'room_id',
+          idField:function (item) {
+            return item.building_id+item.room_id
+          },
+          starKey:function (building_id) {
+            return building_id;
+          },
           dataType:4,
           filter:function (item,building_id) {
             return item.building_id==building_id;
@@ -366,7 +371,12 @@
         }),
         rooms: http.db({
           _id:'v_rooms',
-          idField:'room_id',
+          idField:function (item) {
+            return item.building_id+item.room_id
+          },
+          starKey:function (arg) {
+            return arg.building_id;
+          },
           dataType:4,
           filter:function (item,arg,incHide) {
             item.otype = item.type;
@@ -383,7 +393,12 @@
             return item;
           }
         }).bind(function (arg,incHide) {
-          return get(http.url('/common/v1/buildings/'+arg.building_id+'/rooms', {building_id: arg.building_id, floor:arg.floor, page_size: 0, page_number: 1}));
+          return get(http.url('/common/v1/buildings/'+arg.building_id+'/rooms', {building_id: arg.building_id, floor:arg.floor, page_size: 0, page_number: 1})).then(function (result) {
+            result.data.data.forEach(function (item) {
+              item.building_id=arg.building_id;
+            })
+            return result;
+          });
         },function (result) {
           result.data.data.sort (function (i1, i2) {
             var n1 = getNumName (i1.name),

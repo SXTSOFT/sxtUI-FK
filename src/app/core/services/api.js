@@ -465,7 +465,7 @@
                         if (cfg.filter)
                           return cfg.filter.apply(cfg, [item].concat(args));
                         return true;
-                      }).then(function (r) {
+                      },cfg.starKey && cfg.starKey.apply(cfg,args)).then(function (r) {
                         result.data = r.rows[0];
                         if (!cfg.raiseError || result.data)
                           resolve(result);
@@ -479,7 +479,7 @@
                       if (cfg.filter)
                         return cfg.filter.apply(cfg, [item].concat(args));
                       return true;
-                    }).then(function (r) {
+                    },cfg.starKey && cfg.starKey.apply(cfg,args)).then(function (r) {
                       bindData(result,r.rows,cfg);
                       resolve(result);
                     });
