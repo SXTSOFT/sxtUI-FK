@@ -393,7 +393,7 @@
             return item;
           }
         }).bind(function (arg,incHide) {
-          return get(http.url('/common/v1/buildings/'+arg.building_id+'/rooms', {building_id: arg.building_id, floor:arg.floor, page_size: 0, page_number: 1})).then(function (result) {
+          return get(http.url('/common/v1/buildings/'+arg.building_id+'/rooms', {floor:arg.floor, page_size: 0, page_number: 1})).then(function (result) {
             result.data.data.forEach(function (item) {
               item.building_id=arg.building_id;
             })

@@ -319,11 +319,7 @@
           }).then(function (result) {
             result.data.data.forEach(function (build) {
               tasks.push(function () {
-                return api.szgc.vanke.rooms({
-                  building_id: build.building_id,
-                  page_size: 0,
-                  page_number: 1
-                });
+                return api.szgc.vanke.floors(build.building_id);
               })
             });
           });
