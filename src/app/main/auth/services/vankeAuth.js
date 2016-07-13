@@ -4,7 +4,7 @@
 
   angular
     .module('app.auth')
-    .factory('vankeAuth', vankeAuth);
+    .factory('Auth', vankeAuth);
 
   /** @ngInject */
   function vankeAuth($http,$q,appConfig,$state)
