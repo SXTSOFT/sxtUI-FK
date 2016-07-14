@@ -102,7 +102,7 @@
           delete:{
             delete:true,
             fn:function(measurePointID) {
-              return $http.post($http.url('/Api/MeasurePointApi/DeletePoint',  measurePointID))
+              return $http.post($http.url('/Api/MeasurePointApi/DeletePoint', measurePointID))
             }
           }
         }
@@ -246,9 +246,16 @@
       getZGReginQuesPoint:function(areaId,rectificationID){
         return $http.get($http.url('/api/InspectionRectificationApi/GetPointByAreaIdAndAcceptanceItemId',{areaId:areaId,rectificationID:rectificationID}))
       },
-      getZGlist: function (status) {
-        return $http.get($http.url('/api/InspectionRectificationApi/GetByStatus',{status:status}))
-      },
+      getZGlist:$http.db({
+        _id:'zgList',
+        idField:'InspectionId',
+        dataType:1
+      }).bind(function(status){
+        return $http.get($http.url('/api/InspectionRectificationApi/GetByStatus',{status:status}));
+      }),
+      //getZGlist: function (status) {
+      //  return $http.get($http.url('/api/InspectionRectificationApi/GetByStatus',{status:status}))
+      //},
       getRegionByInspectionID:function(inspectionId){
         return $http.get($http.url('/api/InspectionAreaApi/ByInspectionId',{inspectionId:inspectionId}))
       },
@@ -261,9 +268,16 @@
       getRectification:function(rectificationId){
         return $http.get($http.url('/api/InspectionApi/ByRectificationId',{rectificationId:rectificationId}))
       },
-      createZGReceipt:function(InspectionID,Remarks,Day){
-        return $http.post($http.url('/api/InspectionRectificationApi/Insert'),{InspectionID:InspectionID,Remarks:Remarks,Day:Day})
-      },
+      createZGReceipt:$http.db({
+        _id:'createZGReceipt',
+        idField:'InspectionID',
+        upload:true
+      }).bind(function(InspectionID,Remarks,Day){
+        return $http.post($http.url('/api/InspectionRectificationApi/Insert',{InspectionID:InspectionID,Remarks:Remarks,Day:Day}));
+      }),
+      //createZGReceipt:function(InspectionID,Remarks,Day){
+      //  return $http.post($http.url('/api/InspectionRectificationApi/Insert'),{InspectionID:InspectionID,Remarks:Remarks,Day:Day})
+      //},
       InspectionRectificationUpdateStatus:function (rectificationId,status) {
         return $http.post($http.url('/api/InspectionRectificationApi/UpdateStatus'),{RectificationId:rectificationId,Status:status})
       },

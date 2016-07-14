@@ -71,7 +71,6 @@
       scope.addPhoto = function () {
         scope.data.v.isNew = false;
         xhUtils.photo().then(function (image) {
-
           if(image){
             var img = {
               ProblemRecordFileID:sxt.uuid(),

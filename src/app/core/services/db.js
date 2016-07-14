@@ -101,8 +101,8 @@
         return db.remove(doc);
       });
     },
-    findAll:function (filter) {
-      return this.allDocs({include_docs:true}).then(function (result) {
+    findAll:function (filter,startKey) {
+      return this.allDocs({include_docs:true,startKey:startKey}).then(function (result) {
         var r = {
           "total_rows":result.total_rows,
           "offset":result.offset,
