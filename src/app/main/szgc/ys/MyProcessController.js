@@ -359,14 +359,44 @@
             })
           });
         },
-        function () {
-          return api.szgc.ProjectSettingsSevice.query({treeId:idTree,unitType:1,includeChild:true});
+        function (tasks) {
+          return api.szgc.ProjectSettingsSevice.query({treeId:idTree,unitType:1,includeChild:true}).then(function (result) {
+            var units = [];
+            result.data.Rows.forEach(function (s) {
+              if(units.indexOf(s.UnitId)==-1){
+                units.push(s.UnitId);
+                tasks.push(function () {
+                  return api.szgc.vanke.teams(s.UnitId);
+                })
+              }
+            })
+          });
         },
-        function () {
-          return api.szgc.ProjectSettingsSevice.query({treeId:idTree,unitType:2,includeChild:true});
+        function (tasks) {
+          return api.szgc.ProjectSettingsSevice.query({treeId:idTree,unitType:2,includeChild:true}).then(function (result) {
+            var units = [];
+            result.data.Rows.forEach(function (s) {
+              if(units.indexOf(s.UnitId)==-1){
+                units.push(s.UnitId);
+                tasks.push(function () {
+                  return api.szgc.vanke.teams(s.UnitId);
+                })
+              }
+            })
+          });
         },
-        function () {
-          return api.szgc.ProjectSettingsSevice.query({treeId:idTree,unitType:3,includeChild:true});
+        function (tasks) {
+          return api.szgc.ProjectSettingsSevice.query({treeId:idTree,unitType:3,includeChild:true}).then(function (result) {
+            var units = [];
+            result.data.Rows.forEach(function (s) {
+              if(units.indexOf(s.UnitId)==-1){
+                units.push(s.UnitId);
+                tasks.push(function () {
+                  return api.szgc.vanke.teams(s.UnitId);
+                })
+              }
+            })
+          });
         },
         //验收状态
         function () {
