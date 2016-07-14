@@ -22,7 +22,7 @@
         return $q (function (resolve,reject) {
           $http ({
             method: 'POST',
-            url: sxt.app.api + '/api/Account',
+            url: sxt.app.api + '/token',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'//,
               //'Authorization': 'Basic ' + btoa ('59EEDFCCB53C451488E067522992853B:9d6ab75f921942e61fb43a9b1fc25c63')
@@ -58,7 +58,7 @@
       if(!token || !token.username) {
         return $q (function (resolve, reject) {
           //api.setNetwork(0);
-          $http.get(sxt.app.api +'/api/Session').then(function (d) {
+          $http.get(sxt.app.api +'/api/Security/profile').then(function (d) {
             if(!d.status && !d.data){
               $rootScope.$emit('user:needlogin');
             }
