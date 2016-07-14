@@ -47,7 +47,6 @@
       },function () {
         item.progress = 100;
         item.isOffline = true;
-        //setGxList([item]);
       },function () {
         item.isDown = false;
         utils.alert('下载失败,请检查网络');

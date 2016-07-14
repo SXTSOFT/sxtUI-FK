@@ -7,8 +7,9 @@
         .config(config);
 
     /** @ngInject */
-    function config($ariaProvider, $logProvider, msScrollConfigProvider, $translateProvider, fuseConfigProvider)
+    function config($ariaProvider, $logProvider, msScrollConfigProvider, $translateProvider, fuseConfigProvider,$httpProvider)
     {
+      $httpProvider.interceptors.push('authToken');
       // Enable debug logging
       $logProvider.debugEnabled(true);
 

@@ -11,7 +11,7 @@
   {
     // 第三方登录插件
     var interceptorFactories = this.interceptors = [];
-    var forEach = angular.forEach,loginedUser={};
+    var forEach = angular.forEach,loginedUser;
     // 是否转跳的登录
     var autoLoginPath = false;
 
@@ -79,19 +79,14 @@
             //$state.go('app.auth.login');
           }
           else {
-            profile.username = profile.username||profile.Id;
+            profile.username = profile.username || profile.Id;
             profile.token = token;
             profile.user = user;
-            sxt.cache.setProfile(profile,function(){
-              console.log('save sql',profile);
-              $rootScope.$emit ('user:login', profile);
-              if(!autoLoginPath){
-
-                $state.go('app.xhsc.home')
-                //$location.path('/');
-              }
-            })
-
+            $rootScope.$emit('user:login', profile);
+            if (!autoLoginPath) {
+              $state.go('app.xhsc.home')
+              //$location.path('/');
+            }
           }
         });
       }
