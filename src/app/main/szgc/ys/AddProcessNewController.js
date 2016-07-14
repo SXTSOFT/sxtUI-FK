@@ -790,6 +790,17 @@
         utils.alert('日期格式不对!(yyyy-MM-dd HH:dd:ss)');
         return;
       }
+
+      var isL = true;
+      $scope.targets.yb.forEach(function (y) {
+        if(isL && y.checked && y.points.length==0 ){
+          isL=false;
+        }
+      });
+      if(!isL){
+        utils.alert('有已打勾的指标未输入！');
+        return;
+      }
       //if ($scope.data.pics.length == 0) {
       //  utils.alert('请上传原验收表扫描件');
       //  return;

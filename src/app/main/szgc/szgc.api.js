@@ -178,6 +178,20 @@
           }
         }).bind(function(args){
           return $http.get($http.url('/api/ProcedureBatchSet' , args));
+        },function (result) {
+          var n = {
+            data:{
+              Rows:[]
+            }
+          };
+          result.data.Rows.forEach(function (p) {
+            if(!n.data.Rows.find(function (p1) {
+                return p1.ProcedureId==p.ProcedureId;
+              })){
+              n.data.Rows.push(p);
+            }
+          });
+          return n;
         })
       },
       projectMasterListService:{
