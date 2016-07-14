@@ -491,9 +491,11 @@
               return;
             };
           }
-          if(!(item.partner_id == $scope.data.curHistory.CompanyId || gps.find(function (g) {
+          if(item.partner_id != $scope.data.curHistory.CompanyId)
+            return;
+          if(!gps.find(function (g) {
               return g.id == item.team_id;
-            }))){
+            })){
             return;
           }
           var ns = [];
