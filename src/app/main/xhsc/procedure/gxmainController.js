@@ -28,7 +28,7 @@
 
     vm.download = function(item){
       item.isDown = true;
-      var ix=1,len = 8;
+      var ix=1,len = 6;
       item.progress = ix/len;
       api.task([function () {
         return remote.Project.getDrawings(item.ProjectID)
@@ -40,8 +40,6 @@
         return remote.Procedure.getRegionStatus(item.ProjectID);
       },function () {
         return remote.Procedure.queryProcedure();
-      },function(){
-        return remote.Project.getInspectionList(item.ProjectID);
       },function () {
         return api.setting('project:'+item.ProjectID,{ProjectID:item.ProjectID,date:new Date()});
       }])(function (persent) {
@@ -58,14 +56,46 @@
 
     remote.Procedure.getInspections(1).then(function(r){
       vm.Inspections= [];
+      var list = [];
       if (angular.isArray( r.data)){
         r.data.forEach(function(o){
             if (o.Sign==1){
-              vm.Inspections.push(o);
+                list.push(api.setting('inspectionList:'+ o.InspectionId))
+              //o.offLine = false;
             }
+        });
+        $q.all(list).then(function (rs) {
+          var ix=0;
+          r.data.forEach(function (item) {
+            if(item.Sign == 1)
+            {
+              item.isOffline = rs[ix++]?true:false;
+              vm.Inspections.push(item)
+            }
+          });
+
         });
       }
     });
+
+    vm.loadInspection = function(item){
+      item.isDown = true;
+      var ix = 1,len =2;
+      item.progress = ix/len;
+      api.task([function(){
+        return  remote.Project.getInspectionList(item.InspectionId);
+      },function () {
+        return api.setting('inspectionList:'+item.InspectionId,{InspectionId:item.InspectionId});
+      }])(function (persent) {
+        item.progress = persent*100;
+      },function () {
+        item.progress = 100;
+        item.isOffline = true;
+      },function () {
+        item.isDown = false;
+        utils.alert('下载失败,请检查网络');
+      });
+    }
 
     remote.Procedure.getZGlist(31).then(function (r) {
       vm.zglist = [];
@@ -74,7 +104,6 @@
             vm.zglist.push(o);
         });
       }
-
     });
 
     remote.Procedure.getInspectionInfoBySign(8).then(function (r) {

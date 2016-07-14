@@ -43,12 +43,18 @@
                     var p = r1.data.find(function (p1) {
                       return p1.MeasurePointID == c.PositionID;
                     });
-                    if (p&&p) {
-                      p.geometry = $window.JSON.parse(p.Geometry);
+                    if (p&& p) {
+                      if(p.Geometry){
+                        p.geometry = $window.JSON.parse(p.Geometry);
+                      }else{
+                        p.geometry = p.geometry;
+                      }
                       p.geometry.options.customSeq = true;
                       p.geometry.options.seq = c.ProblemSortName;
+                      c.isNew = false;
                       p.geometry.options.v = c;
                       fg.addData(p.geometry);
+                      //fg.addData(feature)
                     }
                   })
                 })
@@ -107,7 +113,7 @@
             },
             onDelete: function (layer) {
               var id = layer.getValue().$id;
-              remote.Procedure.InspectionPoint.delete({measurePointID:id}).then(function () {
+              remote.Procedure.InspectionPoint.delete({MeasurePointID:id}).then(function (r) {
                 var v = fg.data.find(function (d) {
                   return d.PositionID == id;
                 }),ix = fg.data.indexOf(v);
