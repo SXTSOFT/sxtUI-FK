@@ -65,12 +65,12 @@
         <input style="border:none;width:100%;" ng-model="vm.params.Remarks" placeholder="备注">
       </p>
     </md-list-item>
-    <md-list-item>
-      <label>验收状态</label>
-      <p style="text-align: right;margin-right:70px;">
-        {{vm.value}}<md-switch ng-model="vm.value" ng-true-value="'合格'" ng-init="vm.value='不合格'" ng-false-value="'不合格'" class="md-secondary"></md-switch>
-      </p>
-    </md-list-item>
+    <!--<md-list-item>-->
+      <!--<label>验收状态</label>-->
+      <!--<p style="text-align: right;margin-right:70px;">-->
+        <!--{{vm.value}}<md-switch ng-model="vm.value" ng-true-value="'合格'" ng-init="vm.value='不合格'" ng-false-value="'不合格'" class="md-secondary"></md-switch>-->
+      <!--</p>-->
+    <!--</md-list-item>-->
   </md-list>
   <md-button flex style="display: block;width:100%;margin:10px 0;padding:6px;border:1px solid #d8d8d8;background: #fff;" ng-disabled="!vm.Isfail" ng-click="vm.submitResult()">确认提交</md-button>
   <!--<md-button flex style="display: block;width:100%;margin:10px 0;padding:6px;border:1px solid #d8d8d8;background: #fff;" ui-sref="app.xhsc.gx.fgxtest">确认提交</md-button>-->

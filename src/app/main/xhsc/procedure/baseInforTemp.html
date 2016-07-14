@@ -5,11 +5,11 @@
       <md-list>
         <md-list-item>
           <label>工序</label>
-          <p>工序名称</p>
+          <p>{{baseInfo.AcceptanceItemName}}</p>
         </md-list-item>
         <md-list-item>
           <label>部位</label>
-          <p>{{area.AreaName}}</p>
+          <p>{{area.RegionName}}</p>
         </md-list-item>
         <!--<md-list-item>-->
           <!--<label>监理单位</label>-->
@@ -41,16 +41,16 @@
         <!--</md-list-item>-->
         <md-list-item>
           <label>备注信息</label>
-          <p>{{baseInfo.Describe}}</p>
+          <p>{{baseInfo.Describe || '无'}}</p>
         </md-list-item>
-        <md-list-item>
-          <label>验收状态</label>
-          <p>{{baseInfo.zwStatus}}</p>
-        </md-list-item>
+        <!--<md-list-item>-->
+          <!--<label>验收状态</label>-->
+          <!--<p>{{baseInfo.zwStatus}}</p>-->
+        <!--</md-list-item>-->
       </md-list>
     </div>
   </md-dialog-content>
-  <md-dialog-actions style="padding-top:0;padding-bottom:0;min-height: 40px;">
+  <md-dialog-actions style="padding-top:0;padding-bottom:0;min-height: 44px;">
     <a flex class="new-btn noborder" ng-click="submit()">确定</a>
   </md-dialog-actions>
 </md-dialog>

@@ -3,12 +3,12 @@
   <md-list style="margin-top: 0">
     <md-list-item>
       <label>问题描述</label>
-      <p>{{data[0].Describe}}</p>
+      <p>{{slideContext.layer.options.v.ProblemDescription||ZjRecord.zj.Describe}}</p>
     </md-list-item>
     <md-list-item ng-if="role=='zj'">
       <label>状态 </label>
       <p style="text-align: right;margin-right:70px;">
-        {{data[0].Status==2?'合格':'不合格'}}<md-switch ng-model="data[0].Status" ng-true-value="2"  ng-false-value="4" class="md-secondary"></md-switch>
+        {{ZjRecord.zj.Status==2?'合格':'不合格'}}<md-switch ng-model="ZjRecord.zj.Status" ng-true-value="2"  ng-false-value="4" class="md-secondary"></md-switch>
       </p>
     </md-list-item>
   </md-list>

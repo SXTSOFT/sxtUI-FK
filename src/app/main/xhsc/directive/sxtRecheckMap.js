@@ -71,6 +71,7 @@
               //console.log('b')
             },
             onPopup: function (e) {
+              //alert('popup')
               if(e.layer instanceof L.Stamp) {
                 var edit = mapPopupSerivce.get('mapRecheckMapPopup');
                 if (edit) {

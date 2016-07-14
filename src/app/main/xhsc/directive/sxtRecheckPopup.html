@@ -1,5 +1,5 @@
-<div class="recheck" style="position: fixed;top:0;left:0;bottom:0;right:0;background: transparent;z-index:50;" ng-show="slideShow"></div>
-<div class="slideTop" ng-class="{'slidedown':slideShow}">
+<div class="recheck slideTop" id="recheck" style="position: fixed;top:0;left:0;bottom:0;right:0;background: transparent;z-index:28;box-shadow:0 0 0 transparent;border-bottom: none;" ng-class="{'slidedown':slideShow}"></div>
+<div class="slideTop" id="slideTop" ng-class="{'slidedown':slideShow}">
   <md-list style="margin-top: 0">
     <md-list-item>
       <label>问题描述</label>
@@ -16,7 +16,7 @@
     <md-list-item ng-if="role == 'zb'">
       <label>整改照片</label>
       <p>
-          <span ng-if="Record.zb && Record.zb.images" class="photo" ng-click="playImage(Record.zb.images)">
+          <span ng-if="Record.zb && Record.zb.images.length" class="photo" ng-click="playImage(Record.zb.images)">
             <i>照片</i><i>{{Record.zb.images.length}}</i>
           </span>
         <md-button style="min-width: 40px;" class="addphoto" ng-click="addPhoto()"><img src="app/main/xhsc/images/plus-gx.png" width="40"></md-button>
@@ -56,7 +56,7 @@
     <md-list-item ng-if="role == 'jl'">
       <label>备注</label>
       <p>
-        {{Record.Remark || '无'}}
+        {{Record.zb.Remark || '无'}}
       </p>
     </md-list-item>
     <md-list-item ng-if="role == 'jl'">

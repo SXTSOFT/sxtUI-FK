@@ -95,6 +95,7 @@
       });
       scope.$on('$destroy',function(){
         mapPopupSerivce.remove('mapSelfCheckMapPopup');
+        $(element).remove();
       });
     }
   }

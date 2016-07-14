@@ -9,7 +9,7 @@
     .controller('gxzjcheckController',gxzjcheckController);
 
   /**@ngInject*/
-  function gxzjcheckController($stateParams,remote,$rootScope,$q,$scope,utils){
+  function gxzjcheckController($state,$stateParams,remote,$rootScope,$q,$scope,utils){
     var vm = this;
     vm.InspectionId = $stateParams.InspectionId;
     vm.acceptanceItemID = $stateParams.acceptanceItemID
@@ -135,7 +135,9 @@
     var sendZjResult = $rootScope.$on('sendGxResult',function() {
       remote.Procedure.updataZjStatus(vm.InspectionId).then(function(r){
         if(!r.data.ErrorCode){
-          utils.alert('保存成功');
+          utils.alert('保存成功',null,function(){
+            $state.go("app.xhsc.gx.gxmain");
+          });
         }
       })
     });
