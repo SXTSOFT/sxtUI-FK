@@ -69,7 +69,7 @@
                 });
                 L.marker([0.345703125,0.44921875], {icon: myIcon}).addTo(map).on('click',function () {
                   ys7.token().then(function (token) {
-                    sxt.plugin.playYs7([token,'d5576863efc74427a297d17d157b2843']);
+                    sxt.plugin.playYs7([token,'e5b1c419eeb44175afd6e61e3e225443']);
                   });
                 });
                 var myIcon2 = L.icon({
@@ -79,7 +79,7 @@
                 });
                 L.marker([0.498046875,0.31640625], {icon: myIcon2}).addTo(map).on('click',function () {
                   ys7.token().then(function (token) {
-                    sxt.plugin.playYs7([token,'a231ce71fdd84b43a541526f2eb6cbec']);
+                    sxt.plugin.playYs7([token,'1d11a177ed734bb3bdffe65afc156014']);
                   });
                 });;
                 L.geoJson(feature).addTo(map);
