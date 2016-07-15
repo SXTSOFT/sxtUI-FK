@@ -231,24 +231,55 @@
       postInspection:function(params){
         return $http.post($http.url('/Api/InspectionApi/insert'),params )
       },
-      getInspections:function (status) {
+      //getInspections:function (status) {
+      //  return $http.get($http.url('/api/InspectionApi/GetInspectionInfoList',{status:status}))
+      //},
+      getInspections:$http.db({
+        _id:'inspectionsList',
+        idField:'InspectionId',
+        dataType:1
+      }).bind(function(status){
         return $http.get($http.url('/api/InspectionApi/GetInspectionInfoList',{status:status}))
-      },
+      }),
       getZGlistbyProjectId: function (projectID) {
         return $http.get($http.url('/api/InspectionRectificationApi/List',{projectId:projectID}))
       },
-      getZGById:function (rectificationID) {
-        return $http.get($http.url('/api/InspectionRectificationApi/GetById',{rectificationID:rectificationID}))
-      },
-      getZGReginQues:function(areaId,rectificationID){
+      //getZGById:function (rectificationID) {
+      //  return $http.get($http.url('/api/InspectionRectificationApi/GetById',{rectificationID:rectificationID}))
+      //},
+      getZGById:$http.db({
+        _id:'zgById',
+        idField:'RectificationID',
+        dataType:1
+      }).bind(function(rectificationID){
+        return $http.get($http.url('/api/InspectionRectificationApi/GetById',{rectificationID:rectificationID})).then(function(result){
+          result.data = [result.data];
+          return result;
+        });
+      }),
+      //getZGReginQues:function(areaId,rectificationID){
+      //  return $http.get($http.url('/api/InspectionRectificationApi/ByAreaIdAndAcceptanceItemId',{areaId:areaId,rectificationID:rectificationID}))
+      //},
+      getZGReginQues:$http.db({
+        _id:'zgRegionQues',
+        idField:'PositionID',
+        dataType:1
+      }).bind(function(areaId,rectificationID){
         return $http.get($http.url('/api/InspectionRectificationApi/ByAreaIdAndAcceptanceItemId',{areaId:areaId,rectificationID:rectificationID}))
-      },
-      getZGReginQuesPoint:function(areaId,rectificationID){
+      }),
+      //getZGReginQuesPoint:function(areaId,rectificationID){
+      //  return $http.get($http.url('/api/InspectionRectificationApi/GetPointByAreaIdAndAcceptanceItemId',{areaId:areaId,rectificationID:rectificationID}))
+      //},
+      getZGReginQuesPoint:$http.db({
+        _id:'zgRegionQuesPoint',
+        idField:'MeasurePointID',
+        dataType:1
+      }).bind(function(areaId,rectificationID){
         return $http.get($http.url('/api/InspectionRectificationApi/GetPointByAreaIdAndAcceptanceItemId',{areaId:areaId,rectificationID:rectificationID}))
-      },
+      }),
       getZGlist:$http.db({
         _id:'zgList',
-        idField:'InspectionId',
+        idField:'RectificationID',
         dataType:1
       }).bind(function(status){
         return $http.get($http.url('/api/InspectionRectificationApi/GetByStatus',{status:status}));
@@ -272,8 +303,8 @@
         _id:'createZGReceipt',
         idField:'InspectionID',
         upload:true
-      }).bind(function(InspectionID,Remarks,Day){
-        return $http.post($http.url('/api/InspectionRectificationApi/Insert',{InspectionID:InspectionID,Remarks:Remarks,Day:Day}));
+      }).bind(function(data){
+        return $http.post($http.url('/api/InspectionRectificationApi/Insert'),data);
       }),
       //createZGReceipt:function(InspectionID,Remarks,Day){
       //  return $http.post($http.url('/api/InspectionRectificationApi/Insert'),{InspectionID:InspectionID,Remarks:Remarks,Day:Day})

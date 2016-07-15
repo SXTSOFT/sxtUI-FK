@@ -9,7 +9,7 @@
     .controller('gxresultController',gxresultController);
 
   /** @ngInject*/
-  function gxresultController($mdDialog,$stateParams,$state,$scope,remote,utils){
+  function gxresultController($mdDialog,$stateParams,$state,$scope,remote,utils,db,sxt){
     var vm = this;
     vm.params = $stateParams;
     vm.gxname = $stateParams.acceptanceItemName;
@@ -96,9 +96,25 @@
     }
 
     vm.Isfail=true;
+    var zgReceipt = db('createZGReceipt');
     vm.submitResult = function(){
       //console.log('time',vm.time)
-      remote.Procedure.createZGReceipt(vm.params.InspectionID,vm.params.Remarks,vm.time).then(function(r){
+
+      vm.data ={
+        InspectionID:vm.params.InspectionID,
+        Remarks:vm.params.Remarks,
+        Day:vm.time
+      }
+      //
+      //zgReceipt.addOrUpdate(vm.data).then(function(res){
+      //  //console.log('res',res)
+      //  utils.alert("暂存成功",null,function(){
+      //    $state.go("app.xhsc.gx.gxmain",{index:0});
+      //  });
+      //})
+
+      remote.Procedure.createZGReceipt(vm.data).then(function(r){
+        console.log(r)
           if (r.data&&r.data.ErrorCode==0){
             utils.alert("保存成功",null,function(){
               $state.go("app.xhsc.gx.gxmain",{index:0});

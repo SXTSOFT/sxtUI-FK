@@ -9,7 +9,7 @@
     .controller('gxzgController',gxzgController);
 
   /** @ngInject */
-  function gxzgController($state,$rootScope,$scope,$mdDialog,remote,$timeout,$q,utils){
+  function gxzgController($state,$rootScope,$scope,$mdDialog,remote,$timeout,$q,utils,db){
     var vm = this;
     $rootScope.title = $state.params.Role == 'zb'?'整改':'复验';
       vm.ProjectID=$state.params.ProjectID;
@@ -20,7 +20,8 @@
     vm.InspectionID = $state.params.InspectionID;
 
     remote.Procedure.getZGById(RectificationID).then(function (r) {
-      vm.Rectification = r.data;
+      console.log('r',r)
+      vm.Rectification = r.data[0];
       vm.pareaList = vm.Rectification.Children;
       vm.regionSelect = vm.pareaList[0];
       vm.regionSelect.hasCheck=true;

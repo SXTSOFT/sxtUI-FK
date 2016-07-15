@@ -40,7 +40,7 @@
                     }
                   }),
                   center: [.48531902026005, .5],
-                  zoom: 0,
+                  zoom: 1,
                   minZoom: 0,
                   maxZoom: 3,
                   scrollWheelZoom: true,
