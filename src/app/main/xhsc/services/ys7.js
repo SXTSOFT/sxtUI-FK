@@ -92,7 +92,10 @@
     return {
       token:getToken,
       request:request,
-      post:post
+      post:post,
+      cameraList:function (args) {
+        return post('cameraList',angular.extend({pageSize:1000,pageStart:0},args||{}));
+      }
     };
   }
 })();
