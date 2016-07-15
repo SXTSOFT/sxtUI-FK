@@ -10,7 +10,7 @@
     .controller('HomeController', HomeController);
 
   /** @ngInject */
-  function HomeController($scope,auth,$state,$rootScope,$timeout, $mdBottomSheet)
+  function HomeController($scope,auth,$state,$rootScope,$timeout, $mdBottomSheet,ys7)
   {
 
     var vm = this;
@@ -37,6 +37,9 @@
 
     }
 
+/*    ys7.post('cameraList',{pageSize:1000,pageStart:0}).then(function (r) {
+      console.log(r);
+    })*/
     //function markerClick($current){
     //  console.log('current',JSON.stringify([{project_id:$current.projectId,name:$current.title}]))
     //

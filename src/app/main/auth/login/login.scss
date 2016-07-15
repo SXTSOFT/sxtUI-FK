@@ -1,7 +1,6 @@
 #login-form{
-
-   width: 300px;
-
+   //width: 300px;
+  padding:40px 60px;background: rgba(255,255,255,.95);border-radius:8px;box-shadow: 0 0 8px #ccc;width: 50%;position: absolute;top:50%;left: 50%;transform: translate(-50%,-50%);
   .logo{
     margin-top: 25px;
     text-align: center;
@@ -59,12 +58,19 @@
     #login-form-wrapper {
 
       #login-form {
-        width: 100%;
-
+        //width: 100%;
+        padding:20px 30px;width: 80%;
+        md-input-container{
+          margin:4px 0;
+        }
+        .login-name{
+          margin:20px 0;
+        }
         form {
 
           .md-button {
             width: 90%;
+            font-size:18px;
           }
         }
 
@@ -80,3 +86,8 @@
   }
 
 }
+//@media screen and (max-width: 700px){
+//  #login-form{
+//    padding:40px 60px;background: rgba(255,255,255,.95);border-radius:8px;box-shadow: 0 0 8px #ccc;width: 50%;position: absolute;top:50%;left: 50%;transform: translate(-50%,-50%);
+//  }
+//}

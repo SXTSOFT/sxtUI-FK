@@ -28,7 +28,7 @@
 
     vm.download = function(item){
       item.isDown = true;
-      var ix=1,len = 8;
+      var ix=1,len = 6;
       item.progress = ix/len;
       api.task([function () {
         return remote.Project.getDrawings(item.ProjectID)
@@ -40,8 +40,6 @@
         return remote.Procedure.getRegionStatus(item.ProjectID);
       },function () {
         return remote.Procedure.queryProcedure();
-      },function(){
-        return remote.Project.getInspectionList(item.ProjectID);
       },function () {
         return api.setting('project:'+item.ProjectID,{ProjectID:item.ProjectID,date:new Date()});
       }])(function (persent) {
@@ -49,7 +47,6 @@
       },function () {
         item.progress = 100;
         item.isOffline = true;
-        //setGxList([item]);
       },function () {
         item.isDown = false;
         utils.alert('下载失败,请检查网络');
@@ -58,23 +55,109 @@
 
     remote.Procedure.getInspections(1).then(function(r){
       vm.Inspections= [];
+      var list = [];
       if (angular.isArray( r.data)){
         r.data.forEach(function(o){
             if (o.Sign==1){
-              vm.Inspections.push(o);
+                list.push(api.setting('inspectionList:'+ o.InspectionId))
+              //o.offLine = false;
             }
+        });
+        $q.all(list).then(function (rs) {
+          var ix=0;
+          r.data.forEach(function (item) {
+            if(item.Sign == 1)
+            {
+              item.isOffline = rs[ix++]?true:false;
+              vm.Inspections.push(item)
+            }
+          });
+
         });
       }
     });
 
+    vm.loadInspection = function(item){
+      item.isDown = true;
+      var ix = 1,len =2;
+      item.progress = ix/len;
+      api.task([function(){
+        return  remote.Project.getInspectionList(item.InspectionId);
+      },function () {
+        return api.setting('inspectionList:'+item.InspectionId,{InspectionId:item.InspectionId});
+      }])(function (persent) {
+        item.progress = persent*100;
+      },function () {
+        item.progress = 100;
+        item.isOffline = true;
+      },function () {
+        item.isDown = false;
+        utils.alert('下载失败,请检查网络');
+      });
+    }
+    vm.zgdownload = function(item){
+      item.isDown = true;
+      var ix = 1,len =2;
+      item.progress = ix/len;
+      api.task([function(tasks){
+        return  remote.Procedure.getZGById(item.RectificationID).then(function(result){
+          var promise=[];
+          result.data[0].Children.forEach(function(r){
+            promise=[
+              remote.Procedure.getZGReginQues(r.AreaID,item.RectificationID),
+              remote.Procedure.getZGReginQuesPoint(r.AreaID,item.RectificationID)
+            ]
+            tasks.push(function(){
+              return $q.all(promise);
+            })
+          })
+        });
+      },function () {
+        return api.setting('zgList:'+item.RectificationID,{RectificationID:item.RectificationID});
+      }])(function (persent) {
+        item.progress = persent*100;
+      },function () {
+        item.progress = 100;
+        item.isOffline = true;
+      },function () {
+        item.isDown = false;
+        utils.alert('下载失败,请检查网络');
+      });
+    }
+    vm.upInspection = function(){
+      api.upload(function(cfg,item){
+        return true;
+      },function(){
+
+      },function(){
+        utils.alert('上传成功',null,function(){
+          $state.go("app.xhsc.gx.gxmain",{index:0});
+        });
+      },function(){
+        utils.alert('上传失败');
+      },{
+        uploaded:function (cfg,row,result) {
+          cfg.db.delete(row._id);
+        }
+
+      })
+    }
     remote.Procedure.getZGlist(31).then(function (r) {
       vm.zglist = [];
+      var list=[]
       if (angular.isArray(r.data)){
         r.data.forEach(function(o){
-            vm.zglist.push(o);
+           // vm.zglist.push(o);
+          list.push(api.setting('zgList:'+ o.RectificationID))
+        });
+        $q.all(list).then(function (rs) {
+          var ix=0;
+          r.data.forEach(function (item) {
+              item.isOffline = rs[ix++]?true:false;
+              vm.zglist.push(item);
+          });
         });
       }
-
     });
 
     remote.Procedure.getInspectionInfoBySign(8).then(function (r) {
@@ -93,7 +176,7 @@
     //vm.selectedIndex = 2;
 
     vm.zg = function(r){
-      $state.go('app.xhsc.gx.gxzg',{Role:'zb',InspectionID: r.InspectionID,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID});
+      $state.go('app.xhsc.gx.gxzg',{Role:'zb',InspectionID: r.InspectionId,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID});
     };
 
     vm.fj = function (r) {
