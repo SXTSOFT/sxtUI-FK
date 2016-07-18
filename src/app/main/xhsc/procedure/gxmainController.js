@@ -52,7 +52,9 @@
         utils.alert('下载失败,请检查网络');
       });
     };
-
+    if(api.getNetwork() == 1){
+      vm.noNet = true;
+    }
     remote.Procedure.getInspections(1).then(function(r){
       vm.Inspections= [];
       var list = [];
@@ -60,7 +62,6 @@
         r.data.forEach(function(o){
             if (o.Sign==1){
                 list.push(api.setting('inspectionList:'+ o.InspectionId))
-              //o.offLine = false;
             }
         });
         $q.all(list).then(function (rs) {
@@ -131,7 +132,25 @@
 
       },function(){
         utils.alert('上传成功',null,function(){
-          $state.go("app.xhsc.gx.gxmain",{index:0});
+          $state.go("app.xhsc.gx.gxmain");
+        });
+      },function(){
+        utils.alert('上传失败');
+      },{
+        uploaded:function (cfg,row,result) {
+          cfg.db.delete(row._id);
+        }
+
+      })
+    }
+    vm.uploadzg = function(item){
+      api.upload(function(cfg,item){
+        return true;
+      },function(){
+
+      },function(){
+        utils.alert('上传成功',null,function(){
+          $state.go("app.xhsc.gx.gxmain");
         });
       },function(){
         utils.alert('上传失败');

@@ -59,7 +59,7 @@
         return $q (function (resolve, reject) {
           //api.setNetwork(0);
           $http.get(sxt.app.api +'/api/Security/profile').then(function (d) {
-            if(!d.status && !d.data){
+            if(!d && !d.status && !d.data){
               $rootScope.$emit('user:needlogin');
             }
             resolve(d && d.data);

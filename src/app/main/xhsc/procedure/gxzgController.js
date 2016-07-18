@@ -194,7 +194,11 @@
           }
           $scope.submit = function(){
             if(vm.role=='zb'){
-              remote.Procedure.InspectionRectificationUpdateStatus(RectificationID,16).then(function () {
+              var data={
+                RectificationId:RectificationID,
+                Status:16
+              }
+              remote.Procedure.InspectionRectificationUpdateStatus(data).then(function (r) {
                 utils.alert('提交成功',null,function(){
                   $mdDialog.hide();
                   $state.go("app.xhsc.gx.gxmain");

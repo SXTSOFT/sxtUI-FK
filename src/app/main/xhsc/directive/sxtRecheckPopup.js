@@ -7,7 +7,7 @@
     .module('app.xhsc')
     .directive('sxtRecheckPopup',sxtRecheckPopup);
   /** @ngInject */
-  function sxtRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote,$q,utils){
+  function sxtRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote,$q,utils,api){
     return {
       restrict:'E',
       scope:{
@@ -50,12 +50,9 @@
               Remark:''
             };
           }
-          //remote.Procedure.
         })
-        //$timeout(function(){
-        //  scope.slideShowbg = true;
-        //},200)
         scope.value =scope.data.value.Status;
+
       }
 
       scope.playImage = function (imgs) {
@@ -110,10 +107,10 @@
             utils.alert('请上传整改后照片');
             return;
           }
-          createZb(true).then(function () {
-            remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
+          if(api.getNetwork() == 1){
+            createZb(true).then(function () {
+              remote.Procedure.InspectionCheckpoint.create(scope.data.value);
               scope.slideShow = false;
-              //scope.slideShowbg = false;
               if(scope.data.value.Status == 8){
                 scope.context.layer.options.color = '#faa526';
                 scope.context.layer.setStyle('color','#faa526');
@@ -121,9 +118,23 @@
                 scope.context.layer.options.color = 'red';
                 scope.context.layer.setStyle('color','red');
               }
-              //scope.context.layer.redraw();
             });
-          });
+          }else{
+            createZb(true).then(function () {
+              remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
+                scope.slideShow = false;
+                if(scope.data.value.Status == 8){
+                  scope.context.layer.options.color = '#faa526';
+                  scope.context.layer.setStyle('color','#faa526');
+                }else{
+                  scope.context.layer.options.color = 'red';
+                  scope.context.layer.setStyle('color','red');
+                }
+                //scope.context.layer.redraw();
+              });
+            });
+          }
+
         }
         else{
           scope.data.value.Status = scope.data.value.Status==2?2:4;

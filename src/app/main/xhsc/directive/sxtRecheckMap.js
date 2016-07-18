@@ -6,7 +6,7 @@
     .module('app.xhsc')
     .directive('sxtRecheckMap',sxtRecheckMap);
   /** @ngInject */
-  function sxtRecheckMap($timeout,remote,mapPopupSerivce,sxt,utils,$q,$window) {
+  function sxtRecheckMap($timeout,remote,mapPopupSerivce,sxt,utils,$q,$window,api,db) {
     return {
       scope:{
         item:'=sxtRecheckMap',
@@ -33,6 +33,9 @@
             stamp.disable();
             map._map.removeLayer(fg);
           }
+          remote.Procedure.getZGReginQuesPoint(scope.regionId,scope.item).then(function(t){
+            console.log('t',t)
+          })
           scope.ques=[];
           regionId = scope.regionId;
           fg = new L.SvFeatureGroup({
@@ -50,6 +53,7 @@
                     var geo = $window.JSON.parse(p.Geometry);
                     geo.options.v = item;
                     geo.geometry.options={};
+
                     if(item.Status == 2){
                       geo.options.color ='#169e49';
                     }
