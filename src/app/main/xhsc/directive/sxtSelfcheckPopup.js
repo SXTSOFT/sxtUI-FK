@@ -61,13 +61,8 @@
         remote.Procedure.updataZjPoint(scope.slideId,scope.ZjRecord.zj.Status).then(function (r) {
           if(r.data.ErrorCode == 0){
             scope.slideShow = false;
-            if(scope.ZjRecord.zj.Status == 2){
-              scope.slideContext.layer.options.color='#169e49';
-              scope.slideContext.layer.setStyle('color','#169e49');
-            }else{
-              scope.slideContext.layer.options.color='red';
-              scope.slideContext.layer.setStyle('color','red');
-            }
+            scope.slideContext.fg.updateStatus(scope.slideContext.layer.properties.$id,scope.ZjRecord.zj.Status);
+
             //scope.slideContext.layer.redraw();
           }
         });

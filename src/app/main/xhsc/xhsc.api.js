@@ -146,8 +146,8 @@
             filter:function (item,AcceptanceItemID,AreaID) {
               return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID;
             },
-            fn:function (acceptanceItemId,areaId) {
-              return $http.get($http.url('/Api/InspectionCheckpointApi/ByAreaIdAndAcceptanceItemId',{areaId:areaId,acceptanceItemId:acceptanceItemId}));
+            fn:function (acceptanceItemId,areaId,inspectionId) {
+              return $http.get($http.url('/Api/InspectionCheckpointApi/ByAreaIdAndAcceptanceItemId',{areaId:areaId,acceptanceItemId:acceptanceItemId,inspectionId:inspectionId}));
             }
           },
           create:{
@@ -290,11 +290,11 @@
       getRegionByInspectionID:function(inspectionId){
         return $http.get($http.url('/api/InspectionAreaApi/ByInspectionId',{inspectionId:inspectionId}))
       },
-      getReginQues:function(areaId,acceptanceItemId){
-        return $http.get($http.url('/api/InspectionIndexApi/ByAreaIdAndAcceptanceItemId',{areaId:areaId,acceptanceItemId:acceptanceItemId}))
+      getReginQues:function(areaId,acceptanceItemId,inspectionId){
+        return $http.get($http.url('/api/InspectionIndexApi/ByAreaIdAndAcceptanceItemId',{areaId:areaId,acceptanceItemId:acceptanceItemId,inspectionId:inspectionId}))
       },
-      getPoints:function(areaId,acceptanceItemId){
-        return $http.get($http.url('/api/InspectionCheckpointApi/ByAreaIdAndAcceptanceItemId',{areaId:areaId,acceptanceItemId:acceptanceItemId}))
+      getPoints:function(areaId,acceptanceItemId,inspectionId){
+        return $http.get($http.url('/api/InspectionCheckpointApi/ByAreaIdAndAcceptanceItemId',{areaId:areaId,acceptanceItemId:acceptanceItemId,inspectionId:inspectionId}))
       },
       getRectification:function(rectificationId){
         return $http.get($http.url('/api/InspectionApi/ByRectificationId',{rectificationId:rectificationId}))
@@ -321,8 +321,8 @@
       getInspectionInfoBySign:function(sign){
         return $http.get($http.url('/Api/InspectionApi/BySign',{sign:sign}))
       },
-      insertJlfy:function(InspectionID,Remarks,Day){
-        return $http.post($http.url('/api/InspectionRectificationApi/ReviewInsert'),{InspectionID:InspectionID,Remarks:Remarks,Day:Day})
+      insertJlfy:function(RectificationID,Remarks,Day){
+        return $http.post($http.url('/api/InspectionRectificationApi/ReviewInsert'),{RectificationID:RectificationID,Remarks:Remarks,Day:Day})
       }
     },
     Assessment:{

@@ -87,7 +87,7 @@
               _t.WPAcceptanceList = _t.ProblemLibraryList;
               _t.SpecialtyName = _t.ProblemClassifyName;
               _t.ProblemLibraryList.forEach(function(_tt){
-                _tt.AcceptanceItemName = _tt.ProblemDescription;
+                _tt.AcceptanceItemName = _tt.ProblemSortName +'.'+ _tt.ProblemDescription;
               })
             })
           })

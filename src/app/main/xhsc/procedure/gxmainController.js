@@ -54,27 +54,7 @@
     };
 
     remote.Procedure.getInspections(1).then(function(r){
-      vm.Inspections= [];
-      var list = [];
-      if (angular.isArray( r.data)){
-        r.data.forEach(function(o){
-            if (o.Sign==1){
-                list.push(api.setting('inspectionList:'+ o.InspectionId))
-              //o.offLine = false;
-            }
-        });
-        $q.all(list).then(function (rs) {
-          var ix=0;
-          r.data.forEach(function (item) {
-            if(item.Sign == 1)
-            {
-              item.isOffline = rs[ix++]?true:false;
-              vm.Inspections.push(item)
-            }
-          });
-
-        });
-      }
+      vm.Inspections= r.data;
     });
 
     vm.loadInspection = function(item){

@@ -113,15 +113,7 @@
           createZb(true).then(function () {
             remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
               scope.slideShow = false;
-              //scope.slideShowbg = false;
-              if(scope.data.value.Status == 8){
-                scope.context.layer.options.color = '#faa526';
-                scope.context.layer.setStyle('color','#faa526');
-              }else{
-                scope.context.layer.options.color = 'red';
-                scope.context.layer.setStyle('color','red');
-              }
-              //scope.context.layer.redraw();
+              scope.context.updateStatus(scope.data.value.PositionID,scope.data.value.Status);
             });
           });
         }
@@ -129,15 +121,7 @@
           scope.data.value.Status = scope.data.value.Status==2?2:4;
           remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
             scope.slideShow = false;
-            //scope.slideShowbg = false;
-            if(scope.data.value.Status == 2){
-              scope.context.layer.options.color = '#169e49';
-              scope.context.layer.setStyle('color','#169e49');
-            }else{
-              scope.context.layer.options.color = 'red';
-              scope.context.layer.setStyle('color','red');
-            }
-            //scope.context.layer.redraw();
+            scope.context.updateStatus(scope.data.value.PositionID,scope.data.value.Status);
           });
         }
       }
