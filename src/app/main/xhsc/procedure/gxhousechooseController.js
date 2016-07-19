@@ -18,6 +18,7 @@
       acceptanceItemName = $stateParams.acceptanceItemName,
       role=$stateParams.role,
       areaId = $stateParams.areaId;
+    vm.maxRegion = $stateParams.maxRegion;
 
     $rootScope.title = $stateParams.acceptanceItemName;
     if(role == "zb"){
@@ -33,28 +34,55 @@
         yzg:0,//已整改
         wzg:0//未整改
       }
-      function  setNum(status){
-        vm.nums.qb++;
-        switch (status){
-          case  0:
-            vm.nums.wtj++;
-          break;
-          case  1:
-            vm.nums.dy++;
-            break;
-          case  2:
-            vm.nums.hg++;
-            break;
-          case  4:
-            vm.nums.bhg++;
-            break;
-          case  8:
-            vm.nums.yzg++;
-            break;
-          case  16:
-            vm.nums.wzg++;
-            break;
+      function  setNum(status,region){
+        if(vm.maxRegion >8){
+          vm.nums.qb++;
+          switch (status){
+            case  0:
+              vm.nums.wtj++;
+              break;
+            case  1:
+              vm.nums.dy++;
+              break;
+            case  2:
+              vm.nums.hg++;
+              break;
+            case  4:
+              vm.nums.bhg++;
+              break;
+            case  8:
+              vm.nums.yzg++;
+              break;
+            case  16:
+              vm.nums.wzg++;
+              break;
+          }
+        }else{
+          if(region.RegionType == 8){
+            vm.nums.qb++;
+            switch (status){
+              case  0:
+                vm.nums.wtj++;
+                break;
+              case  1:
+                vm.nums.dy++;
+                break;
+              case  2:
+                vm.nums.hg++;
+                break;
+              case  4:
+                vm.nums.bhg++;
+                break;
+              case  8:
+                vm.nums.yzg++;
+                break;
+              case  16:
+                vm.nums.wzg++;
+                break;
+            }
+          }
         }
+
 
       }
       //状态设置与用户区域权限
@@ -87,7 +115,7 @@
         region.Percentage = percentage;
         region.status = status;
         region.style=ConvertClass(status);
-        setNum(status);
+        setNum(status,region);
       }
       //状态设置
       function statusSetting(status,region){

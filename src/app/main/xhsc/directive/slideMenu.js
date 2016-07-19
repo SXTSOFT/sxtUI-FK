@@ -68,9 +68,11 @@
        // console.log('current',scope.current)
       });
       scope.goToLink = function (item) {
+
+        console.log('vm',item)
         if(!scope.showCheck){
           if (scope.role){
-            $state.go('app.xhsc.gx.gxhousechoose',{role:scope.role,acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId})
+            $state.go('app.xhsc.gx.gxhousechoose',{role:scope.role,acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId,maxRegion:item.maxRegion})
           }else {
             $state.go('app.xhsc.gx.zjhouseChoose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId})
           }

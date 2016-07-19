@@ -1093,7 +1093,8 @@ md-tabs[md-align-tabs="bottom"]{
     }
     .md-button{
       margin: 0;
-      padding:0;
+      //padding:0;
+      text-align: left;
     }
     .md-list-item-inner {
       > md-checkbox{
@@ -1117,30 +1118,6 @@ md-tabs[md-align-tabs="bottom"]{
         }
       }
     }
-    //md-checkbox{
-    //  width:18px;
-    //  height:18px;
-    //  .md-container{
-    //    width:18px;
-    //    height:18px;
-    //  }
-    //  .md-icon{
-    //    background: url(/app/toolbar/images/check.png);
-    //    border-width:0;
-    //    width:18px;
-    //    height:18px;
-    //    border-radius: 0;
-    //    overflow: hidden;
-    //  }
-    //  &.md-vanke-theme{
-    //    &.md-checked {
-    //      .md-icon{
-    //        background: url(/app/toolbar/images/checked.png);
-    //        background-color:transparent;
-    //      }
-    //    }
-    //  }
-    //}
     i{
       &.myselect{
         display: inline-block;box-sizing:border-box;width:18px;height:18px;
@@ -1157,7 +1134,9 @@ md-tabs[md-align-tabs="bottom"]{
       border-bottom:1px solid #dedede;
     }
     .md-button{
-      padding:6px 0;
+      padding:6px 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
       &.md-vanke-theme{
         &:not([disabled]){
           &:hover{
