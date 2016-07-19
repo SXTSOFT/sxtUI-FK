@@ -157,6 +157,17 @@
           }
         }
       })
+      .state('app.szgc.ybgcResultT1', {
+        noBack:true,
+        title    :'一户一档',
+        url      : '/ybgcResultT1',
+        views    : {
+          'content@app': {
+            controller: 'yhydController as vm',
+            templateUrl: 'app/main/szgc/report/yuyd.html'
+          }
+        }
+      })
       .state('app.szgc.report.viewBath', {
         title :'质量总表',
         url: '/viewBath',
