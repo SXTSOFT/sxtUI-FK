@@ -9,7 +9,7 @@
     .controller('gxzgController',gxzgController);
 
   /** @ngInject */
-  function gxzgController($state,$rootScope,$scope,$mdDialog,remote,$timeout,$q,utils,db){
+  function gxzgController($state,$rootScope,$scope,$mdDialog,remote,$timeout,$q,utils,xhUtils){
     var vm = this;
     $rootScope.title = $state.params.Role == 'zb'?'整改':'复验';
       vm.ProjectID=$state.params.ProjectID;
@@ -108,37 +108,7 @@
     vm.qyslide = function(){
       vm.qyslideShow = !vm.qyslideShow;
     }
-    $scope.times = [{
-      value:6,
-      time:'6小时'
-    },{
-      value:12,
-      time:'12小时'
-    },{
-      value:24,
-      time:'1天'
-    },{
-      value:24*2,
-      time:'2天'
-    },{
-      value:24*3,
-      time:'3天'
-    },{
-      value:24*4,
-      time:'4天'
-    },{
-      value:24*5,
-      time:'5天'
-    },{
-      value:24*6,
-      time:'6天'
-    },{
-      value:24*7,
-      time:'7天'
-    },{
-      value:24*15,
-      time:'15天'
-    }];
+    $scope.times = xhUtils.zgDays();
     var gxzgChanged = $rootScope.$on('sendGxResult',function(){
       console.log('time',$scope)
       var  msg=[];
@@ -158,37 +128,7 @@
           $scope.role = vm.role;
           $scope.remark = '备注';
           $scope.time= 24*7;
-          $scope.times = [{
-            value:6,
-            time:'6小时'
-          },{
-            value:12,
-            time:'12小时'
-          },{
-            value:24,
-            time:'1天'
-          },{
-            value:24*2,
-            time:'2天'
-          },{
-            value:24*3,
-            time:'3天'
-          },{
-            value:24*4,
-            time:'4天'
-          },{
-            value:24*5,
-            time:'5天'
-          },{
-            value:24*6,
-            time:'6天'
-          },{
-            value:24*7,
-            time:'7天'
-          },{
-            value:24*15,
-            time:'15天'
-          }];
+          $scope.times = xhUtils.zgDays();
           $scope.cancel = function(){
             $mdDialog.hide();
           }
@@ -207,12 +147,17 @@
             }
             else{
               console.log('time',$scope)
-              remote.Procedure.insertJlfy($scope.InspectionID,$scope.remark,$scope.time).then(function(r){
+              remote.Procedure.insertJlfy(RectificationID,$scope.remark,$scope.time).then(function(r){
                 if (r.data.ErrorCode==0){
                   utils.alert("提交成功",null,function(){
                     vm.Isfail=false;
                     $mdDialog.hide();
                     $state.go("app.xhsc.gx.gxmain");
+                  });
+                }
+                else{
+                  utils.alert("失败",null,function(){
+                    vm.Isfail=true;
                   });
                 }
               })

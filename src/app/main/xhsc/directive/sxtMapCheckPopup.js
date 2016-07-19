@@ -50,8 +50,8 @@
 
       scope.removeLayer = function(){
         scope.isSaveData = false;
-        var layer = scope.context.layer;
-        layer._fg.removeLayer(layer);
+        var c = scope.context;
+        c.fg.delete(c.layer);
       };
       scope.cancelEdit = function(saveData){
         scope.isSaveData = saveData||false;

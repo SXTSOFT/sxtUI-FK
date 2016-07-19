@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Created by jiuyuong on 2016/6/22.
  */
 (function () {
@@ -11,7 +11,6 @@
       scope:{
         item:'=sxtMapSelfCheck',
         items:'=',
-        projectId:'=',
         procedure:'=',
         regionId:'=',
         inspectionId:'='
@@ -20,55 +19,61 @@
     };
 
     function link(scope,element,attr,ctrl) {
-      var map,fg,stamp,regionId;
+      var map,fg;
       var install =function () {
         if (!map) {
-          map = new L.SXT.Project(element[0], {
+          map = new $window.L.glProject(element[0], {
             map: {
               zoomControl: false
             }
           });
-          map._map.removeControl(map._map.zoomControl);
-          if(fg && scope.regionId!=regionId){
-            stamp.disable();
-            map._map.removeLayer(fg);
+          fg = $window.mapboxgl.Plan({
+            onChangeMode:function (mode,op,cb) {
+              if(mode && !op){
+                scope.item = {
+                  ProblemID:null,
+                  ProblemSortName:'✔',//'',
+                  ProblemDescription:''
+                };
           }
-          regionId = scope.regionId;
-          fg = new L.SvFeatureGroup({
-            onLoad: function () {
-              remote.Procedure.InspectionCheckpoint.query(scope.procedure,scope.regionId).then(function (r) {
+              cb();
+            },
+            onLoad: function (cb) {
+              console.log('scope.inspectionId',scope.inspectionId);
+              remote.Procedure.InspectionCheckpoint.query(scope.procedure,scope.regionId,scope.inspectionId).then(function (r) {
                 remote.Procedure.InspectionPoint.query(scope.inspectionId,scope.procedure, scope.regionId).then(function (r1) {
-                  fg.data = r.data;
+                  fg.data = r.data,fs=[];
                   r.data.forEach(function (c) {
                     var p = r1.data.find(function (p1) {
                       return p1.MeasurePointID == c.PositionID;
                     });
-                    if (p) {
+                    if (p && p) {
+                      if(p.Geometry){
                       p.geometry = $window.JSON.parse(p.Geometry);
-                      p.geometry.options.customSeq = true;
-                      p.geometry.options.seq = c.ProblemSortName;
-                      p.geometry.options.v = c;
-                      if(c.Status == 2){
-                        p.geometry.options.color='#169e49';
                       }else{
-                        p.geometry.options.color='red';
+                        p.geometry = p.geometry;
                       }
-                      fg.addData(p.geometry);
+                      p.geometry.properties.seq = c.ProblemSortName;
+                      if(p.geometry.geometry.type == 'Stamp')
+                        p.geometry.geometry.type = 'Point';
+                      p.geometry.properties.Status = c.Status;
+                      fs.push(p.geometry);
                     }
-                  })
+                  });
+                  scope.item = null;
+                  fg.addData(fs,false);
+                  cb();
                 })
               });
             },
-            onUpdate: function (layer, isNew, group) {
-              var point = layer.toGeoJSON();
+            onUpdate: function (layer, isNew, group,cb) {
               if(isNew){
-                layer.updateValue({
-                  seq: scope.item.ProblemSortName
-                });
+                layer.properties.seq = scope.item.ProblemSortName;
+                layer.properties.Status = scope.item.ProblemID?1:2;
               }
-              point = {
-                MeasurePointID:point.properties.$id,
-                geometry:point
+              var point = {
+                MeasurePointID:layer.properties.$id,
+                geometry:layer
               };
               remote.Procedure.InspectionPoint.create(point);
               if(isNew || !fg.data.find(function (d) {
@@ -89,13 +94,15 @@
                 }
                 if(!v.IndexPointID){
                   v.Status = 2;
-                  point.geometry.options.color='#169e49';
+                  point.geometry.properties.Status = 2;
                 }
                 fg.data.push(v);
+                fg.changeMode();
                 remote.Procedure.InspectionCheckpoint.create(v);
               }
+              cb(layer);
             },
-            onPopupClose: function (e) {
+            onPopupClose: function (cb) {
               var self = this;
               var edit = mapPopupSerivce.get('mapSelfCheckMapPopup'),
                 scope = edit.scope;
@@ -103,58 +110,46 @@
                 scope.isSaveData = false;
                 self.options.onUpdateData(scope.context,scope.data,scope);
               }
+              cb();
             },
             onUpdateData: function (context, data, editScope) {
-              //remote.Procedure.InspectionCheckpoint.create(data.v);
               if(data.v.ProblemSortName == 'T'){
                 remote.Procedure.InspectionCheckpoint.create(data.v);
               }
             },
-            onDelete: function (layer) {
-              var id = layer.getValue().$id;
-              remote.Procedure.InspectionPoint.delete({measurePointID:id}).then(function (r) {
-                console.log('r',r)
-                if(r.data.ErrorCode == 0){
+            onDelete: function (layer,cb) {
+              var id = layer.properties.$id;
+              remote.Procedure.InspectionPoint.delete({MeasurePointID:id}).then(function (r) {
                   var v = fg.data.find(function (d) {
                     return d.PositionID == id;
                   }),ix = fg.data.indexOf(v);
                   fg.data.splice(ix,1);
                   remote.Procedure.InspectionCheckpoint.delete(v.CheckpointID);
-                }
               });
+              cb(layer);
             },
-            onPopup: function (e) {
-              if(e.layer instanceof L.Stamp)
-                var edit = mapPopupSerivce.get('mapSelfCheckMapPopup');
+            onPopup: function (layer,cb) {
+              var edit = mapPopupSerivce.get('mapSelfCheckMapPopup');
               if(edit) {
-                if(e.layer instanceof L.Stamp) {
-                  $timeout(function () {
-                    var center = fg._map.getCenter();
-                    fg._map.setView([center.lat,e.layer._latlng.lng]);
-                  },500);
+                edit.scope.context = {
+                  fg:fg,
+                  layer:layer
                 };
-                edit.scope.context = e;
                 edit.scope.data = {
                   item:scope.item,
-                  projectId:scope.projectId,
                   procedure:scope.procedure,
                   regionId:scope.regionId,
                   v:fg.data.find(function (d) {
-                    return d.PositionID == e.layer._value.$id;
-                  }),
-
+                    return d.PositionID == layer.properties.$id;
+                  })
                 };
+
+                edit.scope.readonly = scope.readonly;
                 edit.scope.apply && edit.scope.apply();
-                return edit.el[0];
+                cb(edit.el[0]);
               }
             }
-          }).addTo(map._map),
-            stamp = new L.Draw.Stamp(map._map);
-          map._map.on('draw:created',function (e) {
-            if(this._map){
-              this.addLayer(e.layer);
-            }
-          },fg);
+          });
           $timeout(function () {
             remote.Project.getDrawingRelations(scope.regionId.substring(0,5)).then(function (result) {
               var imgId = result.data.find(function (item) {
@@ -171,17 +166,8 @@
                     utils.alert('未找到图纸,请与管理员联系!(2)');
                     return;
                   }
-                  map.loadSvgXml(result.data.DrawingContent, {
-                    filterLine: function (line) {
-                      line.attrs.stroke = 'black';
-                      line.options = line.options || {};
-                      line.attrs['stroke-width'] = line.attrs['stroke-width'] * 6;
-                    },
-                    filterText: function (text) {
-                    }
-                  });
-                  map.center();
-                  map._map.setZoom(1);
+                  map.loadSvgXml(result.data.DrawingContent);
+                  map.map.addControl(fg);
                 })
               }
               else{
@@ -198,26 +184,26 @@
         scope.$watch('regionId', function () {
           if(scope.regionId && scope.procedure) {
             if(map){
-              map._map.remove();
+              map.remove();
               map = null;
             }
             install();
           }
         });
         scope.$watch('item',function () {
-          if(stamp) {
+          if(fg) {
             if (scope.item) {
-              stamp.enable();
+              fg.changeMode('inspect',scope.item);
             }
             else {
-              stamp.disable();
+              fg.changeMode();
             }
           }
         })
       }, 500);
       scope.$on('destroy',function () {
         if(map){
-          map._map.remove();
+          map.remove();
           map = null;
         }
       })

@@ -8,9 +8,6 @@
               {{item.ProjectName}}
             </p>
             <div class="md-secondary md-hue-3" style="right:0;margin:0;">
-              <!--<md-button ng-click="vm.download(item)" class="md-raised md-warn" style="margin-top:7px;margin-bottom: 4px;">-->
-               <!--{{item.isOffline?'刷新':'下载'}}-->
-              <!--</md-button>-->
               <md-button ui-sref="app.xhsc.gx.gxlist({role:'zb',projectId:item.ProjectID})" class="md-raised md-primary" style="margin-top:7px;margin-bottom: 4px;">
                 报验
               </md-button>
@@ -41,7 +38,7 @@
   <md-tab label="总包复验" >
     <md-content>
       <div layout="column" class="gxdownload">
-        <md-subheader>已下载工序列表</md-subheader>
+        <!--<md-subheader>已下载工序列表</md-subheader>-->
         <md-list>
           <md-list-item ng-repeat="item in vm.fyList">
             <div class="md-list-item-text" layout="column">
@@ -63,9 +60,9 @@
   <md-tab label="总包整改">
     <md-content>
       <div layout="column" class="gxdownload">
-        <md-subheader>已下载列表</md-subheader>
+        <!--<md-subheader>已下载列表</md-subheader>-->
         <md-list>
-          <md-list-item ng-repeat="item in vm.zglist|filter:{Status:4,isOffline:true}">
+          <md-list-item ng-repeat="item in vm.zglist|filter:{Status:4}">
             <div class="md-list-item-text" layout="column">
               <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
                 {{item.AcceptanceItemName}}
@@ -76,37 +73,34 @@
               <md-button class="md-raised md-primary" ng-click="vm.zg(item)">
                 整改
               </md-button>
-              <md-button class="md-raised md-primary" ng-click="vm.uploadzg(item)" ng-disabled="vm.noNet">
-                上传
-              </md-button>
             </div>
           </md-list-item>
         </md-list>
-        <md-subheader>未下载列表</md-subheader>
-        <md-list>
-          <md-list-item ng-repeat="item in vm.zglist|filter:{Status:4,isOffline:false}">
-            <div class="md-list-item-text" layout="column">
-              <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
-                {{item.AcceptanceItemName}}
-              </p>
-              <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>
-            </div>
-            <div class="md-secondary md-hue-3" style="right:0;margin:0;">
-              <md-button class="md-raised md-primary" ng-click="vm.zgdownload(item)">
-                下载
-              </md-button>
-            </div>
-          </md-list-item>
-        </md-list>
+        <!--<md-subheader>未下载列表</md-subheader>-->
+        <!--<md-list>-->
+          <!--<md-list-item ng-repeat="item in vm.zglist|filter:{Status:4}">-->
+            <!--<div class="md-list-item-text" layout="column">-->
+              <!--<p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">-->
+                <!--{{item.AcceptanceItemName}}-->
+              <!--</p>-->
+              <!--<p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>-->
+            <!--</div>-->
+            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;">-->
+              <!--<md-button class="md-raised md-primary" ng-click="vm.zgdownload(item)">-->
+                <!--下载-->
+              <!--</md-button>-->
+            <!--</div>-->
+          <!--</md-list-item>-->
+        <!--</md-list>-->
       </div>
     </md-content>
   </md-tab>
   <md-tab label="监理验收" >
     <md-content>
       <div layout="column" class="gxdownload">
-        <md-subheader>已下载列表</md-subheader>
+        <!--<md-subheader>已下载列表</md-subheader>-->
         <md-list>
-          <md-list-item ng-repeat="item in vm.Inspections|filter:{isOffline:true}">
+          <md-list-item ng-repeat="item in vm.Inspections">
             <div class="md-list-item-text" layout="column">
               <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
                 {{item.AcceptanceItemName}}
@@ -117,40 +111,40 @@
               <md-button class="md-raised md-primary" ng-click="vm.ys(item)">
                 验收
               </md-button>
-              <md-button class="md-raised md-primary" ng-click="vm.upInspection(item)" ng-disabled="vm.noNet">
-                上传
-              </md-button>
+              <!--<md-button class="md-raised md-primary" ng-click="vm.upInspection(item)">-->
+                <!--上传-->
+              <!--</md-button>-->
             </div>
           </md-list-item>
         </md-list>
-        <md-subheader>未下载列表</md-subheader>
-        <md-list>
-          <md-list-item ng-repeat="item in vm.Inspections|filter:{isOffline:false}">
-            <div class="md-list-item-text" layout="column">
-              <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
-                {{item.AcceptanceItemName}}
-              </p>
-              <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>
-            </div>
-            <div class="md-secondary md-hue-3" style="right:0;margin:0;">
-              <span style="display:inline-block;width:58px;text-align: center;">
-                <md-button ng-if="!item.isDown" class="md-raised upload-btn" ng-click="vm.loadInspection(item)">
-                  下载
-                </md-button>
-               <a  ng-if="item.isDown" style="position: relative;display: inline-block;width:31px;height:31px;border:1px solid #f8f8f8;border-radius:50%" ng-click="vm.cancel()">
-                 <md-progress-circular md-mode="determinate" value="{{item.progress}}"  md-diameter="30"></md-progress-circular>
-                 <md-icon style="width:10px;height:10px;background: #0185f1;position: absolute;left:10px;top:10px;"></md-icon></a>
-              </span>
-            </div>
-          </md-list-item>
-        </md-list>
+        <!--<md-subheader>未下载列表</md-subheader>-->
+        <!--<md-list>-->
+          <!--<md-list-item ng-repeat="item in vm.Inspections">-->
+            <!--<div class="md-list-item-text" layout="column">-->
+              <!--<p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">-->
+                <!--{{item.AcceptanceItemName}}-->
+              <!--</p>-->
+              <!--<p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>-->
+            <!--</div>-->
+            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;">-->
+              <!--<span style="display:inline-block;width:58px;text-align: center;">-->
+                <!--<md-button ng-if="!item.isDown" class="md-raised upload-btn" ng-click="vm.loadInspection(item)">-->
+                  <!--下载-->
+                <!--</md-button>-->
+               <!--<a  ng-if="item.isDown" style="position: relative;display: inline-block;width:31px;height:31px;border:1px solid #f8f8f8;border-radius:50%" ng-click="vm.cancel()">-->
+                 <!--<md-progress-circular md-mode="determinate" value="{{item.progress}}"  md-diameter="30"></md-progress-circular>-->
+                 <!--<md-icon style="width:10px;height:10px;background: #0185f1;position: absolute;left:10px;top:10px;"></md-icon></a>-->
+              <!--</span>-->
+            <!--</div>-->
+          <!--</md-list-item>-->
+        <!--</md-list>-->
       </div>
     </md-content>
   </md-tab>
   <md-tab label="监理复验">
     <md-content>
       <div layout="column" class="gxdownload">
-        <md-subheader>已下载列表</md-subheader>
+
         <md-list>
           <md-list-item ng-repeat="item in vm.zglist|filter:{Status:16}">
             <div class="md-list-item-text" layout="column">
@@ -162,22 +156,6 @@
             <div class="md-secondary md-hue-3" style="right:0;margin:0;">
               <md-button class="md-raised md-primary" ng-click="vm.fy(item)">
                 复验
-              </md-button>
-            </div>
-          </md-list-item>
-        </md-list>
-        <md-subheader>未下载列表</md-subheader>
-        <md-list>
-          <md-list-item ng-repeat="item in vm.zglist|filter:{Status:16}">
-            <div class="md-list-item-text" layout="column">
-              <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
-                {{item.AcceptanceItemName}}
-              </p>
-              <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>
-            </div>
-            <div class="md-secondary md-hue-3" style="right:0;margin:0;">
-              <md-button class="md-raised md-primary" ng-click="vm.fy(item)">
-                下载
               </md-button>
             </div>
           </md-list-item>

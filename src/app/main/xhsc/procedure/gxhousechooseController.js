@@ -346,17 +346,11 @@
           if(_t.checked){
             vm.data.Rows.push(_t);
           }
-          if (!_t.Children){
-            _t.Children=[];
-          }
-          _t.Children.forEach(function(_tt){
+          _t.Children && _t.Children.forEach(function(_tt){
             if(_tt.checked){
               vm.data.Rows.push(_tt);
             }
-            if (!_tt.Children){
-              _tt.Children=[];
-            }
-            _tt.Children.forEach(function(l){
+            _tt.Children && _tt.Children.forEach(function(l){
               if(l.checked){
                 vm.data.Rows.push(l)
               }

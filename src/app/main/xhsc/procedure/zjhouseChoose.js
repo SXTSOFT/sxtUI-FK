@@ -253,7 +253,7 @@
               Percentage:100
             });
           }
-          _t.Children.forEach(function(_tt){
+          _t.Children && _t.Children.forEach(function(_tt){
             if(_tt.checked){
               vm.data.AreaList.push({
                 AreaID:_tt.RegionID,
@@ -261,7 +261,7 @@
                 Percentage:100
               });
             }
-            _tt.Children.forEach(function(l){
+            _tt.Children && _tt.Children.forEach(function(l){
               if(l.checked){
                 vm.data.AreaList.push({
                   AreaID:l.RegionID,
