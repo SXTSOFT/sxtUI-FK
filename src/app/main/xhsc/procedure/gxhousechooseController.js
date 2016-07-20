@@ -82,8 +82,6 @@
             }
           }
         }
-
-
       }
       //状态设置与用户区域权限
       function filterOrSetting(status,region){
