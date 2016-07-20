@@ -1,22 +1,5 @@
 <md-tabs flex md-border-bottom>
-  <md-tab label="总包报验">
-    <md-content>
-      <div layout="column" class="gxdownload">
-        <md-list style="overflow: hidden;">
-          <md-list-item ng-repeat="item in vm.projects">
-            <p layout="column" style="padding-right: 125px;font-size:16px;padding-left:8px;">
-              {{item.ProjectName}}
-            </p>
-            <div class="md-secondary md-hue-3" style="right:0;margin:0;">
-              <md-button ui-sref="app.xhsc.gx.gxlist({role:'zb',projectId:item.ProjectID})" class="md-raised md-primary" style="margin-top:7px;margin-bottom: 4px;">
-                报验
-              </md-button>
-            </div>
-          </md-list-item>
-        </md-list>
-      </div>
-    </md-content>
-  </md-tab>
+
   <md-tab label="总包自检">
     <md-content>
       <div layout="column" class="gxdownload">
@@ -35,10 +18,10 @@
       </div>
     </md-content>
   </md-tab>
-  <md-tab label="总包复验" >
+<!--  <md-tab label="总包复验" >
     <md-content>
       <div layout="column" class="gxdownload">
-        <!--<md-subheader>已下载工序列表</md-subheader>-->
+        &lt;!&ndash;<md-subheader>已下载工序列表</md-subheader>&ndash;&gt;
         <md-list>
           <md-list-item ng-repeat="item in vm.fyList">
             <div class="md-list-item-text" layout="column">
@@ -50,6 +33,24 @@
             <div class="md-secondary md-hue-3" style="right:0;margin:0;">
               <md-button class="md-raised md-primary" ng-click="vm.fj(item)">
                 复检
+              </md-button>
+            </div>
+          </md-list-item>
+        </md-list>
+      </div>
+    </md-content>
+  </md-tab>-->
+  <md-tab label="总包报验">
+    <md-content>
+      <div layout="column" class="gxdownload">
+        <md-list style="overflow: hidden;">
+          <md-list-item ng-repeat="item in vm.projects">
+            <p layout="column" style="padding-right: 125px;font-size:16px;padding-left:8px;">
+              {{item.ProjectName}}
+            </p>
+            <div class="md-secondary md-hue-3" style="right:0;margin:0;">
+              <md-button ui-sref="app.xhsc.gx.gxlist({role:'zb',projectId:item.ProjectID})" class="md-raised md-primary" style="margin-top:7px;margin-bottom: 4px;">
+                报验
               </md-button>
             </div>
           </md-list-item>
@@ -100,7 +101,7 @@
       <div layout="column" class="gxdownload">
         <!--<md-subheader>已下载列表</md-subheader>-->
         <md-list>
-          <md-list-item ng-repeat="item in vm.Inspections">
+          <md-list-item ng-repeat="item in vm.Inspections|filter:{Sign:1}">
             <div class="md-list-item-text" layout="column">
               <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
                 {{item.AcceptanceItemName}}

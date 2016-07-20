@@ -2951,4 +2951,10 @@ $mapboxgl-popup-bg:rgba(0,0,0,.85)!important;
     background-repeat:no-repeat;
     background-position:center center;
   }
+  &.links{
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0A%09%20viewBox%3D%220%200%20595.3%20841.9%22%20style%3D%22enable-background%3Anew%200%200%20595.3%20841.9%3B%22%20xml%3Aspace%3D%22preserve%22%3E%0A%3Cstyle%20type%3D%22text%2Fcss%22%3E%0A%09.st0%7Bfill%3A%23333333%3B%7D%0A%3C%2Fstyle%3E%0A%3Cg%3E%0A%09%3Cpath%20class%3D%22st0%22%20d%3D%22M238.6%2C509.7V675c0%2C15.8%2C12.8%2C28.5%2C28.5%2C28.5h61c15.8%2C0%2C28.5-12.8%2C28.5-28.5V544.1c0-17.2-15-30.3-32-28.3%0A%09%09c-8.8%2C1-17.7%2C1.6-26.8%2C1.6C277.3%2C517.3%2C257.5%2C514.5%2C238.6%2C509.7L238.6%2C509.7z%20M238.6%2C509.7%22%2F%3E%0A%09%3Cpath%20class%3D%22st0%22%20d%3D%22M297.8%2C11.9C165.3%2C11.9%2C58%2C118.6%2C58%2C250.2c0%2C131.6%2C107.3%2C238.3%2C239.8%2C238.3c132.4%2C0%2C239.8-106.7%2C239.8-238.3%0A%09%09C537.5%2C118.6%2C430.2%2C11.9%2C297.8%2C11.9L297.8%2C11.9z%20M203.8%2C147.1c-18.6%2C0-33.7-15.1-33.7-33.7c0-18.6%2C15.1-33.7%2C33.7-33.7%0A%09%09c18.6%2C0%2C33.7%2C15.1%2C33.7%2C33.7C237.5%2C132%2C222.4%2C147.1%2C203.8%2C147.1L203.8%2C147.1z%20M203.8%2C147.1%22%2F%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A");
+    background-size:70%;
+    background-repeat:no-repeat;
+    background-position:center center;
+  }
 }

@@ -115,11 +115,10 @@
       }
 
       // 退出登录
-      function logout(){
-        sxt.cache.removeProfile(loginedUser, function(){
-          $rootScope.$emit ('user:logout', loginedUser);
-          $state.go('app.auth.login');
-        });
+      function logout() {
+        $rootScope.$emit('user:logout', loginedUser);
+        $state.go('app.auth.login');
+
       }
 
       function currentUser(){

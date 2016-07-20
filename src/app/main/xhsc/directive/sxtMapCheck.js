@@ -167,6 +167,7 @@
                   }
                   map.loadSvgXml(result.data.DrawingContent);
                   map.map.addControl(fg);
+                  
                 })
               }
               else{

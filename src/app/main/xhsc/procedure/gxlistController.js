@@ -14,7 +14,7 @@
     vm.projectId = $stateParams.projectId;
     vm.role=$stateParams.role;
     remote.Procedure.queryProcedure().then(function(result){
-     // console.log(result);
+      // console.log(result);
       //vm.procedureData = result.data;
       vm.procedureData = [];
       result.data.forEach(function(it){

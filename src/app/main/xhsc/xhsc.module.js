@@ -35,7 +35,7 @@
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
-        title :'消息中心',
+        title :'个人中心',
         url   :'/pcenter',
         views :{
           'content@app':{

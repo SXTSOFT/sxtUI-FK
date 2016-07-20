@@ -11,15 +11,14 @@
   /** @ngInject */
   function zjhouseChooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils){
     var vm=this,
-      id = $stateParams.assessmentID,
-      AssessmentTypeID = $stateParams.AssessmentTypeID,
       projectId = $stateParams.projectId,
       acceptanceItemID=$stateParams.acceptanceItemID,
       acceptanceItemName = $stateParams.acceptanceItemName,
       role=$stateParams.role,
       areaId = $stateParams.areaId;
     $rootScope.title = $stateParams.acceptanceItemName;
-    $rootScope.sendBt = true;
+    $rootScope.sendBt = false;
+    vm.maxRegion = $stateParams.maxRegion;
     function  load(){
       vm.nums={
         qb:0, //全部
@@ -28,14 +27,17 @@
         hg:0, //合格
         bhg:0,//不合格
         yzg:0,//已整改
-        wzg:0//未整改
+        wzg:0,//未整改
+        ytj:0//已检查
       }
       function  setNum(status){
         vm.nums.qb++;
         switch (status){
           case  0:
-          case  1:
             vm.nums.wtj++;
+             break;
+          case  1:
+            vm.nums.ytj++;
             break;
           case  2:
             vm.nums.hg++;
@@ -54,7 +56,7 @@
           statusSetting(status,region);
         }
         var st=status.find(function(o){
-          return o.AreaId==region.RegionID;
+          return o.AreaId.indexOf(region.RegionID)!=-1;
         });
         if (st){
           region.hasShowRight=true;
@@ -101,11 +103,13 @@
         var style;
         switch (status){
           case 0:
-          case 1:
+
             style="wait";
             break;
           case 2:
-            style="pass";
+            style="pass";break;
+          case 1:
+            style="dy";
             break;
           case 4:
           case 8:
@@ -151,12 +155,36 @@
     }
 
     load();
+    var inspectionInfoDef = remote.Procedure.getInspectionInfoBySign(8);
 
     vm.callBack=function(){
       load();
     };
     vm.selected = function(r){
-      zbSelected(r);
+      inspectionInfoDef.then(function (r1) {
+        var fd = r1.data.find(function (item) {
+          return item.Children.find(function (area) {
+            return area.AreaID == r.RegionID;
+          })!=null;
+        });
+        if(fd!=null){
+          $state.go('app.xhsc.gx.gxzjcheck',
+            {
+              acceptanceItemID:acceptanceItemID,
+              acceptanceItemName:acceptanceItemName,
+              //name: vm.data.AreaList[0].newName,
+              projectId:projectId,
+              //areaId:vm.data.AreaList[0].AreaID,
+              InspectionId:fd.InspectionId
+            });
+        }
+        else{
+          console.log('r',r);
+          r.checked = true;
+          $rootScope.$emit('sendGxResult');
+        }
+      });
+      //zbSelected(r);
     }
     //总包点击事件
     function zbSelected(r){
