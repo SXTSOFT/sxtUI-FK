@@ -59,7 +59,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url: '/zjhouseChoose/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
+        url: '/zjhouseChoose/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}/{maxRegion}',
         templateUrl: 'app/main/xhsc/procedure/zjhouseChoose.html',
         controller: 'zjhouseChooseController as vm'
       })
@@ -74,7 +74,7 @@
       })
       .state('app.xhsc.gx.gxzjcheck', {
         noBack: true,
-        sendBt: true,
+        sendBt: false,
         rightArrow: false,
         leftArrow: false,
         title: '工序自检',

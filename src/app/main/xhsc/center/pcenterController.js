@@ -9,7 +9,7 @@
     .controller('pcenterController',pcenterController);
 
   /**@ngInject*/
-  function pcenterController($scope,$mdDialog,sxt){
+  function pcenterController($scope,$mdDialog,sxt,auth){
     var vm = this;
     vm.tel=13112345678;
     vm.changeTel = function(tel){
@@ -113,7 +113,7 @@
 */
 
     vm.logout = function(){
-      vm.showmyDialog = true;
+      auth.logout();
     }
   }
 })();

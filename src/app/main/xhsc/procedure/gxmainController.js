@@ -140,9 +140,9 @@
       }
     });
 
-    remote.Procedure.getInspectionInfoBySign(8).then(function (r) {
+/*    remote.Procedure.getInspectionInfoBySign(8).then(function (r) {
       vm.fyList = r.data;
-    });
+    });*/
 
     vm.ys = function(item){
       $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,

@@ -91,7 +91,7 @@
           statusSetting(status,region);
         }
         var st=status.find(function(o){
-          return o.AreaId==region.RegionID;
+          return o.AreaId.indexOf(region.RegionID)!=-1;
         });
         if (st){
           region.hasShowRight=true;
