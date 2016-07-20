@@ -9,7 +9,7 @@
     .directive('myDialog',myDialogDirective);
 
   /**@ngInject*/
-  function myDialogDirective($state,$timeout,remote,utils){
+  function myDialogDirective($state,$timeout,remote,utils,auth){
     return {
       scope:{
         dialogShow:'=',
@@ -34,12 +34,15 @@
           scope.description="";
           scope. percentage=100;
         }
+        if(scope.dialogSure != '报验'){
+          scope.logOut= true;
+        }
       })
       scope.$watch('dialogData',function(){
         if(!scope.dialogData) return;
         var msg='';
         scope.dialogData.Rows.forEach(function(t){
-          msg += t.projectTree+',';
+          msg += t.projectTree+'，';
         })
         scope.dialogMsg = msg + scope.dialogData.acceptanceItemName+ '工序已自检完毕，请监理验收';
       })
@@ -50,23 +53,23 @@
       scope.submit = function(evt){
         scope.dialogShow = false;
         scope.areaIds=[];
-        var percentage= scope.percentage?scope.percentage:100
-        scope.dialogData.Rows.forEach(function(t){
-          scope.areaIds.push( {
-            AreaID:t.RegionID,
-            Describe:scope.description,
-            Percentage:percentage
-          });
-        })
-        var params ={
-          AcceptanceItemID:scope.dialogData.acceptanceItemID,
-          AreaList:scope.areaIds,
-          Describe:scope.description,
-          Percentage:percentage
-        }
 
         $('.my-dialog-mask',element).fadeOut();
         if(scope.dialogSure == '报验'){
+          var percentage= scope.percentage?scope.percentage:100
+          scope.dialogData.Rows.forEach(function(t){
+            scope.areaIds.push( {
+              AreaID:t.RegionID,
+              Describe:scope.description,
+              Percentage:percentage
+            });
+          })
+          var params ={
+            AcceptanceItemID:scope.dialogData.acceptanceItemID,
+            AreaList:scope.areaIds,
+            Describe:scope.description,
+            Percentage:percentage
+          }
           remote.Procedure.postInspection(params).then(function(result){
             if (result.data.ErrorCode==0){
               $timeout(function(){
@@ -74,6 +77,8 @@
               },200);
             }
           })
+        }else{
+         //auth.logout();
         }
       }
       scope.$on('$destroy', function () {

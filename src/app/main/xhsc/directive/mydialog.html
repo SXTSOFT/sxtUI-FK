@@ -3,11 +3,11 @@
     <div class="dialog-top" layout="column" ng-cloak>
       <div class="dialog-msg" layout="column" style="border-bottom: 1px solid #dedede;padding:20px;">
         <p>{{dialogMsg}}</p>
-        <md-input-container>
+        <md-input-container ng-show="!logOut">
           <label>描述</label>
           <input   md-no-asterisk name="description" ng-model="description">
         </md-input-container>
-        <md-slider-container layout="row" layout-align="start center">
+        <md-slider-container layout="row" layout-align="start center" ng-show="!logOut">
           <span flex="none" style="display:inline-block;padding-right: 10px">百分比</span>
           <md-slider flex min="0" max="100" ng-model="percentage" aria-label="red" id="red-slider">
           </md-slider>
