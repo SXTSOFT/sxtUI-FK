@@ -20,6 +20,24 @@
     });
   }
   apiProvider.register('xhsc',{
+    offline:$http.db({
+      _id:'s_offline',
+      idField:'Id',
+      methods:{
+        query:{
+          dataType:1,
+          filter:function (item,prjectId) {
+            return !prjectId || prjectId==item.Id;
+          }
+        },
+        create:{
+          upload:true
+        },
+        delete:{
+          delete:true
+        }
+      }
+    }),
     Project: {
       getMap: $http.db({
         _id: 'mapPoroject',
@@ -336,13 +354,21 @@
       getRectification:$http.db({
         _id:'ByRectificationId',
         idField:'rectificationId',
-        dataType:1
+        dataType:1,
+        filter:function (item,rectificationId) {
+          return item.rectificationId==rectificationId;
+        }
       }).bind(function(rectificationId){
         return $http.get($http.url('/api/InspectionApi/ByRectificationId',{rectificationId:rectificationId})).then(function(r){
           if (r.data){
             r.data.rectificationId=rectificationId;
           }
+          return {
+            data:[r.data]
+          };
         })
+      },function (r) {
+        return {data: r.data[0]};
       }),
       createZGReceipt:$http.db({
         _id:'createZGReceipt',
