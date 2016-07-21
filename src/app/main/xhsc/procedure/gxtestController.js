@@ -22,7 +22,10 @@
       current:null,
       projectId:projectId,
       acceptanceItemID:acceptanceItemID,
-      regionId:areaId
+      regionId:areaId,
+      cancelMode:function () {
+        vm.cancelCurrent(null);
+      }
     };
 
     vm.btBatch;

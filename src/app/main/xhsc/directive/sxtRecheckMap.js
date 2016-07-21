@@ -6,7 +6,7 @@
     .module('app.xhsc')
     .directive('sxtRecheckMap',sxtRecheckMap);
   /** @ngInject */
-  function sxtRecheckMap($timeout,remote,mapPopupSerivce,sxt,utils,$q,$window) {
+  function sxtRecheckMap($timeout,remote,mapPopupSerivce,sxt,utils,$q,$window,xhUtils) {
     return {
       scope:{
         item:'=sxtRecheckMap',
@@ -14,7 +14,9 @@
         items:'=',
         procedure:'=',
         regionId:'=',
-        inspectionId:'='
+        inspectionId:'=',
+        disableInspect:'=',
+        disableDrag:'='
       },
       link:link
     };
@@ -29,6 +31,8 @@
             }
           });
           fg = $window.mapboxgl.Plan({
+            disableInspect:scope.disableInspect,
+            disableDrag:scope.disableDrag,
             onChangeMode:function (mode,op,cb) {
               if(mode && !op){
                 scope.item = {
@@ -123,13 +127,27 @@
                 });
               }
               if (imgId) {
-                remote.Project.getDrawing(imgId.DrawingID).then(function (result) {
-                  if(!result.data.DrawingContent){
+                remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
+                  if(!result2.data.DrawingContent){
                     utils.alert('未找到图纸,请与管理员联系!(2)');
                     return;
                   }
-                  map.loadSvgXml(result.data.DrawingContent);
+                  map.loadSvgXml(result2.data.DrawingContent);
                   map.map.addControl(fg);
+                  var btn = $('<div class="mapboxgl-ctrl-group mapboxgl-ctrl"><button class="mapboxgl-ctrl-icon links"  title="其它图纸"></button></div>');
+                  btn.click(function () {
+                    var mapList = [];
+                    result.data.forEach(function (item) {
+                      if(item.RegionId == scope.regionId && item.DrawingID!=imgId.DrawingID && !mapList.find(function (f) {
+                          return f.DrawingID==item.DrawingID
+                        })){
+                        mapList.push(item);
+                      }
+                    });
+
+                    xhUtils.openLinks(mapList);
+                  });
+                  element.find('.mapboxgl-ctrl-bottom-left').append(btn);
                 })
               }
               else{

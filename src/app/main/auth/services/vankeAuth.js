@@ -1,4 +1,4 @@
-(function ()
+﻿(function ()
 {
   'use strict';
 
@@ -7,13 +7,22 @@
     .factory('vankeAuth', vankeAuth);
 
   /** @ngInject */
-  function vankeAuth($http,$q,appConfig,$state)
+  function vankeAuth($http,$q,appConfig,api,utils)
   {
     var service = {
       token   : token,
       profile : profile
     };
-
+    var userInfo = api.db({
+      _id:'s_userinfo',
+      idField:'Id',
+      filter:function () {
+        return true;
+      },
+      dataType:3
+    }).bind(function () {
+      return $http.get(sxt.app.api + '/api/Security/profile', {t: new Date().getTime()});
+    });
     return service;
 
     function token(user){
@@ -44,7 +53,7 @@
               reject({})
             }
           },function(){
-            //resolve(user);
+            resolve(user);
           });
           //
         });
@@ -57,16 +66,16 @@
     function profile(token){
       if(!token || !token.username) {
         return $q (function (resolve, reject) {
-          //api.setNetwork(0);
-          $http.get(sxt.app.api +'/api/Security/profile').then(function (d) {
-            //if(!d || !d.status && !d.data){
-            //  $rootScope.$emit('user:needlogin');
-            //}
+          api.setNetwork(0);
+          userInfo().then(function (d) {
+            if(!d ||(!d.status && !d.data)){
+              $rootScope.$emit('user:needlogin');
+            }
             resolve(d && d.data);
-            //api.resetNetwork();
+            api.resetNetwork();
           }, function (rejection) {
 
-            //utils.alert(rejection.data && rejection.data.Message?rejection.data.Message:'网络错误');
+            utils.alert(rejection.data && rejection.data.Message?rejection.data.Message:'网络错误');
             reject(token);
           });
         });
