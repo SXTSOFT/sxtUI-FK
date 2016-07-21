@@ -327,6 +327,14 @@
         utils.alert('下载失败,请检查网络');
       });
     }
+    vm.exportReport = function(item){
+      window.open(sxt.app.api+'/api/Office/ExportWord?inspectionId='+item.InspectionId);
+      // window.open('app/main/xhsc/images/bg.png')
+    }
+    vm.Lookinto = function(item){
+      console.log(item)
+      $state.go('app.xhsc.gx.gxzgdetail',{InspectionId:item.InspectionId,acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,projectId:item.ProjectID});
+    }
     vm.upInspection = function(){
       api.upload(function(cfg,item){
         return true;
