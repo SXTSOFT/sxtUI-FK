@@ -31,17 +31,45 @@
         return remote.Procedure.queryProcedure();
       }
     ];
-    function projectTask(projectId) {
+    function projectTask(projectId,sign) {
       return [
         function () {
           return remote.Project.queryAllBulidings(projectId);
         },
         function () {
-          return remote.Procedure.getRegionStatus(projectId)
+          return remote.Procedure.getRegionStatus(projectId,sign)
+        },
+        function (tasks) {
+          return remote.Procedure.getDrawingRelations(projectId).then(function (result) {
+            var pics = [];
+            result.data.forEach(function (item) {
+              if(pics.indexOf(item.DrawingID)==-1){
+                pics.push(item.DrawingID);
+              }
+            });
+            pics.forEach(function (drawingID) {
+              tasks.push(function () {
+                return remote.Project.getDrawing(drawingID);
+              })
+            });
+            return result;
+          })
         }
       ]
     }
-
+vm.downloadzj = function (item) {
+  var tasks = [].concat(globalTask).concat(projectTask(item.ProjectID,"8"));
+  api.task(tasks)(function(percent,current,total){
+    item.percent = parseInt(percent *100) +' %';
+    item.current = current;
+    item.total = total;
+  },function(){
+    item.percent = item.current = item.total = null;
+    item.isOffline = true;
+  },function(){
+    utils.alert('下载失败,请检查网络');
+  })
+}
     vm.loadPack=function(market,item){
       gxOfflinePack.download(market,function(percent,current,total){
         item.percent = parseInt(percent *100) +' %';
