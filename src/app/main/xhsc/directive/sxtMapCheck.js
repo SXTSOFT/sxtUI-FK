@@ -59,11 +59,13 @@
                       }else{
                         p.geometry = p.geometry;
                       }
-                      p.geometry.properties.seq = c.ProblemSortName;
-                      if(p.geometry.geometry.type == 'Stamp')
-                        p.geometry.geometry.type = 'Point';
-                      p.geometry.properties.Status = c.Status;
-                      fs.push(p.geometry);
+                      if(p.geometry && p.geometry.properties) {
+                        p.geometry.properties.seq = c.ProblemSortName;
+                        if (p.geometry.geometry.type == 'Stamp')
+                          p.geometry.geometry.type = 'Point';
+                        p.geometry.properties.Status = c.Status;
+                        fs.push(p.geometry);
+                      }
                     }
                   });
                   scope.item = null;
