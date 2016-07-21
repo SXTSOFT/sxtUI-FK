@@ -122,6 +122,16 @@
         templateUrl : 'app/main/xhsc/procedure/gxdetail.html',
         controller:'gxdetailController as vm'
       })
+      .state('app.xhsc.gx.gxzgdetail',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'工序整改详情',
+        url   :'/gxzgdetail/{acceptanceItemID}/{acceptanceItemName}/{projectId}/{InspectionId}',
+        templateUrl : 'app/main/xhsc/procedure/gxzgdetail.html',
+        controller:'gxzgdetailController as vm'
+      })
       .state('app.xhsc.gx.gxbdchoose', {
         noBack: true,
         sendBt: false,

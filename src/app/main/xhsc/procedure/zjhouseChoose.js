@@ -16,6 +16,7 @@
       acceptanceItemName = $stateParams.acceptanceItemName,
       role=$stateParams.role,
       areaId = $stateParams.areaId;
+    vm.maxRegion = $stateParams.maxRegion;
     $rootScope.title = $stateParams.acceptanceItemName;
     $rootScope.sendBt = false;
     vm.maxRegion = $stateParams.maxRegion;
@@ -30,24 +31,47 @@
         wzg:0,//未整改
         ytj:0//已检查
       }
-      function  setNum(status){
-        vm.nums.qb++;
-        switch (status){
-          case  0:
-            vm.nums.wtj++;
-             break;
-          case  1:
-            vm.nums.ytj++;
-            break;
-          case  2:
-            vm.nums.hg++;
-            break;
-          case  4:
-          case  8:
-          case  16:
-            vm.nums.bhg++;
-            break;
+      function  setNum(status,region){
+        if(vm.maxRegion >8){
+          vm.nums.qb++;
+          switch (status){
+            case  0:
+              vm.nums.wtj++;
+              break;
+            case  1:
+              vm.nums.ytj++;
+              break;
+            case  2:
+              vm.nums.hg++;
+              break;
+            case  4:
+            case  8:
+            case  16:
+              vm.nums.bhg++;
+              break;
+          }
+        }else{
+          if(region.RegionType == 8){
+            vm.nums.qb++;
+            switch (status){
+              case  0:
+                vm.nums.wtj++;
+                break;
+              case  1:
+                vm.nums.ytj++;
+                break;
+              case  2:
+                vm.nums.hg++;
+                break;
+              case  4:
+              case  8:
+              case  16:
+                vm.nums.bhg++;
+                break;
+            }
+          }
         }
+
 
       }
       //状态设置与用户区域权限
@@ -80,7 +104,7 @@
         region.Percentage = percentage;
         region.status = status;
         region.style=ConvertClass(status);
-        setNum(status);
+        setNum(status,region);
       }
       //状态设置
       function statusSetting(status,region){
@@ -123,11 +147,29 @@
       }
       $q.all([
         remote.Project.queryAllBulidings(projectId),
-        remote.Procedure.getRegionStatus(projectId,8)
+        remote.Procedure.getRegionStatus(projectId,8),
+        remote.Procedure.authorityByUserId()
       ]).then(function(res){
         vm.loading = true;
         var result=res[0];
         var status=res[1]&&res[1].data?res[1].data:[];
+        var permissionRegion = res[2].data;
+        var find = res[2].data.forEach(function(p){
+          return p.ProjectID == projectId;
+        })
+        //if(find){
+        //  var allRegins = find;
+        //  var idx = allRegins.RegionIDs.indexOf(',');
+        //  if(idx == -1){
+        //
+        //  }else{
+        //    var arr=[];
+        //    arr=allRegins.RegionIDs.split(',');
+        //    for(var i=0;i<arr.length;i++){
+        //
+        //    }
+        //  }
+        //}
         result.data[0].RegionRelations.forEach(function(d){
           filterOrSetting(status,d);
           d.projectTree =  d.RegionName;
