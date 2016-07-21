@@ -7,7 +7,7 @@
     .factory('vankeAuth', vankeAuth);
 
   /** @ngInject */
-  function vankeAuth($http,$q,appConfig,api,utils)
+  function vankeAuth($http,$q,$rootScope,api,utils)
   {
     var service = {
       token   : token,
