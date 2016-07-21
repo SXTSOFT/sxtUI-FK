@@ -31,21 +31,11 @@
         return remote.Procedure.queryProcedure();
       }
     ];
-    function projectTask(projectId,sign) {
+    //项目包
+    function projectTask(projectId) {
       return [
         function () {
           return remote.Project.queryAllBulidings(projectId);
-        },
-        function (tasks) {
-          return remote.Procedure.getRegionStatus(projectId,sign).then(function (result) {
-            result.data.forEach(function (item) {
-              if(item.AcceptanceItemID && item.AreaId && item.InspectionId) {
-                tasks.push(function () {
-                  return remote.Procedure.InspectionCheckpoint.query(item.AcceptanceItemID, item.AreaId, item.InspectionId);
-                })
-              }
-            })
-          })
         },
         function (tasks) {
           return remote.Project.getDrawingRelations(projectId).then(function (result) {
@@ -65,19 +55,28 @@
         }
       ]
     }
+/*    function projectPoints(projectId,sign) {
+      return
+    }*/
     function InspectionTask(item) {
       var t = [function () {
         return remote.Project.getInspectionList(item.InspectionId);
       }];
       item.Children.forEach(function (area) {
-        t.push(function (tasks) {
+        t.push(function (tasks,down) {
             return remote.Procedure.InspectionCheckpoint.query(item.AcceptanceItemID,area.AreaID,item.InspectionId).then(function (result) {
               result.data.forEach(function (p) {
                 tasks.push(function () {
                   return remote.Procedure.InspectionProblemRecord.query(p.CheckpointID).then(function (result) {
                     result.data.forEach(function (r) {
                       tasks.push(function () {
-                        return remote.Procedure.InspectionProblemRecordFile.query(r.ProblemRecordID);
+                        return remote.Procedure.InspectionProblemRecordFile.query(r.ProblemRecordID).then(function (result) {
+                          result.data.forEach(function (f) {
+                            tasks.push(function () {
+                              return down('images',f.Id+'.jpg',f.FileUrl);
+                            })
+                          })
+                        })
                       })
                     })
                   })
@@ -92,7 +91,21 @@
     }
 
     vm.downloadzj = function (item) {
-     var tasks = [].concat(globalTask).concat(projectTask(item.ProjectID, "8"));
+     var tasks = [].concat(globalTask)
+       .concat(projectTask(item.ProjectID))
+       .concat([
+         function (tasks) {
+           return remote.Procedure.getRegionStatus(item.ProjectID,"8").then(function (result) {
+             result.data.forEach(function (item) {
+               if(item.AcceptanceItemID && item.AreaId && item.InspectionId) {
+                 tasks.push(function () {
+                   return remote.Procedure.InspectionCheckpoint.query(item.AcceptanceItemID, item.AreaId, item.InspectionId);
+                 })
+               }
+             })
+           })
+         }
+       ]);
      api.task(tasks)(function (percent, current, total) {
        item.percent = parseInt(percent * 100) + ' %';
        item.current = current;
@@ -107,7 +120,7 @@
    }
     vm.downloadys = function (item) {
       var tasks = [].concat(globalTask)
-        .concat(projectTask(item.ProjectID, "8"))
+        .concat(projectTask(item.ProjectID))
         .concat(InspectionTask(item));
       api.task(tasks)(function (percent, current, total) {
         item.percent = parseInt(percent * 100) + ' %';
@@ -135,7 +148,20 @@
     }
 
     vm.download = function(item){
-      item.isDown = true;
+      var tasks = [].concat(globalTask).concat(projectTask(item.ProjectID, "8"));
+      api.task(tasks)(function (percent, current, total) {
+        item.percent = parseInt(percent * 100) + ' %';
+        item.current = current;
+        item.total = total;
+      }, function () {
+        item.percent = item.current = item.total = null;
+        item.isOffline = true;
+        utils.alert('下载完成');
+      }, function () {
+        utils.alert('下载失败,请检查网络');
+      })
+
+      /*item.isDown = true;
       var ix=1,len = 6;
       item.progress = ix/len;
       api.task([function () {
@@ -158,7 +184,7 @@
       },function () {
         item.isDown = false;
         utils.alert('下载失败,请检查网络');
-      });
+      });*/
     };
 
     remote.Procedure.getInspections(1).then(function(r){
