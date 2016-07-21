@@ -246,9 +246,35 @@
           return r;
         });
       }),
-      postInspection:function(params){
+      postInspection:$http.db({
+        _id:'InspectionApi',
+        upload:true,
+        idField:'InspectionID'
+      }).bind(function(params){
         return $http.post($http.url('/Api/InspectionApi/insert'),params )
-      },
+      },function (r,cfg,args) {
+        if(!r.data){
+          r = r[0];
+          return this.root.xhsc.Project.insertInspectionList({
+            "InspectionId":r.InspectionID,
+            "ProjectID":r.AreaList[0].AreaID.substring(0,5),
+            "Percentage":100.0,
+            "Describe":"",
+            "AcceptanceItemID":r.AcceptanceItemID,
+            "Status":1,
+            "Sign":r.Sign,
+            "Children":r.AreaList
+          }).then(function () {
+            return {
+              data:{
+                ErrorCode:0,
+                Data:r
+              }
+            }
+          });
+        }
+        return r;
+      }),
       getInspections:$http.db({
         _id:'InspectionInfoList',
         idField:'InspectionId',
@@ -355,6 +381,7 @@
       getInspectionInfoBySign:$http.db({
         _id:'Inspection_8',
         idField:'InspectionId',
+        dataType:1,
         fitler:function () {
           return true;
         }
@@ -364,9 +391,13 @@
       insertJlfy:function(RectificationID,Remarks,Day){
         return $http.post($http.url('/api/InspectionRectificationApi/ReviewInsert'),{RectificationID:RectificationID,Remarks:Remarks,Day:Day})
       },//根据当前登陆人获取权限
-      authorityByUserId:function(){
+      authorityByUserId:$http.db({
+        _id:'ProjectPermissions',
+        idField:'ProjectID',
+        dataType:1,
+      }).bind(function(){
         return $http.get($http.url('/Api/ProjectInfoApi/GetProjectPermissions'));
-      },
+      }),
       //根据项目ID获取项目人员权限
       GetPermissionsByProjectId:function(ProjectId){
         return $http.get($http.url('/Api/ProjectInfoApi/GetPermissionsByProjectId',{projectId:ProjectId}));
