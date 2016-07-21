@@ -51,6 +51,11 @@
           result.data.forEach(function (item) {
             tasks.push(remote.Project.queryAllBulidings(item.ProjectID));
             tasks.push(remote.Procedure.getRegionStatus(projectId,8));
+            tasks.push(remote.Procedure.getDrawingRelations(projectId,8).then(function(r){
+              r.data.forEach(function (item_draw){
+                tasks.push( remote.Procedure.getDrawing(item_draw.DrawingID));
+              });
+            }))
           });
         });
       }])(progress,success,fail);

@@ -9,7 +9,7 @@
     .controller('gxmainController',gxmainController);
 
   /**@ngInject*/
-  function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,gxOfflinePack){
+  function gxmainController($scope,remote,xhUtils,$rootScope,utils,api,$q,$state,gxOfflinePack){
     var vm = this;
 
     remote.Project.getMap().then(function(result){
