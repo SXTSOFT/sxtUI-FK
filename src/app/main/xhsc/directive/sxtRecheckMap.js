@@ -55,12 +55,14 @@
                     });
                     if (p && p.Geometry) {
                       var geo = $window.JSON.parse(p.Geometry);
-                      if(geo.geometry.type == 'Stamp')
-                        geo.geometry.type = 'Point';
-                      geo.properties.Status = item.Status;
-                      geo.properties.v = item;
-                      geo.properties.seq = item.ProblemSortName;
-                      fs.push(geo);
+                      if(geo && geo.geometry) {
+                        if (geo.geometry.type == 'Stamp')
+                          geo.geometry.type = 'Point';
+                        geo.properties.Status = item.Status;
+                        geo.properties.v = item;
+                        geo.properties.seq = item.ProblemSortName;
+                        fs.push(geo);
+                      }
                     }
                   })
                   fg.addData(fs, false);
