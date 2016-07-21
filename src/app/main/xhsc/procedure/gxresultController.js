@@ -78,7 +78,7 @@
     vm.params={
           InspectionID:InspectionId,
           Remarks:"",
-          Day:7
+          Day:12
     }
 
     vm.Isfail=true;

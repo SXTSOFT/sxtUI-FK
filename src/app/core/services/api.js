@@ -491,9 +491,12 @@
                   }
                 }
               });
-              return cb? p2.then(function (result) {
+              return (cb? p2.then(function (result) {
                 return cb.call(caller,result,cfg,args);
-              }):p2;
+              }):p2).then(function (result) {
+                console.log('r',result,cfg);
+                return result;
+              });
             }
             else
             {
