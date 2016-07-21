@@ -9,7 +9,7 @@
     .controller('gxmainController',gxmainController);
 
   /**@ngInject*/
-  function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,gxOfflinePack){
+  function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,gxOfflinePack,$scope){
     var vm = this;
 
     remote.Project.getMap().then(function(result){
@@ -25,15 +25,32 @@
         vm.projects = result.data;
       });
     });
+    //所有全局任务
+    var globalTask = [
+      function () {
+        return remote.Procedure.queryProcedure();
+      }
+    ];
+    function projectTask(projectId) {
+      return [
+        function () {
+          return remote.Project.queryAllBulidings(projectId);
+        },
+        function () {
+          return remote.Procedure.getRegionStatus(projectId)
+        }
+      ]
+    }
 
     vm.loadPack=function(market,item){
-      gxOfflinePack.download(market,function(){
-        item.progress = percent*100;
+      gxOfflinePack.download(market,function(percent,current,total){
+        item.percent = parseInt(percent *100) +' %';
+        item.current = current;
+        item.total = total;
       },function(){
-        item.progress = 100;
+        item.percent = item.current = item.total = null;
         item.isOffline = true;
       },function(){
-        item.isDown = false;
         utils.alert('下载失败,请检查网络');
       });
     }
@@ -143,7 +160,6 @@
         uploaded:function (cfg,row,result) {
           cfg.db.delete(row._id);
         }
-
       })
     }
     remote.Procedure.getZGlist(31).then(function (r) {

@@ -9,7 +9,7 @@
     .controller('zjhouseChooseController',zjhouseChooseController);
 
   /** @ngInject */
-  function zjhouseChooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils){
+  function zjhouseChooseController($scope,$stateParams,sxt,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils){
     var vm=this,
       projectId = $stateParams.projectId,
       acceptanceItemID=$stateParams.acceptanceItemID,
@@ -278,7 +278,8 @@
             vm.data.AreaList.push({
               AreaID:_t.RegionID,
               Describe:"",
-              Percentage:100
+              Percentage:100,
+              RegionName:_t.RegionName
             });
           }
           _t.Children && _t.Children.forEach(function(_tt){
@@ -286,7 +287,8 @@
               vm.data.AreaList.push({
                 AreaID:_tt.RegionID,
                 Describe:"",
-                Percentage:100
+                Percentage:100,
+                RegionName:_t.RegionName+_tt.RegionName
               });
             }
             _tt.Children && _tt.Children.forEach(function(l){
@@ -294,7 +296,8 @@
                 vm.data.AreaList.push({
                   AreaID:l.RegionID,
                   Describe:"",
-                  Percentage:100
+                  Percentage:100,
+                  RegionName:_t.RegionName+_tt.RegionName+l.RegionName
                 })
               }
             })
@@ -302,6 +305,8 @@
         })
       })
       if(vm.data.AreaList.length){
+        if(!vm.data.Id)
+          vm.data.InspectionID = sxt.uuid();
         remote.Procedure.postInspection(vm.data).then(function(result){
           console.log(result);
           if (result.data.ErrorCode==0){
