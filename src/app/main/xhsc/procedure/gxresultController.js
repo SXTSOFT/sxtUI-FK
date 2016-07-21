@@ -53,8 +53,9 @@
         name:'王五2',
         id:9
       }]
-    }]
+    }];
     //console.log('s',$stateParams)
+
     remote.Project.queryAllBulidings($stateParams.projectId).then(function(result){
       vm.allRelations = [];
       var areaId = $stateParams.areaId;
@@ -82,12 +83,12 @@
 
     vm.Isfail=true;
     vm.submitResult = function(){
-      //console.log('time',vm.time)
+      console.log('time',vm.responsers)
 
       vm.data ={
         InspectionID:vm.params.InspectionID,
         Remarks:vm.params.Remarks,
-        Day:vm.time
+        Day:vm.time,
       }
       //
       //zgReceipt.addOrUpdate(vm.data).then(function(res){
@@ -98,8 +99,8 @@
       //})
 
       remote.Procedure.createZGReceipt(vm.data).then(function(r){
-        console.log(r)
-          if (r.data&&r.data.ErrorCode==0){
+
+          if (r.data){
             utils.alert("提交成功",null,function(){
               $state.go("app.xhsc.gx.gxmain",{index:0});
             });

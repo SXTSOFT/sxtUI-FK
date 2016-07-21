@@ -34,7 +34,7 @@
         {{data.value.Status==8?'已整改':'未整改'}}<md-switch ng-model="data.value.Status" ng-true-value="8" ng-false-value="1" class="md-secondary"></md-switch>
       </p>
     </md-list-item>
-    <md-list-item ng-if="role == 'jl'">
+    <md-list-item ng-if="role == 'jl'||role==''">
       <label>整改前照片</label>
       <p>
           <span class="photo" ng-click="playImage(Record.jl.images)">
@@ -45,7 +45,7 @@
         <!--</span>-->
       </p>
     </md-list-item>
-    <md-list-item ng-if="role == 'jl'">
+    <md-list-item ng-if="role == 'jl'||role==''">
       <label>整改后照片</label>
       <p>
           <span class="photo" ng-click="playImage(Record.zb.images)">

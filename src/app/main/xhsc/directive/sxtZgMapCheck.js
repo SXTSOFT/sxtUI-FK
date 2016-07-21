@@ -4,25 +4,24 @@
 (function () {
   angular
     .module('app.xhsc')
-    .directive('sxtMapCheck',sxtMapCheck);
+    .directive('sxtZgMapCheck',sxtZgMapCheck);
   /** @ngInject */
-  function sxtMapCheck($timeout,remote,mapPopupSerivce,sxt,utils,$window,xhUtils) {
+  function sxtZgMapCheck($timeout,remote,mapPopupSerivce,sxt,utils,$q,$window,xhUtils) {
     return {
       scope:{
-        item:'=sxtMapCheck',
+        item:'=sxtZgMapCheck',
+        sxtMapShow:'=',
         items:'=',
         procedure:'=',
         regionId:'=',
         inspectionId:'=',
-        ct:'=',
-        disableInspect:'@',
-        disableDrag:'@'
+        disableInspect:'=',
+        disableDrag:'='
       },
       link:link
     };
 
     function link(scope,element,attr,ctrl) {
-      scope.ct && (scope.ct.loading = true);
       var map,fg;
       var install =function () {
         if (!map) {
@@ -36,7 +35,6 @@
             disableDrag:scope.disableDrag,
             onChangeMode:function (mode,op,cb) {
               if(mode && !op){
-                scope.ct && scope.ct.cancelMode && scope.ct.cancelMode();
                 scope.item = {
                   ProblemID:null,
                   ProblemSortName:'✔',//'',
@@ -59,13 +57,13 @@
                       }else{
                         p.geometry = p.geometry;
                       }
-                      if(p.geometry && p.geometry.properties) {
-                        p.geometry.properties.seq = c.ProblemSortName;
-                        if (p.geometry.geometry.type == 'Stamp')
-                          p.geometry.geometry.type = 'Point';
-                        p.geometry.properties.Status = c.Status;
-                        fs.push(p.geometry);
-                      }
+                      c.ProblemDescription= c.IndexPointID?c.ProblemDescription:'合格';
+                      p.geometry.properties.seq = c.ProblemSortName;
+                      p.geometry.properties.v = c;
+                      if(p.geometry.geometry.type == 'Stamp')
+                        p.geometry.geometry.type = 'Point';
+                      p.geometry.properties.Status = c.Status;
+                      fs.push(p.geometry);
                     }
                   });
                   scope.item = null;
@@ -75,86 +73,20 @@
               });
             },
             onUpdate: function (layer, isNew, group,cb) {
-              if(isNew){
-                layer.properties.seq = scope.item.ProblemSortName;
-                layer.properties.Status = scope.item.ProblemID?1:2;
-              }
-              var point = {
-                MeasurePointID:layer.properties.$id,
-                geometry:layer
-              };
-              remote.Procedure.InspectionPoint.create(point);
-              if(isNew || !fg.data.find(function (d) {
-                  return d.PositionID == point.MeasurePointID;
-                })) {
-                var v = {
-                  InspectionID:scope.inspectionId,
-                  CheckpointID:sxt.uuid(),
-                  IndexPointID:scope.item.ProblemID,
-                  AreaID:scope.regionId,
-                  AcceptanceItemID:scope.procedure,
-                  PositionID:point.MeasurePointID,
-                  MeasureValue:0,
-                  Status:1,
-                  ProblemSortName:scope.item.ProblemSortName,
-                  ProblemDescription:scope.item.ProblemDescription,
-                  isNew:true
-                }
-                if(!v.IndexPointID){
-                  v.Status = 2;
-                  point.geometry.properties.Status = 2;
-                }
-                fg.data.push(v);
-                scope.ct && scope.ct.cancelMode && scope.ct.cancelMode();
-                remote.Procedure.InspectionCheckpoint.create(v);
-              }
-              cb(layer);
-            },
-            onPopupClose: function (cb) {
-              var self = this;
-              var edit = mapPopupSerivce.get('mapCheckMapPopup'),
-                scope = edit.scope;
-              if(scope.data && scope.isSaveData!==false){
-                scope.isSaveData = false;
-                self.options.onUpdateData(scope.context,scope.data,scope);
-              }
-              cb();
-            },
-            onUpdateData: function (context, data, editScope) {
-              if(data.v.ProblemSortName == 'T'){
-                remote.Procedure.InspectionCheckpoint.create(data.v);
-              }
-            },
-            onDelete: function (layer,cb) {
-              var id = layer.properties.$id;
-              remote.Procedure.InspectionPoint.delete({MeasurePointID:id}).then(function (r) {
-                var v = fg.data.find(function (d) {
-                  return d.PositionID == id;
-                }),ix = fg.data.indexOf(v);
-                fg.data.splice(ix,1);
-                remote.Procedure.InspectionCheckpoint.delete(v.CheckpointID);
-              });
-              cb(layer);
+
             },
             onPopup: function (layer,cb) {
-              var edit = mapPopupSerivce.get('mapCheckMapPopup');
-              if(edit) {
-                edit.scope.context = {
-                  fg:fg,
-                  layer:layer
-                };
+              var edit = mapPopupSerivce.get('mapRecheckMapPopup');
+              if (edit) {
+                scope.sxtMapShow = true;
+                edit.scope.context = fg;
                 edit.scope.data = {
                   item:scope.item,
                   procedure:scope.procedure,
                   regionId:scope.regionId,
-                  v:fg.data.find(function (d) {
-                    return d.PositionID == layer.properties.$id;
-                  })
-                };
-
-                edit.scope.readonly = scope.readonly;
+                  value: layer.properties.v
+                }
                 edit.scope.apply && edit.scope.apply();
-                cb(edit.el[0]);
               }
             }
           });
@@ -171,7 +103,6 @@
               if (imgId) {
                 remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
                   if(!result2.data.DrawingContent){
-                    scope.ct && (scope.ct.loading = false);
                     utils.alert('未找到图纸,请与管理员联系!(2)');
                     return;
                   }
@@ -191,13 +122,11 @@
                     xhUtils.openLinks(mapList);
                   });
                   element.find('.mapboxgl-ctrl-bottom-left').append(btn);
-                  scope.ct && (scope.ct.loading = false);
                 })
               }
               else{
                 if(!result.data.DrawingContent){
-                  utils.alert('未找到图纸,请与管理员联系!(1)');
-                  scope.ct && (scope.ct.loading = false);
+                  utils.alert('未找到图纸,请与管理员联系!(1)')
                   return;
                 }
               }

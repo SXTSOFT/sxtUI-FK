@@ -11,104 +11,66 @@
   /**@ngInject*/
   function gxrychooseController($scope,$stateParams,remote){
     var vm = this;
-    console.log('a',$stateParams)
+    //console.log('a',$stateParams)
     remote.Project.queryAllBulidings($stateParams.projectId).then(function (result) {
     })
-    vm.persons = [{
-      unit:'甲方',
-      users:[{
-        name:'张三',
-        id:1
-      },{
-        name:'李四',
-        id:2
-      },{
-        name:'王五',
-        id:3
-      },{
-        name:'王五',
-        id:10
-      },{
-        name:'王五',
-        id:11
-      },{
-        name:'王五',
-        id:12
-      },{
-        name:'王五',
-        id:13
-      },{
-        name:'王五',
-        id:14
-      },{
-        name:'王五',
-        id:15
-      },{
-        name:'王五',
-        id:16
-      },{
-        name:'王五',
-        id:17
-      },{
-        name:'王五',
-        id:18
-      },{
-        name:'王五',
-        id:19
-      },{
-        name:'王五',
-        id:20
-      }]
-    },{
-      unit:'监理',
-      users:[{
-        name:'张三',
-        id:4
-      },{
-        name:'李四',
-        id:5
-      },{
-        name:'王五',
-        id:6
-      }]
-    },{
-      unit:'施工单位',
-      users:[{
-        name:'张三',
-        id:7
-      },{
-        name:'李四',
-        id:8
-      },{
-        name:'王五',
-        id:9
-      }]
-    }]
-
-    vm.persons.forEach(function(p){
-      p.users.forEach(function(u){
-        u.checked = false;
+    remote.Procedure.GetPermissionsByProjectId($stateParams.projectId).then(function(res){
+      console.log('a',res)
+      var personzbList = [],personjlList=[],persongcList=[];
+      res.data.forEach(function(p){
+        if(p.MemberType == 0){
+          personzbList.push(p)
+        }else if(p.MemberType == 2){
+          personjlList.push(p);
+        }else if(p.MemberType == 4){
+          persongcList.push(p);
+        }
       })
+      vm.persons = [{
+        type:0,
+        unit:'总包',
+        users:personzbList
+      },{
+        type:2,
+        unit:'监理',
+        users:personjlList
+      },{
+        type:4,
+        unit:'项目部',
+        users:persongcList
+      }];
+      vm.persons.forEach(function(p){
+        p.users.forEach(function(u){
+          u.checked = false;
+        })
+      })
+      setUser();
+      //console.log('all',vm.allpersons)
     })
-    vm.choosed = [];
-    if($scope.$parent.vm.responsers){
-      $scope.$parent.vm.responsers.forEach(function(_t){
-        console.log('-t',_t)
-        vm.persons.forEach(function(t){
-          var f = t.users.find(function(u){
-            return u.id === _t.id;
+
+    function setUser(){
+      vm.choosed = [];
+      if($scope.$parent.vm.responsers){
+        $scope.$parent.vm.responsers.forEach(function(_t){
+          console.log('-t',_t)
+          vm.persons && vm.persons.forEach(function(t){
+            var f = t.users.find(function(u){
+              return u.SupervisionHeadID === _t.SupervisionHeadID;
+            })
+            console.log('f',f)
+            if(f){
+              //console.log(f)
+              f.checked = true;
+              vm.choosed.push(f)
+            }
           })
-          console.log('f',f)
-          if(f){
-            //console.log(f)
-            f.checked = true;
-            vm.choosed.push(f)
-          }
+
         })
 
-      })
-
+      }
+      vm.choosery(vm.persons[0])
     }
+
 
     vm.choosery = function(it){
       //vm.rylevels = null;
@@ -122,6 +84,7 @@
       })
       it.checked = true;
       //vm.rylevels= it.users;
+
     }
     vm.choose = function(user){
       user.checked = !user.checked;
@@ -129,7 +92,7 @@
         vm.choosed.push(user);
       }else{
         vm.choosed.forEach(function(t){
-          if(t.id ==  user.id){
+          if(t.SupervisionHeadID ==  user.SupervisionHeadID){
             var idx = vm.choosed.indexOf(user);
             console.log('idx',idx)
             if(idx !=-1){
@@ -142,7 +105,7 @@
     }
     vm.rydel = function(item){
       vm.choosed.forEach(function(t){
-        if(t.id ==  item.id){
+        if(t.SupervisionHeadID ==  item.SupervisionHeadID){
           t.checked = false;
           var idx = vm.choosed.indexOf(item);
           console.log('idx',idx)
@@ -153,7 +116,10 @@
         }
       })
     }
-    vm.choosery(vm.persons[0])
+    $scope.$watch('vm.persons',function(){
+
+    })
+
 
     //console.log($scope.$parent.vm.responsers)
     vm.userSubmit = function(user){

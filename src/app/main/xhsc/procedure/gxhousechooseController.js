@@ -51,10 +51,10 @@
               vm.nums.bhg++;
               break;
             case  8:
-              vm.nums.yzg++;
+              vm.nums.wzg++;
               break;
             case  16:
-              vm.nums.wzg++;
+              vm.nums.yzg++;
               break;
           }
         }else{
@@ -74,10 +74,10 @@
                 vm.nums.bhg++;
                 break;
               case  8:
-                vm.nums.yzg++;
+                vm.nums.wzg++;
                 break;
               case  16:
-                vm.nums.wzg++;
+                vm.nums.yzg++;
                 break;
             }
           }
@@ -214,7 +214,7 @@
         function validateChecked(r){
            switch(r.RegionType){
              case 8:
-               r.Children.forEach(function(m){
+               r.Children&&r.Children.forEach(function(m){
                   if (m.checked){
                     r.checked=false;
                   }
