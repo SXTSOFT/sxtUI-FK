@@ -9,7 +9,7 @@
     .controller('gxmainController',gxmainController);
 
   /**@ngInject*/
-  function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,gxOfflinePack){
+  function gxmainController($scope,remote,xhUtils,$rootScope,utils,api,$q,$state,gxOfflinePack,sxt){
     var vm = this;
 
     remote.Project.getMap().then(function(result){
@@ -80,7 +80,14 @@
         return vm.MemberType.indexOf(type) > -1;
       }
     })
-
+    vm.exportReport = function(item){
+      window.open(sxt.app.api+'/api/Office/ExportWord?inspectionId='+item.InspectionId);
+     // window.open('app/main/xhsc/images/bg.png')
+    }
+    vm.Lookinto = function(item){
+      console.log(item)
+      $state.go('app.xhsc.gx.gxzgdetail',{InspectionId:item.InspectionId,acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,projectId:item.ProjectID});
+    }
     vm.loadInspection = function(item){
       item.isDown = true;
       var ix = 1,len =2;

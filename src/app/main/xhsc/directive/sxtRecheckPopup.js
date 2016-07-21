@@ -117,12 +117,14 @@
             });
           });
         }
-        else{
+        else if(scope.role=='jl'){
           scope.data.value.Status = scope.data.value.Status==2?2:4;
           remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
             scope.slideShow = false;
             scope.context.updateStatus(scope.data.value.PositionID,scope.data.value.Status);
           });
+        }else{
+          scope.slideShow = false;
         }
       }
       $('body').on('click',function(e){
