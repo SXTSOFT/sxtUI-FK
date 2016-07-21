@@ -1,6 +1,5 @@
 <md-tabs flex md-border-bottom>
-
-  <md-tab label="总包自检">
+  <md-tab label="总包自检" ng-if="vm.showPermission(0)">
     <md-content>
       <div layout="column" class="gxdownload">
         <md-list style="overflow: hidden;">
@@ -40,7 +39,7 @@
       </div>
     </md-content>
   </md-tab>-->
-  <md-tab label="总包报验">
+  <md-tab label="总包报验" ng-if="vm.showPermission(0)">
     <md-content>
       <div layout="column" class="gxdownload">
         <md-list style="overflow: hidden;">
@@ -58,7 +57,7 @@
       </div>
     </md-content>
   </md-tab>
-  <md-tab label="总包整改">
+  <md-tab label="总包整改" ng-if="vm.showPermission(0)">
     <md-content>
       <div layout="column" class="gxdownload">
         <!--<md-subheader>已下载列表</md-subheader>-->
@@ -96,7 +95,7 @@
       </div>
     </md-content>
   </md-tab>
-  <md-tab label="监理验收" >
+  <md-tab label="监理验收" ng-if="vm.showPermission(2)">
     <md-content>
       <div layout="column" class="gxdownload">
         <!--<md-subheader>已下载列表</md-subheader>-->
@@ -142,7 +141,7 @@
       </div>
     </md-content>
   </md-tab>
-  <md-tab label="监理复验">
+  <md-tab label="监理复验" ng-if="vm.showPermission(2)">
     <md-content>
       <div layout="column" class="gxdownload">
 

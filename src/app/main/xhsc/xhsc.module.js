@@ -21,7 +21,7 @@
         rightArrow:false,
         leftArrow:false,
         opBtn:true,
-        title :'个人中心',
+        title :'消息中心',
         url   :'/mcenter',
         views :{
           'content@app':{

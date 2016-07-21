@@ -343,6 +343,13 @@
       },
       insertJlfy:function(RectificationID,Remarks,Day){
         return $http.post($http.url('/api/InspectionRectificationApi/ReviewInsert'),{RectificationID:RectificationID,Remarks:Remarks,Day:Day})
+      },//根据当前登陆人获取权限
+      authorityByUserId:function(){
+        return $http.get($http.url('/Api/ProjectInfoApi/GetProjectPermissions'));
+      },
+      //根据项目ID获取项目人员权限
+      GetPermissionsByProjectId:function(ProjectId){
+        return $http.get($http.url('/Api/ProjectInfoApi/GetPermissionsByProjectId',{projectId:ProjectId}));
       }
     },
     Assessment:{

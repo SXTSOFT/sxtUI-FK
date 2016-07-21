@@ -9,7 +9,7 @@
     .controller('gxmainController',gxmainController);
 
   /**@ngInject*/
-  function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state){
+  function gxmainController($scope,remote,xhUtils,$rootScope,utils,api,$q,$state){
     var vm = this;
 
     remote.Project.getMap().then(function(result){
@@ -56,6 +56,18 @@
     remote.Procedure.getInspections(1).then(function(r){
       vm.Inspections= r.data;
     });
+    vm.MemberType = [];
+    remote.Procedure.authorityByUserId().then(function(res){
+      console.log('resId',res)
+      res.data.forEach(function(r){
+        vm.MemberType.push(r.MemberType);
+      })
+    })
+    $scope.$watch('vm.MemberType',function(){
+      vm.showPermission = function(type){
+        return vm.MemberType.indexOf(type) > -1;
+      }
+    })
 
     vm.loadInspection = function(item){
       item.isDown = true;
