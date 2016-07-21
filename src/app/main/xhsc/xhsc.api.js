@@ -73,7 +73,12 @@
         dataType:1
       }).bind(function(inspectionId){
         return $http.get($http.url('/api/InspectionApi/GetInspectionInfoByInspection',{inspectionId:inspectionId}));
-      })
+      }),
+      insertInspectionList:$http.db({
+        _id:'Inspection',
+        idField:'InspectionId',
+        upload:true
+      }).bind()
     },
     Procedure:{
       queryProcedure:$http.db({
@@ -241,7 +246,7 @@
           return r;
         });
       }),
-      postInspection:function(params){  //报检区域
+      postInspection:function(params){
         return $http.post($http.url('/Api/InspectionApi/insert'),params )
       },
       getInspections:$http.db({
@@ -257,6 +262,9 @@
       getZGlistbyProjectId: function (projectID) {
         return $http.get($http.url('/api/InspectionRectificationApi/List',{projectId:projectID}))
       },
+      //getZGById:function (rectificationID) {
+      //  return $http.get($http.url('/api/InspectionRectificationApi/GetById',{rectificationID:rectificationID}))
+      //},
       getZGById:$http.db({
         _id:'zgById',
         idField:'RectificationID',
@@ -267,6 +275,9 @@
           return result;
         });
       }),
+      //getZGReginQues:function(areaId,rectificationID){
+      //  return $http.get($http.url('/api/InspectionRectificationApi/ByAreaIdAndAcceptanceItemId',{areaId:areaId,rectificationID:rectificationID}))
+      //},
       getZGReginQues:$http.db({
         _id:'InspectionCheckpoint',
         idField:'CheckpointID',
@@ -283,6 +294,9 @@
       }).bind(function(areaId,rectificationID){
         return $http.get($http.url('/api/InspectionRectificationApi/ByAreaIdAndAcceptanceItemId',{areaId:areaId,rectificationID:rectificationID}))
       }),
+      //getZGReginQuesPoint:function(areaId,rectificationID){
+      //  return $http.get($http.url('/api/InspectionRectificationApi/GetPointByAreaIdAndAcceptanceItemId',{areaId:areaId,rectificationID:rectificationID}))
+      //},
       getZGReginQuesPoint:$http.db({
         _id:'InspectionPoint',
         idField:'MeasurePointID',
@@ -309,18 +323,9 @@
       getPoints:function(areaId,acceptanceItemId,inspectionId){
         return $http.get($http.url('/api/InspectionCheckpointApi/ByAreaIdAndAcceptanceItemId',{areaId:areaId,acceptanceItemId:acceptanceItemId,inspectionId:inspectionId}))
       },
-      getRectification:$http.db({
-        _id:'ByRectificationId',
-        idField:'rectificationId',
-        dataType:3
-      }).bind(function(rectificationId){
-        return $http.get($http.url('/api/InspectionApi/ByRectificationId',{rectificationId:rectificationId})).then(function(r){
-            if(r&& r.data){
-              r.data.rectificationId=rectificationId;
-            }
-            return r;
-        })
-      }),
+      getRectification:function(rectificationId){
+        return $http.get($http.url('/api/InspectionApi/ByRectificationId',{rectificationId:rectificationId}))
+      },
       createZGReceipt:$http.db({
         _id:'createZGReceipt',
         idField:'InspectionID',
