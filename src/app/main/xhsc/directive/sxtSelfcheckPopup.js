@@ -58,7 +58,7 @@
           CheckpointID:scope.slideId,
           Status:scope.data.Status
         }
-        remote.Procedure.updataZjPoint(scope.slideId,scope.ZjRecord.zj.Status).then(function (r) {
+        remote.Procedure.updataZjPoint({CheckpointID:scope.slideId,Status:scope.ZjRecord.zj.Status}).then(function (r) {
           if(r.data.ErrorCode == 0){
             scope.slideShow = false;
             scope.slideContext.fg.updateStatus(scope.slideContext.layer.properties.$id,scope.ZjRecord.zj.Status);

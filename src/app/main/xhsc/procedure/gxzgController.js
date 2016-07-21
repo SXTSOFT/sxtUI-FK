@@ -147,7 +147,7 @@
             }
             else{
               console.log('time',$scope)
-              remote.Procedure.insertJlfy(RectificationID,$scope.remark,$scope.time).then(function(r){
+              remote.Procedure.insertJlfy({RectificationID:RectificationID,Remarks:$scope.remark,Day:$scope.time}).then(function(r){
                 if (r.data.ErrorCode==0){
                   utils.alert("提交成功",null,function(){
                     vm.Isfail=false;
