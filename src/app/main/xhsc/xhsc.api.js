@@ -70,7 +70,10 @@
       getInspectionList:$http.db({
         _id:'Inspection',
         idField:'InspectionId',
-        dataType:1
+        dataType:1,
+        filter:function (item,inspectionId) {
+          return item.InspectionId==inspectionId;
+        }
       }).bind(function(inspectionId){
         return $http.get($http.url('/api/InspectionApi/GetInspectionInfoByInspection',{inspectionId:inspectionId}));
       }),
@@ -228,7 +231,7 @@
       getRegionStatus:$http.db({
           _id:'project_status',
           idField:function (item) {
-            return item.Sign + item.AcceptanceItemID+item.AreaID;
+            return item.Sign + item.AcceptanceItemID+item.AreaId;
           },
           dataType:1,
           filter:function (item,projectId,Sign) {

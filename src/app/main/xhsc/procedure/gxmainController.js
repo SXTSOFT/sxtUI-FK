@@ -36,11 +36,19 @@
         function () {
           return remote.Project.queryAllBulidings(projectId);
         },
-        function () {
-          return remote.Procedure.getRegionStatus(projectId,sign)
+        function (tasks) {
+          return remote.Procedure.getRegionStatus(projectId,sign).then(function (result) {
+            result.data.forEach(function (item) {
+              if(item.AcceptanceItemID && item.AreaId && item.InspectionId) {
+                tasks.push(function () {
+                  return remote.Procedure.InspectionCheckpoint.query(item.AcceptanceItemID, item.AreaId, item.InspectionId);
+                })
+              }
+            })
+          })
         },
         function (tasks) {
-          return remote.Procedure.getDrawingRelations(projectId).then(function (result) {
+          return remote.Project.getDrawingRelations(projectId).then(function (result) {
             var pics = [];
             result.data.forEach(function (item) {
               if(pics.indexOf(item.DrawingID)==-1){
@@ -57,19 +65,62 @@
         }
       ]
     }
-vm.downloadzj = function (item) {
-  var tasks = [].concat(globalTask).concat(projectTask(item.ProjectID,"8"));
-  api.task(tasks)(function(percent,current,total){
-    item.percent = parseInt(percent *100) +' %';
-    item.current = current;
-    item.total = total;
-  },function(){
-    item.percent = item.current = item.total = null;
-    item.isOffline = true;
-  },function(){
-    utils.alert('下载失败,请检查网络');
-  })
-}
+    function InspectionTask(item) {
+      var t = [function () {
+        return remote.Project.getInspectionList(item.InspectionId);
+      }];
+      item.Children.forEach(function (area) {
+        t.push(function (tasks) {
+            return remote.Procedure.InspectionCheckpoint.query(item.AcceptanceItemID,area.AreaID,item.InspectionId).then(function (result) {
+              result.data.forEach(function (p) {
+                tasks.push(function () {
+                  return remote.Procedure.InspectionProblemRecord.query(p.CheckpointID).then(function (result) {
+                    result.data.forEach(function (r) {
+                      tasks.push(function () {
+                        return remote.Procedure.InspectionProblemRecordFile.query(r.ProblemRecordID);
+                      })
+                    })
+                  })
+                });
+              });
+            })
+          });
+        t.push(function () {
+          return remote.Procedure.InspectionPoint.query(item.AcceptanceItemID,item.InspectionId,area.AreaID)
+        })
+      })
+    }
+
+    vm.downloadzj = function (item) {
+     var tasks = [].concat(globalTask).concat(projectTask(item.ProjectID, "8"));
+     api.task(tasks)(function (percent, current, total) {
+       item.percent = parseInt(percent * 100) + ' %';
+       item.current = current;
+       item.total = total;
+     }, function () {
+       item.percent = item.current = item.total = null;
+       item.isOffline = true;
+       utils.alert('下载完成');
+     }, function () {
+       utils.alert('下载失败,请检查网络');
+     })
+   }
+    vm.downloadys = function (item) {
+      var tasks = [].concat(globalTask)
+        .concat(projectTask(item.ProjectID, "8"))
+        .concat(InspectionTask(item));
+      api.task(tasks)(function (percent, current, total) {
+        item.percent = parseInt(percent * 100) + ' %';
+        item.current = current;
+        item.total = total;
+      }, function () {
+        item.percent = item.current = item.total = null;
+        item.isOffline = true;
+        utils.alert('下载完成');
+      }, function () {
+        utils.alert('下载失败,请检查网络');
+      })
+    }
     vm.loadPack=function(market,item){
       gxOfflinePack.download(market,function(percent,current,total){
         item.percent = parseInt(percent *100) +' %';
