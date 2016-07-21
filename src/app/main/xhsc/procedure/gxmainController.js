@@ -9,7 +9,7 @@
     .controller('gxmainController',gxmainController);
 
   /**@ngInject*/
-  function gxmainController($scope,remote,xhUtils,$rootScope,utils,api,$q,$state){
+  function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,gxOfflinePack){
     var vm = this;
 
     remote.Project.getMap().then(function(result){
@@ -25,6 +25,18 @@
         vm.projects = result.data;
       });
     });
+
+    vm.loadPack=function(market,item){
+      gxOfflinePack.download(market,function(){
+        item.progress = percent*100;
+      },function(){
+        item.progress = 100;
+        item.isOffline = true;
+      },function(){
+        item.isDown = false;
+        utils.alert('下载失败,请检查网络');
+      });
+    }
 
     vm.download = function(item){
       item.isDown = true;

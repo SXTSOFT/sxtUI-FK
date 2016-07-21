@@ -244,9 +244,6 @@
       postInspection:function(params){
         return $http.post($http.url('/Api/InspectionApi/insert'),params )
       },
-      //getInspections:function (status) {
-      //  return $http.get($http.url('/api/InspectionApi/GetInspectionInfoList',{status:status}))
-      //},
       getInspections:$http.db({
         _id:'InspectionInfoList',
         idField:'InspectionId',
@@ -312,9 +309,6 @@
       }).bind(function(status){
         return $http.get($http.url('/api/InspectionRectificationApi/GetByStatus',{status:status}));
       }),
-      //getZGlist: function (status) {
-      //  return $http.get($http.url('/api/InspectionRectificationApi/GetByStatus',{status:status}))
-      //},
       getRegionByInspectionID:function(inspectionId){
         return $http.get($http.url('/api/InspectionAreaApi/ByInspectionId',{inspectionId:inspectionId}))
       },
