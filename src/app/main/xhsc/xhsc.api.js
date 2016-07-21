@@ -98,7 +98,7 @@
           query:{
             dataType:1,
             filter:function (item,inspectionId,acceptanceItemId,areaId) {
-              return item.InspectionId==inspectionId && item.AcceptanceItemID==acceptanceItemId && item.AreaID==areaId
+              return true;
             },
             fn:function (inspectionId,acceptanceItemId,areaId) {
               return $http.get($http.url('/api/InspectionCheckpointApi/GetMeasurePoint',{inspectionId:inspectionId,areaId:areaId,acceptanceItemId:acceptanceItemId}));
@@ -320,6 +320,9 @@
         _id:'InspectionPoint',
         idField:'MeasurePointID',
         dataType:1,
+        filter:function () {
+          return true;
+        }
       }).bind(function(areaId,rectificationID){
         return $http.get($http.url('/api/InspectionRectificationApi/GetPointByAreaIdAndAcceptanceItemId',{areaId:areaId,rectificationID:rectificationID}))
       }),

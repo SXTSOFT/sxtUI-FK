@@ -99,6 +99,9 @@
              result.data.forEach(function (item) {
                if(item.AcceptanceItemID && item.AreaId && item.InspectionId) {
                  tasks.push(function () {
+                   return remote.Project.getInspectionList(item.InspectionId);
+                 });
+                 tasks.push(function () {
                    return remote.Procedure.InspectionCheckpoint.query(item.AcceptanceItemID, item.AreaId, item.InspectionId);
                  })
                }
