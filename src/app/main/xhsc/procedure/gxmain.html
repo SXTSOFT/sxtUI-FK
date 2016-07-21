@@ -60,7 +60,8 @@
                 整改
               </md-button>
               <md-button ng-if="!item.isDown" class="md-raised md-primary" ng-click="vm.downloadzg(item)">
-                下载
+                <md-icon ng-if="item.isOffline" md-font-icon="icon-box-download"></md-icon>
+                <md-icon ng-if="!item.isOffline" md-font-icon="icon-download"></md-icon>
               </md-button>
               <a  ng-if="item.isDown" style="position: relative;display: inline-block;width:31px;height:31px;border:1px solid #f8f8f8;border-radius:50%" ng-click="vm.cancel()">
                 <md-progress-circular md-mode="determinate" value="{{item.progress}}"  md-diameter="30"></md-progress-circular>
@@ -89,7 +90,8 @@
                 验收
               </md-button>
               <md-button  ng-if="!item.isDown" class="md-raised md-primary" ng-click="vm.downloadys(item)">
-                <md-icon md-font-icon="{{item.isOffline?'icon-box-download':'icon-download'}}"></md-icon>
+                <md-icon ng-if="item.isOffline" md-font-icon="icon-box-download"></md-icon>
+                <md-icon ng-if="!item.isOffline" md-font-icon="icon-download"></md-icon>
               </md-button>
             </div>
           </md-list-item>
@@ -114,7 +116,8 @@
                 复验
               </md-button>
               <md-button ng-if="!item.isDown" class="md-raised md-primary"  ng-click="vm.downloadzg(item)">
-                <md-icon md-font-icon="{{item.isOffline?'icon-box-download':'icon-download'}}"></md-icon>
+                <md-icon ng-if="item.isOffline" md-font-icon="icon-box-download"></md-icon>
+                <md-icon ng-if="!item.isOffline" md-font-icon="icon-download"></md-icon>
               </md-button>
 
             </div>
