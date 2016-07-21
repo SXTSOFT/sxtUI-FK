@@ -30,6 +30,7 @@
   </div>
 </div>
 <div class="mapcheck" flex sxt-map-check="vm.info.current" inspection-id="vm.InspectionId" procedure="vm.info.acceptanceItemID" ct="vm.info" region-id="vm.info.selected.AreaID">
+  <div style="position: absolute;"><md-progress-circular md-mode="indeterminate" ng-if="vm.info.loading"></md-progress-circular></div>
   <div style="position: absolute;z-index: 79;bottom: 0px;right: 0px" ng-show="vm.info.current"><md-button class="md-fab md-mini md-green" fast-click="vm.cancelCurrent($event)"><md-icon md-font-icon="icon-undo-variant"></md-icon></md-button></div>
 </div>
 <md-divider></md-divider>
