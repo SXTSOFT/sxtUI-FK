@@ -265,7 +265,13 @@
     };
 
     remote.Procedure.getInspections(1).then(function(r){
-      vm.Inspections= r.data;
+      vm.Inspections=[];
+      r.data.forEach(function(o){
+        if (o.Sign!=8){
+          vm.Inspections.push(o);
+        }
+      });
+      //vm.Inspections= r.data;
     });
     vm.MemberType = [];
     remote.Procedure.authorityByUserId().then(function(res){
