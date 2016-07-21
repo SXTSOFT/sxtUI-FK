@@ -62,7 +62,7 @@
         var imgs = [];
         scope.data.images.forEach(function (img) {
           imgs.push({
-            url:img.FileUrl||img.FileContent,
+            url:img.FileContent||img.FileUrl,
             alt:''
           });
         })
