@@ -16,7 +16,8 @@
         regionId:'=',
         inspectionId:'=',
         disableInspect:'=',
-        disableDrag:'='
+        disableDrag:'=',
+        ct:'='
       },
       link:link
     };
@@ -35,6 +36,7 @@
             disableDrag:scope.disableDrag,
             onChangeMode:function (mode,op,cb) {
               if(mode && !op){
+                scope.ct && scope.ct.cancelMode && scope.ct.cancelMode();
                 scope.item = {
                   ProblemID:null,
                   ProblemSortName:'✔',//'',
@@ -100,7 +102,7 @@
                   point.geometry.properties.Status = 2;
                 }
                 fg.data.push(v);
-                fg.changeMode();
+                scope.ct && scope.ct.cancelMode && scope.ct.cancelMode();
                 remote.Procedure.InspectionCheckpoint.create(v);
               }
               cb(layer);

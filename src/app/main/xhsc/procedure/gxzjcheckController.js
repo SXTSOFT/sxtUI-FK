@@ -18,7 +18,10 @@
     vm.projectId = $stateParams.projectId;
     //console.log('state',$stateParams)
     vm.info={
-      current:null
+      current:null,
+      cancelMode:function () {
+        vm.cancelCurrent(null);
+      }
     }
 
 
