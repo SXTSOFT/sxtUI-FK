@@ -13,7 +13,8 @@
         items:'=',
         procedure:'=',
         regionId:'=',
-        inspectionId:'='
+        inspectionId:'=',
+        ct:'='
       },
       link:link
     };
@@ -30,6 +31,7 @@
           fg = $window.mapboxgl.Plan({
             onChangeMode:function (mode,op,cb) {
               if(mode && !op){
+                scope.ct && scope.ct.cancelMode && scope.ct.cancelMode();
                 scope.item = {
                   ProblemID:null,
                   ProblemSortName:'✔',//'',
@@ -97,7 +99,7 @@
                   point.geometry.properties.Status = 2;
                 }
                 fg.data.push(v);
-                fg.changeMode();
+                scope.ct && scope.ct.cancelMode && scope.ct.cancelMode();
                 remote.Procedure.InspectionCheckpoint.create(v);
               }
               cb(layer);

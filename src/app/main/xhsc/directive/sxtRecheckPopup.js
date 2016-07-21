@@ -60,7 +60,7 @@
 
       scope.playImage = function (imgs) {
         imgs.forEach(function (img) {
-          img.url = img.FileUrl || img.FileContent;
+          img.url = img.FileContent||img.FileUrl;
           img.alt = ' ';
         })
         xhUtils.playPhoto(imgs);
