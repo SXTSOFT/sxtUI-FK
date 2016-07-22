@@ -426,7 +426,7 @@
         function () {
           return api.szgc.TargetService.getAll()
         }])(function (percent,current,total) {
-        item.percent = parseInt(percent *100) +' %';
+          item.percent = parseInt(percent *100) +' %';
         item.current = current;
         item.total = total;
       },function () {
