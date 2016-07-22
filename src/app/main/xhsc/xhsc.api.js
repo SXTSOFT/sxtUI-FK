@@ -312,7 +312,10 @@
       getZGById:$http.db({
         _id:'zgById',
         idField:'RectificationID',
-        dataType:1
+        dataType:1,
+        filter:function(item,rectificationID){
+          return item.RectificationID == rectificationID;
+        }
       }).bind(function(rectificationID){
         return $http.get($http.url('/api/InspectionRectificationApi/GetById',{rectificationID:rectificationID})).then(function(result){
           result.data = [result.data];
