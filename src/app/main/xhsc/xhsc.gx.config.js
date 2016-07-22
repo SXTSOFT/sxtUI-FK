@@ -64,7 +64,7 @@
         controller: 'zjhouseChooseController as vm'
       })
       .state('app.xhsc.gx.gxtest', {
-        noBack: true,
+        noBack: false,
         sendBt: true,
         rightArrow: false,
         leftArrow: false,

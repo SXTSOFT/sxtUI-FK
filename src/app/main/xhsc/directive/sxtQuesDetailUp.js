@@ -23,6 +23,8 @@
     function link(scope,element,attr,ctrl){
       $(element).appendTo('body');
       var load = function(){
+        if(!scope.currentRectificationid) return;
+        if(!scope.selectedArea) return;
         var promises=[
           remote.Procedure.getZGReginQues(scope.selectedArea,scope.currentRectificationid)/*,
            remote.Procedure.getZGReginQuesPoint(vm.regionSelect.AreaID,RectificationID)*/
@@ -47,6 +49,9 @@
         })
       }
       scope.$watch('selectedArea',function(){
+        load();
+      })
+      scope.$watch('currentRectificationid',function(){
         load();
       })
       $('body').on('click',function(e){
