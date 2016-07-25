@@ -138,14 +138,7 @@
 
       });
     }
-    //remote.Assessment.queryItemResults().then(function(result){
-    //  result.data.forEach(function(t){
-    //    t.fullName = ((t.Year+'年')||'') +'第'+t.Quarter +'季度'+ (t.ProjectName||'')+'项目得分汇总';
-    //  })
-    //  vm.projects = result.data;
-    //})
     vm.showECs = function(ev,item) {
-      //var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && vm.customFullscreen;
       console.log('ev',item)
       $mdDialog.show({
           controller: ['$scope', '$mdDialog','item', function DialogController($scope, $mdDialog,item) {
