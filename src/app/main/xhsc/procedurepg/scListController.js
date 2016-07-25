@@ -15,6 +15,8 @@
   function sclistController($scope,remote,$stateParams){
     var vm=this;
     vm.projectId = $stateParams.projectId;
+    vm.areaId='';
+
     vm.role=$stateParams.role;
     remote.Procedure.queryProcedure().then(function(result){
       vm.procedureData = [];
