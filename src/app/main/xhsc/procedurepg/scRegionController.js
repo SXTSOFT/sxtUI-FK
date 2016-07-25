@@ -214,7 +214,7 @@
         regionId: "00025000010000100001",
         regionType: 8
       }
-      $state.go('app.xhsc.sc2',test);
+      $state.go('app.xhsc.scsl._sc',test);
       //inspectionInfoDef.then(function (r1) {
       //    var fd = r1.data.find(function (item) {
       //      return item.Children.find(function (area) {
