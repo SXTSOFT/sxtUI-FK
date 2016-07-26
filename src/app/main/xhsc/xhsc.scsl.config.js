@@ -36,7 +36,7 @@
         rightArrow: false,
         leftArrow: false,
         title: '选择实测项',
-        url: '/sclist/{role}/{projectId}',
+        url: '/sclist/{projectId}/{assessmentID}/{role}',
         templateUrl: 'app/main/xhsc/procedurepg/sclist.html',
         controller: 'sclistController as vm'
       })
@@ -45,7 +45,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url: '/scRegion/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}/{maxRegion}',
+        url: '/scRegion/{assessmentID}/{role}/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{maxRegion}',
         templateUrl: 'app/main/xhsc/procedurepg/scRegion.html',
         controller: 'scRegionController as vm'
       })

@@ -19,7 +19,9 @@
         projectId:'=',
         areaId:'=',
         current:'=',
-        isSC:'=' //是否为实测项
+        isSC:'=', //是否为实测项
+        role:'=',
+        assessmentId:'='
       },
       templateUrl:'app/main/xhsc/directive/slideMenu.html',
       link:link
@@ -72,7 +74,7 @@
         console.log('vm',item)
         if(!scope.showCheck){
           if (scope.isSC){
-            var tmp={acceptanceItemID: "40001764938c41aeb105f8273e0b6f51", projectId: "00027", acceptanceItemName: "钢筋 - 墙柱", areaId: undefined, maxRegion: "8"}
+            var tmp= {assessmentID:scope.assessmentId,role:scope.role,acceptanceItemID: "40001764938c41aeb105f8273e0b6f51", projectId: "00027", acceptanceItemName: "钢筋 - 墙柱", maxRegion: "8"}
             $state.go('app.xhsc.scsl.scRegion',tmp);
           }else if (scope.role){
             $state.go('app.xhsc.gx.gxhousechoose',{role:scope.role,acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId,maxRegion:item.maxRegion})
@@ -80,7 +82,6 @@
             $state.go('app.xhsc.gx.zjhouseChoose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId,maxRegion:item.maxRegion})
           }
         }else{
-          //item.checked = !item.checked;
         }
       }
     }

@@ -9,17 +9,26 @@
     .controller('scRegionController',scRegionController);
 
   /** @ngInject */
-  function scRegionController($scope,$stateParams,sxt,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils){
+  function scRegionController($scope,$stateParams,sxt,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils,db){
     var vm=this,
       projectId = $stateParams.projectId,
       acceptanceItemID=$stateParams.acceptanceItemID,
       acceptanceItemName = $stateParams.acceptanceItemName,
       role=$stateParams.role,
-      areaId = $stateParams.areaId;
-    vm.maxRegion = $stateParams.maxRegion;
+      assessmentID = $stateParams.assessmentID;
+      vm.maxRegion = $stateParams.maxRegion;
     $rootScope.title = $stateParams.acceptanceItemName;
     $rootScope.sendBt = false;
     vm.maxRegion = $stateParams.maxRegion;
+
+    var _db=db('pack'+ assessmentID);
+    _db.get("GetRegionTreeInfo").then(function(r){
+        console.log(r);
+    }).catch(function(r){
+
+    });
+
+
     function  load(){
       vm.nums={
         qb:0, //全部
@@ -157,19 +166,6 @@
         var find = res[2].data.forEach(function(p){
           return p.ProjectID == projectId;
         })
-        //if(find){
-        //  var allRegins = find;
-        //  var idx = allRegins.RegionIDs.indexOf(',');
-        //  if(idx == -1){
-        //
-        //  }else{
-        //    var arr=[];
-        //    arr=allRegins.RegionIDs.split(',');
-        //    for(var i=0;i<arr.length;i++){
-        //
-        //    }
-        //  }
-        //}
         result.data[0].RegionRelations.forEach(function(d){
           filterOrSetting(status,d);
           d.projectTree =  d.RegionName;
@@ -195,7 +191,6 @@
         vm.houses =  result.data[0].RegionRelations;
       });
     }
-
     load();
     var inspectionInfoDef = remote.Procedure.getInspectionInfoBySign(8);
 

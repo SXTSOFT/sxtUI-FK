@@ -155,7 +155,7 @@
         var args = toArray(arguments),
           url = args[0];
         if (url.indexOf('http') == -1)
-          args[0] = sxt.app.scApi + url;
+          args[0] = sxt.app.api + url;
         return provider.$http.$http[method].apply(self, args);
       };
     }
