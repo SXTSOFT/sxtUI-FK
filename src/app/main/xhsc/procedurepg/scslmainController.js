@@ -83,7 +83,7 @@
     }
     vm.upload =function (item) {
       item.uploading = true;
-      remote.Assessment.GetAssessmentStatus(item.AssessmentID).then(function (result) {
+      remote.Project.getMap(item.ProjectID).then(function (result) {
           if(result.data.ErrorCode==0){
             var pk = pack.sc.up(item.AssessmentID);
             pk.upload(function (proc) {
@@ -110,7 +110,7 @@
           }
         })
         .catch(function () {
-          utils.alert('网络越野')
+          utils.alert('网络出现异常')
         })
 
     }
