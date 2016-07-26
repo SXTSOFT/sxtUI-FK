@@ -1,0 +1,13 @@
+<div style="position: fixed;top: 0;left: 0;right:0;bottom:0;background: rgba(0,0,0,.5);z-index: 20;" ng-if="upShow" id="quesUp"></div>
+<div class="slideTop" ng-class="{'slidedown':upShow}">
+  <div class="gxtest gxtestdetail" flex>
+    <md-list class="gxque" style="margin-top:0;">
+      <md-list-item ng-repeat="k in ques | orderBy:'ProblemSortName'">
+        <!--<span flex="none" style="width:100px;">2号问题</span>-->
+        <span flex style="padding-left:8px;">{{k.ProblemDescription}}</span>
+        <span flex="none" style="text-align: right;padding-right:8px">{{k.Points}}处</span>
+      </md-list-item>
+    </md-list>
+  </div>
+  <div flex style="border-bottom: 1px solid #dedede;height: 48px;line-height: 48px;text-align: center;" ng-click="submit()">确定</div>
+</div>

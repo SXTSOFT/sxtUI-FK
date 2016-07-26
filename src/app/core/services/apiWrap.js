@@ -4,10 +4,10 @@
 
   angular
     .module('app.core')
-    .provider('api', apiProvider)
+    .provider('apiWrap', apiWrapProvider)
 
   /** @ngInject */
-  function apiProvider() {
+  function apiWrapProvider() {
     var api = {},
       provider = this,
       injector,
@@ -205,7 +205,7 @@
      *
      * @param obj
      * @returns {Object}
-       */
+     */
     function bindHttp(obj) {
       return angular.extend(obj,{
         get:cfg('get'),
@@ -404,8 +404,8 @@
     /**
      * 绑定配置
      * @param cfg
-       * @returns {*}
-       */
+     * @returns {*}
+     */
     function bindDb (cfg) {
       if(cfg.methods){
         var o = {},methods = cfg.methods;
@@ -432,7 +432,7 @@
                 else if(cfg.delete){
                   args.forEach(function (d) {
                     lodb.delete(id(d,null,cfg)||d);
-                 });
+                  });
                   resolve(args);
                 }
                 else if(cfg.upload) {
@@ -492,6 +492,7 @@
               return (cb? p2.then(function (result) {
                 return cb.call(caller,result,cfg,args);
               }):p2).then(function (result) {
+
                 return result;
               });
             }
@@ -586,19 +587,19 @@
 
     function clearDb(progress,complete,fail,options) {
       var tasks = [];
-       cfgs.forEach(function (cfg) {
-         if(options.exclude && options.exclude.indexOf(cfg._id)!=-1)return;
-         var db = initDb(cfg);
-         if(db) {
-           tasks.push(function () {
-             return db.destroy().then(function (result) {
-               cfg.db = null;
-               return result;
-             }).catch(function (err) {
-             });
-           })
-         }
-       });
+      cfgs.forEach(function (cfg) {
+        if(options.exclude && options.exclude.indexOf(cfg._id)!=-1)return;
+        var db = initDb(cfg);
+        if(db) {
+          tasks.push(function () {
+            return db.destroy().then(function (result) {
+              cfg.db = null;
+              return result;
+            }).catch(function (err) {
+            });
+          })
+        }
+      });
       return task(tasks)(progress,complete,fail,options);
     }
   }

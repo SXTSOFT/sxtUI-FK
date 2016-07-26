@@ -47,7 +47,7 @@
         vm.Inspection = rtv[0].data[0];
         vm.btBatch = vm.Inspection.Children;
         vm.current = vm.btBatch[0];
-        load();
+        //load();
         return vm.btBatch;
       })
     }
@@ -64,7 +64,7 @@
 
     vm.setRegion = function(region){
       vm.current = region;
-      load();
+      //load();
     }
     vm.nextRegion = function(prev){
       var idx = vm.btBatch.indexOf(vm.current);
@@ -84,7 +84,9 @@
         }
       }
     }
-
+    vm.showQuesList = function(){
+      vm.showList = true;
+    }
 
     function load(){
       remote.Procedure.InspectionCheckpoint.query(vm.acceptanceItemID,vm.current.AreaID,vm.InspectionId).then(function (r) {

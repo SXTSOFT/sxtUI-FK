@@ -18,9 +18,9 @@
       var RectificationID=$state.params.RectificationID;
     vm.role = $state.params.Role;
     vm.InspectionID = $state.params.InspectionID;
-
+    vm.RectificationID = $state.params.RectificationID;
     remote.Procedure.getZGById(RectificationID).then(function (r) {
-      console.log('r',r)
+      console.log('r1',r)
       vm.Rectification = r.data[0];
       vm.pareaList = vm.Rectification.Children;
       vm.regionSelect = vm.pareaList[0];
@@ -85,11 +85,14 @@
     vm.showTop = function(){
       vm.slideShow = true;
     }
+    vm.showQuesList = function(){
+      vm.showUp = true;
+    }
     vm.selectQy = function(item){
       vm.regionSelect = item;
       vm.regionSelect.hasCheck=true;
       vm.qyslideShow = false;
-      load();
+      //load();
     }
     vm.showBaseInfor = function(){
       $mdDialog.show({
@@ -200,14 +203,14 @@
             if ((index-1)>=0){
               vm.regionSelect=vm.pareaList[index-1];
               vm.regionSelect.hasCheck=true;
-              load();
+              //load();
               return;
             }
           }else {
             if ((index+1)<vm.pareaList.length){
               vm.regionSelect=vm.pareaList[index+1];
               vm.regionSelect.hasCheck=true;
-              load();
+              //load();
               return;
             }
           }

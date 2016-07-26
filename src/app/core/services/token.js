@@ -34,19 +34,18 @@
     }
 
     function onHttpRequest(config){
-      var token = getToken();
-      if(token && !config.headers['Authorization'])
-        config.headers['Authorization'] = token;
+      var  url=config.url;
+      if (url.indexOf(sxt.app.api)>-1){
+        var token = getToken();
+        if(token && !config.headers['Authorization'])
+          config.headers['Authorization'] = token;
+      }
       return config;
     }
 
     function onHttpResponseError(rejection){
       if(rejection.status == 401){
         $rootScope.$emit ('user:needlogin');
-        //$rootScope.$emit('')
-        //document.location = '#/auth/login'
-        //$state.go('')
-        //setToken(null);
       }
     }
 

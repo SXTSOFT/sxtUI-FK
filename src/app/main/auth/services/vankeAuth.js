@@ -34,7 +34,6 @@
             url: sxt.app.api + '/token',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'//,
-              //'Authorization': 'Basic ' + btoa ('59EEDFCCB53C451488E067522992853B:9d6ab75f921942e61fb43a9b1fc25c63')
             },
             transformRequest: function (obj) {
               var str = [];

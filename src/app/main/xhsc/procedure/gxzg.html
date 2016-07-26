@@ -20,23 +20,19 @@
 </div>
 <div class="mapcheck" flex sxt-recheck-map="vm.Rectification.RectificationID"  sxt-map-show="vm.slideShow" project-id="vm.regionSelect.AreaID" procedure="vm.Rectification.AcceptanceItemID" disable-inspect="vm.role=='zb'" disable-drag region-id="vm.regionSelect.AreaID">
 </div>
-<md-content flex style="background: transparent;">
-  <div class="gxtest gxtestdetail" flex>
-    <div style="margin-top: 20px;padding:0 8px;" flex layout="row"><span flex>问题列表</span><span flex></span><span ng-click="vm.showBaseInfor()" style="background: url(app/main/xhsc/images/right.png) no-repeat right 2px;background-size:auto 14px;padding-right:12px;">基本信息</span></div>
-    <md-list class="gxque">
-      <md-list-item ng-repeat="k in vm.ques | orderBy:'ProblemSortName'">
-        <!--<span flex="none" style="width:100px;">2号问题</span>-->
-        <span flex style="padding-left:8px;">{{k.ProblemDescription}}</span>
-        <span flex="none" style="text-align: right;padding-right:8px">{{k.Points}}处</span>
-      </md-list-item>
-    </md-list>
-    <!--<md-button flex style="display: block;width:100%;margin:10px 0;padding:6px;border:1px solid #d8d8d8;background: #fff;" ng-click="vm.showTop()">提交复检报告{{vm.role}}</md-button>-->
-    <!--<slide-top-view slide-show="vm.slideShow" slide-role="vm.role"></slide-top-view>-->
-    <!--<div style="display: none">-->
-      <sxt-recheck-popup slide-show="vm.slideShow" slide-role="vm.role"></sxt-recheck-popup>
-    <!--</div>-->
-  </div>
-</md-content>
-
+<sxt-recheck-popup slide-show="vm.slideShow" slide-role="vm.role"></sxt-recheck-popup>
+<div style="margin-top: 12px;padding:0 8px;margin-bottom:12px;" flex="none" layout="row"><span flex ng-click="vm.showQuesList()">问题列表详情</span><span flex></span><span ng-click="vm.showBaseInfor()" style="background: url(app/main/xhsc/images/right.png) no-repeat right 2px;background-size:auto 14px;padding-right:12px;">基本信息</span></div>
+<!--<md-content flex style="background: transparent;" ng-show="false">-->
+  <!--<div class="gxtest gxtestdetail" flex>-->
+    <!--<md-list class="gxque">-->
+      <!--<md-list-item ng-repeat="k in vm.ques | orderBy:'ProblemSortName'">-->
+        <!--&lt;!&ndash;<span flex="none" style="width:100px;">2号问题</span>&ndash;&gt;-->
+        <!--<span flex style="padding-left:8px;">{{k.ProblemDescription}}</span>-->
+        <!--<span flex="none" style="text-align: right;padding-right:8px">{{k.Points}}处</span>-->
+      <!--</md-list-item>-->
+    <!--</md-list>-->
+  <!--</div>-->
+<!--</md-content>-->
+<sxt-ques-detail-up up-show="vm.showUp" selected-area="vm.regionSelect.AreaID" current-rectificationid="vm.RectificationID"></sxt-ques-detail-up>
 
 
