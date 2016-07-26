@@ -6,7 +6,7 @@
   angular
     .module('app.xhsc')
     .controller('scslmainController',scslmainController);
-  function scslmainController($mdDialog,db,scRemote,xhUtils,$rootScope,$scope,scPack,utils,stzlServices,$mdBottomSheet){
+  function scslmainController($mdDialog,db,scRemote,xhUtils,$rootScope,$scope,scPack,utils,stzlServices,$mdBottomSheet,$state){
     var vm = this;
     var remote=  scRemote;
     var pack=scPack;
@@ -158,34 +158,29 @@
       });
     }
 
-    //function queryOnline() {
-    //  vm.onlines = [];
-    //  vm.offlines = [];
-    //  vm.data.rows.forEach(function (m) {
-    //    m.progress = 0;
-    //    vm.offlines.push(m);
-    //  });
-    //  remote.Assessment.query().then(function (result) {
-    //    if(result.data.length==0){
-    //      utils.alert('暂无待评估项目！');
-    //    }
-    //    else {
-    //      result.data.forEach(function (m) {
-    //        var fd = vm.data.rows.find(function (a) {
-    //          return a.AssessmentID == m.AssessmentID;
-    //        });
-    //        if (fd) {
-    //
-    //        }
-    //        else {
-    //          vm.onlines.push(m);
-    //        }
-    //      });
-    //    }
-    //  }).catch(function () {
-    //
-    //  });
-    //}
+    vm.go=function(item){
+      var pk = db('pack'+item.AssessmentID);
+      pk.get('GetRegionTreeInfo').then(function(r){
+        if (r&& r.data&& r.data.Children){
+          var areas=r.data.Children;
+          var  routeData={
+            projectId:item.ProjectID,
+            assessmentID:item.AssessmentID,
+            role:vm.role
+          };
+          if (angular.isArray(areas)&&areas.length>1){
+            $state.go("app.xhsc.scsl.chooseArea",routeData)
+          }else {
+            $state.go("app.xhsc.scsl.sclist",routeData)
+          }
+        }
+      }).catch(function(r){
+
+      });
+
+
+    }
+
     vm.showECs = function(ev,item) {
       console.log('ev',item)
       $mdDialog.show({

@@ -63,5 +63,19 @@
           }
         }
       })
+      .state('app.xhsc.scsl.chooseArea',{
+        noBack: true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title :'请选择分期',
+        url   :'/chooseArea/{assessmentID}/{projectId}/{role}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/procedurepg/chooseArea.html',
+            controller:'chooseAreaController as vm'
+          }
+        }
+      })
   }
 })();
