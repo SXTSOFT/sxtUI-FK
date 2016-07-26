@@ -11,8 +11,9 @@
     .module('app.xhsc')
     .factory('scPack',scPack);
   /** @ngInject */
-  function scPack(scLocalPack, remotePack,sxt,db,$cordovaFile) {
+  function scPack(scLocalPack, scRemotePack,sxt,db,$cordovaFile) {
     var  localPack=scLocalPack;
+    var  remotePack=scRemotePack;
     var p ={
       sc:{
         down:function (item) {

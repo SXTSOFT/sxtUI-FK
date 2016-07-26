@@ -30,8 +30,6 @@
     }).catch(function(r){
 
     });
-
-
     vm.download = function (item) {
       item.downloading = true;
       item.progress = 0;
@@ -84,7 +82,7 @@
     vm.upload =function (item) {
       item.uploading = true;
       remote.Project.getMap(item.ProjectID).then(function (result) {
-          if(result.data.ErrorCode==0){
+          if(result.data&&result.data.length){
             var pk = pack.sc.up(item.AssessmentID);
             pk.upload(function (proc) {
               item.progress = proc;
@@ -180,14 +178,9 @@
           }
         }
       }).catch(function(r){
-
       });
-
-
     }
-
     vm.showECs = function(ev,item) {
-      console.log('ev',item)
       $mdDialog.show({
           controller: ['$scope', '$mdDialog','item', function DialogController($scope, $mdDialog,item) {
             $scope.item = item;
