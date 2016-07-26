@@ -22,6 +22,7 @@
       appCookie.put('projects', JSON.stringify([{project_id: $stateParams.pid, name: $stateParams.pname}]))
     }
     query = function(){
+      if (vm.project.type != '8')return;
       console.log('vm.project',vm.project)
       var params = {
         regionTreeId: vm.project.idTree?vm.project.idTree:"",

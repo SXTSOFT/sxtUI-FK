@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg width="200" height="200" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g class="transform-group"><g transform="scale(0.1953125, 0.1953125)">
+
+<defs>
+    <style>
+      .cls-a {
+
+         fill: #bbb;
+          stroke: #989898;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+<path d="M827.958 906.831h-211.583c-7.947 0-14.391-6.442-14.391-14.391v-263.091h-179.336v263.090c0 7.947-6.443 14.391-14.391 14.391h-211.583c-7.947 0-14.391-6.442-14.391-14.391v-401.836h-120.884c-5.925 0-11.244-3.632-13.403-9.15s-0.712-11.796 3.641-15.814l450.917-416.228c5.512-5.089 14.008-5.089 19.521 0l450.915 416.228c4.355 4.019 5.799 10.296 3.641 15.814-2.156 5.518-7.477 9.15-13.402 9.15h-120.882v401.837c0 7.947-6.442 14.391-14.39 14.391z" fill="#aaaaaa" class="cls-a"></path></g></g></svg>

@@ -23,7 +23,7 @@
          // $cordovaAppVersion.getVersionNumber().then(function (version) {
           //  console.log("version=====本机>>>" + version + "====>>服务器" + serverAppVersion);
 
-          var version='1.5.0'
+          var version='1.5.1'
             if (version != serverAppVersion) {
               //弹出选择框 是否进行更新
 
