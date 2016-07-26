@@ -171,7 +171,12 @@
           if (angular.isArray(areas)&&areas.length>1){
             $state.go("app.xhsc.scsl.chooseArea",routeData)
           }else {
-            $state.go("app.xhsc.scsl.sclist",routeData)
+            if (areas.length==1){
+              areas[0].selected=true;
+              pk.update(r).then(function(){
+                $state.go("app.xhsc.scsl.sclist",routeData)
+              })
+            }
           }
         }
       }).catch(function(r){

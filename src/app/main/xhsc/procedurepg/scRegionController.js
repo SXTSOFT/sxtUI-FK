@@ -136,17 +136,25 @@
     load();
 
     vm.selected = function(r){
-      var test={
-        regionId: "00025000010000100001",
-        RegionName: "4层",
-        name: "山海湾二期8栋4层",
-        areaId: "0002500001",
-        regionType: 8,
-        db: "f1373f341c304b77bd6898f8e51ee9e3",
-        measureItemID: "d7579fa6e26b4850967d105ac8ed6893",
-        pname: "01砼工程",
-      }
-      $state.go('app.xhsc.scsl._sc',test);
+      //var test={
+      //  regionId: "00025000010000100001",
+      //  RegionName: "4层",
+      //  name: "山海湾二期8栋4层",
+      //  areaId: "0002500001",
+      //  regionType: 8,
+      //  db: "f1373f341c304b77bd6898f8e51ee9e3",
+      //  measureItemID: "d7579fa6e26b4850967d105ac8ed6893",
+      //  pname: "01砼工程",
+      //}
+      $state.go('app.xhsc.scsl._sc',{
+        regionId: r.RegionID,
+        RegionName: r.RegionName,
+        name: r.FullRegionName,
+        regionType: r.RegionType,
+        db:assessmentID,
+        measureItemID:acceptanceItemID,
+        pname:acceptanceItemName
+      });
     }
     //总包点击事件
 
