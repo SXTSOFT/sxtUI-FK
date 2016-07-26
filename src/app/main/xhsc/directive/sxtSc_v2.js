@@ -100,14 +100,7 @@
         SummaryPassYield
           :
           false,
-        Weight
-          :
-          12,
-
         CalculatedValue:3,
-        CheckRegionID:null,
-        CreateBy:"admin",
-        CreateTime:"2016-06-30T01:45:41.717",
         DesignValue:null,
         ExtendedField1:null,
         ExtendedField2:null,
@@ -118,7 +111,7 @@
         MeasureRecordID:"c6409dd994ca492e92d5d692e3e393ac",
         MeasureRole:null,
         MeasureStatus:1,
-        MeasureValue :3,
+        MeasureValue :'',
         MeasureValueId:"0413c9dece6f43e2bd8f12c9d1649b01",
         ParentMeasureValueID:null,
         RecordType:null,
@@ -126,11 +119,33 @@
         RelationID:null,
         Remark:null
       }];
+      var packdb = db('pack'+'scsl00027');
+      packdb.get('GetMeasureItemInfoByAreaID').then (function (r) {
+        var find = r.data.find(function (it) {
+          return it.AcceptanceItemID == scope.acceptanceItem;
+        });
+        if(!find){ //TODO:一般不可能找不到,找不到肯定后台有问题,这里可能需要提示并去掉
+          find = r.data.find(function () {
+            return true;
+          })
+        }
+        var m=[];
+        find.MeasureIndexList.forEach(function(item) {
+          m.push(item);
+        });
+        scope.indexs = m;
+        scope.indexs.forEach(function(t){
+          t._id = sxt.uuid();//指标结构表
+          t.checked = false;
+        })
+      },function(err){
+
+      });
       var install = function(){
-        if(!scope.db || !scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
+        //if(!scope.db || !scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
         //if(!scope.db || !scope.imageUrl || !scope.regionId)return;
 
-        //if(!scope.measureIndexes) scope.measureIndexes = [];
+        if(!scope.measureIndexes) scope.measureIndexes = [];
         if(!pk)
           pk = pack.sc.up(scope.db);
         if(!data)
@@ -186,34 +201,20 @@
             layer.loaded = true;
             //measureIndexes
             if(!scope.measureIndexes.length){
-              //scope.MeasurePoints.forEach(function (point) {
-              //  var geo = JSON.parse(point.Geometry),
-              //    v = scope.MeasureValues.find(function (value) {
-              //      return value.MeasurePointID == point.MeasurePointID;
-              //    });
-              //  if(v) {
-              //    if(geo.geometry.type=='Stamp' && !v.MeasureValue && v.MeasureValue!==0)return;
-              //    if(!v.ExtendedField1 && v.DesignValue){
-              //      v.ExtendedField1 = v.MeasureValue+','+v.DesignValue;
-              //    }
-              //
-              //    geo.options.MeasureValue = v.MeasureValue;
-              //    geo.options.ExtendedField1 = v.ExtendedField1;
-              //    geo.options.seq = v.MeasureValue;
-              //    geo.options.v = v;
-              //    geo.options.customSeq = true;
-              //    switch(v.MeasureStatus) {
-              //      case 1:
-              //        //geo.options.
-              //        geo.options.color = 'black';
-              //        break;
-              //      case 2:
-              //        geo.options.color = '#eb7400';
-              //        break;
-              //    }
-              //    layer.addData(geo);
-              //  }
-              //});
+              scope.MeasurePoints.forEach(function (point) {
+                var geo = JSON.parse(point.Geometry),
+                  v = scope.MeasureValues.find(function (value) {
+                    return value.MeasurePointID == point.MeasurePointID;
+                  });
+                if(v) {
+                  geo.options.ExtendedField1 = v.ExtendedField1;
+                  geo.options.seq = geo.properties.seq;
+                  geo.options.v = v;
+                  geo.options.customSeq = true;
+                  geo.options.color = 'red';
+                  layer.addData(geo);
+                }
+              });
             }else{
               var list=[];
               scope.MeasureValues.forEach(function(r){
@@ -229,7 +230,6 @@
                     }
                   }
                 })
-                ///if(r.AcceptanceIndexID == scope.measureIndexes)
               })
               scope.MeasurePoints.forEach(function(point){
                 var geo = JSON.parse(point.Geometry),
@@ -237,40 +237,42 @@
                     return value.MeasurePointID == point.MeasurePointID;
                   });
                 if(v) {
-                  if(geo.geometry.type=='Stamp' && !v.MeasureValue && v.MeasureValue!==0)return;
-                  if(!v.ExtendedField1 && v.DesignValue){
-                    v.ExtendedField1 = v.MeasureValue+','+v.DesignValue;
-                  }
-                  fg.data.push(v)
-                  geo.options.MeasureValue = v.MeasureValue;
                   geo.options.ExtendedField1 = v.ExtendedField1;
-                  geo.options.seq = v.MeasureValue;
+                  geo.options.seq = geo.properties.seq;
                   geo.options.v = v;
                   geo.options.customSeq = true;
-                  switch(v.MeasureStatus) {
-                    case 1:
-                      //geo.options.
-                      geo.options.color = 'black';
-                      break;
-                    case 2:
-                      geo.options.color = '#eb7400';
-                      break;
-                  }
+                  geo.options.color = 'red';
                   layer.addData(geo);
                 }
 
               })
+              scope.MeasureValues.forEach(function(r){
+                fg.data.push(r);
+              })
             }
 
             data.findAll(function(o){
+              if(scope.measureIndexes.length){
+
               return o.DrawingID==scope.imageUrl
                 && o.AcceptanceItemID==scope.acceptanceItem
-                && !!scope.measureIndexes.find(function(m){
+                && scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
                   return m.AcceptanceIndexID == o.AcceptanceIndexID
                     ||(m.Children && m.Children.find(function (m1) {
                       return m1.AcceptanceIndexID == o.AcceptanceIndexID
                     }));
                 });
+
+              }else{
+                return o.DrawingID==scope.imageUrl
+                  && o.AcceptanceItemID==scope.acceptanceItem
+                  //&& scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
+                  //  return m.AcceptanceIndexID == o.AcceptanceIndexID
+                  //    ||(m.Children && m.Children.find(function (m1) {
+                  //      return m1.AcceptanceIndexID == o.AcceptanceIndexID
+                  //    }));
+                  //});
+              }
             }).then(function(r){
 
               points.findAll(function(o){
@@ -284,16 +286,19 @@
                       else{
                         o.geometry.options.color = 'red';
                       }
-                     // o.geometry.options.v = i;
+                      o.geometry.options.v = i;
                       o.CreateTime = moment(i.CreateTime).toDate();
                       return true;
                     }
                     return false;
                   })!=null;
               }).then(function(p){
-                fg.data = r.rows.filter(function (row) {
+                 fg.data = r.rows.filter(function (row) {
                   return row.CheckRegionID==scope.regionId;
                 });
+                scope.MeasureValues.forEach(function(r){
+                  fg.data.push(r);
+                })
                 //fg.addLayer(p);
                 p.rows.sort(function (p1,p2) {
                   return p1.CreateTime.getTime()-p2.CreateTime.getTime();
@@ -303,6 +308,7 @@
                 });
               })
             });
+
           },
           onUpdate:function(layer,isNew,group){
             //这里是修正用户点的位置,尽可能在最近点的同一水平或竖直线上
@@ -564,15 +570,33 @@
                   fg._map.setView([center.lat,e.layer._latlng.lng]);
                 },300);
               };
-
               edit.scope.context = e;
-              edit.scope.data = {
-                measureIndexes:scope.measureIndexes,
-                regionId:scope.regionId,
-                regionType:scope.regionType,
-                acceptanceItem:scope.acceptanceItem,
-                values:fg.data
-              };
+              if(!scope.measureIndexes.length){
+                scope.indexs.forEach(function(m){
+                  if(m.AcceptanceIndexID == e.layer.options.v.AcceptanceIndexID){
+                    e.layer.options.v.QSKey = m.QSKey;
+                  }else if(m.Children && m.Children.find(function (m1) {
+                      return m1.AcceptanceIndexID == e.layer.options.v.AcceptanceIndexID
+                    })){
+
+                  }
+                })
+                edit.scope.data = {
+                  measureIndexes:[e.layer.options.v],
+                  regionId:scope.regionId,
+                  regionType:scope.regionType,
+                  acceptanceItem:scope.acceptanceItem,
+                  values:fg.data
+                };
+              }else{
+                edit.scope.data = {
+                  measureIndexes:scope.measureIndexes,
+                  regionId:scope.regionId,
+                  regionType:scope.regionType,
+                  acceptanceItem:scope.acceptanceItem,
+                  values:fg.data
+                };
+              }
               edit.scope.readonly = scope.readonly;
               edit.scope.apply && edit.scope.apply();
               return edit.el[0];
@@ -583,7 +607,7 @@
           featureGroup:fg,
           group:{
             lineGroup: false,
-            areaGroup:scope.measureIndexes&&!!scope.measureIndexes.find(function (m) {
+            areaGroup:scope.measureIndexes.length&&!!scope.measureIndexes.find(function (m) {
               return m.QSKey=='4'
             })
           }
