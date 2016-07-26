@@ -32,7 +32,7 @@
         var singleEdit=[],mutiEdit=[],floorEdit=[],sjzEdit=[],materEidt=[],group= null,groupEdit=[];
         scope.data.updates = [];
         var ms = [];
-        scope.data.measureIndexes.forEach(function(m){
+        scope.data.measureIndexes&&scope.data.measureIndexes.forEach(function(m){
           if(m.Children && m.Children.length){
             var m0 = m.Children.find(function(m2){
               return m2.QSKey=='2';
