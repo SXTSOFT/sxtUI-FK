@@ -33,11 +33,104 @@
     }
     function link(scope,element,attr,ctrl){
       var map,tile,fg,toolbar,data,points,pk;
+
+      scope.MeasurePoints=[{
+        ExtendedField1:null,
+        ExtendedField2:null,
+        Geometry:'{"type":"Feature","properties":{"seq":20,"$id":"208cfb0506ce40e6976d160c2a9eb8c0"},"options":{"stroke":true,"color":"red","dashArray":"","lineCap":null,"lineJoin":null,"weight":1,"opacity":1,"fill":true,"fillColor":null,"fillOpacity":0.2,"clickable":true,"font-family":"Helvetica","font-style":"normal","font-weight":"bold","letter-spacing":"0.05em","stroke-width":2,"text-decoration":"none","multiSelect":false,"repeatMode":true},"geometry":{"type":"Stamp","coordinates":[0.4942626953125,0.468505859375]}}',
+        MeasurePointID:"208cfb0506ce40e6976d160c2a9eb8c0",
+        ParentMeasurePointID:null,
+        Remark:null,
+      }];
+      scope.MeasureValues =[{
+        AcceptanceIndexID
+          :
+          "b337a8b22b1145ae992a805a1e70a96f",
+        AcceptanceItemID
+          :
+          "d7579fa6e26b4850967d105ac8ed6893",
+        Children
+          :
+          Array[0],
+        GroupSign
+          :
+          0,
+        IconColor
+          :
+          "",
+        IconImage
+          :
+          "",
+        IndexName
+          :
+          "结构立面垂直度",
+        IndexType
+          :
+          "Single",
+        MeasureMethod
+          :
+          "1",
+        OrderNo
+          :
+          1,
+        ParentAcceptanceIndexID
+          :
+          null,
+        ParentIndexName
+          :
+          null,
+        PassYieldComputeMode
+          :
+          "1",
+        QSCondition
+          :
+          "2",
+        QSKey
+          :
+          "1",
+        QSOtherValue
+          :
+          null,
+        QSValue
+          :
+          "8",
+        SinglePassYield
+          :
+          false,
+        SummaryPassYield
+          :
+          false,
+        Weight
+          :
+          12,
+
+        CalculatedValue:3,
+        CheckRegionID:null,
+        CreateBy:"admin",
+        CreateTime:"2016-06-30T01:45:41.717",
+        DesignValue:null,
+        ExtendedField1:null,
+        ExtendedField2:null,
+        ExtendedField3:null,
+        MeasurPointName:null,
+        MeasurPointType:null,
+        MeasurePointID:"208cfb0506ce40e6976d160c2a9eb8c0",
+        MeasureRecordID:"c6409dd994ca492e92d5d692e3e393ac",
+        MeasureRole:null,
+        MeasureStatus:1,
+        MeasureValue :3,
+        MeasureValueId:"0413c9dece6f43e2bd8f12c9d1649b01",
+        ParentMeasureValueID:null,
+        RecordType:null,
+        RegionType:null,
+        RelationID:null,
+        Remark:null
+      }];
       var install = function(){
         if(!scope.db || !scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
+        //if(!scope.db || !scope.imageUrl || !scope.regionId)return;
 
-
-
+        //if(!scope.measureIndexes) scope.measureIndexes = [];
         if(!pk)
           pk = pack.sc.up(scope.db);
         if(!data)
@@ -91,6 +184,84 @@
             var layer = this;
             if(layer.loaded)return;
             layer.loaded = true;
+            //measureIndexes
+            if(!scope.measureIndexes.length){
+              //scope.MeasurePoints.forEach(function (point) {
+              //  var geo = JSON.parse(point.Geometry),
+              //    v = scope.MeasureValues.find(function (value) {
+              //      return value.MeasurePointID == point.MeasurePointID;
+              //    });
+              //  if(v) {
+              //    if(geo.geometry.type=='Stamp' && !v.MeasureValue && v.MeasureValue!==0)return;
+              //    if(!v.ExtendedField1 && v.DesignValue){
+              //      v.ExtendedField1 = v.MeasureValue+','+v.DesignValue;
+              //    }
+              //
+              //    geo.options.MeasureValue = v.MeasureValue;
+              //    geo.options.ExtendedField1 = v.ExtendedField1;
+              //    geo.options.seq = v.MeasureValue;
+              //    geo.options.v = v;
+              //    geo.options.customSeq = true;
+              //    switch(v.MeasureStatus) {
+              //      case 1:
+              //        //geo.options.
+              //        geo.options.color = 'black';
+              //        break;
+              //      case 2:
+              //        geo.options.color = '#eb7400';
+              //        break;
+              //    }
+              //    layer.addData(geo);
+              //  }
+              //});
+            }else{
+              var list=[];
+              scope.MeasureValues.forEach(function(r){
+                scope.measureIndexes.forEach(function(_r){
+                  if(_r.AcceptanceIndexID == r.AcceptanceIndexID){
+                    list.push(r)
+                  }else{
+                    var find = _r.Children && _r.Children.forEach(function(_c){
+                      return _c.AcceptanceIndexID == r.AcceptanceIndexID;
+                    })
+                    if(find){
+                      list.push(r);
+                    }
+                  }
+                })
+                ///if(r.AcceptanceIndexID == scope.measureIndexes)
+              })
+              scope.MeasurePoints.forEach(function(point){
+                var geo = JSON.parse(point.Geometry),
+                  v = list.find(function (value) {
+                    return value.MeasurePointID == point.MeasurePointID;
+                  });
+                if(v) {
+                  if(geo.geometry.type=='Stamp' && !v.MeasureValue && v.MeasureValue!==0)return;
+                  if(!v.ExtendedField1 && v.DesignValue){
+                    v.ExtendedField1 = v.MeasureValue+','+v.DesignValue;
+                  }
+                  fg.data.push(v)
+                  geo.options.MeasureValue = v.MeasureValue;
+                  geo.options.ExtendedField1 = v.ExtendedField1;
+                  geo.options.seq = v.MeasureValue;
+                  geo.options.v = v;
+                  geo.options.customSeq = true;
+                  switch(v.MeasureStatus) {
+                    case 1:
+                      //geo.options.
+                      geo.options.color = 'black';
+                      break;
+                    case 2:
+                      geo.options.color = '#eb7400';
+                      break;
+                  }
+                  layer.addData(geo);
+                }
+
+              })
+            }
+
             data.findAll(function(o){
               return o.DrawingID==scope.imageUrl
                 && o.AcceptanceItemID==scope.acceptanceItem
@@ -113,6 +284,7 @@
                       else{
                         o.geometry.options.color = 'red';
                       }
+                     // o.geometry.options.v = i;
                       o.CreateTime = moment(i.CreateTime).toDate();
                       return true;
                     }
@@ -392,6 +564,7 @@
                   fg._map.setView([center.lat,e.layer._latlng.lng]);
                 },300);
               };
+
               edit.scope.context = e;
               edit.scope.data = {
                 measureIndexes:scope.measureIndexes,
@@ -410,7 +583,7 @@
           featureGroup:fg,
           group:{
             lineGroup: false,
-            areaGroup:!!scope.measureIndexes.find(function (m) {
+            areaGroup:scope.measureIndexes&&!!scope.measureIndexes.find(function (m) {
               return m.QSKey=='4'
             })
           }
