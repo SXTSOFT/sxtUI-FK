@@ -12,10 +12,21 @@
     .controller('sclistController',sclistController);
 
   /**@ngInject*/
-  function sclistController($scope,remote,$stateParams){
+  function sclistController($scope,scRemote,$stateParams,db){
     var vm=this;
+    var remote=  scRemote;
     vm.projectId = $stateParams.projectId;
-    vm.areaId='';
+    vm.assessmentID=$stateParams.assessmentID;
+    vm.role=$stateParams.role;
+    //离线待实现
+    var _db=db('pack'+ vm.assessmentID);
+    _db.get("GetBaseMeasure").then(function(r){
+
+    }).catch(function(r){
+
+    });
+
+
 
     vm.role=$stateParams.role;
     remote.Procedure.queryProcedure().then(function(result){

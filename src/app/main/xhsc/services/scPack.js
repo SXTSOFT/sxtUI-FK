@@ -23,19 +23,24 @@
               {
                 _id:'GetMeasureItemInfoByAreaID',
                 name:'获取分期下所有指标',
-                url:'/Api/MeasureInfo/GetMeasureItemInfo?areaID='+item.AreaID
+                url:'/Api/MeasureInfo/GetMeasureItemInfo?areaID='+item.ProjectID,
               },
               {
                 _id:'GetRegionTreeInfo',
                 name:'获取区域信息',
-                url:'/Api/ProjectInfoApi/GetRegionTreeInfo?AreaID='+item.AreaID,
+                url:'/Api/ProjectInfoApi/GetRegionTreeInfo?AreaID='+item.ProjectID,
                 type:'data',
                 item:angular.copy(item)
               },
               {
                 _id:'GetDrawingByAreaID',
                 name:'获取区域图纸',
-                url:'/Api/ProjectInfoApi/GetDrawingByAreaID?AreaID='+item.AreaID,
+                url:'/Api/ProjectInfoApi/GetDrawingByAreaID?AreaID='+item.ProjectID,
+                type:'data'
+              }, {
+                _id:'GetBaseMeasure',
+                name:'获取实测项',
+                url:'/api/MeasureInfo/GetBaseMeasure',
                 type:'data'
               }
             ]
@@ -46,27 +51,27 @@
             _id:id,
             db:{
               sc: {
-                url:sxt.app.scApi+'/Api/MeasureValueApi/CreateMeasureValue',
+                url:sxt.app.api+'/Api/MeasureValueApi/CreateMeasureValue',
                 type: 'data'
               },
               point: {
-                url:sxt.app.scApi+'/Api/MeasurePointApi/CreatePoint',
+                url:sxt.app.api+'/Api/MeasurePointApi/CreatePoint',
                 type: 'data'
               },
               indexs:{
-                url:sxt.app.scApi+'/Api/MeasureValueApi/MeasureIndexSubmit',
+                url:sxt.app.api+'/Api/MeasureValueApi/MeasureIndexSubmit',
                 type:'data'
               },
               stzl_item:{
-                url:sxt.app.scApi+'/Api/AssessmentApi/SubmitAssessmentRegionItemResult',
+                url:sxt.app.api+'/Api/AssessmentApi/SubmitAssessmentRegionItemResult',
                 type:'data'
               },
               stzl_question:{
-                url:sxt.app.scApi+'/Api/AssessmentApi/SubmitEductScoreItem',
+                url:sxt.app.api+'/Api/AssessmentApi/SubmitEductScoreItem',
                 type:'data'
               },
               stzl_images:{
-                url:sxt.app.scApi+'/Api/MeasureValueApi/SubmitImage',
+                url:sxt.app.api+'/Api/MeasureValueApi/SubmitImage',
                 type:'fileurl'
               }
             }

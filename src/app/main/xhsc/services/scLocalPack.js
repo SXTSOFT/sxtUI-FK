@@ -160,7 +160,7 @@
           }
         }
         else{
-          (task.api?task.api():$http.get(sxt.app.scApi + task.url)).then(function (result) {
+          (task.api?task.api():$http.get(sxt.app.api + task.url)).then(function (result) {
             if(task.db){
               var taskDb = db(task.db);
               taskDb.addOrUpdate(result.data).then(function (r) {

@@ -6,7 +6,7 @@
   angular
     .module('app.xhsc')
     .controller('scslmainController',scslmainController);
-  function scslmainController($mdDialog,db,scRemote,localPack,xhUtils,$rootScope,$scope,scPack,utils,stzlServices,$mdBottomSheet){
+  function scslmainController($mdDialog,db,scRemote,xhUtils,$rootScope,$scope,scPack,utils,stzlServices,$mdBottomSheet){
     var vm = this;
     var remote=  scRemote;
     var pack=scPack;
@@ -21,6 +21,17 @@
       };
       queryOnline();
     });
+    remote.Procedure.authorityByUserId().then(function(res){
+      if (res&&res.data&&res.data.length){
+        vm.role=res.data[0].MemberType;
+      }else {
+        vm.role=0;
+      }
+    }).catch(function(r){
+
+    });
+
+
     vm.download = function (item) {
       item.downloading = true;
       item.progress = 0;
@@ -39,22 +50,27 @@
             vm.offlines.splice(ix, 1);
           }
           var it1 = vm.data.rows.find(function (it) {
-            return it.AssessmentID==item.AssessmentID;
+            return it.ProjectID==item.ProjectID;
           }),ix=it1?vm.data.rows.indexOf(it1):-1;
           if(ix!=-1){
             vm.data.rows.splice(ix, 1);
           }
           delete item.pack;
-          remote.Assessment.queryById(item.AssessmentID).then(function (result) {
+          remote.Project.getMap().then(function (result) {
+            var project=result.data.find(function(r){
+              return r.ProjectID== item.ProjectID;
+            });
+            project.AssessmentID='scsl'+ project.ProjectID;
+            project.AssessmentSubject= project.ProjectName;
             var fd = vm.data.rows.find(function (a) {
-              return a.AssessmentID == result.data.AssessmentID;
+              return a.ProjectID ==project.ProjectID;
             }),ix=fd?vm.data.rows.indexOf(fd):-1;
             if(ix==-1) {
-              vm.data.rows.push(result.data);
-              vm.offlines.push(item);
+              vm.data.rows.push(project);
+              vm.offlines.push(project);
             }
             else{
-              vm.data.rows[ix] = result.data;
+              vm.data.rows[ix] = project;
             }
             xcpk.addOrUpdate(vm.data).then(function () {
               item.downloading = false;
@@ -110,6 +126,7 @@
         })
       })
     }
+
     function queryOnline() {
       vm.onlines = [];
       vm.offlines = [];
@@ -117,12 +134,14 @@
         m.progress = 0;
         vm.offlines.push(m);
       });
-      remote.Assessment.query().then(function (result) {
+      remote.Project.getMap().then(function (result) {
         if(result.data.length==0){
           utils.alert('暂无待评估项目！');
         }
         else {
           result.data.forEach(function (m) {
+            m.AssessmentID='scsl'+ m.ProjectID;
+            m.AssessmentSubject= m.ProjectName;
             var fd = vm.data.rows.find(function (a) {
               return a.AssessmentID == m.AssessmentID;
             });
@@ -138,6 +157,35 @@
 
       });
     }
+
+    //function queryOnline() {
+    //  vm.onlines = [];
+    //  vm.offlines = [];
+    //  vm.data.rows.forEach(function (m) {
+    //    m.progress = 0;
+    //    vm.offlines.push(m);
+    //  });
+    //  remote.Assessment.query().then(function (result) {
+    //    if(result.data.length==0){
+    //      utils.alert('暂无待评估项目！');
+    //    }
+    //    else {
+    //      result.data.forEach(function (m) {
+    //        var fd = vm.data.rows.find(function (a) {
+    //          return a.AssessmentID == m.AssessmentID;
+    //        });
+    //        if (fd) {
+    //
+    //        }
+    //        else {
+    //          vm.onlines.push(m);
+    //        }
+    //      });
+    //    }
+    //  }).catch(function () {
+    //
+    //  });
+    //}
     vm.showECs = function(ev,item) {
       console.log('ev',item)
       $mdDialog.show({
@@ -161,39 +209,9 @@
             item:item
           },
           clickOutsideToClose: true
-          //fullscreen: useFullScreen
         })
         .then(function(answer) {
-
         });
-
     };
-    //vm.detail=function(ev,item){
-    //  $mdDialog.show({
-    //      controller: ['$scope', '$mdDialog','item', function DialogController($scope, $mdDialog,item) {
-    //        $scope.item = item;
-    //        $scope.hide = function () {
-    //          $mdDialog.hide();
-    //        };
-    //        $scope.cancel = function () {
-    //          $mdDialog.cancel();
-    //        };
-    //        $scope.answer = function (answer) {
-    //          $mdDialog.hide(answer);
-    //        };
-    //      }],
-    //      templateUrl: 'app/main/xhsc/ys/detailChoose.html',
-    //      parent: angular.element(document.body),
-    //      targetEvent: ev,
-    //      locals:{
-    //        item:item
-    //      },
-    //      clickOutsideToClose: true
-    //      //fullscreen: useFullScreen
-    //    })
-    //    .then(function(answer) {
-    //
-    //    });
-    //}
   }
 })();
