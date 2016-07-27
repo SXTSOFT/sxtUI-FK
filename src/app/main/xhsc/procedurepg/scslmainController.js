@@ -34,6 +34,7 @@
     });
     //项目包
     function projectTask(projectId) {
+      return [];
       return [
         function (tasks) {
           return $q(function(resolve) {
@@ -181,8 +182,8 @@
         vm.offlines.push(m);
       });
       remote.Project.getMap().then(function (result) {
-        if(result.data.length==0){
-          utils.alert('暂无待评估项目！');
+        if(!result || result.data.length==0){
+          utils.alert('暂无项目！');
         }
         else {
           result.data.forEach(function (m) {

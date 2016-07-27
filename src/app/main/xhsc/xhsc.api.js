@@ -441,8 +441,9 @@
       }).bind(function (projectId,recordType,relationId,db,sxt) {
         return $http.get($http.url('/api/MeasureInfo/GetUserMeasureValue',{projectId:projectId,recordType:recordType,relationId:relationId})).then(function (r) {
           r.data.forEach(function (item) {
-            if(!item.MeasureValueId)
-              item.MeasureValueId = sxt.uuid();
+            if(!item.MeasureValueId) {
+              item.MeasureValueId = item.MeasurePointID;
+            }
           });
           return r;
         });

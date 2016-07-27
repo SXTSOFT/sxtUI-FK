@@ -136,8 +136,7 @@
             layer.loaded = true;
 
             data.findAll(function(o){
-              return o.DrawingID==scope.imageUrl
-                && o.AcceptanceItemID==scope.acceptanceItem
+              return o.AcceptanceItemID==scope.acceptanceItem
                 && scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
                   return m.AcceptanceIndexID == o.AcceptanceIndexID
                     ||(m.Children && m.Children.find(function (m1) {
