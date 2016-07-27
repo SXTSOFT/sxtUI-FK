@@ -39,7 +39,7 @@
       )
     }
 
-    sxt.plugin.playYs7(['at.9bqcatcc9fufzpdcak6g3lyo0nlrt1vx-1sbphy33b4-08io12i-mvctkmsal','de7e39a6802a41b49a037518cffa684d'])
+   // sxt.plugin.playYs7(['at.9bqcatcc9fufzpdcak6g3lyo0nlrt1vx-1sbphy33b4-08io12i-mvctkmsal','de7e39a6802a41b49a037518cffa684d'])
 /*    ys7.post('cameraList',{pageSize:200,pageStart:0}).then(function (result) {
       ys7.getToken().then(function (token) {
         sxt.plugin.playYs7([token,])
