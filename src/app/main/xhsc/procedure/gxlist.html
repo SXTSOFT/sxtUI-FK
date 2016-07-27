@@ -1,3 +1,18 @@
 
-  <slide-menu flex layout="column" role="vm.role" slide-data="vm.procedureData" show-check="false"  project-id="vm.projectId" area-id="vm.areaId"></slide-menu>
+  <!--<slide-menu flex layout="column" role="vm.role" slide-data="vm.procedureData" show-check="false"  project-id="vm.projectId" area-id="vm.areaId"></slide-menu>-->
+
+  <md-content class="floor-list gxnew md-hue-1">
+    <div class="right engineer">
+      <div layout="column" ng-repeat="item in vm.procedureData">
+        <div style="border-bottom: 1px solid #d8d8d8;">
+          <h2 class="md-title" style="color:#e93030;font-size:16px;margin:16px;">{{item.name}}</h2>
+        </div>
+        <md-list>
+          <md-list-item ng-repeat="i in item.rows" ui-sref="app.xhsc.gx.gxhousechoose({role:vm.role,acceptanceItemID:item.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:vm.areaId,maxRegion:item.maxRegion})">
+              <p>{{i.AcceptanceItemName}}</p>
+          </md-list-item>
+        </md-list>
+      </div>
+    </div>
+  </md-content>
 
