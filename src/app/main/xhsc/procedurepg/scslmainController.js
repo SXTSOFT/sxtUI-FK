@@ -6,7 +6,7 @@
   angular
     .module('app.xhsc')
     .controller('scslmainController',scslmainController);
-  function scslmainController($mdDialog,db,scRemote,xhUtils,$rootScope,$scope,scPack,utils,stzlServices,$mdBottomSheet){
+  function scslmainController($mdDialog,db,scRemote,xhUtils,$rootScope,$scope,scPack,utils,stzlServices,$mdBottomSheet,$state){
     var vm = this;
     var remote=  scRemote;
     var pack=scPack;
@@ -30,8 +30,6 @@
     }).catch(function(r){
 
     });
-
-
     vm.download = function (item) {
       item.downloading = true;
       item.progress = 0;
@@ -83,8 +81,8 @@
     }
     vm.upload =function (item) {
       item.uploading = true;
-      remote.Assessment.GetAssessmentStatus(item.AssessmentID).then(function (result) {
-          if(result.data.ErrorCode==0){
+      remote.Project.getMap(item.ProjectID).then(function (result) {
+          if(result.data&&result.data.length){
             var pk = pack.sc.up(item.AssessmentID);
             pk.upload(function (proc) {
               item.progress = proc;
@@ -110,7 +108,7 @@
           }
         })
         .catch(function () {
-          utils.alert('网络越野')
+          utils.alert('网络出现异常')
         })
 
     }
@@ -158,36 +156,31 @@
       });
     }
 
-    //function queryOnline() {
-    //  vm.onlines = [];
-    //  vm.offlines = [];
-    //  vm.data.rows.forEach(function (m) {
-    //    m.progress = 0;
-    //    vm.offlines.push(m);
-    //  });
-    //  remote.Assessment.query().then(function (result) {
-    //    if(result.data.length==0){
-    //      utils.alert('暂无待评估项目！');
-    //    }
-    //    else {
-    //      result.data.forEach(function (m) {
-    //        var fd = vm.data.rows.find(function (a) {
-    //          return a.AssessmentID == m.AssessmentID;
-    //        });
-    //        if (fd) {
-    //
-    //        }
-    //        else {
-    //          vm.onlines.push(m);
-    //        }
-    //      });
-    //    }
-    //  }).catch(function () {
-    //
-    //  });
-    //}
+    vm.go=function(item){
+      var pk = db('pack'+item.AssessmentID);
+      pk.get('GetRegionTreeInfo').then(function(r){
+        if (r&& r.data&& r.data.Children){
+          var areas=r.data.Children;
+          var  routeData={
+            projectId:item.ProjectID,
+            assessmentID:item.AssessmentID,
+            role:vm.role
+          };
+          if (angular.isArray(areas)&&areas.length>1){
+            $state.go("app.xhsc.scsl.chooseArea",routeData)
+          }else {
+            if (areas.length==1){
+              areas[0].selected=true;
+              pk.update(r).then(function(){
+                $state.go("app.xhsc.scsl.sclist",routeData)
+              })
+            }
+          }
+        }
+      }).catch(function(r){
+      });
+    }
     vm.showECs = function(ev,item) {
-      console.log('ev',item)
       $mdDialog.show({
           controller: ['$scope', '$mdDialog','item', function DialogController($scope, $mdDialog,item) {
             $scope.item = item;

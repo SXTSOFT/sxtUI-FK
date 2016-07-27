@@ -10,7 +10,7 @@
     .module('app.xhsc')
     .directive('sxtScPopupNew',sxtScPopupNew);
   /** @ngInject */
-  function sxtScPopupNew(mapPopupSerivce,$timeout,sxt,xhUtils){
+  function sxtScPopupNew(mapPopupSerivce,$timeout,sxt,xhUtils,db){
     return {
       restrict:'E',
       scope:{
@@ -46,6 +46,7 @@
             ms.push(m);
           }
         });
+
         ms.forEach(function (m) {
           var o = {
             m: m,

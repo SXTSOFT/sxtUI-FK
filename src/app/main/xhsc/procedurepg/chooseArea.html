@@ -1,0 +1,16 @@
+<md-content class="floor-list md-hue-1">
+  <div class="right engineer">
+    <div layout="column" >
+      <div style="border-bottom: 1px solid #d8d8d8;">
+        <h2 class="md-title" style="color:#e93030;font-size:16px;margin:16px;">{{ vm.project.data.RegionName}}</h2>
+      </div>
+      <md-list>
+        <md-list-item ng-repeat="b in  vm.areas" style="width:25%;">
+          <md-button ng-click="vm.go(b)" style="min-width:80px;border: 1px solid #e93030;color:#e93030">
+            <p>{{b.regionName}}</p>
+          </md-button>
+        </md-list-item>
+      </md-list>
+    </div>
+  </div>
+</md-content>
