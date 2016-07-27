@@ -137,6 +137,7 @@
             else {
               p.ms.push(m);
               if (item.AcceptanceIndexName.indexOf('尺寸一致性') != -1) {
+                //m.MeasureValue = m.MeasureValue + '<br/>' + m.DesignValue;
                 m.MeasureValue = m.MeasureValue + '<br/>' + m.DesignValue;
               }
             }

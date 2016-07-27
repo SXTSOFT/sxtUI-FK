@@ -64,13 +64,13 @@
           return style;
         }
         function _init(region){
-          if (region.RegionType==8||region.RegionType==16){
+          if (region&&region.RegionType==8||region&&region.RegionType==16){
             if (isReport=='0'||isReport==0){
               region.style= ConvertClass(region.Status);
             }
             setNum(region.Status,region);
           }
-          if (region.Children.length){
+          if (region&&region.Children.length){
             region.Children.forEach(function(r){
               _init(r);
             });
@@ -111,7 +111,7 @@
       if (isReport=='0'||isReport==0){
         _db.get("GetRegionTreeInfo").then(callBack);
       }else {
-        remote.Project.GetRegionTreeInfo(projectId).then(callBack);
+          remote.Project.GetRegionTreeInfo(projectId).then(callBack);
       }
     }
 
