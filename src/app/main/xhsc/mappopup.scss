@@ -1624,12 +1624,15 @@ md-tabs[md-align-tabs="bottom"]{
       padding: 8px;
     }
     td{
-      &.yellow{
-        color:#e6b900;
+      p{
+        &.yellow{
+          color:#e6b900;
+        }
+        &.red{
+          color:#f00;
+        }
       }
-      &.red{
-        color:#f00;
-      }
+
       .red{
         color:#f00;
       }
