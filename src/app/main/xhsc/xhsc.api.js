@@ -99,7 +99,13 @@
         _id:'Inspection',
         idField:'InspectionId',
         upload:true
-      }).bind()
+      }).bind(),
+      GetRegionTreeInfo:function(ProjectID){
+        return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo',{areaID:ProjectID}))
+      },
+      GetMeasureItemInfoByAreaID:function(ProjectID){
+        return $http.get($http.url('/Api/MeasureInfo/GetMeasureItemInfo',{areaID:ProjectID}))
+      }
     },
     Procedure:{
       queryProcedure:$http.db({

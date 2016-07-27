@@ -1,4 +1,4 @@
-<div flex="none" layout="column" style="max-height:50px;height:50px;width:100%;z-index: 10;" class="gxxz">
+<div flex="none" layout="column" style="max-height:50px;height:50px;width:100%;z-index: 10;" class="gxxz" ng-if="vm.isReport=='0'||vm.isReport==0">
   <md-list flex layout="row" class="gxfilter">
     <md-list-item  flex ng-class="{'active':vm.filterNum == -1}"><md-button ng-click="vm.filter(-1)" style="margin:6px auto;"><span>全部</span><span>{{vm.nums.qb}}</span></md-button></md-list-item>
     <md-list-item  flex ng-class="{'active':vm.filterNum == 0}"><md-button ng-click="vm.filter(0)" style="margin:6px auto;"><span><i class="wait"></i>未检</span><span>{{vm.nums.wtj}}</span></md-button></md-list-item>

@@ -36,7 +36,7 @@
         rightArrow: false,
         leftArrow: false,
         title: '选择实测项',
-        url: '/sclist/{projectId}/{assessmentID}/{role}',
+        url: '/sclist/{projectId}/{assessmentID}/{area}/{isReport}',
         templateUrl: 'app/main/xhsc/procedurepg/sclist.html',
         controller: 'sclistController as vm'
       })
@@ -45,9 +45,27 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url: '/scRegion/{assessmentID}/{role}/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{maxRegion}',
+        url: '/scRegion/{assessmentID}/{area}/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{maxRegion}/{isReport}',
         templateUrl: 'app/main/xhsc/procedurepg/scRegion.html',
         controller: 'scRegionController as vm'
+      })
+      .state('app.xhsc.scsl.schztb', {
+        noBack: true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        url: '/schztb/{db}/{areaId}/{measureItemID}/{regionId}/{regionType}/{name}/{pname}',
+        templateUrl: 'app/main/xhsc/procedurepg/schztb.html',
+        controller: 'schztbController as vm'
+      })
+      .state('app.xhsc.scsl.schztbdetail', {
+        noBack: true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        url: '/schztbdetail/{recordId}/{itemId}',
+        templateUrl: 'app/main/xhsc/procedurepg/schztbdetail.html',
+        controller: 'schztbdetailController as vm'
       })
       .state('app.xhsc.scsl._sc',{
         noBack:true,
@@ -68,7 +86,7 @@
         rightArrow: false,
         leftArrow: false,
         title :'请选择分期',
-        url   :'/chooseArea/{assessmentID}/{projectId}/{role}',
+        url   :'/chooseArea/{assessmentID}/{projectId}/{role}/{isReport}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/procedurepg/chooseArea.html',

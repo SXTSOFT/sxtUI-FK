@@ -48,6 +48,28 @@
       </md-content>
     </md-tab-content>
   </md-tab>
+
+  <md-tab label="实测对象">
+    <md-tab-content  style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
+      <md-content class="download" style="padding: 0px">
+        <div layout="column">
+          <md-subheader><span style="margin-left: -18px">项目汇总列表</span></md-subheader>
+          <md-list style="padding:0px">
+            <md-list-item ng-repeat="item in vm.projects" layout="row">
+              <p flex style="font-size:16px;padding-left:12px;">
+                {{item.ProjectName}}
+              </p>
+              <div flex="none" layout="row">
+                <md-button  ng-click="vm.go(item,1)"  class="md-raised md-primary" style="min-width:50px;padding:0px;margin:0px 0px 0px 5px ;line-height:35px ">
+                  实测
+                </md-button>
+              </div>
+            </md-list-item>
+          </md-list>
+        </div>
+      </md-content>
+    </md-tab-content>
+  </md-tab>
 </md-tabs>
 
 

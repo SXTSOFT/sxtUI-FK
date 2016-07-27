@@ -12,16 +12,17 @@
     .controller('chooseAreaController',chooseAreaController);
 
   /** @ngInject */
-  function chooseAreaController($scope,$stateParams,db,$state){
+  function chooseAreaController($scope,$stateParams,db,$state,remote){
     var vm=this,
       id =vm.areasssessmentID= $stateParams.assessmentID;
       vm.projectId=$stateParams.projectId;
       vm.role=$stateParams.role;
+      var isReport= vm.isReport=$stateParams.isReport;
 
     var pk = db('pack'+id);
     vm.project;
     vm.areas=[];
-    pk.get('GetRegionTreeInfo').then(function(r){
+    function  callBack(r){
       vm.project=r;
       if (r.data){
         if (r.data.Children&&angular.isArray(r.data.Children)){
@@ -32,25 +33,21 @@
             });
           });
         }
-
       }
-    }).catch(function(r){
+    }
 
-    });
+    if (isReport=='0'||isReport==0){
+      pk.get('GetRegionTreeInfo').then(callBack);
+    }else {
+      remote.Project.GetRegionTreeInfo(vm.projectId).then(callBack);
+    }
+
     vm.go=function(item){
-      var f= vm.project.data.Children.forEach(function(r){
-        if ( r.RegionID==item.regionID){
-          r.selected=true;
-        }else {
-          r.selected=false;
-        }
-      });
-      pk.update(vm.project).then(function(){
-        $state.go('app.xhsc.scsl.sclist',{
-          projectId:vm.projectId,
-          assessmentID:vm.areasssessmentID,
-          role:vm.role
-        });
+      $state.go('app.xhsc.scsl.sclist',{
+        projectId:vm.projectId,
+        assessmentID:vm.areasssessmentID,
+        area:item.regionID,
+        isReport:vm.isReport
       });
     }
   }

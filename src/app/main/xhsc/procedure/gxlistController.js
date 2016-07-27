@@ -9,10 +9,11 @@
     .controller('gxlistController',gxlistController);
 
   /**@ngInject*/
-  function gxlistController($scope,remote,$stateParams){
+  function gxlistController($scope,remote,$stateParams,$state){
     var vm=this;
     vm.projectId = $stateParams.projectId;
     vm.role=$stateParams.role;
+    console.log('role',vm.role)
     remote.Procedure.queryProcedure().then(function(result){
       // console.log(result);
       //vm.procedureData = result.data;
@@ -51,8 +52,14 @@
 //console.log('plist', vm.procedureData)
         //vm.procedureData.push({name:it.SpecialtyName,rows:vm.wpalist});
       })
-
+    //  ui-sref="app.xhsc.gx.zjhouseChoose({role:vm.role,acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,areaId:vm.areaId,maxRegion:i.maxRegion})"
     })
-
+    vm.choosego = function(i){
+      if(!vm.role){
+        $state.go('app.xhsc.gx.zjhouseChoose',{role:vm.role,acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,areaId:vm.areaId,maxRegion:i.maxRegion})
+      }else{
+        $state.go('app.xhsc.gx.gxhousechoose',{role:vm.role,acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,areaId:vm.areaId,maxRegion:i.maxRegion})
+      }
+    }
   }
 })();
