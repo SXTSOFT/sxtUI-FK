@@ -34,24 +34,24 @@
     function link(scope,element,attr,ctrl){
       var map,tile,fg,toolbar,data,points,pk;
 
-      scope.MeasurePoints=[{
-        Geometry:'{"type":"Feature","properties":{"seq":20,"$id":"208cfb0506ce40e6976d160c2a9eb8c0"},"options":{"stroke":true,"color":"red","dashArray":"","lineCap":null,"lineJoin":null,"weight":1,"opacity":1,"fill":true,"fillColor":null,"fillOpacity":0.2,"clickable":true,"font-family":"Helvetica","font-style":"normal","font-weight":"bold","letter-spacing":"0.05em","stroke-width":2,"text-decoration":"none","multiSelect":false,"repeatMode":true},"geometry":{"type":"Stamp","coordinates":[0.4942626953125,0.468505859375]}}',
-        MeasurePointID:"208cfb0506ce40e6976d160c2a9eb8c0",
-        ParentMeasurePointID:null,
-        Remark:null,
-      }];
-      scope.MeasureValues =[{
-        AcceptanceIndexID:"31f68aeeae3642e4bc595b39e65477f0",
-        AcceptanceItemID:"1d119619c09e42e195179f245286033d",
-        CheckRegionID:"00027000010000000000",
-        DrawingID:"46feb5847f14471d85d627cf39a215f1",
-        MeasurePointID:"208cfb0506ce40e6976d160c2a9eb8c0",
-        MeasureValue:" ",
-        MeasureValueId:"3a7d6725065645d3a609ba70db45e53e",
-        RecordType:4,
-        RegionType:8,
-        RelationID:"scsl00027"
-      }];
+      //scope.MeasurePoints=[{
+      //  Geometry:'{"type":"Feature","properties":{"seq":20,"$id":"208cfb0506ce40e6976d160c2a9eb8c0"},"options":{"stroke":true,"color":"red","dashArray":"","lineCap":null,"lineJoin":null,"weight":1,"opacity":1,"fill":true,"fillColor":null,"fillOpacity":0.2,"clickable":true,"font-family":"Helvetica","font-style":"normal","font-weight":"bold","letter-spacing":"0.05em","stroke-width":2,"text-decoration":"none","multiSelect":false,"repeatMode":true},"geometry":{"type":"Stamp","coordinates":[0.4942626953125,0.468505859375]}}',
+      //  MeasurePointID:"208cfb0506ce40e6976d160c2a9eb8c0",
+      //  ParentMeasurePointID:null,
+      //  Remark:null,
+      //}];
+      //scope.MeasureValues =[{
+      //  AcceptanceIndexID:"31f68aeeae3642e4bc595b39e65477f0",
+      //  AcceptanceItemID:"1d119619c09e42e195179f245286033d",
+      //  CheckRegionID:"00027000010000000000",
+      //  DrawingID:"46feb5847f14471d85d627cf39a215f1",
+      //  MeasurePointID:"208cfb0506ce40e6976d160c2a9eb8c0",
+      //  MeasureValue:" ",
+      //  MeasureValueId:"3a7d6725065645d3a609ba70db45e53e",
+      //  RecordType:4,
+      //  RegionType:8,
+      //  RelationID:"scsl00027"
+      //}];
 
       var install = function(){
         if(!scope.db || !scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
