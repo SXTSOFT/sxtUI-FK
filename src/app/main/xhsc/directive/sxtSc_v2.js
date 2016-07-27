@@ -199,7 +199,6 @@
             var layer = this;
             if(layer.loaded)return;
             layer.loaded = true;
-            //measureIndexes
             if(!scope.measureIndexes.length){
               scope.MeasurePoints.forEach(function (point) {
                 var geo = JSON.parse(point.Geometry),
@@ -215,7 +214,8 @@
                   layer.addData(geo);
                 }
               });
-            }else{
+            }
+            else{
               var list=[];
               scope.MeasureValues.forEach(function(r){
                 scope.measureIndexes.forEach(function(_r){
@@ -250,31 +250,21 @@
                 fg.data.push(r);
               })
             }
-
             data.findAll(function(o){
               if(scope.measureIndexes.length){
-
-              return o.DrawingID==scope.imageUrl
-                && o.AcceptanceItemID==scope.acceptanceItem
-                && scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
-                  return m.AcceptanceIndexID == o.AcceptanceIndexID
-                    ||(m.Children && m.Children.find(function (m1) {
-                      return m1.AcceptanceIndexID == o.AcceptanceIndexID
-                    }));
+                return o.DrawingID==scope.imageUrl
+                  && o.AcceptanceItemID==scope.acceptanceItem
+                  && scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
+                    return m.AcceptanceIndexID == o.AcceptanceIndexID
+                      ||(m.Children && m.Children.find(function (m1) {
+                        return m1.AcceptanceIndexID == o.AcceptanceIndexID
+                      }));
                 });
-
               }else{
                 return o.DrawingID==scope.imageUrl
                   && o.AcceptanceItemID==scope.acceptanceItem
-                  //&& scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
-                  //  return m.AcceptanceIndexID == o.AcceptanceIndexID
-                  //    ||(m.Children && m.Children.find(function (m1) {
-                  //      return m1.AcceptanceIndexID == o.AcceptanceIndexID
-                  //    }));
-                  //});
               }
             }).then(function(r){
-
               points.findAll(function(o){
                 return r.rows.find(function(i){
                     if(i.MeasurePointID == o._id){
@@ -299,7 +289,6 @@
                 scope.MeasureValues.forEach(function(r){
                   fg.data.push(r);
                 })
-                //fg.addLayer(p);
                 p.rows.sort(function (p1,p2) {
                   return p1.CreateTime.getTime()-p2.CreateTime.getTime();
                 });
@@ -308,7 +297,6 @@
                 });
               })
             });
-
           },
           onUpdate:function(layer,isNew,group){
             //这里是修正用户点的位置,尽可能在最近点的同一水平或竖直线上
