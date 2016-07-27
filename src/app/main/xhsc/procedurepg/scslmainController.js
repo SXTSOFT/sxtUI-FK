@@ -21,15 +21,7 @@
       };
       queryOnline();
     });
-    //remote.Procedure.authorityByUserId().then(function(res){
-    //  if (res&&res.data&&res.data.length){
-    //    vm.role=res.data[0].MemberType;
-    //  }else {
-    //    vm.role=0;
-    //  }
-    //}).catch(function(r){
-    //
-    //});
+
     vm.download = function (item) {
       item.downloading = true;
       item.progress = 0;
@@ -159,7 +151,7 @@
     }
 
     vm.go=function(item,isReport){
-      var pk = db('pack'+item.AssessmentID);
+
       function callBack(r){
         if (r&& r.data&& r.data.Children){
           var areas=r.data.Children;
@@ -186,6 +178,7 @@
         }
       }
       if (!isReport){
+        var pk = db('pack'+item.AssessmentID);
         pk.get('GetRegionTreeInfo').then(callBack).catch(function(r){
         });
       }else {
