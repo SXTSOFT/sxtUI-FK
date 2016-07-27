@@ -34,7 +34,6 @@
     });
     //项目包
     function projectTask(projectId) {
-      return [];
       return [
         function (tasks) {
           return $q(function(resolve) {

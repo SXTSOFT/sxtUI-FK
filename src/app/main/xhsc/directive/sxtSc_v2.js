@@ -57,7 +57,7 @@
 
       });
       var install = function(){
-        if(!scope.db || !scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
+        if(!scope.db || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
         //if(!scope.db || !scope.imageUrl || !scope.regionId)return;
         if(!pk)
           pk = pack.sc.up(scope.db);
