@@ -149,7 +149,7 @@
                 return r.rows.find(function(i){
                     if(i.MeasurePointID == o._id|| i.MeasurePointID == o.MeasurePointID){
                       if(r.rows.find(function(i){
-                          return ((i.MeasurePointID == o._id && i.CheckRegionID==scope.regionId && i.MeasureValue || i.MeasureValue===0)||i.MeasurePointID == o.MeasurePointID)
+                          return ((i.MeasurePointID == o._id||i.MeasurePointID == o.MeasurePointID) && i.CheckRegionID==scope.regionId && i.MeasureValue || i.MeasureValue===0)
                         })) {
                         o.geometry.options.color = 'blue';
                       }

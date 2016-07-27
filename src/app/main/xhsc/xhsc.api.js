@@ -436,13 +436,15 @@
         db:function (projectId,recordType,relationId,db) {
           return db;
         },
-        idField:'MeasureValueId',
+        idField:function (item) {
+          return item.AcceptanceIndexID+item.MeasurePointID
+        },
         dataType:1
       }).bind(function (projectId,recordType,relationId,db,sxt) {
         return $http.get($http.url('/api/MeasureInfo/GetUserMeasureValue',{projectId:projectId,recordType:recordType,relationId:relationId})).then(function (r) {
           r.data.forEach(function (item) {
             if(!item.MeasureValueId) {
-              item.MeasureValueId = item.MeasurePointID;
+              item.MeasureValueId = sxt.uuid();
             }
           });
           return r;
