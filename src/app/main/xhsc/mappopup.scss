@@ -2223,12 +2223,37 @@ md-tabs[md-align-tabs="bottom"]{
     }
   }
 }
-@media (max-width: 800px){
+.floor-list{
+  &.gxnew{
+    .right{
+      &.engineer{
+        md-list-item{
+          .md-list-item-inner{
+            min-height: 32px;
+            color:#333;
+          }
+        }
+      }
+    }
+  }
+}
+@media (max-width: 700px){
   .floor-list{
     .right{
       &.engineer{
         md-list-item{
           width:20%;
+        }
+      }
+    }
+  }
+  .floor-list{
+    &.gxnew{
+      .right{
+        &.engineer{
+          md-list-item{
+            width:33%;
+          }
         }
       }
     }
