@@ -43,81 +43,16 @@
         Remark:null,
       }];
       scope.MeasureValues =[{
-        AcceptanceIndexID
-          :
-          "b337a8b22b1145ae992a805a1e70a96f",
-        AcceptanceItemID
-          :
-          "d7579fa6e26b4850967d105ac8ed6893",
-        Children
-          :
-          Array[0],
-        GroupSign
-          :
-          0,
-        IconColor
-          :
-          "",
-        IconImage
-          :
-          "",
-        IndexName
-          :
-          "结构立面垂直度",
-        IndexType
-          :
-          "Single",
-        MeasureMethod
-          :
-          "1",
-        OrderNo
-          :
-          1,
-        ParentAcceptanceIndexID
-          :
-          null,
-        ParentIndexName
-          :
-          null,
-        PassYieldComputeMode
-          :
-          "1",
-        QSCondition
-          :
-          "2",
-        QSKey
-          :
-          "1",
-        QSOtherValue
-          :
-          null,
-        QSValue
-          :
-          "8",
-        SinglePassYield
-          :
-          false,
-        SummaryPassYield
-          :
-          false,
-        CalculatedValue:3,
-        DesignValue:null,
-        ExtendedField1:null,
-        ExtendedField2:null,
-        ExtendedField3:null,
-        MeasurPointName:null,
-        MeasurPointType:null,
+        AcceptanceIndexID:"b337a8b22b1145ae992a805a1e70a96f",
+        AcceptanceItemID:"d7579fa6e26b4850967d105ac8ed6893",
+        CheckRegionID:"00027000010000000000",
+        DrawingID:"46feb5847f14471d85d627cf39a215f1",
         MeasurePointID:"208cfb0506ce40e6976d160c2a9eb8c0",
-        MeasureRecordID:"c6409dd994ca492e92d5d692e3e393ac",
-        MeasureRole:null,
-        MeasureStatus:1,
-        MeasureValue :'',
-        MeasureValueId:"0413c9dece6f43e2bd8f12c9d1649b01",
-        ParentMeasureValueID:null,
-        RecordType:null,
-        RegionType:null,
-        RelationID:null,
-        Remark:null
+        MeasureValue:"",
+        MeasureValueId:"3a7d6725065645d3a609ba70db45e53e",
+        RecordType:4,
+        RegionType:8,
+        RelationID:"scsl00027"
       }];
       var packdb = db('pack'+'scsl00027');
       packdb.get('GetMeasureItemInfoByAreaID').then (function (r) {
@@ -142,10 +77,8 @@
 
       });
       var install = function(){
-        //if(!scope.db || !scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
+        if(!scope.db || !scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
         //if(!scope.db || !scope.imageUrl || !scope.regionId)return;
-
-        if(!scope.measureIndexes) scope.measureIndexes = [];
         if(!pk)
           pk = pack.sc.up(scope.db);
         if(!data)
@@ -193,67 +126,20 @@
         if(toolbar)
           map._map.removeControl(toolbar);
 
-
+/*        scope.MeasureValues.forEach(function(r){
+          data.addOrUpdate(r)
+        })
+        scope.MeasurePoints.forEach(function(r){
+          r.geometry = JSON.parse(point.Geometry);
+          points.addOrUpdate(r)
+        })*/
         fg = new L.SvFeatureGroup({
           onLoad:function(){
             var layer = this;
             if(layer.loaded)return;
             layer.loaded = true;
-            //measureIndexes
-            if(!scope.measureIndexes.length){
-              scope.MeasurePoints.forEach(function (point) {
-                var geo = JSON.parse(point.Geometry),
-                  v = scope.MeasureValues.find(function (value) {
-                    return value.MeasurePointID == point.MeasurePointID;
-                  });
-                if(v) {
-                  geo.options.ExtendedField1 = v.ExtendedField1;
-                  geo.options.seq = geo.properties.seq;
-                  geo.options.v = v;
-                  geo.options.customSeq = true;
-                  geo.options.color = 'red';
-                  layer.addData(geo);
-                }
-              });
-            }else{
-              var list=[];
-              scope.MeasureValues.forEach(function(r){
-                scope.measureIndexes.forEach(function(_r){
-                  if(_r.AcceptanceIndexID == r.AcceptanceIndexID){
-                    list.push(r)
-                  }else{
-                    var find = _r.Children && _r.Children.forEach(function(_c){
-                      return _c.AcceptanceIndexID == r.AcceptanceIndexID;
-                    })
-                    if(find){
-                      list.push(r);
-                    }
-                  }
-                })
-              })
-              scope.MeasurePoints.forEach(function(point){
-                var geo = JSON.parse(point.Geometry),
-                  v = list.find(function (value) {
-                    return value.MeasurePointID == point.MeasurePointID;
-                  });
-                if(v) {
-                  geo.options.ExtendedField1 = v.ExtendedField1;
-                  geo.options.seq = geo.properties.seq;
-                  geo.options.v = v;
-                  geo.options.customSeq = true;
-                  geo.options.color = 'red';
-                  layer.addData(geo);
-                }
-
-              })
-              scope.MeasureValues.forEach(function(r){
-                fg.data.push(r);
-              })
-            }
 
             data.findAll(function(o){
-              if(scope.measureIndexes.length){
-
               return o.DrawingID==scope.imageUrl
                 && o.AcceptanceItemID==scope.acceptanceItem
                 && scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
@@ -262,24 +148,13 @@
                       return m1.AcceptanceIndexID == o.AcceptanceIndexID
                     }));
                 });
-
-              }else{
-                return o.DrawingID==scope.imageUrl
-                  && o.AcceptanceItemID==scope.acceptanceItem
-                  //&& scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
-                  //  return m.AcceptanceIndexID == o.AcceptanceIndexID
-                  //    ||(m.Children && m.Children.find(function (m1) {
-                  //      return m1.AcceptanceIndexID == o.AcceptanceIndexID
-                  //    }));
-                  //});
-              }
             }).then(function(r){
 
               points.findAll(function(o){
                 return r.rows.find(function(i){
-                    if(i.MeasurePointID == o._id){
+                    if(i.MeasurePointID == o._id|| i.MeasurePointID == o.MeasurePointID){
                       if(r.rows.find(function(i){
-                          return i.MeasurePointID == o._id && i.CheckRegionID==scope.regionId && i.MeasureValue || i.MeasureValue===0
+                          return ((i.MeasurePointID == o._id && i.CheckRegionID==scope.regionId && i.MeasureValue || i.MeasureValue===0)||i.MeasurePointID == o.MeasurePointID)
                         })) {
                         o.geometry.options.color = 'blue';
                       }
@@ -296,9 +171,9 @@
                  fg.data = r.rows.filter(function (row) {
                   return row.CheckRegionID==scope.regionId;
                 });
-                scope.MeasureValues.forEach(function(r){
-                  fg.data.push(r);
-                })
+                //scope.MeasureValues.forEach(function(r){
+                //  fg.data.push(r);
+                //})
                 //fg.addLayer(p);
                 p.rows.sort(function (p1,p2) {
                   return p1.CreateTime.getTime()-p2.CreateTime.getTime();
@@ -571,24 +446,7 @@
                 },300);
               };
               edit.scope.context = e;
-              if(!scope.measureIndexes.length){
-                scope.indexs.forEach(function(m){
-                  if(m.AcceptanceIndexID == e.layer.options.v.AcceptanceIndexID){
-                    e.layer.options.v.QSKey = m.QSKey;
-                  }else if(m.Children && m.Children.find(function (m1) {
-                      return m1.AcceptanceIndexID == e.layer.options.v.AcceptanceIndexID
-                    })){
 
-                  }
-                })
-                edit.scope.data = {
-                  measureIndexes:[e.layer.options.v],
-                  regionId:scope.regionId,
-                  regionType:scope.regionType,
-                  acceptanceItem:scope.acceptanceItem,
-                  values:fg.data
-                };
-              }else{
                 edit.scope.data = {
                   measureIndexes:scope.measureIndexes,
                   regionId:scope.regionId,
@@ -596,7 +454,7 @@
                   acceptanceItem:scope.acceptanceItem,
                   values:fg.data
                 };
-              }
+
               edit.scope.readonly = scope.readonly;
               edit.scope.apply && edit.scope.apply();
               return edit.el[0];
