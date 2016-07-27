@@ -118,7 +118,7 @@
     load();
 
     vm.selected = function(r){
-      $state.go('app.xhsc.scsl._sc',{
+      var routeData={
         regionId: r.RegionID,
         RegionName: r.RegionName,
         name: r.FullRegionName,
@@ -126,7 +126,12 @@
         db:assessmentID,
         measureItemID:acceptanceItemID,
         pname:acceptanceItemName
-      });
+      }
+      if (isReport=='0'||isReport==0){
+        $state.go('app.xhsc.scsl._sc',routeData);
+      }else {
+        $state.go('app.xhsc.scsl.schztb',routeData);
+      }
     }
     //总包点击事件
 
