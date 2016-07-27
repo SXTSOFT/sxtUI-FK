@@ -165,14 +165,11 @@
             $state.go("app.xhsc.scsl.chooseArea",routeData)
           }else {
             if(isReport){
-              $state.go("app.xhsc.scsl.sclist",routeData);
+              $state.go("app.xhsc.scsl.sclist",angular.extend(routeData,{area:areas[0].RegionID}));
             }else {
-              if (areas.length==1){
-                areas[0].selected=true;
-                pk.update(r).then(function(){
-                  $state.go("app.xhsc.scsl.sclist",routeData);
-                })
-              }
+              pk.update(r).then(function(){
+                $state.go("app.xhsc.scsl.sclist",angular.extend(routeData,{area:areas[0].RegionID}));
+              })
             }
           }
         }
