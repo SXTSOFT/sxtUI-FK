@@ -14,10 +14,10 @@
   function _scController($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,pack,sxt,$timeout) {
     var vm = this;
     vm.info = {
-      db:$stateParams.db,
+      db:'scsl00027',//$stateParams.db,
       name: $stateParams.name,
       areaId:$stateParams.areaId,
-      acceptanceItemID: $stateParams.measureItemID,
+      acceptanceItemID: 'd7579fa6e26b4850967d105ac8ed6893',//$stateParams.measureItemID,
       regionId: $stateParams.regionId,
       regionType: $stateParams.regionType,
       aItem:{
@@ -30,7 +30,7 @@
     $rootScope.title =vm.info.name;
     var packdb = db('pack'+vm.info.db);
     packdb.get('GetMeasureItemInfoByAreaID').then (function (r) {
-      //console.log('r',r)
+      console.log('r',r)
       var find = r.data.find(function (it) {
         return it.AcceptanceItemID == vm.info.acceptanceItemID;
       });
@@ -117,10 +117,16 @@
 
     vm.setRegionId = function(regionId,regionType){
       packdb.get('GetRegionTreeInfo').then(function (result) {
-        var region = xhUtils.findRegion([result.data],regionId),
-          ld = xhUtils.findRegion([result.data],regionId.substring(0,15));
-        vm.plasterDepth = ld?ld.PlasterDepth:0;
-        vm.setRegion(region);
+        vm.regionTree = result.data.Children;
+        result.data.Children.forEach(function(r){
+          if(r.selected == true){
+            var region = xhUtils.findRegion(r.Children,regionId),
+              ld = xhUtils.findRegion(r.Children,regionId.substring(0,15));
+            vm.plasterDepth = ld?ld.PlasterDepth:0;
+            vm.setRegion(region);
+          }
+        })
+
       });
     }
     vm.setRegion = function(region){
