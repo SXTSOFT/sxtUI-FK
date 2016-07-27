@@ -12,7 +12,7 @@
     .directive('sxtScNew', sxtScNew);
 
   /** @Inject */
-  function sxtScNew($timeout,mapPopupSerivce,db,sxt,xhUtils,pack){
+  function sxtScNew($timeout,mapPopupSerivce,db,sxt,xhUtils,pack,remote){
     function now() {
       return new Date().toISOString();
     }
@@ -34,27 +34,7 @@
     function link(scope,element,attr,ctrl){
       var map,tile,fg,toolbar,data,points,pk;
 
-      scope.MeasurePoints=[{
-        ExtendedField1:null,
-        ExtendedField2:null,
-        Geometry:'{"type":"Feature","properties":{"seq":20,"$id":"208cfb0506ce40e6976d160c2a9eb8c0"},"options":{"stroke":true,"color":"red","dashArray":"","lineCap":null,"lineJoin":null,"weight":1,"opacity":1,"fill":true,"fillColor":null,"fillOpacity":0.2,"clickable":true,"font-family":"Helvetica","font-style":"normal","font-weight":"bold","letter-spacing":"0.05em","stroke-width":2,"text-decoration":"none","multiSelect":false,"repeatMode":true},"geometry":{"type":"Stamp","coordinates":[0.4942626953125,0.468505859375]}}',
-        MeasurePointID:"208cfb0506ce40e6976d160c2a9eb8c0",
-        ParentMeasurePointID:null,
-        Remark:null,
-      }];
-      scope.MeasureValues =[{
-        AcceptanceIndexID:"b337a8b22b1145ae992a805a1e70a96f",
-        AcceptanceItemID:"d7579fa6e26b4850967d105ac8ed6893",
-        CheckRegionID:"00027000010000000000",
-        DrawingID:"46feb5847f14471d85d627cf39a215f1",
-        MeasurePointID:"208cfb0506ce40e6976d160c2a9eb8c0",
-        MeasureValue:"",
-        MeasureValueId:"3a7d6725065645d3a609ba70db45e53e",
-        RecordType:4,
-        RegionType:8,
-        RelationID:"scsl00027"
-      }];
-      var packdb = db('pack'+'scsl00027');
+      var packdb = db('pack'+scope.db);
       packdb.get('GetMeasureItemInfoByAreaID').then (function (r) {
         var find = r.data.find(function (it) {
           return it.AcceptanceItemID == scope.acceptanceItem;
@@ -91,15 +71,24 @@
           map = new L.SXT.Project(element[0]);
         }
         if(!tile || tile!=scope.regionId) {
-          db('pack'+scope.db).get('GetDrawingByAreaID').then(function (data) {
-            var fd = data.data.find(function (d) {
-              return d.DrawingID == scope.imageUrl;
-            });
-            if(fd) {
-              if(fd.DrawingContent) {
-                scope.tooltip = '正在加载图形....';
-                $timeout(function () {
-                  map.loadSvgXml(fd.DrawingContent, {
+          $timeout(function () {
+            remote.Project.getDrawingRelations(scope.regionId.substring(0,5)).then(function (result) {
+              var imgId = result.data.find(function (item) {
+                return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
+              });
+              if(!imgId){
+                imgId = result.data.find(function (item) {
+                  return item.RegionId == scope.regionId;
+                });
+              }
+              if (imgId) {
+                remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
+                  if(!result2.data.DrawingContent){
+                    scope.ct && (scope.ct.loading = false);
+                    utils.alert('未找到图纸,请与管理员联系!(2)');
+                    return;
+                  }
+                  map.loadSvgXml(result2.data.DrawingContent, {
                     filterLine: function (line) {
                       line.attrs.stroke = 'black';
                       line.options = line.options||{};
@@ -108,15 +97,22 @@
                       line.attrs['stroke-width'] = line.attrs['stroke-width']*6;
                     },
                     filterText: function (text) {
-                      //return false;
+                      return false;
                     }
                   });
                   map.center();
                   scope.tooltip = '';
-                },0)
+                })
               }
-            }
-          });
+              else{
+                if(!result.data.DrawingContent){
+                  utils.alert('未找到图纸,请与管理员联系!(1)');
+                  scope.ct && (scope.ct.loading = false);
+                  return;
+                }
+              }
+            });
+          }, 0);
           tile = scope.regionId;
         }
 

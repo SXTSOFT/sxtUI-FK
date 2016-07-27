@@ -6,7 +6,7 @@
   angular
     .module('app.xhsc')
     .controller('scslmainController',scslmainController);
-  function scslmainController($mdDialog,db,scRemote,xhUtils,$rootScope,$scope,scPack,utils,stzlServices,$mdBottomSheet,$state){
+  function scslmainController($mdDialog,db,scRemote,xhUtils,$rootScope,$scope,scPack,utils,$q,api,$state){
     var vm = this;
     var remote=  scRemote;
     var pack=scPack;
@@ -30,54 +30,94 @@
     }).catch(function(r){
 
     });
+    //项目包
+    function projectTask(projectId) {
+      return [
+        function (tasks) {
+          return $q(function(resolve) {
+            remote.Project.getDrawingRelations(projectId).then(function (result) {
+              var pics = [];
+              result.data.forEach(function (item) {
+                if (pics.indexOf(item.DrawingID) == -1) {
+                  pics.push(item.DrawingID);
+                }
+              });
+              pics.forEach(function (drawingID) {
+                tasks.push(function () {
+                  return remote.Project.getDrawing(drawingID);
+                })
+              });
+              resolve(result);
+            })
+          })
+        },
+        function () {
+          return remote.Project.queryAllBulidings(projectId);
+        }
+      ]
+    }
     vm.download = function (item) {
       item.downloading = true;
       item.progress = 0;
-      item.pack = pack.sc.down(item);
-      $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
-        //console.log(arguments);
-        if(!item.pack)return;
-        var p = item.pack.getProgress();
-        item.progress = parseInt(p.progress);
-        if(item.pack && item.pack.completed) {
-          var ix = vm.onlines.indexOf(item);
-          if (ix != -1)
-            vm.onlines.splice(ix, 1);
-          ix = vm.offlines.indexOf(item);
-          if(ix!=-1){
-            vm.offlines.splice(ix, 1);
-          }
-          var it1 = vm.data.rows.find(function (it) {
-            return it.ProjectID==item.ProjectID;
-          }),ix=it1?vm.data.rows.indexOf(it1):-1;
-          if(ix!=-1){
-            vm.data.rows.splice(ix, 1);
-          }
-          delete item.pack;
-          remote.Project.getMap().then(function (result) {
-            var project=result.data.find(function(r){
-              return r.ProjectID== item.ProjectID;
-            });
-            project.AssessmentID='scsl'+ project.ProjectID;
-            project.AssessmentSubject= project.ProjectName;
-            var fd = vm.data.rows.find(function (a) {
-              return a.ProjectID ==project.ProjectID;
-            }),ix=fd?vm.data.rows.indexOf(fd):-1;
-            if(ix==-1) {
-              vm.data.rows.push(project);
-              vm.offlines.push(project);
+      var tasks = [];
+      tasks.push(function () {
+        return $q(function (resolve) {
+          item.pack = pack.sc.down(item);
+          $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
+            //console.log(arguments);
+            if(!item.pack)return;
+            var p = item.pack.getProgress();
+            item.progress = parseInt(p.progress);
+            if(item.pack && item.pack.completed) {
+              resolve();
             }
-            else{
-              vm.data.rows[ix] = project;
-            }
-            xcpk.addOrUpdate(vm.data).then(function () {
-              item.downloading = false;
-              utils.alert('下载完成');
-            })
-          })
-        }
 
-      })
+          })
+        });
+      });
+      tasks = tasks.concat(projectTask(item.ProjectID));
+      api.task(tasks)(function (percent, current, total) {
+        item.progress = parseInt(percent * 100);
+      }, function () {
+        var ix = vm.onlines.indexOf(item);
+        if (ix != -1)
+          vm.onlines.splice(ix, 1);
+        ix = vm.offlines.indexOf(item);
+        if(ix!=-1){
+          vm.offlines.splice(ix, 1);
+        }
+        var it1 = vm.data.rows.find(function (it) {
+          return it.ProjectID==item.ProjectID;
+        }),ix=it1?vm.data.rows.indexOf(it1):-1;
+        if(ix!=-1){
+          vm.data.rows.splice(ix, 1);
+        }
+        delete item.pack;
+        remote.Project.getMap().then(function (result) {
+          var project=result.data.find(function(r){
+            return r.ProjectID== item.ProjectID;
+          });
+          project.AssessmentID='scsl'+ project.ProjectID;
+          project.AssessmentSubject= project.ProjectName;
+          var fd = vm.data.rows.find(function (a) {
+            return a.ProjectID ==project.ProjectID;
+          }),ix=fd?vm.data.rows.indexOf(fd):-1;
+          if(ix==-1) {
+            vm.data.rows.push(project);
+            vm.offlines.push(project);
+          }
+          else{
+            vm.data.rows[ix] = project;
+          }
+          xcpk.addOrUpdate(vm.data).then(function () {
+            item.downloading = false;
+            utils.alert('下载完成');
+          })
+        })
+      }, function () {
+        item.downloading = false;
+        utils.alert('下载失败,请检查网络');
+      },{timeout:20000})
     }
     vm.upload =function (item) {
       item.uploading = true;
