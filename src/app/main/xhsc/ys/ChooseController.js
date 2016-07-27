@@ -68,12 +68,7 @@
           assessmentID:item.AssessmentID,
         }
         vm.ms = ms;
-       // console.log(ms)
-       // console.log('item',vm.fq)
       })
     })
-
-
   }
-
 })();

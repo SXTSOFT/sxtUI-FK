@@ -6,21 +6,15 @@
 </div>
 <div layout="row">
   <!--<div flex="50" ng-repeat="img in data.images"><img src=""></div>-->
-  <div flex style="text-align: center;border-right:1px solid #555;" ng-click="playImage()">
-    <span class="photo" style="margin:0;">
+  <div flex style="text-align: center;border-right:1px solid #555;" >
+    <md-button class="md-fab md-mini" ng-click="playImage()" style="background: none;margin:0;padding:0;"><md-icon  class="icon s24" md-font-icon="icon-picture"></md-icon> {{ data.images.length }}</md-button>
+<!--    <span class="photo" style="margin:0;">
       <i>照片</i><i>{{data.images.length||0}}</i>
-    </span>
+    </span>-->
   </div>
-  <div flex style="text-align: center;border-right:1px solid #555;"><md-button class="md-fab md-mini" ng-click="addPhoto()" style="background: none;margin:0;padding:0;"><md-icon class="icon s32" md-font-icon="icon-camera"></md-icon></md-button></div>
-  <div flex>
-    <a style="display: block;height:40px;line-height: 40px;text-align: center;color:#fff;" href="javascript:void(0)" ng-click="removeLayer()">删 除</a>
+  <div flex style="text-align: center;border-right:1px solid #555;"><md-button class="md-fab md-mini" ng-click="addPhoto()" style="background: none;margin:0;padding:0;"><md-icon class="icon s24" md-font-icon="icon-camera"></md-icon></md-button></div>
+  <div flex style="text-align: center;">
+    <md-button class="md-fab md-mini" ng-click="removeLayer()" style="background: none;margin:0;padding:0;"><md-icon class="icon s24" md-font-icon="icon-delete"></md-icon></md-button>
   </div>
-</div>
-<div class="leaflet-draw-subbuttom sure" style="display: none;">
-  <ul  layout="row">
-    <li ng-if="!readonly"><a class="" href="javascript:void(0)" ng-click="removeLayer()">删除</a></li>
-    <li flex></li><!--
-    <li ng-if="!readonly"><a class="" href="javascript:void(0)" ng-click="updateValue()">确定</a></li>-->
-  </ul>
 </div>
 </div>

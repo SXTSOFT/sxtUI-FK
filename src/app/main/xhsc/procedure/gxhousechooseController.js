@@ -18,6 +18,7 @@
       acceptanceItemName = $stateParams.acceptanceItemName,
       role=$stateParams.role,
       areaId = $stateParams.areaId;
+    vm.maxRegion = $stateParams.maxRegion;
 
     $rootScope.title = $stateParams.acceptanceItemName;
     if(role == "zb"){
@@ -33,29 +34,54 @@
         yzg:0,//已整改
         wzg:0//未整改
       }
-      function  setNum(status){
-        vm.nums.qb++;
-        switch (status){
-          case  0:
-            vm.nums.wtj++;
-          break;
-          case  1:
-            vm.nums.dy++;
-            break;
-          case  2:
-            vm.nums.hg++;
-            break;
-          case  4:
-            vm.nums.bhg++;
-            break;
-          case  8:
-            vm.nums.yzg++;
-            break;
-          case  16:
-            vm.nums.wzg++;
-            break;
+      function  setNum(status,region){
+        if(vm.maxRegion >8){
+          vm.nums.qb++;
+          switch (status){
+            case  0:
+              vm.nums.wtj++;
+              break;
+            case  1:
+              vm.nums.dy++;
+              break;
+            case  2:
+              vm.nums.hg++;
+              break;
+            case  4:
+              vm.nums.bhg++;
+              break;
+            case  8:
+              vm.nums.wzg++;
+              break;
+            case  16:
+              vm.nums.yzg++;
+              break;
+          }
+        }else{
+          if(region.RegionType == 8){
+            vm.nums.qb++;
+            switch (status){
+              case  0:
+                vm.nums.wtj++;
+                break;
+              case  1:
+                vm.nums.dy++;
+                break;
+              case  2:
+                vm.nums.hg++;
+                break;
+              case  4:
+                vm.nums.bhg++;
+                break;
+              case  8:
+                vm.nums.wzg++;
+                break;
+              case  16:
+                vm.nums.yzg++;
+                break;
+            }
+          }
         }
-
       }
       //状态设置与用户区域权限
       function filterOrSetting(status,region){
@@ -63,7 +89,7 @@
           statusSetting(status,region);
         }
         var st=status.find(function(o){
-          return o.AreaId==region.RegionID;
+          return o.AreaId.indexOf(region.RegionID)!=-1;
         });
         if (st){
           region.hasShowRight=true;
@@ -87,7 +113,7 @@
         region.Percentage = percentage;
         region.status = status;
         region.style=ConvertClass(status);
-        setNum(status);
+        setNum(status,region);
       }
       //状态设置
       function statusSetting(status,region){
@@ -188,7 +214,7 @@
         function validateChecked(r){
            switch(r.RegionType){
              case 8:
-               r.Children.forEach(function(m){
+               r.Children&&r.Children.forEach(function(m){
                   if (m.checked){
                     r.checked=false;
                   }
@@ -318,17 +344,11 @@
           if(_t.checked){
             vm.data.Rows.push(_t);
           }
-          if (!_t.Children){
-            _t.Children=[];
-          }
-          _t.Children.forEach(function(_tt){
+          _t.Children && _t.Children.forEach(function(_tt){
             if(_tt.checked){
               vm.data.Rows.push(_tt);
             }
-            if (!_tt.Children){
-              _tt.Children=[];
-            }
-            _tt.Children.forEach(function(l){
+            _tt.Children && _tt.Children.forEach(function(l){
               if(l.checked){
                 vm.data.Rows.push(l)
               }

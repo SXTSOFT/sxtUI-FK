@@ -18,7 +18,10 @@
     vm.projectId = $stateParams.projectId;
     //console.log('state',$stateParams)
     vm.info={
-      current:null
+      current:null,
+      cancelMode:function () {
+        vm.cancelCurrent(null);
+      }
     }
 
 
@@ -47,12 +50,10 @@
         }
         return regionType;
       }
-      var promises=[
-        remote.Project.getInspectionList(vm.InspectionId)
-      ];
+
       vm.btBatch=[];
-      return $q.all(promises).then(function(rtv){
-        var  r=rtv[0].data.find(function(o){
+      return remote.Project.getInspectionList(vm.InspectionId).then(function(rtv){
+        var  r=rtv.data.find(function(o){
           return o.InspectionId==vm.InspectionId;
         });
         if (angular.isArray(r.Children)){
@@ -87,7 +88,7 @@
               _t.WPAcceptanceList = _t.ProblemLibraryList;
               _t.SpecialtyName = _t.ProblemClassifyName;
               _t.ProblemLibraryList.forEach(function(_tt){
-                _tt.AcceptanceItemName = _tt.ProblemDescription;
+                _tt.AcceptanceItemName = _tt.ProblemSortName +'.'+ _tt.ProblemDescription;
               })
             })
           })

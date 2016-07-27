@@ -1,15 +1,14 @@
-
 <div flex="none" style="position: relative;" class="downcaret">
   <div layout="row" flex style="height:48px;border-bottom: 1px solid #d8d8d8;position: relative;z-index: 10;background: rgb(245,245,245);">
-    <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;left:10px;top:0;" ng-click="vm.nextRegion(true)">
+<!--    <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;left:10px;top:0;" ng-click="vm.nextRegion(true)">
       <md-icon md-font-icon="icon-chevron-left"></md-icon>
-    </md-button>
+    </md-button>-->
     <p ng-click="vm.qyslide()" style="font-size:14px;padding:0 10px;text-align: center;margin: 0;height:48px;line-height:48px;width:70%;margin-left:auto;margin-right:auto;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
       {{vm.current.RegionName}} <span class="caret"></span>
     </p>
-    <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;right:10px;top:0" ng-click="vm.nextRegion()">
+<!--    <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;position: absolute;right:10px;top:0" ng-click="vm.nextRegion()">
       <md-icon md-font-icon="icon-chevron-right"></md-icon>
-    </md-button>
+    </md-button>-->
   </div>
   <div flex layout="row" class="gxtest qyslide" ng-class="{'qydown':vm.qyslideShow}">
     <md-list layout="column" flex class="gxplist">
@@ -19,21 +18,22 @@
     </md-list>
   </div>
 </div>
-<div class="mapcheck" flex sxt-map-check="false" inspection-id="vm.InspectionId"  project-id="vm.projectId" procedure="vm.acceptanceItemID" region-id="vm.current.AreaID">
+<div class="mapcheck" flex sxt-map-check="false" inspection-id="vm.InspectionId"  project-id="vm.projectId" disable-inspect="true" disable-drag="true" procedure="vm.acceptanceItemID" region-id="vm.current.AreaID">
 </div>
-<md-content flex style="background: transparent;">
-  <div class="gxtest gxtestdetail" flex>
-    <div style="margin-top: 20px;padding:0 8px;" flex layout="row"><span flex>问题列表</span><span flex></span></div>
-    <md-list class="gxque">
-      <md-list-item ng-repeat="question in vm.pList|orderBy:'ProblemSortName'">
-        <!--<span flex="none" style="width:100px;">2号问题</span>-->
-        <span flex style="padding-left:8px;">{{question.ProblemDescription}}</span>
-        <span flex="none" style="text-align: right;padding-right:8px">{{question.rows.length}}处</span>
-      </md-list-item>
-    </md-list>
-  </div>
-</md-content>
-
+<div style="margin-top: 12px;padding:0 8px;margin-bottom:12px;" flex="none" layout="row"><span flex ng-click="vm.showQuesList()">问题列表详情</span><span flex></span></div>
+<!--<md-content flex style="background: transparent;">-->
+  <!--<div class="gxtest gxtestdetail" flex>-->
+    <!--<div style="margin-top: 20px;padding:0 8px;" flex layout="row"><span flex>详细列表</span><span flex></span></div>-->
+    <!--<md-list class="gxque">-->
+      <!--<md-list-item ng-repeat="question in vm.pList|orderBy:'ProblemSortName'">-->
+        <!--&lt;!&ndash;<span flex="none" style="width:100px;">2号问题</span>&ndash;&gt;-->
+        <!--<span flex style="padding-left:8px;">{{question.ProblemSortName}} {{question.ProblemDescription}}</span>-->
+        <!--<span flex="none" style="text-align: right;padding-right:8px">{{question.rows.length}}处</span>-->
+      <!--</md-list-item>-->
+    <!--</md-list>-->
+  <!--</div>-->
+<!--</md-content>-->
+<sxt-question-list list-show="vm.showList" list-inspectid="vm.InspectionId" procedure="vm.acceptanceItemID" region-id="vm.current.AreaID"></sxt-question-list>
 
 <!--<div class="gxtest gxtestdetail">-->
   <!--<md-list>-->

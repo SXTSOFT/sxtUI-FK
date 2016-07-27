@@ -7,7 +7,7 @@
     .module('app.xhsc')
     .directive('sxtRecheckPopup',sxtRecheckPopup);
   /** @ngInject */
-  function sxtRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote,$q,utils,api){
+  function sxtRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote,$q,utils){
     return {
       restrict:'E',
       scope:{
@@ -50,14 +50,17 @@
               Remark:''
             };
           }
+          //remote.Procedure.
         })
+        //$timeout(function(){
+        //  scope.slideShowbg = true;
+        //},200)
         scope.value =scope.data.value.Status;
-
       }
 
       scope.playImage = function (imgs) {
         imgs.forEach(function (img) {
-          img.url = img.FileUrl || img.FileContent;
+          img.url = img.FileContent||img.FileUrl;
           img.alt = ' ';
         })
         xhUtils.playPhoto(imgs);
@@ -107,49 +110,21 @@
             utils.alert('请上传整改后照片');
             return;
           }
-          if(api.getNetwork() == 1){
-            createZb(true).then(function () {
-              remote.Procedure.InspectionCheckpoint.create(scope.data.value);
+          createZb(true).then(function () {
+            remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
               scope.slideShow = false;
-              if(scope.data.value.Status == 8){
-                scope.context.layer.options.color = '#faa526';
-                scope.context.layer.setStyle('color','#faa526');
-              }else{
-                scope.context.layer.options.color = 'red';
-                scope.context.layer.setStyle('color','red');
-              }
+              scope.context.updateStatus(scope.data.value.PositionID,scope.data.value.Status);
             });
-          }else{
-            createZb(true).then(function () {
-              remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
-                scope.slideShow = false;
-                if(scope.data.value.Status == 8){
-                  scope.context.layer.options.color = '#faa526';
-                  scope.context.layer.setStyle('color','#faa526');
-                }else{
-                  scope.context.layer.options.color = 'red';
-                  scope.context.layer.setStyle('color','red');
-                }
-                //scope.context.layer.redraw();
-              });
-            });
-          }
-
+          });
         }
-        else{
+        else if(scope.role=='jl'){
           scope.data.value.Status = scope.data.value.Status==2?2:4;
           remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
             scope.slideShow = false;
-            //scope.slideShowbg = false;
-            if(scope.data.value.Status == 2){
-              scope.context.layer.options.color = '#169e49';
-              scope.context.layer.setStyle('color','#169e49');
-            }else{
-              scope.context.layer.options.color = 'red';
-              scope.context.layer.setStyle('color','red');
-            }
-            //scope.context.layer.redraw();
+            scope.context.updateStatus(scope.data.value.PositionID,scope.data.value.Status);
           });
+        }else{
+          scope.slideShow = false;
         }
       }
       $('body').on('click',function(e){

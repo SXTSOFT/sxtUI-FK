@@ -328,7 +328,6 @@
           provider.$cordovaFileTransfer.download(url, rootPath + uname).then(function (r) {
             resolve();
           }).catch(function (err) {
-            console.log('downerr',err);
             resolve();
           });
         }
@@ -358,7 +357,6 @@
                 next();
               }
             }).catch(function (err) {
-              console.log('derr',err);
               d = 0;
               fail && fail();
             });
@@ -433,8 +431,8 @@
                 }
                 else if(cfg.delete){
                   args.forEach(function (d) {
-                    lodb.delete(id(d)||d);
-                  });
+                    lodb.delete(id(d,null,cfg)||d);
+                 });
                   resolve(args);
                 }
                 else if(cfg.upload) {
@@ -491,9 +489,11 @@
                   }
                 }
               });
-              return cb? p2.then(function (result) {
+              return (cb? p2.then(function (result) {
                 return cb.call(caller,result,cfg,args);
-              }):p2;
+              }):p2).then(function (result) {
+                return result;
+              });
             }
             else
             {
@@ -595,7 +595,6 @@
                cfg.db = null;
                return result;
              }).catch(function (err) {
-               console.log(err)
              });
            })
          }

@@ -9,29 +9,14 @@
     .controller('gxresultController',gxresultController);
 
   /** @ngInject*/
-  function gxresultController($mdDialog,$stateParams,$state,$scope,remote,utils,db,sxt){
+  function gxresultController($mdDialog,$stateParams,$state,$scope,remote,utils,xhUtils){
     var vm = this;
     vm.params = $stateParams;
     vm.gxname = $stateParams.acceptanceItemName;
     vm.bwname = $stateParams.name;
     var  InspectionId=$stateParams.InspectionId;
 
-    vm.times = [{
-      time:'一天',
-      val:1
-    },{
-      time:'二天',
-      val:2
-    },{
-      time:'三天',
-      val:3
-    },{
-      time:'四天',
-      val:4
-    },{
-      time:'五天',
-      val:5
-    }]
+    vm.times = xhUtils.zgDays();
     vm.persons = [{
       unit:'甲方',
       users:[{
@@ -68,8 +53,9 @@
         name:'王五2',
         id:9
       }]
-    }]
+    }];
     //console.log('s',$stateParams)
+
     remote.Project.queryAllBulidings($stateParams.projectId).then(function(result){
       vm.allRelations = [];
       var areaId = $stateParams.areaId;
@@ -92,18 +78,17 @@
     vm.params={
           InspectionID:InspectionId,
           Remarks:"",
-          Day:7
+          Day:12
     }
 
     vm.Isfail=true;
-    var zgReceipt = db('createZGReceipt');
     vm.submitResult = function(){
-      //console.log('time',vm.time)
+      console.log('time',vm.responsers)
 
       vm.data ={
         InspectionID:vm.params.InspectionID,
         Remarks:vm.params.Remarks,
-        Day:vm.time
+        Day:vm.time,
       }
       //
       //zgReceipt.addOrUpdate(vm.data).then(function(res){
@@ -114,9 +99,9 @@
       //})
 
       remote.Procedure.createZGReceipt(vm.data).then(function(r){
-        console.log(r)
-          if (r.data&&r.data.ErrorCode==0){
-            utils.alert("保存成功",null,function(){
+
+          if (r.data){
+            utils.alert("提交成功",null,function(){
               $state.go("app.xhsc.gx.gxmain",{index:0});
             });
           }

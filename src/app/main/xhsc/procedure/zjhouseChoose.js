@@ -9,17 +9,17 @@
     .controller('zjhouseChooseController',zjhouseChooseController);
 
   /** @ngInject */
-  function zjhouseChooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils){
+  function zjhouseChooseController($scope,$stateParams,sxt,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils){
     var vm=this,
-      id = $stateParams.assessmentID,
-      AssessmentTypeID = $stateParams.AssessmentTypeID,
       projectId = $stateParams.projectId,
       acceptanceItemID=$stateParams.acceptanceItemID,
       acceptanceItemName = $stateParams.acceptanceItemName,
       role=$stateParams.role,
       areaId = $stateParams.areaId;
+    vm.maxRegion = $stateParams.maxRegion;
     $rootScope.title = $stateParams.acceptanceItemName;
-    $rootScope.sendBt = true;
+    $rootScope.sendBt = false;
+    vm.maxRegion = $stateParams.maxRegion;
     function  load(){
       vm.nums={
         qb:0, //全部
@@ -28,24 +28,50 @@
         hg:0, //合格
         bhg:0,//不合格
         yzg:0,//已整改
-        wzg:0//未整改
+        wzg:0,//未整改
+        ytj:0//已检查
       }
-      function  setNum(status){
-        vm.nums.qb++;
-        switch (status){
-          case  0:
-          case  1:
-            vm.nums.wtj++;
-            break;
-          case  2:
-            vm.nums.hg++;
-            break;
-          case  4:
-          case  8:
-          case  16:
-            vm.nums.bhg++;
-            break;
+      function  setNum(status,region){
+        if(vm.maxRegion >8){
+          vm.nums.qb++;
+          switch (status){
+            case  0:
+              vm.nums.wtj++;
+              break;
+            case  1:
+              vm.nums.ytj++;
+              break;
+            case  2:
+              vm.nums.hg++;
+              break;
+            case  4:
+            case  8:
+            case  16:
+              vm.nums.bhg++;
+              break;
+          }
+        }else{
+          if(region.RegionType == 8){
+            vm.nums.qb++;
+            switch (status){
+              case  0:
+                vm.nums.wtj++;
+                break;
+              case  1:
+                vm.nums.ytj++;
+                break;
+              case  2:
+                vm.nums.hg++;
+                break;
+              case  4:
+              case  8:
+              case  16:
+                vm.nums.bhg++;
+                break;
+            }
+          }
         }
+
 
       }
       //状态设置与用户区域权限
@@ -54,7 +80,7 @@
           statusSetting(status,region);
         }
         var st=status.find(function(o){
-          return o.AreaId==region.RegionID;
+          return o.AreaId.indexOf(region.RegionID)!=-1;
         });
         if (st){
           region.hasShowRight=true;
@@ -78,7 +104,7 @@
         region.Percentage = percentage;
         region.status = status;
         region.style=ConvertClass(status);
-        setNum(status);
+        setNum(status,region);
       }
       //状态设置
       function statusSetting(status,region){
@@ -101,11 +127,13 @@
         var style;
         switch (status){
           case 0:
-          case 1:
+
             style="wait";
             break;
           case 2:
-            style="pass";
+            style="pass";break;
+          case 1:
+            style="dy";
             break;
           case 4:
           case 8:
@@ -119,11 +147,29 @@
       }
       $q.all([
         remote.Project.queryAllBulidings(projectId),
-        remote.Procedure.getRegionStatus(projectId,8)
+        remote.Procedure.getRegionStatus(projectId,8),
+        remote.Procedure.authorityByUserId()
       ]).then(function(res){
         vm.loading = true;
         var result=res[0];
         var status=res[1]&&res[1].data?res[1].data:[];
+        var permissionRegion = res[2].data;
+        var find = res[2].data.forEach(function(p){
+          return p.ProjectID == projectId;
+        })
+        //if(find){
+        //  var allRegins = find;
+        //  var idx = allRegins.RegionIDs.indexOf(',');
+        //  if(idx == -1){
+        //
+        //  }else{
+        //    var arr=[];
+        //    arr=allRegins.RegionIDs.split(',');
+        //    for(var i=0;i<arr.length;i++){
+        //
+        //    }
+        //  }
+        //}
         result.data[0].RegionRelations.forEach(function(d){
           filterOrSetting(status,d);
           d.projectTree =  d.RegionName;
@@ -151,12 +197,36 @@
     }
 
     load();
+    var inspectionInfoDef = remote.Procedure.getInspectionInfoBySign(8);
 
     vm.callBack=function(){
       load();
     };
     vm.selected = function(r){
-      zbSelected(r);
+      inspectionInfoDef.then(function (r1) {
+        var fd = r1.data.find(function (item) {
+          return item.Children.find(function (area) {
+            return area.AreaID == r.RegionID;
+          })!=null;
+        });
+        if(fd!=null){
+          $state.go('app.xhsc.gx.gxzjcheck',
+            {
+              acceptanceItemID:acceptanceItemID,
+              acceptanceItemName:acceptanceItemName,
+              //name: vm.data.AreaList[0].newName,
+              projectId:projectId,
+              //areaId:vm.data.AreaList[0].AreaID,
+              InspectionId:fd.InspectionId
+            });
+        }
+        else{
+          console.log('r',r);
+          r.checked = true;
+          $rootScope.$emit('sendGxResult');
+        }
+      });
+      //zbSelected(r);
     }
     //总包点击事件
     function zbSelected(r){
@@ -250,23 +320,26 @@
             vm.data.AreaList.push({
               AreaID:_t.RegionID,
               Describe:"",
-              Percentage:100
+              Percentage:100,
+              RegionName:_t.RegionName
             });
           }
-          _t.Children.forEach(function(_tt){
+          _t.Children && _t.Children.forEach(function(_tt){
             if(_tt.checked){
               vm.data.AreaList.push({
                 AreaID:_tt.RegionID,
                 Describe:"",
-                Percentage:100
+                Percentage:100,
+                RegionName:_t.RegionName+_tt.RegionName
               });
             }
-            _tt.Children.forEach(function(l){
+            _tt.Children && _tt.Children.forEach(function(l){
               if(l.checked){
                 vm.data.AreaList.push({
                   AreaID:l.RegionID,
                   Describe:"",
-                  Percentage:100
+                  Percentage:100,
+                  RegionName:_t.RegionName+_tt.RegionName+l.RegionName
                 })
               }
             })
@@ -274,6 +347,8 @@
         })
       })
       if(vm.data.AreaList.length){
+        if(!vm.data.Id)
+          vm.data.InspectionID = sxt.uuid();
         remote.Procedure.postInspection(vm.data).then(function(result){
           console.log(result);
           if (result.data.ErrorCode==0){

@@ -9,7 +9,7 @@
     .controller('pcenterController',pcenterController);
 
   /**@ngInject*/
-  function pcenterController($scope,$mdDialog,sxt){
+  function pcenterController($scope,$mdDialog,sxt,auth,$rootScope,api){
     var vm = this;
     vm.tel=13112345678;
     vm.changeTel = function(tel){
@@ -111,9 +111,20 @@
     }
 
 */
-
+    $rootScope.$on('$cordovaNetwork:online', function(event, state){
+      vm.networkState = api.getNetwork();
+    });
+    $rootScope.$on('$cordovaNetwork:offline', function(event, state){
+      vm.networkState = api.getNetwork();
+    });
+    vm.networkState = api.getNetwork();
+    $scope.$watch(function () {
+      return vm.networkState
+    },function () {
+      api.setNetwork(vm.networkState);
+    });
     vm.logout = function(){
-      vm.showmyDialog = true;
+      auth.logout();
     }
   }
 })();

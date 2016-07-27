@@ -9,7 +9,7 @@
     .controller('gxfyController',gxfyController);
 
   /** @ngInject */
-  function gxfyController($state,$rootScope,$scope,$mdDialog,$stateParams,remote,$q,utils){
+  function gxfyController($state,$rootScope,$scope,$mdDialog,$stateParams,remote,$q,utils,xhUtils){
     var vm = this;
     vm.ProjectID=$state.params.ProjectID;
     var InspectionID=$state.params.InspectionID;
@@ -100,35 +100,7 @@
     var gxfyChanged = $rootScope.$on('sendGxResult',function(){
       $mdDialog.show({
         controller:['$scope',function($scope){
-          $scope.times = [{
-            time:'6小时'
-          },{
-            time:'12小时'
-          },{
-            time:'一天'
-          },{
-            time:'二天'
-          },{
-            time:'三天'
-          },{
-            time:'四天'
-          },{
-            time:'五天'
-          },{
-            time:'六天'
-          },{
-            time:'一周'
-          },{
-            time:'二周'
-          },{
-            time:'三周'
-          },{
-            time:'一个月'
-          },{
-            time:'二个月'
-          },{
-            time:'三个月'
-          }]
+          $scope.times = xhUtils.zgDays();
           $scope.submit = function(){
             $mdDialog.hide();
           }

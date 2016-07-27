@@ -19,7 +19,7 @@
     </md-list-item>
     <md-list-item>
       <label>责任人</label>
-      <p>责任人</p>
+      <p>{{vm.allRelations[0].MainContractorName}}</p>
       <!--<p ng-click="vm.rych()">&nbsp;<span ng-repeat="res in vm.responsers">{{res.name}}，</span></p>-->
     </md-list-item>
   </md-list>
@@ -31,8 +31,8 @@
   </md-list>
   <md-list>
     <md-list-item>
-      <label>验收人员</label>
-      <p ui-sref="app.xhsc.gx.gxresult.gxrychoose">&nbsp;<span ng-repeat="res in vm.responsers"> {{res.name}} </span></p>
+      <label>参与人</label>
+      <p ui-sref="app.xhsc.gx.gxresult.gxrychoose">&nbsp;<span ng-repeat="res in vm.responsers"> {{res.UserName}} </span></p>
     </md-list-item>
     <!--<md-list-item>-->
         <!--<label>验收进度</label>-->
@@ -52,7 +52,7 @@
       <p style="text-align: right;">
         <md-input-container class="md-block" style="margin:0">
           <md-select ng-model="vm.time">
-            <md-option ng-repeat="time in vm.times" ng-value="time.val">
+            <md-option ng-repeat="time in vm.times" ng-value="time.value">
               {{time.time}}
             </md-option>
           </md-select>

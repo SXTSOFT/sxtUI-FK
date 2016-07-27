@@ -9,7 +9,7 @@
     .controller('gxzgController',gxzgController);
 
   /** @ngInject */
-  function gxzgController($state,$rootScope,$scope,$mdDialog,remote,$timeout,$q,utils,db){
+  function gxzgController($state,$rootScope,$scope,$mdDialog,remote,$timeout,$q,utils,xhUtils){
     var vm = this;
     $rootScope.title = $state.params.Role == 'zb'?'整改':'复验';
       vm.ProjectID=$state.params.ProjectID;
@@ -18,9 +18,9 @@
       var RectificationID=$state.params.RectificationID;
     vm.role = $state.params.Role;
     vm.InspectionID = $state.params.InspectionID;
-
+    vm.RectificationID = $state.params.RectificationID;
     remote.Procedure.getZGById(RectificationID).then(function (r) {
-      console.log('r',r)
+      console.log('r1',r)
       vm.Rectification = r.data[0];
       vm.pareaList = vm.Rectification.Children;
       vm.regionSelect = vm.pareaList[0];
@@ -85,11 +85,14 @@
     vm.showTop = function(){
       vm.slideShow = true;
     }
+    vm.showQuesList = function(){
+      vm.showUp = true;
+    }
     vm.selectQy = function(item){
       vm.regionSelect = item;
       vm.regionSelect.hasCheck=true;
       vm.qyslideShow = false;
-      load();
+      //load();
     }
     vm.showBaseInfor = function(){
       $mdDialog.show({
@@ -108,37 +111,7 @@
     vm.qyslide = function(){
       vm.qyslideShow = !vm.qyslideShow;
     }
-    $scope.times = [{
-      value:6,
-      time:'6小时'
-    },{
-      value:12,
-      time:'12小时'
-    },{
-      value:24,
-      time:'1天'
-    },{
-      value:24*2,
-      time:'2天'
-    },{
-      value:24*3,
-      time:'3天'
-    },{
-      value:24*4,
-      time:'4天'
-    },{
-      value:24*5,
-      time:'5天'
-    },{
-      value:24*6,
-      time:'6天'
-    },{
-      value:24*7,
-      time:'7天'
-    },{
-      value:24*15,
-      time:'15天'
-    }];
+    $scope.times = xhUtils.zgDays();
     var gxzgChanged = $rootScope.$on('sendGxResult',function(){
       console.log('time',$scope)
       var  msg=[];
@@ -158,37 +131,7 @@
           $scope.role = vm.role;
           $scope.remark = '备注';
           $scope.time= 24*7;
-          $scope.times = [{
-            value:6,
-            time:'6小时'
-          },{
-            value:12,
-            time:'12小时'
-          },{
-            value:24,
-            time:'1天'
-          },{
-            value:24*2,
-            time:'2天'
-          },{
-            value:24*3,
-            time:'3天'
-          },{
-            value:24*4,
-            time:'4天'
-          },{
-            value:24*5,
-            time:'5天'
-          },{
-            value:24*6,
-            time:'6天'
-          },{
-            value:24*7,
-            time:'7天'
-          },{
-            value:24*15,
-            time:'15天'
-          }];
+          $scope.times = xhUtils.zgDays();
           $scope.cancel = function(){
             $mdDialog.hide();
           }
@@ -207,12 +150,17 @@
             }
             else{
               console.log('time',$scope)
-              remote.Procedure.insertJlfy($scope.InspectionID,$scope.remark,$scope.time).then(function(r){
+              remote.Procedure.insertJlfy({RectificationID:RectificationID,Remarks:$scope.remark,Day:$scope.time}).then(function(r){
                 if (r.data.ErrorCode==0){
                   utils.alert("提交成功",null,function(){
                     vm.Isfail=false;
                     $mdDialog.hide();
                     $state.go("app.xhsc.gx.gxmain");
+                  });
+                }
+                else{
+                  utils.alert("失败",null,function(){
+                    vm.Isfail=true;
                   });
                 }
               })
@@ -255,14 +203,14 @@
             if ((index-1)>=0){
               vm.regionSelect=vm.pareaList[index-1];
               vm.regionSelect.hasCheck=true;
-              load();
+              //load();
               return;
             }
           }else {
             if ((index+1)<vm.pareaList.length){
               vm.regionSelect=vm.pareaList[index+1];
               vm.regionSelect.hasCheck=true;
-              load();
+              //load();
               return;
             }
           }

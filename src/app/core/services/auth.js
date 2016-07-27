@@ -11,7 +11,7 @@
   {
     // 第三方登录插件
     var interceptorFactories = this.interceptors = [];
-    var forEach = angular.forEach,loginedUser={};
+    var forEach = angular.forEach,loginedUser;
     // 是否转跳的登录
     var autoLoginPath = false;
 
@@ -115,11 +115,10 @@
       }
 
       // 退出登录
-      function logout(){
-        sxt.cache.removeProfile(loginedUser, function(){
-          $rootScope.$emit ('user:logout', loginedUser);
-          $state.go('app.auth.login');
-        });
+      function logout() {
+        $rootScope.$emit('user:logout', loginedUser);
+        $state.go('app.auth.login');
+
       }
 
       function currentUser(){

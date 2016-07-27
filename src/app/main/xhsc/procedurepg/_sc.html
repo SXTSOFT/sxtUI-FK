@@ -1,0 +1,28 @@
+<div layout="row" class="scTop">
+  <div flex class="scleft">
+    <span>当前测量项：</span>
+    <md-button class="md-mini" ng-click="vm.scChoose($event)">
+      <label style="margin-bottom: 0;font-weight: normal;"><span ng-repeat="sc in vm.info.MeasureIndexes" style="color:#f00;">{{sc.IndexName}}</span></label>
+      <img src="app/main/xhsc/images/pop.png" style="vertical-align: middle;margin-left: 10px;"></md-button>
+    <span style="color:darkslategray;font-style: italic;">{{vm.info.tooltip}}</span>
+  </div>
+  <div flex="none" class="scright">
+    <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;" ng-click="vm.nextRegion(true)" aria-label="">
+      <md-icon  md-font-icon="icon-chevron-left" ></md-icon>
+    </md-button>
+    <span style="font-size:16px;display: inline-block;vertical-align: middle;">{{ vm.info.name}}</span>
+    <md-button class="md-fab" style="line-height: 24px;width:36px;height:36px;" ng-click="vm.nextRegion()" aria-label="">
+      <md-icon   md-font-icon="icon-chevron-right" ></md-icon>
+    </md-button>
+  </div>
+</div>
+<div flex="none" layout="row" style="border-bottom: 1px solid rgba(0, 0, 0, 0.117647);display: none;">
+  <md-tabs md-dynamic-height flex  md-selected="vm.selectedIndex">
+    <md-tab ng-repeat="m in vm.MeasureIndexes" label="{{m.IndexName}}">
+    </md-tab>
+  </md-tabs>
+</div>
+<sxt-sc-new flex area-id="vm.info.areaId" tooltip="vm.info.tooltip" db="vm.info.db" image-url="vm.info.imageUrl" region-id="vm.info.regionId" region-type="vm.info.regionType" acceptance-item="vm.info.acceptanceItemID" region-name="vm.info.name"  measure-indexes="vm.info.MeasureIndexes" ></sxt-sc-new>
+<div style="display: none">
+  <sxt-sc-popup-new></sxt-sc-popup-new>
+</div>

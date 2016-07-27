@@ -50,7 +50,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url: '/gxhousechoose/{InspectionId}/{role}/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
+        url: '/gxhousechoose/{InspectionId}/{role}/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}/{maxRegion}',
         templateUrl: 'app/main/xhsc/procedure/gxhousechoose.html',
         controller: 'gxhousechooseController as vm'
       })
@@ -59,12 +59,12 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url: '/zjhouseChoose/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}',
+        url: '/zjhouseChoose/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}/{maxRegion}',
         templateUrl: 'app/main/xhsc/procedure/zjhouseChoose.html',
         controller: 'zjhouseChooseController as vm'
       })
       .state('app.xhsc.gx.gxtest', {
-        noBack: true,
+        noBack: false,
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
@@ -74,7 +74,7 @@
       })
       .state('app.xhsc.gx.gxzjcheck', {
         noBack: true,
-        sendBt: true,
+        sendBt: false,
         rightArrow: false,
         leftArrow: false,
         title: '工序自检',
@@ -122,6 +122,16 @@
         templateUrl : 'app/main/xhsc/procedure/gxdetail.html',
         controller:'gxdetailController as vm'
       })
+      .state('app.xhsc.gx.gxzgdetail',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'工序整改详情',
+        url   :'/gxzgdetail/{acceptanceItemID}/{acceptanceItemName}/{projectId}/{InspectionId}',
+        templateUrl : 'app/main/xhsc/procedure/gxzgdetail.html',
+        controller:'gxzgdetailController as vm'
+      })
       .state('app.xhsc.gx.gxbdchoose', {
         noBack: true,
         sendBt: false,
@@ -152,7 +162,7 @@
         controller: 'gxhousechooseController as vm'
       })
       .state('app.xhsc.gx.gxzg',{
-        noBack: true,
+        noBack: false,
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
