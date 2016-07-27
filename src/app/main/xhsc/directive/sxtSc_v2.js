@@ -50,7 +50,7 @@
         MeasurePointID:"208cfb0506ce40e6976d160c2a9eb8c0",
         MeasureValue:"",
         MeasureValueId:"3a7d6725065645d3a609ba70db45e53e",
-        RecordType:4,
+        RecordType:1,
         RegionType:8,
         RelationID:"scsl00027"
       }];

@@ -14,8 +14,9 @@
     projectId = $stateParams.projectId,
     acceptanceItemID=$stateParams.acceptanceItemID,
     acceptanceItemName = $stateParams.acceptanceItemName,
-    role=$stateParams.role,
-    assessmentID = $stateParams.assessmentID;
+    area=$stateParams.area,
+    assessmentID = $stateParams.assessmentID,
+    isReport= vm.isReport=$stateParams.isReport;
     vm.maxRegion = $stateParams.maxRegion;
     $rootScope.title = $stateParams.acceptanceItemName;
     $rootScope.sendBt = false;
@@ -39,8 +40,6 @@
         }
       }
     }
-
-
 
     function  load(){
       vm.nums={
@@ -66,8 +65,10 @@
         }
         function _init(region){
           if (region.RegionType==8||region.RegionType==16){
+            if (isReport=='0'||isReport==0){
               region.style= ConvertClass(region.Status);
-              setNum(region.Status,region);
+            }
+            setNum(region.Status,region);
           }
           if (region.Children.length){
             region.Children.forEach(function(r){
@@ -81,32 +82,35 @@
       vm.isRegionShow=function(region){
         if (region.Children&&region.Children.length){
           var f= region.Children.find(function(o){
+            if (!(isReport=='0'||isReport==0)){
+              return region.Status===1;
+            }
             return o.Status==vm.filterNum
           });
           if (f){
             return true;
           }
         }
-        return  (vm.filterNum==-1||region.Status==vm.filterNum);
+        return  !(isReport=='0'||isReport==0)?region.Status===1: (vm.filterNum==-1||region.Status==vm.filterNum);
       }
 
-      _db.get("GetRegionTreeInfo").then(function(r){
-          vm.loading = true;
-          var project= r.data,area;
-          if (angular.isArray(project.Children)){
-              if (project.Children.length>1){
-                  area=project.Children.find(function(k){
-                      return k.selected;
-                  });
-              }else {
-                area=project.Children[0];
-              }
-              initRegion(area);
-              vm.houses =  [area];
-          }
-      }).catch(function(r){
+      function  callBack(r){
+        vm.loading = true;
+        var project= r.data,_area;
+        if (angular.isArray(project.Children)){
+          _area=project.Children.find(function(k){
+            return k.RegionID==area;
+          });
+          initRegion(_area);
+          vm.houses =  [_area];
+        }
+      }
 
-      });
+      if (isReport=='0'||isReport==0){
+        _db.get("GetRegionTreeInfo").then(callBack);
+      }else {
+        remote.Project.GetRegionTreeInfo(projectId).then(callBack);
+      }
     }
 
     load();
@@ -130,7 +134,6 @@
     vm.filterNum = -1;
     vm.filter = function(num){
       vm.filterNum = num;
-      //load();
     }
   }
 })();

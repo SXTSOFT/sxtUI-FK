@@ -21,15 +21,15 @@
       };
       queryOnline();
     });
-    remote.Procedure.authorityByUserId().then(function(res){
-      if (res&&res.data&&res.data.length){
-        vm.role=res.data[0].MemberType;
-      }else {
-        vm.role=0;
-      }
-    }).catch(function(r){
-
-    });
+    //remote.Procedure.authorityByUserId().then(function(res){
+    //  if (res&&res.data&&res.data.length){
+    //    vm.role=res.data[0].MemberType;
+    //  }else {
+    //    vm.role=0;
+    //  }
+    //}).catch(function(r){
+    //
+    //});
     vm.download = function (item) {
       item.downloading = true;
       item.progress = 0;
@@ -150,35 +150,49 @@
               vm.onlines.push(m);
             }
           });
+
+          vm.projects=result.data;
         }
       }).catch(function () {
 
       });
     }
 
-    vm.go=function(item){
+    vm.go=function(item,isReport){
       var pk = db('pack'+item.AssessmentID);
-      pk.get('GetRegionTreeInfo').then(function(r){
+      function callBack(r){
         if (r&& r.data&& r.data.Children){
           var areas=r.data.Children;
           var  routeData={
             projectId:item.ProjectID,
             assessmentID:item.AssessmentID,
-            role:vm.role
+            role:vm.role,
+            isReport:isReport
           };
           if (angular.isArray(areas)&&areas.length>1){
             $state.go("app.xhsc.scsl.chooseArea",routeData)
           }else {
-            if (areas.length==1){
-              areas[0].selected=true;
-              pk.update(r).then(function(){
-                $state.go("app.xhsc.scsl.sclist",routeData)
-              })
+            if(isReport){
+              $state.go("app.xhsc.scsl.sclist",routeData);
+            }else {
+              if (areas.length==1){
+                areas[0].selected=true;
+                pk.update(r).then(function(){
+                  $state.go("app.xhsc.scsl.sclist",routeData);
+                })
+              }
             }
           }
         }
-      }).catch(function(r){
-      });
+      }
+      if (!isReport){
+        pk.get('GetRegionTreeInfo').then(callBack).catch(function(r){
+        });
+      }else {
+        remote.Project.GetRegionTreeInfo(item.ProjectID).then(callBack).catch(function(r){
+        });
+      }
+
     }
     vm.showECs = function(ev,item) {
       $mdDialog.show({

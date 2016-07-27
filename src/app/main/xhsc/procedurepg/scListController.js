@@ -17,17 +17,23 @@
     var remote=  scRemote;
     vm.projectId = $stateParams.projectId;
     vm.assessmentID=$stateParams.assessmentID;
-    vm.role=$stateParams.role;
-    //离线待实现
-    var _db=db('pack'+ vm.assessmentID);
-    _db.get("GetMeasureItemInfoByAreaID").then(function(result){
+    vm.area=$stateParams.area;
+    var isReport=vm.isReport=$stateParams.isReport;
+
+    function  callback(result){
       vm.procedureData = [];
       if (result.data){
         vm.procedureData=result.data;
       }
-    }).catch(function(r){
+    }
 
-    });
+    if (isReport=='0'||isReport==0){
+      var _db=db('pack'+ vm.assessmentID);
+      _db.get("GetMeasureItemInfoByAreaID").then(callback);
+    }else {
+      scRemote.Project.GetMeasureItemInfoByAreaID(vm.projectId).then(callback);
+    }
+    //离线待实现
     function getMax(regionStr){
       var val= 0,tmp;
       var  arr=regionStr.split(',');
@@ -44,11 +50,12 @@
     vm.go=function(item){
       $state.go('app.xhsc.scsl.scRegion',{
         assessmentID:vm.assessmentID,
-        role:vm.role,
+        area:vm.area,
         acceptanceItemID:item.AcceptanceItemID ,
         projectId: vm.projectId,
         acceptanceItemName:item.MeasureItemName,
-        maxRegion: getMax(item.SplitRule)
+        maxRegion: getMax(item.SplitRule),
+        isReport:vm.isReport
       });
     };
   }

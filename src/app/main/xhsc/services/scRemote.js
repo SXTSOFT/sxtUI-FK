@@ -11,7 +11,7 @@
     .module('app.xhsc')
     .factory('scRemote',scRemote);
   /** @ngInject */
-  function scRemote(apiWrap){
-    return apiWrap.xhsc;
+  function scRemote(api){
+    return api.xhsc;
   }
 })();
