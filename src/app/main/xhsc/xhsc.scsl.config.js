@@ -51,10 +51,9 @@
       })
       .state('app.xhsc.scsl._sc',{
         noBack:true,
-        sendBt:true,
+        sendBt:false,
         rightArrow:false,
         leftArrow:false,
-        title :'实测',
         url   :'/_sc/{db}/{areaId}/{measureItemID}/{regionId}/{regionType}/{name}/{pname}',
         views :{
           'content@app':{

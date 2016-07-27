@@ -12,7 +12,7 @@
     .controller('sclistController',sclistController);
 
   /**@ngInject*/
-  function sclistController($scope,scRemote,$stateParams,db){
+  function sclistController($scope,scRemote,$stateParams,db,$state){
     var vm=this;
     var remote=  scRemote;
     vm.projectId = $stateParams.projectId;
@@ -20,32 +20,36 @@
     vm.role=$stateParams.role;
     //离线待实现
     var _db=db('pack'+ vm.assessmentID);
-    _db.get("GetBaseMeasure").then(function(result){
+    _db.get("GetMeasureItemInfoByAreaID").then(function(result){
       vm.procedureData = [];
-      result.data.forEach(function(it){
-        it.SpecialtyChildren.forEach(function(t){
-          t.WPAcceptanceList.forEach(function(_t){
-            _t.AcceptanceItemName=_t.MeasureItemName;
-            //_t.AcceptanceItemID=_t;
-            var max = 0,arr=[];
-            var idx = _t.SplitRule.indexOf(',');
-            if(idx == -1){
-              _t.maxRegion = _t.SplitRule;
-            }else{
-              arr = _t.SplitRule.split(',');
-              for(var i=0;i<arr.length;i++){
-                if(parseInt(arr[i])>max){
-                  max = arr[i];
-                }
-              }
-              _t.maxRegion = max;
-            }
-          })
-        })
-        vm.procedureData.push(it);
-      })
+      if (result.data){
+        vm.procedureData=result.data;
+      }
     }).catch(function(r){
 
     });
+    function getMax(regionStr){
+      var val= 0,tmp;
+      var  arr=regionStr.split(',');
+      if (angular.isArray(arr)){
+        arr.forEach(function(o){
+          tmp=parseInt(o);
+          if (val<tmp){
+              val=tmp;
+          }
+        });
+      }
+      return val;
+    }
+    vm.go=function(item){
+      $state.go('app.xhsc.scsl.scRegion',{
+        assessmentID:vm.assessmentID,
+        role:vm.role,
+        acceptanceItemID:item.AcceptanceItemID ,
+        projectId: vm.projectId,
+        acceptanceItemName:item.MeasureItemName,
+        maxRegion: getMax(item.SplitRule)
+      });
+    };
   }
 })();

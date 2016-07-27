@@ -26,7 +26,8 @@
       },
       tooltip:''
     };
-    $rootScope.title = vm.info.aItem.MeasureItemName;
+    //vm.info.aItem.MeasureItemName
+    $rootScope.title =vm.info.name;
     var packdb = db('pack'+vm.info.db);
     packdb.get('GetMeasureItemInfoByAreaID').then (function (r) {
       console.log('r',r)
@@ -170,10 +171,6 @@
           });
         });
       })
-      /*      }, function () {
-
-       });*/
-
     }
 
     vm.nextRegion = function(prev){

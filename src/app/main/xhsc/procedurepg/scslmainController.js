@@ -30,8 +30,6 @@
     }).catch(function(r){
 
     });
-
-
     vm.download = function (item) {
       item.downloading = true;
       item.progress = 0;
@@ -83,54 +81,35 @@
     }
     vm.upload =function (item) {
       item.uploading = true;
-      var pk = pack.sc.up(item.AssessmentID);
-      pk.upload(function (proc) {
-        item.progress = proc;
-        if(proc==-1) {
-          item.completed = pk.completed;
-          if(item.completed)
-            remote.Assessment.sumReportTotal(item.AssessmentID).then(function(){
-              xcpk.addOrUpdate(vm.data);
-              item.progress = 100;
-              //utils.tips('同步完成');
-              utils.alert('同步完成');
-              item.uploading = true;
-            })
-          else {
-            utils.alert('同步未完成');
-            item.uploading = true;
+      remote.Project.getMap(item.ProjectID).then(function (result) {
+          if(result.data&&result.data.length){
+            var pk = pack.sc.up(item.AssessmentID);
+            pk.upload(function (proc) {
+              item.progress = proc;
+              if(proc==-1) {
+                item.completed = pk.completed;
+                if(item.completed)
+                  remote.Assessment.sumReportTotal(item.AssessmentID).then(function(){
+                    xcpk.addOrUpdate(vm.data);
+                    item.progress = 100;
+                    //utils.tips('同步完成');
+                    utils.alert('同步完成');
+                    item.uploading = true;
+                  })
+                else {
+                  utils.alert('同步未完成');
+                  item.uploading = true;
+                }
+              }
+            });
           }
-        }
-      });
-      //remote.Assessment.GetAssessmentStatus(item.AssessmentID).then(function (result) {
-      //    if(result.data.ErrorCode==0){
-      //      var pk = pack.sc.up(item.AssessmentID);
-      //      pk.upload(function (proc) {
-      //        item.progress = proc;
-      //        if(proc==-1) {
-      //          item.completed = pk.completed;
-      //          if(item.completed)
-      //            remote.Assessment.sumReportTotal(item.AssessmentID).then(function(){
-      //              xcpk.addOrUpdate(vm.data);
-      //              item.progress = 100;
-      //              //utils.tips('同步完成');
-      //              utils.alert('同步完成');
-      //              item.uploading = true;
-      //            })
-      //          else {
-      //            utils.alert('同步未完成');
-      //            item.uploading = true;
-      //          }
-      //        }
-      //      });
-      //    }
-      //    else{
-      //      utils.alert(result.data.ErrorMessage);
-      //    }
-      //  })
-      //  .catch(function () {
-      //    utils.alert('网络越野')
-      //  })
+          else{
+            utils.alert(result.data.ErrorMessage);
+          }
+        })
+        .catch(function () {
+          utils.alert('网络出现异常')
+        })
 
     }
     vm.delete = function(item,ev){
@@ -199,14 +178,9 @@
           }
         }
       }).catch(function(r){
-
       });
-
-
     }
-
     vm.showECs = function(ev,item) {
-      console.log('ev',item)
       $mdDialog.show({
           controller: ['$scope', '$mdDialog','item', function DialogController($scope, $mdDialog,item) {
             $scope.item = item;
