@@ -11,13 +11,14 @@
     .module('app.xhsc')
     .controller('_scController',_scController)
   /** @ngInject */
-  function _scController($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,pack,sxt,$timeout) {
+  function _scController($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,scPack,sxt,$timeout) {
     var vm = this;
+    var  pack=scPack;
     vm.info = {
-      db:'scsl00027',//$stateParams.db,
+      db:$stateParams.db,
       name: $stateParams.name,
       areaId:$stateParams.areaId,
-      acceptanceItemID: 'd7579fa6e26b4850967d105ac8ed6893',//$stateParams.measureItemID,
+      acceptanceItemID:$stateParams.measureItemID,
       regionId: $stateParams.regionId,
       regionType: $stateParams.regionType,
       aItem:{
@@ -172,22 +173,6 @@
         });
       })
     }
-
-    vm.nextRegion = function(prev){
-      //vm.info.regionId 当前
-      packdb.get('GetRegionTreeInfo').then(function (result) {
-        var  rr=xhUtils.wrapRegion(result.data);
-        var region = xhUtils.findRegion([rr],vm.info.regionId);
-        if (region){
-          var next=prev?region.prev():region.next();
-          if (!next){
-            utils.alert("查无数据!");
-            return;
-          }
-          vm.setRegion(next);
-        }
-      });
-    };
 
     vm.setRegionId($stateParams.regionId);
 
