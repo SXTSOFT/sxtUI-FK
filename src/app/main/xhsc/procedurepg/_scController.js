@@ -14,10 +14,10 @@
   function _scController($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,pack,sxt,$timeout) {
     var vm = this;
     vm.info = {
-      db:'scsl00027',//$stateParams.db,
+      db:$stateParams.db,
       name: $stateParams.name,
       areaId:$stateParams.areaId,
-      acceptanceItemID: 'd7579fa6e26b4850967d105ac8ed6893',//$stateParams.measureItemID,
+      acceptanceItemID:$stateParams.measureItemID,
       regionId: $stateParams.regionId,
       regionType: $stateParams.regionType,
       aItem:{
