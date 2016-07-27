@@ -7,7 +7,7 @@
     .module('app.xhsc')
     .factory('localPack', localPack);
   /** @ngInject */
-  function localPack(db,$http,$rootScope,$cordovaFileTransfer,sxt,xhUtils,$timeout) {
+  function localPack(db,$http,$rootScope,$cordovaFileTransfer,sxt,xhUtils,$timeout,$q) {
 
     function Pack(config) {
       var self = this,
@@ -160,7 +160,17 @@
           (task.api?task.api():$http.get(sxt.app.api + task.url)).then(function (result) {
             if(task.db){
               var taskDb = db(task.db);
-              taskDb.addOrUpdate(result.data).then(function (r) {
+              var updates = [];
+              if(task.type=='rows'){
+                result.data.forEach(function(row){
+                  row._id = row._id||row[task.idField];
+                  updates.push(taskDb.addOrUpdate(row));
+                });
+              }
+              else{
+                updates.push(taskDb.addOrUpdate(result.data));
+              }
+              $q.all(updates).then(function (r) {
                 $rootScope.$emit('pack'+self.config._id,{
                   name:'complete',
                   task:task,
