@@ -32,17 +32,12 @@
       var map,tile,fg,toolbar,data,points,pk;
       var install = function(){
         if(!scope.db || !scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
-
-
-
         if(!pk)
           pk = pack.sc.up(scope.db);
         if(!data)
           data = pk.sc.db;
         if(!points)
           points = pk.point.db;
-
-
         if(!map){
           map = new L.SXT.Project(element[0]);
         }
@@ -98,7 +93,6 @@
                     }));
                 });
             }).then(function(r){
-
               points.findAll(function(o){
                 return r.rows.find(function(i){
                     if(i.MeasurePointID == o._id){

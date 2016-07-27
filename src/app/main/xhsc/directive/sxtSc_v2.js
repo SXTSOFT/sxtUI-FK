@@ -18,15 +18,15 @@
     }
     return {
       scope:{
-        db:'=',
-        areaId:'=',
-        acceptanceItem:'=',
-        measureIndexes:'=',
-        imageUrl:'=',
-        regionId:'=',
-        regionName:'=',
-        regionType:'=',
-        readonly:'=',
+        db:'=', //现场评估id
+        areaId:'=', //分期
+        acceptanceItem:'=',//实测项
+        measureIndexes:'=', //实测指标
+        imageUrl:'=',//图纸id
+        regionId:'=',//区域
+        regionName:'=',//区域名称
+        regionType:'=',//区域类型
+        readonly:'=',//只读
         tooltip:'='
       },
       link:link
@@ -366,35 +366,6 @@
                 m.v.MeasureValue = maxV;
                 m.v.DesignValue = minV;
                 m.v.ExtendedField1 = vs.join(',');
-                //组测量(一个点多个值)
-                /*                var childValues = fg.data.filter(function (item) {
-                 return item.ParentMeasureValueID == m.v.MeasureValueId;
-                 }),ix=0;
-                 for(var k in m.v.values) {
-                 if (isNaN(parseInt(k)))return;
-                 var dv = m.v.values[k];
-                 if (!dv)return;
-                 var fd = childValues[ix++];
-                 if (!fd) {
-                 fd = {
-                 _id: sxt.uuid(),
-                 ParentMeasureValueID: m.v.MeasureValueId,
-                 CreateTime: now(),
-                 RelationID: scope.db,
-                 RecordType: 4,
-                 DrawingID:scope.imageUrl,
-                 MeasurePointID: editScope.context.layer._value.$id,
-                 CheckRegionID: scope.regionId,
-                 RegionType: scope.regionType,
-                 AcceptanceItemID: scope.acceptanceItem,
-                 AcceptanceIndexID: m.m.AcceptanceIndexID,
-                 Hide: true
-                 };
-                 fd.MeasureValueId = fd._id;
-                 }
-                 fd.MeasureValue = dv;
-                 data.addOrUpdate(fd);
-                 }*/
               }
 
               data.addOrUpdate(m.v);
