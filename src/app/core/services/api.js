@@ -421,7 +421,7 @@
           cfg.fn = fn;
           return function () {
             var args = toArray(arguments),
-              lodb = initDb(cfg),
+              lodb = initDb(cfg,args),
               caller = this;
 
             if(cfg.local || !cfg.fn || provider.getNetwork()==1){
@@ -572,10 +572,15 @@
       }
     }
 
-    function initDb(cfg) {
-      if(cfg.db) return cfg.db;
-      if(!cfg._id)return;
-      return (cfg.db = pouchdb(cfg._id));
+    function initDb(cfg,args) {
+      if(cfg._id && cfg.db) return cfg.db;
+      if(cfg._id)
+        return (cfg.db = pouchdb(cfg._id));
+      else if(cfg.db){
+        var id = cfg.db.apply(cfg,args);
+        if(id)
+          return pouchdb(id);
+      }
     }
     function getNetwork() {
       return networkState;

@@ -6,32 +6,35 @@
   angular
     .module('app.xhsc')
     .controller('scslmainController',scslmainController);
-  function scslmainController($mdDialog,db,scRemote,xhUtils,$rootScope,$scope,scPack,utils,$q,api,$state){
+  function scslmainController($mdDialog,db,scRemote,sxt,$rootScope,$scope,scPack,utils,$q,api,$state){
     var vm = this;
     var remote=  scRemote;
     var pack=scPack;
     var xcpk = db('xcpk');
-    xcpk.get('xcpk').then(function (result) {
-      vm.data = result;
-      queryOnline();
-    }).catch(function (err) {
-      vm.data = {
-        _id:'xcpk',
-        rows:[]
-      };
-      queryOnline();
-    });
+
     remote.Procedure.authorityByUserId().then(function(res){
       if (res&&res.data&&res.data.length){
         vm.role=res.data[0].MemberType;
       }else {
         vm.role=0;
       }
+      xcpk.get('xcpk').then(function (result) {
+        vm.data = result;
+        queryOnline();
+      }).catch(function (err) {
+        vm.data = {
+          _id:'xcpk',
+          rows:[]
+        };
+        queryOnline();
+      });
+
     }).catch(function(r){
 
     });
     //项目包
     function projectTask(projectId) {
+      return [];
       return [
         function (tasks) {
           return $q(function(resolve) {
@@ -76,6 +79,12 @@
         });
       });
       tasks = tasks.concat(projectTask(item.ProjectID));
+      tasks.push(function () {
+        return remote.Assessment.getUserMeasureValue(item.ProjectID,1,item.AssessmentID,"Pack"+item.AssessmentID+"sc",sxt);
+      });
+      tasks.push(function () {
+        return remote.Assessment.getUserMeasurePoint(item.ProjectID,1,"Pack"+item.AssessmentID+"point");
+      });
       api.task(tasks)(function (percent, current, total) {
         item.progress = parseInt(percent * 100);
       }, function () {
@@ -97,7 +106,7 @@
           var project=result.data.find(function(r){
             return r.ProjectID== item.ProjectID;
           });
-          project.AssessmentID='scsl'+ project.ProjectID;
+          project.AssessmentID='scsl'+ project.ProjectID+'_'+vm.role;
           project.AssessmentSubject= project.ProjectName;
           var fd = vm.data.rows.find(function (a) {
             return a.ProjectID ==project.ProjectID;
@@ -178,7 +187,7 @@
         }
         else {
           result.data.forEach(function (m) {
-            m.AssessmentID='scsl'+ m.ProjectID;
+            m.AssessmentID='scsl'+ m.ProjectID+'_'+vm.role;
             m.AssessmentSubject= m.ProjectName;
             var fd = vm.data.rows.find(function (a) {
               return a.AssessmentID == m.AssessmentID;

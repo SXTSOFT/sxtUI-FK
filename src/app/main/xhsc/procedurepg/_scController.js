@@ -31,7 +31,6 @@
     $rootScope.title =vm.info.name;
     var packdb = db('pack'+vm.info.db);
     packdb.get('GetMeasureItemInfoByAreaID').then (function (r) {
-      console.log('r',r)
       var find = r.data.find(function (it) {
         return it.AcceptanceItemID == vm.info.acceptanceItemID;
       });
@@ -166,7 +165,7 @@
             AcceptanceIndexID: m.AcceptanceIndexID,
             AcceptanceItemID: vm.info.acceptanceItemID,
             IndexResultID:m._id,
-            RecordType:4,
+            RecordType:1,
             RelationID:vm.info.db,
             Status: 1
           });

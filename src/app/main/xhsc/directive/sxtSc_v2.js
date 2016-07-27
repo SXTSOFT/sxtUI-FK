@@ -12,7 +12,7 @@
     .directive('sxtScNew', sxtScNew);
 
   /** @Inject */
-  function sxtScNew($timeout,mapPopupSerivce,db,sxt,xhUtils,pack,remote){
+  function sxtScNew($timeout,mapPopupSerivce,db,sxt,xhUtils,pack,remote,utils){
     function now() {
       return new Date().toISOString();
     }
@@ -236,7 +236,7 @@
                 ms.forEach(function (m) {
                   var v = {
                     _id: sxt.uuid(),
-                    RecordType: 4,
+                    RecordType: 1,
                     CreateTime:now(),
                     RelationID: scope.db,
                     MeasurePointID: point._id,
@@ -360,7 +360,7 @@
                   _id:sxt.uuid(),
                   CreateTime:now(),
                   RelationID:scope.db,
-                  RecordType:4,
+                  RecordType:1,
                   DrawingID:scope.imageUrl,
                   MeasurePointID:editScope.context.layer._value.$id,
                   CheckRegionID:scope.regionId,
