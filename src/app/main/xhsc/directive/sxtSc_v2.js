@@ -12,7 +12,7 @@
     .directive('sxtScNew', sxtScNew);
 
   /** @Inject */
-  function sxtScNew($timeout,mapPopupSerivce,db,sxt,xhUtils,pack){
+  function sxtScNew($timeout,mapPopupSerivce,db,sxt,xhUtils,pack,remote,utils){
     function now() {
       return new Date().toISOString();
     }
@@ -34,27 +34,30 @@
     function link(scope,element,attr,ctrl){
       var map,tile,fg,toolbar,data,points,pk;
 
-      //scope.MeasurePoints=[{
-      //  Geometry:'{"type":"Feature","properties":{"seq":20,"$id":"208cfb0506ce40e6976d160c2a9eb8c0"},"options":{"stroke":true,"color":"red","dashArray":"","lineCap":null,"lineJoin":null,"weight":1,"opacity":1,"fill":true,"fillColor":null,"fillOpacity":0.2,"clickable":true,"font-family":"Helvetica","font-style":"normal","font-weight":"bold","letter-spacing":"0.05em","stroke-width":2,"text-decoration":"none","multiSelect":false,"repeatMode":true},"geometry":{"type":"Stamp","coordinates":[0.4942626953125,0.468505859375]}}',
-      //  MeasurePointID:"208cfb0506ce40e6976d160c2a9eb8c0",
-      //  ParentMeasurePointID:null,
-      //  Remark:null,
-      //}];
-      //scope.MeasureValues =[{
-      //  AcceptanceIndexID:"31f68aeeae3642e4bc595b39e65477f0",
-      //  AcceptanceItemID:"1d119619c09e42e195179f245286033d",
-      //  CheckRegionID:"00027000010000000000",
-      //  DrawingID:"46feb5847f14471d85d627cf39a215f1",
-      //  MeasurePointID:"208cfb0506ce40e6976d160c2a9eb8c0",
-      //  MeasureValue:" ",
-      //  MeasureValueId:"3a7d6725065645d3a609ba70db45e53e",
-      //  RecordType:4,
-      //  RegionType:8,
-      //  RelationID:"scsl00027"
-      //}];
+      var packdb = db('pack'+scope.db);
+      packdb.get('GetMeasureItemInfoByAreaID').then (function (r) {
+        var find = r.data.find(function (it) {
+          return it.AcceptanceItemID == scope.acceptanceItem;
+        });
+        if(!find){ //TODO:一般不可能找不到,找不到肯定后台有问题,这里可能需要提示并去掉
+          find = r.data.find(function () {
+            return true;
+          })
+        }
+        var m=[];
+        find.MeasureIndexList.forEach(function(item) {
+          m.push(item);
+        });
+        scope.indexs = m;
+        scope.indexs.forEach(function(t){
+          t._id = sxt.uuid();//指标结构表
+          t.checked = false;
+        })
+      },function(err){
 
+      });
       var install = function(){
-        if(!scope.db || !scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
+        if(!scope.db || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
         //if(!scope.db || !scope.imageUrl || !scope.regionId)return;
         if(!pk)
           pk = pack.sc.up(scope.db);
@@ -68,15 +71,24 @@
           map = new L.SXT.Project(element[0]);
         }
         if(!tile || tile!=scope.regionId) {
-          db('pack'+scope.db).get('GetDrawingByAreaID').then(function (data) {
-            var fd = data.data.find(function (d) {
-              return d.DrawingID == scope.imageUrl;
-            });
-            if(fd) {
-              if(fd.DrawingContent) {
-                scope.tooltip = '正在加载图形....';
-                $timeout(function () {
-                  map.loadSvgXml(fd.DrawingContent, {
+          $timeout(function () {
+            remote.Project.getDrawingRelations(scope.regionId.substring(0,5)).then(function (result) {
+              var imgId = result.data.find(function (item) {
+                return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
+              });
+              if(!imgId){
+                imgId = result.data.find(function (item) {
+                  return item.RegionId == scope.regionId;
+                });
+              }
+              if (imgId) {
+                remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
+                  if(!result2.data.DrawingContent){
+                    scope.ct && (scope.ct.loading = false);
+                    utils.alert('未找到图纸,请与管理员联系!(2)');
+                    return;
+                  }
+                  map.loadSvgXml(result2.data.DrawingContent, {
                     filterLine: function (line) {
                       line.attrs.stroke = 'black';
                       line.options = line.options||{};
@@ -85,15 +97,22 @@
                       line.attrs['stroke-width'] = line.attrs['stroke-width']*6;
                     },
                     filterText: function (text) {
-                      //return false;
+                      return false;
                     }
                   });
                   map.center();
                   scope.tooltip = '';
-                },0)
+                })
               }
-            }
-          });
+              else{
+                if(!result.data.DrawingContent){
+                  utils.alert('未找到图纸,请与管理员联系!(1)');
+                  scope.ct && (scope.ct.loading = false);
+                  return;
+                }
+              }
+            });
+          }, 0);
           tile = scope.regionId;
         }
 
@@ -103,39 +122,34 @@
         if(toolbar)
           map._map.removeControl(toolbar);
 
-
+/*        scope.MeasureValues.forEach(function(r){
+          data.addOrUpdate(r)
+        })
+        scope.MeasurePoints.forEach(function(r){
+          r.geometry = JSON.parse(point.Geometry);
+          points.addOrUpdate(r)
+        })*/
         fg = new L.SvFeatureGroup({
           onLoad:function(){
             var layer = this;
             if(layer.loaded)return;
             layer.loaded = true;
-            //scope.MeasureValues.forEach(function(r){
-            //  r._id=sxt.uuid();
-            //  data.addOrUpdate(r)
-            //})
-            //scope.MeasurePoints.forEach(function(r){
-            //  r._id = r.MeasurePointID;
-            // // r.geometry = JSON.parse(r.Geometry);
-            //  points.addOrUpdate(r)
-            //})
+
             data.findAll(function(o){
-              return o.DrawingID==scope.imageUrl
-                && o.AcceptanceItemID==scope.acceptanceItem
-                && !!scope.measureIndexes.find(function(m){
+              return o.AcceptanceItemID==scope.acceptanceItem
+                && scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
                   return m.AcceptanceIndexID == o.AcceptanceIndexID
                     ||(m.Children && m.Children.find(function (m1) {
                       return m1.AcceptanceIndexID == o.AcceptanceIndexID
                     }));
                 });
             }).then(function(r){
+
               points.findAll(function(o){
                 return r.rows.find(function(i){
-                    if(i.MeasurePointID == o._id){
-                      if(o.Geometry){
-                        o.geometry = JSON.parse(o.Geometry);
-                      }
+                    if(i.MeasurePointID == o._id|| i.MeasurePointID == o.MeasurePointID){
                       if(r.rows.find(function(i){
-                          return (i.MeasurePointID == o._id && i.CheckRegionID==scope.regionId && i.MeasureValue || i.MeasureValue===0)
+                          return ((i.MeasurePointID == o._id||i.MeasurePointID == o.MeasurePointID) && i.CheckRegionID==scope.regionId && i.MeasureValue || i.MeasureValue===0)
                         })) {
                         o.geometry.options.color = 'blue';
                       }
@@ -152,12 +166,14 @@
                  fg.data = r.rows.filter(function (row) {
                   return row.CheckRegionID==scope.regionId;
                 });
+                //scope.MeasureValues.forEach(function(r){
+                //  fg.data.push(r);
+                //})
+                //fg.addLayer(p);
                 p.rows.sort(function (p1,p2) {
                   return p1.CreateTime.getTime()-p2.CreateTime.getTime();
                 });
                 p.rows.forEach(function(geo){
-                  geo.geometry.options.seq = geo.geometry.properties.seq;
-                  geo.geometry.options.customSeq = true;
                   layer.addData(geo.geometry);
                 });
               })
@@ -219,7 +235,7 @@
                 ms.forEach(function (m) {
                   var v = {
                     _id: sxt.uuid(),
-                    RecordType: 4,
+                    RecordType: 1,
                     CreateTime:now(),
                     RelationID: scope.db,
                     MeasurePointID: point._id,
@@ -343,7 +359,7 @@
                   _id:sxt.uuid(),
                   CreateTime:now(),
                   RelationID:scope.db,
-                  RecordType:4,
+                  RecordType:1,
                   DrawingID:scope.imageUrl,
                   MeasurePointID:editScope.context.layer._value.$id,
                   CheckRegionID:scope.regionId,

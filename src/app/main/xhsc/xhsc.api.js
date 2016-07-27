@@ -431,6 +431,40 @@
       }
     },
     Assessment:{
+
+      getUserMeasureValue:$http.db({
+        db:function (projectId,recordType,relationId,db) {
+          return db;
+        },
+        idField:function (item) {
+          return item.AcceptanceIndexID+item.MeasurePointID
+        },
+        dataType:1
+      }).bind(function (projectId,recordType,relationId,db,sxt) {
+        return $http.get($http.url('/api/MeasureInfo/GetUserMeasureValue',{projectId:projectId,recordType:recordType,relationId:relationId})).then(function (r) {
+          r.data.forEach(function (item) {
+            if(!item.MeasureValueId) {
+              item.MeasureValueId = sxt.uuid();
+            }
+          });
+          return r;
+        });
+      }),
+      getUserMeasurePoint:$http.db({
+        db:function (projectId,recordType,db) {
+          return db;
+        },
+        idField:'$id',
+        dataType:1
+      }).bind(function (projectId,recordType,db) {
+        return $http.get($http.url('/api/MeasureInfo/GetUserMeasurePoint',{projectId:projectId,recordType:recordType})).then(function (r) {
+          r.data.forEach(function (item) {
+            item.$id = item.MeasurePointID;
+            item.geometry = JSON.parse(item.Geometry);
+          });
+          return r;
+        });
+      }),
       queryRegions:function (arg) {
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentSectionExtractRegion',arg))
       },
@@ -541,86 +575,6 @@
         },
         getWorkingProcess:function(regionId){
           return $http.get($http.url('api/ImageSignApi/GetBuildingDetailed?buildingId='+regionId));
-        }
-      },
-      Measure:{
-        /**
-         * 获取本人所有实测项目(并非自定义的，而是系统基础项)
-         *
-         * @param    {string}  areaID     分期
-         * */
-        query:function(areaID) {
-          //return $http.get($http.url('/Api/MeasureInfo/MeasureQuery', {areaID: areaID}));
-          return r([{
-            AcceptanceItemID:"abc", //模板中的实测项
-            AcceptanceItemName:"土建",//实测项名称
-            Building:""   //模板
-          },{
-            AcceptanceItemID:"abc", //模板中的实测项
-            AcceptanceItemName:"抹灰",//实测项名称
-            Building:""   //模板
-          }])
-          /*return query (array ({
-           AcceptanceItemID: 'string1',
-           MeasureItemName: '测量项{0}',
-           SpecialtyID: 'id1;id2',
-           SpecialtyName: '专业类型;专业类型',
-           /!**
-           * 1 、项目
-           * 2、 区域
-           * 4、 楼项
-           * 8、 楼层
-           * 16、 房间
-           * *!/
-           RegionType: 1 | 2 | 4 | 8 | 16
-           }
-           ))*/
-        },
-        MeasureIndex:{
-          /**
-           * 获取实测项所有指标
-           *
-           * @param  {string} acceptanceItemID 实测项ID
-           * */
-          query:function() {
-            return r([{
-              AcceptanceIndexID:"",
-              ParentAcceptanceIndexID:"",
-              AcceptanceItemID:"",
-              IndexName:"门窗",
-              IndexType:"",
-              MeasureMethod:"",
-              QSKey:"",
-              QSCondition:"",
-              QSValue:"",
-              QSOtherValue:"",
-              PassYieldComputeMode:"",
-              GroupSign:"",
-              Weight:"",
-              SinglePassYield:"",
-              SummaryPassYield:"",
-              IconImage:"",
-              IconColor:""
-            },{
-              AcceptanceIndexID:"",
-              ParentAcceptanceIndexID:"",
-              AcceptanceItemID:"",
-              IndexName:"天花板",
-              IndexType:"",
-              MeasureMethod:"",
-              QSKey:"",
-              QSCondition:"",
-              QSValue:"",
-              QSOtherValue:"",
-              PassYieldComputeMode:"",
-              GroupSign:"",
-              Weight:"",
-              SinglePassYield:"",
-              SummaryPassYield:"",
-              IconImage:"",
-              IconColor:""
-            }])
-          }
         }
       },
 
@@ -798,23 +752,6 @@
           query:function(acceptanceItemID,checkRegionID,regionType,flags){
             return $http.get($http.url('/Api/MeasurePointApi/GetMeasurePoint', {acceptanceItemID: acceptanceItemID,checkRegionID:checkRegionID,regionType:regionType,flags:flags}))
 
-           /** return get({
-              type: 'FeatureCollection',//固定为FeatureCollection
-              features: [{
-                type: 'Feature',//固定为Feature
-                geometry: {
-                  type: 'lineGroup', // lineGroup 测量组 或　areaGroup　区域组 或　stamp　测量点，以后会更多类型
-                  coordinates: [] //图形位置信息
-                },
-                options: {       //几何图形配置项，属性不固定，不同的geometry.type不尽相同
-                  color: 'red'
-                },
-                properties:{
-                  $id:'guid', //唯一ID
-                  $groupId:'guid' //所在属组（可以不用，但请保存为UI使用）
-                }
-              }]
-            });**/
           },
 
           submit:function(values){
@@ -875,37 +812,6 @@
         getMeasureCheckResult:function(measureRecordID){
           return $http.get($http.url('/Api/MeasureValueApi/GetMeasureCheckResult',{measureRecordID:measureRecordID}))
         }
-        //测量项的点测量数据：
-
-
-
-//
-//【AcceptanceIndexID: "bda32789505d4adf9457fccd64b69bf2"//指标ID
-//AcceptanceItemID: "e66a7435e8274dc0b7c09924ce1ee91c"//测量项ID
-//CheckRegionID: "77961e877d4c4f9890dbe6207853d59f"//区域ID
-//CheckStatus: 1//验收状态
-//CompanyName: null//公司名称
-//IndexName: "结构截面尺寸"//指标名称
-//MeasureRecordID: "d80f8e047db84b24aadb50ab154bd6a4"//测量记录ID
-//MeasureStatus: 2 //测量状态
-//MeasureTime: "2016-04-20 11:21:59"//测量时间
-//MeasureUserId: "admin" //测量人ID
-//MeasureUserName: "体验帐户" //测量人
-//ParticipantIDs: null
-//MaximumDeviation：//最大偏差值
-//Points: 【
-//AcceptanceIndexID: "aa2672eedfb94418b18449c3d704f9c7"//指标ID
-//CalculatedValue: 1//计算值
-//DesignValue: null//设计值
-//MeasurPointName: "2"//标点名称
-//MeasureRecordID: "d80f8e047db84b24aadb50ab154bd6a4"//测量记录ID
-//MeasureStatus: 1//状态
-//MeasureValue: 5//测量值
-//MeasureValueId: "09c9d723d1ff4dc8aa3d11e632eee67b"
-//ParentMeasureValueID: null
-//】
-//QualifiedRate: null
-//】
       },
       sxtHouseService:{
         getZ: function (totalW, totalH, m, w, h) {
