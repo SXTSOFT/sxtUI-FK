@@ -121,6 +121,14 @@
 
         if(toolbar)
           map._map.removeControl(toolbar);
+
+/*        scope.MeasureValues.forEach(function(r){
+          data.addOrUpdate(r)
+        })
+        scope.MeasurePoints.forEach(function(r){
+          r.geometry = JSON.parse(point.Geometry);
+          points.addOrUpdate(r)
+        })*/
         fg = new L.SvFeatureGroup({
           onLoad:function(){
             var layer = this;
@@ -129,6 +137,7 @@
 
             data.findAll(function(o){
               return o.CheckRegionID==scope.regionId&& o.AcceptanceItemID==scope.acceptanceItem
+              return o.CheckRegionID == scope.regionId && o.AcceptanceItemID==scope.acceptanceItem
                 && scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
                   return m.AcceptanceIndexID == o.AcceptanceIndexID
                     ||(m.Children && m.Children.find(function (m1) {
@@ -148,7 +157,9 @@
                         o.geometry.options.color = 'red';
                       }
                       o.geometry.options.v = i;
-                      o.CreateTime = moment(i.CreateTime).toDate();
+                      o.geometry.options.seq = o.geometry.properties.seq;
+                      o.geometry.options.customSeq = true;
+                      o.CreateTime = moment(o.CreateTime).toDate();
                       return true;
                     }
                     return false;

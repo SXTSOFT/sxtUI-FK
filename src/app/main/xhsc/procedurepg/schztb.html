@@ -1,12 +1,6 @@
 <div flex layout="column">
-  <!--<md-toolbar>-->
-    <!--<div class="md-toolbar-tools" layout="row">-->
-      <!--<h2 class="md-flex">{{vm.info.name}}({{vm.info.pname}})</h2>-->
-      <!--<span flex></span>-->
-      <!--<md-button  class="md-raised  md-warn" ng-click="vm.back()">返回</md-button>-->
-    <!--</div>-->
-  <!--</md-toolbar>-->
   <md-content class="subheader" style="position:relative;" flex layout-padding>
+    <div style="font-size: 14px;">文字说明：<span style="padding-right:10px;">总包</span><span class="jlfont" style="padding-right:10px;">监理</span><span style="padding-right:10px;" class="xmfont">项目部</span></div>
     <table width="100%" cellpadding="0" cellspacing="0" class="levelTable">
       <thead>
       <tr>
@@ -23,7 +17,6 @@
       </tr>
       <tr>
         <th style="width:60px;text-align: center;">指标</th>
-        <th style="width:60px;text-align: center;white-space: nowrap;">角色</th>
         <th style="text-align: center;white-space: nowrap;">结果</th>
         <th style="text-align: center;white-space: nowrap;">合格率</th>
         <th ng-repeat="i in vm.scData[0].rows[0]">{{$index+1}}</th>
@@ -38,50 +31,36 @@
             </tr>
           </table>
         </td>
-        <td rowspan="{{item.rows.length}}*2" ng-if="$index == 0" align="center">
-          <!--&nbsp;-->
-          <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">
-            <tr>
-              <td style="border:none;white-space: nowrap;">总包</td>
-            </tr>
-            <!--<tr>-->
-              <!--<td style="border:none;white-space: nowrap;">监理</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-              <!--<td style="border:none;white-space: nowrap;">项目部</td>-->
-            <!--</tr>-->
-          </table>
-        </td>
         <td rowspan="{{item.rows.length}}" ng-if="$index == 0" align="center">
-          <!--{{item.QualifiedPointNum}}/{{item.allDot}}-->
-          <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">
-            <tr>
-              <td style="border:none;">{{item.QualifiedPointNum}}/{{item.allDot}}</td>
-            </tr>
+          <span>{{item.QualifiedPointNum}}/{{item.allDot}}</span>
+          <!--<table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">-->
             <!--<tr>-->
               <!--<td style="border:none;">{{item.QualifiedPointNum}}/{{item.allDot}}</td>-->
             <!--</tr>-->
-            <!--<tr>-->
-              <!--<td style="border:none;">{{item.QualifiedPointNum}}/{{item.allDot}}</td>-->
-            <!--</tr>-->
-          </table>
+            <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+              <!--&lt;!&ndash;<td style="border:none;">{{item.QualifiedPointNum}}/{{item.allDot}}</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+              <!--&lt;!&ndash;<td style="border:none;">{{item.QualifiedPointNum}}/{{item.allDot}}</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+          <!--</table>-->
         </td>
         <td rowspan="{{item.rows.length}}" ng-if="$index == 0">
-          <!--{{item.QualifiedRate|number:2}}%-->
-          <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">
-            <tr>
-              <td style="border:none;">{{item.QualifiedRate|number:2}}%</td>
-            </tr>
+          <span>{{item.QualifiedRate|number:2}}%</span>
+          <!--<table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">-->
             <!--<tr>-->
               <!--<td style="border:none;">{{item.QualifiedRate|number:2}}%</td>-->
             <!--</tr>-->
-            <!--<tr>-->
-              <!--<td style="border:none;">{{item.QualifiedRate|number:2}}%</td>-->
-            <!--</tr>-->
-          </table>
+            <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+              <!--&lt;!&ndash;<td style="border:none;">{{item.QualifiedRate|number:2}}%</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+              <!--&lt;!&ndash;<td style="border:none;">{{item.QualifiedRate|number:2}}%</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+          <!--</table>-->
         </td>
         <td ng-repeat="point in row" style="padding:0 6px;">
-          <span ng-class="{'yellow':point.MeasureStatus == 2,'red':point.MeasureStatus == 3}" style="display: block;padding:8px 0;">{{point.MeasureValue}}</span>
+          <span ng-class="{'yellow':point.MeasureStatus == 2,'red':point.MeasureStatus == 3,'jlfont':true}" ng-bind-html="point.MeasureValue"></span>
           <!--<span ng-class="{'yellow':point.MeasureStatus == 2,'red':point.MeasureStatus == 3}"  style="display: block;padding:8px 0;">{{point.MeasureValue}}</span>-->
           <!--<span ng-class="{'yellow':point.MeasureStatus == 2,'red':point.MeasureStatus == 3}"  style="display: block;padding:8px 0;">{{point.MeasureValue}}</span>-->
         </td>
@@ -96,46 +75,35 @@
           </table>
         </td>
         <td align="center" rowspan="{{item.rowSpan}}" ng-if="$index==0" style="padding: 0;">
-          <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">
-            <tr>
-              <td style="border:none;white-space: nowrap;">总包</td>
-            </tr>
-            <!--<tr>-->
-              <!--<td style="border:none;white-space: nowrap;">监理</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-              <!--<td style="border:none;white-space: nowrap;">项目部</td>-->
-            <!--</tr>-->
-          </table>
-        </td>
-        <td align="center" rowspan="{{item.rowSpan}}" ng-if="$index==0" style="padding: 0;">
-          <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">
-            <tr>
-              <td style="border:none;">{{item.QualifiedRate|number:2}}%</td>
-            </tr>
+          <span ng-class="{'jlfont':true}">{{item.QualifiedRate|number:2}}%</span>
+          <!--<table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">-->
             <!--<tr>-->
               <!--<td style="border:none;">{{item.QualifiedRate|number:2}}%</td>-->
             <!--</tr>-->
-            <!--<tr>-->
-              <!--<td style="border:none;">{{item.QualifiedRate|number:2}}%</td>-->
-            <!--</tr>-->
-          </table>
+            <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+              <!--&lt;!&ndash;<td style="border:none;">{{item.QualifiedRate|number:2}}%</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+              <!--&lt;!&ndash;<td style="border:none;">{{item.QualifiedRate|number:2}}%</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+          <!--</table>-->
         </td>
         <td  rowspan="{{item.rowSpan}}" ng-if="$index==0" style="padding:0;">
-          <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">
-            <tr>
-              <td style="border:none;">{{item.QualifiedPointNum*100.0/item.allDot|number:2}}%</td>
-            </tr>
+          <span>{{item.QualifiedPointNum*100.0/item.allDot|number:2}}%</span>
+          <!--<table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">-->
             <!--<tr>-->
               <!--<td style="border:none;">{{item.QualifiedPointNum*100.0/item.allDot|number:2}}%</td>-->
             <!--</tr>-->
-            <!--<tr>-->
-              <!--<td style="border:none;">{{item.QualifiedPointNum*100.0/item.allDot|number:2}}%</td>-->
-            <!--</tr>-->
-          </table>
+            <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+              <!--&lt;!&ndash;<td style="border:none;">{{item.QualifiedPointNum*100.0/item.allDot|number:2}}%</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+              <!--&lt;!&ndash;<td style="border:none;">{{item.QualifiedPointNum*100.0/item.allDot|number:2}}%</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+          <!--</table>-->
         </td>
-        <td ng-repeat="point in row.rows[0]" ng-class="{'yellow':point.MeasureStatus == 2,'red':point.MeasureStatus == 3}">
-          <span>{{point.MeasureValue}}</span>
+        <td ng-repeat="point in row.rows[0]">
+          <span  ng-class="{'yellow':point.MeasureStatus == 2,'red':point.MeasureStatus == 3}" ng-bind-html="point.MeasureValue"></span>
           <!--<p>{{point.MeasureValue}}</p>-->
           <!--<p>{{point.MeasureValue}}</p>-->
         </td>

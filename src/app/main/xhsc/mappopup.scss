@@ -1625,6 +1625,8 @@ md-tabs[md-align-tabs="bottom"]{
     }
     td{
       span{
+        display: block;padding:8px 0;
+        text-align: center;
         &.yellow{
           color:#e6b900;
         }
@@ -2643,6 +2645,14 @@ md-bottom-sheet{
 
     }
   }
+}
+.jlfont{
+  font-style: italic;
+  text-decoration: underline;
+}
+.xmfont{
+  font-weight: bolder;
+  text-decoration: underline;
 }
 .roomllist{
   font-size: 12px;
