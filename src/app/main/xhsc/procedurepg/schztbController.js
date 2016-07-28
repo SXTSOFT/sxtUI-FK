@@ -27,29 +27,67 @@
       RelationID:$stateParams.db//'a55164d5c46f454ca8df799f520bbba8'//
     }).then(function (result){
 
-      result.data.forEach(function (item) {
-        var newList = [];
-        item.MeasureValueList.forEach(function (m) {
-          var p = newList.find(function (m1) {
-            return m1.MeasurePointID == m.MeasurePointID;
-          });
-          if (!p) {
-            newList.push({
-              MeasurePointID: m.MeasurePointID,
-              values: [m]
-            })
-          }
-          else {
-            p.values.push(m);
-          }
-        });
-        item.newList = newList;
-      });
-      var newD = [];
-      result.data.forEach(function (item) {
+      //vm.temp=[];
+      //var itemList=[];
+      //result.data.forEach(function(item){
+      //
+      //  var f = itemList.find(function(m){
+      //    return m.AcceptanceIndexID == item.AcceptanceIndexID;
+      //  })
+      //  if(!f){
+      //    itemList.push({
+      //      types:[item],
+      //      ParentAcceptanceIndexID:item.ParentAcceptanceIndexID,
+      //      AcceptanceIndexName:item.AcceptanceIndexName,
+      //      AcceptanceIndexID: item.AcceptanceIndexID,
+      //      rowsd:[item.MeasureValueList]
+      //    })
+      //  }else{
+      //    f.types.push(item);
+      //    f.rowsd.push(item.MeasureValueList);
+      //  }
+      //  item.itemNew = itemList;
+      //
+      //})
 
-        //if(!item.MeasureValueList.length){
-        if(!item.newList.length){
+      //itemList.forEach(function(item){
+      //  item.MeasureValueList=[];
+      //  item.rowsd.forEach(function(m){
+      //    for(var i=0;i< m.length;i++){
+      //      item.MeasureValueList.push(m[i])
+      //    }
+      //  })
+      //})
+
+      //itemList.forEach(function (item) {
+      //
+      //  var newList = [];
+      //  item.MeasureValueList.forEach(function (m) {
+      //    var p = newList.find(function (m1) {
+      //      return m1.MeasurePointID == m.MeasurePointID;
+      //    });
+      //    if (!p) {
+      //      newList.push({
+      //        MeasurePointID: m.MeasurePointID,
+      //        ParentMeasureValueID: m.ParentMeasureValueID,
+      //        values: [m]
+      //      })
+      //    }
+      //    else {
+      //      p.values.push(m);
+      //    }
+      //  });
+      //  item.newList = newList;
+      //});
+      //console.log(itemList)
+
+      var newD = [];
+
+
+      result.data.forEach(function (item) {
+        //item.newList
+        if(!item.MeasureValueList.length){
+        //if(!item.newList.length){
           var rowSpan = 0,t1=0,t2 = 0;
           item.Children = result.data.filter(function (r) {
             if(r.ParentAcceptanceIndexID==item.AcceptanceIndexID){
@@ -111,6 +149,8 @@
           item.rows = [];
           var ps=[];
           item.QualifiedRate = item.QualifiedRate * 100;
+          //item.allDot = [];
+          //
           item.allDot = item.QualifiedPointNum + item.UnqualifiedPointNum;
           item.MeasureValueList.forEach(function (m) {
             var p = ps.find(function (p1) {
@@ -137,9 +177,9 @@
             else {
               p.ms.push(m);
               if (item.AcceptanceIndexName.indexOf('尺寸一致性') != -1) {
-                //m.MeasureValue = m.MeasureValue + '<br/>' + m.DesignValue;
-                m.MeasureValue = m.MeasureValue;
-              }
+                m.MeasureValue = m.MeasureValue + '<br/>' + m.DesignValue;
+              // m.MeasureValue = m.MeasureValue;
+            }
             }
           });
           ps.forEach(function (p) {
