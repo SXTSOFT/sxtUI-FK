@@ -1,43 +1,28 @@
-<div class="md-toolbar-tools grzx" style="padding: 0">
+<div class="md-toolbar-tools grzx" style="padding: 0" layout="row">
     <!--<md-icon md-font-icon="icon-chevron-left" style="color:white;" ng-click="goBack();" class="icon s32"></md-icon>-->
-  <md-button ng-show="$root.noBack" ng-click="goBack();" style="color:white;position: absolute;top:5px;left:0;">返回</md-button>
-  <div style="color:white;position: absolute;top:5px;left:0;" ng-show="$root.showgrzx">
-    <md-button ui-sref="app.xhsc.pcenter"><md-icon><img src="app/main/xhsc/images/grzx.png" width="21"></md-icon></md-button>
-  </div>
-  <h2>
+  <md-button flex="none" ng-show="$root.noBack" ng-click="goBack();" >返回</md-button>
+<md-button flex="none" ng-show="$root.showgrzx" ui-sref="app.xhsc.pcenter"><md-icon><img src="app/main/xhsc/images/grzx.png" width="21"></md-icon></md-button>
+
+  <h2 flex>
     <md-icon class="arrows icon s32" ng-show="$root.leftArrow===true" md-font-icon="icon-chevron-left" style="color:#fff;" ng-click="toLeft()"></md-icon>
     <span style="width:70%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" ng-class="{'subtitle':$root.leftArrow===true}">{{$root.subtitle||$root.title || '星河大数据工程管理平台'}}</span>
     <md-icon class="arrows icon s32" ng-show="$root.rightArrow===true" md-font-icon="icon-chevron-right" style="color:#fff;" ng-click="toRight()"></md-icon>
   </h2>
-  <!--<div ng-show="$root.sendBt===true"><md-button style="color:white;position: absolute;top:9px;right:0;margin:0;min-width:60px;min-height:24px;line-height:24px;" ng-click="send($event)" ui-sref="app.xhsc.zg">发送</md-button></div>-->
-  <!--<div style="position: absolute;top:5px;right:5px;font-size:14px;" class="topSelect" ng-if="!$root.loadingProgress">-->
-      <!--<md-select placeholder="星河智慧一期" ng-model="vm.selectedArea" style="min-width: 120px;margin:0" ng-change="vm.change()">-->
-        <!--<md-option ng-value="area" ng-repeat="area in vm.Areas">{{area.ProjectName}}{{area.AreaName}}</md-option>-->
-      <!--</md-select>-->
-  <!--</div>-->
-  <!--<div style="position: absolute;top:12px;right:25px;font-size:14px;" ng-click="toggleRight()">-->
-    <!--星河智慧一期<md-icon class="icon s32" md-font-icon="icon-menu-down" style="color:#fff;"></md-icon>-->
-    <!--</div>-->
-  <div style="position: absolute;top:5px;right:0;font-size:14px;" ng-show="$root.sendBt" class="submit-btn">
-    <md-button ng-click="vm.sendGxResult()">
+  <md-button flex="none" class="md-icon-button" aria-label="net work" ng-click="vm.setNetwork()">
+    <md-icon md-svg-icon="assets/images/online.svg" ng-if="vm.networkState==0" style="color:#e0e0e0"></md-icon>
+    <md-icon md-svg-icon="assets/images/offline.svg" ng-if="vm.networkState==1" style="color:#e0e0e0"></md-icon>
+  </md-button>
+    <md-button  flex="none" style="font-size:14px;" ng-show="$root.sendBt" ng-click="vm.sendGxResult()">
       提交
     </md-button>
-  </div>
-  <div style="position: absolute;top:5px;right:0;font-size:14px;" ng-show="$root.opBtn" class="submit-btn">
-    <md-button ng-click="vm.operateMsg()">
+<md-button  flex="none" style="font-size:14px;" ng-show="$root.opBtn" ng-click="vm.operateMsg()">
       操作
     </md-button>
-  </div>
-  <div style="position: absolute;top:5px;right:0;font-size:14px;" ng-show="$root.refreshBtn===true" class="topfresh">
-    <md-button class="md-link md-mini">
+ <md-button flex="none" style="font-size:14px;" ng-show="$root.refreshBtn===true" class="md-link md-mini">
       <md-icon><img src="app/main/xhsc/images/refresh.png"></md-icon>
     </md-button>
-  </div>
-  <div style="position: absolute;top:5px;right:0;font-size:14px;" ng-show="$root.showgrzx">
-    <md-button ui-sref="app.xhsc.mcenter"><md-icon><img src="app/main/xhsc/images/msg.png" width="21"></md-icon></md-button>
-    <div style="width:8px;height:8px;border-radius: 50%;background: #fff;position: absolute;right:14px;top:5px;display: none;"></div>
-  </div>
-  <div style="position: absolute;top:5px;right:3px;font-size:14px;">
+  <md-button flex="none" style="font-size:14px;" ng-show="$root.showgrzx" ui-sref="app.xhsc.mcenter"><md-icon><img src="app/main/xhsc/images/msg.png" width="21"></md-icon></md-button>
+  <div  flex="none" style="font-size:14px;">
   <md-progress-circular id="toolbar-progress" ng-if="$root.loadingProgress"
                         md-mode="indeterminate" md-diameter="40">
   </md-progress-circular></div>
