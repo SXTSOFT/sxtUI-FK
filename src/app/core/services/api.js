@@ -65,8 +65,26 @@
         return networkState;
       };
       api.resetNetwork = function () {
-        $rootScope.$emit('$cordovaNetwork:online');
+        var type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
+        switch (type) {
+          case 'ethernet':
+          case 'wifi':
+            networkState = 0;
+            break;
+          case 'unknown':
+          case 'none':
+          case '2g':
+          case '3g':
+          case '4g':
+          case 'cellular':
+            networkState = 1;
+            break;
+          default:
+            networkState = 0;
+            break;
+        }
       };
+
       api.useNetwork = function (state) {
         var cState,type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
         switch (type) {
@@ -96,35 +114,23 @@
       };
 
       $rootScope.$on('$cordovaNetwork:online', function(event, state){
-        var type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
-        switch (type) {
-          case 'ethernet':
-          case 'wifi':
-            networkState = 0;
-            break;
-          case 'unknown':
-          case 'none':
-          case '2g':
-          case '3g':
-          case '4g':
-          case 'cellular':
-            networkState = 1;
-            break;
-          default:
-            networkState = 0;
-            break;
-        }
+        api.resetNetwork();
       });
       $rootScope.$on('$cordovaNetwork:offline', function(event, state){
         networkState =1;
       });
-      api.resetNetwork();
+      $timeout(function () {
+        api.resetNetwork();
+      },1000);
+
 
       api.db = provider.$http.db;
       api.clearDb = clearDb;
       api.download = download;
       return api;
     }
+
+
 
     function resolveApi(p,$resource,$http){
       if(p!==api)
