@@ -96,7 +96,7 @@
             scope.data.MeasurePoints.forEach(function (point) {
               var geo = JSON.parse(point.Geometry),
                 v = scope.data.MeasureValues.find(function (value) {
-                  return value.MeasurePointID == point.MeasurePointID;
+                  return value.MeasurePointID == point.Id;
                 });
               if(v) {
                 if(geo.geometry.type=='Stamp' && !v.MeasureValue && v.MeasureValue!==0)return;
@@ -120,6 +120,7 @@
                 layer.addData(geo);
               }
             });
+
             layer.eachLayer(function (layer) {
               if(layer.options.MeasureValue || layer.options.MeasureValue===0) {
                 //layer.updateValue({seq: ''+layer.options.MeasureValue});

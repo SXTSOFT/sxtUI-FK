@@ -27,7 +27,7 @@
         <td rowspan="{{item.rows.length}}" ng-if="$index == 0" style="padding: 0;">
           <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">
             <tr>
-              <td style="white-space: nowrap;"><a ui-sref="app.xhsc.scsl.schztbdetail({regionId:vm.reginId,itemId:item.AcceptanceIndexID,acceptanceItemID:vm.AcceptanceItemID})">{{item.IndexName}}</a></td>
+              <td style="white-space: nowrap;"><a ui-sref="app.xhsc.scsl.schztbdetail({regionId:vm.regionId,itemId:item.AcceptanceIndexID,acceptanceItemID:vm.AcceptanceItemID})">{{item.IndexName}}</a></td>
             </tr>
           </table>
         </td>
@@ -38,7 +38,7 @@
           <span ng-repeat="n in item.QualifiedRate" ng-class="{'jlfont':n.Role == 2,'xmfont':n.Role == 4}">{{n.Value|number:2}}%</span>
         </td>
         <td ng-repeat="point in row" style="padding:0 6px;">
-          <span ng-repeat="v in point.MeasureValue" ng-class="{'yellow':v.MeasureStatus == 2,'red':v.MeasureStatus == 3,'jlfont':v.Role == 2,'xmfont':v.Role == 4}">{{v.Value}}</span>
+          <span ng-repeat="v in point.MeasureValue" ng-class="{'yellow':v.Status == 2,'red':v.Status == 3,'jlfont':v.Role == 2,'xmfont':v.Role == 4}">{{v.Value}}</span>
         </td>
       </tr>
       <tr ng-repeat="row in item.Children" ng-if="item.Children">
@@ -57,7 +57,7 @@
           <span ng-class="{'jlfont':n.Role == 2,'xmfont':n.Role == 4}" ng-repeat="n in item.Qual|orderBy:Role:true">{{n.Value*100|number:2}}%</span>
         </td>
         <td ng-repeat="point in row.rows[0]">
-          <span  ng-class="{'yellow':point.MeasureStatus == 2,'red':point.MeasureStatus == 3,'jlfont':v.Role == 2,'xmfont':v.Role == 4}" ng-repeat="v in point.MeasureValue" ng-bind-html="v.Value"></span>
+          <span  ng-class="{'yellow':v.Status == 2,'red':v.Status == 3,'jlfont':v.Role == 2,'xmfont':v.Role == 4}" ng-repeat="v in point.MeasureValue" ng-bind-html="v.Value"></span>
         </td>
         <!--<td ng-repeat="point in row">{{point.MeasureValue}}</td>-->
       </tr>

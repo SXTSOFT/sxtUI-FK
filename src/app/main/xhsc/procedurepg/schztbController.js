@@ -61,7 +61,16 @@
               //r.allDot = r.QualifiedPointNum + r.UnqualifiedPointNum;
               //t1 += r.QualifiedPointNum;
               //t2 += r.allDot;
+
               r.List.forEach(function (m) {
+                m.MeasureValue.forEach(function(r1){
+                  var fi= m.MeasureStatus.find(function(_r){
+                    return _r.Role == r1.Role;
+                  })
+                  if(fi){
+                    r1.Status = fi.Value;
+                  }
+                })
                 var p = ps.find(function (p1) {
                   return p1.ParentMeasureValueID == m.ParentMeasureValueID;
                 });
@@ -174,6 +183,15 @@
           //item.allDot = item.QualifiedPointNum + item.UnqualifiedPointNum;
          // item.QualifiedRate
           item.List.forEach(function (m) {
+
+            m.MeasureValue.forEach(function(r){
+              var fi= m.MeasureStatus.find(function(_r){
+                return _r.Role == r.Role;
+              })
+              if(fi){
+                r.Status = fi.Value;
+              }
+            })
             var p = ps.find(function (p1) {
               return p1.ParentMeasureValueID == m.ParentMeasureValueID;
             });
