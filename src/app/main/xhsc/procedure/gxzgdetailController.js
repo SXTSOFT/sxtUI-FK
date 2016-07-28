@@ -16,6 +16,7 @@
     vm.acceptanceItemID = $stateParams.acceptanceItemID;
     $rootScope.title = $stateParams.acceptanceItemName;
     vm.role = '';
+    vm.info = {};
     function initBtBatch(){
 
       function getRegionType(regionID){

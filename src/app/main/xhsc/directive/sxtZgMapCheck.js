@@ -16,12 +16,14 @@
         regionId:'=',
         inspectionId:'=',
         disableInspect:'=',
-        disableDrag:'='
+        disableDrag:'=',
+        ct:'='
       },
       link:link
     };
 
     function link(scope,element,attr,ctrl) {
+      scope.ct && (scope.ct.loading = true);
       var map,fg;
       var install =function () {
         if (!map) {
@@ -69,6 +71,7 @@
                   scope.item = null;
                   fg.addData(fs,false);
                   cb();
+                  scope.ct && (scope.ct.loading = false);
                 })
               });
             },

@@ -66,6 +66,7 @@
                   scope.item = null;
                   fg.addData(fs,false);
                   cb();
+                  scope.ct && (scope.ct.loading = false);
                 })
               });
             },
@@ -186,7 +187,7 @@
                     xhUtils.openLinks(mapList);
                   });
                   element.find('.mapboxgl-ctrl-bottom-left').append(btn);
-                  scope.ct && (scope.ct.loading = false);
+                  
                 })
               }
               else{

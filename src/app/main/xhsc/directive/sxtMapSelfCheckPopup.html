@@ -1,4 +1,4 @@
-<div style="width: 180px;">
+<div style="width: 200px;">
   <div ng-if="data.v.ProblemSortName=='T'"  class="mappopup" style="margin-bottom:10px;">
     <md-input-container>
       <input ng-model="data.v.ProblemDescription">
@@ -12,6 +12,9 @@
     <div flex style="text-align: center;border-right:1px solid #555;"><md-button class="md-fab md-mini" ng-click="addPhoto()" style="background: none;margin:0;padding:0;"><md-icon class="icon s24" md-font-icon="icon-camera"></md-icon></md-button></div>
     <div flex style="text-align: center;border-right:1px solid #555;">
       <md-button class="md-fab md-mini" ng-click="removeLayer()" style="background: none;margin:0;padding:0;"><md-icon class="icon s24" md-font-icon="icon-delete"></md-icon></md-button>
+    </div>
+    <div flex style="text-align: center;border-right:1px solid #555;">
+      <md-button class="md-fab md-mini" ng-click="moveLayer()" style="background: none;margin:0;padding:0;"><md-icon class="icon s24" md-font-icon="icon-cursor-move"></md-icon></md-button>
     </div>
     <div flex>
       <md-button class="md-fab md-mini" ng-click="viewDetail()" style="background: none;margin:0;padding:0;"><md-icon class="icon s24" md-font-icon="icon-dots-horizontal"></md-icon></md-button>

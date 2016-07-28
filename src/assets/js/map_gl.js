@@ -791,7 +791,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
  */
 (function (m) {
     m.Plan = function (options) {
-        var cold='plan_raw',hot='plan_raw_hot',sources = {};
+        var cold='plan_raw',hot='plan_raw_hot',sources = {},mouseDownLngLat;
         sources[cold] = {
             data: {
                 type: 'FeatureCollection',
@@ -806,7 +806,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
             },
             type: 'geojson'
         };
-        var editFeature = null,editPopup = null;
+        var editFeature = null,editPopup = null,editCoordinates = null;
            var ctx = {
                options: options || {},
                uuid: function () {
@@ -845,17 +845,23 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                    ctx.map.off('click', ctx.click);
                },
                changeMode: function (mode, op) {
-                   ctx.cancelEdit();
-                   ctx.removeEventListeners();
+
                    ctx.mode = mode;
+                   if(mode == 'move'){
+                       ctx.moveFeature();
+                   }
+                   else{
+                       ctx.cancelEdit();
+                       //ctx.removeEventListeners();
+                   }
                },
                mousemove: function (e) {
-                   if (!editFeature || !ctx.isDragging) {
+                   if (!mouseDownLngLat || !editFeature || !ctx.isDragging) {
                        return;
                    };
                    if (ctx._moveT)return;
                    ctx._moveT = !0;
-                   sources[hot].data.features[0].geometry.coordinates = e.lngLat.toArray();
+                   sources[hot].data.features[0].geometry.coordinates = [editCoordinates[0]+e.lngLat.lng-mouseDownLngLat.lng,e.lngLat.lat+editCoordinates[1]-mouseDownLngLat.lat];// e.lngLat.toArray();
                    ctx.map.getSource(hot).setData(sources[hot].data);
                    console.log('moveing')
                    setTimeout(function () {
@@ -863,6 +869,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                    }, 30);
                },
                mousedown: function (e) {
+                   mouseDownLngLat = e.lngLat;
                    if(ctx.options.disableDrag)return;
                    //if (!editFeature)return;
                    var features = ctx.findFeatures(e);
@@ -877,20 +884,19 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                    }
                },
                mouseup: function (e) {
+                   mouseDownLngLat = null;
                    if(ctx.options.disableDrag)return;
                    if (ctx.isDragging) {
-                       ctx.isDragging = false;
-                       ctx.map.dragPan.enable();
+                       //ctx.isDragging = false;
+                       //ctx.map.dragPan.enable();
                        var id = sources[hot].data.features[0].properties.$id;
                        var ft = sources[cold].data.features.filter(function (f) {
                            return f.properties.$id == id;
                        });
                        if (ft.length) {
-                           ft[0].geometry.coordinates = sources[hot].data.features[0].geometry.coordinates;
+                           ft[0].geometry.coordinates =  editCoordinates = sources[hot].data.features[0].geometry.coordinates;
                            setup.updateFeature(ft[0], false, null, function () {
                                ctx.resetSource();
-
-                               ctx.edit(ft[0]);
                            });
                        }
                    }
@@ -914,10 +920,13 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                                    }
                                };
                                setup.updateFeature(feature, true, null, function () {
-                                   ctx.addEventListeners();
+                                   //ctx.addEventListeners();
                                    ctx.edit(feature);
                                });
                            }
+                           break;
+                       case 'move':
+                           ctx.cancelMoveFeature();
                            break;
                        default:
                            var features = ctx.findFeaturesCold(e);
@@ -926,7 +935,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                                    return f.properties.$id == features[0].properties.$id;
                                });
                                if (fs.length) {
-                                   ctx.addEventListeners();
+                                   //ctx.addEventListeners();
                                    ctx.cancelEdit();
                                    ctx.edit(fs[0]);
                                }
@@ -938,15 +947,8 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                    }
                },
                cancelEdit: function () {
-
-
                    if (editFeature) {
-                       ctx.map.dragPan.enable();
                        editFeature = null;
-                       if(!ctx.options.disableDrag) {
-                           sources[hot].data.features.length = 0;
-                           ctx.map.getSource(hot).setData(sources[hot].data);
-                       }
                    }
                    if (editPopup) {
                        setup.popupClose(function () {
@@ -957,13 +959,9 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                },
                edit: function (feature) {
                    editFeature = feature;
-                   if(!ctx.options.disableDrag) {
-                       sources[hot].data.features[0] = feature;
-                       ctx.map.getSource(hot).setData(sources[hot].data);
-                   }
                    setup.popupUp(feature, function (el) {
                        if(!el)return;
-                       editPopup = new mapboxgl.Popup({closeButton: false,onUpdate:ctx.PopupOnUpdate,anchor:'bottom'})
+                       editPopup = new mapboxgl.Popup({closeButton: false})
                            .setLngLat(feature.geometry.coordinates);
                        if (typeof el === 'string')
                            editPopup.setHTML(feature.properties.title);
@@ -972,8 +970,37 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                        editPopup.addTo(ctx.map);
                    });
                },
+               moveFeature:function (feature) {
+                   if(!ctx.options.disableDrag) {
+                       editFeature = feature || editFeature;
+                       if(!editFeature) return;
+                       editCoordinates = editFeature.geometry.coordinates;
+
+                       if (editPopup) {
+                           setup.popupClose(function () {
+                               editPopup.remove();
+                               editPopup = null;
+                           });
+                       }
+                       ctx.map.dragPan.disable();
+                       sources[hot].data.features[0] = editFeature;
+                       ctx.map.getSource(hot).setData(sources[hot].data);
+                       ctx.isDragging = true;
+                   }
+               },
+               cancelMoveFeature:function () {
+                   if(!ctx.options.disableDrag) {
+
+                       ctx.isDragging = false;
+                       ctx.mode = null;
+                       ctx.map.dragPan.enable();
+                       editFeature = editCoordinates = null;
+                       sources[hot].data.features.length = 0;
+                       ctx.map.getSource(hot).setData(sources[hot].data);
+                   }
+               },
                resetSource: function () {
-                   ctx.cancelEdit();
+                   //ctx.cancelEdit();
                    ctx.map.getSource(cold).setData(sources[cold].data);
                },
                addData: function (feature, reset) {
@@ -1016,7 +1043,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                    return features
                },
                PopupOnUpdate:function (pos) {
-                   pos.y-=26;
+                   //pos.y-=26;
                }
            };
         var activeButton,buttonElements={};
@@ -1058,14 +1085,14 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                         "type": "symbol",
                         "source": hot,
                         "layout": {
-                            "icon-image":"up-arrow",
-                            "icon-offset":[0,-2],
-                            "icon-size":1.8
+                            "icon-image": "up-arrow",
+                            "icon-offset": [0, 2],
+                            "icon-size": 1.5
                         },
                         "paint": {
                             "text-color": "#000",
                             "icon-color":"#ff0000",
-                            "icon-opacity":0.5
+                            "icon-opacity":0.75
                         }
                     });
 
@@ -1075,8 +1102,8 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                         "source": cold,
                         "filter": ["all",["==", "$type", "Point"],["==", "Status", 2]],
                         "paint": {
-                            "circle-translate":[0,-25],
-                            "circle-radius": 16,
+                            //"circle-translate":[0,-25],
+                            "circle-radius": 12,
                             "circle-color": "#3dd086",
                             "circle-opacity": 0.9
                         }
@@ -1088,8 +1115,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                         "filter": ["all", ["==", "$type", "Point"], ["in", "Status", 1, 4]],
                         "type": "circle",
                         "paint": {
-                            "circle-translate":[0,-25],
-                            "circle-radius": 16,
+                            "circle-radius": 12,
                             "circle-color": "#ff0000",
                             "circle-opacity": 0.9
                         }
@@ -1101,8 +1127,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                         "filter": ["all", ["==", "$type", "Point"], ["==", "Status", 8]],
                         "type": "circle",
                         "paint": {
-                            "circle-translate":[0,-25],
-                            "circle-radius": 16,
+                            "circle-radius": 12,
                             "circle-color": "#f98700",
                             "circle-opacity": 0.9
                         }
@@ -1113,15 +1138,15 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                         "source": cold,
                         "filter": ["==", "$type", "Point"],
                         "layout": {
-                            "text-offset":[0,-1.5],
                             "text-field": "{seq}",
                             "text-anchor": "center",
-                            "text-size": 16
+                            "text-size": 14
                         },
                         "paint": {
                             "text-color": "#ffffff"
                         }
                     });
+                    ctx.addEventListeners();
                 });
             },
             resetSource:function () {
@@ -1165,12 +1190,14 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                 
             },
             changeMode:function (mode,op) {
-                if(!ctx.map)return;
-                setup.cb(options.onChangeMode, function () {
-                    deactivateButtons();
-                    return ctx.changeMode(mode,op);
-                },[mode,op]);
-
+                if (!ctx.map)return;
+                if (op && op.ctx)
+                    return ctx.changeMode(mode, op);
+                else
+                    setup.cb(options.onChangeMode, function () {
+                        deactivateButtons();
+                        return ctx.changeMode(mode, op);
+                    }, [mode, op]);
             }
         };
 
@@ -1201,7 +1228,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
         function deactivateButtons() {
             if (!activeButton) return;
             activeButton.className ='mapboxgl-ctrl-icon '+activeButton.id;
-            ctx.changeMode();
+            //ctx.changeMode();
             activeButton = null;
         }
         function setActiveButton(id) {
@@ -1243,6 +1270,14 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                         setup.changeMode('inspect');
                     }
                 });
+ /*               buttonElements['move'] = createControlButton('move', {
+                    container: controlGroup,
+                    className: 'move',
+                    title: '移动',
+                    onActivate: function () {
+                        ctx.changeMode('move');
+                    }
+                });*/
             }
         }
     };
