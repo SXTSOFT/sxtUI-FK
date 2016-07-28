@@ -27,17 +27,22 @@
       }
     ];
     //项目包
-    function projectTask(projectId) {
+    function projectTask(projectId,areas,acceptanceItemID) {
       return [
         function (tasks) {
           return $q(function(resolve) {
             remote.Project.getDrawingRelations(projectId).then(function (result) {
               var pics = [];
               result.data.forEach(function (item) {
-                if (pics.indexOf(item.DrawingID) == -1) {
+                if ((!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
+                  (!areas || areas.find(function (a) {
+                    return a.AreaID==item.RegionId;
+                  }))&&
+                  pics.indexOf(item.DrawingID) == -1) {
                   pics.push(item.DrawingID);
                 }
               });
+              //console.log(pics);
               pics.forEach(function (drawingID) {
                 tasks.push(function () {
                   return remote.Project.getDrawing(drawingID);
@@ -143,7 +148,7 @@
    }
     vm.downloadys = function (item) {
       var tasks = [].concat(globalTask)
-        .concat(projectTask(item.ProjectID))
+        .concat(projectTask(item.ProjectID,item.Children,item.AcceptanceItemID))
         .concat(InspectionTask(item));
       console.log(tasks);
       api.task(tasks)(function (percent, current, total) {
@@ -161,7 +166,7 @@
     }
     vm.downloadzg = function (item) {
       var tasks = [].concat(globalTask)
-        .concat(projectTask(item.Children[0].AreaID.substring(0,5)))
+        .concat(projectTask(item.Children[0].AreaID.substring(0,5),item.Children,item.AcceptanceItemID))
         .concat(InspectionTask(item))
         .concat(rectificationTask(item));
 
