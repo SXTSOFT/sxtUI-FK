@@ -41,7 +41,7 @@
         <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">
           <tr ng-repeat="row in item.Children">
             <td rowspan="{{item.Children.length}}" ng-if="$index == 0">{{item.AcceptanceIndexName}}</td>
-            <td><a ui-sref="app.xhsc.sctbdetail({recordId:item.MeasureRecordID,itemId:row.AcceptanceIndexID})">{{row.AcceptanceIndexName}}</a></td>
+            <td><a ui-sref="app.pc.sctbdetail({recordId:item.MeasureRecordID,itemId:row.AcceptanceIndexID})">{{row.AcceptanceIndexName}}</a></td>
           </tr>
         </table>
       </td>

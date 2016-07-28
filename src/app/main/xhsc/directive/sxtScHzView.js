@@ -9,10 +9,12 @@
     .directive('sxtScHzView', sxtScHzView);
 
   /** @Inject */
-  function sxtScHzView($timeout,$window){
+  function sxtScHzView($timeout,$window,remote){
     return {
       scope:{
-        data:'='
+        data:'=',
+        procedure:'=',
+        regionId:'='
       },
       link:link
     }
@@ -24,6 +26,50 @@
         if(!map){
           map = new L.SXT.Project(element[0]);
         }
+        $timeout(function(){
+        remote.Project.getDrawingRelations(scope.regionId.substring(0,5)).then(function (result) {
+          var imgId = result.data.find(function (item) {
+            return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
+          });
+          if(!imgId){
+            imgId = result.data.find(function (item) {
+              return item.RegionId == scope.regionId;
+            });
+          }
+          if (imgId) {
+            remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
+              if(!result2.data.DrawingContent){
+                scope.ct && (scope.ct.loading = false);
+                utils.alert('未找到图纸,请与管理员联系!(2)');
+                return;
+              }
+              map.loadSvgXml(result2.data.DrawingContent, {
+                filterLine: function (line) {
+                  line.attrs.stroke = 'black';
+                  line.options = line.options||{};
+                  //line.options.color = 'black';
+
+                  line.attrs['stroke-width'] = line.attrs['stroke-width']*6;
+                },
+                filterText: function (text) {
+                  return false;
+                }
+              });
+              map.center();
+              scope.tooltip = '';
+            })
+          }
+          else{
+            if(!result.data.DrawingContent){
+              utils.alert('未找到图纸,请与管理员联系!(1)');
+              scope.ct && (scope.ct.loading = false);
+              return;
+            }
+          }
+        });
+      }, 0);
+
+
         if(scope.data.Region.DrawingContent) {
           $timeout(function () {
             map.loadSvgXml(scope.data.Region.DrawingContent, {
@@ -50,7 +96,7 @@
             scope.data.MeasurePoints.forEach(function (point) {
               var geo = JSON.parse(point.Geometry),
                 v = scope.data.MeasureValues.find(function (value) {
-                  return value.MeasurePointID == point.MeasurePointID;
+                  return value.MeasurePointID == point.Id;
                 });
               if(v) {
                 if(geo.geometry.type=='Stamp' && !v.MeasureValue && v.MeasureValue!==0)return;
@@ -74,6 +120,7 @@
                 layer.addData(geo);
               }
             });
+
             layer.eachLayer(function (layer) {
               if(layer.options.MeasureValue || layer.options.MeasureValue===0) {
                 //layer.updateValue({seq: ''+layer.options.MeasureValue});

@@ -93,7 +93,7 @@
             }
           }
         }
-        return  !(isReport=='0'||isReport==0)?region.Status===1: (vm.filterNum==-1||region.Status==vm.filterNum);
+        return  true;//!(isReport=='0'||isReport==0)?region.Status===1: (vm.filterNum==-1||region.Status==vm.filterNum);
       }
 
       function  callBack(r){
