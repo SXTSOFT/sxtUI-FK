@@ -21,10 +21,10 @@
       history.back();
     }
     remote.Assessment.getMeasure({
-      RegionID:'0001500000000010000000001',//$stateParams.regionId,
-      AcceptanceItemID:'c9ba481a76644c949d13fdb14b4b4adb',//$stateParams.measureItemID,
-      RecordType:4,
-      RelationID:'a55164d5c46f454ca8df799f520bbba8'//$stateParams.db
+      RegionID:$stateParams.regionId,//'0001500000000010000000001',//,
+      AcceptanceItemID:$stateParams.measureItemID,//'c9ba481a76644c949d13fdb14b4b4adb',//,
+      RecordType:1,
+      RelationID:$stateParams.db//'a55164d5c46f454ca8df799f520bbba8'//
     }).then(function (result){
 
       result.data.forEach(function (item) {
