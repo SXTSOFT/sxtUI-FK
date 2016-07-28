@@ -1,7 +1,7 @@
 <div flex layout="column" class="ryxz" window-height>
   <div style="width:100%;">
     <div style="padding:0 8px;color:#f00;background: #fff;border-bottom: 1px solid #d8d8d8;" ng-show="vm.choosed.length">
-      <span style="display: block;width:50px;float: left;margin-top:15px;">已选：</span><div style="margin-left:50px;"><span class="labs" ng-repeat="item in vm.choosed">{{item.SupervisionHeadID}}<i ng-click="vm.rydel(item)"></i></span></div>
+      <span style="display: block;width:50px;float: left;margin-top:15px;">已选：</span><div style="margin-left:50px;"><span class="labs" ng-repeat="item in vm.choosed">{{item.UserName}}<i ng-click="vm.rydel(item)"></i></span></div>
     </div>
     <div style="clear:both;"></div>
   </div>
@@ -20,7 +20,7 @@
   <div class="floors" layout="column">
   <md-list>
   <md-list-item layout="row" ng-repeat="user in vm.current.users" ng-click="vm.choose(user)">
-  <p ng-class="{'active':user.checked}">{{user.SupervisionHeadID}}</p>
+  <p ng-class="{'active':user.checked}">{{user.UserName}}</p>
   <md-checkbox class="md-secondary" ng-checked="user.checked" ng-click="vm.choose(user)"></md-checkbox>
   </md-list-item>
   </md-list>
