@@ -19,8 +19,8 @@
 
 
     provider.register = register;
-    provider.getNetwork = getNetwork;
-    provider.setNetwork = function (state) { networkState = state;};
+    //provider.getNetwork = getNetwork;
+    //provider.setNetwork = function (state) { networkState = state;};
     provider.$http = bindHttp({
       url:url,
       db:bindDb
@@ -54,8 +54,16 @@
       api.task = task;
       api.upload = upload;
       api.uploadTask = uploadTask;
-      api.setNetwork = provider.setNetwork;
-      api.getNetwork = provider.getNetwork;
+      provider.setNetwork = api.setNetwork = function (state) {
+        networkState = state;
+        if(networkState==0)
+          $rootScope.$emit('$cordovaNetwork:online');
+        else
+          $rootScope.$emit('$cordovaNetwork:offline');
+      };
+      api.getNetwork = provider.getNetwork = function () {
+        return networkState;
+      };
       api.resetNetwork = function () {
         $rootScope.$emit('$cordovaNetwork:online');
       };
@@ -88,7 +96,6 @@
       };
 
       $rootScope.$on('$cordovaNetwork:online', function(event, state){
-        //console.log('$window.navigator',$window.navigator);
         var type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
         switch (type) {
           case 'ethernet':

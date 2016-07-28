@@ -41,7 +41,7 @@
           scope.data.p = p;
           remote.Procedure.InspectionProblemRecordFile.query(p.ProblemRecordID, scope.data.v.PositionID).then(function (r) {
             scope.data.images = r.data;
-            if (scope.data.v.isNew) {
+            if (scope.data.v.isNew  && scope.data.images.length == 0) {
               scope.addPhoto();
             }
           });
