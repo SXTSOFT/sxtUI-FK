@@ -16,6 +16,8 @@
       </feature>
     </config-file>
     <source-file src="src/android/sxt.java" target-dir="src/com/sxt/cordova"/>
+    <source-file src="src/android/PlayActivity.java" target-dir="src/com/sxt/cordova"/>
+    <source-file src="src/android/activity_play.xml" target-dir="res/layout"/>
   </platform>
   <platform name="ios">
     <js-module name="sxt" src="www/sxt.cordova.js">
