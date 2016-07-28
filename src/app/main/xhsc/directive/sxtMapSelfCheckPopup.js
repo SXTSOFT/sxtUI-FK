@@ -21,6 +21,9 @@
       scope.updateValue = function() {
         scope.cancelEdit (true);
       };
+      scope.moveLayer = function () {
+        scope.context.fg.changeMode('move',{ctx:true});
+      }
       scope.apply = function() {
         scope.isSaveData = null;
         scope.$apply();

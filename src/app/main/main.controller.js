@@ -1,31 +1,24 @@
-(function ()
-{
-    'use strict';
+(function () {
+  'use strict';
 
-    angular
-        .module('sxt')
-        .controller('MainController', MainController);
+  angular
+    .module('sxt')
+    .controller('MainController', MainController);
 
-    /** @ngInject */
-    function MainController($scope, $rootScope) {
-      $scope.$on('$viewContentAnimationEnded', function (event) {
-        if (event.targetScope.$id === $scope.$id) {
-          $rootScope.$broadcast('msSplashScreen::remove');
-        }
-      });
-      $scope.$on('hidebar', function () {
-        $scope.isHideBar = true;
-      });
-      //$scope.$on('hidefootbar', function () {
-      //  $scope.hideFBar = false;
-      //  //console.log('b')
-      //});
-    }
-
+  /** @ngInject */
+  function MainController($scope, $rootScope) {
+    $scope.$on('$viewContentAnimationEnded', function (event) {
+      if (event.targetScope.$id === $scope.$id) {
+        $rootScope.$broadcast('msSplashScreen::remove');
+      }
+    });
+    $scope.$on('hidebar', function () {
+      $scope.isHideBar = true;
+    });
+  }
   angular.element(document).ready(function () {
 
-      angular.bootstrap(document, ['sxt']);
+    angular.bootstrap(document, ['sxt']);
   });
-
 
 })();

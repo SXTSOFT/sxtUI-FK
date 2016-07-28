@@ -1,15 +1,15 @@
 /**
  * map_gl 0.1
- * 
- * 
+ *
+ *
  * http://www.sxt.com.cn/
- * 
+ *
  * Copyright 2016, jiuyuong
- * 
+ *
  * http://www.sxt.com.cn/
- * 
+ *
  * Licensed under MIT
- * 
+ *
  * Released on: July 28, 2016
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.mapboxgl = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
@@ -195,7 +195,7 @@
 },{"../geo/lng_lat":10,"../util/dom":96,"../util/evented":100,"../util/util":108}],91:[function(require,module,exports){
 "use strict";function Actor(t,e){this.target=t,this.parent=e,this.callbacks={},this.callbackID=0,this.receive=this.receive.bind(this),this.target.addEventListener("message",this.receive,!1)}module.exports=Actor,Actor.prototype.receive=function(t){var e,s=t.data;if("<response>"===s.type)e=this.callbacks[s.id],delete this.callbacks[s.id],e(s.error||null,s.data);else if("undefined"!=typeof s.id){var i=s.id;this.parent[s.type](s.data,function(t,e,s){this.postMessage({type:"<response>",id:String(i),error:t?String(t):null,data:e},s)}.bind(this))}else this.parent[s.type](s.data)},Actor.prototype.send=function(t,e,s,i){var a=null;s&&(this.callbacks[a=this.callbackID++]=s),this.postMessage({type:t,id:String(a),data:e},i)},Actor.prototype.postMessage=function(t,e){this.target.postMessage(t,e)};
 },{}],92:[function(require,module,exports){
-"use strict";function sameOrigin(e){var t=document.createElement("a");return t.href=e,t.protocol===document.location.protocol&&t.host===document.location.host}exports.getJSON=function(e,t){var n=new XMLHttpRequest;return n.open("GET",e,!0),n.setRequestHeader("Accept","application/json"),n.onerror=function(e){t(e)},n.onload=function(){if(n.status>=200&&n.status<300&&n.response){var e;try{e=JSON.parse(n.response)}catch(e){return t(e)}t(null,e)}else t(new Error(n.statusText))},n.send(),n},exports.getArrayBuffer=function(e,t){var n={};if("undefined"!=typeof window&&(n=window),e.indexOf("assets/font")==-1&&!e.indexOf("assets/sprite")||!n.resolveLocalFileSystemURL||!n.cordova){var r=new XMLHttpRequest;return r.open("GET",e,!0),r.responseType="arraybuffer",r.onerror=function(e){t(e)},r.onload=function(){r.status>=200&&r.status<300&&r.response?t(null,r.response):t(new Error(r.statusText))},r.send(),r}var o=e.indexOf("#");o!=-1&&(e=e.substring(0,o)),n.resolveLocalFileSystemURL(n.cordova.file.applicationDirectory+"www/"+e,function(n){n.file(function(n){var r=new FileReader;r.onloadend=function(e){t(null,this.result)},e.indexOf(".json")!=-1?r.readAsText(n):r.readAsArrayBuffer(n)})},function(e){t(new Error(e))})},exports.getImage=function(e,t){return exports.getArrayBuffer(e,function(e,n){if(e)return t(e);var r=new Image;r.onload=function(){t(null,r),(window.URL||window.webkitURL).revokeObjectURL(r.src)};var o=new Blob([new Uint8Array(n)],{type:"image/png"});return r.src=(window.URL||window.webkitURL).createObjectURL(o),r.getData=function(){var e=document.createElement("canvas"),t=e.getContext("2d");return e.width=r.width,e.height=r.height,t.drawImage(r,0,0),t.getImageData(0,0,r.width,r.height).data},r})},exports.getVideo=function(e,t){var n=document.createElement("video");n.onloadstart=function(){t(null,n)};for(var r=0;r<e.length;r++){var o=document.createElement("source");sameOrigin(e[r])||(n.crossOrigin="Anonymous"),o.src=e[r],n.appendChild(o)}return n.getData=function(){return n},n};
+"use strict";function sameOrigin(e){var t=document.createElement("a");return t.href=e,t.protocol===document.location.protocol&&t.host===document.location.host}exports.getJSON=function(e,t){var n={};if("undefined"!=typeof window&&(n=window),e.indexOf("assets/font")==-1&&!e.indexOf("assets/sprite")||!n.resolveLocalFileSystemURL||!n.cordova){var r=new XMLHttpRequest;return r.open("GET",e,!0),r.setRequestHeader("Accept","application/json"),r.onerror=function(e){t(e)},r.onload=function(){if(r.status>=200&&r.status<300&&r.response){var e;try{e=JSON.parse(r.response)}catch(e){return t(e)}t(null,e)}else t(new Error(r.statusText))},r.send(),r}var o=e.indexOf("#");o!=-1&&(e=e.substring(0,o)),n.resolveLocalFileSystemURL(n.cordova.file.applicationDirectory+"www/"+e,function(e){e.file(function(e){var n=new FileReader;n.onloadend=function(e){t(null,this.result)},n.readAsText(e)})},function(e){t(new Error(e))})},exports.getArrayBuffer=function(e,t){var n={};if("undefined"!=typeof window&&(n=window),e.indexOf("assets/font")==-1&&!e.indexOf("assets/sprite")||!n.resolveLocalFileSystemURL||!n.cordova){var r=new XMLHttpRequest;return r.open("GET",e,!0),r.responseType="arraybuffer",r.onerror=function(e){t(e)},r.onload=function(){r.status>=200&&r.status<300&&r.response?t(null,r.response):t(new Error(r.statusText))},r.send(),r}var o=e.indexOf("#");o!=-1&&(e=e.substring(0,o)),n.resolveLocalFileSystemURL(n.cordova.file.applicationDirectory+"www/"+e,function(e){e.file(function(e){var n=new FileReader;n.onloadend=function(e){t(null,this.result)},n.readAsArrayBuffer(e)})},function(e){t(new Error(e))})},exports.getImage=function(e,t){return exports.getArrayBuffer(e,function(e,n){if(e)return t(e);var r=new Image;r.onload=function(){t(null,r),(window.URL||window.webkitURL).revokeObjectURL(r.src)};var o=new Blob([new Uint8Array(n)],{type:"image/png"});return r.src=(window.URL||window.webkitURL).createObjectURL(o),r.getData=function(){var e=document.createElement("canvas"),t=e.getContext("2d");return e.width=r.width,e.height=r.height,t.drawImage(r,0,0),t.getImageData(0,0,r.width,r.height).data},r})},exports.getVideo=function(e,t){var n=document.createElement("video");n.onloadstart=function(){t(null,n)};for(var r=0;r<e.length;r++){var o=document.createElement("source");sameOrigin(e[r])||(n.crossOrigin="Anonymous"),o.src=e[r],n.appendChild(o)}return n.getData=function(){return n},n};
 },{}],93:[function(require,module,exports){
 "use strict";exports.window=window,module.exports.now=function(){return window.performance&&window.performance.now?window.performance.now.bind(window.performance):Date.now.bind(Date)}();var frame=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.msRequestAnimationFrame;exports.frame=function(e){return frame(e)};var cancel=window.cancelAnimationFrame||window.mozCancelAnimationFrame||window.webkitCancelAnimationFrame||window.msCancelAnimationFrame;exports.cancelFrame=function(e){cancel(e)},exports.timed=function(e,n,o){function r(i){t||(i=module.exports.now(),i>=a+n?e.call(o,1):(e.call(o,(i-a)/n),exports.frame(r)))}if(!n)return e.call(o,1),null;var t=!1,a=module.exports.now();return exports.frame(r),function(){t=!0}},exports.supported=require("mapbox-gl-supported"),exports.hardwareConcurrency=navigator.hardwareConcurrency||4,Object.defineProperty(exports,"devicePixelRatio",{get:function(){return window.devicePixelRatio}}),exports.supportsWebp=!1;var webpImgTest=document.createElement("img");webpImgTest.onload=function(){exports.supportsWebp=!0},webpImgTest.src="data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAQAAAAfQ//73v/+BiOh/AAA=",exports.supportsGeolocation=!!navigator.geolocation;
 },{"mapbox-gl-supported":166}],94:[function(require,module,exports){
@@ -791,7 +791,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
  */
 (function (m) {
     m.Plan = function (options) {
-        var cold='plan_raw',hot='plan_raw_hot',sources = {};
+        var cold='plan_raw',hot='plan_raw_hot',sources = {},mouseDownLngLat;
         sources[cold] = {
             data: {
                 type: 'FeatureCollection',
@@ -806,7 +806,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
             },
             type: 'geojson'
         };
-        var editFeature = null,editPopup = null;
+        var editFeature = null,editPopup = null,editCoordinates = null;
            var ctx = {
                options: options || {},
                uuid: function () {
@@ -845,17 +845,23 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                    ctx.map.off('click', ctx.click);
                },
                changeMode: function (mode, op) {
-                   ctx.cancelEdit();
-                   ctx.removeEventListeners();
+
                    ctx.mode = mode;
+                   if(mode == 'move'){
+                       ctx.moveFeature();
+                   }
+                   else{
+                       ctx.cancelEdit();
+                       //ctx.removeEventListeners();
+                   }
                },
                mousemove: function (e) {
-                   if (!editFeature || !ctx.isDragging) {
+                   if (!mouseDownLngLat || !editFeature || !ctx.isDragging) {
                        return;
                    };
                    if (ctx._moveT)return;
                    ctx._moveT = !0;
-                   sources[hot].data.features[0].geometry.coordinates = e.lngLat.toArray();
+                   sources[hot].data.features[0].geometry.coordinates = [editCoordinates[0]+e.lngLat.lng-mouseDownLngLat.lng,e.lngLat.lat+editCoordinates[1]-mouseDownLngLat.lat];// e.lngLat.toArray();
                    ctx.map.getSource(hot).setData(sources[hot].data);
                    console.log('moveing')
                    setTimeout(function () {
@@ -863,6 +869,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                    }, 30);
                },
                mousedown: function (e) {
+                   mouseDownLngLat = e.lngLat;
                    if(ctx.options.disableDrag)return;
                    //if (!editFeature)return;
                    var features = ctx.findFeatures(e);
@@ -877,20 +884,19 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                    }
                },
                mouseup: function (e) {
+                   mouseDownLngLat = null;
                    if(ctx.options.disableDrag)return;
                    if (ctx.isDragging) {
-                       ctx.isDragging = false;
-                       ctx.map.dragPan.enable();
+                       //ctx.isDragging = false;
+                       //ctx.map.dragPan.enable();
                        var id = sources[hot].data.features[0].properties.$id;
                        var ft = sources[cold].data.features.filter(function (f) {
                            return f.properties.$id == id;
                        });
                        if (ft.length) {
-                           ft[0].geometry.coordinates = sources[hot].data.features[0].geometry.coordinates;
+                           ft[0].geometry.coordinates =  editCoordinates = sources[hot].data.features[0].geometry.coordinates;
                            setup.updateFeature(ft[0], false, null, function () {
                                ctx.resetSource();
-
-                               ctx.edit(ft[0]);
                            });
                        }
                    }
@@ -914,10 +920,13 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                                    }
                                };
                                setup.updateFeature(feature, true, null, function () {
-                                   ctx.addEventListeners();
+                                   //ctx.addEventListeners();
                                    ctx.edit(feature);
                                });
                            }
+                           break;
+                       case 'move':
+                           ctx.cancelMoveFeature();
                            break;
                        default:
                            var features = ctx.findFeaturesCold(e);
@@ -926,7 +935,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                                    return f.properties.$id == features[0].properties.$id;
                                });
                                if (fs.length) {
-                                   ctx.addEventListeners();
+                                   //ctx.addEventListeners();
                                    ctx.cancelEdit();
                                    ctx.edit(fs[0]);
                                }
@@ -938,15 +947,8 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                    }
                },
                cancelEdit: function () {
-
-
                    if (editFeature) {
-                       ctx.map.dragPan.enable();
                        editFeature = null;
-                       if(!ctx.options.disableDrag) {
-                           sources[hot].data.features.length = 0;
-                           ctx.map.getSource(hot).setData(sources[hot].data);
-                       }
                    }
                    if (editPopup) {
                        setup.popupClose(function () {
@@ -957,13 +959,9 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                },
                edit: function (feature) {
                    editFeature = feature;
-                   if(!ctx.options.disableDrag) {
-                       sources[hot].data.features[0] = feature;
-                       ctx.map.getSource(hot).setData(sources[hot].data);
-                   }
                    setup.popupUp(feature, function (el) {
                        if(!el)return;
-                       editPopup = new mapboxgl.Popup({closeButton: false,onUpdate:ctx.PopupOnUpdate,anchor:'bottom'})
+                       editPopup = new mapboxgl.Popup({closeButton: false})
                            .setLngLat(feature.geometry.coordinates);
                        if (typeof el === 'string')
                            editPopup.setHTML(feature.properties.title);
@@ -972,8 +970,37 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                        editPopup.addTo(ctx.map);
                    });
                },
+               moveFeature:function (feature) {
+                   if(!ctx.options.disableDrag) {
+                       editFeature = feature || editFeature;
+                       if(!editFeature) return;
+                       editCoordinates = editFeature.geometry.coordinates;
+
+                       if (editPopup) {
+                           setup.popupClose(function () {
+                               editPopup.remove();
+                               editPopup = null;
+                           });
+                       }
+                       ctx.map.dragPan.disable();
+                       sources[hot].data.features[0] = editFeature;
+                       ctx.map.getSource(hot).setData(sources[hot].data);
+                       ctx.isDragging = true;
+                   }
+               },
+               cancelMoveFeature:function () {
+                   if(!ctx.options.disableDrag) {
+
+                       ctx.isDragging = false;
+                       ctx.mode = null;
+                       ctx.map.dragPan.enable();
+                       editFeature = editCoordinates = null;
+                       sources[hot].data.features.length = 0;
+                       ctx.map.getSource(hot).setData(sources[hot].data);
+                   }
+               },
                resetSource: function () {
-                   ctx.cancelEdit();
+                   //ctx.cancelEdit();
                    ctx.map.getSource(cold).setData(sources[cold].data);
                },
                addData: function (feature, reset) {
@@ -1016,7 +1043,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                    return features
                },
                PopupOnUpdate:function (pos) {
-                   pos.y-=26;
+                   //pos.y-=26;
                }
            };
         var activeButton,buttonElements={};
@@ -1058,14 +1085,14 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                         "type": "symbol",
                         "source": hot,
                         "layout": {
-                            "icon-image":"up-arrow",
-                            "icon-offset":[0,-2],
-                            "icon-size":1.8
+                            "icon-image": "up-arrow",
+                            "icon-offset": [0, 2],
+                            "icon-size": 1.5
                         },
                         "paint": {
                             "text-color": "#000",
                             "icon-color":"#ff0000",
-                            "icon-opacity":0.5
+                            "icon-opacity":0.75
                         }
                     });
 
@@ -1075,21 +1102,20 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                         "source": cold,
                         "filter": ["all",["==", "$type", "Point"],["==", "Status", 2]],
                         "paint": {
-                            "circle-translate":[0,-25],
-                            "circle-radius": 16,
+                            //"circle-translate":[0,-25],
+                            "circle-radius": 12,
                             "circle-color": "#3dd086",
                             "circle-opacity": 0.9
                         }
                     });
                     ctx.map.addLayer({
                         "id": cold + 'lay1',
-                        
+
                         "source": cold,
                         "filter": ["all", ["==", "$type", "Point"], ["in", "Status", 1, 4]],
                         "type": "circle",
                         "paint": {
-                            "circle-translate":[0,-25],
-                            "circle-radius": 16,
+                            "circle-radius": 12,
                             "circle-color": "#ff0000",
                             "circle-opacity": 0.9
                         }
@@ -1101,8 +1127,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                         "filter": ["all", ["==", "$type", "Point"], ["==", "Status", 8]],
                         "type": "circle",
                         "paint": {
-                            "circle-translate":[0,-25],
-                            "circle-radius": 16,
+                            "circle-radius": 12,
                             "circle-color": "#f98700",
                             "circle-opacity": 0.9
                         }
@@ -1113,15 +1138,15 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                         "source": cold,
                         "filter": ["==", "$type", "Point"],
                         "layout": {
-                            "text-offset":[0,-1.5],
                             "text-field": "{seq}",
                             "text-anchor": "center",
-                            "text-size": 16
+                            "text-size": 14
                         },
                         "paint": {
                             "text-color": "#ffffff"
                         }
                     });
+                    ctx.addEventListeners();
                 });
             },
             resetSource:function () {
@@ -1162,15 +1187,17 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                 ctx.map.removeSource(cold);
             },
             addEventListeners:function () {
-                
+
             },
             changeMode:function (mode,op) {
-                if(!ctx.map)return;
-                setup.cb(options.onChangeMode, function () {
-                    deactivateButtons();
-                    return ctx.changeMode(mode,op);
-                },[mode,op]);
-
+                if (!ctx.map)return;
+                if (op && op.ctx)
+                    return ctx.changeMode(mode, op);
+                else
+                    setup.cb(options.onChangeMode, function () {
+                        deactivateButtons();
+                        return ctx.changeMode(mode, op);
+                    }, [mode, op]);
             }
         };
 
@@ -1201,7 +1228,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
         function deactivateButtons() {
             if (!activeButton) return;
             activeButton.className ='mapboxgl-ctrl-icon '+activeButton.id;
-            ctx.changeMode();
+            //ctx.changeMode();
             activeButton = null;
         }
         function setActiveButton(id) {
@@ -1243,6 +1270,14 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                         setup.changeMode('inspect');
                     }
                 });
+ /*               buttonElements['move'] = createControlButton('move', {
+                    container: controlGroup,
+                    className: 'move',
+                    title: '移动',
+                    onActivate: function () {
+                        ctx.changeMode('move');
+                    }
+                });*/
             }
         }
     };
@@ -1357,7 +1392,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
             self.el = null;
         }
     }
-    
+
     L.glProject = Project;
 })(window);
 //# sourceMappingURL=maps/map_gl.js.map

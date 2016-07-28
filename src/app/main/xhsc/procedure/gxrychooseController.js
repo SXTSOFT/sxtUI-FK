@@ -87,6 +87,7 @@
 
     }
     vm.choose = function(user){
+      console.log(user);
       user.checked = !user.checked;
       if(user.checked){
         vm.choosed.push(user);

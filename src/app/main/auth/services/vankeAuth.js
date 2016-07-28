@@ -13,6 +13,9 @@
       token   : token,
       profile : profile
     };
+    $rootScope.$on('user:logout', function () {
+      utils.cookies.remove('auth');
+    });
     var userInfo = api.db({
       _id:'s_userinfo',
       idField:'UserId',
@@ -44,14 +47,16 @@
             data: user
           }).then (function (result) {
             if(result) {
-              //appCookie.put('auth',JSON.stringify(user));
+              utils.cookies.put('auth',JSON.stringify(user));
               var token = result.data;
               resolve(token);
             }
             else{
+              utils.cookies.remove('auth');
               reject({})
             }
           },function(){
+            utils.cookies.remove('auth');
             resolve(user);
           });
           //
