@@ -24,7 +24,7 @@
       })
       $timeout(function(){
         h= $(element).parent().parent().parent('tbody').height();
-        console.log('h',h)
+        //console.log('h',h)
       },400);
 
 

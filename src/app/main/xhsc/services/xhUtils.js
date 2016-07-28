@@ -320,6 +320,7 @@
               $scope.imageId = item.DrawingID;
               $scope.mapName = item.DrawingName
             }
+            $scope.info = {}
           }],
           fullscreen:true,
           template: '<md-dialog style="width: 100%;max-width: 100%;height: 100%;max-height: 100%;" aria-label="List dialog">' +
@@ -328,7 +329,7 @@
           '</md-toolbar>' +
           '<md-dialog-content flex layout="column" style="padding: 0">' +
           '<md-list ng-show="!sMap"><md-list-item ng-repeat="item in mapList" ng-click="showMap(item)">{{item.DrawingName}}</md-list-item></md-list>' +
-          '<div flex ng-show="sMap" sxt-show-map="imageId"></div>'+
+          '<div flex ng-show="sMap" layout="column" ct="info" sxt-show-map="imageId"><div flex layout="row" layout-align="center center" ng-if="info.loading"><md-progress-circular md-mode="indeterminate" ></md-progress-circular></div></div>'+
           '</md-dialog-content></md-dialog>'
         });
       }
