@@ -28,6 +28,10 @@
       load();
     });
 
+    vm.info = {
+      
+    }
+
     function setChina(r) {
       switch (r) {
         case 0:
