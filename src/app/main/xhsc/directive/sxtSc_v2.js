@@ -136,6 +136,7 @@
             layer.loaded = true;
 
             data.findAll(function(o){
+              return o.CheckRegionID==scope.regionId&& o.AcceptanceItemID==scope.acceptanceItem
               return o.CheckRegionID == scope.regionId && o.AcceptanceItemID==scope.acceptanceItem
                 && scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
                   return m.AcceptanceIndexID == o.AcceptanceIndexID
@@ -144,12 +145,11 @@
                     }));
                 });
             }).then(function(r){
-
               points.findAll(function(o){
                 return r.rows.find(function(i){
                     if(i.MeasurePointID == o._id|| i.MeasurePointID == o.MeasurePointID){
                       if(r.rows.find(function(i){
-                          return ((i.MeasurePointID == o._id||i.MeasurePointID == o.MeasurePointID) && i.CheckRegionID==scope.regionId && i.MeasureValue || i.MeasureValue===0)
+                          return ((i.MeasurePointID == o._id||i.MeasurePointID == o.MeasurePointID) && i.MeasureValue || i.MeasureValue===0)
                         })) {
                         o.geometry.options.color = 'blue';
                       }
@@ -168,10 +168,6 @@
                  fg.data = r.rows.filter(function (row) {
                   return row.CheckRegionID==scope.regionId;
                 });
-                //scope.MeasureValues.forEach(function(r){
-                //  fg.data.push(r);
-                //})
-                //fg.addLayer(p);
                 p.rows.sort(function (p1,p2) {
                   return p1.CreateTime.getTime()-p2.CreateTime.getTime();
                 });

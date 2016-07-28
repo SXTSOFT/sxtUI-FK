@@ -23,6 +23,7 @@
     };
 
     function link(scope,element,attr,ctrl) {
+      scope.ct && (scope.ct.loading = true);
       var map,fg;
       var install =function () {
         if (!map) {
@@ -133,6 +134,7 @@
               if (imgId) {
                 remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
                   if(!result2.data.DrawingContent){
+                    scope.ct && (scope.ct.loading = false);
                     utils.alert('未找到图纸,请与管理员联系!(2)');
                     return;
                   }
@@ -152,13 +154,13 @@
                     xhUtils.openLinks(mapList);
                   });
                   element.find('.mapboxgl-ctrl-bottom-left').append(btn);
+                  scope.ct && (scope.ct.loading = false);
                 })
               }
-              else{
-                if(!result.data.DrawingContent){
-                  utils.alert('未找到图纸,请与管理员联系!(1)')
-                  return;
-                }
+              else {
+                scope.ct && (scope.ct.loading = false);
+                utils.alert('未找到图纸,请与管理员联系!(1)')
+                return;
               }
             });
           }, 0);

@@ -10,7 +10,7 @@
  * 
  * Licensed under MIT
  * 
- * Released on: July 27, 2016
+ * Released on: July 28, 2016
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.mapboxgl = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";function Bucket(e){if(this.zoom=e.zoom,this.overscaling=e.overscaling,this.layer=e.layer,this.childLayers=e.childLayers,this.type=this.layer.type,this.features=[],this.id=this.layer.id,this.index=e.index,this.sourceLayer=this.layer.sourceLayer,this.sourceLayerIndex=e.sourceLayerIndex,this.minZoom=this.layer.minzoom,this.maxZoom=this.layer.maxzoom,this.paintAttributes=createPaintAttributes(this),e.arrays){var t=this.childLayers;this.bufferGroups=util.mapObject(e.arrays,function(r,a){return r.map(function(r){var i=util.mapObject(r,function(t,r){return util.mapObject(t,function(t,i){var n=e.arrayTypes[a][r][i],o=n.members.length&&"vertices"===n.members[0].name?Buffer.BufferType.ELEMENT:Buffer.BufferType.VERTEX;return new Buffer(t,n,o)})});i.vaos={},i.layout.element2&&(i.secondVaos={});for(var n=0;n<t.length;n++){var o=t[n].id;i.vaos[o]=new VertexArrayObject,i.layout.element2&&(i.secondVaos[o]=new VertexArrayObject)}return i})})}}function createElementBufferType(e){return new StructArrayType({members:[{type:Buffer.ELEMENT_ATTRIBUTE_TYPE,name:"vertices",components:e||3}]})}function createPaintAttributes(e){var t={};for(var r in e.programInterfaces){for(var a=t[r]={},i=0;i<e.childLayers.length;i++){var n=e.childLayers[i];a[n.id]={attributes:[],uniforms:[],defines:[],vertexPragmas:{define:{},initialize:{}},fragmentPragmas:{define:{},initialize:{}}}}var o=e.programInterfaces[r];if(o.paintAttributes)for(var u="{precision}",s="{type}",l=0;l<o.paintAttributes.length;l++){var f=o.paintAttributes[l];f.multiplier=f.multiplier||1;for(var c=0;c<e.childLayers.length;c++){var m,p=e.childLayers[c],y=a[p.id],h=f.name,v=f.name.slice(2);if(y.fragmentPragmas.initialize[v]="",p.isPaintValueFeatureConstant(f.paintProperty))y.uniforms.push(f),y.fragmentPragmas.define[v]=y.vertexPragmas.define[v]=["uniform",u,s,h].join(" ")+";",y.fragmentPragmas.initialize[v]=y.vertexPragmas.initialize[v]=[u,s,v,"=",h].join(" ")+";\n";else if(p.isPaintValueZoomConstant(f.paintProperty)){y.attributes.push(util.extend({},f,{name:h})),m=["varying",u,s,v].join(" ")+";\n";var g=[y.fragmentPragmas.define[v],"attribute",u,s,h].join(" ")+";\n";y.fragmentPragmas.define[v]=m,y.vertexPragmas.define[v]=m+g,y.vertexPragmas.initialize[v]=[v,"=",h,"/",f.multiplier.toFixed(1)].join(" ")+";\n"}else{for(var d="u_"+h.slice(2)+"_t",b=p.getPaintValueStopZoomLevels(f.paintProperty),T=0;T<b.length&&b[T]<e.zoom;)T++;for(var x=Math.max(0,Math.min(b.length-4,T-2)),B=[],A=0;A<4;A++)B.push(b[Math.min(x+A,b.length-1)]);m=["varying",u,s,v].join(" ")+";\n",y.vertexPragmas.define[v]=m+["uniform","lowp","float",d].join(" ")+";\n",y.fragmentPragmas.define[v]=m,y.uniforms.push(util.extend({},f,{name:d,getValue:createGetUniform(f,x),components:1}));var E=f.components;if(1===E)y.attributes.push(util.extend({},f,{getValue:createFunctionGetValue(f,B),isFunction:!0,components:4*E})),y.vertexPragmas.define[v]+=["attribute",u,"vec4",h].join(" ")+";\n",y.vertexPragmas.initialize[v]=[v,"=","evaluate_zoom_function_1("+h+", "+d+")","/",f.multiplier.toFixed(1)].join(" ")+";\n";else{for(var _=[],P=0;P<4;P++)_.push(h+P),y.attributes.push(util.extend({},f,{getValue:createFunctionGetValue(f,[B[P]]),isFunction:!0,name:h+P})),y.vertexPragmas.define[v]+=["attribute",u,s,h+P].join(" ")+";\n";y.vertexPragmas.initialize[v]=[v," = ","evaluate_zoom_function_4("+_.join(", ")+", "+d+")","/",f.multiplier.toFixed(1)].join(" ")+";\n"}}}}}return t}function createFunctionGetValue(e,t){return function(r,a,i){if(1===t.length)return e.getValue(r,util.extend({},a,{zoom:t[0]}),i);for(var n=[],o=0;o<t.length;o++){var u=t[o];n.push(e.getValue(r,util.extend({},a,{zoom:u}),i)[0])}return n}}function createGetUniform(e,t){return function(r,a){var i=r.getPaintInterpolationT(e.paintProperty,a.zoom);return[Math.max(0,Math.min(4,i-t))]}}var featureFilter=require("feature-filter"),Buffer=require("./buffer"),util=require("../util/util"),StructArrayType=require("../util/struct_array"),VertexArrayObject=require("../render/vertex_array_object");module.exports=Bucket,Bucket.create=function(e){var t={fill:require("./bucket/fill_bucket"),line:require("./bucket/line_bucket"),circle:require("./bucket/circle_bucket"),symbol:require("./bucket/symbol_bucket")};return new t[e.layer.type](e)},Bucket.EXTENT=8192,Bucket.MAX_VERTEX_ARRAY_LENGTH=Math.pow(2,16)-1,Bucket.prototype.populateBuffers=function(){this.createArrays(),this.recalculateStyleLayers();for(var e=0;e<this.features.length;e++)this.addFeature(this.features[e]);this.trimArrays()},Bucket.prototype.prepareArrayGroup=function(e,t){var r=this.arrayGroups[e],a=r.length&&r[r.length-1];if(!a||a.layout.vertex.length+t>Bucket.MAX_VERTEX_ARRAY_LENGTH){var i=this.arrayTypes[e],n=i.layout.vertex,o=i.layout.element,u=i.layout.element2;a={index:r.length,layout:{},paint:{}},a.layout.vertex=new n,o&&(a.layout.element=new o),u&&(a.layout.element2=new u);for(var s=0;s<this.childLayers.length;s++){var l=this.childLayers[s].id,f=i.paint[l];a.paint[l]=new f}r.push(a)}return a},Bucket.prototype.createArrays=function(){this.arrayGroups={},this.arrayTypes={};for(var e in this.programInterfaces){var t=this.programInterfaces[e],r=this.arrayTypes[e]={layout:{},paint:{}};if(this.arrayGroups[e]=[],t.vertexBuffer){var a=new StructArrayType({members:this.programInterfaces[e].layoutAttributes,alignment:Buffer.VERTEX_ATTRIBUTE_ALIGNMENT});r.layout.vertex=a;var i=this.paintAttributes[e];for(var n in i){var o=new StructArrayType({members:i[n].attributes,alignment:Buffer.VERTEX_ATTRIBUTE_ALIGNMENT});r.paint[n]=o}}if(t.elementBuffer){var u=createElementBufferType(t.elementBufferComponents);r.layout.element=u}if(t.elementBuffer2){var s=createElementBufferType(t.elementBuffer2Components);r.layout.element2=s}}},Bucket.prototype.destroy=function(e){for(var t in this.bufferGroups)for(var r=this.bufferGroups[t],a=0;a<r.length;a++){var i=r[a];for(var n in i.paint)i.paint[n].destroy(e);for(var o in i.layout)i.layout[o].destroy(e);for(var u in i.vaos)i.vaos[u].destroy(e);for(var s in i.secondVaos)i.secondVaos[s].destroy(e)}},Bucket.prototype.trimArrays=function(){for(var e in this.arrayGroups){var t=this.arrayGroups[e];for(var r in t.paint)t.paint[r].trim();for(var a in t.layout)t.layout[a].trim()}},Bucket.prototype.setUniforms=function(e,t,r,a,i){for(var n=this.paintAttributes[t][a.id].uniforms,o=0;o<n.length;o++){var u=n[o],s=r[u.name];e["uniform"+u.components+"fv"](s,u.getValue(a,i))}},Bucket.prototype.serialize=function(){return{layerId:this.layer.id,zoom:this.zoom,arrays:util.mapObject(this.arrayGroups,function(e){return e.map(function(e){return util.mapObject(e,function(e){return util.mapObject(e,function(e){return e.serialize()})})})}),arrayTypes:util.mapObject(this.arrayTypes,function(e){return util.mapObject(e,function(e){return util.mapObject(e,function(e){return e.serialize()})})}),childLayerIds:this.childLayers.map(function(e){return e.id})}},Bucket.prototype.createFilter=function(){this.filter||(this.filter=featureFilter(this.layer.filter))};var FAKE_ZOOM_HISTORY={lastIntegerZoom:1/0,lastIntegerZoomTime:0,lastZoom:0};Bucket.prototype.recalculateStyleLayers=function(){for(var e=0;e<this.childLayers.length;e++)this.childLayers[e].recalculate(this.zoom,FAKE_ZOOM_HISTORY)},Bucket.prototype.populatePaintArrays=function(e,t,r,a,i){for(var n=0;n<this.childLayers.length;n++)for(var o=this.childLayers[n],u=this.arrayGroups[e],s=a.index;s<u.length;s++){var l=u[s],f=l.layout.vertex.length,c=l.paint[o.id];c.resize(f);for(var m=this.paintAttributes[e][o.id].attributes,p=0;p<m.length;p++)for(var y=m[p],h=y.getValue(o,t,r),v=y.multiplier||1,g=y.components||1,d=s===a.index?i:0,b=d;b<f;b++)for(var T=c.get(b),x=0;x<g;x++){var B=g>1?y.name+x:y.name;T[B]=h[x]*v}}};
@@ -191,11 +191,11 @@
 },{"../geo/lng_lat":10,"../geo/lng_lat_bounds":11,"../geo/transform":12,"../render/painter":26,"../style/animation_loop":42,"../style/style":45,"../util/browser":93,"../util/canvas":94,"../util/dom":96,"../util/evented":100,"../util/util":108,"./bind_handlers":74,"./camera":75,"./control/attribution":76,"./hash":87,"point-geometry":170}],89:[function(require,module,exports){
 "use strict";function Marker(t){t||(t=DOM.create("div")),t.classList.add("mapboxgl-marker"),this._el=t,this._update=this._update.bind(this)}module.exports=Marker;var DOM=require("../util/dom"),LngLat=require("../geo/lng_lat");Marker.prototype={addTo:function(t){return this.remove(),this._map=t,t.getCanvasContainer().appendChild(this._el),t.on("move",this._update),this._update(),this},remove:function(){this._map&&(this._map.off("move",this._update),this._map=null);var t=this._el.parentNode;return t&&t.removeChild(this._el),this},getLngLat:function(){return this._lngLat},setLngLat:function(t){return this._lngLat=LngLat.convert(t),this._update(),this},getElement:function(){return this._el},_update:function(){if(this._map){var t=this._map.project(this._lngLat);DOM.setTransform(this._el,"translate("+t.x+"px,"+t.y+"px)")}}};
 },{"../geo/lng_lat":10,"../util/dom":96}],90:[function(require,module,exports){
-"use strict";function Popup(t){util.setOptions(this,t),util.bindAll(["_update","_onClickClose"],this)}module.exports=Popup;var util=require("../util/util"),Evented=require("../util/evented"),DOM=require("../util/dom"),LngLat=require("../geo/lng_lat");Popup.prototype=util.inherit(Evented,{options:{closeButton:!0,closeOnClick:!0},addTo:function(t){return this._map=t,this._map.on("move",this._update),this.options.closeOnClick&&this._map.on("click",this._onClickClose),this._update(),this},remove:function(){return this._content&&this._content.parentNode&&this._content.parentNode.removeChild(this._content),this._container&&(this._container.parentNode.removeChild(this._container),delete this._container),this._map&&(this._map.off("move",this._update),this._map.off("click",this._onClickClose),delete this._map),this},getLngLat:function(){return this._lngLat},setLngLat:function(t){return this._lngLat=LngLat.convert(t),this._update(),this},setText:function(t){return this.setDOMContent(document.createTextNode(t))},setHTML:function(t){var e,n=document.createDocumentFragment(),i=document.createElement("body");for(i.innerHTML=t;;){if(e=i.firstChild,!e)break;n.appendChild(e)}return this.setDOMContent(n)},setDOMContent:function(t){return this._createContent(),this._content.appendChild(t),this._update(),this},_createContent:function(){this._content&&this._content.parentNode&&this._content.parentNode.removeChild(this._content),this._content=DOM.create("div","mapboxgl-popup-content",this._container),this.options.closeButton&&(this._closeButton=DOM.create("button","mapboxgl-popup-close-button",this._content),this._closeButton.innerHTML="&#215;",this._closeButton.addEventListener("click",this._onClickClose))},_update:function(){if(this._map&&this._lngLat&&this._content){this._container||(this._container=DOM.create("div","mapboxgl-popup",this._map.getContainer()),this._tip=DOM.create("div","mapboxgl-popup-tip",this._container),this._container.appendChild(this._content));var t=this._map.project(this._lngLat).round(),e=this.options.anchor;if(!e){var n=this._container.offsetWidth,i=this._container.offsetHeight;e=t.y<i?["top"]:t.y>this._map.transform.height-i?["bottom"]:[],t.x<n/2?e.push("left"):t.x>this._map.transform.width-n/2&&e.push("right"),e=0===e.length?"bottom":e.join("-")}var o={top:"translate(-50%,0)","top-left":"translate(0,0)","top-right":"translate(-100%,0)",bottom:"translate(-50%,-100%)","bottom-left":"translate(0,-100%)","bottom-right":"translate(-100%,-100%)",left:"translate(0,-50%)",right:"translate(-100%,-50%)"},s=this._container.classList;for(var a in o)s.remove("mapboxgl-popup-anchor-"+a);s.add("mapboxgl-popup-anchor-"+e),DOM.setTransform(this._container,o[e]+" translate("+t.x+"px,"+t.y+"px)")}},_onClickClose:function(){this.remove()}});
+"use strict";function Popup(t){util.setOptions(this,t),util.bindAll(["_update","_onClickClose"],this)}module.exports=Popup;var util=require("../util/util"),Evented=require("../util/evented"),DOM=require("../util/dom"),LngLat=require("../geo/lng_lat");Popup.prototype=util.inherit(Evented,{options:{closeButton:!0,closeOnClick:!0},addTo:function(t){return this._map=t,this._map.on("move",this._update),this.options.closeOnClick&&this._map.on("click",this._onClickClose),this._update(),this},remove:function(){return this._content&&this._content.parentNode&&this._content.parentNode.removeChild(this._content),this._container&&(this._container.parentNode.removeChild(this._container),delete this._container),this._map&&(this._map.off("move",this._update),this._map.off("click",this._onClickClose),delete this._map),this},getLngLat:function(){return this._lngLat},setLngLat:function(t){return this._lngLat=LngLat.convert(t),this._update(),this},setText:function(t){return this.setDOMContent(document.createTextNode(t))},setHTML:function(t){var e,n=document.createDocumentFragment(),i=document.createElement("body");for(i.innerHTML=t;;){if(e=i.firstChild,!e)break;n.appendChild(e)}return this.setDOMContent(n)},setDOMContent:function(t){return this._createContent(),this._content.appendChild(t),this._update(),this},_createContent:function(){this._content&&this._content.parentNode&&this._content.parentNode.removeChild(this._content),this._content=DOM.create("div","mapboxgl-popup-content",this._container),this.options.closeButton&&(this._closeButton=DOM.create("button","mapboxgl-popup-close-button",this._content),this._closeButton.innerHTML="&#215;",this._closeButton.addEventListener("click",this._onClickClose))},_update:function(){if(this._map&&this._lngLat&&this._content){this._container||(this._container=DOM.create("div","mapboxgl-popup",this._map.getContainer()),this._tip=DOM.create("div","mapboxgl-popup-tip",this._container),this._container.appendChild(this._content));var t=this._map.project(this._lngLat).round(),e=this.options.anchor;if(this.options.onUpdate&&this.options.onUpdate(t),!e){var n=this._container.offsetWidth,i=this._container.offsetHeight;e=t.y<i?["top"]:t.y>this._map.transform.height-i?["bottom"]:[],t.x<n/2?e.push("left"):t.x>this._map.transform.width-n/2&&e.push("right"),e=0===e.length?"bottom":e.join("-")}var o={top:"translate(-50%,0)","top-left":"translate(0,0)","top-right":"translate(-100%,0)",bottom:"translate(-50%,-100%)","bottom-left":"translate(0,-100%)","bottom-right":"translate(-100%,-100%)",left:"translate(0,-50%)",right:"translate(-100%,-50%)"},s=this._container.classList;for(var a in o)s.remove("mapboxgl-popup-anchor-"+a);s.add("mapboxgl-popup-anchor-"+e),DOM.setTransform(this._container,o[e]+" translate("+t.x+"px,"+t.y+"px)")}},_onClickClose:function(){this.remove()}});
 },{"../geo/lng_lat":10,"../util/dom":96,"../util/evented":100,"../util/util":108}],91:[function(require,module,exports){
 "use strict";function Actor(t,e){this.target=t,this.parent=e,this.callbacks={},this.callbackID=0,this.receive=this.receive.bind(this),this.target.addEventListener("message",this.receive,!1)}module.exports=Actor,Actor.prototype.receive=function(t){var e,s=t.data;if("<response>"===s.type)e=this.callbacks[s.id],delete this.callbacks[s.id],e(s.error||null,s.data);else if("undefined"!=typeof s.id){var i=s.id;this.parent[s.type](s.data,function(t,e,s){this.postMessage({type:"<response>",id:String(i),error:t?String(t):null,data:e},s)}.bind(this))}else this.parent[s.type](s.data)},Actor.prototype.send=function(t,e,s,i){var a=null;s&&(this.callbacks[a=this.callbackID++]=s),this.postMessage({type:t,id:String(a),data:e},i)},Actor.prototype.postMessage=function(t,e){this.target.postMessage(t,e)};
 },{}],92:[function(require,module,exports){
-"use strict";function sameOrigin(e){var t=document.createElement("a");return t.href=e,t.protocol===document.location.protocol&&t.host===document.location.host}exports.getJSON=function(e,t){var n=new XMLHttpRequest;return n.open("GET",e,!0),n.setRequestHeader("Accept","application/json"),n.onerror=function(e){t(e)},n.onload=function(){if(n.status>=200&&n.status<300&&n.response){var e;try{e=JSON.parse(n.response)}catch(e){return t(e)}t(null,e)}else t(new Error(n.statusText))},n.send(),n},exports.getArrayBuffer=function(e,t){var n={};if("undefined"!=typeof window&&(n=window),e.indexOf("assets/font")==-1||!n.resolveLocalFileSystemURL||!n.cordova){var r=new XMLHttpRequest;return r.open("GET",e,!0),r.responseType="arraybuffer",r.onerror=function(e){t(e)},r.onload=function(){r.status>=200&&r.status<300&&r.response?t(null,r.response):t(new Error(r.statusText))},r.send(),r}var o=e.indexOf("#");o!=-1&&(e=e.substring(0,o)),n.resolveLocalFileSystemURL(n.cordova.file.applicationDirectory+"www/"+e,function(e){e.file(function(e){var n=new FileReader;n.onloadend=function(e){t(null,this.result)},n.readAsArrayBuffer(e)})},function(e){t(new Error(e))})},exports.getImage=function(e,t){return exports.getArrayBuffer(e,function(e,n){if(e)return t(e);var r=new Image;r.onload=function(){t(null,r),(window.URL||window.webkitURL).revokeObjectURL(r.src)};var o=new Blob([new Uint8Array(n)],{type:"image/png"});return r.src=(window.URL||window.webkitURL).createObjectURL(o),r.getData=function(){var e=document.createElement("canvas"),t=e.getContext("2d");return e.width=r.width,e.height=r.height,t.drawImage(r,0,0),t.getImageData(0,0,r.width,r.height).data},r})},exports.getVideo=function(e,t){var n=document.createElement("video");n.onloadstart=function(){t(null,n)};for(var r=0;r<e.length;r++){var o=document.createElement("source");sameOrigin(e[r])||(n.crossOrigin="Anonymous"),o.src=e[r],n.appendChild(o)}return n.getData=function(){return n},n};
+"use strict";function sameOrigin(e){var t=document.createElement("a");return t.href=e,t.protocol===document.location.protocol&&t.host===document.location.host}exports.getJSON=function(e,t){var n=new XMLHttpRequest;return n.open("GET",e,!0),n.setRequestHeader("Accept","application/json"),n.onerror=function(e){t(e)},n.onload=function(){if(n.status>=200&&n.status<300&&n.response){var e;try{e=JSON.parse(n.response)}catch(e){return t(e)}t(null,e)}else t(new Error(n.statusText))},n.send(),n},exports.getArrayBuffer=function(e,t){var n={};if("undefined"!=typeof window&&(n=window),e.indexOf("assets/font")==-1&&!e.indexOf("assets/sprite")||!n.resolveLocalFileSystemURL||!n.cordova){var r=new XMLHttpRequest;return r.open("GET",e,!0),r.responseType="arraybuffer",r.onerror=function(e){t(e)},r.onload=function(){r.status>=200&&r.status<300&&r.response?t(null,r.response):t(new Error(r.statusText))},r.send(),r}var o=e.indexOf("#");o!=-1&&(e=e.substring(0,o)),n.resolveLocalFileSystemURL(n.cordova.file.applicationDirectory+"www/"+e,function(n){n.file(function(n){var r=new FileReader;r.onloadend=function(e){t(null,this.result)},e.indexOf(".json")!=-1?r.readAsText(n):r.readAsArrayBuffer(n)})},function(e){t(new Error(e))})},exports.getImage=function(e,t){return exports.getArrayBuffer(e,function(e,n){if(e)return t(e);var r=new Image;r.onload=function(){t(null,r),(window.URL||window.webkitURL).revokeObjectURL(r.src)};var o=new Blob([new Uint8Array(n)],{type:"image/png"});return r.src=(window.URL||window.webkitURL).createObjectURL(o),r.getData=function(){var e=document.createElement("canvas"),t=e.getContext("2d");return e.width=r.width,e.height=r.height,t.drawImage(r,0,0),t.getImageData(0,0,r.width,r.height).data},r})},exports.getVideo=function(e,t){var n=document.createElement("video");n.onloadstart=function(){t(null,n)};for(var r=0;r<e.length;r++){var o=document.createElement("source");sameOrigin(e[r])||(n.crossOrigin="Anonymous"),o.src=e[r],n.appendChild(o)}return n.getData=function(){return n},n};
 },{}],93:[function(require,module,exports){
 "use strict";exports.window=window,module.exports.now=function(){return window.performance&&window.performance.now?window.performance.now.bind(window.performance):Date.now.bind(Date)}();var frame=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.msRequestAnimationFrame;exports.frame=function(e){return frame(e)};var cancel=window.cancelAnimationFrame||window.mozCancelAnimationFrame||window.webkitCancelAnimationFrame||window.msCancelAnimationFrame;exports.cancelFrame=function(e){cancel(e)},exports.timed=function(e,n,o){function r(i){t||(i=module.exports.now(),i>=a+n?e.call(o,1):(e.call(o,(i-a)/n),exports.frame(r)))}if(!n)return e.call(o,1),null;var t=!1,a=module.exports.now();return exports.frame(r),function(){t=!0}},exports.supported=require("mapbox-gl-supported"),exports.hardwareConcurrency=navigator.hardwareConcurrency||4,Object.defineProperty(exports,"devicePixelRatio",{get:function(){return window.devicePixelRatio}}),exports.supportsWebp=!1;var webpImgTest=document.createElement("img");webpImgTest.onload=function(){exports.supportsWebp=!0},webpImgTest.src="data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAQAAAAfQ//73v/+BiOh/AAA=",exports.supportsGeolocation=!!navigator.geolocation;
 },{"mapbox-gl-supported":166}],94:[function(require,module,exports){
@@ -602,7 +602,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
         self.texts.forEach(function (text) {
             var p = self.rotate(0, 0, (text.latlng[0] - _mx) * z, (text.latlng[1] - _my) * z, 90);
             text.latlng[0] = p[0];
-            text.latlng[1] = p[1] + 1;
+            text.latlng[1] = Number((p[1] + 1).toFixed(5));
         });
         /*            maxX = (maxX-_mx)*z;
          minX = (minX-_mx)*z;
@@ -753,6 +753,37 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
             }
         }
     };
+    svgParse.prototype.getJSON2 = function () {
+        var cvr = this,g=[];
+        cvr.lineString.forEach(function (line) {
+            g.push({
+                    a:line.latlngs,
+                    b:line.attrs
+            });
+        });
+        cvr.polygons.forEach(function (line) {
+            g.push({
+                a:[line.latlngs],
+                b:line.attrs
+            });
+        });
+        cvr.texts.forEach(function (text) {
+            g.push({
+                a:text.latlng,
+                b:{
+                    c:text.rotate,
+                    d:text.text
+                }
+            });
+        });
+
+        return {
+            geoJSON: {
+                type: 'FeatureCollection',
+                features: g
+            }
+        }
+    };
     m.svgParse = svgParse;
 })(mapboxgl);
 /**
@@ -826,27 +857,27 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                    ctx._moveT = !0;
                    sources[hot].data.features[0].geometry.coordinates = e.lngLat.toArray();
                    ctx.map.getSource(hot).setData(sources[hot].data);
+                   console.log('moveing')
                    setTimeout(function () {
                        ctx._moveT = !1;
                    }, 30);
                },
                mousedown: function (e) {
                    if(ctx.options.disableDrag)return;
-                   if (!editFeature)return;
+                   //if (!editFeature)return;
                    var features = ctx.findFeatures(e);
-                   if (features.length && features.filter(function (f) {
-                           return f.properties.$id == editFeature.properties.$id;
-                       }).length) {
+                   if (features.length) {
                        if (editPopup) {
                            editPopup.remove();
                            editPopup = null;
                        }
-                       sources[hot].data.features[0] = features[0];
                        ctx.isDragging = true;
                        ctx.map.dragPan.disable();
+                       console.log('begin move')
                    }
                },
                mouseup: function (e) {
+                   if(ctx.options.disableDrag)return;
                    if (ctx.isDragging) {
                        ctx.isDragging = false;
                        ctx.map.dragPan.enable();
@@ -858,8 +889,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                            ft[0].geometry.coordinates = sources[hot].data.features[0].geometry.coordinates;
                            setup.updateFeature(ft[0], false, null, function () {
                                ctx.resetSource();
-                               sources[hot].data.features.length = 0;
-                               ctx.map.getSource(hot).setData(sources[hot].data);
+
                                ctx.edit(ft[0]);
                            });
                        }
@@ -890,7 +920,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                            }
                            break;
                        default:
-                           var features = ctx.findFeatures(e);
+                           var features = ctx.findFeaturesCold(e);
                            if (features.length) {
                                var fs = sources[cold].data.features.filter(function (f) {
                                    return f.properties.$id == features[0].properties.$id;
@@ -908,9 +938,15 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                    }
                },
                cancelEdit: function () {
+
+
                    if (editFeature) {
                        ctx.map.dragPan.enable();
                        editFeature = null;
+                       if(!ctx.options.disableDrag) {
+                           sources[hot].data.features.length = 0;
+                           ctx.map.getSource(hot).setData(sources[hot].data);
+                       }
                    }
                    if (editPopup) {
                        setup.popupClose(function () {
@@ -921,9 +957,13 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                },
                edit: function (feature) {
                    editFeature = feature;
+                   if(!ctx.options.disableDrag) {
+                       sources[hot].data.features[0] = feature;
+                       ctx.map.getSource(hot).setData(sources[hot].data);
+                   }
                    setup.popupUp(feature, function (el) {
                        if(!el)return;
-                       editPopup = new mapboxgl.Popup({closeButton: false})
+                       editPopup = new mapboxgl.Popup({closeButton: false,onUpdate:ctx.PopupOnUpdate,anchor:'bottom'})
                            .setLngLat(feature.geometry.coordinates);
                        if (typeof el === 'string')
                            editPopup.setHTML(feature.properties.title);
@@ -960,12 +1000,23 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                    ctx.cancelEdit();
                },
                findFeatures:function (e){
-                   var features = ctx.map.queryRenderedFeatures(e.point, {layers: [cold + 'lay']});
-                   if(!features.length)
+                   var features = ctx.map.queryRenderedFeatures(e.point, {layers: [hot + 'lay']});
+/*                   if(!features.length)
                        features = ctx.map.queryRenderedFeatures(e.point, {layers: [cold + 'lay1']});
                    if(!features.length)
+                       features = ctx.map.queryRenderedFeatures(e.point, {layers: [cold + 'lay2']});*/
+                   return features
+               },
+               findFeaturesCold:function (e) {
+                   var features = ctx.map.queryRenderedFeatures(e.point, {layers: [cold + 'lay']});
+                   if (!features.length)
+                       features = ctx.map.queryRenderedFeatures(e.point, {layers: [cold + 'lay1']});
+                   if (!features.length)
                        features = ctx.map.queryRenderedFeatures(e.point, {layers: [cold + 'lay2']});
                    return features
+               },
+               PopupOnUpdate:function (pos) {
+                   pos.y-=26;
                }
            };
         var activeButton,buttonElements={};
@@ -1004,12 +1055,17 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                     ctx.map.addSource(hot, sources[hot]);
                     ctx.map.addLayer({
                         "id": hot + 'lay',
-                        "type": "circle",
+                        "type": "symbol",
                         "source": hot,
+                        "layout": {
+                            "icon-image":"up-arrow",
+                            "icon-offset":[0,-2],
+                            "icon-size":1.8
+                        },
                         "paint": {
-                            "circle-radius": 12,
-                            "circle-color": "#00ff00",
-                            "circle-opacity": 0.9
+                            "text-color": "#000",
+                            "icon-color":"#ff0000",
+                            "icon-opacity":0.5
                         }
                     });
 
@@ -1019,29 +1075,34 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                         "source": cold,
                         "filter": ["all",["==", "$type", "Point"],["==", "Status", 2]],
                         "paint": {
-                            "circle-radius": 12,
+                            "circle-translate":[0,-25],
+                            "circle-radius": 16,
                             "circle-color": "#3dd086",
                             "circle-opacity": 0.9
                         }
                     });
                     ctx.map.addLayer({
                         "id": cold + 'lay1',
-                        "type": "circle",
+                        
                         "source": cold,
                         "filter": ["all", ["==", "$type", "Point"], ["in", "Status", 1, 4]],
+                        "type": "circle",
                         "paint": {
-                            "circle-radius": 12,
+                            "circle-translate":[0,-25],
+                            "circle-radius": 16,
                             "circle-color": "#ff0000",
                             "circle-opacity": 0.9
                         }
                     });
                     ctx.map.addLayer({
                         "id": cold + 'lay2',
-                        "type": "circle",
+
                         "source": cold,
                         "filter": ["all", ["==", "$type", "Point"], ["==", "Status", 8]],
+                        "type": "circle",
                         "paint": {
-                            "circle-radius": 12,
+                            "circle-translate":[0,-25],
+                            "circle-radius": 16,
                             "circle-color": "#f98700",
                             "circle-opacity": 0.9
                         }
@@ -1052,12 +1113,13 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                         "source": cold,
                         "filter": ["==", "$type", "Point"],
                         "layout": {
+                            "text-offset":[0,-1.5],
                             "text-field": "{seq}",
                             "text-anchor": "center",
-                            "text-size": 14
+                            "text-size": 16
                         },
                         "paint": {
-                            "text-color": "#fff"
+                            "text-color": "#ffffff"
                         }
                     });
                 });
@@ -1219,6 +1281,7 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                         data: this.json.geoJSON
                     }
                 },
+                "sprite":"assets/sprite",
                 "glyphs": "assets/font/{range}.pbf#{fontstack}",
                 "layers": [{
                     'id': 'background',
@@ -1279,14 +1342,9 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
             center: [0.4495199496143392,0.49613420361086097],
             zoom: 9
         });
-        //map.addControl(new mapboxgl.Navigation({position :'top-left'}));
+        map.addControl(new mapboxgl.Navigation({position :'top-left'}));
         map.fitBounds(this.json.bounds);
         map.setMaxBounds(this.json.maxBounds);
-        map.dragRotate.disable();
-/*        var plan = box.Plan({
-
-        });
-        map.addControl(plan);*/
         this.map = map;
         return this;
     };

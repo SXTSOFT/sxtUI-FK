@@ -15,7 +15,7 @@
     };
     var userInfo = api.db({
       _id:'s_userinfo',
-      idField:'Id',
+      idField:'UserId',
       filter:function () {
         return true;
       },

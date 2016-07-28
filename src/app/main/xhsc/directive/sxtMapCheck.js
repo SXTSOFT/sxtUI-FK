@@ -195,11 +195,9 @@
                 })
               }
               else{
-                if(!result.data.DrawingContent){
-                  utils.alert('未找到图纸,请与管理员联系!(1)');
-                  scope.ct && (scope.ct.loading = false);
-                  return;
-                }
+                scope.ct && (scope.ct.loading = false);
+                utils.alert('未找到图纸,请与管理员联系!(1)')
+                return;
               }
             });
           }, 0);
