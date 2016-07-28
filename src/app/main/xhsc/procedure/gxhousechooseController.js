@@ -9,7 +9,7 @@
     .controller('gxhousechooseController',gxhousechooseController);
 
   /** @ngInject */
-  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils){
+  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils,api){
     var vm=this,
       id = $stateParams.assessmentID,
       AssessmentTypeID = $stateParams.AssessmentTypeID,
@@ -313,6 +313,10 @@
     }
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
+      if(api.getNetwork()==1){
+        utils.alert('当前处于离线状态,无法提交报验!');
+        return;
+      }
       vm.data = {
         projectId:projectId,
         Rows:[],
@@ -321,7 +325,6 @@
         acceptanceItemID:acceptanceItemID
       }
 
-      //console.log('vmhouse',vm.houses)
       vm.houses.forEach(function(t){
         if (!t.Children){
           t.Children=[];
