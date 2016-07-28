@@ -438,7 +438,7 @@
                 }
                 else if(cfg.delete){
                   args.forEach(function (d) {
-                    lodb.delete(id(d,null,cfg)||d);
+                    lodb.delete(id(d,null,args,cfg)||d);
                  });
                   resolve(args);
                 }

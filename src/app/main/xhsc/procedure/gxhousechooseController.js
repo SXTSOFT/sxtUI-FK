@@ -35,7 +35,7 @@
         wzg:0//未整改
       }
       function  setNum(status,region){
-        if(vm.maxRegion >8){
+        function  addNum(status){
           vm.nums.qb++;
           switch (status){
             case  0:
@@ -57,42 +57,27 @@
               vm.nums.yzg++;
               break;
           }
-        }else{
-          if(region.RegionType == 8){
-            vm.nums.qb++;
-            switch (status){
-              case  0:
-                vm.nums.wtj++;
-                break;
-              case  1:
-                vm.nums.dy++;
-                break;
-              case  2:
-                vm.nums.hg++;
-                break;
-              case  4:
-                vm.nums.bhg++;
-                break;
-              case  8:
-                vm.nums.wzg++;
-                break;
-              case  16:
-                vm.nums.yzg++;
-                break;
+        }
+        if (vm.maxRegion==8){
+            if (region.RegionType==8&&region.hasShowRight){
+              addNum(status);
             }
-          }
+        }else {
+            if (region.RegionType>=8&&region.hasShowRight){
+              addNum(status);
+            }
         }
       }
       //状态设置与用户区域权限
       function filterOrSetting(status,region){
-        if (region.RegionType>4){
-          statusSetting(status,region);
-        }
         var st=status.find(function(o){
           return o.AreaId.indexOf(region.RegionID)!=-1;
         });
         if (st){
           region.hasShowRight=true;
+        }
+        if (region.RegionType>4){
+          statusSetting(status,region);
         }
       }
       var st2 =[];
@@ -163,6 +148,7 @@
         remote.Procedure.getRegionStatus(projectId)
       ]).then(function(res){
         vm.loading = true;
+        console.log(res[0])
         var result=res[0];
         var status=res[1]&&res[1].data?res[1].data:[];
         result.data[0].RegionRelations.forEach(function(d){
