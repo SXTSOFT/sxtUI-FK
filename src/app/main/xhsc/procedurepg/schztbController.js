@@ -16,6 +16,8 @@
       pname: $stateParams.pname,
       name:$stateParams.name
     };
+    vm.regionId=$stateParams.regionId;
+    vm.AcceptanceItemID = $stateParams.measureItemID;
     $rootScope.title = vm.info.name+'('+vm.info.pname+')';
     vm.back = function () {
       history.back();
@@ -27,78 +29,39 @@
       RelationID:$stateParams.db//'a55164d5c46f454ca8df799f520bbba8'//
     }).then(function (result){
 
-      //vm.temp=[];
-      //var itemList=[];
-      //result.data.forEach(function(item){
-      //
-      //  var f = itemList.find(function(m){
-      //    return m.AcceptanceIndexID == item.AcceptanceIndexID;
-      //  })
-      //  if(!f){
-      //    itemList.push({
-      //      types:[item],
-      //      ParentAcceptanceIndexID:item.ParentAcceptanceIndexID,
-      //      AcceptanceIndexName:item.AcceptanceIndexName,
-      //      AcceptanceIndexID: item.AcceptanceIndexID,
-      //      rowsd:[item.MeasureValueList]
-      //    })
-      //  }else{
-      //    f.types.push(item);
-      //    f.rowsd.push(item.MeasureValueList);
-      //  }
-      //  item.itemNew = itemList;
-      //
-      //})
 
-      //itemList.forEach(function(item){
-      //  item.MeasureValueList=[];
-      //  item.rowsd.forEach(function(m){
-      //    for(var i=0;i< m.length;i++){
-      //      item.MeasureValueList.push(m[i])
-      //    }
-      //  })
-      //})
-
-      //itemList.forEach(function (item) {
-      //
-      //  var newList = [];
-      //  item.MeasureValueList.forEach(function (m) {
-      //    var p = newList.find(function (m1) {
-      //      return m1.MeasurePointID == m.MeasurePointID;
-      //    });
-      //    if (!p) {
-      //      newList.push({
-      //        MeasurePointID: m.MeasurePointID,
-      //        ParentMeasureValueID: m.ParentMeasureValueID,
-      //        values: [m]
-      //      })
-      //    }
-      //    else {
-      //      p.values.push(m);
-      //    }
-      //  });
-      //  item.newList = newList;
-      //});
-      //console.log(itemList)
 
       var newD = [];
 
 
       result.data.forEach(function (item) {
         //item.newList
-        if(!item.MeasureValueList.length){
+        if(!item.List.length){
         //if(!item.newList.length){
-          var rowSpan = 0,t1=0,t2 = 0;
+          var rowSpan = 0,t1=0,t2 = 0,tempq=[],tempa=[];
           item.Children = result.data.filter(function (r) {
             if(r.ParentAcceptanceIndexID==item.AcceptanceIndexID){
-              if(r.MeasureValueList.length==0)return false;
+              if(r.List.length==0)return false;
               r.rows = [];
               var ps=[];
-              r.QualifiedRate = r.QualifiedRate * 100;
-              r.allDot = r.QualifiedPointNum + r.UnqualifiedPointNum;
-              t1 += r.QualifiedPointNum;
-              t2 += r.allDot;
-              r.MeasureValueList.forEach(function (m) {
+              var numbers=[];
+              for(var i=0;i<r.QualifiedPointNum.length;i++){
+                var q = r.QualifiedPointNum[i].Value;
+                var p = r.UnqualifiedPointNum[i].Value;
+                tempa.push({Role:r.QualifiedPointNum[i].Role,allDot:q+p});
+              }
+              //r.numbers =numbers;
+              for(var i=0;i< r.QualifiedPointNum.length;i++){
+                tempq.push(r.QualifiedPointNum[i]);
+              }
+              r.QualifiedRate.forEach(function(v){
+                v.Value = v.Value * 100;
+              })
+              //r.QualifiedRate = r.QualifiedRate * 100;
+              //r.allDot = r.QualifiedPointNum + r.UnqualifiedPointNum;
+              //t1 += r.QualifiedPointNum;
+              //t2 += r.allDot;
+              r.List.forEach(function (m) {
                 var p = ps.find(function (p1) {
                   return p1.ParentMeasureValueID == m.ParentMeasureValueID;
                 });
@@ -139,20 +102,78 @@
             }
             return false;
           });
-
-          item.QualifiedPointNum = t1;
+          var t1a= 0,t2a= 0,t3a= 0,t4a=0,t5a=0,t6a=0;
+          //item.Qall = t1;
+          //item.QualifiedPointNum = t1;
           item.rowSpan = rowSpan;
-          item.allDot = t2;
+          //item.allDot = t2;
           newD.push(item);
+          console.log(tempa)
+          var atemp=[],btemp=[];
+          if(tempa){
+            for(var i=0;i<tempa.length;i++){
+              var f =atemp.find(function(t){
+                return t.Role == tempa[i].Role;
+              })
+              if(!f){
+                f={
+                  Role:tempa[i].Role,
+                  t:tempa[i].allDot
+                }
+                atemp.push(f)
+              }else{
+                f.t +=tempa[i].allDot
+              }
+            }
+          }
+          if(tempq){
+            for(var i=0;i<tempq.length;i++){
+              var f =btemp.find(function(t){
+                return t.Role == tempa[i].Role;
+              })
+              if(!f){
+                f={
+                  Role:tempq[i].Role,
+                  t:tempq[i].Value
+                }
+                btemp.push(f)
+              }else{
+                f.t +=tempq[i].Value
+              }
+            }
+          }
+          var arra=[],arrb=[];
+          for(var i=0;i<btemp.length;i++){
+            var a = btemp[i].t/atemp[i].t;
+            arra.push({Role:btemp[i].Role,Value:a});
+          }
+          for(var i=0;i<atemp.length;i++){
+            var a = btemp[i].t+'/'+atemp[i].t;
+            arrb.push({Role:btemp[i].Role,Value:a});
+          }
+          item.allDot = arrb;
+          item.Qual = arra;
+          //console.log(btemp);
+          //item.allDot = item.allDot;
         }
         else if(!item.ParentAcceptanceIndexID){
           item.rows = [];
           var ps=[];
-          item.QualifiedRate = item.QualifiedRate * 100;
-          //item.allDot = [];
-          //
-          item.allDot = item.QualifiedPointNum + item.UnqualifiedPointNum;
-          item.MeasureValueList.forEach(function (m) {
+          item.QualifiedRate.forEach(function(v){
+            v.Value = v.Value * 100;
+          })
+          var numbers=[];
+          for(var i=0;i<item.QualifiedPointNum.length;i++){
+            var q = item.QualifiedPointNum[i].Value;
+            var p = item.UnqualifiedPointNum[i].Value;
+            numbers.push({Role:item.QualifiedPointNum[i].Role,allDot:q+'/'+p});
+          }
+          item.numbers =numbers;
+
+          //item.QualifiedRate = item.QualifiedRate * 100;
+          //item.allDot = item.QualifiedPointNum + item.UnqualifiedPointNum;
+         // item.QualifiedRate
+          item.List.forEach(function (m) {
             var p = ps.find(function (p1) {
               return p1.ParentMeasureValueID == m.ParentMeasureValueID;
             });
@@ -176,8 +197,11 @@
             }
             else {
               p.ms.push(m);
-              if (item.AcceptanceIndexName.indexOf('尺寸一致性') != -1) {
-                m.MeasureValue = m.MeasureValue + '<br/>' + m.DesignValue;
+              if (item.IndexName.indexOf('尺寸一致性') != -1) {
+                m.MeasureValue.forEach(function(_r){
+                  _r.Value =_r.Value + '<br/>' + m.DesignValue[$index].Value;
+                })
+                //m.MeasureValue = m.MeasureValue + '<br/>' + m.DesignValue;
               // m.MeasureValue = m.MeasureValue;
             }
             }

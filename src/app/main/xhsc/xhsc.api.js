@@ -468,8 +468,8 @@
       queryRegions:function (arg) {
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentSectionExtractRegion',arg))
       },
-      GetMeasureIndexMeasureInfo:function (recordId,itemId) {
-        return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfo',{measureRecordID:recordId,acceptanceIndexID:itemId}));
+      GetMeasureIndexMeasureInfo:function (regionId,itemId) {
+        return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfo',{RegionID:regionId,acceptanceIndexID:itemId}));
       },
       query:$http.db({
           _id:'projects',
