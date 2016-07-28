@@ -10,8 +10,9 @@
 
 
   /** @ngInject */
-  function  utilsFactory($mdToast,$mdDialog){
+  function  utilsFactory($mdToast,$mdDialog,$window){
 
+    var storage = $window.localStorage;
     return {
       id:'52327c423debf68027000006',
       math: {
@@ -43,7 +44,24 @@
       alert:alertMessage,
       confirm:confirmMessage,
       error:errorMessage,
-      copy:copyFn
+      copy:copyFn,
+      cookies:{
+        c:{},
+        put:function(name,value){
+          this.c[name] = value;
+          storage && storage.setItem(name,value);
+        },
+        remove:function(name){
+          delete this.c[name];
+          storage && storage.removeItem(name);
+        },
+        get:function(name){
+          var v = this.c[name];
+          if(!v && storage)
+            v=storage.getItem(name);
+          return v;
+        }
+      }
     };
 
     function accSub(arg2, arg1) {

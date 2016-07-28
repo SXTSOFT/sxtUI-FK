@@ -23,6 +23,18 @@
           utils.tips('用户名或密码错误')
         })
       }
-        //////////
+
+      var authObj = utils.cookies.get('auth');
+
+      if(authObj) {
+        authObj = JSON.parse (authObj);
+        vm.form = authObj;
+        vm.login();
+      }
+      else{
+        vm.show=true;
+      }
+
+      //////////
     }
 })();
