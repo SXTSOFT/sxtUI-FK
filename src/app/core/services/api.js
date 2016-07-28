@@ -119,7 +119,10 @@
       $rootScope.$on('$cordovaNetwork:offline', function(event, state){
         networkState =1;
       });
-      api.resetNetwork();
+      $timeout(function () {
+        api.resetNetwork();
+      },1000);
+
 
       api.db = provider.$http.db;
       api.clearDb = clearDb;
