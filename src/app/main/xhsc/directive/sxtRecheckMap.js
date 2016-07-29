@@ -26,6 +26,7 @@
       scope.ct && (scope.ct.loading = true);
       var map,fg;
       var install =function () {
+        scope.ct && (scope.ct.loading = true);
         if (!map) {
           map = new $window.L.glProject(element[0], {
             map: {

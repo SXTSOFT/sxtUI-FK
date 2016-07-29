@@ -269,7 +269,7 @@
       });*/
     };
 
-    remote.Procedure.getInspections(1).then(function(r){
+    remote.Procedure.getInspections(31).then(function(r){
       vm.Inspections=[];
       r.data.forEach(function(o){
         if (o.Sign!=8){
