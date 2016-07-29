@@ -15,7 +15,8 @@
       pouchdb,
       settingDb,
       uploadDb,
-      networkState = 1;
+      networkState = 1,
+      isSetting = false;
 
 
     provider.register = register;
@@ -33,7 +34,7 @@
 
     provider.$get = getApi;
     provider.get = getServer;
-    provider.setting = setting
+    provider.setting = setting;
 
     getApi.$injector = ['$resource','$http','$injector','$q','db','$rootScope','$cordovaNetwork','$window','$cordovaFileTransfer','$timeout'];
 
@@ -55,13 +56,12 @@
       api.upload = upload;
       api.uploadTask = uploadTask;
       provider.setNetwork = api.setNetwork = function (state) {
-
+        isSetting = true;
+        networkState = state;
         if(networkState==0)
           $rootScope.$emit('$cordovaNetwork:online');
         else
           $rootScope.$emit('$cordovaNetwork:offline');
-
-        networkState = state;
       };
       api.getNetwork = provider.getNetwork = function () {
         return networkState;
@@ -119,10 +119,13 @@
       };
 
       $rootScope.$on('$cordovaNetwork:online', function(event, state){
-        api.resetNetwork();
+        if(!isSetting)
+          api.resetNetwork();
+        isSetting = false;
       });
       $rootScope.$on('$cordovaNetwork:offline', function(event, state){
         networkState =1;
+        isSetting = false;
       });
       $timeout(function () {
         $rootScope.$emit('$cordovaNetwork:online');
