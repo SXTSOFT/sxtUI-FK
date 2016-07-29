@@ -20,6 +20,16 @@
     });
   }
   apiProvider.register('xhsc',{
+    profile:$http.db({
+      _id:'s_userinfo',
+      idField:'UserId',
+      filter:function () {
+        return true;
+      },
+      dataType:3
+    }).bind(function () {
+      return $http.get(sxt.app.api + '/api/Security/profile', {t: new Date().getTime()});
+    }),
     offline:$http.db({
       _id:'s_offline',
       idField:'Id',

@@ -66,6 +66,7 @@
       };
       api.resetNetwork = function () {
         var type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
+
         switch (type) {
           case 'ethernet':
           case 'wifi':
@@ -83,6 +84,8 @@
             networkState = 0;
             break;
         }
+        //api.setNetwork(networkState);
+        //console.log('networkState',type,networkState);
       };
 
       api.useNetwork = function (state) {
@@ -120,8 +123,8 @@
         networkState =1;
       });
       $timeout(function () {
-        api.resetNetwork();
-      },1000);
+        $rootScope.$emit('$cordovaNetwork:online');
+      },100);
 
 
       api.db = provider.$http.db;

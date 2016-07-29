@@ -16,7 +16,7 @@
     $rootScope.$on('user:logout', function () {
       utils.cookies.remove('auth');
     });
-    var userInfo = api.db({
+/*    var userInfo = api.db({
       _id:'s_userinfo',
       idField:'UserId',
       filter:function () {
@@ -25,7 +25,7 @@
       dataType:3
     }).bind(function () {
       return $http.get(sxt.app.api + '/api/Security/profile', {t: new Date().getTime()});
-    });
+    });*/
     return service;
 
     function token(user){
@@ -71,7 +71,7 @@
       if(!token || !token.username) {
         return $q (function (resolve, reject) {
           api.setNetwork(0);
-          userInfo().then(function (d) {
+          api.xhsc.profile().then(function (d) {
             if(!d ||(!d.status && !d.data)){
               $rootScope.$emit('user:needlogin');
             }
