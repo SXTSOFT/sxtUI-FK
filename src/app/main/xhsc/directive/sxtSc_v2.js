@@ -137,7 +137,6 @@
 
             data.findAll(function(o){
               return o.CheckRegionID==scope.regionId&& o.AcceptanceItemID==scope.acceptanceItem
-              return o.CheckRegionID == scope.regionId && o.AcceptanceItemID==scope.acceptanceItem
                 && scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
                   return m.AcceptanceIndexID == o.AcceptanceIndexID
                     ||(m.Children && m.Children.find(function (m1) {
@@ -377,6 +376,7 @@
                     vs.push(v);
                   }
                 };
+                m.v.CreateTime = now();
                 m.v.MeasureValue = maxV;
                 m.v.DesignValue = minV;
                 m.v.ExtendedField1 = vs.join(',');
