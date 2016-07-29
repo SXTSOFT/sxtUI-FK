@@ -100,7 +100,7 @@
 
       remote.Procedure.createZGReceipt(vm.data).then(function(r){
 
-          if (r.data){
+          if (r){
             utils.alert("提交成功",null,function(){
               $state.go("app.xhsc.gx.gxmain",{index:0});
             });
