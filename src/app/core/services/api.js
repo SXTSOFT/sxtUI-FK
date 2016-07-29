@@ -55,11 +55,13 @@
       api.upload = upload;
       api.uploadTask = uploadTask;
       provider.setNetwork = api.setNetwork = function (state) {
-        networkState = state;
+
         if(networkState==0)
           $rootScope.$emit('$cordovaNetwork:online');
         else
           $rootScope.$emit('$cordovaNetwork:offline');
+
+        networkState = state;
       };
       api.getNetwork = provider.getNetwork = function () {
         return networkState;
