@@ -56,19 +56,17 @@
       api.upload = upload;
       api.uploadTask = uploadTask;
       provider.setNetwork = api.setNetwork = function (state) {
-        isSetting = true;
         networkState = state;
         if(networkState==0)
-          $rootScope.$emit('$cordovaNetwork:online');
+          $rootScope.$emit('sxt:online');
         else
-          $rootScope.$emit('$cordovaNetwork:offline');
+          $rootScope.$emit('sxt:offline');
       };
       api.getNetwork = provider.getNetwork = function () {
         return networkState;
       };
       api.resetNetwork = function () {
         var type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
-
         switch (type) {
           case 'ethernet':
           case 'wifi':
@@ -86,8 +84,7 @@
             networkState = 0;
             break;
         }
-        //api.setNetwork(networkState);
-        //console.log('networkState',type,networkState);
+        api.setNetwork(networkState);
       };
 
       api.useNetwork = function (state) {
@@ -112,20 +109,18 @@
         if(state!=0 || cState==0) {
           api.oNetwork = networkState;
           networkState = state;
+          api.networkState(networkState);
         }
       };
       api.resolveNetwork = function () {
-        networkState = api.oNetwork;
+        api.networkState(api.oNetwork);
       };
 
       $rootScope.$on('$cordovaNetwork:online', function(event, state){
-        if(!isSetting)
-          api.resetNetwork();
-        isSetting = false;
+        api.resetNetwork();
       });
       $rootScope.$on('$cordovaNetwork:offline', function(event, state){
-        networkState =1;
-        isSetting = false;
+        api.resetNetwork();
       });
       $timeout(function () {
         $rootScope.$emit('$cordovaNetwork:online');

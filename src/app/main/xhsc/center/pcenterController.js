@@ -33,10 +33,10 @@
       )
     }
 
-    $rootScope.$on('$cordovaNetwork:online', function(event, state){
+    $rootScope.$on('sxt:online', function(event, state){
       vm.networkState = api.getNetwork();
     });
-    $rootScope.$on('$cordovaNetwork:offline', function(event, state){
+    $rootScope.$on('sxt:offline', function(event, state){
       vm.networkState = api.getNetwork();
     });
     vm.networkState = api.getNetwork();

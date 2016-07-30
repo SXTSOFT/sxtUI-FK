@@ -11,11 +11,14 @@
   {
     var service = {
       token   : token,
-      profile : profile
+      profile : profile,
+      refresh : refresh
     };
     $rootScope.$on('user:logout', function () {
       utils.cookies.remove('auth');
     });
+
+
 /*    var userInfo = api.db({
       _id:'s_userinfo',
       idField:'UserId',
@@ -27,6 +30,23 @@
       return $http.get(sxt.app.api + '/api/Security/profile', {t: new Date().getTime()});
     });*/
     return service;
+
+    function refresh(s,response) {
+      return $q(function (resolve,reject) {
+        var authObj = utils.cookies.get('auth');
+        if(authObj) {
+          authObj = JSON.parse (authObj);
+          s.login(authObj).then(function () {
+            resolve();
+          }).catch(function () {
+            reject(response);
+          });
+        }
+        else{
+          reject(response);
+        }
+      })
+    }
 
     function token(user){
       if(user) {
