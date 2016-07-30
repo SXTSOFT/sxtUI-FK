@@ -396,6 +396,9 @@
         building2: function (projectid) {
           return $http.get('/api/ProjectEx/building2?projectid=' + projectid);
         },
+        building3: function (projectid) {
+          return $http.get('/api/ProjectEx/building3?projectid=' + projectid);
+        },
         queryById:function(projectId){
           return $http.get('/api/ProjectEx?projectId=' + projectId);
         }

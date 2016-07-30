@@ -9,7 +9,7 @@
     .controller('SzgcSettingsController',SzgcSettingsController);
 
   /** @ngInject */
-  function SzgcSettingsController(profile,auth,api,$scope,utils,$rootScope,appCookie){
+  function SzgcSettingsController(profile,auth,api,$scope,utils,$rootScope,appCookie,$mdDialog){
 
     var vm = this;
     vm.profile = profile.data.data;
@@ -21,14 +21,14 @@
           utils.confirm('您有'+result.rows.length+'条数据未上传，确定清除所有缓存数据并退出吗？').then(function (result) {
             appCookie.remove('projects');
             vm.trueClear([]);
-            auth.logout();
+            //auth.logout();
           })
         }
         else {
           utils.confirm('退出将清除当前人所有缓存数据，确定退出吗?').then(function (result) {
             appCookie.remove('projects');
             vm.trueClear([]);
-            auth.logout();
+
           });
         }
       });
@@ -37,10 +37,10 @@
     api.szgc.version().then(function (r) {
       vm.serverAppVersion = r.data.verInfo;
     });
-    $rootScope.$on('$cordovaNetwork:online', function(event, state){
+    $rootScope.$on('sxt:online', function(event, state){
       vm.networkState = api.getNetwork();
     });
-    $rootScope.$on('$cordovaNetwork:offline', function(event, state){
+    $rootScope.$on('sxt:offline', function(event, state){
       vm.networkState = api.getNetwork();
     });
     vm.networkState = api.getNetwork();
@@ -50,18 +50,37 @@
       api.setNetwork(vm.networkState);
     });
     vm.trueClear = function (exclude) {
-      api.clearDb(function (persent) {
-        vm.cacheInfo = parseInt(persent * 100) + '%';
-      }, function () {
-        vm.cacheInfo = null;
-        utils.alert('清除成功');
-      }, function () {
-        vm.cacheInfo = null;
-        utils.alert('清除失败');
-      }, {
-        exclude: exclude,
-        timeout: 3000
-      })
+      $mdDialog.show({
+          controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+            api.clearDb(function (persent) {
+              $scope.cacheInfo = parseInt(persent * 100) + '%';
+            }, function () {
+              $scope.cacheInfo = null;
+              $mdDialog.hide();
+              //utils.alert('清除成功');
+            }, function () {
+              $scope.cacheInfo = null;
+              $mdDialog.cancel();
+              utils.alert('清除失败');
+
+            }, {
+              exclude: exclude,
+              timeout: 3000
+            })
+          }],
+          template: '<md-dialog aria-label="正在清除"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular> 正在清除数据，请稍后……({{cacheInfo}})</md-dialog-content></md-dialog>',
+          parent: angular.element(document.body),
+          clickOutsideToClose:false,
+          fullscreen: false
+        })
+        .then(function(answer) {
+          auth.logout();
+        }, function() {
+
+        });
+
+      return;
+
     }
     vm.clearCache = function () {
       api.uploadTask(function (cfg,item) {

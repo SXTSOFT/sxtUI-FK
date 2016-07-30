@@ -33,19 +33,6 @@
           })
         }
       }
-
-      var authObj = appCookie.get('auth');
-
-      if(authObj) {
-        authObj = JSON.parse (authObj);
-        vm.form = authObj;
-        vm.login();
-      }
-      else{
-        vm.show=true;
-      }
-
-
-        //////////
+      
     }
 })();

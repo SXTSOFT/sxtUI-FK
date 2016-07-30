@@ -21,6 +21,7 @@
       gx1: $scope.$parent.vm.current.gx1,
       gx2: $scope.$parent.vm.current.gx2
     };
+    vm.treeId = $stateParams.pid + '>' + $stateParams.itemId + '>' + $stateParams.buildId;
     vm.sellLine = 0.6;
     vm.data= {
       config: {

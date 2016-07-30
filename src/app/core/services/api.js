@@ -1,4 +1,4 @@
-(function ()
+﻿(function ()
 {
   'use strict';
 
@@ -15,12 +15,13 @@
       pouchdb,
       settingDb,
       uploadDb,
-      networkState = 1;
+      networkState = 1,
+      isSetting = false;
 
 
     provider.register = register;
-    provider.getNetwork = getNetwork;
-    provider.setNetwork = function (state) { networkState = state;};
+    //provider.getNetwork = getNetwork;
+    //provider.setNetwork = function (state) { networkState = state;};
     provider.$http = bindHttp({
       url:url,
       db:bindDb
@@ -33,7 +34,7 @@
 
     provider.$get = getApi;
     provider.get = getServer;
-    provider.setting = setting
+    provider.setting = setting;
 
     getApi.$injector = ['$resource','$http','$injector','$q','db','$rootScope','$cordovaNetwork','$window','$cordovaFileTransfer','$timeout'];
 
@@ -54,11 +55,38 @@
       api.task = task;
       api.upload = upload;
       api.uploadTask = uploadTask;
-      api.setNetwork = provider.setNetwork;
-      api.getNetwork = provider.getNetwork;
-      api.resetNetwork = function () {
-        $rootScope.$emit('$cordovaNetwork:online');
+      provider.setNetwork = api.setNetwork = function (state) {
+        networkState = state;
+        if(networkState==0)
+          $rootScope.$emit('sxt:online');
+        else
+          $rootScope.$emit('sxt:offline');
       };
+      api.getNetwork = provider.getNetwork = function () {
+        return networkState;
+      };
+      api.resetNetwork = function () {
+        var type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
+        switch (type) {
+          case 'ethernet':
+          case 'wifi':
+            networkState = 0;
+            break;
+          case 'unknown':
+          case 'none':
+          case '2g':
+          case '3g':
+          case '4g':
+          case 'cellular':
+            networkState = 1;
+            break;
+          default:
+            networkState = 0;
+            break;
+        }
+        api.setNetwork(networkState);
+      };
+
       api.useNetwork = function (state) {
         var cState,type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
         switch (type) {
@@ -81,43 +109,31 @@
         if(state!=0 || cState==0) {
           api.oNetwork = networkState;
           networkState = state;
+          api.networkState(networkState);
         }
       };
       api.resolveNetwork = function () {
-        networkState = api.oNetwork;
+        api.networkState(api.oNetwork);
       };
 
       $rootScope.$on('$cordovaNetwork:online', function(event, state){
-        //console.log('$window.navigator',$window.navigator);
-        var type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
-        switch (type) {
-          case 'ethernet':
-          case 'wifi':
-            networkState = 0;
-            break;
-          case 'unknown':
-          case 'none':
-          case '2g':
-          case '3g':
-          case '4g':
-          case 'cellular':
-            networkState = 1;
-            break;
-          default:
-            networkState = 0;
-            break;
-        }
+        api.resetNetwork();
       });
       $rootScope.$on('$cordovaNetwork:offline', function(event, state){
-        networkState =1;
+        api.resetNetwork();
       });
-      api.resetNetwork();
+      $timeout(function () {
+        $rootScope.$emit('$cordovaNetwork:online');
+      },100);
+
 
       api.db = provider.$http.db;
       api.clearDb = clearDb;
       api.download = download;
       return api;
     }
+
+
 
     function resolveApi(p,$resource,$http){
       if(p!==api)
@@ -421,7 +437,7 @@
         cfgs.push(cfg);
         cfg.bind = function (fn,cb) {
           cfg.fn = fn;
-          return function () {
+          var callFn = function () {
             var args = toArray(arguments),
               lodb = initDb(cfg),
               caller = this;
@@ -433,7 +449,7 @@
                 }
                 else if(cfg.delete){
                   args.forEach(function (d) {
-                    lodb.delete(id(d,null,cfg)||d);
+                    lodb.delete(id(d,null,args,cfg)||d);
                   });
                   resolve(args);
                 }
@@ -470,7 +486,7 @@
                         if (cfg.filter)
                           return cfg.filter.apply(cfg, [item].concat(args));
                         return true;
-                      },cfg.starKey && cfg.starKey.apply(cfg,args)).then(function (r) {
+                      },cfg.search,args).then(function (r) {
                         result.data = r.rows[0];
                         if (!cfg.raiseError || result.data)
                           resolve(result);
@@ -484,7 +500,7 @@
                       if (cfg.filter)
                         return cfg.filter.apply(cfg, [item].concat(args));
                       return true;
-                    },cfg.starKey && cfg.starKey.apply(cfg,args)).then(function (r) {
+                    },cfg.search,args).then(function (r) {
                       bindData(result,r.rows,cfg);
                       resolve(result);
                     });
@@ -534,6 +550,11 @@
               }):p1;
             }
           }
+          callFn.cfg = cfg;
+          callFn.db = function () {
+            return initDb(cfg,toArray(arguments));
+          }
+          return callFn;
         };
         return cfg;
       }
@@ -572,10 +593,15 @@
       }
     }
 
-    function initDb(cfg) {
-      if(cfg.db) return cfg.db;
-      if(!cfg._id)return;
+    function initDb(cfg,args) {
+      if(cfg._id && cfg.db) return cfg.db;
+      if(cfg._id)
       return (cfg.db = pouchdb(cfg._id));
+      else if(cfg.db){
+        var id = cfg.db.apply(cfg,args);
+        if(id)
+          return pouchdb(id);
+      }
     }
     function getNetwork() {
       return networkState;

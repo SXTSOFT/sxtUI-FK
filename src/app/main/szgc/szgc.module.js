@@ -267,9 +267,9 @@
             templateUrl:'app/main/szgc/settings/settings.html',
             resolve:{
               profile:['api',function(api){
-                api.useNetwork(0);
+                //api.useNetwork(0);
                 return api.szgc.vanke.profile().then(function (r) {
-                  api.resolveNetwork();
+                  //api.resolveNetwork();
                   return r;
                 });
               }]

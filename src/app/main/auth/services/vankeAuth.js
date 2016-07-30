@@ -1,4 +1,4 @@
-(function ()
+﻿(function ()
 {
   'use strict';
 
@@ -11,7 +11,8 @@
   {
     var service = {
       token   : token,
-      profile : profile
+      profile : profile,
+      refresh : refresh
     };
     $rootScope.$on('user:logout',function(){
       appCookie.remove('auth');
@@ -28,8 +29,24 @@
     });
     return service;
 
+    function refresh(s,response) {
+      return $q(function (resolve,reject) {
+        var authObj = appCookie.get('auth');
+        if(authObj) {
+          authObj = JSON.parse (authObj);
+          s.login(authObj).then(function () {
+            resolve();
+          }).catch(function () {
+            reject(response);
+          });
+        }
+        else{
+          reject(response);
+        }
+      })
+    }
+
     function token(user){
-      if(!sxt.connection.isOnline())return user;
       if(user) {
         user.grant_type = 'password';
         user.scope = 'sxt';
@@ -71,8 +88,6 @@
     }
 
     function profile(token){
-      if(!sxt.connection.isOnline())return token;
-
       if(!token || !token.username) {
         return $q (function (resolve, reject) {
           api.setNetwork(0);

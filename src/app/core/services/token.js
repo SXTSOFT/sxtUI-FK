@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Created by jiuyuong on 2016/1/22.
  */
 (function(){
@@ -8,19 +8,20 @@
     .factory('authToken',authToken);
   /** @ngInject */
   function authToken($cookies,$rootScope,$injector){
-    var token,tokenInjector;
+    var token,tokenInjector,_401,lastTipTime;
 
     tokenInjector = {
       setToken      : setToken,
       getToken      : getToken,
       request       : onHttpRequest,
-      responseError : onHttpResponseError
+      responseError : onHttpResponseError,
+      on401         : on401
     };
 
     return tokenInjector;
 
     function setToken(tk){
-      token = tk && tk.token_type && tk.access_token ? tk.token_type + ' ' + tk.access_token : null;
+      token = tk && tk.access_token ? (tk.token_type||'Bearer') + ' ' + tk.access_token : null;
       if(token)
         $cookies.put('token',token);
       else
@@ -28,8 +29,8 @@
     }
 
     function getToken(){
-      //if(!token)
-      //  token = $cookies.get('token');
+      if(!token)
+        token = $cookies.get('token');
       return token;
     }
 
@@ -42,13 +43,29 @@
 
     function onHttpResponseError(rejection){
       if(rejection.status == 401){
+        if(_401){
+          return _401.call(tokenInjector,rejection).then(function () {
+            return $injector.get('$http')(rejection.config);
+          }).catch(function () {
         $rootScope.$emit('user:needlogin');
+          });
       }
       else{
+          $rootScope.$emit('user:needlogin');
+        }
+      }
+      else {
+        if(!lastTipTime || new Date().getTime()-lastTipTime<10000){
+          lastTipTime = new Date().getTime();
         $injector.invoke(['utils',function (utils) {
           utils.alert(rejection.data && rejection.data.Message?rejection.data.Message:'网络错误');
         }]);
       }
+    }
+    }
+
+    function on401(fn) {
+      _401 = fn;
     }
 
   }

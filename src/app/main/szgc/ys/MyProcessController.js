@@ -295,11 +295,20 @@
       });
     }
     queryOffline();
-    api.uploadTask(function (cfg,item) {
-      return true
-    }).then(function (result) {
-      $scope.project.tasks = result.rows;
-    });
+    $scope.hasTasks = function (item) {
+      return  $scope.project && $scope.project.tasks && $scope.project.tasks.find(function (t) {
+          return t.procedure == $scope.project.procedureId
+           && t.projectid == item.$id;
+        });
+    }
+    $scope.requeryTasks = function () {
+      api.uploadTask(function (cfg,item) {
+        return true
+      }).then(function (result) {
+        $scope.project.tasks = result.rows;
+      });
+    }
+    $scope.requeryTasks();
     $scope.isOffline = function (item) {
       return !!$scope.project.offlines.find(function (t) {
         return t._id.indexOf(item.project_item_id)!=-1;
@@ -320,7 +329,7 @@
             result.data.data.forEach(function (build) {
               tasks.push(function () {
                 return api.szgc.vanke.floors(build.building_id);
-              })
+              });
             });
           });
         },//下载户型
@@ -351,9 +360,6 @@
                     })
                   }
                 });
-                api.setNetwork(1);
-                api.szgc.vanke.floors('run index');
-                api.setNetwork(0);
                 resolve();
               }).catch(reject);
             })
@@ -395,12 +401,18 @@
                   return api.szgc.vanke.teams(s.UnitId);
                 })
               }
+            });
+            tasks.push(function () {
+              return api.szgc.vanke.teams.db().allDocs();
             })
           });
         },
         //验收状态
         function () {
           return api.szgc.addProcessService.getBatchRelation({regionIdTree:idTree});
+        },
+        function () {
+          return api.szgc.addProcessService.getBatchRelation.db({regionIdTree:idTree}).allDocs();//索引
         },
         //检查项目
         function () {
@@ -421,6 +433,9 @@
         //工序验收批设置
         function () {
           return api.szgc.ProcedureBathSettingService.query();
+        },
+        function () {
+          return api.szgc.ProcedureBathSettingService.query.db({regionIdTree:idTree}).allDocs();//索引
         },
         //工序验收表
         function () {

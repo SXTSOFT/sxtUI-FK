@@ -38,8 +38,8 @@
       token = $stateParams.token,
       flag = $stateParams.flag;
 
-    var tid = procedure+idtree,
-      tname = nametree+'-'+procedureName;
+    var tid = procedure+idtree+pid,
+      tname = nametree+'>'+rname+'-'+procedureName;
 
     $scope.flag = $stateParams.flag;
     if (!procedure) {
@@ -52,6 +52,7 @@
     $scope.isPartner = api.szgc.vanke.isPartner();
     $scope.data = {
       pics: [],
+      pics2:[],
       isFirst: !batchId || batchId == 'new',
       projectName: nametree,
       procedureName: procedureName,
@@ -807,6 +808,10 @@
       //  utils.alert('请上传原验收表扫描件');
       //  return;
       //}
+      if ($scope.data.pics2.length == 0) {
+        utils.alert('请上传原验收表扫描件');
+        return;
+      }
       utils.confirm(null, '确认向验收批:' + $scope.data.curHistory.BatchNo + ' 添加新记录吗?').then(function () {
         $scope._save(addForm);
       });
@@ -899,6 +904,8 @@
           $scope.$parent.project.filter(true);
           api.uploadTask({
             _id:tid,
+            procedure:procedure,
+            projectid:pid,
             name:tname
           });
           utils.alert('提交完成').then(function () {

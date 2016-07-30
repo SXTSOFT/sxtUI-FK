@@ -27,6 +27,7 @@
     info: 'qify',
     compact: 'qify',
     revsDiff: 'qify',
+    search:'qify',
     changes: 'eventEmitter',
     sync: 'eventEmitter',
     replicate: {
@@ -101,8 +102,9 @@
         return db.remove(doc);
       });
     },
-    findAll:function (filter,startKey) {
-      return this.allDocs({include_docs:true,startKey:startKey}).then(function (result) {
+    findAll:function (filter,search,args) {
+      var db = this;
+      return (search? db.search(search.apply(db,args)):db.allDocs({include_docs:true})).then(function (result) {
         var r = {
           "total_rows":result.total_rows,
           "offset":result.offset,

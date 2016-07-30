@@ -49,9 +49,6 @@
     box-shadow:none;
   }
   .md-button{
-    position: absolute;
-    left:0;
-    top:4px;
     &.md-vanke-theme:not([disabled]):hover{
       background:none;
     }

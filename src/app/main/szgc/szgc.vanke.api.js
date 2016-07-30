@@ -347,33 +347,38 @@
         floors: http.db({
           _id:'v_rooms',
           idField:function (item) {
-            return item.building_id+item.room_id
+            return item.building_id
           },
-          search:function (building_id) {
+/*          search:function (building_id) {
             return {
               query:building_id,
               fields:['building_id'],
               include_docs:true
             };
-          },
-          dataType:4,
-          filter:function (item,building_id) {
+          },*/
+          dataType:3
+/*          filter:function (item,building_id) {
             return item.building_id==building_id;
-          },
-          data:function (item,building_id) {
+          },*/
+/*          data:function (item,building_id) {
             item.building_id = building_id;
             return item;
-          }
+          }*/
         }).bind(function (building_id) {
           return get(http.url('/common/v1/buildings/'+building_id+'/rooms',{page_size:0,page_number:1})).then(function (result) {
             result.data.data.forEach(function (item) {
               item.building_id=building_id;
             })
-            return result;
+            return {
+              data:{
+                building_id:building_id,
+                rooms:result.data.data
+              }
+            };
           });
         },function (result) {
           var floors = [];
-          result.data.data.forEach(function (room) {
+          result.data.rooms.forEach(function (room) {
             if(floors.indexOf(room.floor)==-1){
               floors.push(room.floor);
             }
@@ -395,20 +400,13 @@
         units: http.custom(function (arg) {
           return get(http.url('/common/v1/buildings/' + arg + '/units', arg));
         }),
-        rooms: http.db({
+        _rooms: http.db({
           _id:'v_rooms',
           idField:function (item) {
-            return item.building_id+item.room_id
+            return item.building_id
           },
-          search:function (arg) {
-            return {
-              query:arg.building_id,
-              fields:['building_id'],
-              include_docs:true
-            };
-          },
-          dataType:4,
-          filter:function (item,arg,incHide) {
+          dataType:3//,
+/*          filter:function (item,arg,incHide) {
             item.otype = item.type;
             item.type = item.type && item.type.type_id;
             if (incHide !== true) {
@@ -421,16 +419,26 @@
           data:function (item,arg,incHide) {
             item.building_id = arg.building_id;
             return item;
-          }
-        }).bind(function (arg,incHide) {
-          return get(http.url('/common/v1/buildings/'+arg.building_id+'/rooms', {floor:arg.floor, page_size: 0, page_number: 1})).then(function (result) {
+          }*/
+        })
+          .bind(function (building_id,arg,incHide) {
+          return get(http.url('/common/v1/buildings/'+arg.building_id+'/rooms', {/*floor:arg.floor, */page_size: 0, page_number: 1})).then(function (result) {
             result.data.data.forEach(function (item) {
               item.building_id=arg.building_id;
             })
-            return result;
+            return {
+              data:{
+                building_id:building_id,
+                rooms:result.data.data
+              }
+            };
           });
-        },function (result) {
-          result.data.data.sort (function (i1, i2) {
+        },function (result,cfg,args) {
+            var rooms = result.data.rooms.filter(function (item) {
+              return (!args[1].floor || item.floor == args[1].floor)
+               && (args[2] === true || item.engineering.status != 'hide')
+            })
+            rooms.sort (function (i1, i2) {
             var n1 = getNumName (i1.name),
               n2 = getNumName (i2.name);
             if (!isNaN (n1) && !isNaN (n2))
@@ -442,7 +450,11 @@
             else
               return i1.name.localeCompare (i2.name);
           });
-          return result;
+          return {
+            data:{
+              data:rooms
+            }
+          };
         }),
         room_types: http.db({
           _id:'v_types',
@@ -454,6 +466,9 @@
         }).bind(function (project_item_id) {
           return get(http.url('/common/v1/types', { project_item_id: project_item_id, page_size: 0, page_number:1}));
         }),
+        rooms:function (args) {
+          return this.root.szgc.vanke._rooms(args.building_id,args);
+        },
         partners: http.custom(function (arg) {
           return get(http.url('/common/v1/partners', arg));
         }),
