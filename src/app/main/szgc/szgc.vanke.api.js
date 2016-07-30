@@ -349,8 +349,12 @@
           idField:function (item) {
             return item.building_id+item.room_id
           },
-          starKey:function (building_id) {
-            return building_id;
+          search:function (building_id) {
+            return {
+              query:building_id,
+              fields:['building_id'],
+              include_docs:true
+            };
           },
           dataType:4,
           filter:function (item,building_id) {
@@ -396,8 +400,12 @@
           idField:function (item) {
             return item.building_id+item.room_id
           },
-          starKey:function (arg) {
-            return arg.building_id;
+          search:function (arg) {
+            return {
+              query:arg.building_id,
+              fields:['building_id'],
+              include_docs:true
+            };
           },
           dataType:4,
           filter:function (item,arg,incHide) {
