@@ -360,6 +360,24 @@
                     })
                   }
                 });
+
+                [function () {
+                    item.percent = '索引中，可能需要几分钟(1)'
+                    return api.szgc.ProjectSettingsSevice.query.db().allDocs();
+                  },
+                  function () {
+                    item.percent = '索引中，可能需要几分钟(2)'
+                    return api.szgc.addProcessService.getBatchRelation.db({regionIdTree:idTree}).allDocs();//索引
+                  },function () {
+                  item.percent = '索引中，可能需要几分钟(3)'
+                  return api.szgc.CheckStepService.getAll.db().allDocs();
+                },
+                  function () {
+                    item.percent = '索引中，可能需要几分钟(4)'
+                    return api.szgc.ProcedureBathSettingService.query.db({regionIdTree:idTree}).allDocs();//索引
+                  }].forEach(function (fn) {
+                  tasks.push(fn);
+                });
                 resolve();
               }).catch(reject);
             })
@@ -411,9 +429,6 @@
         function () {
           return api.szgc.addProcessService.getBatchRelation({regionIdTree:idTree});
         },
-        function () {
-          return api.szgc.addProcessService.getBatchRelation.db({regionIdTree:idTree}).allDocs();//索引
-        },
         //检查项目
         function () {
           return api.szgc.CheckStepService.cache(idTree);
@@ -433,9 +448,6 @@
         //工序验收批设置
         function () {
           return api.szgc.ProcedureBathSettingService.query();
-        },
-        function () {
-          return api.szgc.ProcedureBathSettingService.query.db({regionIdTree:idTree}).allDocs();//索引
         },
         //工序验收表
         function () {
@@ -460,7 +472,7 @@
       },function () {
         item.downloading = false;
         utils.alert('下载失败');
-      },{timeout:20000});
+      },{timeout:300000});
     };
     $scope.upload =function () {
       $scope.uploading = true;

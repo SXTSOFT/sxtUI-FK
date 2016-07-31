@@ -505,7 +505,12 @@
           return get(http.url('/common/v1/partners/' + partner_id + '/teams',angular.extend({
             page_size: 0,
             page_number: 1
-          })));
+          }))).then(function (result) {
+            result.data.data.forEach(function (item) {
+              item.partner_id = partner_id;
+            })
+            return result;
+          });
         }),
         buildingsInfo:http.custom(function(type, typeId){
           if(type == 2) {

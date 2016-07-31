@@ -276,6 +276,7 @@
         query:$http.db({
           _id:'s_projectSttting',
           idField:function (item) {
+            if(item.Id)return item.Id;
             return item.UnitId+item.RegionIdTree;
           },
           dataType:5,
