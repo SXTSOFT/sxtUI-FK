@@ -82,7 +82,7 @@
 <md-list md-cloak>
   <md-subheader class="md-no-sticky">已下载</md-subheader>
   <md-list-item ng-repeat="project in project.offlines">
-    <p style="padding: 0 14px;"> {{ project.name }} <b ng-if="project.item.downloading"> {{project.item.percent}} ({{project.item.current}}/{{project.item.total}})</b> </p>
+    <p style="padding: 0 14px;" layout="column"><span> {{ project.name }} </span><b ng-if="project.indexing">正在索引 {{project.percent}} ({{project.current}}/{{project.total}})</b> </p>
     <div class="md-secondary">
 <!--    <md-button class="md-primary md-icon-button" ng-if="getNetwork()==0" ng-click="download($event,project.project,project.item)">
       <md-icon md-font-icon="icon-reload" ></md-icon>

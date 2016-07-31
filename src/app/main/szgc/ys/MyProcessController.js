@@ -361,23 +361,6 @@
                   }
                 });
 
-                [function () {
-                    item.percent = '索引中，可能需要几分钟(1)'
-                    return api.szgc.ProjectSettingsSevice.query.db().allDocs();
-                  },
-                  function () {
-                    item.percent = '索引中，可能需要几分钟(2)'
-                    return api.szgc.addProcessService.getBatchRelation.db({regionIdTree:idTree}).allDocs();//索引
-                  },function () {
-                  item.percent = '索引中，可能需要几分钟(3)'
-                  return api.szgc.CheckStepService.getAll.db().allDocs();
-                },
-                  function () {
-                    item.percent = '索引中，可能需要几分钟(4)'
-                    return api.szgc.ProcedureBathSettingService.query.db({regionIdTree:idTree}).allDocs();//索引
-                  }].forEach(function (fn) {
-                  tasks.push(fn);
-                });
                 resolve();
               }).catch(reject);
             })
@@ -420,9 +403,6 @@
                 })
               }
             });
-            tasks.push(function () {
-              return api.szgc.vanke.teams.db().allDocs();
-            })
           });
         },
         //验收状态
@@ -458,22 +438,57 @@
         item.total = total;
       },function () {
         item.downloading = false;
-        api.szgc.ProjectSettings.offline.create({
+        var offline = {
           Id:idTree,
           name:project.name+'>'+item.name,
           project:project,
           item:item
-        }).then(function () {
+        };
+        api.szgc.ProjectSettings.offline.create(offline).then(function () {
           queryOffline().then(function () {
-            utils.alert('下载完成');
+            var off = $scope.project.offlines.find(function (item) {
+              return item.Id == offline.Id;
+            });
+            utils.alert('下载完成，系统将自动继续索引。');
+            $scope.indexDb(off);
           });
-        })
+
+        });
 
       },function () {
         item.downloading = false;
         utils.alert('下载失败');
-      },{timeout:300000});
+      },{timeout:30000});
     };
+    $scope.indexDb =function (item) {
+      item.indexing = true;
+      api.task([function () {
+        return api.szgc.TargetService.getAll.db().allDocs();
+      },function () {
+        return api.szgc.ProjectSettingsSevice.query.db().allDocs();
+      },
+        function () {
+          return api.szgc.addProcessService.getBatchRelation.db().allDocs();//索引
+        },function () {
+          return api.szgc.CheckStepService.getAll.db().allDocs();
+        },
+        function () {
+          return api.szgc.ProcedureBathSettingService.query.db().allDocs();//索引
+        },function () {
+          return api.szgc.vanke.teams.db().allDocs();
+        }])(function (percent,current,total) {
+        item.percent = parseInt(percent *100) +' %';
+        item.current = current;
+        item.total = total;
+      },function () {
+        item.indexing = false;
+        utils.alert('索引完成');
+      },function () {
+        item.indexing = false;
+      },{
+        timeout:300000
+      });
+    }
     $scope.upload =function () {
       $scope.uploading = true;
       api.upload(function (cfg,item) {
