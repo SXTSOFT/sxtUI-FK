@@ -449,7 +449,7 @@
             var off = $scope.project.offlines.find(function (item) {
               return item.Id == offline.Id;
             });
-            utils.alert('下载完成，系统将自动继续索引。');
+            utils.alert('下载完成，系统将创建索引。');
             $scope.indexDb(off);
           });
 
