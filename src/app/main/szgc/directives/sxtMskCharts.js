@@ -136,7 +136,6 @@
                 var option = {
                   title:false,
                   tooltip: {
-                    position: 'top',
                     formatter: function (arg, ticket, callback) {
                       var g = gx[parseInt(arg.data[0] / (maxRooms+1))],
                         f = floors[arg.data[1]],
@@ -146,7 +145,7 @@
                   },
                   animation: false,
                   grid: {
-                    height: '100%',
+                    height: '90%',
                     y: '0'
                   },
                   xAxis: {
@@ -178,15 +177,15 @@
                     }
                   },
                   visualMap: {
-                    top: 0,
-                    right: 0,
+                    left:'auto',
+                    bottom: 0,
                     type: 'piecewise',
                     pieces: gx.concat([{ value: 0, label: '未验', color: 'rgba(225,225,225,1)' }]),
                     show: true,
                     min: 0,
                     max: 5,
                     calculable: false,
-                    orient: 'vertical'
+                    orient: 'horizontal'
                   },
                   series: [{
                     type: 'heatmap',
