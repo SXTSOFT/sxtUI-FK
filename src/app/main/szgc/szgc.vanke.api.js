@@ -356,7 +356,8 @@
               include_docs:true
             };
           },*/
-          dataType:3
+          dataType:3,
+          firstIsId:true
 /*          filter:function (item,building_id) {
             return item.building_id==building_id;
           },*/
@@ -405,7 +406,7 @@
           idField:function (item) {
             return item.building_id
           },
-          dataType:3//,
+          dataType:3, firstIsId:true//,
 /*          filter:function (item,arg,incHide) {
             item.otype = item.type;
             item.type = item.type && item.type.type_id;

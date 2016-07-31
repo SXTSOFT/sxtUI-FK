@@ -467,7 +467,7 @@
                 else{
                   var result = {};
                   if(cfg.dataType == 3){
-                    if(args.length==1 || !cfg.filter) {
+                    if((args.length==1 && !cfg.filter)||cfg.firstIsId) {
                       lodb.get(args[0]).then(function (r) {
                         if(r || !cfg.raiseError) {
                           result.data = r;
