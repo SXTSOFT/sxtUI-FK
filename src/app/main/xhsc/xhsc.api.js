@@ -23,6 +23,7 @@
     profile:$http.db({
       _id:'s_userinfo',
       idField:'UserId',
+      mode:2,
       filter:function () {
         return true;
       },
