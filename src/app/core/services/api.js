@@ -583,34 +583,39 @@
           var p = fn && fn.apply(caller,args);
           if(p) {
             p.then(function (result) {
-              if (result && result.data) {
-                var data = result.data;
-                if (cfg.dataType == 1) {
-                  data.forEach(function (d) {
-                    id(d, lodb, args, cfg);
-                  })
+              if(result && ((result.status>=200 && result.status<=299) || result.data)) {
+                if (result.data) {
+                  var data = result.data;
+                  if (cfg.dataType == 1) {
+                    data.forEach(function (d) {
+                      id(d, lodb, args, cfg);
+                    })
+                  }
+                  else {
+                    if (cfg.dataType == 3) {
+                      id(data, lodb, args, cfg);
+                    }
+                    else if (data.rows && angular.isArray(data.rows)) {
+                      data.rows.forEach(function (d) {
+                        id(d, lodb, args, cfg);
+                      })
+                    }
+                    else if (data.data && angular.isArray(data.data)) {
+                      data.data.forEach(function (d) {
+                        id(d, lodb, args, cfg);
+                      })
+                    }
+                    else if (data.Rows && angular.isArray(data.Rows)) {
+                      data.Rows.forEach(function (d) {
+                        id(d, lodb, args, cfg);
+                      })
+                    }
+                  }
+                  resolve(result);
                 }
-                else {
-                  if (cfg.dataType == 3) {
-                    id(data, lodb, args, cfg);
-                  }
-                  else if (data.rows && angular.isArray(data.rows)) {
-                    data.rows.forEach(function (d) {
-                      id(d, lodb, args, cfg);
-                    })
-                  }
-                  else if (data.data && angular.isArray(data.data)) {
-                    data.data.forEach(function (d) {
-                      id(d, lodb, args, cfg);
-                    })
-                  }
-                  else if (data.Rows && angular.isArray(data.Rows)) {
-                    data.Rows.forEach(function (d) {
-                      id(d, lodb, args, cfg);
-                    })
-                  }
+                else{
+                  resolve(result);
                 }
-                resolve(result);
               }
               else {
                 reject(result);

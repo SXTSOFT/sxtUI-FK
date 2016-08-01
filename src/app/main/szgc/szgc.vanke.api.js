@@ -108,7 +108,7 @@
           }
           else {
             return $q(function (resolve) {
-              resolve();
+              resolve({status:200});
             })
           }
         },
