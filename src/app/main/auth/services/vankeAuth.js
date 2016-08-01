@@ -20,6 +20,7 @@
     var userInfo = api.db({
       _id:'s_userinfo',
       idField:'Id',
+      mode:2,
       filter:function () {
         return true;
       },
@@ -90,13 +91,13 @@
     function profile(token){
       if(!token || !token.username) {
         return $q (function (resolve, reject) {
-          api.setNetwork(0);
+          //api.setNetwork(0);
           userInfo().then(function (d) {
             if(!d ||(!d.status && !d.data)){
               $rootScope.$emit('user:needlogin');
             }
             resolve(d && d.data);
-            api.resetNetwork();
+            //api.resetNetwork();
           }, function (rejection) {
 
             utils.alert(rejection.data && rejection.data.Message?rejection.data.Message:'网络错误');

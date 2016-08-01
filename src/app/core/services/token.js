@@ -41,27 +41,29 @@
       return config;
     }
 
-    function onHttpResponseError(rejection){
-      if(rejection.status == 401){
-        if(_401){
-          return _401.call(tokenInjector,rejection).then(function () {
+    function onHttpResponseError(rejection) {
+      if (rejection.status == 401) {
+        if (_401) {
+          return _401.call(tokenInjector, rejection).then(function () {
             return $injector.get('$http')(rejection.config);
           }).catch(function () {
-        $rootScope.$emit('user:needlogin');
+            $rootScope.$emit('user:needlogin');
           });
-      }
-      else{
+        }
+        else {
           $rootScope.$emit('user:needlogin');
         }
       }
       else {
-        if(!lastTipTime || new Date().getTime()-lastTipTime<10000){
-          lastTipTime = new Date().getTime();
-        $injector.invoke(['utils',function (utils) {
-          utils.alert(rejection.data && rejection.data.Message?rejection.data.Message:'网络错误');
-        }]);
+        if (rejection && rejection.status != -1) {
+          if (!lastTipTime || new Date().getTime() - lastTipTime < 10000) {
+            lastTipTime = new Date().getTime();
+            $injector.invoke(['utils', function (utils) {
+              utils.alert(rejection.data && rejection.data.Message ? rejection.data.Message : '网络错误');
+            }]);
+          }
+        }
       }
-    }
     }
 
     function on401(fn) {
