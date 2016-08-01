@@ -3005,8 +3005,33 @@ $mapboxgl-popup-bg:rgba(0,0,0,.85)!important;
     background-position:center center;
   }
 }
+.gxall{
+  md-list{
+    padding: 0;
+    md-list-item{
+      .md-no-style{
+        padding:0 8px;
+      }
+      .md-button{
+        line-height: 24px;
+      }
+      &.disabled{
+        color:silver;
+        text-decoration: line-through;
+      }
+    }
+  }
+
+  md-switch{
+    width: 72px;
+    .md-container{
+      //width: 85px;
+    }
+  }
+}
 table{
   &.gxzgtb{
+
     border-collapse: collapse;
     tr{
       td,th{

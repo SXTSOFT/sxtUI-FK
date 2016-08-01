@@ -18,7 +18,6 @@
       networkState = 1,
       isSetting = false;
 
-
     provider.register = register;
     //provider.getNetwork = getNetwork;
     //provider.setNetwork = function (state) { networkState = state;};

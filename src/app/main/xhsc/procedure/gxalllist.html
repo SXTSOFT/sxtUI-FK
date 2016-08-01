@@ -1,0 +1,22 @@
+<md-content class="gxall">
+  <div class="gxtest gxtestdetail" flex ng-if="vm.pList.length">
+    <div style="margin-top: 20px;padding:0 8px;" flex layout="row"><span flex>不合格列表</span><span flex></span></div>
+    <md-list class="gxque">
+    <md-list-item ng-repeat="question in vm.pList|orderBy:'ProblemSortName'">
+    <span flex style="padding-left:8px;">{{question.ProblemSortName}} {{question.ProblemDescription}}</span>
+    <span flex="none" style="text-align: right;padding-right:8px">{{question.rows.length}}处</span>
+    </md-list-item>
+    </md-list>
+  </div>
+  <div layout="column" ng-repeat="item in vm.procedureData" style="margin-top: 10px;">
+  <md-list ng-repeat="it in item.ProblemClassifyList">
+    <md-list-item ng-class="{'disabled':!i.checked}" ng-repeat="i in it.ProblemLibraryList|filter:{show:true}" ng-click="vm.checkedOrnot(i)">
+      <md-checkbox ng-model="i.checked" ng-click="vm.checkedOrnot(i)" style="margin-right: 5px;"></md-checkbox>
+      <p style="padding-right: 75px;">{{i.AcceptanceItemName}}</p>
+      <md-switch ng-if="i.checked" ng-disabled="true" ng-model="i.Status" ng-true-value="'合格'" ng-init="i.Status='合格'" ng-false-value="'不合格'" class="md-secondary">
+        {{i.Status}}
+      </md-switch>
+    </md-list-item>
+  </md-list>
+  </div>
+</md-content>
