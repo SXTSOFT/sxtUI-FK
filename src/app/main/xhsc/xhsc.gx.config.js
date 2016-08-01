@@ -132,6 +132,16 @@
         templateUrl : 'app/main/xhsc/procedure/gxzgdetail.html',
         controller:'gxzgdetailController as vm'
       })
+      .state('app.xhsc.gx.gxzgreport', {
+        noBack: true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '工序整改',
+        url: '/gxzgreport',
+        templateUrl: 'app/main/xhsc/procedure/gxzgreport.html',
+        controller: 'gxzgreportController as vm'
+      })
       .state('app.xhsc.gx.gxbdchoose', {
         noBack: true,
         sendBt: false,
@@ -191,6 +201,15 @@
         templateUrl : 'app/main/xhsc/procedure/gxrychoose.html',
         controller:'gxrychooseController as vm',
       })
-
+      .state('app.xhsc.gx.regionStates',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'人员选择',
+        url   :'/regionStates/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{maxRegion}',
+        templateUrl : 'app/main/xhsc/procedure/regionStates.html',
+        controller:'regionStatesController as vm',
+      })
   }
 })();

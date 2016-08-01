@@ -23,6 +23,7 @@
     profile:$http.db({
       _id:'s_userinfo',
       idField:'UserId',
+      mode:2,
       filter:function () {
         return true;
       },
@@ -79,6 +80,7 @@
         _id: 'Drawing',
         idField: 'DrawingID',
         dataType: 3,
+        mode:1,
         filter:function (item,drawingId) {
           return item.DrawingID == drawingId;
         }

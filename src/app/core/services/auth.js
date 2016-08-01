@@ -1,4 +1,4 @@
-(function ()
+﻿(function ()
 {
   'use strict';
 
@@ -11,7 +11,7 @@
   {
     // 第三方登录插件
     var interceptorFactories = this.interceptors = [];
-    var forEach = angular.forEach,loginedUser={};
+    var forEach = angular.forEach,loginedUser;
     // 是否转跳的登录
     var autoLoginPath = false;
 
@@ -20,6 +20,39 @@
     appAuth.$injector = ['$q','$injector','authToken','$state','$rootScope','$location','sxt'];
 
     function appAuth($q,$injector,authToken,$state,$rootScope,$location, sxt){
+
+      var s = {
+        isLoggedIn : isLoggedIn,
+        token      : token,
+        profile    : profile,
+        login      : login,
+        getUser    : getUser,
+        autoLogin  : autoLogin,
+        current    : currentUser,
+        logout     : logout
+      };
+
+      authToken.on401(function (response) {
+        var self = this;
+        if(!self.lastTry || (new Date().getTime()-self.lastTry)>100000){
+          self.lastTry = new Date().getTime();
+          autoLoginPath = true;
+          return (self.lastRefresh = $q(function (resolve,reject) {
+            refresh(s,response).then(function () {
+              resolve();
+            }).catch(function () {
+              autoLoginPath =false;
+              reject(response);
+            });
+          }));
+        }
+        else return self.lastRefresh || $q(function (resolve,reject) {
+          reject(response);
+        })
+      });
+/*    $rootScope.$on('sxt:online', function(event, state){
+        refresh(s);
+      });*/
 
       $rootScope.$on('user:needlogin',function(){
         $state.go('app.auth.login');
@@ -30,16 +63,7 @@
         reversedInterceptors.unshift($injector.get(interceptorFactory));
       });
 
-      return {
-        isLoggedIn : isLoggedIn,
-        token      : token,
-        profile    : profile,
-        login      : login,
-        getUser    : getUser,
-        autoLogin  : autoLogin,
-        current    : currentUser,
-        logout     : logout
-      };
+      return s;
 
       //判断用户是否登录
       function isLoggedIn(){
@@ -54,6 +78,10 @@
       //根据token获取个人信息调用
       function profile(token) {
         return sxt.invoke(reversedInterceptors, 'profile' ,token)
+      }
+
+      function refresh(s) {
+        return sxt.invoke(reversedInterceptors, 'refresh' ,s);
       }
 
       // 根据用户凭据登录系统

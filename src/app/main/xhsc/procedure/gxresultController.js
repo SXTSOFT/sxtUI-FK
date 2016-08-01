@@ -17,44 +17,6 @@
     var  InspectionId=$stateParams.InspectionId;
 
     vm.times = xhUtils.zgDays();
-    vm.persons = [{
-      unit:'甲方',
-      users:[{
-        name:'张三',
-        id:1
-      },{
-        name:'李四',
-        id:2
-      },{
-        name:'王五',
-        id:3
-      }]
-    },{
-      unit:'监理',
-      users:[{
-        name:'张三1',
-        id:4
-      },{
-        name:'李四1',
-        id:5
-      },{
-        name:'王五1',
-        id:6
-      }]
-    },{
-      unit:'施工单位',
-      users:[{
-        name:'张三2',
-        id:7
-      },{
-        name:'李四2',
-        id:8
-      },{
-        name:'王五2',
-        id:9
-      }]
-    }];
-    //console.log('s',$stateParams)
 
     remote.Project.queryAllBulidings($stateParams.projectId).then(function(result){
       vm.allRelations = [];
@@ -90,13 +52,6 @@
         Remarks:vm.params.Remarks,
         Day:vm.time,
       }
-      //
-      //zgReceipt.addOrUpdate(vm.data).then(function(res){
-      //  //console.log('res',res)
-      //  utils.alert("暂存成功",null,function(){
-      //    $state.go("app.xhsc.gx.gxmain",{index:0});
-      //  });
-      //})
 
       remote.Procedure.createZGReceipt(vm.data).then(function(r){
 
