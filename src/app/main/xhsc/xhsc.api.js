@@ -80,6 +80,7 @@
         _id: 'Drawing',
         idField: 'DrawingID',
         dataType: 3,
+        mode:1,
         filter:function (item,drawingId) {
           return item.DrawingID == drawingId;
         }

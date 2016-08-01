@@ -422,65 +422,66 @@
        * @returns {*}
        */
     function bindDb (cfg) {
-      if(cfg.methods){
-        var o = {},methods = cfg.methods;
+      if (cfg.methods) {
+        var o = {}, methods = cfg.methods;
         delete cfg.methods;
-        for(var k in methods){
-          o[k] = bindDb(angular.extend(angular.copy(cfg),methods[k])).bind(methods[k].fn);
+        for (var k in methods) {
+          o[k] = bindDb(angular.extend(angular.copy(cfg), methods[k])).bind(methods[k].fn);
         }
         return o;
       }
       else {
         cfgs.push(cfg);
-        cfg.bind = function (fn,cb) {
+        cfg.bind = function (fn, cb) {
           cfg.fn = fn;
           cfg.mode = cfg.mode || 0;
           var callFn = function () {
             var args = toArray(arguments),
               lodb = initDb(cfg),
               caller = this;
-            if(cfg.mode == 1) { //1 离线优先，无离线数据尝试网络；
+            if (cfg.mode == 1) { //1 离线优先，无离线数据尝试网络；
               var oRaiseError = cfg.raiseError;
               cfg.raiseError = true;
-              return userOffline(caller,lodb,args,cb,fn).catch(function () {
-                return userNetwork(caller,lodb,args,cb,fn).then(function (r) {
+              return userOffline(caller, lodb, args, cb, fn).catch(function () {
+                return userNetwork(caller, lodb, args, cb, fn).then(function (r) {
                   cfg.raiseError = oRaiseError;
                   return r;
                 });
               });
             }
-            else if(cfg.mode == 2){ //2 网络优先，无网络尝试离线数据
-              return userNetwork(caller,lodb,args,cb,fn).catch(function () {
-                return userOffline(caller,lodb,args,cb,fn);
+            else if (cfg.mode == 2) { //2 网络优先，无网络尝试离线数据
+              return userNetwork(caller, lodb, args, cb, fn).catch(function () {
+                return userOffline(caller, lodb, args, cb, fn);
               })
             }
-            else{  //0 有网络只走网络，没网络只走离线；
-            if(cfg.local || !cfg.fn || provider.getNetwork()==1){
-                return userOffline(caller,lodb,args,cb,fn);
+            else {  //0 有网络只走网络，没网络只走离线；
+              if (cfg.local || !cfg.fn || provider.getNetwork() == 1) {
+                return userOffline(caller, lodb, args, cb, fn);
               }
               else {
-                return userNetwork(caller,lodb,args,cb,fn);
+                return userNetwork(caller, lodb, args, cb, fn);
               }
             }
           }
           callFn.cfg = cfg;
           callFn.db = function () {
-            return initDb(cfg,toArray(arguments));
+            return initDb(cfg, toArray(arguments));
           }
           return callFn;
         };
         return cfg;
       }
 
-      function id(d,db,args,cfg,cb) {
+      function id(d, db, args, cfg, cb) {
         var _id = angular.isFunction(cfg.idField) ? cfg.idField(d) : d[cfg.idField];
-        if(_id && db){
-          var defer = db.addOrUpdate(cfg.data?cfg.data.apply(cfg,[angular.extend({_id:_id},d)].concat(args)):angular.extend({_id:_id},d));
-          if(cb && cb(defer));
+        if (_id && db) {
+          var defer = db.addOrUpdate(cfg.data ? cfg.data.apply(cfg, [angular.extend({_id: _id}, d)].concat(args)) : angular.extend({_id: _id}, d));
+          if (cb && cb(defer));
         }
         return _id;
       }
-      function bindData(result,rows,cfg) {
+
+      function bindData(result, rows, cfg) {
         switch (cfg.dataType) {
           case 1:
             result.data = rows;
@@ -504,129 +505,131 @@
         }
         return result;
       }
-      function userOffline(caller,lodb, args,cb, fn) {
-              var p2 = provider.$q.$q(function (resolve,reject) {
-                if(!cfg._id){
-                  resolve(bindData({},[],cfg));
-                }
-                else if(cfg.delete){
-                  args.forEach(function (d) {
-                    lodb.delete(id(d,null,args,cfg)||d);
-                 });
-                  resolve(args);
-                }
-                else if(cfg.upload) {
-                  var updates = [];
-                  args.forEach(function (d) {
-                    id(d,lodb,args,cfg,function (defer) {
-                      updates.push(defer);
-                    });
-                  });
-                  provider.$q.$q.all(updates).then(function () {
-                    resolve(args);
-                  });
-                }
-                else{
-                  var result = {};
-                  if(cfg.dataType == 3){
-              if((args.length==1 && !cfg.filter)||cfg.firstIsId) {
-                      lodb.get(args[0]).then(function (r) {
-                        if(r || !cfg.raiseError) {
-                          result.data = r;
-                          resolve(result);
-                        }
-                        else {
-                          reject();
-                        }
-                      }).catch(function (r) {
-                        result.data = r;
-                        reject(result);
-                      });
-                    }
-                    else{
-                      lodb.findAll(function (item) {
-                        if (cfg.filter)
-                          return cfg.filter.apply(cfg, [item].concat(args));
-                        return true;
-                },cfg.search,args).then(function (r) {
-                        result.data = r.rows[0];
-                        if (!cfg.raiseError || result.data)
-                          resolve(result);
-                        else
-                          reject(result);
-                      })
-                    }
+
+      function userOffline(caller, lodb, args, cb, fn) {
+        var p2 = provider.$q.$q(function (resolve, reject) {
+          if (!cfg._id) {
+            resolve(bindData({}, [], cfg));
+          }
+          else if (cfg.delete) {
+            args.forEach(function (d) {
+              lodb.delete(id(d, null, args, cfg) || d);
+            });
+            resolve(args);
+          }
+          else if (cfg.upload) {
+            var updates = [];
+            args.forEach(function (d) {
+              id(d, lodb, args, cfg, function (defer) {
+                updates.push(defer);
+              });
+            });
+            provider.$q.$q.all(updates).then(function () {
+              resolve(args);
+            });
+          }
+          else {
+            var result = {};
+            if (cfg.dataType == 3) {
+              if ((args.length == 1 && !cfg.filter) || cfg.firstIsId) {
+                lodb.get(args[0]).then(function (r) {
+                  if (r || !cfg.raiseError) {
+                    result.data = r;
+                    resolve(result);
                   }
                   else {
-                    lodb.findAll(function (item) {
-                      if (cfg.filter)
-                        return cfg.filter.apply(cfg, [item].concat(args));
-                      return true;
-              },cfg.search,args).then(function (r) {
-                if(cfg.raiseError && !r.rows.length){
+                    reject();
+                  }
+                }).catch(function (r) {
+                  result.data = r;
+                  reject(result);
+                });
+              }
+              else {
+                lodb.findAll(function (item) {
+                  if (cfg.filter)
+                    return cfg.filter.apply(cfg, [item].concat(args));
+                  return true;
+                }, cfg.search, args).then(function (r) {
+                  result.data = r.rows[0];
+                  if (!cfg.raiseError || result.data)
+                    resolve(result);
+                  else
+                    reject(result);
+                })
+              }
+            }
+            else {
+              lodb.findAll(function (item) {
+                if (cfg.filter)
+                  return cfg.filter.apply(cfg, [item].concat(args));
+                return true;
+              }, cfg.search, args).then(function (r) {
+                if (cfg.raiseError && !r.rows.length) {
                   reject(result);
                 }
                 else {
-                      bindData(result,r.rows,cfg);
-                      resolve(result);
-                }
-                    });
-                  }
+                  bindData(result, r.rows, cfg);
+                  resolve(result);
                 }
               });
-        return cb? p2.then(function (result) {
-                return cb.call(caller,result,cfg,args);
-        }):p2;
             }
-      function userNetwork(caller,lodb, args,cb, fn) {
-        var q = provider.$q.$q(function (resolve,reject) {
-          var p = fn && fn.apply(caller,args);
-          if(p) {
+          }
+        });
+        return cb ? p2.then(function (result) {
+          return cb.call(caller, result, cfg, args);
+        }) : p2;
+      }
+
+      function userNetwork(caller, lodb, args, cb, fn) {
+        var q = provider.$q.$q(function (resolve, reject) {
+          var p = fn && fn.apply(caller, args);
+          if (p) {
             p.then(function (result) {
-                    if(result && result.data) {
-                      var data = result.data;
-                      if (cfg.dataType == 1) {
-                        data.forEach(function (d) {
-                          id(d, lodb, args,cfg);
-                        })
-                      }
-                      else {
-                        if (cfg.dataType == 3) {
-                          id(data, lodb, args,cfg);
-                        }
-                        else if (data.rows && angular.isArray(data.rows)) {
-                          data.rows.forEach(function (d) {
-                            id(d, lodb, args,cfg);
-                          })
-                        }
-                        else if (data.data && angular.isArray(data.data)) {
-                          data.data.forEach(function (d) {
-                            id(d, lodb, args,cfg);
-                          })
-                        }
-                        else if (data.Rows && angular.isArray(data.Rows)) {
-                          data.Rows.forEach(function (d) {
-                            id(d, lodb, args,cfg);
-                          })
-                        }
-                      }
-                resolve(result);
+                if (result && result.data) {
+                  var data = result.data;
+                  if (cfg.dataType == 1) {
+                    data.forEach(function (d) {
+                      id(d, lodb, args, cfg);
+                    })
+                  }
+                  else {
+                    if (cfg.dataType == 3) {
+                      id(data, lodb, args, cfg);
                     }
-              else {
-                reject(result);
-        }
-            })
+                    else if (data.rows && angular.isArray(data.rows)) {
+                      data.rows.forEach(function (d) {
+                        id(d, lodb, args, cfg);
+                      })
+                    }
+                    else if (data.data && angular.isArray(data.data)) {
+                      data.data.forEach(function (d) {
+                        id(d, lodb, args, cfg);
+                      })
+                    }
+                    else if (data.Rows && angular.isArray(data.Rows)) {
+                      data.Rows.forEach(function (d) {
+                        id(d, lodb, args, cfg);
+                      })
+                    }
+                  }
+                  resolve(result);
+                }
+                else {
+                  reject(result);
+                }
+              })
               .catch(function (r) {
                 reject(r);
               });
-      }
-          else{
+          }
+          else {
             resolve();
-        }
+          }
         })
         return q && cb ? q.then(function (result) {
-          return cb.call(caller,result,cfg,args);
-        }):q;
+          return cb.call(caller, result, cfg, args);
+        }) : q;
       }
     }
 
