@@ -6,7 +6,7 @@
   'use strict';
 
   angular
-    .module('app.auth', [])
+    .module('app.auth', ['JPushPlugin'])
     .config(config);
 
   /** @ngInject */

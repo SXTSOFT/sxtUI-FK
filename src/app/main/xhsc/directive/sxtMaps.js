@@ -65,7 +65,7 @@
               var mk = L
                 .marker([o.lat, o.lng], L.extend({
                   icon: L.icon({
-                    iconUrl: 'libs/leaflet/images/M.png',
+                    iconUrl: 'assets/leaflet/css/images/M.png',
                     iconSize: [27, 37],
                     iconAnchor: [20, 20]
                   })

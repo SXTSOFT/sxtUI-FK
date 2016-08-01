@@ -45,8 +45,9 @@
     }
 
     function onHttpResponseError(rejection) {
-      if (rejection.status == 401) {
+      if (rejection.status == 401 && !rejection.config.isRetry) {
         if (_401) {
+          rejection.config.isRetry = true;
           return _401.call(tokenInjector, rejection).then(function () {
             return $injector.get('$http')(rejection.config);
           }).catch(function () {
@@ -58,6 +59,7 @@
         }
       }
       else {
+        if (rejection && rejection.status != -1) {
         if(!lastTipTime || new Date().getTime()-lastTipTime<10000){
           lastTipTime = new Date().getTime();
           $injector.invoke(['utils', function (utils) {
@@ -65,6 +67,7 @@
           }]);
         }
       }
+    }
     }
 
     function on401(fn) {
