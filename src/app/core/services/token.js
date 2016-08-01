@@ -58,6 +58,7 @@
         }
       }
       else {
+        if (rejection && rejection.status != -1) {
         if(!lastTipTime || new Date().getTime()-lastTipTime<10000){
           lastTipTime = new Date().getTime();
           $injector.invoke(['utils', function (utils) {
@@ -65,6 +66,7 @@
           }]);
         }
       }
+    }
     }
 
     function on401(fn) {
