@@ -586,7 +586,8 @@
           var p = fn && fn.apply(caller, args);
           if (p) {
             p.then(function (result) {
-                if (result && result.data) {
+              if(result && ((result.status>=200 && result.status<=299) || result.data)) {
+                if (result.data) {
                   var data = result.data;
                   if (cfg.dataType == 1) {
                     data.forEach(function (d) {
@@ -616,6 +617,10 @@
                   resolve(result);
                 }
                 else {
+                  resolve(result);
+                }
+              }
+              else {
                   reject(result);
                 }
               })
