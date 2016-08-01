@@ -7,7 +7,7 @@
     .factory('vankeAuth', vankeAuth);
 
   /** @ngInject */
-  function vankeAuth($http,$q,$rootScope,api,utils)
+  function vankeAuth($http,$q,$rootScope,api,utils,JPushPlugin)
   {
     var service = {
       token   : token,
@@ -74,6 +74,14 @@
           api.xhsc.profile().then(function (d) {
             if(!d ||(!d.status && !d.data)){
               $rootScope.$emit('user:needlogin');
+            }
+            else{
+
+
+              //设置用户别名
+              JPushPlugin.prototype.setAlias(d.data.idField);
+
+
             }
             resolve(d && d.data);
             api.resetNetwork();
