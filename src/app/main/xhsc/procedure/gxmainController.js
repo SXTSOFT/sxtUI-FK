@@ -243,30 +243,6 @@
         utils.alert('下载失败,请检查网络');
       })
 
-      /*item.isDown = true;
-      var ix=1,len = 6;
-      item.progress = ix/len;
-      api.task([function () {
-        return remote.Project.getDrawings(item.ProjectID)
-      },function () {
-        return remote.Project.getDrawingRelations(item.ProjectID);
-      },function () {
-        return remote.Project.queryAllBulidings(item.ProjectID);
-      },function () {
-        return remote.Procedure.getRegionStatus(item.ProjectID);
-      },function () {
-        return remote.Procedure.queryProcedure();
-      },function () {
-        return api.setting('project:'+item.ProjectID,{ProjectID:item.ProjectID,date:new Date()});
-      }])(function (persent) {
-        item.progress = persent*100;
-      },function () {
-        item.progress = 100;
-        item.isOffline = true;
-      },function () {
-        item.isDown = false;
-        utils.alert('下载失败,请检查网络');
-      });*/
     };
 
     remote.Procedure.getInspections(31).then(function(r){
@@ -339,7 +315,8 @@
       });
     }
     vm.exportReport = function(item){
-      window.open(sxt.app.api+'/api/Office/ExportWord?inspectionId='+item.InspectionId);
+      $state.go('app.xhsc.gx.gxzgreport')
+      //window.open(sxt.app.api+'/api/Office/ExportWord?inspectionId='+item.InspectionId);
       // window.open('app/main/xhsc/images/bg.png')
     }
     vm.Lookinto = function(item){

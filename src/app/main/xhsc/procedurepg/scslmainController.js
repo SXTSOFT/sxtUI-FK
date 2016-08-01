@@ -88,6 +88,7 @@
       api.task(tasks)(function (percent, current, total) {
         item.progress = parseInt(percent * 100);
       }, function () {
+        //$rootScope.isDown=true;
         var ix = vm.onlines.indexOf(item);
         if (ix != -1)
           vm.onlines.splice(ix, 1);

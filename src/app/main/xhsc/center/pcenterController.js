@@ -9,29 +9,45 @@
     .controller('pcenterController',pcenterController);
 
   /**@ngInject*/
-  function pcenterController($scope,$mdDialog,db,auth,$rootScope,api,utils){
+  function pcenterController($scope,$mdDialog,db,auth,$rootScope,api,utils,$q,remote ){
     var vm = this;
-    vm.tel=13112345678;
-    vm.changeTel = function(tel){
-      $mdDialog.show({
-        controller:['$scope',function($scope){
-            $scope.tel = vm.tel;
-            $scope.cancel = function(){
-              $mdDialog.hide();
-            }
-          $scope.submit = function(tel){
-            $mdDialog.hide(tel);
-            vm.tel = tel;
-          }
-        }],
-        templateUrl: 'app/main/xhsc/center/changeTel.html',
-        parent: angular.element(document.body),
-        focusOnOpen:false,
-        clickOutsideToClose: true
+    var pro=[
+      remote.Procedure.authorityByUserId(),
+      auth.getUser()
+    ];
+    $q.all(pro).then(function(r){
+      var role=r[0];
+      var u=r[1];
+      console.log(r);
+      vm.user={};
+      vm.u={};
+      if (u){
+        vm.user.name= u.Name,
+        vm.user.userName= u.UserName
       }
+      if (role&&role.data&&role.data.length){
+          switch (role.data[0].MemberType){
+            case 0:
+              vm.user.role='总包';
+                  break
+            case 2:
+              vm.user.role='监理';
+                  break;
+          }
+      }
+    });
 
-      )
-    }
+
+    auth.getUser().then(function(r){
+      if (r){
+        vm.user={
+          Name: r.Name,
+          UserName: r.UserName
+        };
+      }
+      vm.user={};
+       console.log(r)
+    });
 
     $rootScope.$on('sxt:online', function(event, state){
       vm.networkState = api.getNetwork();

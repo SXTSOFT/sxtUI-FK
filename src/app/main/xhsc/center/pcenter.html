@@ -1,16 +1,23 @@
 <div class="pcenter">
   <md-list style="padding:0">
-<!--    <md-list-item>
-      <img src="app/main/xhsc/images/icon-downed.png" class="md-avatar" />
-      <div class="md-list-item-text" layout="column" flex>
-        <h4 style="border-bottom: 1px solid #d8d8d8;padding-bottom: 10px;">姓名</h4>
-        <p>建筑公司</p>
+    <md-list-item style="margin:0px;border: 0px solid">
+      <div class="md-list-item-text" layout="row" style="border-bottom: 1px solid #d8d8d8" flex>
+        <p style="width: 60px;text-align-last: justify">姓名</p>
+        <p  style="padding-left: 30px">{{vm.user.name}}</p>
       </div>
     </md-list-item>
-    <md-list-item>
-      <p>手机号码</p>
-      <md-button class="md-secondary" ></md-button>
-    </md-list-item>-->
+    <md-list-item  style="margin:0px;border: 0px solid">
+      <div class="md-list-item-text" layout="row" style="border-bottom: 1px solid #d8d8d8" flex>
+        <p style="width: 60px;text-align-last: justify">角色</p>
+        <p  style="padding-left: 30px" layout="row">{{vm.user.role}}</p>
+      </div>
+    </md-list-item>
+    <md-list-item  style="margin:0px;border: 0px solid">
+      <div class="md-list-item-text" layout="row" style="border-bottom: 1px solid #d8d8d8" flex>
+        <p style="width: 60px;text-align-last: justify">手机号码</p>
+        <p  style="padding-left: 30px">{{vm.user.userName}}</p>
+      </div>
+    </md-list-item>
     <md-list-item>
       <p>模式({{vm.networkState?'离线':'在线'}})</p> <p class="md-secondary md-hue-3">
       <md-switch ng-model="vm.networkState" aria-label="模式" ng-true-value="0" ng-false-value="1" class="md-warn"></md-switch></p>
