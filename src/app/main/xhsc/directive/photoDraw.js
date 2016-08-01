@@ -138,7 +138,7 @@
           sourceType: 1,
           allowEdit: false,
           encodingType: 0,
-          saveToPhotoAlbum: false,
+          saveToPhotoAlbum: true,
           correctOrientation: true
         }).then (function (imageData) {
           if (imageData) {

@@ -201,6 +201,15 @@
         templateUrl : 'app/main/xhsc/procedure/gxrychoose.html',
         controller:'gxrychooseController as vm',
       })
-
+      .state('app.xhsc.gx.regionStates',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'人员选择',
+        url   :'/regionStates/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{maxRegion}',
+        templateUrl : 'app/main/xhsc/procedure/regionStates.html',
+        controller:'regionStatesController as vm',
+      })
   }
 })();

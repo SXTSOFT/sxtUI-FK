@@ -10,10 +10,9 @@
     .controller('HomeController', HomeController);
 
   /** @ngInject */
-  function HomeController($scope,auth,$state,$rootScope,$timeout, $mdBottomSheet,remote)
+  function HomeController($scope,auth,$state,$rootScope,$timeout, utils,remote)
   {
     remote.profile()
-
     var vm = this;
     vm.data = {};
     vm.is = function (state) {

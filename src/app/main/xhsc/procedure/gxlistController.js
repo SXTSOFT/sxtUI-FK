@@ -13,14 +13,11 @@
     var vm=this;
     vm.projectId = $stateParams.projectId;
     vm.role=$stateParams.role;
-    console.log('role',vm.role)
+
     remote.Procedure.queryProcedure().then(function(result){
-      // console.log(result);
-      //vm.procedureData = result.data;
       vm.procedureData = [];
       vm.list=[];
       result.data.forEach(function(it){
-        //vm.procedureData.push({name:it.SpecialtyName,rows:[]})
         var name = it.SpecialtyName;
         var plist=[];
         it.SpecialtyChildren.forEach(function(t){
@@ -41,11 +38,7 @@
                 _t.maxRegion = max;
               }
               plist.push(_t);
-              //console.log('plist', plist)
             })
-            //vm.procedureData.rows.push(plist);
-           // vm.list.push(plist);
-
           }
         })
         vm.procedureData.push({name:name,rows:plist});
@@ -58,6 +51,10 @@
       if(!vm.role){
         $state.go('app.xhsc.gx.zjhouseChoose',{role:vm.role,acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,areaId:vm.areaId,maxRegion:i.maxRegion})
       }else{
+        if (vm.role=='regionState'){
+          $state.go('app.xhsc.gx.regionStates',{acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,maxRegion:i.maxRegion});
+          return;
+        }
         $state.go('app.xhsc.gx.gxhousechoose',{role:vm.role,acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,areaId:vm.areaId,maxRegion:i.maxRegion})
       }
     }

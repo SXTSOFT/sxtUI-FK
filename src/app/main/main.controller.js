@@ -17,8 +17,15 @@
     });
   }
   angular.element(document).ready(function () {
-
-    angular.bootstrap(document, ['sxt']);
+    var bootstrap = function () {
+      angular.bootstrap(document, ['sxt']);
+    }
+    if (window.cordova) {
+      document.addEventListener('deviceready', bootstrap, false);
+    }
+    else {
+      bootstrap();
+    }
   });
 
 })();
