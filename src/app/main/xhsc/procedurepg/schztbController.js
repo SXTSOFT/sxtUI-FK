@@ -36,6 +36,7 @@
 
       result.data.forEach(function (item) {
         //item.newList
+
         if(!item.List.length){
         //if(!item.newList.length){
           var rowSpan = 0,t1=0,t2 = 0,tempq=[],tempa=[];
@@ -117,7 +118,7 @@
           item.rowSpan = rowSpan;
           //item.allDot = t2;
           newD.push(item);
-          console.log(tempa)
+          //console.log(tempa)
           var atemp=[],btemp=[];
           if(tempa){
             for(var i=0;i<tempa.length;i++){

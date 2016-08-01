@@ -315,7 +315,8 @@
       });
     }
     vm.exportReport = function(item){
-      window.open(sxt.app.api+'/api/Office/ExportWord?inspectionId='+item.InspectionId);
+      $state.go('app.xhsc.gx.gxzgreport')
+      //window.open(sxt.app.api+'/api/Office/ExportWord?inspectionId='+item.InspectionId);
       // window.open('app/main/xhsc/images/bg.png')
     }
     vm.Lookinto = function(item){

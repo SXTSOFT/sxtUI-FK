@@ -1078,6 +1078,9 @@ md-tabs[md-align-tabs="bottom"]{
   }
 }
 .gx-list{
+  &.narrow{
+
+  }
   &.mb40{
     margin-bottom: 40px;
   }
@@ -3000,5 +3003,25 @@ $mapboxgl-popup-bg:rgba(0,0,0,.85)!important;
     background-size:70%;
     background-repeat:no-repeat;
     background-position:center center;
+  }
+}
+table{
+  &.gxzgtb{
+    border-collapse: collapse;
+    tr{
+      td,th{
+        border:1px solid #dedede;
+        padding: 8px;
+      }
+    }
+    md-radio-group{
+      md-radio-button{
+        margin-bottom: 0;
+        &:not(:first-child){
+          margin-top: 5px;
+        }
+      }
+    }
+
   }
 }
