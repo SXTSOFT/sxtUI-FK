@@ -1,4 +1,18 @@
 <md-content class="gxall">
+  <div flex="none" style="position: relative;" class="downcaret">
+    <div layout="row" flex style="height:48px;border-bottom: 1px solid #d8d8d8;position: relative;z-index: 10;background: rgb(245,245,245);">
+      <p ng-click="vm.qyslide()" style="font-size:14px;padding:0 10px;text-align: center;margin: 0;height:48px;line-height:48px;width:100%;margin-left:auto;margin-right:auto;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+        {{vm.current.RegionName}} <span class="caret"></span>
+      </p>
+    </div>
+    <div flex layout="row" class="gxtest qyslide" ng-class="{'qydown':vm.qyslideShow}">
+      <md-list layout="column" flex class="gxplist">
+        <md-list-item flex ng-repeat="p in vm.btBatch">
+          <p ng-click="vm.selectQy(p)">{{p.RegionName}}</p>
+        </md-list-item>
+      </md-list>
+    </div>
+  </div>
   <div class="gxtest gxtestdetail" flex ng-if="vm.pList.length">
     <div style="margin-top: 20px;padding:0 8px;" flex layout="row"><span flex>不合格列表</span><span flex></span></div>
     <md-list class="gxque">

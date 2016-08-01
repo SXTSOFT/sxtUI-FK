@@ -55,11 +55,27 @@
     })
     vm.current = [];
     vm.btBatch=[];
+    vm.qyslide = function(){
+      vm.qyslideShow = !vm.qyslideShow;
+    }
+    vm.selectQy = function(item){
+      vm.current= item;
+      //vm.RegionName = item.RegionName;
+      vm.qyslideShow = false;
+      //vm.setRegion(item);
+    }
     remote.Project.getInspectionList(vm.inspectionId).then(function(rtv){
       var  r=rtv.data.find(function(o){
         return o.InspectionId==vm.inspectionId;
       });
-       //console.log('r',r)
+      if (angular.isArray(r.Children)){
+        r.Children.forEach(function(tt){
+          vm.btBatch.push(angular.extend({
+            RegionID:tt.AreaID,
+            //RegionType:getRegionType( tt.AreaID)
+          },tt));
+        });
+      }
        vm.current = r.Children[0];
     })
     $scope.$watch('vm.current',function(){
@@ -114,7 +130,7 @@
           ProblemID:it.ProblemID,
           AreaID:areaId
       }
-      remote.Procedure.InspectionIndexJoinApi.create(vm.inspectionId,it.ProblemID,areaId);
+      remote.Procedure.InspectionIndexJoinApi.create(v);
     }
     var sendaResult = $rootScope.$on('sendGxResult',function(){
       $state.go('app.xhsc.gx.gxresult',{acceptanceItemName:acceptanceItemName,acceptanceItemID:acceptanceItemID,name:vm.RegionFullName,areaId:areaId,projectId:projectId,InspectionId:vm.inspectionId});

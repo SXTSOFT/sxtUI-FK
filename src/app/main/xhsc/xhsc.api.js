@@ -266,17 +266,17 @@
       },
       InspectionIndexJoinApi:{
         create:$http.db({
-          id:'InspectionIndexJoinApi',
+          _id:'InspectionIndexJoinApi',
           idField:'ProblemID',
           upload:true,
-          filter:function(item,InspectionID,ProblemID,AreaID){
-            return item.InspectionID == InspectionID && item.ProblemID == ProblemID && item.AreaID ==AreaID
-          }
-        }).bind(function(InspectionID,ProblemID,AreaID){
-          return $http.post('/api/InspectionIndexJoinApi/Insert',{InspectionID:InspectionID,ProblemID:ProblemID,AreaID:AreaID});
+          //filter:function(item,InspectionID,ProblemID,AreaID){
+          //  return item.InspectionID == InspectionID && item.ProblemID == ProblemID && item.AreaID ==AreaID
+          //}
+        }).bind(function(params){
+          return $http.post('/api/InspectionIndexJoinApi/Insert',params);
         }),
         query:$http.db({
-          id:'InspectionIndexJoinApi',
+          _id:'InspectionIndexJoinApi',
           idField:'ProblemID',
           dataType:1,
           filter:function(item,InspectionID){

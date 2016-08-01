@@ -293,8 +293,9 @@
               start: tasks.length,
               cfg:cfg
             };
+            var db = initDb(cfg)
             groups.push(group);
-            p.push(initDb(cfg).findAll(function (item) {
+            p.push(db.findAll(function (item) {
               if (filter)return filter(cfg, item);
               return true;
             }));

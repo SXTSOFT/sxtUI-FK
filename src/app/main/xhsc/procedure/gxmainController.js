@@ -86,9 +86,13 @@
               });
             })
           });
+        t.push(function(){
+          return remote.Procedure.InspectionIndexJoinApi.query(item.InspectionId)
+        })
         t.push(function () {
           return remote.Procedure.InspectionPoint.query(item.AcceptanceItemID,item.InspectionId,area.AreaID)
         })
+
       });
       return t;
     }

@@ -7,7 +7,7 @@
     .factory('vankeAuth', vankeAuth);
 
   /** @ngInject */
-  function vankeAuth($http,$q,$rootScope,api,utils,JPushPlugin)
+  function vankeAuth($http,$q,$rootScope,api,utils)
   {
     var service = {
       token   : token,
@@ -98,9 +98,9 @@
             else{
 
 
-              //设置用户别名
-              JPushPlugin.prototype.setAlias(d.data.idField);
-
+              ////设置用户别名
+              //JPushPlugin.prototype.setAlias(d.data.idField);
+              //
 
             }
             resolve(d && d.data);
