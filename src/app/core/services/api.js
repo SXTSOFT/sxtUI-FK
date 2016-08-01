@@ -343,7 +343,6 @@
           provider.$cordovaFileTransfer.download(url, rootPath + uname).then(function (r) {
             resolve();
           }).catch(function (err) {
-            console.log('downerr',err);
             resolve();
           });
         }
@@ -373,7 +372,6 @@
                 next();
               }
             }).catch(function (err) {
-              console.log('derr',err);
               d = 0;
               fail && fail();
             });
