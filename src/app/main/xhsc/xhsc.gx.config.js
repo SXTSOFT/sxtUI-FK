@@ -132,6 +132,16 @@
         templateUrl : 'app/main/xhsc/procedure/gxzgdetail.html',
         controller:'gxzgdetailController as vm'
       })
+      .state('app.xhsc.gx.gxzgreport', {
+        noBack: true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '工序整改',
+        url: '/gxzgreport',
+        templateUrl: 'app/main/xhsc/procedure/gxzgreport.html',
+        controller: 'gxzgreportController as vm'
+      })
       .state('app.xhsc.gx.gxbdchoose', {
         noBack: true,
         sendBt: false,
