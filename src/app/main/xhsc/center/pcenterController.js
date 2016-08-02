@@ -64,17 +64,18 @@
     vm.logout = function(){
       utils.confirm('确定清除所有缓存数据吗?').then(function (result) {
         vm.trueClear(['v_profile']);
-        db('xcpk').destroy();
-        auth.logout();
       });
     }
 
     vm.trueClear = function (exclude) {
       api.clearDb(function (persent) {
         vm.cacheInfo = parseInt(persent * 100) + '%';
-      }, function () {
+      }, function (tasks,cfgs) {
+        cfgs=[];
         vm.cacheInfo = null;
-        utils.alert('清除成功');
+        db('xcpk').destroy().then(function(){
+          utils.alert('清除成功',null, auth.logout);
+        });
       }, function () {
         vm.cacheInfo = null;
         utils.alert('清除失败');
