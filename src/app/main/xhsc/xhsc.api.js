@@ -264,6 +264,28 @@
           delete:true
         }).bind()
       },
+      InspectionIndexJoinApi:{
+        create:$http.db({
+          _id:'InspectionIndexJoinApi',
+          idField:'ProblemID',
+          upload:true,
+          //filter:function(item,InspectionID,ProblemID,AreaID){
+          //  return item.InspectionID == InspectionID && item.ProblemID == ProblemID && item.AreaID ==AreaID
+          //}
+        }).bind(function(params){
+          return $http.post('/api/InspectionIndexJoinApi/Insert',params);
+        }),
+        query:$http.db({
+          _id:'InspectionIndexJoinApi',
+          idField:'ProblemID',
+          dataType:1,
+          filter:function(item,InspectionID){
+            return item.InspectionID == InspectionID
+          }
+        }).bind(function(InspectionID){
+          return $http.get($http.url('/api/InspectionIndexJoinApi/GetList',{inspectionID:InspectionID}));
+        })
+      },
       getRegionStatus:$http.db({
           _id:'project_status',
           idField:function (item) {
