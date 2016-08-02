@@ -323,6 +323,9 @@
       //window.open(sxt.app.api+'/api/Office/ExportWord?inspectionId='+item.InspectionId);
       // window.open('app/main/xhsc/images/bg.png')
     }
+    vm.Lookintoys = function(item){
+      $state.go('app.xhsc.gx.gxzgreport',{InspectionId:item.InspectionId,acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,projectId:item.ProjectID});
+    }
     vm.Lookinto = function(item){
       console.log(item)
       $state.go('app.xhsc.gx.gxzgdetail',{InspectionId:item.InspectionId,acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,projectId:item.ProjectID});

@@ -1,6 +1,6 @@
 <div flex layout="column">
   <md-content class="subheader" style="position:relative;" flex layout-padding>
-    <table width="100%" cellpadding="0" cellspacing="0" class="gxzgtb">
+    <table width="100%" cellpadding="0" cellspacing="0" class="gxzgtb" border="0">
       <thead>
       <tr>
         <th colspan="8" style="text-align: center;" class="head">
@@ -8,151 +8,164 @@
         </th>
       </tr>
       <tr>
-        <th>
+        <th width="12.5%">
           项目名称：
         </th>
-        <th>
-          钢筋工程
+        <th colspan="3" width="37.5%">
+          {{vm.result.ProjectName}}
         </th>
-        <th colspan="3">验收部位</th>
-        <th>钢筋工程验收记录表</th>
-        <th>验收时间</th>
-        <th>2011-11-11</th>
+        <th width="12.5%">验收部位</th>
+        <th colspan="3" width="37.5%">{{vm.result.CheckAreas}}</th>
+        <!--<th>钢筋工程验收记录表</th>-->
+        <!--<th colspan="2">验收时间</th>-->
       </tr>
-      <tr>
+      <tr ng-if="vm.result.Construction">
+        <th width="12.5%">建设单位</th>
+        <th width="12.5%">{{vm.result.Construction}}</th>
+        <th width="12.5%">项目经理</th>
+        <th width="12.5%"></th>
+        <th width="12.5%">验收人员</th>
+        <th width="12.5%">{{vm.result.InspectionUser}}</th>
+        <th width="12.5%">验收时间</th>
+        <th width="12.5%">{{vm.result.InspectionTime}}</th>
+      </tr>
+      <tr ng-if="vm.result.Supervision">
         <th>监理单位</th>
-        <th></th>
+        <th>{{vm.result.Supervision}}</th>
         <th>项目经理</th>
         <th></th>
         <th>验收人员</th>
-        <th></th>
+        <th>{{vm.result.ProjectManager}}</th>
         <th>验收时间</th>
         <th></th>
       </tr>
-      <tr>
-        <th>建设单位</th>
-        <th></th>
-        <th>项目经理</th>
-        <th></th>
-        <th>验收人员</th>
-        <th></th>
-        <th>验收时间</th>
-        <th></th>
-      </tr>
-      <tr>
-        <th>验收意见</th>
-        <th colspan="7">
-          <md-radio-group>
-            <md-radio-button style="display: inline-block;margin-right: 10px;margin-bottom: 5px;">同意</md-radio-button><md-radio-button style="display: inline-block;">不同意</md-radio-button>
-          </md-radio-group>
-        </th>
+      <!--<tr>-->
+        <!--<th>验收意见</th>-->
+        <!--<th colspan="7">-->
+          <!--<md-radio-group>-->
+            <!--<md-radio-button style="display: inline-block;margin-right: 10px;margin-bottom: 5px;">同意</md-radio-button><md-radio-button style="display: inline-block;">不同意</md-radio-button>-->
+          <!--</md-radio-group>-->
+        <!--</th>-->
 
-      </tr>
+      <!--</tr>-->
       </thead>
       <tbody>
+      <!--<tr>-->
+        <!--<td colspan="8">验收项及验收情况</td>-->
+      <!--</tr>-->
+      <!--<tr>-->
+        <!--<td width="12.5%">-->
+          <!--序号-->
+        <!--</td>-->
+        <!--<td width="12.5%">-->
+          <!--分类-->
+        <!--</td>-->
+        <!--<td width="12.5%">-->
+          <!--管控要点-->
+        <!--</td>-->
+        <!--<td width="12.5%">-->
+          <!--质量标准-->
+        <!--</td>-->
+        <!--<td colspan="2" width="25%">-->
+          <!--检查方法-->
+        <!--</td>-->
+        <!--<td width="12.5%">-->
+          <!--验收情况-->
+        <!--</td>-->
+        <!--<td width="12.5%">-->
+          <!--复验情况-->
+        <!--</td>-->
+      <!--</tr>-->
       <tr>
-        <td colspan="8">验收项及验收情况</td>
-      </tr>
-      <tr>
-        <td >
-          序号
+        <td colspan="8" style="padding:0;">
+          <table cellpadding="0" cellspacing="0" width="100%" class="gxtb2" border="0">
+            <tbody>
+              <tr>
+                <td colspan="8" style="border-top:none;border-right:none;">验收项及验收情况</td>
+              </tr>
+              <tr>
+                <td width="12.5%">
+                  序号
+                </td>
+                <td width="12.5%">
+                  分类
+                </td>
+                <td width="12.5%">
+                  管控要点
+                </td>
+                <td width="12.5%">
+                  质量标准
+                </td>
+                <td colspan="2" width="25%">
+                  检查方法
+                </td>
+                <td width="12.5%">
+                  验收情况
+                </td>
+                <td width="12.5%">
+                  复验情况
+                </td>
+              </tr>
+            </tbody>
+            <tbody  ng-repeat="item in vm.result.Areas">
+              <tr ng-repeat="i in item.Children">
+                <td  width="12.5%">{{$index+1}}</td>
+                <td rowspan="{{item.rowspan}}" ng-if="$index == 0"  width="12.5%">{{item.Classification}}</td>
+                <td  width="12.5%">{{i.PointName}}</td>
+                <td  width="12.5%">{{i.PointName}}</td>
+                <td colspan="2"  width="25%">{{i.PointName}}</td>
+                <td  width="12.5%">
+                  {{i.inspectionStatus}}
+                </td>
+                <td width="12.5%">
+                  {{i.reinspectionStatus}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </td>
-        <td>
-          分类
-        </td>
-        <td>
-          管控要点
-        </td>
-        <td>
-          质量标准
-        </td>
-        <td colspan="2">
-          检查方法
-        </td>
-        <td>
-          验收情况
-        </td>
-        <td>
-          复验情况
-        </td>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td rowspan="2">钢筋制作</td>
 
-        <td>钢筋品牌</td>
-        <td>与合同指定品牌相同</td>
-        <td colspan="2">检查钢筋字幕表示，不同品牌和规格分别选取一个测量点</td>
-        <td>
-          <md-radio-group>
-            <md-radio-button>符合</md-radio-button><md-radio-button>不符合</md-radio-button></td>
-          </md-radio-group>
-        <td><md-radio-group>
-          <md-radio-button>符合</md-radio-button><md-radio-button>不符合</md-radio-button></td>
-        </md-radio-group></td>
       </tr>
+      <!--<tr ng-repeat="item in vm.result.Areas">-->
+        <!--<td>2</td>-->
+        <!--<td>钢筋品牌</td>-->
+        <!--<td>与合同指定品牌相同</td>-->
+        <!--<td colspan="2">检查钢筋字幕表示，不同品牌和规格分别选取一个测量点</td>-->
+        <!--<td>-->
+          <!--符合-->
+          <!--&lt;!&ndash;<md-radio-group>&ndash;&gt;-->
+          <!--&lt;!&ndash;<md-radio-button>符合</md-radio-button><md-radio-button>不符合</md-radio-button>&ndash;&gt;-->
+        <!--&lt;!&ndash;</md-radio-group>&ndash;&gt;-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--符合-->
+          <!--&lt;!&ndash;<md-radio-group>&ndash;&gt;-->
+          <!--&lt;!&ndash;<md-radio-button>符合</md-radio-button><md-radio-button>不符合</md-radio-button>&ndash;&gt;-->
+        <!--&lt;!&ndash;</md-radio-group>&ndash;&gt;-->
+        <!--</td>-->
+      <!--</tr>-->
+
       <tr>
-        <td>2</td>
-        <td>钢筋品牌</td>
-        <td>与合同指定品牌相同</td>
-        <td colspan="2">检查钢筋字幕表示，不同品牌和规格分别选取一个测量点</td>
-        <td><md-radio-group>
-          <md-radio-button>符合</md-radio-button><md-radio-button>不符合</md-radio-button></td>
-        </md-radio-group></td>
-        <td><md-radio-group>
-          <md-radio-button>符合</md-radio-button><md-radio-button>不符合</md-radio-button></td>
-        </md-radio-group></td>
-      </tr>
-      <tr>
-        <td colspan="8" style="border-bottom: none;">验收现场照片</td>
-      </tr>
-      <tr>
-        <td colspan="8" style="padding: 0;border:none;">
-          <table width="100%" cellpadding="0" cellspacing="0">
+        <td colspan="8" style="padding: 0;border-top:none;">
+          <table width="100%" cellpadding="0" cellspacing="0" class="gxtb2">
             <tbody>
             <tr>
-              <td colspan="2">
-                1
-              </td>
-              <td colspan="2">
-                2
-              </td>
-              <td colspan="2">
-                3
-              </td>
-              <td colspan="2">
-                4
+              <td colspan="8"  style="border-top:none;border-right:none;">验收现场照片</td>
+            </tr>
+            </tbody>
+            <tbody ng-repeat="pic in vm.pics">
+            <tr>
+              <td colspan="2" ng-repeat="p in pic">
+                {{p.PictureName}}
               </td>
             </tr>
             <tr>
-              <td colspan="2" width="25%"><p><img src="app/main/xhsc/images/bg.png" width="80%"></p></td>
-              <td colspan="2" width="25%"></td>
-              <td colspan="2" width="25%"></td>
-              <td colspan="2" width="25%"></td>
+              <!--<td colspan="2" width="25%"><p><img src="app/main/xhsc/images/bg.png" width="80%"></p></td>-->
+              <td colspan="2" width="25%" ng-repeat="p in pic">{{p.PictureUrl}}</td>
+              <!--<td colspan="2" width="25%"></td>-->
+              <!--<td colspan="2" width="25%"></td>-->
             </tr>
             </tbody>
-            <!--<tbody>-->
-            <!--<tr>-->
-              <!--<td colspan="2">-->
-                <!--1-->
-              <!--</td>-->
-              <!--<td colspan="2">-->
-                <!--2-->
-              <!--</td>-->
-              <!--<td colspan="2">-->
-                <!--3-->
-              <!--</td>-->
-              <!--<td colspan="2">-->
-                <!--4-->
-              <!--</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-              <!--<td colspan="2"><p style="text-align: center;"><img src="app/main/xhsc/images/bg.png" width="80%"></p></td>-->
-              <!--<td colspan="2"></td>-->
-              <!--<td colspan="2"></p></td>-->
-              <!--<td colspan="2"></p></td>-->
-            <!--</tr>-->
-            <!--</tbody>-->
           </table>
         </td>
       </tr>
@@ -160,51 +173,88 @@
         <td colspan="8" style="border-top: none;">验收问题及原位标注</td>
       </tr>
       <tr>
-        <td colspan="4">原位标注</td>
-        <td colspan="4">问题描述：</td>
+        <td colspan="4" width="50%">
+            <div style="height:500px;" class="mapcheck" layout="column" flex sxt-recheck-map="vm.Rectification.RectificationID" ct="vm.info" project-id="vm.regionSelect.AreaID" procedure="vm.Rectification.AcceptanceItemID" disable-drag region-id="vm.regionSelect.AreaID">
+              <div flex layout="row" layout-align="center center" ng-if="vm.info.loading"><md-progress-circular md-mode="indeterminate" ></md-progress-circular></div>
+            </div>
+        </td>
+        <td colspan="4"><p>问题描述：</p>
+          <p ng-repeat="problem in vm.result.ProblemItem[0].Item">{{problem.Name}}</p>
+        </td>
       </tr>
+
       <tr>
-        <td colspan="8" style="border-bottom: none;">验收问题及整改情况</td>
-      </tr>
-      <tr>
-        <td colspan="8" style="padding: 0;border:none;">
-          <table width="100%" cellpadding="0" cellspacing="0">
+        <td colspan="8" style="padding: 0;">
+          <table width="100%" cellpadding="0" cellspacing="0" class="gxtb2">
             <tbody>
             <tr>
-              <td colspan="2">验收照片</td>
-              <td colspan="2">整改照片</td>
-              <td colspan="2">验收照片</td>
-              <td colspan="2">整改照片</td>
-            </tr>
-            <tr>
-              <td colspan="2" width="25%"><p><img src="app/main/xhsc/images/bg.png" width="80%"></p></td>
-              <td colspan="2" width="25%"></td>
-              <td colspan="2" width="25%"><p><img src="app/main/xhsc/images/bg.png" width="80%"></p></td>
-              <td colspan="2" width="25%"></td>
-            </tr>
-            <tr>
-              <td colspan="4">问题描述</td>
-              <td colspan="4">问题描述</td>
+              <td colspan="8"  style="border-top:none;border-right:none;">验收问题及整改情况</td>
             </tr>
             </tbody>
-            <tbody>
+            <tbody ng-repeat="detail in vm.details">
+            <!--<tr>-->
+              <!--<td colspan="2">验收照片</td>-->
+              <!--<td colspan="2">整改照片</td>-->
+              <!--<td colspan="2">验收照片</td>-->
+              <!--<td colspan="2">整改照片</td>-->
+            <!--</tr>-->
             <tr>
-              <td colspan="2">验收照片</td>
-              <td colspan="2">整改照片</td>
-              <td colspan="2">验收照片</td>
-              <td colspan="2">整改照片</td>
+              <!--<td colspan="8">-->
+              <!--<table>-->
+                <!--<tbody>-->
+                  <!--<tr>-->
+                    <!---->
+                  <!--</tr>-->
+                <!--</tbody>-->
+              <!--</table>-->
+              <!--</td>-->
+              <!--<td colspan="2" width="25%"><p><img src="app/main/xhsc/images/bg.png" width="80%"></p></td>-->
+              <td width="50%" colspan="4" ng-repeat="p in detail" style="padding:0;border-top:none;">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td width="50%">
+                      验收照片
+                    </td>
+                    <td width="50%">
+                      整改照片
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="50%">
+                      {{p.Front}}
+                    </td>
+                    <td width="50%">
+                      {{p.Back}}
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              <!--<td colspan="2" width="25%"><p><img src="app/main/xhsc/images/bg.png" width="80%"></p></td>-->
+              <!--<td colspan="2" width="25%" ng-repeat="p in detail">{{p.Back}}</td>-->
             </tr>
             <tr>
-              <td colspan="2">验收照片</td>
-              <td colspan="2">整改照片</td>
-              <td colspan="2">验收照片</td>
-              <td colspan="2">整改照片</td>
-            </tr>
-            <tr>
-              <td colspan="4">问题描述</td>
-              <td colspan="4">问题描述</td>
+              <td colspan="4" ng-repeat="d in detail">{{d.Describe}}</td>
+              <!--<td colspan="4">问题描述</td>-->
             </tr>
             </tbody>
+            <!--<tbody>-->
+            <!--<tr>-->
+              <!--<td colspan="2">验收照片</td>-->
+              <!--<td colspan="2">整改照片</td>-->
+              <!--<td colspan="2">验收照片</td>-->
+              <!--<td colspan="2">整改照片</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td colspan="2">验收照片</td>-->
+              <!--<td colspan="2">整改照片</td>-->
+              <!--<td colspan="2">验收照片</td>-->
+              <!--<td colspan="2">整改照片</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td colspan="4">问题描述</td>-->
+              <!--<td colspan="4">问题描述</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
           </table>
         </td>
 

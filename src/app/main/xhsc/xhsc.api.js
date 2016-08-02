@@ -462,6 +462,9 @@
       //根据项目ID获取项目人员权限
       GetPermissionsByProjectId:function(ProjectId){
         return $http.get($http.url('/Api/ProjectInfoApi/GetPermissionsByProjectId',{projectId:ProjectId}));
+      },
+      getZgReport:function(InspetionID){
+        return $http.get($http.url('/api/InspectionApi/GetInspectionReport',{InspetionID:InspetionID}));
       }
     },
     Assessment:{
