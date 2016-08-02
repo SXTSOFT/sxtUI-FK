@@ -3050,3 +3050,18 @@ table{
 
   }
 }
+.gxtb2{
+  border-collapse: collapse;
+  tr{
+    td{
+      &:first-child{
+        border-left:none;
+      }
+    }
+    //&:first-child{
+    //  td{
+    //    border-top:none;
+    //  }
+    //}
+  }
+}

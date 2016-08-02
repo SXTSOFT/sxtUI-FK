@@ -146,8 +146,8 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        title: '工序整改',
-        url: '/gxzgreport',
+        title: '验收详情',
+        url: '/gxzgreport/{acceptanceItemID}/{acceptanceItemName}/{projectId}/{InspectionId}',
         templateUrl: 'app/main/xhsc/procedure/gxzgreport.html',
         controller: 'gxzgreportController as vm'
       })
