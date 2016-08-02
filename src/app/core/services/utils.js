@@ -98,18 +98,31 @@
     }
 
     function tipsMessage(message){
-      return $mdToast.show(
-        $mdToast
+      var to= $mdToast.show(
+       $mdToast
           .simple()
           .textContent(message)
           .position({
             bottom:false,
             top:true,
             right:true
+
           })
-          .hideDelay(3000)
+          . action('点击查看')
+          .hideDelay(6000)
+
       );
+      $mdToast.show( $mdToast
+        .simple()).then(function(response) {
+        if (response == 'ok') {
+          alert('You clicked the \'UNDO\' action.');
+        };
+      })
+   return to;
     }
+
+
+
 
     function alertMessage(message,ev,fn){
       return $mdDialog.show(

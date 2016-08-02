@@ -7,46 +7,46 @@
     .module('app.xhsc')
     .factory('notification',notification);
   /** @ngInject */
-  function notification(){
+  function notification(JPushPlugin){
 
     return{
-      openNotification:openNotification,
-      receiveNotification:receiveNotification,
+      //openNotification:openNotification,
+      //receiveNotification:receiveNotification,
       receiveMessage:receiveMessage
     }
-
-    //获取点击通知内容
-    function openNotification(){
-
-      function onOpenNotification (){
-        var alertContent;
-      if(device.platform == "Android") {
-        alertContent = window.plugins.jPushPlugin.openNotification.alert;
-      } else {
-        alertContent = event.aps.alert;
-      }
-      alert("open Notificaiton:" + alertContent);
-      }
-
-      document.addEventListener("jpush.openNotification", onOpenNotification, false);
-    }
-
-    //获取通知内容
-    function receiveNotification(){
-
-      function onReceiveNotification (){
-
-        var alertContent;
-        if(device.platform == "Android") {
-          alertContent = window.plugins.jPushPlugin.receiveNotification.alert;
-        } else {
-          alertContent = event.aps.alert;
-        }
-        alert("open Notificaiton:" + alertContent);
-      }
-
-      document.addEventListener("jpush.receiveNotification", onReceiveNotification, false);
-    }
+    //
+    ////获取点击通知内容
+    //function openNotification(){
+    //
+    //  function onOpenNotification (){
+    //    var alertContent;
+    //  if(device.platform == "Android") {
+    //    alertContent = window.plugins.jPushPlugin.openNotification.alert;
+    //  } else {
+    //    alertContent = event.aps.alert;
+    //  }
+    //  alert("open Notificaiton:" + alertContent);
+    //  }
+    //
+    //  document.addEventListener("jpush.openNotification", onOpenNotification, false);
+    //}
+    //
+    ////获取通知内容
+    //function receiveNotification(){
+    //
+    //  function onReceiveNotification (){
+    //
+    //    var alertContent;
+    //    if(device.platform == "Android") {
+    //      alertContent = window.plugins.jPushPlugin.receiveNotification.alert;
+    //    } else {
+    //      alertContent = event.aps.alert;
+    //    }
+    //    alert("open Notificaiton:" + alertContent);
+    //  }
+    //
+    //  document.addEventListener("jpush.receiveNotification", onReceiveNotification, false);
+    //}
 
     //获取自定义消息推送内容
     function receiveMessage(){
@@ -57,7 +57,7 @@
         try{
           var message
           if(device.platform == "Android") {
-            message = window.plugins.jPushPlugin.receiveMessage.message;
+            message =JPushPlugin.receiveMessage.message;
           } else {
             message = event.content;
           }
