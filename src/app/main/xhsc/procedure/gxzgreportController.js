@@ -39,14 +39,9 @@
       })
       var pics=[];
       vm.pics=[];
+      var details=[];
+      vm.details=[];
       result.data.Picture.forEach(function(pic){
-        //if(ms.length<20){
-        //  ms.push(m);
-        //}
-        //else{
-        //  item.rows.push(ms);
-        //  ms=[m];
-        //}
         if(pics.length<4){
           pics.push(pic)
         }else{
@@ -60,8 +55,23 @@
           p.push({});
         }
       })
+
+      result.data.Detaileds.forEach(function(pic){
+        if(details.length<2){
+          details.push(pic)
+        }else{
+          vm.details.push(details);
+          details = [pic];
+        }
+      })
+      vm.details.push(details)
+      //vm.details.forEach(function(p){
+      //  while(p.length<2){
+      //   // p.push({});
+      //  }
+      //})
       vm.result = result.data;
-      console.log(vm.pics)
+      console.log(vm.details)
     })
   }
 })();
