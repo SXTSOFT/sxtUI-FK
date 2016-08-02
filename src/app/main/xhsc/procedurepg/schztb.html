@@ -8,13 +8,14 @@
           {{vm.info.pname}}
         </th>
       </tr>
-      <tr>
-        <th colspan="10">
+      <tr ng-repeat="item in vm.checkUser">
+        <th colspan="10" rowspan="{{vm.checkUser.length}}">
           项目名称：{{vm.info.name}}
         </th>
-        <th colspan="7">检查人：{{vm.person}}</th>
-        <th colspan="7">检查日期：{{vm.time}}</th>
+        <th colspan="5">检查人：{{item.UserName}}</th>
+        <th colspan="9">检查日期：{{item.MeasureTime}}</th>
       </tr>
+
       <tr>
         <th style="width:60px;text-align: center;">指标</th>
         <th style="text-align: center;white-space: nowrap;">结果</th>

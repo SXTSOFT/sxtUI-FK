@@ -28,19 +28,16 @@
       RecordType:1,
       RelationID:$stateParams.db//'a55164d5c46f454ca8df799f520bbba8'//
     }).then(function (result){
-
-
-
       var newD = [];
+      vm.checkUser = result.data.checkUser;
 
-
-      result.data.forEach(function (item) {
+      result.data.record.forEach(function (item) {
         //item.newList
 
         if(!item.List.length){
         //if(!item.newList.length){
           var rowSpan = 0,t1=0,t2 = 0,tempq=[],tempa=[];
-          item.Children = result.data.filter(function (r) {
+          item.Children = result.data.record.filter(function (r) {
             if(r.ParentAcceptanceIndexID==item.AcceptanceIndexID){
               if(r.List.length==0)return false;
               r.rows = [];
