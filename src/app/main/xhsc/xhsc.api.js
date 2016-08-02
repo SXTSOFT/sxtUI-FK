@@ -842,6 +842,28 @@
           }
         }
       }
-    }});
+    },
+      message: {
+
+
+          messageList: $http.db({
+            _id: 'messageList',
+            idField: 'Id',
+            dataType: 1
+          }).bind(function ( startIndex,maximunRows,checked) {
+            return $http.get($http.url('/api/Message',{maximunRows:maximunRows,startIndex:startIndex,checked:checked}))
+          })
+
+
+      }
+  }
+
+
+
+
+  );
+
+
+
   }
 })();

@@ -28,6 +28,6 @@
         stateChangeStartEvent();
         stateChangeSuccessEvent();
       })
-      window.plugins &&  window.plugins.jPushPlugin && window.plugins.jPushPlugin.init();
+      //window.plugins &&  window.plugins.jPushPlugin && window.plugins.jPushPlugin.init();
     }
 })();
