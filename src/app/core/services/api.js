@@ -462,7 +462,7 @@
           cfg.mode = cfg.mode || 0;
           var callFn = function () {
             var args = toArray(arguments),
-              lodb = initDb(cfg),
+              lodb = initDb(cfg,args),
               caller = this;
               if (!calledCfgs.find(function(c){
                    return c==cfg;
