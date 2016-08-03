@@ -136,11 +136,10 @@
            })
          }
        ]);
-     api.task(tasks)(function (percent, current, total) {
-       item.percent = parseInt(percent * 100) + ' %';
-       item.current = current;
-       item.total = total;
-     }, function () {
+     api.task(tasks,{
+       event:'downloadzj',
+       target:item
+     })(null, function () {
        item.percent = item.current = item.total = null;
        item.isOffline = true;
        remote.offline.create({Id:'zj'+item.ProjectID});
@@ -150,17 +149,35 @@
        item.percent = item.current = item.total = null;
        utils.alert('下载失败,请检查网络');
      })
-   }
+   };
+
+    api.event('downloadzj',function (s,e) {
+      var current = vm.projects && vm.projects.find(function (item) {
+          return item.ProjectID==e.target.ProjectID;
+        });
+      if(current) {
+        switch (e.event) {
+          case 'progress':
+            current.percent = parseInt(e.percent * 100) + ' %';
+            current.current = e.current;
+            current.total = e.total;
+            break;
+          case 'success':
+          current.isOffline = true;
+          break;
+        }
+      }
+    },$scope);
+
     vm.downloadys = function (item) {
       var tasks = [].concat(globalTask)
         .concat(projectTask(item.ProjectID,item.Children,item.AcceptanceItemID))
         .concat(InspectionTask(item));
       //console.log(tasks);
-      api.task(tasks)(function (percent, current, total) {
-        item.percent = parseInt(percent * 100) + ' %';
-        item.current = current;
-        item.total = total;
-      }, function () {
+      api.task(tasks,{
+        event:'downloadys',
+        target:item.InspectionId
+      })(null, function () {
         item.percent = item.current = item.total = null;
         item.isOffline = true;
         utils.alert('下载完成');
@@ -169,25 +186,62 @@
         item.percent = item.current = item.total = null;
       },{timeout:300000})
     }
+
+    api.event('downloadys',function (s,e) {
+      var current = vm.Inspections && vm.Inspections.find(function (item) {
+          return item.InspectionId==e.target;
+        });
+      if(current) {
+        switch (e.event) {
+          case 'progress':
+            current.percent = parseInt(e.percent * 100) + ' %';
+            current.current = e.current;
+            current.total = e.total;
+            break;
+          case 'success':
+            current.isOffline = true;
+            break;
+        }
+      }
+    },$scope);
+
+
     vm.downloadzg = function (item) {
       var tasks = [].concat(globalTask)
-        .concat(projectTask(item.Children[0].AreaID.substring(0,5),item.Children,item.AcceptanceItemID))
+        .concat(projectTask(item.Children[0].AreaID.substring(0, 5), item.Children, item.AcceptanceItemID))
         .concat(InspectionTask(item))
         .concat(rectificationTask(item));
 
-      api.task(tasks)(function (percent, current, total) {
-        item.percent = parseInt(percent * 100) + ' %';
-        item.current = current;
-        item.total = total;
-      }, function () {
+      api.task(tasks, {
+        event: 'downloadzg',
+        target: item.RectificationID
+      })(null, function () {
         item.percent = item.current = item.total = null;
         item.isOffline = true;
         utils.alert('下载完成');
       }, function () {
         utils.alert('下载失败,请检查网络');
         item.percent = item.current = item.total = null;
-      })
+      });
     }
+
+    api.event('downloadzg',function (s,e) {
+      var current = vm.zglist && vm.zglist.find(function (item) {
+          return item.RectificationID==e.target;
+        });
+      if(current) {
+        switch (e.event) {
+          case 'progress':
+            current.percent = parseInt(e.percent * 100) + ' %';
+            current.current = e.current;
+            current.total = e.total;
+            break;
+          case 'success':
+
+            break;
+        }
+      }
+    },$scope);
 
     vm.uploadInfo={}
     vm.upload =function () {

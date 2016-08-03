@@ -59,6 +59,7 @@
                       }else{
                         p.geometry = p.geometry;
                       }
+                      if(!p.geometry)return;
                       c.ProblemDescription= c.IndexPointID?c.ProblemDescription:'合格';
                       p.geometry.properties.seq = c.ProblemSortName;
                       p.geometry.properties.v = c;
