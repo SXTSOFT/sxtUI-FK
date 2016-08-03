@@ -209,6 +209,8 @@
         utils.alert('上传完成');
         vm.uploadInfo.tasks = [];
         vm.uploadInfo.uploading= false;
+
+
       },function () {
         vm.uploadInfo.uploaded = 0;
         utils.alert('上传失败');
