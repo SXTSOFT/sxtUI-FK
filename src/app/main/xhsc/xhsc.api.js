@@ -59,12 +59,21 @@
       }),
       getDrawingRelations: $http.db({
         _id: 'DrawingRelation',
-        idField: function (d) {
-          return d.RegionId+(d.AcceptanceItemID?d.AcceptanceItemID:'');
-        },
-        dataType: 1
+        idField: 'ProjectId',
+        dataType: 3
       }).bind(function (projectId) {
-        return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation', {projectId: projectId}));
+        return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation', {projectId: projectId})).then(function(result){
+          return {
+            data:{
+              ProjectId:projectId,
+              Relations:result.data
+            }
+          }
+        });
+      },function(result){
+        return {
+          data:result.data.Relations
+        }
       }),
       getDrawings: $http.db({
         _id: 'Drawing',

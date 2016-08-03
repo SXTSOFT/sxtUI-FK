@@ -63,25 +63,39 @@
     });
     vm.logout = function(){
       utils.confirm('确定清除所有缓存数据吗?').then(function (result) {
-        vm.trueClear(['v_profile']);
-        db('xcpk').destroy();
-        auth.logout();
-      });
-    }
+        vm.trueClear = function (exclude) {
+          $mdDialog.show({
+              controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+                api.clearDb(function (persent) {
+                  $scope.cacheInfo = parseInt(persent * 100) + '%';
+                }, function () {
+                  $scope.cacheInfo = null;
+                  $mdDialog.hide();
+                  //utils.alert('清除成功');
+                }, function () {
+                  $scope.cacheInfo = null;
+                  $mdDialog.cancel();
+                  utils.alert('清除失败');
 
-    vm.trueClear = function (exclude) {
-      api.clearDb(function (persent) {
-        vm.cacheInfo = parseInt(persent * 100) + '%';
-      }, function () {
-        vm.cacheInfo = null;
-        utils.alert('清除成功');
-      }, function () {
-        vm.cacheInfo = null;
-        utils.alert('清除失败');
-      }, {
-        exclude: exclude,
-        timeout: 3000
-      })
+                }, {
+                  exclude: exclude,
+                  timeout: 3000
+                })
+              }],
+              template: '<md-dialog aria-label="正在清除"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular> 正在清除数据，请稍候……({{cacheInfo}})</md-dialog-content></md-dialog>',
+              parent: angular.element(document.body),
+              clickOutsideToClose:false,
+              fullscreen: false
+            })
+            .then(function(answer) {
+              auth.logout();
+            }, function() {
+
+            });
+          return;
+        }
+        vm.trueClear(['v_profile']);
+      });
     }
   }
 })();

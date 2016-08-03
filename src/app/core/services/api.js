@@ -11,6 +11,7 @@
     var api = {},
       provider = this,
       injector,
+      calledCfgs=[],
       cfgs=[],
       pouchdb,
       settingDb,
@@ -359,7 +360,7 @@
         var len = tasks.length,fn = tasks[i];
         if (progress(i * 1.0 / len, i, len) !== false) {
           if (!fn) {
-            success && success(tasks);
+            success && success(tasks,calledCfgs);
           }
           else {
             var d = new Date().getTime(),next = function () {
@@ -439,6 +440,11 @@
             var args = toArray(arguments),
               lodb = initDb(cfg),
               caller = this;
+              if (!calledCfgs.find(function(c){
+                   return c==cfg;
+                })){
+                calledCfgs.push(cfg);
+              }
             if (cfg.mode == 1) { //1 离线优先，无离线数据尝试网络；
               var oRaiseError = cfg.raiseError;
               cfg.raiseError = true;
@@ -657,19 +663,20 @@
 
     function clearDb(progress,complete,fail,options) {
       var tasks = [];
-       cfgs.forEach(function (cfg) {
-         if(options.exclude && options.exclude.indexOf(cfg._id)!=-1)return;
-         var db = initDb(cfg);
-         if(db) {
-           tasks.push(function () {
-             return db.destroy().then(function (result) {
-               cfg.db = null;
-               return result;
-             }).catch(function (err) {
-             });
-           })
+      calledCfgs.forEach(function (cfg) {
+         if(!(options.exclude && options.exclude.indexOf(cfg._id)!=-1)){
+           var db = initDb(cfg);
+           if(db) {
+             tasks.push(function () {
+               return db.destroy().then(function (result) {
+                 cfg.db = null;
+                 return result;
+               }).catch(function (err) {
+               });
+             })
+           }
          }
-       });
+      });
       return task(tasks)(progress,complete,fail,options);
     }
   }
