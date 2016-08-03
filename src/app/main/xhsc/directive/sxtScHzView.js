@@ -132,9 +132,9 @@
                       .setLatLng(layer._latlng)
                       //.setContent('<div style="text-align:center">' + (layer.options.ExtendedField1 ||layer.options.MeasureValue)+'</div>')
                       .setContent('<div style="padding:5px;">' +
-                        '<div class="row" style="margin-bottom: 10px;"><label style="display: block;width:50px;float: left;">总包：</label><p style="margin:0;margin-left: 50px;">结果：'+(layer.options.ExtendedField1 ||layer.options.MeasureValue)+'</p></div>' +
-                        '<div class="row" style="margin-bottom: 10px;"><label style="display: block;width:50px;float: left;">监理：</label><p style="margin:0;margin-left: 50px;">结果：'+(layer.options.ExtendedField1 ||layer.options.MeasureValue)+'</p></div>'+
-                        '<div class="row" style="margin-bottom: 10px;"><label style="display: block;width:50px;float: left;">项目部：</label><p style="margin:0;margin-left: 50px;">结果：'+(layer.options.ExtendedField1 ||layer.options.MeasureValue)+'</p></div>'+
+                        '<div class="row" style="margin-bottom: 10px;"><label style="display: block;width:50px;float: left;">总包：</label><p style="margin:0;margin-left: 50px;">'+(layer.options.ExtendedField1 ||layer.options.MeasureValue)+'</p></div>' +
+                        '<div class="row" style="margin-bottom: 10px;"><label style="display: block;width:50px;float: left;">监理：</label><p style="margin:0;margin-left: 50px;">'+(layer.options.ExtendedField1 ||layer.options.MeasureValue)+'</p></div>'+
+                        '<div class="row" style="margin-bottom: 10px;"><label style="display: block;width:50px;float: left;">项目部：</label><p style="margin:0;margin-left: 50px;">'+(layer.options.ExtendedField1 ||layer.options.MeasureValue)+'</p></div>'+
                         '</div>')
                       .openOn(map._map);
                   }

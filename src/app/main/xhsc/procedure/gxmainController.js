@@ -145,6 +145,7 @@
        item.isOffline = true;
        remote.offline.create({Id:'zj'+item.ProjectID});
        utils.alert('下载完成');
+
      }, function () {
        item.percent = item.current = item.total = null;
        utils.alert('下载失败,请检查网络');
@@ -154,7 +155,7 @@
       var tasks = [].concat(globalTask)
         .concat(projectTask(item.ProjectID,item.Children,item.AcceptanceItemID))
         .concat(InspectionTask(item));
-      console.log(tasks);
+      //console.log(tasks);
       api.task(tasks)(function (percent, current, total) {
         item.percent = parseInt(percent * 100) + ' %';
         item.current = current;
@@ -166,7 +167,7 @@
       }, function () {
         utils.alert('下载失败,请检查网络');
         item.percent = item.current = item.total = null;
-      })
+      },{timeout:300000})
     }
     vm.downloadzg = function (item) {
       var tasks = [].concat(globalTask)
