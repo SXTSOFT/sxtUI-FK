@@ -181,7 +181,7 @@
         controller: 'gxhousechooseController as vm'
       })
       .state('app.xhsc.gx.gxzg',{
-        noBack: false,
+        noBack: true,
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
