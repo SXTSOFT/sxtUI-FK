@@ -116,6 +116,7 @@
 
     vm.selected = function(r){
       var routeData={
+        areaId: r.RegionID,
         regionId: r.RegionID,
         RegionName: r.RegionName,
         name: r.FullRegionName,

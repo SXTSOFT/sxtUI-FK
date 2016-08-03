@@ -22,7 +22,7 @@
       }
       $rootScope.$emit('receiveMessage',msg);
       $rootScope.showMessage = true;
-      xhUtils.showMessage('msg.Content',function(isCancel){
+      xhUtils.showMessage(msg.Content,function(isCancel){
         if(!isCancel){
           $state.go('app.xhsc.mcenter');
         }
@@ -38,6 +38,7 @@
         setAlias:emptyFn
       }
     }
+
     JPushPlugin.init();
 
     return JPushPlugin;

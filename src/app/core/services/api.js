@@ -54,6 +54,7 @@
       api.task = task;
       api.upload = upload;
       api.uploadTask = uploadTask;
+      api.event = event;
       provider.setNetwork = api.setNetwork = function (state) {
         networkState = state;
         if(networkState==0)
@@ -132,7 +133,10 @@
       return api;
     }
 
-
+    function event(name,fn,scope) {
+      var destroy = provider.$rootScope.$on(name,fn);
+      scope && scope.$on('$destroy',destroy);
+    }
 
     function resolveApi(p,$resource,$http){
       if(p!==api)

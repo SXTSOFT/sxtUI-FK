@@ -37,7 +37,7 @@
       console.log('r2',result)
 
       result.data.Areas.forEach(function(item){
-        vm.Regions.push(item.Area);
+        vm.Regions.push(item.AreaId);
         item.Classification.forEach(function(_it){
           _it.rowspan = _it.Children.length;
           item.rowspan +=_it.rowspan;
@@ -90,7 +90,7 @@
           details = [pic];
         }
       })
-      vm.details.push(vm.pics)
+      vm.details.push(details)
       //vm.details.forEach(function(p){
       //  while(p.length<2){
       //   // p.push({});
