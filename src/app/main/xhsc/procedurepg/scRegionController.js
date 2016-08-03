@@ -83,17 +83,14 @@
         if(vm.maxRegion>8){
           if (region.Children&&region.Children.length){
             var f= region.Children.find(function(o){
-              if (!(isReport=='0'||isReport==0)){
-                return region.Status===1;
-              }
-              return o.Status==vm.filterNum
+              return o.Status==vm.filterNum||vm.filterNum==-1;
             });
             if (f){
               return true;
             }
           }
         }
-        return  true;//!(isReport=='0'||isReport==0)?region.Status===1: (vm.filterNum==-1||region.Status==vm.filterNum);
+        return region.Status==vm.filterNum||vm.filterNum==-1;
       }
 
       function  callBack(r){
@@ -138,7 +135,7 @@
     vm.zk = function(item){
       item.show = !item.show;
     }
-    vm.filterNum = -1;
+    vm.filterNum = isReport=='1'? 1:-1;
     vm.filter = function(num){
       vm.filterNum = num;
     }
