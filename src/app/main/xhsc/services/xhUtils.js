@@ -18,6 +18,7 @@
       when:when,
       playPhoto:playPhoto,
       sort:sort,
+      showMessage:showMessage,
       md5:(function () {
         /*
          * Configurable variables. You may need to tweak these to be compatible with
@@ -567,6 +568,40 @@
       });
       viewer.show();
       return viewer;
+    }
+
+    function showMessage(content,callback){
+      var o='<div class="slideTop slidedown" ng-class="{\'slidedown\':showMessage}">\
+    <md-list style="margin-top: 0">\
+    <md-list-item>\
+    <label>消息通知</label>\
+    <p>'+content+'</p>\
+    </md-list-item></md-list>\
+    <div layout="row">\
+        <md-button flex  style="padding:6px 0;margin:0;border-right:1px solid #dedede;border-radius:0;text-align:center;">取消</md-button>\
+        <md-button flex  style="padding:6px 0;margin:0;text-align:center;">确定</md-button>\
+        </div>';
+        function submit(){
+          alert('a')
+        }
+
+      var oel = $(o);
+      oel.find('md-button').eq(0).click(function(){
+
+          oel.remove();
+          callback && callback(true);
+
+
+      })
+      oel.find('md-button').eq(1).click(function(){
+
+          oel.remove();
+          callback && callback(false);
+
+      })
+      //console.log('aa',content);
+
+      return oel.appendTo('body')
     }
   }
 })();

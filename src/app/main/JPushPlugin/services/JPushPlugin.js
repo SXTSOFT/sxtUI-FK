@@ -8,7 +8,7 @@
     .module('JPushPlugin')
     .factory('JPushPlugin',JPushPlugin);
   /** @ngInject */
-  function JPushPlugin($window,$rootScope,utils){
+  function JPushPlugin($window,$rootScope,utils,xhUtils,$timeout,$state){
     var JPushPlugin = $window.plugins && $window.plugins.jPushPlugin;
     $window.document.addEventListener('jpush.receiveMessage',function(e){
       var msg = {
@@ -21,8 +21,13 @@
         Sender: e.Sender
       }
       $rootScope.$emit('receiveMessage',msg);
+      $rootScope.showMessage = true;
+      xhUtils.showMessage('msg.Content',function(isCancel){
+        if(!isCancel){
+          $state.go('app.xhsc.mcenter');
+        }
+      })
 
-      utils.tips(msg.Content);
     },false)
 
     if(!JPushPlugin){
@@ -33,10 +38,6 @@
         setAlias:emptyFn
       }
     }
-    utils.tips('msg.Content');
-    setTimeout(function(){
-      utils.tips('msg.Content2');
-    },10000)
     JPushPlugin.init();
 
     return JPushPlugin;
