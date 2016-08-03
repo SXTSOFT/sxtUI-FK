@@ -22,7 +22,7 @@
   <div flex layout="row" layout-align="center center" ng-if="vm.info.loading"><md-progress-circular md-mode="indeterminate" ></md-progress-circular></div>
 </div>
 <sxt-recheck-popup slide-show="vm.slideShow" slide-role="vm.role"></sxt-recheck-popup>
-<div style="margin-top: 12px;padding:0 8px;margin-bottom:12px;" flex="none" layout="row"><span flex ng-click="vm.showQuesList()">问题列表详情</span><span flex></span><span ng-click="vm.showBaseInfor()" style="background: url(app/main/xhsc/images/right.png) no-repeat right 2px;background-size:auto 14px;padding-right:12px;">基本信息</span></div>
+<div style="margin-top: 12px;padding:0 8px;margin-bottom:12px;" flex="none" layout="row"><span ng-click="vm.showQuesList()" style="background: url(app/main/xhsc/images/right.png) no-repeat right 2px;background-size:auto 14px;padding-right:12px;">问题列表详情</span><span flex></span><span ng-click="vm.showBaseInfor()" style="background: url(app/main/xhsc/images/right.png) no-repeat right 2px;background-size:auto 14px;padding-right:12px;">基本信息</span></div>
 
 <sxt-ques-detail-up up-show="vm.showUp" selected-area="vm.regionSelect.AreaID" current-rectificationid="vm.RectificationID"></sxt-ques-detail-up>
 
