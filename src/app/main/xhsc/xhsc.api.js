@@ -263,6 +263,7 @@
           name:'照片',
           _id:'InspectionProblemRecordFile',
           idField:'ProblemRecordFileID',
+
           upload:true
         }).bind(function (InspectionProblemRecordFile) {
           return $http.post('/Api/InspectionProblemRecordFileApi/Insert',InspectionProblemRecordFile);
