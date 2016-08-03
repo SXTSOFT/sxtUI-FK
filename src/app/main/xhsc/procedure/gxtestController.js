@@ -127,7 +127,6 @@
         return;
       };
       $state.go('app.xhsc.gx.gxalllist',{acceptanceItemName:acceptanceItemName,acceptanceItemID:acceptanceItemID,name:vm.RegionFullName,areaId:areaId,projectId:projectId,InspectionId:vm.InspectionId})
-     // $state.go('app.xhsc.gx.gxresult',{acceptanceItemName:acceptanceItemName,acceptanceItemID:acceptanceItemID,name:vm.RegionFullName,areaId:areaId,projectId:projectId,InspectionId:vm.InspectionId});
     })
 
     $scope.$on("$destroy",function(){
@@ -135,9 +134,6 @@
       sendResult = null;
     });
     vm.setRegion = function(region){
-      //vm.info.regionId = region.AreaID;
-      //vm.info.regionType = region.RegionType;
-      //vm.RegionFullName = region.RegionName;
       region.hasCheck=true;
       vm.info.selected = region;
     }

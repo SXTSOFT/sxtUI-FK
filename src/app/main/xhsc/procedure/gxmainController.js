@@ -209,6 +209,8 @@
         utils.alert('上传完成');
         vm.uploadInfo.tasks = [];
         vm.uploadInfo.uploading= false;
+
+
       },function () {
         vm.uploadInfo.uploaded = 0;
         utils.alert('上传失败');
@@ -325,7 +327,7 @@
       // window.open('app/main/xhsc/images/bg.png')
     }
     vm.Lookintoys = function(item){
-      $state.go('app.xhsc.gx.gxzgreport',{InspectionId:item.InspectionId,acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,projectId:item.ProjectID});
+      $state.go('app.xhsc.gx.gxzgreport',{InspectionId:item.InspectionId, q:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,projectId:item.ProjectID});
     }
     vm.Lookinto = function(item){
       console.log(item)
