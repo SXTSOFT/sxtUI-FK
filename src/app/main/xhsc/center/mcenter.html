@@ -5,14 +5,14 @@
     </div>
     <span flex></span>
 </div>
-<md-content flex  slide-delete>
+<md-content flex  >
   <md-list style="overflow: hidden;" class="slide-del" ng-repeat="item in vm.messages">
     <md-list-item layout="row" class="slideli">
       <md-checkbox style="margin-right:0;" ng-show="vm.showCheck" ng-model="item.checked"></md-checkbox>
       <div class="slidelist" layout="row">
         <div class="circle" flex="none"><span>{{item.name}}</span></div>
         <div flex>
-          <h3>{{item.title}}<span>2011-11-11</span></h3>
+          <h3>{{item.title}}<span>{{item.time|date:'MM-dd HH:mm'}}</span></h3>
           <p>{{item.description}}</p>
         </div>
       </div>
