@@ -37,13 +37,21 @@
       console.log('r2',result)
 
       result.data.Areas.forEach(function(item){
-        vm.Regions.push(item.Area);
-        item.Classification.forEach(function(_it){
+        vm.Regions.push(item.AreaId);
+        var indexs = 0;
+        item.Classification.forEach(function(_it,index1){
           _it.rowspan = _it.Children.length;
-          item.rowspan +=_it.rowspan;
+          //item.rowspan +=_it.rowspan;
+          //var f = item.Classification.indexOf(_it);
+          //console.log(f)
+          //if(f==0){
+          //  indexs = index1;
+          //}else{
+          //  indexs = index1+item.Classification[f-1].rowspan;
+          //}
 
-          _it.Children.forEach(function(t){
-
+          _it.Children.forEach(function(t,index){
+            //t.index = indexs+index+1;
             //if(t.inspection == 2){
             //  t.inspectionStatus ='合格';
             //}
