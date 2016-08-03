@@ -9,7 +9,7 @@
     .directive('myDialog',myDialogDirective);
 
   /**@ngInject*/
-  function myDialogDirective($state,$timeout,remote,utils,auth){
+  function myDialogDirective($state,$timeout,remote,utils,auth,sxt){
     return {
       scope:{
         dialogShow:'=',
@@ -68,7 +68,8 @@
             AcceptanceItemID:scope.dialogData.acceptanceItemID,
             AreaList:scope.areaIds,
             Describe:scope.description,
-            Percentage:percentage
+            Percentage:percentage,
+            id:sxt.uuid()
           }
           remote.Procedure.postInspection(params).then(function(result){
             if (result.data.ErrorCode==0){
@@ -78,7 +79,6 @@
             }
           })
         }else{
-         //auth.logout();
         }
       }
       scope.$on('$destroy', function () {
