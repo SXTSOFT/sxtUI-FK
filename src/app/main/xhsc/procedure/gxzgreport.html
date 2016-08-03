@@ -174,17 +174,7 @@
             </tbody>
             <tbody ng-repeat="detail in vm.details">
             <tr>
-              <!--<td colspan="8">-->
-              <!--<table>-->
-                <!--<tbody>-->
-                  <!--<tr>-->
-                    <!---->
-                  <!--</tr>-->
-                <!--</tbody>-->
-              <!--</table>-->
-              <!--</td>-->
-              <!--<td colspan="2" width="25%"><p><img src="app/main/xhsc/images/bg.png" width="80%"></p></td>-->
-              <td width="50%" colspan="4" ng-repeat="p in detail" style="padding:0;border-top:none;">
+              <td colspan="4" ng-repeat="p in detail" width="50%" style="padding:0;border-top:none;">
                 <table width="100%" cellpadding="0" cellspacing="0">
                   <tr>
                     <td width="50%">
@@ -196,7 +186,7 @@
                   </tr>
                   <tr>
                     <td width="50%">
-                      <p><img ng-src="{{p.Front}}" width="80%"></p>
+                      <p><img ng-src="{{('http://xhszgc.sxtsoft.com:8090/'+p.Front1)||p.Front}}" width="80%"></p>
                     </td>
                     <td width="50%">
                       <p><img ng-src="{{p.Back}}" width="80%"></p>
@@ -207,29 +197,11 @@
               <!--<td colspan="2" width="25%"><p><img src="app/main/xhsc/images/bg.png" width="80%"></p></td>-->
               <!--<td colspan="2" width="25%" ng-repeat="p in detail">{{p.Back}}</td>-->
             </tr>
-            <tr>
-              <td colspan="4" ng-repeat="d in detail">{{d.Describe}}</td>
-              <!--<td colspan="4">问题描述</td>-->
-            </tr>
+            <!--<tr>-->
+              <!--<td colspan="4" ng-repeat="d in detail">{{d.Describe}}</td>-->
+              <!--&lt;!&ndash;<td colspan="4">问题描述</td>&ndash;&gt;-->
+            <!--</tr>-->
             </tbody>
-            <!--<tbody>-->
-            <!--<tr>-->
-              <!--<td colspan="2">验收照片</td>-->
-              <!--<td colspan="2">整改照片</td>-->
-              <!--<td colspan="2">验收照片</td>-->
-              <!--<td colspan="2">整改照片</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-              <!--<td colspan="2">验收照片</td>-->
-              <!--<td colspan="2">整改照片</td>-->
-              <!--<td colspan="2">验收照片</td>-->
-              <!--<td colspan="2">整改照片</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-              <!--<td colspan="4">问题描述</td>-->
-              <!--<td colspan="4">问题描述</td>-->
-            <!--</tr>-->
-            <!--</tbody>-->
           </table>
         </td>
 
