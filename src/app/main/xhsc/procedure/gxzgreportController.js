@@ -38,11 +38,27 @@
 
       result.data.Areas.forEach(function(item){
         vm.Regions.push(item.AreaId);
-        //var indexs = 0;
-        item.Classification.forEach(function(_it,index1){
+        item.Classification.forEach(function(_it){
           _it.rowspan = _it.Children.length;
-          //_it.Children.forEach(function(t,index){
-          //})
+          item.rowspan +=_it.rowspan;
+
+          _it.Children.forEach(function(t){
+
+            //if(t.inspection == 2){
+            //  t.inspectionStatus ='合格';
+            //}
+            //t.inspectionStatus = t.Inspection == 2?'合格':'不合格';
+            //t.reinspectionStatus = t.ReInspection == 2?'合格':'不合格';
+          })
+        })
+      })
+      result.data.Areas.forEach(function(item){
+        item.Classification.forEach(function(_it){
+         //   for(var j=0;j<_it.Children.length;i++){
+         //     for(var i=0;i<_it.Children[j].length;i++){
+         //       it.Children[j][i].index = j*i+1;
+         //     }
+         //   }
         })
       })
 
@@ -67,7 +83,6 @@
       })
 
       result.data.Detaileds&&result.data.Detaileds.forEach(function(pic){
-
         if(details.length<2){
           details.push(pic)
         }else{
@@ -82,7 +97,7 @@
       //  }
       //})
       vm.result = result.data;
-      console.log(vm.details)
+      console.log(vm.result)
     })
 
   }
