@@ -1,10 +1,9 @@
-﻿(function ()
-{
+﻿﻿(function () {
   'use strict';
 
   angular
     .module('app.core')
-    .provider('api', apiProvider)
+    .provider('api', apiProvider);
 
   /** @ngInject */
   function apiProvider() {
@@ -48,6 +47,7 @@
       provider.$cordovaFileTransfer = $cordovaFileTransfer;
       provider.$timeout = $timeout;
       provider.$window = $window;
+      provider.$rootScope = $rootScope;
       pouchdb = db;
       resolveApi(api,$resource,$http);
       api.setting = setting;
@@ -356,14 +356,28 @@
         }
       })
     }
-    function task(tasks) {
+    function task(tasks,config) {
       return function start(progress,success,fail,options) {
         run(0,progress,success,fail,options);
       }
       function run(i,progress,success,fail,options) {
         var len = tasks.length,fn = tasks[i];
-        if (progress(i * 1.0 / len, i, len) !== false) {
+        if(config && config.event)
+          provider.$rootScope.$emit(config.event,{
+            target:config.target,
+            event:'progress',
+            percent:i * 1.0 / len,
+            current:i,
+            total:len
+          });
+
+        if (!progress || progress(i * 1.0 / len, i, len) !== false) {
           if (!fn) {
+            if(config && config.event)
+              provider.$rootScope.$emit(config.event,{
+                target:config.target,
+                event:'success'
+              });
             success && success(tasks,calledCfgs);
           }
           else {
@@ -378,6 +392,11 @@
               }
             }).catch(function (err) {
               d = 0;
+              if(config && config.event)
+                provider.$rootScope.$emit(config.event,{
+                  target:config.target,
+                  event:'fail'
+                });
               fail && fail();
             });
             provider.$timeout(function () {
@@ -442,7 +461,7 @@
           cfg.mode = cfg.mode || 0;
           var callFn = function () {
             var args = toArray(arguments),
-              lodb = initDb(cfg,args),
+              lodb = initDb(cfg),
               caller = this;
               if (!calledCfgs.find(function(c){
                    return c==cfg;
@@ -668,7 +687,7 @@
     function clearDb(progress,complete,fail,options) {
       var tasks = [];
       calledCfgs.forEach(function (cfg) {
-         if((options.exclude && options.exclude.indexOf(cfg._id)!=-1){
+         if(!(options.exclude && options.exclude.indexOf(cfg._id)!=-1)){
            var db = initDb(cfg);
            if(db) {
              tasks.push(function () {
@@ -681,7 +700,7 @@
            }
          }
       });
-      return task(tasks)(progress,complete,fail,options);
+      return task(tasks,options)(progress,complete,fail,options);
     }
   }
 
