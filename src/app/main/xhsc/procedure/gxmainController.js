@@ -327,7 +327,7 @@
       // window.open('app/main/xhsc/images/bg.png')
     }
     vm.Lookintoys = function(item){
-      $state.go('app.xhsc.gx.gxzgreport',{InspectionId:item.InspectionId,acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,projectId:item.ProjectID});
+      $state.go('app.xhsc.gx.gxzgreport',{InspectionId:item.InspectionId, q:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,projectId:item.ProjectID});
     }
     vm.Lookinto = function(item){
       console.log(item)

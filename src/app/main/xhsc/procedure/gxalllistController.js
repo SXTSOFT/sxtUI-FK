@@ -17,14 +17,33 @@
       areaId = $stateParams.areaId?$stateParams.areaId:$stateParams.regionId;
     vm.inspectionId = $stateParams.InspectionId;
     $rootScope.title = $stateParams.acceptanceItemName;
+    function load(){
+      vm.procedureData.forEach(function(t){
+        t.ProblemClassifyList.forEach(function(_t){
+          _t.ProblemLibraryList.forEach(function(_tt){
+            _tt.AcceptanceItemName = _tt.ProblemSortName +'.'+ _tt.ProblemDescription;
+            var f = vm.allProblems && vm.allProblems.find(function(_f){
+                return _f.ProblemID == _tt.ProblemID && _f.AreaID == vm.current.AreaID;
+              })
+            if(f){
+              _tt.checked = false;
+            }else{
+              _tt.checked = true;
+            }
+            _tt.show = true;
+          })
+        })
+      })
+    }
     var promise=[
       remote.Procedure.InspectionIndexJoinApi.query(vm.inspectionId),
       remote.Procedure.queryProcedure()
     ];
     $q.all(promise).then(function(rs){
       vm.procedureData = [];
-      var allProblems=rs[0] && rs[0].data;
+      vm.allProblems=rs[0] && rs[0].data;
       var basePdata = rs[1].data;
+      //console.log('p',allProblems)
       basePdata.forEach(function(it){
         it.SpecialtyChildren.forEach(function(t){
           var p = t.WPAcceptanceList.find(function(a){
@@ -33,22 +52,7 @@
           if(p){
             vm.procedureData.push(p);
           }
-          vm.procedureData.forEach(function(t){
-            t.ProblemClassifyList.forEach(function(_t){
-              _t.ProblemLibraryList.forEach(function(_tt){
-                _tt.AcceptanceItemName = _tt.ProblemSortName +'.'+ _tt.ProblemDescription;
-                var f = allProblems && allProblems.find(function(_f){
-                  return _f.ProblemID == _tt.ProblemID;
-                })
-                if(f){
-                  _tt.checked = false;
-                }else{
-                  _tt.checked = true;
-                }
-                _tt.show = true;
-              })
-            })
-          })
+          load();
         })
       });
 
@@ -63,6 +67,8 @@
       //vm.RegionName = item.RegionName;
       vm.qyslideShow = false;
       //vm.setRegion(item);
+      load();
+      console.log(item)
     }
     remote.Project.getInspectionList(vm.inspectionId).then(function(rtv){
       var  r=rtv.data.find(function(o){
@@ -128,7 +134,7 @@
       var v={
           InspectionID:vm.inspectionId,
           ProblemID:it.ProblemID,
-          AreaID:areaId
+          AreaID:vm.current.AreaID
       }
       remote.Procedure.InspectionIndexJoinApi.create(v);
     }
