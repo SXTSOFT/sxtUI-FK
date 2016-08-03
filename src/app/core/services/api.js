@@ -48,6 +48,7 @@
       provider.$cordovaFileTransfer = $cordovaFileTransfer;
       provider.$timeout = $timeout;
       provider.$window = $window;
+      provider.$rootScope = $rootScope;
       pouchdb = db;
       resolveApi(api,$resource,$http);
       api.setting = setting;
@@ -352,14 +353,28 @@
         }
       })
     }
-    function task(tasks) {
+    function task(tasks,config) {
       return function start(progress,success,fail,options) {
         run(0,progress,success,fail,options);
       }
       function run(i,progress,success,fail,options) {
         var len = tasks.length,fn = tasks[i];
-        if (progress(i * 1.0 / len, i, len) !== false) {
+        if(config && config.event)
+          provider.$rootScope.$emit(config.event,{
+            target:config.target,
+            event:'progress',
+            percent:i * 1.0 / len,
+            current:i,
+            total:len
+          });
+
+        if (!progress || progress(i * 1.0 / len, i, len) !== false) {
           if (!fn) {
+            if(config && config.event)
+              provider.$rootScope.$emit(config.event,{
+                target:config.target,
+                event:'success'
+              });
             success && success(tasks,calledCfgs);
           }
           else {
@@ -374,6 +389,11 @@
               }
             }).catch(function (err) {
               d = 0;
+              if(config && config.event)
+                provider.$rootScope.$emit(config.event,{
+                  target:config.target,
+                  event:'fail'
+                });
               fail && fail();
             });
             provider.$timeout(function () {
@@ -677,7 +697,7 @@
            }
          }
       });
-      return task(tasks)(progress,complete,fail,options);
+      return task(tasks,options)(progress,complete,fail,options);
     }
   }
 
