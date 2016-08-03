@@ -1,10 +1,9 @@
-﻿(function ()
-{
+﻿﻿(function () {
   'use strict';
 
   angular
     .module('app.core')
-    .provider('api', apiProvider)
+    .provider('api', apiProvider);
 
   /** @ngInject */
   function apiProvider() {
