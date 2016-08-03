@@ -109,7 +109,7 @@
             </tbody>
             <tbody  ng-repeat="item in items.Classification">
               <tr ng-repeat="i in item.Children">
-                <td  width="12.5%">{{$index+1}}</td>
+                <td  width="12.5%">{{i.ProblemSortName}}</td>
                 <td rowspan="{{item.rowspan}}" ng-if="$index == 0"  width="12.5%">{{item.ClassificationName}}</td>
                 <td  width="12.5%">{{i.PointName}}</td>
                 <td  width="12.5%">{{i.PointName}}</td>

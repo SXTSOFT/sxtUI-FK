@@ -90,7 +90,7 @@
           details = [pic];
         }
       })
-      vm.details.push(vm.pics)
+      vm.details.push(details)
       //vm.details.forEach(function(p){
       //  while(p.length<2){
       //   // p.push({});
