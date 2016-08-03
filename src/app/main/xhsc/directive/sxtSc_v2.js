@@ -74,7 +74,7 @@
           $timeout(function () {
             remote.Project.getDrawingRelations(scope.regionId.substring(0,5)).then(function (result) {
               var imgId = result.data.find(function (item) {
-                return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
+                return item.AcceptanceItemID == scope.acceptanceItem && item.RegionId == scope.regionId;
               });
               if(!imgId){
                 imgId = result.data.find(function (item) {
