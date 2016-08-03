@@ -464,7 +464,7 @@
         return $http.get($http.url('/Api/ProjectInfoApi/GetPermissionsByProjectId',{projectId:ProjectId}));
       },
       getZgReport:function(InspetionID){
-        return $http.get($http.url('/api/InspectionApi/GetInspectionReport',{InspetionID:InspetionID}));
+        return $http.get($http.url('/api/InspectionApi/GetInspectionReport',{inspectionID:InspetionID}));
       }
     },
     Assessment:{
