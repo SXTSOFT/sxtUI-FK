@@ -38,35 +38,11 @@
 
       result.data.Areas.forEach(function(item){
         vm.Regions.push(item.AreaId);
-        var indexs = 0;
+        //var indexs = 0;
         item.Classification.forEach(function(_it,index1){
           _it.rowspan = _it.Children.length;
-          //item.rowspan +=_it.rowspan;
-          //var f = item.Classification.indexOf(_it);
-          //console.log(f)
-          //if(f==0){
-          //  indexs = index1;
-          //}else{
-          //  indexs = index1+item.Classification[f-1].rowspan;
-          //}
-
-          _it.Children.forEach(function(t,index){
-            //t.index = indexs+index+1;
-            //if(t.inspection == 2){
-            //  t.inspectionStatus ='合格';
-            //}
-            //t.inspectionStatus = t.Inspection == 2?'合格':'不合格';
-            //t.reinspectionStatus = t.ReInspection == 2?'合格':'不合格';
-          })
-        })
-      })
-      result.data.Areas.forEach(function(item){
-        item.Classification.forEach(function(_it){
-         //   for(var j=0;j<_it.Children.length;i++){
-         //     for(var i=0;i<_it.Children[j].length;i++){
-         //       it.Children[j][i].index = j*i+1;
-         //     }
-         //   }
+          //_it.Children.forEach(function(t,index){
+          //})
         })
       })
 
@@ -91,6 +67,7 @@
       })
 
       result.data.Detaileds&&result.data.Detaileds.forEach(function(pic){
+
         if(details.length<2){
           details.push(pic)
         }else{
@@ -98,14 +75,14 @@
           details = [pic];
         }
       })
-      vm.details.push(vm.pics)
+      vm.details.push(details)
       //vm.details.forEach(function(p){
       //  while(p.length<2){
       //   // p.push({});
       //  }
       //})
       vm.result = result.data;
-      console.log(vm.result)
+      console.log(vm.details)
     })
 
   }
