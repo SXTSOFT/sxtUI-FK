@@ -1,15 +1,28 @@
 <md-dialog aria-label="添加拍照"  ng-cloak>
   <md-toolbar >
     <div class="md-toolbar-tools">
-      <h2>{{vm.project.item.full_name}}</h2>
+      <h2 style="width: 80%;overflow: hidden;text-overflow: ellipsis;">{{vm.project.item.full_name}}</h2>
       <span flex></span>
+      <md-button class="md-fab md-mini md-primary" ng-click="vm.show=true"  aria-label="Favorite">
+        <md-icon md-font-icon="icon-calendar"></md-icon>
+      </md-button>
       <md-button class="md-fab md-mini md-primary" ng-click="vm.answer()"  aria-label="Favorite">
         <md-icon md-font-icon="icon-close"></md-icon>
       </md-button>
     </div>
   </md-toolbar>
-  <md-dialog-content style="padding:0;" layout="column">
-    <div flex sxt-year style="overflow: auto;position:relative" layout="column" region-id="vm.project.pid" show="vm.data.isShow" room-type="vm.project.item.type" procedure-id="vm.data.procedureId" image-type="vm.project.n" partion="vm.data.partion" region-name="vm.project.item.full_name"></div>
+  <md-dialog-content style="padding:0;" layout-full layout="column">
+    <div flex sxt-year style="overflow: auto;position:relative" layout="column" show="true" region-id="vm.project.pid" ng-if="vm.show" room-type="vm.project.item.type" procedure-id="vm.data.procedureId" image-type="vm.project.n" partion="vm.data.partion" region-name="vm.project.item.full_name"></div>
+    <div layout="row" class="newhouse" layout-xs="column" ng-if="!vm.show">
+    <div flex style="height: 375px;width: 100%" sxt-area-houses param="vm.project" item-id="vm.project.itemId" item-name="vm.project.itemName" >
+    </div>
+    <div flex>
+      <div style="padding: 5px 10px;font-weight: bold;">{{vm.project.itemName}}</div>
+      <sxt-images-ybyd item-name="vm.project.itemName" item-id="vm.project.itemId" region-id="vm.project.idTree"></sxt-images-ybyd>
+    </div>
+    </div>
+    <!--<div flex sxt-year style="overflow: auto;position:relative" layout="column" region-id="vm.project.regionId" show="vm.data.isShow" room-type="vm.project.roomType" procedure-id="vm.data.procedureId" image-type="vm.project.n" partion="vm.data.partion" region-name="vm.project.regionName"></div>-->
+
   </md-dialog-content>
-</form>
+  </form>
 </md-dialog>

@@ -1,10 +1,10 @@
-
-<div class="panel" style="border-top-width:0;" >
+﻿
+<div class="panel" md-padding>
     <div class="panel-body">
      <!--<a class="btn btn-sm btn-white" style="padding: 5px 31px; float: right;margin-right: -4px;margin-bottom: 6px;margin-top: -6px;" ng-click="goback()">返回</a>-->
  <h2>{{titol.ProcedureName}}验收记录表</h2>
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive vk" style="border: 0px">
         <div class="row">
             <div class="col-lg-12 target2">
                 <table class="target " width="100%" border="1" cellspacing="0" cellpadding="4" style="border-collapse: collapse;">
@@ -37,8 +37,7 @@
                         <td>{{titol.GrpName}}</td>
                     </tr>
                 </table>
-                <table class="target target2" border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse;width:100%;">
-
+                <table class="target target2" border="0" cellspacing="0" cellpadding="0" style="margin-top: 5px;border-collapse: collapse;width:100%;">
                     <tr>
                         <td style="padding:0;">
                             <table border="1" cellspacing="0" cellpadding="4" style="border-collapse: collapse;width:100%;">
@@ -89,7 +88,7 @@
 
                                         <div class="clearfix"></div>
                                     </td>
-                                    <td rowspan="2" align="center">允许偏差（mm）</td>
+                                    <td width="91" rowspan="2" align="center">允许偏差（mm）</td>
                                     <td align="center">检查点数</td>
                                     <td align="center">合格率</td>
                                     <td align="center">最大偏差</td>
@@ -121,7 +120,7 @@
                                     </td>
                                     <td ng-class="{'tdselectd':n.selected}" align="center">{{$index+1}}</td>
                                     <td ng-repeat="m in n.names" ng-click="data.selected.d.info.ybColSelected=$index" ng-if="m.rowspan!=0 && m.colspan!=0" rowspan="{{m.rowspan||1}}" colspan="{{m.colspan||1}}">{{m.name}}</td>
-                                    <td align="center">
+                                    <td style="width:150px" align="center">
                                         <span ng-if="n.getPassRatio">平均合格率</span> {{n.DeviationLimit}}
                                     </td>
                                     <td align="center">{{n.CheckNum}}</td>
@@ -134,7 +133,7 @@
 
                                 <tr ng-if="data.selected.d.yb.length">
                                     <td colspan="{{data.selected.d.yb[0].names.length+2}}"></td>
-                                    <td align="center">
+                                    <td style="width:150px" align="center">
                                     </td>
                                     <td align="center">主控：{{zkIsOk(data.selected.d.zk)?"合格":"不合格"}}</td>
                                     <td align="center">一般：{{ybIsOk(data.selected.d.yb)?"合格":"不合格"}}({{ybHGL(data.selected.d.yb)}}) 总体({{ybHGLPJ(data.selected.d.yb)|number:2}})</td>
@@ -147,19 +146,50 @@
                         </td>
                     </tr>
                 </table>
-
             </div>
         </div>
-    </div><div img-fancy>
-    <fieldset  sxt-image-view is-container="true">
-        <legend>原验收表扫描件</legend>
-        <sxt-images  ng-model="data.selected.step.GroupImg" project="data.projectInfo" ></sxt-images>
+      <!--ng-if="checkDataValues.length>0"-->
 
-    </fieldset>
-    <fieldset  sxt-image-view is-container="true">
-        <legend>附件</legend>
-        <sxt-images  ng-model="data.selected.step.GroupImg2" project="data.projectInfo"></sxt-images>
-    </fieldset></div>
+    </div>
+    <div>
+      <fieldset >
+          <legend style="margin-bottom: 10px;">原验收表扫描件或验收结果列表</legend>
+          <div ng-if="vm.showData" style="margin-bottom: 10px;">
+            <p style="font-size:20px;">
+              监理检查记录
+            </p>
+            <div ng-repeat="n in data.selected.d.yb">
+              <h3 style="margin-top:10px;">{{$index+1}}、{{n.TargetName}} 允许偏差（mm） :{{n.DeviationLimit}}</h3>
+              <div class="circle">
+                <div>
+                  <div ng-repeat="point in n.points"><div class="point" ng-class="{'done':!point.Result}"><span>{{point.Value}}</span></div></div>
+                </div>
+              </div>
+            </div>
+            <p style="font-size:20px;">
+              万科检查记录
+            </p>
+            <div ng-repeat="n in data.selected.eg.yb">
+              <h3 style="margin-top:10px;">{{$index+1}}、{{n.TargetName}} 允许偏差（mm） :{{n.DeviationLimit}}</h3>
+              <div class="circle">
+                <div>
+                  <div ng-repeat="point in n.points"><div class="point" ng-class="{'done':!point.Result}"><span>{{point.Value}}</span></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div sxt-image-view is-container="true" ng-if="!vm.showData">
+          <sxt-images  ng-model="data.selected.step.GroupImg" project="data.projectInfo" ></sxt-images>
+          </div>
+      </fieldset>
+
+      <fieldset>
+          <legend>附件</legend>
+          <div  sxt-image-view is-container="true">
+            <sxt-images  ng-model="data.selected.step.GroupImg2" project="data.projectInfo"></sxt-images>
+          </div>
+      </fieldset>
+    </div>
 
 
 </div>

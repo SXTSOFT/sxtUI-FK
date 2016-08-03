@@ -5,9 +5,9 @@
         <md-divider></md-divider>
 </md-list>
 
-    <div ng-repeat="st in selectors" data-title="{{st.label}}" ng-if="st.items.length" class="J_selectorLine s-brand" ng-show="isShow(st)">
+    <div ng-repeat="st in selectors" data-title="{{st.label}}" ng-if="st.items.length"  ng-show="isShow(st)">
 <div class="md-padding">
-      <md-input-container class="md-block">
+      <md-input-container class="md-block" ng-disabled="st.loading">
         <label>{{st.label}}</label>
         <md-select ng-model="st.current" md-on-close="st.current && item_selected(st.current, st.index)">
           <md-option ng-repeat="item in st.filters" ng-value="item">
@@ -17,7 +17,7 @@
       </md-input-container></div>
 
       <md-list>
-            <md-subheader class="md-no-sticky">
+<!--            <md-subheader class="md-no-sticky">
                 <div layout="row">
                     <div flex="none" class="stlabel">{{st.label}}</div>
                     <div flex>
@@ -26,7 +26,7 @@
                         </md-button>
                     </div>
                 </div>
-            </md-subheader>
+            </md-subheader>-->
 
             <!--<md-list-item ng-repeat="item in st.filters" ng-click="item_selected(item, st.index)">-->
                 <!--<p>{{item.$name}}</p>-->
