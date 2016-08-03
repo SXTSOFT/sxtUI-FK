@@ -110,8 +110,7 @@
                 geo.options.customSeq = true;
                 switch(v.MeasureStatus) {
                   case 1:
-                    //geo.options.
-                    geo.options.color = 'black';
+                    geo.options.color = '#000000';
                     break;
                   case 2:
                     geo.options.color = '#eb7400';
