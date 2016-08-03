@@ -14,7 +14,6 @@
     vm.project ={
       onQueryed:function () {
         vm.searBarHide = false;
-        query();
       }
     }
     if($stateParams.pid) {
@@ -69,7 +68,6 @@
       })
     }
     vm.viewItem = function(item){
-      console.log('item',item);
       $state.go('app.szgc.yhyd',{
         pid:item.regionId,
         pname:item.regionName,
@@ -123,8 +121,6 @@
     };
     $scope.$watch('vm.project.type', function () {
       $timeout(function () {
-
-
         if (vm.project.type == '8') {
           vm.project.loading = true;
           $q.all([
@@ -180,17 +176,16 @@
               row.ybNum = yb ? yb.FileNum : 0;
               row.ysNum = ys ? ys.YsNum : 0;
               row.hg = ys ? ys.MainResult == 0 ? false : true : true;
-              row.RegionIdTree = yb ? yb.RegionTreeId : ys ? ys.RegionTreeId : ''
+              row.RegionIdTree = yb ? yb.RegionTreeId.replace('sub-', '') : ys ? ys.RegionIdTree : ''
               //if (row.ybNum != 0 || row.ysNum != 0) {
                rows.push(row);
               //}
             });
             vm.project.rows = rows;
-            console.log('a',vm.project);
-
+            vm.project.loading = false;
           });
         }
-      },10)
+      },500)
     });
 
   }

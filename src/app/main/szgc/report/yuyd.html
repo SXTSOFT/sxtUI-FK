@@ -48,12 +48,12 @@
 <md-content flex layout="column">
     <span flex ng-if="vm.project.rows.length==0 && !vm.project.loading" style="text-align: center;display: block;"> 暂无数据</span>
    <span flex style="text-align: center;display: block;" ng-if="vm.project.loading&&vm.project.rows.length!=0">正在加载数据......</span>
-    <md-list layout-padding>
+    <md-list layout-padding ng-if="!vm.project.loading">
       <md-list-item>
         <div class="yhyd" layout="row"  layout-wrap>
           <div layout="column" class="btn" ng-repeat="item in vm.project.rows" ng-class="{'bhg':!item.hg}" >
-            <button class="btnUp" ng-click=" vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionIdTree,type:item.type})">{{item.ybNum}}</button>
-            <button class=" btnDown" ng-click="vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionIdTree,type:item.type})">{{item.ysNum}}</button>
+            <button class="btnUp" ng-click=" vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionIdTree,type:item.type && item.type.type_id})">{{item.ybNum}}</button>
+            <button class=" btnDown" ng-click="vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionIdTree,type:item.type && item.type.type_id})">{{item.ysNum}}</button>
             <span >{{item.name}}</span>
           </div>
         </div>

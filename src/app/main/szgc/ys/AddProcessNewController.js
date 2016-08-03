@@ -555,42 +555,12 @@
         })
       })]).then(function (results) {
         results[0].data.data.forEach(function (item) {
-          /*if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
-            if (item.skills.find(function (sk) {
-                return sk.skill_id == $stateParams.procedureTypeId;
-              }) == null) {
-              return;
-            }
-          }
-          var ns = [];
-          item.managers.forEach(function (it) {
-            ns.push(it.name);
-          });
-          g.push({
-            id: item.team_id,
-            name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
-          });*/
           g.push({
             id: item.id,
             name:item.name
           })
         });
         results[1].data.data.forEach(function (item) {
-          /*if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
-            if (item.skills.find(function (sk) {
-                return sk.skill_id == $stateParams.procedureTypeId;
-              }) == null) {
-              return;
-            }
-          }
-          var ns = [];
-          item.managers.forEach(function (it) {
-            ns.push(it.name);
-          });
-          g.push({
-            id: item.team_id,
-            name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
-          });*/
           g.push({
             id: item.id,
             name: item.name
@@ -640,28 +610,14 @@
         })]).then(function (results) {
 
           results[0].data.data.forEach(function (item) {
-            /*var ns = [];
-            item.managers.forEach(function (it) {
-              ns.push(it.name);
-            });
-            g.push({
-              id: item.team_id,
-              name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
-            });*/
+
             g.push({
               id: item.id,
               name: item.name
             });
           });
           results[1].data.data.forEach(function (item) {
-            /*var ns = [];
-            item.managers.forEach(function (it) {
-              ns.push(it.name);
-            });
-            g.push({
-              id: item.team_id,
-              name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
-            });*/
+
             g.push({
               id: item.id,
               name: item.name
@@ -673,9 +629,6 @@
           } else {
             $scope.data.groups = []
           }
-          //console.log('11',g)
-
-
         })
       }
 
@@ -694,10 +647,6 @@
       zk: [],
       yb: []
     }
-    //ProcedureService.getbyid(procedure).then(function (result) {
-    //    $scope.data.procedure = result.data;
-    //});
-
 
 
 
@@ -804,12 +753,9 @@
         utils.alert('有已打勾的指标未输入！');
         return;
       }
-      //if ($scope.data.pics.length == 0) {
-      //  utils.alert('请上传原验收表扫描件');
-      //  return;
-      //}
+
       if ($scope.data.pics2.length == 0) {
-        utils.alert('请上传原验收表扫描件');
+        utils.alert('请上传验收照片');
         return;
       }
       utils.confirm(null, '确认向验收批:' + $scope.data.curHistory.BatchNo + ' 添加新记录吗?').then(function () {
@@ -825,12 +771,7 @@
       var data = $scope.data,
         step = data.curStep,
         batch = data.curHistory;
-      //if (!batch.GrpId) {
-      //  utils.alert('请选择班组', function () {
-      //    $scope.isSaveing = false;
-      //  });
-      //  //return;
-      //}
+
       step.RoleId = data.submitUser.type;
       step.CheckNo = batch.Count;
       step.MainResult = $scope.zkIsOk() ? 1 : 0;
@@ -940,20 +881,8 @@
       return true;
 
     }
-    //$scope.numbers = function(e){
-    //  console.log('e',e)
-    //  //console.log('e',$(e.target).position(),$(e.target).closest('.circles').height())
-    //  $('.ybxm').animate({scrollTop:$(e.target).position().top-100});
-    //  $('.ybxm').css('padding-bottom','300px');
-    //  if($('.numberpanel').is(':hidden')){
-    //    $('.numberpanel').css({'position':'fixed','bottom':0,'left':0,width:'100%','height':'300px','display':'block'})
-    //  }
-    //
-    //}
 
-    $scope.addCircle = function(i){
-
-    }
+    
     $scope.ybIsOk = function() {
       for (var i = 0, l = $scope.targets.yb.length; i < l; i++) {
         var yb = $scope.targets.yb[i];

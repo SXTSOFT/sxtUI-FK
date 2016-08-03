@@ -12,7 +12,7 @@
     .controller('MyProcessController',MyProcessController);
 
   /** @ngInject */
-  function MyProcessController($scope, api, utils, $state,$q,sxt,xhUtils){
+  function MyProcessController($scope, api, utils, $state,$q,sxt,xhUtils,$timeout){
 
     var vm = this;
     $scope.is = function(route){
@@ -81,12 +81,13 @@
       }],
       onQueryed: function(data) {
         $scope.project.data = data;
-        $scope.project.filter();
+        //$scope.project.filter();
       },
       //filterBatch: function (sources) {
       //    console.log('sources', sources);
       //},
       filter: function(reload) {
+        vm.loading = true;
         if (!$scope.project.procedureId || !$scope.project.data || !$scope.project.data.items) return;
         if (reload === true || ($scope.project.data && !$scope.project.data.fd)) {
           $scope.project.data.fd = true;
@@ -173,7 +174,8 @@
             $scope.project.filter();
           });
 
-        } else if ($scope.project.data.items) {
+        }
+        else if ($scope.project.data.items && $scope.project.data.results) {
           //仅通过states过虑
           var rows = [];
 
@@ -193,6 +195,7 @@
             }
           });
           $scope.project.rows = rows;
+          vm.loading = false;
         }
       }
     };
@@ -234,44 +237,22 @@
     api.szgc.ProcedureTypeService.getAll({startrowIndex:0,maximumRows:100,Status:5}).then(function(result) {
       $scope.project.procedureTypes = result.data.Rows;
     });
-    var pt, ptype;
-    var queryProcedures = function() {
-      var t = 1;
-      if ($scope.project.type) {
-        switch ($scope.project.type) {
-          case 1:
-              t = 2;
-            break;
-          case 2:
-            t = 8;
-            break;
-          case 8:
-            t = 32;
-            break;
-          case 32:
-            t = 64;
-            break;
-        }
-      }
-      if (pt == t && $scope.project.procedureTypeId == ptype) return;
-      pt = t;
-      ptype = $scope.project.procedureTypeId;
-      api.szgc.BatchSetService.getAll({status:4,batchType: t}).then(function(result) {
-        var data = [];
-        result.data.Rows.forEach(function(item) {
-          //if ($scope.project.procedureTypeName != item.ProcedureType)
-          //$scope.project.ProcedureType = item.ProcedureType;
-          if (!$scope.project.procedureTypeId || $scope.project.procedureTypeId == item.ProcedureTypeId) {
-            data.push(item);
-          }
-        });
-        $scope.project.procedures = data;
-      });
-    }
 
-    //$scope.$watch('project.type', queryProcedures);
-    //$scope.$watch('project.procedureTypeId', queryProcedures);
-    $scope.$watch('project.procedureId', function(a,b) {
+    $scope.$watch(function () {
+      return vm.searBarHide;
+    },function () {
+      if(!vm.searBarHide)return;
+      if (!$scope.project.pid || !$scope.project.procedureId) {
+        utils.alert("必须选择项目和工序！");
+        return;
+      }else{
+        $timeout(function () {
+          $scope.project.filter(true);
+        },300);
+
+      }
+    })
+/*    $scope.$watch('project.procedureId', function(a,b) {
       if(a != b){
         if ( !$scope.project.pid) {
           utils.alert("项目不能为空！");
@@ -281,7 +262,7 @@
         }
       }
 
-    });
+    });*/
 
     //以下离线相关
     if(api.getNetwork()==0) {
