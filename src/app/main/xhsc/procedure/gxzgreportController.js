@@ -48,6 +48,41 @@
       })
       vm.result = result.data;
     })
+    $scope.$watch(function(){
+      if(vm.Regions.length){
+        return vm.Regions;
+      }
+    },function(){
+      vm.Problems=[];
+      vm.Regions.forEach(function(r){
+        var f=vm.result && vm.result.ProblemItem.find(function(t){
+            return t.AreaID == r.AreaId;
+          })
+        if(f){
+          r.Problems = f.Children;
+        }else{
 
+        }
+      })
+      //vm.result && vm.result.ProblemItem.forEach(function(r){
+      //  var f=vm.Regions.find(function(t){
+      //    return t.AreaId == r.AreaID;
+      //  })
+      //  if(f){
+      //    var p={
+      //      AreaId: r.AreaID,
+      //      Problems:r
+      //    }
+      //    vm.Problems.push(f);
+      //  }else{
+      //    var p={
+      //      AreaId: r.AreaID,
+      //      Problems:[]
+      //    }
+      //    vm.Problems.push(p);
+      //  }
+      //})
+      console.log(vm.Regions)
+    })
   }
 })();

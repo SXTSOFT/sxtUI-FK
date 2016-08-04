@@ -55,11 +55,6 @@
               r.QualifiedRate.forEach(function(v){
                 v.Value = v.Value * 100;
               })
-              //r.QualifiedRate = r.QualifiedRate * 100;
-              //r.allDot = r.QualifiedPointNum + r.UnqualifiedPointNum;
-              //t1 += r.QualifiedPointNum;
-              //t2 += r.allDot;
-
               r.List.forEach(function (m) {
                 m.MeasureValue.forEach(function(r1){
                   var fi= m.MeasureStatus.find(function(_r){
