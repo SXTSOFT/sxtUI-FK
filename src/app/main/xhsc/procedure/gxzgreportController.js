@@ -80,68 +80,6 @@
       vm.result = result.data;
       //console.log(vm.result)
     })
-    var details=[];
-    vm.details=[];
-    var array = [
-      [{
-        Describe:'问题描述',
-        Front:[{
-          FileUrl:'app/main/xhsc/images/bg.png'
-        },{
-          FileUrl:'app/main/xhsc/images/bg.png'
-        }],
-        Back:[{
-          FileUrl:'app/main/xhsc/images/bg.png'
-        },{
-          FileUrl:'app/main/xhsc/images/bg.png'
-        },{
-          FileUrl:'app/main/xhsc/images/bg.png'
-        }]
-      }],
-      [{
-        Describe:'问题描述',
-        Front:[{
-          FileUrl:'app/main/xhsc/images/bg.png'
-        },{
-          FileUrl:'app/main/xhsc/images/bg.png'
-        }],
-        Back:[{
-          FileUrl:'app/main/xhsc/images/bg.png'
-        },{
-          FileUrl:'app/main/xhsc/images/bg.png'
-        },{
-          FileUrl:'app/main/xhsc/images/bg.png'
-        }]
-      }],
-      [{
-        Describe:'问题描述',
-        Front:[{
-          FileUrl:'app/main/xhsc/images/bg.png'
-        }],
-        Back:[{
-          FileUrl:'app/main/xhsc/images/bg.png'
-        },{
-          FileUrl:'app/main/xhsc/images/bg.png'
-        },{
-          FileUrl:'app/main/xhsc/images/bg.png'
-        }]
-      }]
-    ]
 
-    array.forEach(function(pic){
-      if(details.length<2){
-        details.push(pic)
-      }else{
-        vm.details.push(details);
-        details = [pic];
-      }
-    })
-    vm.details.push(details)
-    vm.details.forEach(function(p){
-      while(p.length<2){
-       // p.push({});
-      }
-    })
-    console.log(vm.details)
   }
 })();
