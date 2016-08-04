@@ -103,6 +103,7 @@
         status.forEach(function(t){
           if(t.AcceptanceItemID==acceptanceItemID && t.AreaId == region.RegionID){
             region.inspectionRows.push(t);
+            region.InspectionId=t.InspectionId;
           }else{
             region.status=0;
             region.Percentage=0;
@@ -217,6 +218,13 @@
           break;
       }
       return show.indexOf(status)>-1;
+    }
+
+    vm.go=function(item){
+      if (item.InspectionId){
+        $state.go('app.xhsc.gx.gxzgreport',{InspectionId:item.InspectionId,
+          acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,projectId:projectId});
+      }
     }
   }
 })();
