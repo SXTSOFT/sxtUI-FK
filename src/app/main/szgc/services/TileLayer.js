@@ -5,7 +5,7 @@
     .module('app.szgc')
     .factory('tileLayer',tileLayer);
   /** @ngInject */
-  function tileLayer($cordovaFile){
+  function tileLayer($cordovaFile,api){
     L.Offline = L.TileLayer.extend({
       _loadTile: function (tile, tilePoint) {
         tile._layer  = this;
@@ -14,7 +14,7 @@
 
         this._adjustTilePoint(tilePoint);
         //console.log(this._url);
-        if(typeof cordova !== 'undefined') {
+        if(api.getNetwork()==1 && typeof cordova !== 'undefined') {
           $cordovaFile.readAsDataURL(cordova.file.dataDirectory+'/map', 'tile_'+this._url.Id +'_' + tilePoint.z + '_' + tilePoint.x + '_' + tilePoint.y + '.jpg').then(function (success) {
             tile.src = success;
           }, function (error) {
