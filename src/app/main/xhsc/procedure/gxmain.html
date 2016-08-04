@@ -61,7 +61,7 @@
               </p>
             </div>
             <div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">
-              <md-button ng-if="!item.isDown" class="md-raised md-primary"  ng-click="vm.upload()">
+              <md-button ng-disabled="vm.uploadInfo.uploading" class="md-raised md-primary"  ng-click="vm.upload()">
                 <md-icon md-font-icon="icon-upload"></md-icon>
               </md-button>
 

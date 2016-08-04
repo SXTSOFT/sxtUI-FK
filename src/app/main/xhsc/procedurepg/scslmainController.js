@@ -11,7 +11,17 @@
     var remote=  scRemote;
     var pack=scPack;
     var xcpk = db('xcpk');
+    var preListens=  $rootScope.$$listeners.preClear=[];
+    preListens.push(function(event,cfgs){
+      cfgs.push(function(){
+        return db('xcpk').destroy();
+      });
+    });
 
+    //var clear= $rootScope.$on('preClear',);
+    //$scope.$on("$destroy",function(){
+    //  clear();
+    //});
     remote.Procedure.authorityByUserId().then(function(res){
       if (res&&res.data&&res.data.length){
         vm.role=res.data[0].MemberType;
@@ -207,7 +217,9 @@
 
       });
     }
-
+    //$rootScope.$on('clearDbSuccess',function(event){
+    //  xcpk.destroy();
+    //})
     vm.go=function(item,isReport){
 
       function callBack(r){

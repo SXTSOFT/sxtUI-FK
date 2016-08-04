@@ -11,7 +11,6 @@
   /**@ngInject*/
   function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,gxOfflinePack,$scope){
     var vm = this;
-
     remote.Project.getMap().then(function(result){
       result.data.forEach(function (item) {
         remote.offline.query('zj'+item.ProjectID).then(function (r) {
@@ -244,6 +243,7 @@
     },$scope);
 
     vm.uploadInfo={}
+    vm.uploadInfo.uploading=false;
     vm.upload =function () {
       vm.uploadInfo.uploading = true;
       api.upload(function (cfg,item) {
@@ -268,7 +268,7 @@
       },function () {
         vm.uploadInfo.uploaded = 0;
         utils.alert('上传失败');
-        vm.uploadInfo =false;
+        vm.uploadInfo.uploading =false;
       },{
         uploaded:function (cfg,row,result) {
           cfg.db.delete(row._id);

@@ -1,4 +1,5 @@
-﻿﻿(function () {
+﻿
+(function(){
   'use strict';
 
   angular
@@ -313,7 +314,9 @@
             result.rows.forEach(function (row) {
               tasks.push(function () {
                 return cfg.fn.call(cfg, row).then(function (result) {
-                  options.uploaded && options.uploaded(cfg,row,result);
+                  if (result&&result.status==200){
+                    options.uploaded && options.uploaded(cfg,row,result);
+                  }
                 });
               });
             });
@@ -700,6 +703,7 @@
            }
          }
       });
+      provider.$rootScope.$emit('preClear',tasks);
       return task(tasks,options)(progress,complete,fail,options);
     }
   }
