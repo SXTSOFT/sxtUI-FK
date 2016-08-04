@@ -143,12 +143,11 @@
         }
         return style;
       }
-      $q.all([
+      return $q.all([
         remote.Project.queryAllBulidings(projectId),
         remote.Procedure.getRegionStatus(projectId)
       ]).then(function(res){
         vm.loading = true;
-        console.log(res[0])
         var result=res[0];
         var status=res[1]&&res[1].data?res[1].data:[];
         result.data[0].RegionRelations.forEach(function(d){
@@ -352,6 +351,7 @@
       }
     });
     $scope.$on("$destroy",function(){
+      //$mdDialog
       sendgxResult();
       sendgxResult=null;
     });

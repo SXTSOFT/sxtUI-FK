@@ -9,7 +9,7 @@
     .directive('myDialog',myDialogDirective);
 
   /**@ngInject*/
-  function myDialogDirective($state,$timeout,remote,utils,auth,sxt){
+  function myDialogDirective($state,$timeout,remote,utils,auth,sxt,$mdDialog){
     return {
       scope:{
         dialogShow:'=',
@@ -51,34 +51,47 @@
         $('.my-dialog-mask',element).fadeOut();
       }
       scope.submit = function(evt){
-        scope.dialogShow = false;
-        scope.areaIds=[];
-
-        $('.my-dialog-mask',element).fadeOut();
-        if(scope.dialogSure == '报验'){
-          var percentage= scope.percentage?scope.percentage:100
-          scope.dialogData.Rows.forEach(function(t){
-            scope.areaIds.push( {
-              AreaID:t.RegionID,
+        var parentEl = angular.element(document.body);
+        $mdDialog.show({
+          parent: parentEl,
+          targetEvent: evt,
+          template:'<md-dialog aria-label="正在清除"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular> 正在提交数据，请稍候……</md-dialog-content></md-dialog>',
+          controller: DialogController
+        });
+        function DialogController($scope) {
+          scope.dialogShow = false;
+          scope.areaIds=[];
+          $('.my-dialog-mask',element).fadeOut();
+          if(scope.dialogSure == '报验'){
+            var percentage= scope.percentage?scope.percentage:100
+            scope.dialogData.Rows.forEach(function(t){
+              scope.areaIds.push( {
+                AreaID:t.RegionID,
+                Describe:scope.description,
+                Percentage:percentage
+              });
+            })
+            var params ={
+              AcceptanceItemID:scope.dialogData.acceptanceItemID,
+              AreaList:scope.areaIds,
               Describe:scope.description,
-              Percentage:percentage
-            });
-          })
-          var params ={
-            AcceptanceItemID:scope.dialogData.acceptanceItemID,
-            AreaList:scope.areaIds,
-            Describe:scope.description,
-            Percentage:percentage,
-            id:sxt.uuid()
-          }
-          remote.Procedure.postInspection(params).then(function(result){
-            if (result.data.ErrorCode==0){
-              $timeout(function(){
-                utils.alert('报验成功',evt,scope.callBack);
-              },200);
+              Percentage:percentage,
+              id:sxt.uuid()
             }
-          })
-        }else{
+            remote.Procedure.postInspection(params).then(function(result){
+              if (result.data.ErrorCode==0){
+                  $mdDialog.hide();
+                  utils.alert('报验成功',evt,function(){
+                    scope.callBack();
+                  });
+              }
+              $mdDialog.hide();
+            }).catch(function(){
+              $mdDialog.cancel();
+            });
+          }else{
+            $mdDialog.hide();
+          }
         }
       }
       scope.$on('$destroy', function () {
