@@ -83,7 +83,7 @@
           if(zoom <10) {
             mks.forEach(function (marker) {
               marker.setIcon(L.icon({
-                iconUrl: 'libs/leaflet/images/M.png',
+                iconUrl: 'assets/leaflet/css/images/M.png',
                 iciconSize: [27, 37],
                 iconAnchor: [20, 20]
               }));
@@ -91,7 +91,7 @@
           }else if(zoom<11){
             mks.forEach(function (marker) {
               marker.setIcon(L.icon({
-                iconUrl: 'libs/leaflet/images/M.png',
+                iconUrl: 'assets/leaflet/css/images/M.png',
                 iconSize: [27, 37],
                 iconAnchor: [20, 20]
               }));
@@ -100,7 +100,7 @@
           else {
             mks.forEach(function (marker) {
               marker.setIcon(L.icon({
-                iconUrl: 'libs/leaflet/images/M.png',
+                iconUrl: 'assets/leaflet/css/images/M.png',
                 iconSize: [27, 37],
                 iconAnchor: [20, 20]
               }));

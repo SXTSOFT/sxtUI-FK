@@ -176,6 +176,7 @@
             <tr>
               <td colspan="4" ng-repeat="p in detail" width="50%" style="padding:0;border-top:none;">
                 <table width="100%" cellpadding="0" cellspacing="0">
+                  <tbody ng-repeat="pic in p">
                   <tr>
                     <td width="50%">
                       验收照片
@@ -186,12 +187,18 @@
                   </tr>
                   <tr>
                     <td width="50%">
-                      <p><img ng-src="{{p.Front}}" width="80%"></p>
+                      <p><span ng-repeat="img in pic.Front"><img ng-src="{{img.FileUrl}}" width="50%"></span></p>
                     </td>
                     <td width="50%">
-                      <p><img ng-src="{{p.Back}}" width="80%"></p>
+                      <p><span ng-repeat="img in pic.Back"><img ng-src="{{img.FileUrl}}" width="50%"></span></p>
                     </td>
                   </tr>
+                  <tr>
+                    <td colspan="2">
+                      {{pic.Describe}}
+                    </td>
+                  </tr>
+                  </tbody>
                 </table>
               </td>
               <!--<td colspan="2" width="25%"><p><img src="app/main/xhsc/images/bg.png" width="80%"></p></td>-->
@@ -208,6 +215,37 @@
       </tr>
       </tbody>
 
+
+
+      <!--<tr ng-repeat="detail in vm.details">-->
+        <!--<td style="padding:0;border-top:none;">-->
+          <!--<table width="100%" cellpadding="0" cellspacing="0">-->
+            <!--<tbody ng-repeat="imgs in detail">-->
+            <!--<tr>-->
+              <!--<td width="50%">-->
+                <!--验收照片-->
+              <!--</td>-->
+              <!--<td width="50%">-->
+                <!--整改照片-->
+              <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td width="50%">-->
+                <!--<p><span ng-repeat="img in imgs.Front"><img ng-src="{{img.FileUrl}}" width="50%"></span></p>-->
+              <!--</td>-->
+              <!--<td width="50%">-->
+                <!--<p><span ng-repeat="img in imgs.Back"><img ng-src="{{img.FileUrl}}" width="50%"></span></p>-->
+              <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td colspan="2" width="100%">-->
+                <!--{{imgs.Describe}}-->
+              <!--</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+          <!--</table>-->
+        <!--</td>-->
+      <!--</tr>-->
     </table>
   </md-content>
 </div>
