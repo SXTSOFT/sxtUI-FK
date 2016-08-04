@@ -11,7 +11,7 @@
     .module('app.xhsc')
     .controller('_scController',_scController)
   /** @ngInject */
-  function _scController($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,scPack,sxt,$timeout) {
+  function _scController($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,scPack,sxt,$timeout,$state,remote) {
     var vm = this;
     var  pack=scPack;
     vm.info = {
@@ -174,6 +174,30 @@
     }
 
     vm.setRegionId($stateParams.regionId);
+    remote.Assessment.getMeasure({
+      RegionID:$stateParams.regionId,//'0001500000000010000000001',//,
+      AcceptanceItemID:$stateParams.measureItemID,//'c9ba481a76644c949d13fdb14b4b4adb',//,
+      RecordType:1,
+      RelationID:vm.info.db//'a55164d5c46f454ca8df799f520bbba8'//
+    }).then(function (result){
+      if(result.data.checkUser.length){
+        vm.showState = true;
+      }
+    })
+    vm.stateGo = function(){
+      var routeData={
+        areaId: vm.info.areaId,
+        regionId: vm.info.regionId,
+        RegionName: vm.info.name,
+        name: vm.info.name,
+        regionType: vm.info.regionType,
+        db:vm.info.db,
+        measureItemID:$stateParams.measureItemID,
+        pname:$stateParams.pname
+      }
+
+      $state.go('app.xhsc.scsl.schztb',routeData);
+    }
 
   }
 })();
