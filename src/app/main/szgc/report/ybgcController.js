@@ -15,7 +15,7 @@
     vm.project ={
       onQueryed:function () {
         vm.searBarHide = false;
-        query();
+        //query();
       }
     }
     if($stateParams.pid) {
@@ -31,8 +31,9 @@
       }
       api.szgc.projectMasterListService.getFileReportData(params).then(function(result){
         //console.log('result',result)
-        rows = result.data.Rows;
-        if (rows.length > 0) {
+        var rows = result.data.Rows;
+        vm.rows = rows;
+/*        if (rows.length > 0) {
           var arr, groupid, promises = [];
           rows.forEach(function (e) {
             groupid =e.RegionTreeId;
@@ -65,7 +66,7 @@
         }
         else {
           vm.rows = [];
-        }
+        }*/
       })
     }
     $timeout(function(){
@@ -102,9 +103,9 @@
         });
     }
     $scope.$watch('vm.project.idTree', function() {
-      //if (!vm.project.idTree) {
-      //  return;
-      //}
+      if (!vm.project.idTree) {
+        return;
+      }
       query();
     });
 
