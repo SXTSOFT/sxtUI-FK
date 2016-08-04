@@ -9,7 +9,7 @@
         </th>
       </tr>
       <tr ng-repeat="item in vm.checkUser">
-        <th colspan="10" rowspan="{{vm.checkUser.length}}">
+        <th colspan="10" rowspan="{{vm.checkUser.length}}" ng-if="$index == 0">
           项目名称：{{vm.info.name}}
         </th>
         <th colspan="5">检查人：{{item.UserName}}</th>
