@@ -70,6 +70,7 @@
                   $scope.cacheInfo = parseInt(persent * 100) + '%';
                 }, function () {
                   $scope.cacheInfo = null;
+                  //$rootScope.$emit('clearDbSuccess');
                   $mdDialog.hide();
                   //utils.alert('清除成功');
                 }, function () {

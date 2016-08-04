@@ -703,6 +703,7 @@
            }
          }
       });
+      provider.$rootScope.$emit('preClear',tasks);
       return task(tasks,options)(progress,complete,fail,options);
     }
   }
