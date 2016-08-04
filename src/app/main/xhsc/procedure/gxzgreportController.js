@@ -36,36 +36,17 @@
     remote.Procedure.getZgReport(vm.Inspection).then(function(result){
       console.log('r2',result)
 
-      result.data.Areas.forEach(function(item){
+      result.data.Areas&&result.data.Areas.forEach(function(item){
         vm.Regions.push(item.AreaId);
         item.Classification.forEach(function(_it){
           _it.rowspan = _it.Children.length;
-          item.rowspan +=_it.rowspan;
-
-          _it.Children.forEach(function(t){
-
-            //if(t.inspection == 2){
-            //  t.inspectionStatus ='合格';
-            //}
-            //t.inspectionStatus = t.Inspection == 2?'合格':'不合格';
-            //t.reinspectionStatus = t.ReInspection == 2?'合格':'不合格';
-          })
-        })
-      })
-      result.data.Areas.forEach(function(item){
-        item.Classification.forEach(function(_it){
-         //   for(var j=0;j<_it.Children.length;i++){
-         //     for(var i=0;i<_it.Children[j].length;i++){
-         //       it.Children[j][i].index = j*i+1;
-         //     }
-         //   }
+          //item.rowspan +=_it.rowspan;
         })
       })
 
       var pics=[];
       vm.pics=[];
-      var details=[];
-      vm.details=[];
+
       result.data.AcceptancePicture && result.data.AcceptancePicture.forEach(function(pic,index){
         pic.index = index+1;
         if(pics.length<4){
@@ -82,23 +63,85 @@
         }
       })
 
-      result.data.Detaileds&&result.data.Detaileds.forEach(function(pic){
-        if(details.length<2){
-          details.push(pic)
-        }else{
-          vm.details.push(details);
-          details = [pic];
-        }
-      })
-      vm.details.push(details)
+      //result.data.Detaileds&&result.data.Detaileds.forEach(function(pic){
+      //  if(details.length<2){
+      //    details.push(pic)
+      //  }else{
+      //    vm.details.push(details);
+      //    details = [pic];
+      //  }
+      //})
+      //vm.details.push(details)
       //vm.details.forEach(function(p){
       //  while(p.length<2){
       //   // p.push({});
       //  }
       //})
       vm.result = result.data;
-      console.log(vm.result)
+      //console.log(vm.result)
     })
+    var details=[];
+    vm.details=[];
+    var array = [
+      [{
+        Describe:'问题描述',
+        Front:[{
+          FileUrl:'app/main/xhsc/images/bg.png'
+        },{
+          FileUrl:'app/main/xhsc/images/bg.png'
+        }],
+        Back:[{
+          FileUrl:'app/main/xhsc/images/bg.png'
+        },{
+          FileUrl:'app/main/xhsc/images/bg.png'
+        },{
+          FileUrl:'app/main/xhsc/images/bg.png'
+        }]
+      }],
+      [{
+        Describe:'问题描述',
+        Front:[{
+          FileUrl:'app/main/xhsc/images/bg.png'
+        },{
+          FileUrl:'app/main/xhsc/images/bg.png'
+        }],
+        Back:[{
+          FileUrl:'app/main/xhsc/images/bg.png'
+        },{
+          FileUrl:'app/main/xhsc/images/bg.png'
+        },{
+          FileUrl:'app/main/xhsc/images/bg.png'
+        }]
+      }],
+      [{
+        Describe:'问题描述',
+        Front:[{
+          FileUrl:'app/main/xhsc/images/bg.png'
+        }],
+        Back:[{
+          FileUrl:'app/main/xhsc/images/bg.png'
+        },{
+          FileUrl:'app/main/xhsc/images/bg.png'
+        },{
+          FileUrl:'app/main/xhsc/images/bg.png'
+        }]
+      }]
+    ]
 
+    array.forEach(function(pic){
+      if(details.length<2){
+        details.push(pic)
+      }else{
+        vm.details.push(details);
+        details = [pic];
+      }
+    })
+    vm.details.push(details)
+    vm.details.forEach(function(p){
+      while(p.length<2){
+       // p.push({});
+      }
+    })
+    console.log(vm.details)
   }
 })();
