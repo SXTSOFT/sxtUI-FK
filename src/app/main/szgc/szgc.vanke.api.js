@@ -8,9 +8,7 @@
 
   /** @ngInject */
   function config(apiProvider){
-    var partner = [
-      'xugt'
-    ],procedureId = '2814510f-0188-4993-a153-559b40d0b5e8';
+    var partner = [],zbPartner=[],procedureId = '2814510f-0188-4993-a153-559b40d0b5e8';
 
     var $http,$q,auth,api;
     angular.injector(['ng']).invoke([
@@ -71,6 +69,9 @@
         }),
         isPartner:http.custom(function(f){
           return (!f && (partner.indexOf(getAuth().current().loginname) != -1)) || getAuth().current().Partner ;
+        }),
+        isZb:http.custom(function(f){
+          return (!f && (zbPartner.indexOf(getAuth().current().loginname) != -1));
         }),
         getPartner:http.custom( function () {
           return getAuth().current().Partner;
