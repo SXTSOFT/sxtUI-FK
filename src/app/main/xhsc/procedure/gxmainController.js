@@ -56,9 +56,7 @@
         }
       ]
     }
-/*    function projectPoints(projectId,sign) {
-      return
-    }*/
+
     function InspectionTask(item) {
       var t = [function () {
         return remote.Project.getInspectionList(item.InspectionId);
@@ -245,6 +243,9 @@
     vm.uploadInfo={}
     vm.uploadInfo.uploading=false;
     vm.upload =function () {
+      if (!api.getNetwork()==0){
+        utils.alert('当前网络处于离线状态,请切换在线');
+      }
       vm.uploadInfo.uploading = true;
       api.upload(function (cfg,item) {
         if(cfg._id=='s_files' && item && item.Url.indexOf('base64')==-1){
@@ -260,6 +261,7 @@
         api.uploadTask(function () {
           return true
         },null);
+        load();
         utils.alert('上传完成');
         vm.uploadInfo.tasks = [];
         vm.uploadInfo.uploading= false;
@@ -273,19 +275,6 @@
         uploaded:function (cfg,row,result) {
           cfg.db.delete(row._id);
         }
-      });
-    }
-
-    vm.loadPack=function(market,item){
-      gxOfflinePack.download(market,function(percent,current,total){
-        item.percent = parseInt(percent *100) +' %';
-        item.current = current;
-        item.total = total;
-      },function(){
-        item.percent = item.current = item.total = null;
-        item.isOffline = true;
-      },function(){
-        utils.alert('下载失败,请检查网络');
       });
     }
 
@@ -306,15 +295,6 @@
 
     };
 
-    remote.Procedure.getInspections(31).then(function(r){
-      vm.Inspections=[];
-      r.data.forEach(function(o){
-        if (o.Sign!=8){
-          vm.Inspections.push(o);
-        }
-      });
-      //vm.Inspections= r.data;
-    });
     vm.MemberType = [];
     remote.Procedure.authorityByUserId().then(function(res){
       console.log('resId',res)
@@ -377,8 +357,6 @@
     }
     vm.exportReport = function(item){
       $state.go('app.xhsc.gx.gxzgreport')
-      //window.open(sxt.app.api+'/api/Office/ExportWord?inspectionId='+item.InspectionId);
-      // window.open('app/main/xhsc/images/bg.png')
     }
     vm.Lookintoys = function(item){
       $state.go('app.xhsc.gx.gxzgreport',{InspectionId:item.InspectionId, acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,projectId:item.ProjectID});
@@ -387,44 +365,38 @@
       console.log(item)
       $state.go('app.xhsc.gx.gxzgdetail',{InspectionId:item.InspectionId,acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,projectId:item.ProjectID});
     }
-    vm.upInspection = function(){
-      api.upload(function(cfg,item){
-        return true;
-      },function(){
 
-      },function(){
-        utils.alert('上传成功',null,function(){
-          $state.go("app.xhsc.gx.gxmain",{index:0});
-        });
-      },function(){
-        utils.alert('上传失败');
-      },{
-        uploaded:function (cfg,row,result) {
-          cfg.db.delete(row._id);
-        }
-      })
-    }
-    remote.Procedure.getZGlist(31).then(function (r) {
-      vm.zglist = [];
-      var list=[]
-      if (angular.isArray(r.data)){
-        r.data.forEach(function(o){
-           // vm.zglist.push(o);
-          list.push(api.setting('zgList:'+ o.RectificationID))
-        });
-        $q.all(list).then(function (rs) {
-          var ix=0;
-          r.data.forEach(function (item) {
+    function load(){
+      remote.Procedure.getZGlist(31).then(function (r) {
+        vm.zglist = [];
+        var list=[]
+        if (angular.isArray(r.data)){
+          r.data.forEach(function(o){
+            // vm.zglist.push(o);
+            list.push(api.setting('zgList:'+ o.RectificationID))
+          });
+          $q.all(list).then(function (rs) {
+            var ix=0;
+            r.data.forEach(function (item) {
               item.isOffline = rs[ix++]?true:false;
               vm.zglist.push(item);
+            });
           });
+        }
+      });
+      remote.Procedure.getInspections(31).then(function(r){
+        vm.Inspections=[];
+        r.data.forEach(function(o){
+          if (o.Sign!=8){
+            vm.Inspections.push(o);
+          }
         });
-      }
-    });
+      });
+    }
+    load();
 
-/*    remote.Procedure.getInspectionInfoBySign(8).then(function (r) {
-      vm.fyList = r.data;
-    });*/
+
+
 
     vm.ys = function(item){
       $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
@@ -435,8 +407,6 @@
       $state.go('app.xhsc.gx.gxzg',{Role:'jl',InspectionID: r.InspectionId,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID})
     };
 
-    //vm.selectedIndex = 2;
-
     vm.zg = function(r){
       $state.go('app.xhsc.gx.gxzg',{Role:'zb',InspectionID: r.InspectionId,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID});
     };
@@ -446,9 +416,7 @@
         {
           acceptanceItemID:r.AcceptanceItemID,
           acceptanceItemName:r.AcceptanceItemName,
-          //name: vm.data.AreaList[0].newName,
           projectId:r.ProjectID,
-          //areaId:vm.data.AreaList[0].AreaID,
           InspectionId:r.InspectionId
         }
       )
