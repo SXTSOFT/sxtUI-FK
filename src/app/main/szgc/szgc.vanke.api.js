@@ -68,7 +68,19 @@
           return result;
         }),
         isPartner:http.custom(function(f){
-          return (!f && (partner.indexOf(getAuth().current().loginname) != -1)) || getAuth().current().Partner ;
+          var me = this;
+          var r = me.getRoleId();
+          return r == 'zb' || r == 'jl' || r=='3rd';
+          //return (!f && (partner.indexOf(getAuth().current().loginname) != -1)) || getAuth().current().Partner ;
+        }),
+        getRoleId: http.custom(function () {
+          var me = this,u = getAuth().current();
+          if (u.Partner_types.indexOf('supervision') != -1) return 'jl';
+          if (u.Partner_types.indexOf('construction') != -1) return 'zb';
+
+          if (u.Id == '56779bf59e10dd61507977c8') return '3rd';
+
+          return u.Partner && u.Partner != '' ? 'jl' : 'eg';
         }),
         isZb:http.custom(function(f){
           return (!f && (zbPartner.indexOf(getAuth().current().loginname) != -1));

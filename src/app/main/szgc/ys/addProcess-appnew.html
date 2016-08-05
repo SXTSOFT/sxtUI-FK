@@ -19,17 +19,17 @@
         </md-list-item>
         <md-subheader class="md-no-sticky">工序</md-subheader>
         <md-list-item>
-          <p>工序{{data.procedureName}}</p>
+          <p>{{data.procedureName}}</p>
         </md-list-item>
-        <md-subheader class="md-no-sticky">监理单位</md-subheader>
-        <md-list-item layout="row">
+        <md-subheader ng-hide="roleId=='3rd'||roleId=='zb'" class="md-no-sticky">监理单位</md-subheader>
+        <md-list-item ng-hide="roleId=='3rd'" layout="row">
           <sxt-select flex name="jldw" ng-disabled="!data.isFirst" required ng-model="data.curHistory.SupervisorCompanyId" name-value="data.curHistory.SupervisorCompanyName" sources="data.construction" text-field="UnitName" value-field="UnitId"></sxt-select>
         </md-list-item>
         <md-subheader class="md-no-sticky">验收人</md-subheader>
         <md-list-item layout="row">
           <sxt-select flex name="ysr" required ng-model="data.curStep.CheckWorker" obj-value="data.submitUser" name-value="data.curStep.CheckWorkerName" sources="data.submitUsers" text-field="name" value-field="id"></sxt-select>
         </md-list-item>
-        <div ng-repeat="batch in data.batchs">
+        <div ng-hide="roleId=='3rd'" ng-repeat="batch in data.batchs">
 
           <md-subheader class="md-no-sticky">{{$index==0?'验收批':''}} <!--<button ng-if="$index==0 && data.isFirst" type="button" ng-click="addBatch()" class="btn btn-white btn-xs"><i class="fa fa-plus"></i></button>--></md-subheader>
           <div class="col-sm-6 col-lg-7">
@@ -42,17 +42,26 @@
           </div>
 
         </div>
-        <md-subheader class="md-no-sticky">总承包</md-subheader>
-        <md-list-item layout="row">
+        <md-subheader ng-hide="roleId=='3rd'" class="md-no-sticky">总承包</md-subheader>
+        <md-list-item ng-hide="roleId=='3rd'" layout="row">
           <sxt-select flex required name="zid"  ng-model="data.curHistory.ParentCompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.ParentCompanyName" sources="data.supervision1" text-field="UnitName" value-field="UnitId"></sxt-select>
         </md-list-item>
-        <md-subheader class="md-no-sticky">专业承包</md-subheader>
+        <md-subheader ng-hide="roleId=='3rd'" class="md-no-sticky">专业承包</md-subheader>
         <md-list-item layout="row">
-          <sxt-select flex required name="zid"  ng-model="data.curHistory.CompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.CompanyName" sources="data.supervision" text-field="UnitName" value-field="UnitId"></sxt-select>
+          <sxt-select ng-hide="roleId=='3rd'" flex required name="zid"  ng-model="data.curHistory.CompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.CompanyName" sources="data.supervision" text-field="UnitName" value-field="UnitId"></sxt-select>
         </md-list-item>
-        <md-subheader class="md-no-sticky">施工班组</md-subheader>
-        <md-list-item layout="row">
+        <md-subheader ng-hide="roleId=='3rd'" class="md-no-sticky">施工班组</md-subheader>
+        <md-list-item ng-hide="roleId=='3rd'" layout="row">
           <sxt-select flex required  ng-model="data.curHistory.GrpId" ng-disabled="!data.isFirst" name="gid" name-value="data.curHistory.GrpName" sources="data.groups" text-field="name" value-field="id"></sxt-select>
+        </md-list-item>
+        <md-subheader ng-show="roleId=='jl'" class="md-no-sticky">总包已验</md-subheader>
+        <md-list-item ng-show="roleId=='jl'" layout="row">
+          <md-checkbox ng-disabled="!data.isFirst" flex="none" ng-model="data.curHistory.ZbChecked" aria-label="总包已验">
+
+
+
+          </md-checkbox>
+          <p flex>如果未选择总包已验，提交后总包将不允许录入验收记录</p>
         </md-list-item>
       </md-list>
 

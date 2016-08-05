@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Created by emma on 2016/5/25.
  */
 /**
@@ -50,6 +50,7 @@
     var user=auth.current(),
       initIng = true;
     $scope.isPartner = api.szgc.vanke.isPartner();
+    $scope.roleId = api.szgc.vanke.getRoleId();
     $scope.data = {
       pics: [],
       pics2:[],
@@ -62,7 +63,8 @@
         BatchNo: 1,
         Count: 1,
         WorkRatio: 100,
-        CheckNo: 1
+        CheckNo: 1,
+        ZbChecked:true
       },
       batchs: [],
       curStep: {},
@@ -145,10 +147,10 @@
 
 
 
-    if (!$scope.isPartner) {
+    if (!$scope.isPartner || $scope.roleId=='zb') {
       $scope.data.submitUsers = [{
         id: user.Id,
-        type: api.szgc.vanke.isPartner(1) ? 'jl' : 'eg',
+        type: api.szgc.vanke.getRoleId(),
         name: user.RealName + '(本人)'
       }];
       $scope.data.curStep.CheckWorker = $scope.data.submitUsers[0].id;
@@ -173,7 +175,7 @@
             b.Id = null;
             b.BatchNo = parseInt(result.data.Rows[0].BatchNo) + 1;//第几次验收批
             b.Remark = '';//描述
-            b.Count = 1;//第几次验收?
+            b.Count = 1;//第几次验收
             b.JLCount = 0;
           }
           else
@@ -189,6 +191,9 @@
       var batch = result.data,
 
         isB = $scope.data.isB = !!batch;
+                if (isB && $scope.roleId == 'jl' && !batch.SupervisorCompanyId) { //如果监理在总包上录入，且总包没有选择监理
+                    batch.SupervisorCompanyId = user.Partner;
+                }
       var gp = batch? {
         id: batch.GrpId,
         name: batch.GrpName
@@ -233,14 +238,20 @@
           unitType: 3
         }),
         isB&&!flag ? $q(function (resolve) {
-          resolve({
-            data: {
-              Rows: [{
-                UnitId: batch.SupervisorCompanyId,
-                UnitName: batch.SupervisorCompanyName
-              }]
-            }
-          });
+          if ($scope.roleId == 'zb') {
+            resolve({
+              data: {Rows: []}
+            });
+          } else {
+            resolve({
+              data: {
+                Rows: [{
+                  UnitId: batch.SupervisorCompanyId,
+                  UnitName: batch.SupervisorCompanyName
+                }]
+              }
+            });
+          }
         }) : api.szgc.vanke.isPartner(1) ? api.szgc.vanke.getPermissin() : api.szgc.ProjectSettingsSevice.query({
           treeId: idtree,
           unitType: 1,
@@ -285,8 +296,19 @@
         })
 
         $scope.data.supervision = sm0;
-        if (isB && $scope.data.supervision.length && !batch.CompanyId)
-          batch.CompanyId = $scope.data.supervision[0].UnitId;
+                    //console.log('$scope.data.supervision',$scope.data.supervision)
+        if ($scope.roleId == 'zb') {
+          var sup = $scope.data.supervision.find(function (it) {
+            return it.UnitId == user.Partner
+          });
+          if (sup) {
+            batch.CompanyId = user.Partner;
+          }
+        }
+        else {
+          if (isB && $scope.data.supervision.length && !batch.CompanyId)
+            batch.CompanyId = $scope.data.supervision[0].UnitId;
+        }
         if (isB && gp) {
           $scope.data.curHistory.GrpId = batch.GrpId;
           $scope.data.groups = [gp];
@@ -309,8 +331,11 @@
         if (isB && $scope.data.supervision1.length && !batch.ParentCompanyId) {
           batch.ParentCompanyId = $scope.data.supervision1[0].UnitId;
         }
+        if ($scope.roleId == 'zb') {
+            batch.ParentCompanyId = user.Partner;
+        }
         if (api.szgc.vanke.isPartner(1)) {
-          batch.Count = (batch.JLCount || 0) + 1;
+          batch.Count = ($scope.roleId == 'zb' ? (batch.ZbCount || 0) : (batch.JLCount || 0)) + 1;
           var fd = results[3].data.Rows.find(function(it) {
             return it.UnitId == api.szgc.vanke.getPartner()
           });
@@ -413,7 +438,7 @@
                 }
               });
             }
-            if ($scope.targets.yb.length == 6) {
+            if ($scope.targets.yb.length == 7) {
               $scope.targets.yb.push({
                 TargetName: '--',
                 DeviationLimit: '≥85',
@@ -756,7 +781,7 @@
 
       if ($scope.data.pics2.length == 0) {
         utils.alert('请上传验收照片');
-        return;
+        //return;
       }
       utils.confirm(null, '确认向验收批:' + $scope.data.curHistory.BatchNo + ' 添加新记录吗?').then(function () {
         $scope._save(addForm);
@@ -772,7 +797,13 @@
         step = data.curStep,
         batch = data.curHistory;
 
-      step.RoleId = data.submitUser.type;
+      if (!batch.GrpId && $scope.roleId != '3rd') {
+        utils.alert('请选择班组', function () {
+          $scope.isSaveing = false;
+          return;
+        });
+      }
+      step.RoleId = api.szgc.vanke.getRoleId();// data.submitUser.type;
       step.CheckNo = batch.Count;
       step.MainResult = $scope.zkIsOk() ? 1 : 0;
       step.OtherResult = $scope.ybIsOk() ? 1 : 0;
@@ -807,7 +838,7 @@
           item.RegionNameTree = batch.RegionNameTree;
           item.RegionName = batch.RegionName;
           item.SupervisorCompanyId = batch.SupervisorCompanyId;
-          item.SupervisorCompanyName = batch.Count.SupervisorCompanyName;
+          item.SupervisorCompanyName = batch.SupervisorCompanyName;
           item.ParentCompanyName = batch.ParentCompanyName;
           item.ParentCompanyId = batch.ParentCompanyId;
           item.CompanyId = batch.CompanyId;
@@ -817,11 +848,7 @@
         }
       });
 
-      if(!data.batchs[0]||!data.batchs[0].GrpId){
-        utils.alert('请选择班组')
-        $scope.isSaveing = false;
-        return;
-      }
+
 
       var targets = toSaveTargets(step);
 
@@ -831,7 +858,14 @@
         return;
       }
 
-      //console.log('CheckData', targets)
+     /* console.log('CheckData', {
+        Id:sxt.uuid(),
+        Batch: data.batchs,
+        Step: step,
+        CheckData: targets,
+        CheckDataValue:$scope.CheckDataValue
+      });
+      return;*/
       api.szgc.addProcessService.postCheckData({
         Id:sxt.uuid(),
         Batch: data.batchs,
@@ -882,7 +916,7 @@
 
     }
 
-    
+
     $scope.ybIsOk = function() {
       for (var i = 0, l = $scope.targets.yb.length; i < l; i++) {
         var yb = $scope.targets.yb[i];

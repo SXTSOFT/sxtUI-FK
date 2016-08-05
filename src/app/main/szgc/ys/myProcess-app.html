@@ -52,12 +52,14 @@
               <tbody>
               <tr ng-repeat="item in project.rows">
                 <td class="name">{{item.$name}}</td>
-                <td class="position">{{item.stateName}}</td>
+                <td class="position">{{roleId=='zb'?item.MinPassRatio0 : item.stateName}}</td>
                 <td class="office" ng-if="!hasTasks(item)">
-                  <a class="btn btn-white btn-xs" ui-sref="app.szgc.ys.addnew({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureTypeId:project.procedureTypeId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})" ng-if="isPartner">{{ item.checkedCount==0?'录入': '复验'}}</a>
-                  <a class="btn btn-white btn-xs" ui-sref="app.szgc.ys.addnew({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureTypeId:project.procedureTypeId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})" ng-if="!isPartner && item.checkedCount && (!item.MinPassRatio1 || item.MinPassRatio1<80)" >{{ item.CheckDate1?'复验': '抽验'}}</a>
-                  <a class="btn btn-white btn-xs" ui-sref="app.szgc.report.viewBath.view({bathid:item.BatchRelationId})" ng-if="!isPartner && item.checkedCount && item.MinPassRatio1 && item.MinPassRatio1>=80" title="查看"></a>
-                  <a class="btn btn-white btn-xs" ui-sref="app.szgc.ys.addnew({projectid:item.$id,name:item.$name,batchId:'new',procedureTypeId:project.procedureTypeId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree,flag:true,project_item_id:item.project_item_id})"ng-if="isPartner && item.checkedCount" >新增验收批</a>
+                  <a class="btn btn-white btn-xs" ui-sref="app.szgc.ys.addnew({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureTypeId:project.procedureTypeId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})"  ng-if="roleId!='3rd' && item.ZbChecked!==false && isPartner">{{ (roleId=='zb' && !item.ZbCount)||(roleId=='jl' && !item.JLCount)?'录入': '复验'}}</a>
+                  <a class="btn btn-white btn-xs" ui-sref="app.szgc.ys.addnew({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureTypeId:project.procedureTypeId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})" ng-if="roleId!='3rd' && !isPartner && item.checkedCount && (!item.MinPassRatio1 || item.MinPassRatio1<80) " >{{ item.CheckDate1?'复验': '抽验'}}</a>
+                  <a class="btn btn-white btn-xs" ui-sref="app.szgc.report.viewBath.view({bathid:item.BatchRelationId})" ng-if="roleId!='3rd' && item.ZbChecked!==false && item.checkedCount" title="查看"></a>
+                  <a class="btn btn-white btn-xs" ui-sref="app.szgc.ys.addnew({projectid:item.$id,name:item.$name,batchId:'new',procedureTypeId:project.procedureTypeId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree,flag:true,project_item_id:item.project_item_id})" ng-if="roleId!='3rd' && item.ZbChecked!==false && isPartner && !((roleId=='zb' && !item.ZbCount)||(roleId=='jl' && !item.JLCount))" >新增验收批</a>
+                  <span ng-if="item.ZbChecked===false">已设为未验收</span>
+                  <a class="btn btn-white btn-xs" ui-sref="app.szgc.ys.addnew({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId?item.BatchRelationId:'',procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree,procedureTypeId:project.procedureTypeId})" ng-if="roleId=='3rd'">抽验</a>
                 </td>
                 <td ng-if="hasTasks(item)">已验未传</td>
               </tr>
@@ -65,6 +67,7 @@
             </table>
           </div>
         </div>
+
       </md-content>
       <div ng-show="is('app.szgc.ys')" style="position: absolute; top:0px; right:0px;z-index:99;">
         <md-button class="md-fab md-mini" ng-show="!vm.searBarHide && vm.isJdBack()" ng-click="vm.backJdSelect()">

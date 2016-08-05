@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Created by zhangzhaoyong on 16/2/1.
  */
 /**
@@ -41,6 +41,7 @@
 
 
     $scope.isPartner = api.szgc.vanke.isPartner();
+    $scope.roleId = api.szgc.vanke.getRoleId();
     $scope.project = {
       isMore: true,
       states: [{
@@ -91,7 +92,8 @@
         if (!$scope.project.procedureId || !$scope.project.data || !$scope.project.data.items) return;
         if (reload === true || ($scope.project.data && !$scope.project.data.fd)) {
           $scope.project.data.fd = true;
-          api.szgc.CheckStepService.getAll($scope.project.procedureId, {
+          api.szgc.addProcessService.getBatchRelation({
+            procedureId:$scope.project.procedureId,
             regionIdTree: $scope.project.idTree,
             Status: 4
           }).then(function(result) {
@@ -110,54 +112,53 @@
                 results.push(item);
               }
 
-              result.data.Rows.forEach(function(it) {
-                var qd = item;
-                if (it.RegionId == qd.$id) {
-                  if (!qd.BatchNo)
-                    qd.BatchNo = it.BatchNo;
-                  else if (qd.BatchNo != it.BatchNo) {
-                    qd = results.find(function(k) {
-                      return k.$id == it.RegionId && k.BatchNo == it.BatchNo
-                    });
-                    if (!qd) {
-                      qd = utils.copy(item2);
-                      qd.BatchRelationId = it.BatchRelationId;
+              if (result.data.Rows) {
+                result.data.Rows.forEach(function (it) {
+                  var qd = item;
+                  if (it.RegionId == qd.$id) {
+                    if (!qd.BatchNo)
                       qd.BatchNo = it.BatchNo;
-                      qd.state = 0;
-                      qd.Remark = it.Remark;
-                      qd.checkedCount = 0;
-                      qd.MinPassRatio = qd.CheckDate = qd.CheckWorkerName = null;
-                      results.push(qd);
+                    else if (qd.BatchNo != it.BatchNo) {
+                      qd = results.find(function (k) {
+                        return k.$id == it.RegionId && k.BatchNo == it.BatchNo
+                      });
+                      if (!qd) {
+                        qd = utils.copy(item2);
+                        qd.BatchRelationId = it.BatchRelationId;
+                        qd.BatchNo = it.BatchNo;
+                        qd.state = 0;
+                        qd.Remark = it.Remark;
+                        qd.checkedCount = 0;
+                        qd.MinPassRatio = qd.CheckDate = qd.CheckWorkerName = null;
+                        results.push(qd);
+                      }
                     }
-                  }
-                  if (!it.CheckNo) {
+                    //if (!it.CheckNo) {
 
-                  } else if (it.CheckNo == 1) {
-                    qd.state = it.AllResult ? 2 : 1;
-                  } else {
-                    qd.state = it.AllResult ? 4 : 3;
-                  }
-
-
-                  if (it.CheckNo)
-                    qd.checkedCount++;
-                  if (it.RoleId == 'jl') {
-                    qd.BatchRelationId = it.BatchRelationId;
+                    //} else if (it.CheckNo == 1) {
+                    //    qd.state = it.AllResult ? 2 : 1;
+                    //} else {
+                    //    qd.state = it.AllResult ? 4 : 3;
+                    //}
+                    qd.state = it.ECCheckResult;
+                    qd.checkedCount = it.JLCount + it.WKCount + it.ZbCount;
+                    qd.MinPassRatio0 = it.ZbLast || it.ZbFirst;
+                    qd.CheckDate0 = it.ZbDate;
+                    qd.BatchRelationId = it.Id;
                     qd.Remark = it.Remark;
-                    qd.MinPassRatio = it.MinPassRatio;
-                    qd.CheckDate = it.CheckDate;
-                    qd.CheckWorkerName = it.CheckWorkerName;
-                  } else if (it.CheckWorkerName) {
-                    qd.MinPassRatio1 = it.MinPassRatio;
-                    qd.CheckDate1 = it.CheckDate;
-                    qd.CheckWorkerName1 = it.CheckWorkerName;
+                    qd.MinPassRatio = it.JLLast || it.JLFirst;
+                    qd.CheckDate = it.JLDate;
+                    qd.CheckWorkerName = it.JLUser;
+                    qd.ZbCount = it.ZbCount;
+                    qd.JLCount = it.JLCount;
+                    qd.WKCount = it.WKCount;
+                    qd.MinPassRatio1 = it.WKLast;
+                    qd.CheckDate1 = it.VKDate;
+                    qd.CheckWorkerName1 = it.WKLastUser;
+                    qd.ZbChecked = $scope.roleId == 'zb' ? it.ZbChecked : true;
                   }
-                }
-              });
-
-              //item.
-
-
+                });
+              }
             });
 
             results.forEach(function(item) {
@@ -174,26 +175,28 @@
             $scope.project.filter();
           });
 
-        }
-        else if ($scope.project.data.items && $scope.project.data.results) {
+            } else if ($scope.project.data.items) {
           //仅通过states过虑
           var rows = [];
 
           $scope.project.states.forEach(function(item) {
             item.c = 0;
           });
+                if ($scope.project.data.results) {
           $scope.project.data.results.forEach(function(item) {
             if ($scope.project.states.find(function(it) {
                 if (it.id == item.state || it.id == -1) {
                   it.c++;
                   item.color = it.color;
-                  item.stateName = it.title;
+                  item.stateName = it.title + ((item.state == 1 || item.state == 3) && item.MinPassRatio && item.MinPassRatio >= 80 ? '(偏差)' : '');
                 }
                 return it.selected && it.id == item.state
               })) {
               rows.push(item);
             }
           });
+                }
+
           $scope.project.rows = rows;
           vm.loading = false;
         }
