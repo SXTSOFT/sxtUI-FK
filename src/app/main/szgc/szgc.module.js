@@ -147,6 +147,17 @@
           }
         }
       })
+      .state('app.szgc.yhyd.records',{
+        noBack:true,
+        url   :'/records',
+        //url:'/home/yhyd/{regionId}/{regionType}/{roomType}/{procedureId}/{regionName}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/szgc/home/link_records.html',
+            controller:'SzgcyhydRecordsController as vm'
+          }
+        }
+      })
       .state('app.szgc.report', {
         noBack:true,
         title    :'报表',
@@ -194,6 +205,7 @@
         templateUrl: 'app/main/szgc/report/ybgcyhyd.html'
       })
       .state('app.szgc.report.viewBath.view', {
+        noBack:true,
         title :'查看详细',
         url: '/{bathid}',
         controller: 'viewBathDetailController as vm',

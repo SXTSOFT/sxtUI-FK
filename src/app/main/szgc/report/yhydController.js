@@ -119,74 +119,78 @@
       var n = parseInt(/[-]?\d+/.exec(str));
       return n;
     };
-    $scope.$watch('vm.project.type', function () {
-      $timeout(function () {
-        if (vm.project.type == '8') {
-          vm.project.loading = true;
-          $q.all([
-            api.szgc.vanke.rooms({
-              building_id: vm.project.idTree.split('>')[2],
-              page_size: 0,
-              page_number: 1
-            }, false),
-            api.szgc.GetFileReportNum.getFileReportData({
-              startrowIndex: 0,
-              maximumRows: 100000,
-              regionTreeId: vm.project.idTree
-            }),
-            api.szgc.ProcProBatchRelationService.getReport(vm.project.idTree)
-          ]).then(function (result) {
-            vm.project.loading = false;
-            result[0].data.data.sort(function (i1, i2) {
-              var f1 = getNumName(i1.floor),
-                f2 = getNumName(i2.floor);
+    vm.search =function () {
+      vm.searBarHide=true;
+      if (vm.project.type == '8') {
+        vm.project.loading = true;
+        var building_id = vm.project.idTree.split('>')[2];
+        $q.all([
+          api.szgc.vanke.rooms({
+            building_id: building_id,
+            page_size: 0,
+            page_number: 1
+          }, false),
+          api.szgc.GetFileReportNum.getFileReportData({
+            startrowIndex: 0,
+            maximumRows: 100000,
+            regionTreeId: vm.project.idTree
+          }),
+          api.szgc.ProcProBatchRelationService.getReport(vm.project.idTree, 8),
+          api.szgc.ProcProBatchRelationService.getReport(vm.project.idTree, 32)
+        ]).then(function (result) {
+          vm.project.loading = false;
+          result[0].data.data.sort(function (i1, i2) {
+            var f1 = getNumName(i1.floor),
+              f2 = getNumName(i2.floor);
 
-              if (i1.floor == i2.floor || (isNaN(f1) && isNaN(f2)) || f1 == f2) {
+            if (i1.floor == i2.floor || (isNaN(f1) && isNaN(f2)) || f1 == f2) {
 
-                var n1 = getNumName(i1.name),
-                  n2 = getNumName(i2.name);
-                if (!isNaN(n1) && !isNaN(n2))
-                  return n1 - n2;
-                else if ((isNaN(n1) && !isNaN(n2)))
-                  return 1;
-                else if ((!isNaN(n1) && isNaN(n2)))
-                  return -1;
-                else
-                  return i1.name.localeCompare(i2.name);
-              }
-              else {
-                if (!isNaN(f1) && !isNaN(f2))
-                  return f1 - f2;
-                else if ((isNaN(f1) && !isNaN(f2)))
-                  return 1;
-                else if ((!isNaN(f1) && isNaN(f2)))
-                  return -1;
-                else
-                  return f1.name.localeCompare(f2.name);
-              }
-            });
-            var rows = [];
-            result[0].data.data.forEach(function (row) {
-              var yb = result[1].data.Rows.find(function (d) {
-                return d.RegionTreeId.indexOf(row.room_id) != -1;
-              });
-              var ys = result[2].data.Rows.find(function (d) {
-                return d.RegionIdTree.indexOf(row.room_id) != -1;
-              });
-              row.ybNum = yb ? yb.FileNum : 0;
-              row.ysNum = ys ? ys.YsNum : 0;
-              row.hg = ys ? ys.MainResult == 0 ? false : true : true;
-              row.RegionIdTree = yb ? yb.RegionTreeId.replace('sub-', '') : ys ? ys.RegionIdTree : ''
-              //if (row.ybNum != 0 || row.ysNum != 0) {
-               rows.push(row);
-              //}
-            });
-            vm.project.rows = rows;
-            vm.project.loading = false;
+              var n1 = getNumName(i1.name),
+                n2 = getNumName(i2.name);
+              if (!isNaN(n1) && !isNaN(n2))
+                return n1 - n2;
+              else if ((isNaN(n1) && !isNaN(n2)))
+                return 1;
+              else if ((!isNaN(n1) && isNaN(n2)))
+                return -1;
+              else
+                return i1.name.localeCompare(i2.name);
+            }
+            else {
+              if (!isNaN(f1) && !isNaN(f2))
+                return f1 - f2;
+              else if ((isNaN(f1) && !isNaN(f2)))
+                return 1;
+              else if ((!isNaN(f1) && isNaN(f2)))
+                return -1;
+              else
+                return f1.name.localeCompare(f2.name);
+            }
           });
-        }
-      },500)
-    });
+          var rows = [];
+          result[0].data.data.forEach(function (row) {
+            var yb = result[1].data.Rows.find(function (d) {
+              return d.RegionTreeId.indexOf(row.room_id) != -1;
+            });
+            var ys = result[2].data.Rows.find(function (d) {
+              return d.RegionIdTree.indexOf('-'+row.floor)!=-1;
+            });
+            var ys1 = result[3].data.Rows.find(function (d) {
+              return d.RegionIdTree.indexOf(row.room_id) != -1;
+            });
+            row.ybNum = yb ? yb.FileNum : 0;
+            row.ysNum = (ys ? ys.YsNum : 0) + (ys1 ? ys1.YsNum : 0);
+            row.hg = true;
+            row.RegionIdTree = vm.project.idTree+'>'+building_id+'-'+row.floor
+            //if (row.ybNum != 0 || row.ysNum != 0) {
+            rows.push(row);
+            //}
+          });
+          vm.project.rows = rows;
+          vm.project.loading = false;
+        });
+      }
+    }
 
   }
 })();

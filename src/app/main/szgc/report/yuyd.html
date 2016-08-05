@@ -4,24 +4,11 @@
     </sxt-projects-jd>
     <div class="md-padding" layout="row">
 
-      <md-button ng-disabled="vm.project.type<8" type="submit" flex ng-click="vm.searBarHide=true"  class="md-raised md-primary"> 确定  </md-button>
+      <md-button ng-disabled="vm.project.type<8" type="submit" flex  ng-click="vm.search()" class="md-raised md-primary"> 确定  </md-button>
     </div></div>
 </md-content>
 <md-content flex ng-show="vm.searBarHide" layout="column" id="ybgc">
-  <!--<md-virtual-repeat-container flex id="vertical-container" style="height: 800px;">-->
-  <!--<div layout="row" style="border-bottom: 1px solid #d8d8d8">-->
-  <!--<span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: inline-block;text-align: center" flex>部位</span>-->
-  <!--<span style="width: 100px;display: inline-block;text-align: center">拍摄时间</span>-->
-  <!--<span style="width: 100px;display: inline-block;text-align: center">照片数量</span>-->
-  <!--</div>-->
-  <!--<div md-virtual-repeat="item in vm.rows|orderBy:vm.CreateTime:reverse" class="repeated-item" flex>-->
-  <!--<div layout="row" style="border-bottom: 1px solid #d8d8d8" ng-click="vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionTreeId,type:item.type})">-->
-  <!--<span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: inline-block; padding-left:5px; " flex>{{item.full_name.replace(vm.project.projectName,'')}}</span>-->
-  <!--<span style="width: 100px;display: inline-block;text-align: center">{{item.CreateTime}}</span>-->
-  <!--<span style="width: 100px;display: inline-block;text-align: center">{{item.FileNum}}</span>-->
-  <!--</div>-->
-  <!--</div>-->
-  <!--</md-virtual-repeat-container>-->
+
 
   <div flex="none" ng-init="vm.showSm =false">
       <div layout="column" style="padding: 5px 10px;border-bottom: 1px solid #d8d8d8;">
@@ -47,7 +34,8 @@
   </div>
 <md-content flex layout="column">
     <span flex ng-if="vm.project.rows.length==0 && !vm.project.loading" style="text-align: center;display: block;"> 暂无数据</span>
-   <span flex style="text-align: center;display: block;" ng-if="vm.project.loading&&vm.project.rows.length!=0">正在加载数据......</span>
+  <md-progress-circular md-mode="indeterminate" ng-if="vm.project.loading&&vm.project.rows.length!=0"></md-progress-circular>
+
     <md-list layout-padding ng-if="!vm.project.loading">
       <md-list-item>
         <div class="yhyd" layout="row"  layout-wrap>
