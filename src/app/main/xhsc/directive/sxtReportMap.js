@@ -37,7 +37,7 @@
           });
           fg = $window.mapboxgl.Plan({
             disableInspect:scope.disableInspect,
-            disableDrag:scope.disableDrag,
+            disableDrag:true,
             onChangeMode:function (mode,op,cb) {
               if(mode && !op){
                 scope.item = {
@@ -116,20 +116,20 @@
                   }
                   map.loadSvgXml(result2.data.DrawingContent);
                   map.map.addControl(fg);
-                  var btn = $('<div class="mapboxgl-ctrl-group mapboxgl-ctrl"><button class="mapboxgl-ctrl-icon links"  title="其它图纸"></button></div>');
-                  btn.click(function () {
-                    var mapList = [];
-                    result.data.forEach(function (item) {
-                      if(item.RegionId == scope.regionId && item.DrawingID!=imgId.DrawingID && !mapList.find(function (f) {
-                          return f.DrawingID==item.DrawingID
-                        })){
-                        mapList.push(item);
-                      }
-                    });
-
-                    xhUtils.openLinks(mapList);
-                  });
-                  element.find('.mapboxgl-ctrl-bottom-left').append(btn);
+                  //var btn = $('<div class="mapboxgl-ctrl-group mapboxgl-ctrl"><button class="mapboxgl-ctrl-icon links"  title="其它图纸"></button></div>');
+                  //btn.click(function () {
+                  //  var mapList = [];
+                  //  result.data.forEach(function (item) {
+                  //    if(item.RegionId == scope.regionId && item.DrawingID!=imgId.DrawingID && !mapList.find(function (f) {
+                  //        return f.DrawingID==item.DrawingID
+                  //      })){
+                  //      mapList.push(item);
+                  //    }
+                  //  });
+                  //
+                  //  xhUtils.openLinks(mapList);
+                  //});
+                  //element.find('.mapboxgl-ctrl-bottom-left').append(btn);
                 })
               }
               else{

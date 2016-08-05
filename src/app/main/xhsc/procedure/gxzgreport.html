@@ -107,7 +107,7 @@
                 </td>
               </tr>
             </tbody>
-            <tbody  ng-repeat="item in items.Classification">
+            <tbody  ng-repeat="item in items.Classification" ng-if="item.Children.length">
               <tr ng-repeat="i in item.Children">
                 <td  width="12.5%">{{i.ProblemSortName}}</td>
                 <td rowspan="{{item.rowspan}}" ng-if="$index == 0"  width="12.5%">{{item.ClassificationName}}</td>
@@ -155,12 +155,13 @@
       </tr>
       <tr ng-repeat="area in vm.Regions">
         <td colspan="4" width="50%">
-            <div style="height:500px;" class="mapcheck" layout="column" flex inspection-id="vm.Inspection" sxt-report-map="vm.rectificationIDs" ct="vm.info" procedure="vm.acceptanceItemId" disable-drag region-id="area.AreaId">
+            <div style="height:500px;" class="mapcheck" layout="column" flex inspection-id="vm.Inspection" disable-inspect="true" sxt-report-map="vm.rectificationIDs" ct="vm.info" procedure="vm.acceptanceItemId" disable-drag region-id="area.AreaId">
               <div flex layout="row" layout-align="center center" ng-if="vm.info.loading"><md-progress-circular md-mode="indeterminate" ></md-progress-circular></div>
             </div>
         </td>
         <td colspan="4"><p>问题描述：</p>
-          <p ng-repeat="problem in area.plist" style="word-break: break-all;">{{problem.ProblemDescription}}</p>
+          <p ng-repeat="problem in area.Problems" style="word-break: break-all;">{{problem.ProblemDescription}}</p>
+          <p ng-if="!area.Problems">合格</p>
         </td>
       </tr>
 
@@ -195,7 +196,7 @@
                   </tr>
                   <tr>
                     <td colspan="2">
-                      {{detail.Describe}}
+                      问题描述：{{detail.Describe}}
                     </td>
                   </tr>
                   </tbody>
