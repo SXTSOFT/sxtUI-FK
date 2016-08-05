@@ -149,6 +149,7 @@
       });
 
       vm.scData = newD;
+      console.log(vm.scData)
     });
   }
 })();
