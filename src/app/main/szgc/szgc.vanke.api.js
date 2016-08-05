@@ -52,7 +52,7 @@
           _id:'v_profile',
           idField:'Id',
           dataType:3,
-          mode:2,
+          mode:0,
           raiseError:true,
           filter:function () {
             return true;

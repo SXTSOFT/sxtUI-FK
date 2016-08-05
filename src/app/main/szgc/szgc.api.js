@@ -385,9 +385,13 @@
         }).bind(function (id) {
           return $http.get('/api/ProjectEx/'+id);
         }),
-        query: function (status) {
+        query:  $http.db({
+          _id:'s_projectEx',
+          idField:'ProjectId',
+          dataType:5
+        }).bind(function (status) {
           return $http.get('/api/ProjectEx?status=' + status);
-        },
+        }),
         queryPno: function (pno) {
           return $http.get('/api/ProjectEx?pno=' + pno);
         },
