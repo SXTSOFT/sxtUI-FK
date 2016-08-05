@@ -28,6 +28,8 @@
       RecordType:1,
       RelationID:$stateParams.db//'a55164d5c46f454ca8df799f520bbba8'//
     }).then(function (result){
+
+      console.log(result)
       var newD = [];
       vm.checkUser = result.data.checkUser;
 
@@ -176,15 +178,25 @@
           //item.allDot = item.QualifiedPointNum + item.UnqualifiedPointNum;
          // item.QualifiedRate
           item.List.forEach(function (m) {
-
-            m.MeasureValue.forEach(function(r){
-              var fi= m.MeasureStatus.find(function(_r){
-                return _r.Role == r.Role;
-              })
-              if(fi){
-                r.Status = fi.Value;
+            //console.log(m.ExtendedField1s[0].Value.indexOf(','))
+            var exist = 0;
+            m.ExtendedField1.forEach(function(fileds){
+              var i = fileds.Value.indexOf(',')
+              if(i>0){
+                exist = 1;
               }
             })
+            if(!exist){
+              m.MeasureValue.forEach(function(r){
+                var fi= m.MeasureStatus.find(function(_r){
+                  return _r.Role == r.Role;
+                })
+                if(fi){
+                  r.Status = fi.Value;
+                }
+              })
+            }
+
             var p = ps.find(function (p1) {
               return p1.ParentMeasureValueID == m.ParentMeasureValueID;
             });
@@ -195,22 +207,36 @@
               };
               ps.push(p);
             }
-            if(m.ExtendedField1 && m.ExtendedField1.indexOf(',')){
-              var ms = m.ExtendedField1.split(',');
-              ms.forEach(function (v) {
-                p.ms.push({
-                  MeasureStatus:m.MeasureStatus,
-                  MeasureValue:v,
-                  MeasureValueId:m.MeasureValueId
-                });
-              });
-              p.ParentMeasureValueID = m.MeasureValueId;
+
+            if(exist){
+              //var ms = m.ExtendedField1.split(',');
+              //ms.forEach(function (v) {
+              //  p.ms.push({
+              //    MeasureStatus:m.MeasureStatus,
+              //    MeasureValue:v,
+              //    MeasureValueId:m.MeasureValueId
+              //  });
+              //});
+              //p.ParentMeasureValueID = m.MeasureValueId;
+              m.ExtendedField1.forEach(function(fs,index){
+                if(fs.Value.indexOf(',')>0){
+                  var ms = fs.Value.split(',');
+                  ms.forEach(function (v) {
+                    p.ms.push({
+                      MeasureStatus:m.MeasureStatus[index].Value,
+                      MeasureValue:[{Role:fs.Role,Value:v}],
+                      MeasureValueId:m.MeasureValueId[index].Value
+                    });
+                  });
+                  p.ParentMeasureValueID = m.MeasureValueId;
+                }
+              })
             }
             else {
               p.ms.push(m);
               if (item.IndexName.indexOf('尺寸一致性') != -1) {
-                m.MeasureValue.forEach(function(_r){
-                  _r.Value =_r.Value + '<br/>' + m.DesignValue[$index].Value;
+                m.MeasureValue.forEach(function(_r,index){
+                  _r.Value =_r.Value + '/' + m.DesignValue[index].Value;
                 })
                 //m.MeasureValue = m.MeasureValue + '<br/>' + m.DesignValue;
               // m.MeasureValue = m.MeasureValue;
