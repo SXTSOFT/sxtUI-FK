@@ -555,12 +555,13 @@
               args.forEach(function (d) {
                 lodb.delete(id(d, null, args, cfg) || d);
               });
+              resolve(args);
             }
             else{
-              lodb.delete(args);
-              //db_save(cfg,args);
-            }
+              lodb.delete(args).then(function () {
             resolve(args);
+              });
+            }
           }
           else if (cfg.upload) {
             if(cfg.selfDb) {
@@ -571,13 +572,13 @@
                 });
               });
               provider.$q.$q.all(updates).then(function () {
-                resolve({data: {ErrorCode: 0, args: args,Data:args[0]}});
+              resolve(args);
               });
             }
             else{
-              lodb.addOrUpdate(args);
-              //db_save(cfg,args);
-              resolve({data: {ErrorCode: 0, args: args,Data:args[0]}});
+              lodb.addOrUpdate(args).then(function () {
+                resolve(args);
+              }).catch(reject);
             }
           }
           else {
@@ -678,7 +679,7 @@
                     }
                   }
                   else {
-                    lodb.addOrUpdate(result.data);
+                    lodb.saveItems(result.data);
                     //db_save(cfg, result.data);
                   }
                   resolve(result);
@@ -781,6 +782,9 @@
         items = [items];
       return db_save({_id:cfg._id,upload:!0},items,this.idFn);
     }
+    SingleDB.prototype.saveItems = function (result) {
+      return db_save(this.cfg,result,this.idFn);
+    }
     SingleDB.prototype.get = function (id) {
       var self = this;
       return self.findAll(function (item) {
@@ -790,7 +794,9 @@
       });
     }
     SingleDB.prototype.allDocs = function () {
-
+      return provider.$q.$q(function (resolve) {
+        resolve();
+      })
     }
 
     function get_globalDb() {
@@ -816,6 +822,7 @@
     }
     function db_save(cfg,result,idFn) {
       var db = get_globalDb();
+      return provider.$q.$q(function (resolve,reject) {
       db.get(cfg._id).then(save_to).catch(save_to);
       function save_to(doc) {
         if (!doc||doc.error)
@@ -845,8 +852,11 @@
             replace_db(result.Rows, doc.rows, idFn);
           }
         }
-        return db.put(doc);
+          return db.put(doc).then(resolve,reject);
       }
+
+      });
+
       function replace_db(src,dist,id) {
         src.forEach(function (item) {
           replace_db_single(item,dist,id);
