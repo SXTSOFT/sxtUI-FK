@@ -1474,6 +1474,7 @@ md-tabs[md-align-tabs="bottom"]{
 }
 .slide-del{
   padding:0;
+  md-list-item{
     position: relative;-webkit-transform: translateX(0);border-bottom: 1px solid #d8d8d8;
     //padding:16px 0;
     .md-no-style{
@@ -1537,7 +1538,7 @@ md-tabs[md-align-tabs="bottom"]{
         }
       }
     }
-
+  }
 }
 
 .grzx{

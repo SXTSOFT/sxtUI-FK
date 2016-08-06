@@ -23,7 +23,7 @@
     app: {
       couchDb:'http://ggem.sxtsoft.com:5984',
       api:'http://xhszgc.sxtsoft.com:9091',
-      fs:'http://xhszgc.sxtsoft.com:9090'
+      fs:'http://xhszgc.sxtsoft.com:8090'
     },
     angular:{
 
