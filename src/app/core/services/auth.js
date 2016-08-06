@@ -86,38 +86,47 @@
 
       // 根据用户凭据登录系统
       function login(user){
-        return token(user).then(function(token){
-          authToken.setToken(token);
-          getProfile(token,user);
-        },function(){
-          //$state.go('app.auth.login');
-          return $q.reject("用户名或密码错误");
+        return $q(function (resovle,reject) {
+          token(user).then(function(token){
+            authToken.setToken(token);
+            getProfile(token,user).then(function (profile) {
+              resovle(profile)
+            }).catch(reject);
+          },function(){
+            //$state.go('app.auth.login');
+            return reject("用户名或密码错误");
 
+          });
         });
       }
 
       // 根据用户token登录系统
       function getProfile(token,user){
-         profile(token).then(function(profile){
-           if(token == profile)
-            profile = null;
+         return $q(function (resolve,reject) {
+           profile(token).then(function(profile){
+             if(token == profile)
+               profile = null;
 
-           loginedUser = profile;
-          if(!loginedUser) {
-            //$state.go('app.auth.login');
-          }
-          else {
-            profile.username = profile.username||profile.Id;
-            profile.token = token;
-            profile.user = user;
-              $rootScope.$emit ('user:login', profile);
-              if(!autoLoginPath){
+             loginedUser = profile;
+             if(!loginedUser) {
+               //$state.go('app.auth.login');
+               reject('获取用户信息错误');
+             }
+             else {
+               profile.username = profile.username||profile.Id;
+               profile.token = token;
+               profile.user = user;
 
-                $state.go('app.szgc.home')
-                //$location.path('/');
-              }
-          }
-        });
+               $rootScope.$emit ('user:login', profile);
+               if(!autoLoginPath){
+
+                 $state.go('app.szgc.home')
+                 //$location.path('/');
+               }
+               resolve();
+             }
+           });
+         });
       }
 
       // 获取当前用户

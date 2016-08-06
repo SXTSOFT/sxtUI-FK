@@ -670,6 +670,14 @@
        });
       return task(tasks)(progress,complete,fail,options);
     }
+
+    // 因为sqlite 获取多条数据慢，每一个表作为一条数据，这里是重写
+    function addOrUpdate(cfg) {
+
+    }
+    function findAll(cfg) {
+
+    }
   }
 
 })();
