@@ -35,13 +35,13 @@
     provider.get = getServer;
     provider.setting = setting;
 
-    getApi.$injector = ['$resource','$http','$injector','$q','db','$rootScope','$cordovaNetwork','$window','$cordovaFileTransfer','$timeout'];
+    getApi.$injector = ['$resource','$http','$injector','$q','db','$rootScope','$cordovaNetwork','$window','$cordovaFileTransfer','$timeout','utils'];
 
     function getServer(name){
       return injector.get(name);
     }
 
-    function getApi($resource,$http,$injector,$q,db,$rootScope,$cordovaNetwork,$window,$cordovaFileTransfer,$timeout){
+    function getApi($resource,$http,$injector,$q,db,$rootScope,$cordovaNetwork,$window,$cordovaFileTransfer,$timeout,utils){
       injector = $injector;
       provider.$http.$http = $http;
       provider.$q.$q = $q;
@@ -69,13 +69,13 @@
         switch (type) {
           case 'ethernet':
           case 'wifi':
+          case '4g':
             networkState = 0;
             break;
           case 'unknown':
           case 'none':
           case '2g':
           case '3g':
-          case '4g':
           case 'cellular':
             networkState = 1;
             break;
