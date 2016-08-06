@@ -11,7 +11,7 @@
     var api = {},
       provider = this,
       injector,
-      //calledCfgs=[],
+      calledCfgs=[],
       cfgs=[],
       pouchdb,
       settingDb,
