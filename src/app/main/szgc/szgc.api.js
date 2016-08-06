@@ -253,8 +253,8 @@
           }
           return result;
         }),
-        getReport: function (regionTreeId) {
-          return $http.post('/api/PPBatchRelation/GetRelationReportData', { regionTreeId: regionTreeId })
+        getReport: function (regionTreeId,regionType) {
+          return $http.get($http.url('/api/PPBatchRelation/GetRelationReportData',  { regionTreeId: regionTreeId,regionType:regionType }))
         }
       },
       TargetService:{
