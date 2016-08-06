@@ -272,7 +272,7 @@
         self =this,
         groups = [];
       appendTasks(tasks,groups,filter,options).then(function (tasks) {
-        self.task(tasks)(function (percent,current,total) {
+        self.task(tasks,options)(function (percent,current,total) {
           groups.forEach(function (g) {
             if(current>=g.end)
               g.percent = 1;
@@ -291,6 +291,11 @@
     function appendTasks(tasks,groups,filter,options) {
       return provider.$q.$q(function(resolve,reject) {
         var p=[];
+        cfgs.sort(function(s1,s2){
+          var p1 = s1.prioirty|| 0,
+            p2 = s2.prioirty||0;
+          return p1 - p2;
+        });
         cfgs.forEach(function (cfg) {
           if (cfg.upload && cfg.fn) {
             if (filter && filter(cfg) === false)return;
@@ -314,7 +319,7 @@
             result.rows.forEach(function (row) {
               tasks.push(function () {
                 return cfg.fn.call(cfg, row).then(function (result) {
-                  if (result&&result.status==200){
+                  if (result&&result.status==200&&result.data&&!result.data.ErrorCode){
                     options.uploaded && options.uploaded(cfg,row,result);
                   }
                 });
@@ -557,7 +562,7 @@
               });
             });
             provider.$q.$q.all(updates).then(function () {
-              resolve(args);
+              resolve({data:{ErrorCode:0,args:args}});
             });
           }
           else {

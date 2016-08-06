@@ -87,7 +87,7 @@
           return remote.Procedure.InspectionIndexJoinApi.query(item.InspectionId)
         })
         t.push(function () {
-          return remote.Procedure.InspectionPoint.query(item.AcceptanceItemID,item.InspectionId,area.AreaID)
+          return remote.Procedure.InspectionPoint.query(item.InspectionId,item.AcceptanceItemID,area.AreaID)
         })
 
       });
@@ -245,6 +245,7 @@
     vm.upload =function () {
       if (!api.getNetwork()==0){
         utils.alert('当前网络处于离线状态,请切换在线');
+        return;
       }
       vm.uploadInfo.uploading = true;
       api.upload(function (cfg,item) {
