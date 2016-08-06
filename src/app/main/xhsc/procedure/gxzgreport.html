@@ -20,34 +20,42 @@
         <!--<th colspan="2">验收时间</th>-->
       </tr>
       <tr ng-if="vm.result.Construction">
-        <th width="12.5%">建设单位</th>
+        <th width="12.5%">施工单位</th>
         <th width="12.5%">{{vm.result.Construction}}</th>
         <th width="12.5%">项目经理</th>
         <th width="12.5%"></th>
-        <th width="12.5%">验收人员</th>
+        <th width="12.5%">报验人员</th>
         <th width="12.5%">{{vm.result.InspectionUser}}</th>
-        <th width="12.5%">验收时间</th>
+        <th width="12.5%">报验时间</th>
         <th width="12.5%">{{vm.result.InspectionTime}}</th>
       </tr>
       <tr ng-if="vm.result.Supervision">
         <th>监理单位</th>
         <th>{{vm.result.Supervision}}</th>
-        <th>项目经理</th>
+        <th>项目总监</th>
         <th></th>
         <th>验收人员</th>
         <th>{{vm.result.ProjectManager}}</th>
         <th>验收时间</th>
         <th></th>
       </tr>
-      <!--<tr>-->
-        <!--<th>验收意见</th>-->
-        <!--<th colspan="7">-->
-          <!--<md-radio-group>-->
-            <!--<md-radio-button style="display: inline-block;margin-right: 10px;margin-bottom: 5px;">同意</md-radio-button><md-radio-button style="display: inline-block;">不同意</md-radio-button>-->
-          <!--</md-radio-group>-->
-        <!--</th>-->
+      <tr>
+        <th>建设单位</th>
+        <th>星河地产</th>
+        <th>项目经理</th>
+        <th></th>
+        <th>验收人员</th>
+        <th></th>
+        <th>验收时间</th>
+        <th></th>
+      </tr>
+      <tr>
+        <th>验收意见</th>
+        <th colspan="7">
+          {{vm.result.opioins}}验收
+        </th>
 
-      <!--</tr>-->
+      </tr>
       </thead>
       <tbody>
       <!--<tr>-->
@@ -142,7 +150,7 @@
             </tr>
             <tr>
               <!--<td colspan="2" width="25%"><p><img src="app/main/xhsc/images/bg.png" width="80%"></p></td>-->
-              <td colspan="2" width="25%" ng-repeat="p in pic"><p><img ng-src="{{p.FilenName}}" width="80%"></p></td>
+              <td colspan="2" width="25%" ng-repeat="p in pic"><p style="text-align:center;"><img ng-src="{{p.FilenName}}" width="80%"></p></td>
               <!--<td colspan="2" width="25%"></td>-->
               <!--<td colspan="2" width="25%"></td>-->
             </tr>
@@ -160,7 +168,7 @@
             </div>
         </td>
         <td colspan="4"><p>问题描述：</p>
-          <p ng-repeat="problem in area.Problems" style="word-break: break-all;">{{problem.ProblemDescription}}</p>
+          <p ng-repeat="problem in area.Problems" style="word-break: break-all;">{{problem.ProblemSortName}} {{problem.ProblemDescription}}</p>
           <p ng-if="!area.Problems">合格</p>
         </td>
       </tr>
@@ -188,10 +196,10 @@
                   </tr>
                   <tr>
                     <td width="50%">
-                      <p><span ng-repeat="img in detail.Fronts"><img ng-src="{{img.FileUrl}}" width="50%"></span></p>
+                      <p style="text-align:center;"><span ng-repeat="img in detail.Fronts"><img ng-src="{{img.FileUrl}}" width="90%"></span></p>
                     </td>
                     <td width="50%">
-                      <p><span ng-repeat="img in detail.Backs"><img ng-src="{{img.FileUrl}}" width="50%"></span></p>
+                      <p style="text-align:center;"><span ng-repeat="img in detail.Backs"><img ng-src="{{img.FileUrl}}" width="90%"></span></p>
                     </td>
                   </tr>
                   <tr>
