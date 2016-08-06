@@ -52,10 +52,10 @@
           </table>
         </td>
         <td align="center" rowspan="{{item.rowSpan}}" ng-if="$index==0" style="padding: 0;">
-          <span ng-class="{'jlfont':n.Role == 2,'xmfont':n.Role == 4}" ng-repeat="n in item.allDot|orderBy:Role:true">{{n.Value}}</span>
+          <span ng-class="{'jlfont':n.Role == 2,'xmfont':n.Role == 4}" ng-repeat="n in item.allDot|orderBy:Role:false">{{n.Value}}</span>
         </td>
         <td  rowspan="{{item.rowSpan}}" ng-if="$index==0" style="padding:0;">
-          <span ng-class="{'jlfont':n.Role == 2,'xmfont':n.Role == 4}" ng-repeat="n in item.Qual|orderBy:Role:true">{{n.Value*100|number:2}}%</span>
+          <span ng-class="{'jlfont':n.Role == 2,'xmfont':n.Role == 4}" ng-repeat="n in item.Qual|orderBy:Role:false">{{n.Value*100|number:2}}%</span>
         </td>
         <td ng-repeat="point in row.rows[0]">
           <span  ng-class="{'yellow':v.Status == 2,'red':v.Status == 3,'jlfont':v.Role == 2,'xmfont':v.Role == 4}" ng-repeat="v in point.MeasureValue" ng-bind-html="v.Value"></span>

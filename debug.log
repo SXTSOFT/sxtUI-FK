@@ -51,3 +51,8 @@
 [0730/035247:ERROR:process_reader_win.cc(141)] SuspendThread: 拒绝访问。 (0x5)
 [0730/035247:ERROR:exception_snapshot_win.cc(57)] thread ID 6440 not found in process
 [0730/035247:WARNING:crash_report_exception_handler.cc(60)] ProcessSnapshotWin::InitializeException failed
+[0806/114632:ERROR:process_info.cc(372)] NtQuerySystemInformation SystemExtendedHandleInformation: {没有足够配额} 没有足够的虚拟内存或分页文件配额以完成指定的操作。  (0xc0000017)
+[0806/120252:ERROR:process_info.cc(372)] NtQuerySystemInformation SystemExtendedHandleInformation: {没有足够配额} 没有足够的虚拟内存或分页文件配额以完成指定的操作。  (0xc0000017)
+[0806/120353:ERROR:process_info.cc(372)] NtQuerySystemInformation SystemExtendedHandleInformation: {没有足够配额} 没有足够的虚拟内存或分页文件配额以完成指定的操作。  (0xc0000017)
+[0806/120607:ERROR:process_info.cc(372)] NtQuerySystemInformation SystemExtendedHandleInformation: {没有足够配额} 没有足够的虚拟内存或分页文件配额以完成指定的操作。  (0xc0000017)
+[0806/120845:ERROR:process_info.cc(372)] NtQuerySystemInformation SystemExtendedHandleInformation: {没有足够配额} 没有足够的虚拟内存或分页文件配额以完成指定的操作。  (0xc0000017)

@@ -6,7 +6,8 @@
           <md-list-item ng-repeat="item in vm.Inspections|filter:{Sign:1}">
             <div class="md-list-item-text" layout="column">
               <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
-                {{item.AcceptanceItemName}} <span ng-if="item.total">{{item.percent}}({{item.current}}/{{item.total}})</span>
+                {{item.AcceptanceItemName}}
+                <!--<span ng-if="item.total">{{item.percent}}({{item.current}}/{{item.total}})</span>-->
               </p>
               <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>
             </div>
@@ -143,7 +144,8 @@
         <md-list style="overflow: hidden;">
           <md-list-item ng-repeat="item in vm.projects">
             <p layout="column" style="padding-right: 125px;font-size:16px;padding-left:8px;">
-              {{item.ProjectName}} <span ng-if="item.total">{{item.percent}}({{item.current}}/{{item.total}})</span>
+              {{item.ProjectName}}
+              <!--<span ng-if="item.total">{{item.percent}}({{item.current}}/{{item.total}})</span>-->
             </p>
             <div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">
               <md-button ui-sref="app.xhsc.gx.gxlist({role:'',projectId:item.ProjectID})" class="md-raised md-primary">
@@ -189,7 +191,8 @@
           <md-list-item ng-repeat="item in vm.zglist|filter:{Status:4}">
             <div class="md-list-item-text" layout="column">
               <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
-                {{item.AcceptanceItemName}} <span ng-if="item.total">{{item.percent}}({{item.current}}/{{item.total}})</span>
+                {{item.AcceptanceItemName}}
+                <!--<span ng-if="item.total">{{item.percent}}({{item.current}}/{{item.total}})</span>-->
               </p>
               <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>
             </div>
@@ -264,14 +267,13 @@
           <md-list-item>
             <div class="md-list-item-text" layout="column">
               <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
-                全部上传 <span ng-if="vm.uploadInfo.total">{{vm.uploadInfo.percent}}({{vm.uploadInfo.current}}/{{vm.uploadInfo.total}})</span>
+                全部上传
               </p>
             </div>
             <div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">
               <md-button ng-if="!item.isDown" class="md-raised md-primary"  ng-click="vm.upload()">
                 <md-icon md-font-icon="icon-upload"></md-icon>
               </md-button>
-
             </div>
           </md-list-item>
         </md-list>

@@ -685,6 +685,8 @@
           return pouchdb(id);
       }
     }
+
+
     function getNetwork() {
       return networkState;
     }

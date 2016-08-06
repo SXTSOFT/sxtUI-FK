@@ -50,7 +50,6 @@
                 var p = r.UnqualifiedPointNum[i].Value;
                 tempa.push({Role:r.QualifiedPointNum[i].Role,allDot:q+p});
               }
-              //r.numbers =numbers;
               for(var i=0;i< r.QualifiedPointNum.length;i++){
                 tempq.push(r.QualifiedPointNum[i]);
               }
@@ -59,11 +58,11 @@
               })
               r.List.forEach(function (m) {
                 m.MeasureValue.forEach(function(r1){
-                  var fi= m.MeasureStatus.find(function(_r){
+                  var fstatus= m.MeasureStatus.find(function(_r){
                     return _r.Role == r1.Role;
                   })
-                  if(fi){
-                    r1.Status = fi.Value;
+                  if(fstatus){
+                    r1.Status = fstatus.Value;
                   }
                 })
                 var p = ps.find(function (p1) {
@@ -106,13 +105,8 @@
             }
             return false;
           });
-          var t1a= 0,t2a= 0,t3a= 0,t4a=0,t5a=0,t6a=0;
-          //item.Qall = t1;
-          //item.QualifiedPointNum = t1;
           item.rowSpan = rowSpan;
-          //item.allDot = t2;
           newD.push(item);
-          //console.log(tempa)
           var atemp=[],btemp=[];
           if(tempa){
             for(var i=0;i<tempa.length;i++){
@@ -161,11 +155,20 @@
           //item.allDot = item.allDot;
         }
         else if(!item.ParentAcceptanceIndexID){
+
+          var roles=[];
           item.rows = [];
           var ps=[];
           item.QualifiedRate.forEach(function(v){
             v.Value = v.Value * 100;
+            var f = roles.find(function(r){
+              return r.Role == v.Role;
+            })
+            if(!f){
+              roles.push({Role: v.Role});
+            }
           })
+
           var numbers=[];
           for(var i=0;i<item.QualifiedPointNum.length;i++){
             var q = item.QualifiedPointNum[i].Value;
@@ -174,12 +177,16 @@
           }
           item.numbers =numbers;
 
-          //item.QualifiedRate = item.QualifiedRate * 100;
-          //item.allDot = item.QualifiedPointNum + item.UnqualifiedPointNum;
-         // item.QualifiedRate
           item.List.forEach(function (m) {
-            //console.log(m.ExtendedField1s[0].Value.indexOf(','))
             var exist = 0;
+            roles.forEach(function(r){
+              var f = m.ExtendedField1.find(function(_r){
+                return _r.Role == r.Role;
+              })
+              if(!f){
+                m.ExtendedField1.push({Role: r.Role,Value:','})
+              }
+            })
             m.ExtendedField1.forEach(function(fileds){
               var i = fileds.Value.indexOf(',')
               if(i>0){
@@ -209,28 +216,33 @@
             }
 
             if(exist){
-              //var ms = m.ExtendedField1.split(',');
-              //ms.forEach(function (v) {
-              //  p.ms.push({
-              //    MeasureStatus:m.MeasureStatus,
-              //    MeasureValue:v,
-              //    MeasureValueId:m.MeasureValueId
-              //  });
-              //});
-              //p.ParentMeasureValueID = m.MeasureValueId;
-              m.ExtendedField1.forEach(function(fs,index){
-                if(fs.Value.indexOf(',')>0){
-                  var ms = fs.Value.split(',');
-                  ms.forEach(function (v) {
-                    p.ms.push({
-                      MeasureStatus:m.MeasureStatus[index].Value,
-                      MeasureValue:[{Role:fs.Role,Value:v}],
-                      MeasureValueId:m.MeasureValueId[index].Value
-                    });
-                  });
-                  p.ParentMeasureValueID = m.MeasureValueId;
+              var max= 0,nums=[];
+              for(var i=0;i< m.ExtendedField1.length;i++){
+                if(m.ExtendedField1[i].Value.indexOf(',')){
+                  var num = m.ExtendedField1[i].Value.split(',');
+                  nums.push(num);
+                  if(num.length > max) max = num.length;
                 }
+              }
+              //console.log(nums)
+              var values=[];
+              for(var i=0;i<max;i++){
+                var temp=[];
+                for(var j=0;j<roles.length;j++){
+                  temp.push({Role:roles[j].Role,Value:nums[j]&&nums[j][i]||'',Status:m.MeasureStatus[j]&&m.MeasureStatus[j].Value});
+                }
+                values.push(temp);
+              }
+              values.forEach(function (v) {
+                p.ms.push({
+                  MeasureValue:v,
+                  MeasureValueId:m.MeasureValueId[0].Value
+                });
+              });
+              p.ParentMeasureValueID = m.MeasureValueId;
+              m.ExtendedField1.forEach(function(fs,index){
               })
+
             }
             else {
               p.ms.push(m);

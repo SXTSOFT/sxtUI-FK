@@ -95,6 +95,13 @@
       tasks.push(function () {
         return remote.Assessment.getUserMeasurePoint(item.ProjectID,1,"Pack"+item.AssessmentID+"point");
       });
+      //tasks.push(function(){
+      // return remote.Assessment.getAllMeasureReportData({
+      //    ProjectID:item.ProjectID,
+      //    RecordType:1,
+      //    RelationID:item.AssessmentID
+      //  })
+      //})
       api.task(tasks)(function (percent, current, total) {
         item.progress = parseInt(percent * 100);
       }, function () {
