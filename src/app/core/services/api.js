@@ -11,7 +11,7 @@
     var api = {},
       provider = this,
       injector,
-      calledCfgs=[],
+      //calledCfgs=[],
       cfgs=[],
       pouchdb,
       settingDb,
@@ -685,6 +685,8 @@
           return pouchdb(id);
       }
     }
+
+
     function getNetwork() {
       return networkState;
     }

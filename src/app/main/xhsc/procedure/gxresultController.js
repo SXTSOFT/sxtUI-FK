@@ -45,22 +45,29 @@
 
     vm.Isfail=true;
     vm.submitResult = function(){
-      console.log('time',vm.responsers)
-
-      vm.data ={
-        InspectionID:vm.params.InspectionID,
-        Remarks:vm.params.Remarks,
-        Day:vm.time,
-      }
-
-      remote.Procedure.createZGReceipt(vm.data).then(function(r){
-
-          if (r){
-            utils.alert("提交成功",null,function(){
-              $state.go("app.xhsc.gx.gxmain",{index:0});
-            });
-          }
-      })
+      $mdDialog.show({
+        controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+          vm.data ={
+            InspectionID:vm.params.InspectionID,
+            Remarks:vm.params.Remarks,
+            Day:vm.time,
+        }
+          remote.Procedure.createZGReceipt(vm.data).then(function(r){
+            $mdDialog.hide();
+            if (r){
+              utils.alert("提交成功",null,function(){
+                $state.go("app.xhsc.gx.gxmain",{index:0});
+              });
+            }
+          },function(){
+            $mdDialog.cancel();
+          })
+        }],
+        template: '<md-dialog aria-label="正在提交"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在上传提交数据.....,</p></md-dialog-content></md-dialog>',
+        parent: angular.element(document.body),
+        clickOutsideToClose:false,
+        fullscreen: false
+      });
     }
   }
 })();

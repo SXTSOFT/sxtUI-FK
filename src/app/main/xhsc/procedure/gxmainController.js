@@ -9,7 +9,7 @@
     .controller('gxmainController',gxmainController);
 
   /**@ngInject*/
-  function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,gxOfflinePack,$scope){
+  function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,gxOfflinePack,$scope,$mdDialog){
     var vm = this;
     remote.Project.getMap().then(function(result){
       result.data.forEach(function (item) {
@@ -115,37 +115,48 @@
     }
 
     vm.downloadzj = function (item) {
-     var tasks = [].concat(globalTask)
-       .concat(projectTask(item.ProjectID))
-       .concat([
-         function (tasks) {
-           return remote.Procedure.getRegionStatus(item.ProjectID,"8").then(function (result) {
-             result.data.forEach(function (item) {
-               if(item.AcceptanceItemID && item.AreaId && item.InspectionId) {
-                 tasks.push(function () {
-                   return remote.Project.getInspectionList(item.InspectionId);
-                 });
-                 tasks.push(function () {
-                   return remote.Procedure.InspectionCheckpoint.query(item.AcceptanceItemID, item.AreaId, item.InspectionId);
-                 })
-               }
-             })
-           })
-         }
-       ]);
-     api.task(tasks,{
-       event:'downloadzj',
-       target:item
-     })(null, function () {
-       item.percent = item.current = item.total = null;
-       item.isOffline = true;
-       remote.offline.create({Id:'zj'+item.ProjectID});
-       utils.alert('下载完成');
+      $mdDialog.show({
+        controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+          $scope.item=item;
+            var tasks = [].concat(globalTask)
+              .concat(projectTask(item.ProjectID))
+              .concat([
+                function (tasks) {
+                  return remote.Procedure.getRegionStatus(item.ProjectID,"8").then(function (result) {
+                    result.data.forEach(function (item) {
+                      if(item.AcceptanceItemID && item.AreaId && item.InspectionId) {
+                        tasks.push(function () {
+                          return remote.Project.getInspectionList(item.InspectionId);
+                        });
+                        tasks.push(function () {
+                          return remote.Procedure.InspectionCheckpoint.query(item.AcceptanceItemID, item.AreaId, item.InspectionId);
+                        })
+                      }
+                    })
+                  })
+                }
+              ]);
+            api.task(tasks,{
+              event:'downloadzj',
+              target:item
+            })(null, function () {
+              item.percent = item.current = item.total = null;
+              item.isOffline = true;
+              remote.offline.create({Id:'zj'+item.ProjectID});
+              $mdDialog.hide();
+              utils.alert('下载完成');
 
-     }, function () {
-       item.percent = item.current = item.total = null;
-       utils.alert('下载失败,请检查网络');
-     })
+            }, function () {
+              item.percent = item.current = item.total = null;
+              $mdDialog.cancel();
+              utils.alert('下载失败,请检查网络');
+            })
+          }],
+          template: '<md-dialog aria-label="正在下载"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+          parent: angular.element(document.body),
+          clickOutsideToClose:false,
+          fullscreen: false
+        });
    };
 
     api.event('downloadzj',function (s,e) {
@@ -167,21 +178,32 @@
     },$scope);
 
     vm.downloadys = function (item) {
-      var tasks = [].concat(globalTask)
-        .concat(projectTask(item.ProjectID,item.Children,item.AcceptanceItemID))
-        .concat(InspectionTask(item));
-      //console.log(tasks);
-      api.task(tasks,{
-        event:'downloadys',
-        target:item.InspectionId
-      })(null, function () {
-        item.percent = item.current = item.total = null;
-        item.isOffline = true;
-        utils.alert('下载完成');
-      }, function () {
-        utils.alert('下载失败,请检查网络');
-        item.percent = item.current = item.total = null;
-      },{timeout:300000})
+      $mdDialog.show({
+        controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+          $scope.item=item;
+          var tasks = [].concat(globalTask)
+            .concat(projectTask(item.ProjectID,item.Children,item.AcceptanceItemID))
+            .concat(InspectionTask(item));
+          //console.log(tasks);
+          api.task(tasks,{
+            event:'downloadys',
+            target:item.InspectionId
+          })(null, function () {
+            item.percent = item.current = item.total = null;
+            item.isOffline = true;
+            $mdDialog.hide();
+            utils.alert('下载完成');
+          }, function () {
+            $mdDialog.cancel();
+            utils.alert('下载失败,请检查网络');
+            item.percent = item.current = item.total = null;
+          },{timeout:300000})
+        }],
+        template: '<md-dialog aria-label="正在下载"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载： {{item.AcceptanceItemName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+        parent: angular.element(document.body),
+        clickOutsideToClose:false,
+        fullscreen: false
+      });
     }
 
     api.event('downloadys',function (s,e) {
@@ -204,21 +226,32 @@
 
 
     vm.downloadzg = function (item) {
-      var tasks = [].concat(globalTask)
-        .concat(projectTask(item.Children[0].AreaID.substring(0, 5), item.Children, item.AcceptanceItemID))
-        .concat(InspectionTask(item))
-        .concat(rectificationTask(item));
+      $mdDialog.show({
+        controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+          $scope.item=item;
+          var tasks = [].concat(globalTask)
+            .concat(projectTask(item.Children[0].AreaID.substring(0, 5), item.Children, item.AcceptanceItemID))
+            .concat(InspectionTask(item))
+            .concat(rectificationTask(item));
 
-      api.task(tasks, {
-        event: 'downloadzg',
-        target: item.RectificationID
-      })(null, function () {
-        item.percent = item.current = item.total = null;
-        item.isOffline = true;
-        utils.alert('下载完成');
-      }, function () {
-        utils.alert('下载失败,请检查网络');
-        item.percent = item.current = item.total = null;
+          api.task(tasks, {
+            event: 'downloadzg',
+            target: item.RectificationID
+          })(null, function () {
+            item.percent = item.current = item.total = null;
+            item.isOffline = true;
+            $mdDialog.hide();
+            utils.alert('下载完成');
+          }, function () {
+            $mdDialog.cancel();
+            utils.alert('下载失败,请检查网络');
+            item.percent = item.current = item.total = null;
+          });
+        }],
+        template: '<md-dialog aria-label="正在下载"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+        parent: angular.element(document.body),
+        clickOutsideToClose:false,
+        fullscreen: false
       });
     }
 
@@ -248,34 +281,47 @@
         return;
       }
       vm.uploadInfo.uploading = true;
-      api.upload(function (cfg,item) {
-        if(cfg._id=='s_files' && item && item.Url.indexOf('base64')==-1){
-          return false;
-        }
-        return true;
-      },function (percent,current,total) {
-        vm.uploadInfo.percent = parseInt(percent *100) +' %';
-        vm.uploadInfo.current = current;
-        vm.uploadInfo.total = total;
-      },function () {
-        vm.uploadInfo.uploaded = 1;
-        api.uploadTask(function () {
-          return true
-        },null);
-        load();
-        utils.alert('上传完成');
-        vm.uploadInfo.tasks = [];
-        vm.uploadInfo.uploading= false;
+      vm.uploadInfo.percent='0%'
+      $mdDialog.show({
+        controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+          $scope.uploadInfo=vm.uploadInfo;
+
+          api.upload(function (cfg,item) {
+            if(cfg._id=='s_files' && item && item.Url.indexOf('base64')==-1){
+              return false;
+            }
+            return true;
+          },function (percent,current,total) {
+            vm.uploadInfo.percent = parseInt(percent *100) +' %';
+            vm.uploadInfo.current = current;
+            vm.uploadInfo.total = total;
+          },function () {
+            vm.uploadInfo.uploaded = 1;
+            api.uploadTask(function () {
+              return true
+            },null);
+            load();
+            utils.alert('上传完成');
+            vm.uploadInfo.tasks = [];
+            vm.uploadInfo.uploading= false;
 
 
-      },function () {
-        vm.uploadInfo.uploaded = 0;
-        utils.alert('上传失败');
-        vm.uploadInfo.uploading =false;
-      },{
-        uploaded:function (cfg,row,result) {
-          cfg.db.delete(row._id);
-        }
+          },function () {
+            vm.uploadInfo.uploaded = 0;
+            utils.alert('上传失败');
+            vm.uploadInfo.uploading =false;
+          },{
+            uploaded:function (cfg,row,result) {
+              cfg.db.delete(row._id);
+            }
+          });
+
+
+        }],
+        template: '<md-dialog aria-label="正在上传"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在上传：{{uploadInfo.percent}}({{uploadInfo.current}}/{{uploadInfo.total}})</p></md-dialog-content></md-dialog>',
+        parent: angular.element(document.body),
+        clickOutsideToClose:false,
+        fullscreen: false
       });
     }
 
