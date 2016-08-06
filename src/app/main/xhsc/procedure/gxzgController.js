@@ -29,7 +29,7 @@
     });
 
     vm.info = {
-      
+
     }
 
     function setChina(r) {

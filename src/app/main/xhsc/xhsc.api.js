@@ -152,6 +152,12 @@
           create:{
             upload:true,
             fn:function (point) {
+              if(point.geometry){
+                point.Geometry = point.geometry;
+              }
+              if(typeof point.Geometry==='string'){
+                point.Geometry = JSON.parse(point.Geometry);
+              }
               return $http.post('/Api/MeasurePointApi/CreatePoint',[point]);
             }
           },
@@ -251,8 +257,9 @@
       InspectionProblemRecordFile:{
         query:$http.db({
           _id:'InspectionProblemRecordFile',
-          idField:'ProblemRecordFileID',
-          dataType:1,
+          idField:function(d) {
+            return d.Id|| d.ProblemRecordFileID
+          }, dataType:1,
           filter:function (item,ProblemRecordID) {
             return item.ProblemRecordID==ProblemRecordID;
           }
@@ -263,7 +270,6 @@
           name:'照片',
           _id:'InspectionProblemRecordFile',
           idField:'ProblemRecordFileID',
-
           upload:true
         }).bind(function (InspectionProblemRecordFile) {
           return $http.post('/Api/InspectionProblemRecordFileApi/Insert',InspectionProblemRecordFile);
@@ -426,6 +432,7 @@
       createZGReceipt:$http.db({
         _id:'createZGReceipt',
         idField:'InspectionID',
+        prioirty:10,
         upload:true
       }).bind(function(data){
         return $http.post($http.url('/api/InspectionRectificationApi/Insert'),data);
@@ -456,7 +463,8 @@
       }),
       insertJlfy:$http.db({
         _id:'ReviewInsert',
-        idField:'RectificationId',
+        prioirty:10,
+        idField:'RectificationID',
         upload:true
       }).bind(function(data){
         return $http.post($http.url('/api/InspectionRectificationApi/ReviewInsert'),data)

@@ -20,18 +20,27 @@
 
     function  link(scope,element,attr,ctrl){
       $timeout(function () {
-        var map = L.map(element[0], {
-            center: [22.604987,114.059852],
-            zoom: 17,
-            attributionControl: false
-          }),
-          layer = L.tileLayer('http://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
-            subdomains: "1234"
-          });
-        layer.addTo(map);
         var mks = [];
         remote.Project.getMap().then(function(result){
-          console.log('map',result);
+          var lgn=[22.604987,114.059852];
+          if (result&&angular.isArray(result.data)&&result.data.length){
+            var d=result.data[0].Coordinate;
+            if (d){
+               var arr=  d.split(',');
+               lgn[0]=arr[1]?arr[1]:lgn[0];
+               lgn[1]=arr[0]?arr[0]:lgn[1];
+            }
+          }
+          //lgn.push(result&&angular.isArray(result.data)&&);
+          var map = L.map(element[0], {
+              center: lgn,
+              zoom: 17,
+              attributionControl: false
+            }),
+            layer = L.tileLayer('http://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+              subdomains: "1234"
+            });
+          layer.addTo(map);
           scope.markers=[];
           result.data.filter(function(item) {
             return !!item.Coordinate
@@ -76,39 +85,6 @@
 
             });
             parentGroup.addTo(map);
-        })
-        map.on('zoomend', function (e) {
-          var zoom = map.getZoom();
-          console.log('zoom',zoom)
-          if(zoom <10) {
-            mks.forEach(function (marker) {
-              marker.setIcon(L.icon({
-                iconUrl: 'assets/leaflet/css/images/M.png',
-                iciconSize: [27, 37],
-                iconAnchor: [20, 20]
-              }));
-            })
-          }else if(zoom<11){
-            mks.forEach(function (marker) {
-              marker.setIcon(L.icon({
-                iconUrl: 'assets/leaflet/css/images/M.png',
-                iconSize: [27, 37],
-                iconAnchor: [20, 20]
-              }));
-            })
-          }
-          else {
-            mks.forEach(function (marker) {
-              marker.setIcon(L.icon({
-                iconUrl: 'assets/leaflet/css/images/M.png',
-                iconSize: [27, 37],
-                iconAnchor: [20, 20]
-              }));
-            })
-          }
-        })
-        scope.$on('destroy', function () {
-          map.remove();
         })
       }, 500)
 
