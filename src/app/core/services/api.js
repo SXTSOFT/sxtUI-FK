@@ -11,12 +11,14 @@
     var api = {},
       provider = this,
       injector,
-      calledCfgs=[],
       cfgs=[],
       pouchdb,
       settingDb,
       uploadDb,
-      networkState = 1;
+      networkState = 1,
+      globalDb = {
+        id:'sxt_global_db'
+      };
 
     provider.register = register;
     //provider.getNetwork = getNetwork;
@@ -304,12 +306,17 @@
               start: tasks.length,
               cfg:cfg
             };
-            var db = initDb(cfg)
             groups.push(group);
-            p.push(db.findAll(function (item) {
-              if (filter)return filter(cfg, item);
-              return true;
-            }));
+            if(cfg.selfDb) {
+              var db = initDb(cfg);
+              p.push(db.findAll(function (item) {
+                if (filter)return filter(cfg, item);
+                return true;
+              }));
+            }
+            else{
+              p.push(db_findAll(cfg,filter));
+            }
           }
         });
         provider.$q.$q.all(p).then(function (rs) {
@@ -386,7 +393,7 @@
                 target:config.target,
                 event:'success'
               });
-            success && success(tasks,calledCfgs);
+            success && success(tasks);
           }
           else {
             var d = new Date().getTime(),next = function () {
@@ -471,11 +478,6 @@
             var args = toArray(arguments),
               lodb = initDb(cfg,args),
               caller = this;
-              if (!calledCfgs.find(function(c){
-                   return c==cfg;
-                })){
-                calledCfgs.push(cfg);
-              }
             if (cfg.mode == 1) { //1 离线优先，无离线数据尝试网络；
               var oRaiseError = cfg.raiseError;
               cfg.raiseError = true;
@@ -549,51 +551,73 @@
             resolve(bindData({}, [], cfg));
           }
           else if (cfg.delete) {
-            args.forEach(function (d) {
-              lodb.delete(id(d, null, args, cfg) || d);
-            });
+            if(cfg.selfDb) {
+              args.forEach(function (d) {
+                lodb.delete(id(d, null, args, cfg) || d);
+              });
+              resolve(args);
+            }
+            else{
+              lodb.delete(args).then(function () {
             resolve(args);
+              });
+            }
           }
           else if (cfg.upload) {
-            var updates = [];
-            args.forEach(function (d) {
-              id(d, lodb, args, cfg, function (defer) {
-                updates.push(defer);
+            if(cfg.selfDb) {
+              var updates = [];
+              args.forEach(function (d) {
+                id(d, lodb, args, cfg, function (defer) {
+                  updates.push(defer);
+                });
               });
-            });
-            provider.$q.$q.all(updates).then(function () {
-              resolve({data:{ErrorCode:0,args:args}});
-            });
+              provider.$q.$q.all(updates).then(function () {
+              resolve(args);
+              });
+            }
+            else{
+              lodb.addOrUpdate(args).then(function () {
+                resolve(args);
+              }).catch(reject);
+            }
           }
           else {
             var result = {};
             if (cfg.dataType == 3) {
-              if ((args.length == 1 && !cfg.filter) || cfg.firstIsId) {
-                lodb.get(args[0]).then(function (r) {
-                  if (r || !cfg.raiseError) {
+              if(cfg.selfDb) {
+                if ((args.length == 1 && !cfg.filter) || cfg.firstIsId) {
+                  lodb.get(args[0]).then(function (r) {
+                    if (r || !cfg.raiseError) {
+                      result.data = r;
+                      resolve(result);
+                    }
+                    else {
+                      reject();
+                    }
+                  }).catch(function (r) {
                     result.data = r;
-                    resolve(result);
-                  }
-                  else {
-                    reject();
-                  }
-                }).catch(function (r) {
-                  result.data = r;
-                  reject(result);
-                });
-              }
-              else {
-                lodb.findAll(function (item) {
-                  if (cfg.filter)
-                    return cfg.filter.apply(cfg, [item].concat(args));
-                  return true;
-                }, cfg.search, args).then(function (r) {
-                  result.data = r.rows[0];
-                  if (!cfg.raiseError || result.data)
-                    resolve(result);
-                  else
                     reject(result);
-                })
+                  });
+                }
+                else {
+                  lodb.findAll(function (item) {
+                    if (cfg.filter)
+                      return cfg.filter.apply(cfg, [item].concat(args));
+                    return true;
+                  }, cfg.search, args).then(function (r) {
+                    result.data = r.rows[0];
+                    if (!cfg.raiseError || result.data)
+                      resolve(result);
+                    else
+                      reject(result);
+                  })
+                }
+              }
+              else{
+                lodb.get(args[0]).then(function (r) {
+                  result.data = r;
+                  resolve(result);
+                });
               }
             }
             else {
@@ -623,41 +647,44 @@
           var p = fn && fn.apply(caller, args);
           if (p) {
             p.then(function (result) {
-              if(result && ((result.status>=200 && result.status<=299) || result.data)) {
-                if (result.data) {
-                  var data = result.data;
-                  if (cfg.dataType == 1) {
-                    data.forEach(function (d) {
-                      id(d, lodb, args, cfg);
-                    })
+                if (result && ((result.status >= 200 && result.status <= 299) || result.data)) {
+                  if (cfg.selfDb) {
+                    if (result.data) {
+                      var data = result.data;
+                      if (cfg.dataType == 1) {
+                        data.forEach(function (d) {
+                          id(d, lodb, args, cfg);
+                        })
+                      }
+                      else {
+                        if (cfg.dataType == 3) {
+                          id(data, lodb, args, cfg);
+                        }
+                        else if (data.rows && angular.isArray(data.rows)) {
+                          data.rows.forEach(function (d) {
+                            id(d, lodb, args, cfg);
+                          })
+                        }
+                        else if (data.data && angular.isArray(data.data)) {
+                          data.data.forEach(function (d) {
+                            id(d, lodb, args, cfg);
+                          })
+                        }
+                        else if (data.Rows && angular.isArray(data.Rows)) {
+                          data.Rows.forEach(function (d) {
+                            id(d, lodb, args, cfg);
+                          })
+                        }
+                      }
+                    }
                   }
                   else {
-                    if (cfg.dataType == 3) {
-                      id(data, lodb, args, cfg);
-                    }
-                    else if (data.rows && angular.isArray(data.rows)) {
-                      data.rows.forEach(function (d) {
-                        id(d, lodb, args, cfg);
-                      })
-                    }
-                    else if (data.data && angular.isArray(data.data)) {
-                      data.data.forEach(function (d) {
-                        id(d, lodb, args, cfg);
-                      })
-                    }
-                    else if (data.Rows && angular.isArray(data.Rows)) {
-                      data.Rows.forEach(function (d) {
-                        id(d, lodb, args, cfg);
-                      })
-                    }
+                    lodb.saveItems(result.data);
+                    //db_save(cfg, result.data);
                   }
                   resolve(result);
                 }
                 else {
-                  resolve(result);
-                }
-              }
-              else {
                   reject(result);
                 }
               })
@@ -676,13 +703,19 @@
     }
 
     function initDb(cfg,args) {
-      if(cfg._id && cfg.db) return cfg.db;
-      if(cfg._id)
-        return (cfg.db = pouchdb(cfg._id));
-      else if(cfg.db){
-        var id = cfg.db.apply(cfg,args);
-        if(id)
-          return pouchdb(id);
+      if (cfg._id && cfg.db) return cfg.db;
+      if(cfg.selfDb) {
+
+        if (cfg._id)
+          return (cfg.db = pouchdb(cfg._id));
+        else if (cfg.db) {
+          var id = cfg.db.apply(cfg, args);
+          if (id)
+            return pouchdb(id);
+        }
+      }
+      else{
+        return (cfg.db = new SingleDB(cfg));
       }
     }
 
@@ -695,23 +728,162 @@
     }
 
     function clearDb(progress,complete,fail,options) {
-      var tasks = [];
-      calledCfgs.forEach(function (cfg) {
-         if(!(options.exclude && options.exclude.indexOf(cfg._id)!=-1)){
-           var db = initDb(cfg);
-           if(db) {
-             tasks.push(function () {
-               return db.destroy().then(function (result) {
-                 cfg.db = null;
-                 return result;
-               }).catch(function (err) {
-               });
-             })
-           }
-         }
+      var tasks = [function () {
+        return get_globalDb().destroy().then(function () {
+          globalDb.db = null;
+        });
+      }];
+      if (!(options.exclude && options.exclude.indexOf(cfg._id) != -1)) {
+        var db = cfg.db;// initDb(cfg);
+        if (db) {
+          tasks.push(function () {
+            return db.destroy().then(function (result) {
+              cfg.db = null;
+              return result;
+            }).catch(function (err) {
+            });
+          })
+        }
+      }
+      provider.$rootScope.$emit('preClear', tasks);
+      return task(tasks, options)(progress, complete, fail, options);
+    }
+
+    /**
+     * 优化Sqlite 多数据慢的问题
+     */
+
+    function SingleDB(cfg) {
+      var self = this;
+      self.cfg = cfg;
+      var idIsFunction = angular.isFunction(cfg.idField);
+      self.idFn = function (item) {
+        return angular.isObject(item)? (idIsFunction ? cfg.idField(item) : item[cfg.idField]) :item;
+      };
+    }
+    SingleDB.prototype.findAll = function (filter) {
+      return db_findAll(this.cfg,filter);
+    }
+    SingleDB.prototype.delete = function (id) {
+      if(!angular.isArray(id))
+        id = [id];
+
+      return db_save({
+        _id:this.cfg._id,
+        delete:!0
+      },id,this.idFn);
+    }
+    SingleDB.prototype.addOrUpdate = function (items) {
+      var cfg = this.cfg;
+      if(cfg.dataType == 3)
+        return db_save(this.cfg,items,this.idFn);
+
+      if(!angular.isArray(items))
+        items = [items];
+      return db_save({_id:cfg._id,upload:!0},items,this.idFn);
+    }
+    SingleDB.prototype.saveItems = function (result) {
+      return db_save(this.cfg,result,this.idFn);
+    }
+    SingleDB.prototype.get = function (id) {
+      var self = this;
+      return self.findAll(function (item) {
+        return self.idFn(item)==id;
+      }).then(function (r) {
+        return r.rows[0];
       });
-      provider.$rootScope.$emit('preClear',tasks);
-      return task(tasks,options)(progress,complete,fail,options);
+    }
+    SingleDB.prototype.allDocs = function () {
+      return provider.$q.$q(function (resolve) {
+        resolve();
+      })
+    }
+
+    function get_globalDb() {
+      return globalDb.db || (globalDb.db = pouchdb(globalDb.id));
+    }
+    function db_findAll(cfg,filter) {
+      var db = get_globalDb();
+      return provider.$q.$q(function (resolve,reject) {
+        var result = {
+          "rows":[]
+        };
+        db.get(cfg._id).then(function (r) {
+          for(var i=0,l=r.rows.length;i<l;i++){
+            if(!filter || filter(r.rows[i])!==false){
+              result.rows.push(r.rows[i]);
+            }
+          }
+          resolve(result);
+        }).catch(function () {
+          resolve(result);
+        });
+      })
+    }
+    function db_save(cfg,result,idFn) {
+      var db = get_globalDb();
+      return provider.$q.$q(function (resolve,reject) {
+      db.get(cfg._id).then(save_to).catch(save_to);
+      function save_to(doc) {
+        if (!doc||doc.error)
+          doc = {_id: cfg._id, rows: []};
+        if(cfg.delete){
+          result.forEach(function (item) {
+            delete_db(item,doc.rows,idFn);
+          });
+        }
+        else {
+          if(cfg.upload || cfg.dataType == 1){
+            replace_db(result, doc.rows, idFn);
+          }
+/*          else if (cfg.dataType == 1) {
+            replace_db(result, doc.rows, idFn);
+          }*/
+          else if (cfg.dataType == 3) {
+            replace_db_single(result, doc.rows, idFn);
+          }
+          else if (result.rows && angular.isArray(result.rows)) {
+            replace_db(result.rows, doc.rows, idFn);
+          }
+          else if (result.data && angular.isArray(result.data)) {
+            replace_db(result.data, doc.rows, idFn);
+          }
+          else if (result.Rows && angular.isArray(result.Rows)) {
+            replace_db(result.Rows, doc.rows, idFn);
+          }
+        }
+          return db.put(doc).then(resolve,reject);
+      }
+
+      });
+
+      function replace_db(src,dist,id) {
+        src.forEach(function (item) {
+          replace_db_single(item,dist,id);
+        });
+      }
+      function replace_db_single(item,dist,id) {
+        var _id = id(item), flag = false;
+        for (var i = 0, l = dist.length; i < l; i++) {
+          if (_id == id(dist[i])) {
+            dist[i] = item;
+            flag = true;
+            break;
+          }
+        }
+        if (!flag) {
+          dist.push(item);
+        }
+      }
+      function delete_db(item,dist,id) {
+        var _id = id(item);
+        for (var i = 0, l = dist.length; i < l; i++) {
+          if (_id == id(dist[i])) {
+            dist.splice(i,1);
+            break;
+          }
+        }
+      }
     }
   }
 
