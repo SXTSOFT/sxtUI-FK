@@ -224,11 +224,12 @@
                   if(num.length > max) max = num.length;
                 }
               }
+              //console.log(nums)
               var values=[];
               for(var i=0;i<max;i++){
                 var temp=[];
                 for(var j=0;j<roles.length;j++){
-                  temp.push({Role:roles[j].Role,Value:nums[j][i],Status:m.MeasureStatus[j].Value});
+                  temp.push({Role:roles[j].Role,Value:nums[j]&&nums[j][i]||'',Status:m.MeasureStatus[j]&&m.MeasureStatus[j].Value});
                 }
                 values.push(temp);
               }
