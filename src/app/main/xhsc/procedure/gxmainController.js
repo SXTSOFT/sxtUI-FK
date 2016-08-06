@@ -312,7 +312,7 @@
             vm.uploadInfo.uploading =false;
           },{
             uploaded:function (cfg,row,result) {
-              cfg.db.delete(row._id);
+              cfg.db && cfg.db.delete(row._id);
             }
           });
 
