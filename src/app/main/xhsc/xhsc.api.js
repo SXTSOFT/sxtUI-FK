@@ -525,7 +525,7 @@
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentSectionExtractRegion',arg))
       },
       GetMeasureIndexMeasureInfo:function (regionId,itemId) {
-        return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfo',{RegionID:regionId,acceptanceIndexID:itemId}));
+        return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfoNew',{RegionID:regionId,acceptanceIndexID:itemId}));
       },
       query:$http.db({
           _id:'projects',
