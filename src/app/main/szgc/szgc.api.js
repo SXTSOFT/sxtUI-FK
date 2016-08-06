@@ -241,16 +241,12 @@
       },
       ProcProBatchRelationService:{
         getbyid: $http.db({
-          _id:'s_checkstep',
+          _id:'s_bathlist',
           dataType:3,
-          filter:function (item,id) {
-            return item.BatchRelationId==id;
-          }
+          idField:'Id'
         }).bind(function(id){
           return $http.get('/api/PPBatchRelation/' + id);
         },function (result) {
-          if(result.data.BatchRelationId){
-          }
           return result;
         }),
         getReport: function (regionTreeId,regionType) {
