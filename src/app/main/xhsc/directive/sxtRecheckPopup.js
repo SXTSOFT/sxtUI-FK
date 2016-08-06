@@ -95,7 +95,7 @@
               })
 
             })
-
+          scope.data.value.Status = 8;
           }
         });
       }
