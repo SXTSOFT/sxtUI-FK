@@ -557,7 +557,8 @@
               });
             }
             else{
-              db_save(cfg,args);
+              lodb.delete(args);
+              //db_save(cfg,args);
             }
             resolve(args);
           }
@@ -574,7 +575,8 @@
               });
             }
             else{
-              db_save(cfg,args);
+              lodb.addOrUpdate(args);
+              //db_save(cfg,args);
               resolve({data: {ErrorCode: 0, args: args,Data:args[0]}});
             }
           }
@@ -611,51 +613,26 @@
                 }
               }
               else{
-                var idIsFunction = angular.isFunction(cfg.idField),idFn = function (item) {
-                  return angular.isObject(item)? (idIsFunction ? cfg.idField(item) : item[cfg.idField]):item ;
-                };
-                db_findAll(cfg,function (item) {
-                  return idFn(item)==args[0];
-                }).then(function (r) {
-                  var item = r.rows[0];
-
-                  result.data = item;
+                lodb.get(args[0]).then(function (r) {
+                  result.data = r;
                   resolve(result);
-
                 });
               }
             }
             else {
-              if(cfg.selfDb) {
-                lodb.findAll(function (item) {
-                  if (cfg.filter)
-                    return cfg.filter.apply(cfg, [item].concat(args));
-                  return true;
-                }, cfg.search, args).then(function (r) {
-                  if (cfg.raiseError && !r.rows.length) {
-                    reject(result);
-                  }
-                  else {
-                    bindData(result, r.rows, cfg);
-                    resolve(result);
-                  }
-                });
-              }
-              else{
-                db_findAll(cfg,function (item) {
-                  if (cfg.filter)
-                    return cfg.filter.apply(cfg, [item].concat(args));
-                  return true;
-                }).then(function (r) {
-                  if (cfg.raiseError && !r.rows.length) {
-                    reject(result);
-                  }
-                  else {
-                    bindData(result, r.rows, cfg);
-                    resolve(result);
-                  }
-                });
-              }
+              lodb.findAll(function (item) {
+                if (cfg.filter)
+                  return cfg.filter.apply(cfg, [item].concat(args));
+                return true;
+              }, cfg.search, args).then(function (r) {
+                if (cfg.raiseError && !r.rows.length) {
+                  reject(result);
+                }
+                else {
+                  bindData(result, r.rows, cfg);
+                  resolve(result);
+                }
+              });
             }
           }
         });
@@ -701,7 +678,8 @@
                     }
                   }
                   else {
-                    db_save(cfg, result.data);
+                    lodb.addOrUpdate(result.data);
+                    //db_save(cfg, result.data);
                   }
                   resolve(result);
                 }
@@ -724,8 +702,9 @@
     }
 
     function initDb(cfg,args) {
+      if (cfg._id && cfg.db) return cfg.db;
       if(cfg.selfDb) {
-        if (cfg._id && cfg.db) return cfg.db;
+
         if (cfg._id)
           return (cfg.db = pouchdb(cfg._id));
         else if (cfg.db) {
@@ -735,7 +714,7 @@
         }
       }
       else{
-
+        return (cfg.db = new SingleDB(cfg));
       }
     }
 
@@ -776,24 +755,42 @@
     function SingleDB(cfg) {
       var self = this;
       self.cfg = cfg;
+      var idIsFunction = angular.isFunction(cfg.idField);
+      self.idFn = function (item) {
+        return angular.isObject(item)? (idIsFunction ? cfg.idField(item) : item[cfg.idField]) :item;
+      };
     }
     SingleDB.prototype.findAll = function (filter) {
       return db_findAll(this.cfg,filter);
     }
     SingleDB.prototype.delete = function (id) {
-      return db_save(this.cfg,[id]);
+      if(!angular.isArray(id))
+        id = [id];
+
+      return db_save({
+        _id:this.cfg._id,
+        delete:!0
+      },id,this.idFn);
     }
     SingleDB.prototype.addOrUpdate = function (items) {
       var cfg = this.cfg;
       if(cfg.dataType == 3)
-        return db_save(this.cfg,items);
+        return db_save(this.cfg,items,this.idFn);
 
-      if(!angular.isArray(item))
+      if(!angular.isArray(items))
         items = [items];
-      if(cfg.dataType == 1 ||cfg.upload || cfg.delete)
-        return db_save(cfg,items);
+      return db_save({_id:cfg._id,upload:!0},items,this.idFn);
+    }
+    SingleDB.prototype.get = function (id) {
+      var self = this;
+      return self.findAll(function (item) {
+        return self.idFn(item)==id;
+      }).then(function (r) {
+        return r.rows[0];
+      });
+    }
+    SingleDB.prototype.allDocs = function () {
 
-      return db_save(this.cfg,{rows:items});
     }
 
     function get_globalDb() {
@@ -817,11 +814,8 @@
         });
       })
     }
-    function db_save(cfg,result) {
+    function db_save(cfg,result,idFn) {
       var db = get_globalDb();
-      var idIsFunction = angular.isFunction(cfg.idField),idFn = function (item) {
-        return angular.isObject(item)? (idIsFunction ? cfg.idField(item) : item[cfg.idField]) :item;
-      };
       db.get(cfg._id).then(save_to).catch(save_to);
       function save_to(doc) {
         if (!doc||doc.error)
@@ -832,12 +826,12 @@
           });
         }
         else {
-          if(cfg.upload){
+          if(cfg.upload || cfg.dataType == 1){
             replace_db(result, doc.rows, idFn);
           }
-          else if (cfg.dataType == 1) {
+/*          else if (cfg.dataType == 1) {
             replace_db(result, doc.rows, idFn);
-          }
+          }*/
           else if (cfg.dataType == 3) {
             replace_db_single(result, doc.rows, idFn);
           }
