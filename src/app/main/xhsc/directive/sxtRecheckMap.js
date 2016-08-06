@@ -179,7 +179,7 @@
           }
         });
         scope.$watch('item',function () {
-          if(fg && scope.item && scope.item.ProblemID) {
+          if(fg) {
             if (scope.item) {
               fg.changeMode('inspect',scope.item);
             }

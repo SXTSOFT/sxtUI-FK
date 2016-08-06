@@ -70,11 +70,11 @@
                     result.data.forEach(function (r) {
                       tasks.push(function () {
                         return remote.Procedure.InspectionProblemRecordFile.query(r.ProblemRecordID).then(function (result) {
-                          result.data.forEach(function (f) {
-                            tasks.push(function () {
-                              return down('images',f.Id+'.jpg',f.FileUrl);
-                            })
-                          })
+                          //result.data.forEach(function (f) {
+                          //  tasks.push(function () {
+                          //    return down('images',f.Id+'.jpg',f.FileUrl);
+                          //  })
+                          //})
                         })
                       })
                     })
@@ -312,7 +312,7 @@
             vm.uploadInfo.uploading =false;
           },{
             uploaded:function (cfg,row,result) {
-              cfg.db.delete(row._id);
+              cfg.db && cfg.db.delete(row._id);
             }
           });
 
