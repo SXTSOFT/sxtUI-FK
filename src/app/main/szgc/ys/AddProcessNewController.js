@@ -781,7 +781,7 @@
 
       if ($scope.data.pics2.length == 0) {
         utils.alert('请上传验收照片');
-        //return;
+        return;
       }
       utils.confirm(null, '确认向验收批:' + $scope.data.curHistory.BatchNo + ' 添加新记录吗?').then(function () {
         $scope._save(addForm);

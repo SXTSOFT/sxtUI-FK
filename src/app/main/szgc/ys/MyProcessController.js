@@ -295,7 +295,7 @@
     $scope.requeryTasks();
     $scope.isOffline = function (item) {
       return !!$scope.project.offlines.find(function (t) {
-        return t._id.indexOf(item.project_item_id)!=-1;
+        return t.Id.indexOf(item.project_item_id)!=-1;
       });
     }
     $scope.download =function ($event,project,item) {
@@ -394,9 +394,9 @@
           return api.szgc.addProcessService.getBatchRelation({regionIdTree:idTree});
         },
         //检查项目
-        function () {
+/*        function () {
           return api.szgc.CheckStepService.cache(idTree);
-        },
+        },*/
         //专业
         function () {
           return api.szgc.vanke.skills({page_size:0,page_number:1});
@@ -498,7 +498,7 @@
         $scope.uploading =false;
       },{
         uploaded:function (cfg,row,result) {
-          cfg.db.delete(row._id);
+          cfg.db && cfg.db.delete(row);
         }
       });
     }
