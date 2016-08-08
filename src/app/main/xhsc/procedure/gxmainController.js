@@ -302,6 +302,7 @@
             },null);
             if (!tasks.length){
               utils.alert('上传完成');
+              return;
             }
             var errorNum=0;
             if (angular.isArray(tasks)){
@@ -315,8 +316,6 @@
               utils.alert('本次上传完成，成功'+(tasks.length-errorNum)+'个，失败'+errorNum+'个');
               return;
             }
-
-
             utils.alert('上传成功');
             load();
             vm.uploadInfo.tasks = [];

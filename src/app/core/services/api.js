@@ -414,7 +414,7 @@
                 next.r = true;
                 next();
               }
-            },options && options.timeout?options.timeout:3000);
+            },options && options.timeout?options.timeout:5000);
           }
         }
       }
