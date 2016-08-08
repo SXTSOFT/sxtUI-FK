@@ -18,10 +18,6 @@
       });
     });
 
-    //var clear= $rootScope.$on('preClear',);
-    //$scope.$on("$destroy",function(){
-    //  clear();
-    //});
     remote.Procedure.authorityByUserId().then(function(res){
       if (res&&res.data&&res.data.length){
         vm.role=res.data[0].MemberType;
@@ -69,7 +65,7 @@
         }
       ]
     }
-    vm.download = function (item) {
+    vm.downloadBase=function(item){
       item.downloading = true;
       item.progress = 0;
       var tasks = [];
@@ -77,31 +73,53 @@
         return $q(function (resolve) {
           item.pack = pack.sc.down(item);
           $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
-            //console.log(arguments);
             if(!item.pack)return;
             var p = item.pack.getProgress();
             item.progress = parseInt(p.progress);
             if(item.pack && item.pack.completed) {
               resolve();
             }
-
           })
         });
       });
       tasks = tasks.concat(projectTask(item.ProjectID));
+      api.task(tasks)(function (percent, current, total) {
+        item.progress = parseInt(percent * 100);
+      }, function () {
+        utils.alert('下载完成');
+      }, function () {
+        item.downloading = false;
+        utils.alert('下载失败,请检查网络');
+      },{timeout:20000})
+    }
+
+
+    vm.download = function (item) {
+      item.downloading = true;
+      item.progress = 0;
+      var tasks = [];
+      //tasks.push(function () {
+      //  return $q(function (resolve) {
+      //    item.pack = pack.sc.down(item);
+      //    $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
+      //      //console.log(arguments);
+      //      if(!item.pack)return;
+      //      var p = item.pack.getProgress();
+      //      item.progress = parseInt(p.progress);
+      //      if(item.pack && item.pack.completed) {
+      //        resolve();
+      //      }
+      //
+      //    })
+      //  });
+      //});
+      //tasks = tasks.concat(projectTask(item.ProjectID));
       tasks.push(function () {
         return remote.Assessment.getUserMeasureValue(item.ProjectID,1,item.AssessmentID,"Pack"+item.AssessmentID+"sc",sxt);
       });
       tasks.push(function () {
         return remote.Assessment.getUserMeasurePoint(item.ProjectID,1,"Pack"+item.AssessmentID+"point");
       });
-      //tasks.push(function(){
-      // return remote.Assessment.getAllMeasureReportData({
-      //    ProjectID:item.ProjectID,
-      //    RecordType:1,
-      //    RelationID:item.AssessmentID
-      //  })
-      //})
       api.task(tasks)(function (percent, current, total) {
         item.progress = parseInt(percent * 100);
       }, function () {
@@ -219,6 +237,11 @@
           });
 
           vm.projects=result.data;
+          vm.base=[];
+          vm.projects.forEach(function(o){
+            vm.base.push($.extend({},o));
+          })
+
         }
       }).catch(function () {
 
