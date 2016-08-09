@@ -20,7 +20,9 @@
         files: '='
       },
       template: '<div  style="color: red;padding-bottom: 0px;padding-left: 10px;padding-top: 0px;" ng-show="imgOK">上传成功!</div><div  style="color: red;" ng-show="imgFail">上传失败!</div> <div class="imageEdit"><div class="edititem"  ng-repeat="item in files" ><img style="height:150px;;margin:0 5px;" ng-src="{{item.Url|fileurl}}" class="img-thumbnail" /><div class="action"><md-button class="md-fab md-mini"  ng-if="edit"  ng-click="remove($event,item)"><md-icon md-font-icon="icon-delete" ></md-icon></md-button></div></div>\
-<div  style="float:left;padding:5px;" ng-if="edit"><div class="file-drop-zone" style="height:140px;margin:0 5px;line-height:140px; padding:5px;border-width:1px;" ng-click ="inputChange()"; >\
+<div  style="float:left;padding:5px;" ng-if="edit"><div class="file-drop-zone" layout="column" layout-align="space-around center" style="height:140px;margin:0 5px;line-height:140px; padding:5px;border-width:1px;" >\
+<md-button ng-click ="inputChange(0)" class="md-raised">照片库</md-button>\
+<md-button ng-click ="inputChange(1)" class="md-raised">拍照</md-button>\
         </div>\
 </div></div>',
       link: function (scope, element, attrs, ngModel) {
@@ -37,11 +39,11 @@
               },null)
             });
           }
-          scope.inputChange = function() {
+          scope.inputChange = function(s) {
             $cordovaCamera.getPicture({
               quality: 50,
               destinationType: 0,
-              sourceType: 0,
+              sourceType: s,
               allowEdit: false,
               encodingType: 0,
               saveToPhotoAlbum: true,

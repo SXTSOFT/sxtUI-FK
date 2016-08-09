@@ -312,6 +312,9 @@
             }
           };
         }),
+        GetGroupLike: function (preGroup) {
+          return $http.get($http.url('/api/Files/GetGroupLike', { preGroup: preGroup }));
+        },
         post:$http.db({
           _id:'s_files',
           idField:'Id',
