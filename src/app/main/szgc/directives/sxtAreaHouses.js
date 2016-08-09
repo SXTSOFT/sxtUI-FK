@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Created by jiuyuong on 2016/5/19.
  */
 (function () {
@@ -8,7 +8,7 @@
     .module('app.szgc')
     .directive('sxtAreaHouses',sxtAreaHousesDirective);
   /** @ngInject */
-  function sxtAreaHousesDirective (sxt, api,$timeout) {
+  function sxtAreaHousesDirective (sxt, api,$timeout,$q) {
     return {
       scope: {
         param: '=',
@@ -42,7 +42,13 @@
             var regionId = scope.param.idTree.replace(/\>/g,'-').replace('sub-', ''),
               bid = regionId.split('-')[1],
               type = scope.param.item.type;
-            api.szgc.FilesService.group(bid + '-' + type).then(function (r) {
+
+            $q.all([
+              api.szgc.FilesService.group(bid + '-' + type),
+              api.szgc.FilesService.GetGroupLike(regionId),
+              api.szgc.FilesService.GetGroupLike('sub-'+regionId)
+            ]).then(function (rs) {
+              var r = rs[0];
               var fs = r.data.Files[0];
               if (fs) {
                 var map, layer, apiLayer, drawControl, itemId=[];
@@ -103,7 +109,14 @@
                             if (layer instanceof L.Rectangle || layer instanceof L.Polygon) {
                               layer.setStyle({
                                 color: '#ff0000',
-                                stroke: false,
+                                stroke: true,
+                                opacity: 0.5,
+                                dashArray: rs[1].data.Rows.find(function (r) {
+                                  return r.GroupId.indexOf(layer.options.itemId) != -1
+                                }) || rs[2].data.Rows.find(function (r) {
+                                  return r.GroupId.indexOf(layer.options.itemId) != -1
+                                }) ? null : '1 1',
+                                weight: 1,
                                 fillOpacity: 0.2
                               });
                               groupLayer.push(layer);
@@ -112,6 +125,11 @@
                               layer.setStyle({
                                 color: '#ff0000',
                                 stroke: true,
+                                dashArray: rs[1].data.Rows.find(function (r) {
+                                  return r.GroupId.indexOf(layer.options.itemId) != -1
+                                }) || rs[2].data.Rows.find(function (r) {
+                                  return r.GroupId.indexOf(layer.options.itemId) != -1
+                                }) ? null : '5 2',
                                 fillOpacity: 0.2
                               });
                             }
@@ -208,7 +226,6 @@
                     itemId.splice(itemId.indexOf(curId), 1);
                     itemId.push(curClick.options.itemId);
                   }
-                  console.log(itemId)
                   if (curClick) {
                     //itemId = curClick.options.itemId;
                     curClick.setStyle({
@@ -269,7 +286,10 @@
                                       g.options.t = '轻钢龙骨';
                                       break;
                                     case '5':
-                                      g.options.t = '天花';
+                                                                            g.options.t = '吊顶';
+                                                                            break;
+                                                                        case '6':
+                                                                            g.options.t = '砌筑';
                                       break;
                                   }
                                   g.options.stroke = false;
