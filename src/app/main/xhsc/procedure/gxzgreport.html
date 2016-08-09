@@ -37,7 +37,7 @@
         <th>验收人员</th>
         <th>{{vm.result.SupervisionCollectName}}</th>
         <th>验收时间</th>
-        <th></th>
+        <th>{{vm.result.SupervisionTime}}</th>
       </tr>
       <tr>
         <th>建设单位</th>
@@ -47,7 +47,7 @@
         <th>验收人员</th>
         <th></th>
         <th>验收时间</th>
-        <th></th>
+        <th>{{vm.result.CompanyTime}}</th>
       </tr>
       <tr>
         <th>验收意见</th>
@@ -116,7 +116,7 @@
               </tr>
             </tbody>
             <tbody  ng-repeat="item in items.Classification" ng-if="item.Children.length">
-              <tr ng-repeat="i in item.Children">
+              <tr ng-repeat="i in item.Children" ng-class="{'biaozhu':i.Inspection == '不符合'}">
                 <td  width="12.5%">{{i.ProblemSortName}}</td>
                 <td rowspan="{{item.rowspan}}" ng-if="$index == 0"  width="12.5%">{{item.ClassificationName}}</td>
                 <td  width="12.5%">{{i.PointName}}</td>
