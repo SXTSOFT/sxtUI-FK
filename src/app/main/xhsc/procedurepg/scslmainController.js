@@ -98,22 +98,6 @@
       item.downloading = true;
       item.progress = 0;
       var tasks = [];
-      //tasks.push(function () {
-      //  return $q(function (resolve) {
-      //    item.pack = pack.sc.down(item);
-      //    $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
-      //      //console.log(arguments);
-      //      if(!item.pack)return;
-      //      var p = item.pack.getProgress();
-      //      item.progress = parseInt(p.progress);
-      //      if(item.pack && item.pack.completed) {
-      //        resolve();
-      //      }
-      //
-      //    })
-      //  });
-      //});
-      //tasks = tasks.concat(projectTask(item.ProjectID));
       tasks.push(function () {
         return remote.Assessment.getUserMeasureValue(item.ProjectID,1,item.AssessmentID,"Pack"+item.AssessmentID+"sc",sxt);
       });
@@ -166,6 +150,7 @@
     }
     vm.upload =function (item) {
       item.uploading = true;
+      item.progress=0;
       remote.Project.getMap(item.ProjectID).then(function (result) {
           if(result.data&&result.data.length){
             var pk = pack.sc.up(item.AssessmentID);
@@ -177,13 +162,12 @@
                   remote.Assessment.sumReportTotal(item.AssessmentID).then(function(){
                     xcpk.addOrUpdate(vm.data);
                     item.progress = 100;
-                    //utils.tips('同步完成');
                     utils.alert('同步完成');
-                    item.uploading = true;
+                    item.uploading = false;
                   })
                 else {
-                  utils.alert('同步未完成');
-                  item.uploading = true;
+                  utils.alert('同步发生错误,未完成!');
+                  item.uploading = false;
                 }
               }
             });
@@ -247,9 +231,7 @@
 
       });
     }
-    //$rootScope.$on('clearDbSuccess',function(event){
-    //  xcpk.destroy();
-    //})
+
     vm.go=function(item,isReport){
 
       function callBack(r){

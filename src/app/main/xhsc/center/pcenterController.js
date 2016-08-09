@@ -33,6 +33,8 @@
             case 2:
               vm.user.role='监理';
                   break;
+            case 4:
+              vm.user.role="项目部";
           }
       }
     });

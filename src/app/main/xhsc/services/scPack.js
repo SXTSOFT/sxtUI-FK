@@ -32,13 +32,7 @@
                 url:'/Api/ProjectInfoApi/GetRegionTreeInfo?AreaID='+item.ProjectID,
                 type:'data',
                 item:angular.copy(item)
-              },
-              /*{
-                _id:'GetDrawingByAreaID',
-                name:'获取区域图纸',
-                url:'/Api/ProjectInfoApi/GetDrawingByAreaID?AreaID='+item.ProjectID,
-                type:'data'
-              }, */{
+              },{
                 _id:'GetBaseMeasure',
                 name:'获取实测项',
                 url:'/api/MeasureInfo/GetBaseMeasure',
