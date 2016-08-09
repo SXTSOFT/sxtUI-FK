@@ -21,7 +21,7 @@
 
         <div md-virtual-repeat="item in vm.Rows" class="repeated-item" flex>
           <div style="width:880px;height: 40px;">
-            <div style=" position: relative;height: 40px;" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">
+            <div style=" position: relative;height: 40px;" ui-sref="app.szgc.project.view({bathid:item.Id})">
               <span style="width:120px;display: inline-block;white-space: nowrap;overflow:hidden;padding-right: 5px;text-overflow:ellipsis;">{{ item.RegionNameTree}} {{item.RegionName}}</span>
               <span style="width:80px;display: inline-block;white-space: nowrap;overflow:hidden;text-overflow:ellipsis;">{{item.ProcedureName}}</span>
               <span style="width:55px;display: inline-block;text-align: center;">{{item.GrpWokerName | filterGrpWokerName}}</span>

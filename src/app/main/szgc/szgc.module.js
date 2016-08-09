@@ -136,8 +136,13 @@
           }
         }
       })
+      .state('app.szgc.project.view', {
+        title :'查看详细',
+        url: '/{bathid}',
+        controller: 'viewBathDetailController as vm',
+        templateUrl: 'app/main/szgc/report/viewBathDetail-app-go.html'
+      })
       .state('app.szgc.yhyd',{
-        noBack:true,
         url   :'/home/yhyd/{pid}/{pname}/{idTree}/{type}/{seq}',
         //url:'/home/yhyd/{regionId}/{regionType}/{roomType}/{procedureId}/{regionName}',
         views :{
@@ -148,7 +153,6 @@
         }
       })
       .state('app.szgc.yhyd.records',{
-        noBack:true,
         url   :'/records',
         //url:'/home/yhyd/{regionId}/{regionType}/{roomType}/{procedureId}/{regionName}',
         views :{
@@ -205,7 +209,6 @@
         templateUrl: 'app/main/szgc/report/ybgcyhyd.html'
       })
       .state('app.szgc.report.viewBath.view', {
-        noBack:true,
         title :'查看详细',
         url: '/{bathid}',
         controller: 'viewBathDetailController as vm',
@@ -308,7 +311,6 @@
         templateUrl: 'app/main/szgc/ys/addProcess-app.html'
       })
       .state('app.szgc.ys.addnew', {
-        noBack:true,
         title:'添加验收',
         url: '/newadd/{projectid}/{name}/{batchId}/{procedureTypeId}/{procedureId}/{type}/{idTree}/{procedureName}/{nameTree}/{flag}',
         controller: 'AddProcessNewController as vm',
