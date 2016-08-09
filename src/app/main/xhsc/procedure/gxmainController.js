@@ -295,28 +295,40 @@
             vm.uploadInfo.percent = parseInt(percent *100) +' %';
             vm.uploadInfo.current = current;
             vm.uploadInfo.total = total;
-          },function () {
+          },function (tasks) {
             vm.uploadInfo.uploaded = 1;
             api.uploadTask(function () {
               return true
             },null);
+            if (!tasks.length){
+              utils.alert('上传完成');
+              return;
+            }
+            var errorNum=0;
+            if (angular.isArray(tasks)){
+                tasks.forEach(function(t){
+                    if (!t.isSuccess){
+                        errorNum++;
+                    }
+                });
+            }
+            if (errorNum>0||!tasks.length){
+              utils.alert('本次上传完成，成功'+(tasks.length-errorNum)+'个，失败'+errorNum+'个');
+              return;
+            }
+            utils.alert('上传成功');
             load();
-            utils.alert('上传完成');
             vm.uploadInfo.tasks = [];
             vm.uploadInfo.uploading= false;
-
-
           },function () {
             vm.uploadInfo.uploaded = 0;
-            utils.alert('上传失败');
+            //utils.alert('上传失败');
             vm.uploadInfo.uploading =false;
           },{
             uploaded:function (cfg,row,result) {
               cfg.db && cfg.db.delete(row._id);
             }
           });
-
-
         }],
         template: '<md-dialog aria-label="正在上传"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在上传：{{uploadInfo.percent}}({{uploadInfo.current}}/{{uploadInfo.total}})</p></md-dialog-content></md-dialog>',
         parent: angular.element(document.body),

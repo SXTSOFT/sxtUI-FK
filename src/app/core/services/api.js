@@ -1,4 +1,4 @@
-﻿﻿
+﻿
 (function(){
   'use strict';
 
@@ -393,6 +393,7 @@
               run(i + 1, progress, success, fail, options);
             };
             fn(tasks,donwfile).then(function () {
+              fn.isSuccess=true;
               if(d && !next.r) {
                 d = 0;
                 next.r = true;
@@ -413,7 +414,7 @@
                 next.r = true;
                 next();
               }
-            },options && options.timeout?options.timeout:3000);
+            },options && options.timeout?options.timeout:5000);
           }
         }
       }

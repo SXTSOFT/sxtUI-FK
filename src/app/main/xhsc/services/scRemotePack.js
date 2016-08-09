@@ -27,8 +27,6 @@
     }
     Pack.prototype.upload = function (process) {
       var self = this;
-      if(self.isUp)return;
-      self.isUp = true;
       self.tasks = [];
       var when=[],dbs=[];
       for(var k in self){
@@ -58,6 +56,8 @@
           return s1.index - s2.index;
         });
         self.upTask(process);
+      }).catch(function(error){
+        console.log(error);
       });
     };
     Pack.prototype.getNexts = function (process) {
@@ -91,12 +91,18 @@
       var self = this,
         tasks = self.getNexts(process);
       if(!tasks.length){
-        self.isUp = false;
+        //self.isUp = false;
         self.completed = !self.tasks.find(function (t) {
           return !t.completed;
         });
+        if(self.completed){
+          self.clear().then(function(){
+            self.initDB();
+            process && process(-1);
+          });
+          return;
+        }
         process && process(-1);
-        return;
       }
 
       var url=tasks[0].url,
@@ -118,11 +124,15 @@
         tasks.forEach(function (item) {
           data.push(item.data);
         });
-        $http.post(url,data).then(function () {
-          tasks.forEach(function (task) {
-            task.completed = true;
-          });
-          self.upTask(process);
+        $http.post(url,data).then(function (r) {
+          if (r&& r.data&&! r.data.ErrorCode){
+            tasks.forEach(function (task) {
+              task.completed = true;
+            });
+            self.upTask(process);
+          }else {
+            process && process(-1);
+          }
         }).catch(function (err) {
           tasks.forEach(function (task) {
             task.try = (task.try||0)+1;
@@ -131,7 +141,33 @@
         });
       }
     }
-
+    Pack.prototype.clear=function(){
+      var self=this;
+      var p=[];
+      for(var k in self){
+        if(self.hasOwnProperty(k)) {
+          var m = self[k];
+          if (m.db) {
+            p.push(m.db.destroy());
+            m.db = db('Pack'+self._id+k);
+          }
+        }
+      }
+      return $q.all(p);
+    }
+    Pack.prototype.initDB=function(){
+      var self=this;
+      //var p=[];
+      for(var k in self){
+        if(self.hasOwnProperty(k)) {
+          var m = self[k];
+          if (m.db) {
+            m.db = db('Pack'+self._id+k);
+          }
+        }
+      }
+      //return $q.all(p);
+    }
     var o = {
       packages:{},
       pack:function (config) {
