@@ -12,6 +12,7 @@
       restrict: 'E',
       scope: {
         regionId: '=',
+        regionTree:'=',
         itemId: '=',
         itemName:'='
       },
@@ -25,9 +26,9 @@
       link: function (scope, element, attr, ctrl) {
         scope.$watch("itemId", function () {
           if (scope.regionId && scope.itemId) {
-            var regionId = scope.regionId.replace(/\>/g,'-').replace('sub-',''),
+            var regionId = scope.regionTree.replace(/\>/g,'-').replace('sub-','')+'-'+scope.regionId,
               fs;
-            api.szgc.FilesService.group(regionId + '-' + scope.itemId).then(function (r) {
+            api.szgc.FilesService.group( regionId + '-' + scope.itemId).then(function (r) {
               fs = [].concat(r.data.Files);
               api.szgc.FilesService.group('sub-' + regionId + '-' + scope.itemId).then(function (r) {
                 fs = fs.concat(r.data.Files);

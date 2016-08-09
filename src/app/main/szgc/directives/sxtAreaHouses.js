@@ -268,7 +268,6 @@
                             if (project && project.AreaRemark) {
                               try {
                                 var d = JSON.parse(project.AreaRemark);
-                                console.log('d', d);
                                 d.features.forEach(function (g) {
                                   //if (g.geometry.type == 'Polygon') {
                                   g.options.p = m;
@@ -286,10 +285,10 @@
                                       g.options.t = '轻钢龙骨';
                                       break;
                                     case '5':
-                                                                            g.options.t = '吊顶';
-                                                                            break;
-                                                                        case '6':
-                                                                            g.options.t = '砌筑';
+                                      g.options.t = '吊顶';
+                                      break;
+                                    case '6':
+                                      g.options.t = '砌筑';
                                       break;
                                   }
                                   g.options.stroke = false;
