@@ -531,9 +531,10 @@ md-content{
   }
 }
 .dingw{
-    background: url('main/szgc/images/dw.png') no-repeat left center;
+    background: url('../app/main/szgc/images/dw.png') no-repeat left center;
     background-size: auto 20px;
     padding-left:20px;
     margin-right:10px;
+  white-space: nowrap;
 }
 

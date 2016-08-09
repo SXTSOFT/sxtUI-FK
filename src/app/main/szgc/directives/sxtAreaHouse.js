@@ -141,7 +141,7 @@
           }
           if(apiLayer && map)
             map.removeLayer(apiLayer);
-          
+
           if (!scope.files || !scope.files.length) return;
 
 
@@ -293,7 +293,7 @@
                       //$scope.photo ();
                     },
                     template: '<md-dialog aria-label="添加拍照"  ng-cloak><form><md-toolbar ><div class="md-toolbar-tools"><h2>{{title || \'拍照\'}}</h2></div></md-toolbar>\
-               <md-dialog-content><div class="md-dialog-content" >\
+               <md-dialog-content>\
                 <fieldset>\
                     <legend>总体</legend>\
                     <sxt-images edit="true" ng-model="project.fid" single="true"></sxt-images>\
@@ -302,7 +302,6 @@
                   <legend>细部</legend>\
                   <sxt-images edit="true" ng-model="project.sid"></sxt-images>\
                   </fieldset>\
-                </div>\
                </md-dialog-content>\
                 <md-dialog-actions layout="row" style="border-top:solid 2px red">\
               <span flex></span>\

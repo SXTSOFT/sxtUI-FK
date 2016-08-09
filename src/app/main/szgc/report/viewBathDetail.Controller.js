@@ -8,9 +8,24 @@
     .controller('viewBathDetailController',viewBathDetailController);
   function viewBathDetailController($scope,api,$stateParams,utils,$q,$state,$mdDialog) {
 
+    $stateParams.bathid = $stateParams.bathid||$stateParams.bathId;
     var vm = this;
     vm.back = function(){
       $state.go('app.szgc.report.viewBath')
+    }
+    vm.isPartner = api.szgc.vanke.isPartner(1);
+    vm.goAdd = function () {
+      $state.go('app.szgc.ys.addnew',{
+        projectid:$scope.titol.regionId,
+        name:$scope.titol.RegionName,
+        batchId:$stateParams.bathid,
+        //procedureTypeId:project.procedureTypeId,
+        procedureId:$scope.titol.ProcedureId,
+        //type:project.type,
+        idTree:$scope.titol.RegionIdTree,
+        procedureName:$scope.titol.ProcedureName,
+        nameTree:$scope.titol.RegionNameTree
+      });
     }
     var newItem = function(name) {
       return {
