@@ -119,6 +119,12 @@
       var n = parseInt(/[-]?\d+/.exec(str));
       return n;
     };
+    $scope.$watch('vm.project.idTree',function () {
+      //console.log('vm.project.type',vm.project.type);
+      if(vm.project.type==8){
+        vm.search();
+      }
+    })
     vm.search =function () {
       vm.searBarHide=true;
       if (vm.project.type == '8') {
