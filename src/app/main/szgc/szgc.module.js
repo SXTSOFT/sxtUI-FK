@@ -212,7 +212,7 @@
         title :'查看详细',
         url: '/{bathid}',
         controller: 'viewBathDetailController as vm',
-        templateUrl: 'app/main/szgc/report/viewBathDetail-app.html'
+        templateUrl: 'app/main/szgc/report/viewBathDetail-app-go.html'
       })
 
       .state('app.szgc.report.batchCount', {
