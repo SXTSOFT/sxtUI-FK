@@ -457,19 +457,17 @@
         } else if (item.RoleId == "eg") {
           $scope.egTitol = item;
         }
-
       });
 
       api.szgc.addProcessService.getAll($stateParams.bathid, {status: 4}).then(function(result){
         var group = [],
-          gk = {},
-                        eg,zb;
+          gk = {},eg,zb;
         result.data.Rows.forEach(function(item) {
           var g = gk[item.CheckStepId];
           if (!g) {
             g = gk[item.CheckStepId] = [];
-                            if (item.RoleId == 'eg' || item.RoleId == '3rd') eg = g;
-                            else if (item.RoleId == 'zb') zb = g;
+            if (item.RoleId == 'eg' || item.RoleId == '3rd') eg = g;
+            else if (item.RoleId == 'zb') zb = g;
             else if (!$scope.data.jl) {
               $scope.data.jl = item.CheckWorker;
               $scope.data.jldate = item.CreatedTime;
@@ -503,8 +501,7 @@
 
                 it.FHL = eg && eg[i] && fhl(it.PassRatio, it.VKPassRatio);
                 it.ZBFHL = zb && zb[i] && fhl(it.ZbPassRatio, it.PassRatio);
-              }
-              ;
+              };
               i++;
             });
             jl.push({
@@ -514,31 +511,65 @@
             });
           }
         });
+        if(!jl.length){
+          group.forEach(function (item) {
+            if(item[0].RoleId=='zb'){
+              jl.push({
+                ix: jl.length + 1,
+                text: '第' + (jl.length + 1) + '次',
+                d: bingTargets(item)
+              });
+              item.forEach(function(it) {
+                if (it.TargetTypeId != '018C0866-1EFA-457B-9737-7DCEFEA148F6') {
+
+                  it.ZbPassRatio= it.PassRatio;
+                  it.PassRatio='';
+                  it.CheckNum='';
+                  it.MaxDeviation='';
+                  
+
+                  //it.FHL = eg && eg[i] && fhl(it.PassRatio, it.VKPassRatio);
+                  //it.ZBFHL = zb && zb[i] && fhl(it.ZbPassRatio, it.PassRatio);
+                }
+              });
+            }
+          })
+        }
         //console.log('j1',jl)
         jl.forEach(function(item) {
           item.step = cbr.data.Rows.find(function(it) {
             return it.RoleId == 'jl' && it.CheckNo == item.ix;
           });
           item.eg = eg ? cbr.data.Rows.find(function(it) {
-                            return it.RoleId != 'jl' && it.CheckNo == eg[0].HistoryNo;
+            return it.RoleId != 'jl' && it.CheckNo == eg[0].HistoryNo;
           }) : null;
-          if(item.eg && !item.eg.load) {
-            item.eg.load = true;
-            api.szgc.addProcessService.getAllCheckDataValue(item.eg.Id).then(function (result) {
-              item.eg.yb = [];
-              eg.forEach(function (yb) {
+          item.zb = zb ? cbr.data.Rows.find(function(it) {
+            return it.RoleId == 'zb' && it.CheckNo == zb[0].HistoryNo;
+          }) : null;
+
+          if(!item.load) {
+            item.load = true;
+            $q.all([
+              item.eg?api.szgc.addProcessService.getAllCheckDataValue(item.eg.Id):$q(function(r){r()}),
+              item.zb?api.szgc.addProcessService.getAllCheckDataValue(item.zb.Id):$q(function(r){r()})
+            ]).then(function (rs) {
+              (item.eg = item.eg||{}).yb = [];
+              (item.zb = item.zb||{}).yb = [];
+              (zb||eg).forEach(function (yb) {
                 if(yb.TargetTypeId != '018C0866-1EFA-457B-9737-7DCEFEA148F6') { //不是主控
                   var jlyb = item.d.yb.find(function (jl) {
                     return jl.TargetId == yb.TargetId;
                   });
-                  yb.points = [];
+                  //yb.points = [];
                   jlyb.egPoints = [];
+                  jlyb.zbPoints = [];
                   item.eg.yb.push(yb);
+
                   var row = [];
-                  result.data.Rows.forEach(function (item) {
+                  rs[0] && rs[0].data.Rows.forEach(function (item) {
                     if (yb.Id == item.CheckDataId) {
                       if (row.length == 20) {
-                        yb.points.push(row)
+                        //yb.points.push(row)
                         jlyb.egPoints.push(row);
                         row = [];
                         row.push(item);
@@ -556,12 +587,37 @@
                       len++;
                     }
                     jlyb.egPoints.push(row);
-                    //yb.points.push(row);
+                  }
+
+                  row = [];
+                  rs[1] && rs[1].data.Rows.forEach(function (item) {
+                    if (yb.Id == item.CheckDataId) {
+                      if (row.length == 20) {
+                        //yb.points.push(row)
+                        jlyb.zbPoints.push(row);
+                        row = [];
+                        row.push(item);
+                      } else {
+                        row.push(item);
+                      }
+                    }
+                  });
+                  if (row.length > 0) {
+                    var len = row.length;
+                    while (len < 20) {
+                      row.push({
+                        Value: ""
+                      });
+                      len++;
+                    }
+                    jlyb.zbPoints.push(row);
                   }
                 }
               });
             })
           }
+
+
           item.text += '/共' + jl.length + '次'
         });
 

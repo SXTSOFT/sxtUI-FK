@@ -67,12 +67,13 @@
         </div>
         <p ng-if="vm.norecords" style="text-align: center;font-size: 1.3rem;margin-top: 10px ;">暂无数据</p>
         </md-virtual-repeat-container>
-    </md-content>
-  <div style="position: absolute; top:0px; right:0px;">
-    <md-button class="md-fab md-mini" ng-show="!vm.searBarHide && vm.isJdBack()" ng-click="vm.backJdSelect()">
-    <md-icon md-font-icon="icon-arrow-left"></md-icon>
-  </md-button>
-    <toggle-menu inst="vm.searBarHide" ng-show="vm.is('app.szgc.report.viewBath')"></toggle-menu>
+      <div style="position: absolute; top:0px; right:0px;">
+        <md-button class="md-fab md-mini" ng-show="!vm.searBarHide && vm.isJdBack()" ng-click="vm.backJdSelect()">
+          <md-icon md-font-icon="icon-arrow-left"></md-icon>
+        </md-button>
+        <toggle-menu inst="vm.searBarHide" ng-show="vm.is('app.szgc.report.viewBath')"></toggle-menu>
 
-  </div>
+      </div>
+    </md-content>
+
 <md-content ui-view flex ng-if="!vm.is('app.szgc.report.viewBath')"></md-content>
