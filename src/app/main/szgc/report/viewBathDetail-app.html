@@ -141,7 +141,7 @@
                                     <td colspan="{{data.selected.d.yb[0].names.length+2}}"></td>
                                     <!--<td style="width:150px" align="center"></td>-->
                                     <td align="center" colspan="8">主控：{{zkIsOk(data.selected.d.zk)?"合格":"不合格"}} &nbsp;&nbsp;
-                                    一般：{{ybIsOk(data.selected.d.yb)?"合格":"不合格"}}({{ybHGL(data.selected.d.yb)}}) &nbsp;&nbsp; 
+                                    一般：{{ybIsOk(data.selected.d.yb)?"合格":"不合格"}}({{ybHGL(data.selected.d.yb)}}) &nbsp;&nbsp;
                                      总体({{ybHGLPJ(data.selected.d.yb)|number:2}}) &nbsp;&nbsp;
                                      结果：{{zkIsOk(data.selected.d.zk)&&ybIsOk(data.selected.d.yb)?"合格":"不合格"}}
                                     </td>
@@ -158,7 +158,7 @@
     <div>
       <fieldset >
           <legend style="margin-bottom: 10px;">原验收表扫描件或验收结果列表</legend>
-          <div ng-if="vm.showData" style="margin-bottom: 10px;">
+          <div ng-if="vm.isShow" style="margin-bottom: 10px;">
             <p style="font-size:20px;">
               监理检查记录
             </p>

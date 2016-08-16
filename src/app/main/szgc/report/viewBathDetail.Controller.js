@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Created by guowei on 2016/2/2.
  */
 (function(){
@@ -463,12 +463,13 @@
       api.szgc.addProcessService.getAll($stateParams.bathid, {status: 4}).then(function(result){
         var group = [],
           gk = {},
-          eg;
+                        eg,zb;
         result.data.Rows.forEach(function(item) {
           var g = gk[item.CheckStepId];
           if (!g) {
             g = gk[item.CheckStepId] = [];
-            if (item.RoleId != 'jl') eg = g;
+                            if (item.RoleId == 'eg' || item.RoleId == '3rd') eg = g;
+                            else if (item.RoleId == 'zb') zb = g;
             else if (!$scope.data.jl) {
               $scope.data.jl = item.CheckWorker;
               $scope.data.jldate = item.CreatedTime;
@@ -477,7 +478,10 @@
           }
           g.push(item);
         });
+
         var jl = [];
+        $scope.data.zb = zb && zb[0].CheckWorker;
+                    //$scope.data.zbFll = eg && eg[0].CreatedTime;
         $scope.data.vk = eg && eg[0].CheckWorker;
         $scope.data.vkdate = eg && eg[0].CreatedTime;
         group.forEach(function(item) {
@@ -485,9 +489,22 @@
             var i = 0;
             item.forEach(function(it) {
               if (it.TargetTypeId != '018C0866-1EFA-457B-9737-7DCEFEA148F6') {
-                it.VKPassRatio = eg && eg[0].PassRatio;
-                it.FHL = eg && fhl(it.PassRatio, it.VKPassRatio);
-              };
+                // console.log("eg[i].PassRatio", eg);
+                if (eg && eg[i]) {
+                  it.VKPassRatio = (eg[i].PassRatio == 0) ? '' : eg[i].PassRatio;
+                } else {
+                  it.VKPassRatio = ''
+                }
+                if (zb && zb[i]) {
+                  it.ZbPassRatio = (zb[i].PassRatio == 0) ? '' : zb[i].PassRatio;
+                } else {
+                  it.ZbPassRatio = ''
+                }
+
+                it.FHL = eg && eg[i] && fhl(it.PassRatio, it.VKPassRatio);
+                it.ZBFHL = zb && zb[i] && fhl(it.ZbPassRatio, it.PassRatio);
+              }
+              ;
               i++;
             });
             jl.push({
@@ -503,7 +520,7 @@
             return it.RoleId == 'jl' && it.CheckNo == item.ix;
           });
           item.eg = eg ? cbr.data.Rows.find(function(it) {
-            return it.RoleId != 'jl';
+                            return it.RoleId != 'jl' && it.CheckNo == eg[0].HistoryNo;
           }) : null;
           if(item.eg && !item.eg.load) {
             item.eg.load = true;
@@ -511,13 +528,36 @@
               item.eg.yb = [];
               eg.forEach(function (yb) {
                 if(yb.TargetTypeId != '018C0866-1EFA-457B-9737-7DCEFEA148F6') { //不是主控
+                  var jlyb = item.d.yb.find(function (jl) {
+                    return jl.TargetId == yb.TargetId;
+                  });
                   yb.points = [];
+                  jlyb.egPoints = [];
                   item.eg.yb.push(yb);
+                  var row = [];
                   result.data.Rows.forEach(function (item) {
                     if (yb.Id == item.CheckDataId) {
-                      yb.points.push(item);
+                      if (row.length == 20) {
+                        yb.points.push(row)
+                        jlyb.egPoints.push(row);
+                        row = [];
+                        row.push(item);
+                      } else {
+                        row.push(item);
+                      }
                     }
-                  })
+                  });
+                  if (row.length > 0) {
+                    var len = row.length;
+                    while (len < 20) {
+                      row.push({
+                        Value: ""
+                      });
+                      len++;
+                    }
+                    jlyb.egPoints.push(row);
+                    //yb.points.push(row);
+                  }
                 }
               });
             })
@@ -555,29 +595,44 @@
         })
       }
       $scope.$watch('data.selected',function () {
-        if($scope.data.selected && $scope.data.selected.d){
+        if ($scope.data.selected && $scope.data.selected.d) {
           var s = $scope.data.selected;
-          if(!s.load){
+          if (!s.load) {
             s.load = true;
             api.szgc.addProcessService.getAllCheckDataValue(s.step.Id).then(function (result) {
-              if(result.data.Rows.length){
-                vm.showData = true;
+              if (result.data.Rows.length) {
+                $scope.isShow = true;
               }
               s.d.yb.forEach(function (yb) {
-                yb.points=[];
+                var row = [];
+                yb.points = [];
                 result.data.Rows.forEach(function (item) {
-                  if(yb.Id==item.CheckDataId){
-                    yb.points.push(item);
+                  if (yb.Id == item.CheckDataId) {
+                    if (row.length == 20) {
+                      yb.points.push(row)
+                      row = [];
+                      row.push(item);
+                    } else {
+                      row.push(item);
+                    }
+
                   }
                 })
+                if (row.length > 0) {
+                  var len = row.length;
+                  while (len < 20) {
+                    row.push({
+                      Value: ""
+                    });
+                    len++;
+                  }
+                  yb.points.push(row);
+                }
               });
             })
           }
         }
-      })
-
+      });
     });
-
-
   }
 })();

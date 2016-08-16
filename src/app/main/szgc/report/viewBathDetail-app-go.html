@@ -158,7 +158,7 @@
     <div>
       <fieldset >
           <legend style="margin-bottom: 10px;">原验收表扫描件或验收结果列表</legend>
-          <div ng-if="vm.showData" style="margin-bottom: 10px;">
+          <div ng-if="vm.isShow" style="margin-bottom: 10px;">
             <p style="font-size:20px;">
               监理检查记录
             </p>
@@ -197,7 +197,7 @@
 
 
 </div>
-<div style="position: fixed; top:112px; right:0px;">
+<div style="position: fixed; top:93px; right:0px;">
   <md-button class="md-fab md-mini" ng-if="!vm.isPartner"  ng-click="vm.goAdd()">
     抽验
   </md-button>
