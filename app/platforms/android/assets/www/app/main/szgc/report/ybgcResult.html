@@ -1,0 +1,26 @@
+<md-content flex layout="column" ng-show="!vm.searBarHide" class="menu-toggle-list">
+    <div flex style="overflow: auto">
+    <sxt-projects-jd ng-model="vm.project.pid" object-scope="vm"  region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" on-queryed="vm.project.onQueryed">
+    </sxt-projects-jd>
+    <div class="md-padding" layout="row">
+
+      <md-button type="submit" flex ng-click="vm.searBarHide=true"  class="md-raised md-primary"> 确定  </md-button>
+    </div></div>
+</md-content>
+<md-content flex ng-show="vm.searBarHide" layout="column" id="ybgc">
+  <md-virtual-repeat-container flex id="vertical-container" style="height: 800px;">
+    <div layout="row" style="border-bottom: 1px solid #d8d8d8">
+      <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: inline-block;text-align: center" flex>部位</span>
+      <span style="width: 100px;display: inline-block;text-align: center">拍摄时间</span>
+      <span style="width: 100px;display: inline-block;text-align: center">照片数量</span>
+    </div>
+    <div md-virtual-repeat="item in vm.rows|orderBy:vm.CreateTime:reverse" class="repeated-item" flex>
+      <div layout="row" style="border-bottom: 1px solid #d8d8d8" ng-click="vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionTreeId,type:item.type})">
+        <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: inline-block; padding-left:5px; " flex>{{item.full_name.replace(vm.project.projectName,'')}}</span>
+        <span style="width: 100px;display: inline-block;text-align: center">{{item.CreateTime}}</span>
+        <span style="width: 100px;display: inline-block;text-align: center">{{item.FileNum}}</span>
+      </div>
+    </div>
+  </md-virtual-repeat-container>
+<div style="position: absolute; top:0px; right:0px;">
+  <toggle-menu inst="vm.searBarHide"></toggle-menu></div>
