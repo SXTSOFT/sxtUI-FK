@@ -30,17 +30,15 @@
         <div>
           <div>
             <div style="border-bottom: 1px solid #ccc;padding-left:0;position: relative;">
-              <!--<div sxt-fixed-right="50" style="background: #fff;width:60px;">-->
-                <!--<span style="width:120px;display: inline-block;height:40px;padding-top: 10px;">操作</span>-->
-              <!--</div>-->
               <span style="width:120px;display: inline-block;height:40px;padding-top: 18px;vertical-align: top">部位</span>
               <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">工序</span>
               <span style="width:55px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top;text-align: center;">班组</span>
+              <span style="width:36px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top;text-align: center;">总包</span>
               <span style="width:36px;display: inline-block;height:40px;padding-top: 10px;">监理首验</span>
               <span style="width:36px;display: inline-block;height:40px;padding-top: 10px;">监理再验</span>
               <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">监理员</span>
               <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">查验时间</span>
-              <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">万科抽检</span>
+              <span style="width:120px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">万科、第三方抽检</span>
               <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">符合率</span>
               <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">检查员</span>
               <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">查验时间</span>
@@ -48,21 +46,17 @@
           </div>
 
           <div md-virtual-repeat="item in vm.baths.Rows" class="repeated-item" flex>
-            <div style="width:880px;height: 40px;">
+            <div style="width:980px;height: 40px;">
               <div style=" position: relative;height: 40px;" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">
-                <!--<div sxt-fixed-right="50" style="background: #fff;width:60px;">-->
-                  <!--<a class="btn btn-white btn-xs" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">-->
-                    <!--查看-->
-                  <!--</a>-->
-                <!--</div>-->
                 <span style="width:120px;display: inline-block;white-space: nowrap;overflow:hidden;padding-right: 5px;text-overflow:ellipsis;">{{ item.RegionNameTree}} {{item.RegionName}}</span>
                 <span style="width:80px;display: inline-block;white-space: nowrap;overflow:hidden;text-overflow:ellipsis;">{{item.ProcedureName}}</span>
               <span style="width:55px;display: inline-block;text-align: center;">{{item.GrpWokerName | filterGrpWokerName}}</span>
-              <span style="width:36px;display: inline-block;">{{item.JLFirst|number:1}}</span>
+                <span style="width:36px;display: inline-block;">{{(item.ZbLast||item.ZbFirst)|number:1}}</span>
+                <span style="width:36px;display: inline-block;">{{item.JLFirst|number:1}}</span>
               <span style="width:36px;display: inline-block;">{{item.JLLast|number:1}}</span>
               <span style="width:80px;display: inline-block;">{{item.JLUser}}</span>
               <span style="width:80px;display: inline-block;">{{item.JLDate}}</span>
-              <span style="width:80px;display: inline-block;">{{item.WKLast}}</span>
+              <span style="width:120px;display: inline-block;">{{item.WKLast}}</span>
               <span style="width:80px;display: inline-block;">{{item.AccordRatio|number:1}}</span>
               <span style="width:80px;display: inline-block;">{{item.WKLastUser}}</span>
               <span style="width:80px;display: inline-block;">{{item.VKDate}}</span>
@@ -71,127 +65,6 @@
           </div>
         </div>
         </div>
- <!--       <div class="simple-table-container md-whiteframe-4dp fixedtable" style="position: relative;display: none;">
-          <table class="simple" ms-responsive-table>
-            <thead>
-            <tr>
-              <th>班组</th>
-              <th>班组首验(%)</th>
-              <th>班组再验(%)</th>
-              <th>监理员</th>
-              <th>查验时间</th>
-              <th>万科抽检(%)</th>
-              <th>符合率(%)</th>
-              <th>检查员</th>
-              <th>查验时间</th>
-              <th style="display: none;">操作</th>
-            </tr>
-            </thead>
-
-            <tfoot>
-            <tr>
-              <td></td>
-            </tr>
-            </tfoot>
-
-            <tbody>
-            <tr>
-              <td class="name">{{item.GrpWokerName | filterGrpWokerName}}</td>
-              <td class="position">{{item.JLFirst}}</td>
-              <td class="name">{{item.JLLast}}</td>
-              <td class="position">{{item.JLUser}}</td>
-              <td class="name">{{item.JLDate}}</td>
-              <td class="position">{{item.WKLast}}</td>
-              <td class="name">{{item.AccordRatio}}</td>
-              <td class="position">{{item.WKLastUser}}</td>
-              <td class="name">{{item.VKDate}}</td>
-              <td class="office" style="display: none;">
-                <a class="btn btn-white btn-xs" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">
-                查看
-                </a>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-          <table style="position: absolute;right:0;top:0;width:100px;background: #fff;" class="simple">
-            <thead>
-            <tr>
-              <th>操作</th>
-            </tr>
-            </thead>
-
-            <tfoot>
-            <tr>
-              <td></td>
-            </tr>
-            </tfoot>
-
-            <tbody>
-            <tr ng-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey}" >
-              <td class="office">
-                <a class="btn btn-white btn-xs" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">
-                  查看
-                </a>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>-->
-        <!--<md-card md-virtual-repeat="item in vm.baths.Rows | filter:{GrpName : ddd.grpKey} " flex>-->
-
-            <!--<md-card-title>-->
-                <!--<md-card-title-text>-->
-                    <!--<span class="md-headline">{{ item.RegionNameTree}} {{item.RegionName}}</span>-->
-                    <!--<p>{{item.ProcedureName}}</p>-->
-                <!--</md-card-title-text>-->
-            <!--</md-card-title>-->
-
-            <!--<md-card-content>-->
-                <!--<md-list>-->
-                    <!--<md-list-item class="secondary-button-padding">-->
-                        <!--<p>班组</p>-->
-                        <!--<p class="md-secondary" >{{item.GrpWokerName | filterGrpWokerName}}</p>-->
-                    <!--</md-list-item>-->
-                    <!--<md-list-item class="secondary-button-padding">-->
-                        <!--<p>班组首验(%)</p>-->
-                        <!--<p class="md-secondary">{{item.JLFirst}}</p>-->
-                    <!--</md-list-item>-->
-                    <!--<md-list-item class="secondary-button-padding">-->
-                        <!--<p>班组再验(%)</p>-->
-                        <!--<p class="md-secondary">{{item.JLLast}}</p>-->
-                    <!--</md-list-item>-->
-                    <!--<md-list-item class="secondary-button-padding">-->
-                        <!--<p>监理员</p>-->
-                        <!--<p class="md-secondary">{{item.JLUser}}</p>-->
-                    <!--</md-list-item>-->
-                    <!--<md-list-item class="secondary-button-padding">-->
-                        <!--<p>查验时间</p>-->
-                        <!--<p class="md-secondary">{{item.JLDate}}</p>-->
-                    <!--</md-list-item>-->
-                    <!--<md-list-item class="secondary-button-padding">-->
-                        <!--<p>万科抽检(%)</p>-->
-                        <!--<p class="md-secondary">{{item.WKLast}}</p>-->
-                    <!--</md-list-item>-->
-                    <!--<md-list-item class="secondary-button-padding">-->
-                        <!--<p>符合率(%)</p>-->
-                        <!--<p class="md-secondary">{{item.AccordRatio}}</p>-->
-                    <!--</md-list-item>-->
-                    <!--<md-list-item class="secondary-button-padding">-->
-                        <!--<p>检查员</p>-->
-                        <!--<p class="md-secondary">{{item.WKLastUser}}</p>-->
-                    <!--</md-list-item>-->
-                    <!--<md-list-item class="secondary-button-padding">-->
-                        <!--<p>查验时间</p>-->
-                        <!--<p class="md-secondary">{{item.VKDate}}</p>-->
-                    <!--</md-list-item>-->
-                <!--</md-list>-->
-            <!--</md-card-content>-->
-            <!--<md-card-actions layout="row" layout-align="end center">-->
-                    <!--<md-button class="md-raised" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">-->
-                        <!--查看-->
-                    <!--</md-button>-->
-            <!--</md-card-actions>-->
-        <!--</md-card>-->
         <p ng-if="vm.norecords" style="text-align: center;font-size: 1.3rem;margin-top: 10px ;">暂无数据</p>
         </md-virtual-repeat-container>
     </md-content>

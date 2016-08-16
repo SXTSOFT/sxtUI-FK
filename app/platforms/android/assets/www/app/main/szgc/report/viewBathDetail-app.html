@@ -92,8 +92,8 @@
                                     <td align="center">检查点数</td>
                                     <td align="center">合格率</td>
                                     <td align="center">最大偏差</td>
-                                    <td rowspan="2" align="center">万科抽验</td>
-                                    <td rowspan="2" align="center">抽验符合率</td>
+                                    <td colspan="2" align="center">总包自检</td>
+                                    <td colspan="2" align="center">万科、第三方抽验</td>
                                     <td rowspan="2" align="center">备注</td>
                                 </tr>
                                 <tr>
@@ -110,6 +110,10 @@
     <!--</ui-select-choices>-->
 <!--</ui-select>-->
                                     </td>
+                                    <td>合格率</td>
+                                    <td>符合率</td>
+                                    <td>合格率</td>
+                                    <td>符合率</td>
                                 </tr>
                                 <tr ng-repeat="n in data.selected.d.yb">
                                     <td rowspan="{{data.selected.d.info.ybLength}}" ng-if="$index==0" align="center">
@@ -126,6 +130,8 @@
                                     <td align="center">{{n.CheckNum}}</td>
                                     <td align="center">{{n.PassRatio}}<span ng-if="n.getPassRatio">{{n.ok()?'合格':'不合格'}}({{n.getPassRatio()|number:2}})</span></td>
                                     <td align="center">{{n.MaxDeviation}}</td>
+                                    <td align="center">{{n.ZbPassRatio}}</td>
+                                    <td align="center">{{n.ZBFHL}}</td>
                                     <td align="center">{{n.VKPassRatio}}</td>
                                     <td align="center">{{n.FHL}}</td>
                                     <td align="center"></td>
@@ -133,14 +139,12 @@
 
                                 <tr ng-if="data.selected.d.yb.length">
                                     <td colspan="{{data.selected.d.yb[0].names.length+2}}"></td>
-                                    <td style="width:150px" align="center">
+                                    <!--<td style="width:150px" align="center"></td>-->
+                                    <td align="center" colspan="8">主控：{{zkIsOk(data.selected.d.zk)?"合格":"不合格"}} &nbsp;&nbsp;
+                                    一般：{{ybIsOk(data.selected.d.yb)?"合格":"不合格"}}({{ybHGL(data.selected.d.yb)}}) &nbsp;&nbsp;
+                                     总体({{ybHGLPJ(data.selected.d.yb)|number:2}}) &nbsp;&nbsp;
+                                     结果：{{zkIsOk(data.selected.d.zk)&&ybIsOk(data.selected.d.yb)?"合格":"不合格"}}
                                     </td>
-                                    <td align="center">主控：{{zkIsOk(data.selected.d.zk)?"合格":"不合格"}}</td>
-                                    <td align="center">一般：{{ybIsOk(data.selected.d.yb)?"合格":"不合格"}}({{ybHGL(data.selected.d.yb)}}) 总体({{ybHGLPJ(data.selected.d.yb)|number:2}})</td>
-                                    <td align="center"> 结果：{{zkIsOk(data.selected.d.zk)&&ybIsOk(data.selected.d.yb)?"合格":"不合格"}}</td>
-                                    <td align="center"></td>
-                                    <td align="center"></td>
-                                    <td align="center"></td>
                                 </tr>
                             </table>
                         </td>
@@ -154,7 +158,7 @@
     <div>
       <fieldset >
           <legend style="margin-bottom: 10px;">原验收表扫描件或验收结果列表</legend>
-          <div ng-if="vm.showData" style="margin-bottom: 10px;">
+          <div ng-if="vm.isShow" style="margin-bottom: 10px;">
             <p style="font-size:20px;">
               监理检查记录
             </p>
@@ -193,3 +197,9 @@
 
 
 </div>
+<div style="position: fixed; top:93px; right:0px;">
+  <md-button class="md-fab md-mini" ng-if="!vm.isPartner"  ng-click="vm.goAdd()">
+    抽验
+  </md-button>
+
+</div>﻿
