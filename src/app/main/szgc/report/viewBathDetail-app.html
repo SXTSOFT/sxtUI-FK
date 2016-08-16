@@ -160,6 +160,18 @@
           <legend style="margin-bottom: 10px;">原验收表扫描件或验收结果列表</legend>
           <div ng-if="vm.isShow" style="margin-bottom: 10px;">
             <p style="font-size:20px;">
+              施工单位检查记录
+            </p>
+            <div ng-repeat="n in data.selected.zb.yb">
+              <h3 style="margin-top:10px;">{{$index+1}}、{{n.TargetName}} 允许偏差（mm） :{{n.DeviationLimit}}</h3>
+              <div class="circle">
+                <div>
+                  <div ng-repeat="point in n.points"><div class="point" ng-class="{'done':!point.Result}"><span>{{point.Value}}</span></div></div>
+                </div>
+              </div>
+            </div>
+
+            <p style="font-size:20px;">
               监理检查记录
             </p>
             <div ng-repeat="n in data.selected.d.yb">
