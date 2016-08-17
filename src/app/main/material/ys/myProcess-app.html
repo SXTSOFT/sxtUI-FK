@@ -4,14 +4,14 @@
       <md-content flex layout="column" ng-hide="is('app.szgc.ys.addnew')||is('app.szgc.ys.upload')" >
         <div ng-show="!vm.searBarHide">
           <div flex style="overflow: auto">
-            <sxt-projects-jd ng-model="project.pid" object-scope="project" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
+            <sxt-projects-jd ng-model="project.pid" object-scope="project" levels="2" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
               <div class="md-padding" layout="row" ng-show="project.type==64">
                 <md-button type="submit" flex ui-sref="app.szgc.ys.upload({projectid:project.pid,name:project.typeName,type:project.item.type.type_id||project.item.type,idTree:project.idTree,nameTree:project.nameTree})" class="md-raised md-primary"> 隐蔽工程照片  </md-button>
               </div>
               <md-list ng-hide="project.type==64">
-                <md-subheader class="md-no-sticky">工序</md-subheader>
+                <md-subheader class="md-no-sticky">材料</md-subheader>
                 <md-list-item>
-                  <sxt-procedure style="width:100%" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-procedure>
+                  <sxt-material style="width:100%" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-material>
                   <!--<sxt-procedure-type style="width:100%;" ng-model="project.procedureTypeId"></sxt-procedure-type>-->
                 </md-list-item>
                 <!--<md-list-item>-->

@@ -160,6 +160,17 @@
           <legend style="margin-bottom: 10px;">原验收表扫描件或验收结果列表</legend>
           <div ng-if="vm.isShow" style="margin-bottom: 10px;">
             <p style="font-size:20px;">
+              施工单位检查记录
+            </p>
+            <div ng-repeat="n in data.selected.zb.yb">
+              <h3 style="margin-top:10px;">{{$index+1}}、{{n.TargetName}} 允许偏差（mm） :{{n.DeviationLimit}}</h3>
+              <div class="circle">
+                <div>
+                  <div ng-repeat="point in n.points"><div class="point" ng-class="{'done':!point.Result}"><span>{{point.Value}}</span></div></div>
+                </div>
+              </div>
+            </div>
+            <p style="font-size:20px;">
               监理检查记录
             </p>
             <div ng-repeat="n in data.selected.d.yb">
@@ -182,15 +193,26 @@
               </div>
             </div>
           </div>
-          <div sxt-image-view is-container="true" ng-if="!vm.showData">
-          <sxt-images  ng-model="data.selected.step.GroupImg" project="data.projectInfo" ></sxt-images>
+          <div sxt-image-view is-container="true" >
+            <fieldset ng-if="data.selected.zb && data.selected.zb.GroupImg2"><legend>施工单位</legend>
+            <sxt-images  ng-model="data.selected.zb.GroupImg" project="data.projectInfo" ></sxt-images></fieldset>
+            <fieldset ng-if="data.selected.step && data.selected.step.GroupImg2"><legend>监理单位</legend>
+          <sxt-images  ng-model="data.selected.step.GroupImg" project="data.projectInfo" ></sxt-images></fieldset>
+            <fieldset ng-if="data.selected.eg && data.selected.eg.GroupImg2"><legend>项目部</legend>
+            <sxt-images  ng-model="data.selected.eg.GroupImg" project="data.projectInfo" ></sxt-images></fieldset>
           </div>
       </fieldset>
 
       <fieldset>
           <legend>附件</legend>
           <div  sxt-image-view is-container="true">
-            <sxt-images  ng-model="data.selected.step.GroupImg2" project="data.projectInfo"></sxt-images>
+            <fieldset ng-if="data.selected.zb && data.selected.zb.GroupImg2"><legend>施工单位</legend>
+            <sxt-images  ng-model="data.selected.zb.GroupImg2" project="data.projectInfo"></sxt-images></fieldset>
+            <fieldset ng-if="data.selected.step && data.selected.step.GroupImg2"><legend>监理单位</legend>
+            <sxt-images  ng-model="data.selected.step.GroupImg2" project="data.projectInfo"></sxt-images></fieldset>
+            <fieldset ng-if="data.selected.eg && data.selected.eg.GroupImg2"><legend>项目部</legend>
+              <sxt-images  ng-model="data.selected.eg.GroupImg2" project="data.projectInfo" ></sxt-images></fieldset>
+
           </div>
       </fieldset>
     </div>

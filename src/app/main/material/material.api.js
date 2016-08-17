@@ -141,7 +141,7 @@
             return (item.BatchType|args.batchType)==item.BatchType;
           }
         }).bind(function(args){
-          return $http.get($http.url('/api/ProcedureBatchSet' , args));
+          return $http.get($http.url('/api/MLProcedureBatchSet' , args));
         },function (result) {
           var n = {
             data:{
