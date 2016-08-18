@@ -184,9 +184,9 @@
                           icon: new ST.L.LabelIcon({
                             html: '吊顶',
                             color: rs[1].data.Rows.find(function (r) {
-                              return r.GroupId.indexOf(layer.options.itemId) != -1
+                              return r.GroupId.indexOf(layer2.options.itemId) != -1
                             }) || rs[2].data.Rows.find(function (r) {
-                              return r.GroupId.indexOf(layer.options.itemId) != -1
+                              return r.GroupId.indexOf(layer2.options.itemId) != -1
                             }) ? '#ff0000' : 'silver'
                           }),
                           saved: false,
