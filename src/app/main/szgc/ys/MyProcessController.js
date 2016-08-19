@@ -430,11 +430,11 @@
         };
         api.szgc.ProjectSettings.offline.create(offline).then(function () {
           queryOffline().then(function () {
-            var off = $scope.project.offlines.find(function (item) {
+/*            var off = $scope.project.offlines.find(function (item) {
               return item.Id == offline.Id;
-            });
-            utils.alert('下载完成，系统将创建索引。');
-            $scope.indexDb(off);
+            });*/
+            utils.alert('下载完成。');
+            //$scope.indexDb(off);
           });
 
         });

@@ -503,7 +503,7 @@
       }
     })
     var resetGroup = function() {
-      if (!$scope.data.supervision || !$scope.data.supervision1) return;
+      if (!$scope.data.supervision || !$scope.data.supervision1 || !$scope.data.isFirst) return;
       var g = [];
 
       $scope.data.groups = [];

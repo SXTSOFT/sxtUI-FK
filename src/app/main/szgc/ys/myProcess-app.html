@@ -38,7 +38,8 @@
               <thead>
               <tr>
                 <th>部位</th>
-                <th>状态</th>
+                <th>施工单位</th>
+                <th>监理单位</th>
                 <th>操作</th>
               </tr>
               </thead>
@@ -52,7 +53,8 @@
               <tbody>
               <tr ng-repeat="item in project.rows">
                 <td class="name">{{item.$name}}</td>
-                <td class="position">{{roleId=='zb'?item.MinPassRatio0 : item.stateName}}</td>
+                <td class="name">{{item.MinPassRatio0}}</td>
+                <td class="position">{{item.stateName}}</td>
                 <td class="office" ng-if="!hasTasks(item)">
                   <a class="btn btn-white btn-xs" ui-sref="app.szgc.ys.addnew({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureTypeId:project.procedureTypeId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})"  ng-if="roleId!='3rd' && item.ZbChecked!==false && isPartner">{{ (roleId=='zb' && !item.ZbCount)||(roleId=='jl' && !item.JLCount)?'录入': '复验'}}</a>
                   <a class="btn btn-white btn-xs" ui-sref="app.szgc.ys.addnew({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureTypeId:project.procedureTypeId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})" ng-if="roleId!='3rd' && !isPartner && item.checkedCount && (!item.MinPassRatio1 || item.MinPassRatio1<80) " >{{ item.CheckDate1?'复验': '抽验'}}</a>
