@@ -814,7 +814,9 @@
             get:get,
             put:put,
             allDocs:function(){
-              provider
+              return provider.$q(function(resolve){
+                resolve();
+              })
             },
             destroy:function (id) {
               delete cache[id];
