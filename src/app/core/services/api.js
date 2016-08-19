@@ -736,11 +736,17 @@
         if (cfg._id && !(options.exclude && options.exclude.indexOf(cfg._id) != -1)) {
           tasks.push(function () {
             return provider.$q(function (resolve) {
-              provider.$cordovaFile.removeFile(provider.$window.cordova.file.dataDirectory, cfg._id + '.bin').then(function () {
+              get_globalDb().destroy(cfg._id);
+              if(!provider.$window.cordova) {
                 resolve();
-              }).catch(function () {
-                resolve();
-              })
+              }
+              else {
+                provider.$cordovaFile.removeFile(provider.$window.cordova.file.dataDirectory, cfg._id + '.bin').then(function () {
+                  resolve();
+                }).catch(function () {
+                  resolve();
+                })
+              }
             });
           });
         }
@@ -807,7 +813,10 @@
           return {
             get:get,
             put:put,
-            allDocs:function(){}
+            allDocs:function(){},
+            destroy:function (id) {
+              delete cache[id];
+            }
           }
           function get(id) {
             return provider.$q(function (resolve,reject) {
