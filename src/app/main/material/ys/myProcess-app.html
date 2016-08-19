@@ -18,12 +18,22 @@
                 <!--<sxt-select style="width:100%;" ng-model="project.procedureId" name-value="project.procedureName" sources="project.procedures" text-field="ProcedureName" value-field="ProcedureId"></sxt-select>-->
                 <!--</md-list-item>-->
                 <md-divider></md-divider>
-<!--                <md-subheader class="md-no-sticky">验收状态</md-subheader>
-                <md-list-item ng-repeat="state in project.states">
-                  <p> {{state.title}}({{state.c}})</p>
-                  <md-checkbox class="md-secondary" ng-click="checkState(state)"  ng-checked="state.selected"></md-checkbox>
-                </md-list-item>-->
               </md-list>
+              <md-subheader class="md-no-sticky">供货方</md-subheader>
+              <div class="md-padding">
+                <!--<md-list-item >-->
+                <md-input-container class="md-block" flex-gt-sm>
+                  <label>供货方</label>
+                  <md-select >
+                    <md-option>
+
+                    </md-option>
+                  </md-select>
+                </md-input-container>
+
+              </div>
+              <!--</md-list-item>-->
+              <md-divider></md-divider>
             </sxt-projects-jd>
             <div class="md-padding" ng-hide="project.type==64" layout="row">
 
