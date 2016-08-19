@@ -813,7 +813,9 @@
           return {
             get:get,
             put:put,
-            allDocs:function(){},
+            allDocs:function(){
+              provider
+            },
             destroy:function (id) {
               delete cache[id];
             }
