@@ -546,61 +546,37 @@
       queryRegion:function (areaID) {
         return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo',{AreaID:areaID}));
       },
-      getMeasure:function(param){
-        return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResult',param));
-      },
-      //getMeasure:$http.db({
-      //  _id:'getAllMeasureReportData',
-      //  idField:function(item){
-      //    return item.RegionID + item.AcceptanceItemID;
-      //  },
-      //  filter:function(item,param){
-      //    return item.RegionID == param.RegionID && item.AcceptanceItemID == param.AcceptanceItemID;
-      //  },
-      //  dataType:1
-      //}).bind(function(param){
-      //  return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResult',param)).then(function(result){
-      //    var data = result.data;
-      //    result.data = [{
-      //      RegionID:param.RegionID,
-      //      AcceptanceItemID:param.AcceptanceItemID,
-      //      data:data
-      //    }]
-      //    return result;
-      //  });
-      //}),
-      getAllMeasureReportData:$http.db({
+      //getMeasure:function(param){
+      //  return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResult',param));
+      //},
+      getMeasure:$http.db({
         _id:'getAllMeasureReportData',
         idField:function(item){
-            return item.RegionID + item.AcceptanceItemID;
+          return item.RegionID + item.AcceptanceItemID;
+        },
+        filter:function(item,param){
+          return item.CheckRegionID == param.RegionID && item.AcceptanceItemID == param.AcceptanceItemID;
         },
         dataType:1
       }).bind(function(param){
-        //return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResult',param)).then(function(result){
-        //
-        //});
-        var data=[{
-          RegionID:'00027000000000500016',
-          AcceptanceItemID:'d7579fa6e26b4850967d105ac8ed6893',
-          data:{"checkUser":[{"UserName":"陈杰","MeasureTime":"2016-08-04"},{"UserName":"胡科元","MeasureTime":"2016-08-04"}],"record":[{"AcceptanceIndexID":"b1f26ef21eaf4e40acc5c85fe8b04769","IndexName":"结构表面平整度","ParentAcceptanceIndexID":null,"QualifiedRate":[{"Role":0,"Value":0.0},{"Role":4,"Value":0.0}],"QualifiedPointNum":[{"Role":0,"Value":0},{"Role":4,"Value":0}],"UnqualifiedPointNum":[{"Role":0,"Value":0},{"Role":4,"Value":0}],"List":[]},{"AcceptanceIndexID":"b337a8b22b1145ae992a805a1e70a96f","IndexName":"结构立面垂直度","ParentAcceptanceIndexID":null,"QualifiedRate":[{"Role":0,"Value":1.0},{"Role":4,"Value":0.0}],"QualifiedPointNum":[{"Role":0,"Value":3},{"Role":4,"Value":0}],"UnqualifiedPointNum":[{"Role":0,"Value":0},{"Role":4,"Value":3}],"List":[{"AccptanceIndexId":"b337a8b22b1145ae992a805a1e70a96f","MeasureValueId":[{"Role":2,"Value":0.0}],"MeasureValue":[{"Role":2,"Value":14.0}],"CalculatedValue":[{"Role":2,"Value":14.0}],"MeasureStatus":[{"Role":2,"Value":3.0}],"MeasurePointID":"639f7b927c98498c92bcb0731e18829f","ParentMeasureValueID":null},{"AccptanceIndexId":"b337a8b22b1145ae992a805a1e70a96f","MeasureValueId":[{"Role":0,"Value":0.0},{"Role":2,"Value":0.0}],"MeasureValue":[{"Role":0,"Value":1.0},{"Role":2,"Value":11.0}],"CalculatedValue":[{"Role":0,"Value":1.0},{"Role":2,"Value":11.0}],"MeasureStatus":[{"Role":0,"Value":1.0},{"Role":2,"Value":2.0}],"MeasurePointID":"81fdc727453744199cc79d1ab43a9277","ParentMeasureValueID":null},{"AccptanceIndexId":"b337a8b22b1145ae992a805a1e70a96f","MeasureValueId":[{"Role":0,"Value":0.0}],"MeasureValue":[{"Role":0,"Value":2.0}],"CalculatedValue":[{"Role":0,"Value":2.0}],"MeasureStatus":[{"Role":0,"Value":1.0}],"MeasurePointID":"c06762cac1434db4a6e0c15c3df182f4","ParentMeasureValueID":null},{"AccptanceIndexId":"b337a8b22b1145ae992a805a1e70a96f","MeasureValueId":[{"Role":0,"Value":0.0},{"Role":2,"Value":0.0}],"MeasureValue":[{"Role":0,"Value":3.0},{"Role":2,"Value":13.0}],"CalculatedValue":[{"Role":0,"Value":3.0},{"Role":2,"Value":13.0}],"MeasureStatus":[{"Role":0,"Value":1.0},{"Role":2,"Value":3.0}],"MeasurePointID":"d51c148ba62843fd8cea4564f036d25e","ParentMeasureValueID":null}]}]}
-        },{
-          RegionID:'00027000000000500015',
-          AcceptanceItemID:'d7579fa6e26b4850967d105ac8ed6893',
-          data:{"checkUser":[{"UserName":"陈杰","MeasureTime":"2016-08-04"},{"UserName":"胡科元","MeasureTime":"2016-08-04"}],"record":[{"AcceptanceIndexID":"b1f26ef21eaf4e40acc5c85fe8b04769","IndexName":"结构表面平整度","ParentAcceptanceIndexID":null,"QualifiedRate":[{"Role":0,"Value":0.0},{"Role":4,"Value":0.0}],"QualifiedPointNum":[{"Role":0,"Value":0},{"Role":4,"Value":0}],"UnqualifiedPointNum":[{"Role":0,"Value":0},{"Role":4,"Value":0}],"List":[]},{"AcceptanceIndexID":"b337a8b22b1145ae992a805a1e70a96f","IndexName":"结构立面垂直度","ParentAcceptanceIndexID":null,"QualifiedRate":[{"Role":0,"Value":1.0},{"Role":4,"Value":0.0}],"QualifiedPointNum":[{"Role":0,"Value":3},{"Role":4,"Value":0}],"UnqualifiedPointNum":[{"Role":0,"Value":0},{"Role":4,"Value":3}],"List":[{"AccptanceIndexId":"b337a8b22b1145ae992a805a1e70a96f","MeasureValueId":[{"Role":0,"Value":0.0},{"Role":2,"Value":0.0}],"MeasureValue":[{"Role":0,"Value":1.0},{"Role":2,"Value":11.0}],"CalculatedValue":[{"Role":0,"Value":1.0},{"Role":2,"Value":11.0}],"MeasureStatus":[{"Role":0,"Value":1.0},{"Role":2,"Value":2.0}],"MeasurePointID":"81fdc727453744199cc79d1ab43a9277","ParentMeasureValueID":null},{"AccptanceIndexId":"b337a8b22b1145ae992a805a1e70a96f","MeasureValueId":[{"Role":0,"Value":0.0}],"MeasureValue":[{"Role":0,"Value":2.0}],"CalculatedValue":[{"Role":0,"Value":2.0}],"MeasureStatus":[{"Role":0,"Value":1.0}],"MeasurePointID":"c06762cac1434db4a6e0c15c3df182f4","ParentMeasureValueID":null},{"AccptanceIndexId":"b337a8b22b1145ae992a805a1e70a96f","MeasureValueId":[{"Role":0,"Value":0.0},{"Role":2,"Value":0.0}],"MeasureValue":[{"Role":0,"Value":3.0},{"Role":2,"Value":13.0}],"CalculatedValue":[{"Role":0,"Value":3.0},{"Role":2,"Value":13.0}],"MeasureStatus":[{"Role":0,"Value":1.0},{"Role":2,"Value":3.0}],"MeasurePointID":"d51c148ba62843fd8cea4564f036d25e","ParentMeasureValueID":null}]}]}
-        },{
-          RegionID:'00027000000000500014',
-          AcceptanceItemID:'d7579fa6e26b4850967d105ac8ed6893',
-          data:{"checkUser":[{"UserName":"陈杰","MeasureTime":"2016-08-04"},{"UserName":"胡科元","MeasureTime":"2016-08-04"}],"record":[{"AcceptanceIndexID":"b1f26ef21eaf4e40acc5c85fe8b04769","IndexName":"结构表面平整度","ParentAcceptanceIndexID":null,"QualifiedRate":[{"Role":0,"Value":0.0},{"Role":4,"Value":0.0}],"QualifiedPointNum":[{"Role":0,"Value":0},{"Role":4,"Value":0}],"UnqualifiedPointNum":[{"Role":0,"Value":0},{"Role":4,"Value":0}],"List":[]},{"AcceptanceIndexID":"b337a8b22b1145ae992a805a1e70a96f","IndexName":"结构立面垂直度","ParentAcceptanceIndexID":null,"QualifiedRate":[{"Role":0,"Value":1.0},{"Role":4,"Value":0.0}],"QualifiedPointNum":[{"Role":0,"Value":3},{"Role":4,"Value":0}],"UnqualifiedPointNum":[{"Role":0,"Value":0},{"Role":4,"Value":3}],"List":[{"AccptanceIndexId":"b337a8b22b1145ae992a805a1e70a96f","MeasureValueId":[{"Role":0,"Value":0.0},{"Role":2,"Value":0.0}],"MeasureValue":[{"Role":0,"Value":1.0},{"Role":2,"Value":11.0}],"CalculatedValue":[{"Role":0,"Value":1.0},{"Role":2,"Value":11.0}],"MeasureStatus":[{"Role":0,"Value":1.0},{"Role":2,"Value":2.0}],"MeasurePointID":"81fdc727453744199cc79d1ab43a9277","ParentMeasureValueID":null},{"AccptanceIndexId":"b337a8b22b1145ae992a805a1e70a96f","MeasureValueId":[{"Role":0,"Value":0.0}],"MeasureValue":[{"Role":0,"Value":2.0}],"CalculatedValue":[{"Role":0,"Value":2.0}],"MeasureStatus":[{"Role":0,"Value":1.0}],"MeasurePointID":"c06762cac1434db4a6e0c15c3df182f4","ParentMeasureValueID":null},{"AccptanceIndexId":"b337a8b22b1145ae992a805a1e70a96f","MeasureValueId":[{"Role":0,"Value":0.0},{"Role":2,"Value":0.0}],"MeasureValue":[{"Role":0,"Value":3.0},{"Role":2,"Value":13.0}],"CalculatedValue":[{"Role":0,"Value":3.0},{"Role":2,"Value":13.0}],"MeasureStatus":[{"Role":0,"Value":1.0},{"Role":2,"Value":3.0}],"MeasurePointID":"d51c148ba62843fd8cea4564f036d25e","ParentMeasureValueID":null}]}]}
-        },{
-          RegionID:'00027000000000500013',
-          AcceptanceItemID:'d7579fa6e26b4850967d105ac8ed6893',
-          data:{"checkUser":[{"UserName":"陈杰","MeasureTime":"2016-08-04"},{"UserName":"胡科元","MeasureTime":"2016-08-04"}],"record":[{"AcceptanceIndexID":"b1f26ef21eaf4e40acc5c85fe8b04769","IndexName":"结构表面平整度","ParentAcceptanceIndexID":null,"QualifiedRate":[{"Role":0,"Value":0.0},{"Role":4,"Value":0.0}],"QualifiedPointNum":[{"Role":0,"Value":0},{"Role":4,"Value":0}],"UnqualifiedPointNum":[{"Role":0,"Value":0},{"Role":4,"Value":0}],"List":[]},{"AcceptanceIndexID":"b337a8b22b1145ae992a805a1e70a96f","IndexName":"结构立面垂直度","ParentAcceptanceIndexID":null,"QualifiedRate":[{"Role":0,"Value":1.0},{"Role":4,"Value":0.0}],"QualifiedPointNum":[{"Role":0,"Value":3},{"Role":4,"Value":0}],"UnqualifiedPointNum":[{"Role":0,"Value":0},{"Role":4,"Value":3}],"List":[{"AccptanceIndexId":"b337a8b22b1145ae992a805a1e70a96f","MeasureValueId":[{"Role":0,"Value":0.0},{"Role":2,"Value":0.0}],"MeasureValue":[{"Role":0,"Value":1.0},{"Role":2,"Value":11.0}],"CalculatedValue":[{"Role":0,"Value":1.0},{"Role":2,"Value":11.0}],"MeasureStatus":[{"Role":0,"Value":1.0},{"Role":2,"Value":2.0}],"MeasurePointID":"81fdc727453744199cc79d1ab43a9277","ParentMeasureValueID":null},{"AccptanceIndexId":"b337a8b22b1145ae992a805a1e70a96f","MeasureValueId":[{"Role":0,"Value":0.0}],"MeasureValue":[{"Role":0,"Value":2.0}],"CalculatedValue":[{"Role":0,"Value":2.0}],"MeasureStatus":[{"Role":0,"Value":1.0}],"MeasurePointID":"c06762cac1434db4a6e0c15c3df182f4","ParentMeasureValueID":null},{"AccptanceIndexId":"b337a8b22b1145ae992a805a1e70a96f","MeasureValueId":[{"Role":0,"Value":0.0},{"Role":2,"Value":0.0}],"MeasureValue":[{"Role":0,"Value":3.0},{"Role":2,"Value":13.0}],"CalculatedValue":[{"Role":0,"Value":3.0},{"Role":2,"Value":13.0}],"MeasureStatus":[{"Role":0,"Value":1.0},{"Role":2,"Value":3.0}],"MeasurePointID":"d51c148ba62843fd8cea4564f036d25e","ParentMeasureValueID":null}]}]}
-        }];
-        return $q(function(resolve){
-          resolve({
+        return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResult',param)).then(function(result){
+          var data = result.data;
+          result.data = [{
+            CheckRegionID:param.RegionID,
+            AcceptanceItemID:param.AcceptanceItemID,
             data:data
-          })
-        })
+          }]
+          return result;
+        });
+      }),
+      getAllMeasureReportData:$http.db({
+        _id:'getAllMeasureReportData',
+        idField:function(item){
+            return item.CheckRegionID + item.AcceptanceItemID;
+        },
+        dataType:1
+      }).bind(function(param){
+        return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResultByProjectId',param));
       }),
       queryResult:function (assessmentID) {
         return $http.get($http.url('/Api/AssessmentApi/GetAssessmentItemResult',{AssessmentID:assessmentID}))
@@ -944,15 +920,17 @@
       }
     },
       message: {
+        //messageList: $http.db({
+        //  _id: 'messageList',
+        //  idField: 'Id',
+        //  dataType: 1
+        //}).bind(function ( startIndex,maximunRows,checked) {
+        //  return $http.get($http.url('/api/Message',{maximunRows:maximunRows,startIndex:startIndex,checked:checked}))
+        //})
 
-
-          messageList: $http.db({
-            _id: 'messageList',
-            idField: 'Id',
-            dataType: 1
-          }).bind(function ( startIndex,maximunRows,checked) {
+          messageList: function ( startIndex,maximunRows,checked) {
             return $http.get($http.url('/api/Message',{maximunRows:maximunRows,startIndex:startIndex,checked:checked}))
-          })
+          }
 
 
       }

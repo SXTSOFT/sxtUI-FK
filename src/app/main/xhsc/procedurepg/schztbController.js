@@ -22,6 +22,10 @@
     vm.back = function () {
       history.back();
     }
+    vm.twentyRows=[];
+    for(var i=0;i<20;i++){
+      vm.twentyRows.push({});
+    }
     remote.Assessment.getMeasure({
       RegionID:$stateParams.regionId,//'0001500000000010000000001',//,
       AcceptanceItemID:$stateParams.measureItemID,//'c9ba481a76644c949d13fdb14b4b4adb',//,
@@ -31,15 +35,15 @@
 
       console.log(result)
       var newD = [];
-      vm.checkUser = result.data.checkUser;
+      vm.checkUser = result.data[0].data.checkUser;
 
-      result.data.record.forEach(function (item) {
+      result.data[0].data.record.forEach(function (item) {
         //item.newList
 
         if(!item.List.length){
         //if(!item.newList.length){
           var rowSpan = 0,t1=0,t2 = 0,tempq=[],tempa=[];
-          item.Children = result.data.record.filter(function (r) {
+          item.Children = result.data[0].data.record.filter(function (r) {
             if(r.ParentAcceptanceIndexID==item.AcceptanceIndexID){
               if(r.List.length==0)return false;
               r.rows = [];
@@ -180,14 +184,14 @@
           item.List.forEach(function (m) {
             var exist = 0;
             roles.forEach(function(r){
-              var f = m.ExtendedField1.find(function(_r){
+              var f = m.ExtendedField1&&m.ExtendedField1.find(function(_r){
                 return _r.Role == r.Role;
               })
               if(!f){
-                m.ExtendedField1.push({Role: r.Role,Value:','})
+                m.ExtendedField1&&m.ExtendedField1.push({Role: r.Role,Value:','})
               }
             })
-            m.ExtendedField1.forEach(function(fileds){
+            m.ExtendedField1&&m.ExtendedField1.forEach(function(fileds){
               var i = fileds.Value.indexOf(',')
               if(i>0){
                 exist = 1;

@@ -83,6 +83,9 @@
         }
       ]
     }
+    //remote.Assessment.getAllMeasureReportData({RegionID:'00027',RecordType:1}).then(function(r){
+    //  console.log(r)
+    //})
     vm.downloadBase=function(item){
       item.downloading = true;
       item.progress = 0;
@@ -131,6 +134,9 @@
       tasks.push(function () {
         return remote.Assessment.getUserMeasurePoint(item.ProjectID,1,"Pack"+item.AssessmentID+"point_v");
       });
+      tasks.push(function(){
+        return remote.Assessment.getAllMeasureReportData({RegionID:item.ProjectID,RecordType:1})
+      })
       api.task(tasks)(function (percent, current, total) {
         item.progress = parseInt(percent * 100);
       }, function () {
@@ -168,6 +174,13 @@
             item.downloading = false;
             utils.alert('下载完成');
           })
+          //var fn=remote.Assessment.getUserMeasureValue;
+          //if (fn.db){
+          //  var _db=fn.db(item.ProjectID,1,item.AssessmentID,"Pack"+item.AssessmentID+"sc",sxt);
+          //  _db.allDocs().then(function(){
+          //    console.log('ok');
+          //  });
+          //}
         })
       }, function () {
         item.downloading = false;
