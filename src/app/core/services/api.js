@@ -11,7 +11,6 @@
     var api = {},
       provider = this,
       injector,
-      calledCfgs=[],
       cfgs=[],
       pouchdb,
       settingDb,
@@ -386,7 +385,7 @@
                 target:config.target,
                 event:'success'
               });
-            success && success(tasks,calledCfgs);
+            success && success(tasks);
           }
           else {
             var d = new Date().getTime(),next = function () {
@@ -472,11 +471,6 @@
             var args = toArray(arguments),
               lodb = initDb(cfg,args),
               caller = this;
-              if (!calledCfgs.find(function(c){
-                   return c==cfg;
-                })){
-                calledCfgs.push(cfg);
-              }
             if (cfg.mode == 1) { //1 离线优先，无离线数据尝试网络；
               var oRaiseError = cfg.raiseError;
               cfg.raiseError = true;
@@ -511,7 +505,7 @@
       }
 
       function id(d, db, args, cfg, cb) {
-        var _id = angular.isFunction(cfg.idField) ? cfg.idField(d) : d[cfg.idField];
+        var _id = angular.isFunction(cfg.idField) ? cfg.idField(d,args) : d[cfg.idField];
         if (_id && db) {
           var defer = db.addOrUpdate(cfg.data ? cfg.data.apply(cfg, [angular.extend({_id: _id}, d)].concat(args)) : angular.extend({_id: _id}, d));
           if (cb && cb(defer));
@@ -661,8 +655,15 @@
               else {
                   reject(result);
                 }
-              })
-              .catch(function (r) {
+              }).then(function(result){
+                  return  provider.$q.$q(function(resolver){
+                    pouchdb("localBD").addOrUpdate({
+                      _id:lodb._db_name
+                    }).then(function(){
+                      resolver(result);
+                    })
+                  })
+              }).catch(function (r) {
                 reject(r);
               });
           }
@@ -683,7 +684,7 @@
       else if(cfg.db){
         var id = cfg.db.apply(cfg,args);
         if(id)
-          return pouchdb(id);
+          return (cfg._db=pouchdb(id));
       }
     }
 
@@ -697,19 +698,21 @@
 
     function clearDb(progress,complete,fail,options) {
       var tasks = [];
-      calledCfgs.forEach(function (cfg) {
-         if(!(options.exclude && options.exclude.indexOf(cfg._id)!=-1)){
-           var db = initDb(cfg);
-           if(db) {
-             tasks.push(function () {
-               return db.destroy().then(function (result) {
-                 cfg.db = null;
-                 return result;
-               }).catch(function (err) {
-               });
-             })
-           }
-         }
+      var _db=pouchdb("localBD");
+      _db.findAll().then(function(r){
+        var  rows= r.rows,tmp;
+        if (rows&&rows.length>0){
+            rows.forEach(function(t){
+            if(!(options.exclude && options.exclude.indexOf(t._id)!=-1)){
+              tasks.push(function(){
+                return pouchdb(t._id).destroy()
+              });
+            }
+          });
+        }
+      })
+      tasks.push(function(){
+        return _db.destroy();
       });
       provider.$rootScope.$emit('preClear',tasks);
       return task(tasks,options)(progress,complete,fail,options);

@@ -12,7 +12,7 @@
     .directive('sxtScNew', sxtScNew);
 
   /** @Inject */
-  function sxtScNew($timeout,mapPopupSerivce,db,sxt,xhUtils,pack,remote,utils){
+  function sxtScNew($timeout,mapPopupSerivce,db,sxt,xhUtils,pack,remote,utils,$q){
     function now() {
       return new Date().toISOString();
     }
@@ -33,40 +33,26 @@
     }
     function link(scope,element,attr,ctrl){
       var map,tile,fg,toolbar,data,points,pk;
+      var valRemote=db("Pack"+scope.db+"sc_v");
+      var pointRemote=db("Pack"+scope.db+"point_v");
+      var _r=function(o){  //过滤值
+        return o.CheckRegionID==scope.regionId&& o.AcceptanceItemID==scope.acceptanceItem
+          && scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
+            return m.AcceptanceIndexID == o.AcceptanceIndexID
+              ||(m.Children && m.Children.find(function (m1) {
+                return m1.AcceptanceIndexID == o.AcceptanceIndexID
+              }));
+          });
+      }
 
-      var packdb = db('pack'+scope.db);
-      packdb.get('GetMeasureItemInfoByAreaID').then (function (r) {
-        var find = r.data.find(function (it) {
-          return it.AcceptanceItemID == scope.acceptanceItem;
-        });
-        if(!find){ //TODO:一般不可能找不到,找不到肯定后台有问题,这里可能需要提示并去掉
-          find = r.data.find(function () {
-            return true;
-          })
-        }
-        var m=[];
-        find.MeasureIndexList.forEach(function(item) {
-          m.push(item);
-        });
-        scope.indexs = m;
-        scope.indexs.forEach(function(t){
-          t._id = sxt.uuid();//指标结构表
-          t.checked = false;
-        })
-      },function(err){
-
-      });
       var install = function(){
         if(!scope.db || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
-        //if(!scope.db || !scope.imageUrl || !scope.regionId)return;
         if(!pk)
           pk = pack.sc.up(scope.db);
         if(!data)
           data = pk.sc.db;
         if(!points)
           points = pk.point.db;
-
-
         if(!map){
           map = new L.SXT.Project(element[0]);
         }
@@ -83,7 +69,7 @@
               }
               if (imgId) {
                 remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
-                  if(!result2.data.DrawingContent){
+                  if(!result2.data||!result2.data.DrawingContent){
                     scope.ct && (scope.ct.loading = false);
                     utils.alert('未找到图纸,请与管理员联系!(2)');
                     return;
@@ -115,67 +101,169 @@
           }, 0);
           tile = scope.regionId;
         }
-
         if(fg)
           map._map.removeLayer(fg);
-
         if(toolbar)
-          map._map.removeControl(toolbar);
-
-/*        scope.MeasureValues.forEach(function(r){
-          data.addOrUpdate(r)
-        })
-        scope.MeasurePoints.forEach(function(r){
-          r.geometry = JSON.parse(point.Geometry);
-          points.addOrUpdate(r)
-        })*/
+        map._map.removeControl(toolbar);
         fg = new L.SvFeatureGroup({
           onLoad:function(){
             var layer = this;
             if(layer.loaded)return;
             layer.loaded = true;
+            if (valRemote){
+              valRemote.findAll(_r).then(function(r){
+                if (r&& r.rows.length>0){
+                  r.rows.forEach(function(k){
+                    delete k._rev;
+                    data.addOrUpdate(k);
+                  });
+                }
+                return r;
+              }).then(function(r){
+                if (pointRemote){
+                   return pointRemote.findAll(function(o){ //过滤点
+                    return r.rows.find(function(i){
+                        if(i.MeasurePointID == o._id|| i.MeasurePointID == o.MeasurePointID){
+                          return true;
+                        }
+                        return false;
+                      })!=null;
+                    }).then(function(k){
+                      if (k&& k.rows.length>0){
+                        k.rows.forEach(function(k){
+                         delete k._rev;
+                         points.addOrUpdate(k);
+                       });
+                     }
+                     dataRender( r.rows, k.rows);
+                    });
+                }else {
+                  dataRender(r.rows,null);
+                }
+              });
+            }else {
+              dataRender(null,null);
+            }
 
-            data.findAll(function(o){
-              return o.CheckRegionID==scope.regionId&& o.AcceptanceItemID==scope.acceptanceItem
-                && scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
-                  return m.AcceptanceIndexID == o.AcceptanceIndexID
-                    ||(m.Children && m.Children.find(function (m1) {
-                      return m1.AcceptanceIndexID == o.AcceptanceIndexID
-                    }));
-                });
-            }).then(function(r){
-              points.findAll(function(o){
-                return r.rows.find(function(i){
-                    if(i.MeasurePointID == o._id|| i.MeasurePointID == o.MeasurePointID){
-                      if(r.rows.find(function(i){
-                          return ((i.MeasurePointID == o._id||i.MeasurePointID == o.MeasurePointID) && i.MeasureValue || i.MeasureValue===0)
-                        })) {
-                        o.geometry.options.color = 'blue';
+            function dataRender(valArr,pointArr){
+              data.findAll(function(o){
+                return _r(o);
+              }).then(function(r){
+                if (valArr){
+                  r.rows.concat(valArr);
+                }
+                points.findAll(function(o){
+                  return r.rows.find(function(i){
+                      if(i.MeasurePointID == o._id|| i.MeasurePointID == o.MeasurePointID){
+                        if(r.rows.find(function(i){
+                            return ((i.MeasurePointID == o._id||i.MeasurePointID == o.MeasurePointID) && i.MeasureValue || i.MeasureValue===0)
+                          })) {
+                          o.geometry.options.color = 'blue';
+                        }
+                        else{
+                          o.geometry.options.color = 'red';
+                        }
+                          o.geometry.options.v = i;
+                        o.geometry.options.seq = o.geometry.properties.seq;
+                        o.geometry.options.customSeq = true;
+                        o.CreateTime = moment(o.CreateTime).toDate();
+                        return true;
                       }
-                      else{
-                        o.geometry.options.color = 'red';
-                      }
-                      o.geometry.options.v = i;
-                      o.geometry.options.seq = o.geometry.properties.seq;
-                      o.geometry.options.customSeq = true;
-                      o.CreateTime = moment(o.CreateTime).toDate();
-                      return true;
-                    }
-                    return false;
-                  })!=null;
-              }).then(function(p){
-                 fg.data = r.rows.filter(function (row) {
-                  return row.CheckRegionID==scope.regionId;
-                });
-                p.rows.sort(function (p1,p2) {
-                  return p1.CreateTime.getTime()-p2.CreateTime.getTime();
-                });
-                p.rows.forEach(function(geo){
-                  layer.addData(geo.geometry);
-                });
-              })
-            });
+                      return false;
+                    })!=null;
+                }).then(function(p){
+                  if (pointArr){
+                    p.rows.concat(pointArr);
+                  }
+                  fg.data = r.rows.filter(function (row) {
+                    return row.CheckRegionID==scope.regionId;
+                  });
+                  p.rows.sort(function (p1,p2) {
+                    return p1.CreateTime.getTime()-p2.CreateTime.getTime();
+                  });
+                  p.rows.forEach(function(geo){
+                    layer.addData(geo.geometry);
+                  });
+                })
+              });
+            }
 
+            //$q(function(resolve,reject){
+            //  if (valRemote){
+            //    valRemote.findAll(_r).then(function(r){
+            //      var p=[];
+            //      if (r&& r.rows.length>0){
+            //        r.rows.forEach(function(k){
+            //          delete k._rev;
+            //          p.push(data.addOrUpdate(k));
+            //        });
+            //      }
+            //      if (pointRemote){
+            //        pointRemote.findAll(function(o){ //过滤点
+            //          return r.rows.find(function(i){
+            //              if(i.MeasurePointID == o._id|| i.MeasurePointID == o.MeasurePointID){
+            //                return true;
+            //              }
+            //              return false;
+            //            })!=null;
+            //        }).then(function(k){
+            //          if (k&& k.rows.length>0){
+            //            k.rows.forEach(function(k){
+            //              delete k._rev;
+            //              p.push(points.addOrUpdate(k));
+            //            });
+            //            $q.all(p).then(function(){resolve();}).catch(function(r) {
+            //              reject();
+            //            })
+            //          }
+            //        }).catch(function(){
+            //          reject();
+            //        });
+            //      }else {
+            //        $q.all(p).then(function(){resolve();}).catch(function(){reject();})
+            //      }
+            //    })
+            //  }else {
+            //    resolve();
+            //  }
+            //}).then(function() {
+            //  data.findAll(function(o){
+            //    return _r(o);
+            //  }).then(function(r){
+            //    points.findAll(function(o){
+            //      return r.rows.find(function(i){
+            //          if(i.MeasurePointID == o._id|| i.MeasurePointID == o.MeasurePointID){
+            //            if(r.rows.find(function(i){
+            //                return ((i.MeasurePointID == o._id||i.MeasurePointID == o.MeasurePointID) && i.MeasureValue || i.MeasureValue===0)
+            //              })) {
+            //              o.geometry.options.color = 'blue';
+            //            }
+            //            else{
+            //              o.geometry.options.color = 'red';
+            //            }
+            //            o.geometry.options.v = i;
+            //            o.geometry.options.seq = o.geometry.properties.seq;
+            //            o.geometry.options.customSeq = true;
+            //            o.CreateTime = moment(o.CreateTime).toDate();
+            //            return true;
+            //          }
+            //          return false;
+            //        })!=null;
+            //    }).then(function(p){
+            //      fg.data = r.rows.filter(function (row) {
+            //        return row.CheckRegionID==scope.regionId;
+            //      });
+            //      p.rows.sort(function (p1,p2) {
+            //        return p1.CreateTime.getTime()-p2.CreateTime.getTime();
+            //      });
+            //      p.rows.forEach(function(geo){
+            //        layer.addData(geo.geometry);
+            //      });
+            //    })
+            //  });
+            //}).catch(function(err){
+            //    utils.alert("程序发生错误");
+            //});
           },
           onUpdate:function(layer,isNew,group){
             //这里是修正用户点的位置,尽可能在最近点的同一水平或竖直线上
@@ -446,6 +534,4 @@
       },500);
     }
   }
-
-
 })();

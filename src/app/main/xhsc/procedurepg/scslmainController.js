@@ -10,11 +10,17 @@
     var vm = this;
     var remote=  scRemote;
     var pack=scPack;
-    var xcpk = db('xcpk');
+    var xcpk = db('xcpk'),_local=db('_local');
+    vm.base;
+
+
     var preListens=  $rootScope.$$listeners.preClear=[];
     preListens.push(function(event,cfgs){
       cfgs.push(function(){
         return db('xcpk').destroy();
+      });
+      cfgs.push(function(){
+        return db('_local').destroy();
       });
     });
 
@@ -24,6 +30,7 @@
       }else {
         vm.role=0;
       }
+      //业务数据包
       xcpk.get('xcpk').then(function (result) {
         vm.data = result;
         queryOnline();
@@ -34,13 +41,24 @@
         };
         queryOnline();
       });
+      //基础数据包
+      _local.get('base').then(function (result) {
+        vm.base = result;
+        baseQuery();
+      }).catch(function (err) {
+        vm.base={
+          _id:'base',
+          rows:[]
+        }
+        baseQuery();
+      });
 
     }).catch(function(r){
-
     });
+
+
     //项目包
     function projectTask(projectId) {
-      //return [];
       return [
         function (tasks) {
           return $q(function(resolve) {
@@ -86,7 +104,16 @@
       api.task(tasks)(function (percent, current, total) {
         item.progress = parseInt(percent * 100);
       }, function () {
-        utils.alert('下载完成');
+        vm.base.rows.forEach(function(k){
+            delete k.pack;
+            if (k.ProjectID==item.ProjectID){
+              k.loaded=true;
+            }
+        });
+        _local.addOrUpdate(vm.base).then(function () {
+          item.downloading = false;
+          utils.alert('下载完成');
+        })
       }, function () {
         item.downloading = false;
         utils.alert('下载失败,请检查网络');
@@ -99,15 +126,14 @@
       item.progress = 0;
       var tasks = [];
       tasks.push(function () {
-        return remote.Assessment.getUserMeasureValue(item.ProjectID,1,item.AssessmentID,"Pack"+item.AssessmentID+"sc",sxt);
+        return remote.Assessment.getUserMeasureValue(item.ProjectID,1,item.AssessmentID,"Pack"+item.AssessmentID+"sc_v",sxt);
       });
       tasks.push(function () {
-        return remote.Assessment.getUserMeasurePoint(item.ProjectID,1,"Pack"+item.AssessmentID+"point");
+        return remote.Assessment.getUserMeasurePoint(item.ProjectID,1,"Pack"+item.AssessmentID+"point_v");
       });
       api.task(tasks)(function (percent, current, total) {
         item.progress = parseInt(percent * 100);
       }, function () {
-        //$rootScope.isDown=true;
         var ix = vm.onlines.indexOf(item);
         if (ix != -1)
           vm.onlines.splice(ix, 1);
@@ -212,28 +238,34 @@
             var fd = vm.data.rows.find(function (a) {
               return a.AssessmentID == m.AssessmentID;
             });
-            if (fd) {
-
-            }
-            else {
+            if (!fd) {
               vm.onlines.push(m);
             }
           });
-
           vm.projects=result.data;
-          vm.base=[];
-          vm.projects.forEach(function(o){
-            vm.base.push($.extend({},o));
-          })
-
         }
+      }).then(function(){
+
       }).catch(function () {
 
       });
     }
 
+    function baseQuery(){
+      remote.Project.getMap().then(function (result) {
+        if(result&&result.data.length>0){
+          result.data.forEach(function(k){
+            k.AssessmentID='scsl'+ k.ProjectID+'_'+vm.role;
+            k.AssessmentSubject= k.ProjectName;
+            if (!vm.base.rows.find(function(o){return o.ProjectID== k.ProjectID})){
+              vm.base.rows.push(k);
+            }
+          });
+        }
+      }).catch(function () {
+      });
+    }
     vm.go=function(item,isReport){
-
       function callBack(r){
         if (r&& r.data&& r.data.Children){
           var areas=r.data.Children;

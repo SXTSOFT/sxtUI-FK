@@ -1,0 +1,66 @@
+<md-tabs>
+  <md-tab label="实测报告">
+      <md-content class="download" style="padding: 0px">
+        <div layout="column">
+          <md-list style="padding:0px">
+            <md-list-item ng-repeat="item in vm.projects" layout="row">
+              <p flex style="font-size:16px;padding-left:12px;">
+                {{item.ProjectName}}
+              </p>
+              <div class="md-secondary">
+                <md-button  ng-click="vm.go(item)"  class="md-raised md-primary" style="min-width:50px;padding:0px;margin:0px 0px 0px 5px ;line-height:35px ">
+                  查看
+                </md-button>
+              </div>
+            </md-list-item>
+          </md-list>
+        </div>
+      </md-content>
+  </md-tab>
+  <md-tab label="验收报告">
+    <md-content>
+      <div layout="column" class="gxdownload">
+        <md-list>
+          <md-list-item ng-repeat="item in vm.Inspections">
+            <div class="md-list-item-text" layout="column">
+              <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
+                {{item.AcceptanceItemName}}
+              </p>
+              <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>
+            </div>
+            <div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">
+              <md-button class="md-raised md-primary" ng-click="vm.Lookintoys(item)">
+                查看
+              </md-button>
+            </div>
+          </md-list-item>
+        </md-list>
+      </div>
+    </md-content>
+  </md-tab>
+  <md-tab label="整改报告">
+    <md-content>
+      <div layout="column" class="gxdownload">
+        <md-list>
+          <md-list-item ng-repeat="item in vm.Inspections">
+            <div class="md-list-item-text" layout="column">
+              <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
+                {{item.AcceptanceItemName}}
+              </p>
+              <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>
+            </div>
+            <div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">
+              <md-button class="md-raised md-primary" ng-click="vm.Lookinto(item)">
+                查看
+              </md-button>
+              <!--<md-button class="md-raised md-primary" ng-click="vm.exportReport(item)">-->
+              <!--导出-->
+              <!--</md-button>-->
+            </div>
+          </md-list-item>
+        </md-list>
+      </div>
+    </md-content>
+  </md-tab>
+</md-tabs>
+

@@ -127,6 +127,9 @@
       },
       GetMeasureItemInfoByAreaID:function(ProjectID){
         return $http.get($http.url('/Api/MeasureInfo/GetMeasureItemInfo',{areaID:ProjectID}))
+      },
+      GetMeasureItemInfoFilter:function(ProjectID){
+        return $http.get($http.url('/Api/MeasureInfo/GetMeasureItemInfoFilter',{areaID:ProjectID}))
       }
     },
     Procedure:{
