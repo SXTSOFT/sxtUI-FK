@@ -426,7 +426,8 @@
           Id:idTree,
           name:project.name+'>'+item.name,
           project:project,
-          item:item
+          item:item,
+          date: new Date()
         };
         api.szgc.ProjectSettings.offline.create(offline).then(function () {
           queryOffline().then(function () {

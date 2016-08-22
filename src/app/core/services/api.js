@@ -70,6 +70,10 @@
       };
       api.resetNetwork = function () {
         var type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
+        if($window.cordova) {
+          networkState = 0;
+          return;
+        }
         switch (type) {
           case 'ethernet':
           case 'wifi':
