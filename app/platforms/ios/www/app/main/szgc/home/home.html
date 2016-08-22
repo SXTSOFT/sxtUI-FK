@@ -1,0 +1,16 @@
+<div flex layout="column" >
+<div flex sxt-maps markers="vm.markers" marker-click="vm.markerClick($current)">
+
+</div>
+  <div style="position: absolute;z-index: 10002; top:10px;right:10px;">
+    <md-autocomplete md-no-cache="true" md-selected-item-change="vm.changeItem(item)" md-item-text="item.title" placeholder="项目搜索" md-min-length="0" md-items="item in vm.querySearch(vm.searchText)" md-search-text="vm.searchText">
+      <md-item-template>
+        {{item.title}}
+      </md-item-template>
+      <md-not-found>
+        未找到匹配项
+      </md-not-found>
+    </md-autocomplete>
+  </div>
+</div>
+

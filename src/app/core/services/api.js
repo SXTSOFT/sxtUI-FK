@@ -77,13 +77,14 @@
         switch (type) {
           case 'ethernet':
           case 'wifi':
+          case '4g':
             networkState = 0;
             break;
           case 'unknown':
           case 'none':
           case '2g':
           case '3g':
-          case '4g':
+
           case 'cellular':
             networkState = 1;
             break;
@@ -817,7 +818,9 @@
             get:get,
             put:put,
             allDocs:function(){
-              provider
+              return provider.$q(function(resolve){
+                resolve();
+              })
             },
             destroy:function (id) {
               delete cache[id];

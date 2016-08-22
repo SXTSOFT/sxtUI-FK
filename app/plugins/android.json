@@ -27,7 +27,17 @@
         },
         "cordova-plugin-keyboard": {
             "PACKAGE_NAME": "com.sxt.szgc"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.vanke.sxt.iphone"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.vanke.sxt.iphone"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.vanke.sxt.iphone"
+        }
+    }
 }
