@@ -798,7 +798,7 @@
     SingleDB.prototype.get = function (id) {
       var self = this;
       return self.findAll(function (item) {
-        return self.idFn(item) == id;
+        return  (id && self.idFn(item) == id)||self.cfg.single;
       }).then(function (r) {
         return r.rows[0];
       });
@@ -900,7 +900,10 @@
                replace_db(result, doc.rows, idFn);
                }*/
               else if (cfg.dataType == 3) {
-                replace_db_single(result, doc.rows, idFn);
+                if(cfg.single)
+                  doc.rows = [result];
+                else
+                  replace_db_single(result, doc.rows, idFn);
               }
               else if (result.rows && angular.isArray(result.rows)) {
                 replace_db(result.rows, doc.rows, idFn);

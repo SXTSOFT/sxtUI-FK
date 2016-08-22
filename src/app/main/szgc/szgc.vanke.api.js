@@ -53,6 +53,7 @@
           idField:'Id',
           dataType:3,
           mode:0,
+          single:true,
           raiseError:true,
           filter:function () {
             return true;
