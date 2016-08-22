@@ -60,6 +60,7 @@
       getDrawingRelations: $http.db({
         _id: 'DrawingRelation',
         idField: 'ProjectId',
+        fileFiled:['FileContent'],
         dataType: 3
       }).bind(function (projectId) {
         return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation', {projectId: projectId})).then(function(result){
@@ -86,7 +87,6 @@
         return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingList', {projectId: projectId}));
       }),
       getDrawing: $http.db({
-        selfDb:true,
         _id: 'Drawing',
         idField: 'DrawingID',
         dataType: 3,

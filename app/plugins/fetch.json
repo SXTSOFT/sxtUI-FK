@@ -34,7 +34,7 @@
     "cordova-plugin-file-opener2": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-file-opener2"
+            "id": "cordova-plugin-file-transfer"
         },
         "is_top_level": true,
         "variables": {}
@@ -44,7 +44,7 @@
             "type": "registry",
             "id": "cordova-plugin-compat"
         },
-        "is_top_level": true,
+        "is_top_level": false,
         "variables": {}
     },
     "cordova-plugin-camera": {
@@ -79,6 +79,15 @@
         "source": {
             "type": "local",
             "path": "../plugin"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "jpush-phonegap-plugin": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jpush/jpush-phonegap-plugin.git",
+            "subdir": "."
         },
         "is_top_level": true,
         "variables": {}

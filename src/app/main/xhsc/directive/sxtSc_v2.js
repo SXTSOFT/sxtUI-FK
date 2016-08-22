@@ -12,7 +12,7 @@
     .directive('sxtScNew', sxtScNew);
 
   /** @Inject */
-  function sxtScNew($timeout,mapPopupSerivce,db,sxt,xhUtils,pack,remote,utils,$q){
+  function sxtScNew($timeout,mapPopupSerivce,db,sxt,xhUtils,pack,remote,utils,$q,api){
     function now() {
       return new Date().toISOString();
     }
