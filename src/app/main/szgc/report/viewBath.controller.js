@@ -14,6 +14,54 @@
     vm.is = function(route){
       return $state.is(route);
     }
+    var states = [{
+      id: -1,
+      color: '',
+      title: '全部',
+      selected: true,
+    }, {
+      id: 0,
+      color: 'slategrey',
+      title: '未验收',
+      selected: true,
+      c: 0
+    }, {
+      id: 1,
+      color: 'brown',
+      title: '初验不合格',
+      selected: true,
+      c: 0
+    }, {
+      id: 2,
+      color: 'green',
+      title: '初验合格',
+      selected: true,
+      c: 0
+    }, {
+      id: 3,
+      color: 'red',
+      title: '复验不合格',
+      selected: true,
+      c: 0
+    }, {
+      id: 4,
+      color: 'blue',
+      title: '复验合格',
+      selected: true,
+      c: 0
+    }];
+    vm.getState = function (s) {
+      var f = states.find(function (item) {
+        return item.id==s;
+      });
+      return f?f.title:'';
+    }
+    $scope.$on('$destroy',$scope.$on('goBack',function (s,e) {
+      if($state.is('app.szgc.report.viewBath')) {
+        e.cancel = true;
+        vm.searBarHide = false;
+      }
+    }));
     vm.ddd = {};
     vm.ddd.grpKey = "";
 

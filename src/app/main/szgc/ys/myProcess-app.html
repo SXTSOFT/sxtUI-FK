@@ -86,8 +86,9 @@
 <md-content flex layout="column">
 <md-list md-cloak>
   <md-subheader class="md-no-sticky">已下载</md-subheader>
-  <md-list-item ng-repeat="project in project.offlines">
-    <p style="padding: 0 14px;" layout="column"><span> {{ project.name }} </span><b ng-if="project.indexing">正在索引 {{project.percent}} ({{project.current}}/{{project.total}})</b> </p>
+  <md-list-item ng-repeat="project in project.offlines" >
+      <p  > {{ project.name }} <br /><span style="font-style: italic;color:#9e9e9e">最后更新:{{project.date|date:'MM-dd HH:mm'}}</span></p>
+
     <md-divider></md-divider>
   </md-list-item>
   <md-subheader class="md-no-sticky">下载</md-subheader>

@@ -70,6 +70,10 @@
       };
       api.resetNetwork = function () {
         var type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
+        if($window.cordova) {
+          networkState = 0;
+          return;
+        }
         switch (type) {
           case 'ethernet':
           case 'wifi':
@@ -707,7 +711,6 @@
     function initDb(cfg, args) {
       if (cfg._id && cfg.db) return cfg.db;
       if (cfg.selfDb) {
-
         if (cfg._id)
           return (cfg.db = pouchdb(cfg._id));
         else if (cfg.db) {
@@ -795,7 +798,7 @@
     SingleDB.prototype.get = function (id) {
       var self = this;
       return self.findAll(function (item) {
-        return self.idFn(item) == id;
+        return  (id && self.idFn(item) == id)||self.cfg.single;
       }).then(function (r) {
         return r.rows[0];
       });
@@ -899,7 +902,10 @@
                replace_db(result, doc.rows, idFn);
                }*/
               else if (cfg.dataType == 3) {
-                replace_db_single(result, doc.rows, idFn);
+                if(cfg.single)
+                  doc.rows = [result];
+                else
+                  replace_db_single(result, doc.rows, idFn);
               }
               else if (result.rows && angular.isArray(result.rows)) {
                 replace_db(result.rows, doc.rows, idFn);
