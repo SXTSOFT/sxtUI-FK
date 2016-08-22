@@ -34,13 +34,13 @@
     provider.get = getServer;
     provider.setting = setting;
 
-    getApi.$injector = ['$resource','$http','$injector','$q','db','$rootScope','$cordovaNetwork','$window','$cordovaFileTransfer','$timeout'];
+    getApi.$injector = ['$resource', '$http', '$injector', '$q', 'db', '$rootScope', '$cordovaNetwork', '$window', '$cordovaFileTransfer', '$timeout','$cordovaFile'];
 
     function getServer(name){
       return injector.get(name);
     }
 
-    function getApi($resource,$http,$injector,$q,db,$rootScope,$cordovaNetwork,$window,$cordovaFileTransfer,$timeout){
+    function getApi($resource, $http, $injector, $q, db, $rootScope, $cordovaNetwork, $window, $cordovaFileTransfer, $timeout,$cordovaFile) {
       injector = $injector;
       provider.$http.$http = $http;
       provider.$q.$q = $q;
@@ -48,6 +48,7 @@
       provider.$timeout = $timeout;
       provider.$window = $window;
       provider.$rootScope = $rootScope;
+      provider.$cordovaFile = $cordovaFile;
       pouchdb = db;
       resolveApi(api,$resource,$http);
       api.setting = setting;
@@ -67,6 +68,10 @@
       };
       api.resetNetwork = function () {
         var type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
+        if($window.cordova) {
+          networkState = 0;
+          return;
+        }
         switch (type) {
           case 'ethernet':
           case 'wifi':
@@ -130,6 +135,11 @@
       api.db = provider.$http.db;
       api.clearDb = clearDb;
       api.download = download;
+      api.fdb = function (id,options) {
+        return new SingleDB(angular.extend({
+          _id:id
+        },options));
+      };
       return api;
     }
 
@@ -303,12 +313,17 @@
               start: tasks.length,
               cfg:cfg
             };
-            var db = initDb(cfg)
             groups.push(group);
+            if (cfg.selfDb) {
+              var db = initDb(cfg);
             p.push(db.findAll(function (item) {
               if (filter)return filter(cfg, item);
               return true;
             }));
+          }
+            else {
+              p.push(db_findAll(cfg, filter));
+            }
           }
         });
         provider.$q.$q.all(p).then(function (rs) {
@@ -392,7 +407,6 @@
               run(i + 1, progress, success, fail, options);
             };
             fn(tasks,donwfile).then(function () {
-              fn.isSuccess=true;
               if(d && !next.r) {
                 d = 0;
                 next.r = true;
@@ -413,7 +427,7 @@
                 next.r = true;
                 next();
               }
-            },options && options.timeout?options.timeout:5000);
+            }, options && options.timeout ? options.timeout : 3000);
           }
         }
       }
@@ -505,7 +519,7 @@
       }
 
       function id(d, db, args, cfg, cb) {
-        var _id = angular.isFunction(cfg.idField) ? cfg.idField(d,args) : d[cfg.idField];
+        var _id = angular.isFunction(cfg.idField) ? cfg.idField(d) : d[cfg.idField];
         if (_id && db) {
           var defer = db.addOrUpdate(cfg.data ? cfg.data.apply(cfg, [angular.extend({_id: _id}, d)].concat(args)) : angular.extend({_id: _id}, d));
           if (cb && cb(defer));
@@ -544,12 +558,20 @@
             resolve(bindData({}, [], cfg));
           }
           else if (cfg.delete) {
+            if (cfg.selfDb) {
             args.forEach(function (d) {
               lodb.delete(id(d, null, args, cfg) || d);
             });
             resolve(args);
           }
+            else {
+              lodb.delete(args).then(function () {
+                resolve(args);
+              });
+            }
+          }
           else if (cfg.upload) {
+            if (cfg.selfDb) {
             var updates = [];
             args.forEach(function (d) {
               id(d, lodb, args, cfg, function (defer) {
@@ -561,8 +583,15 @@
             });
           }
           else {
+              lodb.addOrUpdate(args).then(function () {
+                resolve(args);
+              }).catch(reject);
+            }
+          }
+          else {
             var result = {};
             if (cfg.dataType == 3) {
+              if (cfg.selfDb) {
               if ((args.length == 1 && !cfg.filter) || cfg.firstIsId) {
                 lodb.get(args[0]).then(function (r) {
                   if (r || !cfg.raiseError) {
@@ -589,6 +618,13 @@
                   else
                     reject(result);
                 })
+              }
+            }
+            else {
+                lodb.get(args[0]).then(function (r) {
+                  result.data = r;
+                  resolve(result);
+                });
               }
             }
             else {
@@ -619,6 +655,7 @@
           if (p) {
             p.then(function (result) {
               if(result && ((result.status>=200 && result.status<=299) || result.data)) {
+                  if (cfg.selfDb) {
                 if (result.data) {
                   var data = result.data;
                   if (cfg.dataType == 1) {
@@ -646,16 +683,21 @@
                       })
                     }
                   }
-                  resolve(result);
+                    }
                 }
                 else {
+                    lodb.saveItems(result.data);
+                    //db_save(cfg, result.data);
+                  }
                   resolve(result);
                 }
-              }
               else {
                   reject(result);
                 }
               })
+              .catch(function (r) {
+                reject(r);
+              });
           }
           else {
             resolve();
@@ -668,61 +710,302 @@
     }
 
     function initDb(cfg,args) {
-      var  localBD;
-      if(cfg._id && cfg.db)
-        localBD= cfg.db;
+      if (cfg._id && cfg.db) return cfg.db;
+      if (cfg.selfDb) {
+
       if(cfg._id)
-        localBD= cfg.db = pouchdb(cfg._id);
+          return (cfg.db = pouchdb(cfg._id));
       else if(cfg.db){
         var id = cfg.db.apply(cfg,args);
         if(id)
-          localBD= cfg._db=pouchdb(id);
+            return pouchdb(id);
+        }
       }
-      pouchdb("localBD").addOrUpdate({
-        _id:localBD._db_name
-      })
-      return localBD;
-    //.then(function(result){
-    //    return  provider.$q.$q(function(resolver){
-    //      pouchdb("localBD").addOrUpdate({
-    //        _id:lodb._db_name
-    //      }).then(function(){
-    //        resolver(result);
-    //      })
-    //    })
-    //  }).catch(function (r) {
-    //    reject(r);
-    //  });
+      else {
+        return (cfg.db = new SingleDB(cfg));
+      }
     }
 
 
     function getNetwork() {
       return networkState;
     }
+
     function toArray(args) {
       return Array.prototype.slice.call(args);
     }
 
     function clearDb(progress,complete,fail,options) {
       var tasks = [];
-      var _db=pouchdb("localBD");
-      _db.findAll().then(function(r){
-        var  rows= r.rows,tmp;
-        if (rows&&rows.length>0){
-            rows.forEach(function(t){
-            if(!(options.exclude && options.exclude.indexOf(t._id)!=-1)){
+      cfgs.forEach(function (cfg) {
+        if (cfg._id && !(options.exclude && options.exclude.indexOf(cfg._id) != -1)) {
               tasks.push(function(){
-                return pouchdb(t._id).destroy()
-              });
-            }
+            return provider.$q(function (resolve) {
+              get_globalDb().destroy(cfg._id);
+              if(!provider.$window.cordova) {
+                resolve();
+              }
+              else {
+                provider.$cordovaFile.removeFile(provider.$window.cordova.file.dataDirectory, cfg._id + '.bin').then(function () {
+                  resolve();
+                }).catch(function () {
+                  resolve();
+                })
+              }
+            });
           });
         }
-      })
-      tasks.push(function(){
-        return _db.destroy();
       });
-      provider.$rootScope.$emit('preClear',tasks);
-      return task(tasks,options)(progress,complete,fail,options);
+      provider.$rootScope.$emit('preClear', tasks);
+      return task(tasks, options)(progress, complete, fail, options);
+    }
+
+    /**
+     * 优化Sqlite 多数据慢的问题
+     */
+
+    function SingleDB(cfg) {
+      var self = this;
+      self.cfg = cfg;
+      var idIsFunction = angular.isFunction(cfg.idField);
+      self.idFn = function (item) {
+        return angular.isObject(item) ? (idIsFunction ? cfg.idField(item) : item[cfg.idField]) : item;
+      };
+    }
+
+    SingleDB.prototype.findAll = function (filter) {
+      return db_findAll(this.cfg, filter);
+    }
+    SingleDB.prototype.delete = function (id) {
+      if (!angular.isArray(id))
+        id = [id];
+
+      return db_save({
+        _id: this.cfg._id,
+        delete: !0
+      }, id, this.idFn);
+    }
+    SingleDB.prototype.addOrUpdate = function (items) {
+      var cfg = this.cfg;
+      if (cfg.dataType == 3)
+        return db_save(this.cfg, items, this.idFn);
+
+      if (!angular.isArray(items))
+        items = [items];
+      return db_save({_id: cfg._id, upload: !0}, items, this.idFn);
+    }
+    SingleDB.prototype.saveItems = function (result) {
+      return db_save(this.cfg, result, this.idFn);
+    }
+    SingleDB.prototype.get = function (id) {
+      var self = this;
+      return self.findAll(function (item) {
+        return  (id && self.idFn(item) == id)||self.cfg.single;
+      }).then(function (r) {
+        if(cfg.fileField && r.rows && r.rows[0]){
+          return self.db.get(r.rows[0]._id)
+        }
+        return r.rows[0];
+      });
+    }
+    SingleDB.prototype.allDocs = function () {
+      return provider.$q.$q(function (resolve) {
+        resolve();
+      })
+    };
+
+    function get_globalDb() {
+      if(!globalDb.db && provider.$window.cordova){
+        globalDb.db = (function () {
+          var cache = {};
+          return {
+            get:get,
+            put:put,
+            allDocs:function(){
+              return provider.$q(function(resolve){
+                resolve();
+              })
+            },
+            destroy:function (id) {
+              delete cache[id];
+            }
+          }
+          function get(id,noCache) {
+            return provider.$q(function (resolve, reject) {
+              if (cache[id]) {
+                resolve(cache[id]);
+              }
+              else {
+                provider.$cordovaFile.readAsText(provider.$window.cordova.file.dataDirectory, id + '.bin').then(function (result) {
+                  var r = provider.$window.JSON.parse(result);
+                  if(noCache!==true) {
+                    cache[id] = r;
+                  }
+                  resolve(r);
+                }).catch(function (result) {
+                  reject(null);
+                })
+              }
+            });
+          }
+          function put(doc,cfg) {
+            if(!cfg || !cfg.upload)
+              cache[doc._id] = doc;
+
+            if(cfg && cfg.upload && cache[doc._id])
+              delete cache[doc._id];
+
+
+            return provider.$q(function (resolve, reject) {
+              provider.$cordovaFile.writeFile(provider.$window.cordova.file.dataDirectory , doc._id + '.bin', provider.$window.JSON.stringify(doc), true)
+                .then(function (result) {
+                  resolve(result)
+                }).catch(function (result) {
+                reject(result);
+              })
+          });
+        }
+        })();
+      }
+      return globalDb.db || (globalDb.db = pouchdb(globalDb.id));
+    }
+
+    function db_findAll(cfg, filter) {
+      var db = get_globalDb();
+      return provider.$q.$q(function (resolve, reject) {
+        var result = {
+          "rows": []
+        };
+        db.get(cfg._id).then(function (r) {
+          for (var i = 0, l = r.rows.length; i < l; i++) {
+            if (!filter || filter(r.rows[i]) !== false) {
+              result.rows.push(r.rows[i]);
+            }
+          }
+          resolve(result);
+        }).catch(function () {
+          resolve(result);
+        });
+      })
+    }
+
+    function copySave(obj,exFields) {
+      var o = {};
+      for(var k in obj){
+        if(obj.hasOwnProperty(k) && exFields.indexOf(k)==-1){
+          o[k] = obj[k];
+        }
+      }
+      return o;
+    }
+    function db_save(cfg, result, idFn) {
+      var db = get_globalDb();
+      return provider.$q.$q(function (resolve, reject) {
+        db.get(cfg._id,cfg).then(save_to).catch(save_to);
+        function save_to(doc) {
+          provider.$q(function (resolve,reject) {
+            if(cfg.fileField){
+              if(!angular.isArray(cfg.fileField)){
+                cfg.fileField = [cfg.fileField];
+              }
+              var _saveList = [],
+                nResult;
+              if(angular.isArray(result)) {
+                nResult = [];
+                result.forEach(function (r) {
+                  r._id = idFn(r);
+                  _saveList.push(db.put(r, {
+                    upload: true
+                  }));
+                  nResult.push(copySave(r,cfg.fileField));
+                })
+              }
+              else{
+                result._id = idFn(result);
+                nResult = copySave(result,cfg.fileField);
+                _saveList.push(db.put(result, {
+                  upload: true
+                }));
+              }
+              provider.$q.all(_saveList).then(function () {
+                resolve(nResult);
+              },function () {
+                resolve(nResult);
+              });
+            }
+            else{
+              resolve(result);
+            }
+          }).then(function (result) {
+            try {
+              if (!doc || doc.error)
+                doc = {_id: cfg._id, rows: []};
+
+              if (cfg.delete) {
+                result.forEach(function (item) {
+                  delete_db(item, doc.rows, idFn);
+                });
+              }
+              else {
+                if (cfg.upload || cfg.dataType == 1) {
+                  replace_db(result, doc.rows, idFn);
+                }
+                /*          else if (cfg.dataType == 1) {
+                 replace_db(result, doc.rows, idFn);
+                 }*/
+                else if (cfg.dataType == 3) {
+                  if(cfg.single)
+                    doc.rows = [result];
+                  else
+                    replace_db_single(result, doc.rows, idFn);
+                }
+                else if (result.rows && angular.isArray(result.rows)) {
+                  replace_db(result.rows, doc.rows, idFn);
+                }
+                else if (result.data && angular.isArray(result.data)) {
+                  replace_db(result.data, doc.rows, idFn);
+                }
+                else if (result.Rows && angular.isArray(result.Rows)) {
+                  replace_db(result.Rows, doc.rows, idFn);
+                }
+              }
+              return db.put(doc,cfg).then(resolve, reject);
+            }catch (ex){
+              console.log('error',ex);
+            }
+          });
+
+        }
+      });
+
+      function replace_db(src, dist, id) {
+        src.forEach(function (item) {
+          replace_db_single(item, dist, id);
+        });
+      }
+
+      function replace_db_single(item, dist, id) {
+        var _id = id(item), flag = false;
+        for (var i = 0, l = dist.length; i < l; i++) {
+          if (_id == id(dist[i])) {
+            dist[i] = item;
+            flag = true;
+            break;
+          }
+        }
+        if (!flag) {
+          dist.push(item);
+        }
+      }
+      function delete_db(item, dist, id) {
+        var _id = id(item);
+        for (var i = 0, l = dist.length; i < l; i++) {
+          if (_id == id(dist[i])) {
+            dist.splice(i, 1);
+            break;
+          }
+        }
+      }
     }
   }
 
