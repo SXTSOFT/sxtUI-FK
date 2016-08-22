@@ -42,7 +42,7 @@
           <div layout="column" class="btn" ng-repeat="item in vm.project.rows" ng-class="{'bhg':!item.hg}" >
             <button class="btnUp" ng-click=" vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionIdTree,type:item.type && item.type.type_id})">{{item.ybNum}}</button>
             <button class=" btnDown" ng-click="vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionIdTree,type:item.type && item.type.type_id})">{{item.ysNum}}</button>
-            <span >{{item.name}}</span>
+            <span >{{item.name.indexOf(item.floor)==-1?item.floor+'-'+item.name:item.name}}</span>
           </div>
         </div>
       </md-list-item>

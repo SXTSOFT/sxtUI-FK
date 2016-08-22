@@ -711,7 +711,6 @@
     function initDb(cfg, args) {
       if (cfg._id && cfg.db) return cfg.db;
       if (cfg.selfDb) {
-
         if (cfg._id)
           return (cfg.db = pouchdb(cfg._id));
         else if (cfg.db) {
