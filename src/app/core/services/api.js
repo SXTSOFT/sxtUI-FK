@@ -655,17 +655,7 @@
               else {
                   reject(result);
                 }
-              }).then(function(result){
-                  return  provider.$q.$q(function(resolver){
-                    pouchdb("localBD").addOrUpdate({
-                      _id:lodb._db_name
-                    }).then(function(){
-                      resolver(result);
-                    })
-                  })
-              }).catch(function (r) {
-                reject(r);
-              });
+              })
           }
           else {
             resolve();
@@ -678,14 +668,31 @@
     }
 
     function initDb(cfg,args) {
-      if(cfg._id && cfg.db) return cfg.db;
+      var  localBD;
+      if(cfg._id && cfg.db)
+        localBD= cfg.db;
       if(cfg._id)
-        return (cfg.db = pouchdb(cfg._id));
+        localBD= cfg.db = pouchdb(cfg._id);
       else if(cfg.db){
         var id = cfg.db.apply(cfg,args);
         if(id)
-          return (cfg._db=pouchdb(id));
+          localBD= cfg._db=pouchdb(id);
       }
+      pouchdb("localBD").addOrUpdate({
+        _id:localBD._db_name
+      })
+      return localBD;
+    //.then(function(result){
+    //    return  provider.$q.$q(function(resolver){
+    //      pouchdb("localBD").addOrUpdate({
+    //        _id:lodb._db_name
+    //      }).then(function(){
+    //        resolver(result);
+    //      })
+    //    })
+    //  }).catch(function (r) {
+    //    reject(r);
+    //  });
     }
 
 

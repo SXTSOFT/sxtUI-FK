@@ -129,10 +129,10 @@
       item.progress = 0;
       var tasks = [];
       tasks.push(function () {
-        return remote.Assessment.getUserMeasureValue(item.ProjectID,1,item.AssessmentID,"Pack"+item.AssessmentID+"sc_v",sxt);
+        return remote.Assessment.getUserMeasureValue(item.ProjectID,1,item.AssessmentID,"Pack"+item.AssessmentID+"sc",sxt);
       });
       tasks.push(function () {
-        return remote.Assessment.getUserMeasurePoint(item.ProjectID,1,"Pack"+item.AssessmentID+"point_v");
+        return remote.Assessment.getUserMeasurePoint(item.ProjectID,1,"Pack"+item.AssessmentID+"point");
       });
       tasks.push(function(){
         return remote.Assessment.getAllMeasureReportData({RegionID:item.ProjectID,RecordType:1})
@@ -174,13 +174,7 @@
             item.downloading = false;
             utils.alert('下载完成');
           })
-          //var fn=remote.Assessment.getUserMeasureValue;
-          //if (fn.db){
-          //  var _db=fn.db(item.ProjectID,1,item.AssessmentID,"Pack"+item.AssessmentID+"sc",sxt);
-          //  _db.allDocs().then(function(){
-          //    console.log('ok');
-          //  });
-          //}
+
         })
       }, function () {
         item.downloading = false;

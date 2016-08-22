@@ -927,12 +927,9 @@
         //}).bind(function ( startIndex,maximunRows,checked) {
         //  return $http.get($http.url('/api/Message',{maximunRows:maximunRows,startIndex:startIndex,checked:checked}))
         //})
-
           messageList: function ( startIndex,maximunRows,checked) {
             return $http.get($http.url('/api/Message',{maximunRows:maximunRows,startIndex:startIndex,checked:checked}))
           }
-
-
       }
   }
   );

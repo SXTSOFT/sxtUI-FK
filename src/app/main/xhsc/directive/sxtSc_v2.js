@@ -33,8 +33,6 @@
     }
     function link(scope,element,attr,ctrl){
       var map,tile,fg,toolbar,data,points,pk;
-      var valRemote=db("Pack"+scope.db+"sc_v");
-      var pointRemote=db("Pack"+scope.db+"point_v");
       var _r=function(o){  //过滤值
         return o.CheckRegionID==scope.regionId&& o.AcceptanceItemID==scope.acceptanceItem
           && scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
@@ -44,7 +42,6 @@
               }));
           });
       }
-
       var install = function(){
         if(!scope.db || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
         if(!pk)
@@ -110,41 +107,7 @@
             var layer = this;
             if(layer.loaded)return;
             layer.loaded = true;
-            if (valRemote){
-              valRemote.findAll(_r).then(function(r){
-                if (r&& r.rows.length>0){
-                  r.rows.forEach(function(k){
-                    delete k._rev;
-                    data.addOrUpdate(k);
-                  });
-                }
-                return r;
-              }).then(function(r){
-                if (pointRemote){
-                   return pointRemote.findAll(function(o){ //过滤点
-                    return r.rows.find(function(i){
-                        if(i.MeasurePointID == o._id|| i.MeasurePointID == o.MeasurePointID){
-                          return true;
-                        }
-                        return false;
-                      })!=null;
-                    }).then(function(k){
-                      if (k&& k.rows.length>0){
-                        k.rows.forEach(function(k){
-                         delete k._rev;
-                         points.addOrUpdate(k);
-                       });
-                     }
-                     dataRender( r.rows, k.rows);
-                    });
-                }else {
-                  dataRender(r.rows,null);
-                }
-              });
-            }else {
-              dataRender(null,null);
-            }
-
+            dataRender(null,null);
             function dataRender(valArr,pointArr){
               data.findAll(function(o){
                 return _r(o);
@@ -187,83 +150,6 @@
                 })
               });
             }
-
-            //$q(function(resolve,reject){
-            //  if (valRemote){
-            //    valRemote.findAll(_r).then(function(r){
-            //      var p=[];
-            //      if (r&& r.rows.length>0){
-            //        r.rows.forEach(function(k){
-            //          delete k._rev;
-            //          p.push(data.addOrUpdate(k));
-            //        });
-            //      }
-            //      if (pointRemote){
-            //        pointRemote.findAll(function(o){ //过滤点
-            //          return r.rows.find(function(i){
-            //              if(i.MeasurePointID == o._id|| i.MeasurePointID == o.MeasurePointID){
-            //                return true;
-            //              }
-            //              return false;
-            //            })!=null;
-            //        }).then(function(k){
-            //          if (k&& k.rows.length>0){
-            //            k.rows.forEach(function(k){
-            //              delete k._rev;
-            //              p.push(points.addOrUpdate(k));
-            //            });
-            //            $q.all(p).then(function(){resolve();}).catch(function(r) {
-            //              reject();
-            //            })
-            //          }
-            //        }).catch(function(){
-            //          reject();
-            //        });
-            //      }else {
-            //        $q.all(p).then(function(){resolve();}).catch(function(){reject();})
-            //      }
-            //    })
-            //  }else {
-            //    resolve();
-            //  }
-            //}).then(function() {
-            //  data.findAll(function(o){
-            //    return _r(o);
-            //  }).then(function(r){
-            //    points.findAll(function(o){
-            //      return r.rows.find(function(i){
-            //          if(i.MeasurePointID == o._id|| i.MeasurePointID == o.MeasurePointID){
-            //            if(r.rows.find(function(i){
-            //                return ((i.MeasurePointID == o._id||i.MeasurePointID == o.MeasurePointID) && i.MeasureValue || i.MeasureValue===0)
-            //              })) {
-            //              o.geometry.options.color = 'blue';
-            //            }
-            //            else{
-            //              o.geometry.options.color = 'red';
-            //            }
-            //            o.geometry.options.v = i;
-            //            o.geometry.options.seq = o.geometry.properties.seq;
-            //            o.geometry.options.customSeq = true;
-            //            o.CreateTime = moment(o.CreateTime).toDate();
-            //            return true;
-            //          }
-            //          return false;
-            //        })!=null;
-            //    }).then(function(p){
-            //      fg.data = r.rows.filter(function (row) {
-            //        return row.CheckRegionID==scope.regionId;
-            //      });
-            //      p.rows.sort(function (p1,p2) {
-            //        return p1.CreateTime.getTime()-p2.CreateTime.getTime();
-            //      });
-            //      p.rows.forEach(function(geo){
-            //        layer.addData(geo.geometry);
-            //      });
-            //    })
-            //  });
-            //}).catch(function(err){
-            //    utils.alert("程序发生错误");
-            //});
           },
           onUpdate:function(layer,isNew,group){
             //这里是修正用户点的位置,尽可能在最近点的同一水平或竖直线上
