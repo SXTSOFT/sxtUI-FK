@@ -17,7 +17,8 @@
       uploadDb,
       networkState = 1,
       globalDb = {
-        id: 'sxt_global_db'
+        id: 'sxt_global_db',
+        noCache:true
       };
 
     provider.register = register;
@@ -832,8 +833,10 @@
               }
               else{
                 provider.$cordovaFile.readAsText(provider.$window.cordova.file.dataDirectory, id+'.bin').then(function (result) {
-                  cache[id] = provider.$window.JSON.parse(result);
-                  resolve(cache[id]);
+                  var r = provider.$window.JSON.parse(result);
+                  if(!globalDb.noCache)
+                    cache[id] = r;
+                  resolve(r);
                 }).catch(function (result) {
                   reject(null);
                 })
@@ -841,7 +844,7 @@
             });
           }
           function put(doc,cfg) {
-            if(!cfg || !cfg.upload)
+            if((!cfg || !cfg.upload) && !globalDb.noCache)
               cache[doc._id] = doc;
 
             if(cfg && cfg.upload && cache[doc._id])
