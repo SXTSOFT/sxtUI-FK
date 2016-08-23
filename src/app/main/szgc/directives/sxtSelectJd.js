@@ -84,9 +84,11 @@
         scope.selectors = [];
         scope.isMore = true;
         scope.resetUI = function(){
-          $('md-list-item',element).css('display','inline');
           $timeout(function(){
-            $('md-list-item',element).css('display','flex');
+            $('md-list-item',element).css('display','inline');
+            $timeout(function(){
+              $('md-list-item',element).css('display','flex');
+            },100);
           },100);
         }
         var syncValue = function () {
@@ -114,8 +116,9 @@
           scope.onChange && scope.onChange(scope);
           if(!$rootScope.$$phase){
             scope.$apply();
-            scope.resetUI();
+
           }
+          scope.resetUI();
         }
         if(scope.objectScope){
           scope.objectScope.backJdSelect = function(){
@@ -149,8 +152,9 @@
               scope.selectors[index] = next;
               if(!$rootScope.$$phase){
                 scope.$apply();
-                scope.resetUI();
+
               }
+              scope.resetUI();
             });
           }
         };
@@ -183,16 +187,18 @@
 
               if(!$rootScope.$$phase){
                 scope.$apply();
-                scope.resetUI();
+
               }
+              scope.resetUI();
             });
           }
           else{
             syncValue();
             if(!$rootScope.$$phase){
               scope.$apply();
-              scope.resetUI();
+
             }
+            scope.resetUI();
           }
         }
         scope.querySearch = function(array, text) {
@@ -212,8 +218,9 @@
             scope.item_selected(result.selected, scope.selectors.length - 1, false);
           if(!$rootScope.$$phase){
             scope.$apply();
-            scope.resetUI();
+
           }
+          scope.resetUI();
         });
       }
     }
