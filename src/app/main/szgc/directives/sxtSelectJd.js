@@ -47,6 +47,7 @@
           }
         });
       }
+
       filter(letters[0]);
       return {
         label: label,
@@ -66,6 +67,7 @@
         }
       }
     }
+    var tr = null;
     return {
       transclude: true,
       scope: {
@@ -75,7 +77,6 @@
         nameTree: '=',
         onQuery: '=',
         onChange: '=',
-        isMore: '=',
         objectScope:'=',
         cache: '@'
       },
@@ -83,12 +84,14 @@
       link: function (scope, element, attr, ctrl) {
         scope.selectors = [];
         scope.isMore = true;
+        tr = null;
         scope.resetUI = function(){
-          $timeout(function(){
+          if(tr)return;
+          tr = $timeout(function(){
             $('md-list-item',element).css('display','inline');
             $timeout(function(){
               $('md-list-item',element).css('display','flex');
-            },100);
+            },10);
           },100);
         }
         var syncValue = function () {
