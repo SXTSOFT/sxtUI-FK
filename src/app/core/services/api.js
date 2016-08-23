@@ -802,7 +802,7 @@
     SingleDB.prototype.get = function (id) {
       var self = this;
       return self.findAll(function (item) {
-        return  (id && self.idFn(item) == id)||self.cfg.single;
+        return  (id && self.idFn(item) == id)||self.cfg.single===true;
       }).then(function (r) {
         return r.rows[0];
       });
