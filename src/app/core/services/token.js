@@ -42,6 +42,9 @@
     }
 
     function onHttpResponseError(rejection) {
+      if(rejection.status == -1){
+        $rootScope.$emit('$cordovaNetwork:setNetwork',1);
+      }
       if (rejection.status == 401 && !rejection.config.isRetry) {
         if (_401) {
           rejection.config.isRetry = true;

@@ -20,6 +20,7 @@
     var userInfo = api.db({
       _id:'s_userinfo',
       idField:'Id',
+      single:true,
       mode:2,
       filter:function () {
         return true;

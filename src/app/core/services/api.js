@@ -15,7 +15,7 @@
       pouchdb,
       settingDb,
       uploadDb,
-      networkState = 1,
+      networkState = 0,
       globalDb = {
         id: 'sxt_global_db',
         noCache:false
@@ -133,6 +133,9 @@
       });
       $rootScope.$on('$cordovaNetwork:offline', function (event, state) {
         api.resetNetwork();
+      });
+      $rootScope.$on('$cordovaNetwork:setNetwork', function (event, state) {
+        api.setNetwork(state);
       });
       $timeout(function () {
         $rootScope.$emit('$cordovaNetwork:online');
@@ -802,7 +805,7 @@
     SingleDB.prototype.get = function (id) {
       var self = this;
       return self.findAll(function (item) {
-        return  (id && self.idFn(item) == id)||self.cfg.single===true;
+        return  (id && self.idFn(item) == id) || (self.cfg.filter && self.cfg.filter(id)) ||self.cfg.single===true;
       }).then(function (r) {
         return r.rows[0];
       });
