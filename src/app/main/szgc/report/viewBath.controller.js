@@ -14,18 +14,7 @@
     vm.is = function(route){
       return $state.is(route);
     }
-    var states = [{
-      id: -1,
-      color: '',
-      title: '全部',
-      selected: true,
-    }, {
-      id: 0,
-      color: 'slategrey',
-      title: '未验收',
-      selected: true,
-      c: 0
-    }, {
+    var states = vm.states = [{
       id: 1,
       color: 'brown',
       title: '初验不合格',
@@ -33,7 +22,7 @@
       c: 0
     }, {
       id: 2,
-      color: 'green',
+      color: 'black',
       title: '初验合格',
       selected: true,
       c: 0
@@ -55,6 +44,12 @@
         return item.id==s;
       });
       return f?f.title:'';
+    }
+    vm.getStateColor = function (s) {
+      var f = states.find(function (item) {
+        return item.id==s;
+      });
+      return f?f.color:'';
     }
     $scope.$on('$destroy',$scope.$on('goBack',function (s,e) {
       if($state.is('app.szgc.report.viewBath')) {

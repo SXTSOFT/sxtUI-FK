@@ -46,7 +46,7 @@
               sourceType: s,
               allowEdit: false,
               encodingType: 0,
-              saveToPhotoAlbum: true,
+              saveToPhotoAlbum: (s===0? false : true),
               correctOrientation: true
             }).then(function (base64) {
               if (base64) {
