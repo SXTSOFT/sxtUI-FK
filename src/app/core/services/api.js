@@ -18,7 +18,7 @@
       networkState = 1,
       globalDb = {
         id: 'sxt_global_db',
-        noCache:true
+        noCache:false
       };
 
     provider.register = register;
