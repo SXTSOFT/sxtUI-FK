@@ -38,7 +38,7 @@
           api.szgc.vanke.projects().then(function (r2) {
             scope.markers = [];
             result.data.Rows.forEach(function (row) {
-              if (row.Latitude && row.Longitude && r2.data.data.find(function (a) { return a.project_id == row.ProjectId; }) != null) {
+              if (row && row.Latitude && row.Longitude && r2.data.data.find(function (a) { return a.project_id == row.ProjectId; }) != null) {
                 scope.markers.push({
                   projectId: row.ProjectId,
                   title: row.ProjectNo,
