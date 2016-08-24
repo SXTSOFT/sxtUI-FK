@@ -86,7 +86,7 @@
         scope.isMore = true;
         tr = null;
         scope.resetUI = function() {
-          if (tr && $window.device && $window.device.platform != 'Android') return;
+          if (tr && $window.navigator.userAgent.indexOf('Android')!=-1) return;
           tr = $timeout(function () {
             $('md-list-item', element).css('display', 'inline');
             $timeout(function () {
