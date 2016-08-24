@@ -8,7 +8,7 @@
     .directive('sxtNumberListItem',sxtNumberListItem);
 
   /** @ngInject */
-  function sxtNumberListItem(utils){
+  function sxtNumberListItem(utils,$rootScope){
     function ybIsOkRow (item,value) {
 
       var zdpc = value;
@@ -140,7 +140,7 @@
                 });
               }
               if(i==l){
-                $(this).parent().parent().parent().append('<div flex="20" class="flex-20"><div class="point" ><span class="n">'+(values.length+1)+'</span></div></div>');
+                $(this).parent().parent().parent().append('<div flex="20" class="flex-20"><div class="point" ><span class="n">p'+(values.length+1)+'</span></div></div>');
               }
             }
             else if(i>1&&i<l){
