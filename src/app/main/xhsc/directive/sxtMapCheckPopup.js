@@ -11,7 +11,8 @@
     return {
       restrict:'E',
       scope:{
-        readonly:'='
+        readonly:'=',
+        warter:"="
       },
       templateUrl:'app/main/xhsc/directive/sxtMapCheckPopup.html',
       link:link
@@ -45,7 +46,7 @@
           remote.Procedure.InspectionProblemRecordFile.query(p.ProblemRecordID, scope.data.v.PositionID).then(function (r) {
             scope.data.images = r.data;
             if (scope.data.v.isNew  && scope.data.images.length == 0) {
-              scope.addPhoto();
+              scope.addPhoto(scope.warter);
             }
           });
         })
@@ -71,9 +72,9 @@
         })
         xhUtils.playPhoto(imgs);
       }
-      scope.addPhoto = function () {
+      scope.addPhoto = function (waterText) {
         scope.data.v.isNew = false;
-        xhUtils.photo().then(function (image) {
+        xhUtils.photo(null,waterText).then(function (image) {
           if(image){
             var img = {
               ProblemRecordFileID:sxt.uuid(),

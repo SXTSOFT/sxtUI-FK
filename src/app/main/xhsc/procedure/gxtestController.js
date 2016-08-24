@@ -81,6 +81,15 @@
     }
     $rootScope.title = acceptanceItemName;
 
+
+    vm.water="";
+    vm.getWaterText=function(){
+      if (vm.info.selected){
+        return vm.info.selected.RegionName+'('+acceptanceItemName+')'
+      }
+      return "";
+    }
+
     remote.Procedure.queryProcedure().then(function(result){
       vm.procedureData = [];
       result.data.forEach(function(it){
@@ -136,6 +145,7 @@
     vm.setRegion = function(region){
       region.hasCheck=true;
       vm.info.selected = region;
+      vm.water=vm.info.selected.RegionName+'('+acceptanceItemName+')';
     }
     vm.nextRegion = function(prev){
       var idx = vm.btBatch.indexOf(vm.info.selected);

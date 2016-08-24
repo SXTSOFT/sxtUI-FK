@@ -19,7 +19,7 @@
 
       for(var k in config.db){
         self[k] = config.db[k];
-        self[k].db = api.fdb('Pack'+config._id+k);// db('Pack'+config._id+k);
+        self[k].db = db('Pack'+config._id+k);// db('Pack'+config._id+k);
       }
     }
     Pack.prototype.upload = function (process) {
