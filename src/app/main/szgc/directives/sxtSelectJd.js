@@ -10,7 +10,7 @@
     .directive('sxtSelectJd', sxtSelectJdDirective);
 
   /** @ngInject */
-  function sxtSelectJdDirective($rootScope,$timeout)
+  function sxtSelectJdDirective($rootScope,$timeout,$window)
   {
     var joinArr = function (arr) {
       var n = [];
@@ -85,14 +85,14 @@
         scope.selectors = [];
         scope.isMore = true;
         tr = null;
-        scope.resetUI = function(){
-          if(tr)return;
-          tr = $timeout(function(){
-            $('md-list-item',element).css('display','inline');
-            $timeout(function(){
-              $('md-list-item',element).css('display','flex');
-            },10);
-          },100);
+        scope.resetUI = function() {
+          if (tr && $window.device && $window.device.platform != 'Android') return;
+          tr = $timeout(function () {
+            $('md-list-item', element).css('display', 'inline');
+            $timeout(function () {
+              $('md-list-item', element).css('display', 'flex');
+            }, 10);
+          }, 100);
         }
         var syncValue = function () {
           if (!scope.selectors.length || !scope.selectors[0].selected) {

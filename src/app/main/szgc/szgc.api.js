@@ -91,7 +91,7 @@
           dataType:5,
           filter:function (item,param) {
             return item.RegionIdTree==param.regionIdTree
-            && item.ProcedureId==param.procedureId && (!param.regionId || param.regionId==param.RegionId)
+            && item.ProcedureId==param.procedureId && (!param.regionId || param.regionId==item.RegionId)
           }
         }).bind(function(parems) {
           return $http.get($http.url('/api/BatchRelation/GetBatchRelationAllHistoryList', parems));

@@ -7,13 +7,15 @@
     .module('app.core')
     .factory('authToken',authToken);
   /** @ngInject */
-  function authToken($cookies,$rootScope,$injector){
-    var token,tokenInjector,_401,lastTipTime;
+  function authToken($cookies,$rootScope,$injector,$timeout){
+    var token,tokenInjector,_401,lastTipTime,
+      lastRequestTime,isNetworking;
 
     tokenInjector = {
       setToken      : setToken,
       getToken      : getToken,
       request       : onHttpRequest,
+      response      : onResponse,
       responseError : onHttpResponseError,
       on401         : on401
     };
@@ -38,10 +40,39 @@
       var token = getToken();
       if(token && !config.headers['Authorization'])
         config.headers['Authorization'] = token;
+      if(config.url.indexOf('html')==-1) {
+        clearTime();
+        if(lastRequestTime){
+          $timeout.cancel(lastRequestTime);
+        }
+        lastRequestTime = $timeout(function () {
+          isNetworking = true;
+          $rootScope.$emit('sxt:onNetworking', config);
+        }, 5000);
+      }
       return config;
     }
 
+    function onResponse(response) {
+      if(lastRequestTime) {
+        cancelNetworking();
+        clearTime();
+      }
+      return response;
+    }
+
+    function cancelNetworking() {
+      if(isNetworking){
+        $rootScope.$emit('sxt:cancelNetworking');
+      }
+    }
+    function clearTime() {
+      lastRequestTime && $timeout.cancel(lastRequestTime);
+      lastRequestTime = null
+    }
+
     function onHttpResponseError(rejection) {
+      cancelNetworking();
       if(rejection.status == -1){
         $rootScope.$emit('$cordovaNetwork:setNetwork',1);
       }

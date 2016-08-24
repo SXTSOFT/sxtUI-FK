@@ -169,7 +169,7 @@
         }).then(function (result) {
           //如果已经录入了把第一条BatchNo最大的返回取它的BatchNo，把Id制空
           //没有Id才会插入一条数
-          var b = result.data.Rows.length ? result.data.Rows[0] : null;
+          var b = result.data.Rows.length ? angular.copy(result.data.Rows[0]) : null;
 
           if (b) {
             b.Id = null;
@@ -210,7 +210,7 @@
       }
       $q.all([
         api.szgc.TargetService.getAll(procedure),
-        isB&&!flag ? $q(function (resolve) {
+        isB&&!flag  && $scope.roleId!='jl'? $q(function (resolve) {
           resolve({
             data: {
               Rows: [{
@@ -224,7 +224,7 @@
           unitType: 2
         }),
 
-        isB&&!flag ? $q(function (resolve) {
+        isB&&!flag  && $scope.roleId!='jl'? $q(function (resolve) {
           resolve({
             data: {
               Rows: [{
@@ -237,12 +237,13 @@
           projectId: idtree,
           unitType: 3
         }),
-        isB&&!flag ? $q(function (resolve) {
+        isB&&!flag && $scope.roleId!='jl' ? $q(function (resolve) {
           if ($scope.roleId == 'zb') {
             resolve({
               data: {Rows: []}
             });
-          } else {
+          }
+          else {
             resolve({
               data: {
                 Rows: [{
@@ -342,8 +343,8 @@
           var nn = [];
           if (fd) {
             nn.push(fd);
-            if (!batch.SupervisorCompanyId)
-              batch.SupervisorCompanyId = fd.UnitId;
+            //if (!batch.SupervisorCompanyId)
+            batch.SupervisorCompanyId = fd.UnitId;
             $scope.data.construction = nn;
           }
           else{

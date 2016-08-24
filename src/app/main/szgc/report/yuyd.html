@@ -34,7 +34,7 @@
   </div>
 <md-content flex layout="column">
     <span flex ng-if="vm.project.rows.length==0 && !vm.project.loading" style="text-align: center;display: block;"> 暂无数据</span>
-  <md-progress-circular md-mode="indeterminate" ng-if="vm.project.loading&&vm.project.rows.length!=0" md-diameter="40"></md-progress-circular>
+  <md-progress-circular md-mode="indeterminate" ng-if="vm.project.loading&&vm.project.rows.length!=0" md-diameter="20"></md-progress-circular>
 
     <md-list layout-padding ng-if="!vm.project.loading">
       <md-list-item>
