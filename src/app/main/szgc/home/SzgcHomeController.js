@@ -17,11 +17,11 @@
     //alert('是否是Android：'+isAndroid);
     //alert('是否是iOS：'+isiOS);
 
-    if(isAndroid)
-    {
+    //if(isAndroid)
+    //{
       versionUpdate.check();
 
-    }
+    //}
 
     var vm = this;
     vm.data = {};

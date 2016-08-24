@@ -49,6 +49,13 @@
         templateUrl: 'app/main/szgc/material/upload.html'
       })
 
+      //.state('app.material.ys.list', {
+      //  title:'验收',
+      //  url: '/list',
+      //  controller: 'materialListController as vm',
+      //  templateUrl: 'app/main/material/ys/materialList.html'
+      //})
+
 
   }
 })();
