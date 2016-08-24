@@ -334,10 +334,27 @@
             var group = groups[i++], cfg = group.cfg;
             result.rows.forEach(function (row) {
               tasks.push(function () {
-                return cfg.fn.call(cfg, row).then(function (result) {
-                  if (result && result.status == 200 && result.data && !result.data.ErrorCode) {
-                    options.uploaded && options.uploaded(cfg, row, result);
-                  }
+                return provider.$q(function (resolve,reject) {
+                  provider.$q(function (r1,r2) {
+                    if(!cfg.fileField){
+                      r1(row);
+                    }
+                    else{
+                      cfg.db.get(row._id).then(function (newRow) {
+                        r1(newRow);
+                      },r2)
+                    }
+                  }).then(function (row) {
+                    cfg.fn.call(cfg, row).then(function (result) {
+                      if (result && result.status == 200 && result.data && !result.data.ErrorCode) {
+                        options.uploaded && options.uploaded(cfg, row, result);
+                        resolve();
+                      }
+                      else{
+                        reject();
+                      }
+                    }).catch(reject);
+                  }).catch(reject);
                 });
               });
             });
@@ -807,6 +824,9 @@
       return self.findAll(function (item) {
         return  (id && self.idFn(item) == id) || (self.cfg.filter && self.cfg.filter(id)) ||self.cfg.single===true;
       }).then(function (r) {
+        if(cfg.fileField && r.rows && r.rows[0]){
+          return self.db.get(r.rows[0]._id)
+        }
         return r.rows[0];
       });
     }
@@ -890,14 +910,58 @@
       })
     }
 
+    function copySave(obj,exFields) {
+      var o = {};
+      for(var k in obj){
+        if(obj.hasOwnProperty(k) && exFields.indexOf(k)==-1){
+          o[k] = obj[k];
+        }
+      }
+      return o;
+    }
     function db_save(cfg, result, idFn) {
       var db = get_globalDb();
       return provider.$q.$q(function (resolve, reject) {
         db.get(cfg._id,cfg).then(save_to).catch(save_to);
         function save_to(doc) {
+          provider.$q(function (resolve,reject) {
+            if(cfg.fileField){
+              if(!angular.isArray(cfg.fileField)){
+                cfg.fileField = [cfg.fileField];
+              }
+              var _saveList = [],
+                nResult;
+              if(angular.isArray(result)) {
+                nResult = [];
+                result.forEach(function (r) {
+                  r._id = idFn(r);
+                  _saveList.push(db.put(r, {
+                    upload: true
+                  }));
+                  nResult.push(copySave(r,cfg.fileField));
+                })
+              }
+              else{
+                result._id = idFn(result);
+                nResult = copySave(result,cfg.fileField);
+                _saveList.push(db.put(result, {
+                  upload: true
+                }));
+              }
+              provider.$q.all(_saveList).then(function () {
+                resolve(nResult);
+              },function () {
+                resolve(nResult);
+              });
+            }
+            else{
+              resolve(result);
+            }
+          }).then(function (result) {
           try {
             if (!doc || doc.error)
               doc = {_id: cfg._id, rows: []};
+
             if (cfg.delete) {
               result.forEach(function (item) {
                 delete_db(item, doc.rows, idFn);
@@ -930,6 +994,8 @@
           }catch (ex){
             console.log('error',ex);
           }
+          });
+
         }
       });
 
