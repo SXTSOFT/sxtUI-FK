@@ -20,8 +20,8 @@
       <md-list>
         <md-list-item ng-if="d.hasShowRight"  ng-repeat="d in h.Children"  style="padding:0;background: #fff;margin-bottom:10px;border-top:1px solid #dedede;">
           <div flex>
-            <div flex class="gxrooms" style="padding-left:10px;padding-right:10px;"><span class="roomname">{{d.RegionName}}</span><md-button ng-click="vm.zk(d)" style="color:#49affe;min-width: 50px;"><span ng-show="d.show">展开</span><span ng-show="!d.show">收起</span></md-button></div>
-            <md-list slide-up-down ng-value="!d.show" style="padding-left:10px;padding-right:10px;" ng-show="vm.maxRegion !=8">
+            <div flex class="gxrooms" style="padding-left:10px;padding-right:10px;"><span class="roomname">{{d.RegionName}}</span><md-button ng-click="vm.zk(d)" style="color:#49affe;min-width: 50px;"><span ng-show="!d.show">展开</span><span ng-show="d.show">收起</span></md-button></div>
+            <md-list ng-if="d.show&&vm.maxRegion !=8"  style="padding-left:10px;padding-right:10px;">
               <md-list-item ng-if="c.hasShowRight&&vm.regionfilterByStatus(c)"  ng-repeat="c in d.Children|filter:{}">
                 <div flex layout="column">
                   <div flex class="gxrooms" style="overflow: hidden;">
@@ -30,10 +30,10 @@
                         <div style="height:100%;width:{{c.Percentage}}%"></div><span>{{c.RegionName}}</span>
                       </div>
                     </div>
-                    <md-button ng-click="vm.zk(c)" style="color:#49affe;min-width: 50px;"><span ng-show="c.show">展开</span><span ng-show="!c.show">收起</span></md-button>
+                    <md-button ng-click="vm.zk(c)" style="color:#49affe;min-width: 50px;"><span ng-show="!c.show">展开</span><span ng-show="c.show">收起</span></md-button>
                   </div>
-                  <md-list class="roomllist" slide-up-down ng-value="!c.show" style="border-bottom: 1px solid #dedede;margin-top:10px;">
-                    <md-list-item ng-if="r.hasShowRight&&vm.regionfilterByStatus(r)" ng-repeat="r in c.Children">
+                  <md-list class="roomllist" ng-if="c.show" style="border-bottom: 1px solid #dedede;margin-top:10px;">
+                    <md-list-item ng-if="c.show&&r.hasShowRight&&vm.regionfilterByStatus(r)" ng-repeat="r in c.Children">
                       <div class="room-st {{r.style}}" ng-click="vm.selected(r)" ng-class="{'checked':r.checked}">
                         <div style="height:100%;width:{{r.Percentage}}%;"></div><span>{{r.RegionName}}</span>
                       </div>
@@ -42,9 +42,9 @@
                 </div>
               </md-list-item>
             </md-list>
-            <div layout="column"  ng-show="vm.maxRegion ==8">
-            <md-list class="roomllist" slide-up-down ng-value="!d.show"  style="border-bottom: 1px solid #dedede;padding:10px 5px 0;">
-              <md-list-item ng-if="r.hasShowRight&&vm.regionfilterByStatus(r)" ng-repeat="r in d.Children">
+            <div layout="column"  ng-if="d.show&&vm.maxRegion ==8">
+              <md-list class="roomllist"   style="border-bottom: 1px solid #dedede;padding:10px 5px 0;">
+                  <md-list-item ng-if="r.hasShowRight&&vm.regionfilterByStatus(r)" ng-repeat="r in d.Children">
                 <div class="room-st {{r.style}}" ng-click="vm.selected(r)" ng-class="{'checked':r.checked}">
                   <div style="height:100%;width:{{r.Percentage}}%;"></div><span>{{r.RegionName}}</span>
                 </div>
