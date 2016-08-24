@@ -10,7 +10,7 @@
     .directive('sxtSelectJd', sxtSelectJdDirective);
 
   /** @ngInject */
-  function sxtSelectJdDirective($rootScope,$timeout)
+  function sxtSelectJdDirective($rootScope,$timeout,$window)
   {
     var joinArr = function (arr) {
       var n = [];
@@ -47,6 +47,7 @@
           }
         });
       }
+
       filter(letters[0]);
       return {
         label: label,
@@ -66,6 +67,7 @@
         }
       }
     }
+    var tr = null;
     return {
       transclude: true,
       scope: {
@@ -75,7 +77,6 @@
         nameTree: '=',
         onQuery: '=',
         onChange: '=',
-        isMore: '=',
         objectScope:'=',
         cache: '@'
       },
@@ -83,13 +84,15 @@
       link: function (scope, element, attr, ctrl) {
         scope.selectors = [];
         scope.isMore = true;
-        scope.resetUI = function(){
-          $timeout(function(){
-            $('md-list-item',element).css('display','inline');
-            $timeout(function(){
-              $('md-list-item',element).css('display','flex');
-            },100);
-          },100);
+        tr = null;
+        scope.resetUI = function() {
+          if (tr && $window.device && $window.device.platform != 'Android') return;
+          tr = $timeout(function () {
+            $('md-list-item', element).css('display', 'inline');
+            $timeout(function () {
+              $('md-list-item', element).css('display', 'flex');
+            }, 10);
+          }, 100);
         }
         var syncValue = function () {
           if (!scope.selectors.length || !scope.selectors[0].selected) {

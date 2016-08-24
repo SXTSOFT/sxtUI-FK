@@ -10,7 +10,7 @@
     .config(config);
 
   /** @ngInject */
-  function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider,authProvider)
+  function config($stateProvider, msNavigationServiceProvider,authProvider)
   {
     authProvider.interceptors.push('vankeAuth');
 
@@ -37,8 +37,7 @@
         }
       });
 
-    // Translation
-    $translatePartialLoaderProvider.addPart('app/main/auth');
+
 
     //// Navigation
     //msNavigationServiceProvider.saveItem('auth', {

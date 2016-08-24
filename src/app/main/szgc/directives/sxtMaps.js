@@ -112,7 +112,7 @@
         scope.$on('destroy', function () {
           map.remove();
         })
-      }, 1000)
+      }, 0);
 
       function markerClick(e){
         //console.log('e.target.options',e.target.options)

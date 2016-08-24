@@ -10,7 +10,7 @@
     .config(config);
 
   /** @ngInject */
-  function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
+  function config($stateProvider, msNavigationServiceProvider)
   {
     // State
     $stateProvider
@@ -324,8 +324,6 @@
       })
 
 
-    // Translation
-    //$translatePartialLoaderProvider.addPart('app/main/auth');
 
     // Navigation
     msNavigationServiceProvider.saveItem('szgc', {

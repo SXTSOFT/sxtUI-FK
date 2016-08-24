@@ -7,7 +7,7 @@
         .config(config);
 
     /** @ngInject */
-    function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider,apiProvider)
+    function config($stateProvider, msNavigationServiceProvider,apiProvider)
     {
       // State
       $stateProvider
@@ -27,8 +27,6 @@
               }
           });
 
-      // Translation
-      $translatePartialLoaderProvider.addPart('app/main/sample');
 
       //// Navigation
       //msNavigationServiceProvider.saveItem('fuse', {
