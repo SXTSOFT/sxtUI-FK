@@ -217,7 +217,9 @@
           continue;
         }
 
-        db[parent][method] = wrapFunction(db[parent][method]);
+        if (db[parent]&&db[parent][method]){
+          db[parent][method] = wrapFunction(db[parent][method]);
+        }
       }
       return db;
     }
