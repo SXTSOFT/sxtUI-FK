@@ -799,10 +799,9 @@
         batch = data.curHistory;
 
       if (!batch.GrpId && $scope.roleId != '3rd') {
-        utils.alert('请选择班组', function () {
-          $scope.isSaveing = false;
-          return;
-        });
+        utils.alert('请选择班组', function () {});
+        $scope.isSaveing = false;
+        return;
       }
       step.RoleId = api.szgc.vanke.getRoleId();// data.submitUser.type;
       step.CheckNo = batch.Count;

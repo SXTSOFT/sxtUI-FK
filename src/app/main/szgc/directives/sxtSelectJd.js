@@ -86,7 +86,7 @@
         scope.isMore = true;
         tr = null;
         scope.resetUI = function() {
-          if (tr && $window.navigator.userAgent.indexOf('Android')!=-1) return;
+          if (tr && $window.navigator.userAgent.indexOf('Android')==-1) return;
           tr = $timeout(function () {
             $('md-list-item', element).css('display', 'inline');
             $timeout(function () {
@@ -215,16 +215,19 @@
           }
           return k;
         }
-        scope.onQuery(0, newSt, scope.value,scope).then(function (result) {
-          scope.selectors.push(result);
-          if (result.selected)
-            scope.item_selected(result.selected, scope.selectors.length - 1, false);
-          if(!$rootScope.$$phase){
-            scope.$apply();
+        $timeout(function () {
+          scope.onQuery(0, newSt, scope.value,scope).then(function (result) {
+            scope.selectors.push(result);
+            if (result.selected)
+              scope.item_selected(result.selected, scope.selectors.length - 1, false);
+            if(!$rootScope.$$phase){
+              scope.$apply();
 
-          }
-          scope.resetUI();
-        });
+            }
+            scope.resetUI();
+          });
+        },100);
+
       }
     }
   }
