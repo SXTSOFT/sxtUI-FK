@@ -175,8 +175,7 @@
             current.total = e.total;
             break;
           case 'success':
-          current.isOffline = true;
-          break;
+            //downloadys
         }
       }
     },$scope);
@@ -187,8 +186,10 @@
           $scope.item=item;
           var tasks = [].concat(globalTask)
             .concat(projectTask(item.ProjectID,item.Children,item.AcceptanceItemID))
-            .concat(InspectionTask(item));
-          //console.log(tasks);
+            .concat(InspectionTask(item))
+            .concat(function(){
+                return api.setting('ysList:'+ item.InspectionId,{InspectionId:item.InspectionId});
+            })
           api.task(tasks,{
             event:'downloadys',
             target:item.InspectionId
@@ -453,11 +454,26 @@
       });
       remote.Procedure.getInspections(31).then(function(r){
         vm.Inspections=[];
-        r.data.forEach(function(o){
-          if (o.Sign!=8){
-            vm.Inspections.push(o);
-          }
-        });
+
+        var list=[]
+        if (angular.isArray(r.data)){
+          r.data.forEach(function(o){
+            list.push(api.setting('ysList:'+ o.InspectionId))
+          });
+          $q.all(list).then(function (rs) {
+            var ix=0;
+            r.data.forEach(function (item) {
+              item.isOffline = rs[ix++]?true:false;
+              vm.Inspections.push(item);
+            });
+          });
+        }
+
+        //r.data.forEach(function(o){
+        //  if (o.Sign!=8){
+        //    vm.Inspections.push(o);
+        //  }
+        //});
       });
     }
     load();
