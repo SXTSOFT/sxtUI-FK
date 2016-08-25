@@ -189,22 +189,20 @@
       }
     }).then(function (result) {
       var batch = result.data,
-
-        isB = $scope.data.isB = !!batch;
-                if (isB && $scope.roleId == 'jl' && !batch.SupervisorCompanyId) { //如果监理在总包上录入，且总包没有选择监理
-                    batch.SupervisorCompanyId = user.Partner;
-                }
-      var gp = batch? {
+        isB = $scope.data.isB = batch && batch.GrpId;
+      if (isB && $scope.roleId == 'jl' && !batch.SupervisorCompanyId) { //如果监理在总包上录入，且总包没有选择监理
+        batch.SupervisorCompanyId = user.Partner;
+      }
+      var gp = batch && batch.GrpId? {
         id: batch.GrpId,
         name: batch.GrpName
       }:null;//因为控件的BUG,会把名称清掉,这里保留一份
+
       if (flag) {
         batch.BatchNo = parseInt(batch.BatchNo);
         $scope.data.curHistory = batch;
-
       }
       else if (batch && !flag) {
-
         batch.Count = (batch.Count||0) + 1;
         $scope.data.curHistory = batch;
       }
@@ -465,6 +463,7 @@
         });
         //utils.scrollTop();
         initIng = true;
+        resetGroup();
       });
     });
 
@@ -504,7 +503,7 @@
       }
     })
     var resetGroup = function() {
-      if (!$scope.data.supervision || !$scope.data.supervision1 || !$scope.data.isFirst) return;
+      if (!$scope.data.supervision || !$scope.data.supervision1 ) return;
       var g = [];
 
       $scope.data.groups = [];
@@ -554,12 +553,11 @@
                 return;
               };
             }
-            if(!(item.partner_id == $scope.data.curHistory.ParentCompanyId || gps.find(function (g) {
+            if(item.partner_id != $scope.data.curHistory.ParentCompanyId || !gps.find(function (g) {
                 return g.id == item.team_id;
-              }))){
+              })){
               return;
             }
-
 
             var ns = [];
             item.managers.forEach(function (it) {

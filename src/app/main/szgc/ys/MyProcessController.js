@@ -494,7 +494,7 @@
         var ts = [];
         $scope.project.tasks.forEach(function (t) {
           if(t.idtree){
-            var tree = idtree.split('>'),
+            var tree = t.idtree.split('>'),
               tree2 = tree[0]+'>'+tree[1];
             if(!ts.find(function (t) {
                 return t==tree2;

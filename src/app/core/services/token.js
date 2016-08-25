@@ -42,8 +42,7 @@
         config.headers['Authorization'] = token;
       if(config.url.indexOf('api')!=-1) {
         lastRequestTime[config.url] = $timeout(function () {
-          isNetworking = true;
-          console.log('isNetworking',isNetworking)
+          lastRequestTime[config.url].isNetworking = true;
           $rootScope.$emit('sxt:onNetworking', config);
         }, 5000);
       }
@@ -60,9 +59,15 @@
         cancelNetworking(config.url);
         $timeout.cancel(lastRequestTime[config.url]);
         delete lastRequestTime[config.url];
-        if (isNetworking) {
-          $rootScope.$emit('sxt:cancelNetworking');
+        var fg = false;
+        for (var k in lastRequestTime) {
+          if (lastRequestTime[k].isNetworking) {
+            fg = true;
+          }
         }
+        if (!fg)
+          $rootScope.$emit('sxt:cancelNetworking');
+
       }
     }
 
@@ -76,6 +81,7 @@
         if (_401) {
           rejection.config.isRetry = true;
           return _401.call(tokenInjector, rejection).then(function () {
+            rejection.config.headers['Authorization'] = getToken();
             return $injector.get('$http')(rejection.config);
           }).catch(function () {
             $rootScope.$emit('user:needlogin');
