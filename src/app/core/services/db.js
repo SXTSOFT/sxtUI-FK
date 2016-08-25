@@ -228,6 +228,11 @@
         options.adapter = 'websql';
         options.iosDatabaseLocation = 'default';
       }
+      if (name!='localBD'){
+        pouchDB('localBD').addOrUpdate({
+          _id:name
+        })
+      }
       var db = new $window.PouchDB(name, options);
       return wrapMethods(db, self.methods);
     };

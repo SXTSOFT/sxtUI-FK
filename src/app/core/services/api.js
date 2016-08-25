@@ -13,7 +13,6 @@
       injector,
       cfgs=[],
       pouchdb,
-      settingDb,
       uploadDb,
       networkState = 1;
 
@@ -239,9 +238,7 @@
 
     function setting(key,value) {
       return provider.$q(function (resolve) {
-        if (!settingDb) {
-          settingDb = pouchdb('systemstting');
-        }
+        var settingDb= pouchdb('systemstting');
         if(value){
           settingDb.addOrUpdate({
             _id:key,
@@ -391,12 +388,26 @@
             var d = new Date().getTime(),next = function () {
               run(i + 1, progress, success, fail, options);
             };
-            fn(tasks,donwfile).then(function () {
-              fn.isSuccess=true;
-              if(d && !next.r) {
-                d = 0;
-                next.r = true;
-                next();
+            var isTimeout=false;
+            provider.$timeout(function(){
+              if (!isTimeout){
+                isTimeout=true;
+                if(config && config.event)
+                  provider.$rootScope.$emit(config.event,{
+                    target:config.target,
+                    event:'fail'
+                  });
+                fail && fail();
+              }
+            },10000);
+            fn(tasks,donwfile).then(function (k) {
+              if (!isTimeout){
+                isTimeout=true;
+                if(d && !next.r) {
+                  d = 0;
+                  next.r = true;
+                  next();
+                }
               }
             }).catch(function (err) {
               d = 0;
@@ -407,13 +418,6 @@
                 });
               fail && fail();
             });
-            provider.$timeout(function () {
-              if(d && !next.r){
-                d = 0;
-                next.r = true;
-                next();
-              }
-            },options && options.timeout?options.timeout:5000);
           }
         }
       }
@@ -678,9 +682,6 @@
         if(id)
           localBD= cfg._db=pouchdb(id);
       }
-      pouchdb("localBD").addOrUpdate({
-        _id:localBD._db_name
-      })
       return localBD;
     //.then(function(result){
     //    return  provider.$q.$q(function(resolver){
