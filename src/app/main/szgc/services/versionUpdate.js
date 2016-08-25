@@ -10,6 +10,8 @@
 
   function versionUpdate($mdDialog, $cordovaFileTransfer, $cordovaAppVersion, $cordovaFileOpener2,$http){
 
+    var version = '1.7.1'
+    this.version = version;
     this.check = function() {
 
 
@@ -23,7 +25,6 @@
          // $cordovaAppVersion.getVersionNumber().then(function (version) {
           //  console.log("version=====本机>>>" + version + "====>>服务器" + serverAppVersion);
 
-          var version='1.7.1'
             if (version != serverAppVersion) {
               //弹出选择框 是否进行更新
 
@@ -46,7 +47,7 @@
                 if (isiOS)  {
 
 
-                  window.location.href = "devzeng://login?name=zengjing&password=123456";
+                  window.location.href = "sxt://update";
 
 
 
