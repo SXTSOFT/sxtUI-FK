@@ -498,6 +498,7 @@
         utils.alert('上传失败');
         $scope.uploading =false;
       },{
+        timeout:600000,
         uploaded:function (cfg,row,result) {
           cfg.db && cfg.db.delete(row);
         }
