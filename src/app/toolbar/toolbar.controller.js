@@ -9,13 +9,7 @@
   function ToolbarController($rootScope, $mdSidenav, $mdToast, auth, $state) {
     var vm = this;
     vm.is = isRoute;
-    vm.networking = false;
-    $rootScope.$on('sxt:onNetworking', function (e, config) {
-      vm.networking = true;
-    })
-    $rootScope.$on('sxt:cancelNetworking', function () {
-      vm.networking = false;
-    });
+
 
     auth.getUser().then(function (user) {
       console.log('user', user)

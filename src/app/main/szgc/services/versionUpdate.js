@@ -10,7 +10,7 @@
 
   function versionUpdate($mdDialog, $cordovaFileTransfer, $cordovaAppVersion, $cordovaFileOpener2,$http){
 
-    var version = '1.7.1'
+    var version = '1.7.2';
     this.version = version;
     this.check = function() {
 

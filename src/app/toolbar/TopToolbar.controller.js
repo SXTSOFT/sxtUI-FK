@@ -9,6 +9,14 @@
     /** @ngInject */
     function TopToolbarController($scope,$rootScope,api) {
       var vm=this;
+      vm.networking = false;
+      $rootScope.$on('sxt:onNetworking', function (e, config) {
+        vm.networking = true;
+      })
+      $rootScope.$on('sxt:cancelNetworking', function () {
+        vm.networking = false;
+      });
+
       $rootScope.$on('sxt:online', function(event, state){
         vm.networkState = api.getNetwork();
       });

@@ -52,6 +52,7 @@
 
     function token(user){
       if(user) {
+        api.setNetwork(0);
         user.grant_type = 'password';
         user.scope = 'sxt';
         return $q (function (resolve,reject) {
@@ -101,6 +102,8 @@
             cfg.mode = 1;
             if(!d ||(!d.status && !d.data)){
               $rootScope.$emit('user:needlogin');
+            }
+            else{
             }
             resolve(d && d.data);
             //api.resetNetwork();

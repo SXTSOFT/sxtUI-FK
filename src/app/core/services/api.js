@@ -764,6 +764,7 @@
           tasks.push(function () {
             return provider.$q(function (resolve) {
               get_globalDb().destroy(cfg._id);
+              cfg.db = null;
               if(!provider.$window.cordova) {
                 resolve();
               }

@@ -9,7 +9,7 @@
   /** @ngInject */
   function authToken($cookies,$rootScope,$injector,$timeout){
     var token,tokenInjector,_401,lastTipTime,
-      lastRequestTime,isNetworking;
+      lastRequestTime={},isNetworking;
 
     tokenInjector = {
       setToken      : setToken,
@@ -40,13 +40,10 @@
       var token = getToken();
       if(token && !config.headers['Authorization'])
         config.headers['Authorization'] = token;
-      if(config.url.indexOf('html')==-1) {
-        clearTime();
-        if(lastRequestTime){
-          $timeout.cancel(lastRequestTime);
-        }
-        lastRequestTime = $timeout(function () {
+      if(config.url.indexOf('api')!=-1) {
+        lastRequestTime[config.url] = $timeout(function () {
           isNetworking = true;
+          console.log('isNetworking',isNetworking)
           $rootScope.$emit('sxt:onNetworking', config);
         }, 5000);
       }
@@ -54,25 +51,24 @@
     }
 
     function onResponse(response) {
-      if(lastRequestTime) {
-        cancelNetworking();
-        clearTime();
-      }
+      cancelNetworking(response.config);
       return response;
     }
 
-    function cancelNetworking() {
-      if(isNetworking){
-        $rootScope.$emit('sxt:cancelNetworking');
+    function cancelNetworking(config) {
+      if(lastRequestTime[config.url]) {
+        cancelNetworking(config.url);
+        $timeout.cancel(lastRequestTime[config.url]);
+        delete lastRequestTime[config.url];
+        if (isNetworking) {
+          $rootScope.$emit('sxt:cancelNetworking');
+        }
       }
     }
-    function clearTime() {
-      lastRequestTime && $timeout.cancel(lastRequestTime);
-      lastRequestTime = null
-    }
+
 
     function onHttpResponseError(rejection) {
-      cancelNetworking();
+      cancelNetworking(rejection.config);
       if(rejection.status == -1){
         $rootScope.$emit('$cordovaNetwork:setNetwork',1);
       }
@@ -90,7 +86,7 @@
         }
       }
       else {
-        if (rejection && rejection.status != -1) {
+        if (rejection && rejection.status != -1 && rejection.status != 401) {
           if (!lastTipTime || new Date().getTime() - lastTipTime < 10000) {
             lastTipTime = new Date().getTime();
             $injector.invoke(['utils', function (utils) {

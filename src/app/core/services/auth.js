@@ -39,6 +39,7 @@
           autoLoginPath = true;
           return (self.lastRefresh = $q(function (resolve,reject) {
             refresh(s,response).then(function () {
+              autoLoginPath = false;
               resolve();
             }).catch(function () {
               autoLoginPath =false;

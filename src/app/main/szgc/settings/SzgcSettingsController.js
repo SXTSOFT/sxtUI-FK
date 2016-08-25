@@ -20,14 +20,18 @@
         if(result.rows.length){
           utils.confirm('您有'+result.rows.length+'条数据未上传，确定清除所有缓存数据并退出吗？').then(function (result) {
             appCookie.remove('projects');
-            vm.trueClear([]);
-            //auth.logout();
+            vm.trueClear([],function () {
+              auth.logout();
+            });
+
           })
         }
         else {
           utils.confirm('退出将清除当前人所有缓存数据，确定退出吗?').then(function (result) {
             appCookie.remove('projects');
-            vm.trueClear([]);
+            vm.trueClear([],function () {
+              auth.logout();
+            });
 
           });
         }
@@ -50,7 +54,7 @@
     },function () {
       api.setNetwork(vm.networkState);
     });
-    vm.trueClear = function (exclude) {
+    vm.trueClear = function (exclude,callback) {
       $mdDialog.show({
           controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
             api.clearDb(function (persent) {
@@ -58,7 +62,7 @@
             }, function () {
               $scope.cacheInfo = null;
               $mdDialog.hide();
-              //utils.alert('清除成功');
+              utils.alert('清除完成');
             }, function () {
               $scope.cacheInfo = null;
               $mdDialog.cancel();
@@ -75,7 +79,8 @@
           fullscreen: false
         })
         .then(function(answer) {
-          auth.logout();
+          //auth.logout();
+          callback && callback();
         }, function() {
 
         });
