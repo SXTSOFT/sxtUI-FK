@@ -9,7 +9,7 @@
     .controller('SzgcSettingsController',SzgcSettingsController);
 
   /** @ngInject */
-  function SzgcSettingsController(profile,auth,api,$scope,utils,$rootScope,appCookie,$mdDialog){
+  function SzgcSettingsController(profile,auth,api,$scope,utils,$rootScope,appCookie,$mdDialog,versionUpdate){
 
     var vm = this;
     vm.profile = profile.data.data;
@@ -33,10 +33,11 @@
         }
       });
     }
+    vm.serverAppVersion = versionUpdate.version;
     //服务器上保存版本信息
-    api.szgc.version().then(function (r) {
-      vm.serverAppVersion = r.data.verInfo;
-    });
+  /*  api.szgc.version().then(function (r) {
+      //vm.serverAppVersion = r.data.verInfo;
+    });*/
     $rootScope.$on('sxt:online', function(event, state){
       vm.networkState = api.getNetwork();
     });
