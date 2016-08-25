@@ -22,6 +22,7 @@
         idField:'Id',
         single:true,
         mode:1,
+        local:true,
         filter:function () {
           return true;
         },
@@ -94,6 +95,7 @@
       if(!token || !token.username) {
         return $q (function (resolve, reject) {
           //api.setNetwork(0);
+          cfg.local = false;
           cfg.mode = token?2:1;
           userInfo().then(function (d) {
             cfg.mode = 1;
