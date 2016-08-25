@@ -12,7 +12,6 @@
 
 
     auth.getUser().then(function (user) {
-      console.log('user', user)
       vm.user = user;
     });
     $rootScope.$on('user:logout', function (user) {

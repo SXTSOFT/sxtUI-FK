@@ -879,6 +879,7 @@
           $scope.$parent.project.filter(true);
           api.uploadTask({
             _id:tid,
+            idtree:idtree,
             procedure:procedure,
             projectid:pid,
             name:tname

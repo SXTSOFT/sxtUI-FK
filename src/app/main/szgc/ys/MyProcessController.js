@@ -491,6 +491,31 @@
           return true
         },null);
         utils.alert('上传完成');
+        var ts = [];
+        $scope.project.tasks.forEach(function (t) {
+          if(t.idtree){
+            var tree = idtree.split('>'),
+              tree2 = tree[0]+'>'+tree[1];
+            if(!ts.find(function (t) {
+                return t==tree2;
+              })){
+              ts.push(tree2);
+            }
+          }
+        });
+        if(ts.length){ //刷新状态
+          var tasks = [];
+          ts.forEach(function (t) {
+            tasks.push(function () {
+              return api.szgc.addProcessService.getBatchRelation({regionIdTree:t});
+            })
+          });
+          api.task(tasks)(function () {
+
+          },function () {
+
+          });
+        }
         $scope.project.tasks = [];
         $scope.uploading= false;
       },function () {
