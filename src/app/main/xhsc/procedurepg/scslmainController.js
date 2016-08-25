@@ -10,19 +10,8 @@
     var vm = this;
     var remote=  scRemote;
     var pack=scPack;
-    var xcpk = db('xcpk'),_local=db('_local');
+    var xcpk = db('xcpk'),local=db('local');
     vm.base;
-
-
-    var preListens=  $rootScope.$$listeners.preClear=[];
-    preListens.push(function(event,cfgs){
-      cfgs.push(function(){
-        return db('xcpk').destroy();
-      });
-      cfgs.push(function(){
-        return db('_local').destroy();
-      });
-    });
 
     remote.Procedure.authorityByUserId().then(function(res){
       if (res&&res.data&&res.data.length){
@@ -42,7 +31,7 @@
         queryOnline();
       });
       //基础数据包
-      _local.get('base').then(function (result) {
+      local.get('base').then(function (result) {
         vm.base = result;
         baseQuery();
       }).catch(function (err) {
@@ -83,9 +72,7 @@
         }
       ]
     }
-    //remote.Assessment.getAllMeasureReportData({RegionID:'00027',RecordType:1}).then(function(r){
-    //  console.log(r)
-    //})
+
     vm.downloadBase=function(item){
       item.downloading = true;
       item.progress = 0;
@@ -113,7 +100,7 @@
               k.loaded=true;
             }
         });
-        _local.addOrUpdate(vm.base).then(function () {
+        local.addOrUpdate(vm.base).then(function () {
           item.downloading = false;
           utils.alert('下载完成');
         })

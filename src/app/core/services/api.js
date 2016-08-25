@@ -713,17 +713,20 @@
             rows.forEach(function(t){
             if(!(options.exclude && options.exclude.indexOf(t._id)!=-1)){
               tasks.push(function(){
-                return pouchdb(t._id).destroy()
+                return pouchdb(t._id).destroy().catch(function(err){
+                  console.log(err);
+                });
               });
             }
           });
         }
+        tasks.push(function(){
+          return _db.destroy().catch(function(err){
+            console.log(err);
+          });
+        });
+        return task(tasks,options)(progress,complete,fail,options);
       })
-      tasks.push(function(){
-        return _db.destroy();
-      });
-      provider.$rootScope.$emit('preClear',tasks);
-      return task(tasks,options)(progress,complete,fail,options);
     }
   }
 

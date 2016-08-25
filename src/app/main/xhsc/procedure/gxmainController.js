@@ -313,25 +313,12 @@
               utils.alert('上传完成');
               return;
             }
-            var errorNum=0;
-            if (angular.isArray(tasks)){
-                tasks.forEach(function(t){
-                    if (!t.isSuccess){
-                        errorNum++;
-                    }
-                });
-            }
-            if (errorNum>0||!tasks.length){
-              utils.alert('本次上传完成，成功'+(tasks.length-errorNum)+'个，失败'+errorNum+'个');
-              return;
-            }
             utils.alert('上传成功');
             load();
             vm.uploadInfo.tasks = [];
             vm.uploadInfo.uploading= false;
           },function () {
             vm.uploadInfo.uploaded = 0;
-            //utils.alert('上传失败');
             vm.uploadInfo.uploading =false;
           },{
             uploaded:function (cfg,row,result) {

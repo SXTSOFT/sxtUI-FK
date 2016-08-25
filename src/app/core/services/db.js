@@ -231,6 +231,10 @@
       if (name!='localBD'){
         pouchDB('localBD').addOrUpdate({
           _id:name
+        }).then(function(){
+
+        }).catch(function(error){
+          console.log(error);
         })
       }
       var db = new $window.PouchDB(name, options);
