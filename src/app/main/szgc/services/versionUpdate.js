@@ -25,7 +25,7 @@
     this.check = function () {
       $http.get('http://vkde.sxtsoft.com/api/vkapi/Version')
         .then(function (data) {
-          var serverAppVersion = data.data.verInfo;
+          var serverAppVersion = data.data.vankeVersion;
           if (versionToNumber(version) < versionToNumber(serverAppVersion)) {
             var confirm = $mdDialog.confirm()
               .title('发现新版本'+serverAppVersion)
