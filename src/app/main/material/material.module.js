@@ -10,7 +10,7 @@
     .config(config);
 
   /** @ngInject */
-  function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
+  function config($stateProvider, msNavigationServiceProvider)
   {
     // State
     $stateProvider
