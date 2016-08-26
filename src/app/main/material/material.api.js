@@ -58,11 +58,7 @@
               && item.ProcedureId==param.procedureId && (!param.regionId || param.regionId==param.RegionId)
           }
         }).bind(function(parems) {
-<<<<<<< HEAD
           return $http.get($http.url('/api/MLBatchRelation/GetBatchRelationAllHistoryList', parems));
-=======
-          return $http.get($http.url('/api/BatchRelation/GetBatchRelationAllHistoryList', parems));
->>>>>>> origin/szgc
         }),
         getCheckStepByBatchId: $http.db({
           dataType:5
@@ -72,21 +68,12 @@
         getAll:function(batchId, parems) {
           return $http.get($http.url('/api/BatchSet/' + batchId + '/PPCheckDataList', parems));
         },
-<<<<<<< HEAD
         Insert: $http.db({
           _id:'Ms_MaterialcheckData',
           idField:'Id',
           upload:true
         }).bind(function (data) {
           return $http.post($http.url('/api/MLMaterialCheckData/Insert'), data);
-=======
-        postCheckData: $http.db({
-          _id:'Ms_checkData',
-          idField:'Id',
-          upload:true
-        }).bind(function (data) {
-          return $http.post($http.url('/api/PPBatchRelation/CheckData'), data);
->>>>>>> origin/szgc
         }),
         getAllCheckDataValue:function(batchId, parems){
           return $http.get($http.url('/api/BatchSet/' + batchId + '/checkDataValues',parems));
@@ -171,7 +158,6 @@
           return n;
         })
       },
-<<<<<<< HEAD
 
       //获取材料类型
       MaterialTypeService:{
@@ -211,8 +197,6 @@
         })
       },
 
-=======
->>>>>>> origin/szgc
       CheckStepService:{
         getAll:$http.db({
           _id:'Ms_checkstep',

@@ -10,11 +10,7 @@
     .config(config);
 
   /** @ngInject */
-<<<<<<< HEAD
   function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
-=======
-  function config($stateProvider, msNavigationServiceProvider)
->>>>>>> origin/szgc
   {
     // State
     $stateProvider
@@ -23,10 +19,6 @@
       })
 
       .state('app.material.ys',{
-<<<<<<< HEAD
-=======
-        noBack:true,
->>>>>>> origin/szgc
         title:'验收',
         url:'/mys',
         views :{
@@ -36,7 +28,6 @@
           }
         }
       })
-<<<<<<< HEAD
 
       .state('app.material.ys.addAttachment', {
         title:'添加附件',
@@ -51,8 +42,6 @@
         controller: 'CheckDataDetailController as vm',
         templateUrl: 'app/main/material/ys/checkDataDetail-app.html'
       })
-=======
->>>>>>> origin/szgc
       .state('app.material.ys.add', {
         title:'添加验收',
         url: '/new/{projectid}/{name}/{batchId}/{procedureTypeId}/{procedureId}/{type}/{idTree}/{procedureName}/{nameTree}/{flag}',
@@ -73,16 +62,6 @@
         templateUrl: 'app/main/szgc/material/upload.html'
       })
 
-<<<<<<< HEAD
-=======
-      //.state('app.material.ys.list', {
-      //  title:'验收',
-      //  url: '/list',
-      //  controller: 'materialListController as vm',
-      //  templateUrl: 'app/main/material/ys/materialList.html'
-      //})
-
->>>>>>> origin/szgc
 
   }
 })();

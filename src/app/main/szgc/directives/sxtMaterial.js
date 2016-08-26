@@ -34,11 +34,7 @@
     <md-tab-body>\
     <md-content>\
     <section ng-repeat="c in g.children|sxtProcedureS">\
-<<<<<<< HEAD
     <md-subheader class="md-primary">{{c.Name}}({{c.ps.length}})</md-subheader>\
-=======
-    <md-subheader class="md-primary">{{c.name}}({{c.ps.length}})</md-subheader>\
->>>>>>> origin/szgc
     <md-list style="padding:0;" class="newheight">\
     <md-list-item ng-click="sett(p)" ng-repeat="p in c.ps"  style="padding:0;">\
     {{p.ProcedureName}}\
@@ -65,7 +61,6 @@
       }
       scope.Plength = 0;
 
-<<<<<<< HEAD
       api.material.MaterialTypeService.GetProcedureType().then(function (result) {
         var s = [];
         result.data.Rows.forEach(function (item) {
@@ -73,16 +68,6 @@
           if(!gn){
             gn = {
               name:item.ParentName,
-=======
-      api.szgc.vanke.skills({ page_number: 1, page_size: 0 }).then(function (result) {
-        var s = [];
-        result.data.data.forEach(function (item) {
-          if(!item.parent)return;
-          var gn = s.find(function(g){return item.parent.name== g.name});
-          if(!gn){
-            gn = {
-              name:item.parent.name,
->>>>>>> origin/szgc
               children:[]
             };
             s.push(gn);
@@ -140,10 +125,6 @@
             data.push(item);
           });
           scope.procedures = data;
-<<<<<<< HEAD
-=======
-          scope.Plength = scope.procedures.length;
->>>>>>> origin/szgc
           resetSources();
         });
 
@@ -156,16 +137,10 @@
             g.children.forEach(function(c){
               c.ps = [];
               scope.procedures.forEach(function(p){
-<<<<<<< HEAD
                 if(p.ProcedureTypeId == c.Id){
                   c.ps.push(p);
                   g.ps.push(p);
                   scope.Plength +=1;
-=======
-                if(p.ProcedureTypeId == c.skill_id){
-                  c.ps.push(p);
-                  g.ps.push(p);
->>>>>>> origin/szgc
                 }
               })
             });
