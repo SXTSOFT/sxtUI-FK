@@ -819,8 +819,6 @@
       return db_save({_id: cfg._id, upload: !0}, items, this.idFn);
     }
     SingleDB.prototype.saveItems = function (result) {
-      if(!result)
-      console.log('result is null',this)
       return db_save(this.cfg, result, this.idFn);
     }
     SingleDB.prototype.get = function (id) {

@@ -237,9 +237,7 @@
       }
       $scope.project.filter();
     };
-    api.szgc.ProcedureTypeService.getAll({startrowIndex:0,maximumRows:100,Status:5}).then(function(result) {
-      $scope.project.procedureTypes = result.data.Rows;
-    });
+
 
     $scope.$watch(function () {
       return vm.searBarHide;
@@ -254,7 +252,8 @@
         },300);
 
       }
-    })
+    });
+
 /*    $scope.$watch('project.procedureId', function(a,b) {
       if(a != b){
         if ( !$scope.project.pid) {
@@ -278,7 +277,7 @@
         $scope.project.offlines = result.data;
       });
     }
-    queryOffline();
+
     $scope.hasTasks = function (item) {
       return  $scope.project && $scope.project.tasks && $scope.project.tasks.find(function (t) {
           return t.procedure == $scope.project.procedureId
@@ -550,5 +549,13 @@
         project.items = null;
       }
     }
+
+    //init load
+    $timeout(function () {
+      api.szgc.ProcedureTypeService.getAll({startrowIndex:0,maximumRows:100,Status:5}).then(function(result) {
+        $scope.project.procedureTypes = result.data.Rows;
+      });
+      queryOffline();
+    },300)
   }
 })();

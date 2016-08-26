@@ -27,6 +27,10 @@
 
       $rootScope.$on('applicationError',function (s,error) {
         //error && error.exception && error.exception.stack()
+        console.log('err',error);
+        var url = $window.location.href;
+        if(url.indexOf('localhost:3000')!=-1)
+          return;
         var u = auth.current()||{};
         try {
           $.ajax({
@@ -37,7 +41,7 @@
               app: 'vankeSzgc',
               version: versionUpdate.version,
               user: u.RealName + '(' + u.Id + ')',
-              url: $window.location.href,
+              url: url,
               message: error.exception ? error.exception.stack : JSON.stringify(error),
               type: "error"
             })
