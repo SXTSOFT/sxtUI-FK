@@ -79,6 +79,31 @@
 
     </md-tab-content>
   </md-tab>
+  <md-tab label="材料">
+    <md-content>
+      <div> <md-button  flex ui-sref="app.material.ys" class="md-raised md-primary">开始材料验收</md-button></div>
+      <md-list class="md-dense" flex>
+        <md-list-item class="md-3-line" style="padding: 4px 16px;margin-bottom: 5px;" ng-repeat="item in mlCheckData">
+          <div layout="column" layout-align="center center">
+            <label>{{item.CheckTime}}</label>
+            <img ng-src="" class="md-avatar" alt="" style="width: 60px; height: 60px;" />
+          </div>
+          <div class="md-list-item-text" layout="column">
+            <p style="width: 60%;">{{item.RegionNameTree}}</p>
+            <p>{{item.Material}}</p>
+            <p>{{item.Number + item.Unit}}</p>
+          </div>
+          <md-button class="md-secondary md-primary" style="top: 12%;" ng-hide="item.WgCheck == 0 || item.CheckResult == 0 || (item.WgCheck == 1 && item.IsInspection == 0)">
+            追加送检报告
+          </md-button>
+          <md-button class="md-secondary md-primary" ui-sref="app.material.ys.detail({id:item.Id})" style="top: 50%;">
+            详情
+          </md-button>
+          <md-divider></md-divider>
+        </md-list-item>
+      </md-list>
+    </md-content>
+  </md-tab>
   <md-tab label="离线项目">
     <md-tab-content flex layout-fill layout="column">
 <md-content flex layout="column">

@@ -1,0 +1,95 @@
+<md-content flex layout="column" ng-hide="is('app.material.ys.addnew')||is('app.material.ys.upload')" >
+  <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">附件类型</div>
+  <md-divider></md-divider>
+  <md-radio-group ng-model="fjType" >
+    <div class="row">
+      <div flex layout='row' style="padding: 0 0 0 8px;" layout-align="start center" >
+        <div style="width:100%;">
+          出厂合格证
+        </div>
+        <md-radio-button flex ng-value="2" class="md-primary" ></md-radio-button>
+      </div>
+    </div>
+    <md-divider></md-divider>
+    <div class="row">
+      <div flex layout='row' style="padding: 0 0 0 8px;" layout-align="start center" >
+        <div style="width:100%;">
+          材料验收单
+        </div>
+        <md-radio-button flex ng-value="4" class="md-primary" ></md-radio-button>
+      </div>
+    </div>
+    <md-divider></md-divider>
+    <div class="row">
+      <div flex layout='row' style="padding: 0 0 0 8px;" layout-align="start center" >
+        <div style="width:100%;">
+          实拍照片
+        </div>
+        <md-radio-button flex ng-value="8" class="md-primary" ></md-radio-button>
+      </div>
+    </div>
+    <md-divider></md-divider>
+    <div class="row">
+      <div flex layout='row' style="padding: 0 0 0 8px;" layout-align="start center" >
+        <div style="width:100%;">
+          送检报告
+        </div>
+        <md-radio-button flex ng-value="16" class="md-primary" ></md-radio-button>
+      </div>
+    </div>
+    <md-divider></md-divider>
+    <div class="row">
+      <div flex layout='row' style="padding: 0 0 0 8px;" layout-align="start center" >
+        <div style="width:100%;">
+          其他
+        </div>
+        <md-radio-button flex ng-value="32" class="md-primary" ></md-radio-button>
+      </div>
+    </div>
+    <md-divider></md-divider>
+  </md-radio-group>
+  <div class="row" ng-show="fjType==16">
+    <div flex layout='row' style="padding: 0 0 0 8px;" layout-padding layout-align="start center" >
+      <div style="width:50%;">
+        送检报告
+      </div>
+      <md-radio-group ng-model="sjReport" >
+        <md-radio-button flex ng-value="1" style="display: inline-block;" class="md-primary" >合格</md-radio-button>
+        <md-radio-button flex ng-value="0" style="display: inline-block;" class="md-primary" >不合格</md-radio-button>
+      </md-radio-group>
+    </div>
+  </div>
+  <fieldset ng-show="fjType == 2">
+    <legend>出厂合格证</legend>
+    <span class="fs-display-1 display-block">添加照片</span>
+    <div> <small></small></div>
+    <sxt-images ng-model="data.groupId_2"  files="data.imgs1" project="data.projectInfo" edit="true"></sxt-images>
+  </fieldset>
+  <fieldset ng-show="fjType == 4">
+    <legend>材料验收单</legend>
+    <span class="fs-display-1 display-block">添加照片</span>
+    <div> <small></small></div>
+    <sxt-images ng-model="data.groupId_4"  files="data.imgs2" project="data.projectInfo" edit="true"></sxt-images>
+  </fieldset>
+  <fieldset ng-show="fjType == 8">
+    <legend>实拍照片</legend>
+    <span class="fs-display-1 display-block">添加照片</span>
+    <div> <small></small></div>
+    <sxt-images ng-model="data.groupId_8"  files="data.imgs3" project="data.projectInfo" edit="true"></sxt-images>
+  </fieldset>
+  <fieldset ng-show="fjType == 16">
+    <legend>送检报告</legend>
+    <span class="fs-display-1 display-block">添加照片</span>
+    <div> <small></small></div>
+    <sxt-images ng-model="data.groupId_16"  files="data.imgs4" project="data.projectInfo" edit="true"></sxt-images>
+  </fieldset>
+  <fieldset ng-show="fjType == 32">
+    <legend>其他</legend>
+    <span class="fs-display-1 display-block">添加照片</span>
+    <div> <small></small></div>
+    <sxt-images ng-model="data.groupId_32"  files="data.imgs5" project="data.projectInfo" edit="true"></sxt-images>
+  </fieldset>
+  <div class="md-padding" layout="row">
+    <md-button flex class="md-raised md-primary" ng-click="vm.ok()"> 完成 </md-button>
+  </div>
+</md-content>

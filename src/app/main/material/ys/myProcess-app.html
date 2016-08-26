@@ -1,0 +1,73 @@
+﻿<md-content flex layout="column" ui-view>
+  <form name="addForm" class="form-horizontal addform" ng-submit="save(addForm)">
+  <div flex style="overflow: auto">
+  <sxt-projects-jd ng-model="project.pid" object-scope="project" levels="2" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
+      <md-list>
+        <md-subheader class="md-no-sticky">材料</md-subheader>
+        <md-list-item>
+          <sxt-material style="width:100%;margin:0 !important;" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-material>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-subheader class="md-no-sticky">供应商</md-subheader>
+        <md-list-item>
+          <md-select placeholder="" ng-model="vm.checkData.SupplierId" style="width:100%;margin:0 !important;">
+            <md-option ng-value="s.Id" ng-repeat="s in supplier">{{s.Name}}</md-option>
+          </md-select>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-subheader class="md-no-sticky">厂家/品牌</md-subheader>
+        <md-list-item>
+          <md-input-container class="md-block" flex style="margin:0 !important;">
+            <input style="width: 100%;" ng-model="vm.checkData.Manufactor" >
+          </md-input-container>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-subheader class="md-no-sticky">数量</md-subheader>
+        <md-list-item>
+          <md-input-container class="md-block" flex style="margin:0 !important;">
+            <input style="width: 100%;" ng-model="vm.checkData.Number">
+          </md-input-container>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-subheader class="md-no-sticky">合同编号</md-subheader>
+        <md-list-item>
+          <md-select placeholder="" ng-model="vm.checkData.Manufactor" style="width:100%;margin:0 !important;">
+
+          </md-select>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-subheader class="md-no-sticky">验收时间</md-subheader>
+        <md-list-item>
+          <md-datepicker ng-model="vm.checkData.CheckTime"></md-datepicker>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-subheader class="md-no-sticky">外观检查</md-subheader>
+        <md-list-item>
+          <md-radio-group ng-model="vm.checkData.WgCheck">
+            <md-radio-button value="1" class="md-primary">合格</md-radio-button>
+            <md-radio-button value="0">不合格</md-radio-button>
+          </md-radio-group>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-subheader class="md-no-sticky">是否送检</md-subheader>
+        <md-list-item>
+          <md-radio-group ng-model="vm.checkData.IsInspection">
+            <md-radio-button value="1" class="md-primary">需要</md-radio-button>
+            <md-radio-button value="0">不需要</md-radio-button>
+          </md-radio-group>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-subheader class="md-no-sticky">附件</md-subheader>
+        <md-list-item>
+          <md-button style="width:100%;" ui-sref="app.material.ys.addAttachment">添加附件</md-button>
+        </md-list-item>
+        <md-divider></md-divider>
+      </md-list>
+
+  </sxt-projects-jd>
+  <div class="md-padding" layout="row">
+    <md-button type="submit" flex class="md-raised md-primary"> 确定 </md-button>
+  </div>
+</div>
+  </form>
+</md-content>

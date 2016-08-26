@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Created by zhangzhaoyong on 16/2/1.
  */
 /**
@@ -8,13 +8,87 @@
   'use strict';
 
   angular
-    .module('app.szgc')
-    .controller('MyProcessController',MyProcessController);
+    .module('app.material')
+    .controller('MMyProcessController',MMyProcessController);
 
   /** @ngInject */
-  function MyProcessController($scope, api, utils, $state,$q,sxt,xhUtils,$timeout){
+  function MMyProcessController($scope, api, utils, $state,$q,sxt,xhUtils,$timeout, $mdDialog){
 
     var vm = this;
+    vm.fjType = null;
+    vm.sjReport = null;
+
+    vm.checkData={};
+    vm.checkData.EnclosureType = [];
+    $scope.save = function(addForm) {
+      //vm.checkData.Id = sxt.uuid;
+      //vm.checkData.EnclosureType = vm.fjType;
+      vm.checkData.InspectionReport = vm.sjReport;
+      vm.checkData.ProjectId = $scope.project.projectId;
+      vm.checkData.MaterialId = $scope.project.procedureId;
+      vm.checkData.RegionNameTree = $scope.project.nameTree;
+      vm.checkData.RegionId = $scope.project.pid;
+      vm.checkData.ProjectName = $scope.project.projectName;
+
+
+      if(vm.checkData.WgCheck == 0 ||(vm.fjType == 16 && vm.sjReport == 0)) {
+        $mdDialog.show({
+            controller: ['$scope',function ($scope) {
+              $scope.data= vm.checkData;
+
+              $scope.hide = function() {
+                $mdDialog.hide();
+              };
+              $scope.cancel = function() {
+                $mdDialog.cancel();
+              };
+              $scope.answer = function() {
+                $scope.data.HandleOption = $scope.clyj;
+                if(vm.checkData.WgCheck == 0 || vm.checkData.InspectionReport == 0)
+                  $scope.data.CheckResult = 0
+                api.material.addProcessService.Insert($scope.data).then(function (result) {
+                  if(result){
+                    $scope.isSaveing = false;
+                    utils.alert('提交完成').then(function () {
+                      $state.go('app.material.ys');
+                    });
+                  }else{
+                    utils.alert('提交失败').then(function () {
+                      $scope.isSaveing = false;
+                    });
+                  }
+                });
+              };
+
+            }],
+            templateUrl: 'app/main/material/ys/treatmentOption.html',
+            bindToController:true,
+            fullscreen: $scope.customFullscreen
+          });
+
+      }else{
+        vm._save(addForm);
+      }
+    };
+
+    vm._save = function (addForm) {
+      console.log(vm.checkData);
+      api.material.addProcessService.Insert(vm.checkData).then(function (result) {
+        if(result){
+          $scope.isSaveing = false;
+          utils.alert('提交完成').then(function () {
+            $state.go('app.material.ys');
+          });
+        }else{
+          utils.alert('提交失败').then(function () {
+            $scope.isSaveing = false;
+          });
+        }
+      });
+    }
+
+
+
     $scope.is = function(route){
       return $state.is(route);
     }
@@ -26,7 +100,7 @@
     };
 
     $scope.delmyProcess = function(BatchRelationId) {
-      api.szgc.addProcessService.delProcess(BatchRelationId).then(function(result) {
+      api.material.addProcessService.delProcess(BatchRelationId).then(function(result) {
 
         if (result.status == 200) {
           $scope.project.filter(true);
@@ -39,12 +113,12 @@
       return api.getNetwork();
     }
 
-    api.material.MaterialService.GetAll().then(function(result){
-      $scope.mlCheckData = result.data.Rows;
+    //获取材料供应商
+    api.material.SupplierService.GetAll({startrowIndex:0,maximumRows:100,Status:4}).then(function(result){
+      $scope.supplier = result.data.Rows;
     });
 
     $scope.isPartner = api.szgc.vanke.isPartner();
-    $scope.roleId = api.szgc.vanke.getRoleId();
     $scope.project = {
       isMore: true,
       states: [{
@@ -95,8 +169,7 @@
         if (!$scope.project.procedureId || !$scope.project.data || !$scope.project.data.items) return;
         if (reload === true || ($scope.project.data && !$scope.project.data.fd)) {
           $scope.project.data.fd = true;
-          api.szgc.addProcessService.getBatchRelation({
-            procedureId:$scope.project.procedureId,
+          api.material.CheckStepService.getAll($scope.project.procedureId, {
             regionIdTree: $scope.project.idTree,
             Status: 4
           }).then(function(result) {
@@ -115,53 +188,54 @@
                 results.push(item);
               }
 
-              if (result.data.Rows) {
-                result.data.Rows.forEach(function (it) {
-                  var qd = item;
-                  if (it.RegionId == qd.$id) {
-                    if (!qd.BatchNo)
+              result.data.Rows.forEach(function(it) {
+                var qd = item;
+                if (it.RegionId == qd.$id) {
+                  if (!qd.BatchNo)
+                    qd.BatchNo = it.BatchNo;
+                  else if (qd.BatchNo != it.BatchNo) {
+                    qd = results.find(function(k) {
+                      return k.$id == it.RegionId && k.BatchNo == it.BatchNo
+                    });
+                    if (!qd) {
+                      qd = utils.copy(item2);
+                      qd.BatchRelationId = it.BatchRelationId;
                       qd.BatchNo = it.BatchNo;
-                    else if (qd.BatchNo != it.BatchNo) {
-                      qd = results.find(function (k) {
-                        return k.$id == it.RegionId && k.BatchNo == it.BatchNo
-                      });
-                      if (!qd) {
-                        qd = utils.copy(item2);
-                        qd.BatchRelationId = it.BatchRelationId;
-                        qd.BatchNo = it.BatchNo;
-                        qd.state = 0;
-                        qd.Remark = it.Remark;
-                        qd.checkedCount = 0;
-                        qd.MinPassRatio = qd.CheckDate = qd.CheckWorkerName = null;
-                        results.push(qd);
-                      }
+                      qd.state = 0;
+                      qd.Remark = it.Remark;
+                      qd.checkedCount = 0;
+                      qd.MinPassRatio = qd.CheckDate = qd.CheckWorkerName = null;
+                      results.push(qd);
                     }
-                    //if (!it.CheckNo) {
-
-                    //} else if (it.CheckNo == 1) {
-                    //    qd.state = it.AllResult ? 2 : 1;
-                    //} else {
-                    //    qd.state = it.AllResult ? 4 : 3;
-                    //}
-                    qd.state = it.ECCheckResult;
-                    qd.checkedCount = it.JLCount + it.WKCount + it.ZbCount;
-                    qd.MinPassRatio0 = it.ZbLast || it.ZbFirst;
-                    qd.CheckDate0 = it.ZbDate;
-                    qd.BatchRelationId = it.Id;
-                    qd.Remark = it.Remark;
-                    qd.MinPassRatio = it.JLLast || it.JLFirst;
-                    qd.CheckDate = it.JLDate;
-                    qd.CheckWorkerName = it.JLUser;
-                    qd.ZbCount = it.ZbCount;
-                    qd.JLCount = it.JLCount;
-                    qd.WKCount = it.WKCount;
-                    qd.MinPassRatio1 = it.WKLast;
-                    qd.CheckDate1 = it.VKDate;
-                    qd.CheckWorkerName1 = it.WKLastUser;
-                    qd.ZbChecked = $scope.roleId == 'zb' ? it.ZbChecked : true;
                   }
-                });
-              }
+                  if (!it.CheckNo) {
+
+                  } else if (it.CheckNo == 1) {
+                    qd.state = it.AllResult ? 2 : 1;
+                  } else {
+                    qd.state = it.AllResult ? 4 : 3;
+                  }
+
+
+                  if (it.CheckNo)
+                    qd.checkedCount++;
+                  if (it.RoleId == 'jl') {
+                    qd.BatchRelationId = it.BatchRelationId;
+                    qd.Remark = it.Remark;
+                    qd.MinPassRatio = it.MinPassRatio;
+                    qd.CheckDate = it.CheckDate;
+                    qd.CheckWorkerName = it.CheckWorkerName;
+                  } else if (it.CheckWorkerName) {
+                    qd.MinPassRatio1 = it.MinPassRatio;
+                    qd.CheckDate1 = it.CheckDate;
+                    qd.CheckWorkerName1 = it.CheckWorkerName;
+                  }
+                }
+              });
+
+              //item.
+
+
             });
 
             results.forEach(function(item) {
@@ -178,28 +252,26 @@
             $scope.project.filter();
           });
 
-            } else if ($scope.project.data.items) {
+        }
+        else if ($scope.project.data.items && $scope.project.data.results) {
           //仅通过states过虑
           var rows = [];
 
           $scope.project.states.forEach(function(item) {
             item.c = 0;
           });
-                if ($scope.project.data.results) {
           $scope.project.data.results.forEach(function(item) {
             if ($scope.project.states.find(function(it) {
                 if (it.id == item.state || it.id == -1) {
                   it.c++;
                   item.color = it.color;
-                  item.stateName = it.title + ((item.state == 1 || item.state == 3) && item.MinPassRatio && item.MinPassRatio >= 80 ? '(偏差)' : '');
+                  item.stateName = it.title;
                 }
                 return it.selected && it.id == item.state
               })) {
               rows.push(item);
             }
           });
-                }
-
           $scope.project.rows = rows;
           vm.loading = false;
         }
@@ -240,7 +312,7 @@
       }
       $scope.project.filter();
     };
-    api.szgc.ProcedureTypeService.getAll({startrowIndex:0,maximumRows:100,Status:5}).then(function(result) {
+    api.material.ProcedureTypeService.getAll({startrowIndex:0,maximumRows:100,Status:5}).then(function(result) {
       $scope.project.procedureTypes = result.data.Rows;
     });
 
@@ -298,7 +370,7 @@
     $scope.requeryTasks();
     $scope.isOffline = function (item) {
       return !!$scope.project.offlines.find(function (t) {
-        return t.Id.indexOf(item.project_item_id)!=-1;
+        return t._id.indexOf(item.project_item_id)!=-1;
       });
     }
     $scope.download =function ($event,project,item) {
@@ -315,7 +387,7 @@
           }).then(function (result) {
             result.data.data.forEach(function (build) {
               tasks.push(function () {
-                return api.szgc.vanke.floors(build.building_id);
+                return api.material.vanke.floors(build.building_id);
               });
             });
           });
@@ -325,11 +397,11 @@
             api.szgc.vanke.room_types(item.project_item_id).then(function (result) {
               var tk = [];
               result.data.data.forEach(function (type) {
-                tk.push(api.szgc.FilesService.group(item.project_item_id+'-'+type.type_id));
+                tk.push(api.material.FilesService.group(item.project_item_id+'-'+type.type_id));
                 //5类工序
                 [1,2,3,4,5,6].forEach(function (m) {
                   tasks.push(function () {
-                    return api.szgc.ProjectExService.get(item.project_item_id+'-'+type.type_id+'-'+m)
+                    return api.material.ProjectExService.get(item.project_item_id+'-'+type.type_id+'-'+m)
                   });
                 });
               });
@@ -354,7 +426,7 @@
           });
         },
         function (tasks) {
-          return api.szgc.ProjectSettingsSevice.query({treeId:idTree,unitType:1,includeChild:true}).then(function (result) {
+          return api.material.ProjectSettingsSevice.query({treeId:idTree,unitType:1,includeChild:true}).then(function (result) {
             var units = [];
             result.data.Rows.forEach(function (s) {
               if(units.indexOf(s.UnitId)==-1){
@@ -367,7 +439,7 @@
           });
         },
         function (tasks) {
-          return api.szgc.ProjectSettingsSevice.query({treeId:idTree,unitType:2,includeChild:true}).then(function (result) {
+          return api.material.ProjectSettingsSevice.query({treeId:idTree,unitType:2,includeChild:true}).then(function (result) {
             var units = [];
             result.data.Rows.forEach(function (s) {
               if(units.indexOf(s.UnitId)==-1){
@@ -380,7 +452,7 @@
           });
         },
         function (tasks) {
-          return api.szgc.ProjectSettingsSevice.query({treeId:idTree,unitType:3,includeChild:true}).then(function (result) {
+          return api.material.ProjectSettingsSevice.query({treeId:idTree,unitType:3,includeChild:true}).then(function (result) {
             var units = [];
             result.data.Rows.forEach(function (s) {
               if(units.indexOf(s.UnitId)==-1){
@@ -394,31 +466,31 @@
         },
         //验收状态
         function () {
-          return api.szgc.addProcessService.getBatchRelation({regionIdTree:idTree});
+          return api.material.addProcessService.getBatchRelation({regionIdTree:idTree});
         },
         //检查项目
-/*        function () {
-          return api.szgc.CheckStepService.cache(idTree);
-        },*/
+        function () {
+          return api.material.CheckStepService.cache(idTree);
+        },
         //专业
         function () {
           return api.szgc.vanke.skills({page_size:0,page_number:1});
         },
         //工序级别关系
         function () {
-          return api.szgc.BatchSetService.getAll({status:4,batchType:255})
+          return api.material.BatchSetService.getAll({status:4,batchType:255})
         },
         //专业分类关系
         function () {
-          return api.szgc.ProcedureTypeService.getAll({startrowIndex:0,maximumRows:100,Status:5});
+          return api.material.ProcedureTypeService.getAll({startrowIndex:0,maximumRows:100,Status:5});
         },
         //工序验收批设置
         function () {
-          return api.szgc.ProcedureBathSettingService.query();
+          return api.material.ProcedureBathSettingService.query();
         },
         //工序验收表
         function () {
-          return api.szgc.TargetService.getAll()
+          return api.material.TargetService.getAll()
         }])(function (percent,current,total) {
           item.percent = parseInt(percent *100) +' %';
         item.current = current;
@@ -431,7 +503,7 @@
           project:project,
           item:item
         };
-        api.szgc.ProjectSettings.offline.create(offline).then(function () {
+        api.material.ProjectSettings.offline.create(offline).then(function () {
           queryOffline().then(function () {
             var off = $scope.project.offlines.find(function (item) {
               return item.Id == offline.Id;
@@ -450,17 +522,17 @@
     $scope.indexDb =function (item) {
       item.indexing = true;
       api.task([function () {
-        return api.szgc.TargetService.getAll.db().allDocs();
+        return api.material.TargetService.getAll.db().allDocs();
       },function () {
-        return api.szgc.ProjectSettingsSevice.query.db().allDocs();
+        return api.material.ProjectSettingsSevice.query.db().allDocs();
       },
         function () {
-          return api.szgc.addProcessService.getBatchRelation.db().allDocs();//索引
+          return api.material.addProcessService.getBatchRelation.db().allDocs();//索引
         },function () {
-          return api.szgc.CheckStepService.getAll.db().allDocs();
+          return api.material.CheckStepService.getAll.db().allDocs();
         },
         function () {
-          return api.szgc.ProcedureBathSettingService.query.db().allDocs();//索引
+          return api.material.ProcedureBathSettingService.query.db().allDocs();//索引
         },function () {
           return api.szgc.vanke.teams.db().allDocs();
         }])(function (percent,current,total) {
@@ -501,7 +573,7 @@
         $scope.uploading =false;
       },{
         uploaded:function (cfg,row,result) {
-          cfg.db && cfg.db.delete(row);
+          cfg.db.delete(row._id);
         }
       });
     }
