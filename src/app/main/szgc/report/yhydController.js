@@ -9,32 +9,33 @@
     .controller('yhydController',yhydController);
 
   /** @ngInject*/
-  function yhydController($scope,api,$stateParams,$q,$timeout,$mdDialog,appCookie,$state){
-    var vm = this,query
-    vm.project ={
-      onQueryed:function () {
+  function yhydController($scope,api,$stateParams,$q,$timeout,$mdDialog,appCookie,$state) {
+    var vm = this, query
+    vm.project = {
+      onQueryed: function () {
         vm.searBarHide = false;
       }
     }
-    if($stateParams.pid) {
+    vm.build = {}
+    if ($stateParams.pid) {
       vm.project.idTree = $stateParams.pid;
       appCookie.put('projects', JSON.stringify([{project_id: $stateParams.pid, name: $stateParams.pname}]))
     }
-    query = function(){
+    query = function () {
       if (vm.project.type != '8')return;
-      console.log('vm.project',vm.project)
+      console.log('vm.project', vm.project)
       var params = {
-        regionTreeId: vm.project.idTree?vm.project.idTree:"",
-        maximumRows:10000,
-        startrowIndex:0
+        regionTreeId: vm.project.idTree ? vm.project.idTree : "",
+        maximumRows: 10000,
+        startrowIndex: 0
       }
-      api.szgc.projectMasterListService.getFileReportData(params).then(function(result){
+      api.szgc.projectMasterListService.getFileReportData(params).then(function (result) {
         //console.log('result',result)
         rows = result.data.Rows;
         if (rows.length > 0) {
           var arr, groupid, promises = [];
           rows.forEach(function (e) {
-            groupid =e.RegionTreeId;
+            groupid = e.RegionTreeId;
             arr = groupid.split('-');
 
             promises.push(api.szgc.vanke.rooms({
@@ -48,7 +49,9 @@
               rows.forEach(function (r) {
                 arr = r.RegionTreeId.split('-');
                 //console.log('arr',arr[6])
-                var room = rooms.find(function (o) { return o.room_id == arr[6] });
+                var room = rooms.find(function (o) {
+                  return o.room_id == arr[6]
+                });
                 angular.extend(r, room);
               });
             }))
@@ -67,28 +70,28 @@
         }
       })
     }
-    vm.viewItem = function(item){
-      $state.go('app.szgc.yhyd',{
-        pid:item.regionId,
-        pname:item.regionName,
-        idTree:item.idTree,
-        type:item.type
+    vm.viewItem = function (item) {
+      $state.go('app.szgc.yhyd', {
+        pid: item.regionId,
+        pname: item.regionName,
+        idTree: item.idTree,
+        type: item.type
       });
       return;
       //
       //vm.project.n = n;
-      item.n=2;
-      $mdDialog.show ({
-          locals: {
-            project: item
-          },
-          controller: 'SzgcyhydDlgController as vm',
-          templateUrl: 'app/main/szgc/home/SzgcybgcDlg.html',
-          parent: angular.element (document.body),
-          clickOutsideToClose: true,
-          fullscreen: true
-        })
-        .then (function (answer) {
+      item.n = 2;
+      $mdDialog.show({
+        locals: {
+          project: item
+        },
+        controller: 'SzgcyhydDlgController as vm',
+        templateUrl: 'app/main/szgc/home/SzgcybgcDlg.html',
+        parent: angular.element(document.body),
+        clickOutsideToClose: true,
+        fullscreen: true
+      })
+        .then(function (answer) {
 
         }, function () {
 
@@ -119,14 +122,21 @@
       var n = parseInt(/[-]?\d+/.exec(str));
       return n;
     };
-    $scope.$watch('vm.project.idTree',function () {
-      //console.log('vm.project.type',vm.project.type);
-      if(vm.project.type==8){
-        vm.search();
-      }
-    })
-    vm.search =function () {
-      vm.searBarHide=true;
+    /*    $scope.$watch('vm.project.idTree',function () {
+     //console.log('vm.project.type',vm.project.type);
+     if(vm.project.type==8){
+     vm.search();
+     }
+     })*/
+    vm.total = function () {
+      vm.build.loaded =false;
+      vm.mode = 2;
+      vm.searBarHide = true;
+    }
+    vm.search = function () {
+      vm.mode = 1;
+      vm.build.loaded =false;
+      vm.searBarHide = true;
       if (vm.project.type == '8') {
         vm.project.loading = true;
         var building_id = vm.project.idTree.split('>')[2];
@@ -179,7 +189,7 @@
               return d.RegionTreeId.indexOf(row.room_id) != -1;
             });
             var ys = result[2].data.Rows.find(function (d) {
-              return d.RegionIdTree.indexOf('-'+row.floor)!=-1;
+              return d.RegionIdTree.indexOf('-' + row.floor) != -1;
             });
             var ys1 = result[3].data.Rows.find(function (d) {
               return d.RegionIdTree.indexOf(row.room_id) != -1;
@@ -187,7 +197,7 @@
             row.ybNum = yb ? yb.FileNum : 0;
             row.ysNum = (ys ? ys.YsNum : 0) + (ys1 ? ys1.YsNum : 0);
             row.hg = true;
-            row.RegionIdTree = vm.project.idTree+'>'+building_id+'-'+row.floor
+            row.RegionIdTree = vm.project.idTree + '>' + building_id + '-' + row.floor
             //if (row.ybNum != 0 || row.ysNum != 0) {
             rows.push(row);
             //}

@@ -9,21 +9,23 @@
     .controller('SzgcbuilddetailController', SzgcdetailController);
 
   /** @ngInject */
-  function SzgcdetailController($scope,details,$stateParams)
+  function SzgcdetailController($scope,$stateParams)
   {
 
     var vm = this;
-    vm.build = {
+/*    vm.build = {
       name: $stateParams.buildName || $scope.$parent.vm.current.name,
       building_id: $stateParams.buildId || $scope.$parent.vm.current.building_id,
       floors: $stateParams.floors || $scope.$parent.vm.current.floors,
       summary: $stateParams.summary || $scope.$parent.vm.current.summary,
       gx1: $scope.$parent.vm.current.gx1,
       gx2: $scope.$parent.vm.current.gx2
-    };
+    };*/
+    vm.build = {
+    }
     vm.treeId = $stateParams.pid + '>' + $stateParams.itemId + '>' + $stateParams.buildId;
-    vm.sellLine = 0.6;
-    vm.data= {
+    //vm.sellLine = 0.6;
+/*    vm.data= {
       config: {
         showXAxis: true,
         showYAxis: true,
@@ -54,7 +56,7 @@
         }
       },
       data:details
-    };
+    };*/
 
 
 
