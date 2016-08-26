@@ -399,7 +399,7 @@
                   });
                 fail && fail();
               }
-            },10000);
+            },30000);
             fn(tasks,donwfile).then(function (k) {
               if (!isTimeout){
                 isTimeout=true;
