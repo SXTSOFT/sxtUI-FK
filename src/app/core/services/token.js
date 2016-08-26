@@ -42,8 +42,10 @@
         config.headers['Authorization'] = token;
       if(config.url.indexOf('api')!=-1) {
         lastRequestTime[config.url] = $timeout(function () {
-          lastRequestTime[config.url].isNetworking = true;
-          $rootScope.$emit('sxt:onNetworking', config);
+          if(lastRequestTime[config.url]) {
+            lastRequestTime[config.url].isNetworking = true;
+            $rootScope.$emit('sxt:onNetworking', config);
+          }
         }, 5000);
       }
       return config;

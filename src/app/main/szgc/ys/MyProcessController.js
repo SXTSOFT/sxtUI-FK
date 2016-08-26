@@ -475,6 +475,10 @@
       });
     }
     $scope.upload =function () {
+      if(api.getNetwork()==1){
+        utils.alert('离线模式下不能上传!');
+        return;
+      }
       $scope.uploading = true;
       api.upload(function (cfg,item) {
         if(cfg._id=='s_files' && item && item.Url.indexOf('base64')==-1){

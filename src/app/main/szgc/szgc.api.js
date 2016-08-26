@@ -318,6 +318,7 @@
         post:$http.db({
           _id:'s_files',
           idField:'Id',
+          fileField:'Url',
           upload:true
         }).bind(function (file) {
           return $http.post('/api/Files/base64',file);

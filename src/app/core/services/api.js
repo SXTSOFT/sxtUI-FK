@@ -336,11 +336,11 @@
               tasks.push(function () {
                 return provider.$q(function (resolve,reject) {
                   provider.$q(function (r1,r2) {
-                    if(!cfg.fileField){
+                    if(!cfg.fileField  || !row._id){
                       r1(row);
                     }
                     else{
-                      cfg.db.get(row._id).then(function (newRow) {
+                      initDb(cfg).get(row._id,cfg).then(function (newRow) {
                         r1(newRow);
                       },r2)
                     }
@@ -853,7 +853,7 @@
               delete cache[id];
             }
           }
-          function get(id) {
+          function get(id,cfg) {
             return provider.$q(function (resolve,reject) {
               if(cache[id]){
                 resolve(cache[id]);
@@ -861,7 +861,7 @@
               else{
                 provider.$cordovaFile.readAsText(provider.$window.cordova.file.dataDirectory, id+'.bin').then(function (result) {
                   var r = provider.$window.JSON.parse(result);
-                  if(!globalDb.noCache)
+                  if(!globalDb.noCache || (cfg && cfg.fileField))
                     cache[id] = r;
                   resolve(r);
                 }).catch(function (result) {
@@ -871,7 +871,7 @@
             });
           }
           function put(doc,cfg) {
-            if((!cfg || !cfg.upload) && !globalDb.noCache)
+            if((!cfg || !cfg.upload) && !globalDb.noCache && !cfg.fileField)
               cache[doc._id] = doc;
 
             if(cfg && cfg.upload && cache[doc._id])
@@ -898,7 +898,7 @@
         var result = {
           "rows": []
         };
-        db.get(cfg._id).then(function (r) {
+        db.get(cfg._id,cfg).then(function (r) {
           for (var i = 0, l = r.rows.length; i < l; i++) {
             if (!filter || filter(r.rows[i]) !== false) {
               result.rows.push(r.rows[i]);
@@ -949,7 +949,7 @@
                   upload: true
                 }));
               }
-              provider.$q.all(_saveList).then(function () {
+              provider.$q.$q.all(_saveList).then(function () {
                 resolve(nResult);
               },function () {
                 resolve(nResult);

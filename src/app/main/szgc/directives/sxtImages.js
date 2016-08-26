@@ -9,7 +9,7 @@
     .directive('sxtImages', sxtImagesDirective);
 
   /** @ngInject */
-  function sxtImagesDirective(api, xhUtils,sxt,$cordovaCamera,$window,$q){
+  function sxtImagesDirective(api, xhUtils,sxt,$cordovaCamera,$window,$q,$cordovaImagePicker){
     return {
       restrict: 'E',
       require: "?ngModel",
@@ -39,34 +39,56 @@
               },null)
             });
           }
-          scope.inputChange = function(s) {
-            $cordovaCamera.getPicture({
-              quality: 50,
-              destinationType: 0,
-              sourceType: s,
-              allowEdit: false,
-              encodingType: 0,
-              saveToPhotoAlbum: (s===0? false : true),
-              correctOrientation: true
-            }).then(function (base64) {
-              if (base64) {
-                compress("data:image/jpeg;base64," + base64, function (newBase64) {
-                  var att = {
-                    Id: sxt.uuid(),
-                    GroupId: scope.gid,
-                    Url: newBase64
-                  };
-                  api.szgc.FilesService.post(att);
-                  var d = new Date();
-                  api.uploadTask({
-                    _id: att.Id,
-                    name: '照片 (' + d.getMonth() + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ')'
-                  });
-                  scope.files.push(att);
-                })
-              }
-            }, function (err) {
+          function onSuccess(newBase64) {
+            var att = {
+              Id: sxt.uuid(),
+              GroupId: scope.gid,
+              Url: newBase64
+            };
+            return api.szgc.FilesService.post(att).then(function () {
+              var d = new Date();
+              api.uploadTask({
+                _id: att.Id,
+                name: '照片 (' + (d.getMonth()+1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ')'
+              });
+              scope.files.push(att);
             });
+          }
+          scope.inputChange = function(s) {
+            if(s===0){
+              $cordovaImagePicker.getPictures({
+                maximumImagesCount: 10,
+                height: 600,
+                quality: 50
+              }).then(function(results) {
+                var tasks = [];
+                results.forEach(function (uri) {
+                  tasks.push(function () {
+                    return readImage(uri).then(function (base64) {
+                      return onSuccess(base64);
+                    });
+                  });
+                });
+                api.task(tasks)();
+              });
+            }
+            else {
+              $cordovaCamera.getPicture({
+                quality: 50,
+                destinationType: 0,
+                sourceType: s,
+                allowEdit: false,
+                targetHeight: 600,
+                encodingType: 0,
+                saveToPhotoAlbum: (s === 0 ? false : true),
+                correctOrientation: true
+              }).then(function (base64) {
+                if (base64) {
+                  onSuccess('data:image/jpeg;base64,'+base64);
+                }
+              }, function (err) {
+              });
+            }
           }
 
           api.szgc.FilesService.group(scope.gid || '').then(function (result) {
@@ -102,6 +124,23 @@
         callback(ctx.toDataURL('image/jpeg',1));
       };
       image.src = base64;
+    }
+    function readImage(uri) {
+      return $q(function (resolve,reject) {
+        $window.resolveLocalFileSystemURI(uri,
+          function (fileEntry) {
+            fileEntry.file(function(file) {
+              var reader = new $window.FileReader();
+              reader.onloadend = function (evt) {
+                resolve(evt.target.result);
+              };
+              reader.readAsDataURL(file);
+            }, reject);
+          },
+          reject
+        );
+      })
+
     }
   }
 
