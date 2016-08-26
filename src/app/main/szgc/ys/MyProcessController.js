@@ -39,6 +39,9 @@
       return api.getNetwork();
     }
 
+    api.material.MaterialService.GetAll().then(function(result){
+      $scope.mlCheckData = result.data.Rows;
+    });
 
     $scope.isPartner = api.szgc.vanke.isPartner();
     $scope.roleId = api.szgc.vanke.getRoleId();

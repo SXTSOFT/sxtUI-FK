@@ -1,36 +1,36 @@
 (function ()
 {
-    'use strict';
+  'use strict';
 
-    /**
-     * Main module of the Fuse
-     */
-    angular
-        .module('sxt', [
+  /**
+   * Main module of the Fuse
+   */
+  angular
+    .module('sxt', [
 
-            // Core
-            'app.core',
+      // Core
+      'app.core',
 
-            'app.navigation',
+      'app.navigation',
 
-          // Navigation
-          // Toolbar
-          'app.toolbar',
+      // Navigation
+      // Toolbar
+      'app.toolbar',
 
-            // Quick panel
-            //'app.quick-panel',
+      // Quick panel
+      //'app.quick-panel',
 
-            // Sample
-            'app.sample',
+      // Sample
+      'app.sample',
 
-            // auth
-            'app.auth',
+      // auth
+      'app.auth',
 
-            'app.szgc',
-          'app.material',
-          'panzoom',
-          'hmTouchEvents',
-          'ui.tree',
-          'ngCordova'
-        ]);
+      'app.szgc',
+      'app.material',
+      'panzoom',
+      'hmTouchEvents',
+      'ui.tree',
+      'ngCordova'
+    ]);
 })();

@@ -19,7 +19,6 @@
       })
 
       .state('app.material.ys',{
-        noBack:true,
         title:'验收',
         url:'/mys',
         views :{
@@ -28,6 +27,20 @@
             templateUrl:'app/main/material/ys/myProcess-app.html'
           }
         }
+      })
+
+      .state('app.material.ys.addAttachment', {
+        title:'添加附件',
+        url: '/addAttachment',
+        controller: 'AddAttachmentController as vm',
+        templateUrl: 'app/main/material/ys/addAttachment-app.html'
+      })
+      .state('app.material.ys.detail', {
+        noBack:true,
+        title:'材料验收详情',
+        url: '/detail/{id}',
+        controller: 'CheckDataDetailController as vm',
+        templateUrl: 'app/main/material/ys/checkDataDetail-app.html'
       })
       .state('app.material.ys.add', {
         title:'添加验收',
@@ -48,13 +61,6 @@
         controller: 'MuploadProcessController as vm',
         templateUrl: 'app/main/szgc/material/upload.html'
       })
-
-      //.state('app.material.ys.list', {
-      //  title:'验收',
-      //  url: '/list',
-      //  controller: 'materialListController as vm',
-      //  templateUrl: 'app/main/material/ys/materialList.html'
-      //})
 
 
   }

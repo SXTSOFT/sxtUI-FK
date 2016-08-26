@@ -13,8 +13,8 @@
   </md-list-item>
   <md-list-item flex>
     <md-button  ui-sref="app.szgc.ys" class="md-grid-item-content" flex>
-      <md-icon md-svg-src="app/toolbar/images/icon_check1.svg" class="icon s32"  ng-class="{'active':vm.is('app.szgc.ys')}"></md-icon>
-      <div class="md-grid-text" style="line-height: 20px"  ng-style="{'color':vm.is('app.szgc.ys')?'#ff0000':'rgba(0,0,0,0.54)'}"> 验收 </div>
+      <md-icon md-svg-src="app/toolbar/images/icon_check1.svg" class="icon s32"  ng-class="{'active':vm.is('app.szgc.ys')|| vm.is('app.material.ys')}"></md-icon>
+      <div class="md-grid-text" style="line-height: 20px"  ng-style="{'color':vm.is('app.szgc.ys') || vm.is('app.material.ys')?'#ff0000':'rgba(0,0,0,0.54)'}"> 验收 </div>
     </md-button>
   </md-list-item>
   <md-list-item flex>

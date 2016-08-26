@@ -1,4 +1,4 @@
-﻿<md-tabs md-border-bottom flex layout="column" >
+﻿﻿<md-tabs md-border-bottom flex layout="column" >
   <md-tab label="验收">
     <md-tab-content flex layout-fill layout="column">
       <md-content flex layout="column" ng-hide="is('app.szgc.ys.addnew')||is('app.szgc.ys.upload')" >
@@ -18,11 +18,11 @@
                 <!--<sxt-select style="width:100%;" ng-model="project.procedureId" name-value="project.procedureName" sources="project.procedures" text-field="ProcedureName" value-field="ProcedureId"></sxt-select>-->
                 <!--</md-list-item>-->
                 <md-divider></md-divider>
-<!--                <md-subheader class="md-no-sticky">验收状态</md-subheader>
-                <md-list-item ng-repeat="state in project.states">
-                  <p> {{state.title}}({{state.c}})</p>
-                  <md-checkbox class="md-secondary" ng-click="checkState(state)"  ng-checked="state.selected"></md-checkbox>
-                </md-list-item>-->
+                <!--                <md-subheader class="md-no-sticky">验收状态</md-subheader>
+                                <md-list-item ng-repeat="state in project.states">
+                                  <p> {{state.title}}({{state.c}})</p>
+                                  <md-checkbox class="md-secondary" ng-click="checkState(state)"  ng-checked="state.selected"></md-checkbox>
+                                </md-list-item>-->
               </md-list>
             </sxt-projects-jd>
             <div class="md-padding" ng-hide="project.type==64" layout="row">
@@ -32,14 +32,13 @@
           </div>
         </div>
         <div  ng-show="vm.searBarHide" flex layout="column">
-          <md-progress-circular md-mode="indeterminate" ng-show="vm.loading" md-diameter="20"></md-progress-circular>
+          <md-progress-circular md-mode="indeterminate" ng-show="vm.loading"></md-progress-circular>
           <div >
             <table class="simple" ms-responsive-table>
               <thead>
               <tr>
                 <th>部位</th>
-                <th>施工单位</th>
-                <th>监理单位</th>
+                <th>状态</th>
                 <th>操作</th>
               </tr>
               </thead>
@@ -53,8 +52,7 @@
               <tbody>
               <tr ng-repeat="item in project.rows">
                 <td class="name">{{item.$name}}</td>
-                <td class="name">{{item.MinPassRatio0}}</td>
-                <td class="position">{{item.stateName}}</td>
+                <td class="position">{{roleId=='zb'?item.MinPassRatio0 : item.stateName}}</td>
                 <td class="office" ng-if="!hasTasks(item)">
                   <a class="btn btn-white btn-xs" ui-sref="app.szgc.ys.addnew({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureTypeId:project.procedureTypeId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})"  ng-if="roleId!='3rd' && item.ZbChecked!==false && isPartner">{{ (roleId=='zb' && !item.ZbCount)||(roleId=='jl' && !item.JLCount)?'录入': '复验'}}</a>
                   <a class="btn btn-white btn-xs" ui-sref="app.szgc.ys.addnew({projectid:item.$id,name:item.$name,batchId:item.BatchRelationId,procedureTypeId:project.procedureTypeId,procedureId:project.procedureId,type:project.type,idTree:project.idTree,procedureName:project.procedureName,nameTree:project.nameTree})" ng-if="roleId!='3rd' && !isPartner && item.checkedCount && (!item.MinPassRatio1 || item.MinPassRatio1<80) " >{{ item.CheckDate1?'复验': '抽验'}}</a>
@@ -81,36 +79,54 @@
 
     </md-tab-content>
   </md-tab>
-  <!--<md-tab label="材料">-->
-    <!--<md-content class="md-padding">-->
-
-      <!--<div> <md-button  flex ui-sref="app.material.ys" class="md-raised md-primary">开始材料验收</md-button></div>-->
-    <!--</md-content>-->
-  <!--</md-tab>-->
+  <md-tab label="材料">
+    <md-content>
+      <div> <md-button  flex ui-sref="app.material.ys" class="md-raised md-primary">开始材料验收</md-button></div>
+      <md-list class="md-dense" flex>
+        <md-list-item class="md-3-line" style="padding: 4px 16px;margin-bottom: 5px;" ng-repeat="item in mlCheckData">
+          <div layout="column" layout-align="center center">
+            <label>{{item.CheckTime}}</label>
+            <img ng-src="" class="md-avatar" alt="" style="width: 60px; height: 60px;" />
+          </div>
+          <div class="md-list-item-text" layout="column">
+            <p style="width: 60%;">{{item.RegionNameTree}}</p>
+            <p>{{item.Material}}</p>
+            <p>{{item.Number + item.Unit}}</p>
+          </div>
+          <md-button class="md-secondary md-primary" style="top: 12%;" ng-hide="item.WgCheck == 0 || item.CheckResult == 0 || (item.WgCheck == 1 && item.IsInspection == 0)">
+            追加送检报告
+          </md-button>
+          <md-button class="md-secondary md-primary" ui-sref="app.material.ys.detail({id:item.Id})" style="top: 50%;">
+            详情
+          </md-button>
+          <md-divider></md-divider>
+        </md-list-item>
+      </md-list>
+    </md-content>
+  </md-tab>
   <md-tab label="离线项目">
     <md-tab-content flex layout-fill layout="column">
-<md-content flex layout="column">
-<md-list md-cloak>
-  <md-subheader class="md-no-sticky">已下载</md-subheader>
-  <md-list-item ng-repeat="project in project.offlines" >
-      <p  > {{ project.name }} <br /><span style="font-style: italic;color:#9e9e9e">最后更新:{{project.date|date:'MM-dd HH:mm'}}</span></p>
-
-    <md-divider></md-divider>
-  </md-list-item>
-  <md-subheader class="md-no-sticky">下载</md-subheader>
-  <md-list-item ng-repeat="p in project.projects">
-   <div flex layout="column"> <md-button  ng-click="loadProject_items(p)" style="text-align: left"> {{ p.name }} </md-button>
-     <div ng-repeat="item in p.items" layout="row" style="padding-left: 20px;">
-       <p flex style="margin: 0;line-height: 40px;">{{item.name}}  <b ng-if="item.downloading"> {{item.percent}} ({{item.current}}/{{item.total}})</b> </p>
-       <md-button flex="none" class="md-icon-button md-primary" aria-label="download" ng-click="download($event, p,item)" >
-         <md-icon md-font-icon="{{isOffline(item)?'icon-reload':'icon-download'}}" ></md-icon>
-       </md-button>
-     </div>
-   </div>
-    <md-divider></md-divider>
-  </md-list-item>
-  </md-list>
-</md-content>
+      <md-content flex layout="column">
+        <md-list md-cloak>
+          <md-subheader class="md-no-sticky">已下载</md-subheader>
+          <md-list-item ng-repeat="project in project.offlines">
+            <p style="padding: 0 14px;" layout="column"><span> {{ project.name }} </span><b ng-if="project.indexing">正在索引 {{project.percent}} ({{project.current}}/{{project.total}})</b> </p>
+            <md-divider></md-divider>
+          </md-list-item>
+          <md-subheader class="md-no-sticky">下载</md-subheader>
+          <md-list-item ng-repeat="p in project.projects">
+            <div flex layout="column"> <md-button  ng-click="loadProject_items(p)" style="text-align: left"> {{ p.name }} </md-button>
+              <div ng-repeat="item in p.items" layout="row" style="padding-left: 20px;">
+                <p flex style="margin: 0;line-height: 40px;">{{item.name}}  <b ng-if="item.downloading"> {{item.percent}} ({{item.current}}/{{item.total}})</b> </p>
+                <md-button flex="none" class="md-icon-button md-primary" aria-label="download" ng-click="download($event, p,item)" >
+                  <md-icon md-font-icon="{{isOffline(item)?'icon-reload':'icon-download'}}" ></md-icon>
+                </md-button>
+              </div>
+            </div>
+            <md-divider></md-divider>
+          </md-list-item>
+        </md-list>
+      </md-content>
     </md-tab-content>
   </md-tab>
   <md-tab label="上传" md-on-select="requeryTasks()">

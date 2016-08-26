@@ -139,6 +139,7 @@
                   value:v
                 });
               }
+              //console.log(element.text())
               if(i==l){
                 $(this).parent().parent().parent().append('<div flex="20" class="flex-20"><div class="point" ><span class="n">p'+(values.length+1)+'</span></div></div>');
               }

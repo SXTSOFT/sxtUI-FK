@@ -58,7 +58,7 @@
               && item.ProcedureId==param.procedureId && (!param.regionId || param.regionId==param.RegionId)
           }
         }).bind(function(parems) {
-          return $http.get($http.url('/api/BatchRelation/GetBatchRelationAllHistoryList', parems));
+          return $http.get($http.url('/api/MLBatchRelation/GetBatchRelationAllHistoryList', parems));
         }),
         getCheckStepByBatchId: $http.db({
           dataType:5
@@ -68,12 +68,12 @@
         getAll:function(batchId, parems) {
           return $http.get($http.url('/api/BatchSet/' + batchId + '/PPCheckDataList', parems));
         },
-        postCheckData: $http.db({
-          _id:'Ms_checkData',
+        Insert: $http.db({
+          _id:'Ms_MaterialcheckData',
           idField:'Id',
           upload:true
         }).bind(function (data) {
-          return $http.post($http.url('/api/PPBatchRelation/CheckData'), data);
+          return $http.post($http.url('/api/MLMaterialCheckData/Insert'), data);
         }),
         getAllCheckDataValue:function(batchId, parems){
           return $http.get($http.url('/api/BatchSet/' + batchId + '/checkDataValues',parems));
@@ -158,6 +158,45 @@
           return n;
         })
       },
+
+      //获取材料类型
+      MaterialTypeService:{
+        GetProcedureType:$http.db({
+          _id:'Ms_MaterialType',
+          idField:'Id',
+          dataType:5,
+        }).bind(function () {
+          return $http.get($http.url('/api/MLProcedureType'));
+        })
+      },
+
+      SupplierService:{
+        GetAll:$http.db({
+          _id:'Ms_Supplier',
+          idField:'Id',
+          dataType:5,
+        }).bind(function (args) {
+          return $http.get($http.url('/api/MLSupplier',args));
+        })
+      },
+
+      MaterialService:{
+        GetAll:$http.db({
+          _id:'Ms_MaterialCheckData',
+          idField:'Id',
+          dataType:5,
+        }).bind(function (args) {
+          return $http.get($http.url('/api/MLMaterialCheckData',args));
+        }),
+        GetInfoById:$http.db({
+          _id:'Ms_MaterialCheckDataInfo',
+          idField:'Id',
+          dataType:5,
+        }).bind(function (id) {
+          return $http.get($http.url('/api/MLMaterialCheckData/GetInfoById',{id:id}));
+        })
+      },
+
       CheckStepService:{
         getAll:$http.db({
           _id:'Ms_checkstep',
