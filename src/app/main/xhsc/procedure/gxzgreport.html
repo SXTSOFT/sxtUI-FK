@@ -58,32 +58,6 @@
       </tr>
       </thead>
       <tbody>
-      <!--<tr>-->
-        <!--<td colspan="8">验收项及验收情况</td>-->
-      <!--</tr>-->
-      <!--<tr>-->
-        <!--<td width="12.5%">-->
-          <!--序号-->
-        <!--</td>-->
-        <!--<td width="12.5%">-->
-          <!--分类-->
-        <!--</td>-->
-        <!--<td width="12.5%">-->
-          <!--管控要点-->
-        <!--</td>-->
-        <!--<td width="12.5%">-->
-          <!--质量标准-->
-        <!--</td>-->
-        <!--<td colspan="2" width="25%">-->
-          <!--检查方法-->
-        <!--</td>-->
-        <!--<td width="12.5%">-->
-          <!--验收情况-->
-        <!--</td>-->
-        <!--<td width="12.5%">-->
-          <!--复验情况-->
-        <!--</td>-->
-      <!--</tr>-->
       <tr ng-repeat="items in vm.result.Areas">
         <td colspan="8" style="padding:0;">
           <table cellpadding="0" cellspacing="0" width="100%" class="gxtb2" border="0">
@@ -119,8 +93,8 @@
               <tr ng-repeat="i in item.Children" ng-class="{'biaozhu':i.Inspection == '不符合'}">
                 <td  width="12.5%">{{i.ProblemSortName}}</td>
                 <td rowspan="{{item.rowspan}}" ng-if="$index == 0"  width="12.5%">{{item.ClassificationName}}</td>
-                <td  width="12.5%">{{i.PointName}}</td>
-                <td  width="12.5%">{{i.PointName}}</td>
+                <td  width="12.5%">{{i.ControlPoint}}</td>
+                <td  width="12.5%">{{i.QualityStandard}}</td>
                 <td colspan="2"  width="25%">{{i.Standard}}</td>
                 <td  width="12.5%">
                   {{i.Inspection}}

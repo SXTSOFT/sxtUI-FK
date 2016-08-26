@@ -16,7 +16,7 @@
                 </md-button>
                 <md-button  class="md-raised upload-btn" style="min-width:50px;padding:0px;margin:0px 0px 0px 5px ;line-height:35px" ng-click="vm.download(item)">
                   <md-progress-circular ng-if="item.downloading && item.progress && item.progress!=100" md-mode="determinate" value="{{item.progress}}"  md-diameter="20"></md-progress-circular>
-                  重下
+                   刷新
                 </md-button>
                 <md-button ng-click="vm.upload(item)" class="md-raised upload-btn" style="min-width:50px;padding:0px;margin:0px 5px 0px 5px ;line-height:35px">
                 <md-progress-circular ng-if="item.uploading && item.progress && item.progress!=100" md-mode="determinate" value="{{item.progress}}"  md-diameter="20"></md-progress-circular> 上传
@@ -54,7 +54,7 @@
         <div layout="column">
           <md-subheader><span style="margin-left: -18px">项目列表</span></md-subheader>
           <md-list style="padding:0px">
-            <md-list-item ng-repeat="item in vm.base" layout="row">
+            <md-list-item ng-repeat="item in vm.base.rows" layout="row">
               <p flex style="font-size:16px;padding-left:12px;">
                 {{item.ProjectName}}
               </p>
@@ -62,7 +62,7 @@
               <div flex="none" layout="row">
                 <md-button  class="md-raised upload-btn" style="min-width:50px;padding:0px;margin:0px 5px 0px 0px ;line-height:35px" ng-click="vm.downloadBase(item)">
                   <md-progress-circular ng-if="item.downloading && item.progress && item.progress!=100" md-mode="determinate" value="{{item.progress}}"  md-diameter="20"></md-progress-circular>
-                    <span ng-if="item.progress!=100">下载</span><span ng-if="item.progress==100">已下载</span>
+                  <span ng-if="!item.loaded">下载</span><span ng-if="item.loaded">刷新</span>
                 </md-button>
               </div>
             </md-list-item>
@@ -74,27 +74,27 @@
 
 
 
-  <md-tab label="查看结果">
-    <md-tab-content  style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
-      <md-content class="download" style="padding: 0px">
-        <div layout="column">
-          <md-subheader><span style="margin-left: -18px">项目汇总列表</span></md-subheader>
-          <md-list style="padding:0px">
-            <md-list-item ng-repeat="item in vm.projects" layout="row">
-              <p flex style="font-size:16px;padding-left:12px;">
-                {{item.ProjectName}}
-              </p>
-              <div class="md-secondary">
-                <md-button  ng-click="vm.go(item,1)"  class="md-raised md-primary" style="min-width:50px;padding:0px;margin:0px 0px 0px 5px ;line-height:35px ">
-                  查看
-                </md-button>
-              </div>
-            </md-list-item>
-          </md-list>
-        </div>
-      </md-content>
-    </md-tab-content>
-  </md-tab>
+  <!--<md-tab label="查看结果">-->
+    <!--<md-tab-content  style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">-->
+      <!--<md-content class="download" style="padding: 0px">-->
+        <!--<div layout="column">-->
+          <!--<md-subheader><span style="margin-left: -18px">项目汇总列表</span></md-subheader>-->
+          <!--<md-list style="padding:0px">-->
+            <!--<md-list-item ng-repeat="item in vm.projects" layout="row">-->
+              <!--<p flex style="font-size:16px;padding-left:12px;">-->
+                <!--{{item.ProjectName}}-->
+              <!--</p>-->
+              <!--<div class="md-secondary">-->
+                <!--<md-button  ng-click="vm.go(item,1)"  class="md-raised md-primary" style="min-width:50px;padding:0px;margin:0px 0px 0px 5px ;line-height:35px ">-->
+                  <!--查看-->
+                <!--</md-button>-->
+              <!--</div>-->
+            <!--</md-list-item>-->
+          <!--</md-list>-->
+        <!--</div>-->
+      <!--</md-content>-->
+    <!--</md-tab-content>-->
+  <!--</md-tab>-->
 </md-tabs>
 
 

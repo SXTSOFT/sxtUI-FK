@@ -102,24 +102,26 @@
       });
     },
     findAll:function (filter,startKey) {
-      return this.allDocs({include_docs:true,startKey:startKey}).then(function (result) {
-        var r = {
-          "total_rows":result.total_rows,
-          "offset":result.offset,
-          "rows":[],
-          "_id":result._id,
-          "_rev":result._rev
-        }
-        for(var i=0,l=result.rows.length;i<l;i++){
-          if(!filter || filter(result.rows[i].doc)!==false){
-            r.rows.push(result.rows[i].doc);
-          }
-        }
-        return r;
-      })
+      var def={include_docs:true};
+      if (startKey){
+        def.startKey=startKey;
+      }
+      return _allDoc.apply(this,[filter,def])
+      //_allDoc({include_docs:true,startKey:startKey});
     },
-    find:function (filter) {
-      return this.allDocs({include_docs:true}).then(function (result) {
+    fundAllWithOption:function(filter,option){
+        var def={include_docs:true};
+        if (angular.isObject(option)){
+          angular.extend(def,option);
+        }
+        return _allDoc.apply(this,[filter,def]);
+    },
+    find:function (filter,option) {
+      var def={include_docs:true};
+      if (angular.isObject(option)){
+        angular.extend(def,option);
+      }
+      return this.allDocs(def).then(function (result) {
         for(var i=0,l=result.rows.length;i<l;i++){
           if(!filter || filter(result.rows[i].doc)!==false){
             return result.rows[i].doc;
@@ -128,6 +130,24 @@
       })
     }
   };
+
+  function _allDoc (filter,option){
+    return this.allDocs(option).then(function (result) {
+      var r = {
+        "total_rows":result.total_rows,
+        "offset":result.offset,
+        "rows":[],
+        "_id":result._id,
+        "_rev":result._rev
+      }
+      for(var i=0,l=result.rows.length;i<l;i++){
+        if(!filter || filter(result.rows[i].doc)!==false){
+          r.rows.push(result.rows[i].doc);
+        }
+      }
+      return r;
+    })
+  }
 
   self.$get = $get;
 
@@ -197,7 +217,9 @@
           continue;
         }
 
-        db[parent][method] = wrapFunction(db[parent][method]);
+        if (db[parent]&&db[parent][method]){
+          db[parent][method] = wrapFunction(db[parent][method]);
+        }
       }
       return db;
     }
@@ -207,6 +229,15 @@
         options = options||{};
         options.adapter = 'websql';
         options.iosDatabaseLocation = 'default';
+      }
+      if (name!='localBD'){
+        pouchDB('localBD').addOrUpdate({
+          _id:name
+        }).then(function(){
+
+        }).catch(function(error){
+          console.log(error);
+        })
       }
       var db = new $window.PouchDB(name, options);
       return wrapMethods(db, self.methods);

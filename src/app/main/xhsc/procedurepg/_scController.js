@@ -180,9 +180,9 @@
       RecordType:1,
       RelationID:vm.info.db//'a55164d5c46f454ca8df799f520bbba8'//
     }).then(function (result){
-      //if(result.data[0].data.checkUser.length){
-      //  vm.showState = true;
-      //}
+      if(result.data[0] && result.data[0].data.checkUser.length){
+        vm.showState = true;
+      }
     })
     vm.stateGo = function(){
       var routeData={

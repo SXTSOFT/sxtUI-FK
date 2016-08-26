@@ -11,10 +11,8 @@
     var api = {},
       provider = this,
       injector,
-      calledCfgs=[],
       cfgs=[],
       pouchdb,
-      settingDb,
       uploadDb,
       networkState = 1;
 
@@ -240,9 +238,7 @@
 
     function setting(key,value) {
       return provider.$q(function (resolve) {
-        if (!settingDb) {
-          settingDb = pouchdb('systemstting');
-        }
+        var settingDb= pouchdb('systemstting');
         if(value){
           settingDb.addOrUpdate({
             _id:key,
@@ -386,18 +382,32 @@
                 target:config.target,
                 event:'success'
               });
-            success && success(tasks,calledCfgs);
+            success && success(tasks);
           }
           else {
             var d = new Date().getTime(),next = function () {
               run(i + 1, progress, success, fail, options);
             };
-            fn(tasks,donwfile).then(function () {
-              fn.isSuccess=true;
-              if(d && !next.r) {
-                d = 0;
-                next.r = true;
-                next();
+            var isTimeout=false;
+            provider.$timeout(function(){
+              if (!isTimeout){
+                isTimeout=true;
+                if(config && config.event)
+                  provider.$rootScope.$emit(config.event,{
+                    target:config.target,
+                    event:'fail'
+                  });
+                fail && fail();
+              }
+            },10000);
+            fn(tasks,donwfile).then(function (k) {
+              if (!isTimeout){
+                isTimeout=true;
+                if(d && !next.r) {
+                  d = 0;
+                  next.r = true;
+                  next();
+                }
               }
             }).catch(function (err) {
               d = 0;
@@ -408,13 +418,6 @@
                 });
               fail && fail();
             });
-            provider.$timeout(function () {
-              if(d && !next.r){
-                d = 0;
-                next.r = true;
-                next();
-              }
-            },options && options.timeout?options.timeout:5000);
           }
         }
       }
@@ -472,11 +475,6 @@
             var args = toArray(arguments),
               lodb = initDb(cfg,args),
               caller = this;
-              if (!calledCfgs.find(function(c){
-                   return c==cfg;
-                })){
-                calledCfgs.push(cfg);
-              }
             if (cfg.mode == 1) { //1 离线优先，无离线数据尝试网络；
               var oRaiseError = cfg.raiseError;
               cfg.raiseError = true;
@@ -511,7 +509,7 @@
       }
 
       function id(d, db, args, cfg, cb) {
-        var _id = angular.isFunction(cfg.idField) ? cfg.idField(d) : d[cfg.idField];
+        var _id = angular.isFunction(cfg.idField) ? cfg.idField(d,args) : d[cfg.idField];
         if (_id && db) {
           var defer = db.addOrUpdate(cfg.data ? cfg.data.apply(cfg, [angular.extend({_id: _id}, d)].concat(args)) : angular.extend({_id: _id}, d));
           if (cb && cb(defer));
@@ -662,9 +660,6 @@
                   reject(result);
                 }
               })
-              .catch(function (r) {
-                reject(r);
-              });
           }
           else {
             resolve();
@@ -677,14 +672,28 @@
     }
 
     function initDb(cfg,args) {
-      if(cfg._id && cfg.db) return cfg.db;
+      var  localBD;
+      if(cfg._id && cfg.db)
+        localBD= cfg.db;
       if(cfg._id)
-        return (cfg.db = pouchdb(cfg._id));
+        localBD= cfg.db = pouchdb(cfg._id);
       else if(cfg.db){
         var id = cfg.db.apply(cfg,args);
         if(id)
-          return pouchdb(id);
+          localBD= cfg._db=pouchdb(id);
       }
+      return localBD;
+    //.then(function(result){
+    //    return  provider.$q.$q(function(resolver){
+    //      pouchdb("localBD").addOrUpdate({
+    //        _id:lodb._db_name
+    //      }).then(function(){
+    //        resolver(result);
+    //      })
+    //    })
+    //  }).catch(function (r) {
+    //    reject(r);
+    //  });
     }
 
 
@@ -697,22 +706,27 @@
 
     function clearDb(progress,complete,fail,options) {
       var tasks = [];
-      calledCfgs.forEach(function (cfg) {
-         if(!(options.exclude && options.exclude.indexOf(cfg._id)!=-1)){
-           var db = initDb(cfg);
-           if(db) {
-             tasks.push(function () {
-               return db.destroy().then(function (result) {
-                 cfg.db = null;
-                 return result;
-               }).catch(function (err) {
-               });
-             })
-           }
-         }
-      });
-      provider.$rootScope.$emit('preClear',tasks);
-      return task(tasks,options)(progress,complete,fail,options);
+      var _db=pouchdb("localBD");
+      _db.findAll().then(function(r){
+        var  rows= r.rows,tmp;
+        if (rows&&rows.length>0){
+            rows.forEach(function(t){
+            if(!(options.exclude && options.exclude.indexOf(t._id)!=-1)){
+              tasks.push(function(){
+                return pouchdb(t._id).destroy().catch(function(err){
+                  console.log(err);
+                });
+              });
+            }
+          });
+        }
+        tasks.push(function(){
+          return _db.destroy().catch(function(err){
+            console.log(err);
+          });
+        });
+        return task(tasks,options)(progress,complete,fail,options);
+      })
     }
   }
 

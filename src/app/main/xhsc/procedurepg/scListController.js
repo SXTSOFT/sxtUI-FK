@@ -31,7 +31,7 @@
       var _db=db('pack'+ vm.assessmentID);
       _db.get("GetMeasureItemInfoByAreaID").then(callback);
     }else {
-      scRemote.Project.GetMeasureItemInfoByAreaID(vm.projectId).then(callback);
+      scRemote.Project.GetMeasureItemInfoFilter(vm.projectId).then(callback);
     }
     //离线待实现
     function getMax(regionStr){

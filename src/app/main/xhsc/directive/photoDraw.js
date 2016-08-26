@@ -9,7 +9,8 @@
       restrict:'E',
       scope:{
         onCancel:'&',
-        onAnswer:'&'
+        onAnswer:'&',
+        waterText:'='
       },
       templateUrl:'app/main/xhsc/directive/photoDraw.html',
       link:link
@@ -160,6 +161,12 @@
               ctx.canvas.height = srcHeight;
               ctx.lineWidth =  srcWidth*2/350;
               ctx.drawImage(image, 0, 0,image.width,image.height,0,0,srcWidth,srcHeight);
+              if (scope.waterText){
+                ctx.font="20px microsoft yahei";
+                ctx.fillStyle = "rgba(255,255,255,0.5)";
+                ctx.textAlign="right"
+                ctx.fillText(scope.waterText,srcWidth-10,srcHeight-10);
+              }
             }
             image.src = "data:image/jpeg;base64," + imageData;
           }

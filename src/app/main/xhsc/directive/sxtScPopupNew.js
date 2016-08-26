@@ -192,7 +192,22 @@
       scope.removeLayer = function(){
         scope.isSaveData = false;
         var layer = scope.context.layer;
+        if(layer  instanceof L.AreaGroup){
+          var $id=layer._value.$id;
+          if ($id){
+            var key,v;
+            for (key in  layer._fg._layers){
+                if( layer._fg._layers.hasOwnProperty(key)){
+                  v= layer._fg._layers[key];
+                  if (v._value.$groupId&&v._value.$groupId==$id){
+                    layer._fg.removeLayer(v);
+                  }
+                }
+            }
+          }
+        }
         layer._fg.removeLayer(layer);
+
       };
       scope.cancelEdit = function(saveData){
         scope.isSaveData = saveData||false;
