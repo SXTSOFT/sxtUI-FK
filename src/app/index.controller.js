@@ -7,8 +7,13 @@
         .controller('IndexController', IndexController);
 
     /** @ngInject */
-    function IndexController(fuseTheming)
+    function IndexController(fuseTheming,api,$mdDialog,$rootScope)
     {
+
+
+/*        api.szgc.vanke.profile().then(function () {
+
+        });*/
         var vm = this;
 
         // Data

@@ -169,7 +169,7 @@
         }).then(function (result) {
           //如果已经录入了把第一条BatchNo最大的返回取它的BatchNo，把Id制空
           //没有Id才会插入一条数
-          var b = result.data.Rows.length ? result.data.Rows[0] : null;
+          var b = result.data.Rows.length ? angular.copy(result.data.Rows[0]) : null;
 
           if (b) {
             b.Id = null;
@@ -189,28 +189,26 @@
       }
     }).then(function (result) {
       var batch = result.data,
-
-        isB = $scope.data.isB = !!batch;
-                if (isB && $scope.roleId == 'jl' && !batch.SupervisorCompanyId) { //如果监理在总包上录入，且总包没有选择监理
-                    batch.SupervisorCompanyId = user.Partner;
-                }
-      var gp = batch? {
+        isB = $scope.data.isB = batch && batch.GrpId;
+      if (isB && $scope.roleId == 'jl' && !batch.SupervisorCompanyId) { //如果监理在总包上录入，且总包没有选择监理
+        batch.SupervisorCompanyId = user.Partner;
+      }
+      var gp = batch && batch.GrpId? {
         id: batch.GrpId,
         name: batch.GrpName
       }:null;//因为控件的BUG,会把名称清掉,这里保留一份
+
       if (flag) {
         batch.BatchNo = parseInt(batch.BatchNo);
         $scope.data.curHistory = batch;
-
       }
       else if (batch && !flag) {
-
         batch.Count = (batch.Count||0) + 1;
         $scope.data.curHistory = batch;
       }
       $q.all([
         api.szgc.TargetService.getAll(procedure),
-        isB&&!flag ? $q(function (resolve) {
+        isB&&!flag  && $scope.roleId!='jl'? $q(function (resolve) {
           resolve({
             data: {
               Rows: [{
@@ -224,7 +222,7 @@
           unitType: 2
         }),
 
-        isB&&!flag ? $q(function (resolve) {
+        isB&&!flag  && $scope.roleId!='jl'? $q(function (resolve) {
           resolve({
             data: {
               Rows: [{
@@ -237,12 +235,13 @@
           projectId: idtree,
           unitType: 3
         }),
-        isB&&!flag ? $q(function (resolve) {
+        isB&&!flag && $scope.roleId!='jl' ? $q(function (resolve) {
           if ($scope.roleId == 'zb') {
             resolve({
               data: {Rows: []}
             });
-          } else {
+          }
+          else {
             resolve({
               data: {
                 Rows: [{
@@ -342,8 +341,8 @@
           var nn = [];
           if (fd) {
             nn.push(fd);
-            if (!batch.SupervisorCompanyId)
-              batch.SupervisorCompanyId = fd.UnitId;
+            //if (!batch.SupervisorCompanyId)
+            batch.SupervisorCompanyId = fd.UnitId;
             $scope.data.construction = nn;
           }
           else{
@@ -464,6 +463,7 @@
         });
         //utils.scrollTop();
         initIng = true;
+        resetGroup();
       });
     });
 
@@ -503,7 +503,7 @@
       }
     })
     var resetGroup = function() {
-      if (!$scope.data.supervision || !$scope.data.supervision1) return;
+      if (!$scope.data.supervision || !$scope.data.supervision1 ) return;
       var g = [];
 
       $scope.data.groups = [];
@@ -553,12 +553,11 @@
                 return;
               };
             }
-            if(!(item.partner_id == $scope.data.curHistory.ParentCompanyId || gps.find(function (g) {
+            if(item.partner_id != $scope.data.curHistory.ParentCompanyId || !gps.find(function (g) {
                 return g.id == item.team_id;
-              }))){
+              })){
               return;
             }
-
 
             var ns = [];
             item.managers.forEach(function (it) {
@@ -798,10 +797,9 @@
         batch = data.curHistory;
 
       if (!batch.GrpId && $scope.roleId != '3rd') {
-        utils.alert('请选择班组', function () {
-          $scope.isSaveing = false;
-          return;
-        });
+        utils.alert('请选择班组', function () {});
+        $scope.isSaveing = false;
+        return;
       }
       step.RoleId = api.szgc.vanke.getRoleId();// data.submitUser.type;
       step.CheckNo = batch.Count;
@@ -879,6 +877,7 @@
           $scope.$parent.project.filter(true);
           api.uploadTask({
             _id:tid,
+            idtree:idtree,
             procedure:procedure,
             projectid:pid,
             name:tname

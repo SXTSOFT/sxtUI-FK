@@ -34,7 +34,7 @@
   </div>
 <md-content flex layout="column">
     <span flex ng-if="vm.project.rows.length==0 && !vm.project.loading" style="text-align: center;display: block;"> 暂无数据</span>
-  <md-progress-circular md-mode="indeterminate" ng-if="vm.project.loading&&vm.project.rows.length!=0"></md-progress-circular>
+  <md-progress-circular md-mode="indeterminate" ng-if="vm.project.loading&&vm.project.rows.length!=0" md-diameter="40"></md-progress-circular>
 
     <md-list layout-padding ng-if="!vm.project.loading">
       <md-list-item>
@@ -42,7 +42,7 @@
           <div layout="column" class="btn" ng-repeat="item in vm.project.rows" ng-class="{'bhg':!item.hg}" >
             <button class="btnUp" ng-click=" vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionIdTree,type:item.type && item.type.type_id})">{{item.ybNum}}</button>
             <button class=" btnDown" ng-click="vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionIdTree,type:item.type && item.type.type_id})">{{item.ysNum}}</button>
-            <span >{{item.name}}</span>
+            <span >{{item.name.indexOf(item.floor)==-1?item.floor+'-'+item.name:item.name}}</span>
           </div>
         </div>
       </md-list-item>

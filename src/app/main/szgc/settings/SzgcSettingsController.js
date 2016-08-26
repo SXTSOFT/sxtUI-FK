@@ -9,7 +9,7 @@
     .controller('SzgcSettingsController',SzgcSettingsController);
 
   /** @ngInject */
-  function SzgcSettingsController(profile,auth,api,$scope,utils,$rootScope,appCookie,$mdDialog){
+  function SzgcSettingsController(profile,auth,api,$scope,utils,$rootScope,appCookie,$mdDialog,versionUpdate){
 
     var vm = this;
     vm.profile = profile.data.data;
@@ -20,23 +20,28 @@
         if(result.rows.length){
           utils.confirm('您有'+result.rows.length+'条数据未上传，确定清除所有缓存数据并退出吗？').then(function (result) {
             appCookie.remove('projects');
-            vm.trueClear([]);
-            //auth.logout();
+            vm.trueClear([],function () {
+              auth.logout();
+            });
+
           })
         }
         else {
           utils.confirm('退出将清除当前人所有缓存数据，确定退出吗?').then(function (result) {
             appCookie.remove('projects');
-            vm.trueClear([]);
+            vm.trueClear([],function () {
+              auth.logout();
+            });
 
           });
         }
       });
     }
+    vm.serverAppVersion = versionUpdate.version;
     //服务器上保存版本信息
-    api.szgc.version().then(function (r) {
-      vm.serverAppVersion = r.data.verInfo;
-    });
+  /*  api.szgc.version().then(function (r) {
+      //vm.serverAppVersion = r.data.verInfo;
+    });*/
     $rootScope.$on('sxt:online', function(event, state){
       vm.networkState = api.getNetwork();
     });
@@ -49,7 +54,7 @@
     },function () {
       api.setNetwork(vm.networkState);
     });
-    vm.trueClear = function (exclude) {
+    vm.trueClear = function (exclude,callback) {
       $mdDialog.show({
           controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
             api.clearDb(function (persent) {
@@ -57,7 +62,7 @@
             }, function () {
               $scope.cacheInfo = null;
               $mdDialog.hide();
-              //utils.alert('清除成功');
+              utils.alert('清除完成');
             }, function () {
               $scope.cacheInfo = null;
               $mdDialog.cancel();
@@ -68,13 +73,14 @@
               timeout: 3000
             })
           }],
-          template: '<md-dialog aria-label="正在清除"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular> 正在清除数据，请稍候……({{cacheInfo}})</md-dialog-content></md-dialog>',
+          template: '<md-dialog aria-label="正在清除"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate" md-diameter="20"></md-progress-circular> 正在清除数据，请稍候……({{cacheInfo}})</md-dialog-content></md-dialog>',
           parent: angular.element(document.body),
           clickOutsideToClose:false,
           fullscreen: false
         })
         .then(function(answer) {
-          auth.logout();
+          //auth.logout();
+          callback && callback();
         }, function() {
 
         });

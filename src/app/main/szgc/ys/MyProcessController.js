@@ -240,9 +240,7 @@
       }
       $scope.project.filter();
     };
-    api.szgc.ProcedureTypeService.getAll({startrowIndex:0,maximumRows:100,Status:5}).then(function(result) {
-      $scope.project.procedureTypes = result.data.Rows;
-    });
+
 
     $scope.$watch(function () {
       return vm.searBarHide;
@@ -257,7 +255,8 @@
         },300);
 
       }
-    })
+    });
+
 /*    $scope.$watch('project.procedureId', function(a,b) {
       if(a != b){
         if ( !$scope.project.pid) {
@@ -281,7 +280,7 @@
         $scope.project.offlines = result.data;
       });
     }
-    queryOffline();
+
     $scope.hasTasks = function (item) {
       return  $scope.project && $scope.project.tasks && $scope.project.tasks.find(function (t) {
           return t.procedure == $scope.project.procedureId
@@ -429,15 +428,16 @@
           Id:idTree,
           name:project.name+'>'+item.name,
           project:project,
-          item:item
+          item:item,
+          date: new Date()
         };
         api.szgc.ProjectSettings.offline.create(offline).then(function () {
           queryOffline().then(function () {
-            var off = $scope.project.offlines.find(function (item) {
+/*            var off = $scope.project.offlines.find(function (item) {
               return item.Id == offline.Id;
-            });
-            utils.alert('下载完成，系统将创建索引。');
-            $scope.indexDb(off);
+            });*/
+            utils.alert('下载完成。');
+            //$scope.indexDb(off);
           });
 
         });
@@ -477,6 +477,10 @@
       });
     }
     $scope.upload =function () {
+      if(api.getNetwork()==1){
+        utils.alert('离线模式下不能上传!');
+        return;
+      }
       $scope.uploading = true;
       api.upload(function (cfg,item) {
         if(cfg._id=='s_files' && item && item.Url.indexOf('base64')==-1){
@@ -493,6 +497,31 @@
           return true
         },null);
         utils.alert('上传完成');
+        var ts = [];
+        $scope.project.tasks.forEach(function (t) {
+          if(t.idtree){
+            var tree = t.idtree.split('>'),
+              tree2 = tree[0]+'>'+tree[1];
+            if(!ts.find(function (t) {
+                return t==tree2;
+              })){
+              ts.push(tree2);
+            }
+          }
+        });
+        if(ts.length){ //刷新状态
+          var tasks = [];
+          ts.forEach(function (t) {
+            tasks.push(function () {
+              return api.szgc.addProcessService.getBatchRelation({regionIdTree:t});
+            })
+          });
+          api.task(tasks)(function () {
+
+          },function () {
+
+          });
+        }
         $scope.project.tasks = [];
         $scope.uploading= false;
       },function () {
@@ -500,6 +529,7 @@
         utils.alert('上传失败');
         $scope.uploading =false;
       },{
+        timeout:600000,
         uploaded:function (cfg,row,result) {
           cfg.db && cfg.db.delete(row);
         }
@@ -522,5 +552,13 @@
         project.items = null;
       }
     }
+
+    //init load
+    $timeout(function () {
+      api.szgc.ProcedureTypeService.getAll({startrowIndex:0,maximumRows:100,Status:5}).then(function(result) {
+        $scope.project.procedureTypes = result.data.Rows;
+      });
+      queryOffline();
+    },300)
   }
 })();

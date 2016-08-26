@@ -53,6 +53,7 @@
           idField:'Id',
           dataType:3,
           mode:0,
+          single:true,
           raiseError:true,
           filter:function () {
             return true;
@@ -127,7 +128,7 @@
         },
           function (result,cfg,args) {
           var me = this,arg=args[0],root = me.root;
-          if(root.getNetwork()==1){
+          if(root.getNetwork()==1 && (!args || !args[0].all)){
             return $q(function (resolve,reject) {
               var teamIds = getAuth().current().TeamId.split(',');
               var ps = [];

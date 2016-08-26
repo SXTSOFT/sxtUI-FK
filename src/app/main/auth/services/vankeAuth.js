@@ -17,15 +17,18 @@
     $rootScope.$on('user:logout',function(){
       appCookie.remove('auth');
     });
-    var userInfo = api.db({
-      _id:'s_userinfo',
-      idField:'Id',
-      mode:2,
-      filter:function () {
-        return true;
+    var cfg = {
+        _id:'s_userinfo',
+        idField:'Id',
+        single:true,
+        mode:1,
+        local:true,
+        filter:function () {
+          return true;
+        },
+        dataType:3
       },
-      dataType:3
-    }).bind(function () {
+      userInfo = api.db(cfg).bind(function () {
       return $http.get(sxt.app.api + '/api/Security/Account/UserInfo', {t: new Date().getTime()});
     });
     return service;
@@ -49,6 +52,7 @@
 
     function token(user){
       if(user) {
+        api.setNetwork(0);
         user.grant_type = 'password';
         user.scope = 'sxt';
         return $q (function (resolve,reject) {
@@ -92,14 +96,19 @@
       if(!token || !token.username) {
         return $q (function (resolve, reject) {
           //api.setNetwork(0);
+          cfg.local = false;
+          cfg.mode = token?2:1;
           userInfo().then(function (d) {
+            cfg.mode = 1;
             if(!d ||(!d.status && !d.data)){
               $rootScope.$emit('user:needlogin');
+            }
+            else{
             }
             resolve(d && d.data);
             //api.resetNetwork();
           }, function (rejection) {
-
+            cfg.mode = 1;
             utils.alert(rejection.data && rejection.data.Message?rejection.data.Message:'网络错误');
             reject(token);
           });

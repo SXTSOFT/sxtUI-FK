@@ -3,14 +3,15 @@
     <md-icon md-font-icon="icon-chevron-left" style="color:white;"></md-icon>
   </md-button>
   <h2 flex>
-    <span>{{$root.title || '万科数字工程'}}</span>
+    <span ng-if="!vm.networking">{{$root.title || '万科数字工程'}}</span>
+    <span ng-if="vm.networking"><img src="assets/images/loader.gif"> 连接中...</span>
   </h2>
   <md-button flex="none" class="md-icon-button" aria-label="net work" ng-click="vm.setNetwork()">
     <md-icon md-svg-icon="assets/images/online.svg" ng-if="vm.networkState==0" ></md-icon>
     <md-icon md-svg-icon="assets/images/offline.svg" ng-if="vm.networkState==1" ></md-icon>
   </md-button>
   <div flex="none" >
-  <md-progress-circular id="toolbar-progress" ng-if="$root.loadingProgress"
+  <md-progress-circular ng-if="$root.loadingProgress"
                         md-mode="indeterminate" md-diameter="40">
   </md-progress-circular></div>
 </div>

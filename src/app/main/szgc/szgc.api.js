@@ -91,7 +91,7 @@
           dataType:5,
           filter:function (item,param) {
             return item.RegionIdTree==param.regionIdTree
-            && item.ProcedureId==param.procedureId && (!param.regionId || param.regionId==param.RegionId)
+            && item.ProcedureId==param.procedureId && (!param.regionId || param.regionId==item.RegionId)
           }
         }).bind(function(parems) {
           return $http.get($http.url('/api/BatchRelation/GetBatchRelationAllHistoryList', parems));
@@ -318,6 +318,7 @@
         post:$http.db({
           _id:'s_files',
           idField:'Id',
+          fileField:'Url',
           upload:true
         }).bind(function (file) {
           return $http.post('/api/Files/base64',file);

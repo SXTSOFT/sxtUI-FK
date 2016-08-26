@@ -8,7 +8,8 @@
   height: 49px;
   min-height: 49px;
   max-height: 49px;
-
+  border-top: 1px solid rgba(0, 0, 0, 0.117647);
+  box-shadow:none;
 }
 .newinput{
   .md-button{
@@ -189,8 +190,14 @@
     .repeated-item {
       border-bottom: 1px solid #ddd;
       box-sizing: border-box;
-      height: 40px;
-      padding-top: 10px; }
+      height: 30px;
+      line-height:30px;
+      span{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
     md-content {
       margin: 16px; }
     md-virtual-repeat-container {

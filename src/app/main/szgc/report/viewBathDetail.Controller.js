@@ -526,7 +526,7 @@
                   it.PassRatio='';
                   it.CheckNum='';
                   it.MaxDeviation='';
-                  
+
 
                   //it.FHL = eg && eg[i] && fhl(it.PassRatio, it.VKPassRatio);
                   //it.ZBFHL = zb && zb[i] && fhl(it.ZbPassRatio, it.PassRatio);
@@ -547,15 +547,18 @@
             return it.RoleId == 'zb' && it.CheckNo == zb[0].HistoryNo;
           }) : null;
 
-          if(!item.load) {
-            item.load = true;
+
             $q.all([
-              item.eg?api.szgc.addProcessService.getAllCheckDataValue(item.eg.Id):$q(function(r){r()}),
-              item.zb?api.szgc.addProcessService.getAllCheckDataValue(item.zb.Id):$q(function(r){r()})
-            ]).then(function (rs) {
-              (item.eg = item.eg||{}).yb = [];
-              (item.zb = item.zb||{}).yb = [];
-              (zb||eg).forEach(function (yb) {
+              item.eg && !item.eg.load?api.szgc.addProcessService.getAllCheckDataValue(item.eg.Id):$q(function(r){r()}),
+              item.zb && !item.zb.load?api.szgc.addProcessService.getAllCheckDataValue(item.zb.Id):$q(function(r){r()})
+            ]).then(
+              function (rs) {
+              item.eg && (item.eg.load = true);
+              item.zb && (item.zb.load = true);
+/*              (item.eg = item.eg||{}).yb = [];
+              (item.zb = item.zb||{}).yb = [];*/
+
+              item.d.yb.forEach(function (yb) {
                 if(yb.TargetTypeId != '018C0866-1EFA-457B-9737-7DCEFEA148F6') { //不是主控
                   var jlyb = item.d.yb.find(function (jl) {
                     return jl.TargetId == yb.TargetId;
@@ -563,21 +566,22 @@
                   //yb.points = [];
                   jlyb.egPoints = [];
                   jlyb.zbPoints = [];
-                  item.eg.yb.push(yb);
+                  //item.eg.yb.push(yb);
 
-                  var row = [];
+                  //var row = [];
                   rs[0] && rs[0].data.Rows.forEach(function (item) {
-                    if (yb.Id == item.CheckDataId) {
-                      if (row.length == 20) {
+                    if (yb.TargetId == item.TargetId) {
+                      jlyb.egPoints.push(item);
+                      /*if (row.length == 20) {
                         //yb.points.push(row)
                         jlyb.egPoints.push(row);
-                        row = [];
-                        row.push(item);
+                        //row = [];
+                        //row.push(item);
                       } else {
-                        row.push(item);
-                      }
+                        //row.push(item);
+                      }*/
                     }
-                  });
+                  });/*
                   if (row.length > 0) {
                     var len = row.length;
                     while (len < 20) {
@@ -587,35 +591,19 @@
                       len++;
                     }
                     jlyb.egPoints.push(row);
-                  }
+                  }*/
 
-                  row = [];
+                  //row = [];
                   rs[1] && rs[1].data.Rows.forEach(function (item) {
-                    if (yb.Id == item.CheckDataId) {
-                      if (row.length == 20) {
-                        //yb.points.push(row)
-                        jlyb.zbPoints.push(row);
-                        row = [];
-                        row.push(item);
-                      } else {
-                        row.push(item);
-                      }
+                    if (yb.TargetId == item.TargetId) {
+                      jlyb.zbPoints.push(item);
                     }
                   });
-                  if (row.length > 0) {
-                    var len = row.length;
-                    while (len < 20) {
-                      row.push({
-                        Value: ""
-                      });
-                      len++;
-                    }
-                    jlyb.zbPoints.push(row);
-                  }
                 }
               });
-            })
-          }
+            }
+            );
+
 
 
           item.text += '/共' + jl.length + '次'
@@ -660,30 +648,13 @@
                 $scope.isShow = true;
               }
               s.d.yb.forEach(function (yb) {
-                var row = [];
                 yb.points = [];
                 result.data.Rows.forEach(function (item) {
-                  if (yb.Id == item.CheckDataId) {
-                    if (row.length == 20) {
-                      yb.points.push(row)
-                      row = [];
-                      row.push(item);
-                    } else {
-                      row.push(item);
-                    }
+                  if (yb.TargetId == item.TargetId) {
 
+                      yb.points.push(item)
                   }
-                })
-                if (row.length > 0) {
-                  var len = row.length;
-                  while (len < 20) {
-                    row.push({
-                      Value: ""
-                    });
-                    len++;
-                  }
-                  yb.points.push(row);
-                }
+                });
               });
             })
           }

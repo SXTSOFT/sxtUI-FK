@@ -23,10 +23,10 @@
   </div>
   </div>
     </md-content>
-<div style="color:#f00;height:40px;line-height: 40px;border-bottom: 1px solid #ddd;width:100%;padding-left:8px;" ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')">左右滑动查看全部数据</div>
+<div style="color:#f00;height:40px;line-height: 20px;border-bottom: 1px solid #ddd;width:100%;padding-left:8px;" ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')">左右滑动查看全部数据<br/> <span style="color:{{s.color}}" ng-repeat="s in vm.states">({{s.title}}) </span></div>
     <md-content class="md-padding repeat-top"  ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')" layout="column" flex>
       <md-virtual-repeat-container flex id="vertical-container">
-        <div style="width:880px;overflow-x: hidden;">
+        <div style="width:930px;overflow-x: hidden;">
         <div>
           <div>
             <div style="border-bottom: 1px solid #ccc;padding-left:0;position: relative;">
@@ -46,14 +46,15 @@
           </div>
 
           <div md-virtual-repeat="item in vm.baths.Rows" class="repeated-item" flex>
-            <div style="width:980px;height: 40px;">
-              <div style=" position: relative;height: 40px;" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">
+            <div style="width:980px;height: 30px;">
+              <div style=" position: relative;height: 30px;color:{{vm.getStateColor(item.ECCheckResult)}};" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">
                 <span style="width:120px;display: inline-block;white-space: nowrap;overflow:hidden;padding-right: 5px;text-overflow:ellipsis;">{{ item.RegionNameTree}} {{item.RegionName}}</span>
                 <span style="width:80px;display: inline-block;white-space: nowrap;overflow:hidden;text-overflow:ellipsis;">{{item.ProcedureName}}</span>
-              <span style="width:55px;display: inline-block;text-align: center;">{{item.GrpWokerName | filterGrpWokerName}}</span>
+              <span style="width:55px; white-space: nowrap; display: inline-block;text-align: center;">{{item.GrpWokerName | filterGrpWokerName}}</span>
                 <span style="width:36px;display: inline-block;">{{(item.ZbLast||item.ZbFirst)|number:1}}</span>
-                <span style="width:36px;display: inline-block;">{{item.JLFirst|number:1}}</span>
-              <span style="width:36px;display: inline-block;">{{item.JLLast|number:1}}</span>
+                <span ng-if="!item.JLFirst" style="width: 72px;display: inline-block">{{vm.getState(item.ECCheckResult)}}</span>
+                <span ng-if="item.JLFirst" style="width:36px;display: inline-block;">{{item.JLFirst|number:1}}</span>
+              <span  ng-if="item.JLFirst" style="width:36px;display: inline-block;">{{item.JLLast|number:1}}</span>
               <span style="width:80px;display: inline-block;">{{item.JLUser}}</span>
               <span style="width:80px;display: inline-block;">{{item.JLDate}}</span>
               <span style="width:120px;display: inline-block;">{{item.WKLast}}</span>
@@ -71,7 +72,7 @@
         <md-button class="md-fab md-mini" ng-show="!vm.searBarHide && vm.isJdBack()" ng-click="vm.backJdSelect()">
           <md-icon md-font-icon="icon-arrow-left"></md-icon>
         </md-button>
-        <toggle-menu inst="vm.searBarHide" ng-show="vm.is('app.szgc.report.viewBath')"></toggle-menu>
+<!--        <toggle-menu inst="vm.searBarHide" ng-show="vm.is('app.szgc.report.viewBath')"></toggle-menu>-->
 
       </div>
     </md-content>

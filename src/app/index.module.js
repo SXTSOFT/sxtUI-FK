@@ -27,7 +27,6 @@
             'app.auth',
 
             'app.szgc',
-            'app.material',
           'panzoom',
           'hmTouchEvents',
           'ui.tree',
