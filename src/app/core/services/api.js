@@ -435,6 +435,7 @@
                 next();
               }
             }).catch(function (err) {
+              $rootScope.$emit('applicationError', {exception: err});
               d = 0;
               if (config && config.event)
                 provider.$rootScope.$emit(config.event, {
@@ -818,6 +819,8 @@
       return db_save({_id: cfg._id, upload: !0}, items, this.idFn);
     }
     SingleDB.prototype.saveItems = function (result) {
+      if(!result)
+      console.log('result is null',this)
       return db_save(this.cfg, result, this.idFn);
     }
     SingleDB.prototype.get = function (id) {
@@ -921,45 +924,45 @@
       return o;
     }
     function db_save(cfg, result, idFn) {
+      if(!result) return;
       var db = get_globalDb();
       return provider.$q.$q(function (resolve, reject) {
         db.get(cfg._id,cfg).then(save_to).catch(save_to);
         function save_to(doc) {
-          provider.$q(function (resolve,reject) {
-            if(cfg.fileField){
-              if(!angular.isArray(cfg.fileField)){
+          provider.$q(function (resolve, reject) {
+            if (cfg.fileField) {
+              if (!angular.isArray(cfg.fileField)) {
                 cfg.fileField = [cfg.fileField];
               }
               var _saveList = [],
                 nResult;
-              if(angular.isArray(result)) {
+              if (angular.isArray(result)) {
                 nResult = [];
                 result.forEach(function (r) {
                   r._id = idFn(r);
                   _saveList.push(db.put(r, {
                     upload: true
                   }));
-                  nResult.push(copySave(r,cfg.fileField));
+                  nResult.push(copySave(r, cfg.fileField));
                 })
               }
-              else{
+              else {
                 result._id = idFn(result);
-                nResult = copySave(result,cfg.fileField);
+                nResult = copySave(result, cfg.fileField);
                 _saveList.push(db.put(result, {
                   upload: true
                 }));
               }
               provider.$q.$q.all(_saveList).then(function () {
                 resolve(nResult);
-              },function () {
+              }, function () {
                 resolve(nResult);
               });
             }
-            else{
+            else {
               resolve(result);
             }
           }).then(function (result) {
-          try {
             if (!doc || doc.error)
               doc = {_id: cfg._id, rows: []};
 
@@ -976,7 +979,7 @@
                replace_db(result, doc.rows, idFn);
                }*/
               else if (cfg.dataType == 3) {
-                if(cfg.single)
+                if (cfg.single)
                   doc.rows = [result];
                 else
                   replace_db_single(result, doc.rows, idFn);
@@ -991,12 +994,9 @@
                 replace_db(result.Rows, doc.rows, idFn);
               }
             }
-            return db.put(doc,cfg).then(resolve, reject);
-          }catch (ex){
-            console.log('error',ex);
-          }
-          });
+            return db.put(doc, cfg).then(resolve, reject);
 
+          });
         }
       });
 
