@@ -95,9 +95,9 @@
           });
         }else{
           $scope.$parent.vm.sjReport = $scope.sjReport;
-          if(vm.EnclosureType.find(function (e){return e.OptionType == 2}) == null)
+          if($scope.data.imgs1.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 2}) == null)
             $scope.$parent.vm.EnclosureType.push({OptionType:2,GroupImg:vm.groupId_2});
-          if(vm.EnclosureType.find(function (e){return e.OptionType == 4}) == null)
+          if($scope.data.imgs2.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 4}) == null)
             $scope.$parent.vm.EnclosureType.push({OptionType:4,GroupImg:vm.groupId_4});
           if($scope.data.imgs3.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 8}) == null)
             $scope.$parent.vm.EnclosureType.push({OptionType:8,GroupImg:vm.groupId_8});
