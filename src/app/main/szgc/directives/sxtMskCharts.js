@@ -8,7 +8,38 @@
     .directive('sxtMskCharts',sxtMskCharts);
 
   /** @ngInject */
-  function sxtMskCharts(api,$window,$timeout,$state) {
+  function sxtMskCharts(api,$window,$timeout,$state,$q) {
+    function getNumName(str) {
+      str = str.replace('十', '10')
+        .replace('九', '9')
+        .replace('八', '8')
+        .replace('七', '7')
+        .replace('六', '6')
+        .replace('五', '5')
+        .replace('四', '4')
+        .replace('三', '3')
+        .replace('二', '2')
+        .replace('一', '1')
+        .replace('十一', '11')
+        .replace('十二', '12')
+        .replace('十三', '13')
+        .replace('十四', '14')
+        .replace('十五', '15')
+        .replace('十六', '16')
+        .replace('十七', '17')
+        .replace('十八', '18')
+        .replace('十九', '19')
+        .replace('二十', '20');
+      var n = parseInt(/[-]?\d+/.exec(str));
+      return n;
+    }
+    function getLast(d1,d2) {
+      //var arr = Array.prototype.slice.call(arguments);
+      if(d1 && d2){
+        return d1.localeCompare(d2)>0?d1:d2
+      }
+      return d1||d2;
+    }
     return {
       scope: {
         value: '=sxtMskCharts',
@@ -16,51 +47,25 @@
       },
       link: function (scope, element) {
         $timeout(function () {
-          var myChart = $window.echarts.init(element[0]);
+
           scope.$watch('value', function () {
+            console.log('v',scope.value)
             if (!scope.value) return;
             var bid = scope.value.split('>'),
               legend = [
-                  { value: 0, label: '未验收', color: 'rgba(225,225,225,1)' },
-                  { value: 1, label: '总包已验', color: 'rgba(44,157,251,1)' },
-                  { value: 2, label: '监理已验', color: 'rgba(0,195,213,1)' },
-                  { value: 3, label: '监理/总包', color: 'rgba(0,120,210,1)' },
-                  { value: 4, label: '监理不合格', color: 'rgba(249,98,78,1)' }
+                {value: 0, label: '未验收', color: 'rgba(225,225,225,1)'},
+                {value: 1, label: '总包已验', color: 'rgba(44,157,251,1)'},
+                {value: 2, label: '监理已验', color: 'rgba(0,195,213,1)'},
+                {value: 3, label: '监理/总包', color: 'rgba(0,120,210,1)'},
+                {value: 4, label: '监理不合格', color: 'rgba(249,98,78,1)'}
               ],
-              gx = [
-                { value: 1, label: '橱柜', id: '1c419fcc-24a9-4e38-9132-ce8076051e6a', color: 'rgba(193,35,43,1)' },
-                { value: 2, label: '油漆', id: 'a3776dab-9d80-4ced-b229-e6bfc51f7988', color: 'rgba(181,195,52,1)' },
-                { value: 3, label: '瓷砖', id: '702d964d-cd97-4217-8038-ce9b62d7584b', color: 'rgba(252,206,16,1)' },
-                { value: 4, label: '墙板', id: '8bfc6626-c5ed-4267-ab8f-cb2294885c25', color: 'rgba(193,35,43,1)' },
-                { value: 5, label: '门窗', id: '51bb20e2-92a2-4c9f-85a9-c4545e710cf0', color: 'rgba(181,195,52,1)' }
-              ], getNumName = function (str) {
-                str = str.replace('十', '10')
-                  .replace('九', '9')
-                  .replace('八', '8')
-                  .replace('七', '7')
-                  .replace('六', '6')
-                  .replace('五', '5')
-                  .replace('四', '4')
-                  .replace('三', '3')
-                  .replace('二', '2')
-                  .replace('一', '1')
-                  .replace('十一', '11')
-                  .replace('十二', '12')
-                  .replace('十三', '13')
-                  .replace('十四', '14')
-                  .replace('十五', '15')
-                  .replace('十六', '16')
-                  .replace('十七', '17')
-                  .replace('十八', '18')
-                  .replace('十九', '19')
-                  .replace('二十', '20');
-                var n = parseInt(/[-]?\d+/.exec(str));
-                return n;
-              }
-
-            api.szgc.vanke.rooms({ building_id: bid[bid.length - 1] }).then(function (r) {
-              var floors = [],
-                rooms = [];
+              gx = [];
+            $q.all([
+              api.szgc.vanke.rooms({building_id: bid[bid.length - 1]}),
+              api.szgc.ProjectExService.building3(scope.value),
+              api.szgc.BatchSetService.getAll({status: 4, batchType: 255})
+            ]).then(function (rs) {
+              var r = rs[0], r2 = rs[1],r3 = rs[2];
               r.data.data.sort(function (i1, i2) {
                 var n1 = getNumName(i1.floor),
                   n2 = getNumName(i2.floor),
@@ -88,159 +93,218 @@
                   return i1.name.localeCompare(i2.name);
 
               });
-              api.szgc.ProjectExService.building3(scope.value).then(function (r2) {
-                var floors = [], maxRooms = 0;
-                r.data.data.forEach(function (room) {
-                  var fd = floors.find(function (f) {
-                    return f.floor === room.floor;
+              var floors = [], maxRooms = 0;
+              r.data.data.forEach(function (room) {
+                var fd = floors.find(function (f) {
+                  return f.floor === room.floor;
+                });
+                if (!fd) {
+                  floors.push({
+                    edit: false,
+                    floor: room.floor,
+                    rooms: [room]
                   });
-                  if (!fd) {
-                    floors.push({
-                      edit: false,
-                      floor: room.floor,
-                      rooms: [room]
-                    });
-                  }
-                  else {
-                    fd.rooms.push(room);
-                  }
+                }
+                else {
+                  fd.rooms.push(room);
+                }
+              });
+              floors.forEach(function (f) {
+                if (maxRooms < f.rooms.length)
+                  maxRooms = f.rooms.length;
+              });
+              var x = [], y = [], data = [],points = [],
+                _x = 1, _y = 0,_p;
+              r2.data.Rows.forEach(function (row) {
+                if(row.RegionId.indexOf('-')!=-1)return;
+                var fd = gx.find(function (g) {
+                  return g.id==row.ProcedureId;
                 });
-                floors.forEach(function (f) {
-                  if (maxRooms < f.rooms.length)
-                    maxRooms = f.rooms.length;
-                });
-                var x = [], y = [], data = [],
-                  _x = 1, _y = 0, _z = 0;
-                floors.forEach(function (f) {
-                  y.push(f.floor + '层');
-                  data.push([0, _y, '-']);
-                  _x = 1;
-                  gx.forEach(function (gx) {
-                    for (var i = 0; i < maxRooms; i++) {
-                      var room = f.rooms[i];
-                      if (room) {
-                        var _z = r2.data.Rows.find(function (row) {
-                          return row.ProcedureId == gx.id && row.RegionId == room.room_id;
-                        });
-                        if (_z)
-                          data.push([_x, _y, (_z.ECCheckResult == 1 || _z.ECCheckResult == 3) ? 4 :
-                            _z.ZbDate && _z.JLDate ? 3:
-                              _z.JLDate? 2:
-                                _z.ZbDate?1: 0
-                            , _z]);
-                        else
-                          data.push([_x, _y, 0]);
-                      }
-                      else {
-                        data.push([_x, _y, '-']);
-                      }
-                      if (_y == 0) x.push(gx.label);
-                      _x++;
-                    }
-                    //if (_y == 0) x.push(String(_x));
-                    data.push([_x, _y, '-']);
-                    _x++;
+                if(!fd){
+                  var p = r3.data.Rows.find(function (p1) {
+                    return p1.ProcedureId==row.ProcedureId;
                   });
-                  _y++;
-                });
+                  fd = {
+                    id:p.ProcedureId,
+                    value:gx.length+1,
+                    label:p.ProcedureName,
+                    date:getLast(row.JLDate,row.ZbDate)
+                  }
+                  gx.push(fd);
+                }
+                else{
+                  fd.date = getLast(fd.date,getLast(row.JLDate,row.ZbDate));
+                }
+              });
+              gx.sort(function (g1,g2) {
+                return g2.date.localeCompare(g1.date);
+              });
 
-                var option = {
-                  title: false,
-                  tooltip: {
-                    formatter: function (arg, ticket, callback) {
-                      $state.go('app.szgc.project.view',{bathid:arg.value[3].Id});
-                      /*var g = gx[parseInt(arg.data[0] / (maxRooms + 1))],
-                        f = floors[arg.data[1]],
-                        room = f.rooms[arg.data[0] % (maxRooms + 1) - 1];
-                      return room.name + ' ' + g.label + ' ' + (arg.value[3] ? '(' + arg.value[3].JLDate + ')' + (
-                          arg.value[3].ECCheckResult == 1 ? '初验不合格' :
-                            arg.value[3].ECCheckResult == 2 ? '初验合格' :
-                              arg.value[3].ECCheckResult == 3 ? '复验不合格' :
-                                arg.value[3].ECCheckResult == 4 ? '复验合格' :
-                                  ''
-                        ) : '未验');*/
-                    }
-                  },
-                  animation: false,
-                  grid: {
-                    height: '85%',
-                    y: '5'
-                  },
-                  xAxis: {
-                    type: 'category',
-                    data: x,
-                    axisLabel: {
-                      interval: function (index, value) {
-                        return index % (maxRooms + 1) == 1;
-                      },
-                      show: true
-                    },
-                    splitArea: {
-                      show: false
-                    }
-                  },
-                  dataZoom: [{
-                    type: 'inside'
-                  }],
-                  yAxis: {
-                    type: 'category',
-                    data: y,
-                    min: 0,
-                    max: 50,
-                    interval: 1,
-                    axisLabel: {
-                      textStyle: {
-                        fontSize: 8
-                      }
-                    },
-                    splitArea: {
-                      show: false
-                    }
-                  },
-                  visualMap: {
-                    bottom: 0,
-                    right: 0,
-                    type: 'piecewise',
-                    pieces: legend,//gx.concat([{ value: 0, label: '未验', color: 'rgba(225,225,225,1)' }]),
-                    show: true,
-                    min: 0,
-                    max: 5,
-                    calculable: false,
-                    itemWidth:5,
-                    orient: 'horizontal'
-                  },
-                  series: [{
-                    type: 'heatmap',
-                    data: data,
-                    label: {
-                      normal: {
-                        show: false,
-                        textStyle:{
-                          fontSize:5
+
+              floors.forEach(function (f) {
+                y.push(f.floor + '层');
+                data.push([0, _y, '-']);
+                _x = 1;
+                gx.forEach(function (gx) {
+                  for (var i = 0; i < maxRooms; i++) {
+                    var room = f.rooms[i];
+                    if (room) {
+                      var _z = r2.data.Rows.find(function (row) {
+                        return row.ProcedureId == gx.id && row.RegionId == room.room_id;
+                      });
+                      if (_z) {
+                        _p = (_z.ECCheckResult == 1 || _z.ECCheckResult == 3) ? 4 :
+                          _z.ZbDate && _z.JLDate ? 3 :
+                            _z.JLDate ? 2 :
+                              _z.ZbDate ? 1 : 0;
+                        data.push([_x, _y, _p, _z]);
+                        if(_p===4){
+                          points.push([_x, _y, _p, _z])
+                        }
+                        else{
+                          //data.push([_x, _y, _p, _z]);
                         }
                       }
+                      else
+                        data.push([_x, _y, 0]);
+                    }
+                    else {
+                      data.push([_x, _y, '-']);
+                    }
+                    if (_y == 0) x.push(gx.label);
+                    _x++;
+                  }
+                  data.push([_x, _y, '-']);
+                  _x++;
+                });
+                _y++;
+              });
+              var option = {
+                tooltip: {
+                  formatter: function (arg, ticket, callback) {
+                    //$state.go('app.szgc.project.view',{bathid:arg.value[3].Id});
+                  }
+                },
+                grid: {
+                },
+                xAxis: {
+                  type: 'category',
+                  data: x,
+                  axisLabel: {
+                    interval: function (index, value) {
+                      return index % (maxRooms + 1) == 1;
                     },
-                    itemStyle: {
-                      normal: {
-                        borderWidth: 1,
-                        borderColor: 'rgba(255, 255, 255, 1)'
-                      },
-                      emphasis: {
-                        shadowBlur: 10,
-                        shadowColor: 'rgba(0, 0, 0, 1)'
+                    show: true
+                  },
+                  splitArea: {
+                    show: false
+                  }
+                },
+                yAxis: {
+                  type: 'category',
+                  data: y,
+                  min: 0,
+                  max: 50,
+                  interval: 1,
+                  axisLabel: {
+                    textStyle: {
+                      fontSize: 8
+                    }
+                  },
+                  splitArea: {
+                    show: false
+                  }
+                },
+                dataZoom: [
+                  {
+                    type: 'slider',
+                    show: true,
+                    xAxisIndex: [0],
+                    startValue: 0,
+                    endValue: maxRooms+1
+                  },
+                  {
+                    type: 'slider',
+                    show: true,
+                    yAxisIndex: [0],
+                    left: '93%',
+                    start: 0,
+                    end: 100
+                  },
+                  {
+                    type: 'inside',
+                    xAxisIndex: [0],
+                    startValue: 0,
+                    endValue: maxRooms+1
+                  },
+                  {
+                    type: 'inside',
+                    yAxisIndex: [0],
+                    start: 0,
+                    end: 100
+                  }
+                ],
+                visualMap: [{
+                  /*                    bottom: 0,
+                   right: 0,*/
+                  top:0,
+                  type: 'piecewise',
+                  pieces: legend,//gx.concat([{ value: 0, label: '未验', color: 'rgba(225,225,225,1)' }]),
+                  show: true,
+                  min: 0,
+                  max: 5,
+                  calculable: false,
+                  itemWidth: 5,
+                  orient: 'horizontal'
+                }],
+                series: [{
+                  type: 'heatmap',
+                  data: data,
+                  label: {
+                    normal: {
+                      show: false,
+                      textStyle: {
+                        fontSize: 5
                       }
                     }
-                  }]
-                };
-
-                myChart.setOption(option);
-                scope.build.loaded = true;
-              });
+                  },
+                  itemStyle: {
+                    normal: {
+                      borderWidth: 1,
+                      borderColor: 'rgba(255, 255, 255, 1)'
+                    },
+                    emphasis: {
+                      shadowBlur: 10,
+                      shadowColor: 'rgba(0, 0, 0, 1)'
+                    }
+                  }
+                }]
+              };
+              var myChart = $window.echarts.init(element[0]);
+              myChart.setOption(option);
+              scope.build.loaded = true;
+              scope.build.gx = gx;
+              scope.build.selected = gx[0];
+              scope.build.goTo = function (g) {
+                var ix = gx.indexOf(g);
+                if(ix!=-1){
+                  myChart.dispatchAction({
+                    type: 'dataZoom',
+                    dataZoomIndex: 0,
+                    startValue: ix * (maxRooms) + ix,
+                    endValue: ix * (maxRooms) + ix + maxRooms +1
+                  });
+                }
+              }
+              scope.$watch('build.selected',function () {
+                if(scope.build.selected){
+                  scope.build.goTo(scope.build.selected);
+                }
+              })
             });
 
           });
-        },10);
-
+        }, 10);
       }
     }
   }

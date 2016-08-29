@@ -4,14 +4,13 @@
     </sxt-projects-jd>
     <div class="md-padding" layout="row">
 
-      <md-button ng-disabled="vm.project.type<8" type="submit" flex  ng-click="vm.search()" class="md-raised md-primary"> 确定  </md-button>
+      <md-button ng-disabled="vm.project.type<8" type="submit" flex ng-click="vm.search()" class="md-raised md-primary"> 隐蔽照片  </md-button>
+      <md-button ng-disabled="vm.project.type<8" type="submit" flex ng-click="vm.total()" class="md-raised md-primary"> 验收记录  </md-button>
     </div></div>
 </md-content>
 <md-content flex ng-show="vm.searBarHide" layout="column" id="ybgc">
-
-
-  <div flex="none" ng-init="vm.showSm =false">
-      <div layout="column" style="padding: 5px 10px;border-bottom: 1px solid #d8d8d8;">
+  <div flex="none" ng-init="vm.showSm =false" layout="row">
+      <div layout="column" ng-if="vm.mode==1" flex style="padding: 5px 10px;border-bottom: 1px solid #d8d8d8;">
         <div layout="row">
         <div flex="initial" class="dingw"><span>当前楼栋：</span><span style="color:#0b93d5;">{{vm.project.typeName}}</span></div><div style="position: relative;" flex="none" class="tlsm"><span ng-click="vm.showSm = !vm.showSm" class="span">图例说明</span>
         <div class="tl-wrap" ng-show="vm.showSm">
@@ -31,29 +30,35 @@
         </div>
         </div>
       </div>
+      <md-select ng-if="vm.mode==2" flex placeholder="切换工序" style="margin: 0" ng-model="vm.build.selected">
+        <md-option ng-repeat="gx in vm.build.gx" ng-value="gx" >
+          {{gx.label}} - {{gx.date}}
+        </md-option>
+      </md-select>
+    <span flex="none"><toggle-menu inst="vm.searBarHide"></toggle-menu></span>
   </div>
 <md-content flex layout="column">
-    <span flex ng-if="vm.project.rows.length==0 && !vm.project.loading" style="text-align: center;display: block;"> 暂无数据</span>
-  <md-progress-circular md-mode="indeterminate" ng-if="vm.project.loading&&vm.project.rows.length!=0" md-diameter="40"></md-progress-circular>
+  <span flex ng-if="vm.mode==1 && vm.project.rows.length==0 && !vm.project.loading" style="text-align: center;display: block;"> 暂无数据</span>
+<!--
+  <md-progress-circular  md-mode="indeterminate" ng-if="(vm.project.loading&&vm.project.rows.length!=0)||vm.build.loaded!==true" md-diameter="40"></md-progress-circular>
+-->
 
-    <md-list layout-padding ng-if="!vm.project.loading">
-      <md-list-item>
-        <div class="yhyd" layout="row"  layout-wrap>
-          <div layout="column" class="btn" ng-repeat="item in vm.project.rows" ng-class="{'bhg':!item.hg}" >
-            <button class="btnUp" ng-click=" vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionIdTree,type:item.type && item.type.type_id})">{{item.ybNum}}</button>
-            <button class=" btnDown" ng-click="vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionIdTree,type:item.type && item.type.type_id})">{{item.ysNum}}</button>
-            <span >{{item.name.indexOf(item.floor)==-1?item.floor+'-'+item.name:item.name}}</span>
+      <md-list ng-if="vm.mode==1" layout-padding ng-if="!vm.project.loading">
+        <md-list-item>
+          <div class="yhyd" layout="row"  layout-wrap>
+            <div layout="column" class="btn" ng-repeat="item in vm.project.rows" ng-class="{'bhg':!item.hg}" >
+              <button class="btnUp" ng-click=" vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionIdTree,type:item.type && item.type.type_id})">{{item.ybNum}}</button>
+              <button class=" btnDown" ng-click="vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionIdTree,type:item.type && item.type.type_id})">{{item.ysNum}}</button>
+              <span >{{item.name.indexOf(item.floor)==-1?item.floor+'-'+item.name:item.name}}</span>
+            </div>
           </div>
-        </div>
-      </md-list-item>
-    </md-list>
+        </md-list-item>
+      </md-list>
+
+  <div flex  ng-if="vm.mode==2" sxt-msk-charts="vm.project.idTree" ng-if="vm.project.type==8" build="vm.build" ></div>
   </md-content>
   </md-content>
 
-
-
-<div style="position: absolute; top:0px; right:0px;">
-  <toggle-menu inst="vm.searBarHide"></toggle-menu></div>
 
 
 

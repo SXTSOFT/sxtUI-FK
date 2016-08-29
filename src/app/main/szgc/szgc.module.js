@@ -88,8 +88,8 @@
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/buildingdetail.html',
-            controller:'SzgcbuilddetailController as vm',
-            resolve:{
+            controller:'SzgcbuilddetailController as vm'//,
+/*            resolve:{
               details:['$stateParams','api',function($stateParams,api){
                 return api.szgc.ProjectExService.building2($stateParams.pid + '>' + $stateParams.itemId + '>' + $stateParams.buildId).then(function (result) {
                     var pageload = {
@@ -132,7 +132,7 @@
                     return [char];
                   });
               }]
-            }
+            }*/
           }
         }
       })
