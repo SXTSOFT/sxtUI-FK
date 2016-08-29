@@ -11,5 +11,9 @@
       api.material.MaterialService.GetInfoById($stateParams.id).then(function(result){
         $scope.dataInfo = result.data;
       });
+
+      api.material.MaterialService.GetMLFilesById($stateParams.id).then(function(result){
+        $scope.files = result.data.Rows;
+      });
     }]);
 })();

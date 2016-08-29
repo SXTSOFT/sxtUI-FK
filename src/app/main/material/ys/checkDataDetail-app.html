@@ -60,5 +60,15 @@
       <label style="position:absolute; right: 10px;">{{dataInfo.HandleOption}}</label>
     </md-list-item>
     <md-divider></md-divider>
+    <md-list-item style="background-color: lightgrey;">
+      <label>附件</label>
+    </md-list-item>
+    <md-list-item>
+      <div  sxt-image-view is-container="true">
+        <p ng-repeat="item in files">
+          <sxt-images  ng-model="item.GroupImg"></sxt-images></fieldset>
+        </p>
+      </div>
+    </md-list-item>
   </md-list>
 </md-content>
