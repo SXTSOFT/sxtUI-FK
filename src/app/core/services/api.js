@@ -397,7 +397,7 @@
                     target:config.target,
                     event:'fail'
                   });
-                fail && fail();
+                fail && fail(true);
               }
             },30000);
             fn(tasks,donwfile).then(function (k) {
@@ -410,6 +410,7 @@
                 }
               }
             }).catch(function (err) {
+              isTimeout=true;
               d = 0;
               if(config && config.event)
                 provider.$rootScope.$emit(config.event,{

@@ -9,8 +9,9 @@
     .controller('gxmainController',gxmainController);
 
   /**@ngInject*/
-  function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,gxOfflinePack,$scope,$mdDialog){
+  function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,gxOfflinePack,$scope,$mdDialog,db){
     var vm = this;
+    var  dbpics=db('pics')
     remote.Project.getMap().then(function(result){
       remote.offline.query().then(function (r) {
         if (r&& r.data&& r.data.length){
@@ -38,25 +39,55 @@
       return [
         function (tasks) {
           return $q(function(resolve) {
-            remote.Project.getDrawingRelations(projectId).then(function (result) {
+            var arr=[
+              remote.Project.getDrawingRelations(projectId),
+              dbpics.findAll()
+            ];
+            $q.all(arr).then(function(res){
+              var result=res[0],offPics=res[1].rows;
               var pics = [];
               result.data.forEach(function (item) {
                 if ((!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
                   (!areas || areas.find(function (a) {
                     return a.AreaID==item.RegionId;
                   }))&&
-                  pics.indexOf(item.DrawingID) == -1) {
+                  pics.indexOf(item.DrawingID) == -1&&!offPics.find(function(r){
+                    return r._id==item.DrawingID;
+                  })) {
                   pics.push(item.DrawingID);
                 }
               });
-              //console.log(pics);
               pics.forEach(function (drawingID) {
                 tasks.push(function () {
-                  return remote.Project.getDrawing(drawingID);
+                  return remote.Project.getDrawing(drawingID).then(function(){
+                    dbpics.addOrUpdate({
+                      _id:drawingID
+                    })
+                  });
                 })
               });
               resolve(result);
-            })
+            });
+
+            //remote.Project.getDrawingRelations(projectId).then(function (result) {
+            //  var pics = [];
+            //  result.data.forEach(function (item) {
+            //    if ((!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
+            //      (!areas || areas.find(function (a) {
+            //        return a.AreaID==item.RegionId;
+            //      }))&&
+            //      pics.indexOf(item.DrawingID) == -1) {
+            //      pics.push(item.DrawingID);
+            //    }
+            //  });
+            //  //console.log(pics);
+            //  pics.forEach(function (drawingID) {
+            //    tasks.push(function () {
+            //      return remote.Project.getDrawing(drawingID);
+            //    })
+            //  });
+            //  resolve(result);
+            //})
           })
         },
         function () {

@@ -10,7 +10,7 @@
     var vm = this;
     var remote=  scRemote;
     var pack=scPack;
-    var xcpk = db('xcpk'),local=db('local');
+    var xcpk = db('xcpk'),local=db('local'),dbpics=db('pics');
     vm.base;
 
     remote.Procedure.authorityByUserId().then(function(res){
@@ -50,21 +50,48 @@
     function projectTask(projectId) {
       return [
         function (tasks) {
-          return $q(function(resolve) {
-            remote.Project.getDrawingRelations(projectId).then(function (result) {
-              var pics = [];
-              result.data.forEach(function (item) {
-                if (pics.indexOf(item.DrawingID) == -1) {
-                  pics.push(item.DrawingID);
-                }
-              });
-              pics.forEach(function (drawingID) {
-                tasks.push(function () {
-                  return remote.Project.getDrawing(drawingID);
-                })
-              });
-              resolve(result);
-            })
+          return $q(function(resolve,reject) {
+            var arr=[
+              remote.Project.getDrawingRelations(projectId),
+              dbpics.findAll()
+            ];
+            $q.all(arr).then(function(res){
+                var result=res[0],offPics=res[1].rows;
+                var pics = [];
+                result.data.forEach(function (item) {
+                  if (pics.indexOf(item.DrawingID) == -1&&!offPics.find(function(r){
+                      return r._id==item.DrawingID;
+                    })) {
+                    pics.push(item.DrawingID);
+                  }
+                });
+                pics.forEach(function (drawingID) {
+                  tasks.push(function () {
+                    return remote.Project.getDrawing(drawingID).then(function(){
+                      dbpics.addOrUpdate({
+                        _id:drawingID
+                      })
+                    });
+                  })
+                });
+                resolve(result);
+            }).catch(function(){
+              reject();
+            });
+            //remote.Project.getDrawingRelations(projectId).then(function (result) {
+            //  var pics = [];
+            //  result.data.forEach(function (item) {
+            //    if (pics.indexOf(item.DrawingID) == -1) {
+            //      pics.push(item.DrawingID);
+            //    }
+            //  });
+            //  pics.forEach(function (drawingID) {
+            //    tasks.push(function () {
+            //      return remote.Project.getDrawing(drawingID)
+            //    })
+            //  });
+            //  resolve(result);
+            //})
           })
         },
         function () {
@@ -74,41 +101,101 @@
     }
 
     vm.downloadBase=function(item){
-      item.downloading = true;
-      item.progress = 0;
-      var tasks = [];
-      tasks.push(function () {
-        return $q(function (resolve) {
-          item.pack = pack.sc.down(item);
-          $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
-            if(!item.pack)return;
-            var p = item.pack.getProgress();
-            item.progress = parseInt(p.progress);
-            if(item.pack && item.pack.completed) {
-              resolve();
-            }
+      $mdDialog.show({
+        controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+          $scope.item=item;
+          var tasks = [];
+          tasks.push(function () {
+            return $q(function (resolve) {
+              item.pack = pack.sc.down(item);
+              $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
+                if(!item.pack)return;
+                if(item.pack && item.pack.completed) {
+                  resolve();
+                }
+              })
+            });
+          });
+          tasks = tasks.concat(projectTask(item.ProjectID));
+          item.percent = item.current =0; item.total = tasks.length;
+          api.task(tasks,{
+            event:'downloadsc',
+            target:item
+          })(null,function () {
+            vm.base.rows.forEach(function(k){
+              delete k.pack;
+              if (k.ProjectID==item.ProjectID){
+                k.loaded=true;
+              }
+            });
+            local.addOrUpdate(vm.base).then(function () {
+              item.percent = item.current = item.total = null;
+              utils.alert('下载完成');
+              $mdDialog.hide();
+            })
+          }, function (timeout) {
+            item.percent = item.current = item.total = null;
+            var msg=timeout?'请求超时,任务下载失败!':'下载失败,请检查网络';
+            utils.alert(msg);
+            $mdDialog.cancel();
           })
-        });
+        }],
+        template: '<md-dialog aria-label="正在下载"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+        parent: angular.element(document.body),
+        clickOutsideToClose:false,
+        fullscreen: false
       });
-      tasks = tasks.concat(projectTask(item.ProjectID));
-      api.task(tasks)(function (percent, current, total) {
-        item.progress = parseInt(percent * 100);
-      }, function () {
-        vm.base.rows.forEach(function(k){
-            delete k.pack;
-            if (k.ProjectID==item.ProjectID){
-              k.loaded=true;
-            }
-        });
-        local.addOrUpdate(vm.base).then(function () {
-          item.downloading = false;
-          utils.alert('下载完成');
-        })
-      }, function () {
-        item.downloading = false;
-        utils.alert('下载失败,请检查网络');
-      },{timeout:20000})
+      //item.downloading = true;
+      //item.progress = 0;
+      //var tasks = [];
+      //tasks.push(function () {
+      //  return $q(function (resolve) {
+      //    item.pack = pack.sc.down(item);
+      //    $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
+      //      if(!item.pack)return;
+      //      var p = item.pack.getProgress();
+      //      item.progress = parseInt(p.progress);
+      //      if(item.pack && item.pack.completed) {
+      //        resolve();
+      //      }
+      //    })
+      //  });
+      //});
+      //tasks = tasks.concat(projectTask(item.ProjectID));
+      //api.task(tasks)(function (percent, current, total) {
+      //  item.progress = parseInt(percent * 100);
+      //}, function () {
+      //  vm.base.rows.forEach(function(k){
+      //      delete k.pack;
+      //      if (k.ProjectID==item.ProjectID){
+      //        k.loaded=true;
+      //      }
+      //  });
+      //  local.addOrUpdate(vm.base).then(function () {
+      //    item.downloading = false;
+      //    utils.alert('下载完成');
+      //  })
+      //}, function (timeout) {
+      //  item.downloading = false;
+      //  var msg=timeout?'请求超时,任务下载失败!':'下载失败,请检查网络';
+      //  utils.alert(msg);
+      //})
     }
+
+    api.event('downloadsc',function (s,e) {
+      var current =vm.base.rows &&vm.base.rows.find(function (item) {
+          return item.ProjectID==e.target.ProjectID;
+        });
+      if(current) {
+        switch (e.event) {
+          case 'progress':
+            current.percent = parseInt(e.percent * 100) + ' %';
+            current.current = e.current;
+            current.total = e.total;
+            break;
+        }
+      }
+    },$scope);
 
 
     vm.download = function (item) {
