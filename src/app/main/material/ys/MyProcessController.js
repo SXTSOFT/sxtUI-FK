@@ -19,10 +19,8 @@
     vm.sjReport = null;
 
     vm.checkData={};
-    vm.checkData.EnclosureType = [];
+    vm.EnclosureType = [];
     $scope.save = function(addForm) {
-      //vm.checkData.Id = sxt.uuid;
-      //vm.checkData.EnclosureType = vm.fjType;
       vm.checkData.InspectionReport = vm.sjReport;
       vm.checkData.ProjectId = $scope.project.projectId;
       vm.checkData.MaterialId = $scope.project.procedureId;
@@ -34,8 +32,6 @@
       if(vm.checkData.WgCheck == 0 ||(vm.fjType == 16 && vm.sjReport == 0)) {
         $mdDialog.show({
           controller: ['$scope',function ($scope) {
-            $scope.data= vm.checkData;
-
             $scope.hide = function() {
               $mdDialog.hide();
             };
@@ -43,14 +39,18 @@
               $mdDialog.cancel();
             };
             $scope.answer = function() {
-              $scope.data.HandleOption = $scope.clyj;
-              if(vm.checkData.WgCheck == 0 || vm.checkData.InspectionReport == 0)
-                $scope.data.CheckResult = 0
-              api.material.addProcessService.Insert($scope.data).then(function (result) {
+              vm.checkData.CheckResult = 0;  //状态：不合格
+              vm.checkData.HandleOption = $scope.clyj;
+
+              api.material.addProcessService.Insert({
+                Id:sxt.uuid(),
+                CheckData:vm.checkData,
+                CheckDataOptions:vm.EnclosureType
+              }).then(function (result) {
                 if(result){
                   $scope.isSaveing = false;
                   utils.alert('提交完成').then(function () {
-                    $state.go('app.material.ys');
+                    $state.go('app.szgc.ys');
                   });
                 }else{
                   utils.alert('提交失败').then(function () {
@@ -72,12 +72,19 @@
     };
 
     vm._save = function (addForm) {
-      console.log(vm.checkData);
-      api.material.addProcessService.Insert(vm.checkData).then(function (result) {
+      if (vm.checkData.WgCheck == 1 && vm.checkData.InspectionReport == null)
+        vm.checkData.CheckResult = 2; //状态：未知
+      else
+        vm.checkData.CheckResult = 1; //状态：合格
+      api.material.addProcessService.Insert({
+        Id:sxt.uuid(),
+        CheckData:vm.checkData,
+        CheckDataOptions:vm.EnclosureType
+      }).then(function (result) {
         if(result){
           $scope.isSaveing = false;
           utils.alert('提交完成').then(function () {
-            $state.go('app.material.ys');
+            $state.go('app.szgc.ys');
           });
         }else{
           utils.alert('提交失败').then(function () {
@@ -85,7 +92,7 @@
           });
         }
       });
-    }
+    };
 
 
 

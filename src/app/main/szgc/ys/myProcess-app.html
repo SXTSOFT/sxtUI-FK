@@ -80,7 +80,7 @@
     </md-tab-content>
   </md-tab>
   <md-tab label="材料">
-    <md-content>
+    <md-content flex layout-fill layout="column">
       <div> <md-button  flex ui-sref="app.material.ys" class="md-raised md-primary">开始材料验收</md-button></div>
       <md-list class="md-dense" flex>
         <md-list-item class="md-3-line" style="padding: 4px 16px;margin-bottom: 5px;" ng-repeat="item in mlCheckData">
@@ -93,7 +93,7 @@
             <p>{{item.Material}}</p>
             <p>{{item.Number + item.Unit}}</p>
           </div>
-          <md-button class="md-secondary md-primary" style="top: 12%;" ng-hide="item.WgCheck == 0 || item.CheckResult == 0 || (item.WgCheck == 1 && item.IsInspection == 0)">
+          <md-button class="md-secondary md-primary" ui-sref="app.material.ys.addAttachment({id:item.Id})" style="top: 12%;" ng-show="(item.WgCheck == 1 && item.IsInspection == 1 && item.Report == 0)">
             追加送检报告
           </md-button>
           <md-button class="md-secondary md-primary" ui-sref="app.material.ys.detail({id:item.Id})" style="top: 50%;">
