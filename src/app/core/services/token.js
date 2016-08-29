@@ -95,7 +95,7 @@
       }
       else {
         if (rejection && rejection.status != -1 && rejection.status != 401) {
-          if (!lastTipTime || new Date().getTime() - lastTipTime < 10000) {
+          if (!lastTipTime || new Date().getTime() - lastTipTime > 10000) {
             lastTipTime = new Date().getTime();
             $injector.invoke(['utils', function (utils) {
               utils.alert(rejection.data && rejection.data.Message ? rejection.data.Message : '网络错误');

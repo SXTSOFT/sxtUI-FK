@@ -22,6 +22,9 @@
     min-width:71px;
     font-size:0.8em;
     margin:6px 2px;
+    &.md-vanke-theme:not([disabled]):hover{
+      background: transparent;
+    }
   }
   md-icon{
     padding-top: 4px;
