@@ -31,12 +31,11 @@
 
       .state('app.material.ys.addAttachment', {
         title:'添加附件',
-        url: '/addAttachment',
+        url: '/addAttachment/{id}',
         controller: 'AddAttachmentController as vm',
         templateUrl: 'app/main/material/ys/addAttachment-app.html'
       })
       .state('app.material.ys.detail', {
-        noBack:true,
         title:'材料验收详情',
         url: '/detail/{id}',
         controller: 'CheckDataDetailController as vm',

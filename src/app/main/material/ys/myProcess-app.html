@@ -51,7 +51,7 @@
           <md-divider></md-divider>
           <md-subheader class="md-no-sticky">是否送检</md-subheader>
           <md-list-item>
-            <md-radio-group ng-model="vm.checkData.IsInspection">
+            <md-radio-group ng-model="vm.checkData.IsInspection" ng-disabled="vm.checkData.WgCheck == 0">
               <md-radio-button value="1" class="md-primary">需要</md-radio-button>
               <md-radio-button value="0">不需要</md-radio-button>
             </md-radio-group>
