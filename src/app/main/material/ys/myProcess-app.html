@@ -59,6 +59,11 @@
           <md-divider></md-divider>
           <md-subheader class="md-no-sticky">附件</md-subheader>
           <md-list-item>
+            <div  sxt-image-view is-container="true">
+              <p ng-repeat="item in vm.EnclosureType">
+                <sxt-images  ng-model="item.GroupImg"></sxt-images></fieldset>
+              </p>
+            </div>
             <md-button style="width:100%;" ui-sref="app.material.ys.addAttachment">添加附件</md-button>
           </md-list-item>
           <md-divider></md-divider>
