@@ -43,6 +43,7 @@
               user: u.RealName + '(' + u.Id + ')',
               url: url,
               message: error.exception ? error.exception.stack : JSON.stringify(error),
+              agent: $window.navigator.userAgent,
               type: "error"
             })
           });
