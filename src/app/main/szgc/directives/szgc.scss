@@ -544,3 +544,19 @@ fieldset fieldset{
 fieldset fieldset legend{
   font-size: 12px;
 }
+.target2{
+  overflow: auto;
+  td{
+    white-space: nowrap;
+    min-width: 14px;
+    table{
+      width: 100%;
+      height: 100%;
+      td{
+        border-right: solid 1px #000000;
+
+        text-align: center;
+      }
+    }
+  }
+}

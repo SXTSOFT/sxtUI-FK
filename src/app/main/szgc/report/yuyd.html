@@ -1,11 +1,11 @@
 <md-content flex layout="column" ng-show="!vm.searBarHide" class="menu-toggle-list">
   <div flex style="overflow: auto">
-    <sxt-projects-jd ng-model="vm.project.pid" object-scope="vm" levels="3" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" on-queryed="vm.project.onQueryed">
+    <sxt-projects-jd ng-model="vm.project.pid" object-scope="vm" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" on-queryed="vm.project.onQueryed">
     </sxt-projects-jd>
     <div class="md-padding" layout="row">
 
-      <md-button ng-disabled="vm.project.type<8" type="submit" flex ng-click="vm.search()" class="md-raised md-primary"> 隐蔽照片  </md-button>
-      <md-button ng-disabled="vm.project.type<8" type="submit" flex ng-click="vm.total()" class="md-raised md-primary"> 验收记录  </md-button>
+      <md-button ng-disabled="vm.project.type!=64 || !vm.project.play" type="submit" flex ng-click="vm.play()" class="md-raised md-primary"> 隐蔽照片 {{vm.project.playInfo}}  </md-button>
+      <md-button ng-disabled="vm.project.type!=8" type="submit" flex ng-click="vm.search()" class="md-raised md-primary"> 验收记录  </md-button>
     </div></div>
 </md-content>
 <md-content flex ng-show="vm.searBarHide" layout="column" id="ybgc">

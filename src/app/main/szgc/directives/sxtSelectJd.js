@@ -86,7 +86,7 @@
         scope.isMore = true;
         tr = null;
         scope.resetUI = function() {
-          if (tr && $window.navigator.userAgent.indexOf('Android')==-1) return;
+          if (tr || $window.navigator.userAgent.indexOf('Android')==-1) return;
           tr = $timeout(function () {
             $('md-list-item', element).css('display', 'inline');
             $timeout(function () {
@@ -113,8 +113,9 @@
               c = scope.selectors[++i];
 
             }
-            scope.idTree = idTree.join('>');
+
             scope.nameTree = nameTree.join('>');
+            scope.idTree = idTree.join('>');
           }
           scope.onChange && scope.onChange(scope);
           if(!$rootScope.$$phase){

@@ -764,9 +764,12 @@
         if (cfg._id && !(options.exclude && options.exclude.indexOf(cfg._id) != -1)) {
           tasks.push(function () {
             return provider.$q(function (resolve) {
-              get_globalDb().destroy(cfg._id);
-              cfg.db = null;
-              if(!provider.$window.cordova) {
+              return get_globalDb().destroy(cfg._id).then(function (result) {
+                cfg.db = null;
+                resolve(result);
+                return result;
+              },resolve);
+              /*if(!provider.$window.cordova) {
                 resolve();
               }
               else {
@@ -775,7 +778,7 @@
                 }).catch(function () {
                   resolve();
                 })
-              }
+              }*/
             });
           });
         }
@@ -841,50 +844,100 @@
     function get_globalDb() {
       if(!globalDb.db && provider.$window.cordova){
         globalDb.db = (function () {
-          var cache = {};
+          var cache = {}, locks = {};
           return {
-            get:get,
-            put:put,
-            allDocs:function(){
-              return provider.$q(function(resolve){
+            get: get,
+            put: put,
+            allDocs: function () {
+              return provider.$q(function (resolve) {
                 resolve();
               })
             },
-            destroy:function (id) {
+            destroy: function (id) {
               delete cache[id];
+              return provider.$q(function (resolve, reject) {
+                lock(id, function (cb) {
+                  if(!provider.$window.cordova){
+                    resolve();
+                  }
+                  else {
+                    provider.$cordovaFile.removeFile(provider.$window.cordova.file.dataDirectory, id + '.bin').then(function () {
+                      resolve();
+                      cb();
+                    }).catch(function () {
+                      resolve();
+                      cb();
+                    })
+                  }
+                })
+              });
             }
           }
-          function get(id,cfg) {
-            return provider.$q(function (resolve,reject) {
-              if(cache[id]){
-                resolve(cache[id]);
+          function lock(id, doFn) {
+            var cb = function () {
+              var buff = locks[id];
+              buff.shift();
+              run();
+            }, run = function () {
+              var buff = locks[id];
+              if (buff && buff.length) {
+                if (!buff.find(function (fn) {
+                    return fn.runing === true;
+                  })) {
+                  var fn = locks[id][0];
+                  fn.runing = true;
+                  fn(cb);
+                }
               }
-              else{
-                provider.$cordovaFile.readAsText(provider.$window.cordova.file.dataDirectory, id+'.bin').then(function (result) {
+            };
+            if (!locks[id]) {
+              locks[id] = [];
+            }
+            locks[id].push(doFn);
+            run();
+          }
+
+          function get(id, cfg) {
+            return provider.$q(function (resolve, reject) {
+              lock(id, function (cb) {
+                provider.$cordovaFile.readAsText(provider.$window.cordova.file.dataDirectory, id + '.bin').then(function (result) {
                   var r = provider.$window.JSON.parse(result);
-                  if(!globalDb.noCache || (cfg && cfg.fileField))
-                    cache[id] = r;
+                  //if(!globalDb.noCache || (cfg && cfg.fileField))
+                  //  cache[id] = r;
                   resolve(r);
+                  cb();
                 }).catch(function (result) {
                   reject(null);
-                })
-              }
+                  cb();
+                });
+              })
+              /*              if(cache[id]){
+               resolve(cache[id]);
+               }
+               else{
+
+               }*/
             });
           }
-          function put(doc,cfg) {
-            if((!cfg || !cfg.upload) && !globalDb.noCache && !cfg.fileField)
-              cache[doc._id] = doc;
 
-            if(cfg && cfg.upload && cache[doc._id])
-              delete cache[doc._id];
+          function put(doc, cfg) {
+            //if((!cfg || !cfg.upload) && !globalDb.noCache && !cfg.fileField)
+            //  cache[doc._id] = doc;
+
+            //if(cfg && cfg.upload && cache[doc._id])
+            //  delete cache[doc._id];
 
 
             return provider.$q(function (resolve, reject) {
-              provider.$cordovaFile.writeFile(provider.$window.cordova.file.dataDirectory , doc._id + '.bin', provider.$window.JSON.stringify(doc), true)
-                .then(function (result) {
-                  resolve(result)
-                }).catch(function (result) {
-                reject(result);
+              lock(doc._id, function (cb) {
+                provider.$cordovaFile.writeFile(provider.$window.cordova.file.dataDirectory, doc._id + '.bin', provider.$window.JSON.stringify(doc), true)
+                  .then(function (result) {
+                    resolve(result)
+                    cb();
+                  }).catch(function (result) {
+                  reject(result);
+                  cb();
+                })
               })
             });
           }
@@ -971,7 +1024,10 @@
             }
             else {
               if (cfg.upload || cfg.dataType == 1) {
-                replace_db(result, doc.rows, idFn);
+                if(angular.isArray(result))
+                  replace_db(result, doc.rows, idFn);
+                else
+                  replace_db_single(result, doc.rows, idFn);
               }
               /*          else if (cfg.dataType == 1) {
                replace_db(result, doc.rows, idFn);

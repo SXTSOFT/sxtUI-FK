@@ -78,8 +78,8 @@
           var me = this,u = getAuth().current();
           if (u.Partner_types.indexOf('supervision') != -1) return 'jl';
           if (u.Partner_types.indexOf('construction') != -1) return 'zb';
-
-          if (u.Id == '56779bf59e10dd61507977c8') return '3rd';
+          if (u.Partner_types.indexOf('estimate') != -1) return '3rd';
+          //if (u.Id == '56779bf59e10dd61507977c8') return '3rd';
 
           return u.Partner && u.Partner != '' ? 'jl' : 'eg';
         }),

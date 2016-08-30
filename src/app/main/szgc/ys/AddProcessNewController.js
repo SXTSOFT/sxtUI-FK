@@ -193,7 +193,7 @@
       if (isB && $scope.roleId == 'jl' && !batch.SupervisorCompanyId) { //如果监理在总包上录入，且总包没有选择监理
         batch.SupervisorCompanyId = user.Partner;
       }
-      var gp = batch && batch.GrpId? {
+      var gp = $scope.data.batchgp = batch && batch.GrpId? {
         id: batch.GrpId,
         name: batch.GrpName
       }:null;//因为控件的BUG,会把名称清掉,这里保留一份
@@ -311,7 +311,6 @@
         if (isB && gp) {
           $scope.data.curHistory.GrpId = batch.GrpId;
           $scope.data.groups = [gp];
-
         }
         var sm1 = [];
         results[2].data.Rows.forEach(function (n) {
@@ -603,7 +602,9 @@
             $scope.data.groups = [];
           }
         }
-
+        if($scope.data.batchgp){
+          $scope.data.groups.push($scope.data.batchgp);
+        }
 
       });
       if ($scope.flag) {
@@ -652,6 +653,9 @@
             $scope.data.groups = g;
           } else {
             $scope.data.groups = []
+          }
+          if($scope.data.batchgp){
+            $scope.data.groups.push($scope.data.batchgp);
           }
         })
       }

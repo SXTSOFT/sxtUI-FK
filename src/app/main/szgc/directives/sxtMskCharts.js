@@ -43,29 +43,28 @@
     return {
       scope: {
         value: '=sxtMskCharts',
-        build:'='
+        build:'=',
+        procedures:'='
       },
       link: function (scope, element) {
-        $timeout(function () {
-
-          scope.$watch('value', function () {
-            console.log('v',scope.value)
+        var query = null;
+        scope.build.query = function () {
+          //scope.$watch('value', function () {
             if (!scope.value) return;
             var bid = scope.value.split('>'),
               legend = [
                 {value: 0, label: '未验收', color: 'rgba(225,225,225,1)'},
                 {value: 1, label: '总包已验', color: 'rgba(44,157,251,1)'},
                 {value: 2, label: '监理已验', color: 'rgba(0,195,213,1)'},
-                {value: 3, label: '监理/总包', color: 'rgba(0,120,210,1)'},
-                {value: 4, label: '监理不合格', color: 'rgba(249,98,78,1)'}
+                {value: 3, label: '监理/总包', color: 'rgba(0,150,136,1)'}/*,
+                {value: 4, label: '监理不合格', color: 'rgba(249,98,78,1)'}*/
               ],
               gx = [];
-            $q.all([
+          (query||(query=$q.all([
               api.szgc.vanke.rooms({building_id: bid[bid.length - 1]}),
-              api.szgc.ProjectExService.building3(scope.value),
-              api.szgc.BatchSetService.getAll({status: 4, batchType: 255})
-            ]).then(function (rs) {
-              var r = rs[0], r2 = rs[1],r3 = rs[2];
+              api.szgc.ProjectExService.building3(scope.value)]))
+          ).then(function (rs) {
+              var r = rs[0], r2 = rs[1],r3 ={data:{Rows:scope.procedures}} ;
               r.data.data.sort(function (i1, i2) {
                 var n1 = getNumName(i1.floor),
                   n2 = getNumName(i2.floor),
@@ -115,7 +114,20 @@
               });
               var x = [], y = [], data = [],points = [],
                 _x = 1, _y = 0,_p;
-              r2.data.Rows.forEach(function (row) {
+              r3.data.Rows.forEach(function (g) {
+                if(!g.checked) return;
+                var fd = {
+                  id:g.ProcedureId,
+                  value:gx.length+1,
+                  label:(g.Remark||g.ProcedureName).substring(0,4)
+                };
+                gx.push(fd);
+                /*r2.data.Rows.forEach(function (row) {
+                  if(row.RegionId.indexOf('-')!=-1)return;
+
+                })*/
+              });
+              /*r2.data.Rows.forEach(function (row) {
                 if(row.RegionId.indexOf('-')!=-1)return;
                 var fd = gx.find(function (g) {
                   return g.id==row.ProcedureId;
@@ -135,10 +147,11 @@
                 else{
                   fd.date = getLast(fd.date,getLast(row.JLDate,row.ZbDate));
                 }
-              });
-              gx.sort(function (g1,g2) {
+              });*/
+
+              /*gx.sort(function (g1,g2) {
                 return g2.date.localeCompare(g1.date);
-              });
+              });*/
 
 
               floors.forEach(function (f) {
@@ -153,16 +166,12 @@
                         return row.ProcedureId == gx.id && row.RegionId == room.room_id;
                       });
                       if (_z) {
-                        _p = (_z.ECCheckResult == 1 || _z.ECCheckResult == 3) ? 4 :
-                          _z.ZbDate && _z.JLDate ? 3 :
+                        _p = _z.ZbDate && _z.JLDate ? 3 :
                             _z.JLDate ? 2 :
                               _z.ZbDate ? 1 : 0;
                         data.push([_x, _y, _p, _z]);
-                        if(_p===4){
+                        if(_z.ECCheckResult == 1 || _z.ECCheckResult == 3){
                           points.push([_x, _y, _p, _z])
-                        }
-                        else{
-                          //data.push([_x, _y, _p, _z]);
                         }
                       }
                       else
@@ -174,11 +183,13 @@
                     if (_y == 0) x.push(gx.label);
                     _x++;
                   }
+                  if (_y == 0) x.push(gx.label);
                   data.push([_x, _y, '-']);
                   _x++;
                 });
                 _y++;
               });
+            //console.log('point',points)
               var option = {
                 tooltip: {
                   formatter: function (arg, ticket, callback) {
@@ -215,13 +226,13 @@
                     show: false
                   }
                 },
-                dataZoom: [
+/*                dataZoom: [
                   {
                     type: 'slider',
                     show: true,
                     xAxisIndex: [0],
                     startValue: 0,
-                    endValue: maxRooms+1
+                    endValue: 100//, maxRooms+1
                   },
                   {
                     type: 'slider',
@@ -235,7 +246,7 @@
                     type: 'inside',
                     xAxisIndex: [0],
                     startValue: 0,
-                    endValue: maxRooms+1
+                    endValue: 100//maxRooms+1
                   },
                   {
                     type: 'inside',
@@ -243,7 +254,7 @@
                     start: 0,
                     end: 100
                   }
-                ],
+                ],*/
                 visualMap: [{
                   /*                    bottom: 0,
                    right: 0,*/
@@ -257,7 +268,8 @@
                   itemWidth: 5,
                   orient: 'horizontal'
                 }],
-                series: [{
+                series: [
+                  {
                   type: 'heatmap',
                   data: data,
                   label: {
@@ -278,11 +290,26 @@
                       shadowColor: 'rgba(0, 0, 0, 1)'
                     }
                   }
-                }]
+                },
+                  {
+                    name:'不合格',
+                    type:'scatter',
+                    data:points,
+                    symbolSize: function (data) {
+                      return 7;
+                    },
+                    itemStyle:{
+                      normal:{
+                        color:'rgb(255,0,0)'
+                      }
+                    }
+                  }
+                ]
               };
               var myChart = $window.echarts.init(element[0]);
               myChart.setOption(option);
-              scope.build.loaded = true;
+              scope.build.loading = false;
+              /*
               scope.build.gx = gx;
               scope.build.selected = gx[0];
               scope.build.goTo = function (g) {
@@ -301,10 +328,11 @@
                   scope.build.goTo(scope.build.selected);
                 }
               })
+               */
             });
 
-          });
-        }, 10);
+          //});
+        };
       }
     }
   }
