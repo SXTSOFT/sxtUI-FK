@@ -232,13 +232,13 @@
     };
     return o;
     function pack(config) {
-      if(!this.packages[config._id]) {
+      //if(!this.packages[config._id]) {
         this.packages[config._id] = new Pack(config);
-      }
-      else{
-        //this.packages[config._id].isDown=false;
-        this.packages[config._id].reDown();
-      }
+      //}
+      //else{
+      //  //this.packages[config._id].isDown=false;
+      //  this.packages[config._id].reDown();
+      //}
       return  this.packages[config._id];
     }
 

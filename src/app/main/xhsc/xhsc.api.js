@@ -572,6 +572,18 @@
           return result;
         });
       }),
+      getMeasureNew:$http.db({
+        _id:'getAllMeasureReportDataNew',
+        idField:function(item){
+          return item.RegionID + item.AcceptanceItemID;
+        },
+        filter:function(item,param){
+          return item.CheckRegionID == param.RegionID && item.AcceptanceItemID == param.AcceptanceItemID;
+        },
+        dataType:1
+      }).bind(function(param){
+        return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResultNew',param));
+      }),
       getAllMeasureReportData:$http.db({
         _id:'getAllMeasureReportData',
         idField:function(item){

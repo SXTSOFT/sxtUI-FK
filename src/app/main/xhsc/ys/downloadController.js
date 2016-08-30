@@ -9,7 +9,7 @@
     .controller('downloadController',downloadController);
 
   /** @ngInject*/
-  function downloadController($mdDialog,db,remote,$rootScope,$scope,pack,utils,api){
+  function downloadController($mdDialog,db,remote,$rootScope,$scope,pack,utils,api,$q){
     var vm = this;
     var xcpk = db('xcpk'),dbpics=db('pics');
     xcpk.get('xcpk').then(function (result) {
@@ -61,9 +61,9 @@
 
 
     vm.download = function (item) {
+      var tasks = [];
       item.downloading = true;
       item.progress = 0;
-      var tasks = [];
       tasks.push(function () {
         return $q(function (resolve) {
           item.pack = pack.sc.down(item);
@@ -79,44 +79,6 @@
       api.task(tasks)(function(percent,current,total){
         item.progress= parseInt(percent * 100);
       },function(){
-        var ix = vm.onlines.indexOf(item);
-        if (ix != -1)
-          vm.onlines.splice(ix, 1);
-        ix = vm.offlines.indexOf(item);
-        if(ix!=-1){
-          vm.offlines.splice(ix, 1);
-        }
-        var it1 = vm.data.rows.find(function (it) {
-          return it.AssessmentID==item.AssessmentID;
-        }),ix=it1?vm.data.rows.indexOf(it1):-1;
-        if(ix!=-1){
-          vm.data.rows.splice(ix, 1);
-        }
-        delete item.pack;
-        remote.Assessment.queryById(item.AssessmentID).then(function (result) {
-          var fd = vm.data.rows.find(function (a) {
-            return a.AssessmentID == result.data.AssessmentID;
-          }),ix=fd?vm.data.rows.indexOf(fd):-1;
-          if(ix==-1) {
-            vm.data.rows.push(result.data);
-            vm.offlines.push(item);
-          }
-          else{
-            vm.data.rows[ix] = result.data;
-          }
-          xcpk.addOrUpdate(vm.data).then(function () {
-            item.downloading = false;
-            utils.alert('下载完成');
-          })
-        })
-      },function(timeout){
-
-      });
-
-
-
-      $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
-        //console.log(arguments);
         if(!item.pack)return;
         var p = item.pack.getProgress();
         item.progress = parseInt(p.progress);
@@ -152,7 +114,53 @@
             })
           })
         }
-      })
+      },function(timeout){
+        item.percent = item.current = item.total = null;
+        var msg=timeout?'请求超时,任务下载失败!':'下载失败,请检查网络';
+        utils.alert(msg);
+        $mdDialog.cancel();
+      });
+
+
+
+      //$rootScope.$on('pack'+item.AssessmentID,function (e,d) {
+      //  //console.log(arguments);
+      //  if(!item.pack)return;
+      //  var p = item.pack.getProgress();
+      //  item.progress = parseInt(p.progress);
+      //  if(item.pack && item.pack.completed) {
+      //    var ix = vm.onlines.indexOf(item);
+      //    if (ix != -1)
+      //      vm.onlines.splice(ix, 1);
+      //    ix = vm.offlines.indexOf(item);
+      //    if(ix!=-1){
+      //      vm.offlines.splice(ix, 1);
+      //    }
+      //    var it1 = vm.data.rows.find(function (it) {
+      //      return it.AssessmentID==item.AssessmentID;
+      //    }),ix=it1?vm.data.rows.indexOf(it1):-1;
+      //    if(ix!=-1){
+      //      vm.data.rows.splice(ix, 1);
+      //    }
+      //    delete item.pack;
+      //    remote.Assessment.queryById(item.AssessmentID).then(function (result) {
+      //      var fd = vm.data.rows.find(function (a) {
+      //        return a.AssessmentID == result.data.AssessmentID;
+      //      }),ix=fd?vm.data.rows.indexOf(fd):-1;
+      //      if(ix==-1) {
+      //        vm.data.rows.push(result.data);
+      //        vm.offlines.push(item);
+      //      }
+      //      else{
+      //        vm.data.rows[ix] = result.data;
+      //      }
+      //      xcpk.addOrUpdate(vm.data).then(function () {
+      //        item.downloading = false;
+      //        utils.alert('下载完成');
+      //      })
+      //    })
+      //  }
+      //})
     }
     vm.upload =function (item) {
       item.uploading = true;
@@ -189,14 +197,23 @@
     }
     vm.delete = function(item,ev){
       utils.confirm('确认删除?',ev,'','').then(function(){
-          pack.sc.remove(item.AssessmentID,function () {
-            var idx = vm.data.rows.indexOf(item);
-            vm.data.rows.splice(idx, 1);
-            idx = vm.offlines.indexOf(item);
-            vm.offlines.splice(idx, 1);
-            xcpk.addOrUpdate(vm.data);
-            queryOnline();
-          })
+        $mdDialog.show({
+          controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+            pack.sc.remove(item.AssessmentID,function () {
+              $mdDialog.hide();
+              var idx = vm.data.rows.indexOf(item);
+              vm.data.rows.splice(idx, 1);
+              idx = vm.offlines.indexOf(item);
+              vm.offlines.splice(idx, 1);
+              xcpk.addOrUpdate(vm.data);
+              queryOnline();
+            })
+          }],
+          template: '<md-dialog aria-label="正在删除"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在删除,请稍后...</p></md-dialog-content></md-dialog>',
+          parent: angular.element(document.body),
+          clickOutsideToClose:false,
+          fullscreen: false
+        });
       })
     }
     function queryOnline() {
