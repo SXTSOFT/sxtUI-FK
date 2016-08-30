@@ -52,8 +52,8 @@
     });
     vm.go=function(item){
       function callBack(r){
-        if (r&& r.data&& r.data.Children){
-          var areas=r.data.Children;
+        if (r&& r.data){
+          var areas=r.data;
           var  routeData={
             projectId:item.ProjectID,
             assessmentID:item.AssessmentID,
@@ -67,7 +67,7 @@
           }
         }
       }
-      remote.Project.GetRegionTreeInfo(item.ProjectID).then(callBack);
+      remote.Project.GetAreaChildenbyID(item.ProjectID).then(callBack);
     }
   }
 })();

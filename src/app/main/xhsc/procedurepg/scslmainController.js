@@ -10,7 +10,7 @@
     var vm = this;
     var remote=  scRemote;
     var pack=scPack;
-    var xcpk = db('xcpk'),local=db('local'),dbpics=db('pics');
+    var xcpk = db('scxcpk'),local=db('local'),dbpics=db('pics');
     vm.base;
 
     remote.Procedure.authorityByUserId().then(function(res){

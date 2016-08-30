@@ -27,13 +27,14 @@
                 url:'/Api/ProjectInfoApi/GetRegionTreeInfo?AreaID='+item.AreaID,
                 type:'data',
                 item:angular.copy(item)
-              },
-              {
-                _id:'GetDrawingByAreaID',
-                name:'获取区域图纸',
-                url:'/Api/ProjectInfoApi/GetDrawingByAreaID?AreaID='+item.AreaID,
-                type:'data'
               }
+              //,
+              //{
+              //  _id:'GetDrawingByAreaID',
+              //  name:'获取区域图纸',
+              //  url:'/Api/ProjectInfoApi/GetDrawingByAreaID?AreaID='+item.AreaID,
+              //  type:'data'
+              //}
             ]
           });
         },

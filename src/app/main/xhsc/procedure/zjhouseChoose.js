@@ -157,19 +157,7 @@
         var find = res[2].data.forEach(function(p){
           return p.ProjectID == projectId;
         })
-        //if(find){
-        //  var allRegins = find;
-        //  var idx = allRegins.RegionIDs.indexOf(',');
-        //  if(idx == -1){
-        //
-        //  }else{
-        //    var arr=[];
-        //    arr=allRegins.RegionIDs.split(',');
-        //    for(var i=0;i<arr.length;i++){
-        //
-        //    }
-        //  }
-        //}
+
         result.data[0].RegionRelations.forEach(function(d){
           filterOrSetting(status,d);
           d.projectTree =  d.RegionName;
