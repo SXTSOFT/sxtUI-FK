@@ -3,58 +3,77 @@
     <div flex style="overflow: auto">
       <sxt-projects-jd ng-model="project.pid" object-scope="project" levels="2" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
         <md-list>
-          <md-subheader class="md-no-sticky">材料</md-subheader>
+          <!--<md-subheader class="md-no-sticky">材料</md-subheader>-->
           <md-list-item>
-            <sxt-material style="width:100%;margin:0 !important;" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-material>
+            <div class="md-list-item-text" flex layout="column">
+              <h3>供应商</h3>
+            </div>
+            <sxt-material style="width:75%;margin: 18px 0 0 0;" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-material>
           </md-list-item>
           <md-divider></md-divider>
-          <md-subheader class="md-no-sticky">供应商</md-subheader>
           <md-list-item>
-            <md-select placeholder="" ng-model="vm.checkData.SupplierId" style="width:100%;margin:0 !important;">
+            <div class="md-list-item-text" flex layout="column">
+              <h3>供应商</h3>
+            </div>
+            <md-select placeholder="" ng-model="vm.checkData.SupplierId" style="width: 75%;">
               <md-option ng-value="s.Id" ng-repeat="s in supplier">{{s.Name}}</md-option>
             </md-select>
           </md-list-item>
           <md-divider></md-divider>
-          <md-subheader class="md-no-sticky">厂家/品牌</md-subheader>
           <md-list-item>
-            <md-input-container class="md-block" flex style="margin:0 !important;">
+            <div class="md-list-item-text" flex layout="column">
+              <h3>厂家/品牌</h3>
+            </div>
+            <md-input-container class="md-block" flex-gt-sm style="width: 75%;margin: 18px 0 0 0;">
               <input style="width: 100%;" ng-model="vm.checkData.Manufactor" >
             </md-input-container>
           </md-list-item>
           <md-divider></md-divider>
-          <md-subheader class="md-no-sticky">数量</md-subheader>
           <md-list-item>
-            <md-input-container class="md-block" flex style="margin:0 !important;">
+            <div class="md-list-item-text" flex layout="column">
+              <h3>数量</h3>
+            </div>
+            <md-input-container class="md-block" flex-gt-sm style="width: 75%;margin: 18px 0 0 0;">
               <input style="width: 100%;" ng-model="vm.checkData.Number">
             </md-input-container>
           </md-list-item>
           <md-divider></md-divider>
-          <md-subheader class="md-no-sticky">合同编号</md-subheader>
           <md-list-item>
-            <md-select placeholder="" ng-model="vm.checkData.Manufactor" style="width:100%;margin:0 !important;">
+            <div class="md-list-item-text" flex layout="column">
+              <h3>合同编号</h3>
+            </div>
+            <md-select placeholder="" ng-model="vm.checkData.Manufactor" style="width:75%;">
 
             </md-select>
           </md-list-item>
           <md-divider></md-divider>
-          <md-subheader class="md-no-sticky">验收时间</md-subheader>
           <md-list-item>
-            <md-datepicker ng-model="vm.checkData.CheckTime"></md-datepicker>
+            <div class="md-list-item-text" flex layout="column">
+              <h3>验收时间</h3>
+            </div>
+            <md-datepicker flex-gt-sm ng-model="vm.checkData.CheckTime" style="margin: 18px 0 18px 0; width: 75%;"></md-datepicker>
           </md-list-item>
           <md-divider></md-divider>
-          <md-subheader class="md-no-sticky">外观检查</md-subheader>
           <md-list-item>
-            <md-radio-group ng-model="vm.checkData.WgCheck">
-              <md-radio-button value="1" class="md-primary">合格</md-radio-button>
-              <md-radio-button value="0">不合格</md-radio-button>
-            </md-radio-group>
+            <div class="md-list-item-text" flex layout="column">
+              <h3>外观检查</h3>
+            </div>
+            <!--<md-radio-group ng-model="vm.checkData.WgCheck">-->
+              <!--<md-radio-button value="1" class="md-primary">合格</md-radio-button>-->
+              <!--<md-radio-button value="0">不合格</md-radio-button>-->
+            <!--</md-radio-group>-->
+            <md-switch style="margin: 23px 0 23px 0;" flex-gt-sm ng-model="vm.checkData.WgCheck" ng-true-value="1" ng-false-value="0"></md-switch>
           </md-list-item>
           <md-divider></md-divider>
-          <md-subheader class="md-no-sticky">是否送检</md-subheader>
           <md-list-item>
-            <md-radio-group ng-model="vm.checkData.IsInspection" ng-disabled="vm.checkData.WgCheck == 0">
-              <md-radio-button value="1" class="md-primary">需要</md-radio-button>
-              <md-radio-button value="0">不需要</md-radio-button>
-            </md-radio-group>
+            <div class="md-list-item-text" flex layout="column">
+              <h3>是否送检</h3>
+            </div>
+            <!--<md-radio-group ng-model="vm.checkData.IsInspection" ng-disabled="vm.checkData.WgCheck == 0">-->
+              <!--<md-radio-button value="1" class="md-primary">需要</md-radio-button>-->
+              <!--<md-radio-button value="0">不需要</md-radio-button>-->
+            <!--</md-radio-group>-->
+            <md-switch flex-gt-sm style="margin: 23px 0 23px 0;" ng-model="vm.checkData.IsInspection" ng-true-value="1" ng-false-value="0" ng-disabled="vm.checkData.WgCheck == 0"></md-switch>
           </md-list-item>
           <md-divider></md-divider>
           <md-subheader style="background-color: lightgrey;" class="md-no-sticky">附件</md-subheader>

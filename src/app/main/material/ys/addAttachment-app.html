@@ -1,62 +1,71 @@
 <md-content flex layout="column">
   <md-list class="md-dense" flex style="padding: 0;">
     <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">附件类型</div>
-    <md-divider></md-divider>
     <md-radio-group ng-model="fjType" >
-      <div ng-repeat="item in vm.Type">
-        <div class="row">
-          <div flex layout='row' style="padding: 0 0 0 8px;" layout-align="start center" >
-            <div style="width:100%;">
-              {{item.name}}
-            </div>
-            <md-radio-button flex ng-value="item.value" class="md-primary" ng-disabled="item.value != 16 && vm.checkDataId != ''"></md-radio-button>
+      <div class="row" ng-repeat="item in vm.Type" >
+        <div flex layout='row' style="padding: 0 0 0 8px;" layout-align="start center">
+          <div flex>
+            <h3>{{item.name}}</h3>
           </div>
+          <md-radio-button ng-value="item.value" class="md-primary" ng-disabled="item.value != 16 && vm.checkDataId != ''"></md-radio-button>
         </div>
         <md-divider></md-divider>
       </div>
+
     </md-radio-group>
+    <md-divider></md-divider>
+
     <div class="row" ng-show="fjType==16">
-      <div flex layout='row' style="padding: 0 0 0 8px;" layout-padding layout-align="start center" >
-        <div style="width:50%;">
-          送检报告
+      <div layout='row' style="padding: 0;" layout-padding layout-align="start center" >
+        <div flex>
+          <h3>送检报告</h3>
         </div>
-        <md-radio-group ng-model="sjReport" >
+        <md-radio-group ng-model="sjReport" flex="40">
           <md-radio-button flex ng-value="1" style="display: inline-block;" class="md-primary" >合格</md-radio-button>
           <md-radio-button flex ng-value="0" style="display: inline-block;" class="md-primary" >不合格</md-radio-button>
         </md-radio-group>
       </div>
     </div>
+    <!--<md-list-item ng-show="fjType==16" >-->
+      <!--<div class="md-list-item-text" flex layout="column">-->
+        <!--<h3>送检报告</h3>-->
+      <!--</div>-->
 
-    <fieldset ng-show="fjType == 2">
-      <legend>出厂合格证</legend>
-      <span class="fs-display-1 display-block">添加照片</span>
-      <div> <small></small></div>
-      <sxt-images ng-model="vm.groupId_2"  files="data.imgs1" project="data.projectInfo" edit="true"></sxt-images>
-    </fieldset>
-    <fieldset ng-show="fjType == 4">
-      <legend>材料验收单</legend>
-      <span class="fs-display-1 display-block">添加照片</span>
-      <div> <small></small></div>
-      <sxt-images ng-model="vm.groupId_4"  files="data.imgs2" project="data.projectInfo" edit="true"></sxt-images>
-    </fieldset>
-    <fieldset ng-show="fjType == 8">
-      <legend>实拍照片</legend>
-      <span class="fs-display-1 display-block">添加照片</span>
-      <div> <small></small></div>
-      <sxt-images ng-model="vm.groupId_8"  files="data.imgs3" project="data.projectInfo" edit="true"></sxt-images>
-    </fieldset>
-    <fieldset ng-show="fjType == 16">
-      <legend>送检报告</legend>
-      <span class="fs-display-1 display-block">添加照片</span>
-      <div> <small></small></div>
-      <sxt-images ng-model="vm.groupId_16"  files="data.imgs4" project="data.projectInfo" edit="true"></sxt-images>
-    </fieldset>
-    <fieldset ng-show="fjType == 32">
-      <legend>其他</legend>
-      <span class="fs-display-1 display-block">添加照片</span>
-      <div> <small></small></div>
-      <sxt-images ng-model="vm.groupId_32"  files="data.imgs5" project="data.projectInfo" edit="true"></sxt-images>
-    </fieldset>
+      <!--<md-switch flex-gt-sm style="margin: 23px 0 23px 0;" ng-model="sjReport" ng-true-value="1" ng-false-value="0"></md-switch>-->
+    <!--</md-list-item>-->
+    <md-divider></md-divider>
+    <div class="row">
+      <fieldset ng-show="fjType == 2">
+        <legend>出厂合格证</legend>
+        <span class="fs-display-1 display-block">添加照片</span>
+        <div> <small></small></div>
+        <sxt-images ng-model="vm.groupId_2"  files="data.imgs1" project="data.projectInfo" edit="true"></sxt-images>
+      </fieldset>
+      <fieldset ng-show="fjType == 4">
+        <legend>材料验收单</legend>
+        <span class="fs-display-1 display-block">添加照片</span>
+        <div> <small></small></div>
+        <sxt-images ng-model="vm.groupId_4"  files="data.imgs2" project="data.projectInfo" edit="true"></sxt-images>
+      </fieldset>
+      <fieldset ng-show="fjType == 8">
+        <legend>实拍照片</legend>
+        <span class="fs-display-1 display-block">添加照片</span>
+        <div> <small></small></div>
+        <sxt-images ng-model="vm.groupId_8"  files="data.imgs3" project="data.projectInfo" edit="true"></sxt-images>
+      </fieldset>
+      <fieldset ng-show="fjType == 16">
+        <legend>送检报告</legend>
+        <span class="fs-display-1 display-block">添加照片</span>
+        <div> <small></small></div>
+        <sxt-images ng-model="vm.groupId_16"  files="data.imgs4" project="data.projectInfo" edit="true"></sxt-images>
+      </fieldset>
+      <fieldset ng-show="fjType == 32">
+        <legend>其他</legend>
+        <span class="fs-display-1 display-block">添加照片</span>
+        <div> <small></small></div>
+        <sxt-images ng-model="vm.groupId_32"  files="data.imgs5" project="data.projectInfo" edit="true"></sxt-images>
+      </fieldset>
+    </div>
     <div class="md-padding" layout="row">
       <md-button flex class="md-raised md-primary" ng-click="vm.ok()"> 完成 </md-button>
     </div>

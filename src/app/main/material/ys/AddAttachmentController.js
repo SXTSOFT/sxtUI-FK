@@ -39,7 +39,6 @@
                 item.groupId = e.GroupImg;
             });
           });
-
           $scope.fjType = vm.EnclosureType[vm.EnclosureType.length-1].OptionType; //显示最后一次选中
         }
 
@@ -80,8 +79,9 @@
 
       vm.ok = function(){
         if(vm.checkDataId != ''){
+
           api.material.addProcessService.Insert({
-            CheckData:{Id:vm.checkDataId,InspectionReport:$scope.sjReport},
+            CheckData:{Id:vm.checkDataId,InspectionReport:$scope.sjReport,CheckResult:$scope.sjReport},
             CheckDataOptions:[{OptionType:16,GroupImg:vm.groupId_16}]
           }).then(function (result) {
             if(result){
