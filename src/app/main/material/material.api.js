@@ -194,6 +194,13 @@
           dataType:5,
         }).bind(function (id) {
           return $http.get($http.url('/api/MLMaterialCheckData/GetInfoById',{id:id}));
+        }),
+        GetMLFilesById:$http.db({
+          _id:'Ms_MaterialCheckDataFiles',
+          idField:'Id',
+          dataType:5,
+        }).bind(function (id) {
+          return $http.get($http.url('/api/MLMaterialCheckData/GetMLFilesById',{id:id}));
         })
       },
 

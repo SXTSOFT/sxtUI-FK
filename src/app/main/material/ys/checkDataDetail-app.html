@@ -1,64 +1,74 @@
 <md-content flex layout="column">
   <md-list>
     <md-list-item>
-      <label>项目</label>
-      <label style="position:absolute; right: 10px;">{{dataInfo.RegionNameTree}}</label>
+      <label flex>项目</label>
+      <label>{{dataInfo.RegionNameTree}}</label>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item>
-      <label>材料</label>
-      <label style="position:absolute; right: 10px;">{{dataInfo.Material}}</label>
+      <label flex>材料</label>
+      <label>{{dataInfo.Material}}</label>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item>
-      <label>供货方式</label>
-      <label style="position:absolute; right: 10px;">{{dataInfo.Suppli}}</label>
+      <label flex>供货方式</label>
+      <label>{{dataInfo.Suppli}}</label>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item>
-      <label>供货方</label>
-      <label style="position:absolute; right: 10px;">{{dataInfo.SupplierName}}</label>
+      <label flex>供货方</label>
+      <label>{{dataInfo.SupplierName}}</label>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item>
-      <label>厂家/品牌</label>
-      <label style="position:absolute; right: 10px;">{{dataInfo.Manufactor}}</label>
+      <label flex>厂家/品牌</label>
+      <label flex>{{dataInfo.Manufactor}}</label>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item>
-      <label>数量</label>
-      <label style="position:absolute; right: 10px;">{{dataInfo.Number + dataInfo.Unit}}</label>
+      <label flex>数量</label>
+      <label>{{dataInfo.Number + dataInfo.Unit}}</label>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item>
-      <label>合同编号</label>
-      <label style="position:absolute; right: 10px;">{{dataInfo.ContractNumber}}</label>
+      <label flex>合同编号</label>
+      <label>{{dataInfo.ContractNumber}}</label>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item>
-      <label>验收时间</label>
-      <label style="position:absolute; right: 10px;">{{dataInfo.CheckTime}}</label>
+      <label flex>验收时间</label>
+      <label>{{dataInfo.CheckTime}}</label>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item>
-      <label>外观检查</label>
-      <label style="position:absolute; right: 10px;">{{dataInfo.WgCheck}}</label>
+      <label flex>外观检查</label>
+      <label>{{dataInfo.WgCheck}}</label>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item>
-      <label>送检报告</label>
-      <label style="position:absolute; right: 10px;">{{dataInfo.InspectionReport}}</label>
+      <label flex>送检报告</label>
+      <label>{{dataInfo.InspectionReport}}</label>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item>
-      <label>合格情况</label>
-      <label style="position:absolute; right: 10px;">{{dataInfo.CheckResult}}</label>
+      <label flex>合格情况</label>
+      <label>{{dataInfo.CheckResult}}</label>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item>
-      <label>处理意见</label>
-      <label style="position:absolute; right: 10px;">{{dataInfo.HandleOption}}</label>
+      <label flex>处理意见</label>
+      <label>{{dataInfo.HandleOption}}</label>
     </md-list-item>
     <md-divider></md-divider>
+    <md-list-item style="background-color: lightgrey;">
+      <label>附件</label>
+    </md-list-item>
+    <md-list-item>
+      <div  sxt-image-view is-container="true">
+        <p ng-repeat="item in files">
+          <sxt-images  ng-model="item.GroupImg"></sxt-images></fieldset>
+        </p>
+      </div>
+    </md-list-item>
   </md-list>
 </md-content>

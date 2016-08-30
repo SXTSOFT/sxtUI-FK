@@ -20,6 +20,9 @@
 
     vm.checkData={};
     vm.EnclosureType = [];
+    vm.checkData.WgCheck = 1;
+    vm.checkData.IsInspection = 1;
+
     $scope.save = function(addForm) {
       vm.checkData.InspectionReport = vm.sjReport;
       vm.checkData.ProjectId = $scope.project.projectId;
@@ -29,7 +32,7 @@
       vm.checkData.ProjectName = $scope.project.projectName;
 
 
-      if(vm.checkData.WgCheck == 0 ||(vm.fjType == 16 && vm.sjReport == 0)) {
+      if(vm.checkData.WgCheck == false ||(vm.fjType == 16 && vm.sjReport == false)) {
         $mdDialog.show({
           controller: ['$scope',function ($scope) {
             $scope.hide = function() {
