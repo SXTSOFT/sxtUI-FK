@@ -76,9 +76,11 @@
         }),
         getRoleId: http.custom(function () {
           var me = this,u = getAuth().current();
-          if (u.Partner_types.indexOf('supervision') != -1) return 'jl';
-          if (u.Partner_types.indexOf('construction') != -1) return 'zb';
-          if (u.Partner_types.indexOf('estimate') != -1) return '3rd';
+          if(u.Partner_types) {
+            if (u.Partner_types.indexOf('supervision') != -1) return 'jl';
+            if (u.Partner_types.indexOf('construction') != -1) return 'zb';
+            if (u.Partner_types.indexOf('estimate') != -1) return '3rd';
+          }
           //if (u.Id == '56779bf59e10dd61507977c8') return '3rd';
 
           return u.Partner && u.Partner != '' ? 'jl' : 'eg';
@@ -605,7 +607,12 @@
             data: arg
           }).then(function (r) {
             resolve(r);
-          }, reject);
+          }, function (rejection) {
+            if(rejection.status==401){
+              getAuth().logout();
+            }
+            reject(rejection)
+          });
         });
       });
     }

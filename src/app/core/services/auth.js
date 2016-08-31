@@ -29,7 +29,8 @@
         getUser    : getUser,
         autoLogin  : autoLogin,
         current    : currentUser,
-        logout     : logout
+        logout     : logout,
+        forceLogin : forceLogin
       };
 
       authToken.on401(function (response) {
@@ -151,6 +152,11 @@
           autoLoginPath = false;
           return user;
         });
+      }
+
+      function forceLogin() {
+        loginedUser = null;
+        return autoLogin();
       }
 
       // 退出登录
