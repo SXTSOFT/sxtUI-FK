@@ -1,19 +1,19 @@
 ﻿<md-content flex layout="column"  ui-view>
   <form name="addForm" class="form-horizontal addform" ng-submit="save(addForm)">
-    <div flex style="overflow: auto">
+    <div flex style="overflow: auto" ng-show="!vm.AttachmentSHow">
       <sxt-projects-jd ng-model="project.pid" object-scope="project" levels="2" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
         <md-list>
           <!--<md-subheader class="md-no-sticky">材料</md-subheader>-->
           <md-list-item>
             <div class="md-list-item-text" flex layout="column">
-              <h3>供应商</h3>
+              <h3>材料</h3>
             </div>
             <sxt-material style="width:75%;margin: 18px 0 0 0;" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-material>
           </md-list-item>
           <md-divider></md-divider>
           <md-list-item>
             <div class="md-list-item-text" flex layout="column">
-              <h3>供应商</h3>
+              <h3>供货方</h3>
             </div>
             <md-select placeholder="" ng-model="vm.checkData.SupplierId" style="width: 75%;">
               <md-option ng-value="s.Id" ng-repeat="s in supplier">{{s.Name}}</md-option>
@@ -42,16 +42,18 @@
             <div class="md-list-item-text" flex layout="column">
               <h3>合同编号</h3>
             </div>
-            <md-select placeholder="" ng-model="vm.checkData.Manufactor" style="width:75%;">
-
-            </md-select>
+            <!--<md-select placeholder="" ng-model="vm.checkData.Manufactor" style="width:75%;">-->
+            <!--</md-select>-->
+            <md-input-container class="md-block" flex-gt-sm style="width: 75%;margin: 18px 0 0 0;">
+              <input style="width: 100%;" ng-model="vm.checkData.ContractNumber">
+            </md-input-container>
           </md-list-item>
           <md-divider></md-divider>
           <md-list-item>
             <div class="md-list-item-text" flex layout="column">
               <h3>验收时间</h3>
             </div>
-            <md-datepicker flex-gt-sm ng-model="vm.checkData.CheckTime" style="margin: 18px 0 18px 0; width: 75%;"></md-datepicker>
+            <md-datepicker ng-model="vm.checkData.CheckTime" style="margin: 18px 0 18px 0; width: 75%;"></md-datepicker>
           </md-list-item>
           <md-divider></md-divider>
           <md-list-item>
@@ -86,7 +88,7 @@
           </md-list-item>
           <md-divider></md-divider>
           <md-list-item>
-            <md-button style="width:100%;" ui-sref="app.material.ys.addAttachment">添加附件</md-button>
+            <md-button style="width:100%;" ng-click="vm.AttachmentSHow = true">添加附件</md-button>
           </md-list-item>
         </md-list>
 
@@ -94,6 +96,72 @@
       <div class="md-padding" layout="row">
         <md-button type="submit" flex class="md-raised md-primary"> 确定 </md-button>
       </div>
+    </div>
+
+    <div flex ng-show="vm.AttachmentSHow">
+      <md-list class="md-dense" flex style="padding: 0;">
+        <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">附件类型</div>
+        <md-radio-group ng-model="vm.fjType" >
+          <div class="row" ng-repeat="item in vm.Type" >
+            <div flex layout='row' style="padding: 0 8px;" layout-align="start center">
+              <div flex>
+                <h3>{{item.name}}</h3>
+              </div>
+              <md-radio-button ng-value="item.value" class="md-primary" ng-disabled="item.value != 16 && vm.checkDataId != ''"></md-radio-button>
+            </div>
+            <md-divider></md-divider>
+          </div>
+
+        </md-radio-group>
+        <md-divider></md-divider>
+        <div class="row" ng-show="vm.fjType==16">
+          <div layout='row' style="padding: 0;" layout-padding layout-align="start center" >
+            <div flex>
+              <h3>送检报告</h3>
+            </div>
+            <md-radio-group ng-model="vm.checkData.sjReport" flex="50">
+              <md-radio-button flex ng-value="1" style="display: inline-block;" class="md-primary" >合格</md-radio-button>
+              <md-radio-button flex ng-value="0" style="display: inline-block;" class="md-primary" >不合格</md-radio-button>
+            </md-radio-group>
+          </div>
+        </div>
+        <md-divider></md-divider>
+        <div class="md-padding">
+          <fieldset ng-show="vm.fjType == 2">
+            <legend>出厂合格证</legend>
+            <span class="fs-display-1 display-block">添加照片</span>
+            <div> <small></small></div>
+            <sxt-images ng-model="vm.groupId_2"  files="data.imgs1" project="data.projectInfo" edit="true"></sxt-images>
+          </fieldset>
+          <fieldset ng-show="vm.fjType == 4">
+            <legend>材料验收单</legend>
+            <span class="fs-display-1 display-block">添加照片</span>
+            <div> <small></small></div>
+            <sxt-images ng-model="vm.groupId_4"  files="data.imgs2" project="data.projectInfo" edit="true"></sxt-images>
+          </fieldset>
+          <fieldset ng-show="vm.fjType == 8">
+            <legend>实拍照片</legend>
+            <span class="fs-display-1 display-block">添加照片</span>
+            <div> <small></small></div>
+            <sxt-images ng-model="vm.groupId_8"  files="data.imgs3" project="data.projectInfo" edit="true"></sxt-images>
+          </fieldset>
+          <fieldset ng-show="vm.fjType == 16">
+            <legend>送检报告</legend>
+            <span class="fs-display-1 display-block">添加照片</span>
+            <div> <small></small></div>
+            <sxt-images ng-model="vm.groupId_16"  files="data.imgs4" project="data.projectInfo" edit="true"></sxt-images>
+          </fieldset>
+          <fieldset ng-show="vm.fjType == 32">
+            <legend>其他</legend>
+            <span class="fs-display-1 display-block">添加照片</span>
+            <div> <small></small></div>
+            <sxt-images ng-model="vm.groupId_32"  files="data.imgs5" project="data.projectInfo" edit="true"></sxt-images>
+          </fieldset>
+        </div>
+        <div class="md-padding" layout="row">
+          <md-button flex class="md-raised md-primary" ng-click="vm.checkDataId!= '' ? vm.ok():vm.AttachmentSHow = false"> 完成 </md-button>
+        </div>
+      </md-list>
     </div>
   </form>
 </md-content>

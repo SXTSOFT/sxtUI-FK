@@ -22,7 +22,7 @@
     <md-divider></md-divider>
     <md-list-item>
       <label flex>厂家/品牌</label>
-      <label flex>{{dataInfo.Manufactor}}</label>
+      <label>{{dataInfo.Manufactor}}</label>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item>
@@ -64,9 +64,9 @@
       <label>附件</label>
     </md-list-item>
     <md-list-item>
-      <div  sxt-image-view is-container="true">
+      <div sxt-image-view is-container="true">
         <p ng-repeat="item in files">
-          <sxt-images  ng-model="item.GroupImg"></sxt-images></fieldset>
+          <sxt-images  ng-model="item.GroupImg"></sxt-images>
         </p>
       </div>
     </md-list-item>

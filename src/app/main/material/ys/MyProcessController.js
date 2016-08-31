@@ -12,16 +12,28 @@
     .controller('MMyProcessController',MMyProcessController);
 
   /** @ngInject */
-  function MMyProcessController($scope, api, utils, $state,$q,sxt,xhUtils,$timeout, $mdDialog){
+  function MMyProcessController($scope, api, utils, $state,$q,sxt,xhUtils,$timeout, $mdDialog,$stateParams){
 
     var vm = this;
     vm.fjType = null;
-    vm.sjReport = null;
+
+
+    vm.AttachmentSHow = false;
 
     vm.checkData={};
     vm.EnclosureType = [];
     vm.checkData.WgCheck = 1;
     vm.checkData.IsInspection = 1;
+    vm.checkData.CheckTime = new Date();
+    vm.checkData.sjReport = null;
+    $scope.data = {
+      imgs1:[],
+      imgs2:[],
+      imgs3:[],
+      imgs4:[],
+      imgs5:[]
+
+    };
 
     $scope.save = function(addForm) {
       vm.checkData.InspectionReport = vm.sjReport;
@@ -31,8 +43,19 @@
       vm.checkData.RegionId = $scope.project.pid;
       vm.checkData.ProjectName = $scope.project.projectName;
 
+      if($scope.data.imgs1.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 2}) == null)
+        vm.EnclosureType.push({OptionType:2,GroupImg:vm.groupId_2});
+      if($scope.data.imgs2.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 4}) == null)
+        vm.EnclosureType.push({OptionType:4,GroupImg:vm.groupId_4});
+      if($scope.data.imgs3.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 8}) == null)
+        vm.EnclosureType.push({OptionType:8,GroupImg:vm.groupId_8});
+      if($scope.data.imgs4.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 16}) == null)
+        vm.EnclosureType.push({OptionType:16,GroupImg:vm.groupId_16});
+      if($scope.data.imgs5.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 32}) == null)
+        vm.EnclosureType.push({OptionType:32,GroupImg:vm.groupId_32});
 
-      if(vm.checkData.WgCheck == false ||(vm.fjType == 16 && vm.sjReport == false)) {
+
+      if(vm.checkData.WgCheck == false ||(vm.fjType == 16 && vm.checkData.sjReport == false)) {
         $mdDialog.show({
           controller: ['$scope',function ($scope) {
             $scope.hide = function() {
@@ -75,7 +98,7 @@
     };
 
     vm._save = function (addForm) {
-      if (vm.checkData.WgCheck == 1 && vm.checkData.InspectionReport == null)
+      if (vm.checkData.WgCheck == 1 && vm.checkData.InspectionReport == null && vm.checkData.IsInspection == 1)
         vm.checkData.CheckResult = 2; //状态：未知
       else
         vm.checkData.CheckResult = 1; //状态：合格
@@ -91,11 +114,132 @@
           });
         }else{
           utils.alert('提交失败').then(function () {
-            $scope.isSaveing = false;
           });
         }
       });
     };
+
+    vm.Type = [
+      {name:'出厂合格证',value:2,groupId:sxt.uuid()},
+      {name:'材料验收单',value:4,groupId:sxt.uuid()},
+      {name:'实拍照片',value:8,groupId:sxt.uuid()},
+      {name:'送检报告',value:16,groupId:sxt.uuid()},
+      {name:'其他',value:32,groupId:sxt.uuid()}
+    ];
+
+    vm.checkDataId = $stateParams.id;
+
+    if(vm.checkDataId != ''){
+      vm.AttachmentSHow = true;
+      vm.fjType = 16;
+      vm.Type.find(function (t) {
+        if(t.value == 16){
+          vm.groupId_16 =  t.groupId;
+        }
+      });
+    }else{
+      vm.fjType = 2;
+
+      if(vm.EnclosureType.length != 0){
+        vm.Type.forEach(function (item) {
+          vm.EnclosureType.find(function (e)
+          {
+            if(item.value == e.OptionType)
+              item.groupId = e.GroupImg;
+          });
+        });
+        vm.fjType = vm.EnclosureType[vm.EnclosureType.length-1].OptionType; //显示最后一次选中
+      }
+
+      vm.Type.find(function (t) {
+        if(t.value == 2){
+          vm.groupId_2 =  t.groupId;
+        }
+      });
+
+      vm.Type.find(function (t) {
+        if(t.value == 4){
+          vm.groupId_4 =  t.groupId;
+        }
+      });
+
+      vm.Type.find(function (t) {
+        if(t.value == 8){
+          vm.groupId_8 =  t.groupId;
+        }
+      });
+
+      vm.Type.find(function (t) {
+        if(t.value == 16){
+          vm.groupId_16 =  t.groupId;
+        }
+      });
+
+      vm.Type.find(function (t) {
+        if(t.value == 32){
+          vm.groupId_32 =  t.groupId;
+        }
+      });
+    }
+
+    vm.ok = function(){
+      vm.checkData.HandleOption = null;
+      if(vm.checkDataId != ''){
+        if(vm.checkData.sjReport == 0){
+          $mdDialog.show({
+            controller: ['$scope',function ($scope) {
+              $scope.hide = function() {
+                $mdDialog.hide();
+              };
+              $scope.cancel = function() {
+                $mdDialog.cancel();
+              };
+              $scope.answer = function() {
+                vm.checkData.HandleOption = $scope.clyj;
+
+                api.material.addProcessService.Insert({
+                  CheckData:{Id:vm.checkDataId,InspectionReport:vm.checkData.sjReport,CheckResult:vm.checkData.sjReport,HandleOption:vm.checkData.HandleOption},
+                  CheckDataOptions:[{OptionType:16,GroupImg:vm.groupId_16}]
+                }).then(function (result) {
+                  if(result){
+                    utils.alert('提交完成').then(function () {
+                      $state.go('app.szgc.ys');
+                    });
+                  }else{
+                    utils.alert('提交失败').then(function () {
+                    });
+                  }
+                });
+              };
+            }],
+            templateUrl: 'app/main/material/ys/treatmentOption.html',
+            bindToController:true,
+            fullscreen: $scope.customFullscreen
+          });
+        }else {
+          api.material.addProcessService.Insert({
+            CheckData:{Id:vm.checkDataId,InspectionReport:vm.checkData.sjReport,CheckResult:vm.checkData.sjReport,HandleOption:vm.checkData.HandleOption},
+            CheckDataOptions:[{OptionType:16,GroupImg:vm.groupId_16}]
+          }).then(function (result) {
+            if(result){
+              utils.alert('提交完成').then(function () {
+                $state.go('app.szgc.ys');
+              });
+            }else{
+              utils.alert('提交失败').then(function () {
+              });
+            }
+          });
+        }
+      }
+    };
+
+
+    //获取材料供应商
+    api.material.SupplierService.GetAll({startrowIndex:0,maximumRows:100,Status:4}).then(function(result){
+      $scope.supplier = result.data.Rows;
+    });
+
 
 
 
@@ -122,11 +266,6 @@
     $scope.getNetwork = function () {
       return api.getNetwork();
     }
-
-    //获取材料供应商
-    api.material.SupplierService.GetAll({startrowIndex:0,maximumRows:100,Status:4}).then(function(result){
-      $scope.supplier = result.data.Rows;
-    });
 
     $scope.isPartner = api.szgc.vanke.isPartner();
     $scope.project = {
