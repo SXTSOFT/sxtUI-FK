@@ -75,6 +75,10 @@
     }
 
     vm.download=function(item,isReflsh){
+      if (api.getNetwork()==1){
+        utils.alert('请打开网络!');
+        return;
+      }
       vm.current=item;
       //下载成功回掉
       function callBack(){
@@ -91,7 +95,7 @@
         if(ix!=-1){
           vm.data.rows.splice(ix, 1);
         }
-        delete item.pack;
+        //delete item.pack;
         remote.Project.getMap().then(function (result) {
           var project=result.data.find(function(r){
             return r.ProjectID== item.ProjectID;
@@ -129,17 +133,27 @@
             return remote.Assessment.getAllMeasureReportData({RegionID:item.ProjectID,RecordType:1})
           })
           tasks.push(function () {
-            return $q(function (resolve) {
-              item.pack = pack.sc.down(item);
-              $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
-                if(!item.pack)return;
-                if(item.pack && item.pack.completed) {
-                  resolve();
-                }
-              })
-            });
+            return remote.Assessment.GetMeasureItemInfoByAreaID(item.ProjectID,"pack"+item.AssessmentID);
           });
+          tasks.push(function () {
+            return remote.Assessment.GetRegionTreeInfo(item.ProjectID,"pack"+item.AssessmentID);
+          });
+          tasks.push(function(){
+            return remote.Assessment.GetBaseMeasure("pack"+item.AssessmentID)
+          })
+          //tasks.push(function () {
+          //  return $q(function (resolve) {
+          //    item.pack = pack.sc.down(item);
+          //    $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
+          //      if(!item.pack)return;
+          //      if(item.pack && item.pack.completed) {
+          //        resolve();
+          //      }
+          //    })
+          //  });
+          //});
           tasks = tasks.concat(projectTask(item.ProjectID));
+
           item.percent = item.current =0; item.total = tasks.length;
           api.task(tasks,{
             event:'downloadsc',
@@ -153,8 +167,8 @@
           }, function (timeout) {
             item.percent = item.current = item.total = null;
             var msg=timeout?'请求超时,任务下载失败!':'下载失败,请检查网络';
-            utils.alert(msg);
             $mdDialog.cancel();
+            utils.alert(msg);
           })
         }],
         template: '<md-dialog aria-label="正在下载"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
@@ -210,21 +224,25 @@
     }
 
     vm.go=function(item){
-      var pk = db('pack'+item.AssessmentID);
-      pk.get('GetRegionTreeInfo').then(function(r){
-        if (r&& r.data&& r.data.Children){
-          var areas=r.data.Children;
+      if (!api.getNetwork()==1){
+        utils.alert('请关闭网络,设置为离线状态!');
+        return;
+      }
+      remote.Assessment.GetRegionTreeInfo(item.ProjectID,"pack"+item.AssessmentID).then(function(r){
+        if (r&& r.data&& r.data.data&& r.data.data.Children.length){
+          var areas=r.data.data.Children;
           var  routeData={
             projectId:item.ProjectID,
             assessmentID:item.AssessmentID,
             role:vm.role
-            //isReport:fa
           };
           if (angular.isArray(areas)&&areas.length>1){
             $state.go("app.xhsc.scsl.chooseArea",routeData)
           }else {
             $state.go("app.xhsc.scsl.sclist",angular.extend(routeData,{area:areas[0].RegionID}));
           }
+        }else {
+          utils.alert('该项目没有设置分期');
         }
       })
     }

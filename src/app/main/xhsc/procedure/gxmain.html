@@ -147,7 +147,7 @@
               {{item.ProjectName}}
             </p>
             <div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">
-              <md-button ui-sref="app.xhsc.gx.gxlist({role:'',projectId:item.ProjectID})" class="md-raised md-primary">
+              <md-button ng-click="vm.zj(item)" class="md-raised md-primary">
                 自检
               </md-button>
               <md-button ng-click="vm.downloadzj(item)" class="md-raised md-primary" >
@@ -173,7 +173,7 @@
               {{item.ProjectName}}
             </p>
             <div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">
-              <md-button ui-sref="app.xhsc.gx.gxlist({role:'zb',projectId:item.ProjectID})" class="md-raised md-primary" >
+              <md-button  ng-click="vm.by(item)"  class="md-raised md-primary" >
                 报验
               </md-button>
             </div>

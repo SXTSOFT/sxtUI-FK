@@ -68,26 +68,6 @@
               });
               resolve(result);
             });
-
-            //remote.Project.getDrawingRelations(projectId).then(function (result) {
-            //  var pics = [];
-            //  result.data.forEach(function (item) {
-            //    if ((!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
-            //      (!areas || areas.find(function (a) {
-            //        return a.AreaID==item.RegionId;
-            //      }))&&
-            //      pics.indexOf(item.DrawingID) == -1) {
-            //      pics.push(item.DrawingID);
-            //    }
-            //  });
-            //  //console.log(pics);
-            //  pics.forEach(function (drawingID) {
-            //    tasks.push(function () {
-            //      return remote.Project.getDrawing(drawingID);
-            //    })
-            //  });
-            //  resolve(result);
-            //})
           })
         },
         function () {
@@ -149,6 +129,10 @@
     }
 
     vm.downloadzj = function (item) {
+      if (api.getNetwork()==1){
+        utils.alert('请打开网络!');
+        return;
+      }
       $mdDialog.show({
         controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
             $scope.item=item;
@@ -212,6 +196,10 @@
     },$scope);
 
     vm.downloadys = function (item) {
+      if (api.getNetwork()==1){
+        utils.alert('请打开网络!');
+        return;
+      }
       $mdDialog.show({
         controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
           $scope.item=item;
@@ -262,6 +250,10 @@
 
 
     vm.downloadzg = function (item) {
+      if (api.getNetwork()==1){
+        utils.alert('请打开网络!');
+        return;
+      }
       $mdDialog.show({
         controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
           $scope.item=item;
@@ -365,6 +357,10 @@
     }
 
     vm.download = function(item){
+      if (api.getNetwork()==1){
+        utils.alert('请打开网络!');
+        return;
+      }
       var tasks = [].concat(globalTask).concat(projectTask(item.ProjectID));
       api.task(tasks)(function (percent, current, total) {
         item.percent = parseInt(percent * 100) + ' %';
@@ -412,35 +408,6 @@
         utils.alert('下载失败,请检查网络');
       });
     }
-    //vm.zgdownload = function(item){
-    //  item.isDown = true;
-    //  var ix = 1,len =2;
-    //  item.progress = ix/len;
-    //  api.task([function(tasks){
-    //    return  remote.Procedure.getZGById(item.RectificationID).then(function(result){
-    //      var promise=[];
-    //      result.data[0].Children.forEach(function(r){
-    //        promise=[
-    //          remote.Procedure.getZGReginQues(r.AreaID,item.RectificationID),
-    //          remote.Procedure.getZGReginQuesPoint(r.AreaID,item.RectificationID)
-    //        ]
-    //        tasks.push(function(){
-    //          return $q.all(promise);
-    //        })
-    //      })
-    //    });
-    //  },function () {
-    //    return api.setting('zgList:'+item.RectificationID,{RectificationID:item.RectificationID});
-    //  }])(function (persent) {
-    //    item.progress = persent*100;
-    //  },function () {
-    //    item.progress = 100;
-    //    item.isOffline = true;
-    //  },function () {
-    //    item.isDown = false;
-    //    utils.alert('下载失败,请检查网络');
-    //  });
-    //}
     vm.exportReport = function(item){
       $state.go('app.xhsc.gx.gxzgreport')
     }
@@ -486,12 +453,6 @@
             });
           });
         }
-
-        //r.data.forEach(function(o){
-        //  if (o.Sign!=8){
-        //    vm.Inspections.push(o);
-        //  }
-        //});
       });
     }
     load();
@@ -500,19 +461,35 @@
 
 
     vm.ys = function(item){
+      if (!api.getNetwork()==1){
+        utils.alert('请关闭网络,设置离线状态!');
+        return;
+      }
       $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
         projectId:item.ProjectID,areaId:item.Children[0].AreaID,InspectionId:item.InspectionId})
     };
 
     vm.fy = function(r){
+      if (!api.getNetwork()==1){
+        utils.alert('请关闭网络,设置离线状态!');
+        return;
+      }
       $state.go('app.xhsc.gx.gxzg',{Role:'jl',InspectionID: r.InspectionId,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID})
     };
 
     vm.zg = function(r){
+      if (!api.getNetwork()==1){
+        utils.alert('请关闭网络,设置离线状态!');
+        return;
+      }
       $state.go('app.xhsc.gx.gxzg',{Role:'zb',InspectionID: r.InspectionId,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID});
     };
 
     vm.fj = function (r) {
+      if (!api.getNetwork()==1){
+        utils.alert('请关闭网络,设置离线状态!');
+        return;
+      }
       $state.go('app.xhsc.gx.gxzjcheck',
         {
           acceptanceItemID:r.AcceptanceItemID,
@@ -521,6 +498,21 @@
           InspectionId:r.InspectionId
         }
       )
+    }
+    vm.by=function(r){
+      if (api.getNetwork()==1){
+        utils.alert('请打开网络,报验必须在线进行!');
+        return;
+      }
+      $state.go('app.xhsc.gx.gxlist', {role:'zb',projectId:r.ProjectID});
+    }
+
+    vm.zj=function(r){
+      if (!api.getNetwork()==1){
+        utils.alert('请关闭网络,设置离线状态!');
+        return;
+      }
+      $state.go('app.xhsc.gx.gxlist', {role:'',projectId:r.ProjectID});
     }
   }
 })();

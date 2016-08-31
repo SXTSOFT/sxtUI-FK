@@ -493,6 +493,90 @@
       }
     },
     Assessment:{
+      GetMeasureItemInfoByAreaID:$http.db({
+        db:function (AreaID,db) {
+          return db;
+        },
+        idField:function(){
+          return 'GetMeasureItemInfoByAreaID';
+        },
+        filter:function(item){
+          return item._id=='GetMeasureItemInfoByAreaID'
+        },
+        dataType:3
+      }).bind(function (AreaID,db) {
+        return $http.get($http.url('/Api/MeasureInfo/GetMeasureItemInfo',{areaID:AreaID})).then(function(result){
+          result.data=result.data?result.data:[];
+          return {
+            data:{
+              data:result.data
+            }
+          }
+        });
+      }),
+      GetRegionTreeInfoNotUser:$http.db({
+        db:function (AreaID,db) {
+          return db;
+        },
+        idField:function(){
+          return   'GetRegionTreeInfo';
+        },
+        dataType:3,
+        filter:function(item){
+          return item._id=='GetRegionTreeInfo'
+        },
+      }).bind(function (AreaID,db) {
+        return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfoNotUser',{AreaID:AreaID})).then(function(result){
+          result.data=result.data?result.data:[];
+          return {
+            data:{
+              data:result.data
+            }
+          }
+        });
+      }),
+      GetRegionTreeInfo:$http.db({
+        db:function (AreaID,db) {
+          return db;
+        },
+        idField:function(){
+          return  'GetRegionTreeInfo';
+        },
+        dataType:3,
+        filter:function(item){
+          return item._id=='GetRegionTreeInfo'
+        },
+      }).bind(function (AreaID,db) {
+        return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo',{AreaID:AreaID})).then(function(result){
+          result.data=result.data?result.data:[];
+          return {
+            data:{
+              data:result.data
+            }
+          }
+        });
+      }),
+      GetBaseMeasure:$http.db({
+        db:function (db) {
+          return db;
+        },
+        idField:function(){
+          return 'GetBaseMeasure';
+        },
+        dataType:3,
+        filter:function(item){
+          return item._id=='GetBaseMeasure'
+        },
+      }).bind(function (db) {
+        return $http.get($http.url('/api/MeasureInfo/GetBaseMeasure')).then(function(result){
+          result.data=result.data?result.data:[];
+           return {
+              data:{
+                data:result.data
+              }
+          }
+        });
+      }),
 
       getUserMeasureValue:$http.db({
         db:function (projectId,recordType,relationId,db) {
@@ -549,9 +633,6 @@
       queryRegion:function (areaID) {
         return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo',{AreaID:areaID}));
       },
-      //getMeasure:function(param){
-      //  return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResult',param));
-      //},
       getMeasure:$http.db({
         _id:'getAllMeasureReportData',
         idField:function(item){

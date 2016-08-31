@@ -545,7 +545,7 @@
 
       function userOffline(caller, lodb, args, cb, fn) {
         var p2 = provider.$q.$q(function (resolve, reject) {
-          if (!cfg._id) {
+          if (!cfg._id&&!lodb) {
             resolve(bindData({}, [], cfg));
           }
           else if (cfg.delete) {

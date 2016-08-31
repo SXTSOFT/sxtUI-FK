@@ -60,29 +60,15 @@
     }
 
 
-    vm.download = function (item) {
-      var tasks = [];
-      item.downloading = true;
-      item.progress = 0;
-      tasks.push(function () {
-        return $q(function (resolve) {
-          item.pack = pack.sc.down(item);
-          $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
-            if(!item.pack)return;
-            if(item.pack && item.pack.completed) {
-              resolve();
-            }
-          })
-        });
-      });
-      tasks = tasks.concat(projectTask(item.ProjectID));
-      api.task(tasks)(function(percent,current,total){
-        item.progress= parseInt(percent * 100);
-      },function(){
-        if(!item.pack)return;
-        var p = item.pack.getProgress();
-        item.progress = parseInt(p.progress);
-        if(item.pack && item.pack.completed) {
+    vm.download=function(item,isReflsh){
+      if (api.getNetwork()==1){
+        utils.alert('请打开网络!');
+        return;
+      }
+      vm.current=item;
+      //下载成功回掉
+      function callBack(){
+        remote.Assessment.queryById(item.AssessmentID).then(function (result) {
           var ix = vm.onlines.indexOf(item);
           if (ix != -1)
             vm.onlines.splice(ix, 1);
@@ -97,71 +83,70 @@
             vm.data.rows.splice(ix, 1);
           }
           delete item.pack;
-          remote.Assessment.queryById(item.AssessmentID).then(function (result) {
-            var fd = vm.data.rows.find(function (a) {
-              return a.AssessmentID == result.data.AssessmentID;
-            }),ix=fd?vm.data.rows.indexOf(fd):-1;
-            if(ix==-1) {
-              vm.data.rows.push(result.data);
-              vm.offlines.push(item);
-            }
-            else{
-              vm.data.rows[ix] = result.data;
-            }
-            xcpk.addOrUpdate(vm.data).then(function () {
-              item.downloading = false;
-              utils.alert('下载完成');
-            })
+          var fd = vm.data.rows.find(function (a) {
+            return a.AssessmentID == result.data.AssessmentID;
+          }),ix=fd?vm.data.rows.indexOf(fd):-1;
+          if(ix==-1) {
+            vm.data.rows.push(result.data);
+            vm.offlines.push(item);
+          }
+          else{
+            vm.data.rows[ix] = result.data;
+          }
+          xcpk.addOrUpdate(vm.data).then(function () {
+            utils.alert('下载完成');
           })
-        }
-      },function(timeout){
-        item.percent = item.current = item.total = null;
-        var msg=timeout?'请求超时,任务下载失败!':'下载失败,请检查网络';
-        utils.alert(msg);
-        $mdDialog.cancel();
+        })
+      }
+
+      $mdDialog.show({
+        controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+          $scope.item=item;
+          var tasks=[];
+          tasks.push(function () {
+            return remote.Assessment.GetMeasureItemInfoByAreaID(item.ProjectID,"pack"+item.AssessmentID);
+          });
+          tasks.push(function () {
+            return remote.Assessment.GetRegionTreeInfoNotUser(item.ProjectID,"pack"+item.AssessmentID);
+          });
+          tasks = tasks.concat(projectTask(item.ProjectID));
+          item.percent = item.current =0; item.total = tasks.length;
+          api.task(tasks,{
+            event:'downloadxc',
+            target:item
+          })(null,function () {
+            if (!isReflsh){
+              callBack();
+            }else {
+              utils.alert("下载成功!");
+            }
+          }, function (timeout) {
+            item.percent = item.current = item.total = null;
+            var msg=timeout?'请求超时,任务下载失败!':'下载失败,请检查网络';
+            $mdDialog.cancel();
+            utils.alert(msg);
+          })
+        }],
+        template: '<md-dialog aria-label="正在下载"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+        parent: angular.element(document.body),
+        clickOutsideToClose:false,
+        fullscreen: false
       });
-
-
-
-      //$rootScope.$on('pack'+item.AssessmentID,function (e,d) {
-      //  //console.log(arguments);
-      //  if(!item.pack)return;
-      //  var p = item.pack.getProgress();
-      //  item.progress = parseInt(p.progress);
-      //  if(item.pack && item.pack.completed) {
-      //    var ix = vm.onlines.indexOf(item);
-      //    if (ix != -1)
-      //      vm.onlines.splice(ix, 1);
-      //    ix = vm.offlines.indexOf(item);
-      //    if(ix!=-1){
-      //      vm.offlines.splice(ix, 1);
-      //    }
-      //    var it1 = vm.data.rows.find(function (it) {
-      //      return it.AssessmentID==item.AssessmentID;
-      //    }),ix=it1?vm.data.rows.indexOf(it1):-1;
-      //    if(ix!=-1){
-      //      vm.data.rows.splice(ix, 1);
-      //    }
-      //    delete item.pack;
-      //    remote.Assessment.queryById(item.AssessmentID).then(function (result) {
-      //      var fd = vm.data.rows.find(function (a) {
-      //        return a.AssessmentID == result.data.AssessmentID;
-      //      }),ix=fd?vm.data.rows.indexOf(fd):-1;
-      //      if(ix==-1) {
-      //        vm.data.rows.push(result.data);
-      //        vm.offlines.push(item);
-      //      }
-      //      else{
-      //        vm.data.rows[ix] = result.data;
-      //      }
-      //      xcpk.addOrUpdate(vm.data).then(function () {
-      //        item.downloading = false;
-      //        utils.alert('下载完成');
-      //      })
-      //    })
-      //  }
-      //})
     }
+
+    api.event('downloadxc',function (s,e) {
+      var current =vm.current;
+      if(current) {
+        switch (e.event) {
+          case 'progress':
+            current.percent = parseInt(e.percent * 100) + ' %';
+            current.current = e.current;
+            current.total = e.total;
+            break;
+        }
+      }
+    },$scope);
+
     vm.upload =function (item) {
       item.uploading = true;
       remote.Assessment.GetAssessmentStatus(item.AssessmentID).then(function (result) {
@@ -252,7 +237,10 @@
     })
     vm.showECs = function(ev,item) {
       //var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && vm.customFullscreen;
-      console.log('ev',item)
+      if (!api.getNetwork()==1){
+        utils.alert('请关闭网络,设置为离线状态!');
+        return;
+      }
       $mdDialog.show({
           controller: ['$scope', '$mdDialog','item', function DialogController($scope, $mdDialog,item) {
             $scope.item = item;
