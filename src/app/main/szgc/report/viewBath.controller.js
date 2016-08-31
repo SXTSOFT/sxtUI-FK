@@ -172,7 +172,7 @@
           companyId: vm.project.companyId,
           regionIdTree: vm.project.idTree
         }
-         console.log('vm.project',batchParems)
+         //console.log('vm.project',batchParems)
         api.szgc.addProcessService.queryByProjectAndProdure3(vm.project.projectId, batchParems).then(function(result) {
           //cb(result.data);
           if (result.data.Rows.length > 0) {
@@ -198,6 +198,10 @@
           vm.workGroupSources = [];
           vm.baths.Rows.forEach(function(item) {
             fishIndex = 0;
+            item.RegionNameTree = item.RegionNameTree.replace(vm.project.nameTree,'').replace('>>','');
+            if(item.RegionNameTree.indexOf('>')==0){
+              item.RegionNameTree = item.RegionNameTree.substr(1);
+            }
             //var idx =item.JLFirst.split('.');
             //if(idx[1]){
             //  item.JLFirst = Number(item.JLFirst).toFixed(1);

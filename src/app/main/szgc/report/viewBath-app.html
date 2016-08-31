@@ -26,7 +26,7 @@
 <div style="color:#f00;height:40px;line-height: 20px;border-bottom: 1px solid #ddd;width:100%;padding-left:8px;" ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')">左右滑动查看全部数据<br/> <span style="color:{{s.color}}" ng-repeat="s in vm.states">({{s.title}}) </span></div>
     <md-content class="md-padding repeat-top"  ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')" layout="column" flex>
       <md-virtual-repeat-container flex id="vertical-container">
-        <div style="width:930px;overflow-x: hidden;">
+        <div style="width:815px;overflow-x: hidden;">
         <div>
           <div>
             <div style="border-bottom: 1px solid #ccc;padding-left:0;position: relative;">
@@ -38,17 +38,17 @@
               <span style="width:36px;display: inline-block;height:40px;padding-top: 10px;">监理再验</span>
               <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">监理员</span>
               <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">查验时间</span>
-              <span style="width:120px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">万科、第三方抽检</span>
-              <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">符合率</span>
-              <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">检查员</span>
+              <span style="width:50px;display: inline-block;height:40px;padding-top: 10px;">万科、<br>第三方</span>
+              <span style="width:40px;display: inline-block;height:40px;padding-top: 18px;vertical-align: top">符合率</span>
+              <span style="width:80px;display: inline-block;height:40px;padding-top: 18px;vertical-align: top;text-align: center">检查员</span>
               <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">查验时间</span>
             </div>
           </div>
 
           <div md-virtual-repeat="item in vm.baths.Rows" class="repeated-item" flex>
-            <div style="width:980px;height: 30px;">
+            <div style="width:815px;height: 30px;">
               <div style=" position: relative;height: 30px;color:{{vm.getStateColor(item.ECCheckResult)}};" ui-sref="app.szgc.report.viewBath.view({bathid:item.Id})">
-                <span style="width:120px;display: inline-block;white-space: nowrap;overflow:hidden;padding-right: 5px;text-overflow:ellipsis;">{{ item.RegionNameTree}} {{item.RegionName}}</span>
+                <span style="width:120px;display: inline-block;white-space: nowrap;overflow:hidden;padding-right: 5px;text-overflow:ellipsis;direction: rtl">{{ item.RegionNameTree}} {{item.RegionName}}</span>
                 <span style="width:80px;display: inline-block;white-space: nowrap;overflow:hidden;text-overflow:ellipsis;">{{item.ProcedureName}}</span>
               <span style="width:55px; white-space: nowrap; display: inline-block;text-align: center;">{{item.GrpWokerName | filterGrpWokerName}}</span>
                 <span style="width:36px;display: inline-block;">{{(item.ZbLast||item.ZbFirst)|number:1}}</span>
@@ -57,9 +57,9 @@
               <span  ng-if="item.JLFirst" style="width:36px;display: inline-block;">{{item.JLLast|number:1}}</span>
               <span style="width:80px;display: inline-block;">{{item.JLUser}}</span>
               <span style="width:80px;display: inline-block;">{{item.JLDate}}</span>
-              <span style="width:120px;display: inline-block;">{{item.WKLast}}</span>
-              <span style="width:80px;display: inline-block;">{{item.AccordRatio|number:1}}</span>
-              <span style="width:80px;display: inline-block;">{{item.WKLastUser}}</span>
+              <span style="width:50px;display: inline-block;">{{item.WKLast}}</span>
+              <span style="width:40px;display: inline-block;">{{item.AccordRatio|number:1}}</span>
+              <span style="width:80px;display: inline-block;text-align: center">{{item.WKLastUser}}</span>
               <span style="width:80px;display: inline-block;">{{item.VKDate}}</span>
               </div>
             </div>

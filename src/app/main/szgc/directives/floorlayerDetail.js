@@ -101,30 +101,11 @@
         $('.newlayer>div').on('click', function () {
           $(this).css('z-index',101).siblings().css('z-index',100);
         })
-        //窗口缩放时自动调整相应参数
-        //$(window).resize(function () {
-        //  if ($(window).width() > 960) {
-        //    zoom = 0.5;
-        //    iFloorHeight = ((scope.floorNum - 1) * 18 + 107 + 34) * zoom + 80;
-        //    $('.whole').css('zoom', zoom);
-        //    $('.floor-layer1').css('height', iFloorHeight + 'px');
-        //  }
-        //  else if ($(window).width() > 760) {
-        //    zoom = 0.5;
-        //    iFloorHeight = ((scope.floorNum - 1) * 18 + 107 + 34) * zoom + 50;
-        //    $('.whole').css('zoom', zoom);
-        //    $('.floor-layer1').css('height', iFloorHeight + 'px');
-        //  } else {
-        //    zoom = izoom;
-        //    $('.whole').css('zoom', zoom);
-        //    iFloorHeight = ((scope.floorNum - 1) * 18 + 107 + 34) * zoom + 50;
-        //    $('.floor-layer1').css('height', iFloorHeight + 'px');
-        //  }
-        //})
+
 
         iFloorHeight = itemp * zoom ;
-        $('.whole', element).css('zoom', '0.24');
-        $('.floor-layer1').css({'height': '250px','width': '250px'});
+        $('.whole', element).css('zoom', '0.5');
+        $('.floor-layer1').css({'height': '520px','width': '250px'});
 
         scope.$on('$destroy', function () {
           o.remove();

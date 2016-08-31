@@ -207,6 +207,41 @@
         });
       }
     }
+    $scope.$watch('vm.project.pid',function () {
+      if(vm.project.type==64){
+        vm.project.play = false;
+        vm.project.playInfo = '(查询中...)';
+        api.szgc.FilesService.GetPrjFilesByFilter(vm.project.pid, {imageType: 2}).then(function (r) {
+          vm.project.play = r.data.Rows.length !=0;
+          vm.project.playInfo = '('+r.data.Rows.length+'张)';
+        });
+      }
+      else{
+        vm.project.playInfo='';
+      }
+    });
+    vm.play = function () {
+      var n = 2;
+      vm.project.n = n;
+      vm.project.item = {
+        type: vm.item.type.type_id
+      };
+      $mdDialog.show({
+        locals: {
+          project: vm.project
+        },
+        controller: 'SzgcyhydDlgController as vm',
+        templateUrl: 'app/main/szgc/home/SzgcyhydDlg.html',
+        parent: angular.element(document.body),
+        clickOutsideToClose: true,
+        fullscreen: true
+      })
+        .then(function (answer) {
+
+        }, function () {
+
+        });
+    }
 
   }
 })();

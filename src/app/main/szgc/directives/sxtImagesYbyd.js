@@ -26,7 +26,7 @@
       link: function (scope, element, attr, ctrl) {
         scope.$watch("itemId", function () {
           if (scope.regionId && scope.itemId) {
-            var regionId = scope.regionTree.replace(/\>/g,'-').replace('sub-','')+'-'+scope.regionId,
+            var regionId = scope.regionTree.replace(/\>/g,'-').replace('sub-','')+(scope.regionTree.indexOf(scope.regionId)==-1?'-'+scope.regionId:''),
               fs;
             api.szgc.FilesService.group( regionId + '-' + scope.itemId).then(function (r) {
               fs = [].concat(r.data.Files);

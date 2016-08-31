@@ -9,7 +9,7 @@
 <div class="md-padding">
       <md-input-container class="md-block" ng-disabled="st.loading">
         <label>{{st.label}}</label>
-        <md-select ng-model="st.current" md-on-close="st.current && item_selected(st.current, st.index)">
+        <md-select ng-model="st.current" ng-disabled="st.loading" md-on-close="st.current && item_selected(st.current, st.index)">
           <md-option ng-repeat="item in st.filters" ng-value="item">
             {{item.$name}}
           </md-option>
