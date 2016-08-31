@@ -10,8 +10,8 @@
     var vm = this;
     var remote=  scRemote;
     var pack=scPack;
-    var xcpk = db('scxcpk'),local=db('local'),dbpics=db('pics');
-    vm.base;
+    var xcpk = db('scxcpk'),dbpics=db('pics');
+
 
     remote.Procedure.authorityByUserId().then(function(res){
       if (res&&res.data&&res.data.length){
@@ -30,18 +30,6 @@
         };
         queryOnline();
       });
-      //基础数据包
-      local.get('base').then(function (result) {
-        vm.base = result;
-        baseQuery();
-      }).catch(function (err) {
-        vm.base={
-          _id:'base',
-          rows:[]
-        }
-        baseQuery();
-      });
-
     }).catch(function(r){
     });
 
@@ -78,20 +66,6 @@
             }).catch(function(){
               reject();
             });
-            //remote.Project.getDrawingRelations(projectId).then(function (result) {
-            //  var pics = [];
-            //  result.data.forEach(function (item) {
-            //    if (pics.indexOf(item.DrawingID) == -1) {
-            //      pics.push(item.DrawingID);
-            //    }
-            //  });
-            //  pics.forEach(function (drawingID) {
-            //    tasks.push(function () {
-            //      return remote.Project.getDrawing(drawingID)
-            //    })
-            //  });
-            //  resolve(result);
-            //})
           })
         },
         function () {
@@ -100,120 +74,10 @@
       ]
     }
 
-    vm.downloadBase=function(item){
-      $mdDialog.show({
-        controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
-          $scope.item=item;
-          var tasks = [];
-          tasks.push(function () {
-            return $q(function (resolve) {
-              item.pack = pack.sc.down(item);
-              $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
-                if(!item.pack)return;
-                if(item.pack && item.pack.completed) {
-                  resolve();
-                }
-              })
-            });
-          });
-          tasks = tasks.concat(projectTask(item.ProjectID));
-          item.percent = item.current =0; item.total = tasks.length;
-          api.task(tasks,{
-            event:'downloadsc',
-            target:item
-          })(null,function () {
-            vm.base.rows.forEach(function(k){
-              delete k.pack;
-              if (k.ProjectID==item.ProjectID){
-                k.loaded=true;
-              }
-            });
-            local.addOrUpdate(vm.base).then(function () {
-              item.percent = item.current = item.total = null;
-              utils.alert('下载完成');
-              $mdDialog.hide();
-            })
-          }, function (timeout) {
-            item.percent = item.current = item.total = null;
-            var msg=timeout?'请求超时,任务下载失败!':'下载失败,请检查网络';
-            utils.alert(msg);
-            $mdDialog.cancel();
-          })
-        }],
-        template: '<md-dialog aria-label="正在下载"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
-        parent: angular.element(document.body),
-        clickOutsideToClose:false,
-        fullscreen: false
-      });
-      //item.downloading = true;
-      //item.progress = 0;
-      //var tasks = [];
-      //tasks.push(function () {
-      //  return $q(function (resolve) {
-      //    item.pack = pack.sc.down(item);
-      //    $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
-      //      if(!item.pack)return;
-      //      var p = item.pack.getProgress();
-      //      item.progress = parseInt(p.progress);
-      //      if(item.pack && item.pack.completed) {
-      //        resolve();
-      //      }
-      //    })
-      //  });
-      //});
-      //tasks = tasks.concat(projectTask(item.ProjectID));
-      //api.task(tasks)(function (percent, current, total) {
-      //  item.progress = parseInt(percent * 100);
-      //}, function () {
-      //  vm.base.rows.forEach(function(k){
-      //      delete k.pack;
-      //      if (k.ProjectID==item.ProjectID){
-      //        k.loaded=true;
-      //      }
-      //  });
-      //  local.addOrUpdate(vm.base).then(function () {
-      //    item.downloading = false;
-      //    utils.alert('下载完成');
-      //  })
-      //}, function (timeout) {
-      //  item.downloading = false;
-      //  var msg=timeout?'请求超时,任务下载失败!':'下载失败,请检查网络';
-      //  utils.alert(msg);
-      //})
-    }
-
-    api.event('downloadsc',function (s,e) {
-      var current =vm.base.rows &&vm.base.rows.find(function (item) {
-          return item.ProjectID==e.target.ProjectID;
-        });
-      if(current) {
-        switch (e.event) {
-          case 'progress':
-            current.percent = parseInt(e.percent * 100) + ' %';
-            current.current = e.current;
-            current.total = e.total;
-            break;
-        }
-      }
-    },$scope);
-
-
-    vm.download = function (item) {
-      item.downloading = true;
-      item.progress = 0;
-      var tasks = [];
-      tasks.push(function () {
-        return remote.Assessment.getUserMeasureValue(item.ProjectID,1,item.AssessmentID,"Pack"+item.AssessmentID+"sc",sxt);
-      });
-      tasks.push(function () {
-        return remote.Assessment.getUserMeasurePoint(item.ProjectID,1,"Pack"+item.AssessmentID+"point");
-      });
-      tasks.push(function(){
-        return remote.Assessment.getAllMeasureReportData({RegionID:item.ProjectID,RecordType:1})
-      })
-      api.task(tasks)(function (percent, current, total) {
-        item.progress = parseInt(percent * 100);
-      }, function () {
+    vm.download=function(item,isReflsh){
+      vm.current=item;
+      //下载成功回掉
+      function callBack(){
         var ix = vm.onlines.indexOf(item);
         if (ix != -1)
           vm.onlines.splice(ix, 1);
@@ -248,58 +112,71 @@
             item.downloading = false;
             utils.alert('下载完成');
           })
-
         })
-      }, function () {
-        item.downloading = false;
-        utils.alert('下载失败,请检查网络');
-      },{timeout:20000})
-    }
-    vm.upload =function (item) {
-      item.uploading = true;
-      item.progress=0;
-      remote.Project.getMap(item.ProjectID).then(function (result) {
-          if(result.data&&result.data.length){
-            var pk = pack.sc.up(item.AssessmentID);
-            pk.upload(function (proc) {
-              item.progress = proc;
-              if(proc==-1) {
-                item.completed = pk.completed;
-                if(item.completed)
-                  remote.Assessment.sumReportTotal(item.AssessmentID).then(function(){
-                    xcpk.addOrUpdate(vm.data);
-                    item.progress = 100;
-                    utils.alert('同步完成');
-                    item.uploading = false;
-                  })
-                else {
-                  utils.alert('同步发生错误,未完成!');
-                  item.uploading = false;
+      }
+
+      $mdDialog.show({
+        controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+          $scope.item=item;
+          var tasks = [];
+          tasks.push(function () {
+            return remote.Assessment.getUserMeasureValue(item.ProjectID,1,item.AssessmentID,"Pack"+item.AssessmentID+"sc",sxt);
+          });
+          tasks.push(function () {
+            return remote.Assessment.getUserMeasurePoint(item.ProjectID,1,"Pack"+item.AssessmentID+"point");
+          });
+          tasks.push(function(){
+            return remote.Assessment.getAllMeasureReportData({RegionID:item.ProjectID,RecordType:1})
+          })
+          tasks.push(function () {
+            return $q(function (resolve) {
+              item.pack = pack.sc.down(item);
+              $rootScope.$on('pack'+item.AssessmentID,function (e,d) {
+                if(!item.pack)return;
+                if(item.pack && item.pack.completed) {
+                  resolve();
                 }
-              }
+              })
             });
-          }
-          else{
-            utils.alert(result.data.ErrorMessage);
-          }
-        })
-        .catch(function () {
-          utils.alert('网络出现异常')
-        })
+          });
+          tasks = tasks.concat(projectTask(item.ProjectID));
+          item.percent = item.current =0; item.total = tasks.length;
+          api.task(tasks,{
+            event:'downloadsc',
+            target:item
+          })(null,function () {
+                if (!isReflsh){
+                  callBack();
+                }else {
+                  utils.alert("刷新成功!");
+                }
+          }, function (timeout) {
+            item.percent = item.current = item.total = null;
+            var msg=timeout?'请求超时,任务下载失败!':'下载失败,请检查网络';
+            utils.alert(msg);
+            $mdDialog.cancel();
+          })
+        }],
+        template: '<md-dialog aria-label="正在下载"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+        parent: angular.element(document.body),
+        clickOutsideToClose:false,
+        fullscreen: false
+      });
+    }
 
-    }
-    vm.delete = function(item,ev){
-      utils.confirm('确认删除?',ev,'','').then(function(){
-        pack.sc.remove(item.AssessmentID,function () {
-          var idx = vm.data.rows.indexOf(item);
-          vm.data.rows.splice(idx, 1);
-          idx = vm.offlines.indexOf(item);
-          vm.offlines.splice(idx, 1);
-          xcpk.addOrUpdate(vm.data);
-          queryOnline();
-        })
-      })
-    }
+    api.event('downloadsc',function (s,e) {
+      var current =vm.current;
+      if(current) {
+        switch (e.event) {
+          case 'progress':
+            current.percent = parseInt(e.percent * 100) + ' %';
+            current.current = e.current;
+            current.total = e.total;
+            break;
+        }
+      }
+    },$scope);
+
 
     function queryOnline() {
       vm.onlines = [];
@@ -332,78 +209,24 @@
       });
     }
 
-    function baseQuery(){
-      remote.Project.getMap().then(function (result) {
-        if(result&&result.data.length>0){
-          result.data.forEach(function(k){
-            k.AssessmentID='scsl'+ k.ProjectID+'_'+vm.role;
-            k.AssessmentSubject= k.ProjectName;
-            if (!vm.base.rows.find(function(o){return o.ProjectID== k.ProjectID})){
-              vm.base.rows.push(k);
-            }
-          });
-        }
-      }).catch(function () {
-      });
-    }
-    vm.go=function(item,isReport){
-      function callBack(r){
+    vm.go=function(item){
+      var pk = db('pack'+item.AssessmentID);
+      pk.get('GetRegionTreeInfo').then(function(r){
         if (r&& r.data&& r.data.Children){
           var areas=r.data.Children;
           var  routeData={
             projectId:item.ProjectID,
             assessmentID:item.AssessmentID,
-            role:vm.role,
-            isReport:isReport
+            role:vm.role
+            //isReport:fa
           };
           if (angular.isArray(areas)&&areas.length>1){
             $state.go("app.xhsc.scsl.chooseArea",routeData)
           }else {
-            if(isReport){
-              $state.go("app.xhsc.scsl.sclist",angular.extend(routeData,{area:areas[0].RegionID}));
-            }else {
-              pk.update(r).then(function(){
-                $state.go("app.xhsc.scsl.sclist",angular.extend(routeData,{area:areas[0].RegionID}));
-              })
-            }
+            $state.go("app.xhsc.scsl.sclist",angular.extend(routeData,{area:areas[0].RegionID}));
           }
         }
-      }
-      if (!isReport){
-        var pk = db('pack'+item.AssessmentID);
-        pk.get('GetRegionTreeInfo').then(callBack).catch(function(r){
-        });
-      }else {
-        remote.Project.GetRegionTreeInfo(item.ProjectID).then(callBack).catch(function(r){
-        });
-      }
-
+      })
     }
-    vm.showECs = function(ev,item) {
-      $mdDialog.show({
-          controller: ['$scope', '$mdDialog','item', function DialogController($scope, $mdDialog,item) {
-            $scope.item = item;
-            $scope.hide = function () {
-              $mdDialog.hide();
-            };
-            $scope.cancel = function () {
-              $mdDialog.cancel();
-            };
-            $scope.answer = function (answer) {
-              $mdDialog.hide(answer);
-            };
-          }],
-          templateUrl: 'app/main/xhsc/ys/evaluateChoose.html',
-          parent: angular.element(document.body),
-          targetEvent: ev,
-          focusOnOpen:false,
-          locals:{
-            item:item
-          },
-          clickOutsideToClose: true
-        })
-        .then(function(answer) {
-        });
-    };
   }
 })();

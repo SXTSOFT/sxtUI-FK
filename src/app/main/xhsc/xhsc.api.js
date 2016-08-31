@@ -60,7 +60,7 @@
       getDrawingRelations: $http.db({
         _id: 'DrawingRelation',
         idField: 'ProjectId',
-        fileFiled:['FileContent'],
+        //fileFiled:['FileContent'],
         dataType: 3
       }).bind(function (projectId) {
         return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation', {projectId: projectId})).then(function(result){
