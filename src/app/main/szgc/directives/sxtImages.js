@@ -19,7 +19,7 @@
         edit:'@',
         files: '='
       },
-      template: '<div  style="color: red;padding-bottom: 0px;padding-left: 10px;padding-top: 0px;" ng-show="imgOK">上传成功!</div><div  style="color: red;" ng-show="imgFail">上传失败!</div> <div class="imageEdit"><div class="edititem"  ng-repeat="item in files" ><img style="height:150px;;margin:0 5px;" ng-src="{{item.Url|fileurl}}" class="img-thumbnail" /><div class="action"><md-button class="md-fab md-mini"  ng-if="edit"  ng-click="remove($event,item)"><md-icon md-font-icon="icon-delete" ></md-icon></md-button></div></div>\
+      template: '<div class="imageEdit"><div class="edititem"  ng-repeat="item in files" ><img style="height:150px;;margin:0 5px;" ng-src="{{item.Url|fileurl}}" class="img-thumbnail" /><div class="action"><md-progress-circular md-mode="indeterminate" md-diameter="20px" ng-if="item.Uploading"></md-progress-circular><md-button ng-if="!item.Uploading" class="md-fab md-mini"  ng-if="edit"  ng-click="remove($event,item)"><md-icon md-font-icon="icon-delete" ></md-icon></md-button></div></div>\
 <div  style="float:left;padding:5px;" ng-if="edit"><div class="file-drop-zone" layout="column" layout-align="space-around center" style="height:140px;margin:0 5px;line-height:140px; padding:5px;border-width:1px;" >\
 <md-button ng-click ="inputChange(0)" class="md-raised">照片库</md-button>\
 <md-button ng-click ="inputChange(1)" class="md-raised">拍照</md-button>\
@@ -43,15 +43,17 @@
             var att = {
               Id: sxt.uuid(),
               GroupId: scope.gid,
-              Url: newBase64
+              Url: newBase64,
+              Uploading:true
             };
+            var d = new Date();
+            api.uploadTask({
+              _id: att.Id,
+              name: '照片 (' + (d.getMonth()+1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ')'
+            });
+            scope.files.push(att);
             return api.szgc.FilesService.post(att).then(function () {
-              var d = new Date();
-              api.uploadTask({
-                _id: att.Id,
-                name: '照片 (' + (d.getMonth()+1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ')'
-              });
-              scope.files.push(att);
+              att.Uploading = false;
             });
           }
           scope.inputChange = function(s) {
