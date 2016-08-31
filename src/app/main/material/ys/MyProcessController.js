@@ -26,6 +26,14 @@
     vm.checkData.IsInspection = 1;
     vm.checkData.CheckTime = new Date();
     vm.checkData.sjReport = null;
+    $scope.data = {
+      imgs1:[],
+      imgs2:[],
+      imgs3:[],
+      imgs4:[],
+      imgs5:[]
+
+    };
 
     $scope.save = function(addForm) {
       vm.checkData.InspectionReport = vm.sjReport;
@@ -34,6 +42,17 @@
       vm.checkData.RegionNameTree = $scope.project.nameTree;
       vm.checkData.RegionId = $scope.project.pid;
       vm.checkData.ProjectName = $scope.project.projectName;
+
+      if($scope.data.imgs1.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 2}) == null)
+        vm.EnclosureType.push({OptionType:2,GroupImg:vm.groupId_2});
+      if($scope.data.imgs2.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 4}) == null)
+        vm.EnclosureType.push({OptionType:4,GroupImg:vm.groupId_4});
+      if($scope.data.imgs3.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 8}) == null)
+        vm.EnclosureType.push({OptionType:8,GroupImg:vm.groupId_8});
+      if($scope.data.imgs4.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 16}) == null)
+        vm.EnclosureType.push({OptionType:16,GroupImg:vm.groupId_16});
+      if($scope.data.imgs5.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 32}) == null)
+        vm.EnclosureType.push({OptionType:32,GroupImg:vm.groupId_32});
 
 
       if(vm.checkData.WgCheck == false ||(vm.fjType == 16 && vm.checkData.sjReport == false)) {
@@ -95,7 +114,6 @@
           });
         }else{
           utils.alert('提交失败').then(function () {
-            $scope.isSaveing = false;
           });
         }
       });
@@ -165,35 +183,64 @@
     }
 
     vm.ok = function(){
+      vm.checkData.HandleOption = null;
       if(vm.checkDataId != ''){
-        console.log(vm.checkData.sjReport);
-        api.material.addProcessService.Insert({
-          CheckData:{Id:vm.checkDataId,InspectionReport:vm.checkData.sjReport,CheckResult:vm.checkData.sjReport},
-          CheckDataOptions:[{OptionType:16,GroupImg:vm.groupId_16}]
-        }).then(function (result) {
-          if(result){
-            utils.alert('提交完成').then(function () {
-              $state.go('app.szgc.ys');
-            });
-          }else{
-            utils.alert('提交失败').then(function () {
-            });
-          }
-        });
-      }else{
+        if(vm.checkData.sjReport == 0){
+          $mdDialog.show({
+            controller: ['$scope',function ($scope) {
+              $scope.hide = function() {
+                $mdDialog.hide();
+              };
+              $scope.cancel = function() {
+                $mdDialog.cancel();
+              };
+              $scope.answer = function() {
+                vm.checkData.HandleOption = $scope.clyj;
 
-        if($scope.data.imgs1.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 2}) == null)
-          vm.EnclosureType.push({OptionType:2,GroupImg:vm.groupId_2});
-        if($scope.data.imgs2.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 4}) == null)
-          vm.EnclosureType.push({OptionType:4,GroupImg:vm.groupId_4});
-        if($scope.data.imgs3.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 8}) == null)
-          vm.EnclosureType.push({OptionType:8,GroupImg:vm.groupId_8});
-        if($scope.data.imgs4.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 16}) == null)
-          vm.EnclosureType.push({OptionType:16,GroupImg:vm.groupId_16});
-        if($scope.data.imgs5.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 32}) == null)
-          vm.EnclosureType.push({OptionType:32,GroupImg:vm.groupId_32});
+                api.material.addProcessService.Insert({
+                  CheckData:{Id:vm.checkDataId,InspectionReport:vm.checkData.sjReport,CheckResult:vm.checkData.sjReport,HandleOption:vm.checkData.HandleOption},
+                  CheckDataOptions:[{OptionType:16,GroupImg:vm.groupId_16}]
+                }).then(function (result) {
+                  if(result){
+                    utils.alert('提交完成').then(function () {
+                      $state.go('app.szgc.ys');
+                    });
+                  }else{
+                    utils.alert('提交失败').then(function () {
+                    });
+                  }
+                });
+              };
+            }],
+            templateUrl: 'app/main/material/ys/treatmentOption.html',
+            bindToController:true,
+            fullscreen: $scope.customFullscreen
+          });
+        }else {
+          api.material.addProcessService.Insert({
+            CheckData:{Id:vm.checkDataId,InspectionReport:vm.checkData.sjReport,CheckResult:vm.checkData.sjReport,HandleOption:vm.checkData.HandleOption},
+            CheckDataOptions:[{OptionType:16,GroupImg:vm.groupId_16}]
+          }).then(function (result) {
+            if(result){
+              utils.alert('提交完成').then(function () {
+                $state.go('app.szgc.ys');
+              });
+            }else{
+              utils.alert('提交失败').then(function () {
+              });
+            }
+          });
+        }
       }
-    }
+    };
+
+
+    //获取材料供应商
+    api.material.SupplierService.GetAll({startrowIndex:0,maximumRows:100,Status:4}).then(function(result){
+      $scope.supplier = result.data.Rows;
+    });
+
+
 
 
     $scope.is = function(route){
@@ -219,11 +266,6 @@
     $scope.getNetwork = function () {
       return api.getNetwork();
     }
-
-    //获取材料供应商
-    api.material.SupplierService.GetAll({startrowIndex:0,maximumRows:100,Status:4}).then(function(result){
-      $scope.supplier = result.data.Rows;
-    });
 
     $scope.isPartner = api.szgc.vanke.isPartner();
     $scope.project = {

@@ -6,14 +6,14 @@
           <!--<md-subheader class="md-no-sticky">材料</md-subheader>-->
           <md-list-item>
             <div class="md-list-item-text" flex layout="column">
-              <h3>供应商</h3>
+              <h3>材料</h3>
             </div>
             <sxt-material style="width:75%;margin: 18px 0 0 0;" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-material>
           </md-list-item>
           <md-divider></md-divider>
           <md-list-item>
             <div class="md-list-item-text" flex layout="column">
-              <h3>供应商</h3>
+              <h3>供货方</h3>
             </div>
             <md-select placeholder="" ng-model="vm.checkData.SupplierId" style="width: 75%;">
               <md-option ng-value="s.Id" ng-repeat="s in supplier">{{s.Name}}</md-option>
@@ -42,9 +42,11 @@
             <div class="md-list-item-text" flex layout="column">
               <h3>合同编号</h3>
             </div>
-            <md-select placeholder="" ng-model="vm.checkData.Manufactor" style="width:75%;">
-
-            </md-select>
+            <!--<md-select placeholder="" ng-model="vm.checkData.Manufactor" style="width:75%;">-->
+            <!--</md-select>-->
+            <md-input-container class="md-block" flex-gt-sm style="width: 75%;margin: 18px 0 0 0;">
+              <input style="width: 100%;" ng-model="vm.checkData.ContractNumber">
+            </md-input-container>
           </md-list-item>
           <md-divider></md-divider>
           <md-list-item>
@@ -101,7 +103,7 @@
         <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">附件类型</div>
         <md-radio-group ng-model="vm.fjType" >
           <div class="row" ng-repeat="item in vm.Type" >
-            <div flex layout='row' style="padding: 0 0 0 8px;" layout-align="start center">
+            <div flex layout='row' style="padding: 0 8px;" layout-align="start center">
               <div flex>
                 <h3>{{item.name}}</h3>
               </div>

@@ -3,7 +3,7 @@
     <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">附件类型</div>
     <md-radio-group ng-model="fjType" >
       <div class="row" ng-repeat="item in vm.Type" >
-        <div flex layout='row' style="padding: 0 0 0 8px;" layout-align="start center">
+        <div flex layout="row" style="padding: 0 8px 0 8px;" layout-align="start center">
           <div flex>
             <h3>{{item.name}}</h3>
           </div>
@@ -26,13 +26,6 @@
         </md-radio-group>
       </div>
     </div>
-    <!--<md-list-item ng-show="fjType==16" >-->
-      <!--<div class="md-list-item-text" flex layout="column">-->
-        <!--<h3>送检报告</h3>-->
-      <!--</div>-->
-
-      <!--<md-switch flex-gt-sm style="margin: 23px 0 23px 0;" ng-model="sjReport" ng-true-value="1" ng-false-value="0"></md-switch>-->
-    <!--</md-list-item>-->
     <md-divider></md-divider>
     <div class="row">
       <fieldset ng-show="fjType == 2">
