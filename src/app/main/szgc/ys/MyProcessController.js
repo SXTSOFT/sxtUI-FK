@@ -44,6 +44,10 @@
       console.log($scope.mlCheckData);
     });
 
+    $scope.goMaterialDetail = function (id) {
+      $state.go('app.material.ys.detail',{id:id});
+    }
+
     $scope.isPartner = api.szgc.vanke.isPartner();
     $scope.roleId = api.szgc.vanke.getRoleId();
     $scope.project = {

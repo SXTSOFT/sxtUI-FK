@@ -20,7 +20,7 @@
 
       .state('app.material.ys',{
         title:'验收',
-        url:'/mys',
+        url:'/mys/{id}',
         views :{
           'content@app':{
             controller:'MMyProcessController as vm',
