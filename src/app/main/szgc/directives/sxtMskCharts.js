@@ -203,7 +203,7 @@
                   data: x,
                   axisLabel: {
                     interval: function (index, value) {
-                      return index % (maxRooms + 1) == 1;
+                      return index % (maxRooms + 1) == parseInt((maxRooms + 1)/2);
                     },
                     show: true
                   },

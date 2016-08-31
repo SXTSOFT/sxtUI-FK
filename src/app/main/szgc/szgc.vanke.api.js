@@ -10,7 +10,7 @@
   function config(apiProvider){
     var partner = [],zbPartner=[],procedureId = '2814510f-0188-4993-a153-559b40d0b5e8';
 
-    var $http,$q,auth,api;
+    var $http,$q,auth,api,utils;
     angular.injector(['ng']).invoke([
       '$http','$q',function (_$http,_$q)
       {
@@ -198,9 +198,15 @@
                           result.data.data.splice(i, 1);
                         }
                       }
+                      p1 = result;
+                      resolve(p1);
                     }
-                    p1 = result;
-                    resolve(p1);
+                    else{
+                      alert('发生网络错误，稍后再试')
+                      p1 = null;
+                      resolve({data:{data:[]}})
+                    }
+
                   });
                 });
               }
