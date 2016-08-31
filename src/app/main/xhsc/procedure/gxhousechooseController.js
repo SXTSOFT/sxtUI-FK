@@ -173,13 +173,17 @@
           })
         })
         vm.houses =  result.data[0].RegionRelations;
+        return vm.houses;
       });
     }
 
     load();
 
     vm.callBack=function(){
-      load();
+      load().then(function(){
+        $mdDialog.hide();
+        utils.alert('报验成功')
+      });
     };
     vm.selected = function(r){
       switch (role){

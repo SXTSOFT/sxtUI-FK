@@ -17,7 +17,7 @@
   <!--</md-content>-->
 
 
-  <div flex layout="row" class="gx-list" ng-class="{'narrow':level == 2}">
+  <div flex layout="row" class="gx-list" style="position: relative" ng-class="{'narrow':level == 2}">
     <div flex="33" layout="column">
       <md-content class="list-left" flex style="background: #f0f0f0;border-right:1px solid #dedede;">
         <div>
@@ -30,7 +30,7 @@
         </div>
       </md-content>
     </div>
-    <div flex layout="column" style="background: #fff;position:relative;">
+    <div flex ng-show="!vm.acceptanceItem.length" layout="column" style="background: #fff;position:relative;">
       <md-content class="list-right" flex>
         <div class="floors" layout="column">
           <md-list>
@@ -41,15 +41,22 @@
         </div>
       </md-content>
     </div>
-    <div flex="33" ng-if="vm.acceptanceItem.length" layout="column" style="background: #fff;position:relative;">
+    <div flex ng-show="vm.acceptanceItem.length" layout="column" style="background: #fff;position:relative;">
       <md-content class="list-right" flex>
         <div class="floors" layout="column">
           <md-list>
             <md-list-item ng-click="vm.choosego(item)" layout="row" ng-repeat="item in  vm.acceptanceItem" >
-              <p >{{item.AcceptanceItemName}}</p>
+              <p flex>{{item.AcceptanceItemName}}</p>
             </md-list-item>
           </md-list>
         </div>
       </md-content>
+    </div>
+    <div ng-show="vm.acceptanceItem.length" style="position: absolute;right:5px">
+      <md-button class="md-fab" ng-click="vm.comeBack()">
+        <md-icon md-svg-src="app/main/xhsc/images/icon-comeback.svg"></md-icon>
+      </md-button>
+
+        <!--<img src="app/main/xhsc/images/circle.jpg">上一级</img>-->
     </div>
   </div>

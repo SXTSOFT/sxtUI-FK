@@ -15,15 +15,19 @@
     vm.role=$stateParams.role;
 
     vm.selectSpecialty=function(item){
-        if (item.SpecialtyChildren&&item.SpecialtyChildren.length){
+        //if (item.SpecialtyChildren&&item.SpecialtyChildren.length){
           vm.gxClassType=item.SpecialtyChildren;
-        }
+          vm.acceptanceItem=[];
+        //}
     }
     vm.acceptanceItem=[];
     vm.selectSpecialtyLow=function(item){
       vm.acceptanceItem=item.WPAcceptanceList?item.WPAcceptanceList:[];
     }
 
+    vm.comeBack=function(){
+      vm.acceptanceItem=[];
+    }
     remote.Procedure.queryProcedure().then(function(result){
      vm.data=result.data;
       console.log(vm.data);
