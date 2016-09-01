@@ -21,8 +21,8 @@
 <!--                <md-button  ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
                   详情
                 </md-button>-->
-                <md-button  class="md-raised upload-btn" ng-click="vm.download(item)">
-                  <md-progress-circular ng-show="item.downloading && item.progress && item.progress!=100" md-mode="determinate" value="{{item.progress}}"  md-diameter="20"></md-progress-circular>
+                <md-button  class="md-raised upload-btn" ng-click="vm.download(item,true)">
+                  <!--<md-progress-circular ng-show="item.downloading && item.progress!=100" md-mode="determinate" value="{{item.progress}}"  md-diameter="20"></md-progress-circular>-->
                   重下
                 </md-button>
           <span style="display:inline-block;text-align: center;">
@@ -47,12 +47,12 @@
 <!--                <md-button ng-if="!item.pack.isDown"  ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
                   详情
                 </md-button>-->
-            <md-button ng-if="!item.pack.isDown" class="md-raised upload-btn" ng-click="vm.download(item)">
+            <md-button  class="md-raised upload-btn" ng-click="vm.download(item)">
               下载
             </md-button>
-           <a  ng-if="item.pack.isDown" style="position: relative;display: inline-block;width:31px;height:31px;border:1px solid #f8f8f8;border-radius:50%" ng-click="vm.cancel()">
-             <md-progress-circular md-mode="determinate" value="{{item.progress}}"  md-diameter="30"></md-progress-circular>
-             <md-icon style="width:10px;height:10px;background: #0185f1;position: absolute;left:10px;top:10px;"></md-icon></a>
+           <!--<a  ng-if="item.downloading" style="position: relative;display: inline-block;width:31px;height:31px;border:1px solid #f8f8f8;border-radius:50%" ng-click="vm.cancel()">-->
+             <!--<md-progress-circular md-mode="determinate" value="{{item.progress}}"  md-diameter="30"></md-progress-circular>-->
+             <!--<md-icon style="width:10px;height:10px;background: #0185f1;position: absolute;left:10px;top:10px;"></md-icon></a>-->
            <!--<md-button  ng-if="item.pack.isDown" style="display: inline-block;vertical-align: middle;padding:5px;color:#0185f1;min-width:40px;" ui-sref="app.xhsc.ddetail">详情</md-button>-->
           </span>
               </div>

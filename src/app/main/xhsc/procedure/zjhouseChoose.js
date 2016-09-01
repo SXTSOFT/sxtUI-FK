@@ -9,7 +9,7 @@
     .controller('zjhouseChooseController',zjhouseChooseController);
 
   /** @ngInject */
-  function zjhouseChooseController($scope,$stateParams,sxt,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils){
+  function zjhouseChooseController($scope,$stateParams,sxt,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils,api){
     var vm=this,
       projectId = $stateParams.projectId,
       acceptanceItemID=$stateParams.acceptanceItemID,
@@ -157,19 +157,7 @@
         var find = res[2].data.forEach(function(p){
           return p.ProjectID == projectId;
         })
-        //if(find){
-        //  var allRegins = find;
-        //  var idx = allRegins.RegionIDs.indexOf(',');
-        //  if(idx == -1){
-        //
-        //  }else{
-        //    var arr=[];
-        //    arr=allRegins.RegionIDs.split(',');
-        //    for(var i=0;i<arr.length;i++){
-        //
-        //    }
-        //  }
-        //}
+
         result.data[0].RegionRelations.forEach(function(d){
           filterOrSetting(status,d);
           d.projectTree =  d.RegionName;
@@ -197,31 +185,28 @@
     }
 
     load();
-    var inspectionInfoDef = remote.Procedure.getInspectionInfoBySign(8);
-
+    var inspectionInfoDef = remote.Procedure.getRegionStatus(projectId,"8");
     vm.callBack=function(){
       load();
     };
     vm.selected = function(r){
       inspectionInfoDef.then(function (r1) {
         var fd = r1.data.find(function (item) {
-          return item.Children.find(function (area) {
-            return area.AreaID == r.RegionID;
-          })!=null;
+          return item.AreaId==r.RegionID&&item.AcceptanceItemID==acceptanceItemID;
+          //return item.Children.find(function (area) {
+          //  return area.AreaID == r.RegionID;
+          //})!=null;
         });
         if(fd!=null){
           $state.go('app.xhsc.gx.gxzjcheck',
             {
               acceptanceItemID:acceptanceItemID,
               acceptanceItemName:acceptanceItemName,
-              //name: vm.data.AreaList[0].newName,
               projectId:projectId,
-              //areaId:vm.data.AreaList[0].AreaID,
               InspectionId:fd.InspectionId
             });
         }
         else{
-          console.log('r',r);
           r.checked = true;
           $rootScope.$emit('sendGxResult');
         }
@@ -348,20 +333,19 @@
       })
       if(vm.data.AreaList.length){
         if(!vm.data.Id)
-          vm.data.InspectionID = sxt.uuid();
-        remote.Procedure.postInspection(vm.data).then(function(result){
-          console.log(result);
-          if (result.data.ErrorCode==0){
-            $state.go('app.xhsc.gx.gxzjcheck',
-              {
-                acceptanceItemID:acceptanceItemID,
-                acceptanceItemName:acceptanceItemName,
-                //name: vm.data.AreaList[0].newName,
-                projectId:projectId,
-                //areaId:vm.data.AreaList[0].AreaID,
-                InspectionId:result.data.Data.InspectionID
-              });
-          }
+          vm.data.InspectionId = sxt.uuid();
+        api.setNetwork(1).then(function(){
+          remote.Procedure.postInspection(vm.data).then(function(result){
+            if (result.data.ErrorCode==0){
+              $state.go('app.xhsc.gx.gxzjcheck',
+                {
+                  acceptanceItemID:acceptanceItemID,
+                  acceptanceItemName:acceptanceItemName,
+                  projectId:projectId,
+                  InspectionId:result.data.args[0].InspectionId
+                });
+            }
+          });
         });
       }else{
         utils.alert('请选择区域');

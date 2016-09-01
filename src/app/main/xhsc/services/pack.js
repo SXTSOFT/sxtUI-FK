@@ -8,7 +8,7 @@
     .module('app.xhsc')
     .factory('pack',pack);
   /** @ngInject */
-  function pack(localPack, remotePack,sxt,db,$cordovaFile) {
+  function pack(localPack, remotePack,sxt,db,$cordovaFile,$q) {
     var p ={
       sc:{
         down:function (item) {
@@ -24,15 +24,9 @@
               {
                 _id:'GetRegionTreeInfo',
                 name:'获取区域信息',
-                url:'/Api/ProjectInfoApi/GetRegionTreeInfo?AreaID='+item.AreaID,
+                url:'/Api/ProjectInfoApi/GetRegionTreeInfoNotUser?AreaID='+item.AreaID,
                 type:'data',
                 item:angular.copy(item)
-              },
-              {
-                _id:'GetDrawingByAreaID',
-                name:'获取区域图纸',
-                url:'/Api/ProjectInfoApi/GetDrawingByAreaID?AreaID='+item.AreaID,
-                type:'data'
               }
             ]
           });
@@ -69,41 +63,43 @@
           })
         },
         remove:function (id,cb,progress){
-          localPack.unPack(id);
-          remotePack.unPack(id);
-          var totalStep = 9,
-            fn = function (step) {
-              progress && progress(parseInt(step/totalStep*100));
-          };
-          fn(0);
-          p.destroyDb('pack'+id,function () {
-            fn(1);
-            p.destroyDb('Pack'+id+'sc',function () {
-              fn(2);
-              p.destroyDb('Pack'+id+'point',function () {
-                fn(3);
-                p.destroyDb('Pack'+id+'indexs',function () {
-                  fn(4);
-                  p.destroyDb('Pack'+id+'pics',function () {
-                    fn(5);
-                    p.destroyDir(id, function () {
-                      fn(6);
-                      p.destroyDb('Pack'+id+'stzl_item',function () {
-                        fn(7);
-                        p.destroyDb('Pack'+id+'stzl_question',function () {
-                          fn(8);
-                          p.destroyDb('Pack'+id+'stzl_images', function () {
-                            fn(9);
-                            cb();
+          return $q(function(resolve,reject){
+            localPack.unPack(id);
+            remotePack.unPack(id);
+            var totalStep = 9,
+              fn = function (step) {
+                progress && progress(parseInt(step/totalStep*100));
+              };
+            fn(0);
+            p.destroyDb('pack'+id,function () {
+              fn(1);
+              p.destroyDb('Pack'+id+'sc',function () {
+                fn(2);
+                p.destroyDb('Pack'+id+'point',function () {
+                  fn(3);
+                  p.destroyDb('Pack'+id+'indexs',function () {
+                    fn(4);
+                    p.destroyDb('Pack'+id+'pics',function () {
+                      fn(5);
+                      p.destroyDir(id, function () {
+                        fn(6);
+                        p.destroyDb('Pack'+id+'stzl_item',function () {
+                          fn(7);
+                          p.destroyDb('Pack'+id+'stzl_question',function () {
+                            fn(8);
+                            p.destroyDb('Pack'+id+'stzl_images', function () {
+                              fn(9);
+                              cb();
+                            });
                           });
-                        });
-                      })
+                        })
+                      });
                     });
-                  });
+                  })
                 })
               })
             })
-          })
+          });
         }
 
       },

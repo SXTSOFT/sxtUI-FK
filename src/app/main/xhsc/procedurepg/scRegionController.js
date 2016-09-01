@@ -21,7 +21,7 @@
     $rootScope.title = $stateParams.acceptanceItemName;
     $rootScope.sendBt = false;
     vm.maxRegion = $stateParams.maxRegion;
-    var _db=db('pack'+ assessmentID);
+    //var _db=db('pack'+ assessmentID);
     vm.nums={
       qb:0,
       wtj:0,//未提交
@@ -95,7 +95,7 @@
 
       function  callBack(r){
         vm.loading = true;
-        var project= r.data,_area;
+        var project= r.data.data,_area;
         if (angular.isArray(project.Children)){
           _area=project.Children.find(function(k){
             return k.RegionID==area;
@@ -104,12 +104,12 @@
           vm.houses =  [_area];
         }
       }
-
-      if (isReport=='0'||isReport==0){
-        _db.get("GetRegionTreeInfo").then(callBack);
-      }else {
-          remote.Project.GetRegionTreeInfo(projectId).then(callBack);
-      }
+      remote.Assessment.GetRegionTreeInfo(projectId,'pack'+assessmentID).then(callBack);
+      //if (isReport=='0'||isReport==0){
+      //  _db.get("GetRegionTreeInfo").then(callBack);
+      //}else {
+      //    remote.Project.GetRegionTreeInfo(projectId).then(callBack);
+      //}
     }
 
     load();

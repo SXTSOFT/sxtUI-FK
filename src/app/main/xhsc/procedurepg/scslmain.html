@@ -9,13 +9,12 @@
               <p flex style="font-size:16px;padding-left:12px;">
                 {{item.ProjectName}}
               </p>
-              <!--<span flex></span>-->
               <div flex="none" layout="row">
                 <md-button ng-if="true"  ng-click="vm.go(item)"   class="md-raised md-primary" style="min-width:50px;padding:0px;margin:0px 0px 0px 5px ;line-height:35px ">
                   实测
                 </md-button>
-                <md-button  class="md-raised upload-btn" style="min-width:50px;padding:0px;margin:0px 0px 0px 5px ;line-height:35px" ng-click="vm.download(item)">
-                  <md-progress-circular ng-if="item.downloading && item.progress && item.progress!=100" md-mode="determinate" value="{{item.progress}}"  md-diameter="20"></md-progress-circular>
+                <md-button  class="md-raised upload-btn" style="min-width:50px;padding:0px;margin:0px 0px 0px 5px ;line-height:35px" ng-click="vm.download(item,true)">
+                  <!--<md-progress-circular ng-if="item.downloading && item.progress && item.progress!=100" md-mode="determinate" value="{{item.progress}}"  md-diameter="20"></md-progress-circular>-->
                    刷新
                 </md-button>
                 <md-button ng-click="vm.upload(item)" class="md-raised upload-btn" style="min-width:50px;padding:0px;margin:0px 5px 0px 5px ;line-height:35px">
@@ -31,38 +30,8 @@
                 {{item.ProjectName}}
               </p>
               <div flex="none" class="md-secondary md-hue-3"  style="right:5px">
-               <span style="display:inline-block;text-align: center;">
-                  <md-button ng-if="!item.downloading" class="md-raised upload-btn" ng-click="vm.download(item)"
-                     style="min-width:50px;padding:0px;margin:3px;line-height:35px ">
-                 下载
-               </md-button>
-                 <a  ng-if="item.downloading" style="position: relative;display: inline-block;width:31px;height:31px;border:1px solid #f8f8f8;border-radius:50%" ng-click="vm.cancel()">
-                   <md-progress-circular md-mode="determinate" value="{{item.progress}}"  md-diameter="30"></md-progress-circular>
-                   <md-icon style="width:10px;height:10px;background: #0185f1;position: absolute;left:10px;top:10px;"></md-icon></a>
-                </span>
-              </div>
-            </md-list-item>
-          </md-list>
-        </div>
-      </md-content>
-    </md-tab-content>
-  </md-tab>
-
-  <md-tab label="基础包下载">
-    <md-tab-content  style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
-      <md-content class="download" style="padding: 0px">
-        <div layout="column">
-          <md-subheader><span style="margin-left: -18px">项目列表</span></md-subheader>
-          <md-list style="padding:0px">
-            <md-list-item ng-repeat="item in vm.base.rows" layout="row">
-              <p flex style="font-size:16px;padding-left:12px;">
-                {{item.ProjectName}}
-              </p>
-              <!--<span flex></span>-->
-              <div flex="none" layout="row">
-                <md-button  class="md-raised upload-btn" style="min-width:50px;padding:0px;margin:0px 5px 0px 0px ;line-height:35px" ng-click="vm.downloadBase(item)">
-                  <md-progress-circular ng-if="item.downloading && item.progress && item.progress!=100" md-mode="determinate" value="{{item.progress}}"  md-diameter="20"></md-progress-circular>
-                  <span ng-if="!item.loaded">下载</span><span ng-if="item.loaded">刷新</span>
+                <md-button ng-click="vm.download(item)" class="md-raised md-primary" style="min-width:50px;padding:0px;margin:0px 10px 0px 0px ;line-height:35px" >
+                  <md-icon  md-font-icon="icon-download"></md-icon>
                 </md-button>
               </div>
             </md-list-item>
@@ -72,22 +41,26 @@
     </md-tab-content>
   </md-tab>
 
-
-
-  <!--<md-tab label="查看结果">-->
+  <!--<md-tab label="基础包下载">-->
     <!--<md-tab-content  style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">-->
       <!--<md-content class="download" style="padding: 0px">-->
         <!--<div layout="column">-->
-          <!--<md-subheader><span style="margin-left: -18px">项目汇总列表</span></md-subheader>-->
+          <!--<md-subheader><span style="margin-left: -18px">项目列表</span></md-subheader>-->
           <!--<md-list style="padding:0px">-->
-            <!--<md-list-item ng-repeat="item in vm.projects" layout="row">-->
+            <!--<md-list-item ng-repeat="item in vm.base.rows" layout="row">-->
               <!--<p flex style="font-size:16px;padding-left:12px;">-->
                 <!--{{item.ProjectName}}-->
               <!--</p>-->
-              <!--<div class="md-secondary">-->
-                <!--<md-button  ng-click="vm.go(item,1)"  class="md-raised md-primary" style="min-width:50px;padding:0px;margin:0px 0px 0px 5px ;line-height:35px ">-->
-                  <!--查看-->
+              <!--&lt;!&ndash;<span flex></span>&ndash;&gt;-->
+              <!--<div flex="none" layout="row">-->
+                <!--<md-button ng-click="vm.downloadBase(item)" class="md-raised md-primary" style="min-width:50px;padding:0px;margin:0px 10px 0px 0px ;line-height:35px" >-->
+                  <!--<md-icon ng-if="item.loaded" md-font-icon="icon-box-download"></md-icon>-->
+                  <!--<md-icon ng-if="!item.loaded" md-font-icon="icon-download"></md-icon>-->
                 <!--</md-button>-->
+                <!--&lt;!&ndash;<md-button  class="md-raised upload-btn" style="min-width:50px;padding:0px;margin:0px 5px 0px 0px ;line-height:35px" ng-click="vm.downloadBase(item)">&ndash;&gt;-->
+                  <!--&lt;!&ndash;<md-progress-circular ng-if="item.downloading && item.progress && item.progress!=100" md-mode="determinate" value="{{item.progress}}"  md-diameter="20"></md-progress-circular>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<span ng-if="!item.loaded">下载</span><span ng-if="item.loaded">刷新</span>&ndash;&gt;-->
+                <!--&lt;!&ndash;</md-button>&ndash;&gt;-->
               <!--</div>-->
             <!--</md-list-item>-->
           <!--</md-list>-->

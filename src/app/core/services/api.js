@@ -55,11 +55,14 @@
       api.uploadTask = uploadTask;
       api.event = event;
       provider.setNetwork = api.setNetwork = function (state) {
-        networkState = state;
-        if(networkState==0)
-          $rootScope.$emit('sxt:online');
-        else
-          $rootScope.$emit('sxt:offline');
+        return provider.$q.$q(function(resolve,reject){
+          networkState = state;
+          if(networkState==0)
+            $rootScope.$emit('sxt:online');
+          else
+            $rootScope.$emit('sxt:offline');
+          resolve(networkState);
+        })
       };
       api.getNetwork = provider.getNetwork = function () {
         return networkState;
@@ -115,15 +118,15 @@
         api.networkState(api.oNetwork);
       };
 
-      $rootScope.$on('$cordovaNetwork:online', function(event, state){
-        api.resetNetwork();
-      });
-      $rootScope.$on('$cordovaNetwork:offline', function(event, state){
-        api.resetNetwork();
-      });
-      $timeout(function () {
-        $rootScope.$emit('$cordovaNetwork:online');
-      },100);
+      //$rootScope.$on('$cordovaNetwork:online', function(event, state){
+      //  api.resetNetwork();
+      //});
+      //$rootScope.$on('$cordovaNetwork:offline', function(event, state){
+      //  api.resetNetwork();
+      //});
+      //$timeout(function () {
+      //  $rootScope.$emit('$cordovaNetwork:online');
+      //},100);
 
 
       api.db = provider.$http.db;
@@ -397,7 +400,7 @@
                     target:config.target,
                     event:'fail'
                   });
-                fail && fail();
+                fail && fail(true);
               }
             },30000);
             fn(tasks,donwfile).then(function (k) {
@@ -410,6 +413,7 @@
                 }
               }
             }).catch(function (err) {
+              isTimeout=true;
               d = 0;
               if(config && config.event)
                 provider.$rootScope.$emit(config.event,{
@@ -475,6 +479,9 @@
             var args = toArray(arguments),
               lodb = initDb(cfg,args),
               caller = this;
+            //if (cfg.upload){ //上传的数据只能加载到本地，走离线
+            //  return userOffline(caller, lodb, args, cb, fn);
+            //}
             if (cfg.mode == 1) { //1 离线优先，无离线数据尝试网络；
               var oRaiseError = cfg.raiseError;
               cfg.raiseError = true;
@@ -544,7 +551,7 @@
 
       function userOffline(caller, lodb, args, cb, fn) {
         var p2 = provider.$q.$q(function (resolve, reject) {
-          if (!cfg._id) {
+          if (!cfg._id&&!lodb) {
             resolve(bindData({}, [], cfg));
           }
           else if (cfg.delete) {

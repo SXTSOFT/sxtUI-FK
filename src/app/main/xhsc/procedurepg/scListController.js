@@ -22,17 +22,18 @@
 
     function  callback(result){
       vm.procedureData = [];
-      if (result.data){
-        vm.procedureData=result.data;
+      if (result.data&&result.data.data){
+        vm.procedureData=result.data.data;
       }
     }
 
-    if (isReport=='0'||isReport==0){
-      var _db=db('pack'+ vm.assessmentID);
-      _db.get("GetMeasureItemInfoByAreaID").then(callback);
-    }else {
-      scRemote.Project.GetMeasureItemInfoFilter(vm.projectId).then(callback);
-    }
+    scRemote.Assessment.GetMeasureItemInfoByAreaID(vm.projectId,'pack'+vm.assessmentID).then(callback);
+    //if (isReport=='0'||isReport==0){
+    //  var _db=db('pack'+ vm.assessmentID);
+    //  _db.get("GetMeasureItemInfoByAreaID").then(callback);
+    //}else {
+    //  scRemote.Project.GetMeasureItemInfoFilter(vm.projectId).then(callback);
+    //}
     //离线待实现
     function getMax(regionStr){
       var val= 0,tmp;

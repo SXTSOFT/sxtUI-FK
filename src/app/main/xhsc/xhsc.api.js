@@ -60,7 +60,7 @@
       getDrawingRelations: $http.db({
         _id: 'DrawingRelation',
         idField: 'ProjectId',
-        fileFiled:['FileContent'],
+        //fileFiled:['FileContent'],
         dataType: 3
       }).bind(function (projectId) {
         return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation', {projectId: projectId})).then(function(result){
@@ -76,6 +76,9 @@
           data:result.data.Relations
         }
       }),
+      GetAreaChildenbyID:function(regionID){
+       return  $http.get($http.url('/api/ProjectInfoApi/GetAreaChildenById', {areaId: regionID}))
+      },
       getDrawings: $http.db({
         _id: 'Drawing',
         idField: 'DrawingID',
@@ -117,6 +120,14 @@
       }).bind(function(inspectionId){
         return $http.get($http.url('/api/InspectionApi/GetInspectionInfoByInspection',{inspectionId:inspectionId}));
       }),
+      getZjInspectionList:$http.db({
+        _id:'InspectionApi',
+        idField:'InspectionID',
+        dataType:1,
+        filter:function (item,inspectionId) {
+          return item.InspectionID==inspectionId;
+        }
+      }).bind(),
       insertInspectionList:$http.db({
         _id:'Inspection',
         idField:'InspectionId',
@@ -328,16 +339,16 @@
         });
       }),
       postInspection:$http.db({
-        _id:'InspectionApi',
+        _id:'Inspection',
         upload:true,
-        idField:'InspectionID'
+        idField:'InspectionId'
       }).bind(function(params){
-        return $http.post($http.url('/Api/InspectionApi/insert'),params )
+        return $http.post($http.url('/Api/InspectionApi/insert'),params)
       },function (r,cfg,args) {
         if(!r.data){
           r = r[0];
           return this.root.xhsc.Project.insertInspectionList({
-            "InspectionId":r.InspectionID,
+            "InspectionId":r.InspectionId,
             "ProjectID":r.AreaList[0].AreaID.substring(0,5),
             "Percentage":100.0,
             "Describe":"",
@@ -490,6 +501,90 @@
       }
     },
     Assessment:{
+      GetMeasureItemInfoByAreaID:$http.db({
+        db:function (AreaID,db) {
+          return db;
+        },
+        idField:function(){
+          return 'GetMeasureItemInfoByAreaID';
+        },
+        filter:function(item){
+          return item._id=='GetMeasureItemInfoByAreaID'
+        },
+        dataType:3
+      }).bind(function (AreaID,db) {
+        return $http.get($http.url('/Api/MeasureInfo/GetMeasureItemInfo',{areaID:AreaID})).then(function(result){
+          result.data=result.data?result.data:[];
+          return {
+            data:{
+              data:result.data
+            }
+          }
+        });
+      }),
+      GetRegionTreeInfoNotUser:$http.db({
+        db:function (AreaID,db) {
+          return db;
+        },
+        idField:function(){
+          return   'GetRegionTreeInfo';
+        },
+        dataType:3,
+        filter:function(item){
+          return item._id=='GetRegionTreeInfo'
+        },
+      }).bind(function (AreaID,db) {
+        return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfoNotUser',{AreaID:AreaID})).then(function(result){
+          result.data=result.data?result.data:[];
+          return {
+            data:{
+              data:result.data
+            }
+          }
+        });
+      }),
+      GetRegionTreeInfo:$http.db({
+        db:function (AreaID,db) {
+          return db;
+        },
+        idField:function(){
+          return  'GetRegionTreeInfo';
+        },
+        dataType:3,
+        filter:function(item){
+          return item._id=='GetRegionTreeInfo'
+        },
+      }).bind(function (AreaID,db) {
+        return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo',{AreaID:AreaID})).then(function(result){
+          result.data=result.data?result.data:[];
+          return {
+            data:{
+              data:result.data
+            }
+          }
+        });
+      }),
+      GetBaseMeasure:$http.db({
+        db:function (db) {
+          return db;
+        },
+        idField:function(){
+          return 'GetBaseMeasure';
+        },
+        dataType:3,
+        filter:function(item){
+          return item._id=='GetBaseMeasure'
+        },
+      }).bind(function (db) {
+        return $http.get($http.url('/api/MeasureInfo/GetBaseMeasure')).then(function(result){
+          result.data=result.data?result.data:[];
+           return {
+              data:{
+                data:result.data
+              }
+          }
+        });
+      }),
 
       getUserMeasureValue:$http.db({
         db:function (projectId,recordType,relationId,db) {
@@ -546,9 +641,6 @@
       queryRegion:function (areaID) {
         return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo',{AreaID:areaID}));
       },
-      //getMeasure:function(param){
-      //  return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResult',param));
-      //},
       getMeasure:$http.db({
         _id:'getAllMeasureReportData',
         idField:function(item){
@@ -568,6 +660,18 @@
           }]
           return result;
         });
+      }),
+      getMeasureNew:$http.db({
+        _id:'getAllMeasureReportDataNew',
+        idField:function(item){
+          return item.RegionID + item.AcceptanceItemID;
+        },
+        filter:function(item,param){
+          return item.CheckRegionID == param.RegionID && item.AcceptanceItemID == param.AcceptanceItemID;
+        },
+        dataType:1
+      }).bind(function(param){
+        return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResultNew',param));
       }),
       getAllMeasureReportData:$http.db({
         _id:'getAllMeasureReportData',

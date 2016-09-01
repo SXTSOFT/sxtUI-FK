@@ -9,7 +9,7 @@
     .directive('sxtSc', sxtSc);
 
   /** @Inject */
-  function sxtSc($timeout,mapPopupSerivce,db,sxt,xhUtils,pack){
+  function sxtSc($timeout,mapPopupSerivce,db,sxt,xhUtils,pack,remote,utils){
     function now() {
       return new Date().toISOString();
     }
@@ -31,7 +31,7 @@
     function link(scope,element,attr,ctrl){
       var map,tile,fg,toolbar,data,points,pk;
       var install = function(){
-        if(!scope.db || !scope.imageUrl || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
+        if(!scope.db || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
         if(!pk)
           pk = pack.sc.up(scope.db);
         if(!data)
@@ -42,15 +42,24 @@
           map = new L.SXT.Project(element[0]);
         }
         if(!tile || tile!=scope.regionId) {
-          db('pack'+scope.db).get('GetDrawingByAreaID').then(function (data) {
-            var fd = data.data.find(function (d) {
-              return d.DrawingID == scope.imageUrl;
-            });
-            if(fd) {
-              if(fd.DrawingContent) {
-                scope.tooltip = '正在加载图形....';
-                $timeout(function () {
-                  map.loadSvgXml(fd.DrawingContent, {
+          $timeout(function () {
+            remote.Project.getDrawingRelations(scope.regionId.substring(0,5)).then(function (result) {
+              var imgId = result.data.find(function (item) {
+                return item.AcceptanceItemID == scope.acceptanceItem && item.RegionId == scope.regionId;
+              });
+              if(!imgId){
+                imgId = result.data.find(function (item) {
+                  return item.RegionId == scope.regionId;
+                });
+              }
+              if (imgId) {
+                remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
+                  if(!result2.data||!result2.data.DrawingContent){
+                    scope.ct && (scope.ct.loading = false);
+                    utils.alert('未找到图纸,请与管理员联系!(2)');
+                    return;
+                  }
+                  map.loadSvgXml(result2.data.DrawingContent, {
                     filterLine: function (line) {
                       line.attrs.stroke = 'black';
                       line.options = line.options||{};
@@ -59,15 +68,48 @@
                       line.attrs['stroke-width'] = line.attrs['stroke-width']*6;
                     },
                     filterText: function (text) {
-                      //return false;
+                      return false;
                     }
                   });
                   map.center();
                   scope.tooltip = '';
-                },0)
+                })
               }
-            }
-          });
+              else{
+                if(!result.data.DrawingContent){
+                  utils.alert('未找到图纸,请与管理员联系!(1)');
+                  scope.ct && (scope.ct.loading = false);
+                  return;
+                }
+              }
+            });
+          }, 0);
+          //db('pack'+scope.db).get('GetDrawingByAreaID').then(function (data) {
+          //  var fd = data.data.find(function (d) {
+          //    return d.DrawingID == scope.imageUrl;
+          //  });
+          //  if(fd) {
+          //    if(fd.DrawingContent) {
+          //      scope.tooltip = '正在加载图形....';
+          //      $timeout(function () {
+          //        map.loadSvgXml(fd.DrawingContent, {
+          //          filterLine: function (line) {
+          //            line.attrs.stroke = 'black';
+          //            line.options = line.options||{};
+          //            //line.options.color = 'black';
+          //
+          //            line.attrs['stroke-width'] = line.attrs['stroke-width']*6;
+          //          },
+          //          filterText: function (text) {
+          //            //return false;
+          //          }
+          //        });
+          //        map.center();
+          //        scope.tooltip = '';
+          //      },0)
+          //    }
+          //  }
+          //});
           tile = scope.regionId;
         }
 

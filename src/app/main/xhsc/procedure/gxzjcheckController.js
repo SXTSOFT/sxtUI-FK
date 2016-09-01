@@ -9,7 +9,7 @@
     .controller('gxzjcheckController',gxzjcheckController);
 
   /**@ngInject*/
-  function gxzjcheckController($state,$stateParams,remote,$rootScope,$q,$scope,utils){
+  function gxzjcheckController($state,$stateParams,remote,$rootScope,$q,$scope,utils,api ){
     var vm = this;
     vm.InspectionId = $stateParams.InspectionId;
     vm.acceptanceItemID = $stateParams.acceptanceItemID
@@ -52,50 +52,53 @@
       }
 
       vm.btBatch=[];
-      return remote.Project.getInspectionList(vm.InspectionId).then(function(rtv){
-        var  r=rtv.data.find(function(o){
-          return o.InspectionId==vm.InspectionId;
-        });
-        if (angular.isArray(r.Children)){
-          r.Children.forEach(function(tt){
-            vm.btBatch.push(angular.extend({
-              RegionID:tt.AreaID,
-              RegionType:getRegionType( tt.AreaID)
-            },tt));
+      api.setNetwork(1).then(function(){
+        remote.Project.getInspectionList(vm.InspectionId).then(function(rtv){
+          var  r=rtv.data.find(function(o){
+            return o.InspectionId==vm.InspectionId;
           });
-        }
-       // vm.selectQy(vm.btBatch[0]);
-        console.log('vm',vm.btBatch)
-        vm.info.selected = vm.btBatch[0];
-        return vm.btBatch;
-      })
+          if (!r.Children){
+            r.Children= r.AreaList;
+          }
+          if (r.Children&&angular.isArray(r.Children)){
+            r.Children.forEach(function(tt){
+              vm.btBatch.push(angular.extend({
+                RegionID:tt.AreaID,
+                RegionType:getRegionType( tt.AreaID)
+              },tt));
+            });
+          }
+          vm.info.selected = vm.btBatch[0];
+          return vm.btBatch;
+        })
+        remote.Procedure.queryProcedure().then(function(result){
+          vm.procedureData = [];
+          result.data.forEach(function(it){
+            it.SpecialtyChildren.forEach(function(t){
+              var p = t.WPAcceptanceList.find(function(a){
+                return a.AcceptanceItemID === vm.acceptanceItemID;
+              })
+              if(p){
+                vm.procedureData.push(p);
+              }
+              vm.procedureData.forEach(function(t){
+                t.SpecialtyChildren = t.ProblemClassifyList;
+                t.ProblemClassifyList.forEach(function(_t){
+                  _t.WPAcceptanceList = _t.ProblemLibraryList;
+                  _t.SpecialtyName = _t.ProblemClassifyName;
+                  _t.ProblemLibraryList.forEach(function(_tt){
+                    _tt.AcceptanceItemName = _tt.ProblemSortName +'.'+ _tt.ProblemDescription;
+                  })
+                })
+              })
+            })
+          });
+        })
+      });
     }
     initBtBatch(); //获取一个批下面的所有区域
 
-    remote.Procedure.queryProcedure().then(function(result){
-      vm.procedureData = [];
-      result.data.forEach(function(it){
-        it.SpecialtyChildren.forEach(function(t){
-          var p = t.WPAcceptanceList.find(function(a){
-            return a.AcceptanceItemID === vm.acceptanceItemID;
-          })
-          if(p){
-            vm.procedureData.push(p);
-          }
-          vm.procedureData.forEach(function(t){
-            t.SpecialtyChildren = t.ProblemClassifyList;
-            t.ProblemClassifyList.forEach(function(_t){
-              _t.WPAcceptanceList = _t.ProblemLibraryList;
-              _t.SpecialtyName = _t.ProblemClassifyName;
-              _t.ProblemLibraryList.forEach(function(_tt){
-                _tt.AcceptanceItemName = _tt.ProblemSortName +'.'+ _tt.ProblemDescription;
-              })
-            })
-          })
-        })
-      });
-      //console.log('vm',vm.procedureData)
-    })
+
     vm.setRegion = function(region){
       vm.info.selected = region;
     }

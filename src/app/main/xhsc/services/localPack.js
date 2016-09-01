@@ -11,7 +11,7 @@
 
     function Pack(config) {
       var self = this,
-        pack = api.fdb('pack'+config._id);// db('pack'+config._id);
+        pack = db('pack'+config._id);
       self.pack = pack;
       if(!self.config) {
         pack.getOrAdd(config).then(function (config) {
@@ -232,13 +232,7 @@
     };
     return o;
     function pack(config) {
-      if(!this.packages[config._id]) {
         this.packages[config._id] = new Pack(config);
-      }
-      else{
-        this.packages[config._id].isDown=false;
-        this.packages[config._id].reDown();
-      }
       return  this.packages[config._id];
     }
 

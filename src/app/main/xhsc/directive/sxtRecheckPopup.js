@@ -12,7 +12,8 @@
       restrict:'E',
       scope:{
         slideShow:'=',
-        slideRole:'='
+        slideRole:'=',
+        warter:"="
       },
       templateUrl:'app/main/xhsc/directive/sxtRecheckPopup.html',
       link:link
@@ -78,8 +79,8 @@
           }
         })
       }
-      scope.addPhoto = function () {
-        xhUtils.photo().then(function (image) {
+      scope.addPhoto = function (warter) {
+        xhUtils.photo(null,warter).then(function (image) {
           if(image){
             createZb().then(function () {
               var img = {

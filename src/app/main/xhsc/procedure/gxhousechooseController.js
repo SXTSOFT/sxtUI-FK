@@ -173,13 +173,17 @@
           })
         })
         vm.houses =  result.data[0].RegionRelations;
+        return vm.houses;
       });
     }
 
     load();
 
     vm.callBack=function(){
-      load();
+      load().then(function(){
+        $mdDialog.hide();
+        utils.alert('报验成功')
+      });
     };
     vm.selected = function(r){
       switch (role){
@@ -312,10 +316,6 @@
     }
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
-      if(api.getNetwork()==1){
-        utils.alert('当前处于离线状态,无法提交报验!');
-        return;
-      }
       vm.data = {
         projectId:projectId,
         Rows:[],

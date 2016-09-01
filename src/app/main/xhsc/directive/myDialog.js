@@ -9,7 +9,7 @@
     .directive('myDialog',myDialogDirective);
 
   /**@ngInject*/
-  function myDialogDirective($state,$timeout,remote,utils,auth,sxt,$mdDialog){
+  function myDialogDirective($state,$timeout,remote,utils,auth,sxt,$mdDialog,api){
     return {
       scope:{
         dialogShow:'=',
@@ -55,7 +55,7 @@
         $mdDialog.show({
           parent: parentEl,
           targetEvent: evt,
-          template:'<md-dialog aria-label="正在清除"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular> 正在提交数据，请稍候……</md-dialog-content></md-dialog>',
+          template:'<md-dialog   ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular> 正在提交数据，请稍候……</md-dialog-content></md-dialog>',
           controller: DialogController
         });
         function DialogController($scope) {
@@ -78,16 +78,14 @@
               Percentage:percentage,
               id:sxt.uuid()
             }
-            remote.Procedure.postInspection(params).then(function(result){
-              if (result.data.ErrorCode==0){
-                  $mdDialog.hide();
-                  utils.alert('报验成功',evt,function(){
-                    scope.callBack();
-                  });
-              }
-              $mdDialog.hide();
-            }).catch(function(){
-              $mdDialog.cancel();
+            api.setNetwork(0).then(function(){
+              remote.Procedure.postInspection(params).then(function(result){
+                if (result.data.ErrorCode==0) {
+                  scope.callBack();
+                }
+              }).catch(function(){
+                $mdDialog.cancel();
+              });
             });
           }else{
             $mdDialog.hide();
