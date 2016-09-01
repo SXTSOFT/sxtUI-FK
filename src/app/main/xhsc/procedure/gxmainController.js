@@ -359,6 +359,7 @@
               api.uploadTask(function () {
                 return true
               },null);
+              $mdDialog.hide()
               if (!tasks.length){
                 utils.alert('上传完成');
                 return;
@@ -367,7 +368,13 @@
               load();
               vm.uploadInfo.tasks = [];
               vm.uploadInfo.uploading= false;
-            },function () {
+            },function (timeout) {
+              $mdDialog.hide();
+              var msg='上传失败,请检查网络!'
+              if(timeout){
+                msg='请求超时,请检查网络!';
+              }
+              utils.alert(msg);
               vm.uploadInfo.uploaded = 0;
               vm.uploadInfo.uploading =false;
             },{
@@ -483,7 +490,7 @@
     };
     vm.zg = function(r){
       _goBefor(r).then(function(){
-        $state.go('app.xhsc.gx.gxzg',{Role:'zb',InspectionID: r.InspectionId,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID});
+        $state.go('app.xhsc.gx.gxzg',{Role:'zb',InspectionID: r.InspectionId,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID,AcceptanceItemName: r.AcceptanceItemName});
       });
     };
     vm.fj = function (r) {
