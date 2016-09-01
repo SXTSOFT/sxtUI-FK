@@ -118,15 +118,15 @@
         api.networkState(api.oNetwork);
       };
 
-      $rootScope.$on('$cordovaNetwork:online', function(event, state){
-        api.resetNetwork();
-      });
-      $rootScope.$on('$cordovaNetwork:offline', function(event, state){
-        api.resetNetwork();
-      });
-      $timeout(function () {
-        $rootScope.$emit('$cordovaNetwork:online');
-      },100);
+      //$rootScope.$on('$cordovaNetwork:online', function(event, state){
+      //  api.resetNetwork();
+      //});
+      //$rootScope.$on('$cordovaNetwork:offline', function(event, state){
+      //  api.resetNetwork();
+      //});
+      //$timeout(function () {
+      //  $rootScope.$emit('$cordovaNetwork:online');
+      //},100);
 
 
       api.db = provider.$http.db;

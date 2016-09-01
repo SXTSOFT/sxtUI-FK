@@ -9,7 +9,7 @@
     .controller('evaluateController',evaluateController);
 
   /** @ngInject*/
-  function evaluateController($mdDialog,$timeout){
+  function evaluateController($mdDialog,$timeout,$state,api,$state){
     var vm = this;
 
     vm.showECs = function(ev) {
@@ -37,12 +37,23 @@
           $mdDialog.hide(answer);
         };
       }
-     // $timeout(function(){$('.md-scroll-mask').addClass('addlayer');},100);
-      //$scope.$watch(function() {
-      //  return $mdMedia('xs') || $mdMedia('sm');
-      //}, function(wantsFullScreen) {
-      //  $scope.customFullscreen = (wantsFullScreen === true);
-      //});
+
+      vm.goSC=function(item){
+        api.setNetwork(1).then(function(){
+          $state.go('app.xhsc.ch2',{areaID:item.AreaID,areaName:item.AreaName,assessmentID:item.AssessmentID});
+        });
+      }
+      vm.goST=function(item){
+        api.setNetwork(1).then(function(){
+          $state.go('app.xhsc.ch1',{areaID:item.AreaID,areaName:item.AreaName,assessmentID:item.AssessmentID,AssessmentTypeID:'7d179e8804a54819aad34b7a9398880d',typename:'实体质量'});
+        });
+      }
+      vm.goAQ=function(item){
+        api.setNetwork(1).then(function(){
+          $state.go('app.xhsc.ch1',{assessmentID:item.AssessmentID,AssessmentTypeID:'82666209a15647569f9bcaff50d324c2',typename:'安全文明'});
+        });
+      }
+
     };
   }
 })();
