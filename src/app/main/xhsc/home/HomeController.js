@@ -10,74 +10,76 @@
     .controller('HomeController', HomeController);
 
   /** @ngInject */
-  function HomeController($scope,auth,$state,$rootScope,$timeout, utils,remote)
+  function HomeController($scope,auth,$state,$rootScope,$timeout, utils,remote,api)
   {
-    remote.profile()
     var vm = this;
-    vm.data = {};
-    vm.is = function (state) {
-      return vm.includes(state);
-    }
-    vm.markerClick = markerClick;
-    vm.querySearch = function(text){
-      var k=[];
-      if(vm.markers){
-        vm.markers.forEach(function(item){
-          if(!text || text=='' || item.title.indexOf(text)!=-1 || item.pinyin.indexOf(text)!=-1){
-            k.push(item);
-          }
-        })
+    api.setNetwork(0).then(function(){
+      remote.profile()
+      vm.data = {};
+      vm.is = function (state) {
+        return vm.includes(state);
       }
-      return k;
-    }
-    vm.changeItem = function(item){
-      $timeout(function(){
-        $state.go('app.xhsc.choose',{pid:item.projectId, pname: item.title});
-      },200)
+      vm.markerClick = markerClick;
+      vm.querySearch = function(text){
+        var k=[];
+        if(vm.markers){
+          vm.markers.forEach(function(item){
+            if(!text || text=='' || item.title.indexOf(text)!=-1 || item.pinyin.indexOf(text)!=-1){
+              k.push(item);
+            }
+          })
+        }
+        return k;
+      }
+      vm.changeItem = function(item){
+        $timeout(function(){
+          $state.go('app.xhsc.choose',{pid:item.projectId, pname: item.title});
+        },200)
 
-    }
+      }
 
-/*    ys7.post('cameraList',{pageSize:1000,pageStart:0}).then(function (r) {
-      console.log(r);
-    })*/
-    //function markerClick($current){
-    //  console.log('current',JSON.stringify([{project_id:$current.projectId,name:$current.title}]))
-    //
-    ////  appCookie.put('projects',JSON.stringify([{project_id:$current.projectId,name:$current.title}]))
-    //  //$state.go('app.xhsc.choose',{pid:$current.projectId, pname:'天津星河时代'});
-    //  $mdBottomSheet.show({
-    //   templateUrl: 'app/main/xhsc/home/homeBottom.html',
-    //    controller: ['$scope',function($scope){
-    //      $scope.name = $current.title;
-    //      $scope.projectId = $current.projectId;
-    //      $scope.hide = function(){
-    //        $mdBottomSheet.hide();
-    //      }
-    //    }],
-    //    clickOutsideToClose:true,
-    //    disableBackdrop:true
-    //  }).then(function(clickedItem) {
-    //    //$mdBottomSheet.hide(clickedItem);
-    //  });
-    //
-    //}
-    function markerClick($current){
-      $state.go('app.xhsc.xxjd.xxjdmain',{projectId:$current.projectId, projectName:$current.title});
-    }
-    //vm.markerClick = function(){
-    // // vm.showBot = true;
-    //  $mdBottomSheet.show({
-    //    templateUrl: 'app/main/xhsc/home/homeBottom.html',
-    //    controller: ['$scope',function($scope){
-    //      $scope.hide = function(){
-    //        $mdBottomSheet.hide();
-    //      }
-    //
-    //    }],
-    //    disableBackdrop:true
-    //  }).then(function(){
-    //
-    //  })
-    //}
+      /*    ys7.post('cameraList',{pageSize:1000,pageStart:0}).then(function (r) {
+       console.log(r);
+       })*/
+      //function markerClick($current){
+      //  console.log('current',JSON.stringify([{project_id:$current.projectId,name:$current.title}]))
+      //
+      ////  appCookie.put('projects',JSON.stringify([{project_id:$current.projectId,name:$current.title}]))
+      //  //$state.go('app.xhsc.choose',{pid:$current.projectId, pname:'天津星河时代'});
+      //  $mdBottomSheet.show({
+      //   templateUrl: 'app/main/xhsc/home/homeBottom.html',
+      //    controller: ['$scope',function($scope){
+      //      $scope.name = $current.title;
+      //      $scope.projectId = $current.projectId;
+      //      $scope.hide = function(){
+      //        $mdBottomSheet.hide();
+      //      }
+      //    }],
+      //    clickOutsideToClose:true,
+      //    disableBackdrop:true
+      //  }).then(function(clickedItem) {
+      //    //$mdBottomSheet.hide(clickedItem);
+      //  });
+      //
+      //}
+      function markerClick($current){
+        $state.go('app.xhsc.xxjd.xxjdmain',{projectId:$current.projectId, projectName:$current.title});
+      }
+      //vm.markerClick = function(){
+      // // vm.showBot = true;
+      //  $mdBottomSheet.show({
+      //    templateUrl: 'app/main/xhsc/home/homeBottom.html',
+      //    controller: ['$scope',function($scope){
+      //      $scope.hide = function(){
+      //        $mdBottomSheet.hide();
+      //      }
+      //
+      //    }],
+      //    disableBackdrop:true
+      //  }).then(function(){
+      //
+      //  })
+      //}
+    })
   }
 })();
