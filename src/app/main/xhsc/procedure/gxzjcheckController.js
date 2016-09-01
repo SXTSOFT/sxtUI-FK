@@ -57,8 +57,11 @@
           var  r=rtv.data.find(function(o){
             return o.InspectionId==vm.InspectionId;
           });
-          if (angular.isArray(r.AreaList)){
-            r.AreaList.forEach(function(tt){
+          if (!r.Children){
+            r.Children= r.AreaList;
+          }
+          if (r.Children&&angular.isArray(r.Children)){
+            r.Children.forEach(function(tt){
               vm.btBatch.push(angular.extend({
                 RegionID:tt.AreaID,
                 RegionType:getRegionType( tt.AreaID)

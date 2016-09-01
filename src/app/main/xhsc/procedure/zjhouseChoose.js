@@ -185,31 +185,28 @@
     }
 
     load();
-    var inspectionInfoDef = remote.Procedure.getInspectionInfoBySign(8);
-
+    var inspectionInfoDef = remote.Procedure.getRegionStatus(projectId,"8");
     vm.callBack=function(){
       load();
     };
     vm.selected = function(r){
       inspectionInfoDef.then(function (r1) {
         var fd = r1.data.find(function (item) {
-          return item.Children.find(function (area) {
-            return area.AreaID == r.RegionID;
-          })!=null;
+          return item.AreaId==r.RegionID&&item.AcceptanceItemID==acceptanceItemID;
+          //return item.Children.find(function (area) {
+          //  return area.AreaID == r.RegionID;
+          //})!=null;
         });
         if(fd!=null){
           $state.go('app.xhsc.gx.gxzjcheck',
             {
               acceptanceItemID:acceptanceItemID,
               acceptanceItemName:acceptanceItemName,
-              //name: vm.data.AreaList[0].newName,
               projectId:projectId,
-              //areaId:vm.data.AreaList[0].AreaID,
               InspectionId:fd.InspectionId
             });
         }
         else{
-          console.log('r',r);
           r.checked = true;
           $rootScope.$emit('sendGxResult');
         }
@@ -336,7 +333,7 @@
       })
       if(vm.data.AreaList.length){
         if(!vm.data.Id)
-          vm.data.InspectionID = sxt.uuid();
+          vm.data.InspectionId = sxt.uuid();
         api.setNetwork(1).then(function(){
           remote.Procedure.postInspection(vm.data).then(function(result){
             if (result.data.ErrorCode==0){
@@ -344,10 +341,8 @@
                 {
                   acceptanceItemID:acceptanceItemID,
                   acceptanceItemName:acceptanceItemName,
-                  //name: vm.data.AreaList[0].newName,
                   projectId:projectId,
-                  //areaId:vm.data.AreaList[0].AreaID,
-                  InspectionId:result.data.args[0].InspectionID
+                  InspectionId:result.data.args[0].InspectionId
                 });
             }
           });

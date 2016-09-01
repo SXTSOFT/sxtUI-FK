@@ -128,6 +128,28 @@
       ]
     }
 
+
+    function InspectionZjTask(t,AcceptanceItemID,AreaID,InspectionId) {
+      t.push(function () {
+        return remote.Procedure.InspectionPoint.query(InspectionId,AcceptanceItemID,AreaID)
+      })
+      t.push(function (tasks,down) {
+        return remote.Procedure.InspectionCheckpoint.query(AcceptanceItemID,AreaID,InspectionId).then(function (result) {
+          result.data.forEach(function (p) {
+            tasks.push(function () {
+              return remote.Procedure.InspectionProblemRecord.query(p.CheckpointID).then(function (result) {
+                result.data.forEach(function (r) {
+                  tasks.push(function () {
+                    return remote.Procedure.InspectionProblemRecordFile.query(r.ProblemRecordID).then(function (result) {
+                    })
+                  })
+                })
+              })
+            });
+          });
+        })
+      });
+    }
     vm.downloadzj = function (item) {
       api.setNetwork(0).then(function(){
         $mdDialog.show({
@@ -137,16 +159,31 @@
               .concat(item.isOffline?[]:projectTask(item.ProjectID))
               .concat([
                 function (tasks) {
+                  var group=[];
+                  var inspections=[];
                   return remote.Procedure.getRegionStatus(item.ProjectID,"8").then(function (result) {
                     result.data.forEach(function (item) {
-                      if(item.AcceptanceItemID && item.AreaId && item.InspectionId) {
-                        tasks.push(function () {
-                          return remote.Project.getInspectionList(item.InspectionId);
-                        });
-                        tasks.push(function () {
-                          return remote.Procedure.InspectionCheckpoint.query(item.AcceptanceItemID, item.AreaId, item.InspectionId);
-                        })
+                      if(item.AcceptanceItemID && item.AreaId && item.InspectionId&&!group.find(function(k){
+                          return k.AcceptanceItemID==item.AcceptanceItemID&& k.AreaId==item.AreaId&&k.InspectionId==item.InspectionId
+                        })) {
+                        group.push([item.AcceptanceItemID,item.AreaId,item.InspectionId]);
                       }
+                      if(item.AcceptanceItemID && item.AreaId && item.InspectionId&&!inspections.find(function(k){
+                            return k.InspectionId==item.InspectionId;
+                        })){
+                        inspections.push(item.InspectionId);
+                      }
+                    })
+                    inspections.forEach(function(id){
+                      tasks.push(function(){
+                        return remote.Project.getInspectionList(id);
+                      });
+                      tasks.push(function(){
+                        return remote.Procedure.InspectionIndexJoinApi.query(id)
+                      });
+                    });
+                    group.forEach(function(data){
+                      InspectionZjTask(tasks,data[0],data[1],data[2]);
                     })
                   })
                 }

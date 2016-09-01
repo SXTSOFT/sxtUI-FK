@@ -343,12 +343,12 @@
         upload:true,
         idField:'InspectionId'
       }).bind(function(params){
-        return $http.post($http.url('/Api/InspectionApi/insert'),params )
+        return $http.post($http.url('/Api/InspectionApi/insert'),params)
       },function (r,cfg,args) {
         if(!r.data){
           r = r[0];
           return this.root.xhsc.Project.insertInspectionList({
-            "InspectionId":r.InspectionID,
+            "InspectionId":r.InspectionId,
             "ProjectID":r.AreaList[0].AreaID.substring(0,5),
             "Percentage":100.0,
             "Describe":"",
