@@ -71,7 +71,7 @@
                       }
                     }),
                     center: [.48531902026005, .5],
-                    zoom: 0,
+                    zoom: 1,
                     minZoom: 0,
                     maxZoom: 3,
                     scrollWheelZoom: true,
@@ -120,6 +120,22 @@
                       else {
                         cb();
                       }
+                      var cImg = new Image();
+                      cImg.onload = function () {
+                        var w = this.width,
+                          h = this.height;
+                        var x, y;
+                        if (w > h) {
+                          x = 0.5;
+                          y = h/w*0.5;
+                        }
+                        else {
+                          y = 0.5;
+                          x = w / h * 0.5;
+                        }
+                        map.setView([y, x]);
+                      };
+                      cImg.src = sxt.app.api + '/api/Files/thumb/250?path=' + fs.data.Files[0].Url.replace('/s_', '/');
                     },
                     post: function (data, cb) {
                       project.AreaRemark = JSON.stringify(data);

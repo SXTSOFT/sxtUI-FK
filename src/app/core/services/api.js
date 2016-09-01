@@ -351,7 +351,7 @@
                         resolve();
                       }
                       else{
-                        reject();
+                        reject(result);
                       }
                     }).catch(reject);
                   }).catch(reject);
@@ -435,7 +435,7 @@
                 next();
               }
             }).catch(function (err) {
-              $rootScope.$emit('applicationError', {exception: err});
+              provider.$rootScope.$emit('applicationError', {exception: err});
               d = 0;
               if (config && config.event)
                 provider.$rootScope.$emit(config.event, {

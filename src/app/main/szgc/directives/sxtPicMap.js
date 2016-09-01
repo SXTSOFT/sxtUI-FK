@@ -20,7 +20,7 @@
     function link(scope,element,attr,ctrl){
 
       $timeout(function(){
-        console.log('picUrl',scope.picUrl)
+        //console.log('picUrl',scope.picUrl)
         //var crs = ;
 
         var map = L.map(element[0],{

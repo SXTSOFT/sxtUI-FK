@@ -346,6 +346,22 @@
                 continuousWorld: false,
                 tileSize: 256
               }).addTo(map);
+              var cImg = new Image();
+              cImg.onload = function () {
+                var w = this.width,
+                  h = this.height;
+                var x, y;
+                if (w > h) {
+                  x = 0.5;
+                  y = h/w*0.5;
+                }
+                else {
+                  y = 0.5;
+                  x = w / h * 0.5;
+                }
+                map.setView([y, x]);
+              };
+              cImg.src = sxt.app.api + '/api/Files/thumb/250?path=' + scope.file.replace('/s_', '/');
             }
             else {
               $('.outermap', o).remove();
