@@ -8,7 +8,7 @@
             <div class="md-list-item-text" flex layout="column">
               <h3>材料</h3>
             </div>
-            <sxt-material style="width:75%;margin: 18px 0 0 0;" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-material>
+            <sxt-material style="width:75%;margin: 18px 0 0 0;" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId" material-Unit="project.materialUnit" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-material>
           </md-list-item>
           <md-divider></md-divider>
           <md-list-item>
@@ -31,11 +31,12 @@
           <md-divider></md-divider>
           <md-list-item>
             <div class="md-list-item-text" flex layout="column">
-              <h3>数量</h3>
+              <h3 flex>数量</h3>
             </div>
-            <md-input-container class="md-block" flex-gt-sm style="width: 75%;margin: 18px 0 0 0;">
+            <md-input-container class="md-block" flex-gt-sm style="width: 70%;margin: 18px 0 0 0;">
               <input style="width: 100%;" ng-model="vm.checkData.Number">
             </md-input-container>
+            <h3 flex="5">{{project.materialUnit}}</h3>
           </md-list-item>
           <md-divider></md-divider>
           <md-list-item>
@@ -159,7 +160,7 @@
           </fieldset>
         </div>
         <div class="md-padding" layout="row">
-          <md-button flex class="md-raised md-primary" ng-click="vm.checkDataId!= '' ? vm.ok():vm.AttachmentSHow = false"> 完成 </md-button>
+          <md-button flex class="md-raised md-primary" ng-click="vm.ok()"> 完成 </md-button>
         </div>
       </md-list>
     </div>

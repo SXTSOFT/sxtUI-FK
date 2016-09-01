@@ -111,7 +111,7 @@
               <md-button class="md-secondary md-primary" ui-sref="app.material.ys({id:item.Id})" ng-show="(item.WgCheck == 1 && item.IsInspection == 1 && item.Report == 0)">追加送检报告</md-button>
             </div>
             <md-list-item class="md-3-line" ng-click="goMaterialDetail(item.Id)">
-              <img ng-src="" class="md-avatar" style="width: 60px; height: 60px;" />
+              <img ng-src="{{getImgURl(item.imgUrl)}}" style="width: 80px; height: 80px; padding: 8px 8px 8px 0" />
               <div class="md-list-item-text" layout="column">
                 <h3>{{ item.RegionNameTree }}</h3>
                 <h4>{{ item.Material }}</h4>
