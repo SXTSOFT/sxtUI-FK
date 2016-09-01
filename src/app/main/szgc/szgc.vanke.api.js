@@ -615,7 +615,7 @@
             resolve(r);
           }, function (rejection) {
             if(rejection.status==401){
-              getAuth().logout();
+              //getAuth().logout();
             }
             reject(rejection)
           });

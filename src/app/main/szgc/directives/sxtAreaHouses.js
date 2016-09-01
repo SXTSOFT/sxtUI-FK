@@ -240,6 +240,25 @@
                                   })
 
                                 })
+
+                                var cImg = new Image();
+                                cImg.onload = function () {
+                                  var w = this.width,
+                                    h = this.height;
+                                  var x, y;
+                                  if (w > h) {
+                                    x = 0.5;
+                                    y = h/w*0.5;
+                                  }
+                                  else {
+                                    y = 0.5;
+                                    x = w / h * 0.5;
+                                  }
+                                  map.setView([y, x]);
+                                  //console.log(x,y)
+                                };
+                                cImg.src = sxt.app.api + '/api/Files/thumb/250?path=' + fs.Url.replace('/s_', '/');
+
                               });
 
                             },
