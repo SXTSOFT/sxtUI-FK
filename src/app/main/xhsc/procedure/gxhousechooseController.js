@@ -316,10 +316,6 @@
     }
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
-      if(api.getNetwork()==1){
-        utils.alert('当前处于离线状态,无法提交报验!');
-        return;
-      }
       vm.data = {
         projectId:projectId,
         Rows:[],

@@ -9,7 +9,7 @@
     .directive('myDialog',myDialogDirective);
 
   /**@ngInject*/
-  function myDialogDirective($state,$timeout,remote,utils,auth,sxt,$mdDialog){
+  function myDialogDirective($state,$timeout,remote,utils,auth,sxt,$mdDialog,api){
     return {
       scope:{
         dialogShow:'=',
@@ -78,12 +78,14 @@
               Percentage:percentage,
               id:sxt.uuid()
             }
-            remote.Procedure.postInspection(params).then(function(result){
-              if (result.data.ErrorCode==0) {
-                scope.callBack();
-              }
-            }).catch(function(){
-              $mdDialog.cancel();
+            api.setNetwork(0).then(function(){
+              remote.Procedure.postInspection(params).then(function(result){
+                if (result.data.ErrorCode==0) {
+                  scope.callBack();
+                }
+              }).catch(function(){
+                $mdDialog.cancel();
+              });
             });
           }else{
             $mdDialog.hide();

@@ -9,7 +9,7 @@
     .controller('zjhouseChooseController',zjhouseChooseController);
 
   /** @ngInject */
-  function zjhouseChooseController($scope,$stateParams,sxt,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils){
+  function zjhouseChooseController($scope,$stateParams,sxt,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils,api){
     var vm=this,
       projectId = $stateParams.projectId,
       acceptanceItemID=$stateParams.acceptanceItemID,
@@ -337,19 +337,20 @@
       if(vm.data.AreaList.length){
         if(!vm.data.Id)
           vm.data.InspectionID = sxt.uuid();
-        remote.Procedure.postInspection(vm.data).then(function(result){
-          console.log(result);
-          if (result.data.ErrorCode==0){
-            $state.go('app.xhsc.gx.gxzjcheck',
-              {
-                acceptanceItemID:acceptanceItemID,
-                acceptanceItemName:acceptanceItemName,
-                //name: vm.data.AreaList[0].newName,
-                projectId:projectId,
-                //areaId:vm.data.AreaList[0].AreaID,
-                InspectionId:result.data.Data.InspectionID
-              });
-          }
+        api.setNetwork(1).then(function(){
+          remote.Procedure.postInspection(vm.data).then(function(result){
+            if (result.data.ErrorCode==0){
+              $state.go('app.xhsc.gx.gxzjcheck',
+                {
+                  acceptanceItemID:acceptanceItemID,
+                  acceptanceItemName:acceptanceItemName,
+                  //name: vm.data.AreaList[0].newName,
+                  projectId:projectId,
+                  //areaId:vm.data.AreaList[0].AreaID,
+                  InspectionId:result.data.args[0].InspectionID
+                });
+            }
+          });
         });
       }else{
         utils.alert('请选择区域');

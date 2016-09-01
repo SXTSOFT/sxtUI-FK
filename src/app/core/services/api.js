@@ -55,11 +55,14 @@
       api.uploadTask = uploadTask;
       api.event = event;
       provider.setNetwork = api.setNetwork = function (state) {
-        networkState = state;
-        if(networkState==0)
-          $rootScope.$emit('sxt:online');
-        else
-          $rootScope.$emit('sxt:offline');
+        return provider.$q.$q(function(resolve,reject){
+          networkState = state;
+          if(networkState==0)
+            $rootScope.$emit('sxt:online');
+          else
+            $rootScope.$emit('sxt:offline');
+          resolve(networkState);
+        })
       };
       api.getNetwork = provider.getNetwork = function () {
         return networkState;
@@ -476,6 +479,9 @@
             var args = toArray(arguments),
               lodb = initDb(cfg,args),
               caller = this;
+            //if (cfg.upload){ //上传的数据只能加载到本地，走离线
+            //  return userOffline(caller, lodb, args, cb, fn);
+            //}
             if (cfg.mode == 1) { //1 离线优先，无离线数据尝试网络；
               var oRaiseError = cfg.raiseError;
               cfg.raiseError = true;

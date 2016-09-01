@@ -120,6 +120,14 @@
       }).bind(function(inspectionId){
         return $http.get($http.url('/api/InspectionApi/GetInspectionInfoByInspection',{inspectionId:inspectionId}));
       }),
+      getZjInspectionList:$http.db({
+        _id:'InspectionApi',
+        idField:'InspectionID',
+        dataType:1,
+        filter:function (item,inspectionId) {
+          return item.InspectionID==inspectionId;
+        }
+      }).bind(),
       insertInspectionList:$http.db({
         _id:'Inspection',
         idField:'InspectionId',
@@ -331,9 +339,9 @@
         });
       }),
       postInspection:$http.db({
-        _id:'InspectionApi',
+        _id:'Inspection',
         upload:true,
-        idField:'InspectionID'
+        idField:'InspectionId'
       }).bind(function(params){
         return $http.post($http.url('/Api/InspectionApi/insert'),params )
       },function (r,cfg,args) {
