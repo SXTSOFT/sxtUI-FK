@@ -12,13 +12,13 @@
       <!--<div class="md-grid-text" style="line-height: 20px"  ng-style="{'color':vm.is('app.xhsc.gx.gxzbmain')?'#e93030':'rgba(0,0,0,0.54)'}">总包工序</div>-->
     <!--</md-button>-->
   <!--</md-list-item>-->
-  <md-list-item flex>
-  <md-button  ui-sref="app.xhsc.gx.gxmain" class=" ys">
+  <md-list-item ng-if="vm.role==0||vm.role==2||vm.role==4"   flex>
+  <md-button ui-sref="app.xhsc.gx.gxmain" class=" ys">
     <md-icon md-svg-src="app/toolbar/images/gx.svg" class="icon s32"  ng-class="{'active':vm.is('app.xhsc.gx.gxmain')}"></md-icon>
     <div class="md-grid-text" style="line-height: 20px"  ng-style="{'color':vm.is('app.xhsc.gx.gxmain')?'#e93030':'rgba(0,0,0,0.54)'}">工序验收</div>
   </md-button>
 </md-list-item>
-  <md-list-item flex>
+  <md-list-item ng-if="vm.role==0||vm.role==2||vm.role==4"   flex>
     <md-button  ui-sref="app.xhsc.scsl.scslmain" class=" ys">
       <md-icon md-svg-src="app/toolbar/images/xhmeasure1.svg" class="icon s32"  ng-class="{'active':vm.is('app.xhsc.scsl.scslmain')}"></md-icon>
       <div class="md-grid-text" style="line-height: 20px"  ng-style="{'color':vm.is('app.xhsc.scsl.scslmain')?'#e93030':'rgba(0,0,0,0.54)'}">实测实量</div>
@@ -30,7 +30,7 @@
       <div class="md-grid-text" style="line-height: 20px" ng-style="{'color':vm.is('app.xhsc.report.default')?'#e93030':'rgba(0,0,0,0.54)'}">报表中心</div>
   </md-button>
   </md-list-item>
- <md-list-item flex>
+ <md-list-item ng-if="vm.OUType==1"  flex>
     <md-button ui-sref="app.xhsc.download">
       <md-icon md-svg-src="app/toolbar/images/xhproc.svg" class="icon s32" ng-class="{'active':vm.is('app.xhsc.download')}"></md-icon>
       <div class="md-grid-text" style="line-height: 20px" ng-style="{'color':vm.is('app.xhsc.download')?'#e93030':'rgba(0,0,0,0.54)'}"> 现场评估</div>

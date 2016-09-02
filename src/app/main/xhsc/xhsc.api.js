@@ -29,7 +29,8 @@
       },
       dataType:3
     }).bind(function () {
-      return $http.get(sxt.app.api + '/api/Security/profile', {t: new Date().getTime()});
+      //return $http.get(sxt.app.api + '/api/Security/profile', {t: new Date().getTime()});
+      return $http.get(sxt.app.api + '/api/UserInfo/profile');
     }),
     offline:$http.db({
       _id:'s_offline',

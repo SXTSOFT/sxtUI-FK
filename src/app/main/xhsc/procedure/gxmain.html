@@ -254,49 +254,49 @@
 </md-tabs>
 
 <md-tabs flex md-border-bottom ng-if="vm.showPermission(4)">
-  <md-tab label="工序检查">
-    <md-content>
-      <div layout="column" class="gxdownload">
-        <md-list style="overflow: hidden;">
-          <md-list-item ng-repeat="item in vm.projects">
-            <p layout="column" style="padding-right: 125px;font-size:16px;padding-left:8px;">
-              {{item.ProjectName}}
-            </p>
-            <div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">
-              <md-button ng-click="vm.zj(item)" class="md-raised md-primary">
-                检查
-              </md-button>
-              <md-button ng-click="vm.downloadzj(item)" class="md-raised md-primary" >
-                <md-icon ng-if="item.isOffline" md-font-icon="icon-box-download"></md-icon>
-                <md-icon ng-if="!item.isOffline" md-font-icon="icon-download"></md-icon>
-              </md-button>
-            </div>
-          </md-list-item>
-        </md-list>
-      </div>
-    </md-content>
-  </md-tab>
-  <md-tab label="离线包">
-    <md-content>
-      <div layout="column" class="gxdownload">
-        <md-list>
-          <md-list-item>
-            <div class="md-list-item-text" layout="column">
-              <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
-                全部上传
-              </p>
-            </div>
-            <div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">
-              <md-button ng-if="!item.isDown" class="md-raised md-primary"  ng-click="vm.upload()">
-                <md-icon md-font-icon="icon-upload"></md-icon>
-              </md-button>
-            </div>
-          </md-list-item>
-        </md-list>
-      </div>
-    </md-content>
-  </md-tab>
-  <md-tab label="区域状态">
+  <!--<md-tab label="工序检查">-->
+    <!--<md-content>-->
+      <!--<div layout="column" class="gxdownload">-->
+        <!--<md-list style="overflow: hidden;">-->
+          <!--<md-list-item ng-repeat="item in vm.projects">-->
+            <!--<p layout="column" style="padding-right: 125px;font-size:16px;padding-left:8px;">-->
+              <!--{{item.ProjectName}}-->
+            <!--</p>-->
+            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">-->
+              <!--<md-button ng-click="vm.zj(item)" class="md-raised md-primary">-->
+                <!--检查-->
+              <!--</md-button>-->
+              <!--<md-button ng-click="vm.downloadzj(item)" class="md-raised md-primary" >-->
+                <!--<md-icon ng-if="item.isOffline" md-font-icon="icon-box-download"></md-icon>-->
+                <!--<md-icon ng-if="!item.isOffline" md-font-icon="icon-download"></md-icon>-->
+              <!--</md-button>-->
+            <!--</div>-->
+          <!--</md-list-item>-->
+        <!--</md-list>-->
+      <!--</div>-->
+    <!--</md-content>-->
+  <!--</md-tab>-->
+  <!--<md-tab label="离线包">-->
+    <!--<md-content>-->
+      <!--<div layout="column" class="gxdownload">-->
+        <!--<md-list>-->
+          <!--<md-list-item>-->
+            <!--<div class="md-list-item-text" layout="column">-->
+              <!--<p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">-->
+                <!--全部上传-->
+              <!--</p>-->
+            <!--</div>-->
+            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">-->
+              <!--<md-button ng-if="!item.isDown" class="md-raised md-primary"  ng-click="vm.upload()">-->
+                <!--<md-icon md-font-icon="icon-upload"></md-icon>-->
+              <!--</md-button>-->
+            <!--</div>-->
+          <!--</md-list-item>-->
+        <!--</md-list>-->
+      <!--</div>-->
+    <!--</md-content>-->
+  <!--</md-tab>-->
+  <md-tab label="验收状态">
     <md-content>
       <div layout="column" class="gxdownload">
         <md-list style="overflow: hidden;">
