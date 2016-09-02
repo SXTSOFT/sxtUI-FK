@@ -13,11 +13,9 @@
 
   /** @ngInject */
   function MMyProcessController($scope, api, utils, $state,$q,sxt,xhUtils,$timeout, $mdDialog,$stateParams){
-
+    
     var vm = this;
     vm.fjType = null;
-
-
     vm.AttachmentSHow = false;
 
     vm.checkData={};
@@ -42,17 +40,6 @@
       vm.checkData.RegionNameTree = $scope.project.nameTree;
       vm.checkData.RegionId = $scope.project.pid;
       vm.checkData.ProjectName = $scope.project.projectName;
-
-      if($scope.data.imgs1.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 2}) == null)
-        vm.EnclosureType.push({OptionType:2,GroupImg:vm.groupId_2});
-      if($scope.data.imgs2.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 4}) == null)
-        vm.EnclosureType.push({OptionType:4,GroupImg:vm.groupId_4});
-      if($scope.data.imgs3.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 8}) == null)
-        vm.EnclosureType.push({OptionType:8,GroupImg:vm.groupId_8});
-      if($scope.data.imgs4.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 16}) == null)
-        vm.EnclosureType.push({OptionType:16,GroupImg:vm.groupId_16});
-      if($scope.data.imgs5.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 32}) == null)
-        vm.EnclosureType.push({OptionType:32,GroupImg:vm.groupId_32});
 
 
       if(vm.checkData.WgCheck == false ||(vm.fjType == 16 && vm.checkData.sjReport == false)) {
@@ -231,6 +218,18 @@
             }
           });
         }
+      }else {
+        if($scope.data.imgs1.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 2}) == null)
+          vm.EnclosureType.push({OptionType:2,GroupImg:vm.groupId_2});
+        if($scope.data.imgs2.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 4}) == null)
+          vm.EnclosureType.push({OptionType:4,GroupImg:vm.groupId_4});
+        if($scope.data.imgs3.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 8}) == null)
+          vm.EnclosureType.push({OptionType:8,GroupImg:vm.groupId_8});
+        if($scope.data.imgs4.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 16}) == null)
+          vm.EnclosureType.push({OptionType:16,GroupImg:vm.groupId_16});
+        if($scope.data.imgs5.length != 0 && vm.EnclosureType.find(function (e){return e.OptionType == 32}) == null)
+          vm.EnclosureType.push({OptionType:32,GroupImg:vm.groupId_32});
+        vm.AttachmentSHow = false;
       }
     };
 

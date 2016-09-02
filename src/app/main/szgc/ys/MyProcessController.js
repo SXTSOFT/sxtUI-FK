@@ -12,12 +12,12 @@
     .controller('MyProcessController',MyProcessController);
 
   /** @ngInject */
-  function MyProcessController($scope, api, utils, $state,$q,sxt,xhUtils,$timeout){
+  function MyProcessController($scope, api, utils, $state,$q,sxt,xhUtils,$timeout,$window){
 
     var vm = this;
     $scope.is = function(route){
       return $state.is(route);
-    }
+    };
     $scope.delProcess = function(BatchRelationId) {
       utils.confirm(null, '确认删除验收批吗？',
         function() {
@@ -35,9 +35,13 @@
       });
     };
 
+    $scope.getImgURl = function (img) {
+      return sxt.app.api + img.substring(1);
+    };
+
     $scope.getNetwork = function () {
       return api.getNetwork();
-    }
+    };
 
 /*    api.material.MaterialService.GetAll().then(function(result){
       $scope.mlCheckData = result.data.Rows;
@@ -45,7 +49,7 @@
 
     $scope.goMaterialDetail = function (id) {
       $state.go('app.material.ys.detail',{id:id});
-    }
+    };
 
     $scope.isPartner = api.szgc.vanke.isPartner();
     $scope.roleId = api.szgc.vanke.getRoleId();

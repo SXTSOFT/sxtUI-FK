@@ -19,6 +19,7 @@
         regionType:'=',
         value:'=ngModel',
         nameValue:'=',
+        materialUnit:'=',
         inc :'@'
       },
       template:'<div layout="row">' +
@@ -57,9 +58,10 @@
         scope.procedureTypeId = p.ProcedureTypeId;
         scope.value = p.ProcedureId;
         scope.nameValue = p.ProcedureName;
+        scope.materialUnit = p.Unit;
         ctrl.$setViewValue(scope.value);
       }
-      scope.Plength = 0;
+
 
       api.material.MaterialTypeService.GetProcedureType().then(function (result) {
         var s = [];
@@ -78,8 +80,10 @@
         resetSources();
       });
       scope.$watch('regionType',function(){
+        scope.Plength = 0;
         scope.value = null;
         scope.nameValue = null;
+        scope.materialUnit = null;
         ctrl.$setViewValue();
         if(!scope.regionType && !scope.inc)return;
         var t = 1,ex=[1],q={
