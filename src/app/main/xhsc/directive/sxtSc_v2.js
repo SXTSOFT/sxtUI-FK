@@ -50,21 +50,8 @@
             }
             return true;
           }
-          //if (o.AcceptanceIndexID==yxzAcceptanceIndexID){
-          //  yzxPointVal.push(o);
-          //  if (o.CheckRegionID==scope.regionId){
-          //    return true;
-          //  }
-          //}
         }
         return false;
-        //return o.CheckRegionID==scope.regionId&& o.AcceptanceItemID==scope.acceptanceItem
-        //  && scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
-        //    return m.AcceptanceIndexID == o.AcceptanceIndexID
-        //      ||(m.Children && m.Children.find(function (m1) {
-        //        return m1.AcceptanceIndexID == o.AcceptanceIndexID
-        //      }));
-        //  });
       }
       var install = function(){
         if(!scope.db || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
@@ -137,7 +124,6 @@
               data.findAll(function(o){
                 return _r(o);
               }).then(function(r){
-                console.log(yzxPointVal);
                 if (valArr){
                   r.rows.concat(valArr);
                 }
@@ -164,7 +150,7 @@
                       return false;
                     })!=null;
                 }).then(function(p){
-                  console.log(yzxPoint);
+
                   if (pointArr){
                     p.rows.concat(pointArr);
                   }
@@ -177,6 +163,33 @@
                   p.rows.forEach(function(geo){
                     layer.addData(geo.geometry);
                   });
+                  //一致性引用上一层
+                  if (!p|| !p.length&&yzxPointVal.length){
+                    var region=parseInt(scope.regionId);
+                    var RegionVal=[];
+                    yzxPointVal.forEach(function(k){
+                      if (k.CheckRegionID==(region-1)){
+                        RegionVal.push(k);
+                      }
+                    });
+                    if(!RegionVal.length){
+                      yzxPointVal.forEach(function(k){
+                        if (k.CheckRegionID==(region-1)){
+                          RegionVal.push(k);
+                        }
+                      });
+                    }
+                    if (!RegionVal.length){
+                      RegionVal.forEach(function(k){
+                        fg.data.push(k);
+                        yzxPoint.forEach(function(m){
+                          if (k.MeasurePointID == m._id|| k.MeasurePointID == m.MeasurePointID){
+                            layer.addData(m.geometry);
+                          }
+                        })
+                      })
+                    }
+                  }
                 })
               });
             }
