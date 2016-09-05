@@ -25,6 +25,7 @@
           <md-list ng-cloak style="padding-top:0;padding-bottom: 0;">
             <md-list-item ng-class="{'active':gx1.checked}" ng-repeat="gx1 in vm.data">
               <md-button flex ng-click="vm.selectSpecialty(gx1)"> {{gx1.SpecialtyName}}</md-button>
+              <span class="border1px bottom1px"></span>
             </md-list-item>
           </md-list>
         </div>
@@ -36,6 +37,7 @@
           <md-list>
             <md-list-item ng-click="vm.selectSpecialtyLow(item)" layout="row" ng-repeat="item in  vm.gxClassType" >
               <p >{{item.SpecialtyName}}</p>
+              <span class="border1px bottom1px"></span>
             </md-list-item>
           </md-list>
         </div>
@@ -47,6 +49,7 @@
           <md-list>
             <md-list-item ng-click="vm.choosego(item)" layout="row" ng-repeat="item in  vm.acceptanceItem" >
               <p flex>{{item.AcceptanceItemName}}</p>
+              <span class="border1px bottom1px"></span>
             </md-list-item>
           </md-list>
         </div>
@@ -57,6 +60,5 @@
         <md-icon md-svg-src="app/main/xhsc/images/icon-comeback.svg"></md-icon>
       </md-button>
 
-        <!--<img src="app/main/xhsc/images/circle.jpg">上一级</img>-->
     </div>
   </div>

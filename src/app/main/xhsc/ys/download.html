@@ -4,10 +4,10 @@
       <md-content class="download" style="padding: 0px">
         <div layout="column">
           <md-subheader ng-if="vm.offlines.length">已下载列表</md-subheader>
+          <span class="border1px"></span>
           <md-list>
-            <md-list-item ng-repeat="item in vm.offlines">
-
-              <img src="app/main/xhsc/images/icon-downed.png" class="md-avatar" />
+            <md-list-item style="margin: 0px -32px"  ng-repeat="item in vm.offlines">
+              <img  style="margin-left: 32px;"  src="app/main/xhsc/images/icon-downed.png" class="md-avatar" />
               <p layout="column" style="padding-right: 230px;font-size:18px;">
                 {{item.AssessmentSubject}}
               </p>
@@ -31,32 +31,26 @@
             </md-button>
           </span>
               </div>
-
+              <span class="border1px bottom1px"></span>
             </md-list-item>
 
           </md-list>
           <md-subheader ng-if="vm.onlines.length">未下载列表</md-subheader>
+          <span class="border1px"></span>
           <md-list>
-            <md-list-item ng-repeat="item in vm.onlines">
-              <img src="app/main/xhsc/images/icon-down.png" class="md-avatar" />
+            <md-list-item style="margin: 0px -32px"  ng-repeat="item in vm.onlines">
+              <img src="app/main/xhsc/images/icon-down.png" style="margin-left: 32px;" class="md-avatar" />
               <p layout="column" style="font-size: 18px;padding-right: 100px;">
                 {{item.AssessmentSubject}}
               </p>
               <div class="md-secondary md-hue-3">
-         <span style="display:inline-block;width:250px;text-align: center;">
-<!--                <md-button ng-if="!item.pack.isDown"  ui-sref="app.xhsc.ch3({assessmentID:item.AssessmentID})" class="md-raised md-primary" style="vertical-align: top;border:1px solid #0185f1;">
-                  详情
-                </md-button>-->
+               <span style="display:inline-block;padding-right: 20px;">
             <md-button  class="md-raised upload-btn" ng-click="vm.download(item)">
               下载
             </md-button>
-           <!--<a  ng-if="item.downloading" style="position: relative;display: inline-block;width:31px;height:31px;border:1px solid #f8f8f8;border-radius:50%" ng-click="vm.cancel()">-->
-             <!--<md-progress-circular md-mode="determinate" value="{{item.progress}}"  md-diameter="30"></md-progress-circular>-->
-             <!--<md-icon style="width:10px;height:10px;background: #0185f1;position: absolute;left:10px;top:10px;"></md-icon></a>-->
-           <!--<md-button  ng-if="item.pack.isDown" style="display: inline-block;vertical-align: middle;padding:5px;color:#0185f1;min-width:40px;" ui-sref="app.xhsc.ddetail">详情</md-button>-->
           </span>
               </div>
-
+              <span class="border1px bottom1px"></span>
             </md-list-item>
           </md-list>
         </div>
@@ -68,25 +62,22 @@
         <md-content class="download" style="padding: 0px">
         <div layout="column">
           <md-subheader ng-if="vm.offlines.length">项目汇总列表</md-subheader>
+          <span class="border1px"></span>
           <md-list>
-            <md-list-item ng-repeat="item in vm.projects">
-              <img src="app/main/xhsc/images/icon-downed.png" class="md-avatar" />
+            <md-list-item style="margin: 0px -32px" ng-repeat="item in vm.projects">
+              <img src="app/main/xhsc/images/icon-downed.png" style="margin-left: 32px;" class="md-avatar" />
               <p layout="column" style="padding-right: 230px;font-size:18px;">
                 {{item.fullName}}
               </p>
               <div class="md-secondary md-hue-3">
-               <span style="display:inline-block;text-align: center;">
-                    <md-button class="md-raised upload-btn" ui-sref="app.xhsc.ch31({year:item.Year,projectID:item.ProjectID,quarter:item.Quarter,assessmentStage:item.AssessmentStage})">
-                 实测
-              </md-button>
-              <!--<md-button class="md-raised  md-primary" ui-sref="app.xhsc.pkresult({year:item.Year,projectID:item.ProjectID,quarter:item.Quarter,assessmentStage:item.AssessmentStage})">-->
-                 <!--总表-->
-              <!--</md-button>-->
-          </span>
+                 <span style="display:inline-block;text-align: center;">
+                      <md-button class="md-raised upload-btn" ui-sref="app.xhsc.ch31({year:item.Year,projectID:item.ProjectID,quarter:item.Quarter,assessmentStage:item.AssessmentStage})">
+                   实测
+                </md-button>
+                </span>
               </div>
-
+              <span class="border1px bottom1px"></span>
             </md-list-item>
-
           </md-list>
         </div>
       </md-content>

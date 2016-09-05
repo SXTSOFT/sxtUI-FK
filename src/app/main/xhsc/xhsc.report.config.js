@@ -38,5 +38,15 @@
         templateUrl: 'app/main/xhsc/report/reportDefault.html',
         controller: 'reportDefault as vm'
       })
+      .state('app.xhsc.report.ysReport', {
+        noBack:true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '验收报表',
+        url: '/{acceptanceItemID}',
+        templateUrl: 'app/main/xhsc/report/ysReport.html',
+        controller: 'ysReportController as vm'
+      })
   }
 })();

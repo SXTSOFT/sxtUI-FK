@@ -1,4 +1,5 @@
 <md-list flex layout="row">
+  <span class="border1px top1px"></span>
   <span flex="25" flex-xs="5"></span>
   <md-list-item flex>
     <md-button ui-sref="app.xhsc.home">
@@ -12,7 +13,7 @@
       <!--<div class="md-grid-text" style="line-height: 20px"  ng-style="{'color':vm.is('app.xhsc.gx.gxzbmain')?'#e93030':'rgba(0,0,0,0.54)'}">总包工序</div>-->
     <!--</md-button>-->
   <!--</md-list-item>-->
-  <md-list-item ng-if="vm.role==0||vm.role==2||vm.role==4"   flex>
+  <md-list-item flex>
   <md-button ui-sref="app.xhsc.gx.gxmain" class=" ys">
     <md-icon md-svg-src="app/toolbar/images/gx.svg" class="icon s32"  ng-class="{'active':vm.is('app.xhsc.gx.gxmain')}"></md-icon>
     <div class="md-grid-text" style="line-height: 20px"  ng-style="{'color':vm.is('app.xhsc.gx.gxmain')?'#e93030':'rgba(0,0,0,0.54)'}">工序验收</div>

@@ -14,11 +14,14 @@
     margin-top: 2px;
   }
 }
+
 #toolbar2{
   font-size:12px;
   padding-top: 4px;
   background: #f4f4f6;
-  border-top:1px solid #d3d3d5;
+  position: relative;
+  //border-top:1px solid #d3d3d5;
+
   .md-button{
     line-height:26px;
     min-width:75px;
@@ -32,6 +35,36 @@ margin-bottom: 2px;
     margin-top: 2px;
   }
 }
+
+
+
+.border1px{
+  content: '';
+  width:200%;
+  display: block;
+  border-bottom:1px solid #dedede;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transform: scale(0.5);
+  transform: scale(0.5);
+  -webkit-transform-origin: left top;
+  transform-origin: left top;
+}
+
+
+.top1px{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.bottom1px{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 #toptoolbar{
   height:44px;
   min-height:44px;
@@ -56,6 +89,7 @@ background-color:rgb(233,48,48);
       color:#fff;
     }
   }
+
   h2{
     text-align:center;
     display:block;

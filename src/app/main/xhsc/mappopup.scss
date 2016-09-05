@@ -1134,7 +1134,8 @@ md-tabs[md-align-tabs="bottom"]{
   .list-left{
     background: #f0f0f0;
     md-list-item{
-      border-bottom:1px solid #dedede;
+      //border-bottom:1px solid #dedede;
+      position: relative;
     }
     .md-button{
       padding:6px 10px;
@@ -1325,7 +1326,8 @@ md-tabs[md-align-tabs="bottom"]{
     md-list{
       padding: 0;
       md-list-item{
-        border-bottom: 1px solid #dedede;
+        //border-bottom: 1px solid #dedede;
+        position: relative;
         a{
           color:#333;
         }
@@ -1721,7 +1723,8 @@ md-tabs[md-align-tabs="bottom"]{
 .download{
   .md-subheader{
     font-size:12px;
-    border-bottom: 1px solid #d8d8d8;
+    //position: relative;
+    //border-bottom: 1px solid #d8d8d8;
     .md-subheader-inner{
     padding:16px 32px;
     }
@@ -1731,10 +1734,10 @@ md-tabs[md-align-tabs="bottom"]{
   }
   md-list{
     padding:0 32px;
-    border-bottom: 1px solid #d8d8d8;
+    //border-bottom: 1px solid #d8d8d8;
     md-list-item{
-      border-bottom: 1px solid #d8d8d8;
-      margin-bottom: -1px;
+      //border-bottom: 1px solid #d8d8d8;
+      //margin-bottom: -1px;
       &.md-no-proxy{
         padding:0;
       }
@@ -1811,7 +1814,7 @@ md-tabs[md-align-tabs="bottom"]{
 .gxdownload{
   .md-subheader{
     font-size:12px;
-    border-bottom: 1px solid #dedede;
+    //border-bottom: 1px solid #dedede;
     .md-subheader-inner{
       padding:16px 10px;
     }
@@ -1820,12 +1823,13 @@ md-tabs[md-align-tabs="bottom"]{
     }
   }
   md-list{
-    padding:0 10px;
-    border-bottom: 1px solid #dedede;
+    padding:0 0px;
+    //border-bottom: 1px solid #dedede;
     md-list-item{
-      border-bottom: 1px solid #dedede;
-      margin-bottom: -1px;
-      padding:8px 0;
+      position: relative;
+      //border-bottom: 1px solid #dedede;
+      //margin-bottom: -1px;
+      padding:12px 0px 12px 12px;
       &.md-no-proxy{
         padding:0;
       }
@@ -2900,6 +2904,7 @@ md-bottom-sheet{
       margin:10px 0;
       border:1px solid #d8d8d8;
       background: #fff;
+      position: relative;
     }
   }
 }
@@ -3058,13 +3063,55 @@ table{
         border-left:none;
       }
     }
-    //&:first-child{
-    //  td{
-    //    border-top:none;
-    //  }
-    //}
   }
 }
-//.biaozhu{
-//  background: #f00;
-//}
+.summaryReport{
+    width: 100%;
+    border-collapse: collapse;
+    border: 0px;
+    text-align: center;
+    th{
+      border: 1px solid #d8d8d8;
+      text-align: center !important;
+      line-height: 44px;
+    }
+    th:nth-child(n+4){
+      min-width: 100px;
+    }
+    th:nth-child(1){
+      width: 50px;
+      min-width: 50px;
+    }
+    th:nth-child(2){
+      width:10%;
+      min-width: 120px;
+    }
+    th:nth-child(3){
+      width:10%;
+      min-width: 120px;
+    }
+    td{
+      border: 1px solid #d8d8d8;
+      padding: 0px;
+    }
+    table{
+      width: 100%;
+      height: 100%;
+      border-collapse: collapse;
+      border: 0px solid;
+      td{
+        width: 50%;
+        border: 0px solid;
+        line-height: 22px;
+      }
+      td:first-child{
+        border-right: 1px solid #d8d8d8;
+      }
+      tr{
+        border-bottom: 1px solid #d8d8d8;
+      }
+      tr:last-child{
+        border: 0px solid;
+      }
+    }
+}

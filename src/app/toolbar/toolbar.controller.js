@@ -16,8 +16,8 @@
       vm.OUType='';
       remote.profile().then(function(r){
            if (r.data&& r.data.Role){
-             vm.role= r.data.Role.MemberType;
-             vm.OUType=r.data.Role.OUType;
+             vm.role= r.data.Role.MemberType===0||r.data.Role.MemberType?r.data.Role.MemberType:-100;
+             vm.OUType=r.data.Role.OUType===0||r.data.Role.OUType?r.data.Role.OUType:-100;
            }
         });
 

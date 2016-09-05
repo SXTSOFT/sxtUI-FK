@@ -1,4 +1,4 @@
-<md-tabs flex md-border-bottom ng-if="vm.showPermission(2)">
+<md-tabs flex md-border-bottom ng-if="vm.role==2">
   <md-tab label="监理验收">
     <md-content>
       <div layout="column" class="gxdownload">
@@ -7,7 +7,6 @@
             <div class="md-list-item-text" layout="column">
               <p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
                 {{item.AcceptanceItemName}}
-                <!--<span ng-if="item.total">{{item.percent}}({{item.current}}/{{item.total}})</span>-->
               </p>
               <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>
             </div>
@@ -20,6 +19,7 @@
                 <md-icon ng-if="!item.isOffline" md-font-icon="icon-download"></md-icon>
               </md-button>
             </div>
+            <span class="border1px bottom1px"></span>
           </md-list-item>
         </md-list>
 
@@ -46,56 +46,12 @@
                 <md-icon ng-if="!item.isOffline" md-font-icon="icon-download"></md-icon>
               </md-button>
             </div>
+            <span class="border1px bottom1px"></span>
           </md-list-item>
         </md-list>
       </div>
     </md-content>
-  </md-tab>
-  <!--<md-tab label="整改报告">-->
-    <!--<md-content>-->
-      <!--<div layout="column" class="gxdownload">-->
-        <!--<md-list>-->
-          <!--<md-list-item ng-repeat="item in vm.Inspections">-->
-            <!--<div class="md-list-item-text" layout="column">-->
-              <!--<p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">-->
-                <!--{{item.AcceptanceItemName}}-->
-              <!--</p>-->
-              <!--<p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>-->
-            <!--</div>-->
-            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">-->
-              <!--<md-button class="md-raised md-primary" ng-click="vm.Lookinto(item)">-->
-                <!--查看-->
-              <!--</md-button>-->
-              <!--&lt;!&ndash;<md-button class="md-raised md-primary" ng-click="vm.exportReport(item)">&ndash;&gt;-->
-              <!--&lt;!&ndash;导出&ndash;&gt;-->
-              <!--&lt;!&ndash;</md-button>&ndash;&gt;-->
-            <!--</div>-->
-          <!--</md-list-item>-->
-        <!--</md-list>-->
-      <!--</div>-->
-    <!--</md-content>-->
-  <!--</md-tab>-->
-  <!--<md-tab label="验收报告">-->
-    <!--<md-content>-->
-      <!--<div layout="column" class="gxdownload">-->
-        <!--<md-list>-->
-          <!--<md-list-item ng-repeat="item in vm.Inspections">-->
-            <!--<div class="md-list-item-text" layout="column">-->
-              <!--<p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">-->
-                <!--{{item.AcceptanceItemName}}-->
-              <!--</p>-->
-              <!--<p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>-->
-            <!--</div>-->
-            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">-->
-              <!--<md-button class="md-raised md-primary" ng-click="vm.Lookintoys(item)">-->
-                <!--查看-->
-              <!--</md-button>-->
-            <!--</div>-->
-          <!--</md-list-item>-->
-        <!--</md-list>-->
-      <!--</div>-->
-    <!--</md-content>-->
-  <!--</md-tab>-->
+</md-tab>
   <md-tab label="离线包">
     <md-content>
       <div layout="column" class="gxdownload">
@@ -112,6 +68,7 @@
               </md-button>
 
             </div>
+            <span class="border1px bottom1px"></span>
           </md-list-item>
         </md-list>
       </div>
@@ -130,6 +87,7 @@
                 查看
               </md-button>
             </div>
+            <span class="border1px bottom1px"></span>
           </md-list-item>
         </md-list>
       </div>
@@ -137,7 +95,7 @@
   </md-tab>
 </md-tabs>
 
-<md-tabs flex md-border-bottom ng-if="vm.showPermission(0)">
+<md-tabs flex md-border-bottom ng-if="vm.role==0">
   <md-tab label="总包自检">
     <md-content>
       <div layout="column" class="gxdownload">
@@ -154,11 +112,8 @@
               <md-icon ng-if="item.isOffline" md-font-icon="icon-box-download"></md-icon>
               <md-icon ng-if="!item.isOffline" md-font-icon="icon-download"></md-icon>
             </md-button>
-              <!--<a  ng-if="item.isDown" style="position: relative;display: inline-block;width:31px;height:31px;border:1px solid #f8f8f8;border-radius:50%" ng-click="vm.cancel()">-->
-                <!--<md-progress-circular md-mode="determinate" value="{{item.progress}}"  md-diameter="30"></md-progress-circular>-->
-                <!--<md-icon style="width:10px;height:10px;background: #0185f1;position: absolute;left:10px;top:10px;"></md-icon>-->
-              <!--</a>-->
             </div>
+            <span class="border1px bottom1px"></span>
           </md-list-item>
         </md-list>
       </div>
@@ -177,6 +132,7 @@
                 报验
               </md-button>
             </div>
+            <span class="border1px bottom1px"></span>
           </md-list-item>
         </md-list>
       </div>
@@ -207,9 +163,9 @@
                 <md-icon style="width:10px;height:10px;background: #0185f1;position: absolute;left:10px;top:10px;"></md-icon>
               </a>
             </div>
+            <span class="border1px bottom1px"></span>
           </md-list-item>
         </md-list>
-
       </div>
     </md-content>
   </md-tab>
@@ -246,6 +202,7 @@
                 查看
               </md-button>
             </div>
+            <span class="border1px bottom1px"></span>
           </md-list-item>
         </md-list>
       </div>
@@ -253,49 +210,7 @@
   </md-tab>
 </md-tabs>
 
-<md-tabs flex md-border-bottom ng-if="vm.showPermission(4)">
-  <!--<md-tab label="工序检查">-->
-    <!--<md-content>-->
-      <!--<div layout="column" class="gxdownload">-->
-        <!--<md-list style="overflow: hidden;">-->
-          <!--<md-list-item ng-repeat="item in vm.projects">-->
-            <!--<p layout="column" style="padding-right: 125px;font-size:16px;padding-left:8px;">-->
-              <!--{{item.ProjectName}}-->
-            <!--</p>-->
-            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">-->
-              <!--<md-button ng-click="vm.zj(item)" class="md-raised md-primary">-->
-                <!--检查-->
-              <!--</md-button>-->
-              <!--<md-button ng-click="vm.downloadzj(item)" class="md-raised md-primary" >-->
-                <!--<md-icon ng-if="item.isOffline" md-font-icon="icon-box-download"></md-icon>-->
-                <!--<md-icon ng-if="!item.isOffline" md-font-icon="icon-download"></md-icon>-->
-              <!--</md-button>-->
-            <!--</div>-->
-          <!--</md-list-item>-->
-        <!--</md-list>-->
-      <!--</div>-->
-    <!--</md-content>-->
-  <!--</md-tab>-->
-  <!--<md-tab label="离线包">-->
-    <!--<md-content>-->
-      <!--<div layout="column" class="gxdownload">-->
-        <!--<md-list>-->
-          <!--<md-list-item>-->
-            <!--<div class="md-list-item-text" layout="column">-->
-              <!--<p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">-->
-                <!--全部上传-->
-              <!--</p>-->
-            <!--</div>-->
-            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">-->
-              <!--<md-button ng-if="!item.isDown" class="md-raised md-primary"  ng-click="vm.upload()">-->
-                <!--<md-icon md-font-icon="icon-upload"></md-icon>-->
-              <!--</md-button>-->
-            <!--</div>-->
-          <!--</md-list-item>-->
-        <!--</md-list>-->
-      <!--</div>-->
-    <!--</md-content>-->
-  <!--</md-tab>-->
+<md-tabs flex md-border-bottom ng-if="!(vm.role==2||vm.role==0)">
   <md-tab label="验收状态">
     <md-content>
       <div layout="column" class="gxdownload">
@@ -309,6 +224,7 @@
                 查看
               </md-button>
             </div>
+            <span class="border1px bottom1px"></span>
           </md-list-item>
         </md-list>
       </div>
