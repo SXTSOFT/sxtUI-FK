@@ -33,14 +33,38 @@
     }
     function link(scope,element,attr,ctrl){
       var map,tile,fg,toolbar,data,points,pk;
+      var yzxPointVal=[];
+      var yzxPoint=[];
+      var yxzAcceptanceIndexID='c1c7a2150bb742d8bd3eeefd2cf3de89';//尺寸一直性指标ID
       var _r=function(o){  //过滤值
-        return o.CheckRegionID==scope.regionId&& o.AcceptanceItemID==scope.acceptanceItem
-          && scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
+        if ( o.AcceptanceItemID==scope.acceptanceItem&&scope.measureIndexes.length
+          &&!!scope.measureIndexes.find(function(m){
             return m.AcceptanceIndexID == o.AcceptanceIndexID
               ||(m.Children && m.Children.find(function (m1) {
                 return m1.AcceptanceIndexID == o.AcceptanceIndexID
               }));
-          });
+          })){
+          if (o.CheckRegionID==scope.regionId){
+            if (o.AcceptanceIndexID==yxzAcceptanceIndexID){
+              yzxPointVal.push(o);
+            }
+            return true;
+          }
+          //if (o.AcceptanceIndexID==yxzAcceptanceIndexID){
+          //  yzxPointVal.push(o);
+          //  if (o.CheckRegionID==scope.regionId){
+          //    return true;
+          //  }
+          //}
+        }
+        return false;
+        //return o.CheckRegionID==scope.regionId&& o.AcceptanceItemID==scope.acceptanceItem
+        //  && scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
+        //    return m.AcceptanceIndexID == o.AcceptanceIndexID
+        //      ||(m.Children && m.Children.find(function (m1) {
+        //        return m1.AcceptanceIndexID == o.AcceptanceIndexID
+        //      }));
+        //  });
       }
       var install = function(){
         if(!scope.db || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
@@ -108,10 +132,12 @@
             if(layer.loaded)return;
             layer.loaded = true;
             dataRender(null,null);
+
             function dataRender(valArr,pointArr){
               data.findAll(function(o){
                 return _r(o);
               }).then(function(r){
+                console.log(yzxPointVal);
                 if (valArr){
                   r.rows.concat(valArr);
                 }
@@ -130,11 +156,15 @@
                         o.geometry.options.seq = o.geometry.properties.seq;
                         o.geometry.options.customSeq = true;
                         o.CreateTime = moment(o.CreateTime).toDate();
+                        if (i.AcceptanceIndexID==yxzAcceptanceIndexID){
+                          yzxPoint.push(o);
+                        }
                         return true;
                       }
                       return false;
                     })!=null;
                 }).then(function(p){
+                  console.log(yzxPoint);
                   if (pointArr){
                     p.rows.concat(pointArr);
                   }
