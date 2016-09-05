@@ -13,7 +13,7 @@
 
   /** @ngInject */
   function MMyProcessController($scope, api, utils, $state,$q,sxt,xhUtils,$timeout, $mdDialog,$stateParams){
-    
+
     var vm = this;
     vm.fjType = null;
     vm.AttachmentSHow = false;
@@ -40,6 +40,7 @@
       vm.checkData.RegionNameTree = $scope.project.nameTree;
       vm.checkData.RegionId = $scope.project.pid;
       vm.checkData.ProjectName = $scope.project.projectName;
+      vm.checkData.RegionName = $scope.project.typeName;
 
 
       if(vm.checkData.WgCheck == false ||(vm.fjType == 16 && vm.checkData.sjReport == false)) {
