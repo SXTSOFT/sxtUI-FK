@@ -351,7 +351,8 @@
                         resolve();
                       }
                       else{
-                        reject(result);
+                        resolve();
+                        //reject(result);
                       }
                     }).catch(reject);
                   }).catch(reject);
@@ -1014,7 +1015,7 @@
               resolve(result);
             }
           }).then(function (result) {
-            if (!doc || doc.error)
+            if (!doc || !doc.rows)
               doc = {_id: cfg._id, rows: []};
 
             if (cfg.delete) {
