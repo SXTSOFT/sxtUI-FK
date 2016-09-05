@@ -163,7 +163,7 @@
                     var room = f.rooms[i];
                     if (room) {
                       var _z = r2.data.Rows.find(function (row) {
-                        return row.ProcedureId == gx.id && row.RegionId == room.room_id;
+                        return row.ProcedureId == gx.id && (row.RegionId == room.room_id||room.building_id+'-'+room.floor==row.RegionId );
                       });
                       if (_z) {
                         _p = _z.ZbDate && _z.JLDate ? 3 :
