@@ -70,6 +70,30 @@
         }
         remote.Project.GetAreaChildenbyID(item.ProjectID).then(callBack);
       }
+
+      remote.Report.Summary().then(function(r){
+          vm.report= r.data? r.data:[];
+      });
+
+
+      vm.selectSpecialty=function(item){
+        vm.gxClassType=item.SpecialtyChildren;
+        vm.acceptanceItem=[];
+      }
+      vm.acceptanceItem=[];
+      vm.selectSpecialtyLow=function(item){
+        vm.acceptanceItem=item.WPAcceptanceList?item.WPAcceptanceList:[];
+      }
+
+      vm.comeBack=function(){
+        vm.acceptanceItem=[];
+      }
+      remote.Procedure.queryProcedure().then(function(result){
+        vm.data=result.data;
+      })
+      vm.choosego = function(i){
+        $state.go('app.xhsc.report.ysReport',{acceptanceItemID: i.AcceptanceItemID})
+      }
     });
   }
 })();

@@ -359,6 +359,7 @@
               api.uploadTask(function () {
                 return true
               },null);
+              $mdDialog.hide()
               if (!tasks.length){
                 utils.alert('上传完成');
                 return;
@@ -367,7 +368,13 @@
               load();
               vm.uploadInfo.tasks = [];
               vm.uploadInfo.uploading= false;
-            },function () {
+            },function (timeout) {
+              $mdDialog.hide();
+              var msg='上传失败,请检查网络!'
+              if(timeout){
+                msg='请求超时,请检查网络!';
+              }
+              utils.alert(msg);
               vm.uploadInfo.uploaded = 0;
               vm.uploadInfo.uploading =false;
             },{
@@ -405,18 +412,28 @@
     vm.MemberType = [];
 
     api.setNetwork(0).then(function(){
-      remote.Procedure.authorityByUserId().then(function(res){
-        res.data.forEach(function(r){
-          vm.MemberType.push(r.MemberType);
-        })
-      })
+      remote.profile().then(function(r){
+        if (r.data&& r.data.Role){
+          vm.role= r.data.Role.MemberType===0|| r.data.Role.MemberType?r.data.Role.MemberType:-100;
+          vm.OUType=r.data.Role.OUType===0||r.data.Role.OUType?r.data.Role.OUType:-100;
+          vm.MemberType.push(vm.role);
+        }
+      });
+
+
+
+      //remote.Procedure.authorityByUserId().then(function(res){
+      //  res.data.forEach(function(r){
+      //    vm.MemberType.push(r.MemberType);
+      //  })
+      //})
     })
 
-    $scope.$watch('vm.MemberType',function(){
-      vm.showPermission = function(type){
-        return vm.MemberType.indexOf(type) > -1;
-      }
-    })
+    //$scope.$watch('vm.MemberType',function(){
+    //  vm.showPermission = function(type){
+    //    return vm.MemberType.indexOf(type) > -1;
+    //  }
+    //})
 
     function load(){
       remote.Procedure.getZGlist(31).then(function (r) {
@@ -440,12 +457,18 @@
         vm.Inspections=[];
         var list=[]
         if (angular.isArray(r.data)){
+          var ys=[];
           r.data.forEach(function(o){
+            if (o.Sign==1){
+              ys.push(o);
+            }
+          });
+          ys.forEach(function(o){
             list.push(api.setting('ysList:'+ o.InspectionId))
           });
           $q.all(list).then(function (rs) {
             var ix=0;
-            r.data.forEach(function (item) {
+            ys.forEach(function (item) {
               item.isOffline = rs[ix++]?true:false;
               vm.Inspections.push(item);
             });
@@ -483,7 +506,7 @@
     };
     vm.zg = function(r){
       _goBefor(r).then(function(){
-        $state.go('app.xhsc.gx.gxzg',{Role:'zb',InspectionID: r.InspectionId,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID});
+        $state.go('app.xhsc.gx.gxzg',{Role:'zb',InspectionID: r.InspectionId,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID,AcceptanceItemName: r.AcceptanceItemName});
       });
     };
     vm.fj = function (r) {

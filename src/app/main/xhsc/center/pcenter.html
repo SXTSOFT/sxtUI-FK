@@ -1,26 +1,30 @@
 <div class="pcenter">
   <md-list style="padding:0">
     <md-list-item style="margin:0px;border: 0px solid">
-      <div class="md-list-item-text" layout="row" style="border-bottom: 1px solid #d8d8d8" flex>
+      <div class="md-list-item-text" layout="row" flex>
         <p style="width: 60px;text-align-last: justify">姓名</p>
         <p  style="padding-left: 30px">{{vm.user.name}}</p>
       </div>
+      <span class="border1px bottom1px"></span>
     </md-list-item>
     <md-list-item  style="margin:0px;border: 0px solid">
-      <div class="md-list-item-text" layout="row" style="border-bottom: 1px solid #d8d8d8" flex>
+      <div class="md-list-item-text" layout="row" flex>
         <p style="width: 60px;text-align-last: justify">角色</p>
         <p  style="padding-left: 30px" layout="row">{{vm.user.role}}</p>
+        <span class="border1px bottom1px"></span>
       </div>
     </md-list-item>
     <md-list-item  style="margin:0px;border: 0px solid">
-      <div class="md-list-item-text" layout="row" style="border-bottom: 1px solid #d8d8d8" flex>
+      <div class="md-list-item-text" layout="row"  flex>
         <p style="width: 60px;text-align-last: justify">手机号码</p>
         <p  style="padding-left: 30px">{{vm.user.userName}}</p>
+        <span class="border1px bottom1px"></span>
       </div>
     </md-list-item>
     <md-list-item>
       <p>模式({{vm.networkState?'离线':'在线'}})</p> <p class="md-secondary md-hue-3">
       <md-switch ng-model="vm.networkState" ng-disabled="true" aria-label="模式" ng-true-value="0" ng-false-value="1" class="md-warn"></md-switch></p>
+      <!--<span class="border1px bottom1px"></span>-->
     </md-list-item>
   </md-list>
   <div flex><md-button style="display: block;width:100%;margin-left:0;margin-right:0;background:#fff;border:1px solid #d8d8d8;min-height:48px;line-height:48px;" ng-click="vm.logout()">退出登录</md-button></div>

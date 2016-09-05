@@ -33,14 +33,25 @@
     }
     function link(scope,element,attr,ctrl){
       var map,tile,fg,toolbar,data,points,pk;
+      var yzxPointVal=[];
+      var yzxPoint=[];
+      var yxzAcceptanceIndexID='c1c7a2150bb742d8bd3eeefd2cf3de89';//尺寸一直性指标ID
       var _r=function(o){  //过滤值
-        return o.CheckRegionID==scope.regionId&& o.AcceptanceItemID==scope.acceptanceItem
-          && scope.measureIndexes.length&&!!scope.measureIndexes.find(function(m){
+        if ( o.AcceptanceItemID==scope.acceptanceItem&&scope.measureIndexes.length
+          &&!!scope.measureIndexes.find(function(m){
             return m.AcceptanceIndexID == o.AcceptanceIndexID
               ||(m.Children && m.Children.find(function (m1) {
                 return m1.AcceptanceIndexID == o.AcceptanceIndexID
               }));
-          });
+          })){
+          if (o.CheckRegionID==scope.regionId){
+            if (o.AcceptanceIndexID==yxzAcceptanceIndexID){
+              yzxPointVal.push(o);
+            }
+            return true;
+          }
+        }
+        return false;
       }
       var install = function(){
         if(!scope.db || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
@@ -108,6 +119,7 @@
             if(layer.loaded)return;
             layer.loaded = true;
             dataRender(null,null);
+
             function dataRender(valArr,pointArr){
               data.findAll(function(o){
                 return _r(o);
@@ -130,11 +142,15 @@
                         o.geometry.options.seq = o.geometry.properties.seq;
                         o.geometry.options.customSeq = true;
                         o.CreateTime = moment(o.CreateTime).toDate();
+                        if (i.AcceptanceIndexID==yxzAcceptanceIndexID){
+                          yzxPoint.push(o);
+                        }
                         return true;
                       }
                       return false;
                     })!=null;
                 }).then(function(p){
+
                   if (pointArr){
                     p.rows.concat(pointArr);
                   }
@@ -147,6 +163,33 @@
                   p.rows.forEach(function(geo){
                     layer.addData(geo.geometry);
                   });
+                  //一致性引用上一层
+                  if (!p|| !p.length&&yzxPointVal.length){
+                    var region=parseInt(scope.regionId);
+                    var RegionVal=[];
+                    yzxPointVal.forEach(function(k){
+                      if (k.CheckRegionID==(region-1)){
+                        RegionVal.push(k);
+                      }
+                    });
+                    if(!RegionVal.length){
+                      yzxPointVal.forEach(function(k){
+                        if (k.CheckRegionID==(region-1)){
+                          RegionVal.push(k);
+                        }
+                      });
+                    }
+                    if (!RegionVal.length){
+                      RegionVal.forEach(function(k){
+                        fg.data.push(k);
+                        yzxPoint.forEach(function(m){
+                          if (k.MeasurePointID == m._id|| k.MeasurePointID == m.MeasurePointID){
+                            layer.addData(m.geometry);
+                          }
+                        })
+                      })
+                    }
+                  }
                 })
               });
             }

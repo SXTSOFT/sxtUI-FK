@@ -186,7 +186,7 @@
         rightArrow: false,
         leftArrow: false,
         title: '整改',
-        url: '/gxzg/{Role}/{InspectionID}/{AcceptanceItemID}/{RectificationID}',
+        url: '/gxzg/{Role}/{InspectionID}/{AcceptanceItemID}/{RectificationID}/{AcceptanceItemName}',
         templateUrl: 'app/main/xhsc/procedure/gxzg.html',
         controller: 'gxzgController as vm'
       })

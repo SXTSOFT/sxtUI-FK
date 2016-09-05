@@ -16,6 +16,7 @@
       var InspectionID=$state.params.InspectionID;
       vm.AcceptanceItemID=$state.params.AcceptanceItemID;
       var RectificationID=$state.params.RectificationID;
+      vm.AcceptanceItemName=$state.params.AcceptanceItemName?$state.params.AcceptanceItemName:"";
     vm.role = $state.params.Role;
     vm.InspectionID = $state.params.InspectionID;
     vm.RectificationID = $state.params.RectificationID;
@@ -25,6 +26,7 @@
         vm.Rectification = r.data[0];
         vm.pareaList = vm.Rectification.Children;
         vm.regionSelect = vm.pareaList[0];
+        vm.warter=vm.regionSelect.RegionName+(vm.AcceptanceItemName?'('+vm.AcceptanceItemName+')':"");
         vm.regionSelect.hasCheck=true;
         load();
       });
@@ -96,6 +98,7 @@
       vm.selectQy = function(item){
         vm.regionSelect = item;
         vm.regionSelect.hasCheck=true;
+        vm.warter=vm.regionSelect.RegionName+(vm.AcceptanceItemName?'('+vm.AcceptanceItemName+')':"");
         vm.qyslideShow = false;
         //load();
       }

@@ -7,11 +7,20 @@
         .controller('ToolbarController', ToolbarController);
 
     /** @ngInject */
-    function ToolbarController($rootScope, $mdSidenav, $translate, $mdToast, auth, $state)
+    function ToolbarController($rootScope, $mdSidenav, $translate, $mdToast, auth, $state,remote)
     {
         var vm = this;
         vm.is = isRoute;
       $rootScope.toggle = false;
+      vm.role='';
+      vm.OUType='';
+      remote.profile().then(function(r){
+           if (r.data&& r.data.Role){
+             vm.role= r.data.Role.MemberType===0||r.data.Role.MemberType?r.data.Role.MemberType:-100;
+             vm.OUType=r.data.Role.OUType===0||r.data.Role.OUType?r.data.Role.OUType:-100;
+           }
+        });
+
         auth.getUser().then(function(user){
           console.log('user',user)
           vm.user = user;
