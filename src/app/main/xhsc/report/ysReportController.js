@@ -50,6 +50,9 @@
           utils.alert('查无数据!');
         }
       });
+      vm.Lookintoys = function(item){
+        $state.go('app.xhsc.gx.gxzgreport',{InspectionId:item.InspectionId, acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,projectId:item.ProjectID});
+      }
     });
   }
 })();
