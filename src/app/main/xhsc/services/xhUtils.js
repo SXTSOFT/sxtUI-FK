@@ -333,7 +333,8 @@
           '<div flex ng-show="sMap" layout="column" ct="info" sxt-show-map="imageId"><div flex layout="row" layout-align="center center" ng-if="info.loading"><md-progress-circular md-mode="indeterminate" ></md-progress-circular></div></div>'+
           '</md-dialog-content></md-dialog>'
         });
-      }
+      },
+      getSiblingsRegionID:getSiblingsRegionID
     };
     return o;
 
@@ -455,6 +456,25 @@
           }
         }
         return region;
+    }
+//获取楼层，户型的兄弟id
+    function getSiblingsRegionID(regionId,regions){
+        if (!regionId||!regions){
+          return null;
+        }
+        if ((regions.RegionID.length+5)==regionId.length&&regionId.indexOf(regions.RegionID)>-1){
+            return regions.Children;
+        }
+        var val;
+        if (regions.Children&&regions.Children.length){
+          for (var i=0;i<regions.Children.length;i++){
+            val=getSiblingsRegionID(regionId,regions.Children[i]);
+            if (val){
+                return val;
+            }
+          }
+        }
+        return null;
     }
 
     function getMapPic(maxZoom){

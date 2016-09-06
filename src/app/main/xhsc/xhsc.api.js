@@ -502,6 +502,10 @@
         }
       },
       Assessment:{
+        getCheckArea:function(assessmentID){
+          return $http.get($http.url('/api/AssessmentApi/PQAssessmentMeasurItemExtractLoadData',{assessmentID:assessmentID}))
+
+        },
         GetMeasureItemInfoByAreaID:$http.db({
           db:function (AreaID,db) {
             return db;

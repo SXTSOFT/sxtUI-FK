@@ -24,33 +24,38 @@
         queryOnline();
       });
 
-      function projectTask(projectId) {
+      function projectTask(projectId,assessmentID) {
         return [
           function (tasks) {
             return $q(function(resolve,reject) {
               var arr=[
                 remote.Project.getDrawingRelations(projectId),
-                dbpics.findAll()
+                dbpics.findAll(),
+                remote.Assessment.getCheckArea(assessmentID)
               ];
               $q.all(arr).then(function(res){
-                var result=res[0],offPics=res[1].rows;
+                var result=res[0],offPics=res[1].rows,chooseArea=res[2].data;
                 var pics = [];
-                result.data.forEach(function (item) {
-                  if (pics.indexOf(item.DrawingID) == -1&&!offPics.find(function(r){
-                      return r._id==item.DrawingID;
-                    })) {
-                    pics.push(item.DrawingID);
-                  }
-                });
-                pics.forEach(function (drawingID) {
-                  tasks.push(function () {
-                    return remote.Project.getDrawing(drawingID).then(function(){
-                      dbpics.addOrUpdate({
-                        _id:drawingID
-                      })
-                    });
-                  })
-                });
+                if (chooseArea&&chooseArea.length){
+                  result.data.forEach(function (item) {
+                    if (chooseArea.find(function(k){
+                       return  k.RegionID==item.RegionId
+                      })&&pics.indexOf(item.DrawingID) == -1&&!offPics.find(function(r){
+                        return r._id==item.DrawingID;
+                      })) {
+                      pics.push(item.DrawingID);
+                    }
+                  });
+                  pics.forEach(function (drawingID) {
+                    tasks.push(function () {
+                      return remote.Project.getDrawing(drawingID).then(function(){
+                        dbpics.addOrUpdate({
+                          _id:drawingID
+                        })
+                      });
+                    })
+                  });
+                }
                 resolve(result);
               }).catch(function(){
                 reject();
@@ -104,9 +109,9 @@
               return remote.Assessment.GetMeasureItemInfoByAreaID(item.ProjectID,"pack"+item.AssessmentID);
             });
             tasks.push(function () {
-              return remote.Assessment.GetRegionTreeInfoNotUser(item.ProjectID,"pack"+item.AssessmentID);
+              return remote.Assessment.GetRegionTreeInfo(item.ProjectID,"pack"+item.AssessmentID);
             });
-            tasks = tasks.concat(projectTask(item.ProjectID));
+            tasks = tasks.concat(projectTask(item.ProjectID,item.AssessmentID));
             item.percent = item.current =0; item.total = tasks.length;
             api.task(tasks,{
               event:'downloadxc',
