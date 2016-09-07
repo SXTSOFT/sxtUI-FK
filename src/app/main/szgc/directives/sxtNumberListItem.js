@@ -20,6 +20,11 @@
       //    }
       //}
       zdpc = parseFloat(zdpc);
+       var pl = parseFloat(item.LevelNo);
+
+      if (isNaN(pl))
+        pl = 1.5;
+
       var hgl = parseFloat(item.PassRatio),
         pc = item.DeviationLimit,
         op = pc.substring(0, 1),
@@ -80,11 +85,11 @@
         //  };
         //}
         var max1 = max,min1=min;
-        max1 = utils.math.mul(max, 1.5);
+        max1 = utils.math.mul(max, pl);
         if (min > 0)
           min1 = utils.math.mul(min, 0.5);
         else
-          min1 = utils.math.mul(min, 1.5);
+          min1 = utils.math.mul(min, pl);
         //console.log(min, max, zdpc)
         if (zdpc < min1 || zdpc > max1) {
           return {
