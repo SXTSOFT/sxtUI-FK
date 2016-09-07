@@ -7,9 +7,9 @@
         .config(config);
 
     /** @ngInject */
-    function config($ariaProvider, $logProvider, msScrollConfigProvider, $provide, fuseConfigProvider, $httpProvider,$mdAriaProvider)
+    function config($ariaProvider, $logProvider, msScrollConfigProvider, $provide, fuseConfigProvider, $httpProvider)
     {
-      $mdAriaProvider.disableWarnings();
+      //$mdAriaProvider.disableWarnings();
       $httpProvider.interceptors.push('authToken');
 
       // ng-aria configuration
