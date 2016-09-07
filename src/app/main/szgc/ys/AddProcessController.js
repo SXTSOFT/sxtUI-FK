@@ -691,7 +691,11 @@ $scope.back = function(){
         item.isOK = true;
         return item.isOK;
       }
-      var zdpc = item.MaxDeviation;
+      var zdpc = item.MaxDeviation,
+        pl = parseFloat(item.LevelNo);
+
+      if (isNaN(pl))
+        pl = 1.5;
       //var pattern = /^[0-9]+([.]\d{1,2})?$/;
       //if (zdpc) {
       //    if (!pattern.test(zdpc)) {
@@ -749,11 +753,11 @@ $scope.back = function(){
           max = utils.math.sub(max, 0.1);
           min = -10000000;
         }
-        max = utils.math.mul(max, 1.5);
+        max = utils.math.mul(max, pl);
         if (min > 0)
           min = utils.math.mul(min, 0.5);
         else
-          min = utils.math.mul(min, 1.5);
+          min = utils.math.mul(min, pl);
         //console.log(min, max, zdpc)
         if (zdpc < min || zdpc > max) {
           item.isOK = false;

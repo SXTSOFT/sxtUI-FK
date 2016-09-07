@@ -217,6 +217,9 @@
         },
         getFileReportData: function (args) {
           return $http.post('/api/Files/GetFileReportData', args);
+        },
+        GetBatchCountDetail : function (args) {
+          return $http.get($http.url('/api/Report/GetBatchCountDetail', args));
         }
       },
       CheckStepService:{

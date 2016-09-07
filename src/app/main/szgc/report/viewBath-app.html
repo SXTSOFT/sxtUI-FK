@@ -33,15 +33,15 @@
               <span style="width:120px;display: inline-block;height:40px;padding-top: 18px;vertical-align: top">部位</span>
               <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">工序</span>
               <span style="width:55px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top;text-align: center;">班组</span>
-              <span style="width:36px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top;text-align: center;">总包</span>
+              <span style="width:36px;display: inline-block;height:40px;;padding-top: 10px;vertical-align: top;text-align: center;">施工单位</span>
               <span style="width:36px;display: inline-block;height:40px;padding-top: 10px;">监理首验</span>
               <span style="width:36px;display: inline-block;height:40px;padding-top: 10px;">监理再验</span>
-              <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">监理员</span>
-              <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">查验时间</span>
+              <span style="width:60px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">监理员</span>
+              <span style="width:65px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">查验时间</span>
               <span style="width:50px;display: inline-block;height:40px;padding-top: 10px;">万科、<br>第三方</span>
               <span style="width:40px;display: inline-block;height:40px;padding-top: 18px;vertical-align: top">符合率</span>
               <span style="width:80px;display: inline-block;height:40px;padding-top: 18px;vertical-align: top;text-align: center">检查员</span>
-              <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">查验时间</span>
+              <span style="width:65px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">查验时间</span>
             </div>
           </div>
 
@@ -55,12 +55,12 @@
                 <span ng-if="!item.JLFirst" style="width: 72px;display: inline-block">{{vm.getState(item.ECCheckResult)}}</span>
                 <span ng-if="item.JLFirst" style="width:36px;display: inline-block;">{{item.JLFirst|number:1}}</span>
               <span  ng-if="item.JLFirst" style="width:36px;display: inline-block;">{{item.JLLast|number:1}}</span>
-              <span style="width:80px;display: inline-block;">{{item.JLUser}}</span>
-              <span style="width:80px;display: inline-block;">{{item.JLDate}}</span>
+              <span style="width:60px;display: inline-block;">{{item.JLUser}}</span>
+              <span style="width:65px;display: inline-block;">{{item.JLDate|sxtdate}}</span>
               <span style="width:50px;display: inline-block;">{{item.WKLast}}</span>
               <span style="width:40px;display: inline-block;">{{item.AccordRatio|number:1}}</span>
               <span style="width:80px;display: inline-block;text-align: center">{{item.WKLastUser}}</span>
-              <span style="width:80px;display: inline-block;">{{item.VKDate}}</span>
+              <span style="width:65px;display: inline-block;">{{item.VKDate|sxtdate}}</span>
               </div>
             </div>
           </div>
