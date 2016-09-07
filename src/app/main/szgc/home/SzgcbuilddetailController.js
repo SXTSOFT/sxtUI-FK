@@ -72,7 +72,7 @@
         utils.alert('一次仅能显示四种工序');
         p.checked =false;
       }
-      for(var i=0,l=selected.ps.length;i<l;i++){
+      for(var i=selected.ps.length;i>=0;i--){
         if(!selected.ps[i].checked){
           selected.ps.splice(i,1);
           selected.children[0].ps.splice(i,1);
