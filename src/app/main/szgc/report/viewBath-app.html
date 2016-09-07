@@ -52,7 +52,7 @@
                 <span style="width:80px;display: inline-block;white-space: nowrap;overflow:hidden;text-overflow:ellipsis;">{{item.ProcedureName}}</span>
               <span style="width:55px; white-space: nowrap; display: inline-block;text-align: center;">{{item.GrpWokerName | filterGrpWokerName}}</span>
                 <span style="width:36px;display: inline-block;">{{(item.ZbLast||item.ZbFirst)|number:1}}</span>
-                <span ng-if="!item.JLFirst" style="width: 72px;display: inline-block">{{vm.getState(item.ECCheckResult)}}</span>
+                <span ng-if="!item.JLFirst" style="width: 75px;display: inline-block">{{vm.getState(item.ECCheckResult)}}</span>
                 <span ng-if="item.JLFirst" style="width:36px;display: inline-block;">{{item.JLFirst|number:1}}</span>
               <span  ng-if="item.JLFirst" style="width:36px;display: inline-block;">{{item.JLLast|number:1}}</span>
               <span style="width:60px;display: inline-block;">{{item.JLUser}}</span>
