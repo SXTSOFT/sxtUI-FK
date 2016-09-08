@@ -8,7 +8,7 @@
   'use strict';
 
   angular
-    .module('app.pcReport.ysReport')
+    .module('app.pcReport_ys',[])
     .controller('gxysReportController',gxysReportController);
 
   /**@ngInject*/

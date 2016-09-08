@@ -6,12 +6,12 @@
   'use strict';
 
   angular
-    .module('app.pcReport', ['app.pcReport.ysReport'])
+    .module('app.pcReport', ['app.pcReport_ys'])
     .config(config);
-  /** @ngInject */
-  function config(msNavigationServiceProvider)
-  {
 
+  /** @ngInject */
+  function config(msNavigationServiceProvider,$stateProvider)
+  {
     // Navigation
     msNavigationServiceProvider.saveItem('report', {
       title : '报表中心',
@@ -27,20 +27,20 @@
     });
     msNavigationServiceProvider.saveItem('report.ysReport.yshzReport', {
       title: '汇总报表',
-      state: 'app.pcReport_ysReport_gxysReport'
-      //weight:1
+      state: 'app.xhsc.report.default',
+      weight:1
     });
 
     msNavigationServiceProvider.saveItem('report.ysReport.gxysReport', {
       title: '工序验收报表',
-      state: 'app.pcReport_ysReport_gxysReport'
-      //weight:2
+      state: 'app.pcReport_ys_gx',
+      weight:2
     });
 
     msNavigationServiceProvider.saveItem('report.ysReport.scslReport', {
       title: '实测实量报表',
-      state: 'app.pcReport_ysReport_gxysReport'
-      //weight:3
+      state: '/',
+      weight:3
     });
 
     msNavigationServiceProvider.saveItem('report.pgReport', {
