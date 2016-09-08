@@ -1,7 +1,8 @@
 <ul>
     <li ng-repeat="node in vm.navigation" ms-navigation-node="node"
         ng-class="{'collapsed': vm.collapsed, 'has-children': vm.hasChildren}"
-        ng-include="'navigation-nested.html'"></li>
+        ng-include="'navigation-nested.html'">
+    </li>
 </ul>
 
 <!-- Nested navigation template -->
@@ -23,7 +24,6 @@
             <span class="badge white-fg" ng-style="{'background': node.badge.color}" ng-if="node.badge">{{node.badge.content}}</span>
             <i class="icon-chevron-right s16 arrow" ng-if="vm.collapsable && vm.hasChildren"></i>
         </a>
-
     </div>
 
     <ul ng-if="vm.hasChildren && !vm.isHidden()">

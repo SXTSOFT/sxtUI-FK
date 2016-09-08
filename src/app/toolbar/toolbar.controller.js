@@ -85,10 +85,6 @@
             }
         };
 
-      //remote.Project.Area.query().then(function(result){
-      //  vm.Areas = result.data.rows;
-      //  vm.selectedArea = vm.Areas[0];
-      //})
         // Methods
         vm.toggleSidenav = toggleSidenav;
         vm.logout = logout;
