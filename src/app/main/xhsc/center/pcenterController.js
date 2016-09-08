@@ -12,13 +12,12 @@
   function pcenterController($scope,$mdDialog,db,auth,$rootScope,api,utils,$q,remote ){
     var vm = this;
     var pro=[
-      remote.Procedure.authorityByUserId(),
+      remote.profile(),
       auth.getUser()
     ];
     $q.all(pro).then(function(r){
       var role=r[0];
       var u=r[1];
-      console.log(r);
       vm.user={};
       vm.u={};
       if (u){
