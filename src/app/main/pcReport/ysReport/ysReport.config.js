@@ -18,7 +18,6 @@
       url:'/pcReport_ys_gx',
       views:{
         'content@app':{
-          template:'<ui-view flex layout="column"></ui-view>',
           templateUrl: 'app/main/pcReport/ysReport/gxysReport.html',
           controller : 'gxysReportController as vm',
         }

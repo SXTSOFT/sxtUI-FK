@@ -10,7 +10,7 @@
     .config(config);
 
   /** @ngInject */
-  function config(msNavigationServiceProvider,$stateProvider)
+  function config(msNavigationServiceProvider)
   {
     // Navigation
     msNavigationServiceProvider.saveItem('report', {
@@ -49,7 +49,7 @@
       weight:2
     });
     msNavigationServiceProvider.saveItem('report.pgReport.xcpgReport', {
-      title: '评估',
+      title: '现场评估',
       weight:1
     });
     //msNavigationServiceProvider.saveItem('components.charts.chart-js', {
