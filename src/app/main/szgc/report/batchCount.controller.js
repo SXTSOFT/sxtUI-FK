@@ -126,6 +126,16 @@
         vm.search();
       }
     });
+    $scope.$on('$destroy',$scope.$on('goBack',function (s,e) {
+      if(vm.switch == 'detail'){
+        vm.backList();
+        e.cancel = true;
+      }
+      else if (vm.searBarHide) {
+        e.cancel = true;
+        vm.searBarHide = false;
+      }
+    }));
 
 /*    $scope.$watch('m.eDate', function() {
       vm.batchData2 = [];

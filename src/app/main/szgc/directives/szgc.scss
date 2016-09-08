@@ -560,3 +560,17 @@ fieldset fieldset legend{
     }
   }
 }
+.wk-table{
+  caption{
+    text-align: center;
+    font-weight: bold;
+  }
+  border: 1px solid #000000;
+  border-collapse:collapse;
+  td{
+    border: 1px solid #000000!important;
+  }
+  th{
+    border: 1px solid #000000!important;
+  }
+}

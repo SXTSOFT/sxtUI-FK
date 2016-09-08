@@ -32,6 +32,7 @@
       $scope.goBack = function() {
         var data = {cancel: false};
         $rootScope.$broadcast ('goBack', data);
+        $rootScope.$broadcast ('goBack:end', data);
         if (!data.cancel)
           history.go (-1);
       }

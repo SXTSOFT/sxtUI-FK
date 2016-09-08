@@ -50,11 +50,11 @@
       </table>
         </div>
         <div ng-switch-when="detail">
-          <md-button class="md-raised md-primary" ng-click="vm.backList()">返回列表</md-button>
+
           <table class="table wk-table" width="100%">
             <caption><h3 style="text-align: center">施工单位自检数量统计</h3></caption>
             <thead>
-            <tr style="border-bottom:2px solid #fff;">
+            <tr style="border-bottom:2px solid #000;">
               <th width="30%">施工单位</th>
               <th width="15%">自检人员</th>
               <th width="15%">自检数量</th>
@@ -78,7 +78,7 @@
           <table class="table wk-table" width="100%">
             <caption><h3 style="text-align: center">监理单位验收数量统计</h3></caption>
             <thead>
-            <tr style="border-bottom:2px solid #fff;">
+            <tr style="border-bottom:2px solid #000;">
               <th width="30%">监理单位</th>
               <th width="15%">验收人员</th>
               <th width="15%">验收数量</th>
@@ -102,6 +102,6 @@
       </div>
       <md-progress-circular ng-show="vm.loading" md-mode="indeterminate"></md-progress-circular>
     </md-content>
-    <div style="position: absolute; top:0px; right:0px;">
+    <div ng-show="vm.switch!='detail'" style="position: absolute; top:0px; right:0px;">
       <toggle-menu inst="vm.searBarHide"></toggle-menu></div>
 

@@ -256,6 +256,7 @@
       if(!vm.searBarHide)return;
       if (!$scope.project.pid || !$scope.project.procedureId) {
         utils.alert("必须选择项目和工序！");
+        vm.searBarHide = false;
         return;
       }else{
         $timeout(function () {

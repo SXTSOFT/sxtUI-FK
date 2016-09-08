@@ -69,11 +69,11 @@
         </div>
 
       </md-content>
-      <div ng-show="is('app.szgc.ys')" style="position: absolute; top:0px; right:0px;z-index:99;">
+      <div ng-show="is('app.szgc.ys') && project.type!=64" style="position: absolute; top:0px; right:0px;z-index:99;">
         <md-button class="md-fab md-mini" ng-show="!vm.searBarHide && vm.isJdBack()" ng-click="vm.backJdSelect()">
           <md-icon md-font-icon="icon-arrow-left"></md-icon>
         </md-button>
-        <toggle-menu inst="vm.searBarHide"></toggle-menu></div>
+        <toggle-menu  inst="vm.searBarHide"></toggle-menu></div>
 
       <ui-view layout="column" flex ng-show="is('app.szgc.ys.addnew')||is('app.szgc.ys.upload')"></ui-view>
 

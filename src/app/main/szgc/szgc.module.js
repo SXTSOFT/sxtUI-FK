@@ -216,7 +216,7 @@
       })
 
       .state('app.szgc.report.batchCount', {
-        title :'项目填报情况统计表',
+        title :'录入情况统计',
         url:'/batchCount',
         controller: 'batchCountController as vm',
         templateUrl: 'app/main/szgc/report/batchCount-app.html'
