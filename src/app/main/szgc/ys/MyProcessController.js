@@ -36,16 +36,17 @@
     };
 
     $scope.getImgURl = function (img) {
-      return sxt.app.api + img.substring(1);
+      if(img != null)
+        return sxt.app.api + img.substring(1);
     };
 
     $scope.getNetwork = function () {
       return api.getNetwork();
     };
 
-/*    api.material.MaterialService.GetAll().then(function(result){
+    api.material.MaterialService.GetAll().then(function(result){
       $scope.mlCheckData = result.data.Rows;
-    });*/
+    });
 
     $scope.goMaterialDetail = function (id) {
       $state.go('app.material.ys.detail',{id:id});

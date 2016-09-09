@@ -54,6 +54,9 @@
             };
             $scope.answer = function() {
               vm.checkData.CheckResult = 0;  //状态：不合格
+              if (vm.checkData.InspectionReport == null)
+                vm.checkData.InspectionReport = 3; //   N/A
+
               vm.checkData.HandleOption = $scope.clyj;
 
               api.material.addProcessService.Insert({
@@ -81,15 +84,20 @@
         });
 
       }else{
+        if (vm.checkData.WgCheck == 1 && vm.checkData.InspectionReport == null && vm.checkData.IsInspection == 1) {
+          vm.checkData.CheckResult = 2; //状态：未知
+          vm.checkData.InspectionReport = 2; //未提供
+        } else {
+          vm.checkData.CheckResult = 1; //状态：合格
+          if (vm.checkData.InspectionReport == null)
+            vm.checkData.InspectionReport = 3; //   N/A
+        }
+
         vm._save(addForm);
       }
     };
 
     vm._save = function (addForm) {
-      if (vm.checkData.WgCheck == 1 && vm.checkData.InspectionReport == null && vm.checkData.IsInspection == 1)
-        vm.checkData.CheckResult = 2; //状态：未知
-      else
-        vm.checkData.CheckResult = 1; //状态：合格
       api.material.addProcessService.Insert({
         Id:sxt.uuid(),
         CheckData:vm.checkData,
