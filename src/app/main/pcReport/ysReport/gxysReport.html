@@ -1,42 +1,83 @@
-<md-content flex class="md-padding" layout="column" layout="row">
+<md-content flex class="md-padding" layout="column">
     <md-card flex style="background-color: white"  md-theme-watch>
       <!--<md-card-title>-->
         <md-card-title-text style="margin: 15px">
           <span class="md-headline">筛选条件</span>
         </md-card-title-text>
       <!--</md-card-title>-->
-      <div style="margin: 0px 15px">
+      <div ng-show="vm.regions.length" style="margin: 0px 15px">
         <h5>已选区域</h5>
-        <md-chips ng-model="ctrl.roFruitNames" name="fruitName" readonly="ctrl.readonly"
-                  md-removable="ctrl.removable" md-max-chips="5">
+        <md-chips  md-on-remove="vm.removeRegion($chip)" ng-model="vm.regions" name="regionName" readonly="true"
+                  md-removable="true" md-max-chips="5">
           <md-chip-template>
-            <strong>{{$chip}}</strong>
-            <em>(fruit)</em>
+            {{$chip.regionName}}
           </md-chip-template>
         </md-chips>
       </div>
 
-      <md-card-content>
+      <md-card-content >
           <div layout="row">
             <md-input-container  md-theme="default" flex>
-              <label>分期</label>
-               <md-select name="type" ng-model="project.type" required>
-                  <md-option value="app">抹灰工程</md-option>
-                  <md-option value="web">抹灰工程</md-option>
-                </md-select>
-              </md-input-container>
-            </md-input-container>
-          </div>
-
-          <div layout="row">
-            <md-input-container md-theme="default" flex>
-              <label>工序</label>
+              <label>项目</label>
               <md-select name="type" ng-model="project.type" required>
                 <md-option value="app">抹灰工程</md-option>
-                <md-option value="web">砌筑工程</md-option>
+                <md-option value="web">抹灰工程</md-option>
               </md-select>
             </md-input-container>
+            </md-input-container>
           </div>
+          <div ng-show="false" layout="row">
+            <md-input-container  md-theme="default" flex>
+              <label>分期</label>
+              <md-select name="type" ng-model="project.type" required>
+                <md-option value="app">抹灰工程</md-option>
+                <md-option value="web">抹灰工程</md-option>
+              </md-select>
+            </md-input-container>
+            </md-input-container>
+          </div>
+          <div ng-show="false" layout="row">
+            <md-input-container  md-theme="default" flex>
+              <label>楼栋</label>
+              <md-select name="type" ng-model="project.type" required>
+                <md-option value="app">抹灰工程</md-option>
+                <md-option value="web">抹灰工程</md-option>
+              </md-select>
+            </md-input-container>
+            </md-input-container>
+          </div>
+          <div ng-show="false" layout="row">
+            <md-input-container  md-theme="default" flex>
+              <label>楼层</label>
+              <md-select name="type" ng-model="project.type" required>
+                <md-option value="app">抹灰工程</md-option>
+                <md-option value="web">抹灰工程</md-option>
+              </md-select>
+            </md-input-container>
+            </md-input-container>
+          </div>
+          <div ng-show="false" layout="row">
+            <md-input-container  md-theme="default" flex>
+              <label>房间</label>
+              <md-select name="type" ng-model="project.type" required>
+                <md-option value="app">抹灰工程</md-option>
+                <md-option value="web">抹灰工程</md-option>
+              </md-select>
+            </md-input-container>
+            </md-input-container>
+          </div>
+          <proceduce selected="vm.gxSelected"></proceduce>
+          <!--<div layout="row" ng-click="vm.gxSelect()">-->
+            <!--<md-input-container md-theme="default" flex>-->
+              <!--<label>工序</label>-->
+              <!--<div>-->
+                <!--<input disabled/>-->
+                <!--<md-button class="md-icon-button md-primary" style="position: absolute;right: -8px;" aria-label="Settings">-->
+                  <!--<md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>-->
+                <!--</md-button>-->
+              <!--</div>-->
+            <!--</md-input-container>-->
+          <!--</div>-->
       </md-card-content>
       <md-card-actions layout="row" layout-align="cent center">
         <md-button flex class="md-raised md-primary">确定</md-button>

@@ -1,0 +1,24 @@
+<div style="height: 100%;width: 100%" layout="column">
+  <!--<md-content ms-scroll flex>-->
+    <md-tabs md-border-bottom   flex  style="background-color:white">
+      <md-tab  ng-repeat="gx1 in ctrl.procedures" label="{{gx1.SpecialtyName}}">
+        <md-tab-content layout="column">
+          <md-content  ms-scroll flex layout="column">
+            <div flex  layout="row">
+              <md-list flex="33">
+                <md-list-item   ng-click="ctrl.selectSpecialtyLow(item)" layout="row" ng-repeat="item in  gx1.SpecialtyChildren" >
+                  <p>{{item.SpecialtyName}}</p>
+                </md-list-item>
+              </md-list>
+              <md-list flex style="box-shadow:-1px 0px 15px 0 #d8d8d8 ">
+                <md-list-item  ng-click="ctrl.choosego(item)" layout="row" ng-repeat="item in  ctrl.acceptanceItem" >
+                  <p flex>{{item.AcceptanceItemName}}</p>
+                </md-list-item>
+              </md-list>
+          </div>
+          </md-content>
+        </md-tab-content>
+      </md-tab>
+    </md-tabs>
+  <!--</md-content>-->
+</div>
