@@ -45,7 +45,7 @@
 
     msNavigationServiceProvider.saveItem('report.pgReport', {
       title: '评估',
-      icon : 'icon-poll',
+      icon  : 'icon-tile-four',
       weight:2
     });
     msNavigationServiceProvider.saveItem('report.pgReport.xcpgReport', {
