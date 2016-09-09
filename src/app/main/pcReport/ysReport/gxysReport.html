@@ -1,1 +1,56 @@
-<div>hello world!</div>
+<md-content flex class="md-padding" layout="column" layout="row">
+    <md-card flex style="background-color: white"  md-theme-watch>
+      <!--<md-card-title>-->
+        <md-card-title-text style="margin: 15px">
+          <span class="md-headline">筛选条件</span>
+        </md-card-title-text>
+      <!--</md-card-title>-->
+      <div style="margin: 0px 15px">
+        <h5>已选区域</h5>
+        <md-chips ng-model="ctrl.roFruitNames" name="fruitName" readonly="ctrl.readonly"
+                  md-removable="ctrl.removable" md-max-chips="5">
+          <md-chip-template>
+            <strong>{{$chip}}</strong>
+            <em>(fruit)</em>
+          </md-chip-template>
+        </md-chips>
+      </div>
+
+      <md-card-content>
+          <div layout="row">
+            <md-input-container  md-theme="default" flex>
+              <label>分期</label>
+               <md-select name="type" ng-model="project.type" required>
+                  <md-option value="app">抹灰工程</md-option>
+                  <md-option value="web">抹灰工程</md-option>
+                </md-select>
+              </md-input-container>
+            </md-input-container>
+          </div>
+
+          <div layout="row">
+            <md-input-container md-theme="default" flex>
+              <label>工序</label>
+              <md-select name="type" ng-model="project.type" required>
+                <md-option value="app">抹灰工程</md-option>
+                <md-option value="web">砌筑工程</md-option>
+              </md-select>
+            </md-input-container>
+          </div>
+      </md-card-content>
+      <md-card-actions layout="row" layout-align="cent center">
+        <md-button flex class="md-raised md-primary">确定</md-button>
+      </md-card-actions>
+    </md-card>
+  <!--<md-card flex style="background-color: white"  md-theme-watch>-->
+      <!--<md-card-title>-->
+        <!--<md-card-title-text>-->
+          <!--<span class="md-headline">筛选条件</span>-->
+          <!--&lt;!&ndash;<span class="md-subhead">过滤</span>&ndash;&gt;-->
+        <!--</md-card-title-text>-->
+      <!--</md-card-title>-->
+      <!--<md-card-actions layout="row" layout-align="end center">-->
+        <!--<md-button>确定</md-button>-->
+      <!--</md-card-actions>-->
+    <!--</md-card>-->
+</md-content>
