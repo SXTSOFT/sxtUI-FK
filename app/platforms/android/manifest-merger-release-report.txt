@@ -4,7 +4,7 @@ ADDED from AndroidManifest.xml:2:1
 	android:hardwareAccelerated
 		ADDED from AndroidManifest.xml:2:11
 	xmlns:android
-		ADDED from AndroidManifest.xml:2:125
+		ADDED from AndroidManifest.xml:2:133
 	package
 		ADDED from AndroidManifest.xml:2:102
 	android:versionName
@@ -49,7 +49,7 @@ ADDED from AndroidManifest.xml:7:5
 		ADDED from AndroidManifest.xml:7:53
 	android:hardwareAccelerated
 		ADDED from AndroidManifest.xml:7:18
-activity#com.sxt.szgc.MainActivity
+activity#com.vanke.sxt.iphone.MainActivity
 ADDED from AndroidManifest.xml:8:9
 	android:windowSoftInputMode
 		ADDED from AndroidManifest.xml:8:248

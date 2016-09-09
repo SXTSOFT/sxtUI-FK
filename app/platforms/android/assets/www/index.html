@@ -1,2 +1,77 @@
-<!doctype html> <html> <head> <title>tittle</title> <script> window.location='./main.html'; </script><body>  </body> </html>
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no">
+        <title>深信通</title>
 
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+         <link rel="stylesheet" href="assets/leaflet/BZ.css">
+        <link rel="stylesheet" href="styles/vendor-0f251fcdba.css">
+
+        <link rel="stylesheet" href="styles/app-6eb8aab495.css">
+
+
+
+    </head>
+
+
+    <body   md-theme-watch md-theme="{{vm.themes.active.name}}" ng-controller="IndexController as vm"
+          class="{{state.current.bodyClass || ''}}">
+
+        <!-- SPLASH SCREEN -->
+        <ms-splash-screen id="splash-screen">
+            <div class="center">
+                <div class="logo">
+                    <span><img src="app/main/auth/login/loading.png"> </span>
+                </div>
+                <!-- Material Design Spinner -->
+                <!--<div class="spinner-wrapper">-->
+                    <!--<div class="outer-spinner">-->
+                        <!--<div class="spinner">-->
+                            <!--<div class="left">-->
+                                <!--<div class="circle"></div>-->
+                            <!--</div>-->
+                            <!--<div class="right">-->
+                                <!--<div class="circle"></div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!-- / Material Design Spinner -->
+              <div class="animated-container">
+                <div class="messaging">
+                  <div class="spinner">
+                    <div class="rect1"></div>
+                    <div class="rect2"></div>
+                    <div class="rect3"></div>
+                    <div class="rect4"></div>
+                    <div class="rect5"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </ms-splash-screen>
+        <!-- / SPLASH SCREEN -->
+
+        <div id="main" ui-view="main" layout="column"></div>
+
+        <!--<ms-theme-options></ms-theme-options>-->
+
+        <script src="scripts/vendor-13f554ed1a.js"></script>
+        <script src="assets/js/echarts.js"></script>
+        <script src="assets/js/angular-echarts.min.js"></script>
+
+        <script src="assets/leaflet/BZ.js"></script>
+        <script src="assets/js/pinyin.js"></script>
+        <script src="assets/js/sxt.js"></script>
+
+
+        <script src="scripts/app-351c3914a5.js"></script>
+
+        <script src="assets/js/ng-cordova.min.js"></script>
+        <script src="cordova.js"></script>
+    </body>
+</html>

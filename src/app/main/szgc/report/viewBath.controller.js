@@ -14,6 +14,51 @@
     vm.is = function(route){
       return $state.is(route);
     }
+    var states = vm.states = [{
+      id: 1,
+      color: 'brown',
+      title: '初验不合格',
+      selected: true,
+      c: 0
+    }, {
+      id: 2,
+      color: 'black',
+      title: '初验合格',
+      selected: true,
+      c: 0
+    }, {
+      id: 3,
+      color: 'red',
+      title: '复验不合格',
+      selected: true,
+      c: 0
+    }, {
+      id: 4,
+      color: 'blue',
+      title: '复验合格',
+      selected: true,
+      c: 0
+    }];
+    vm.getState = function (s) {
+      var f = states.find(function (item) {
+        return item.id==s;
+      });
+      return f?f.title:'';
+    }
+    vm.getStateColor = function (s) {
+      var f = states.find(function (item) {
+        return item.id==s;
+      });
+      return f?f.color:'';
+    }
+    $scope.$on('$destroy',$scope.$on('goBack',function (s,e) {
+      if($state.is('app.szgc.report.viewBath')) {
+        if(vm.searBarHide) {
+          e.cancel = true;
+          vm.searBarHide = false;
+        }
+      }
+    }));
     vm.ddd = {};
     vm.ddd.grpKey = "";
 
@@ -129,7 +174,7 @@
           companyId: vm.project.companyId,
           regionIdTree: vm.project.idTree
         }
-         console.log('vm.project',batchParems)
+         //console.log('vm.project',batchParems)
         api.szgc.addProcessService.queryByProjectAndProdure3(vm.project.projectId, batchParems).then(function(result) {
           //cb(result.data);
           if (result.data.Rows.length > 0) {
@@ -155,6 +200,10 @@
           vm.workGroupSources = [];
           vm.baths.Rows.forEach(function(item) {
             fishIndex = 0;
+            item.RegionNameTree = item.RegionNameTree.replace(vm.project.nameTree,'').replace('>>','');
+            if(item.RegionNameTree.indexOf('>')==0){
+              item.RegionNameTree = item.RegionNameTree.substr(1);
+            }
             //var idx =item.JLFirst.split('.');
             //if(idx[1]){
             //  item.JLFirst = Number(item.JLFirst).toFixed(1);

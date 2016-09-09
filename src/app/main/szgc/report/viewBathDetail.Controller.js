@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Created by guowei on 2016/2/2.
  */
 (function(){
@@ -8,9 +8,24 @@
     .controller('viewBathDetailController',viewBathDetailController);
   function viewBathDetailController($scope,api,$stateParams,utils,$q,$state,$mdDialog) {
 
+    $stateParams.bathid = $stateParams.bathid||$stateParams.bathId;
     var vm = this;
     vm.back = function(){
       $state.go('app.szgc.report.viewBath')
+    }
+    vm.isPartner = api.szgc.vanke.isPartner(1);
+    vm.goAdd = function () {
+      $state.go('app.szgc.ys.addnew',{
+        projectid:$scope.titol.regionId,
+        name:$scope.titol.RegionName,
+        batchId:$stateParams.bathid,
+        //procedureTypeId:project.procedureTypeId,
+        procedureId:$scope.titol.ProcedureId,
+        //type:project.type,
+        idTree:$scope.titol.RegionIdTree,
+        procedureName:$scope.titol.ProcedureName,
+        nameTree:$scope.titol.RegionNameTree
+      });
     }
     var newItem = function(name) {
       return {
@@ -353,7 +368,7 @@
     var fhl = function (jl, vk) {
       if (jl == vk) return '100';
       //var r = ((1 - accDiv(Math.abs(jl - vk), jl)) * 100).toString();
-      var r = ((1 - utils.math.div((jl - vk), jl)) * 100).toString();
+      var r = ((1 - utils.math.div(Math.abs(jl - vk), jl)) * 100).toString();
       var rs = r.split('.');
       if (rs.length == 2 && rs[1].length > 2) {
         return rs[0] + '.' + rs[1].substring(0, 2);
@@ -408,6 +423,14 @@
 
     $scope.egTitol = {};
     $stateParams.titol = {};
+
+            $scope.th = []
+            for (var i = 1; i <= 20; i++) {
+                $scope.th.push({
+                    aglin: "center",
+                    Value: i
+                })
+            }
     //验收批数据
     $q.all([
       api.szgc.ProcProBatchRelationService.getbyid($stateParams.bathid),
@@ -442,18 +465,27 @@
         } else if (item.RoleId == "eg") {
           $scope.egTitol = item;
         }
-
       });
+      $scope.data.ps = {
+          zb: false,
+          zb1:false,
+          jl: false,
+          jl1:false,
+          eg: false,
+          eg1: false,
+          _3rd: false,
+          _3rd1:false
+      }
 
-      api.szgc.addProcessService.getAll($stateParams.bathid, {status: 4}).then(function(result){
+      api.szgc.addProcessService.getAll($stateParams.bathid, {status: 4}).then(function(result) {
         var group = [],
-          gk = {},
-          eg;
-        result.data.Rows.forEach(function(item) {
+          gk = {}, eg, zb;
+        result.data.Rows.forEach(function (item) {
           var g = gk[item.CheckStepId];
           if (!g) {
             g = gk[item.CheckStepId] = [];
-            if (item.RoleId != 'jl') eg = g;
+            if (item.RoleId == 'eg' || item.RoleId == '3rd') eg = g;
+            else if (item.RoleId == 'zb') zb = g;
             else if (!$scope.data.jl) {
               $scope.data.jl = item.CheckWorker;
               $scope.data.jldate = item.CreatedTime;
@@ -462,17 +494,39 @@
           }
           g.push(item);
         });
+
         var jl = [];
+        $scope.data.zb = zb && zb[0].CheckWorker;
+        //$scope.data.zbFll = eg && eg[0].CreatedTime;
         $scope.data.vk = eg && eg[0].CheckWorker;
         $scope.data.vkdate = eg && eg[0].CreatedTime;
-        group.forEach(function(item) {
+        group.forEach(function (item) {
           if (item[0].RoleId == 'jl') {
             var i = 0;
-            item.forEach(function(it) {
+            item.forEach(function (it) {
               if (it.TargetTypeId != '018C0866-1EFA-457B-9737-7DCEFEA148F6') {
-                it.VKPassRatio = eg && eg[0].PassRatio;
-                it.FHL = eg && fhl(it.PassRatio, it.VKPassRatio);
-              };
+                // console.log("eg[i].PassRatio", eg);
+                var _eg = eg && eg.find(function (p) {
+                    return p.TargetId == it.TargetId;
+                  });
+                if (_eg) {
+                  it.VKPassRatio = (_eg.PassRatio == 0) ? '' : _eg.PassRatio;
+                } else {
+                  it.VKPassRatio = ''
+                }
+                var _zb = zb && zb.find(function (p) {
+                    return p.TargetId == it.TargetId;
+                  });
+                if (_zb) {
+                  it.ZbPassRatio = (_zb.PassRatio == 0) ? '' : _zb.PassRatio;
+                } else {
+                  it.ZbPassRatio = ''
+                }
+
+                it.FHL = _eg && fhl(it.PassRatio, it.VKPassRatio);
+                it.ZBFHL = _zb && fhl(it.ZbPassRatio, it.PassRatio);
+              }
+              ;
               i++;
             });
             jl.push({
@@ -482,49 +536,171 @@
             });
           }
         });
-        //console.log('j1',jl)
-        jl.forEach(function(item) {
-          item.step = cbr.data.Rows.find(function(it) {
-            return it.RoleId == 'jl' && it.CheckNo == item.ix;
-          });
-          item.eg = eg ? cbr.data.Rows.find(function(it) {
-            return it.RoleId != 'jl';
-          }) : null;
-          if(item.eg && !item.eg.load) {
-            item.eg.load = true;
-            api.szgc.addProcessService.getAllCheckDataValue(item.eg.Id).then(function (result) {
-              item.eg.yb = [];
-              eg.forEach(function (yb) {
-                if(yb.TargetTypeId != '018C0866-1EFA-457B-9737-7DCEFEA148F6') { //不是主控
-                  yb.points = [];
-                  item.eg.yb.push(yb);
-                  result.data.Rows.forEach(function (item) {
-                    if (yb.Id == item.CheckDataId) {
-                      yb.points.push(item);
-                    }
-                  })
+        $scope.data.ps.jl = jl.length != 0;
+        if (!jl.length) {
+          group.forEach(function (item) {
+            if (item[0].RoleId == 'zb') {
+              jl.push({
+                ix: jl.length + 1,
+                text: '第' + (jl.length + 1) + '次',
+                d: bingTargets(item)
+              });
+              item.forEach(function (it) {
+                if (it.TargetTypeId != '018C0866-1EFA-457B-9737-7DCEFEA148F6') {
+
+                  it.ZbPassRatio = it.PassRatio;
+                  it.PassRatio = '';
+                  it.CheckNum = '';
+                  it.MaxDeviation = '';
+
+
+                  //it.FHL = eg && eg[i] && fhl(it.PassRatio, it.VKPassRatio);
+                  //it.ZBFHL = zb && zb[i] && fhl(it.ZbPassRatio, it.PassRatio);
                 }
               });
+            }
+          })
+        }
+        //console.log('j1',jl)
+        jl.forEach(function (item) {
+          item.step = cbr.data.Rows.find(function (it) {
+            return it.RoleId == 'jl' && it.CheckNo == item.ix;
+          });
+          item.eg = eg ? cbr.data.Rows.find(function (it) {
+            return it.RoleId != 'jl' && it.CheckNo == eg[0].HistoryNo;
+          }) : null;
+          item.zb = zb ? cbr.data.Rows.find(function (it) {
+            return it.RoleId == 'zb' && it.CheckNo == zb[0].HistoryNo;
+          }) : null;
+
+          item._3rd = zb ? cbr.data.Rows.find(function (it) {
+            return it.RoleId == '3rd' && it.CheckNo == zb[0].HistoryNo;
+          }) : null;
+
+          $scope.data.ps.eg = !!item.eg;
+          $scope.data.ps.zb = !!item.zb;
+          $scope.data.ps.eg = !!item.eg;
+          $scope.data.ps._3rd = !!item._3rd
+
+
+          $q.all([
+            item.eg && !item.eg.load ? api.szgc.addProcessService.getAllCheckDataValue(item.eg.Id) : $q(function (r) {
+              r()
+            }),
+            item.zb && !item.zb.load ? api.szgc.addProcessService.getAllCheckDataValue(item.zb.Id) : $q(function (r) {
+              r()
+            }),
+            item._3rd && !item._3rd.load ? api.szgc.addProcessService.getAllCheckDataValue(item._3rd.Id) : $q(function (r) {
+              r()
             })
-          }
+          ]).then(
+            function (rs) {
+              item.eg && (item.eg.load = true);
+              item.zb && (item.zb.load = true);
+              /*              (item.eg = item.eg||{}).yb = [];
+               (item.zb = item.zb||{}).yb = [];*/
+
+              item.d.yb.forEach(function (yb) {
+                if (yb.TargetTypeId != '018C0866-1EFA-457B-9737-7DCEFEA148F6') { //不是主控
+                  var jlyb = item.d.yb.find(function (jl) {
+                    return jl.TargetId == yb.TargetId;
+                  });
+                  //yb.points = [];
+                  jlyb.egPoints = [];
+                  jlyb.zbPoints = [];
+                  jlyb._3rdPoints = [];
+                  //item.eg.yb.push(yb);
+
+                  var row = [];
+                  rs[0] && rs[0].data.Rows.forEach(function (item) {
+                    $scope.data.ps.eg1 = true;
+                    if (yb.TargetId == item.TargetId) {
+                      //jlyb.egPoints.push(item);
+                      if (row.length == 20) {
+                        //yb.points.push(row)
+                        jlyb.egPoints.push(row);
+                        row = [];
+                        row.push(item);
+                      } else {
+                        row.push(item);
+                      }
+                    }
+                  });
+                  if (row.length > 0) {
+                    var len = row.length;
+                    while (len < 20) {
+                      row.push({
+                        Value: ""
+                      });
+                      len++;
+                    }
+                    jlyb.egPoints.push(row);
+                  }
+
+                  row = [];
+                  rs[1] && rs[1].data.Rows.forEach(function (item) {
+                    $scope.data.ps.zb1 = true;
+                    if (yb.TargetId == item.TargetId) {
+                      //jlyb.egPoints.push(item);
+                      if (row.length == 20) {
+                        //yb.points.push(row)
+                        jlyb.zbPoints.push(row);
+                        row = [];
+                        row.push(item);
+                      } else {
+                        row.push(item);
+                      }
+                    }
+
+                  });
+                  if (row.length > 0) {
+                    var len = row.length;
+                    while (len < 20) {
+                      row.push({
+                        Value: ""
+                      });
+                      len++;
+                    }
+                    jlyb.zbPoints.push(row);
+                  }
+
+                  row = [];
+                  rs[2] && rs[2].data.Rows.forEach(function (item) {
+                    $scope.data.ps._3rd1 = true;
+                    if (yb.TargetId == item.TargetId) {
+                      //jlyb.egPoints.push(item);
+                      if (row.length == 20) {
+                        //yb.points.push(row)
+                        jlyb._3rdPoints.push(row);
+                        row = [];
+                        row.push(item);
+                      } else {
+                        row.push(item);
+                      }
+                    }
+
+                  });
+                  if (row.length > 0) {
+                    var len = row.length;
+                    while (len < 20) {
+                      row.push({
+                        Value: ""
+                      });
+                      len++;
+                    }
+                    jlyb._3rdPoints.push(row);
+                  }
+                }
+              });
+            }
+          );
           item.text += '/共' + jl.length + '次'
         });
 
         $scope.data.sources = jl;
         $scope.data.selected = jl[jl.length - 1]; //取最后一次的验收数据
-        var RemoveStr = function(str) {
-          var strarr = str.split('>');
-          var strarr2 = [];
-          strarr.forEach(function(item) {
-            item = item.replace(/(^\s*)|(\s*$)/g, '');
-            if (!strarr2.length || strarr2[strarr2.length - 1] != item) {
-              strarr2.push(item);
-            }
-          });
-          return strarr2.join('>');
-        };
+
         $scope.data.selected.d.yb.forEach(function (item) {
-          item.TargetName = RemoveStr(item.TargetName)
           if (item.CheckNum == 0 && item.MaxDeviation == 0 && item.PassRatio == 0) {
             item.CheckNum = undefined;
             item.MaxDeviation = undefined;
@@ -532,37 +708,47 @@
           }
         });
       });
-      $scope.th=[]
-      for (var i=1;i<=20;i++){
-        $scope.th.push({
-           aglin:"center",
-           Value:i
-        })
-      }
+
+
       $scope.$watch('data.selected',function () {
-        if($scope.data.selected && $scope.data.selected.d){
+        if ($scope.data.selected && $scope.data.selected.d) {
           var s = $scope.data.selected;
-          if(!s.load){
+          if (!s.load) {
             s.load = true;
             api.szgc.addProcessService.getAllCheckDataValue(s.step.Id).then(function (result) {
-              if(result.data.Rows.length){
-                vm.showData = true;
+              if (result.data.Rows.length) {
+                $scope.data.ps.jl1 = true;
               }
               s.d.yb.forEach(function (yb) {
-                yb.points=[];
+                var row = [];
+                yb.points = [];
                 result.data.Rows.forEach(function (item) {
-                  if(yb.Id==item.CheckDataId){
-                    yb.points.push(item);
+                  if (yb.Id == item.CheckDataId) {
+                    if (row.length == 20) {
+                      yb.points.push(row)
+                      row = [];
+                      row.push(item);
+                    } else {
+                      row.push(item);
+                    }
+
                   }
                 })
+                if (row.length > 0) {
+                  var len = row.length;
+                  while (len < 20) {
+                    row.push({
+                      Value: ""
+                    });
+                    len++;
+                  }
+                  yb.points.push(row);
+                }
               });
             })
           }
         }
-      })
-
+      });
     });
-
-
   }
 })();

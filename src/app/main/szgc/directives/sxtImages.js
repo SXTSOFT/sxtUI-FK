@@ -9,7 +9,7 @@
     .directive('sxtImages', sxtImagesDirective);
 
   /** @ngInject */
-  function sxtImagesDirective(FileUploader,api, authToken,sxt,$q,$timeout){
+  function sxtImagesDirective(api, xhUtils,sxt,$cordovaCamera,$window,$q,$cordovaImagePicker){
     return {
       restrict: 'E',
       require: "?ngModel",
@@ -19,184 +19,130 @@
         edit:'@',
         files: '='
       },
-      controller: function ($scope) {
-
-        var dataURItoBlob = function (dataURI) {
-          var byteString;
-          if (dataURI.split(',')[0].indexOf('base64') >= 0)
-            byteString = atob(dataURI.split(',')[1]);
-          else
-            byteString = unescape(dataURI.split(',')[1]);
-          var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-          var ia = new Uint8Array(byteString.length);
-          for (var i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
-          }
-
-          return new Blob([ia], {
-            type: mimeString
-          });
-        };
-
-        var resizeFile = function (file) {
-          var deferred = $q.defer();
-          var img = new Image();
-          try {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-              img.src = e.target.result;
-              img.onload = function () {
-                var canvas = document.createElement("canvas");
-                var ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0);
-                var MAX_WIDTH = 800;
-                var MAX_HEIGHT = 800;
-                var width = img.width;
-                var height = img.height;
-                if (width > height) {
-                  if (width > MAX_WIDTH) {
-                    height *= MAX_WIDTH / width;
-                    width = MAX_WIDTH;
-                  }
-                } else {
-                  if (height > MAX_HEIGHT) {
-                    width *= MAX_HEIGHT / height;
-                    height = MAX_HEIGHT;
-                  }
-                }
-                canvas.width = width;
-                canvas.height = height;
-                var ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0, width, height);
-
-                var dataURL = canvas.toDataURL('image/jpeg');
-                var blob = dataURItoBlob(dataURL);
-
-                deferred.resolve(blob);
-              }
-            };
-            reader.readAsDataURL(file);
-          } catch (e) {
-            deferred.resolve(e);
-          }
-          return deferred.promise;
-
-        };
-
-        var uploader = $scope.uploader = new FileUploader({
-          headers: { 'Authorization': authToken.getToken() },
-          autoUpload: false,
-          onSuccessItem: function (item, response, status, headers) {
-
-            if (status==200) {
-              $scope.imgOK = true;
-            }else{
-              $scope.imgFail = true;
-            }
-            $timeout(function(){
-              $scope.imgOK = false;
-              $scope.imgFail = false;
-            },1000)
-            item.file.Id = response.Files[0].Id;
-            item.file.Url = response.Files[0].Url;
-            item.file.Remark = response.Files[0].Remark;
-            if (angular.isArray($scope.files))
-              $scope.files.push(response.Files[0].Url);
-            item.remove = function () {
-              var me = this;
-              api.szgc.FilesService.delete(me.file.Id).then(function (r) {
-                uploader.queue.splice(uploader.queue.indexOf(me), 1);
-              });
-            }
-          },
-          onAfterAddingFile: function (item) {
-            if (item.file.type.indexOf('image/') != -1) {
-              resizeFile(item._file).then(function (blob_data) {
-                item._file = blob_data;
-                $scope.ImageSize = blob_data.size/1024/1024
-                console.log('$scope.ImageSize',$scope.ImageSize)
-                item.upload();
-              })
-            }
-            else {
-              item.upload();
-            }
-
-          }
-        });
-        $scope.editPic = function (file) {
-
-        }
-        $scope.remove = function ($event, file) {
-          $scope.imgOK = false;
-          $event.preventDefault();
-          file.remove();
-        }
-      },
-      template: '<div  style="color: red;padding-bottom: 0px;padding-left: 10px;padding-top: 0px;" ng-show="imgOK">上传成功!</div><div  style="color: red;" ng-show="imgFail">上传失败!</div> <div class="imageEdit"><div class="edititem" ng-repeat="item in uploader.queue" uib-tooltip="{{item.file.Remark}}"><div ng-if="!item.isSuccess" class="proc" >{{item.progress}}%</div><img style="height:150px;;margin:0 5px;" ng-click="editPic(item.file)" ng-src="{{item.file.Url|fileurl}}" class="img-thumbnail" /><div class="action"><a class="btn btn-white btn-xs" ng-if="edit" ng-click="remove($event,item)"><i class="fa fa-times"></i></a></div></div>\
-<div  style="float:left;padding:5px;" ng-if="edit"><div class="file-drop-zone" style="height:140px;margin:0 5px;line-height:140px; padding:5px;" nv-file-drop uploader="uploader">\
-            <input type="file" nv-file-select uploader="uploader" multiple ng-click ="inputChange()"; />\
+      template: '<div class="imageEdit"><div class="edititem"  ng-repeat="item in files" ><img style="height:150px;;margin:0 5px;" ng-src="{{item.Url|fileurl}}" class="img-thumbnail" /><div class="action"><md-progress-circular md-mode="indeterminate" ng-if="item.Uploading"></md-progress-circular><md-button ng-if="!item.Uploading && edit" class="md-fab md-mini"  ng-click="remove($event,item)"><md-icon md-font-icon="icon-delete" ></md-icon></md-button></div></div>\
+<div  style="float:left;padding:5px;" ng-if="edit"><div class="file-drop-zone" layout="column" layout-align="space-around center" style="height:140px;margin:0 5px;line-height:140px; padding:5px;border-width:1px;" >\
+<md-button ng-click ="inputChange(0)" class="md-raised">照片库</md-button>\
+<md-button ng-click ="inputChange(1)" class="md-raised">拍照</md-button>\
         </div>\
 </div></div>',
       link: function (scope, element, attrs, ngModel) {
-        var uploader = scope.uploader;
         var gid;
         scope.$watch('gid', function () {
           if (gid && gid == scope.gid) return;
-          uploader.queue.length = 0;
           gid = scope.gid;
-
-          if (gid != '') {
-            uploader.url =sxt.app.api+ '/api/Files/' + gid + '?project=' + (scope.project||'');
-            angular.forEach(uploader.queue, function (item) { item.url = uploader.url });
+          scope.files = [];
+          scope.remove = function ($event,item) {
+            api.szgc.FilesService.delete(item.Id).then(function () {
+              scope.files.splice(scope.files.indexOf(item),1);
+              api.uploadTask(function (up) {
+                return up._id==item.Id;
+              },null)
+            });
           }
-          scope.inputChange = function(){
-            scope.imgOK = false;
-            scope.imgFail = false;
+          function onSuccess(newBase64) {
+            var att = {
+              Id: sxt.uuid(),
+              GroupId: scope.gid,
+              Url: newBase64,
+              Uploading:true
+            };
+            var d = new Date();
+            api.uploadTask({
+              _id: att.Id,
+              name: '照片 (' + (d.getMonth()+1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ')'
+            });
+            scope.files.push(att);
+            return api.szgc.FilesService.post(att).then(function () {
+              att.Uploading = false;
+            });
           }
-
-          api.szgc.FilesService.group(scope.gid || '').success(function (data) {
-            if (gid != data.Group) {
-              gid = scope.gid = data.Group;
-              uploader.url = sxt.app.api+'/api/Files/' + gid + '?project=' + (scope.project || '');
-              angular.forEach(uploader.queue, function (item) { item.url = uploader.url });
-            }
-            if (data.Files) {
-              data.Files.forEach(function (att) {
-                if (angular.isArray(scope.files))
-                  scope.files.push(att.Url);
-
-                uploader.queue.push({
-                  file: {
-                    Id: att.Id,
-                    name: att.FileName,
-                    size: att.FileSize,
-                    Url: att.Url,
-                    UserID: att.UserID,
-                    Remark:att.Remark,
-                    CreateDate: att.CreateDate
-                  },
-                  remove: function () {
-                    var me = this;
-                    api.szgc.FilesService.delete(me.file.Id).then(function (r) {
-                      uploader.queue.splice(uploader.queue.indexOf(me), 1);
+          scope.inputChange = function(s) {
+            if(s===0){
+              $cordovaImagePicker.getPictures({
+                maximumImagesCount: 10,
+                height: 600,
+                quality: 50
+              }).then(function(results) {
+                var tasks = [];
+                results.forEach(function (uri) {
+                  tasks.push(function () {
+                    return readImage(uri).then(function (base64) {
+                      return onSuccess(base64);
                     });
-                  },
-                  progress: 100,
-                  isServer: true,
-                  isSuccess: true,
-                  isCancel: false,
-                  isError: false,
-                  isReady: false,
-                  isUploading: true,
-                  isUploaded: true,
-                  index: null
+                  });
                 });
+                api.task(tasks)();
               });
             }
-          })
+            else {
+              $cordovaCamera.getPicture({
+                quality: 50,
+                destinationType: 0,
+                sourceType: s,
+                allowEdit: false,
+                targetHeight: 600,
+                encodingType: 0,
+                saveToPhotoAlbum: (s === 0 ? false : true),
+                correctOrientation: true
+              }).then(function (base64) {
+                if (base64) {
+                  onSuccess('data:image/jpeg;base64,'+base64);
+                }
+              }, function (err) {
+              });
+            }
+          }
+
+          api.szgc.FilesService.group(scope.gid || '').then(function (result) {
+            var data = result.data;
+            if (data.Files) {
+              data.Files.forEach(function (att) {
+                  scope.files.push(att);
+              });
+            }
+          });
         });
       }
+    }
+
+    function compress(base64,callback){
+      var image = new Image();
+      image.onload = function () {
+        var srcWidth,
+          srcHeight,
+          ctx = $window.document.createElement('canvas');
+        if(image.width>600 || image.height>600){
+          var rd = 600/Math.max(image.width,image.height);
+          srcWidth = image.width*rd;
+          srcHeight = image.height*rd;
+        }
+        else{
+          srcWidth = image.width;
+          srcHeight = image.height;
+        }
+        ctx.width = srcWidth;
+        ctx.height = srcHeight;
+        ctx.getContext("2d").drawImage(image, 0, 0,image.width,image.height,0,0,srcWidth,srcHeight);
+        callback(ctx.toDataURL('image/jpeg',1));
+      };
+      image.src = base64;
+    }
+    function readImage(uri) {
+      return $q(function (resolve,reject) {
+        $window.resolveLocalFileSystemURI(uri,
+          function (fileEntry) {
+            fileEntry.file(function(file) {
+              var reader = new $window.FileReader();
+              reader.onloadend = function (evt) {
+                resolve(evt.target.result);
+              };
+              reader.readAsDataURL(file);
+            }, reject);
+          },
+          reject
+        );
+      })
+
     }
   }
 

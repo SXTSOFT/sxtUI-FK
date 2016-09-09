@@ -1,10 +1,17 @@
-<div class="md-toolbar-tools">
-    <md-icon ng-hide="$root.noBack===true" md-font-icon="icon-chevron-left" style="color:white;" ng-click="goBack();" class="icon s32"></md-icon>
-  <h2>
-    <span>{{$root.title || '万科数字工程'}}</span>
+<div class="md-toolbar-tools" layout="row">
+  <md-button flex="none" class="md-icon-button" ng-show="!$root.noBack" ng-click="goBack();" >
+    <md-icon md-font-icon="icon-chevron-left" style="color:white;"></md-icon>
+  </md-button>
+  <h2 flex>
+    <span ng-if="!vm.networking">{{$root.title || '万科数字工程'}}</span>
+    <span ng-if="vm.networking"><img src="assets/images/loader.gif"> 连接中...</span>
   </h2>
-  <div style="position: absolute;top:5px;right:5px;">
-  <md-progress-circular id="toolbar-progress" ng-if="$root.loadingProgress"
+  <md-button flex="none" class="md-icon-button" aria-label="net work" ng-click="vm.setNetwork()">
+    <md-icon md-svg-icon="assets/images/online.svg" ng-if="vm.networkState==0" ></md-icon>
+    <md-icon md-svg-icon="assets/images/offline.svg" ng-if="vm.networkState==1" ></md-icon>
+  </md-button>
+  <div flex="none" >
+  <md-progress-circular ng-if="$root.loadingProgress"
                         md-mode="indeterminate" md-diameter="40">
   </md-progress-circular></div>
 </div>

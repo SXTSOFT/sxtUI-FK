@@ -1,0 +1,64 @@
+<md-content flex layout="column" ng-show="!vm.searBarHide" class="menu-toggle-list">
+  <div flex style="overflow: auto">
+    <sxt-projects-jd ng-model="vm.project.pid" object-scope="vm" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" on-queryed="vm.project.onQueryed">
+    </sxt-projects-jd>
+    <div class="md-padding" layout="row">
+
+      <md-button ng-disabled="vm.project.type!=64 || !vm.project.play" type="submit" flex ng-click="vm.play()" class="md-raised md-primary"> 隐蔽照片 {{vm.project.playInfo}}  </md-button>
+      <md-button ng-disabled="vm.project.type!=8" type="submit" flex ng-click="vm.search()" class="md-raised md-primary"> 验收记录  </md-button>
+    </div></div>
+</md-content>
+<md-content flex ng-show="vm.searBarHide" layout="column" id="ybgc">
+  <div flex="none" ng-init="vm.showSm =false" layout="row">
+      <div layout="column" ng-if="vm.mode==1" flex style="padding: 5px 10px;border-bottom: 1px solid #d8d8d8;">
+        <div layout="row">
+        <div flex="initial" class="dingw"><span>当前楼栋：</span><span style="color:#0b93d5;">{{vm.project.typeName}}</span></div><div style="position: relative;" flex="none" class="tlsm"><span ng-click="vm.showSm = !vm.showSm" class="span">图例说明</span>
+        <div class="tl-wrap" ng-show="vm.showSm">
+          <div style="margin-bottom: 12px;font-size:14px;">图例说明</div>
+          <div style="margin-bottom: 12px;">
+            <span style="display:inline-block;width: 20px ;height: 20px; border: none;background-color: #0b93d5;vertical-align: top;margin-right:10px;"></span>
+            <span style="display: inline-block;line-height: 20px;height:20px;vertical-align: top;">照片数量</span>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <span style="display:inline-block;width: 20px ;height: 20px; border: none;background-color: #0b93d5;opacity: 0.5;vertical-align: top;margin-right:10px;"></span>
+            <span style="display: inline-block;line-height: 20px;height:20px;vertical-align: top;">验收表数量</span></div>
+          <div>
+            <span style="display:inline-block;width: 20px ;height: 20px; border: none;background-color: orange;vertical-align: top;margin-right:10px;"></span>
+            <span style="display: inline-block;line-height: 20px;height:20px;vertical-align: top;">不合格</span>
+          </div>
+        </div>
+        </div>
+        </div>
+      </div>
+      <md-select ng-if="vm.mode==2" flex placeholder="切换工序" style="margin: 0" ng-model="vm.build.selected">
+        <md-option ng-repeat="gx in vm.build.gx" ng-value="gx" >
+          {{gx.label}} - {{gx.date}}
+        </md-option>
+      </md-select>
+    <span flex="none"><toggle-menu inst="vm.searBarHide"></toggle-menu></span>
+  </div>
+<md-content flex layout="column">
+  <span flex ng-if="vm.mode==1 && vm.project.rows.length==0 && !vm.project.loading" style="text-align: center;display: block;"> 暂无数据</span>
+<!--
+  <md-progress-circular  md-mode="indeterminate" ng-if="(vm.project.loading&&vm.project.rows.length!=0)||vm.build.loaded!==true" md-diameter="40"></md-progress-circular>
+-->
+
+      <md-list ng-if="vm.mode==1" layout-padding ng-if="!vm.project.loading">
+        <md-list-item>
+          <div class="yhyd" layout="row"  layout-wrap>
+            <div layout="column" class="btn" ng-repeat="item in vm.project.rows" ng-class="{'bhg':!item.hg}" >
+              <button class="btnUp" ng-click=" vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionIdTree,type:item.type && item.type.type_id})">{{item.ybNum}}</button>
+              <button class=" btnDown" ng-click="vm.viewItem({regionId:item.room_id,regionType:32,regionName:item.full_name,roomType:item.type,idTree:item.RegionIdTree,type:item.type && item.type.type_id})">{{item.ysNum}}</button>
+              <span >{{item.name.indexOf(item.floor)==-1?item.floor+'-'+item.name:item.name}}</span>
+            </div>
+          </div>
+        </md-list-item>
+      </md-list>
+
+  <div flex  ng-if="vm.mode==2" sxt-msk-charts="vm.project.idTree" ng-if="vm.project.type==8" build="vm.build" ></div>
+  </md-content>
+  </md-content>
+
+
+
+

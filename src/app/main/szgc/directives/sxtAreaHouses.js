@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Created by jiuyuong on 2016/5/19.
  */
 (function () {
@@ -8,7 +8,7 @@
     .module('app.szgc')
     .directive('sxtAreaHouses',sxtAreaHousesDirective);
   /** @ngInject */
-  function sxtAreaHousesDirective (sxt, api,$timeout) {
+  function sxtAreaHousesDirective (sxt, api,$timeout,$q) {
     return {
       scope: {
         param: '=',
@@ -17,6 +17,15 @@
         itemName:'='
       },
       link: function (scope, element, attrs, ctrl) {
+        function setDefault(options,def) {
+          options = options || {};
+          if (def) {
+            for (var k in def) {
+              options[k] = def[k];
+            }
+          }
+          return options;
+        }
         function isMiddleNumber(n1, n2, n, f) {
           if(f){ //修正线难被点到的问题
             if(Math.abs(n1-n2)<0.02){
@@ -42,7 +51,13 @@
             var regionId = scope.param.idTree.replace(/\>/g,'-').replace('sub-', ''),
               bid = regionId.split('-')[1],
               type = scope.param.item.type;
-            api.szgc.FilesService.group(bid + '-' + type).then(function (r) {
+
+            $q.all([
+              api.szgc.FilesService.group(bid + '-' + type),
+              api.szgc.FilesService.GetGroupLike(regionId),
+              api.szgc.FilesService.GetGroupLike('sub-'+regionId)
+            ]).then(function (rs) {
+              var r = rs[0];
               var fs = r.data.Files[0];
               if (fs) {
                 var map, layer, apiLayer, drawControl, itemId=[];
@@ -73,6 +88,9 @@
                     overLayers = [],
                     eb, isN = false;
                   map.eachLayer(function (layer) {
+                    if (layer instanceof L.Marker) {
+                      map.removeLayer(layer);
+                    }
                     if (layer.editing && !layer.isEdit) {
                       layer.setStyle({
                         color: '#ff0000'
@@ -85,105 +103,7 @@
                       }
                     }
                   });
-                  var colorLayer = overLayers.find(function (l) {
-                    return l.options.fillOpacity != 0;
-                  });
-                  if (!colorLayer) {
-                    colorLayer = overLayers.find(function (l) {
-                      return l instanceof L.Polygon || layer instanceof L.Rectangle;
-                    });
-                    if (colorLayer) {
-                      var groupLayer = [];
-                      map.eachLayer(function (layer) {
-                        if (layer.isEdit) {
-                          map.removeLayer(layer);
-                        }
-                        if (layer.editing && !layer.isEdit) {
-                          if (layer.options.itemName == colorLayer.options.itemName) {
-                            if (layer instanceof L.Rectangle || layer instanceof L.Polygon) {
-                              layer.setStyle({
-                                color: '#ff0000',
-                                stroke: false,
-                                fillOpacity: 0.2
-                              });
-                              groupLayer.push(layer);
-                            }
-                            else {
-                              layer.setStyle({
-                                color: '#ff0000',
-                                stroke: true,
-                                fillOpacity: 0.2
-                              });
-                            }
-                          }
-                          else {
-                            layer.setStyle({
-                              color: '#ff0000',
-                              stroke: false,
-                              fillOpacity: 0
-                            });
-                          }
-                        }
-                      });
-                      var layer = groupLayer.find(function (layer) {
-                        return layer.options.p == '1';
-                      });
-                      var layer2 = groupLayer.find(function (layer) {
-                        return layer.options.p == '5';
-                      });
-                      if (layer) {
-                        //console.log('b', layer.getBounds());
-                        var b = layer.getBounds(), p1 = new L.latLng(b._southWest.lat - 0.1, b._southWest.lng-0.1);
-                        L.marker(p1, {
-                          icon: new ST.L.LabelIcon({
-                            html: '楼板',
-                            color: 'black'
-                          }),
-                          saved: false,
-                          draggable: true,       // Allow label dragging...?
-                          zIndexOffset: 1000     // Make appear above other map features
-                        }).addTo(map).on('click', function () {
-                          layer.setStyle({
-                            color: 'green'
-                          })
-                          scope.itemName = layer.options.t;
-                          //scope.itemName = (layer.options.itemName || itemName) + ' - ' + layer.options.t;
-                          scope.itemId = layer.options.itemId || '--';
-                          scope.$apply();
-                          layer2 && layer2.setStyle({
-                            color: '#ff0000'
-                          })
-                        }).isEdit = true;
-                      }
 
-                      if (layer2) {
-                        var b = layer2.getBounds(), p2 = L.latLng(b._southWest.lat - 0.1, b._southWest.lng + 0.1);
-                        L.marker(p2, {
-                          icon: new ST.L.LabelIcon({
-                            html: '吊顶',
-                            color: 'black'
-                          }),
-                          saved: false,
-                          draggable: true,       // Allow label dragging...?
-                          zIndexOffset: 1000     // Make appear above other map features
-                        }).addTo(map).on('click', function () {
-                          layer2.setStyle({
-                            color: 'green'
-                          })
-                          layer && layer.setStyle({
-                            color: '#ff0000'
-                          })
-                          scope.itemName = layer2.options.t;
-                          //scope.itemName = (layer2.options.itemName || itemName) + ' - ' + layer2.options.t;
-                          scope.itemId = layer2.options.itemId || '--';
-                          scope.$apply();
-
-                        }).isEdit = true;
-                      }
-
-                    }
-                    return;
-                  }
                   var line, itemName, curClick;
                   overLayers.forEach(function (layer) {
                     itemName = layer.options.itemName || itemName;
@@ -208,18 +128,13 @@
                     itemId.splice(itemId.indexOf(curId), 1);
                     itemId.push(curClick.options.itemId);
                   }
-                  console.log(itemId)
                   if (curClick) {
-                    //itemId = curClick.options.itemId;
                     curClick.setStyle({
                       color: 'green'
                     })
                     scope.itemName = curClick.options.t;
-                    //scope.itemName = (curClick.options.itemName || itemName)+' - '+ curClick.options.t;
                     scope.itemId = curClick.options.itemId || '--';
                     scope.$apply();
-
-                    //console.log(curClick.toJSON())
                   }
                 });
 
@@ -241,70 +156,125 @@
                     var layer = lys.find(function (o) {
                       return o.p == m;
                     });
-                    if (!layer) {
-                      layer = L.GeoJSON.api({
-                        areaLabel: false,
-                        edit: false,
-                        get: function (cb) {
-                          api.szgc.ProjectExService.get(bid + '-' + type + '-' + m).then(function (r) {
-                            var project = r.data;
-                            if (project && project.AreaRemark) {
-                              try {
-                                var d = JSON.parse(project.AreaRemark);
-                                console.log('d', d);
-                                d.features.forEach(function (g) {
-                                  //if (g.geometry.type == 'Polygon') {
-                                  g.options.p = m;
-                                  switch (m) {
-                                    case '1':
-                                      g.options.t = '楼板';
-                                      break;
-                                    case '2':
-                                      g.options.t = '墙体';
-                                      break;
-                                    case '3':
-                                      g.options.t = '内墙板';
-                                      break;
-                                    case '4':
-                                      g.options.t = '轻钢龙骨';
-                                      break;
-                                    case '5':
-                                      g.options.t = '天花';
-                                      break;
+                    (function (layer) {
+                        if (!layer) {
+                          layer = L.GeoJSON.api({
+                            areaLabel: false,
+                            edit: false,
+                            get: function (cb) {
+                              api.szgc.ProjectExService.get(bid + '-' + type + '-' + m).then(function (r) {
+                                var project = r.data;
+                                if (project && project.AreaRemark) {
+                                  try {
+                                    var d = JSON.parse(project.AreaRemark);
+                                    //console.log('d', d);
+                                    d.features.forEach(function (g) {
+                                      //if (g.geometry.type == 'Polygon') {
+                                      g.options.p = m;
+                                      switch (m) {
+                                        case '1':
+                                          g.options.t = '楼板';
+                                          break;
+                                        case '2':
+                                          g.options.t = '墙体';
+                                          break;
+                                        case '3':
+                                          g.options.t = '内墙板';
+                                          break;
+                                        case '4':
+                                          g.options.t = '轻钢龙骨';
+                                          break;
+                                        case '5':
+                                          g.options.t = '吊顶';
+                                          break;
+                                        case '6':
+                                          g.options.t = '砌筑';
+                                          break;
+                                      }
+
+                                      setDefault(g.options);
+                                      g.options.stroke = false;
+                                      g.options.opacity = 0;
+                                      g.options.fillOpacity = 0;
+                                    })
+                                    cb(d);
                                   }
-                                  g.options.stroke = false;
-                                  //g.options.opacity = 0;
-                                  g.options.fillOpacity = 0;
-                                  //}
+                                  catch (ex) {
+                                    cb();
+                                  }
+                                }
+                                else {
+                                  cb();
+                                }
+                                map.eachLayer(function (fg) {
+                                  fg.eachLayer && fg.eachLayer(function (layer) {
+                                    if (layer instanceof L.Rectangle || layer instanceof L.Polygon) {
+                                      layer.setStyle({
+                                        color: '#ff0000',
+                                        stroke: true,
+                                        opacity: 0.5,
+                                        dashArray: rs[1].data.Rows.find(function (r) {
+                                          return r.GroupId.indexOf(layer.options.itemId) != -1
+                                        }) || rs[2].data.Rows.find(function (r) {
+                                          return r.GroupId.indexOf(layer.options.itemId) != -1
+                                        }) ? null : '1 1',
+                                        weight: 1,
+                                        fillOpacity: 0.2
+                                      });
+                                    }
+                                    else {
+
+                                      layer.setStyle({
+                                        opacity: 0.5,
+                                        color: '#ff0000',
+                                        stroke: true,
+                                        dashArray: rs[1].data.Rows.find(function (r) {
+                                          return r.GroupId.indexOf(layer.options.itemId) != -1
+                                        }) || rs[2].data.Rows.find(function (r) {
+                                          return r.GroupId.indexOf(layer.options.itemId) != -1
+                                        }) ? null : '5 2',
+                                        fillOpacity: 0.2
+                                      });
+                                      //console.log('line', layer.options)
+                                    }
+                                  })
+
                                 })
-                                cb(d);
-                              }
-                              catch (ex) {
-                                cb();
-                              }
-                            }
-                            else {
-                              cb();
+
+                                var cImg = new Image();
+                                cImg.onload = function () {
+                                  var w = this.width,
+                                    h = this.height;
+                                  var x, y;
+                                  if (w > h) {
+                                    x = 0.5;
+                                    y = h/w*0.5;
+                                  }
+                                  else {
+                                    y = 0.5;
+                                    x = w / h * 0.5;
+                                  }
+                                  map.setView([y, x]);
+                                  //console.log(x,y)
+                                };
+                                cImg.src = sxt.app.api + '/api/Files/thumb/250?path=' + fs.Url.replace('/s_', '/');
+
+                              });
+
+                            },
+                            click: function () {
+
                             }
                           });
 
-                        },
-                        click: function () {
-
+                          lys.push(layer)
                         }
-                      });
+                        layer.hide = false;
+                      })(layer)
 
-                      lys.push(layer)
-                    }
-                    layer.hide = false;
                   });
                   lys.forEach(function (l) {
-                    if (l._map && l.hide) {
-                      l._map.removeLayer(l);
-                    }
-                    else if (!l.hide && !l._map) {
-                      l.addTo(map);
-                    }
+                    l.addTo(map);
                   })
 
                 });

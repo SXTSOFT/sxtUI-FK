@@ -10,7 +10,7 @@
     .config(config);
 
   /** @ngInject */
-  function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
+  function config($stateProvider, msNavigationServiceProvider)
   {
     // State
     $stateProvider
@@ -136,13 +136,29 @@
           }
         }
       })
+      .state('app.szgc.project.view', {
+        title :'查看详细',
+        url: '/{bathid}',
+        controller: 'viewBathDetailController as vm',
+        templateUrl: 'app/main/szgc/report/viewBathDetail-app-go.html'
+      })
       .state('app.szgc.yhyd',{
-        url   :'/home/yhyd/{pid}/{pname}/{idTree}/{type}',
+        url   :'/home/yhyd/{pid}/{pname}/{idTree}/{type}/{seq}',
         //url:'/home/yhyd/{regionId}/{regionType}/{roomType}/{procedureId}/{regionName}',
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/link.html',
             controller:'SzgcyhydController as vm'
+          }
+        }
+      })
+      .state('app.szgc.yhyd.records',{
+        url   :'/records',
+        //url:'/home/yhyd/{regionId}/{regionType}/{roomType}/{procedureId}/{regionName}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/szgc/home/link_records.html',
+            controller:'SzgcyhydRecordsController as vm'
           }
         }
       })
@@ -154,6 +170,17 @@
           'content@app': {
             templateUrl: 'app/main/szgc/report/report.html',
             controller: 'SzgcReportController as vm'
+          }
+        }
+      })
+      .state('app.szgc.ybgcResultT1', {
+        noBack:true,
+        title    :'一户一档',
+        url      : '/ybgcResultT1',
+        views    : {
+          'content@app': {
+            controller: 'yhydController as vm',
+            templateUrl: 'app/main/szgc/report/yuyd.html'
           }
         }
       })
@@ -172,8 +199,8 @@
       .state('app.szgc.project.ybgcResultT', {
         title :'隐蔽工程',
         url: '/viewYbgc',
-        controller: 'ybgcController as vm',
-        templateUrl: 'app/main/szgc/report/ybgcResult.html'
+        controller: 'yhydController as vm',
+        templateUrl: 'app/main/szgc/report/yuyd.html'
       })
       .state('app.szgc.report.picView', {
         title :'隐蔽工程详情',
@@ -185,11 +212,11 @@
         title :'查看详细',
         url: '/{bathid}',
         controller: 'viewBathDetailController as vm',
-        templateUrl: 'app/main/szgc/report/viewBathDetail-app.html'
+        templateUrl: 'app/main/szgc/report/viewBathDetail-app-go.html'
       })
 
       .state('app.szgc.report.batchCount', {
-        title :'项目填报情况统计表',
+        title :'录入情况统计',
         url:'/batchCount',
         controller: 'batchCountController as vm',
         templateUrl: 'app/main/szgc/report/batchCount-app.html'
@@ -256,7 +283,11 @@
             templateUrl:'app/main/szgc/settings/settings.html',
             resolve:{
               profile:['api',function(api){
-                return api.szgc.vanke.profile();
+                //api.useNetwork(0);
+                return api.szgc.vanke.profile().then(function (r) {
+                  //api.resolveNetwork();
+                  return r;
+                });
               }]
             }
           }
@@ -293,8 +324,6 @@
       })
 
 
-    // Translation
-    //$translatePartialLoaderProvider.addPart('app/main/auth');
 
     // Navigation
     msNavigationServiceProvider.saveItem('szgc', {

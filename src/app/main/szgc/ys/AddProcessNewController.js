@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Created by emma on 2016/5/25.
  */
 /**
@@ -12,10 +12,10 @@
 
   /** @ngInject */
   function AddProcessNewController($scope, $filter, $stateParams, utils,  $q, api,auth,$state,sxt){
+
     var vm = this;
     vm.keyboard = { show:false};
 
-    //给默认时�?
     var dateFilter = $filter('date');
     $scope.m = {
         isStash: false
@@ -37,6 +37,10 @@
       nametree = $scope.$parent.project.nameTree || $stateParams.nameTree,
       token = $stateParams.token,
       flag = $stateParams.flag;
+
+    var tid = procedure+idtree+pid,
+      tname = nametree+'>'+rname+'-'+procedureName;
+
     $scope.flag = $stateParams.flag;
     if (!procedure) {
       $state.go('app.szgc.ys');
@@ -46,8 +50,10 @@
     var user=auth.current(),
       initIng = true;
     $scope.isPartner = api.szgc.vanke.isPartner();
+    $scope.roleId = api.szgc.vanke.getRoleId();
     $scope.data = {
       pics: [],
+      pics2:[],
       isFirst: !batchId || batchId == 'new',
       projectName: nametree,
       procedureName: procedureName,
@@ -57,7 +63,8 @@
         BatchNo: 1,
         Count: 1,
         WorkRatio: 100,
-        CheckNo: 1
+        CheckNo: 1,
+        ZbChecked:true
       },
       batchs: [],
       curStep: {},
@@ -137,20 +144,13 @@
 
     }
 
-    api.szgc.ProcedureService.getAppImg(pid, procedure, api.szgc.vanke.isPartner(1) ? 'partner' : '').then(function (r) {
-      if (r.data) {
-        $scope.data.curStep.GroupImg2 = r.data.Id;
-
-      }
-    });
 
 
 
-
-    if (!$scope.isPartner) {
+    if (!$scope.isPartner || $scope.roleId=='zb') {
       $scope.data.submitUsers = [{
         id: user.Id,
-        type: api.szgc.vanke.isPartner(1) ? 'jl' : 'eg',
+        type: api.szgc.vanke.getRoleId(),
         name: user.RealName + '(本人)'
       }];
       $scope.data.curStep.CheckWorker = $scope.data.submitUsers[0].id;
@@ -169,13 +169,14 @@
         }).then(function (result) {
           //如果已经录入了把第一条BatchNo最大的返回取它的BatchNo，把Id制空
           //没有Id才会插入一条数
-          var b = result.data.Rows.length ? result.data.Rows[0] : null;
+          var b = result.data.Rows.length ? angular.copy(result.data.Rows[0]) : null;
 
           if (b) {
             b.Id = null;
             b.BatchNo = parseInt(result.data.Rows[0].BatchNo) + 1;//第几次验收批
             b.Remark = '';//描述
-            b.Count = 1;//第几次验收?
+            b.Count = 1;//第几次验收
+            b.JLCount = 0;
           }
           else
             flag = false;
@@ -188,21 +189,26 @@
       }
     }).then(function (result) {
       var batch = result.data,
+        isB = $scope.data.isB = batch && batch.GrpId;
+      if (isB && $scope.roleId == 'jl' && !batch.SupervisorCompanyId) { //如果监理在总包上录入，且总包没有选择监理
+        batch.SupervisorCompanyId = user.Partner;
+      }
+      var gp = $scope.data.batchgp = batch && batch.GrpId? {
+        id: batch.GrpId,
+        name: batch.GrpName
+      }:null;//因为控件的BUG,会把名称清掉,这里保留一份
 
-        isB = $scope.data.isB = !!batch;
       if (flag) {
         batch.BatchNo = parseInt(batch.BatchNo);
         $scope.data.curHistory = batch;
-
       }
       else if (batch && !flag) {
-
-        batch.Count = batch.Count + 1;
+        batch.Count = (batch.Count||0) + 1;
         $scope.data.curHistory = batch;
       }
       $q.all([
         api.szgc.TargetService.getAll(procedure),
-        isB&&!flag ? $q(function (resolve) {
+        isB&&!flag  && $scope.roleId!='jl'? $q(function (resolve) {
           resolve({
             data: {
               Rows: [{
@@ -216,7 +222,7 @@
           unitType: 2
         }),
 
-        isB&&!flag ? $q(function (resolve) {
+        isB&&!flag  && $scope.roleId!='jl'? $q(function (resolve) {
           resolve({
             data: {
               Rows: [{
@@ -229,15 +235,22 @@
           projectId: idtree,
           unitType: 3
         }),
-        isB&&!flag ? $q(function (resolve) {
-          resolve({
-            data: {
-              Rows: [{
-                UnitId: batch.SupervisorCompanyId,
-                UnitName: batch.SupervisorCompanyName
-              }]
-            }
-          });
+        isB&&!flag && $scope.roleId!='jl' ? $q(function (resolve) {
+          if ($scope.roleId == 'zb') {
+            resolve({
+              data: {Rows: []}
+            });
+          }
+          else {
+            resolve({
+              data: {
+                Rows: [{
+                  UnitId: batch.SupervisorCompanyId,
+                  UnitName: batch.SupervisorCompanyName
+                }]
+              }
+            });
+          }
         }) : api.szgc.vanke.isPartner(1) ? api.szgc.vanke.getPermissin() : api.szgc.ProjectSettingsSevice.query({
           treeId: idtree,
           unitType: 1,
@@ -249,57 +262,94 @@
       ]).then(function (results) {
 
         batch = batch || $scope.data.curHistory;
-                    var stash = results[5].data;
-                    stash = stash && stash.SValue ? JSON.parse(stash.SValue) : null;
-                    if (stash) {
-                        batch.CompanyId = stash.Batch[0].CompanyId;
-                        batch.ParentCompanyId = stash.Batch[0].ParentCompanyId;
-                        batch.GrpId = stash.Batch[0].GrpId;
-                        batch.SupervisorCompanyId = stash.Batch[0].SupervisorCompanyId;
-                        $scope.data.curStep.GroupImg = stash.Step.GroupImg;
-                        $scope.data.curStep.GroupImg2 = stash.Step.GroupImg2;
-                    }
+        var stash = results[5].data;
+        stash = stash && stash.SValue ? JSON.parse(stash.SValue) : null;
+        if (stash) {
+          batch.CompanyId = stash.Batch[0].CompanyId;
+          batch.ParentCompanyId = stash.Batch[0].ParentCompanyId;
+          batch.GrpId = stash.Batch[0].GrpId;
+          batch.SupervisorCompanyId = stash.Batch[0].SupervisorCompanyId;
+          $scope.data.curStep.GroupImg = stash.Step.GroupImg;
+          $scope.data.curStep.GroupImg2 = stash.Step.GroupImg2;
+        }
+        if(!$scope.data.curStep.GroupImg2){
+          $scope.data.curStep.GroupImg2 = sxt.uuid();
+        }
+        if(!$scope.data.curStep.GroupImg){
+          $scope.data.curStep.GroupImg = sxt.uuid();
+        }
         $scope.data.batchs.push(batch);
 
         var sm0 = [];
         results[1].data.Rows.forEach(function (n) {
-          if (sm0.find(function (n2) { return n2.UnitId == n.UnitId; }) == null) {
+          var fd = sm0.find(function (n2) { return n2.UnitId == n.UnitId; });
+          if (fd == null) {
+            fd = n;
             sm0.push(n);
           }
+          fd.groups = fd.groups || [];
+          fd.groups.push({
+            id: n.GroupId,
+            name: n.GroupName
+          });
         })
 
         $scope.data.supervision = sm0;
-        if (isB && $scope.data.supervision.length && !batch.CompanyId)
-          batch.CompanyId = $scope.data.supervision[0].UnitId;
-        if (isB) {
+                    //console.log('$scope.data.supervision',$scope.data.supervision)
+        if ($scope.roleId == 'zb') {
+          var sup = $scope.data.supervision.find(function (it) {
+            return it.UnitId == user.Partner
+          });
+          if (sup) {
+            batch.CompanyId = user.Partner;
+          }
+        }
+        else {
+          if (isB && $scope.data.supervision.length && !batch.CompanyId)
+            batch.CompanyId = $scope.data.supervision[0].UnitId;
+        }
+        if (isB && gp) {
           $scope.data.curHistory.GrpId = batch.GrpId;
-          $scope.data.groups = [{
-            id: batch.GrpId,
-            name: batch.GrpName
-          }];
-
+          $scope.data.groups = [gp];
         }
         var sm1 = [];
         results[2].data.Rows.forEach(function (n) {
-          if (sm1.find(function (n2) { return n2.UnitId == n.UnitId; }) == null) {
+          var fd = sm1.find(function (n2) { return n2.UnitId == n.UnitId; });
+          if (fd == null) {
+            fd = n;
             sm1.push(n);
           }
+          fd.groups = fd.groups || [];
+          fd.groups.push({
+            id: n.GroupId,
+            name: n.GroupName
+          });
         })
         $scope.data.supervision1 = sm1;
         if (isB && $scope.data.supervision1.length && !batch.ParentCompanyId) {
           batch.ParentCompanyId = $scope.data.supervision1[0].UnitId;
         }
+        if ($scope.roleId == 'zb') {
+            batch.ParentCompanyId = user.Partner;
+        }
         if (api.szgc.vanke.isPartner(1)) {
-          batch.Count = (batch.JLCount || 0) + 1;
+          batch.Count = ($scope.roleId == 'zb' ? (batch.ZbCount || 0) : (batch.JLCount || 0)) + 1;
           var fd = results[3].data.Rows.find(function(it) {
-            return it.UnitId = api.szgc.vanke.getPartner()
+            return it.UnitId == api.szgc.vanke.getPartner()
           });
           var nn = [];
           if (fd) {
             nn.push(fd);
-            if (!batch.SupervisorCompanyId)
-              batch.SupervisorCompanyId = fd.UnitId;
+            //if (!batch.SupervisorCompanyId)
+            batch.SupervisorCompanyId = fd.UnitId;
             $scope.data.construction = nn;
+          }
+          else{
+            nn = nn.concat(results[3].data.Rows);
+            if(nn.length){
+              batch.SupervisorCompanyId = nn[0].UnitId;
+              $scope.data.construction = nn;
+            }
           }
         } else {
           batch.Count = (batch.WKCount || 0) + 1;
@@ -364,7 +414,7 @@
                   for (var i = $scope.targets.yb.length - 1; i >= 0; i--) {
                     var n = $scope.targets.yb[i];
                     if (n.TargetName && n.TargetName.substring(0, 1) == '-') break;
-                    ns.push(n)
+                    ns.push(n);
                   };
                   return ns;
                 })(),
@@ -386,7 +436,7 @@
                 }
               });
             }
-            if ($scope.targets.yb.length == 6) {
+            if ($scope.targets.yb.length == 7) {
               $scope.targets.yb.push({
                 TargetName: '--',
                 DeviationLimit: '≥85',
@@ -412,6 +462,7 @@
         });
         //utils.scrollTop();
         initIng = true;
+        resetGroup();
       });
     });
 
@@ -451,18 +502,75 @@
       }
     })
     var resetGroup = function() {
-      //console.log('111')
+      if (!$scope.data.supervision || !$scope.data.supervision1 ) return;
       var g = [];
 
       $scope.data.groups = [];
-      $q.all([!$scope.data.isB && $scope.data.curHistory.CompanyId ? api.szgc.vanke.teams($scope.data.curHistory.CompanyId) : $q(function (resolve) {
+      $q.all([!$scope.data.isB && $scope.data.curHistory.CompanyId ?  api.szgc.vanke.teams($scope.data.curHistory.CompanyId).then(function (result) {
+        var gps = getGroups($scope.data.supervision,'UnitId',$scope.data.curHistory.CompanyId)
+          ,gps2=[];
+        result.data.data.forEach(function (item) {
+          if (!item || !item.skills || !item.skills.length) return;
+          if ($stateParams.procedureTypeId) {
+            if (item.skills.find(function (sk) { return sk.skill_id == $stateParams.procedureTypeId; }) == null) {
+              return;
+            };
+          }
+          if(item.partner_id != $scope.data.curHistory.CompanyId)
+            return;
+          if(!gps.find(function (g) {
+              return g.id == item.team_id;
+            })){
+            return;
+          }
+          var ns = [];
+          item.managers.forEach(function (it) {
+            ns.push(it.name);
+          });
+          gps2.push({
+            id: item.team_id,
+            name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
+          });
+
+        });
+        return {data:{data:gps2}};
+      })  : $q(function (resolve) {
 
         resolve({
           data: {
             data: []
           }
         })
-      }), !$scope.data.isB && $scope.data.curHistory.ParentCompanyId && $scope.data.curHistory.ParentCompanyId != $scope.data.curHistory.CompanyId ? api.szgc.vanke.teams($scope.data.curHistory.ParentCompanyId) : $q(function (resolve) {
+      }), !$scope.data.isB && $scope.data.curHistory.ParentCompanyId && $scope.data.curHistory.ParentCompanyId != $scope.data.curHistory.CompanyId ?
+        api.szgc.vanke.teams($scope.data.curHistory.ParentCompanyId).then(function (result) {
+          var gps = getGroups($scope.data.supervision1,'UnitId',$scope.data.curHistory.ParentCompanyId),
+            gps2 = [];
+          result.data.data.forEach(function (item) {
+            if (!item || !item.skills || !item.skills.length) return;
+            if ($stateParams.procedureTypeId) {
+              if (item.skills.find(function (sk) { return sk.skill_id == $stateParams.procedureTypeId; }) == null) {
+                return;
+              };
+            }
+            if(item.partner_id != $scope.data.curHistory.ParentCompanyId || !gps.find(function (g) {
+                return g.id == item.team_id;
+              })){
+              return;
+            }
+
+            var ns = [];
+            item.managers.forEach(function (it) {
+              ns.push(it.name);
+            });
+            gps2.push({
+              id: item.team_id,
+              name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
+            });
+
+          });
+          return {data: {data: gps2}};
+          ;
+        }) : $q(function (resolve) {
         resolve({
           data: {
             data: []
@@ -470,57 +578,55 @@
         })
       })]).then(function (results) {
         results[0].data.data.forEach(function (item) {
-          if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
-            if (item.skills.find(function (sk) {
-                return sk.skill_id == $stateParams.procedureTypeId;
-              }) == null) {
-              return;
-            }
-          }
-          var ns = [];
-          item.managers.forEach(function (it) {
-            ns.push(it.name);
-          });
           g.push({
-            id: item.team_id,
-            name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
-          });
+            id: item.id,
+            name:item.name
+          })
         });
         results[1].data.data.forEach(function (item) {
-          if (item && item.skills && item.skills.length && $stateParams.procedureTypeId) {
-            if (item.skills.find(function (sk) {
-                return sk.skill_id == $stateParams.procedureTypeId;
-              }) == null) {
-              return;
-            }
-          }
-          var ns = [];
-          item.managers.forEach(function (it) {
-            ns.push(it.name);
-          });
           g.push({
-            id: item.team_id,
-            name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
-          });
+            id: item.id,
+            name: item.name
+          })
         });
 
-        if (g.length) {
-          $scope.data.groups = g;
-        } else {
-          $scope.data.groups = [];
+        if ($scope.data.isB && $scope.data.groups) {
+          g.forEach(function (g1) {
+            $scope.data.groups.push(g1);
+          })
         }
-        //console.log('11',g)
-
+        else {
+          if (g.length) {
+            $scope.data.groups = g;
+          } else {
+            $scope.data.groups = [];
+          }
+        }
+        if($scope.data.batchgp){
+          $scope.data.groups.push($scope.data.batchgp);
+        }
 
       });
       if ($scope.flag) {
-        $q.all([$scope.data.isB && $scope.data.curHistory.CompanyId ? vkapi.teams($scope.data.curHistory.CompanyId) : $q(function (resolve) {
+        $q.all([$scope.data.isB && $scope.data.curHistory.CompanyId ? $q(function (resolve) {
+          resolve({
+            data: {
+              data: getGroups($scope.data.supervision,'UnitId',$scope.data.curHistory.CompanyId)
+            }
+          })
+        }) : $q(function (resolve) {
           resolve({
             data: {
               data: []
             }
           })
-        }), $scope.data.curHistory.ParentCompanyId && $scope.data.curHistory.ParentCompanyId != $scope.data.curHistory.CompanyId ? vkapi.teams($scope.data.curHistory.ParentCompanyId) : $q(function (resolve) {
+        }), $scope.data.curHistory.ParentCompanyId && $scope.data.curHistory.ParentCompanyId != $scope.data.curHistory.CompanyId ?  $q(function (resolve) {
+          resolve({
+            data: {
+              data: getGroups($scope.data.supervision1,'UnitId',$scope.data.curHistory.ParentCompanyId)
+            }
+          })
+        }) : $q(function (resolve) {
           resolve({
             data: {
               data: []
@@ -529,24 +635,18 @@
         })]).then(function (results) {
 
           results[0].data.data.forEach(function (item) {
-            var ns = [];
-            item.managers.forEach(function (it) {
-              ns.push(it.name);
-            });
+
             g.push({
-              id: item.team_id,
-              name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
+              id: item.id,
+              name: item.name
             });
           });
           results[1].data.data.forEach(function (item) {
-            var ns = [];
-            item.managers.forEach(function (it) {
-              ns.push(it.name);
-            });
+
             g.push({
-              id: item.team_id,
-              name: item.name + (ns.length ? '(' + ns.join(';') + ')' : '')
-            });
+              id: item.id,
+              name: item.name
+            })
           });
 
           if (g.length) {
@@ -554,9 +654,9 @@
           } else {
             $scope.data.groups = []
           }
-          //console.log('11',g)
-
-
+          if($scope.data.batchgp){
+            $scope.data.groups.push($scope.data.batchgp);
+          }
         })
       }
 
@@ -564,14 +664,17 @@
     $scope.$watch('data.curHistory.ParentCompanyId', resetGroup)
     $scope.$watch('data.curHistory.CompanyId', resetGroup);
 
+    function getGroups(sp,field,v) {
+      if(!sp)return [];
+      var gp = sp.find(function (s) {
+        return s[field] == v;
+      });
+      return gp?gp.groups:[]
+    }
     $scope.targets = {
       zk: [],
       yb: []
     }
-    //ProcedureService.getbyid(procedure).then(function (result) {
-    //    $scope.data.procedure = result.data;
-    //});
-
 
 
 
@@ -667,10 +770,22 @@
         utils.alert('日期格式不对!(yyyy-MM-dd HH:dd:ss)');
         return;
       }
-      //if ($scope.data.pics.length == 0) {
-      //  utils.alert('请上传原验收表扫描件');
-      //  return;
-      //}
+
+      var isL = true;
+      $scope.targets.yb.forEach(function (y) {
+        if(isL && y.checked && y.points.length==0 ){
+          isL=false;
+        }
+      });
+      if(!isL){
+        utils.alert('有已打勾的指标未输入！');
+        return;
+      }
+
+      if ($scope.data.pics2.length == 0) {
+        utils.alert('请上传验收照片');
+        return;
+      }
       utils.confirm(null, '确认向验收批:' + $scope.data.curHistory.BatchNo + ' 添加新记录吗?').then(function () {
         $scope._save(addForm);
       });
@@ -684,13 +799,13 @@
       var data = $scope.data,
         step = data.curStep,
         batch = data.curHistory;
-      //if (!batch.GrpId) {
-      //  utils.alert('请选择班组', function () {
-      //    $scope.isSaveing = false;
-      //  });
-      //  //return;
-      //}
-      step.RoleId = data.submitUser.type;
+
+      if (!batch.GrpId && $scope.roleId != '3rd') {
+        utils.alert('请选择班组', function () {});
+        $scope.isSaveing = false;
+        return;
+      }
+      step.RoleId = api.szgc.vanke.getRoleId();// data.submitUser.type;
       step.CheckNo = batch.Count;
       step.MainResult = $scope.zkIsOk() ? 1 : 0;
       step.OtherResult = $scope.ybIsOk() ? 1 : 0;
@@ -725,7 +840,7 @@
           item.RegionNameTree = batch.RegionNameTree;
           item.RegionName = batch.RegionName;
           item.SupervisorCompanyId = batch.SupervisorCompanyId;
-          item.SupervisorCompanyName = batch.Count.SupervisorCompanyName;
+          item.SupervisorCompanyName = batch.SupervisorCompanyName;
           item.ParentCompanyName = batch.ParentCompanyName;
           item.ParentCompanyId = batch.ParentCompanyId;
           item.CompanyId = batch.CompanyId;
@@ -735,11 +850,7 @@
         }
       });
 
-      if(!data.batchs[0]||!data.batchs[0].GrpId){
-        utils.alert('请选择班组')
-        $scope.isSaveing = false;
-        return;
-      }
+
 
       var targets = toSaveTargets(step);
 
@@ -748,17 +859,33 @@
         $scope.isSaveing = false;
         return;
       }
-      //console.log('CheckData', targets)
+
+     /* console.log('CheckData', {
+        Id:sxt.uuid(),
+        Batch: data.batchs,
+        Step: step,
+        CheckData: targets,
+        CheckDataValue:$scope.CheckDataValue
+      });
+      return;*/
       api.szgc.addProcessService.postCheckData({
+        Id:sxt.uuid(),
         Batch: data.batchs,
         Step: step,
         CheckData: targets,
         CheckDataValue:$scope.CheckDataValue
       }).then(function (result) {
-        if(result.data == "ok"){
-          api.szgc.ProcedureService.deleteAppImg(step.GroupImg2);
+        if(result){
+          //api.szgc.ProcedureService.deleteAppImg(step.GroupImg2);
           $scope.isSaveing = false;
           $scope.$parent.project.filter(true);
+          api.uploadTask({
+            _id:tid,
+            idtree:idtree,
+            procedure:procedure,
+            projectid:pid,
+            name:tname
+          });
           utils.alert('提交完成').then(function () {
             $state.go('app.szgc.ys');
           });
@@ -791,20 +918,8 @@
       return true;
 
     }
-    //$scope.numbers = function(e){
-    //  console.log('e',e)
-    //  //console.log('e',$(e.target).position(),$(e.target).closest('.circles').height())
-    //  $('.ybxm').animate({scrollTop:$(e.target).position().top-100});
-    //  $('.ybxm').css('padding-bottom','300px');
-    //  if($('.numberpanel').is(':hidden')){
-    //    $('.numberpanel').css({'position':'fixed','bottom':0,'left':0,width:'100%','height':'300px','display':'block'})
-    //  }
-    //
-    //}
 
-    $scope.addCircle = function(i){
 
-    }
     $scope.ybIsOk = function() {
       for (var i = 0, l = $scope.targets.yb.length; i < l; i++) {
         var yb = $scope.targets.yb[i];
@@ -833,7 +948,10 @@
         item.isOK = true;
         return item.isOK;
       }
-      var zdpc = item.MaxDeviation;
+      var zdpc = item.MaxDeviation,
+        pl = parseFloat(item.LevelNo);
+      if (isNaN(pl))
+        pl = 1.5;
       //var pattern = /^[0-9]+([.]\d{1,2})?$/;
       //if (zdpc) {
       //    if (!pattern.test(zdpc)) {
@@ -894,11 +1012,11 @@
           max = utils.math.sub(max, 0.1);
           min = -10000000;
         }
-        max = utils.math.mul(max, (item.TargetName.indexOf('>悬挑板')!=-1||item.TargetName.indexOf('>板')!=-1)?2: 1.5);
+        max = utils.math.mul(max, pl);
         if (min > 0)
           min = utils.math.mul(min, 0.5);
         else
-          min = utils.math.mul(min, 1.5);
+          min = utils.math.mul(min, pl);
         //console.log(min, max, zdpc)
         if (zdpc < min || zdpc > max) {
           item.isOK = false;
@@ -914,6 +1032,7 @@
     $scope.ybHGL = function() {
       var hgl;
       for (var i = 0, l = $scope.targets.yb.length; i < l; i++) {
+        if(!$scope.targets.yb[i].checked) continue;
         var ybd = parseFloat($scope.targets.yb[i].PassRatio);
         if (!isNaN(ybd) && (!hgl || hgl > ybd)) hgl = ybd;
       }

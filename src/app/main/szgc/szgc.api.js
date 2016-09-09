@@ -13,7 +13,38 @@
       $q = apiProvider.$q;
 
     apiProvider.register('szgc',{
+      version:$http.db({
+        _id:'s_version',
+        idField:'Id',
+        dataType:3,
+        filter:function () {
+          return true
+        }
+      }).bind(function () {
+        return $http.get('http://vkde.sxtsoft.com/api/vkapi/Version').then(function (r) {
+          r.data.Id = 'version';
+          return r;
+        })
+      }),
       ProjectSettings:{
+        offline:$http.db({
+          _id:'s_offline',
+          idField:'Id',
+          methods:{
+            query:{
+              dataType:1
+            },
+            create:{
+              upload:true
+            },
+            delete:{
+              delete:true
+            }
+          }
+        }),
+        getAllSatus:function (regionType) {
+          return $http.get($http.url('/api/tblRegionState', { regionType: regionType }));
+        },
         query:function(args) {
           return $http.get($http.url('/api/ProjectSetting', args));
         }
@@ -22,17 +53,26 @@
         getAll:function(args){
           return $http.get($http.url('/api/PProcedure', args));
         },
-        getAppImg:function(regionId,produceId,roleid){
+        getAppImg:$http.db({
+          dataType: 3
+        }).bind(function(regionId,produceId,roleid){
           return $http.get('/api/projects/' + regionId + '/Procedure/' + produceId + '/APPImgs?roleId=' + roleid);
-        },
+        }),
         deleteAppImg: function (id) {
           return $http.delete('/api/APPImgs/' + id);
         }
       },
       ProcedureTypeService:{
-        getAll:function(args){
+        getAll:$http.db({
+          _id:'s_ProcedureType',
+          idField:'Id',
+          dataType:5,
+          filter:function (item,args) {
+            return item.BatchType==args.batchType;
+          }
+        }).bind(function(args){
           return $http.get($http.url('/api/ProcedureType',args));
-        }
+        })
       },
       addProcessService:{
         queryByProjectAndProdure2:function(projectid,bathParens){
@@ -45,29 +85,59 @@
           return $http.delete($http.url('/api/PPBatchRelation/' + id));
         },
         //根据区域树获取验收批数据
-        getBatchRelation: function(parems) {
+        getBatchRelation: $http.db({
+          _id:'s_bathlist',
+          idField:'Id',
+          dataType:5,
+          filter:function (item,param) {
+            return item.RegionIdTree==param.regionIdTree
+            && item.ProcedureId==param.procedureId && (!param.regionId || param.regionId==item.RegionId)
+          }
+        }).bind(function(parems) {
           return $http.get($http.url('/api/BatchRelation/GetBatchRelationAllHistoryList', parems));
-        },
-        getCheckStepByBatchId: function(batchRelationId, parems) {
+        }),
+        getCheckStepByBatchId: $http.db({
+          dataType:5
+        }).bind(function(batchRelationId, parems) {
           return $http.get($http.url('/api/BatchRelation/' + batchRelationId + '/CheckStep', parems));
-        },
+        }),
         getAll:function(batchId, parems) {
           return $http.get($http.url('/api/BatchSet/' + batchId + '/PPCheckDataList', parems));
         },
-        postCheckData: function (data) {
+        postCheckData: $http.db({
+          _id:'s_checkData',
+          idField:'Id',
+          upload:true
+        }).bind(function (data) {
           return $http.post($http.url('/api/PPBatchRelation/CheckData'), data);
-        },
+        }),
         getAllCheckDataValue:function(batchId, parems){
           return $http.get($http.url('/api/BatchSet/' + batchId + '/checkDataValues',parems));
         },
-        GetBatchsTargetByHistryNo:function (parems) {
+        GetBatchsTargetByHistryNo:$http.db({
+          _id:'s_batchs_status',
+          idField:'Id',
+          dataType:5,
+          filter:function (item,parems) {
+            return item.BatchRelationId==parems.BatchRelationId;
+          }
+        }).bind(function (parems) {
           return $http.get($http.url('/api/PPCheckData/GetBatchsTargetByHistryNo', parems));
-        }
+        }),
+        GetBatchsTargetByHistry:$http.db({
+          _id:'s_batchs_status',
+          idField:'Id',
+          dataType:5
+        }).bind(function (projectId) {
+          return $http.get($http.url('/api/PPCheckData/GetBatchsTargetByHistry',{projectId:projectId}));
+        })
       },
       UserStashService:{
-        get: function (key) {
+        get: $http.db({
+          dataType: 3
+        }).bind(function (key) {
           return $http.get('/api/UserStash?sKey=' + encodeURIComponent(key));
-        },
+        }),
         create: function (key, value) {
           return $http.post('/api/UserStash', {
             SKey: key,
@@ -85,17 +155,44 @@
         delete: function (id) {
           return $http.delete('/api/ProcedureBathSetting/' + id);
         },
-        query: function () {
+        query: $http.db({
+          _id:'s_batchsetting',
+          idField:'Id',
+          dataType:5
+        }).bind(function () {
           return $http.get('/api/ProcedureBathSetting');
-        },
+        }),
         get: function (id) {
           return $http.get('/api/ProcedureBathSetting/' + id);
         }
       },
       BatchSetService:{
-        getAll:function(args){
+        getAll:$http.db({
+          _id:'s_ProcedureBatchSet',
+          idField:function (item) {
+            return item.BatchType+'-'+item.ProcedureId
+          },
+          dataType:5,
+          filter:function (item,args) {
+            return (item.BatchType|args.batchType)==item.BatchType;
+          }
+        }).bind(function(args){
           return $http.get($http.url('/api/ProcedureBatchSet' , args));
-        }
+        },function (result) {
+          var n = {
+            data:{
+              Rows:[]
+            }
+          };
+          result.data.Rows.forEach(function (p) {
+            if(!n.data.Rows.find(function (p1) {
+                return p1.ProcedureId==p.ProcedureId;
+              })){
+              n.data.Rows.push(p);
+            }
+          });
+          return n;
+        })
       },
       projectMasterListService:{
         //统计工序填报情况(监理)
@@ -120,38 +217,122 @@
         },
         getFileReportData: function (args) {
           return $http.post('/api/Files/GetFileReportData', args);
+        },
+        GetBatchCountDetail : function (args) {
+          return $http.get($http.url('/api/Report/GetBatchCountDetail', args));
         }
       },
       CheckStepService:{
-        getAll:function(procedureId,args){
+        getAll:$http.db({
+          _id:'s_checkstep',
+          idField:'Id',
+          dataType:5,
+          filter:function (item,procedureId,args) {
+            return item.ProcedureId == procedureId
+            && item.RegionIdTree==args.regionIdTree
+          }
+        }).bind(function(procedureId,args){
           return $http.get($http.url('/api/procedure/'+procedureId+'/CheckStep' , args));
-        }
+        }),
+        cache:$http.db({
+          _id:'s_checkstep',
+          idField:'Id',
+          dataType:5
+        }).bind(function (projectId) {
+          return $http.get($http.url('/api/procedure/CheckStep',{regionIdTree:projectId}));
+        })
       },
       ProcProBatchRelationService:{
-        getbyid:function(id){
+        getbyid: $http.db({
+          _id:'s_bathlist',
+          dataType:3,
+          idField:'Id'
+        }).bind(function(id){
           return $http.get('/api/PPBatchRelation/' + id);
+        },function (result) {
+          return result;
+        }),
+        getReport: function (regionTreeId,regionType) {
+          return $http.get($http.url('/api/PPBatchRelation/GetRelationReportData',  { regionTreeId: regionTreeId,regionType:regionType }))
         }
       },
       TargetService:{
-        getAll:function(procedureId){
-          return $http.get($http.url('/api/PProcedure/' + procedureId + '/EngineeringTarget'));
-        }
+        getAll:$http.db({
+          _id:'s_pTarget',
+          idField:'Id',
+          dataType:5,
+          filter:function (item,procedureId) {
+            return item.ProcedureId==procedureId;
+          }
+        }).bind(function(procedureId){
+          if(procedureId)
+            return $http.get($http.url('/api/PProcedure/' + procedureId + '/EngineeringTarget'));
+          else
+            return $http.get($http.url('/api/PProcedure/EngineeringTarget/All'));
+        })
       },
       ProjectSettingsSevice:{
-        query:function(args){
+        query:$http.db({
+          _id:'s_projectSttting',
+          idField:function (item) {
+            if(item.Id)return item.Id;
+            return item.UnitId+item.RegionIdTree;
+          },
+          dataType:5,
+          filter:function (item,args) {
+            if(args.projectId){
+              return args.projectId.indexOf(item.RegionIdTree)!=-1 &&
+                args.unitType==item.UnitType;
+            }
+            else
+              return item.UnitId==args.unitId;
+          }
+        }).bind(function(args){
           return $http.get($http.url('/api/ProjectSetting', args));
-        }
+        })
       },
       FilesService:{
         get: function (id) {
           return $http.get('/api/Files/' + id);
         },
-        group: function (group) {
-          return $http.get('/api/Files?group=' + group);
+        group:$http.db({
+          _id:'s_files',
+          idField:'Id',
+          dataType:5,
+          filter:function (item,group) {
+            return item.GroupId==group;
+          }
+        }).bind(function (group) {
+          return $http.get('/api/Files?group=' + group).then(function (result) {
+            result.data.Rows = result.data.Files;
+            return result;
+          });
+        },function (result,cfg,args) {
+          return {
+            data: {
+              Group: args[0],
+              Files: result.data.Rows
+            }
+          };
+        }),
+        GetGroupLike: function (preGroup) {
+          return $http.get($http.url('/api/Files/GetGroupLike', { preGroup: preGroup }));
         },
-        delete: function (id) {
+        post:$http.db({
+          _id:'s_files',
+          idField:'Id',
+          fileField:'Url',
+          upload:true
+        }).bind(function (file) {
+          return $http.post('/api/Files/base64',file);
+        }),
+        delete: $http.db({
+          _id:'s_files',
+          idField:'Id',
+          delete:true
+        }).bind(function (id) {
           return $http.delete('/api/Files/' + id);
-        },
+        }),
         update: function (file) {
           return $http.put('/api/Files/' + file.Id, file);
         },
@@ -200,12 +381,20 @@
         update: function (data) {
           return $http.put('/api/ProjectEx/' + data.ProjectId, data);
         },
-        get: function (id) {
+        get: $http.db({
+          _id:'s_projectEx',
+          idField:'ProjectId',
+          dataType:3
+        }).bind(function (id) {
           return $http.get('/api/ProjectEx/'+id);
-        },
-        query: function (status) {
+        }),
+        query:  $http.db({
+          _id:'s_projectEx',
+          idField:'ProjectId',
+          dataType:5
+        }).bind(function (status) {
           return $http.get('/api/ProjectEx?status=' + status);
-        },
+        }),
         queryPno: function (pno) {
           return $http.get('/api/ProjectEx?pno=' + pno);
         },
@@ -215,18 +404,27 @@
         building2: function (projectid) {
           return $http.get('/api/ProjectEx/building2?projectid=' + projectid);
         },
+        building3: function (projectid) {
+          return $http.get('/api/ProjectEx/building3?projectid=' + projectid);
+        },
         queryById:function(projectId){
           return $http.get('/api/ProjectEx?projectId=' + projectId);
         }
       },
       grpFitRateService:{
         getGrpFitRateByFiter: function (prjIds, skillIds, fromDate, toDate) {
-          return $http.post("/api/Report/GetGrpFitRateByFiter/", { SkillIds: skillIds, FromDate: fromDate, ToDate: toDate, PrjIds: prjIds });
+          return $http.post("/api/Report/GetGrpFitRateByFiter", { SkillIds: skillIds, FromDate: fromDate, ToDate: toDate, PrjIds: prjIds });
         }
       },
       parentCompanyFitRateByFiter:{
         getParentCompanyFitRateByFiter: function (prjIds, fromDate, toDate) {
-          return $http.post("/api/Report/GetParentCompanyFitRateByFiter/", { PrjIds: prjIds,FromDate: fromDate, ToDate: toDate });
+          return $http.post("/api/Report/GetParentCompanyFitRateByFiter", { PrjIds: prjIds,FromDate: fromDate, ToDate: toDate });
+        }
+      },
+
+      GetFileReportNum:{
+        getFileReportData: function (params) {
+          return $http.post('/api/Files/GetFileReportData', params);
         }
       },
 

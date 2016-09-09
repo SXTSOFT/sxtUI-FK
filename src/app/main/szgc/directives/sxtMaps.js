@@ -35,10 +35,10 @@
         layer.addTo(map);
         var mks = [];
         api.szgc.ProjectExService.query(4).then(function (result) {
-          api.szgc.vanke.projects().then(function (r2) {
+          api.szgc.vanke.projects({all:true}).then(function (r2) {
             scope.markers = [];
             result.data.Rows.forEach(function (row) {
-              if (row.Latitude && row.Longitude && r2.data.data.find(function (a) { return a.project_id == row.ProjectId; }) != null) {
+              if (row && row.Latitude && row.Longitude && r2.data.data.find(function (a) { return a.project_id == row.ProjectId; }) != null) {
                 scope.markers.push({
                   projectId: row.ProjectId,
                   title: row.ProjectNo,
@@ -112,7 +112,7 @@
         scope.$on('destroy', function () {
           map.remove();
         })
-      }, 1000)
+      }, 0);
 
       function markerClick(e){
         //console.log('e.target.options',e.target.options)

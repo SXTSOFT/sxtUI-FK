@@ -278,7 +278,7 @@ $scope.back = function(){
         if (api.szgc.vanke.isPartner(1) && !flag) {
           batch.Count = (batch.JLCount || 0) + 1;
           var fd = results[3].data.Rows.find(function(it) {
-            return it.UnitId = api.szgc.vanke.getPartner()
+            return it.UnitId == api.szgc.vanke.getPartner()
           });
           var nn = [];
           if (fd) {
@@ -551,7 +551,7 @@ $scope.back = function(){
         return;
       }
       if ($scope.data.pics.length == 0) {
-        utils.alert('请上传原验收表扫描件');
+        utils.alert('请上传原验收照片');
         return;
       }
       utils.confirm(null, '确认向验收批：' + $scope.data.curHistory.BatchNo + ' 添加新记录吗?').then(function() {
@@ -623,6 +623,7 @@ $scope.back = function(){
 
       //console.log('CheckData', targets)
       api.szgc.addProcessService.postCheckData({
+        Id:sxt.uuid(),
         Batch: data.batchs,
         Step: step,
         CheckData: targets
@@ -690,7 +691,11 @@ $scope.back = function(){
         item.isOK = true;
         return item.isOK;
       }
-      var zdpc = item.MaxDeviation;
+      var zdpc = item.MaxDeviation,
+        pl = parseFloat(item.LevelNo);
+
+      if (isNaN(pl))
+        pl = 1.5;
       //var pattern = /^[0-9]+([.]\d{1,2})?$/;
       //if (zdpc) {
       //    if (!pattern.test(zdpc)) {
@@ -748,11 +753,11 @@ $scope.back = function(){
           max = utils.math.sub(max, 0.1);
           min = -10000000;
         }
-        max = utils.math.mul(max, 1.5);
+        max = utils.math.mul(max, pl);
         if (min > 0)
           min = utils.math.mul(min, 0.5);
         else
-          min = utils.math.mul(min, 1.5);
+          min = utils.math.mul(min, pl);
         //console.log(min, max, zdpc)
         if (zdpc < min || zdpc > max) {
           item.isOK = false;

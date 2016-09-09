@@ -3,7 +3,7 @@
   padding-top: 4px;
   .md-button{
     line-height:20px;
-    min-width:75px;
+    min-width:71px;
     font-size:0.8em;
     margin:6px 2px;
   }
@@ -19,9 +19,12 @@
   padding-top: 4px;
   .md-button{
     line-height:26px;
-    min-width:75px;
+    min-width:71px;
     font-size:0.8em;
     margin:6px 2px;
+    &.md-vanke-theme:not([disabled]):hover{
+      background: transparent;
+    }
   }
   md-icon{
     padding-top: 4px;
@@ -49,9 +52,6 @@
     box-shadow:none;
   }
   .md-button{
-    position: absolute;
-    left:0;
-    top:4px;
     &.md-vanke-theme:not([disabled]):hover{
       background:none;
     }

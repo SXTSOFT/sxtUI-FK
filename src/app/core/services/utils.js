@@ -10,7 +10,7 @@
 
 
   /** @ngInject */
-  function  utilsFactory($mdToast,$mdDialog){
+  function  utilsFactory($mdToast,$mdDialog,$q){
     function accSub(arg2, arg1) {
       var r1, r2, m, n;
       try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
@@ -89,17 +89,24 @@
       );
     }
 
-    function alertMessage(message,ev){
-      return $mdDialog.show(
-        $mdDialog.alert()
-          .parent(angular.element(document.querySelector('body')))
-          .clickOutsideToClose(true)
-          .title('温馨提示')
-          .textContent(message)
-          .ariaLabel('温馨提示')
-          .ok('确定')
-          .targetEvent(ev)
-      );
+    function alertMessage(message,ev) {
+      if (message == '出现错误') {
+        return $q(function (r) {
+          r();
+        });
+      }
+      else {
+        return $mdDialog.show(
+          $mdDialog.alert()
+            .parent(angular.element(document.querySelector('body')))
+            .clickOutsideToClose(true)
+            .title('温馨提示')
+            .textContent(message)
+            .ariaLabel('温馨提示')
+            .ok('确定')
+            .targetEvent(ev)
+        );
+      }
     }
 
     function confirmMessage(message,ev,ok,cancel){

@@ -1,4 +1,4 @@
-(function ()
+﻿(function ()
 {
   'use strict';
 
@@ -21,6 +21,41 @@
 
     function appAuth($q,$injector,authToken,$state,$rootScope,$location, sxt){
 
+      var s = {
+        isLoggedIn : isLoggedIn,
+        token      : token,
+        profile    : profile,
+        login      : login,
+        getUser    : getUser,
+        autoLogin  : autoLogin,
+        current    : currentUser,
+        logout     : logout,
+        forceLogin : forceLogin
+      };
+
+      authToken.on401(function (response) {
+        var self = this;
+        if(!self.lastTry || (new Date().getTime()-self.lastTry)>100000){
+          self.lastTry = new Date().getTime();
+          autoLoginPath = true;
+          return (self.lastRefresh = $q(function (resolve,reject) {
+            refresh(s,response).then(function () {
+              autoLoginPath = false;
+              resolve();
+            }).catch(function () {
+              autoLoginPath =false;
+              reject(response);
+            });
+          }));
+        }
+        else return self.lastRefresh || $q(function (resolve,reject) {
+          reject(response);
+        })
+      });
+/*    $rootScope.$on('sxt:online', function(event, state){
+        refresh(s);
+      });*/
+
       $rootScope.$on('user:needlogin',function(){
         $state.go('app.auth.login');
       });
@@ -30,16 +65,7 @@
         reversedInterceptors.unshift($injector.get(interceptorFactory));
       });
 
-      return {
-        isLoggedIn : isLoggedIn,
-        token      : token,
-        profile    : profile,
-        login      : login,
-        getUser    : getUser,
-        autoLogin  : autoLogin,
-        current    : currentUser,
-        logout     : logout
-      };
+      return s;
 
       //判断用户是否登录
       function isLoggedIn(){
@@ -56,44 +82,53 @@
         return sxt.invoke(reversedInterceptors, 'profile' ,token)
       }
 
+      function refresh(s) {
+        return sxt.invoke(reversedInterceptors, 'refresh' ,s);
+      }
+
       // 根据用户凭据登录系统
       function login(user){
-        return token(user).then(function(token){
-          authToken.setToken(token);
-          getProfile(token,user);
-        },function(){
-          //$state.go('app.auth.login');
-          return $q.reject("用户名或密码错误");
+        return $q(function (resovle,reject) {
+          token(user).then(function(token){
+            authToken.setToken(token);
+            getProfile(token,user).then(function (profile) {
+              resovle(profile)
+            }).catch(reject);
+          },function(){
+            //$state.go('app.auth.login');
+            return reject("用户名或密码错误");
 
+          });
         });
       }
 
       // 根据用户token登录系统
       function getProfile(token,user){
-         profile(token).then(function(profile){
-           if(token == profile)
-            profile = null;
+         return $q(function (resolve,reject) {
+           profile(token).then(function(profile){
+             if(token == profile)
+               profile = null;
 
-           loginedUser = profile;
-          if(!loginedUser) {
-            //$state.go('app.auth.login');
-          }
-          else {
-            profile.username = profile.username||profile.Id;
-            profile.token = token;
-            profile.user = user;
-            sxt.cache.setProfile(profile,function(){
-              console.log('save sql',profile);
-              $rootScope.$emit ('user:login', profile);
-              if(!autoLoginPath){
+             loginedUser = profile;
+             if(!loginedUser) {
+               //$state.go('app.auth.login');
+               reject('获取用户信息错误');
+             }
+             else {
+               profile.username = profile.username||profile.Id;
+               profile.token = token;
+               profile.user = user;
 
-                $state.go('app.szgc.home')
-                //$location.path('/');
-              }
-            })
+               $rootScope.$emit ('user:login', profile);
+               if(!autoLoginPath){
 
-          }
-        });
+                 $state.go('app.szgc.home')
+                 //$location.path('/');
+               }
+               resolve();
+             }
+           });
+         });
       }
 
       // 获取当前用户
@@ -119,12 +154,16 @@
         });
       }
 
+      function forceLogin() {
+        loginedUser = null;
+        return autoLogin();
+      }
+
       // 退出登录
       function logout(){
-        sxt.cache.removeProfile(loginedUser, function(){
           $rootScope.$emit ('user:logout', loginedUser);
           $state.go('app.auth.login');
-        });
+
       }
 
       function currentUser(){

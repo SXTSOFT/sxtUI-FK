@@ -8,7 +8,7 @@
     .directive('sxtNumberListItem',sxtNumberListItem);
 
   /** @ngInject */
-  function sxtNumberListItem(utils){
+  function sxtNumberListItem(utils,$rootScope){
     function ybIsOkRow (item,value) {
 
       var zdpc = value;
@@ -20,6 +20,11 @@
       //    }
       //}
       zdpc = parseFloat(zdpc);
+       var pl = parseFloat(item.LevelNo);
+
+      if (isNaN(pl))
+        pl = 1.5;
+
       var hgl = parseFloat(item.PassRatio),
         pc = item.DeviationLimit,
         op = pc.substring(0, 1),
@@ -80,29 +85,29 @@
         //  };
         //}
         var max1 = max,min1=min;
-        max1 = utils.math.mul(max, 1.5);
+        max1 = utils.math.mul(max, pl);
         if (min > 0)
           min1 = utils.math.mul(min, 0.5);
         else
-          min1 = utils.math.mul(min, 1.5);
+          min1 = utils.math.mul(min, pl);
         //console.log(min, max, zdpc)
         if (zdpc < min1 || zdpc > max1) {
           return {
             result:false,
             allResult:false,
-            zdpc:abs
+            zdpc:zdpc
           };
         }
         if (zdpc < min || zdpc > max) {
           return {
             result:false,
-            zdpc:abs
+            zdpc:zdpc
           };
         }
 
         return {
           result:true,
-          zdpc:abs
+          zdpc:zdpc
         };
       } else {
         return {
@@ -139,8 +144,9 @@
                   value:v
                 });
               }
+              //console.log(element.text())
               if(i==l){
-                $(this).parent().parent().parent().append('<div flex="20" class="flex-20"><div class="point" ><span class="n">'+(values.length+1)+'</span></div></div>');
+                $(this).parent().parent().parent().append('<div flex="20" class="flex-20"><div class="point" ><span class="n">p'+(values.length+1)+'</span></div></div>');
               }
             }
             else if(i>1&&i<l){

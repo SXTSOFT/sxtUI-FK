@@ -19,17 +19,17 @@
         </md-list-item>
         <md-subheader class="md-no-sticky">工序</md-subheader>
         <md-list-item>
-          <p>工序{{data.procedureName}}</p>
+          <p>{{data.procedureName}}</p>
         </md-list-item>
-        <md-subheader class="md-no-sticky">监理单位</md-subheader>
-        <md-list-item layout="row">
+        <md-subheader ng-hide="roleId=='3rd'||roleId=='zb'" class="md-no-sticky">监理单位</md-subheader>
+        <md-list-item ng-hide="roleId=='3rd'" layout="row">
           <sxt-select flex name="jldw" ng-disabled="!data.isFirst" required ng-model="data.curHistory.SupervisorCompanyId" name-value="data.curHistory.SupervisorCompanyName" sources="data.construction" text-field="UnitName" value-field="UnitId"></sxt-select>
         </md-list-item>
         <md-subheader class="md-no-sticky">验收人</md-subheader>
         <md-list-item layout="row">
           <sxt-select flex name="ysr" required ng-model="data.curStep.CheckWorker" obj-value="data.submitUser" name-value="data.curStep.CheckWorkerName" sources="data.submitUsers" text-field="name" value-field="id"></sxt-select>
         </md-list-item>
-        <div ng-repeat="batch in data.batchs">
+        <div ng-hide="roleId=='3rd'" ng-repeat="batch in data.batchs">
 
           <md-subheader class="md-no-sticky">{{$index==0?'验收批':''}} <!--<button ng-if="$index==0 && data.isFirst" type="button" ng-click="addBatch()" class="btn btn-white btn-xs"><i class="fa fa-plus"></i></button>--></md-subheader>
           <div class="col-sm-6 col-lg-7">
@@ -42,17 +42,23 @@
           </div>
 
         </div>
-        <md-subheader class="md-no-sticky">总承包</md-subheader>
-        <md-list-item layout="row">
+        <md-subheader ng-hide="roleId=='3rd'" class="md-no-sticky">总承包</md-subheader>
+        <md-list-item ng-hide="roleId=='3rd'" layout="row">
           <sxt-select flex required name="zid"  ng-model="data.curHistory.ParentCompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.ParentCompanyName" sources="data.supervision1" text-field="UnitName" value-field="UnitId"></sxt-select>
         </md-list-item>
-        <md-subheader class="md-no-sticky">专业承包</md-subheader>
+        <md-subheader ng-hide="roleId=='3rd'" class="md-no-sticky">专业承包</md-subheader>
         <md-list-item layout="row">
-          <sxt-select flex required name="zid"  ng-model="data.curHistory.CompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.CompanyName" sources="data.supervision" text-field="UnitName" value-field="UnitId"></sxt-select>
+          <sxt-select ng-hide="roleId=='3rd'" flex required name="zid"  ng-model="data.curHistory.CompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.CompanyName" sources="data.supervision" text-field="UnitName" value-field="UnitId"></sxt-select>
         </md-list-item>
-        <md-subheader class="md-no-sticky">施工班组</md-subheader>
-        <md-list-item layout="row">
+        <md-subheader ng-hide="roleId=='3rd'" class="md-no-sticky">施工班组</md-subheader>
+        <md-list-item ng-hide="roleId=='3rd'" layout="row">
           <sxt-select flex required  ng-model="data.curHistory.GrpId" ng-disabled="!data.isFirst" name="gid" name-value="data.curHistory.GrpName" sources="data.groups" text-field="name" value-field="id"></sxt-select>
+        </md-list-item>
+        <md-subheader ng-show="roleId=='jl'" class="md-no-sticky">总包已自检</md-subheader>
+        <md-list-item ng-show="roleId=='jl'" layout="row">
+          <md-checkbox ng-disabled="!data.isFirst" flex="none" ng-model="data.curHistory.ZbChecked" aria-label="总包已验">
+          </md-checkbox>
+          <p flex>如果未选择总包已验，提交后总包将不允许录入验收记录</p>
         </md-list-item>
       </md-list>
 
@@ -62,14 +68,14 @@
 
       <fieldset>
         <legend>验收件</legend>
-        <span class="fs-display-1 display-block">附件</span>
+        <span class="fs-display-1 display-block">添加验收照片</span>
         <div> <small></small></div>
-        <sxt-images ng-model="data.curStep.GroupImg2"  project="data.projectInfo" edit="true"></sxt-images>
+        <sxt-images ng-model="data.curStep.GroupImg2"  files="data.pics2" project="data.projectInfo" edit="true"></sxt-images>
       </fieldset>
       <fieldset>
         <legend>主控项目</legend>
         <md-list>
-          <md-list-item ng-repeat="n in targets.zk" ng-click="n.checked && (n.isOK=!n.isOK)">
+          <md-list-item ng-repeat="n in targets.zk"  ng-click="n.checked && (n.isOK=!n.isOK)">
             <md-checkbox ng-model="n.checked" ng-click="$event.stopPropagation()"></md-checkbox>
             <div class="md-list-item-text" flex ng-class="{'text-disabled':!n.checked}" layout="column">
               <h3>{{$index+1}}、{{n.TargetName}}</h3>
@@ -90,21 +96,21 @@
         <div ng-repeat="n in targets.yb"  ng-class="{'bgc-red-A100':!ybIsOkRow(n),'datas':n.checked}">
           <h3  ng-class="{'text-disabled':!n.checked}"><md-checkbox ng-model="n.checked" ng-click="$event.stopPropagation()"></md-checkbox>{{$index+1}}、{{n.TargetName}} 允许偏差（mm） :{{n.DeviationLimit}}</h3>
 
-          <!--<md-input-container ng-if="false" class="md-block">-->
-            <!--<label>检查点数</label>-->
-            <!--<input type="number" ng-disabled="!n.checked" ng-model="n.CheckNum">-->
-          <!--</md-input-container>-->
-          <!--<md-input-container ng-if="false" class="md-block">-->
-            <!--<label>合格率</label>-->
-            <!--<input ng-disabled="!n.checked" ng-model="n.PassRatio" >-->
-          <!--</md-input-container>-->
-          <!--<md-input-container ng-if="false" class="md-block">-->
-            <!--<label>最大偏差</label>-->
-            <!--<input ng-disabled="!n.checked"  ng-model="n.MaxDeviation" >-->
-          <!--</md-input-container>-->
+          <md-input-container ng-if="false" class="md-block">
+            <label>检查点数</label>
+            <input type="number" ng-disabled="!n.checked" ng-model="n.CheckNum">
+          </md-input-container>
+          <md-input-container ng-if="false" class="md-block">
+            <label>合格率</label>
+            <input ng-disabled="!n.checked" ng-model="n.PassRatio" >
+          </md-input-container>
+          <md-input-container ng-if="false" class="md-block">
+            <label>最大偏差</label>
+            <input ng-disabled="!n.checked"  ng-model="n.MaxDeviation" >
+          </md-input-container>
           <div class="circles" ng-if="n.checked" sxt-number-list-item ng-model="n">
             <div layout="row" layout-wrap>
-              <div flex="20"><div class="point" ng-if="n.checked"><span class="n">1</span></div></div>
+              <div flex="20"><div class="point" ng-if="n.checked"><span class="n">p1</span></div></div>
             </div>
           </div>
         </div>

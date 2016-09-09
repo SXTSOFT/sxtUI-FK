@@ -10,7 +10,7 @@
     .directive('sxtSelectJd', sxtSelectJdDirective);
 
   /** @ngInject */
-  function sxtSelectJdDirective($rootScope)
+  function sxtSelectJdDirective($rootScope,$timeout,$window)
   {
     var joinArr = function (arr) {
       var n = [];
@@ -47,6 +47,7 @@
           }
         });
       }
+
       filter(letters[0]);
       return {
         label: label,
@@ -66,6 +67,7 @@
         }
       }
     }
+    var tr = null;
     return {
       transclude: true,
       scope: {
@@ -75,7 +77,6 @@
         nameTree: '=',
         onQuery: '=',
         onChange: '=',
-        isMore: '=',
         objectScope:'=',
         cache: '@'
       },
@@ -83,6 +84,16 @@
       link: function (scope, element, attr, ctrl) {
         scope.selectors = [];
         scope.isMore = true;
+        tr = null;
+        scope.resetUI = function() {
+          if (tr || $window.navigator.userAgent.indexOf('Android')==-1) return;
+          tr = $timeout(function () {
+            $('md-list-item', element).css('display', 'inline');
+            $timeout(function () {
+              $('md-list-item', element).css('display', 'flex');
+            }, 10);
+          }, 100);
+        }
         var syncValue = function () {
           if (!scope.selectors.length || !scope.selectors[0].selected) {
             scope.value =
@@ -102,13 +113,16 @@
               c = scope.selectors[++i];
 
             }
-            scope.idTree = idTree.join('>');
+
             scope.nameTree = nameTree.join('>');
+            scope.idTree = idTree.join('>');
           }
           scope.onChange && scope.onChange(scope);
           if(!$rootScope.$$phase){
             scope.$apply();
+
           }
+          scope.resetUI();
         }
         if(scope.objectScope){
           scope.objectScope.backJdSelect = function(){
@@ -132,12 +146,19 @@
           syncValue();
           var q = scope.onQuery(index, newSt, scope.selectors.length > 1 ? scope.selectors[index - 1].selected.$id : null,scope);
           if (q) {
+            scope.selectors[index] = {
+              label:'正在加载',
+              items:[{$name:'正在加载'}],
+              loading:true
+            };
             q.then(function (result) {
               var next = result;
               scope.selectors[index] = next;
               if(!$rootScope.$$phase){
                 scope.$apply();
+
               }
+              scope.resetUI();
             });
           }
         };
@@ -154,6 +175,11 @@
 
           var q = scope.onQuery(index + 1, newSt, item.$id,scope);
           if (q) {
+            scope.selectors[index+1] = {
+              label:'正在加载',
+              items:[{$name:'正在加载'}],
+              loading:true
+            };
             q.then(function (result) {
               var next = result;
               scope.selectors[index + 1] = next;
@@ -165,14 +191,18 @@
 
               if(!$rootScope.$$phase){
                 scope.$apply();
+
               }
+              scope.resetUI();
             });
           }
           else{
             syncValue();
             if(!$rootScope.$$phase){
               scope.$apply();
+
             }
+            scope.resetUI();
           }
         }
         scope.querySearch = function(array, text) {
@@ -186,14 +216,19 @@
           }
           return k;
         }
-        scope.onQuery(0, newSt, scope.value,scope).then(function (result) {
-          scope.selectors.push(result);
-          if (result.selected)
-            scope.item_selected(result.selected, scope.selectors.length - 1, false);
-          if(!$rootScope.$$phase){
-            scope.$apply();
-          }
-        });
+        $timeout(function () {
+          scope.onQuery(0, newSt, scope.value,scope).then(function (result) {
+            scope.selectors.push(result);
+            if (result.selected)
+              scope.item_selected(result.selected, scope.selectors.length - 1, false);
+            if(!$rootScope.$$phase){
+              scope.$apply();
+
+            }
+            scope.resetUI();
+          });
+        },300);
+
       }
     }
   }

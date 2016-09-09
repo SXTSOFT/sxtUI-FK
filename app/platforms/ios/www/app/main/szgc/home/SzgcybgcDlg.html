@@ -1,0 +1,15 @@
+<md-dialog aria-label="添加拍照"  ng-cloak>
+  <md-toolbar >
+    <div class="md-toolbar-tools">
+      <h2 style="width: 80%;overflow: hidden;text-overflow: ellipsis;">{{vm.project.regionName}}</h2>
+      <span flex></span>
+      <md-button class="md-fab md-mini md-primary" ng-click="vm.answer()"  aria-label="Favorite">
+        <md-icon md-font-icon="icon-close"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content style="padding:0;" layout="column">
+
+    <div flex sxt-year style="overflow: auto;position:relative" year-show="true" layout="column" region-id="vm.project.regionId" show="true" room-type="vm.project.roomType" procedure-id="vm.data.procedureId" image-type="vm.project.n" partion="vm.data.partion" region-name="vm.project.regionName"></div>
+  </md-dialog-content>
+</md-dialog>

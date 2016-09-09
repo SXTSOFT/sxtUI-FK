@@ -8,7 +8,7 @@
     .directive('sxtAreaHouse',sxtAreaHouse);
 
   /** @ngInject */
-  function sxtAreaHouse($timeout,$rootScope,api,sxt,$mdDialog,$http){
+  function sxtAreaHouse($timeout,$rootScope,api,sxt,$mdDialog,$http,tileLayer){
     return {
       scope: {
         show:'=',
@@ -135,10 +135,13 @@
           if (!scope.show) return;
           //var crs = ;
           if (map && map.gid == scope.gid) return;
-          if (map && scope.files && scope.files[0] != map.pic) {
+          if (map && scope.files && scope.files[0].Url != map.pic) {
             map.remove ();
             map = null;
           }
+          if(apiLayer && map)
+            map.removeLayer(apiLayer);
+
           if (!scope.files || !scope.files.length) return;
 
 
@@ -158,20 +161,22 @@
               center: [.48531902026005, .5],
               zoom: 0,
               minZoom: 0,
-              maxZoom: 3,
+              maxZoom: 2,
               scrollWheelZoom: true,
               annotationBar: false,
               zoomControl: false,
               attributionControl: false
             });
-            map.pic = scope.files[0];
-
+            map.pic = scope.files[0].Url;
+            scope.files[0].api = sxt.app.api;
+            scope.files[0].Url = scope.files[0].Url.replace ('/s_', '/');
+            layer = tileLayer.tile(scope.files[0]);
             //layer = L.tileLayer(sxt.app.api + '/api/file/load?x={x}&y={y}&z={z}', {
-            layer = L.tileLayer (sxt.app.api + '/api/picMap/load/{z}_{x}_{y}.png?size=256&path=' + scope.files[0].replace ('/s_', '/'), {
+/*            layer = L.tileLayer (sxt.app.api + '/api/picMap/load/{z}_{x}_{y}.png?size=256&path=' + scope.files[0].Url.replace ('/s_', '/'), {
               noWrap: true,
               continuousWorld: false,
               tileSize: 256
-            });
+            });*/
             map.gid = scope.gid;
             layer.addTo (map);
 
@@ -288,7 +293,7 @@
                       //$scope.photo ();
                     },
                     template: '<md-dialog aria-label="添加拍照"  ng-cloak><form><md-toolbar ><div class="md-toolbar-tools"><h2>{{title || \'拍照\'}}</h2></div></md-toolbar>\
-               <md-dialog-content><div class="md-dialog-content" >\
+               <md-dialog-content>\
                 <fieldset>\
                     <legend>总体</legend>\
                     <sxt-images edit="true" ng-model="project.fid" single="true"></sxt-images>\
@@ -297,11 +302,10 @@
                   <legend>细部</legend>\
                   <sxt-images edit="true" ng-model="project.sid"></sxt-images>\
                   </fieldset>\
-                </div>\
                </md-dialog-content>\
                 <md-dialog-actions layout="row" style="border-top:solid 2px red">\
               <span flex></span>\
-                <md-button  class="md-raised md-primary" ng-click="answer()"  md-autofocus style="margin-right:20px;margin-top: 20px">确定</md-button>\
+                <md-button  class="md-raised md-primary" ng-click="answer()"  md-autofocus style="margin-right:20px;margin-top: 20px">关闭</md-button>\
                   </md-dialog-actions>\
                   </form>\
                   </md-dialog>',

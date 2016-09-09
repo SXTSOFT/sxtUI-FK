@@ -22,9 +22,9 @@
         else {
           vm.logining = '正在登录';
           auth.login (vm.form).then (function () {
-            if(vm.show) {
-              utils.tips ('登录成功');
-            }
+            //if(vm.show) {
+            //  utils.tips ('登录成功');
+            //}
             vm.logining = null;
           }, function (reject) {
             utils.tips ('用户名或密码错误');
@@ -33,19 +33,6 @@
           })
         }
       }
-
-      var authObj = appCookie.get('auth');
-
-      if(authObj) {
-        authObj = JSON.parse (authObj);
-        vm.form = authObj;
-        vm.login();
-      }
-      else{
-        vm.show=true;
-      }
-
-
-        //////////
+      
     }
 })();

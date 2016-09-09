@@ -10,7 +10,7 @@
     .controller('SzgcReportController', SzgcReportController);
 
   /** @ngInject */
-  function SzgcReportController($scope,$state)
+  function SzgcReportController($scope,$state,api,utils)
   {
 
     var vm = this;
@@ -38,6 +38,10 @@
     });
 
     vm.goToReport = function (name, path, $event) {
+      if(api.getNetwork()==1){
+        utils.alert('离线模式下无法统计')
+        return;
+      }
       if (vm.tabs.length == 0) {
         vm.tabs.push({
           name: name
@@ -54,5 +58,11 @@
       $state.go('app.szgc.report');
       // $scope.tabs.splice($scope.data.selectedIndex-1, 1);
     };
+    $scope.$on('$destroy',$scope.$on ('goBack:end', function (s,d) {
+      if(!d.cancel && !$state.is('app.szgc.report')){
+        $state.go('app.szgc.report');
+        d.cancel = true;
+      }
+    }))
   }
 })();

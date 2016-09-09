@@ -9,7 +9,7 @@
     .controller('SzgcyhydController', SzgcyhydController);
 
   /** @ngInject */
-  function SzgcyhydController(api,$mdDialog,$rootScope,$scope,utils,$stateParams,appCookie,viewImage)
+  function SzgcyhydController(api,$mdDialog,$rootScope,$scope,utils,$stateParams,$state,viewImage)
   {
     //viewImage.view('http://szdp.vanke.com:8088/upload/2016/03/980012f8-e903-4b54-9222-bd53edee391c.jpg')
     var vm = this;
@@ -44,7 +44,7 @@
     })
     var play = function(){
       api.szgc.FilesService.GetPrjFilesByFilter(vm.project.pid, vm.project.procedureId, vm.project.partion ? vm.project.partion.Id : null).then(function (r) {
-        console.log('r.data.Rows.length',r.data.Rows.length)
+        //console.log('r.data.Rows.length',r.data.Rows.length)
         if (r.data.Rows.length == 0) {
           utils.alert('暂无照片');
         }
@@ -96,7 +96,10 @@
     }
     $scope.$on('goBack',whenBack);
     vm.playN = function(n){
-      console.log('vm.project',vm.project)
+      if(n==3){
+        $state.go('app.szgc.yhyd.records',$stateParams);
+        return;
+      }
       api.szgc.FilesService.GetPrjFilesByFilter(vm.project.pid, { imageType: n }).then(function(r){
         if(r.data.Rows.length==0){
           utils.alert('暂无照片');
@@ -121,6 +124,10 @@
         }
       })
 
+    }
+
+    if($stateParams.seq=='2'){
+      vm.playN(2);
     }
     //vm.playN();
 

@@ -1,0 +1,9 @@
+{
+    "TOOLBAR": {
+        "TOGGLE_NAVIGATION": "展开/折叠菜单",
+        "TOGGLE_NAVIGATION_MODE": "展开/折叠菜单",
+        "SEARCH": "搜索",
+        "USER_SETTINGS": "用户设置",
+        "TOGGLE_QUICK_PANEL": "快速面板"
+    }
+}

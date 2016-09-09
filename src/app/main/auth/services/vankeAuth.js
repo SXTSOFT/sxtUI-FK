@@ -1,4 +1,4 @@
-(function ()
+﻿(function ()
 {
   'use strict';
 
@@ -7,20 +7,52 @@
     .factory('vankeAuth', vankeAuth);
 
   /** @ngInject */
-  function vankeAuth($http,$q,appConfig,sxt,appCookie,$rootScope)
+  function vankeAuth($http,$q,api,sxt,appCookie,$rootScope,utils)
   {
     var service = {
       token   : token,
-      profile : profile
+      profile : profile,
+      refresh : refresh
     };
     $rootScope.$on('user:logout',function(){
       appCookie.remove('auth');
-    })
+    });
+    var cfg = {
+        _id:'s_userinfo',
+        idField:'Id',
+        single:true,
+        mode:1,
+        local:true,
+        filter:function () {
+          return true;
+        },
+        dataType:3
+      },
+      userInfo = api.db(cfg).bind(function () {
+      return $http.get(sxt.app.api + '/api/Security/Account/UserInfo', {t: new Date().getTime()});
+    });
     return service;
 
+    function refresh(s,response) {
+      return $q(function (resolve,reject) {
+        var authObj = appCookie.get('auth');
+        if(authObj) {
+          authObj = JSON.parse (authObj);
+          s.login(authObj).then(function () {
+            resolve();
+          }).catch(function () {
+            reject(response);
+          });
+        }
+        else{
+          reject(response);
+        }
+      })
+    }
+
     function token(user){
-      if(!sxt.connection.isOnline())return user;
       if(user) {
+        api.setNetwork(0);
         user.grant_type = 'password';
         user.scope = 'sxt';
         return $q (function (resolve,reject) {
@@ -61,17 +93,25 @@
     }
 
     function profile(token){
-      if(!sxt.connection.isOnline())return token;
-
       if(!token || !token.username) {
         return $q (function (resolve, reject) {
-          $http
-            .get (sxt.app.api + '/api/Security/Account/UserInfo', {t: new Date ().getTime ()})
-            .then (function (d) {
-              resolve (d && d.data);
-            }, function () {
-              reject (token);
-            });
+          //api.setNetwork(0);
+          cfg.local = false;
+          cfg.mode = token?2:1;
+          userInfo().then(function (d) {
+            cfg.mode = 1;
+            if(!d ||(!d.status && !d.data)){
+              $rootScope.$emit('user:needlogin');
+            }
+            else{
+            }
+            resolve(d && d.data);
+            //api.resetNetwork();
+          }, function (rejection) {
+            cfg.mode = 1;
+            utils.alert(rejection.data && rejection.data.Message?rejection.data.Message:'网络错误');
+            reject(token);
+          });
         });
       }
       else{
