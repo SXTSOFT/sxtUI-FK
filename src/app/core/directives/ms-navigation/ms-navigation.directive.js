@@ -368,7 +368,7 @@
                         }
                     }
                 }
-
+                console.log(navigation);
                 return navigation;
             }
 
@@ -770,6 +770,7 @@
         vm.collapse = collapse;
         vm.expand = expand;
         vm.getClass = getClass;
+        vm.isHidden = isHidden;
 
         //////////
 
