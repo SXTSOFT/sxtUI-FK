@@ -54,12 +54,9 @@
         <md-list-item ng-hide="roleId=='3rd'" layout="row">
           <sxt-select flex required  ng-model="data.curHistory.GrpId" ng-disabled="!data.isFirst" name="gid" name-value="data.curHistory.GrpName" sources="data.groups" text-field="name" value-field="id"></sxt-select>
         </md-list-item>
-        <md-subheader ng-show="roleId=='jl'" class="md-no-sticky">总包已验</md-subheader>
+        <md-subheader ng-show="roleId=='jl'" class="md-no-sticky">总包已自检</md-subheader>
         <md-list-item ng-show="roleId=='jl'" layout="row">
           <md-checkbox ng-disabled="!data.isFirst" flex="none" ng-model="data.curHistory.ZbChecked" aria-label="总包已验">
-
-
-
           </md-checkbox>
           <p flex>如果未选择总包已验，提交后总包将不允许录入验收记录</p>
         </md-list-item>

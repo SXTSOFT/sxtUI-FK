@@ -22,6 +22,14 @@
       }
     }
     var vm = this;
+    var selected = {
+      name:'已选择',
+      children:[{
+        name:'已选择',
+        ps:[]
+      }],
+      ps:[]
+    }
     vm.query = function () {
       vm.build.loading = true;
       vm.build.query();
@@ -32,6 +40,7 @@
         vm.procedures.forEach(function (gx) {
           if(gx.checked){
             g.push(gx.ProcedureId);
+
           }
         })
         if(!g.length){
@@ -50,15 +59,24 @@
       vm.itemChecked(p);
     }
     vm.itemChecked = function (p) {
-      var g = [];
       vm.procedures.forEach(function (gx) {
-        if(gx.checked){
-          g.push(gx.ProcedureId);
+        if(gx.checked && !selected.ps.find(function (a) {
+            return a===gx;
+          })){
+          selected.ps.push(gx);
+          selected.children[0].ps.push(gx);
         }
       });
-      if(g.length>4){
+
+      if(selected.ps.length>4){
         utils.alert('一次仅能显示四种工序');
         p.checked =false;
+      }
+      for(var i=selected.ps.length-1;i>=0;i--){
+        if(!selected.ps[i].checked){
+          selected.ps.splice(i,1);
+          selected.children[0].ps.splice(i,1);
+        }
       }
     }
 
@@ -85,7 +103,8 @@
       api.szgc.vanke.skills({ page_number: 1, page_size: 0 }),
       api.szgc.BatchSetService.getAll({status:4,batchType:255})
     ]).then(function (results) {
-      var s = [],result = results[0];
+
+      var s = [selected],result = results[0];
       result.data.data.forEach(function (item) {
         if(!item.parent)return;
         var gn = s.find(function(g){return item.parent.name== g.name});
@@ -124,6 +143,8 @@
           });
           if(fd){
             fd.checked = true;
+            selected.ps.push(fd);
+            selected.children[0].ps.push(fd);
           }
         });
       }

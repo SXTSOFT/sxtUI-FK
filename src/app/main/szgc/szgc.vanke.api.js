@@ -202,7 +202,7 @@
                       resolve(p1);
                     }
                     else{
-                      alert('发生网络错误，稍后再试')
+                      //alert('发生网络错误，稍后再试')
                       p1 = null;
                       resolve({data:{data:[]}})
                     }

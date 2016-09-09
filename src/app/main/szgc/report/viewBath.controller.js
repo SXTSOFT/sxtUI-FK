@@ -53,8 +53,10 @@
     }
     $scope.$on('$destroy',$scope.$on('goBack',function (s,e) {
       if($state.is('app.szgc.report.viewBath')) {
-        e.cancel = true;
-        vm.searBarHide = false;
+        if(vm.searBarHide) {
+          e.cancel = true;
+          vm.searBarHide = false;
+        }
       }
     }));
     vm.ddd = {};

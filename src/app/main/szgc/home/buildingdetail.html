@@ -15,7 +15,7 @@
         <md-list>
           <section ng-repeat="c in g.children|sxtProcedureS">
             <md-subheader class="md-primary">{{c.name}}({{c.ps.length}})</md-subheader>
-            <md-list-item ng-repeat="p in c.ps" ng-click="vm.itemChecked1(p)" >
+            <md-list-item ng-repeat="p in c.ps" ng-click="vm.itemChecked1(p,c)" >
               <p> {{p.ProcedureName}}</p>
               <md-checkbox class="md-secondary" ng-click="vm.itemChecked(p)" ng-model="p.checked"></md-checkbox>
             </md-list-item>
