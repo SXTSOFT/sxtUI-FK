@@ -169,7 +169,7 @@
                         group.push([item.AcceptanceItemID,item.AreaId,item.InspectionId]);
                       }
                       if(item.AcceptanceItemID && item.AreaId && item.InspectionId&&!inspections.find(function(k){
-                            return k.InspectionId==item.InspectionId;
+                          return k.InspectionId==item.InspectionId;
                         })){
                         inspections.push(item.InspectionId);
                       }
