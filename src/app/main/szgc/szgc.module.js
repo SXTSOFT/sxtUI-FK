@@ -323,6 +323,20 @@
         templateUrl: 'app/main/szgc/ys/upload.html'
       })
 
+      .state('app.szgc.ys.material',{
+        title:'添加验收',
+        url:'/mys/{id}',
+        controller:'MMyProcessController as vm',
+        templateUrl:'app/main/material/ys/myProcess-app.html'
+      })
+
+      .state('app.szgc.ys.detail', {
+        title:'材料验收详情',
+        url: '/detail/{id}',
+        controller: 'CheckDataDetailController as vm',
+        templateUrl: 'app/main/material/ys/checkDataDetail-app.html'
+      })
+
 
 
     // Navigation

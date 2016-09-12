@@ -49,7 +49,7 @@
     });
 
     $scope.goMaterialDetail = function (id) {
-      $state.go('app.material.ys.detail',{id:id});
+      $state.go('app.szgc.ys.detail',{id:id});
     };
 
     $scope.isPartner = api.szgc.vanke.isPartner();
@@ -425,6 +425,22 @@
         function () {
           return api.szgc.ProcedureBathSettingService.query();
         },
+
+        //获取材料供应商
+        function () {
+          return api.material.SupplierService.GetAll({startrowIndex:0,maximumRows:100,Status:4});
+        },
+
+        //获取材料类型
+        function () {
+          return api.material.MaterialTypeService.GetProcedureType();
+        },
+
+        //获取材料
+        function () {
+          return api.material.BatchSetService.getAll({status:4,batchType:2});
+        },
+
         //工序验收表
         function () {
           return api.szgc.TargetService.getAll()

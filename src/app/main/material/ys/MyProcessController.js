@@ -15,7 +15,6 @@
   function MMyProcessController($scope, api, utils, $state,$q,sxt,xhUtils,$timeout, $mdDialog,$stateParams){
 
     var vm = this;
-    vm.fjType = null;
     vm.AttachmentSHow = false;
 
     vm.checkData={};
@@ -34,7 +33,7 @@
     };
 
     $scope.save = function(addForm) {
-      vm.checkData.InspectionReport = vm.sjReport;
+      vm.checkData.InspectionReport = vm.checkData.sjReport;
       vm.checkData.ProjectId = $scope.project.projectId;
       vm.checkData.MaterialId = $scope.project.procedureId;
       vm.checkData.RegionNameTree = $scope.project.nameTree;
@@ -43,7 +42,7 @@
       vm.checkData.RegionName = $scope.project.typeName;
 
 
-      if(vm.checkData.WgCheck == false ||(vm.fjType == 16 && vm.checkData.sjReport == false)) {
+      if(vm.checkData.WgCheck == 0 || vm.checkData.InspectionReport == 0) {
         $mdDialog.show({
           controller: ['$scope',function ($scope) {
             $scope.hide = function() {
@@ -82,12 +81,12 @@
           bindToController:true,
           fullscreen: $scope.customFullscreen
         });
-
-      }else{
+      }
+      else{
         if (vm.checkData.WgCheck == 1 && vm.checkData.InspectionReport == null && vm.checkData.IsInspection == 1) {
           vm.checkData.CheckResult = 2; //状态：未知
           vm.checkData.InspectionReport = 2; //未提供
-        } else {
+        }else{
           vm.checkData.CheckResult = 1; //状态：合格
           if (vm.checkData.InspectionReport == null)
             vm.checkData.InspectionReport = 3; //   N/A
