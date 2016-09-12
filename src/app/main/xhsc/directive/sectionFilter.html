@@ -14,7 +14,7 @@
     </md-toolbar>
     <div style="padding: 15px">
       <h5 >已选区域</h5>
-      <md-chips  md-on-remove="vm.removeRegion($chip)" ng-model="vm.secSelected" name="RegionName" readonly="true"
+      <md-chips  md-on-remove="vm.removeRegion($chip)" ng-model="secSelected" name="RegionName" readonly="true"
                  md-removable="true" md-max-chips="5">
         <md-chip-template>
           {{$chip.RegionName}}
@@ -22,7 +22,7 @@
       </md-chips>
     </div>
     <md-card-content >
-      <div ng-show="(!level||leve>0)&&vm.secSelected.length==0" layout="row">
+      <div ng-show="(!level||level>0)&&secSelected.length==0" layout="row">
         <md-input-container  md-theme="default" flex>
           <label>项目</label>
           <md-select  ng-model="vm.ngModel[0]" name="type" >
@@ -31,7 +31,7 @@
         </md-input-container>
         </md-input-container>
       </div>
-      <div ng-show="(!level||leve>1)&&vm.secSelected.length==1" layout="row">
+      <div ng-show="(!level||level>1)&&secSelected.length==1" layout="row">
         <md-input-container  md-theme="default" flex>
           <label>分期</label>
           <md-select  ng-model="vm.ngModel[1]" name="type" >
@@ -40,7 +40,7 @@
         </md-input-container>
         </md-input-container>
       </div>
-      <div ng-show="(!level||leve>2)&&vm.secSelected.length==2" layout="row">
+      <div ng-show="(!level||level>2)&&secSelected.length==2" layout="row">
         <md-input-container  md-theme="default" flex>
           <label>楼栋</label>
           <md-select  ng-model="vm.ngModel[2]" name="type" >
@@ -49,7 +49,7 @@
         </md-input-container>
         </md-input-container>
       </div>
-      <div ng-show="(!level||leve>3)&&vm.secSelected.length==3" layout="row">
+      <div ng-show="(!level||level>3)&&secSelected.length==3" layout="row">
         <md-input-container  md-theme="default" flex>
           <label>楼层</label>
           <md-select  ng-model="vm.ngModel[3]" name="type" >
@@ -58,7 +58,7 @@
         </md-input-container>
         </md-input-container>
       </div>
-      <div ng-show="(!level||leve>4)&&vm.secSelected.length==4" layout="row">
+      <div ng-show="(!level||level>4)&&secSelected.length==4" layout="row">
         <md-input-container  md-theme="default" flex>
           <label>房间</label>
           <md-select  ng-model="vm.ngModel[4]"  name="type" >
@@ -70,7 +70,7 @@
       <div layout="row" ng-click="click()"><md-input-container md-theme="default" flex> <label>工序</label> <div> <input ng-model="gxNames" disabled/> <md-button class="md-icon-button md-primary" style="position: absolute;right: -8px;" aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon> </md-button> </div> </md-input-container> </div>
     </md-card-content>
     <md-card-actions layout="row" layout-align="cent center">
-      <md-button flex class="md-raised md-primary">确定</md-button>
+      <md-button flex ng-click="submit()" class="md-raised md-primary">确定</md-button>
     </md-card-actions>
   </md-card>
   <md-sidenav id="gx_nav" layout="column" style="min-width: 80%" class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
@@ -79,7 +79,7 @@
         <h4>选择工序</h4>
         <span flex></span>
         <!--<md-button style="min-width:50px" ng-click="close()">关闭</md-button>-->
-        <md-button  ng-click="ok()">关闭</md-button>
+        <md-button  ng-click="ok()">确定</md-button>
       </div>
     </md-toolbar>
     <md-tabs  md-border-bottom   flex  style="background-color:white">

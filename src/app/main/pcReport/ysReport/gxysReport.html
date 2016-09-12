@@ -1,2 +1,41 @@
-<section-filter flex layout="column" gx-selected="vm.gxSelected" sec-selected="vm.secSelected" source="vm.regions"></section-filter>
+<section-filter ng-show="!vm.render" flex layout="column" level="1" submit="vm.submit()" gx-selected="vm.gxSelected" sec-selected="vm.secSelected" source="vm.regions"></section-filter>
+<div ng-show="vm.render" style="position: absolute;right: 8px">
+  <md-button class="md-fab md-mini" ng-click="vm.comeBack()">
+    <md-icon md-svg-src="app/main/xhsc/images/icon-comeback.svg"></md-icon>
+  </md-button>
+</div>
+<md-tabs ng-show="vm.render" flex layout="column">
+  <md-tab flex layout="column" label="工序验收">
+    <md-tab-content ms-scroll class="download" style="padding: 0px">
+      <table class="summaryReport">
+        <thead>
+        <tr>
+          <th>序号</th>
+          <th style="width:40%">工序</th>
+          <th style="width:40%">区域</th>
+          <th style="min-width: 50px">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="item in vm.Inspections">
+          <td>{{$index+1}}</td>
+          <td style="text-align: left;padding-left: 15px;min-width: 120px">{{item.AcceptanceItemName}}</td>
+          <td style="text-align: left;min-width: 120px">
+              <md-list  style="padding: 0px 15px" ng-cloak>
+                <md-list-item ng-repeat="k in item.Children">
+                    {{k.RegionName}}
+                </md-list-item>
+              </md-list>
+          </td>
+          <td>
+            <md-button ng-click="vm.Lookintoys(item)" class="md-primary"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>查看</md-button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </md-tab-content>
+  </md-tab>
+</md-tabs>
+
+
 

@@ -9,9 +9,18 @@
     .module('app.pcReport', ['app.pcReport_ys'])
     .config(config);
   /** @ngInject */
-  function config(msNavigationServiceProvider)
+  function config(msNavigationServiceProvider,$stateProvider)
   {
-
+    $stateProvider
+      .state('app.pcReport_hz',{
+        url:'/pcReport_hz',
+        views:{
+          'content@app':{
+            templateUrl: 'app/main/pcReport/hzReport.html',
+            controller : 'hzReportController as vm',
+          }
+        }
+      })
     // Navigation
     msNavigationServiceProvider.saveItem('xh', {
       title : '星河集团',
@@ -32,7 +41,7 @@
     });
     msNavigationServiceProvider.saveItem('xh.ysReport.yshzReport', {
       title: '汇总报表',
-      state: 'app.xhsc.report.default',
+      state: 'app.pcReport_hz',
       weight:1
     });
 

@@ -18,7 +18,8 @@
         source:'=',
         gxSelected:"=",
         secSelected:"=",
-        level:"="
+        level:"=",
+        submit:"&"
       },
       controller:p_controller,
       link:link,
@@ -26,24 +27,36 @@
     }
     function  p_controller($timeout,remote,$scope,$q,$mdSidenav){
       var vm = this;
-      vm.gxSelected=[];
+      if (! $scope.gxSelected){
+        $scope.gxSelected=[];
+      }
+      if (!$scope.secSelected){
+        $scope.secSelected=[];
+      }
+      if (!$scope.submit){
+        $scope.submit=function(){
 
+        }
+      }
+      if ($scope.level){
+        $scope.level=parseInt($scope.level);
+      }
       vm.removeRegion=function(chip){
         if (chip.index||chip.index===0){
           for (var  i=chip.index;i<vm.ngModel.length;i++){
             vm.ngModel[i]=null;
           }
         }
-        for (var i=vm.secSelected.length-1;i>=0;i--)
+        for (var i=$scope.secSelected.length-1;i>=0;i--)
         {
-          if (vm.secSelected[i].RegionID.toString().length>chip.RegionID.toString().length){
-            vm.secSelected.splice(i,1);
+          if ($scope.secSelected[i].RegionID.toString().length>chip.RegionID.toString().length){
+            $scope.secSelected.splice(i,1);
           }
         }
       }
       vm.secSource=[[],[],[],[],[]];
       vm.ngModel=[null,null,null,null,null]
-      vm.secSelected=[]
+      $scope.secSelected=[]
       if ($scope.source.then){
         $scope.source.then(function(r){
             if (r&& r.data&&angular.isArray( r.data)){
@@ -92,7 +105,7 @@
               });
               break;
           }
-          vm.secSelected.push(item);
+          $scope.secSelected.push(item);
         })
       }
 

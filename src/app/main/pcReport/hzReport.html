@@ -1,0 +1,57 @@
+<md-tabs ng-show="vm.rendered" flex layout="column">
+  <md-tab flex layout="column" label="汇总清单">
+    <md-tab-content ms-scroll class="download" style="padding: 0px">
+      <table class="summaryReport">
+        <thead>
+        <tr>
+          <th>序号</th>
+          <th>城市公司</th>
+          <th>项目名称</th>
+          <th>工序验收报表</th>
+          <th>实测实量报表</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="item in vm.report">
+          <td>{{$index+1}}</td>
+          <td>{{item.OUName}}</td>
+          <td>{{item.ProjectName}}</td>
+          <td>
+            <table>
+              <tr>
+                <td>总计</td>
+                <td>{{item.Inspection.Count}}</td>
+              </tr>
+              <tr>
+                <td>本月</td>
+                <td>{{item.Inspection.Month}}</td>
+              </tr>
+              <tr>
+                <td>本日</td>
+                <td>{{item.Inspection.Day}}</td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <table>
+              <tr>
+                <td>总计</td>
+                <td>{{item.PQMeasureRecord.Count}}</td>
+              </tr>
+              <tr>
+                <td>本月</td>
+                <td>{{item.PQMeasureRecord.Month}}</td>
+              </tr>
+              <tr>
+                <td>本日</td>
+                <td>{{item.PQMeasureRecord.Day}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </md-tab-content>
+  </md-tab>
+</md-tabs>
+
