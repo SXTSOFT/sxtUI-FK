@@ -9,10 +9,10 @@
 
   angular
     .module('app.pcReport_ys')
-    .controller('gxysReportController',gxysReportController);
+    .controller('gxysFilterController',gxysFilterController);
 
   /**@ngInject*/
-  function gxysReportController($scope,remote,$mdDialog,$state ){
+  function gxysFilterController($scope,remote,$mdDialog,$state ){
     var vm = this;
     vm.gxSelected=[];
     vm.secSelected=[]

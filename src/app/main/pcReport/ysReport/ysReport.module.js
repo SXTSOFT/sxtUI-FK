@@ -18,8 +18,8 @@
       url:'/pcReport_ys_gx',
       views:{
         'content@app':{
-          templateUrl: 'app/main/pcReport/ysReport/gxysReport.html',
-          controller : 'gxysReportController as vm',
+          templateUrl: 'app/main/pcReport/ysReport/gxysFilter.html',
+          controller : 'gxysFilterController as vm',
         }
       }
     })
