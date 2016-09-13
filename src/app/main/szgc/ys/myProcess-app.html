@@ -79,36 +79,14 @@
 
     </md-tab-content>
   </md-tab>
-<!--  <md-tab label="材料">
+<<md-tab label="材料">
     <md-tab-content flex layout-fill layout="column">
-      <md-content flex layout-fill layout="column">
-        <div> <md-button  flex ui-sref="app.material.ys" class="md-raised md-primary">开始材料验收</md-button></div>
+      <md-content flex layout-fill layout="column" ng-hide="is('app.szgc.ys.material') || is('app.szgc.ys.detail')" >
         <md-list flex>
-          &lt;!&ndash;<md-list-item class="md-3-line" style="padding: 4px 16px;margin-bottom: 5px;" ng-repeat="item in mlCheckData">&ndash;&gt;
-            &lt;!&ndash;<div layout="column" layout-align="center center">&ndash;&gt;
-              &lt;!&ndash;<label>{{item.CheckTime}}</label>&ndash;&gt;
-              &lt;!&ndash;<img ng-src="" class="md-avatar" alt="" style="width: 60px; height: 60px;" />&ndash;&gt;
-              &lt;!&ndash;&lt;!&ndash;<sxt-images  ng-model="item.GroupImg"></sxt-images></fieldset>&ndash;&gt;&ndash;&gt;
-            &lt;!&ndash;</div>&ndash;&gt;
-            &lt;!&ndash;<div class="md-list-item-text" layout="column">&ndash;&gt;
-              &lt;!&ndash;<p style="width: 60%;">{{item.RegionNameTree}}</p>&ndash;&gt;
-              &lt;!&ndash;<p>{{item.Material}}</p>&ndash;&gt;
-              &lt;!&ndash;<p>{{item.Number + item.Unit}}</p>&ndash;&gt;
-            &lt;!&ndash;</div>&ndash;&gt;
-            &lt;!&ndash;<div layout="column">&ndash;&gt;
-              &lt;!&ndash;<md-button class="md-secondary md-primary" ui-sref="app.material.ys.addAttachment({id:item.Id})" style="top: 12%;" ng-show="(item.WgCheck == 1 && item.IsInspection == 1 && item.Report == 0)">&ndash;&gt;
-                &lt;!&ndash;追加送检报告&ndash;&gt;
-              &lt;!&ndash;</md-button>&ndash;&gt;
-              &lt;!&ndash;<md-button class="md-secondary md-primary" ui-sref="app.material.ys.detail({id:item.Id})" style="top: 50%;">&ndash;&gt;
-                &lt;!&ndash;详情&ndash;&gt;
-              &lt;!&ndash;</md-button>&ndash;&gt;
-            &lt;!&ndash;</div>&ndash;&gt;
-            &lt;!&ndash;<md-divider></md-divider>&ndash;&gt;
-          &lt;!&ndash;</md-list-item>&ndash;&gt;
           <div flex ng-repeat="item in mlCheckData">
             <div class="md-padding" layout="row" style="padding: 0 8px">
               <p flex>{{ item.CheckTime }}</p>
-              <md-button class="md-secondary md-primary" ui-sref="app.material.ys({id:item.Id})" ng-show="(item.WgCheck == 1 && item.IsInspection == 1 && item.Report == 0)">追加送检报告</md-button>
+              <md-button class="md-secondary md-primary" ui-sref="app.szgc.ys.material({id:item.Id})" ng-show="(item.WgCheck == 1 && item.IsInspection == 1 && item.Report == 0)">追加送检报告</md-button>
             </div>
             <md-list-item class="md-3-line" ng-click="goMaterialDetail(item.Id)">
               <img ng-src="{{getImgURl(item.imgUrl)}}" style="width: 80px; height: 80px; padding: 8px 8px 8px 0" />
@@ -122,6 +100,10 @@
           </div>
         </md-list>
       </md-content>
+      <div class="md-padding" layout="row" style="position:relative; width:100%; background-color: white;" ng-hide="is('app.szgc.ys.material') || is('app.szgc.ys.detail')">
+        <md-button  flex ui-sref="app.szgc.ys.material" class="md-raised md-primary">添加材料验收</md-button>
+      </div>
+      <ui-view layout="column" flex ng-show="is('app.szgc.ys.material') || is('app.szgc.ys.detail')"></ui-view>
     </md-tab-content>
   </md-tab>-->
   <md-tab label="离线项目">

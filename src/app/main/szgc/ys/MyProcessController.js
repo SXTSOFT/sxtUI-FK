@@ -36,19 +36,21 @@
     };
 
     $scope.getImgURl = function (img) {
-      return sxt.app.api + img.substring(1);
+      if(img != null)
+        return sxt.app.api + img.substring(1);
     };
 
     $scope.getNetwork = function () {
       return api.getNetwork();
     };
 
-/*    api.material.MaterialService.GetAll().then(function(result){
+    //获取所有材料验收信息
+    api.material.MaterialService.GetAll().then(function(result){
       $scope.mlCheckData = result.data.Rows;
-    });*/
+    });
 
     $scope.goMaterialDetail = function (id) {
-      $state.go('app.material.ys.detail',{id:id});
+      $state.go('app.szgc.ys.detail',{id:id});
     };
 
     $scope.isPartner = api.szgc.vanke.isPartner();
@@ -424,6 +426,32 @@
         function () {
           return api.szgc.ProcedureBathSettingService.query();
         },
+
+        //获取材料供应商
+        function () {
+          return api.material.SupplierService.GetAll({startrowIndex:0,maximumRows:100,Status:4});
+        },
+
+        //获取材料类型
+        function () {
+          return api.material.MaterialTypeService.GetProcedureType();
+        },
+
+        //获取材料
+        function () {
+          return api.material.BatchSetService.getAll({status:4});
+        },
+
+        //获取所有材料验收详细信息
+        function () {
+          return api.material.MaterialService.GetInfoById();
+        },
+
+        //获取所有材料验收所选附件
+        function () {
+          return api.material.MaterialService.GetMLFilesById();
+        },
+
         //工序验收表
         function () {
           return api.szgc.TargetService.getAll()
