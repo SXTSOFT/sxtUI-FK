@@ -422,7 +422,7 @@
                 getPassRatio: function () {
                   var sum=0,l=0;
                   this.items.forEach(function (item) {
-                                            if (item.checked && item.PassRatio) {
+                    if (item.checked && item.PassRatio) {
                       sum = utils.math.sum(item.PassRatio, sum);
                       l++;
                     }
@@ -763,7 +763,7 @@
     }
 
     $scope.save = function(addForm) {
-
+      $scope.btnToSave =false;
       var m = /(((20[0-9][0-9]-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|(20[0-3][0-9]-(0[2469]|11)-(0[1-9]|[12][0-9]|30))) (20|21|22|23|[0-1][0-9]):[0-5][0-9]:[0-5][0-9])/
       var s = $scope.m.CheckDate;
       if (!m.test(s)) {

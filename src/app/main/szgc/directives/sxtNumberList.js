@@ -8,7 +8,7 @@
     .directive('sxtNumberList',sxtNumberList);
 
   /** @ngInject */
-  function sxtNumberList($rootScope){
+  function sxtNumberList($rootScope,$timeout){
     return {
       restrict:'A',
       scope:{
@@ -41,7 +41,7 @@
           else{
             if(p.hasClass('point')){
               currentPoint.addClass('current');
-              $rootScope.$emit('keyboard:setvalue',currentPoint.text());
+              $rootScope.$emit('keyboard:setvalue','');//currentPoint.text() 点击改变清值
               element.animate({
                 scrollTop: element.scrollTop()+ p.offset().top - element.height() + p.height() - element.offset().top
               });
@@ -67,8 +67,7 @@
           if(eq<datas.length){
             pontTo($('div.point',element).index(nextItem.find('div.point').eq(0)));
           }else{
-           // currentPoint.removeClass('current');
-            scope.show = false;
+              scope.show = false;
           }
         });
         $rootScope.$on('keyboard:nextpoint',function(){

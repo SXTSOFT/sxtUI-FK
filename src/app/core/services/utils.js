@@ -90,7 +90,7 @@
     }
 
     function alertMessage(message,ev) {
-      if (message == '出现错误') {
+      if (message.indexOf('出现错误')!=-1) {
         return $q(function (r) {
           r();
         });
@@ -109,7 +109,7 @@
       }
     }
 
-    function confirmMessage(message,ev,ok,cancel){
+    function confirmMessage(message,ev){
       return $mdDialog.show(
         $mdDialog.confirm()
           .title('需要您的确认')

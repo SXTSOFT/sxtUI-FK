@@ -19,9 +19,9 @@
       .state('app.auth', {
         url    : '/auth',
         views    : {
-          'main@'                       : {
+          'main@' : {
             templateUrl: 'app/core/layouts/content-only.html',
-            controller : 'MainController as vm'
+            controller: 'MainController as vm'
           }
         },
         abstract:true
