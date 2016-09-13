@@ -40,8 +40,8 @@
       vm.checkData.RegionId = $scope.project.pid;
       vm.checkData.ProjectName = $scope.project.projectName;
       vm.checkData.RegionName = $scope.project.typeName;
-
-
+      //console.log($scope)
+      $scope.$parent.vm.load();
       if(vm.checkData.WgCheck == 0 || vm.checkData.InspectionReport == 0) {
         $mdDialog.show({
           controller: ['$scope',function ($scope) {
@@ -67,6 +67,7 @@
                   $scope.isSaveing = false;
                   utils.alert('提交完成').then(function () {
                     $state.go('app.szgc.ys');
+                    console.log($scope)
                   });
                 }else{
                   utils.alert('提交失败').then(function () {

@@ -45,9 +45,12 @@
     };
 
     //获取所有材料验收信息
-    api.material.MaterialService.GetAll().then(function(result){
-      $scope.mlCheckData = result.data.Rows;
-    });
+    vm.load = function () {
+      api.material.MaterialService.GetAll().then(function(result){
+        $scope.mlCheckData = result.data.Rows;
+      });
+    };
+    vm.load();
 
     $scope.goMaterialDetail = function (id) {
       $state.go('app.szgc.ys.detail',{id:id});
