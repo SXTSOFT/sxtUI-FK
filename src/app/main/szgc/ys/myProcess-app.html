@@ -81,10 +81,7 @@
   </md-tab>
 <<md-tab label="材料">
     <md-tab-content flex layout-fill layout="column">
-      <md-content flex layout-fill layout="column" style="margin-bottom:64px;" ng-hide="is('app.szgc.ys.material') || is('app.szgc.ys.detail')" >
-        <div class="md-padding" layout="row" style="position: fixed;bottom: 49px; z-index: 9999;width:100%; background-color: white;">
-          <md-button  flex ui-sref="app.szgc.ys.material" class="md-raised md-primary">添加材料验收</md-button>
-        </div>
+      <md-content flex layout-fill layout="column" ng-hide="is('app.szgc.ys.material') || is('app.szgc.ys.detail')" >
         <md-list flex>
           <div flex ng-repeat="item in mlCheckData">
             <div class="md-padding" layout="row" style="padding: 0 8px">
@@ -103,6 +100,9 @@
           </div>
         </md-list>
       </md-content>
+      <div class="md-padding" layout="row" style="position:relative; width:100%; background-color: white;" ng-hide="is('app.szgc.ys.material') || is('app.szgc.ys.detail')">
+        <md-button  flex ui-sref="app.szgc.ys.material" class="md-raised md-primary">添加材料验收</md-button>
+      </div>
       <ui-view layout="column" flex ng-show="is('app.szgc.ys.material') || is('app.szgc.ys.detail')"></ui-view>
     </md-tab-content>
   </md-tab>-->

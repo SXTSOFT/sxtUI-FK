@@ -44,6 +44,7 @@
       return api.getNetwork();
     };
 
+    //获取所有材料验收信息
     api.material.MaterialService.GetAll().then(function(result){
       $scope.mlCheckData = result.data.Rows;
     });
@@ -438,7 +439,17 @@
 
         //获取材料
         function () {
-          return api.material.BatchSetService.getAll({status:4,batchType:2});
+          return api.material.BatchSetService.getAll({status:4});
+        },
+
+        //获取所有材料验收详细信息
+        function () {
+          return api.material.MaterialService.GetInfoById();
+        },
+
+        //获取所有材料验收所选附件
+        function () {
+          return api.material.MaterialService.GetMLFilesById();
         },
 
         //工序验收表

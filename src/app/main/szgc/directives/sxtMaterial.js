@@ -66,6 +66,7 @@
       api.material.MaterialTypeService.GetProcedureType().then(function (result) {
         var s = [];
         result.data.Rows.forEach(function (item) {
+          if(!item.ParentName)return;
           var gn = s.find(function(g){return item.ParentName== g.name});
           if(!gn){
             gn = {
@@ -111,19 +112,9 @@
             ex = ex.concat([2, 8, 32, 64]);
             break;
         }
-
-        if (scope.inc) {
-          t = 0;
-          /*          q.isGetChilde=1;
-           q.batchTypeList = ex.join(',');
-           //q = '&isGetChilde=1&batchTypeList='+ex.join(',')*/
-          ex.forEach(function (t1) {
-            t = t | t1;
-          })
-        }
-        q.batchType = t;
-
+        
         api.material.BatchSetService.getAll(q).then(function(result) {
+          console.log(result);
           var data = [];
           result.data.Rows.forEach(function(item) {
             data.push(item);
