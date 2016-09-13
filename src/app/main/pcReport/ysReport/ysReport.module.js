@@ -23,5 +23,14 @@
         }
       }
     })
+    .state('app.pcReport_ys_rp',{
+      url:'/pcReport_ys_rp',
+      views:{
+        'content@app':{
+          templateUrl: 'app/main/pcReport/ysReport/gxysReport.html',
+          controller : 'gxysReportController as vm',
+        }
+      }
+    })
   }
 })();

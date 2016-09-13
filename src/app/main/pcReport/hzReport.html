@@ -4,7 +4,7 @@
       <table class="summaryReport">
         <thead>
         <tr>
-          <th>序号</th>
+          <th>序号 </th>
           <th>城市公司</th>
           <th>项目名称</th>
           <th>工序验收报表</th>
@@ -15,7 +15,7 @@
         <tr data-ng-repeat="item in vm.report">
           <td>{{$index+1}}</td>
           <td>{{item.OUName}}</td>
-          <td>{{item.ProjectName}}</td>
+          <td> <md-button ng-click="vm.selecte(item)" class="md-accent" >{{item.ProjectName}}</md-button> </td>
           <td>
             <table>
               <tr>
@@ -54,4 +54,29 @@
     </md-tab-content>
   </md-tab>
 </md-tabs>
+<md-sidenav id="reportDT" layout="column" style="min-width: 80%" class="md-sidenav-right md-whiteframe-4dp" md-component-id="reportDT">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h4>子报表</h4>
+      <span flex></span>
+    </div>
+  </md-toolbar>
+  <md-content>
+      <md-list class="md-dense" flex>
+        <md-list-item layout="row">
+          <md-button ng-click="vm.goDetail(0)" flex layout="row">
+            <md-icon md-font-icon="icon-clock" class="s16"></md-icon>工序验收
+            <span flex></span>
+          </md-button>
+        </md-list-item>
+
+        <md-list-item layout="row">
+          <md-button ng-click="vm.goDetail(1)" flex layout="row">
+             <md-icon md-font-icon="icon-border-color" class="s16"></md-icon>实测实量
+              <span flex></span>
+          </md-button>
+        </md-list-item>
+      </md-list>
+    </md-content>
+</md-sidenav>
 

@@ -381,6 +381,9 @@
         getZGlistbyProjectId: function (projectID) {
           return $http.get($http.url('/api/InspectionRectificationApi/List',{projectId:projectID}))
         },
+        GetInspectionInfoListEx:function(params){
+          return $http.post($http.url('/api/InspectionApi/GetInspectionInfoListEx'),params)
+        },
         getZGById:$http.db({
           _id:'zgById',
           idField:'RectificationID',

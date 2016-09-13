@@ -9,7 +9,7 @@
     .module('app.pcReport', ['app.pcReport_ys'])
     .config(config);
   /** @ngInject */
-  function config(msNavigationServiceProvider,$stateProvider)
+  function config(msNavigationServiceProvider,$stateProvider,$mdIconProvider)
   {
     $stateProvider
       .state('app.pcReport_hz',{

@@ -85,7 +85,7 @@
     <md-tabs  md-border-bottom   flex  style="background-color:white">
       <md-tab label="已选工序">
         <md-tab-content layout="column">
-          <div flex layout="row">
+          <md-content  flex layout="row">
             <md-list style="box-shadow:1px 0px 15px 0 #d8d8d8 " flex="40" ms-scroll>
               <md-list-item ng-repeat="item in gxSelected">
                 <md-checkbox ng-click="remove(item)" ng-model="item.checked" style="margin-right: 8px">
@@ -95,7 +95,7 @@
               </md-list-item>
               <span flex></span>
             </md-list>
-          </div>
+          </md-content >
         </md-tab-content>
       </md-tab>
       <md-tab  ng-repeat="gx1 in procedures" label="{{gx1.SpecialtyName}}">

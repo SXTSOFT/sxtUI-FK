@@ -1,4 +1,7 @@
 /**
+ * Created by lss on 2016/9/13.
+ */
+/**
  * Created by lss on 2016/9/8.
  */
 /**
@@ -9,10 +12,10 @@
 
   angular
     .module('app.pcReport_ys')
-    .controller('gxysFilterController',gxysFilterController);
+    .controller('scslFilterController',scslFilterController);
 
   /**@ngInject*/
-  function gxysFilterController($scope,remote,$mdDialog,$state,$rootScope){
+  function scslFilterController($scope,remote,$mdDialog,$state,$rootScope){
     var vm = this;
     vm.gxSelected=[];
     vm.secSelected=[]
@@ -26,11 +29,11 @@
       });
     });
     vm.submit=function(){
-      $rootScope.gxParams={
+      $rootScope.scParams={
         secSelected:vm.secSelected,
         gxSelected:vm.gxSelected
       };
-      $state.go("app.pcReport_ys_rp");
+      $state.go("app.pcReport_sl_rp");
     }
   }
 })();
