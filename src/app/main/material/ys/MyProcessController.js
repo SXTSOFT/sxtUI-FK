@@ -179,6 +179,7 @@
     }
 
     vm.ok = function(){
+      $scope.$parent.vm.load();
       vm.checkData.HandleOption = null;
       if(vm.checkDataId != ''){
         if(vm.checkData.sjReport == 0){
