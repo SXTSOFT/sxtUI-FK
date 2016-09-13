@@ -295,7 +295,7 @@
           });
           progress && progress(percent, current, total);
         }, complete, fail, options);
-      });
+      },fail);
       return groups;
     }
 
@@ -364,7 +364,7 @@
             group.total = group.end - group.start;
           });
           resolve(tasks);
-        })
+        },reject)
       });
     }
 

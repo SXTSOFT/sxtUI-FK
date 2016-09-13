@@ -58,6 +58,7 @@
         else{
           $rootScope.noBack = toState.noBack;
           $rootScope.title = toState.title || $rootScope.title;
+          $rootScope.hideFootbar = toState.hideFootbar;
         }
         //console.log('toState',toState)
       });

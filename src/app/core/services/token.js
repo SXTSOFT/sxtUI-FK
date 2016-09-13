@@ -7,7 +7,7 @@
     .module('app.core')
     .factory('authToken',authToken);
   /** @ngInject */
-  function authToken($cookies,$rootScope,$injector,$timeout){
+  function authToken($cookies,$rootScope,$injector,$timeout,$q){
     var token,tokenInjector,_401,lastTipTime,
       lastRequestTime={},isNetworking;
 
@@ -87,13 +87,14 @@
             return $injector.get('$http')(rejection.config);
           }).catch(function () {
             $rootScope.$emit('user:needlogin');
+            return $q.reject(rejection);
           });
         }
         else {
           $rootScope.$emit('user:needlogin');
         }
       }
-      else {
+      else if(rejection.status >= 500){
         if (rejection && rejection.status != -1 && rejection.status != 401) {
           if (!lastTipTime || new Date().getTime() - lastTipTime > 10000) {
             lastTipTime = new Date().getTime();
@@ -103,6 +104,7 @@
           }
         }
       }
+      return $q.reject(rejection);
     }
 
     function on401(fn) {

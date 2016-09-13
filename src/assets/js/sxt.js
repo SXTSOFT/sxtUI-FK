@@ -21,6 +21,7 @@ window.sxt = (function(win)
       appDir: appDir,
       serve: 'http://10.245.9.134:46844',
       api:'http://szdp.vanke.com:8088',
+      logger:'http://vkde.sxtsoft.com/api/logger',
       //api:'http://10.245.9.118:8090',
       //api:'http://vkde.sxtsoft.com',
       //api:'http://localhost:46844',

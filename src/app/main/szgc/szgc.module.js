@@ -306,12 +306,14 @@
       })
       .state('app.szgc.ys.add', {
         title:'添加验收',
+        hideFootbar:true,
         url: '/new/{projectid}/{name}/{batchId}/{procedureTypeId}/{procedureId}/{type}/{idTree}/{procedureName}/{nameTree}/{flag}',
         controller: 'AddProcessController as vm',
         templateUrl: 'app/main/szgc/ys/addProcess-app.html'
       })
       .state('app.szgc.ys.addnew', {
         title:'添加验收',
+        hideFootbar:true,
         url: '/newadd/{projectid}/{name}/{batchId}/{procedureTypeId}/{procedureId}/{type}/{idTree}/{procedureName}/{nameTree}/{flag}',
         controller: 'AddProcessNewController as vm',
         templateUrl: 'app/main/szgc/ys/addProcess-appnew.html'
