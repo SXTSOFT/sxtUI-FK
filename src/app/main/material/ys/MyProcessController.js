@@ -31,8 +31,35 @@
       imgs5:[]
 
     };
-
+    vm.change = function (item) {
+      vm.fjType=item.value;
+    }
     $scope.save = function(addForm) {
+      if(!$scope.project.procedureId){
+        utils.alert('请选择材料');
+        return;
+      }
+
+      if(!vm.checkData.SupplierId){
+        utils.alert('请选择供货方');
+        return;
+      }
+
+      if(!vm.checkData.Manufactor){
+        utils.alert('请输入厂家/品牌');
+        return;
+      }
+
+      if(!vm.checkData.Number){
+        utils.alert('请输入数量');
+        return;
+      }
+
+      if(!vm.checkData.ContractNumber){
+        utils.alert('请输入合同编号');
+        return;
+      }
+
       vm.checkData.InspectionReport = vm.checkData.sjReport;
       vm.checkData.ProjectId = $scope.project.projectId;
       vm.checkData.MaterialId = $scope.project.procedureId;
@@ -40,7 +67,6 @@
       vm.checkData.RegionId = $scope.project.pid;
       vm.checkData.ProjectName = $scope.project.projectName;
       vm.checkData.RegionName = $scope.project.typeName;
-      //console.log($scope)
       $scope.$parent.vm.load();
       if(vm.checkData.WgCheck == 0 || vm.checkData.InspectionReport == 0) {
         $mdDialog.show({
@@ -52,12 +78,15 @@
               $mdDialog.cancel();
             };
             $scope.answer = function() {
+              if(!$scope.clyj){
+                utils.alert('请输入处理意见');
+                return;
+              }
               vm.checkData.CheckResult = 0;  //状态：不合格
               if (vm.checkData.InspectionReport == null)
                 vm.checkData.InspectionReport = 3; //   N/A
 
               vm.checkData.HandleOption = $scope.clyj;
-
               api.material.addProcessService.Insert({
                 Id:sxt.uuid(),
                 CheckData:vm.checkData,
@@ -192,6 +221,11 @@
                 $mdDialog.cancel();
               };
               $scope.answer = function() {
+                if(!$scope.clyj){
+                  utils.alert('请输入处理意见');
+                  return;
+                }
+
                 vm.checkData.HandleOption = $scope.clyj;
 
                 api.material.addProcessService.Insert({

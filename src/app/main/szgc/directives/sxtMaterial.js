@@ -23,7 +23,7 @@
         inc :'@'
       },
       template:'<div layout="row">' +
-      '<md-input-container flex md-no-float class="md-block"><label>可选材料({{Plength}})</label><input  ng-model="nameValue" readonly></md-input-container>'+
+      '<md-input-container style="margin:8px 0;" flex md-no-float class="md-block"><label>可选材料({{Plength}})</label><input  ng-model="nameValue" readonly></md-input-container>'+
       '<md-menu flex="none">\
     <md-button aria-label="Open  menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">\
     <md-icon md-menu-origin  md-font-icon="icon-arrow-down"></md-icon>\
@@ -112,7 +112,7 @@
             ex = ex.concat([2, 8, 32, 64]);
             break;
         }
-        
+
         api.material.BatchSetService.getAll(q).then(function(result) {
           console.log(result);
           var data = [];
