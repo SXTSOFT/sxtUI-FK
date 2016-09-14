@@ -54,9 +54,9 @@
             var bid = scope.value.split('>'),
               legend = [
                 {value: 0, label: '未验收', color: 'rgba(225,225,225,1)'},
-                {value: 1, label: '总包已验', color: 'rgba(44,157,251,1)'},
+                {value: 1, label: '施工单位已验', color: 'rgba(44,157,251,1)'},
                 {value: 2, label: '监理已验', color: 'rgba(0,195,213,1)'},
-                {value: 3, label: '监理/总包', color: 'rgba(0,150,136,1)'}/*,
+                {value: 3, label: '监理/施工单位', color: 'rgba(0,150,136,1)'}/*,
                 {value: 4, label: '监理不合格', color: 'rgba(249,98,78,1)'}*/
               ],
               gx = [];

@@ -364,7 +364,11 @@
             group.total = group.end - group.start;
           });
           resolve(tasks);
-        },reject)
+        },function (reason) {
+          reason = reason||{};
+          reason.errcode = '08001'
+          reject(reason)
+        })
       });
     }
 
@@ -377,9 +381,11 @@
         return t(progress, function () {
           networkState = oNetworkState;
           success && success();
-        }, function () {
+        }, function (reason) {
+          reason = reason||{};
+          reason.errcode = reason.errcode||'08002';
           networkState = oNetworkState;
-          fail && fail();
+          fail && fail(reason);
         }, options);
       };
     }
@@ -435,7 +441,7 @@
                 next.r = true;
                 next();
               }
-            }).catch(function (err) {
+            },function (err) {
               provider.$rootScope.$emit('applicationError', {exception: err});
               d = 0;
               if (config && config.event)
@@ -443,7 +449,10 @@
                   target: config.target,
                   event: 'fail'
                 });
-              fail && fail();
+              err = err||{};
+              err.errcode=err.errcode||'08003'
+              fail && fail(err);
+              provider.$q.$q.reject(err);
             });
             provider.$timeout(function () {
               if (d && !next.r) {
