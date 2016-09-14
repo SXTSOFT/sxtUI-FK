@@ -569,9 +569,9 @@
         }
         $scope.project.tasks = [];
         $scope.uploading= false;
-      },function () {
+      },function (err) {
         $scope.project.uploaded = 0;
-        utils.alert('上传失败');
+        utils.alert('上传失败'+(err && err.errcode));
         $scope.uploading =false;
       },{
         timeout:600000,
