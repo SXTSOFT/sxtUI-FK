@@ -15,6 +15,9 @@
   function MyProcessController($scope, api, utils, $state,$q,sxt,xhUtils,$timeout,$window){
 
     var vm = this;
+    $scope.isPartner = api.szgc.vanke.isPartner();
+    vm.hasMaterial = !api.szgc.vanke.isPartner()||api.szgc.vanke.getRoleId()=='jl';
+
     $scope.is = function(route){
       return $state.is(route);
     };
@@ -50,13 +53,15 @@
         $scope.mlCheckData = result.data.Rows;
       });
     };
-    vm.load();
+    if(vm.hasMaterial) {
+      vm.load();
+    }
 
     $scope.goMaterialDetail = function (id) {
       $state.go('app.szgc.ys.detail',{id:id});
     };
 
-    $scope.isPartner = api.szgc.vanke.isPartner();
+
     $scope.roleId = api.szgc.vanke.getRoleId();
     $scope.project = {
       isMore: true,

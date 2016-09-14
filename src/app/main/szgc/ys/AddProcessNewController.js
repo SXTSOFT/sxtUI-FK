@@ -661,8 +661,18 @@
       }
 
     }
-    $scope.$watch('data.curHistory.ParentCompanyId', resetGroup)
-    $scope.$watch('data.curHistory.CompanyId', resetGroup);
+    $scope.$watch('data.curHistory.ParentCompanyId', function () {
+      if($scope.data.curHistory.ParentCompanyId) {
+        $scope.data.curHistory.CompanyId = undefined;
+        resetGroup();
+      }
+    })
+    $scope.$watch('data.curHistory.CompanyId', function () {
+      if($scope.data.curHistory.CompanyId) {
+        $scope.data.curHistory.ParentCompanyId = undefined;
+        resetGroup();
+      }
+    });
 
     function getGroups(sp,field,v) {
       if(!sp)return [];

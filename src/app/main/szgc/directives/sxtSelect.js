@@ -37,7 +37,16 @@
         var setIng = false;
         scope.data = {};
         var resetValue = function (value) {
+          if(value===undefined){
+            scope.value = null;
+            scope.nameValue = null;
+            scope.objValue = null;
+            scope.data.selected = null;
+            if (!value)
+              ngModel.$setViewValue();
+          }
           if(!value)return;
+
           if (scope.valueField && scope.data.selected && scope.data.selected[scope.valueField] == scope.value) return;
 
           if (scope.value && scope.data.sources) {

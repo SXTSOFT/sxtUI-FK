@@ -79,7 +79,7 @@
 
     </md-tab-content>
   </md-tab>
-<<md-tab label="材料">
+  <md-tab ng-if="vm.hasMaterial" label="材料">
     <md-tab-content flex layout-fill layout="column">
       <md-content flex layout-fill layout="column" ng-hide="is('app.szgc.ys.material') || is('app.szgc.ys.detail')" >
         <md-list flex>
