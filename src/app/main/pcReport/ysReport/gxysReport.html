@@ -10,8 +10,9 @@
         <thead>
         <tr>
           <th>序号</th>
-          <th style="width:35%">工序</th>
-          <th style="width:35%">区域</th>
+          <th style="width:23%">工序</th>
+          <th style="width:23%">区域</th>
+          <th style="width:23%">报验时间</th>
           <th style="width: 10%;min-width: 50px">状态</th>
           <th style="min-width: 50px">操作</th>
         </tr>
@@ -26,6 +27,9 @@
                 {{k.RegionName}}
               </md-list-item>
             </md-list>
+          </td>
+          <td>
+            {{item.InspectionTime}}
           </td>
           <td>
             {{item.statusName}}

@@ -23,6 +23,9 @@
       history.back();
     }
     vm.twentyRows=[];
+    vm.goBack=function(){
+      window.history.go(-1);
+    }
     for(var i=0;i<20;i++){
       vm.twentyRows.push({});
     }

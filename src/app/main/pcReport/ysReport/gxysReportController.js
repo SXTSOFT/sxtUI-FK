@@ -56,53 +56,34 @@
         clickOutsideToClose:false,
         fullscreen: false
       });
-      vm.secSelected.length?vm.secSelected[0]:null;
       var tmp=[];
-      vm.secSelected.forEach(function(k){
+      vm.gxSelected.forEach(function(k){
         tmp.push(k.AcceptanceItemID);
       });
-
-      //remote.Procedure.GetInspectionInfoListEx({
-      //  PageSize:5000,
-      //  CurPage:0,
-      //  status:31,
-      //  ProjectId: vm.secSelected.length?vm.secSelected[0].RegionID:"",
-      //  AcceptanceItemIDs:tmp
-      //}).then(function(r){
-      //  console.log(r);
-      //});
-
-      remote.Procedure.getInspections(31).then(function(r){
-        var inspections=[];
+      vm.source=[];
+      remote.Procedure.GetInspectionInfoListEx({
+        PageSize:5000,
+        CurPage:0,
+        status:31,
+        ProjectId: vm.secSelected.length?vm.secSelected[0].RegionID:"",
+        AcceptanceItemIDs:tmp
+      }).then(function(r){
         r.data.forEach(function(o){
           //非自检单并根据工序过滤
-          if (o.Sign!=8&&(!vm.gxSelected.length||vm.gxSelected.find(function(k){
-              return o.AcceptanceItemID== k.AcceptanceItemID
-            }))){
-            inspections.push(o);
+          if (o.Sign!=8){
+            if (o.InspectionTime){
+              var d=new Date(o.InspectionTime).Format("yyyy-MM-dd hh:mm:ss");
+              o.InspectionTime=d;
+            }
+            o.statusName=convertStatus(o.Status)
+            vm.source.push(o);
           }
         });
-        return inspections;
-      }).then(function(res){
-        var fiter= function(k){
-          //根据选择的项目过滤
-          var regionFilter= vm.secSelected.length?vm.secSelected[0]:null;
-          return (!regionFilter|| k.ProjectID==regionFilter.RegionID)
-        }
-        if (angular.isArray(res)){
-          vm.source=[];
-          res.forEach(function(k){
-            if (fiter(k)){
-              k.statusName=convertStatus(k.Status)
-              vm.source.push(k);
-            }
-          });
-        }
-        vm.show=true;
         $mdDialog.hide();
-      }).catch(function(){
         vm.show=true;
+      }).catch(function(){
         $mdDialog.cancel();
+        vm.show=true;
       });
     }
     load();

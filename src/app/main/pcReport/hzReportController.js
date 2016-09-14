@@ -41,7 +41,11 @@
             $state.go("app.pcReport_ys_rp");
                 break;
           case 1:
-                break;
+            $state.go("app.pcReport_sl_rp",{
+              scSelected:"",
+              secSelected:vm.current.ProjectID
+            });
+            break;
         }
     }
     remote.Report.Summary().then(function(r){

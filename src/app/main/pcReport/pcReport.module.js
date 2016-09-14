@@ -6,7 +6,7 @@
   'use strict';
 
   angular
-    .module('app.pcReport', ['app.pcReport_ys'])
+    .module('app.pcReport', ['app.pcReport_sl','app.pcReport_ys','app.pcReport_pg'])
     .config(config);
   /** @ngInject */
   function config(msNavigationServiceProvider,$stateProvider,$mdIconProvider)
@@ -53,7 +53,7 @@
 
     msNavigationServiceProvider.saveItem('xh.ysReport.scslReport', {
       title: '实测实量报表',
-      state: '/',
+      state: 'app.pcReport_sl_sc',
       weight:3
     });
 
@@ -64,8 +64,8 @@
     });
     msNavigationServiceProvider.saveItem('xh.pgReport.xcpgReport', {
       title: '现场评估',
-      weight:1
+      weight:1,
+      state:'app.pcReport_pg'
     });
-
   }
 })();

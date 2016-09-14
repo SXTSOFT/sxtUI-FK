@@ -11,7 +11,7 @@
 {
   'use strict';
   angular.
-    module('app.pcReport_sc',[])
+    module('app.pcReport_sl',[])
     .config(config);
   /** @ngInject */
   function config($stateProvider)
@@ -21,16 +21,16 @@
         url:'/pcReport_sl_sc',
         views:{
           'content@app':{
-            templateUrl: 'app/main/pcReport/ysReport/scslFilter.html',
+            templateUrl: 'app/main/pcReport/scReport/scslFilter.html',
             controller : 'scslFilterController as vm',
           }
         }
       })
       .state('app.pcReport_sl_rp',{
-        url:'/pcReport_sl_rp',
+        url:'/pcReport_sl_rp/{scSelected}/{secSelected}',
         views:{
           'content@app':{
-            templateUrl: 'app/main/pcReport/ysReport/scslReport.html',
+            templateUrl: 'app/main/pcReport/scReport/scslReport.html',
             controller : 'scslReportController as vm',
           }
         }

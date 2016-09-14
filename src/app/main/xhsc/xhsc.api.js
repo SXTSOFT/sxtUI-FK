@@ -505,9 +505,26 @@
         }
       },
       Assessment:{
+        GetMeasureList:function(params){
+          return $http.post($http.url('/api/ReportApi/GetMeasureList'),{
+            ProjectId:params.ProjectId,
+            AcceptanceItemIDs:params.AcceptanceItemIDs,
+            PageSize: params.PageSize,
+            CurPage: params.CurPage
+
+          })
+        },
         getCheckArea:function(assessmentID){
           return $http.get($http.url('/api/AssessmentApi/PQAssessmentMeasurItemExtractLoadData',{assessmentID:assessmentID}))
 
+        },
+        GetAsssmentReportLst:function(param){
+          return $http.post($http.url('/Api/PQAssessment/GetAsssmentReportLst'),{
+            Curpage:param.Curpage,
+            PageSize:param.PageSize,
+            Year:param.Year,
+            Quarter:param.Quarter
+          });
         },
         GetMeasureItemInfoByAreaID:$http.db({
           db:function (AreaID,db) {
