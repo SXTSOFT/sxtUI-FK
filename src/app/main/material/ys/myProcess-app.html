@@ -1,5 +1,5 @@
 ﻿<md-content flex layout="column"  ui-view>
-  <form name="addForm" class="form-horizontal addform" style="font-size:1.3rem;" ng-submit="save(addForm)">
+  <form name="addForm" class="form-horizontal addform" style="font-size:14px; color: rgba(0,0,0,0.54);" ng-submit="save(addForm)">
     <div flex style="overflow: auto" ng-show="!vm.AttachmentSHow">
       <sxt-projects-jd ng-model="project.pid" object-scope="project" levels="2" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
         <md-list style="padding:0;">
@@ -10,9 +10,19 @@
           <md-divider></md-divider>
           <md-subheader class="md-no-sticky">供货方</md-subheader>
           <md-list-item>
-            <md-select ng-model="vm.checkData.SupplierId" style="width: 100%;">
+            <md-select ng-model="vm.checkData.SupplierId" style="width: 100%;margin: 0 0 26px 0;">
               <md-option ng-value="s.Id" ng-repeat="s in supplier">{{s.Name}}</md-option>
             </md-select>
+          </md-list-item>
+          <md-divider></md-divider>
+          <md-list-item>
+
+            <div class="md-list-item-text" flex="25" layout="column">
+              <p style="text-align: left;">合同编号</p>
+            </div>
+            <md-input-container class="md-block" flex-gt-sm style="width: 75%;margin: 18px 0 0 0;">
+              <input style="width: 100%;" ng-model="vm.checkData.ContractNumber">
+            </md-input-container>
           </md-list-item>
           <md-divider></md-divider>
           <md-list-item>
@@ -50,7 +60,7 @@
               <p style="text-align: left;">验收时间</p>
             </div>
             <div flex></div>
-            <md-datepicker ng-model="vm.checkData.CheckTime" style="margin: 18px 0 18px 0;padding-right: 0;"></md-datepicker>
+            <md-datepicker ng-model="vm.checkData.CheckTime" md-open-on-focus="" style="margin: 18px 0 18px 0;padding-right: 0;"></md-datepicker>
           </md-list-item>
           <md-divider></md-divider>
           <md-list-item>
@@ -109,7 +119,7 @@
           <div class="row" ng-repeat="item in vm.Type" ng-click="vm.change(item)">
             <div flex layout='row' style="padding: 0 8px;" layout-align="start center">
               <div flex>
-                <h3>{{item.name}}{{item.value}}</h3>
+                <h3>{{item.name}}</h3>
               </div>
               <md-radio-button ng-value="item.value" class="md-primary" ng-disabled="item.value != 16 && vm.checkDataId != ''"></md-radio-button>
             </div>
