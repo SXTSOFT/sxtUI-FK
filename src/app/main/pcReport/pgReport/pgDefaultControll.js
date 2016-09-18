@@ -13,7 +13,7 @@
 (function(){
   'use strict';
    angular
-    .module('app.pcReport_sl')
+    .module('app.pcReport_pg')
     .controller('pgDefaultController',pgDefaultController);
 
   /**@ngInject*/
@@ -56,14 +56,20 @@
     });
 
     vm.gohz=function(item){
-      $state.go("app.xhsc.pkresult",{
+      $state.go("app.pcReport_pg_pkresult",{
         year:item.Year,
-        projectID:item.ProjectID,
-        quarter:item.Quarter
+        projectID:item.AssessmentProjectID,
+        quarter:item.Quarter,
+        assessmentStage:item.AssessmentStage
       })
     }
     vm.gosc=function(item){
-
+      $state.go("app.pcReport_pg_scRegion",{
+        year:item.Year,
+        projectID:item.AssessmentProjectID,
+        quarter:item.Quarter,
+        assessmentStage:item.AssessmentStage
+      })
     }
     vm.goBack=function(){
       window.history.go(-1);

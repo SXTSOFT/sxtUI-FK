@@ -14,7 +14,7 @@
   'use strict';
 
   angular
-    .module('app.pcReport_sl')
+    .module('app.pcReport_pg')
     .controller('pgReportFilterController',pgReportFilterController);
 
   /**@ngInject*/

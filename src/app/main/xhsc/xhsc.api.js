@@ -647,6 +647,9 @@
         queryRegions:function (arg) {
           return $http.get($http.url('/Api/AssessmentApi/GetAssessmentSectionExtractRegion',arg))
         },
+        queryRegions_9090:function (arg) {
+          return $http.get($http.url('http://xhszgc.sxtsoft.com:9090/Api/AssessmentApi/GetAssessmentSectionExtractRegion',arg))
+        },
         GetMeasureIndexMeasureInfo:function (regionId,itemId) {
           return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfoNew',{RegionID:regionId,acceptanceIndexID:itemId}));
         },
@@ -725,11 +728,20 @@
         queryReport:function (year,quarter,projectID,assessmentStage) {
           return $http.get($http.url('/Api/AssessmentApi/GetAssessmentItemStatisticsResult',{year:year,projectID:projectID,quarter:quarter,assessmentStage:assessmentStage}));
         },
+        queryReport_9090:function(year,quarter,projectID,assessmentStage){
+          return $http.get($http.url('http://xhszgc.sxtsoft.com:9090/Api/AssessmentApi/GetAssessmentItemStatisticsResult',{year:year,projectID:projectID,quarter:quarter,assessmentStage:assessmentStage}));
+        },
         queryTotalReport:function(year,quarter,projectID,assessmentStage){
           return $http.get($http.url('/Api/AssessmentApi/GetAssessmentTotalReport',{year:year,projectID:projectID,quarter:quarter,assessmentStage:assessmentStage}));
         },
+        queryTotalReport_9090:function(year,quarter,projectID,assessmentStage){
+          return $http.get($http.url('http://xhszgc.sxtsoft.com:9090/Api/AssessmentApi/GetAssessmentTotalReport',{year:year,projectID:projectID,quarter:quarter,assessmentStage:assessmentStage}));
+        },
         queryProjectRegionInfo:function(projectID){
            return $http.get($http.url('/Api/ProjectInfoApi/GetProjectRegionRelationByProjectID',{projectID:projectID}));
+        },
+        queryProjectRegionInfo_9090:function(projectID){
+          return $http.get($http.url('http://xhszgc.sxtsoft.com:9090/Api/ProjectInfoApi/GetProjectRegionRelationByProjectID',{projectID:projectID}));
         },
         sumReportTotal:function(assessmentID){
           return $http.post($http.url('/Api/AssessmentApi/SumReportTotal'),{assessmentID:assessmentID});

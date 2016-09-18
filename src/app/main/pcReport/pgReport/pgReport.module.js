@@ -38,5 +38,23 @@
           }
         }
       })
+      .state('app.pcReport_pg_pkresult',{
+        url:'/pkresult/{year}/{projectID}/{quarter}/{assessmentStage}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/pcReport/pgReport/pchz.html',
+            controller:'pchzController as vm'
+          }
+        }
+      })
+      .state('app.pcReport_pg_scRegion',{
+        url:'/scRegion/{year}/{projectID}/{quarter}/{assessmentStage}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/pcReport/pgReport/scRegion.html',
+            controller:'pgScRegionController as vm'
+          }
+        }
+      })
   }
 })();
