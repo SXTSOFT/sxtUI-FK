@@ -10,6 +10,19 @@
       <h4 class="md-toolbar-tools">选择工序(点击左侧灰色区关闭)</h4>
     </md-toolbar>
     <md-tabs flex layout="column" md-border-bottom >
+      <md-tab label="已选择工序">
+        <md-tab-content flex layout-fill layout="column">
+          <md-list>
+            <section>
+              <md-subheader class="md-primary">已选择工序</md-subheader>
+              <md-list-item ng-repeat="p in vm.selected.ps" ng-click="vm.itemChecked1(p,vm.selected)" >
+                <p> {{p.ProcedureName}}</p>
+                <md-checkbox class="md-secondary" ng-click="vm.itemChecked(p)" ng-model="p.checked"></md-checkbox>
+              </md-list-item>
+            </section>
+          </md-list>
+        </md-tab-content>
+      </md-tab>
     <md-tab ng-repeat="g in vm.types|sxtProcedureS" label="{{g.name}}({{g.ps.length}})">
       <md-tab-content flex layout-fill layout="column">
         <md-list>

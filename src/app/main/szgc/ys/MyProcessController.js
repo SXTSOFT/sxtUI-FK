@@ -532,10 +532,20 @@
           return false;
         }
         return true;
-      },function (percent,current,total) {
+      },function (percent,current,total,task) {
         $scope.project.percent = parseInt(percent *100) +' %';
         $scope.project.current = current;
         $scope.project.total = total;
+        task && task.then(function (row) {
+          try {
+            api.upload(function (up) {
+              return up._id == row.Id || up._id == row.tid;
+            }, null);
+          }catch (ex){
+
+          }
+          return row;
+        })
       },function () {
         $scope.project.uploaded = 1;
         api.uploadTask(function () {

@@ -348,10 +348,10 @@
                     cfg.fn.call(cfg, row).then(function (result) {
                       if (result && result.status == 200 && result.data && !result.data.ErrorCode) {
                         options.uploaded && options.uploaded(cfg, row, result);
-                        resolve();
+                        resolve(row);
                       }
                       else{
-                        resolve();
+                        resolve(row);
                         //reject(result);
                       }
                     }).catch(reject);
@@ -422,7 +422,7 @@
             total: len
           });
 
-        if (!progress || progress(i * 1.0 / len, i, len) !== false) {
+        if (!progress || progress(i * 1.0 / len, i, len,fn) !== false) {
           if (!fn) {
             if (config && config.event)
               provider.$rootScope.$emit(config.event, {

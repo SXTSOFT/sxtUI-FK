@@ -880,6 +880,7 @@
       return;*/
       api.szgc.addProcessService.postCheckData({
         Id:sxt.uuid(),
+        tid:tid,
         Batch: data.batchs,
         Step: step,
         CheckData: targets,
