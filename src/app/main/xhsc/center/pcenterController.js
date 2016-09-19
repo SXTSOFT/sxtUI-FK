@@ -9,8 +9,10 @@
     .controller('pcenterController',pcenterController);
 
   /**@ngInject*/
-  function pcenterController($scope,$mdDialog,db,auth,$rootScope,api,utils,$q,remote ){
+  function pcenterController($scope,$mdDialog,db,auth,$rootScope,api,utils,$q,remote,versionUpdate ){
     var vm = this;
+
+    vm.serverAppVersion = versionUpdate.version;
     var pro=[
       remote.Procedure.authorityByUserId(),
       auth.getUser()

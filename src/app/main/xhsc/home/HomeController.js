@@ -10,8 +10,10 @@
     .controller('HomeController', HomeController);
 
   /** @ngInject */
-  function HomeController($scope,auth,$state,$rootScope,$timeout, utils,remote,api)
+  function HomeController($scope,auth,$state,$rootScope,$timeout, utils,remote,api,versionUpdate)
   {
+
+    versionUpdate.check();
     var vm = this;
     api.setNetwork(0).then(function(){
       remote.profile()
