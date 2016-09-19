@@ -28,6 +28,9 @@
       $mdSidenav("reportDT")
         .toggle()
     }
+    vm.pageAction=function(info, page, pageSize, total){
+        console.log(info+'-'+page);
+    }
     vm.goDetail=function(flag){
         switch (flag){
           case 0:

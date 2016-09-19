@@ -47,6 +47,18 @@
       return zt;
     }
 
+    $scope.pageing={
+      page:1,
+      pageSize:10,
+      total:0
+    }
+
+    $scope.$watch("pageing.pageSize",function(){
+      if ($scope.pageing.pageSize){
+        load();
+      }
+    },true);
+
     function load(){
       $mdDialog.show({
         controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
@@ -62,22 +74,21 @@
       });
       vm.source=[];
       remote.Procedure.GetInspectionInfoListEx({
-        PageSize:5000,
-        CurPage:0,
+        PageSize:$scope.pageing.pageSize,
+        CurPage:$scope.pageing.page-1,
         status:31,
         ProjectId: vm.secSelected.length?vm.secSelected[0].RegionID:"",
         AcceptanceItemIDs:tmp
       }).then(function(r){
-        r.data.forEach(function(o){
+        $scope.pageing.total= r.data.TotalCount;
+        r.data.Data.forEach(function(o){
           //非自检单并根据工序过滤
-          if (o.Sign!=8){
-            if (o.InspectionTime){
-              var d=new Date(o.InspectionTime).Format("yyyy-MM-dd hh:mm:ss");
-              o.InspectionTime=d;
-            }
-            o.statusName=convertStatus(o.Status)
-            vm.source.push(o);
+          if (o.InspectionTime){
+            var d=new Date(o.InspectionTime).Format("yyyy-MM-dd hh:mm:ss");
+            o.InspectionTime=d;
           }
+          o.statusName=convertStatus(o.Status)
+          vm.source.push(o);
         });
         $mdDialog.hide();
         vm.show=true;
@@ -86,7 +97,12 @@
         vm.show=true;
       });
     }
-    load();
+
+    vm.pageAction=function(title, page, pageSize, total){
+      $scope.pageing.page=page;
+      load();
+    }
+
     vm.goBack=function(){
       window.history.go(-1);
     }

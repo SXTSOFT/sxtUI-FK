@@ -6,7 +6,7 @@
   'use strict';
 
   angular
-    .module('app.pcReport', ['app.pcReport_sl','app.pcReport_ys','app.pcReport_pg'])
+    .module('app.pcReport', ['app.pcReport_sl','app.pcReport_ys','app.pcReport_pg','bw.paging'])
     .config(config);
   /** @ngInject */
   function config(msNavigationServiceProvider,$stateProvider,$mdIconProvider)

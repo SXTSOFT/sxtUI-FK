@@ -40,6 +40,22 @@
         </tr>
         </tbody>
       </table>
+      <div layout="row">
+        <span flex></span>
+        <md-select ng-model="pageing.pageSize" class="pageSZ">
+          <md-option value="10">10</md-option>
+          <md-option value="20">20</md-option>
+          <md-option value="40">40</md-option>
+          <md-option value="80">80</md-option>
+          <md-option value="100">100</md-option>
+        </md-select>
+        <div style="text-align: right;margin-right: 15px"
+             paging page="pageing.page"
+             page-size="pageing.pageSize"
+             total="pageing.total"
+             paging-action="vm.pageAction('bar', page, pageSize, total)">
+        </div>
+      </div>
     </md-tab-content>
   </md-tab>
 </md-tabs>
