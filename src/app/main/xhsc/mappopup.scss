@@ -3115,3 +3115,22 @@ table{
       }
     }
 }
+#content .leaflet-control-zoom-in{
+  color:white ;
+}
+#content .leaflet-control-zoom-out{
+  color:white ;
+}
+@media screen and (min-width: 960px){
+  /* 视窗宽度大于等于 320px 且小于等于 1000px */
+
+  #gx_nav{
+    min-width: 50% !important;
+  }
+  #reportDT{
+    min-width: 30% !important;
+  }
+}
+a:hover{
+  cursor:pointer;
+}
