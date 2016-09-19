@@ -234,7 +234,7 @@
 
 
 
-<div flex class="gxbg">
+<div flex class="gxbg" layout="column" ms-scroll>
   <div class="gxhead">
     <ul>
       <li>
@@ -277,8 +277,19 @@
       </li>
     </ul>
   </div>
-  <div class="gxbody">
-    body
+<div  flex style="background-color: white;overflow: scroll">
+    <md-list style="overflow-x: hidden;">
+      <md-list-item layout="row" style="padding-left: 4%" ng-repeat="item in vm.projects">
+         <p style="font-size:14px;">
+            {{item.ProjectName}} <span style="margin-left:2%;color:white;background-color: #359df5;font-size:12px;border-radius: 3px">总包自检</span>
+         </p>
+        <span flex></span>
+        <md-button ng-click="vm.zbzjAction($event)" class="md-icon-button" aria-label="More" style="margin-right: 4%">
+          <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+        </md-button>
+         <span style="left: 4%" class="border1px bottom1px"></span>
+    </md-list-item>
+    </md-list>
   </div>
 </div>
 
