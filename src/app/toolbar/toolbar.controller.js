@@ -16,6 +16,7 @@
       vm.OUType='';
       remote.profile().then(function(r){
            if (r.data&& r.data.Role){
+             vm.user=r.data;
              vm.role= r.data.Role.MemberType===0||r.data.Role.MemberType?r.data.Role.MemberType:-100;
              vm.OUType=r.data.Role.OUType===0||r.data.Role.OUType?r.data.Role.OUType:-100;
            }
@@ -84,10 +85,6 @@
             }
         };
 
-      //remote.Project.Area.query().then(function(result){
-      //  vm.Areas = result.data.rows;
-      //  vm.selectedArea = vm.Areas[0];
-      //})
         // Methods
         vm.toggleSidenav = toggleSidenav;
         vm.logout = logout;

@@ -1,0 +1,347 @@
+<md-tabs md-align-tabs="bottom" flex  md-selected="vm.selectedIndex" class="zlpkwrap">
+  <md-tab label="{{b.AssessmentClassificationName}}" ng-repeat="b in vm.items.AssessmentClassifys">
+    <md-tab-content flex layout-fill layout="column"  >
+      <div flex="none" layout="row" style="border-right:0" class="zlpkheader">
+        <div flex layout="row">
+          <div flex="10">
+            检测内容
+          </div>
+          <div flex="35" style=" border-left: 1px solid #d8d8d8;">
+            评判标准
+          </div>
+          <div flex="55" layout="row">
+            <div flex style=" border-left: 1px solid #d8d8d8;">{{vm.isAddScore?'加':'扣'}}分标准</div>
+            <div  style="width: 70px;border-left: 1px solid #d8d8d8;" ng-if="vm.showfitObj && !(vm.isAddScore||vm.isDScore)">
+              评估对象
+            </div>
+            <div flex="none" style="width:50px; border-left: 1px solid #d8d8d8;border-right:1px solid #d8d8d8;text-align: center;">
+              权重
+            </div>
+            <div flex="none" ng-repeat="x in vm.sections" layout="column" class="bd">
+              <div flex="none" layout="row">
+                <div flex="none" class="bdtop">
+                  {{x.SectionName}}
+                </div>
+              </div>
+              <div flex="none" layout="row">
+                <div flex="none" style="width:50px;text-align: center;height:23px;line-height: 23px;">
+                  {{vm.isAddScore?'加':'扣'}}分
+                </div>
+                <div flex="none" style="width:50px; border-left: 1px solid #d8d8d8;text-align: center;height:23px;line-height: 23px;">
+                  得分
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div flex="none" fix-scrollbar-width="md-content.zlpksub">
+        </div>
+      </div>
+      <div flex layout="column" layout-fill>
+        <md-content flex  class="zlpksub">
+          <section class="zlpklist" ng-if="c.show" ng-repeat="c in b.AssessmentClassifys">
+            <md-subheader>
+              <div layout="row" class="zlpksubheader">
+                <span>{{c.AssessmentClassificationName}}</span>
+              </div>
+            </md-subheader>
+            <table width="100%" cellspacing="0" cellpadding="0" class="zlpktables">
+              <tr  ng-if="e.show" ng-repeat="e in c.AssessmentClassifys">
+                <td style="width:{{vm.getW(1,2)}}%;">
+                  <p>{{e.AssessmentClassificationName}}</p>
+                </td>
+                <td>
+                  <table width="100%" cellspacing="0" cellpadding="0">
+                    <tr  ng-if="f.show" ng-repeat="f in e.AssessmentClassifys">
+                      <td style="width:{{vm.getWidth(2,b.level)}}%;">
+                        <p >{{f.AssessmentClassificationName}}</p>
+                      </td>
+                      <td>
+                        <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td style="width:38.9%;">
+                              <p>{{item.EvaluationCriteria}}</p>
+                            </td>
+                            <td>
+                              <p>{{item.DeductionCriteria}}</p>
+                            </td>
+                            <td style="width: 70px" ng-if="vm.showfitObj && !(vm.isAddScore||vm.isDScore)">
+                              {{item.ApplicableObjectName}}
+                            </td>
+                            <td style="width: 50px;text-align: center;">
+                              {{item.Weight}}
+                            </td>
+                            <td style="width:100px" ng-repeat="k in  vm.sections">
+                              <table fit-table-height style="width: 100px;">
+                                <tr>
+                                  <td style="width: 50px;text-align: center;" class="lr">
+                                    <button  ng-if="vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
+                                    <button  ng-if="!vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">扣分</span> </button>
+
+                                  </td>
+                                  <td style="width: 50px;text-align: center;" class="lr">
+                                    {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                          <tr ng-if="!vm.showfitObj" ng-repeat="m in item.AssessmentItemResults">
+                            <td colspan="{{3+vm.sections.length*2+(vm.showfitObj?1:0)}}">
+                              <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                <td style="width:10%"><p>{{vm.getSectionName(m.SectionID)}}</p></td>
+                                <td>
+                                  <table ng-if="m.AssessmentRegionItemResults.length" fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                    <tr ng-repeat="region in m.AssessmentRegionItemResults">
+                                      <td>
+                                        <table  fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                          <tr>
+                                            <td style="width:120px;text-align:left">
+                                              <p>{{region.RegionName}}</p></td>
+                                            <td>
+                                                     <span ng-if="region.DeductScoreItems.length" ng-repeat="q in region.DeductScoreItems">
+                                                        <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
+                                                        </md-button>
+                                                      </span>
+                                              <md-button ng-if="!region.DeductScoreItems.length" aria-label="" class="md-button">符合要求</md-button>
+                                            </td>
+                                          </tr>
+                                        </table>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                  <!--<md-icon ng-if="!m.AssessmentRegionItemResults.length" style="width:16px;height:16px;margin-left:15px"><img ng-src="{{'app/main/xhsc/images/text.png'}}"></md-icon>-->
+                                  <md-button ng-if="!m.AssessmentRegionItemResults.length" aria-label="" class="md-button">符合要求</md-button>
+                                </td>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr ng-if="item.show" ng-repeat="item in e.AssessmentItems">
+                      <td style="width:5.26%;">
+                        <p>{{item.AssessmentCheckItemName}}</p>
+                      </td>
+                      <td>
+                        <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td style="width:38.9%;">
+                              <p>{{item.EvaluationCriteria}}</p>
+                            </td>
+                            <td>
+                              <p>{{item.DeductionCriteria}}</p>
+                            </td>
+                            <td style="width:70px;text-align: center" ng-if="vm.showfitObj && !(vm.isAddScore||vm.isDScore)">
+                              {{item.ApplicableObjectName}}
+                            </td>
+                            <td style="width: 50px;text-align: center;">
+                              {{item.Weight}}
+                            </td>
+                            <td style="width:100px" ng-repeat="k in  vm.sections">
+                              <table fit-table-height style="width: 100px;">
+                                <tr>
+                                  <td style="width: 50px;text-align: center;" class="lr">
+                                    <button ng-if="vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
+                                    <button  ng-if="!vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.isAddScore?'加':'扣'}}分</span> </button>
+                                  </td>
+                                  <td style="width: 50px;text-align: center;" class="lr">
+                                    {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                          <tr ng-if="!vm.showfitObj" ng-repeat="m in item.AssessmentItemResults">
+                            <td colspan="{{3+vm.sections.length*2+(vm.showfitObj?1:0)}}">
+                              <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                <td style="width: 10%"><p>{{vm.getSectionName(m.SectionID)}}</p></td>
+                                <td>
+                                  <table ng-if="m.AssessmentRegionItemResults.length" fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                    <tr ng-repeat="region in m.AssessmentRegionItemResults">
+                                      <td>
+                                        <table  fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                          <tr>
+                                            <td style="width:120px;text-align:left"><p>{{region.RegionName}}</p></td>
+                                            <td>
+                                                    <span ng-if="region.DeductScoreItems.length" ng-repeat="q in region.DeductScoreItems">
+                                                        <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
+                                                        </md-button>
+                                                      </span>
+                                              <md-button ng-if="!region.DeductScoreItems.length" aria-label="" class="md-button">符合要求</md-button>
+                                            </td>
+                                          </tr>
+                                        </table>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                  <!--<md-icon ng-if="!m.AssessmentRegionItemResults.length" style="width:16px;height:16px;margin-left:15px"><img ng-src="{{'app/main/xhsc/images/text.png'}}"></md-icon>-->
+                                  <md-button ng-if="!m.AssessmentRegionItemResults.length" aria-label="" class="md-button">符合要求</md-button>
+                                </td>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr ng-if="item.show" ng-repeat="item in c.AssessmentItems">
+                <td style="width:10%;">
+                  <p >{{item.AssessmentCheckItemName}}</p>
+                </td>
+                <td>
+                  <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td style="width:38.9%;">
+                        <p>{{item.EvaluationCriteria}}</p>
+                      </td>
+                      <td>
+                        <p>{{item.DeductionCriteria}}</p>
+                      </td>
+                      <td style="width:70px;text-align: center;" ng-if="vm.showfitObj && !(vm.isAddScore||vm.isDScore)">
+                        {{item.ApplicableObjectName}}
+                      </td>
+                      <td style="width: 50px;text-align: center;">
+                        {{item.Weight}}
+                      </td>
+                      <td style="width:100px;"  ng-repeat="k in  vm.sections">
+                        <table fit-table-height style="width: 100px;">
+                          <tr>
+                            <td style="width: 50px;text-align: center;" class="lr">
+                              <button ng-if="vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.bindSectionScore(item,k.SectionID,"DelScore")}}</span> </button>
+                              <button  ng-if="!vm.showkf(item,k.SectionID,'DelScore')" ng-click="vm.changeScore(item,k,$event)"> <span style="color: #0fb2fb">{{vm.isAddScore?'加':'扣'}}分</span> </button>
+                            </td>
+                            <td style="width: 50px;text-align: center;" class="lr">
+                              {{vm.bindSectionScore(item,k.SectionID,"ModifyScore")}}
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr ng-if="!vm.showfitObj" ng-repeat="m in item.AssessmentItemResults">
+                      <td colspan="{{3+vm.sections.length*2+(vm.showfitObj?1:0)}}">
+                        <table fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                          <td style="width: 10%"><p>{{vm.getSectionName(m.SectionID)}}</p></td>
+                          <td>
+                            <table ng-if="m.AssessmentRegionItemResults.length" fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                              <tr ng-repeat="region in m.AssessmentRegionItemResults">
+                                <td>
+                                  <table  fit-table-height width="100%" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                      <td style="width:120px;text-align:left"><p>{{region.RegionName}}</p></td>
+                                      <td>
+                                             <span ng-if="region.DeductScoreItems.length" ng-repeat="q in region.DeductScoreItems">
+                                                        <md-button  ng-click="vm.quesDetail(q,region,$event)"><md-icon style="width:16px;height:16px;"><img ng-src="{{q.Images && q.Images.length?'app/main/xhsc/images/pic.png':'app/main/xhsc/images/text.png'}}"></md-icon><span style="padding-left:3px">{{q.DeductionScore}}</span>
+                                                        </md-button>
+                                                      </span>
+                                        <md-button ng-if="!region.DeductScoreItems.length" aria-label="" class="md-button">符合要求</md-button>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </td>
+                              </tr>
+                            </table>
+                            <!--<md-icon ng-if="!m.AssessmentRegionItemResults.length" style="width:16px;height:16px;margin-left:15px"><img ng-src="{{'app/main/xhsc/images/text.png'}}"></md-icon>-->
+                            <md-button ng-if="!m.AssessmentRegionItemResults.length" aria-label="" class="md-button">符合要求</md-button>
+                          </td>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </section>
+        </md-content>
+      </div>
+    </md-tab-content>
+  </md-tab>
+  <md-tab label="项目评分汇总表" ng-if="vm.inited">
+    <md-tab-content  style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
+      <div flex="none" layout="row" style="text-align: center;font-size:20px;border-right:0;padding: 0 8px;" >
+        <div flex>
+          <div style="text-align: center;width:100%;">{{vm.params.year}} 年第 {{vm.params.quarter}}季度{{vm.toTalReport.projectName}}得分汇总表</div>
+          <table class="reportWrap"  width="100%" cellpadding="0" cellspacing="0">
+            <thead>
+            <tr>
+              <th style="text-align: center;font-size: 16px;font-family: 'Roboto'">检查评估项</th>
+              <th style="text-align: center;width:120px;font-size: 16px;font-family: 'Roboto'" ng-repeat="k in vm.toTalReport.Sections">
+                {{k.SectionName}}
+              </th>
+              <th  style="text-align: center;width:120px;font-size: 16px;font-family: 'Roboto'">
+                备注
+              </th>
+            </tr>
+            </thead>
+          </table>
+        </div>
+        <div flex="none" fix-scrollbar-width="md-content.zlpksub">
+        </div>
+      </div>
+      <div flex layout="column" layout-fill style="padding: 0 8px;">
+        <md-content flex class="zlpksub">
+          <table class="reportWrap"  width="99.9%" cellpadding="0" cellspacing="0">
+            <tbody>
+            <tr>
+              <td rowspan="2" class="td_left" style="padding-left: 10px;">项目部得分</td>
+              <td colspan="{{vm.prjScores.length}}">
+                <span ng-if="vm.prjScores.avg">{{vm.prjScores.avg*100|number:2}} %</span></td>
+              <td class="td_left" style="width:120px"></td>
+            </tr>
+            <tr>
+              <td style="width:120px" ng-repeat="k in vm.prjScores">
+                <span ng-if="k.Score">{{k.Score*100|number:2}} %</span></td>
+              <td class="td_left"></td>
+            </tr>
+            <tr>
+              <td rowspan="2" class="td_left" style="padding-left: 10px;">监理得分</td>
+              <td colspan="{{vm.jlScores.length}}">
+                <span ng-if="vm.jlScores.avg">{{vm.jlScores.avg*100|number:2}} %</span></td>
+              <td class="td_left"></td>
+            </tr>
+            <tr>
+              <td ng-repeat="k in vm.jlScores">
+                <span ng-if="k.Score">{{k.Score*100|number:2}} %</span></td>
+              <td class="td_left"></td>
+            </tr>
+            <tr>
+              <td class="td_left" style="padding-left: 10px;">总包得分</td>
+              <td ng-repeat="k in vm.zbScores">
+                <span ng-if="k.Score">{{k.Score*100|number:2}} %</span></td>
+              <td class="td_left"></td>
+            </tr>
+            </tbody>
+            <tbody>
+            <tr ng-repeat="k in vm.toTalReport.AssessmentTypes">
+              <td colspan="5">
+                <table class="report" style="width: 100%">
+                  <tr>
+                    <td style="text-align: left;padding-left: 10px;" colspan="{{k.CategorySections && k.CategorySections.length?1:vm.toTalReport.Sections.length+1}}">
+                      <h3>{{k.AssessmentTypeName}}</h3>
+                    </td>
+                    <td style="width:120px;" ng-repeat="n in k.CategorySections">{{n.ScroePercent * 100|number:2}} {{n.ScroePercent||n.ScroePercent===0?'%':''}}</td>
+                    <td style="width:120px;"></td>
+                  </tr>
+                  <tr ng-repeat="m in k.AssessmentCategorys">
+                    <td class="td_left" style="padding-left: 10px;">{{m.AssessmentClassificationName}}</td>
+                    <td style="width:120px;" ng-repeat="n in m.sectionScore">
+                      {{n.ScroePercent * 100|number:2}} {{n.ScroePercent||n.ScroePercent===0?'%':''}}
+                    </td>
+                    <td style="width:120px;"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </md-content>
+      </div>
+    </md-tab-content>
+  </md-tab>
+</md-tabs>
+<div flex="none" style="position: absolute;top:45%;left:45%;">
+  <md-progress-circular  class="md-accent md-hue-1" md-diameter="30"  md-mode="indeterminate" ng-show="vm.loading"></md-progress-circular>
+</div>
+

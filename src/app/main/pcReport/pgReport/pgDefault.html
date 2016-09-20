@@ -1,0 +1,61 @@
+<div ng-show="vm.show"  style="position: absolute;right: 8px">
+  <md-button class="md-fab md-mini" ng-click="vm.goBack()">
+    <md-icon md-svg-src="app/main/xhsc/images/icon-comeback.svg"></md-icon>
+  </md-button>
+</div>
+<md-tabs ng-show="vm.show" flex layout="column">
+  <md-tab flex layout="column" label="现场评估">
+    <md-tab-content ms-scroll class="download" style="padding: 0px">
+      <table class="summaryReport">
+        <thead>
+        <tr>
+          <th>序号</th>
+          <th style="width: 30%">项目</th>
+          <th style="min-width:80px;width: 80px">年份</th>
+          <th style="min-width:80px;width: 80px">季度</th>
+          <th style="width: 30%">评估阶段</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="item in vm.source">
+          <td>{{$index+1}}</td>
+          <td style="text-align: left;padding-left: 15px;min-width: 120px">{{item.ProjectName}}</td>
+          <td>
+            {{item.Year}}
+          </td>
+          <td>
+            {{item.Quarter}}
+          </td>
+          <td>
+            {{item.AssessmentStageName}}
+          </td>
+          <td layout="column">
+              <md-button style="text-align: left" flex ng-click="vm.gohz(item)" class="md-primary"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>评估汇总</md-button>
+              <!--<md-button style="text-align: left" flex ng-click="vm.Lookintoys(item)" class="md-primary"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>导出汇总报告</md-button>-->
+
+              <md-button flex style="text-align: left" ng-click="vm.gosc(item)" class="md-primary"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>实测实量</md-button>
+              <!--<md-button flex style="text-align: left" ng-click="vm.Lookintoys(item)" class="md-primary"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>导出整改报告</md-button>-->
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div layout="row">
+        <span flex></span>
+        <md-select ng-model="pageing.pageSize" class="pageSZ">
+          <md-option value="10">10</md-option>
+          <md-option value="20">20</md-option>
+          <md-option value="40">40</md-option>
+          <md-option value="80">80</md-option>
+          <md-option value="100">100</md-option>
+        </md-select>
+        <div style="text-align: right;margin-right: 15px"
+             paging page="pageing.page"
+             page-size="pageing.pageSize"
+             total="pageing.total"
+             paging-action="vm.pageAction('bar', page, pageSize, total)">
+        </div>
+      </div>
+    </md-tab-content>
+  </md-tab>
+</md-tabs>

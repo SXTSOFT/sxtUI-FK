@@ -1,0 +1,36 @@
+<md-content flex class="md-padding" layout="column">
+  <md-card flex style="background-color: white"  md-theme-watch>
+    <md-toolbar class="md-hue-1">
+      <div class="md-toolbar-tools">
+        <h2>
+          <span>筛选条件</span>
+        </h2>
+      </div>
+    </md-toolbar>
+    <md-card-content>
+      <div flex layout="row">
+        <md-input-container  md-theme="default" flex>
+          <label>年份</label>
+          <md-select  ng-model="year" name="type" >
+            <md-option ng-repeat="item in vm.yearSource" ng-value="item" >{{item}}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div flex layout="row">
+        <md-input-container  md-theme="default" flex>
+          <label>季度</label>
+          <md-select  ng-model="quart"  name="type" >
+            <md-option ng-repeat="item in vm.yearQuart" ng-value="item.id">{{item.text}}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="cent center">
+      <md-button flex ng-click="vm.click()" class="md-raised md-primary">确定</md-button>
+      <!--<md-button flex ng-click="vm.click()" class="md-raised md-primary">确定</md-button>-->
+      <!--<md-button flex ng-click="vm.click()" class="md-raised md-primary">确定</md-button>-->
+      <!--<md-button flex ng-click="vm.click()" class="md-raised md-primary">确定</md-button>-->
+    </md-card-actions>
+  </md-card>
+</md-content>
+

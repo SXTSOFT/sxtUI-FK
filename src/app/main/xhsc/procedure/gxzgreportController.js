@@ -64,25 +64,9 @@
 
         }
       })
-      //vm.result && vm.result.ProblemItem.forEach(function(r){
-      //  var f=vm.Regions.find(function(t){
-      //    return t.AreaId == r.AreaID;
-      //  })
-      //  if(f){
-      //    var p={
-      //      AreaId: r.AreaID,
-      //      Problems:r
-      //    }
-      //    vm.Problems.push(f);
-      //  }else{
-      //    var p={
-      //      AreaId: r.AreaID,
-      //      Problems:[]
-      //    }
-      //    vm.Problems.push(p);
-      //  }
-      //})
-      console.log(vm.Regions)
+      vm.goback=function(){
+        window.history.go(-1);
+      }
     })
   }
 })();

@@ -17,7 +17,6 @@
         vm.msScrollOptions = {
             suppressScrollX: true
         };
-
         // Methods
         vm.toggleMsNavigationFolded = toggleMsNavigationFolded;
 

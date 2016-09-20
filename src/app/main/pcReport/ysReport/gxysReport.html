@@ -1,0 +1,61 @@
+<div ng-show="vm.show"  style="position: absolute;right: 8px">
+  <md-button class="md-fab md-mini" ng-click="vm.goBack()">
+    <md-icon md-svg-src="app/main/xhsc/images/icon-comeback.svg"></md-icon>
+  </md-button>
+</div>
+<md-tabs ng-show="vm.show" flex layout="column">
+  <md-tab flex layout="column" label="工序验收">
+    <md-tab-content ms-scroll class="download" style="padding: 0px">
+      <table class="summaryReport">
+        <thead>
+        <tr>
+          <th>序号</th>
+          <th style="width:23%">工序</th>
+          <th style="width:23%">区域</th>
+          <th style="width:23%">报验时间</th>
+          <th style="width: 10%;min-width: 50px">状态</th>
+          <th style="min-width: 50px">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="item in vm.source">
+          <td>{{$index+1}}</td>
+          <td style="text-align: left;padding-left: 15px;min-width: 120px">{{item.AcceptanceItemName}}</td>
+          <td style="text-align: left;min-width: 120px">
+            <md-list  style="padding: 0px 15px" ng-cloak>
+              <md-list-item ng-repeat="k in item.Children">
+                {{k.RegionName}}
+              </md-list-item>
+            </md-list>
+          </td>
+          <td>
+            {{item.InspectionTime}}
+          </td>
+          <td>
+            {{item.statusName}}
+          </td>
+          <td>
+            <md-button ng-click="vm.Lookintoys(item)" class="md-primary"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>查看</md-button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div layout="row">
+        <span flex></span>
+        <md-select ng-model="pageing.pageSize" class="pageSZ">
+          <md-option value="10">10</md-option>
+          <md-option value="20">20</md-option>
+          <md-option value="40">40</md-option>
+          <md-option value="80">80</md-option>
+          <md-option value="100">100</md-option>
+        </md-select>
+        <div style="text-align: right;margin-right: 15px"
+             paging page="pageing.page"
+             page-size="pageing.pageSize"
+             total="pageing.total"
+             paging-action="vm.pageAction('bar', page, pageSize, total)">
+        </div>
+      </div>
+    </md-tab-content>
+  </md-tab>
+</md-tabs>

@@ -7,7 +7,7 @@
         .controller('TopToolbarController', TopToolbarController);
 
     /** @ngInject */
-    function TopToolbarController($scope,api,$rootScope) {
+    function TopToolbarController($scope,api,$rootScope,remote) {
       var vm=this;
 
       $rootScope.$on('sxt:online', function(event, state){
@@ -21,7 +21,6 @@
         vm.networkState = vm.networkState==0?1:0;
         api.setNetwork(vm.networkState);
       }
-
 
       $scope.goBack = function(){
         history.go(-1);//返回
