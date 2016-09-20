@@ -9,7 +9,7 @@
     .controller('gxmainController',gxmainController);
 
   /**@ngInject*/
-  function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,gxOfflinePack,$scope,$mdDialog,db){
+  function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,gxOfflinePack,$scope,$mdDialog,db,$mdBottomSheet){
     var vm = this;
     var  dbpics=db('pics')
     remote.Project.getMap().then(function(result){
@@ -529,5 +529,15 @@
         $state.go('app.xhsc.gx.gxlist', {role:'',projectId:r.ProjectID});
       });
     }
+
+    vm.zbzjAction=function(evt){
+      $mdBottomSheet.show({
+        templateUrl: 'app/main/xhsc/procedure/zbzjAction.html',
+        controller:function($scope){
+
+        }
+      });
+    }
+
   }
 })();
