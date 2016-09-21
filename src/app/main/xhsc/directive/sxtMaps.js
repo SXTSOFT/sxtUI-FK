@@ -34,7 +34,7 @@
           //lgn.push(result&&angular.isArray(result.data)&&);
           var map = L.map(element[0], {
               center: lgn,
-              zoom: 17,
+              zoom: 8,
               attributionControl: false
             }),
             layer = L.tileLayer('http://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
@@ -56,19 +56,6 @@
               }
             })
           })
-            //mks.push(L
-            //  .marker([parseFloat(latlngs[1]), parseFloat(latlngs[0])], L.extend({
-            //    icon: L.icon({
-            //      iconUrl: 'libs/leaflet/images/M.png',
-            //      iconSize: [27, 37],
-            //      iconAnchor: [20, 20]
-            //    }),
-            //    projectId: m.ProjectID,
-            //    title: m.ProjectName
-            //  }))
-            //  .on('click', markerClick)
-            //  .addTo(map)
-            //);
             var parentGroup = L.markerClusterGroup();
             angular.forEach(scope.markers, function (o, k) {
               var mk = L
