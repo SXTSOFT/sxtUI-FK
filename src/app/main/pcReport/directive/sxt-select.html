@@ -8,27 +8,78 @@
     <md-button class="md-raised" ng-click="item_back(1)">返回上一步</md-button>
   </div>
 </div>
-<div layout="row" flex style="border:1px solid #dedede;margin-top:10px;">
-  <div ng-repeat="st in selectors" data-title="{{st.label}}" ng-if="st.items.length"  ng-show="isShow(st)" flex>
-    <div ng-class="{'extend':st.extend}" layout="row">
-      <div flex="none" style="background:#f9f9f9;width:100px;margin-right: 10px;" layout-padding><span>{{st.label}}：</span></div>
-      <div>
-        <div layout="row" flex style="margin-top: 10px;" class="show">
-          <div style="border:1px solid #dedede;padding-right:10px;">
-            <input type="text" ng-model="st.key" placeholder="输入拼音首字母搜索" ng-change="st.keyChanged()" style="height:30px;border:none;border-right:1px solid #dedede;line-height:28px;display:inline-block;vertical-align:top;width:140px;padding-left:2px"/><md-icon ng-click="st.key='';st.keyChanged()" style="padding:5px;" md-font-icon="icon-close s16"></md-icon>
-          </div>
-        </div>
-        <!--<div class="clr" style="clear:both;"></div>-->
-        <div layout="column" flex>
-          <md-list>
-            <md-list-item ng-repeat="item in st.filters | orderBy:'RegionID'" data-initial="t" style="display: inline-block;">
-              <md-button ng-click="item_selected(item, st.index)" title="{{item.$name}}"><i></i>{{item.$name}}</md-button>
-            </md-list-item>
-          </md-list>
-        </div>
+<!--<div layout="row" flex style="border:1px solid #dedede;margin-top:10px;">-->
+  <!--<div ng-repeat="st in selectors" data-title="{{st.label}}" ng-if="st.items.length"  ng-show="isShow(st)" flex>-->
+    <!--<div ng-class="{'extend':st.extend}" layout="row">-->
+      <!--<div flex="none" style="background:#f9f9f9;width:100px;margin-right: 10px;" layout-padding><span>{{st.label}}：</span></div>-->
+      <!--<div>-->
+        <!--<div layout="row" flex style="margin-top: 10px;" class="show">-->
+          <!--<div style="border:1px solid #dedede;padding-right:10px;">-->
+            <!--<input type="text" ng-model="st.key" placeholder="输入拼音首字母搜索" ng-change="st.keyChanged()" style="height:30px;border:none;border-right:1px solid #dedede;line-height:28px;display:inline-block;vertical-align:top;width:140px;padding-left:2px"/><md-icon ng-click="st.key='';st.keyChanged()" style="padding:5px;" md-font-icon="icon-close s16"></md-icon>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;<div class="clr" style="clear:both;"></div>&ndash;&gt;-->
+        <!--<div layout="column" flex>-->
+          <!--<md-list>-->
+            <!--<md-list-item ng-repeat="item in st.filters | orderBy:'RegionID'" data-initial="t" style="display: inline-block;">-->
+              <!--<md-button ng-click="item_selected(item, st.index)" title="{{item.$name}}"><i></i>{{item.$name}}</md-button>-->
+            <!--</md-list-item>-->
+          <!--</md-list>-->
+        <!--</div>-->
 
+      <!--</div>-->
+      <!--<div class="sl-ext" ng-style="{top:st.extend?'50px':''}" ><a href="javascript:;" style="visibility: visible;" ng-click="st.index<2?st.filter({$id:''},(st.fff=!!!st.fff)):st.toggleExtend()" class="sl-e-more J_extMore">更多<i></i></a></div>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<div ng-transclude></div>-->
+  <!--<div layout="row" flex>-->
+    <!--<span data-more="更多筛选项" class="sm-wrap opened" ng-click="toggleMore()">{{isMore?'收起':'更多筛选项'}}<i></i></span>-->
+  <!--</div>-->
+<!--</div>-->
+<div id="J_searchWrap" style="margin-top:10px;">
+  <div id="J_container">
+    <div id="J_selector" class="selector">
+      <div ng-repeat="st in selectors" data-title="{{st.label}}" ng-if="st.items.length" class="J_selectorLine s-brand" ng-show="isShow(st)">
+        <div class="sl-wrap" ng-class="{'extend':st.extend}" layout="row">
+          <div class="sl-key" flex="none"><span>{{st.label}}：</span></div>
+          <div class="sl-value" flex>
+            <ul class="sl-b-letter J_brandLetter" style="padding-left:0;">
+              <!--<li ng-repeat="lt in st.letters" ng-click="st.filter(lt)" ng-class="{'curr':lt.selected}">{{lt.$name}}</li>-->
+              <li style="border:1px solid #dedede;padding-right:10px;">
+                <input type="text" ng-model="st.key" placeholder="输入拼音首字母搜索" ng-change="st.keyChanged()" style="height:30px;border:none;border-right:1px solid #dedede;line-height:28px;display:inline-block;vertical-align:top;width:140px;padding-left:2px"/><md-icon ng-click="st.key='';st.keyChanged()" style="margin-left:8px;margin-top:-2px;" md-font-icon="icon-close s16"></md-icon>
+              </li>
+            </ul>
+            <div class="clr" style="clear:both;"></div>
+            <div class="sl-v-list">
+              <div class="J-valueList v-fixed">
+                <md-list style="padding:0;">
+                <md-list-item ng-repeat="item in st.filters | orderBy:'RegionID'" data-initial="t" style="display: inline-block;">
+                <md-button ng-click="item_selected(item, st.index)" title="{{item.$name}}"><i></i>{{item.$name}}</md-button>
+                </md-list-item>
+                </md-list>
+              </div>
+              <!--<ul class="J_valueList v-fixed">-->
+                <!--<li ng-repeat="item in st.filters | orderBy:'project_item_id'" data-initial="t" style="display: block; width: 150px" class="ng-scope">-->
+                  <!--<a href="javascript:void(0)" ng-click="item_selected(item, st.index)" title="{{item.$name}}" rel="nofollow" class="ng-binding"><i></i>{{item.$name}}</a>-->
+                <!--</li>-->
+              <!--</ul>-->
+            </div>
+            <!--<div style="/* display: none; */" class="sl-b-selected J_brandSelected">-->
+              <!--<span class="sl-b-key">已选条件：</span>-->
+              <!--<ul class="sl-v-list brand-selected"></ul>-->
+            <!--</div>-->
+            <!--<div class="sl-btns"><a href="javascript:;" class="sel-btn sel-btn-primary J_btnsConfirm disabled">确定</a><a href="javascript:;" class="sel-btn sel-btn-default J_btnsCancel">取消</a></div>-->
+          </div>
+          <div class="sl-ext" ng-style="{top:st.extend?'50px':''}" ><a href="javascript:;" style="visibility: visible;" ng-click="st.index<2?st.filter({$id:''},(st.fff=!!!st.fff)):st.toggleExtend()" class="sl-e-more J_extMore">更多<i></i></a></div>
+        </div>
+      </div>
+      <div ng-transclude></div>
+      <div id="J_selectorMore" class="s-more">
+        <span data-more="更多筛选项" class="sm-wrap opened" ng-click="toggleMore()">{{isMore?'收起':'更多筛选项'}}<i></i></span>
       </div>
     </div>
   </div>
-  <div ng-transclude></div>
+  <span class="clr"></span>
+
+  <div id="Collect_Tip" class="Tip360 w260"></div>
 </div>

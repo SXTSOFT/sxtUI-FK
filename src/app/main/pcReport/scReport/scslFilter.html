@@ -78,15 +78,7 @@
 <!--</md-content>-->
 
 <div style="height:100%" flex class="md-padding">
-  <!--<md-toolbar class="md-hue-1" style="margin-bottom: 20px;">-->
-    <!--<div class="md-toolbar-tools">-->
-    <!--<h2>-->
-    <!--<span>筛选条件</span>-->
-    <!--</h2>-->
-    <!--</div>-->
-  <!--</md-toolbar>-->
   <sxt-projects-jd ng-model="project.pid" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
-
   </sxt-projects-jd>
   <div layout="row" flex ng-show="project.pid">
     <md-input-container  md-theme="default" flex>
