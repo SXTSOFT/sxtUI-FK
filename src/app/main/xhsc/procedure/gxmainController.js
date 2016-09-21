@@ -12,26 +12,24 @@
   function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,$scope,$mdDialog,db,$mdBottomSheet){
     var vm = this;
     var  dbpics=db('pics')
-    remote.Project.getMap().then(function(result){
-      remote.offline.query().then(function (r) {
-        if (r&& r.data&& r.data.length){
-          result.data.forEach(function (item) {
-              if ( r.data.find(function(o){
-                  return o.Id=='zj'+item.ProjectID;
-              })){
-                item.isOffline =true;
-              }
-          });
-        }
-        vm.projects = result.data;
-      }).catch(function(){
-        vm.projects = result.data;
-      });
-    });
+    vm.procedure=[];
     //所有全局任务
     var globalTask = [
       function () {
-        return remote.Procedure.queryProcedure();
+        return remote.Procedure.queryProcedure().then(function(r){
+          if (r.data&& r.data.length){
+            r.data.forEach(function(k){
+                if (k.SpecialtyChildren.length){
+                  k.SpecialtyChildren.forEach(function(m){
+                    if (m.WPAcceptanceList.length){
+                      vm.procedure=vm.procedure.concat(m.WPAcceptanceList);
+                    }
+                  })
+                }
+            });
+          }
+          return r;
+        })
       }
     ];
     //项目包
@@ -53,6 +51,8 @@
                   }))&&
                   pics.indexOf(item.DrawingID) == -1&&!offPics.find(function(r){
                     return r._id==item.DrawingID;
+                  })&&vm.procedure.find(function(k){
+                    return k.AcceptanceItemID==item.AcceptanceItemID;
                   })) {
                   pics.push(item.DrawingID);
                 }
@@ -229,7 +229,6 @@
             current.total = e.total;
             break;
           case 'success':
-            //downloadys
         }
       }
     },$scope);
@@ -244,7 +243,7 @@
                 .concat(projectTask(item.ProjectID,item.Children,item.AcceptanceItemID))
                 .concat(InspectionTask(item))
                 .concat(function(){
-                  return api.setting('ysList:'+ item.InspectionId,{InspectionId:item.InspectionId});
+                  return remote.offline.create({Id:'ys'+item.InspectionId});
                 })
               api.task(tasks,{
                 event:'downloadys',
@@ -300,7 +299,7 @@
                .concat(InspectionTask(item))
                .concat(rectificationTask(item))
                .concat(function(){
-                 return api.setting('zgList:'+item.RectificationID,{RectificationID:item.RectificationID});
+                 return remote.offline.create({Id:'zg'+item.RectificationID});
                });
              api.task(tasks, {
                event: 'downloadzg',
@@ -372,11 +371,8 @@
               api.uploadTask(function () {
                 return true
               },null);
-              $mdDialog.hide()
-              if (!tasks.length){
-                utils.alert('上传完成');
-                return;
-              }
+              $mdDialog.hide();
+              db("s_offline").destroy();
               utils.alert('上传成功');
               load();
               vm.uploadInfo.tasks = [];
@@ -404,26 +400,13 @@
       });
     }
 
-    vm.download = function(item){
-      api.setNetwork(0).then(function(){
-        var tasks = [].concat(globalTask).concat(projectTask(item.ProjectID));
-        api.task(tasks)(function (percent, current, total) {
-          item.percent = parseInt(percent * 100) + ' %';
-          item.current = current;
-          item.total = total;
-        }, function () {
-          item.percent = item.current = item.total = null;
-          item.isOffline = true;
-          utils.alert('下载完成');
-        }, function () {
-          item.percent = item.current = item.total = null;
-          utils.alert('下载失败,请检查网络');
-        })
-      });
-    };
 
     vm.MemberType = [];
-
+    vm.by=function(r){
+      api.setNetwork(0).then(function(){
+        $state.go('app.xhsc.gx.gxlist', {role:'zb',projectId:r.ProjectID});
+      });
+    }
     api.setNetwork(0).then(function(){
       remote.profile().then(function(r){
         if (r.data&& r.data.Role){
@@ -436,40 +419,58 @@
     })
 
     function load(){
+      remote.Project.getMap().then(function(result){
+        remote.offline.query().then(function (r) {
+          if (r&& r.data&& r.data.length){
+            result.data.forEach(function (item) {
+              item.isOffline =true;
+            });
+          }
+          vm.projects = result.data;
+        }).catch(function(){
+          vm.projects = result.data;
+        });
+      });
+
       remote.Procedure.getZGlist(23).then(function (r) {
         vm.zglist = [];
-        var list=[]
         if (angular.isArray(r.data)){
+          var zg=[];
           r.data.forEach(function(o){
-            // vm.zglist.push(o);
-            list.push(api.setting('zgList:'+ o.RectificationID))
+            zg.push(o);
           });
-          $q.all(list).then(function (rs) {
-            var ix=0;
-            r.data.forEach(function (item) {
-              item.isOffline = rs[ix++]?true:false;
-              vm.zglist.push(item);
-            });
+          remote.offline.query().then(function(r){
+            if (angular.isArray(r.data)){
+              zg.forEach(function(k){
+                if (r.data.find(function(m){
+                    return m.Id=="zg"+k.RectificationID;
+                  })){
+                  k.isOffline=true;
+                }
+              })
+            }
+            vm.zglist=zg;
           });
         }
       });
       remote.Procedure.getInspections(1).then(function(r){
         vm.Inspections=[];
-        var list=[]
         if (angular.isArray(r.data)){
           var ys=[];
           r.data.forEach(function(o){
             ys.push(o);
           });
-          ys.forEach(function(o){
-            list.push(api.setting('ysList:'+ o.InspectionId))
-          });
-          $q.all(list).then(function (rs) {
-            var ix=0;
-            ys.forEach(function (item) {
-              item.isOffline = rs[ix++]?true:false;
-              vm.Inspections.push(item);
-            });
+          remote.offline.query().then(function(r){
+            if (angular.isArray(r.data)){
+              ys.forEach(function(k){
+                if (r.data.find(function(m){
+                      return m.Id=="ys"+k.InspectionId;
+                  })){
+                  k.isOffline=true;
+                }
+              })
+            }
+            vm.Inspections=ys;
           });
         }
       });
@@ -477,58 +478,6 @@
     api.setNetwork(0).then(function(){
       load();
     })
-
-
-    function _goBefor(r){
-      return $q(function(resolve,reject){
-        if (!r.isOffline){
-          utils.alert('请先点击右边按钮,下载项目基础数据包!');
-          reject();
-          return;
-        }
-        api.setNetwork(1).then(function(r){
-          resolve(r);
-        })
-      })
-    }
-    vm.ys = function(item){
-      _goBefor(item).then(function(){
-        $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
-          projectId:item.ProjectID,areaId:item.Children[0].AreaID,InspectionId:item.InspectionId})
-      });
-    };
-    vm.fy = function(r){
-      _goBefor(r).then(function(){
-        $state.go('app.xhsc.gx.gxzg',{Role:'jl',InspectionID: r.InspectionId,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID})
-      });
-    };
-    vm.zg = function(r){
-      _goBefor(r).then(function(){
-        $state.go('app.xhsc.gx.gxzg',{Role:'zb',InspectionID: r.InspectionId,AcceptanceItemID: r.AcceptanceItemID,RectificationID: r.RectificationID,AcceptanceItemName: r.AcceptanceItemName});
-      });
-    };
-    vm.fj = function (r) {
-      _goBefor(r).then(function(){
-        $state.go('app.xhsc.gx.gxzjcheck', {
-            acceptanceItemID:r.AcceptanceItemID,
-            acceptanceItemName:r.AcceptanceItemName,
-            projectId:r.ProjectID,
-            InspectionId:r.InspectionId
-        })
-      });
-    }
-    vm.by=function(r){
-      api.setNetwork(0).then(function(){
-        $state.go('app.xhsc.gx.gxlist', {role:'zb',projectId:r.ProjectID});
-      });
-    }
-    vm.zj=function(r){
-      _goBefor(r).then(function(){
-        $state.go('app.xhsc.gx.gxlist', {role:'',projectId:r.ProjectID});
-      });
-    }
-
-
 
     vm.setModule=function(val){
       vm.bodyFlag=val;
