@@ -118,8 +118,10 @@
       }
     });
     $scope.$watchCollection("gxSelected",function(){
-      if ($scope.gxSelected.length){
+      if ($scope.gxSelected.length||$scope.gxSelected.isGo){
         load();
+      }else {
+        $scope.gxSelected.isGo=true;
       }
     });
 
