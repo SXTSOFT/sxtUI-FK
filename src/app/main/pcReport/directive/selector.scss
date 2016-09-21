@@ -22,204 +22,11 @@ li{
   }
 }
 
-.sel-btn {
-  display: inline-block;
-  line-height: 14px;
-  height: 22px;
-  border-radius: 2px;
-  background: #F7F7F7;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer
-}
-
-.sel-btn:hover {
-  text-decoration: none;
-  box-shadow: 0 1px 1px rgba(0, 1, 1, .08);
-  cursor: pointer
-}
-
-.sel-btn-default {
-  display: inline-block;
-  line-height: 14px;
-  height: 22px;
-  border-radius: 2px;
-  background: #F7F7F7;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  border: 1px solid #DDD;
-  padding: 4px 13px 5px;
-  color: #666;
-  background-color: #f7f7f7;
-  background-repeat: repeat-x;
-  background-image: -moz-linear-gradient(top, #f7f7f7, #f2f2f2);
-  background-image: -webkit-linear-gradient(top, #f7f7f7, #f2f2f2);
-  background-image: -o-linear-gradient(top, #f7f7f7, #f2f2f2);
-  background-image: linear-gradient(top, #f7f7f7, #f2f2f2);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f7f7f7', endColorstr='#f2f2f2', GradientType=0)
-}
-
-.sel-btn-default:hover {
-  text-decoration: none;
-  box-shadow: 0 1px 1px rgba(0, 1, 1, .08);
-  cursor: pointer;
-  color: #666
-}
-
-.sel-btn-primary {
-  display: inline-block;
-  line-height: 14px;
-  height: 22px;
-  border-radius: 2px;
-  background: #F7F7F7;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  border: 0;
-  padding: 5px 15px 6px;
-  color: #FFF;
-  background-color: #E74649;
-  background-repeat: repeat-x;
-  background-image: -moz-linear-gradient(top, #E74649, #DF3033);
-  background-image: -webkit-linear-gradient(top, #E74649, #DF3033);
-  background-image: -o-linear-gradient(top, #E74649, #DF3033);
-  background-image: linear-gradient(top, #E74649, #DF3033);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#E74649', endColorstr='#DF3033', GradientType=0)
-}
-
-.sel-btn-primary:hover {
-  text-decoration: none;
-  box-shadow: 0 1px 1px rgba(0, 1, 1, .08);
-  cursor: pointer;
-  color: #FFF
-}
-
-.sel-btn.disabled {
-  padding: 4px 13px 5px;
-  border: 1px solid #DDD;
-  background: #FFF;
-  cursor: default;
-  color: #CCC;
-  opacity: .2;
-  filter: alpha(Opacity=20);
-  filter: alpha(Opacity=20)
-}
-
-.sel-btn.disabled:hover {
-  color: #CCC
-}
-
-.crumbs-bar {
-  position: relative;
-  margin-bottom: 10px;
-  z-index: 5
-}
-
-.crumbs-nav {
-  height: 24px;
-  line-height: 24px
-}
-
-.crumbs-nav-item {
-  float: left;
-  margin-right: 8px
-}
-
-.crumbs-link, .crumbs-nav-item .menu-drop, .crumbs-nav-item .selector-set {
-  float: left;
-  margin-right: 5px
-}
-
-.crumbs-arrow {
-  font-family: simsun;
-  font-style: normal
-}
-
-.crumbs-nav-item {
-  float: left;
-  margin-right: 8px
-}
-
-.crumbs-link, .crumbs-nav-item .menu-drop, .crumbs-nav-item .selector-set {
-  float: left;
-  margin-right: 5px
-}
-
-
-.selector-set {
-  font-size: 0
-}
-
-.selector-set .ss-item {
-  position: relative;
-  display: inline-block;
-  height: 26px;
-  line-height: 26px;
-  border: 1px solid #DDD;
-  font-size: 12px;
-  vertical-align: top;
-  margin: 0 5px 5px 0;
-  padding: 0 26px 0 4px;
-  cursor: pointer
-}
-
-.selector-set .ss-item b {
-  font-weight: 400
-}
-
-.selector-set .ss-item em {
-  color: #e4393c
-}
-
-.selector-set .ss-item i {
-  display: block;
-  position: absolute;
-  width: 25px;
-  height: 25px;
-  right: 0;
-  top: 0;
-  background: url(http://misc.360buyimg.com/product/list/1.0.2/css/i/search.ele.png) no-repeat 7px -140px
-}
-
-.selector-set .ss-item:hover {
-  border-color: #e4393c;
-  text-decoration: none
-}
-
-.selector-set .ss-item:hover i {
-  background-color: #e4393c;
-  background-position: 7px -158px
-}
 
 .selector {
-  border-top: 1px solid #DDD;
+  border-top: 1px solid #dedede;
   background: #FFF;
   margin-bottom: 10px
-}
-
-.selector .s-title {
-  border-bottom: 1px solid #DDD;
-  background: #F1F1F1;
-  line-height: 34px;
-  height: 34px;
-  overflow: hidden;
-  zoom: 1
-}
-
-.selector .s-title h3 {
-  float: left;
-  padding-left: 10px
-}
-
-.selector .s-title h3 b {
-  color: #e4393c;
-  margin-right: 5px
-}
-
-.selector .s-title .st-ext {
-  float: left;
-  padding-left: 20px
 }
 
 .selector .s-brand, .selector .s-line {
@@ -258,7 +65,7 @@ li{
 
 .selector .sl-ext {
   position: absolute;
-  top: 25px;
+  top: 20px;
   right: 0;
   width: 120px;
   height: auto;
@@ -293,7 +100,7 @@ li{
   width: 20px;
   height: 20px;
   border: 1px solid #DDD;
-  background-position: 4px 7px;
+  background-position: 3px 6px;
 }
 
 .selector .sl-ext .sl-e-more:hover {
@@ -303,7 +110,7 @@ li{
 
 .selector .sl-ext .sl-e-more:hover i {
   border-color: #e4393c;
-  background-position: 4px -11px
+  background-position: 3px -12px
 }
 
 .selector .sl-ext .sl-e-more.opened i {
@@ -1042,6 +849,3 @@ li{
   font-size: 1em;
 }
 
-.ss-item em {
-  font-style: normal;
-}

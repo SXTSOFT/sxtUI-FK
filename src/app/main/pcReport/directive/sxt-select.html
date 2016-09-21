@@ -52,7 +52,7 @@
             <div class="clr" style="clear:both;"></div>
             <div class="sl-v-list">
               <div class="J-valueList v-fixed">
-                <md-list>
+                <md-list style="padding:0;">
                 <md-list-item ng-repeat="item in st.filters | orderBy:'RegionID'" data-initial="t" style="display: inline-block;">
                 <md-button ng-click="item_selected(item, st.index)" title="{{item.$name}}"><i></i>{{item.$name}}</md-button>
                 </md-list-item>
