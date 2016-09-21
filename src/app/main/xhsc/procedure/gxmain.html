@@ -1,296 +1,194 @@
-<!--<md-tabs flex md-border-bottom ng-if="vm.role==2">-->
-  <!--<md-tab label="监理验收">-->
-    <!--<md-content>-->
-      <!--<div layout="column" class="gxdownload">-->
-        <!--<md-list>-->
-          <!--<md-list-item ng-repeat="item in vm.Inspections|filter:{Sign:1}">-->
-            <!--<div class="md-list-item-text" layout="column">-->
-              <!--<p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">-->
-                <!--{{item.AcceptanceItemName}}-->
-              <!--</p>-->
-              <!--<p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>-->
-            <!--</div>-->
-            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">-->
-              <!--<md-button class="md-raised md-primary" ng-click="vm.ys(item)">-->
-                <!--验收-->
-              <!--</md-button>-->
-              <!--<md-button  ng-if="!item.isDown" class="md-raised md-primary" ng-click="vm.downloadys(item)">-->
-                <!--<md-icon ng-if="item.isOffline" md-font-icon="icon-box-download"></md-icon>-->
-                <!--<md-icon ng-if="!item.isOffline" md-font-icon="icon-download"></md-icon>-->
-              <!--</md-button>-->
-            <!--</div>-->
-            <!--<span class="border1px bottom1px"></span>-->
-          <!--</md-list-item>-->
-        <!--</md-list>-->
-
-      <!--</div>-->
-    <!--</md-content>-->
-  <!--</md-tab>-->
-  <!--<md-tab label="监理复验">-->
-    <!--<md-content>-->
-      <!--<div layout="column" class="gxdownload">-->
-        <!--<md-list>-->
-          <!--<md-list-item ng-repeat="item in vm.zglist|filter:{Status:16}">-->
-            <!--<div class="md-list-item-text" layout="column">-->
-              <!--<p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">-->
-                <!--{{item.AcceptanceItemName}} <span ng-if="item.total">{{item.percent}}({{item.current}}/{{item.total}})</span>-->
-              <!--</p>-->
-              <!--<p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>-->
-            <!--</div>-->
-            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">-->
-              <!--<md-button class="md-raised md-primary" ng-click="vm.fy(item)">-->
-                <!--复验-->
-              <!--</md-button>-->
-              <!--<md-button ng-if="!item.isDown" class="md-raised md-primary"  ng-click="vm.downloadzg(item)">-->
-                <!--<md-icon ng-if="item.isOffline" md-font-icon="icon-box-download"></md-icon>-->
-                <!--<md-icon ng-if="!item.isOffline" md-font-icon="icon-download"></md-icon>-->
-              <!--</md-button>-->
-            <!--</div>-->
-            <!--<span class="border1px bottom1px"></span>-->
-          <!--</md-list-item>-->
-        <!--</md-list>-->
-      <!--</div>-->
-    <!--</md-content>-->
-<!--</md-tab>-->
-  <!--<md-tab label="离线包">-->
-    <!--<md-content>-->
-      <!--<div layout="column" class="gxdownload">-->
-        <!--<md-list>-->
-          <!--<md-list-item>-->
-            <!--<div class="md-list-item-text" layout="column">-->
-              <!--<p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">-->
-                <!--全部上传-->
-              <!--</p>-->
-            <!--</div>-->
-            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">-->
-              <!--<md-button ng-disabled="vm.uploadInfo.uploading" class="md-raised md-primary"  ng-click="vm.upload()">-->
-                <!--<md-icon md-font-icon="icon-upload"></md-icon>-->
-              <!--</md-button>-->
-
-            <!--</div>-->
-            <!--<span class="border1px bottom1px"></span>-->
-          <!--</md-list-item>-->
-        <!--</md-list>-->
-      <!--</div>-->
-    <!--</md-content>-->
-  <!--</md-tab>-->
-  <!--<md-tab label="区域状态">-->
-    <!--<md-content>-->
-      <!--<div layout="column" class="gxdownload">-->
-        <!--<md-list style="overflow: hidden;">-->
-          <!--<md-list-item ng-repeat="item in vm.projects">-->
-            <!--<p layout="column" style="padding-right: 125px;font-size:16px;padding-left:8px;">-->
-              <!--{{item.ProjectName}}-->
-            <!--</p>-->
-            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">-->
-              <!--<md-button ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" class="md-raised md-primary" >-->
-                <!--查看-->
-              <!--</md-button>-->
-            <!--</div>-->
-            <!--<span class="border1px bottom1px"></span>-->
-          <!--</md-list-item>-->
-        <!--</md-list>-->
-      <!--</div>-->
-    <!--</md-content>-->
-  <!--</md-tab>-->
-<!--</md-tabs>-->
-
-<!--<md-tabs flex md-border-bottom ng-if="vm.role==0">-->
-  <!--<md-tab label="总包自检">-->
-    <!--<md-content>-->
-      <!--<div layout="column" class="gxdownload">-->
-        <!--<md-list style="overflow: hidden;">-->
-          <!--<md-list-item ng-repeat="item in vm.projects">-->
-            <!--<p layout="column" style="padding-right: 125px;font-size:16px;padding-left:8px;">-->
-              <!--{{item.ProjectName}}-->
-            <!--</p>-->
-            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">-->
-              <!--<md-button ng-click="vm.zj(item)" class="md-raised md-primary">-->
-                <!--自检-->
-              <!--</md-button>-->
-              <!--<md-button ng-click="vm.downloadzj(item)" class="md-raised md-primary" >-->
-              <!--<md-icon ng-if="item.isOffline" md-font-icon="icon-box-download"></md-icon>-->
-              <!--<md-icon ng-if="!item.isOffline" md-font-icon="icon-download"></md-icon>-->
-            <!--</md-button>-->
-            <!--</div>-->
-            <!--<span class="border1px bottom1px"></span>-->
-          <!--</md-list-item>-->
-        <!--</md-list>-->
-      <!--</div>-->
-    <!--</md-content>-->
-  <!--</md-tab>-->
-  <!--<md-tab label="总包报验">-->
-    <!--<md-content>-->
-      <!--<div layout="column" class="gxdownload">-->
-        <!--<md-list style="overflow: hidden;">-->
-          <!--<md-list-item ng-repeat="item in vm.projects">-->
-            <!--<p layout="column" style="padding-right: 125px;font-size:16px;padding-left:8px;">-->
-              <!--{{item.ProjectName}}-->
-            <!--</p>-->
-            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">-->
-              <!--<md-button  ng-click="vm.by(item)"  class="md-raised md-primary" >-->
-                <!--报验-->
-              <!--</md-button>-->
-            <!--</div>-->
-            <!--<span class="border1px bottom1px"></span>-->
-          <!--</md-list-item>-->
-        <!--</md-list>-->
-      <!--</div>-->
-    <!--</md-content>-->
-  <!--</md-tab>-->
-  <!--<md-tab label="总包整改">-->
-    <!--<md-content>-->
-      <!--<div layout="column" class="gxdownload">-->
-        <!--<md-list>-->
-          <!--<md-list-item ng-repeat="item in vm.zglist|filter:{Status:4}">-->
-            <!--<div class="md-list-item-text" layout="column">-->
-              <!--<p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">-->
-                <!--{{item.AcceptanceItemName}}-->
-                <!--&lt;!&ndash;<span ng-if="item.total">{{item.percent}}({{item.current}}/{{item.total}})</span>&ndash;&gt;-->
-              <!--</p>-->
-              <!--<p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>-->
-            <!--</div>-->
-            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">-->
-              <!--<md-button  class="md-raised md-primary" ng-click="vm.zg(item)">-->
-                <!--整改-->
-              <!--</md-button>-->
-              <!--<md-button ng-if="!item.isDown" class="md-raised md-primary" ng-click="vm.downloadzg(item)">-->
-                <!--<md-icon ng-if="item.isOffline" md-font-icon="icon-box-download"></md-icon>-->
-                <!--<md-icon ng-if="!item.isOffline" md-font-icon="icon-download"></md-icon>-->
-              <!--</md-button>-->
-              <!--<a  ng-if="item.isDown" style="position: relative;display: inline-block;width:31px;height:31px;border:1px solid #f8f8f8;border-radius:50%" ng-click="vm.cancel()">-->
-                <!--<md-progress-circular md-mode="determinate" value="{{item.progress}}"  md-diameter="30"></md-progress-circular>-->
-                <!--<md-icon style="width:10px;height:10px;background: #0185f1;position: absolute;left:10px;top:10px;"></md-icon>-->
-              <!--</a>-->
-            <!--</div>-->
-            <!--<span class="border1px bottom1px"></span>-->
-          <!--</md-list-item>-->
-        <!--</md-list>-->
-      <!--</div>-->
-    <!--</md-content>-->
-  <!--</md-tab>-->
-  <!--<md-tab label="离线包">-->
-    <!--<md-content>-->
-      <!--<div layout="column" class="gxdownload">-->
-        <!--<md-list>-->
-          <!--<md-list-item>-->
-            <!--<div class="md-list-item-text" layout="column">-->
-              <!--<p layout="column" style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">-->
-                <!--全部上传-->
-              <!--</p>-->
-            <!--</div>-->
-            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">-->
-              <!--<md-button ng-if="!item.isDown" class="md-raised md-primary"  ng-click="vm.upload()">-->
-                <!--<md-icon md-font-icon="icon-upload"></md-icon>-->
-              <!--</md-button>-->
-            <!--</div>-->
-          <!--</md-list-item>-->
-        <!--</md-list>-->
-      <!--</div>-->
-    <!--</md-content>-->
-  <!--</md-tab>-->
-  <!--<md-tab label="区域状态">-->
-    <!--<md-content>-->
-      <!--<div layout="column" class="gxdownload">-->
-        <!--<md-list style="overflow: hidden;">-->
-          <!--<md-list-item ng-repeat="item in vm.projects">-->
-            <!--<p layout="column" style="padding-right: 125px;font-size:16px;padding-left:8px;">-->
-              <!--{{item.ProjectName}}-->
-            <!--</p>-->
-            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">-->
-              <!--<md-button ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" class="md-raised md-primary" >-->
-                <!--查看-->
-              <!--</md-button>-->
-            <!--</div>-->
-            <!--<span class="border1px bottom1px"></span>-->
-          <!--</md-list-item>-->
-        <!--</md-list>-->
-      <!--</div>-->
-    <!--</md-content>-->
-  <!--</md-tab>-->
-<!--</md-tabs>-->
-
-<!--<md-tabs flex md-border-bottom ng-if="!(vm.role==2||vm.role==0)">-->
-  <!--<md-tab label="验收状态">-->
-    <!--<md-content>-->
-      <!--<div layout="column" class="gxdownload">-->
-        <!--<md-list style="overflow: hidden;">-->
-          <!--<md-list-item ng-repeat="item in vm.projects">-->
-            <!--<p layout="column" style="padding-right: 125px;font-size:16px;padding-left:8px;">-->
-              <!--{{item.ProjectName}}-->
-            <!--</p>-->
-            <!--<div class="md-secondary md-hue-3" style="right:0;margin:0;" layout="row">-->
-              <!--<md-button ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" class="md-raised md-primary" >-->
-                <!--查看-->
-              <!--</md-button>-->
-            <!--</div>-->
-            <!--<span class="border1px bottom1px"></span>-->
-          <!--</md-list-item>-->
-        <!--</md-list>-->
-      <!--</div>-->
-    <!--</md-content>-->
-  <!--</md-tab>-->
-<!--</md-tabs>-->
-
-
-
-<div flex class="gxbg" layout="column" ms-scroll>
-  <div class="gxhead">
+<div flex ng-if="vm.role==0" class="gxbg" layout="column" ms-scroll>
+  <div class="gxheadzb">
     <ul>
-      <li>
+      <li ng-click="vm.setModule(0)">
         <img src="app/main/xhsc/images/zbzj.png">
         <p>总包自检</p>
       </li>
-      <li>
+      <li ng-click="vm.setModule(2)">
         <img src="app/main/xhsc/images/zbby.png">
         <p>总包报验</p>
       </li>
-      <li>
+      <li ng-click="vm.setModule(4)">
         <img src="app/main/xhsc/images/zbzg.png">
         <p>总包整改</p>
       </li>
-      <li>
-        <img src="app/main/xhsc/images/offPackage.png">
-        <p>离线上传</p>
-      </li>
-      <li>
+      <li ng-click="vm.setModule(8)">
         <img src="app/main/xhsc/images/regionState.png">
         <p>区域状态</p>
       </li>
+      <li ng-click="vm.upload()">
+        <img src="app/main/xhsc/images/upload.png">
+        <p>离线上传</p>
+      </li>
     </ul>
     <ul ng-if="false">
-      <li>
+      <li ng-click="vm.setModule(32)">
         <img src="app/main/xhsc/images/jlys.png">
         <p>监理验收</p>
       </li>
-      <li>
+      <li ng-click="vm.setModule(64)">
         <img src="app/main/xhsc/images/jlfy.png">
         <p>监理复验</p>
       </li>
-      <li>
+      <li ng-click="vm.setModule(8)">
         <img src="app/main/xhsc/images/offPackage.png">
         <p>离线上传</p>
       </li>
-      <li>
+      <li ng-click="vm.setModule(16)">
         <img src="app/main/xhsc/images/regionState.png">
         <p>区域状态</p>
       </li>
     </ul>
   </div>
-<div  flex style="background-color: white;overflow: scroll">
+  <div  ng-if="vm.bodyFlag==0" flex style="background-color: white;overflow: scroll">
     <md-list style="overflow-x: hidden;">
-      <md-list-item layout="row" style="padding-left: 4%" ng-repeat="item in vm.projects">
-         <p style="font-size:14px;">
-            {{item.ProjectName}} <span style="margin-left:2%;color:white;background-color: #359df5;font-size:12px;border-radius: 3px">总包自检</span>
-         </p>
+      <md-list-item ng-click="vm.zbzjAction(item)" layout="row"  ng-repeat="item in vm.projects">
+        <p style="font-size:14px;">
+          {{item.ProjectName}}
+          <span style="margin-left:2%;color:white;background-color: #00b6de;font-size:12px;border-radius: 3px">总包自检</span>
+        </p>
         <span flex></span>
-        <md-button ng-click="vm.zbzjAction($event)" class="md-icon-button" aria-label="More" style="margin-right: 4%">
+        <md-button ng-click="vm.zbzjbtnAction(item,$event)" class="md-icon-button" aria-label="More">
           <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
         </md-button>
-         <span style="left: 4%" class="border1px bottom1px"></span>
-    </md-list-item>
+        <span class="border1px bottom1px"></span>
+      </md-list-item>
+    </md-list>
+  </div>
+  <div  ng-if="vm.bodyFlag==2" flex style="background-color: white;overflow: scroll">
+    <md-list style="overflow-x: hidden;">
+      <md-list-item layout="row" ng-click="vm.by(item)" ng-repeat="item in vm.projects">
+        <p style="font-size:14px;">
+          {{item.ProjectName}} <span
+          style="margin-left:2%;color:white;background-color: #359df5;font-size:12px;border-radius: 3px">总包报验</span>
+        </p>
+        <span flex></span>
+        <!--<md-button   class="md-icon-button" aria-label="More">-->
+          <!--<md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>-->
+        <!--</md-button>-->
+        <span  class="border1px bottom1px"></span>
+      </md-list-item>
+    </md-list>
+  </div>
+  <div  ng-if="vm.bodyFlag==4" flex style="background-color: white;overflow: scroll">
+    <md-list>
+      <md-list-item ng-click="vm.zbzgAction(item)" layout="row" ng-repeat="item in vm.zglist|filter:{Status:4}">
+        <div  layout="column">
+          <p style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
+            {{item.AcceptanceItemName}}<span style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">总包整改</span>
+          </p>
+          <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span
+            ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>
+        </div>
+        <span flex></span>
+        <md-button ng-click="vm.zbzgbtnAction(item,$event)" class="md-icon-button" aria-label="More">
+          <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+        </md-button>
+        <span class="border1px bottom1px"></span>
+      </md-list-item>
+    </md-list>
+  </div>
+  <div  ng-if="vm.bodyFlag==8" flex style="background-color: white;overflow: scroll">
+    <md-list style="overflow-x: hidden;">
+      <md-list-item layout="row" ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" ng-repeat="item in vm.projects">
+        <p style="font-size:14px;">
+          {{item.ProjectName}} <span
+          style="margin-left:2%;color:white;background-color: #f78744;font-size:12px;border-radius: 3px">区域状态</span>
+        </p>
+        <span flex></span>
+        <md-button  ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" style="color: black;margin-right: 0px"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>查看</md-button>
+        <span  class="border1px bottom1px"></span>
+      </md-list-item>
     </md-list>
   </div>
 </div>
 
+<div flex ng-if="vm.role==2" class="gxbg" layout="column" ms-scroll>
+  <div class="gxheadjl">
+    <ul>
+      <li ng-click="vm.setModule(2)">
+        <img src="app/main/xhsc/images/jlys.png">
+        <p>监理验收</p>
+      </li>
+      <li ng-click="vm.setModule(4)">
+        <img src="app/main/xhsc/images/jlfy.png">
+        <p>监理复验</p>
+      </li>
+      <li ng-click="vm.setModule(8)">
+        <img src="app/main/xhsc/images/regionState.png">
+        <p>区域状态</p>
+      </li>
+      <li ng-click="vm.upload()">
+        <img src="app/main/xhsc/images/upload.png">
+        <p>离线上传</p>
+      </li>
+    </ul>
+  </div>
+  <div ng-if="vm.bodyFlag==2" flex style="background-color: white;overflow: scroll">
+    <md-list>
+      <md-list-item layout="row" ng-click="vm.jlysAction(item)" ng-repeat="item in vm.Inspections|filter:{Sign:1}">
+        <div layout="column">
+          <p style="padding-right: 120px;font-size:14px;line-height: 20px;padding-left:8px;">
+            {{item.AcceptanceItemName}}
+            <span style="margin-left:2%;color:white;background-color: #359df5;font-size:12px;border-radius: 3px">监理验收</span>
+          </p>
+          <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;">
+            <span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span>
+          </p>
+        </div>
+        <span flex></span>
+        <md-button ng-click="vm.jlysbtnAction(item,$event)" class="md-icon-button" aria-label="More">
+          <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+        </md-button>
+        <span class="border1px bottom1px"></span>
+      </md-list-item>
+    </md-list>
+  </div>
+  <div ng-if="vm.bodyFlag==4" flex style="background-color: white;overflow: scroll">
+    <md-list>
+      <md-list-item ng-click="vm.jlfyAction(item)" ng-repeat="item in vm.zglist|filter:{Status:16}">
+        <div class="md-list-item-text" layout="column">
+          <p  style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
+            {{item.AcceptanceItemName}} <span style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">监理复验</span>
+          </p>
+          <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span
+            ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>
+        </div>
+        <span flex></span>
+        <md-button ng-click="vm.jlfybtnAction(item,$event)" class="md-icon-button" aria-label="More">
+          <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+        </md-button>
+        <span class="border1px bottom1px"></span>
+      </md-list-item>
+      </md-list-item>
+    </md-list>
+  </div>
+  <div  ng-if="vm.bodyFlag==8" flex style="background-color: white;overflow: scroll">
+    <md-list style="overflow-x: hidden;">
+      <md-list-item layout="row" ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" ng-repeat="item in vm.projects">
+        <p style="font-size:14px;">
+          {{item.ProjectName}} <span
+          style="margin-left:2%;color:white;background-color: #f78744;font-size:12px;border-radius: 3px">区域状态</span>
+        </p>
+        <span flex></span>
+        <span  class="border1px bottom1px"></span>
+        <md-button  ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" style="color: black;margin-right: 0px"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>查看</md-button>
+      </md-list-item>
+    </md-list>
+  </div>
+</div>
 
+<div flex ng-if="vm.role!=2&&vm.role!=0" class="gxbg" layout="column">
+  <md-list style="overflow-x: hidden;">
+    <md-list-item layout="row" ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" ng-repeat="item in vm.projects">
+      <p style="font-size:14px;">
+        {{item.ProjectName}} <span
+        style="margin-left:2%;color:white;background-color: #f78744;font-size:12px;border-radius: 3px">区域状态</span>
+      </p>
+      <span flex></span>
+      <span  class="border1px bottom1px"></span>
+      <md-button  ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" style="color: black;margin-right: 0px"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>查看</md-button>
+    </md-list-item>
+  </md-list>
+</div>

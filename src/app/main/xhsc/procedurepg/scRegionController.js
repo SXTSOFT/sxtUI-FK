@@ -65,9 +65,9 @@
         }
         function _init(region){
           if (region&&region.RegionType==8||region&&region.RegionType==16){
-            if (isReport=='0'||isReport==0){
+            //if (isReport=='0'||isReport==0){
               region.style= ConvertClass(region.Status);
-            }
+            //}
             setNum(region.Status,region);
           }
           if (region&&region.Children.length){
@@ -105,11 +105,6 @@
         }
       }
       remote.Assessment.GetRegionTreeInfo(projectId,'pack'+assessmentID).then(callBack);
-      //if (isReport=='0'||isReport==0){
-      //  _db.get("GetRegionTreeInfo").then(callBack);
-      //}else {
-      //    remote.Project.GetRegionTreeInfo(projectId).then(callBack);
-      //}
     }
 
     load();
@@ -125,11 +120,12 @@
         measureItemID:acceptanceItemID,
         pname:acceptanceItemName
       }
-      if (isReport=='0'||isReport==0){
-        $state.go('app.xhsc.scsl._sc',routeData);
-      }else {
-        $state.go('app.xhsc.scsl.schztb',routeData);
-      }
+      $state.go('app.xhsc.scsl._sc',routeData);
+      //if (isReport=='0'||isReport==0){
+      //  $state.go('app.xhsc.scsl._sc',routeData);
+      //}else {
+      //  $state.go('app.xhsc.scsl.schztb',routeData);
+      //}
     }
     //总包点击事件
 
