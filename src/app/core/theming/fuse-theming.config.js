@@ -42,7 +42,6 @@
                 .warnPalette(theme.warn.name, theme.warn.hues)
                 .backgroundPalette(theme.background.name, theme.background.hues);
         });
-
         // Store generated PALETTES and THEMES objects from $mdThemingProvider
         // in our custom provider, so we can inject them into other areas
         fuseThemingProvider.setRegisteredPalettes($mdThemingProvider._PALETTES);

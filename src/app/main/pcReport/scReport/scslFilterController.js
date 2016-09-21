@@ -84,12 +84,16 @@
         $scope.secSelected.push(item);
       })
     }
-    vm.click=function(){
-      $rootScope.scParams={
-        scSelected: $scope.currentSC,
-        secSelected:$scope.secSelected.length?$scope.secSelected[length-1]:null
-      }
-    }
+    //vm.click=function(){
+    //  $rootScope.scParams={
+    //    scSelected: $scope.currentSC,
+    //    secSelected:$scope.secSelected.length?$scope.secSelected[length-1]:null
+    //  }
+    //  $state.go("app.pcReport_sl_rp",{
+    //    scSelected:$scope.currentSC,
+    //    secSelected:$scope.secSelected.length?$scope.secSelected[$scope.secSelected.length-1].RegionID:null
+    //  })
+    //}
     $scope.$watch('project.pid',function(){
       $scope.currentSC = null;
       remote.Project.GetMeasureItemInfoByAreaID($scope.project.pid).then(function(r){
