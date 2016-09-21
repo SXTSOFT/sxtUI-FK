@@ -577,7 +577,7 @@ li{
 }
 
 .selector .s-brand .sl-v-list .v-fixed {
-  height: 60px
+  height: auto;//60px
 }
 
 .selector .s-brand .extend, .selector .s-brand .multiple {
@@ -614,7 +614,7 @@ li{
 
 .selector .s-brand .extend .sl-v-list .v-fixed, .selector .s-brand .multiple .sl-v-list .v-fixed {
   *width: 100%;
-  height: 150px;
+  height: auto;//150px;
   overflow-x: hidden;
   overflow-y: auto
 }
@@ -693,7 +693,7 @@ li{
 .selector .s-category .extend .sl-v-list .v-fixed {
   overflow-x: hidden;
   overflow-y: auto;
-  height: 150px
+  height: auto;//150px
 }
 
 .selector .s-more {
