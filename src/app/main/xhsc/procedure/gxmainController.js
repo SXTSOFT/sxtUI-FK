@@ -9,7 +9,7 @@
     .controller('gxmainController',gxmainController);
 
   /**@ngInject*/
-  function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,gxOfflinePack,$scope,$mdDialog,db,$mdBottomSheet){
+  function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,$scope,$mdDialog,db,$mdBottomSheet){
     var vm = this;
     var  dbpics=db('pics')
     remote.Project.getMap().then(function(result){
@@ -436,7 +436,7 @@
     })
 
     function load(){
-      remote.Procedure.getZGlist(31).then(function (r) {
+      remote.Procedure.getZGlist(23).then(function (r) {
         vm.zglist = [];
         var list=[]
         if (angular.isArray(r.data)){
@@ -453,15 +453,13 @@
           });
         }
       });
-      remote.Procedure.getInspections(31).then(function(r){
+      remote.Procedure.getInspections(1).then(function(r){
         vm.Inspections=[];
         var list=[]
         if (angular.isArray(r.data)){
           var ys=[];
           r.data.forEach(function(o){
-            if (o.Sign==1){
-              ys.push(o);
-            }
+            ys.push(o);
           });
           ys.forEach(function(o){
             list.push(api.setting('ysList:'+ o.InspectionId))

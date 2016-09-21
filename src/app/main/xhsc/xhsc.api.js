@@ -78,7 +78,7 @@
           }
         }),
         GetAreaChildenbyID:function(regionID){
-         return  $http.get($http.url('/api/ProjectInfoApi/GetAreaChildenById', {areaId: regionID}))
+          return  $http.get($http.url('/api/ProjectInfoApi/GetAreaChildenById', {areaId: regionID}))
         },
         getDrawings: $http.db({
           _id: 'Drawing',
