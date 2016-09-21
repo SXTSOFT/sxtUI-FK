@@ -6,22 +6,14 @@
           <md-subheader ng-if="vm.offlines.length"><span style="margin-left: -18px">已下载列表</span></md-subheader>
           <span class="border1px"></span>
           <md-list style="padding:0px">
-            <md-list-item ng-repeat="item in vm.offlines" layout="row">
-              <p flex style="font-size:16px;padding-left:12px;">
+            <md-list-item layout="row" ng-repeat="item in vm.offlines" layout="row">
+              <p style="font-size:14px;padding-left:3%">
                 {{item.ProjectName}}
               </p>
-              <div flex="none" layout="row">
-                <md-button ng-if="true"  ng-click="vm.go(item)"   class="md-raised md-primary" style="min-width:50px;padding:0px;margin:0px 0px 0px 5px ;line-height:35px ">
-                  实测
-                </md-button>
-                <md-button  class="md-raised upload-btn" style="min-width:50px;padding:0px;margin:0px 0px 0px 5px ;line-height:35px" ng-click="vm.download(item,true)">
-                  <!--<md-progress-circular ng-if="item.downloading && item.progress && item.progress!=100" md-mode="determinate" value="{{item.progress}}"  md-diameter="20"></md-progress-circular>-->
-                   刷新
-                </md-button>
-                <md-button ng-click="vm.upload(item)" class="md-raised upload-btn" style="min-width:50px;padding:0px;margin:0px 5px 0px 5px ;line-height:35px">
-                <md-progress-circular ng-if="item.uploading && item.progress && item.progress!=100" md-mode="determinate" value="{{item.progress}}"  md-diameter="20"></md-progress-circular> 上传
-                </md-button>
-              </div>
+              <span flex></span>
+              <md-button ng-click="vm.action(item,$event)"  style="margin: 6px 0px"   aria-label="More">
+                <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+              </md-button>
               <span class="border1px bottom1px"></span>
             </md-list-item>
           </md-list>
@@ -29,14 +21,13 @@
           <span class="border1px"></span>
           <md-list style="padding:0px">
             <md-list-item ng-repeat="item in vm.onlines"  layout="row">
-              <p flex style="font-size:16px;padding-left:12px;">
+              <p style="font-size:14px;padding-left:3%">
                 {{item.ProjectName}}
               </p>
-              <div flex="none" class="md-secondary md-hue-3"  style="right:5px">
-                <md-button ng-click="vm.download(item)" class="md-raised md-primary" style="min-width:50px;padding:0px;margin:0px 0px 0px 0px ;line-height:35px" >
-                  <md-icon  md-font-icon="icon-download"></md-icon>
-                </md-button>
-              </div>
+              <span flex></span>
+              <md-button ng-click="vm.download(item)" style="margin: 6px 0px" >
+                <i class="icon icon-download s30"></i>
+              </md-button>
               <span class="border1px bottom1px"></span>
             </md-list-item>
           </md-list>
