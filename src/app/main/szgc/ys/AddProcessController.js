@@ -587,6 +587,10 @@ $scope.back = function(){
         if (ix != -1)
           step.CheckWorkerName = step.CheckWorkerName.substring(0, ix);
       }
+      if (!step.CheckWorkerName) {
+        step.CheckWorker = user.Id;
+        step.CheckWorkerName = user.RealName;
+      }
 
 
       batch.ProcedureId = procedure;

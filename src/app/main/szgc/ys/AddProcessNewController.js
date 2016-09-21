@@ -36,6 +36,7 @@
       idtree = $scope.$parent.project.idTree || $stateParams.idTree,
       nametree = $scope.$parent.project.nameTree || $stateParams.nameTree,
       token = $stateParams.token,
+      checkRequirement = $stateParams.checkRequirement,
       flag = $stateParams.flag;
 
     var tid = procedure+idtree+pid,
@@ -54,6 +55,7 @@
     $scope.data = {
       pics: [],
       pics2:[],
+      CheckRequirement:checkRequirement,
       isFirst: !batchId || batchId == 'new',
       projectName: nametree,
       procedureName: procedureName,
@@ -827,7 +829,10 @@
         if (ix != -1)
           step.CheckWorkerName = step.CheckWorkerName.substring(0, ix);
       }
-
+      if (!step.CheckWorkerName) {
+        step.CheckWorker = user.Id;
+        step.CheckWorkerName = user.RealName;
+      }
 
       batch.ProcedureId = procedure;
       batch.EngineeringProjectId = idtree.split('>')[0];
