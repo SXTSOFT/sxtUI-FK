@@ -22,7 +22,6 @@
     vm.yearSource=[
       2015,2016,2017,2018,2019,2020
     ];
-    vm.show=false;
     $scope.year="";
     $scope.quart="";
     vm.yearQuart=[{
@@ -43,7 +42,16 @@
       pageSize:10,
       total:0
     }
-
+    $scope.$watch("year",function(){
+      if ($scope.year){
+        load();
+      }
+    });
+    $scope.$watch("quart",function(){
+      if ($scope.quart){
+        load();
+      }
+    });
     $scope.$watch("pageing.pageSize",function(){
       if ($scope.pageing.pageSize){
         load();
@@ -61,11 +69,7 @@
         if (r&& r.data){
           vm.source= r.data.Data;
         }
-        vm.show=true;
-        $mdDialog.hide();
       }).catch(function(){
-        vm.show=true;
-        $mdDialog.cancel();
       });
     }
 
@@ -89,9 +93,9 @@
         assessmentStage:item.AssessmentStage
       })
     }
-    vm.goBack=function(){
-      window.history.go(-1);
-    }
+    //vm.goBack=function(){
+    //  window.history.go(-1);
+    //}
   }
 })();
 /**

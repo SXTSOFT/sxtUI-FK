@@ -132,7 +132,6 @@
       }else {
         vm.role=0;
       }
-      //load();
       vm.go=function(item){
         $state.go("app.xhsc.scsl.schztb",{
           regionId: item.AreaID,
@@ -161,27 +160,15 @@
     },true);
 
     function load(){
-      $mdDialog.show({
-        controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
-        }],
-        template: '<md-dialog   ng-cloak><md-dialog-content layout="column"> <md-progress-circular class="md-accent md-hue-1" md-diameter="20" md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">数据加载中...</p></md-dialog-content></md-dialog>',
-        parent: angular.element(document.body),
-        clickOutsideToClose:false,
-        fullscreen: false
-      });
       remote.Assessment.GetMeasureList({
-        ProjectId: $scope.project.pid,//vm.secSeleced,
+        ProjectId: $scope.project.pid,
         AcceptanceItemIDs:$scope.currentSC?[$scope.currentSC]:[],
         PageSize: $scope.pageing.pageSize,
         CurPage: $scope.pageing.page-1
       }).then(function(r){
         $scope.pageing.total= r.data.TotalCount;
         vm.source= r.data.Data;
-        vm.show=true;
-        $mdDialog.hide();
       }).catch(function(){
-        vm.show=true;
-        $mdDialog.cancel();
       });
     }
     //load();
