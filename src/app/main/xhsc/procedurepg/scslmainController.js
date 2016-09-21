@@ -49,6 +49,8 @@
                 result.data.forEach(function (item) {
                   if (pics.indexOf(item.DrawingID) == -1&&!offPics.find(function(r){
                       return r._id==item.DrawingID;
+                    })&&vm.sc.find(function(k){
+                      return k.AcceptanceItemID==item.AcceptanceItemID;
                     })) {
                     pics.push(item.DrawingID);
                   }
@@ -118,7 +120,7 @@
             })
           })
         }
-
+        vm.sc=[];
         $mdDialog.show({
           controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
             $scope.item=item;
@@ -139,7 +141,22 @@
               return remote.Assessment.GetRegionTreeInfo(item.ProjectID,"pack"+item.AssessmentID);
             });
             tasks.push(function(){
-              return remote.Assessment.GetBaseMeasure("pack"+item.AssessmentID)
+              return remote.Assessment.GetBaseMeasure("pack"+item.AssessmentID).then(function(r){
+                var d= r.data&& r.data.data?r.data.data:[];
+                d.forEach(function(k){
+                  if (k.WPAcceptanceList.length){
+                    vm.sc=vm.sc.concat(k.WPAcceptanceList);
+                  }
+                  if (k.SpecialtyChildren&& k.SpecialtyChildren.length){
+                    k.SpecialtyChildren.forEach(function(n){
+                      if (n.WPAcceptanceList&& n.WPAcceptanceList.length){
+                        vm.sc=vm.sc.concat(n.WPAcceptanceList);
+                      }
+                    });
+                  }
+                })
+                return r;
+              })
             })
             tasks = tasks.concat(projectTask(item.ProjectID));
             item.percent = item.current =0; item.total = tasks.length;
