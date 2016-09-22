@@ -12,6 +12,7 @@
             'app.toolbar',
             'app.auth',
             'app.pcReport',
-            'app.xhsc'
+            'app.xhsc',
+            'app.plan'
         ]);
 })();
