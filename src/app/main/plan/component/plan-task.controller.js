@@ -119,13 +119,24 @@
       };
       temp = new template({
         onClick:function (e) {
-          var data = e.data;
-          console.log(data);
+          vm.current = e.data;
           vm.toggleRight();
         }
       });
       temp.load(task);
-      temp.render();
+    }
+
+    vm.save = function () {
+      temp && temp.edit(vm.current);
+      //vm.toggleRight();
+    }
+    vm.next = function () {
+      temp && temp.edit(vm.next,vm.current);
+      //vm.toggleRight();
+    }
+    vm.nextBranch = function () {
+      temp && temp.edit(vm.branch,vm.current,true);
+      //vm.toggleRight();
     }
 
     function buildToggler(navID) {

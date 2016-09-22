@@ -6,9 +6,9 @@
     .module('app.plan')
     .factory('template',template);
   /** @ngInject */
-  function template() {
+  function template($window) {
 
-    var graphTemplate = new GitGraph.Template({
+    var graphTemplate = new $window.GitGraph.Template({
       colors: [ "#EF9A9A", "#42A5F5", "#26A69A","#CE93D8" ],
       branch: {
         lineWidth: 3,
@@ -50,6 +50,9 @@
         mode:'extend',
         orientation:'vertical'
       });
+      this.init();
+    }
+    FTemplate.prototype.init = function () {
       var gitGraph = this.gitGraph = new GitGraph(this.options.config);
       gitGraph.canvas.addEventListener( "graph:render", function ( event ) {
         //console.log( event.data.id, "graph has been rendered" );
@@ -65,39 +68,17 @@
         this.style.cursor = "auto";
       });
     }
-
-    FTemplate.prototype.newColumn = function () {
-      this.maxColumn = this.maxColumn?this.maxColumn+1:0;
-    }
-    function FLine(options,temp) {
-      var self = this;
-      self.temp = temp;
-      self.lines = [];
-      self.nodes = [];
-      self.branch = temp.gitGraph.branch(extend(options,
-        {
-          column:temp.newColumn()
-        })
-      );
-    }
-    FLine.prototype.addNode = function (options) {
-      var self = this;
-      this.nodes.push(options);
-      var node = new FNode(options,self);
-    }
-    function FNode(options,line) {
-      this.line = line;
-      this.options = options;
-    }
     FTemplate.prototype.load = function load(task) {
+      this.task = task;
       var groups = [],lines = [],times=[];
-      fillTask(groups,lines,0,task);
+      this.line = fillTask(groups,lines,0,task);
       groups.forEach(function (g) {
         if(!g.parentCategoryId){
           appendRoot(times,groups,lines,g);
         }
       });
       this.times = times;
+      this.render();
     }
     FTemplate.prototype.onClick = function (e) {
       var data = this.times.find(function (d) {
@@ -106,10 +87,13 @@
       this.options.onClick && this.options.onClick({e:e,data:data});
     }
     FTemplate.prototype.render = function () {
+      this.gitGraph = null;
+      this.init();
       var self = this,times = this.times,
-        branch = [],
-        commits = [],
+        branch = this.branch = [],
         gitGraph = this.gitGraph;
+      gitGraph.branches.length = 0;
+      gitGraph.commits.length = 0;
       function onClick(e) {
         self.onClick(e);
       }
@@ -120,7 +104,6 @@
         return b1 && b1.b;
       }
       times.forEach(function (t) {
-
         switch (t.type){
           case 'line':
             branch.push({
@@ -145,24 +128,69 @@
                 onClick:onClick
               });
               ix++;
-            })
-
-            //commits.push(branch[t.line].merge({}))
+            });
             break;
           default:
             if(t.line || t.line===0){
-              commits.push(getBranch(t.line).commit({
+              getBranch(t.line).commit({
                 author:t.categoryId,
                 tag:t.name,
                 message:t.name,
                 onClick:onClick
-              }));
+              });
             }
             break;
         }
       });
     }
-
+    FTemplate.prototype.add = function (data,prev,isBranch) {
+      var container = !prev||prev.line===0?this.task.master:this.task.branch.find(function (b) {
+        return b.indexOf(prev)!=-1;
+      });
+      if(prev)
+        data.parentCategoryId = prev.categoryId;
+      if(isBranch){
+        this.branch.push([data]);
+      }
+      else{
+        container.push(data);
+      }
+      this.render();
+    }
+    FTemplate.prototype.edit = function (data) {
+      this.render();
+    }
+    FTemplate.prototype.remove = function (data) {
+      var container = this.task.master.indexOf(data)!=-1?
+        this.task.master:
+        this.task.branch.find(function (b) {
+          return b.indexOf(b)!=-1;
+        });
+      var index = container.indexOf(data);
+      if(index===0 && container===this.task.master && container.length===1){
+        this.task.master = [];
+        this.task.branch = [];
+      }
+      else{
+        var next = container[index+1];
+        next.parentCategoryId = data.parentCategoryId;
+        container.splice(index,1);
+        this.task.branch.forEach(function (b) {
+          if(b[0].parentCategoryId===data.categoryId){
+            b[0].parentCategoryId = next.categoryId;
+          }
+        });
+      }
+      for(var l=this.task.branch.length-1;l>=0;l--){
+        if(this.task.branch[l].length===0){
+          this.task.branch.splice(l,1);
+        }
+      }
+      this.render();
+    }
+    function getLast(array) {
+      return array.length?array[array.length-1]:null;
+    }
     function extend(obj,ext) {
       obj = obj||{};
       for(var k in ext){

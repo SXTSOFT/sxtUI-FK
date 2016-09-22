@@ -32,10 +32,8 @@
   </md-tab>
   <md-tab label="任务流程" md-on-select="vm.onLoadTemplate()">
     <md-tab-content flex layout-fill layout="row">
-      <md-content flex layout="column">
-        <md-content layout="column" flex>
-          <canvas id="gitGraph"></canvas>
-        </md-content>
+      <md-content layout="column" class="md-padding white-bg" flex >
+        <canvas id="gitGraph"></canvas>
       </md-content>
       <md-sidenav layout="column" class="md-sidenav-right md-whiteframe-4dp white-bg" style="max-width: 600px;width:600px" md-component-id="right">
         <md-tabs md-border-bottom flex >
@@ -44,7 +42,7 @@
               <form>
                 <md-input-container class="md-block">
                   <label>名称</label>
-                  <input type="text" ng-model="vm.data.name" md-autofocus>
+                  <input type="text" ng-model="vm.current.name" md-autofocus>
                 </md-input-container>
                 <md-select ng-model="weapon" placeholder="备选任务" class="md-block" multiple>
                   <md-option value="axe">Axe</md-option>
@@ -71,7 +69,7 @@
                   <md-option value="pen">Pen?</md-option>
                 </md-select>
               </form>
-              <md-button ng-click="close()" class="md-primary md-raised">
+              <md-button ng-click="vm.save()" class="md-primary md-raised md-mini">
                 保存
               </md-button>
             </md-tab-content>
@@ -81,10 +79,10 @@
               <form>
                 <md-input-container class="md-block">
                   <label>下一流程名称</label>
-                  <input type="text" ng-model="vm.data.name" md-autofocus>
+                  <input type="text" ng-model="vm.next.name" md-autofocus>
                 </md-input-container>
               </form>
-              <md-button ng-click="close()" class="md-primary md-raised">
+              <md-button ng-click="vm.next()" class="md-primary md-raised  md-mini">
                 添加
               </md-button>
             </md-tab-content>
@@ -94,10 +92,10 @@
               <form>
                 <md-input-container class="md-block">
                   <label>分支流程名称</label>
-                  <input type="text" ng-model="vm.data.name" md-autofocus>
+                  <input type="text" ng-model="vm.branch.name" md-autofocus>
                 </md-input-container>
               </form>
-              <md-button ng-click="close()" class="md-primary md-raised">
+              <md-button ng-click="vm.nextBranch()" class="md-primary md-raised  md-mini" >
                 添加
               </md-button>
             </md-tab-content>
