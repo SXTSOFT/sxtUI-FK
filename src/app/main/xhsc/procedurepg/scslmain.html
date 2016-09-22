@@ -6,7 +6,7 @@
           <md-subheader ng-if="vm.offlines.length"><span style="margin-left: -18px">已下载列表</span></md-subheader>
           <span class="border1px"></span>
           <md-list style="padding:0px">
-            <md-list-item layout="row" ng-repeat="item in vm.offlines" layout="row">
+            <md-list-item layout="row"ng-click="vm.go(item)"  ng-repeat="item in vm.offlines" layout="row">
               <p style="font-size:14px;padding-left:3%">
                 {{item.ProjectName}}
               </p>
