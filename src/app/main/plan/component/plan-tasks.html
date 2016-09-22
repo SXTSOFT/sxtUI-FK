@@ -1,0 +1,29 @@
+<table class="simple" ms-responsive-table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Position</th>
+    <th>Office</th>
+    <th class="text-right">Age</th>
+    <th class="text-right">Start Date</th>
+    <th class="text-right">Salary</th>
+  </tr>
+  </thead>
+
+  <tfoot>
+  <tr>
+    <td></td>
+  </tr>
+  </tfoot>
+
+  <tbody>
+  <tr ng-repeat="person in vm.employees">
+    <td class="name">{{person.name}}</td>
+    <td class="position">{{person.position}}</td>
+    <td class="office">{{person.office}}</td>
+    <td class="age text-right">{{person.age}}</td>
+    <td class="start-date text-right">{{person.startDate}}</td>
+    <td class="salary text-right">{{person.salary | currency}}</td>
+  </tr>
+  </tbody>
+</table>
