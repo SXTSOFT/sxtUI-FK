@@ -9,10 +9,12 @@
     .directive('sxtScView', sxtScView);
 
   /** @Inject */
-  function sxtScView($timeout,$window){
+  function sxtScView($timeout,$window,remote,utils){
     return {
       scope:{
-        data:'='
+        data:'=',
+        procedure:'=',
+        regionId:'='
       },
       link:link
     }
@@ -24,24 +26,65 @@
         if(!map){
           map = new L.SXT.Project(element[0]);
         }
-        if(scope.data.Region.DrawingContent) {
-          $timeout(function () {
-            map.loadSvgXml(scope.data.Region.DrawingContent, {
-              filterLine: function (line) {
-                line.attrs.stroke = 'black';
-                line.options = line.options || {};
-                //line.options.color = 'black';
-
-                line.attrs['stroke-width'] = line.attrs['stroke-width'] * 6;
-              },
-              filterText: function (text) {
-                //return false;
-              }
+        //if(scope.data.Region.DrawingContent) {
+        //  $timeout(function () {
+        //    map.loadSvgXml(scope.data.Region.DrawingContent, {
+        //      filterLine: function (line) {
+        //        line.attrs.stroke = 'black';
+        //        line.options = line.options || {};
+        //        //line.options.color = 'black';
+        //
+        //        line.attrs['stroke-width'] = line.attrs['stroke-width'] * 6;
+        //      },
+        //      filterText: function (text) {
+        //        //return false;
+        //      }
+        //    });
+        //    map.center();
+        //  }, 0)
+        //}
+        $timeout(function(){
+          remote.Project.getDrawingRelations(scope.regionId.substring(0,5)).then(function (result) {
+            var imgId = result.data.find(function (item) {
+              return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
             });
-            map.center();
-          }, 0)
-        }
+            if(!imgId){
+              imgId = result.data.find(function (item) {
+                return item.RegionId == scope.regionId;
+              });
+            }
+            if (imgId) {
+              remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
+                if(!result2.data.DrawingContent){
+                  scope.ct && (scope.ct.loading = false);
+                  utils.alert('未找到图纸,请与管理员联系!(2)');
+                  return;
+                }
+                map.loadSvgXml(result2.data.DrawingContent, {
+                  filterLine: function (line) {
+                    line.attrs.stroke = 'black';
+                    line.options = line.options||{};
+                    //line.options.color = 'black';
 
+                    line.attrs['stroke-width'] = line.attrs['stroke-width']*6;
+                  },
+                  filterText: function (text) {
+                    return false;
+                  }
+                });
+                map.center();
+                scope.tooltip = '';
+              })
+            }
+            else{
+              if(!result.data.DrawingContent){
+                utils.alert('未找到图纸,请与管理员联系!(1)');
+                scope.ct && (scope.ct.loading = false);
+                return;
+              }
+            }
+          });
+        }, 0);
 
         fg = new L.SvFeatureGroup({
           onLoad:function(){

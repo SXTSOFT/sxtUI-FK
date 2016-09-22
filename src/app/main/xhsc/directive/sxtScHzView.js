@@ -9,7 +9,7 @@
     .directive('sxtScHzView', sxtScHzView);
 
   /** @Inject */
-  function sxtScHzView($timeout,$window,remote){
+  function sxtScHzView($timeout,$window,remote,utils ){
     return {
       scope:{
         data:'=',
@@ -70,23 +70,23 @@
       }, 0);
 
 
-        if(scope.data.Region.DrawingContent) {
-          $timeout(function () {
-            map.loadSvgXml(scope.data.Region.DrawingContent, {
-              filterLine: function (line) {
-                line.attrs.stroke = 'black';
-                line.options = line.options || {};
-                //line.options.color = 'black';
-
-                line.attrs['stroke-width'] = line.attrs['stroke-width'] * 6;
-              },
-              filterText: function (text) {
-                //return false;
-              }
-            });
-            map.center();
-          }, 0)
-        }
+        //if(scope.data.Region.DrawingContent) {
+        //  $timeout(function () {
+        //    map.loadSvgXml(scope.data.Region.DrawingContent, {
+        //      filterLine: function (line) {
+        //        line.attrs.stroke = 'black';
+        //        line.options = line.options || {};
+        //        //line.options.color = 'black';
+        //
+        //        line.attrs['stroke-width'] = line.attrs['stroke-width'] * 6;
+        //      },
+        //      filterText: function (text) {
+        //        //return false;
+        //      }
+        //    });
+        //    map.center();
+        //  }, 0)
+        //}
 
 
         fg = new L.SvFeatureGroup({

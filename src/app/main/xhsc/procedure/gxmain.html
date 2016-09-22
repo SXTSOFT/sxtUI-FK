@@ -23,38 +23,11 @@
       </li>
     </ul>
   </div>
-  <div  ng-if="vm.bodyFlag==0" flex style="background-color: white;overflow: scroll">
-    <md-list style="overflow-x: hidden;">
-      <md-list-item ng-click="vm.zbzjAction(item)" layout="row"  ng-repeat="item in vm.projects">
-        <p style="font-size:14px;">
-          {{item.ProjectName}}
-          <span style="margin-left:2%;color:white;background-color: #00b6de;font-size:12px;border-radius: 3px">总包自检</span>
-        </p>
-        <span flex></span>
-        <md-button ng-click="vm.zbzjbtnAction(item,$event)" class="md-icon-button" aria-label="More">
-          <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
-        </md-button>
-        <span class="border1px bottom1px"></span>
-      </md-list-item>
-    </md-list>
-  </div>
-  <div  ng-if="vm.bodyFlag==2" flex style="background-color: white;overflow: scroll">
-    <md-list style="overflow-x: hidden;">
-      <md-list-item layout="row" ng-click="vm.by(item)" ng-repeat="item in vm.projects">
-        <p style="font-size:14px;">
-          {{item.ProjectName}} <span
-          style="margin-left:2%;color:white;background-color: #359df5;font-size:12px;border-radius: 3px">总包报验</span>
-        </p>
-        <span flex></span>
-        <!--<md-button   class="md-icon-button" aria-label="More">-->
-          <!--<md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>-->
-        <!--</md-button>-->
-        <span  class="border1px bottom1px"></span>
-      </md-list-item>
-    </md-list>
-  </div>
-  <div  ng-if="vm.bodyFlag==4" flex style="background-color: white;overflow: scroll">
-    <md-list>
+  <div flex style="background-color: white;overflow: scroll">
+    <md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
+                          md-mode="indeterminate" md-diameter="42">
+    </md-progress-circular>
+    <md-list ng-show="vm.isOver">
       <md-list-item ng-click="vm.zbzgAction(item)" layout="row" ng-repeat="item in vm.zglist|filter:{Status:4}">
         <div  layout="column">
           <p style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
@@ -71,30 +44,16 @@
       </md-list-item>
     </md-list>
   </div>
-  <div  ng-if="vm.bodyFlag==8" flex style="background-color: white;overflow: scroll">
-    <md-list style="overflow-x: hidden;">
-      <md-list-item layout="row" ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" ng-repeat="item in vm.projects">
-        <p style="font-size:14px;">
-          {{item.ProjectName}} <span
-          style="margin-left:2%;color:white;background-color: #f78744;font-size:12px;border-radius: 3px">区域状态</span>
-        </p>
-        <span flex></span>      <md-button  ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" style="color: black;margin-right: 0px"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>查看</md-button>
-
-
-        <span  class="border1px bottom1px"></span>
-      </md-list-item>
-    </md-list>
-  </div>
 </div>
 
 <div flex ng-if="vm.role==2" class="gxbg" layout="column" ms-scroll>
   <div class="gxheadjl">
     <ul>
-      <li ng-click="vm.setModule(2)">
+      <li ng-click="vm.setModule(16)">
         <img src="app/main/xhsc/images/jlys.png">
         <p>监理验收</p>
       </li>
-      <li ng-click="vm.setModule(4)">
+      <li ng-click="vm.setModule(32)">
         <img src="app/main/xhsc/images/jlfy.png">
         <p>监理复验</p>
       </li>
@@ -108,13 +67,17 @@
       </li>
     </ul>
   </div>
-  <div ng-if="vm.bodyFlag==2" flex style="background-color: white;overflow: scroll">
-    <md-list>
+  <div flex style="background-color: white;overflow: scroll">
+    <md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
+                          md-mode="indeterminate" md-diameter="42">
+    </md-progress-circular>
+    <md-list ng-show="vm.isOver">
       <md-list-item layout="row" ng-click="vm.jlysAction(item)" ng-repeat="item in vm.Inspections">
         <div layout="column">
           <p style="padding-right: 120px;font-size:14px;line-height: 20px;padding-left:8px;">
             {{item.AcceptanceItemName}}
-            <span style="margin-left:2%;color:white;background-color: #359df5;font-size:12px;border-radius: 3px">监理验收</span>
+            <span
+              style="margin-left:2%;color:white;background-color: #359df5;font-size:12px;border-radius: 3px">监理验收</span>
           </p>
           <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;">
             <span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span>
@@ -126,14 +89,11 @@
         </md-button>
         <span class="border1px bottom1px"></span>
       </md-list-item>
-    </md-list>
-  </div>
-  <div ng-if="vm.bodyFlag==4" flex style="background-color: white;overflow: scroll">
-    <md-list>
       <md-list-item ng-click="vm.jlfyAction(item)" ng-repeat="item in vm.zglist|filter:{Status:16}">
         <div class="md-list-item-text" layout="column">
-          <p  style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
-            {{item.AcceptanceItemName}} <span style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">监理复验</span>
+          <p style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
+            {{item.AcceptanceItemName}} <span
+            style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">监理复验</span>
           </p>
           <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span
             ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>
@@ -143,20 +103,6 @@
           <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
         </md-button>
         <span class="border1px bottom1px"></span>
-      </md-list-item>
-      </md-list-item>
-    </md-list>
-  </div>
-  <div  ng-if="vm.bodyFlag==8" flex style="background-color: white;overflow: scroll">
-    <md-list style="overflow-x: hidden;">
-      <md-list-item layout="row" ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" ng-repeat="item in vm.projects">
-        <p style="font-size:14px;">
-          {{item.ProjectName}} <span
-          style="margin-left:2%;color:white;background-color: #f78744;font-size:12px;border-radius: 3px">区域状态</span>
-        </p>
-        <span flex></span>
-        <span  class="border1px bottom1px"></span>
-        <md-button  ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" style="color: black;margin-right: 0px"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>查看</md-button>
       </md-list-item>
     </md-list>
   </div>

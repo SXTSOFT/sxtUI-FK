@@ -35,6 +35,16 @@
         templateUrl: 'app/main/xhsc/procedure/gxmain.html',
         controller: 'gxmainController as vm'
       })
+      .state('app.xhsc.gx.yw', {
+        noBack:false,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '工序验收',
+        url: '/{yw}',
+        templateUrl: 'app/main/xhsc/procedure/yw.html',
+        controller: 'ywController as vm'
+      })
       .state('app.xhsc.gx.gxlist', {
         noBack: true,
         sendBt: false,

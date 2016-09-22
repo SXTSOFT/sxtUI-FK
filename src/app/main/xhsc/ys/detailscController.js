@@ -9,7 +9,7 @@
     .controller('detailscController',detailscController);
 
   /** @ngInject*/
-  function detailscController($stateParams,remote,$rootScope){
+  function detailscController($stateParams,remote,$rootScope,$state){
     var vm = this;
     var iMax = 20;
     vm.info={
@@ -147,9 +147,11 @@
         }
 
       });
-
+      vm.go=function(row,item){
+        $state.go("app.pc.sctbdetail",{recordId:$stateParams.regionId,itemId:item.AcceptanceIndexID,AcceptanceItemID:$stateParams.measureItemID});
+        //ui-sref="()"
+      }
       vm.scData = newD;
-      console.log(vm.scData)
     });
   }
 })();

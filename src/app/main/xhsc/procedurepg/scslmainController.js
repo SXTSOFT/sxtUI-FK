@@ -264,11 +264,12 @@
               }
             });
             vm.projects=result.data;
+            vm.isOver=true;
           }
         }).then(function(){
 
         }).catch(function () {
-
+          vm.isOver=true;
         });
       }
 
