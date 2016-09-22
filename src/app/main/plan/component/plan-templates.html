@@ -1,23 +1,20 @@
 <md-toolbar class="md-hue-2">
   <div class="md-toolbar-tools">
     <h2>
-      <span>任务管理</span>
+      <span>模板管理</span>
     </h2>
     <span flex></span>
     <md-button class="md-icon-button" aria-label="More">
-      <md-icon md-font-icon="icon-plus" ui-sref="app.plan.task.detail({id:'add'})"></md-icon>
+      <md-icon md-font-icon="icon-plus" ui-sref="app.plan.template.detail({id:'add'})"></md-icon>
     </md-button>
   </div>
 </md-toolbar>
 <table class="simple" ms-responsive-table>
   <thead>
   <tr>
-    <th>Name</th>
-    <th>Position</th>
-    <th>Office</th>
-    <th class="text-right">Age</th>
-    <th class="text-right">Start Date</th>
-    <th class="text-right">Salary</th>
+    <th>名称</th>
+    <th>时间</th>
+    <th>管理</th>
   </tr>
   </thead>
 
@@ -32,9 +29,6 @@
     <td class="name">{{person.name}}</td>
     <td class="position">{{person.position}}</td>
     <td class="office">{{person.office}}</td>
-    <td class="age text-right">{{person.age}}</td>
-    <td class="start-date text-right">{{person.startDate}}</td>
-    <td class="salary text-right">{{person.salary | currency}}</td>
   </tr>
   </tbody>
 </table>

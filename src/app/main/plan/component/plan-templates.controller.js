@@ -6,14 +6,14 @@
 
   angular
     .module('app.plan')
-    .component('planTemplate',{
-      templateUrl:'app/main/plan/component/plan-template.html',
-      controller:planTemplate,
+    .component('planTemplates',{
+      templateUrl:'app/main/plan/component/plan-templates.html',
+      controller:planTemplates,
       controllerAs:'vm'
     });
 
   /** @ngInject */
-  function planTemplate(){
+  function planTemplates(){
 
   }
 })(angular,undefined);
