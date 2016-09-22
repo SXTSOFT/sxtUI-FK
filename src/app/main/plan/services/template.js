@@ -53,6 +53,11 @@
       this.init();
     }
     FTemplate.prototype.init = function () {
+      var g = $window.$('#gitGraph'),
+        p = g.parent();
+      g.remove();
+      p.append('<canvas id="gitGraph"></canvas>');
+
       var gitGraph = this.gitGraph = new GitGraph(this.options.config);
       gitGraph.canvas.addEventListener( "graph:render", function ( event ) {
         //console.log( event.data.id, "graph has been rendered" );
@@ -83,7 +88,7 @@
     FTemplate.prototype.onClick = function (e) {
       var data = this.times.find(function (d) {
         return d.categoryId === e.author;
-      })
+      });
       this.options.onClick && this.options.onClick({e:e,data:data});
     }
     FTemplate.prototype.render = function () {
@@ -92,8 +97,6 @@
       var self = this,times = this.times,
         branch = this.branch = [],
         gitGraph = this.gitGraph;
-      gitGraph.branches.length = 0;
-      gitGraph.commits.length = 0;
       function onClick(e) {
         self.onClick(e);
       }
@@ -144,18 +147,21 @@
       });
     }
     FTemplate.prototype.add = function (data,prev,isBranch) {
+      if(prev && !prev.categoryId)
+        prev = null;
+
       var container = !prev||prev.line===0?this.task.master:this.task.branch.find(function (b) {
         return b.indexOf(prev)!=-1;
       });
       if(prev)
         data.parentCategoryId = prev.categoryId;
       if(isBranch){
-        this.branch.push([data]);
+        this.task.branch.push([data]);
       }
       else{
         container.push(data);
       }
-      this.render();
+      this.load(this.task);
     }
     FTemplate.prototype.edit = function (data) {
       this.render();
@@ -164,7 +170,7 @@
       var container = this.task.master.indexOf(data)!=-1?
         this.task.master:
         this.task.branch.find(function (b) {
-          return b.indexOf(b)!=-1;
+          return b.indexOf(data)!=-1;
         });
       var index = container.indexOf(data);
       if(index===0 && container===this.task.master && container.length===1){
@@ -173,20 +179,22 @@
       }
       else{
         var next = container[index+1];
-        next.parentCategoryId = data.parentCategoryId;
         container.splice(index,1);
-        this.task.branch.forEach(function (b) {
-          if(b[0].parentCategoryId===data.categoryId){
-            b[0].parentCategoryId = next.categoryId;
-          }
-        });
+        if(next) {
+          next.parentCategoryId = data.parentCategoryId;
+          this.task.branch.forEach(function (b) {
+            if (b[0].parentCategoryId === data.categoryId) {
+              b[0].parentCategoryId = next.categoryId;
+            }
+          });
+        }
       }
       for(var l=this.task.branch.length-1;l>=0;l--){
         if(this.task.branch[l].length===0){
           this.task.branch.splice(l,1);
         }
       }
-      this.render();
+      this.load(this.task);
     }
     function getLast(array) {
       return array.length?array[array.length-1]:null;
@@ -280,6 +288,8 @@
       var laskTask;
       task.master && task.master.forEach(function (g) {
         g.parentCategoryId = prev ? prev.categoryId : parent && parent.categoryId;
+        if(prev)
+          prev.hasNext = true;
         prev = g;
         g.line = t2;
         groups.push(g);
@@ -301,7 +311,11 @@
           type:'line',
           line:(++t)
         });
+        prev = null;
         b.forEach(function (g) {
+          if(prev)
+            prev.hasNext = true;
+          prev = g;
           g.line = t;
           groups.push(g);
           g.tasks && g.tasks.forEach(function (tk) {

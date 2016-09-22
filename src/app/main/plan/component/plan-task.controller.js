@@ -16,7 +16,14 @@
   function planTask(template,$mdSidenav){
     var vm = this,
       temp;
-    vm.toggleRight = buildToggler('right');
+    vm.toggleRight = function () {
+      return $mdSidenav('right')
+        .open();
+    }
+    vm.closeRight = function () {
+      return $mdSidenav('right')
+        .close();
+    }
     vm.onLoadTemplate = function () {
       if(temp)return;
       var task = {
@@ -123,29 +130,37 @@
           vm.toggleRight();
         }
       });
-      temp.load(task);
+      temp.load({
+        taskId:1,
+        name:'测试',
+        master:[],
+        branch:[]
+      });
+      vm.toggleRight();
     }
 
     vm.save = function () {
       temp && temp.edit(vm.current);
-      //vm.toggleRight();
+      vm.closeRight();
     }
-    vm.next = function () {
-      temp && temp.edit(vm.next,vm.current);
-      //vm.toggleRight();
+    vm.nextSave = function () {
+      var next = angular.extend({},vm.next);
+      vm.next = {};
+      next.categoryId = new Date().getTime();
+      temp && temp.add(next,vm.current);
+      vm.closeRight();
     }
     vm.nextBranch = function () {
-      temp && temp.edit(vm.branch,vm.current,true);
-      //vm.toggleRight();
+      var next = angular.extend({},vm.branch);
+      vm.branch = {};
+      next.categoryId = new Date().getTime();
+      temp && temp.add(next,vm.current,true);
+      vm.closeRight();
+    }
+    vm.remove = function () {
+      temp && temp.remove(vm.current);
+      vm.closeRight();
     }
 
-    function buildToggler(navID) {
-      return function() {
-        $mdSidenav(navID)
-          .toggle()
-          .then(function () {
-          });
-      }
-    }
   }
 })(angular,undefined);

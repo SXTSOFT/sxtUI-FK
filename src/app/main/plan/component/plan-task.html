@@ -15,6 +15,12 @@
           <input type="number" ng-model="vm.data.gq" >
         </md-input-container>
         <md-select ng-model="weapon" placeholder="关联工序" class="md-block" multiple>
+          <md-select-header class="sxt-select-header">
+            <md-input-container md-no-float class="md-block">
+              <input type="search" class="md-text" placeholder="输入关键字" >
+              <md-icon md-font-icon="icon-plus" style="display:inline-block;"></md-icon>
+            </md-input-container>
+          </md-select-header>
           <md-option value="axe">Axe</md-option>
           <md-option value="sword">Sword</md-option>
           <md-option value="wand">Wand</md-option>
@@ -37,7 +43,7 @@
       </md-content>
       <md-sidenav layout="column" class="md-sidenav-right md-whiteframe-4dp white-bg" style="max-width: 600px;width:600px" md-component-id="right">
         <md-tabs md-border-bottom flex >
-          <md-tab label="流程信息">
+          <md-tab label="流程信息" ng-disabled="!vm.current">
             <md-tab-content layout-padding >
               <form>
                 <md-input-container class="md-block">
@@ -45,6 +51,12 @@
                   <input type="text" ng-model="vm.current.name" md-autofocus>
                 </md-input-container>
                 <md-select ng-model="weapon" placeholder="备选任务" class="md-block" multiple>
+                  <md-select-header class="demo-select-header">
+                    <md-input-container md-no-float class="md-block">
+                      <input ng-model="user.address" type="text" placeholder="Address" >
+                      <md-icon md-font-icon="icon-plus" style="display:inline-block;"></md-icon>
+                    </md-input-container>
+                  </md-select-header>
                   <md-option value="axe">Axe</md-option>
                   <md-option value="sword">Sword</md-option>
                   <md-option value="wand">Wand</md-option>
@@ -72,9 +84,12 @@
               <md-button ng-click="vm.save()" class="md-primary md-raised md-mini">
                 保存
               </md-button>
+              <md-button ng-click="vm.remove()" class="md-warn md-raised md-mini">
+                删除
+              </md-button>
             </md-tab-content>
           </md-tab>
-          <md-tab label="添加流程">
+          <md-tab label="添加流程" ng-disabled="vm.current && vm.current.hasNext">
             <md-tab-content  layout-padding>
               <form>
                 <md-input-container class="md-block">
@@ -82,7 +97,7 @@
                   <input type="text" ng-model="vm.next.name" md-autofocus>
                 </md-input-container>
               </form>
-              <md-button ng-click="vm.next()" class="md-primary md-raised  md-mini">
+              <md-button ng-click="vm.nextSave()" class="md-primary md-raised  md-mini">
                 添加
               </md-button>
             </md-tab-content>
