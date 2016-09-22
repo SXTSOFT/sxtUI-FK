@@ -6,7 +6,7 @@
   angular
     .module('app.xhsc')
     .controller('scslmainController',scslmainController);
-  function scslmainController($mdDialog,db,scRemote,sxt,$rootScope,$scope,scPack,utils,$q,api,$state){
+  function scslmainController($mdDialog,db,scRemote,sxt,$rootScope,$scope,scPack,utils,$q,api,$state,$mdBottomSheet){
     var vm = this;
     var remote=  scRemote;
     var pack=scPack;
@@ -49,6 +49,8 @@
                 result.data.forEach(function (item) {
                   if (pics.indexOf(item.DrawingID) == -1&&!offPics.find(function(r){
                       return r._id==item.DrawingID;
+                    })&&vm.sc.find(function(k){
+                      return k.AcceptanceItemID==item.AcceptanceItemID;
                     })) {
                     pics.push(item.DrawingID);
                   }
@@ -118,7 +120,7 @@
             })
           })
         }
-
+        vm.sc=[];
         $mdDialog.show({
           controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
             $scope.item=item;
@@ -139,7 +141,22 @@
               return remote.Assessment.GetRegionTreeInfo(item.ProjectID,"pack"+item.AssessmentID);
             });
             tasks.push(function(){
-              return remote.Assessment.GetBaseMeasure("pack"+item.AssessmentID)
+              return remote.Assessment.GetBaseMeasure("pack"+item.AssessmentID).then(function(r){
+                var d= r.data&& r.data.data?r.data.data:[];
+                d.forEach(function(k){
+                  if (k.WPAcceptanceList.length){
+                    vm.sc=vm.sc.concat(k.WPAcceptanceList);
+                  }
+                  if (k.SpecialtyChildren&& k.SpecialtyChildren.length){
+                    k.SpecialtyChildren.forEach(function(n){
+                      if (n.WPAcceptanceList&& n.WPAcceptanceList.length){
+                        vm.sc=vm.sc.concat(n.WPAcceptanceList);
+                      }
+                    });
+                  }
+                })
+                return r;
+              })
             })
             tasks = tasks.concat(projectTask(item.ProjectID));
             item.percent = item.current =0; item.total = tasks.length;
@@ -179,39 +196,51 @@
         }
       },$scope);
 
-      vm.upload =function (item) {
-        item.uploading = true;
-        item.progress=0;
+      vm.upload = function (item) {
+        item.progress = 0;
         remote.Project.getMap(item.ProjectID).then(function (result) {
-            if(result.data&&result.data.length){
-              var pk = pack.sc.up(item.AssessmentID);
-              pk.upload(function (proc) {
-                item.progress = proc;
-                if(proc==-1) {
-                  item.completed = pk.completed;
-                  if(item.completed)
-                    remote.Assessment.sumReportTotal(item.AssessmentID).then(function(){
-                      xcpk.addOrUpdate(vm.data);
-                      item.progress = 100;
-                      utils.alert('同步完成');
-                      item.uploading = false;
-                    })
-                  else {
-                    utils.alert('同步发生错误,未完成!');
-                    item.uploading = false;
+          if (result.data && result.data.length) {
+            $mdDialog.show({
+              controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+                $scope.item=item;
+                var pk = pack.sc.up(item.AssessmentID);
+                pk.upload(function (proc, curent, total) {
+                  if (proc!=-1){
+                    item.percent = proc;
+                    item.current=curent;
+                    item.total=total;
+                  } else{
+                    $mdDialog.hide();
+                    item.current = item.total = null;
+                    item.completed = pk.completed;
+                    if (item.completed)
+                      remote.Assessment.sumReportTotal(item.AssessmentID).then(function () {
+                        xcpk.addOrUpdate(vm.data);
+                        utils.alert('同步完成');
+                        pack.sc.remove(item.AssessmentID,function(){});
+                      })
+                    else {
+                      utils.alert('同步发生错误,未完成!');
+                      $mdDialog.hide();
+                    }
                   }
-                }
-              });
-            }
-            else{
-              utils.alert(result.data.ErrorMessage);
-            }
-          })
-          .catch(function () {
-            utils.alert('网络出现异常')
-          })
+                });
+              }],
+              template: '<md-dialog aria-label="正在下载"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+              parent: angular.element(document.body),
+              clickOutsideToClose:false,
+              fullscreen: false
+            });
+          }
+          else {
+            utils.alert(result.data.ErrorMessage);
+          }
+        }).catch(function () {
+          utils.alert('网络出现异常')
+        })
 
       }
+
       function queryOnline() {
         vm.onlines = [];
         vm.offlines = [];
@@ -264,6 +293,59 @@
           })
         })
       }
+
+      vm.action=function(item,evt){
+        $mdBottomSheet.show({
+          templateUrl: 'app/main/xhsc/procedure/action.html',
+          controller:function($scope){
+            $scope.btns=[{
+              title:'实 测',
+              action:function(){
+                $mdBottomSheet.hide();
+                vm.go(item);
+              }
+            },{
+              title:'刷 新',
+              action:function(){
+                $mdBottomSheet.hide();
+                vm.download(item,true);
+              }
+            },{
+              title:'上 传',
+              action:function(){
+                vm.upload(item);
+                $mdBottomSheet.hide();
+              }
+            },{
+              title:'删 除',
+              action:function(){
+                $mdBottomSheet.hide();
+                utils.confirm('确认删除?',evt,'','').then(function(){
+                  $mdDialog.show({
+                    controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+                      pack.sc.remove(item.AssessmentID,function () {
+                        $mdDialog.hide();
+                        var idx = vm.data.rows.indexOf(item);
+                        vm.data.rows.splice(idx, 1);
+                        idx = vm.offlines.indexOf(item);
+                        vm.offlines.splice(idx, 1);
+                        xcpk.addOrUpdate(vm.data);
+                        queryOnline();
+                      })
+                    }],
+                    template: '<md-dialog aria-label="正在删除"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在删除,请稍后...</p></md-dialog-content></md-dialog>',
+                    parent: angular.element(document.body),
+                    clickOutsideToClose:false,
+                    fullscreen: false
+                  });
+                })
+              }
+            }]
+          }
+        });
+        evt.stopPropagation();
+      }
+
     });
   }
 })();

@@ -14,7 +14,7 @@
 <!-- Nested horizontal navigation template -->
 <script type="text/ng-template" id="navigation-horizontal-nested.html">
 
-    <div ms-navigation-horizontal-item layout="row">
+    <div ms-navigation-horizontal-item layout="row" ng-if="!vm.isHidden()">
 
         <div class="ms-navigation-horizontal-button" ng-if="!node.uisref && node.title"
              ng-class="{'active md-accent-bg': vm.isActive}">
@@ -35,7 +35,7 @@
 
     </div>
 
-    <ul ng-if="vm.hasChildren">
+    <ul ng-if="vm.hasChildren && !vm.isHidden()">
         <li ng-repeat="node in node.children" ms-navigation-horizontal-node="node"
             ng-class="{'has-children': vm.hasChildren}"
             ng-include="'navigation-horizontal-nested.html'"></li>

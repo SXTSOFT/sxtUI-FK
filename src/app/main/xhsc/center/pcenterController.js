@@ -9,24 +9,21 @@
     .controller('pcenterController',pcenterController);
 
   /**@ngInject*/
-  function pcenterController($scope,$mdDialog,db,auth,$rootScope,api,utils,$q,remote ){
+  function pcenterController($scope,$mdDialog,db,auth,$rootScope,api,utils,$q,remote,versionUpdate ){
     var vm = this;
+
+    vm.serverAppVersion = versionUpdate.version;
     var pro=[
-      remote.Procedure.authorityByUserId(),
-      auth.getUser()
+      remote.profile()
     ];
     $q.all(pro).then(function(r){
       var role=r[0];
-      var u=r[1];
-      console.log(r);
       vm.user={};
       vm.u={};
-      if (u){
-        vm.user.name= u.Name,
-        vm.user.userName= u.UserName
-      }
-      if (role&&role.data&&role.data.length){
-          switch (role.data[0].MemberType){
+      if (role&&role.data&&role.data){
+          vm.user.name= role.data.Name,
+          vm.user.userName= role.data.UserName
+          switch (role.data.Role.MemberType){
             case 0:
               vm.user.role='总包';
                   break
@@ -40,16 +37,16 @@
     });
 
 
-    auth.getUser().then(function(r){
-      if (r){
-        vm.user={
-          Name: r.Name,
-          UserName: r.UserName
-        };
-      }
-      vm.user={};
-       console.log(r)
-    });
+    //auth.getUser().then(function(r){
+    //  if (r){
+    //    vm.user={
+    //      Name: r.Name,
+    //      UserName: r.UserName
+    //    };
+    //  }
+    //  vm.user={};
+    //   console.log(r)
+    //});
 
     $rootScope.$on('sxt:online', function(event, state){
       vm.networkState = api.getNetwork();

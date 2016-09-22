@@ -16,8 +16,8 @@
     var vm=this,
       id =vm.areasssessmentID= $stateParams.assessmentID;
       vm.projectId=$stateParams.projectId;
-      vm.role=$stateParams.role;
-      var isReport= vm.isReport=$stateParams.isReport;
+      //vm.role=$stateParams.role;
+      //var isReport= vm.isReport=$stateParams.isReport;
 
     var pk = db('pack'+id);
     vm.project;
@@ -46,8 +46,8 @@
       $state.go('app.xhsc.scsl.sclist',{
         projectId:vm.projectId,
         assessmentID:vm.areasssessmentID,
-        area:item.regionID,
-        isReport:vm.isReport
+        area:item.regionID
+        //isReport:vm.isReport
       });
     }
   }

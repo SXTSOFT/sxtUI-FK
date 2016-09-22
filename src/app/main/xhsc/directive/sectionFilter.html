@@ -1,0 +1,121 @@
+<md-content flex class="md-padding" layout="column">
+  <md-card flex style="background-color: white"  md-theme-watch>
+
+    <md-toolbar class="md-hue-1">
+      <div class="md-toolbar-tools">
+        <h2>
+          <span>筛选条件</span>
+        </h2>
+      </div>
+    </md-toolbar>
+    <div style="padding: 15px">
+      <h5 >已选区域</h5>
+      <md-chips  md-on-remove="vm.removeRegion($chip)" ng-model="secSelected" name="RegionName" readonly="true"
+                 md-removable="true" md-max-chips="5">
+        <md-chip-template>
+          {{$chip.RegionName}}
+        </md-chip-template>
+      </md-chips>
+    </div>
+    <md-card-content >
+      <div ng-show="(!level||level>0)&&secSelected.length==0" layout="row">
+        <md-input-container  md-theme="default" flex>
+          <label>项目</label>
+          <md-select  ng-model="vm.ngModel[0]" name="type" >
+            <md-option ng-click="vm.getChild(item)" ng-repeat="item in vm.secSource[0]"  ng-value="item.RegionID">{{item.RegionName}}</md-option>
+          </md-select>
+        </md-input-container>
+        </md-input-container>
+      </div>
+      <div ng-show="(!level||level>1)&&secSelected.length==1" layout="row">
+        <md-input-container  md-theme="default" flex>
+          <label>分期</label>
+          <md-select  ng-model="vm.ngModel[1]" name="type" >
+            <md-option ng-click="vm.getChild(item)" ng-repeat="item in vm.secSource[1]"  ng-value="item.RegionID">{{item.RegionName}}</md-option>
+          </md-select>
+        </md-input-container>
+        </md-input-container>
+      </div>
+      <div ng-show="(!level||level>2)&&secSelected.length==2" layout="row">
+        <md-input-container  md-theme="default" flex>
+          <label>楼栋</label>
+          <md-select  ng-model="vm.ngModel[2]" name="type" >
+            <md-option ng-click="vm.getChild(item)" ng-repeat="item in vm.secSource[2]"  ng-value="item.RegionID">{{item.RegionName}}</md-option>
+          </md-select>
+        </md-input-container>
+        </md-input-container>
+      </div>
+      <div ng-show="(!level||level>3)&&secSelected.length==3" layout="row">
+        <md-input-container  md-theme="default" flex>
+          <label>楼层</label>
+          <md-select  ng-model="vm.ngModel[3]" name="type" >
+            <md-option ng-click="vm.getChild(item)" ng-repeat="item in vm.secSource[3]"  ng-value="item.RegionID">{{item.RegionName}}</md-option>
+          </md-select>
+        </md-input-container>
+        </md-input-container>
+      </div>
+      <div ng-show="(!level||level>4)&&secSelected.length==4" layout="row">
+        <md-input-container  md-theme="default" flex>
+          <label>房间</label>
+          <md-select  ng-model="vm.ngModel[4]"  name="type" >
+            <md-option ng-repeat="item in vm.secSource[4]" ng-value="item.RegionID">{{item.RegionName}}</md-option>
+          </md-select>
+        </md-input-container>
+        </md-input-container>
+      </div>
+      <div layout="row" ng-click="click()"><md-input-container md-theme="default" style="padding-left: 2px" flex> <label style="left: 0px">工序</label> <div> <input ng-model="gxNames" disabled/> <md-button class="md-icon-button md-primary" style="position: absolute;right: -8px;" aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon> </md-button> </div> </md-input-container> </div>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="cent center">
+      <md-button flex ng-click="submit()" class="md-raised md-primary">确定</md-button>
+    </md-card-actions>
+  </md-card>
+  <md-sidenav id="gx_nav" layout="column" style="min-width: 80%" class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h4>选择工序</h4>
+        <span flex></span>
+        <!--<md-button style="min-width:50px" ng-click="close()">关闭</md-button>-->
+        <md-button  ng-click="ok()">确定</md-button>
+      </div>
+    </md-toolbar>
+    <md-tabs  md-border-bottom   flex  style="background-color:white">
+      <md-tab label="已选工序">
+        <md-tab-content layout="column">
+          <md-content  flex layout="row">
+            <md-list style="box-shadow:1px 0px 15px 0 #d8d8d8 " flex="40" ms-scroll>
+              <md-list-item ng-repeat="item in gxSelected">
+                <md-checkbox ng-click="remove(item)" ng-model="item.checked" style="margin-right: 8px">
+                  {{item.AcceptanceItemName}}
+                </md-checkbox>
+                <p flex>{{item.AcceptanceItemName}}</p>
+              </md-list-item>
+              <span flex></span>
+            </md-list>
+          </md-content >
+        </md-tab-content>
+      </md-tab>
+      <md-tab  ng-repeat="gx1 in procedures" label="{{gx1.SpecialtyName}}">
+        <md-tab-content layout="column">
+          <md-content   flex layout="column">
+            <div flex  layout="row">
+              <div flex="40"  style="position: relative" ms-scroll layout="column">
+                <md-list style="margin-left:8px ">
+                  <md-list-item   ng-click="selectSpecialtyLow(item,gx1)" layout="row" ng-repeat="item in  gx1.SpecialtyChildren" >
+                    <p>{{item.SpecialtyName}}</p>
+                  </md-list-item>
+                </md-list>
+              </div>
+              <md-list flex style="box-shadow:-1px 0px 15px 0 #d8d8d8 ">
+                <md-list-item  layout="row" ng-repeat="item in  gx1.WPAcceptanceList" >
+                  <md-checkbox ng-click="choosego(item)"  ng-model="item.checked" style="margin-right: 8px">
+                  </md-checkbox>
+                  <p flex>{{item.AcceptanceItemName}}</p>
+                </md-list-item>
+              </md-list>
+            </div>
+          </md-content>
+        </md-tab-content>
+      </md-tab>
+    </md-tabs>
+  </md-sidenav>
+</md-content>

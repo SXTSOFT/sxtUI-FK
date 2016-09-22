@@ -11,7 +11,7 @@
         <div class="toolbar-separator"></div>
 
         <md-progress-circular id="toolbar-progress" ng-if="$root.loadingProgress" class="md-accent"
-                              md-mode="indeterminate" md-diameter="64">
+                              md-mode="indeterminate" md-diameter="32">
         </md-progress-circular>
     </div>
 
@@ -29,7 +29,7 @@
                                      class="icon status s16">
                             </md-icon>
                         </div>
-                        <span class="username" hide-xs>{{vm.user.Username}}</span>
+                        <span class="username" hide-xs>{{vm.user.Name}}</span>
                         <md-icon md-font-icon="icon-chevron-down"
                                  class="icon s16" hide-xs></md-icon>
                     </div>

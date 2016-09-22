@@ -15,7 +15,6 @@
     remote.Project.queryAllBulidings($stateParams.projectId).then(function (result) {
     })
     remote.Procedure.GetPermissionsByProjectId($stateParams.projectId).then(function(res){
-      console.log('a',res)
       var personzbList = [],personjlList=[],persongcList=[];
       res.data.forEach(function(p){
         if(p.MemberType == 0){
@@ -45,7 +44,6 @@
         })
       })
       setUser();
-      //console.log('all',vm.allpersons)
     })
 
     function setUser(){

@@ -18,7 +18,7 @@
     vm.projectId = $stateParams.projectId;
     vm.assessmentID=$stateParams.assessmentID;
     vm.area=$stateParams.area;
-    var isReport=vm.isReport=$stateParams.isReport;
+    //var isReport=vm.isReport=$stateParams.isReport;
 
     function  callback(result){
       vm.procedureData = [];
@@ -55,8 +55,8 @@
         acceptanceItemID:item.AcceptanceItemID ,
         projectId: vm.projectId,
         acceptanceItemName:item.MeasureItemName,
-        maxRegion: getMax(item.SplitRule),
-        isReport:vm.isReport
+        maxRegion: getMax(item.SplitRule)
+        //isReport:vm.isReport
       });
     };
   }

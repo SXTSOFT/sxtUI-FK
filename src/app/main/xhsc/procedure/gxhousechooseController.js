@@ -18,7 +18,7 @@
       acceptanceItemName = $stateParams.acceptanceItemName,
       role=$stateParams.role,
       areaId = $stateParams.areaId;
-    vm.maxRegion = $stateParams.maxRegion;
+      vm.maxRegion = $stateParams.maxRegion;
 
     $rootScope.title = $stateParams.acceptanceItemName;
     if(role == "zb"){

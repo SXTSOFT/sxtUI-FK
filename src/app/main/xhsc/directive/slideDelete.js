@@ -19,28 +19,39 @@
       var moveX,moveY;
       var X = 0,Y=0;
       var objX = 0,objY=0;
+      var isScrolling,isMoved,isTouched;
       function touchstart(event){
-       // console.log(e)
+        // console.log(e)
         var obj= $(event.target).parents('md-list-item');
         if(obj[0]){
+          isMoved = false;
+          isTouched = true;
+          isScrolling = undefined;
           initX = event.targetTouches[0].pageX;
           initY = event.targetTouches[0].pageY;
           objX =(obj[0].style.WebkitTransform.replace(/translateX\(/g,"").replace(/px\)/g,""))*1;
         }
       }
       function touchmove(event){
+        if (!isTouched) return;
+        moveX = event.targetTouches[0].pageX;
+        moveY = event.targetTouches[0].pageY;
+        if (typeof isScrolling === 'undefined') {
+          isScrolling = !!(isScrolling || Math.abs(moveY - initY) > Math.abs(moveX - initX));
+        }
+        if (isScrolling) {
+          isTouched = false;
+          return;
+        }
         var obj= $(event.target).parents('md-list-item');
         if(objX==0){
-          if(obj[0]){
-            moveX = event.targetTouches[0].pageX;
-            moveY = event.targetTouches[0].pageY;
+          if(obj[0] && !isMoved){
+
             X = moveX - initX;
             Y=moveY - initY;
             //console.log(Y)
-            if(Math.abs(Y)>5){
-              event.preventDefault();
-              return;
-            }
+            // isMoved = true;
+            event.preventDefault();
             //X<0 往左
             //console.log(Y)
             if(X>0){
@@ -53,16 +64,16 @@
                 obj[0].style.WebkitTransform = "translateX(" + -l + "px)";
               }
             }
+
           }
         }else if(objX<0){
-          if(obj[0]){
+          if(obj[0] && !isMoved){
             moveX = event.targetTouches[0].pageX;
             moveY = event.targetTouches[0].pageY;
             X = moveX - initX;
             Y=moveY - initY;
-            if(Math.abs(X)>10){
-              event.preventDefault();
-            }
+            // isMoved = true;
+            event.preventDefault();
             if(X>0){
               var r = -160 + Math.abs(X);
               obj[0].style.WebkitTransform = "translateX(" + r + "px)";
@@ -79,16 +90,24 @@
 
       }
       function touchend(event){
+        if (!isTouched || !isMoved) {
+          isTouched = false;
+          isMoved = false;
+          return;
+        }
+
+        isTouched = false;
+        isMoved = false;
         var obj= $(event.target).parents('md-list-item');
         if(obj[0]){
-           // event.preventDefault();
-            objX =(obj[0].style.WebkitTransform.replace(/translateX\(/g,"").replace(/px\)/g,""))*1;
-            if(objX>-40){
-              obj[0].style.WebkitTransform = "translateX(" + 0 + "px)";
-            }else{
-              obj[0].style.WebkitTransform = "translateX(" + -160 + "px)";
-            }
+          // event.preventDefault();
+          objX =(obj[0].style.WebkitTransform.replace(/translateX\(/g,"").replace(/px\)/g,""))*1;
+          if(objX>-40){
+            obj[0].style.WebkitTransform = "translateX(" + 0 + "px)";
+          }else{
+            obj[0].style.WebkitTransform = "translateX(" + -160 + "px)";
           }
+        }
       }
 
       window.addEventListener('touchstart',touchstart,false);

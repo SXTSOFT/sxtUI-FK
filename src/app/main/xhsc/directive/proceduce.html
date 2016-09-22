@@ -1,0 +1,49 @@
+<div flex layout="column">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h4>选择工序</h4>
+      <span flex></span>
+      <md-button style="min-width:40px" ng-click="ctrl.ok()">确定</md-button>
+      <md-button id="_cancel" ng-click="ctrl.close()" style="min-width:50px">取消</md-button>
+    </div>
+  </md-toolbar>
+    <md-tabs md-selected="1" md-border-bottom   flex  style="background-color:white">
+      <md-tab label="已选工序">
+        <md-tab-content layout="column">
+          <div flex layout="row">
+            <md-list style="box-shadow:1px 0px 15px 0 #d8d8d8 " flex="40" ms-scroll>
+              <md-list-item ng-repeat="item in ctrl.selected">
+                <md-checkbox ng-click="ctrl.remove(item)" ng-model="item.checked" style="margin-right: 8px">
+                  {{item.AcceptanceItemName}}
+                </md-checkbox>
+                <p flex>{{item.AcceptanceItemName}}</p>
+              </md-list-item>
+              <span flex></span>
+            </md-list>
+          </div>
+        </md-tab-content>
+      </md-tab>
+      <md-tab  ng-repeat="gx1 in ctrl.procedures" label="{{gx1.SpecialtyName}}">
+        <md-tab-content layout="column">
+          <md-content   flex layout="column">
+            <div flex  layout="row">
+              <div flex="40"  style="position: relative" ms-scroll layout="column">
+                <md-list>
+                  <md-list-item   ng-click="ctrl.selectSpecialtyLow(item,gx1)" layout="row" ng-repeat="item in  gx1.SpecialtyChildren" >
+                    <p>{{item.SpecialtyName}}</p>
+                  </md-list-item>
+                </md-list>
+              </div>
+              <md-list flex style="box-shadow:-1px 0px 15px 0 #d8d8d8 ">
+                <md-list-item  layout="row" ng-repeat="item in  gx1.WPAcceptanceList" >
+                    <md-checkbox ng-click="ctrl.choosego(item)"  ng-model="item.checked" style="margin-right: 8px">
+                    </md-checkbox>
+                    <p flex>{{item.AcceptanceItemName}}</p>
+                </md-list-item>
+              </md-list>
+          </div>
+          </md-content>
+        </md-tab-content>
+      </md-tab>
+    </md-tabs>
+</div>

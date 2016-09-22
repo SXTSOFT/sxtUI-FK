@@ -21,6 +21,14 @@
         <span class="border1px bottom1px"></span>
       </div>
     </md-list-item>
+    <md-list-item  style="margin:0px;border: 0px solid">
+      <div class="md-list-item-text" layout="row"  flex>
+        <p style="width: 60px;text-align-last: justify">当前版本</p>
+
+        <p  style="padding-left: 30px">{{ vm.serverAppVersion}}</p>
+        <span class="border1px bottom1px"></span>
+      </div>
+    </md-list-item>
     <md-list-item>
       <p>模式({{vm.networkState?'离线':'在线'}})</p> <p class="md-secondary md-hue-3">
       <md-switch ng-model="vm.networkState" ng-disabled="true" aria-label="模式" ng-true-value="0" ng-false-value="1" class="md-warn"></md-switch></p>

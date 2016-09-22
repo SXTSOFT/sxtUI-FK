@@ -78,7 +78,7 @@
           type = task.type;
 
       });
-      process && process(parseInt( p/self.tasks.length*100));
+      process && process(parseInt( p/self.tasks.length*100),p,self.tasks.length);
 
       return tasks;
     }
@@ -105,7 +105,6 @@
           self.upTask();
         },function (progress) {
           tasks[0].progress = (progress.loaded / progress.total) * 100;
-          // (progress.loaded / progress.total) * 100
         });
       }
       else{

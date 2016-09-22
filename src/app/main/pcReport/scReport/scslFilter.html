@@ -1,0 +1,77 @@
+<md-toolbar class="md-hue-1">
+  <div class="md-toolbar-tools">
+    <h4>
+      <span>现场评估</span>
+    </h4>
+  </div>
+</md-toolbar>
+<md-card  style="background-color: white" md-theme-watch>
+  <md-card-content>
+    <sxt-projects-jd ng-model="project.pid" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
+    </sxt-projects-jd>
+    <div layout="row" flex >
+      <md-input-container  md-theme="default" flex>
+        <label>实测项</label>
+        <md-select  ng-model="currentSC" class="md-no-underline" name="type"  style="border: 1px solid #ddd;height: 32px;border-radius: 5px;padding-left: 8px">
+          <md-option ng-repeat="item in vm.mes" ng-value="item.AcceptanceItemID">{{item.MeasureItemName}}</md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+  </md-card-content>
+</md-card>
+<div  flex style="margin: 24px 16px">
+  <table class="table table-hover"  style="margin-top: 20px;">
+    <thead>
+    <tr>
+      <th style="width: 60px;text-align: center">序号</th>
+      <th style="width:20%;text-align: center">公司</th>
+      <th style="width:20%;text-align: center">项目</th>
+      <th style="width: 20%;text-align: center">实测项</th>
+      <th style="text-align: center">区域</th>
+      <th style="min-width: 50px;text-align: center">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr data-ng-repeat="item in vm.source">
+      <td style="vertical-align: middle">{{$index+1}}</td>
+      <td style="text-align: left;padding-left: 36px;min-width: 120px;vertical-align: middle">{{item.CompanyName}}</td>
+      <td style="text-align: left;padding-left: 32px;min-width: 120px;vertical-align: middle">
+        {{item.ProjectName}}
+      </td>
+      <td style="text-align: left;min-width: 120px;padding-left: 15px;vertical-align: middle">
+        {{item.MeasureItemName}}
+      </td>
+      <td style="text-align: left;padding-left: 15px;min-width: 120px;vertical-align: middle">
+        {{item.AreaName}}
+      </td>
+      <td style="vertical-align: middle">
+        <md-button  class="md-primary"  ng-click="vm.go(item)" aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>查看</md-button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div  layout="row">
+    <span flex></span>
+    <md-select ng-model="pageing.pageSize" class="pageSZ">
+      <md-option value="10">10</md-option>
+      <md-option value="20">20</md-option>
+      <md-option value="40">40</md-option>
+      <md-option value="80">80</md-option>
+      <md-option value="100">100</md-option>
+    </md-select>
+    <div style="text-align: right;margin-right: 15px"
+         paging page="pageing.page"
+         page-size="pageing.pageSize"
+         total="pageing.total"
+         paging-action="vm.pageAction('bar', page, pageSize, total)">
+    </div>
+  </div>
+</div>
+
+<!--<div style="height:100%" flex class="md-padding">-->
+  <!--<sxt-projects-jd ng-model="project.pid" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">-->
+  <!--</sxt-projects-jd>-->
+
+  <!---->
+
+<!--</div>-->
