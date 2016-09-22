@@ -13,7 +13,6 @@
     var vm = this;
     vm.projectId = $stateParams.projectId;
     remote.Project.queryAllBulidings(vm.projectId).then(function(result){
-      console.log(result)
       var mainTitle = result.data.ProjectName;
       result.data[0].Sections.forEach(function(t){
         t.title = (mainTitle||'') + t.SectionName;

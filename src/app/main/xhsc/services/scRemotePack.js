@@ -83,8 +83,7 @@
           type = task.type;
 
       });
-      process && process(parseInt( p/self.tasks.length*100));
-
+      process && process(parseInt(p>0? p/self.tasks.length*100:0),p,self.tasks.length);
       return tasks;
     }
     Pack.prototype.upTask = function (process) {

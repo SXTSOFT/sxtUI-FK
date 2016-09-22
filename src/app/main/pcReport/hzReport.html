@@ -15,7 +15,9 @@
         <tr data-ng-repeat="item in vm.report">
           <td>{{$index+1}}</td>
           <td>{{item.OUName}}</td>
-          <td> <md-button ng-click="vm.selecte(item)" class="md-accent" >{{item.ProjectName}}</md-button> </td>
+          <td> <md-button ng-click="vm.selecte(item)" class="md-accent" style=" font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif';font-size: 13px;" >
+            {{item.ProjectName}}</md-button>
+          </td>
           <td>
             <table>
               <tr>

@@ -19,94 +19,88 @@
     var vm = this;
     $scope.currentSC;
 
-    vm.removeRegion=function(chip){
-      if (chip.index||chip.index===0){
-        for (var  i=chip.index;i<vm.ngModel.length;i++){
-          vm.ngModel[i]=null;
+    $scope.$watch('project.pid',function(){
+      $scope.currentSC = null;
+      remote.Project.GetMeasureItemInfoByAreaID($scope.project.pid).then(function(r){
+        if (r&& r.data){
+          vm.mes=r.data;
         }
-      }
-      for (var i=$scope.secSelected.length-1;i>=0;i--)
-      {
-        if ($scope.secSelected[i].RegionID.toString().length>chip.RegionID.toString().length){
-          $scope.secSelected.splice(i,1);
-        }
-      }
-    }
-    vm.secSource=[[],[],[],[],[]];
-    vm.ngModel=[null,null,null,null,null]
-    $scope.secSelected=[]
-    remote.Project.getMap().then(function (result) {
-      result.data.forEach(function (m) {
-        vm.secSource[0].push({
-          RegionID: m.ProjectID,
-          RegionName: m.ProjectName
-        })
-      });
-    });
-    vm.getChild=function(item){
-      $timeout(function(){
-        function child(){
-          return  remote.Project.GetAreaChildenbyID(item.RegionID);
-        }
-        switch ((""+item.RegionID).length){
-          case 5:
-            item.index=0;
-            child().then(function(r){
-              vm.secSource[1]= r.data;
-            });
-            break;
-          case 10:
-            item.index=1;
-            child().then(function(r){
-              vm.secSource[2]= r.data;
-            });
-            break;
-          case 15:
-            item.index=2;
-            child().then(function(r){
-              vm.secSource[3]= r.data;
-            });
-            break;
-          case 20:
-            item.index=3;
-            child().then(function(r){
-              vm.secSource[4]= r.data;
-            });
-            break;
-          case 25:
-            item.index=4;
-            child().then(function(r){
-              vm.secSource[5]= r.data;
-            });
-            break;
-        }
-        $scope.secSelected.push(item);
       })
-    }
-    vm.click=function(){
-      $rootScope.scParams={
-        scSelected: $scope.currentSC,
-        secSelected:$scope.secSelected.length?$scope.secSelected[length-1]:null
+    })
+    $scope.$watch('project.pid',function(){
+      if($scope.project.pid||$scope.project.isGo){
+        load()
+      }else {
+        $scope.project.isGo=true;
       }
-      $state.go("app.pcReport_sl_rp",{
-        scSelected:$scope.currentSC,
-        secSelected:$scope.secSelected.length?$scope.secSelected[0].RegionID:null
-      })
+    })
+    $scope.$watch('currentSC',function(){
+      if($scope.currentSC){
+        load()
+      }
+
+    })
+
+    remote.Procedure.authorityByUserId().then(function(res){
+      if (res&&res.data&&res.data.length){
+        vm.role=res.data[0].MemberType;
+      }else {
+        vm.role=0;
+      }
+      vm.go=function(item){
+        $state.go("app.xhsc.scsl.schztb",{
+          regionId: item.AreaID,
+          RegionName: item.AreaName,
+          name: item.AreaName,
+          //regionType:Math.pow(2,(item.AreaID.length/5)),
+          db:'scsl'+ item.ProjectID+'_'+vm.role,
+          measureItemID: item.AcceptanceItemID,
+          pname: item.MeasureItemName
+        });
+      }
+
+      //业务数据包
+    }).catch(function(r){});
+
+    $scope.pageing={
+      page:1,
+      pageSize:10,
+      total:0
     }
 
-    $scope.$watch(function(){
-      return vm.ngModel[0];
-    },function(){
-      if (vm.ngModel[0]){
-        remote.Project.GetMeasureItemInfoByAreaID(vm.ngModel[0].RegionID).then(function(r){
-          if (r&& r.data){
-            vm.mes=r.data;
-          }
-        })
-      }else {
-        $scope.currentSC=null;
+    $scope.$watch("pageing.pageSize",function(){
+      if ($scope.pageing.pageSize){
+        load();
       }
-    });
+    },true);
+
+    function load(){
+      remote.Assessment.GetMeasureList({
+        ProjectId: $scope.project.pid?$scope.project.pid:"",
+        AcceptanceItemIDs:$scope.currentSC?[$scope.currentSC]:[],
+        PageSize: $scope.pageing.pageSize,
+        CurPage: $scope.pageing.page-1
+      }).then(function(r){
+        $scope.pageing.total= r.data.TotalCount;
+        vm.source= r.data.Data;
+      }).catch(function(){
+      });
+    }
+    vm.pageAction=function(title, page, pageSize, total){
+      $scope.pageing.page=page;
+      load();
+    }
+
+    vm.Lookintoys = function(item){
+      $state.go('app.xhsc.gx.gxzgreport',{InspectionId:item.InspectionId, acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,projectId:item.ProjectID});
+    }
+    $scope.project = {
+      isMore: true,
+      onQueryed: function (data) {
+        $scope.project.data = data;
+      }
+    };
+
 
   }
 })();
