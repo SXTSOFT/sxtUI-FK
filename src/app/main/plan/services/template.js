@@ -8,34 +8,39 @@
   /** @ngInject */
   function template($window) {
 
+    $window.GitGraph.Commit.prototype._render = $window.GitGraph.Commit.prototype.render;
+    $window.GitGraph.Commit.prototype.render = function () {
+      this._render();
+      this.context.fillStyle = 'white';
+      if(this.tag) {
+        this.context.fillText(this.tag.substring(0,1), this.x-5, this.y+5);
+      }
+    }
+
     var graphTemplate = new $window.GitGraph.Template({
       colors: [ "#EF9A9A", "#42A5F5", "#26A69A","#CE93D8" ],
       branch: {
-        lineWidth: 3,
-        spacingX: 60,
+        lineWidth: 6,
+        spacingX: 90,
         mergeStyle: "straight",
         showLabel: true,                // display branch names on graph
-        labelFont: "normal 10pt Arial"
+        labelFont: "normal 13pt Arial"
       },
       commit: {
-        spacingY: -30,
+        spacingY: -60,
         dot: {
-          size: 10,
+          size: 16,
           strokeColor: "#000000",
           strokeWidth: 4
         },
         tag: {
-          font: "normal 10pt Arial",
+          font: "normal 13pt Arial",
           strokeWidth: 1
         },
         message: {
-          font: "normal 12pt Arial",
           display:false
         },
-        shouldDisplayTooltipsInCompactMode:false,
-        tooltipHTMLFormatter:function (commit) {
-          return commit.message;
-        }
+        shouldDisplayTooltipsInCompactMode:false
       },
       arrow: {
         size: 8,
@@ -124,7 +129,8 @@
             t.merge.forEach(function (m) {
               getBranch(m).merge(getBranch(t.line),{
                 author:t.categoryId,
-                tag:ix!==0?t.name:undefined,
+                tag:ix!==0?(t.seq+1)+'、'+ t.name:undefined,
+                displayTagBox:false,
                 dotSize:ix===0?1:0,
                 dotStrokeWidth:ix===0?1:0,
                 dotStrokeColor:ix===0?'transparent':0,
@@ -137,7 +143,8 @@
             if(t.line || t.line===0){
               getBranch(t.line).commit({
                 author:t.categoryId,
-                tag:t.name,
+                tag: (t.seq+1)+'、'+ t.name,
+                displayTagBox:false,
                 message:t.name,
                 onClick:onClick
               });
@@ -284,9 +291,10 @@
       task.type = 'line';
       task.line = t2;
       lines.push(task);
-      var prev = null;
+      var prev = null,seq=0;
       var laskTask;
       task.master && task.master.forEach(function (g) {
+        g.seq = seq++;
         g.parentCategoryId = prev ? prev.categoryId : parent && parent.categoryId;
         if(prev)
           prev.hasNext = true;
@@ -312,9 +320,11 @@
           line:(++t)
         });
         prev = null;
+        seq=0;
         b.forEach(function (g) {
           if(prev)
             prev.hasNext = true;
+          g.seq = seq++;
           prev = g;
           g.line = t;
           groups.push(g);

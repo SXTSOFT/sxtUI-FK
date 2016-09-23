@@ -95,12 +95,13 @@
           tasks: []
         }],
         branch: [
-          [{
-            categoryId: 30,
-            parentCategoryId: 2,
-            name: '前期准备验收',
-            tasks: []
-          },
+          [
+            {
+              categoryId: 30,
+              parentCategoryId: 2,
+              name: '前期准备验收',
+              tasks: []
+            },
             {
               categoryId: 31,
 
@@ -114,7 +115,8 @@
               parentCategoryId: 31,
               name: '前期准备验收4',
               tasks: []
-            }],
+            }
+          ],
           [{
             categoryId: 42,
             parentCategoryId: 31,
@@ -130,12 +132,7 @@
           vm.toggleRight();
         }
       });
-      temp.load({
-        taskId:1,
-        name:'测试',
-        master:[],
-        branch:[]
-      });
+      temp.load(task);
       vm.toggleRight();
     }
 
