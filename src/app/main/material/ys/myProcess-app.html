@@ -46,21 +46,10 @@
           <md-divider></md-divider>
           <md-list-item>
             <div class="md-list-item-text" flex="25" layout="column">
-              <p style="text-align: left;">合同编号</p>
-            </div>
-            <!--<md-select placeholder="" ng-model="vm.checkData.Manufactor" style="width:75%;">-->
-            <!--</md-select>-->
-            <md-input-container class="md-block" flex-gt-sm style="width: 75%;margin: 18px 0 0 0;">
-              <input style="width: 100%;" ng-model="vm.checkData.ContractNumber">
-            </md-input-container>
-          </md-list-item>
-          <md-divider></md-divider>
-          <md-list-item>
-            <div class="md-list-item-text" flex="25" layout="column">
               <p style="text-align: left;">验收时间</p>
             </div>
             <div flex></div>
-            <md-datepicker ng-model="vm.checkData.CheckTime" md-open-on-focus="" style="margin: 18px 0 18px 0;padding-right: 0;"></md-datepicker>
+            <md-datepicker ng-model="vm.checkData.CheckTime" md-open-on-focus style="margin: 18px 0 18px 0;padding-right: 0;"></md-datepicker>
           </md-list-item>
           <md-divider></md-divider>
           <md-list-item>
@@ -71,7 +60,9 @@
               <!--<md-radio-button value="1" class="md-primary">合格</md-radio-button>-->
               <!--<md-radio-button value="0">不合格</md-radio-button>-->
             <!--</md-radio-group>-->
-            <md-switch class="md-secondary" ng-model="vm.checkData.WgCheck" ng-true-value="1" ng-false-value="0"></md-switch>
+            <md-switch class="md-secondary" ng-model="vm.checkData.WgCheck" ng-true-value="1" ng-false-value="0">
+              {{vm.checkData.WgCheck ? '合格':'不合格' }}
+            </md-switch>
           </md-list-item>
           <md-divider></md-divider>
           <md-list-item>
@@ -82,7 +73,9 @@
               <!--<md-radio-button value="1" class="md-primary">需要</md-radio-button>-->
               <!--<md-radio-button value="0">不需要</md-radio-button>-->
             <!--</md-radio-group>-->
-            <md-switch style="height: 76px;" class="md-secondary" ng-model="vm.checkData.IsInspection" ng-true-value="1" ng-false-value="0" ng-disabled="vm.checkData.WgCheck == 0"></md-switch>
+            <md-switch style="height: 76px;" class="md-secondary" ng-model="vm.checkData.IsInspection" ng-true-value="1" ng-false-value="0" ng-disabled="vm.checkData.WgCheck == 0">
+              {{vm.checkData.IsInspection ? '需要':'不需要' }}
+            </md-switch>
           </md-list-item>
           <md-divider></md-divider>
           <md-list-item  ng-click="vm.AttachmentSHow = true">
