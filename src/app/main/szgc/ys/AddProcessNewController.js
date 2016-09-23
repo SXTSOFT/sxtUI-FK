@@ -1004,11 +1004,6 @@
             min = parseFloat(isIn[0]);
           }
         }
-        if (max < min) {
-          var t11 = max;
-          max = min;
-          min = t11;
-        }
 
         if (op == '±') {
           min = -max;
