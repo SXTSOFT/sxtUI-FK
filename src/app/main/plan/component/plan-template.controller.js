@@ -14,6 +14,9 @@
 
   /** @ngInject */
   function planTemplate(){
-
+    var vm=this;
+    vm.ClickSave=function(data){
+      console.log( data,"保存")
+    };
   }
 })(angular,undefined);

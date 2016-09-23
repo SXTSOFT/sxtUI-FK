@@ -1,3 +1,4 @@
+
 <md-toolbar class="md-hue-2">
   <div class="md-toolbar-tools">
     <h2>
@@ -9,26 +10,50 @@
     </md-button>
   </div>
 </md-toolbar>
-<table class="simple" ms-responsive-table>
-  <thead>
-  <tr>
-    <th>名称</th>
-    <th>时间</th>
-    <th>管理</th>
-  </tr>
-  </thead>
 
-  <tfoot>
-  <tr>
-    <td></td>
-  </tr>
-  </tfoot>
+<md-content flex layout="column"  ms-scroll>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th>名称</th>
+      <th>时间</th>
+      <th>管理</th>
+    </tr>
+    </thead>
 
-  <tbody>
-  <tr ng-repeat="person in vm.employees">
-    <td class="name">{{person.name}}</td>
-    <td class="position">{{person.position}}</td>
-    <td class="office">{{person.office}}</td>
-  </tr>
-  </tbody>
-</table>
+    <tfoot>
+    <tr>
+      <td></td>
+    </tr>
+    </tfoot>
+
+    <tbody>
+    <tr ng-repeat="item in vm.items">
+      <td class="name">{{item.name}}</td>
+      <td class="time">{{item.time}}</td>
+      <td class="office">
+        <md-button style=" text-align: left" flex ng-click="vm.Query(item)" class="md-primary"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>查看</md-button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div layout="row">
+    <span flex></span>
+    <md-select ng-model="pageing.pageSize" class="pageSZ">
+      <md-option value="10">10</md-option>
+      <md-option value="20">20</md-option>
+      <md-option value="40">40</md-option>
+      <md-option value="80">80</md-option>
+      <md-option value="100">100</md-option>
+    </md-select>
+    <div style="text-align: right;margin-right: 15px"
+         paging page="pageing.page"
+         page-size="pageing.pageSize"
+         total="pageing.total"
+         paging-action="vm.pageAction('bar', page, pageSize, total)">
+    </div>
+  </div>
+
+</md-content>
+

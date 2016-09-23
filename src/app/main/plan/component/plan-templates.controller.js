@@ -13,7 +13,31 @@
     });
 
   /** @ngInject */
-  function planTemplates(){
+  function planTemplates($scope,remote){
+    var vm = this;
+    $scope.pageing={
+      page:1,
+      pageSize:10,
+      total:50
+    }
 
+    vm.pageAction = function(title, page, pageSize, total){
+      $scope.pageing.page = page;
+    }
+
+    $scope.$watch("vm.pageing",function(){
+      Load();
+    },true);
+
+    vm.Query = function (item) {
+      //todo:模板点击查询
+    }
+
+    function Load() {
+      vm.items =  remote.Plan.GetTaskTemplates({
+        Curpage:$scope.pageing.page-1,
+        PageSize:$scope.pageing.pageSize
+      });
+    }
   }
 })(angular,undefined);

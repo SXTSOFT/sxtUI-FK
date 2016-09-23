@@ -146,10 +146,10 @@
       },
       Procedure:{
         queryProcedure:$http.db({
-            _id: 'AcceptanceInfo',
-            idField: 'SpecialtyID',
-            dataType: 1
-          }).bind(function(){
+          _id: 'AcceptanceInfo',
+          idField: 'SpecialtyID',
+          dataType: 1
+        }).bind(function(){
           return $http.get($http.url('/Api/WPAcceptanceApi/GetWPAcceptanceInfo'));
         }),
         InspectionPoint:$http.db({
@@ -319,15 +319,15 @@
           })
         },
         getRegionStatus:$http.db({
-            _id:'project_status',
-            idField:function (item) {
-              return item.Sign + item.AcceptanceItemID+item.AreaId;
-            },
-            dataType:1,
-            filter:function (item,projectId,Sign) {
-              return item.projectId==projectId && item.Sign==Sign
-            }
-          }).bind(function(projectId,Sign) {
+          _id:'project_status',
+          idField:function (item) {
+            return item.Sign + item.AcceptanceItemID+item.AreaId;
+          },
+          dataType:1,
+          filter:function (item,projectId,Sign) {
+            return item.projectId==projectId && item.Sign==Sign
+          }
+        }).bind(function(projectId,Sign) {
           return $http.get($http.url('/Api/InspectionApi/GetUserInspectionInfo', {
             projectId: projectId,
             Sign:!Sign? "":Sign
@@ -603,10 +603,10 @@
         }).bind(function (db) {
           return $http.get($http.url('/api/MeasureInfo/GetBaseMeasure')).then(function(result){
             result.data=result.data?result.data:[];
-             return {
-                data:{
-                  data:result.data
-                }
+            return {
+              data:{
+                data:result.data
+              }
             }
           });
         }),
@@ -654,10 +654,10 @@
           return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfoNew',{RegionID:regionId,acceptanceIndexID:itemId}));
         },
         query:$http.db({
-            _id:'projects',
-            idField:'AssessmentID',
-            dataType:1
-          }).bind(function () {
+          _id:'projects',
+          idField:'AssessmentID',
+          dataType:1
+        }).bind(function () {
           return $http.get($http.url('/Api/AssessmentApi/GetAssessmentProject'));
         }),
         queryById:function (assessmentID) {
@@ -704,7 +704,7 @@
         getAllMeasureReportData:$http.db({
           _id:'getAllMeasureReportData',
           idField:function(item){
-              return item.CheckRegionID + item.AcceptanceItemID;
+            return item.CheckRegionID + item.AcceptanceItemID;
           },
           dataType:1
         }).bind(function(param){
@@ -738,7 +738,7 @@
           return $http.get($http.url('http://xhszgc.sxtsoft.com:9090/Api/AssessmentApi/GetAssessmentTotalReport',{year:year,projectID:projectID,quarter:quarter,assessmentStage:assessmentStage}));
         },
         queryProjectRegionInfo:function(projectID){
-           return $http.get($http.url('/Api/ProjectInfoApi/GetProjectRegionRelationByProjectID',{projectID:projectID}));
+          return $http.get($http.url('/Api/ProjectInfoApi/GetProjectRegionRelationByProjectID',{projectID:projectID}));
         },
         queryProjectRegionInfo_9090:function(projectID){
           return $http.get($http.url('http://xhszgc.sxtsoft.com:9090/Api/ProjectInfoApi/GetProjectRegionRelationByProjectID',{projectID:projectID}));
@@ -752,28 +752,28 @@
         EngineeringProcess:{
           getWorkingMap:function(projectId){
             return $q(function(resolve){
-                resolve({
-                  data:{
-                    Application: null,
-                    AreaImage: "a13d7f27-f320-40ed-aa43-242075e6c4cf",
-                    AreaRemark: {"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[0.5732421875,0.4951171875]},"options":{"icon":{"options":{"className":"","shadowUrl":null,"iconAnchor":[15,15],"iconSize":[30,30],"iconUrl":"/dp/libs/leaflet/images/photo.png","color":"#ff0000"},"_initHooksCalled":true},"title":"","alt":"","clickable":true,"draggable":false,"keyboard":true,"zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250,"gid":"e5bf57b4-7d71-4161-9b4f-c460766e7398"}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[0.21875,0.49609375]},"options":{"icon":{"options":{"className":"","shadowUrl":null,"iconAnchor":[15,15],"iconSize":[30,30],"iconUrl":"/dp/libs/leaflet/images/photo.png","color":"#ff0000"},"_initHooksCalled":true},"title":"","alt":"","clickable":true,"draggable":false,"keyboard":true,"zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250,"gid":"0f8696fa-f1e7-4f08-be50-5228eaddf32f"}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[0.3975830078125,0.3734130859375]},"options":{"icon":{"options":{"className":"leaflet-div-label","html":"万科时代广场一期","color":"#ff0000"},"_initHooksCalled":true,"_div":{"_leaflet_pos":{"x":568,"y":193}}},"title":"","alt":"","clickable":true,"draggable":true,"keyboard":true,"zIndexOffset":1000,"opacity":1,"riseOnHover":false,"riseOffset":250,"saved":false}},{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[0.15966796875,0.338623046875],[0.2236328125,0.338134765625],[0.223388671875,0.347412109375],[0.22314453125,0.353759765625],[0.2236328125,0.357666015625],[0.22607421875,0.364501953125],[0.231201171875,0.3740234375],[0.2392578125,0.380126953125],[0.24462890625,0.382568359375],[0.249755859375,0.384033203125],[0.255615234375,0.384521484375],[0.264404296875,0.3837890625],[0.2705078125,0.381591796875],[0.27978515625,0.375],[0.28466796875,0.3662109375],[0.2880859375,0.35693359375],[0.2890625,0.35107421875],[0.28759765625,0.3447265625],[0.2880859375,0.3388671875],[0.35107421875,0.3388671875],[0.35205078125,0.370361328125],[0.365966796875,0.37060546875],[0.375244140625,0.361328125],[0.41552734375,0.36083984375],[0.439697265625,0.3505859375],[0.56591796875,0.21533203125],[0.56591796875,0.2001953125],[0.61474609375,0.199951171875],[0.635498046875,0.218994140625],[0.330078125,0.541015625],[0.2822265625,0.546875],[0.16015625,0.5234375],[0.15966796875,0.338623046875]]]},"options":{"stroke":true,"color":"#ff0000","dashArray":null,"lineCap":null,"lineJoin":null,"weight":4,"opacity":0.5,"fill":true,"fillColor":null,"fillOpacity":0.2,"clickable":true,"smoothFactor":1,"noClip":false,"itemId":"5514f7a571fe65ac066cb091","itemName":"万科时代广场一期","areaLabel":{"text":"万科时代广场一期","id":"5514f7a571fe65ac066cb091","lat":0.3734130859375,"lng":0.3975830078125}}}]},
-                    BuildArea: 0,
-                    CreatedId: "e2f0e8396443beab00eaa1f7cb6c2cf7ad8a346a",
-                    CreatedTime: "2016-03-02",
-                    GreenArea: 0,
-                    LandUseType: 0,
-                    Latitude: "22.7172406798959",
-                    Longitude: "114.250833392143",
-                    ModefiedId: "d51474c887fe38b89cf6f4eff740309789f93034",
-                    ModefiedTime: "2016-06-14",
-                    ProjectId: "5513e1c7493fdce42f42d9b1",
-                    ProjectNo: "深圳万科时代广场",
-                    SellLine: "66.7%",
-                    Status: 4,
-                    TotalArea: 0
-                  }
-                })
+              resolve({
+                data:{
+                  Application: null,
+                  AreaImage: "a13d7f27-f320-40ed-aa43-242075e6c4cf",
+                  AreaRemark: {"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[0.5732421875,0.4951171875]},"options":{"icon":{"options":{"className":"","shadowUrl":null,"iconAnchor":[15,15],"iconSize":[30,30],"iconUrl":"/dp/libs/leaflet/images/photo.png","color":"#ff0000"},"_initHooksCalled":true},"title":"","alt":"","clickable":true,"draggable":false,"keyboard":true,"zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250,"gid":"e5bf57b4-7d71-4161-9b4f-c460766e7398"}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[0.21875,0.49609375]},"options":{"icon":{"options":{"className":"","shadowUrl":null,"iconAnchor":[15,15],"iconSize":[30,30],"iconUrl":"/dp/libs/leaflet/images/photo.png","color":"#ff0000"},"_initHooksCalled":true},"title":"","alt":"","clickable":true,"draggable":false,"keyboard":true,"zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250,"gid":"0f8696fa-f1e7-4f08-be50-5228eaddf32f"}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[0.3975830078125,0.3734130859375]},"options":{"icon":{"options":{"className":"leaflet-div-label","html":"万科时代广场一期","color":"#ff0000"},"_initHooksCalled":true,"_div":{"_leaflet_pos":{"x":568,"y":193}}},"title":"","alt":"","clickable":true,"draggable":true,"keyboard":true,"zIndexOffset":1000,"opacity":1,"riseOnHover":false,"riseOffset":250,"saved":false}},{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[0.15966796875,0.338623046875],[0.2236328125,0.338134765625],[0.223388671875,0.347412109375],[0.22314453125,0.353759765625],[0.2236328125,0.357666015625],[0.22607421875,0.364501953125],[0.231201171875,0.3740234375],[0.2392578125,0.380126953125],[0.24462890625,0.382568359375],[0.249755859375,0.384033203125],[0.255615234375,0.384521484375],[0.264404296875,0.3837890625],[0.2705078125,0.381591796875],[0.27978515625,0.375],[0.28466796875,0.3662109375],[0.2880859375,0.35693359375],[0.2890625,0.35107421875],[0.28759765625,0.3447265625],[0.2880859375,0.3388671875],[0.35107421875,0.3388671875],[0.35205078125,0.370361328125],[0.365966796875,0.37060546875],[0.375244140625,0.361328125],[0.41552734375,0.36083984375],[0.439697265625,0.3505859375],[0.56591796875,0.21533203125],[0.56591796875,0.2001953125],[0.61474609375,0.199951171875],[0.635498046875,0.218994140625],[0.330078125,0.541015625],[0.2822265625,0.546875],[0.16015625,0.5234375],[0.15966796875,0.338623046875]]]},"options":{"stroke":true,"color":"#ff0000","dashArray":null,"lineCap":null,"lineJoin":null,"weight":4,"opacity":0.5,"fill":true,"fillColor":null,"fillOpacity":0.2,"clickable":true,"smoothFactor":1,"noClip":false,"itemId":"5514f7a571fe65ac066cb091","itemName":"万科时代广场一期","areaLabel":{"text":"万科时代广场一期","id":"5514f7a571fe65ac066cb091","lat":0.3734130859375,"lng":0.3975830078125}}}]},
+                  BuildArea: 0,
+                  CreatedId: "e2f0e8396443beab00eaa1f7cb6c2cf7ad8a346a",
+                  CreatedTime: "2016-03-02",
+                  GreenArea: 0,
+                  LandUseType: 0,
+                  Latitude: "22.7172406798959",
+                  Longitude: "114.250833392143",
+                  ModefiedId: "d51474c887fe38b89cf6f4eff740309789f93034",
+                  ModefiedTime: "2016-06-14",
+                  ProjectId: "5513e1c7493fdce42f42d9b1",
+                  ProjectNo: "深圳万科时代广场",
+                  SellLine: "66.7%",
+                  Status: 4,
+                  TotalArea: 0
+                }
               })
+            })
 
           },
           getWorkingMapDetail:function(imageId){
@@ -868,7 +868,7 @@
            * **/
           updateHouseDrawing:function(regionID,draw){
             return $http.db({
-            _id:'updateHouseDrawing',
+              _id:'updateHouseDrawing',
               data:1,
               idField:'regionID'
             }).post('/Api/MeasureInfo/ModifyHouseType',{regionID:regionID,draw:draw});
@@ -1024,7 +1024,7 @@
                 acceptanceItemID: acceptanceItemID,
                 checkRegionID: checkRegionID
               }));
-          },
+            },
             /**
              * 删除点
              *
@@ -1061,20 +1061,32 @@
         }
       },
       message: {
-          //messageList: $http.db({
-          //  _id: 'messageList',
-          //  idField: 'Id',
-          //  dataType: 1
-          //}).bind(function ( startIndex,maximunRows,checked) {
-          //  return $http.get($http.url('/api/Message',{maximunRows:maximunRows,startIndex:startIndex,checked:checked}))
-          //})
-            messageList: function ( startIndex,maximunRows,checked) {
-              return $http.get($http.url('/api/Message',{maximunRows:maximunRows,startIndex:startIndex,checked:checked}))
-            }
-        },
+        //messageList: $http.db({
+        //  _id: 'messageList',
+        //  idField: 'Id',
+        //  dataType: 1
+        //}).bind(function ( startIndex,maximunRows,checked) {
+        //  return $http.get($http.url('/api/Message',{maximunRows:maximunRows,startIndex:startIndex,checked:checked}))
+        //})
+        messageList: function ( startIndex,maximunRows,checked) {
+          return $http.get($http.url('/api/Message',{maximunRows:maximunRows,startIndex:startIndex,checked:checked}))
+        }
+      },
       Report:{
         Summary:function(){
           return $http.get(sxt.app.api + '/api/ReportApi/Summary');
+        }
+      },
+      Plan:{
+        GetTaskTemplates:function(param){
+          var curpage=param.Curpage;
+          var pageSize=param.PageSize;
+
+          var arr = new Array();
+          for(var i = 0;i<15;i++) {
+            arr.push({name:"名称",time:"2016"})
+          }
+          return arr;
         }
       }
     });

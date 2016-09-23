@@ -1,3 +1,5 @@
+
+
 <md-toolbar class="md-hue-2">
   <div class="md-toolbar-tools">
     <h2>
@@ -6,6 +8,16 @@
     <span flex></span>
   </div>
 </md-toolbar>
+
+<md-content layout-padding flex layout="column">
 <form>
-  添加
+  <md-input-container class="md-block">
+    <label>名称</label>
+    <input type="text" ng-model="vm.data.name" md-autofocus>
+  </md-input-container>
+
 </form>
+<md-button ng-click="vm.ClickSave(vm.data)" class="md-primary md-raised">
+  保存
+</md-button>
+</md-content>
