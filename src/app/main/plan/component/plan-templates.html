@@ -12,7 +12,7 @@
 </md-toolbar>
 
 <md-content flex layout="column"  ms-scroll>
-  <table class="table table-hover">
+  <table class="simple" ms-responsive-table>
     <thead>
     <tr>
       <th>名称</th>
@@ -32,7 +32,7 @@
       <td class="name">{{item.name}}</td>
       <td class="time">{{item.time}}</td>
       <td class="office">
-        <md-button style=" text-align: left" flex ng-click="vm.Query(item)" class="md-primary"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>查看</md-button>
+        <md-button ng-click="vm.Query(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon></md-button>
       </td>
     </tr>
     </tbody>
