@@ -1,6 +1,6 @@
 <div class="md-toolbar-tools" layout="row">
   <div style="position: absolute;width: 100%" layout="row">
-    <h2 flex>
+    <h2 flex style="line-height: 44px">
       <span ng-if="!vm.networking">{{$root.title || '万科数字工程'}}</span>
       <span ng-if="vm.networking"><img src="assets/images/loader.gif"> 连接中...</span>
     </h2>
@@ -8,6 +8,7 @@
   <md-button flex="none" class="md-icon-button" ng-show="!$root.noBack" ng-click="goBack();" >
     <md-icon md-font-icon="icon-chevron-left" style="color:white;"></md-icon>
   </md-button>
+  <h2 flex></h2>
   <md-button flex="none" class="md-icon-button" aria-label="net work" ng-click="vm.setNetwork()">
     <md-icon md-svg-icon="assets/images/online.svg" ng-if="vm.networkState==0" ></md-icon>
     <md-icon md-svg-icon="assets/images/offline.svg" ng-if="vm.networkState==1" ></md-icon>

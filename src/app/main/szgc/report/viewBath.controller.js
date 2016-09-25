@@ -58,6 +58,10 @@
           vm.searBarHide = false;
         }
       }
+      else if($state.is('app.szgc.report.viewBath.view')){
+        $state.go('app.szgc.report.viewBath');
+        e.cancel = true;
+      }
     }));
     vm.ddd = {};
     vm.ddd.grpKey = "";
