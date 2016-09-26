@@ -18,11 +18,30 @@
     vm.data = {
 
     }
+
+    //获取模板
+    api.plan.TaskTemplates.GetList({Skip:0,Limit:100}).then(function (r) {
+      vm.data.templates = r.data.Items||[];
+    })
+
     vm.getMaps = function () {
       return api.xhsc.Project.getMap().then(function (r) {
         vm.data.projects = r.data;
       })
     }
+
+    vm.getSections = function () {
+      return api.xhsc.Project.GetAreaChildenbyID(vm.formWizard.projectId).then(function (r) {
+        vm.data.sections = r.data;
+      })
+    }
+
+    vm.getBuildings = function () {
+      return api.xhsc.Project.GetAreaChildenbyID(vm.formWizard.sectionId).then(function (r) {
+        vm.data.buildings = r.data;
+      })
+    }
+
     $scope.$watch('msWizard.selectedIndex',function () {
       switch ($scope.msWizard.selectedIndex){
         case 1:

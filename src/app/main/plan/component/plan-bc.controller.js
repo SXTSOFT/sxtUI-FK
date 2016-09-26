@@ -40,10 +40,8 @@
 
     vm.delete = function(id){
       if (window.confirm('确认删除此工序类型信息？')) {
-        var r = api.plan.compensate.delete(id);
-        if(r){
-          Load();
-        }
+        api.plan.compensate.delete(id);
+        Load();
       }
     }
   }

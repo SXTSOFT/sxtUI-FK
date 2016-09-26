@@ -32,7 +32,7 @@
   <tbody>
   <tr ng-repeat="item in vm.data">
     <td>{{item.Time | date:'yyyy-MM-dd'}}</td>
-    <td>{{item.TimeType == 'GregorianCalendar'?'公历':'农历'}}</td>
+    <td>{{item.TimeType == 0?'公历':'农历'}}</td>
     <td>{{item.FrontDays}}</td>
     <td>{{item.BackDay}}</td>
     <td>{{item.ExtendName}}</td>

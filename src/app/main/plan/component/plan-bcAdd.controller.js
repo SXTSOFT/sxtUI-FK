@@ -28,6 +28,7 @@
     }
 
     vm.save = function(){
+      //vm.data.TimeType = (vm.data.TimeType == 'GregorianCalendar'?0:1);
       if(!vm.data.Id){
         var r = api.plan.compensate.createBc(vm.data);
         if(r){
@@ -36,7 +37,6 @@
           });
         }
       }else{
-        console.log(vm.data);
         var r = api.plan.compensate.putCompensate(vm.data);
         if(r){
           utils.alert("提交成功",null,function(){
