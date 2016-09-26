@@ -25,7 +25,7 @@
         spacingX: 90,
         mergeStyle: "straight",
         showLabel: true,
-        // display branch names on graph
+        // display Branch names on graph
         labelFont: "normal 13pt Arial"
       },
       commit: {
@@ -94,7 +94,7 @@
     }
     FTemplate.prototype.onClick = function (e) {
       var data = this.times.find(function (d) {
-        return d.TaskLibraryId === e.author;
+        return d.TaskFlowId === e.author;
       });
       this.options.onClick && this.options.onClick({e:e,data:data});
     }
@@ -102,13 +102,13 @@
       this.gitGraph = null;
       this.init();
       var self = this,times = this.times,
-        branch = this.branch = [],
+        Branch = this.Branch = [],
         gitGraph = this.gitGraph;
       function onClick(e) {
         self.onClick(e);
       }
       function getBranch(line) {
-        var b1 = branch.find(function (b) {
+        var b1 = Branch.find(function (b) {
           return b.line==line;
         });
         return b1 && b1.b;
@@ -116,10 +116,10 @@
       times.forEach(function (t) {
         switch (t.type){
           case 'line':
-            branch.push({
+            Branch.push({
               line: t.line,
               b: gitGraph.branch({
-                name: t.Name || ('b' + branch.length),
+                name: t.Name || ('b' + Branch.length),
                 showLabel: !!t.Name,
                 column: t.line,
                 parentBranch: getBranch(t.parent)
@@ -130,7 +130,7 @@
             var ix=t.merge.length===1?2:0;
             t.merge.forEach(function (m) {
               getBranch(m).merge(getBranch(t.line),{
-                author:t.TaskLibraryId,
+                author:t.TaskFlowId,
                 tag:ix!==0?(t.seq+1)+'、'+ t.Name:undefined,
                 displayTagBox:false,
                 dotSize:ix===0?1:0,
@@ -144,7 +144,7 @@
           default:
             if(t.line || t.line===0){
               getBranch(t.line).commit({
-                author:t.TaskLibraryId,
+                author:t.TaskFlowId,
                 tag: (t.seq+1)+'、'+ t.Name,
                 displayTagBox:false,
                 message:t.Name,
@@ -156,16 +156,16 @@
       });
     }
     FTemplate.prototype.add = function (data,prev,isBranch) {
-      if(prev && !prev.TaskLibraryId)
+      if(prev && !prev.TaskFlowId)
         prev = null;
 
-      var container = !prev||prev.line===0?this.task.master:this.task.branch.find(function (b) {
+      var container = !prev||prev.line===0?this.task.Master:this.task.Branch.find(function (b) {
         return b.indexOf(prev)!=-1;
       });
       if(prev)
-        data.ParentId = prev.TaskLibraryId;
+        data.ParentId = prev.TaskFlowId;
       if(isBranch){
-        this.task.branch.push([data]);
+        this.task.Branch.push([data]);
       }
       else{
         container.push(data);
@@ -176,31 +176,31 @@
       this.render();
     }
     FTemplate.prototype.remove = function (data) {
-      var container = this.task.master.indexOf(data)!=-1?
-        this.task.master:
-        this.task.branch.find(function (b) {
+      var container = this.task.Master.indexOf(data)!=-1?
+        this.task.Master:
+        this.task.Branch.find(function (b) {
           return b.indexOf(data)!=-1;
         });
       var index = container.indexOf(data);
-      if(index===0 && container===this.task.master && container.length===1){
-        this.task.master = [];
-        this.task.branch = [];
+      if(index===0 && container===this.task.Master && container.length===1){
+        this.task.Master = [];
+        this.task.Branch = [];
       }
       else{
         var next = container[index+1];
         container.splice(index,1);
         if(next) {
           next.ParentId = data.ParentId;
-          this.task.branch.forEach(function (b) {
-            if (b[0].ParentId === data.TaskLibraryId) {
-              b[0].ParentId = next.TaskLibraryId;
+          this.task.Branch.forEach(function (b) {
+            if (b[0].ParentId === data.TaskFlowId) {
+              b[0].ParentId = next.TaskFlowId;
             }
           });
         }
       }
-      for(var l=this.task.branch.length-1;l>=0;l--){
-        if(this.task.branch[l].length===0){
-          this.task.branch.splice(l,1);
+      for(var l=this.task.Branch.length-1;l>=0;l--){
+        if(this.task.Branch[l].length===0){
+          this.task.Branch.splice(l,1);
         }
       }
       this.load(this.task);
@@ -218,8 +218,8 @@
       return obj;
     }
     function appendRoot(times,groups,lines,g) {
-      if(g.TaskLibraryId && !times.find(function (t) {
-          return t.TaskLibraryId===g.TaskLibraryId;
+      if(g.TaskFlowId && !times.find(function (t) {
+          return t.TaskFlowId===g.TaskFlowId;
         })) {
         var line = lines.find(function (l) {
           return l.line === g.line;
@@ -230,9 +230,9 @@
       appendTask(times,groups,lines,g);
     }
     function appendTask(times,groups,lines,gp) {
-      if(!gp || !gp.TaskLibraryId) return;
+      if(!gp || !gp.TaskFlowId) return;
       var fds = groups.filter(function (g) {
-        return g.ParentId === gp.TaskLibraryId;
+        return g.ParentId === gp.TaskFlowId;
       });
       fds.sort(function (s1,s2) {
         if(s1.line===gp.line)
@@ -241,10 +241,10 @@
           return -1;
         return 0;
       }).forEach(function (fd) {
-        var ends = fd.TaskLibraryId && groups.filter(function (g) {
-            return g.EndFlagTaskFlowId === fd.TaskLibraryId;
+        var ends = fd.TaskFlowId && groups.filter(function (g) {
+            return g.EndFlagTaskFlowId === fd.TaskFlowId;
           });
-        ends.forEach(function (e) {
+        ends && ends.forEach(function (e) {
           if(!fd.merge) {
             fd.merge = [];
             fd.type = 'merge';
@@ -260,8 +260,8 @@
           line.parent = gp.line;
           times.push(line);
         }
-        if(fd.TaskLibraryId && times.find(function (g) {
-            return g.TaskLibraryId===fd.TaskLibraryId;
+        if(fd.TaskFlowId && times.find(function (g) {
+            return g.TaskFlowId===fd.TaskFlowId;
           })) {
           return;
         }
@@ -270,7 +270,7 @@
         //
         /*      if(fd.EndFlagTaskFlowId){
          var ed = groups.find(function (g) {
-         return g.TaskLibraryId === fd.EndFlagTaskFlowId;
+         return g.TaskFlowId === fd.EndFlagTaskFlowId;
          });
          if(ed){
          var eRoot = findLineRoot(groups,ed);
@@ -284,7 +284,7 @@
     }
     function findLineRoot(groups,g1) {
       var prev = groups.find(function (g) {
-        return g.line===g1.line && g1.ParentId===g.TaskLibraryId;
+        return g.line===g1.line && g1.ParentId===g.TaskFlowId;
       });
       return prev?findLineRoot(groups,prev):g1;
     }
@@ -295,9 +295,9 @@
       lines.push(task);
       var prev = null,seq=0;
       var laskTask;
-      task.master && task.master.forEach(function (g) {
+      task.Master && task.Master.forEach(function (g) {
         g.seq = seq++;
-        g.ParentId = prev ? prev.TaskLibraryId : parent && parent.TaskLibraryId;
+        g.ParentId = prev ? prev.TaskFlowId : parent && parent.TaskFlowId;
         if(prev)
           prev.hasNext = true;
         prev = g;
@@ -305,18 +305,18 @@
         groups.push(g);
 
         if (laskTask) {
-          laskTask.EndFlagTaskFlowId = g.TaskLibraryId;
+          laskTask.EndFlagTaskFlowId = g.TaskFlowId;
           laskTask = null;
         }
         g.tasks && g.tasks.forEach(function (tk) {
-          if (tk.master.length) {
-            tk.master[0].ParentId = g.TaskLibraryId;
-            laskTask = tk.master[tk.master.length - 1];
+          if (tk.Master.length) {
+            tk.Master[0].ParentId = g.TaskFlowId;
+            laskTask = tk.Master[tk.Master.length - 1];
             t = fillTask(groups, lines, t + 1, tk, g);
           }
         });
       });
-      task.branch && task.branch.forEach(function (b) {
+      task.Branch && task.Branch.forEach(function (b) {
         lines.push({
           type:'line',
           line:(++t)
