@@ -5,7 +5,7 @@
   'use strict';
 
   angular
-    .module('app.plan', ['app.core'])
+    .module('app.plan', ['app.core','app.xhsc'])
     .config(config);
 
   /** @ngInject */

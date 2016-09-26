@@ -22,12 +22,11 @@
               </div>
             </md-input-container>
           </div>
-          <div  layout-gt-sm="row">
+          <div layout="row">
             <md-input-container class="md-block" flex-gt-sm>
               <label>请选择项目</label>
-              <md-select name="projectId" ng-model="vm.formWizard.projectId" required>
-                <md-option value="app">Application</md-option>
-                <md-option value="web">Website</md-option>
+              <md-select name="projectId" ng-model="vm.formWizard.projectId" required md-on-open="vm.getMaps()">
+                <md-option ng-value="p.ProjectID" ng-repeat="p in vm.data.projects">{{p.ProjectName}}</md-option>
               </md-select>
               <div ng-messages="wizardStep1.projectId.$error" ng-show="wizardStep1.projectId.$touched" role="alert">
                 <div ng-message="required">
@@ -35,9 +34,22 @@
                 </div>
               </div>
             </md-input-container>
+          </div>
+          <div  layout-gt-sm="row">
+            <md-input-container class="md-block" flex-gt-sm>
+              <label>请选择模板</label>
+              <md-select name="templateId" ng-disabled="!vm.formWizard.projectId" ng-model="vm.formWizard.templateId"  md-on-open="vm.getTemplates()">
+                <md-option ng-value="p.ProjectID" ng-repeat="p in vm.data.templates">{{p.ProjectName}}</md-option>
+              </md-select>
+              <div ng-messages="wizardStep1.templateId.$error" ng-show="wizardStep1.templateId.$touched" role="alert">
+                <div ng-message="required">
+                  <span>请选择模板.</span>
+                </div>
+              </div>
+            </md-input-container>
             <md-input-container flex-gt-sm>
               <label>开始日期</label>
-              <md-datepicker name="beginDate" ng-model="vm.formWizard.beginDate" required></md-datepicker>
+              <md-datepicker name="beginDate" ng-model="vm.formWizard.beginDate" required md-open-on-focus></md-datepicker>
             </md-input-container>
           </div>
         </form>
@@ -55,16 +67,9 @@
       </md-tab-label>
       <md-tab-body>
         <form name="wizardStep2" ms-form-wizard-form novalidate>
-          <md-input-container class="md-block">
-            <label>Address</label>
-            <textarea ng-model="vm.formWizard.address" columns="1" md-maxlength="150" rows="5" required></textarea>
-            <div ng-messages="wizardStep2.address.$error" ng-show="wizardStep2.address.$touched" role="alert" multiple>
-              <div ng-message="required"><span>Address field is required.</span></div>
-              <div ng-message="md-maxlength">
-                <span>Address can't be longer than 150 characters.</span>
-              </div>
-            </div>
-          </md-input-container>
+          <div layout="row" layout-algin="space-between center">
+
+          </div>
         </form>
       </md-tab-body>
     </md-tab>
