@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function planBc($scope,remote){
+  function planBc($scope,api){
     var vm = this;
     $scope.pageing={
       page:1,
@@ -30,15 +30,20 @@
     }
 
     function Load() {
-      vm.data =  remote.Plan.GetBcs({
-        Curpage:$scope.pageing.page-1,
-        PageSize:$scope.pageing.pageSize
+      var page=api.plan.GetPage($scope.pageing);
+
+      api.plan.compensate.getList({Skip:page.Skip,Limit:page.Limit}).then(function (r) {
+        vm.data=r.data.Items||[];
+        $scope.pageing.total = r.data.TotalCount;
       });
     }
 
     vm.delete = function(id){
       if (window.confirm('确认删除此工序类型信息？')) {
-        remote.Plan.deleteBc(id);
+        var r = api.plan.compensate.delete(id);
+        if(r){
+          Load();
+        }
       }
     }
   }

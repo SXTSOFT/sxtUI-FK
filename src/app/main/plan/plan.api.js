@@ -63,6 +63,23 @@
         getTaskFlow:function (taskId) {
           return $http.get($http.url('/api/TaskLibrarys/'+taskId+'/Tree'));
         }
+      },
+      compensate:{
+        createBc:function (values) {
+          return $http.post('/api/Compensates', values)
+        },
+        getList:function(param){
+          return $http.get($http.url('/api/Compensates',{Skip:param.Skip,Limit:param.Limit}));
+        },
+        getCompensate:function(id){
+          return $http.get($http.url('/api/Compensates/'+id));
+        },
+        putCompensate:function(data){
+          return $http.put('/api/Compensates/'+data.Id,data);
+        },
+        delete:function(id){
+          return $http.delete('/api/Compensates/'+id);
+        }
       }
     });
   }

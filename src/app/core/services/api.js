@@ -230,6 +230,7 @@
     function bindHttp(obj) {
       return angular.extend(obj,{
         get:cfg('get'),
+        put:cfg('put'),
         post:cfg('post'),
         delete:cfg('delete'),
         options:cfg('options'),
