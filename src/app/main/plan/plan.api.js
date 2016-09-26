@@ -10,6 +10,8 @@
 
   /** @ngInject */
   function config(apiProvider) {
+    var $http = apiProvider.$http,
+      $q = apiProvider.$q;
     apiProvider.register('plan',{
 
     });
