@@ -27,7 +27,7 @@
     vm.ClickSaveleft = function(data){
 
       if(id=='add'){
-        api.plan.TaskLibrary.Create(data).then(function (r) {
+        api.plan.TaskLibrary.create(data).then(function (r) {
           $state.go('app.plan.task.list');
         });
 

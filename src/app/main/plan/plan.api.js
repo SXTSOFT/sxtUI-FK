@@ -65,11 +65,6 @@
 
           return $http.put('/api/TaskLibrarys/'+taskLibrary.TaskLibraryId,item);
         },
-        Create:function(param){
-          return $http.post('/api/TaskLibrarys', param)
-        //update:function (taskLibrary) {
-        //  return $http.put($http.url('/api/TaskLibrarys/'+taskLibrary.id),taskLibrary);
-        //},
         deleteFlowById:function(id){
           return $http.delete($http.url('/api/TaskLibrarys/'+id))
         },
