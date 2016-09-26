@@ -27,7 +27,12 @@
         }
       },
       TaskFlow:{
+        post:function(input){
+          return $http.post($http.url('/api/TaskLibrarys/'+input.TaskFlowId+'/TaskFlows',input))
+        },
+        getTaskFlow:function(){
 
+        }
       },
       /** /api/TaskLibrary 任务 **/
       TaskLibrary:{

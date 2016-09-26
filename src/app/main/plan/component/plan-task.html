@@ -1,4 +1,4 @@
-<md-tabs md-border-bottom flex layout="column" >
+<md-tabs md-border-bottom flex layout="column">
   <md-tab label="基础信息">
     <md-tab-content flex layout-fill class="white-bg" layout-padding>
       <form>
@@ -17,14 +17,13 @@
         <md-select ng-model="weapon" placeholder="关联工序" class="md-block" multiple>
           <md-select-header class="sxt-select-header">
             <md-input-container md-no-float class="md-block">
-              <input type="search" class="md-text" placeholder="输入关键字" >
-              <md-icon md-font-icon="icon-plus" style="display:inline-block;"></md-icon>
+              <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >
+              <md-icon md-font-icon="icon-plus" style="display:inline-block;" ng-click="vm.add()"></md-icon>
             </md-input-container>
           </md-select-header>
-          <md-option value="axe">Axe</md-option>
-          <md-option value="sword">Sword</md-option>
-          <md-option value="wand">Wand</md-option>
-          <md-option value="pen">Pen?</md-option>
+          <md-optgroup>
+            <md-option value="{{gx.id}}" ng-repeat="gx in vm.procedure | filter:searchTerm">{{gx.name}}</md-option>
+          </md-optgroup>
         </md-select>
         <md-checkbox ng-model="data.cb1" aria-label="Checkbox 1">
           手工关闭
@@ -120,3 +119,4 @@
     </md-tab-content>
   </md-tab>
 </md-tabs>
+

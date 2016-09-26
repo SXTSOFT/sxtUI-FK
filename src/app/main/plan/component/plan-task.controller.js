@@ -136,7 +136,7 @@
       if(!task) {
         task = {
           taskId: 0,
-          name: vm.data.name,
+          name: vm.data&&vm.data.name||'楼栋模板',
           master: [],
           branch: []
         }
@@ -161,6 +161,7 @@
     vm.nextSave = function () {
       var next = angular.extend({},vm.next);
       vm.next = {};
+      console.log(vm.next)
       api.plan.TaskFlow.post(
         next
       ).then(function (r) {
