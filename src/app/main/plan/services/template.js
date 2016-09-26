@@ -13,24 +13,26 @@
       this._render();
       this.context.fillStyle = 'white';
       if(this.tag) {
-        this.context.fillText(this.tag.substring(0,1), this.x-5, this.y+5);
+        var seq = /\d+/.exec(this.tag)[0]
+        this.context.fillText(seq, this.x-(seq.length==1?5:8), this.y+5);
       }
     }
 
     var graphTemplate = new $window.GitGraph.Template({
-      colors: [ "#EF9A9A", "#42A5F5", "#26A69A","#CE93D8" ],
+      colors: [ "#ffae4b", "#00b8ff", "#00c98f","#4cd9b0" ],
       branch: {
         lineWidth: 6,
         spacingX: 90,
         mergeStyle: "straight",
-        showLabel: true,                // display branch names on graph
+        showLabel: true,
+        // display branch names on graph
         labelFont: "normal 13pt Arial"
       },
       commit: {
         spacingY: -60,
         dot: {
           size: 16,
-          strokeColor: "#000000",
+          strokeColor: "white",
           strokeWidth: 4
         },
         tag: {
