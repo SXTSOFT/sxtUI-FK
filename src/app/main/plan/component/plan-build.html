@@ -1,0 +1,114 @@
+<ms-form-wizard flex>
+  <md-tabs md-dynamic-height md-selected="msWizard.selectedIndex" md-center-tabs="true">
+    <md-tab>
+      <md-tab-label>
+            <span class="ms-form-wizard-step-label">
+                <span class="ms-form-wizard-step-number md-accent-bg" ng-if="wizardStep1.$invalid">1</span>
+                <span class="ms-form-wizard-step-number md-accent-bg" ng-if="wizardStep1.$valid">
+                    <i class="icon-check s16"></i>
+                </span>
+                <span class="ms-form-wizard-step-text">基本信息</span>
+            </span>
+      </md-tab-label>
+      <md-tab-body>
+        <form name="wizardStep1" class="md-inline-form" ms-form-wizard-form novalidate>
+          <div layout="row" >
+            <md-input-container flex="100" >
+              <input type="text" name="planName" ng-model="vm.formWizard.planName" placeholder="计划名称" required>
+              <div ng-messages="wizardStep1.firstname.$error" ng-show="wizardStep1.planName.$touched" role="alert">
+                <div ng-message="required">
+                  <span>请输入计划名称.</span>
+                </div>
+              </div>
+            </md-input-container>
+          </div>
+          <div layout="row">
+            <md-input-container class="md-block" flex-gt-sm>
+              <label>请选择项目</label>
+              <md-select name="projectId" ng-model="vm.formWizard.projectId" required md-on-open="vm.getMaps()">
+                <md-option ng-value="p.ProjectID" ng-repeat="p in vm.data.projects">{{p.ProjectName}}</md-option>
+              </md-select>
+              <div ng-messages="wizardStep1.projectId.$error" ng-show="wizardStep1.projectId.$touched" role="alert">
+                <div ng-message="required">
+                  <span>请选择项目.</span>
+                </div>
+              </div>
+            </md-input-container>
+          </div>
+          <div  layout-gt-sm="row">
+            <md-input-container class="md-block" flex-gt-sm>
+              <label>请选择模板</label>
+              <md-select name="templateId" ng-disabled="!vm.formWizard.projectId" ng-model="vm.formWizard.templateId"  md-on-open="vm.getTemplates()">
+                <md-option ng-value="p.ProjectID" ng-repeat="p in vm.data.templates">{{p.ProjectName}}</md-option>
+              </md-select>
+              <div ng-messages="wizardStep1.templateId.$error" ng-show="wizardStep1.templateId.$touched" role="alert">
+                <div ng-message="required">
+                  <span>请选择模板.</span>
+                </div>
+              </div>
+            </md-input-container>
+            <md-input-container flex-gt-sm>
+              <label>开始日期</label>
+              <md-datepicker name="beginDate" ng-model="vm.formWizard.beginDate" required md-open-on-focus></md-datepicker>
+            </md-input-container>
+          </div>
+        </form>
+      </md-tab-body>
+    </md-tab>
+    <md-tab ng-disabled="wizardStep1.$invalid">
+      <md-tab-label>
+            <span class="ms-form-wizard-step-label">
+                <span class="ms-form-wizard-step-number md-accent-bg" ng-if="wizardStep2.$invalid">2</span>
+                <span class="ms-form-wizard-step-number md-accent-bg" ng-if="wizardStep2.$valid">
+                    <i class="icon-check s16"></i>
+                </span>
+                <span class="ms-form-wizard-step-text">流程确认</span>
+            </span>
+      </md-tab-label>
+      <md-tab-body>
+        <form name="wizardStep2" ms-form-wizard-form novalidate>
+          <div layout="row" layout-algin="space-between center">
+
+          </div>
+        </form>
+      </md-tab-body>
+    </md-tab>
+    <md-tab ng-disabled="wizardStep1.$invalid || wizardStep2.$invalid">
+      <md-tab-label>
+            <span class="ms-form-wizard-step-label">
+                <span class="ms-form-wizard-step-number md-accent-bg" ng-if="wizardStep3.$invalid">3</span>
+                <span class="ms-form-wizard-step-number md-accent-bg" ng-if="wizardStep3.$valid">
+                    <i class="icon-check s16"></i>
+                </span>
+                <span class="ms-form-wizard-step-text">人员分配</span>
+            </span>
+      </md-tab-label>
+      <md-tab-body>
+        <form name="wizardStep3" ms-form-wizard-form novalidate>
+          <md-input-container class="md-block">
+            <input type="text" name="cardholder" ng-model="vm.formWizard.cardholder" placeholder="Card Holder" required>
+            <div ng-messages="wizardStep3.cardholder.$error" ng-show="wizardStep3.cardholder.$dirty" role="alert">
+              <div ng-message="required">
+                <span>Card holder field is required.</span>
+              </div>
+            </div>
+          </md-input-container>
+        </form>
+      </md-tab-body>
+    </md-tab>
+  </md-tabs>
+  <div class="navigation" flex layout="row" layout-align="center center">
+    <md-button class="md-raised md-accent" ng-click="msWizard.previousStep()" ng-disabled="msWizard.isFirstStep()">
+      上一步
+    </md-button>
+    <div class="steps">
+      <span ng-repeat="form in msWizard.forms" ng-class="{'selected md-accent-bg':msWizard.selectedIndex === $index}"></span>
+    </div>
+    <md-button class="md-raised md-accent" ng-click="msWizard.nextStep()" ng-hide="msWizard.isLastStep()" ng-disabled="msWizard.currentStepInvalid()">
+      下一步
+    </md-button>
+    <md-button class="md-raised md-warn" ng-click="vm.sendForm(); msWizard.resetForm();" ng-show="msWizard.isLastStep()" ng-disabled="msWizard.formsIncomplete()">
+      生成任务
+    </md-button>
+  </div>
+</ms-form-wizard>

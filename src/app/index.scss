@@ -31,3 +31,19 @@
   }
 
 }
+table {
+  &.simple{
+    tbody {
+      tr {
+        td {
+          &.actions{
+            padding: 0 8px;
+            .md-button{
+              margin: 4px 8px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

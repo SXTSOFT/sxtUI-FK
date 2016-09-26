@@ -7,7 +7,7 @@
     .module('app.core')
     .factory('authToken',authToken);
   /** @ngInject */
-  function authToken($cookies,$rootScope,$injector){
+  function authToken($cookies,$rootScope,$injector,$q){
     var token,tokenInjector,_401,lastTipTime;
 
     tokenInjector = {
@@ -52,22 +52,25 @@
             return $injector.get('$http')(rejection.config);
           }).catch(function () {
             $rootScope.$emit('user:needlogin');
+            return $q.reject(rejection);
           });
         }
         else {
           $rootScope.$emit('user:needlogin');
+          return $q.reject(rejection);
         }
       }
       else {
-        if (rejection && rejection.status != -1) {
-        if(!lastTipTime || new Date().getTime()-lastTipTime<10000){
-          lastTipTime = new Date().getTime();
-          $injector.invoke(['utils', function (utils) {
-            utils.alert(rejection.data && rejection.data.Message ? rejection.data.Message : '网络错误');
-          }]);
+        if (rejection && rejection.status != -1 && (rejection.status >= 500 || rejection.status<200)) {
+          if (!lastTipTime || new Date().getTime() - lastTipTime < 10000) {
+            lastTipTime = new Date().getTime();
+            $injector.invoke(['utils', function (utils) {
+              utils.alert(rejection.data && rejection.data.Message ? rejection.data.Message : '网络错误');
+            }]);
+          }
         }
       }
-    }
+      return $q.reject(rejection);
     }
 
     function on401(fn) {

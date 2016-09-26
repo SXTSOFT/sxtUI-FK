@@ -1,4 +1,4 @@
-﻿﻿(function ()
+﻿(function ()
 {
   'use strict';
 
@@ -48,11 +48,12 @@
       })
     }
 
-    function token(user){
-      if(user) {
-        user.grant_type = 'password';
-        return $q (function (resolve,reject) {
-          $http ({
+    function token(user) {
+
+      return $q(function (resolve, reject) {
+        if (user) {
+          user.grant_type = 'password';
+          $http({
             method: 'POST',
             url: sxt.app.api + '/token',
             headers: {
@@ -61,30 +62,32 @@
             transformRequest: function (obj) {
               var str = [];
               for (var p in obj)
-                str.push (encodeURIComponent (p) + "=" + encodeURIComponent (obj[p]));
-              return str.join ("&");
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+              return str.join("&");
             },
             data: user
-          }).then (function (result) {
-            if(result) {
-              utils.cookies.put('auth',JSON.stringify(user));
-              var token = result.data;
-              resolve(token);
-            }
-            else{
-              utils.cookies.remove('auth');
-              reject({})
-            }
-          },function(){
-            utils.cookies.remove('auth');
-            resolve(user);
-          });
-          //
-        });
-      }
-      else{
-        return user;
-      }
+          })
+            .then(function (result) {
+                if (result) {
+                  utils.cookies.put('auth', JSON.stringify(user));
+                  var token = result.data;
+                  resolve(token);
+                }
+                else {
+                  utils.cookies.remove('auth');
+                  reject({})
+                }
+              },
+              function () {
+                utils.cookies.remove('auth');
+                reject(user);
+              });
+        }
+        else {
+          return reject();
+        }
+      });
+
     }
 
     function profile(token){

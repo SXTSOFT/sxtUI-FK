@@ -13,9 +13,16 @@
     });
 
   /** @ngInject */
-  function planTask($scope,template,$mdSidenav,utils,$mdDialog,$mdSelect,$element){
+  function planTask(template,$mdSidenav,$stateParams,api){
     var vm = this,
-      temp;
+      temp,task;
+    vm.isNew = $stateParams.id=='add';
+    if(!vm.isNew){
+      api.plan.TaskLibrary.getTaskFlow($stateParams.id).then(function (r) {
+        task = r.data;
+      })
+    }
+
     vm.toggleRight = function () {
       return $mdSidenav('right')
         .open();
@@ -26,7 +33,7 @@
     }
     vm.onLoadTemplate = function () {
       if(temp)return;
-      var task = {
+     /* var task = {
         taskId: 0,
         name: '楼栋模板',
         master: [{
@@ -125,7 +132,16 @@
             tasks: []
           }]
         ]
-      };
+      };*/
+      if(!task) {
+        task = {
+          taskId: 0,
+          name: vm.data.name,
+          master: [],
+          branch: []
+        }
+      }
+
       temp = new template({
         onClick:function (e) {
           vm.current = e.data;
@@ -137,15 +153,23 @@
     }
 
     vm.save = function () {
-      temp && temp.edit(vm.current);
-      vm.closeRight();
+      api.plan.TaskLibrary.update(vm.current).then(function () {
+        temp && temp.edit(vm.current);
+        vm.closeRight();
+      })
     }
     vm.nextSave = function () {
       var next = angular.extend({},vm.next);
       vm.next = {};
-      next.categoryId = new Date().getTime();
-      temp && temp.add(next,vm.current);
-      vm.closeRight();
+      api.plan.TaskFlow.post(
+        next
+      ).then(function (r) {
+        next.categoryId = r.categoryId;
+        //next.categoryId = new Date().getTime();
+        temp && temp.add(next,vm.current);
+        vm.closeRight();
+      });
+
     }
     vm.nextBranch = function () {
       var next = angular.extend({},vm.branch);
@@ -157,32 +181,6 @@
     vm.remove = function () {
       temp && temp.remove(vm.current);
       vm.closeRight();
-    }
-    vm.procedure=[{
-      name:'工序1',
-      id:1
-    },{
-      name:'工序2',
-      id:2
-    },{
-      name:'工序3',
-      id:3
-    }]
-    vm.stop = function(ev){
-      ev.stopPropagation();
-    }
-    vm.add = function(){
-      $mdSelect
-        .destroy();
-      $mdDialog.show($mdDialog.prompt({
-        title:'输入关联工序',
-        textContent:'输入关联工序名',
-        placeholder:'输入关联工序',
-        ok:'确定',
-        cancel:'取消'
-      })).then(function(r){
-        console.log(r)
-      })
     }
 
   }

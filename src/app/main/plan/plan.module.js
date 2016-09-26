@@ -5,7 +5,7 @@
   'use strict';
 
   angular
-    .module('app.plan', ['app.core'])
+    .module('app.plan', ['app.core','app.xhsc'])
     .config(config);
 
   /** @ngInject */
@@ -62,6 +62,10 @@
       .state('app.plan.bc.edit', {
         url: '/edit/{id}',
         template: '<plan-bcEdit flex layout="column"></plan-bcEdit>'
+      })
+      .state('app.plan.buildPlan',{
+        url:'/build',
+        template:'<plan_build flex layout="column"></plan_build>'
       })
 
 
