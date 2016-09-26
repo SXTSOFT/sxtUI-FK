@@ -17,7 +17,7 @@
     <tr>
       <th>名称</th>
       <th>时间</th>
-      <th>管理</th>
+      <th style="width: 160px">管理</th>
     </tr>
     </thead>
 
@@ -25,7 +25,7 @@
     <tr ng-repeat="item in vm.items">
       <td class="name">{{item.name}}</td>
       <td class="time">{{item.time}}</td>
-      <td class="office">
+      <td class="actions">
         <md-button ng-click="vm.Query(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon></md-button>
         <md-button ng-click="vm.Delete(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
       </td>
