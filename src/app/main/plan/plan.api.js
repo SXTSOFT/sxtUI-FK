@@ -46,13 +46,16 @@
           return $http.post('/api/TaskLibrarys', param)
         },
         getFlowById:function(taskFlowId){
-          return $http.get($http.url('/api/TaskLibrarys'+taskFlowId))
+          return $http.get($http.url('/api/TaskLibrarys/'+taskFlowId))
         },
         updateFlowById:function(taskFlowId){
-          return $http.put($http.url('/api/TaskLibrarys'+taskFlowId))
+          return $http.put($http.url('/api/TaskLibrarys/'+taskFlowId))
         },
         getFlowTree:function(taskFlowId){
-          return $http.get($http.url('/api/TaskLibrarys'+taskFlowId+'/Tree'))
+          return $http.get($http.url('/api/TaskLibrarys/'+taskFlowId+'/Tree'))
+        },
+        deleteFlow:function (id) {
+          return $http.delete('/api/TaskFlows/'+id)
         }
       },
       /** /api/TaskLibrary 任务 **/
@@ -69,7 +72,7 @@
           return $http.delete($http.url('/api/TaskLibrarys/'+id))
         },
         GetList:function(param){
-          return $http.get($http.url('/api/TaskLibrarys',{Skip:param.Skip,Limit:param.Limit}));
+          return $http.get($http.url('/api/TaskLibrarys',param));
         },
         getItem:function(id){
           return $http.get($http.url('/api/TaskLibrarys/'+id));
@@ -93,6 +96,19 @@
         },
         delete:function(id){
           return $http.delete('/api/Compensates/'+id);
+        }
+      },
+      UserGroup:{
+        create:function (data) {
+          return $http.post('/api/UserGroup',data);
+        },
+        query:function (param) {
+          return $http.get($http.url('/api/UserGroup',param))
+        }
+      },
+      TaskFlowRole:{
+        queryByFlowId:function (flowId) {
+          return $http.get('/api/TaskFlowRoles/'+flowId);
         }
       }
     });

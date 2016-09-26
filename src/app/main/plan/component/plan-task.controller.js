@@ -13,19 +13,18 @@
     });
 
   /** @ngInject */
-  function planTask(template,$mdSidenav,$stateParams,api,$state){
+  function planTask(template,$mdSidenav,$stateParams,api,$state,$mdDialog){
     var vm = this,
       temp,task,
       id = $state.params["id"];
 
-    if(id!='add'){
+/*    if(id!='add'){
       api.plan.TaskLibrary.getItem(id).then(function (r) {
         vm.data = r.data;
       })
-    }
+    }*/
     //保存任务左边的基础信息
     vm.ClickSaveleft = function(data){
-
       if(id=='add'){
         api.plan.TaskLibrary.create(data).then(function (r) {
           $state.go('app.plan.task.list');
@@ -33,7 +32,7 @@
 
       }else{
         api.plan.TaskLibrary.update(data).then(function (r) {
-          $state.go('app.plan.task.list');
+          //$state.go('app.plan.task.list');
         });
       }
 
@@ -59,6 +58,11 @@
         task = vm.data = r.data;
       })
     }
+    else{
+      task = vm.data = {
+        Level:0
+      }
+    }
 
     vm.toggleRight = function () {
       return $mdSidenav('right')
@@ -70,112 +74,12 @@
     }
     vm.onLoadTemplate = function () {
       if(temp)return;
-     /* var task = {
-        taskId: 0,
-        name: '楼栋模板',
-        master: [{
-          categoryId: 1,
-          name: '前期准备',
-          tasks: []
-        }, {
-          categoryId: 2,
-          name: '开工',
-          tasks: []
-        }, {
-          categoryId: 3,
-          name: '基坑',
-          tasks: []
-        }, {
-          categoryId: 4,
-          name: '基坑土方',
-          tasks: []
-        }, {
-          categoryId: 5,
-          name: '桩基',
-          tasks: []
-        }, {
-          categoryId: 6,
-          name: '桩基土方',
-          tasks: []
-        }, {
-          categoryId: 7,
-          name: '结构基础',
-          tasks: []
-        }, {
-          categoryId: 8,
-          name: '楼层',
-          tasks: []
-        }, {
-          categoryId: 9,
-          name: '外墙面',
-          tasks: []
-        }, {
-          categoryId: 10,
-          name: '落架',
-          tasks: []
-        }, {
-          categoryId: 11,
-          name: '室外景观',
-          tasks: []
-        }, {
-          categoryId: 12,
-          name: '竣工验收',
-          tasks: []
-        }, {
-          categoryId: 13,
-          name: '加建',
-          tasks: []
-        }, {
-          categoryId: 14,
-          name: '土建移交',
-          tasks: []
-        }, {
-          categoryId: 15,
-          name: '批量精装',
-          tasks: []
-        }, {
-          categoryId: 16,
-          name: '管理权移交',
-          tasks: []
-        }],
-        branch: [
-          [
-            {
-              categoryId: 30,
-              parentCategoryId: 2,
-              name: '前期准备验收',
-              tasks: []
-            },
-            {
-              categoryId: 31,
-
-              parentCategoryId: 30,
-              name: '前期准备验收1',
-              tasks: []
-            },
-            {
-              categoryId: 32,
-              endFlagCategoryId: 7,
-              parentCategoryId: 31,
-              name: '前期准备验收4',
-              tasks: []
-            }
-          ],
-          [{
-            categoryId: 42,
-            parentCategoryId: 31,
-            endFlagCategoryId: 8,
-            name: '前期准备验收2',
-            tasks: []
-          }]
-        ]
-      };*/
       if(!task) {
         task = {
           taskId: 0,
-          name: vm.data&&vm.data.name||'楼栋模板',
-          master: [],
-          branch: []
+          Name: vm.data&&vm.data.name||'楼栋模板',
+          Master: [],
+          Branch: []
         }
       }
 
@@ -186,13 +90,12 @@
         }
       });
       temp.load(task);
-      vm.toggleRight();
+      if(task.Master.length===0) {
+        vm.toggleRight();
+      }
     }
 
     vm.save = function () {
-      //vm.current = angular.extend({
-      //  id:vm.current.TaskFlowId
-      //},vm.current)
       api.plan.TaskLibrary.update(vm.current).then(function () {
         temp && temp.edit(vm.current);
         vm.closeRight();
@@ -237,14 +140,78 @@
 
     }
     vm.remove = function () {
-      vm.current = angular.extend({
-        id:vm.current.TaskFlowId
-      },vm.current)
-      api.plan.TaskLibrary.deleteFlowById(vm.current.id).then(function () {
-        temp && temp.edit(vm.current);
+      api.plan.TaskFlow.deleteFlow(vm.current.TaskFlowId).then(function () {
+        temp && temp.remove(vm.current);
         vm.closeRight();
+        //$state.go('app.plan.task.list');
       })
     }
 
+    vm.getNextTasks = function () {
+      api.plan.TaskLibrary.GetList({
+        Level:task.Level+1
+      }).then(function (r) {
+        vm.nextTasks = r.data.Items;
+      })
+    }
+    vm.addSubTask = function (ev) {
+      $mdDialog.show({
+        controller: 'planTaskMiniController',
+        templateUrl: 'app/main/plan/component/plan-task-mini.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: true,
+        fullscreen: false,
+        locals:{
+          parentTask:task
+        }
+      })
+        .then(function (newTask) {
+
+        }, function () {
+
+        });
+    }
+    vm.saveSubTask = function () {
+      var tasks = [];
+      vm.saveTasks && vm.saveTasks.forEach(function (tid) {
+        tasks.push({
+          TaskFlowId:vm.current.TaskFlowId,
+          TaskLibraryId:tid
+        });
+      })
+
+      console.log('vm.saveTasks',vm.saveTasks)
+    }
+    vm.getUseGroups = function () {
+      api.plan.UserGroup.query().then(function (r) {
+        vm.nextUserGroups = r.data.Items;
+      })
+    }
+    vm.addRole = function (ev) {
+        var confirm = $mdDialog.prompt()
+          .title('添加新的角色')
+          .textContent('请输入角色名字')
+          .placeholder('角色名字')
+          .ariaLabel('角色名字')
+          .initialValue('')
+          .ok('添加')
+          .cancel('取消');
+        $mdDialog.show(confirm).then(function(result) {
+          api.plan.UserGroup.create({
+            "GroupName": result,
+            "SystemID": "plan",
+            "Description": result
+          })
+        }, function() {
+
+        });
+    }
+    vm.saveUserGroup = function (type) {
+      var datas = vm['saveNotice'+type];
+      if(datas && datas.length){
+
+      }
+    }
   }
 })(angular,undefined);
