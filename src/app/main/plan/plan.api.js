@@ -13,7 +13,22 @@
     var $http = apiProvider.$http,
       $q = apiProvider.$q;
     apiProvider.register('plan',{
+      GetPage:function(param) {
+        return {Skip:(param.page - 1) * param.pageSize,Limit:param.pageSize};
+      },
 
+      /** /api/TaskTemplates 模板 **/
+      TaskTemplates:{
+        GetList:function(param){
+          return $http.get($http.url('/api/TaskTemplates',{Skip:param.Skip,Limit:param.Limit}));
+        }
+      },
+      /** /api/TaskLibrary 任务 **/
+      TaskLibrary:{
+        GetList:function(param){
+          return $http.get($http.url('/api/TaskLibrarys',{Skip:param.Skip,Limit:param.Limit}));
+        }
+      }
     });
   }
 })(angular,undefined);
