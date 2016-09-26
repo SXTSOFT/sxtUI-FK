@@ -18,6 +18,7 @@
     <th>后补偿天数</th>
     <th>扩展名称</th>
     <th>标识</th>
+    <th>是否全面停工</th>
     <th>操作</th>
   </tr>
   </thead>
@@ -30,16 +31,17 @@
 
   <tbody>
   <tr ng-repeat="item in vm.data">
-    <td>{{item.Time}}</td>
-    <td>{{item.TimeType == 1?'公历':'农历'}}</td>
-    <td>{{item.FrontDay}}</td>
+    <td>{{item.Time | date:'yyyy-MM-dd'}}</td>
+    <td>{{item.TimeType == 0?'公历':'农历'}}</td>
+    <td>{{item.FrontDays}}</td>
     <td>{{item.BackDay}}</td>
     <td>{{item.ExtendName}}</td>
     <td>{{item.Sign}}</td>
+    <td>{{item.IsAllStopWork?'是':'否'}}</td>
     <td>
-      <md-button flex class="md-primary"  aria-label="Settings" ui-sref="app.plan.bc.edit({id:item.id})">更新</md-button>
+      <md-button flex class="md-primary"  aria-label="Settings" ui-sref="app.plan.bc.detail({id:item.Id})">更新</md-button>
 
-      <md-button flex class="md-primary"  aria-label="Settings" ng-click="vm.delete(item.id)">删除</md-button>
+      <md-button flex class="md-primary"  aria-label="Settings" ng-click="vm.delete(item.Id)">删除</md-button>
 
     </td>
   </tr>

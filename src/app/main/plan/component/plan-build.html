@@ -49,11 +49,37 @@
               </div>
             </md-input-container>
           </div>
+          <div layout="row">
+            <md-input-container class="md-block" flex-gt-sm>
+              <label>请选择分期</label>
+              <md-select name="sectionId" ng-model="vm.formWizard.sectionId" required md-on-open="vm.getSections()">
+                <md-option ng-value="p.RegionID " ng-repeat="p in vm.data.sections">{{p.RegionName}}</md-option>
+              </md-select>
+              <div ng-messages="wizardStep1.projectId.$error" ng-show="wizardStep1.projectId.$touched" role="alert">
+                <div ng-message="required">
+                  <span>请选择分期.</span>
+                </div>
+              </div>
+            </md-input-container>
+          </div>
+          <div layout="row">
+            <md-input-container class="md-block" flex-gt-sm>
+              <label>请选择楼栋</label>
+              <md-select name="buildingId" ng-model="vm.formWizard.buildingId" required md-on-open="vm.getBuildings()">
+                <md-option ng-value="p.RegionID" ng-repeat="p in vm.data.buildings">{{p.RegionName}}</md-option>
+              </md-select>
+              <div ng-messages="wizardStep1.projectId.$error" ng-show="wizardStep1.projectId.$touched" role="alert">
+                <div ng-message="required">
+                  <span>请选择楼栋.</span>
+                </div>
+              </div>
+            </md-input-container>
+          </div>
           <div  layout-gt-sm="row">
             <md-input-container class="md-block" flex-gt-sm>
               <label>请选择模板</label>
               <md-select name="templateId" ng-disabled="!vm.formWizard.projectId" ng-model="vm.formWizard.templateId"  md-on-open="vm.getTemplates()">
-                <md-option ng-value="p.ProjectID" ng-repeat="p in vm.data.templates">{{p.ProjectName}}</md-option>
+                <md-option ng-value="p.Id" ng-repeat="p in vm.data.templates">{{p.Name}}</md-option>
               </md-select>
               <div ng-messages="wizardStep1.templateId.$error" ng-show="wizardStep1.templateId.$touched" role="alert">
                 <div ng-message="required">

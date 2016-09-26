@@ -24,26 +24,75 @@
         },
         Create:function (param) {
           return $http.post('/api/TaskTemplates', param)
+        },
+        getItem:function(id){
+          return $http.get($http.url('/api/TaskTemplates/'+id));
+        },
+        update:function(param){
+          return $http.put('/api/TaskTemplates/'+param.Id,param);
+        },
+        delete:function(id){
+          return $http.delete('/api/TaskTemplates/'+id);
         }
       },
       TaskFlow:{
-        post:function(input){
-          return $http.post($http.url('/api/TaskLibrarys/'+input.TaskFlowId+'/TaskFlows',input))
+        post:function(param){
+          return $http.post($http.url('/api/TaskLibrarys/'+param.TaskLibraryId+'/TaskFlows'),param)
         },
-        getTaskFlow:function(){
-
+        getTaskFlow:function(param){
+          return $http.get($http.url('/api/TaskLibrarys/',{Type:param.type,Level:param.level,Skip:param.Skip,Limit:param.Limit}))
+        },
+        postTaskFlow:function(param){
+          return $http.post('/api/TaskLibrarys', param)
+        },
+        getFlowById:function(taskFlowId){
+          return $http.get($http.url('/api/TaskLibrarys'+taskFlowId))
+        },
+        updateFlowById:function(taskFlowId){
+          return $http.put($http.url('/api/TaskLibrarys'+taskFlowId))
+        },
+        getFlowTree:function(taskFlowId){
+          return $http.get($http.url('/api/TaskLibrarys'+taskFlowId+'/Tree'))
         }
       },
       /** /api/TaskLibrary 任务 **/
       TaskLibrary:{
+        create:function (taskLibrary) {
+          return $http.post('/api/TaskLibrarys',taskLibrary);
+        },
         update:function (taskLibrary) {
-          return $http.post('/api/TaskLibrarys/'+taskLibrary.id,taskLibrary);
+          var item= angular.extend(taskLibrary,{Id:taskLibrary.TaskLibraryId});
+
+          return $http.put('/api/TaskLibrarys/'+taskLibrary.TaskLibraryId,item);
+        },
+        deleteFlowById:function(id){
+          return $http.delete($http.url('/api/TaskLibrarys/'+id))
         },
         GetList:function(param){
           return $http.get($http.url('/api/TaskLibrarys',{Skip:param.Skip,Limit:param.Limit}));
         },
+        getItem:function(id){
+          return $http.get($http.url('/api/TaskLibrarys/'+id));
+        },
         getTaskFlow:function (taskId) {
           return $http.get($http.url('/api/TaskLibrarys/'+taskId+'/Tree'));
+        }
+      },
+      compensate:{
+        createBc:function (values) {
+          return $http.post('/api/Compensates', values)
+        },
+        getList:function(param){
+          return $http.get($http.url('/api/Compensates',{Skip:param.Skip,Limit:param.Limit}));
+        },
+        getCompensate:function(id){
+          return $http.get($http.url('/api/Compensates/'+id));
+        },
+        putCompensate:function(data){
+          return $http.put('/api/Compensates/'+data.Id,data);
+        },
+        delete:function(id){
+          return $http.delete('/api/Compensates/'+id);
         }
       }
     });

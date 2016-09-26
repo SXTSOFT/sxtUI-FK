@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function planTemplates($scope,api){
+  function planTemplates($scope,api,$state){
     var vm = this;
     $scope.pageing={
       page:1,
@@ -31,6 +31,8 @@
 
     vm.Query = function (item) {
       //todo:模板点击查询
+      $state.go("app.plan.template.detail",{id:item.Id});
+
     }
 
     vm.Delete = function(item){
