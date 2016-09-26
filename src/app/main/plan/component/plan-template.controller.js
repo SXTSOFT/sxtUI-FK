@@ -13,9 +13,13 @@
     });
 
   /** @ngInject */
-  function planTemplate(){
-    var vm=this;
-    vm.ClickSave=function(data){
+  function planTemplate(api,$state){
+    var vm = this;
+    vm.ClickSave = function(data){
+      api.plan.TaskTemplates.Create({Name:data.Name,AreaId:data.AreaId}).then(function (r) {
+        $state,go('app.plan.template.list');
+      });
+
       console.log( data,"保存")
     };
   }

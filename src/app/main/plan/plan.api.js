@@ -21,6 +21,9 @@
       TaskTemplates:{
         GetList:function(param){
           return $http.get($http.url('/api/TaskTemplates',{Skip:param.Skip,Limit:param.Limit}));
+        },
+        Create:function (param) {
+          return $http.post('/api/TaskTemplates', param)
         }
       },
       /** /api/TaskLibrary 任务 **/

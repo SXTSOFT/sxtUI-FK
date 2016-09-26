@@ -22,8 +22,8 @@
     </thead>
     <tbody>
     <tr ng-repeat="item in vm.items">
-      <td class="name">{{item.name}}</td>
-      <td class="time">{{item.time}}</td>
+      <td class="name">{{item.Name}}</td>
+      <td class="time">{{item.CreationTime}}</td>
       <td class="actions">
         <md-button ng-click="vm.Query(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon></md-button>
         <md-button ng-click="vm.Delete(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
