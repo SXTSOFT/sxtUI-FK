@@ -62,18 +62,29 @@
                   <input type="text" ng-model="vm.current.Name" md-autofocus>
                 </md-input-container>
                 <md-checkbox ng-model="vm.current.IsFloor ">IsFloor </md-checkbox>
-                <md-select ng-model="weapon" placeholder="备选任务" class="md-block" multiple>
-                  <md-select-header class="demo-select-header">
+                <md-select ng-model="weapon" placeholder="关联工序" class="md-block" multiple>
+                  <md-select-header class="sxt-select-header">
                     <md-input-container md-no-float class="md-block">
-                      <input ng-model="user.address" type="text" placeholder="Address" >
-                      <md-icon md-font-icon="icon-plus" style="display:inline-block;"></md-icon>
+                      <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >
+                      <md-icon md-font-icon="icon-plus" style="display:inline-block;" ng-click="vm.add()"></md-icon>
                     </md-input-container>
                   </md-select-header>
-                  <md-option value="axe">Axe</md-option>
-                  <md-option value="sword">Sword</md-option>
-                  <md-option value="wand">Wand</md-option>
-                  <md-option value="pen">Pen?</md-option>
+                  <md-optgroup>
+                    <md-option value="{{gx.id}}" ng-repeat="gx in vm.procedure | filter:searchTerm">{{gx.name}}</md-option>
+                  </md-optgroup>
                 </md-select>
+                <!--<md-select ng-model="weapon" placeholder="备选任务" class="md-block" multiple>-->
+                  <!--<md-select-header class="demo-select-header">-->
+                    <!--<md-input-container md-no-float class="md-block">-->
+                      <!--<input ng-model="user.address" type="text" placeholder="Address" >-->
+                      <!--<md-icon md-font-icon="icon-plus" style="display:inline-block;"></md-icon>-->
+                    <!--</md-input-container>-->
+                  <!--</md-select-header>-->
+                  <!--<md-option value="axe">Axe</md-option>-->
+                  <!--<md-option value="sword">Sword</md-option>-->
+                  <!--<md-option value="wand">Wand</md-option>-->
+                  <!--<md-option value="pen">Pen?</md-option>-->
+                <!--</md-select>-->
                 <md-select ng-model="weapon" placeholder="开始通知" class="md-block" multiple>
                   <md-option value="axe">Axe</md-option>
                   <md-option value="sword">Sword</md-option>

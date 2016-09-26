@@ -190,6 +190,9 @@
     }
 
     vm.save = function () {
+      //vm.current = angular.extend({
+      //  id:vm.current.TaskFlowId
+      //},vm.current)
       api.plan.TaskLibrary.update(vm.current).then(function () {
         temp && temp.edit(vm.current);
         vm.closeRight();
@@ -234,8 +237,13 @@
 
     }
     vm.remove = function () {
-      temp && temp.remove(vm.current);
-      vm.closeRight();
+      vm.current = angular.extend({
+        id:vm.current.TaskFlowId
+      },vm.current)
+      api.plan.TaskLibrary.deleteFlowById(vm.current.id).then(function () {
+        temp && temp.edit(vm.current);
+        vm.closeRight();
+      })
     }
 
   }
