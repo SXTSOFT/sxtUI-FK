@@ -4,7 +4,7 @@
       <form>
         <md-input-container class="md-block">
           <label>名称</label>
-          <input type="text" ng-model="vm.data.Name" md-autofocus>
+          <input type="text" ng-model="vm.data.name" md-autofocus>
         </md-input-container>
         <md-input-container class="md-block">
           <label>变量名</label>
@@ -13,6 +13,18 @@
         <md-input-container class="md-block">
           <label>工期</label>
           <input type="number" ng-model="vm.data.Duration" >
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>预留开始天数 </label>
+          <input type="number" ng-model="vm.data.ReservedStartDays" >
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>预留结束天数</label>
+          <input type="number" ng-model="vm.data.ReservedEndDays" >
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>层级</label>
+          <input type="number" ng-model="vm.data.Level" >
         </md-input-container>
         <md-select ng-model="weapon" placeholder="关联工序" class="md-block" multiple>
           <md-select-header class="sxt-select-header">
@@ -30,7 +42,7 @@
         </md-checkbox>
 
       </form>
-      <md-button ng-click="vm.createTask()" class="md-primary md-raised">
+      <md-button ng-click="vm.ClickSaveleft(vm.data)" class="md-primary md-raised">
         保存
       </md-button>
     </md-tab-content>

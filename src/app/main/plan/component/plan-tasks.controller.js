@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function planTask($scope,api){
+  function planTask($scope,api,$state){
     var vm = this;
     $scope.pageing={
       page:1,
@@ -30,6 +30,7 @@
     },true);
 
     vm.Query = function (item) {
+      $state.go("app.plan.task.detail",{id:item.TaskLibraryId});
       //todo:模板点击查询
     }
 
@@ -38,7 +39,6 @@
     }
     function Load() {
      var page= api.plan.GetPage($scope.pageing);
-
        api.plan.TaskLibrary.GetList({Skip:page.Skip,Limit:page.Limit}).then(function (r) {
          vm.items = r.data.Items||[];
          $scope.pageing.total = r.data.TotalCount;

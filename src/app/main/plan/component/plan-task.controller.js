@@ -15,7 +15,30 @@
   /** @ngInject */
   function planTask(template,$mdSidenav,$stateParams,api,$state){
     var vm = this,
-      temp,task;
+      temp,task,
+      id = $state.params["id"];
+
+    if(id!='add'){
+      api.plan.TaskLibrary.getItem(id).then(function (r) {
+        vm.data = r.data;
+      })
+    }
+    //保存任务左边的基础信息
+    vm.ClickSaveleft = function(data){
+
+      if(id=='add'){
+        api.plan.TaskLibrary.create(data).then(function (r) {
+          $state.go('app.plan.task.list');
+        });
+
+      }else{
+        api.plan.TaskLibrary.update(data).then(function (r) {
+          $state.go('app.plan.task.list');
+        });
+      }
+
+    }
+
     vm.isNew = $stateParams.id=='add';
 
     vm.createTask = function(){

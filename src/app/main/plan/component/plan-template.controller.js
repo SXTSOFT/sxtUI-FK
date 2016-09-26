@@ -15,12 +15,26 @@
   /** @ngInject */
   function planTemplate(api,$state){
     var vm = this;
-    vm.ClickSave = function(data){
-      api.plan.TaskTemplates.Create({Name:data.Name,AreaId:data.AreaId}).then(function (r) {
-        $state,go('app.plan.template.list');
-      });
 
-      console.log( data,"保存")
+    var id = $state.params["id"];
+
+    if(id!='add'){
+      api.plan.TaskTemplates.getItem(id).then(function (r) {
+        vm.data = r.data;
+      })
+    }
+
+    vm.ClickSave = function(data){
+      if(id=='add'){
+        api.plan.TaskTemplates.Create({Name:data.Name,AreaId:data.AreaId}).then(function (r) {
+          $state.go('app.plan.template.list');
+        });
+        console.log( data,"保存")
+      }else{
+        api.plan.TaskTemplates.update(data).then(function (r) {
+          $state.go('app.plan.template.list');
+        });
+      }
     };
   }
 })(angular,undefined);
