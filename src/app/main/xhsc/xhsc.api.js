@@ -1079,6 +1079,7 @@
       },
       Plan:{
         GetTaskTemplates:function(param){
+          //todo:API 模板查询 注意计算分页
           var curpage=param.Curpage;
           var pageSize=param.PageSize;
 
@@ -1087,6 +1088,9 @@
             arr.push({name:"名称",time:"2016"})
           }
           return arr;
+        },
+        DelTaskTemplates:function(param){
+          //todo: API删除模板
         }
       }
     });

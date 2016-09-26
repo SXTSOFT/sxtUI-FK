@@ -33,6 +33,10 @@
       //todo:模板点击查询
     }
 
+    vm.Delete = function(item){
+      //todo:模板点击删除
+    }
+
     function Load() {
       vm.items =  remote.Plan.GetTaskTemplates({
         Curpage:$scope.pageing.page-1,

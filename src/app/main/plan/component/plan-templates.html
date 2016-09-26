@@ -11,8 +11,8 @@
   </div>
 </md-toolbar>
 
-<md-content flex layout="column"  ms-scroll>
-  <table class="simple" ms-responsive-table>
+<md-content flex layout="column" ms-scroll>
+  <table class="simple">
     <thead>
     <tr>
       <th>名称</th>
@@ -21,39 +21,34 @@
     </tr>
     </thead>
 
-    <tfoot>
-    <tr>
-      <td></td>
-    </tr>
-    </tfoot>
-
     <tbody>
     <tr ng-repeat="item in vm.items">
       <td class="name">{{item.name}}</td>
       <td class="time">{{item.time}}</td>
       <td class="office">
         <md-button ng-click="vm.Query(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon></md-button>
+        <md-button ng-click="vm.Delete(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
       </td>
     </tr>
     </tbody>
   </table>
 
-  <div layout="row">
-    <span flex></span>
-    <md-select ng-model="pageing.pageSize" class="pageSZ">
-      <md-option value="10">10</md-option>
-      <md-option value="20">20</md-option>
-      <md-option value="40">40</md-option>
-      <md-option value="80">80</md-option>
-      <md-option value="100">100</md-option>
-    </md-select>
-    <div style="text-align: right;margin-right: 15px"
-         paging page="pageing.page"
-         page-size="pageing.pageSize"
-         total="pageing.total"
-         paging-action="vm.pageAction('bar', page, pageSize, total)">
-    </div>
-  </div>
-
 </md-content>
+
+<div layout="row">
+  <span flex></span>
+  <md-select ng-model="pageing.pageSize" class="pageSZ">
+    <md-option value="10">10</md-option>
+    <md-option value="20">20</md-option>
+    <md-option value="40">40</md-option>
+    <md-option value="80">80</md-option>
+    <md-option value="100">100</md-option>
+  </md-select>
+  <div style="text-align: right;margin-right: 15px"
+       paging page="pageing.page"
+       page-size="pageing.pageSize"
+       total="pageing.total"
+       paging-action="vm.pageAction('bar', page, pageSize, total)">
+  </div>
+</div>
 
