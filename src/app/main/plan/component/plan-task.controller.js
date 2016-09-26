@@ -40,9 +40,23 @@
     }
 
     vm.isNew = $stateParams.id=='add';
+
+    vm.createTask = function(){
+      if(vm.isNew) {
+        api.plan.TaskLibrary.create(vm.data).then(function (r) {
+          $state.go('app.plan.task.detail',{id: r.data.TaskLibraryId});
+        });
+      }
+      else{
+        api.plan.TaskLibrary.update(vm.data.TaskLibraryId,vm.data).then(function () {
+
+        })
+      }
+    }
+
     if(!vm.isNew){
       api.plan.TaskLibrary.getTaskFlow($stateParams.id).then(function (r) {
-        task = r.data;
+        task = vm.data = r.data;
       })
     }
 
@@ -182,13 +196,18 @@
       })
     }
     vm.nextSave = function () {
-      var next = angular.extend({},vm.next);
+      var next = angular.extend({
+        TaskLibraryId:task.TaskLibraryId,
+        IsFloor:false,
+        Type:vm.current?vm.current.line:0,
+        ParentId:vm.current?vm.current.TaskFlowId:0
+      },vm.next);
       vm.next = {};
-      console.log(vm.next)
       api.plan.TaskFlow.post(
         next
       ).then(function (r) {
-        next.categoryId = r.categoryId;
+        next.TaskFlowId = r.data.TaskFlowId;
+        next.TaskLibraryId = task.TaskLibraryId;
         //next.categoryId = new Date().getTime();
         temp && temp.add(next,vm.current);
         vm.closeRight();
@@ -196,11 +215,23 @@
 
     }
     vm.nextBranch = function () {
-      var next = angular.extend({},vm.branch);
+      var next = angular.extend({
+        TaskLibraryId:task.TaskLibraryId,
+        IsFloor:false,
+        Type:vm.current?vm.current.line+1:0,
+        ParentId:vm.current?vm.current.TaskFlowId:0
+      },vm.branch);
       vm.branch = {};
-      next.categoryId = new Date().getTime();
-      temp && temp.add(next,vm.current,true);
-      vm.closeRight();
+      api.plan.TaskFlow.post(
+        next
+      ).then(function (r) {
+        next.TaskFlowId = r.data.TaskFlowId;
+        next.TaskLibraryId = task.TaskLibraryId;
+        //next.categoryId = new Date().getTime();
+        temp && temp.add(next,vm.current,true);
+        vm.closeRight();
+      });
+
     }
     vm.remove = function () {
       temp && temp.remove(vm.current);

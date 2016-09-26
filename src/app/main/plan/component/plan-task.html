@@ -4,11 +4,7 @@
       <form>
         <md-input-container class="md-block">
           <label>名称</label>
-          <input type="text" ng-model="vm.data.Name" md-autofocus>
-        </md-input-container>
-        <md-input-container class="md-block">
-          <label>任务类型</label>
-          <input type="text" ng-model="vm.data.Type" md-autofocus>
+          <input type="text" ng-model="vm.data.name" md-autofocus>
         </md-input-container>
         <md-input-container class="md-block">
           <label>变量名</label>
@@ -51,7 +47,7 @@
       </md-button>
     </md-tab-content>
   </md-tab>
-  <md-tab label="任务流程" md-on-select="vm.onLoadTemplate()">
+  <md-tab label="任务流程" ng-disabled="!vm.data.TaskLibraryId" md-on-select="vm.onLoadTemplate()">
     <md-tab-content flex layout-fill layout="row">
       <md-content layout="column" class="md-padding white-bg" flex >
         <canvas id="gitGraph"></canvas>
@@ -63,8 +59,9 @@
               <form>
                 <md-input-container class="md-block">
                   <label>名称</label>
-                  <input type="text" ng-model="vm.current.name" md-autofocus>
+                  <input type="text" ng-model="vm.current.Name" md-autofocus>
                 </md-input-container>
+                <md-checkbox ng-model="vm.current.IsFloor ">IsFloor </md-checkbox>
                 <md-select ng-model="weapon" placeholder="备选任务" class="md-block" multiple>
                   <md-select-header class="demo-select-header">
                     <md-input-container md-no-float class="md-block">
@@ -109,7 +106,7 @@
               <form>
                 <md-input-container class="md-block">
                   <label>下一流程名称</label>
-                  <input type="text" ng-model="vm.next.name" md-autofocus>
+                  <input type="text" ng-model="vm.next.Name" md-autofocus>
                 </md-input-container>
               </form>
               <md-button ng-click="vm.nextSave()" class="md-primary md-raised  md-mini">
