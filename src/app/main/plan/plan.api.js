@@ -36,9 +36,6 @@
         postTaskFlow:function(param){
           return $http.post('/api/TaskLibrarys', param)
         },
-        deleteFlowById:function(taskFlowId){
-          return $http.delete($http.url('/api/TaskLibrarys'+taskFlowId))
-        },
         getFlowById:function(taskFlowId){
           return $http.get($http.url('/api/TaskLibrarys'+taskFlowId))
         },
@@ -54,8 +51,11 @@
         create:function (taskLibrary) {
           return $http.post('/api/TaskLibrarys',taskLibrary);
         },
-        update:function (taskLibrary) {
-          return $http.put($http.url('/api/TaskLibrarys/'+taskLibrary.TaskFlowId),taskLibrary);
+        //update:function (taskLibrary) {
+        //  return $http.put($http.url('/api/TaskLibrarys/'+taskLibrary.id),taskLibrary);
+        //},
+        deleteFlowById:function(id){
+          return $http.delete($http.url('/api/TaskLibrarys/'+id))
         },
         GetList:function(param){
           return $http.get($http.url('/api/TaskLibrarys',{Skip:param.Skip,Limit:param.Limit}));
