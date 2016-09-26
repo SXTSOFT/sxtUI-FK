@@ -46,6 +46,23 @@
         url: '/{id}',
         template: '<plan-template flex layout="column"></plan-template>'
       })
+      .state('app.plan.bc', {
+        url: '/bc',
+        abstract: true,
+        template: '<ui-view flex layout="column"></ui-view>'
+      })
+      .state('app.plan.bc.list', {
+        url: '',
+        template: '<plan-bc flex layout="column"></plan-bc>'
+      })
+      .state('app.plan.bc.detail', {
+        url: '/{id}',
+        template: '<plan-bcAdd flex layout="column"></plan-bcAdd>'
+      })
+      .state('app.plan.bc.edit', {
+        url: '/edit/{id}',
+        template: '<plan-bcEdit flex layout="column"></plan-bcEdit>'
+      })
 
 
     msNavigationServiceProvider.saveItem('plan', {
@@ -86,7 +103,7 @@
 
     msNavigationServiceProvider.saveItem('plan.template.bc', {
       title: '补尝',
-      state: 'app.plan.task.bc',
+      state: 'app.plan.bc.list',
       icon: 'icon-account',
       weight: 1
     });
