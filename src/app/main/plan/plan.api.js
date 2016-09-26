@@ -70,7 +70,6 @@
         },
         Create:function(param){
           return $http.post('/api/TaskLibrarys', param)
-          return $http.put('/api/TaskLibrarys/'+taskLibrary.id,taskLibrary);
         },
         GetList:function(param){
           return $http.get($http.url('/api/TaskLibrarys',{Skip:param.Skip,Limit:param.Limit}));
