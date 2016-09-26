@@ -26,10 +26,19 @@
           return $http.post('/api/TaskTemplates', param)
         }
       },
+      TaskFlow:{
+
+      },
       /** /api/TaskLibrary 任务 **/
       TaskLibrary:{
+        update:function (taskLibrary) {
+          return $http.post('/api/TaskLibrarys/'+taskLibrary.id,taskLibrary);
+        },
         GetList:function(param){
           return $http.get($http.url('/api/TaskLibrarys',{Skip:param.Skip,Limit:param.Limit}));
+        },
+        getTaskFlow:function (taskId) {
+          return $http.get($http.url('/api/TaskLibrarys/'+taskId+'/Tree'));
         }
       }
     });
