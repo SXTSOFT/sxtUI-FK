@@ -55,7 +55,7 @@
           return $http.post('/api/TaskLibrarys',taskLibrary);
         },
         update:function (taskLibrary) {
-          return $http.put('/api/TaskLibrarys/'+taskLibrary.id,taskLibrary);
+          return $http.put($http.url('/api/TaskLibrarys/'+taskLibrary.TaskFlowId),taskLibrary);
         },
         GetList:function(param){
           return $http.get($http.url('/api/TaskLibrarys',{Skip:param.Skip,Limit:param.Limit}));
