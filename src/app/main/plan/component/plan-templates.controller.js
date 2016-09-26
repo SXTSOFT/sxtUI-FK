@@ -13,12 +13,12 @@
     });
 
   /** @ngInject */
-  function planTemplates($scope,remote){
+  function planTemplates($scope,api){
     var vm = this;
     $scope.pageing={
       page:1,
       pageSize:10,
-      total:50
+      total:0
     }
 
     vm.pageAction = function(title, page, pageSize, total){
@@ -38,9 +38,11 @@
     }
 
     function Load() {
-      vm.items =  remote.Plan.GetTaskTemplates({
-        Curpage:$scope.pageing.page-1,
-        PageSize:$scope.pageing.pageSize
+      var page=api.plan.GetPage($scope.pageing);
+
+      api.plan.TaskTemplates.GetList({Skip:page.Skip,Limit:page.Limit}).then(function (r) {
+        vm.items=r.data.Items||[];
+        $scope.pageing.total = r.data.TotalCount;
       });
     }
   }

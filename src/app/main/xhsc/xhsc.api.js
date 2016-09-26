@@ -1076,18 +1076,6 @@
         Summary:function(){
           return $http.get(sxt.app.api + '/api/ReportApi/Summary');
         }
-      },
-      Plan:{
-        GetTaskTemplates:function(param){
-          var curpage=param.Curpage;
-          var pageSize=param.PageSize;
-
-          var arr = new Array();
-          for(var i = 0;i<15;i++) {
-            arr.push({name:"名称",time:"2016"})
-          }
-          return arr;
-        }
       }
     });
   }
