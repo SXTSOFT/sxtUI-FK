@@ -1087,6 +1087,44 @@
             arr.push({name:"名称",time:"2016"})
           }
           return arr;
+        },
+        GetBcs:function(param){
+          var curpage=param.Curpage;
+          var pageSize=param.PageSize;
+
+          var arr = new Array();
+          for(var i = 0;i<15;i++) {
+            arr.push({ id:i,
+              Time:"2016-09-25",
+              TimeType:'1',
+              FrontDay:10,
+              BackDay:10,
+              ExtendName:'扩展名称',
+              Sign:'标识'
+            })
+          }
+          return arr;
+        },
+        GetBc:function(id) {
+          //return $http.delete($http.url('', {id: id}));
+          return { id:1,
+            Time:"2016-09-25",
+            TimeType:'1',
+            FrontDay:10,
+            BackDay:10,
+            ExtendName:'扩展名称',
+            Sign:'标识'}
+        },
+        deleteBc:function(id) {
+          //return $http.delete($http.url('', {id: id}));
+        },
+        editBc:function(values) {
+          return true;
+          //return $http.post('',values)
+        },
+        createBc:function(values) {
+          return true;
+          //return $http.post('',values)
         }
       }
     });
