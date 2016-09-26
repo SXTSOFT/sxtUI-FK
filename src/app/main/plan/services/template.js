@@ -85,7 +85,7 @@
       var groups = [],lines = [],times=[];
       this.line = fillTask(groups,lines,0,task);
       groups.forEach(function (g) {
-        if(!g.parentCategoryId){
+        if(!g.ParentId){
           appendRoot(times,groups,lines,g);
         }
       });
@@ -94,7 +94,7 @@
     }
     FTemplate.prototype.onClick = function (e) {
       var data = this.times.find(function (d) {
-        return d.categoryId === e.author;
+        return d.TaskLibraryId === e.author;
       });
       this.options.onClick && this.options.onClick({e:e,data:data});
     }
@@ -119,8 +119,8 @@
             branch.push({
               line: t.line,
               b: gitGraph.branch({
-                name: t.name || ('b' + branch.length),
-                showLabel: !!t.name,
+                name: t.Name || ('b' + branch.length),
+                showLabel: !!t.Name,
                 column: t.line,
                 parentBranch: getBranch(t.parent)
               })
@@ -130,8 +130,8 @@
             var ix=t.merge.length===1?2:0;
             t.merge.forEach(function (m) {
               getBranch(m).merge(getBranch(t.line),{
-                author:t.categoryId,
-                tag:ix!==0?(t.seq+1)+'、'+ t.name:undefined,
+                author:t.TaskLibraryId,
+                tag:ix!==0?(t.seq+1)+'、'+ t.Name:undefined,
                 displayTagBox:false,
                 dotSize:ix===0?1:0,
                 dotStrokeWidth:ix===0?1:0,
@@ -144,10 +144,10 @@
           default:
             if(t.line || t.line===0){
               getBranch(t.line).commit({
-                author:t.categoryId,
-                tag: (t.seq+1)+'、'+ t.name,
+                author:t.TaskLibraryId,
+                tag: (t.seq+1)+'、'+ t.Name,
                 displayTagBox:false,
-                message:t.name,
+                message:t.Name,
                 onClick:onClick
               });
             }
@@ -156,14 +156,14 @@
       });
     }
     FTemplate.prototype.add = function (data,prev,isBranch) {
-      if(prev && !prev.categoryId)
+      if(prev && !prev.TaskLibraryId)
         prev = null;
 
       var container = !prev||prev.line===0?this.task.master:this.task.branch.find(function (b) {
         return b.indexOf(prev)!=-1;
       });
       if(prev)
-        data.parentCategoryId = prev.categoryId;
+        data.ParentId = prev.TaskLibraryId;
       if(isBranch){
         this.task.branch.push([data]);
       }
@@ -190,10 +190,10 @@
         var next = container[index+1];
         container.splice(index,1);
         if(next) {
-          next.parentCategoryId = data.parentCategoryId;
+          next.ParentId = data.ParentId;
           this.task.branch.forEach(function (b) {
-            if (b[0].parentCategoryId === data.categoryId) {
-              b[0].parentCategoryId = next.categoryId;
+            if (b[0].ParentId === data.TaskLibraryId) {
+              b[0].ParentId = next.TaskLibraryId;
             }
           });
         }
@@ -218,8 +218,8 @@
       return obj;
     }
     function appendRoot(times,groups,lines,g) {
-      if(g.categoryId && !times.find(function (t) {
-          return t.categoryId===g.categoryId;
+      if(g.TaskLibraryId && !times.find(function (t) {
+          return t.TaskLibraryId===g.TaskLibraryId;
         })) {
         var line = lines.find(function (l) {
           return l.line === g.line;
@@ -230,9 +230,9 @@
       appendTask(times,groups,lines,g);
     }
     function appendTask(times,groups,lines,gp) {
-      if(!gp || !gp.categoryId) return;
+      if(!gp || !gp.TaskLibraryId) return;
       var fds = groups.filter(function (g) {
-        return g.parentCategoryId === gp.categoryId;
+        return g.ParentId === gp.TaskLibraryId;
       });
       fds.sort(function (s1,s2) {
         if(s1.line===gp.line)
@@ -241,8 +241,8 @@
           return -1;
         return 0;
       }).forEach(function (fd) {
-        var ends = fd.categoryId && groups.filter(function (g) {
-            return g.endFlagCategoryId === fd.categoryId;
+        var ends = fd.TaskLibraryId && groups.filter(function (g) {
+            return g.EndFlagTaskFlowId === fd.TaskLibraryId;
           });
         ends.forEach(function (e) {
           if(!fd.merge) {
@@ -260,17 +260,17 @@
           line.parent = gp.line;
           times.push(line);
         }
-        if(fd.categoryId && times.find(function (g) {
-            return g.categoryId===fd.categoryId;
+        if(fd.TaskLibraryId && times.find(function (g) {
+            return g.TaskLibraryId===fd.TaskLibraryId;
           })) {
           return;
         }
         times.push(fd);
         appendTask(times, groups, lines, fd);
         //
-        /*      if(fd.endFlagCategoryId){
+        /*      if(fd.EndFlagTaskFlowId){
          var ed = groups.find(function (g) {
-         return g.categoryId === fd.endFlagCategoryId;
+         return g.TaskLibraryId === fd.EndFlagTaskFlowId;
          });
          if(ed){
          var eRoot = findLineRoot(groups,ed);
@@ -284,7 +284,7 @@
     }
     function findLineRoot(groups,g1) {
       var prev = groups.find(function (g) {
-        return g.line===g1.line && g1.parentCategoryId===g.categoryId;
+        return g.line===g1.line && g1.ParentId===g.TaskLibraryId;
       });
       return prev?findLineRoot(groups,prev):g1;
     }
@@ -297,7 +297,7 @@
       var laskTask;
       task.master && task.master.forEach(function (g) {
         g.seq = seq++;
-        g.parentCategoryId = prev ? prev.categoryId : parent && parent.categoryId;
+        g.ParentId = prev ? prev.TaskLibraryId : parent && parent.TaskLibraryId;
         if(prev)
           prev.hasNext = true;
         prev = g;
@@ -305,12 +305,12 @@
         groups.push(g);
 
         if (laskTask) {
-          laskTask.endFlagCategoryId = g.categoryId;
+          laskTask.EndFlagTaskFlowId = g.TaskLibraryId;
           laskTask = null;
         }
         g.tasks && g.tasks.forEach(function (tk) {
           if (tk.master.length) {
-            tk.master[0].parentCategoryId = g.categoryId;
+            tk.master[0].ParentId = g.TaskLibraryId;
             laskTask = tk.master[tk.master.length - 1];
             t = fillTask(groups, lines, t + 1, tk, g);
           }
