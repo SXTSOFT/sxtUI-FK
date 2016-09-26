@@ -24,6 +24,15 @@
         },
         Create:function (param) {
           return $http.post('/api/TaskTemplates', param)
+        },
+        getItem:function(id){
+          return $http.get($http.url('/api/TaskTemplates/'+id));
+        },
+        update:function(param){
+          return $http.put('/api/TaskTemplates/'+param.Id,param);
+        },
+        delete:function(id){
+          return $http.delete('/api/TaskTemplates/'+id);
         }
       },
       TaskFlow:{
@@ -37,10 +46,18 @@
       /** /api/TaskLibrary 任务 **/
       TaskLibrary:{
         update:function (taskLibrary) {
-          return $http.post('/api/TaskLibrarys/'+taskLibrary.id,taskLibrary);
+          var item= angular.extend(taskLibrary,{Id:taskLibrary.TaskLibraryId});
+
+          return $http.put('/api/TaskLibrarys/'+taskLibrary.TaskLibraryId,item);
+        },
+        Create:function(param){
+          return $http.post('/api/TaskLibrarys', param)
         },
         GetList:function(param){
           return $http.get($http.url('/api/TaskLibrarys',{Skip:param.Skip,Limit:param.Limit}));
+        },
+        getItem:function(id){
+          return $http.get($http.url('/api/TaskLibrarys/'+id));
         },
         getTaskFlow:function (taskId) {
           return $http.get($http.url('/api/TaskLibrarys/'+taskId+'/Tree'));

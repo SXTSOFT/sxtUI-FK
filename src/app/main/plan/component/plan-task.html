@@ -4,15 +4,31 @@
       <form>
         <md-input-container class="md-block">
           <label>名称</label>
-          <input type="text" ng-model="vm.data.name" md-autofocus>
+          <input type="text" ng-model="vm.data.Name" md-autofocus>
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>任务类型</label>
+          <input type="text" ng-model="vm.data.Type" md-autofocus>
         </md-input-container>
         <md-input-container class="md-block">
           <label>变量名</label>
-          <input type="text" ng-model="vm.data.name" md-autofocus>
+          <input type="text" ng-model="vm.data.Variable" md-autofocus>
         </md-input-container>
         <md-input-container class="md-block">
           <label>工期</label>
-          <input type="number" ng-model="vm.data.gq" >
+          <input type="number" ng-model="vm.data.Duration" >
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>预留开始天数 </label>
+          <input type="number" ng-model="vm.data.ReservedStartDays" >
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>预留结束天数</label>
+          <input type="number" ng-model="vm.data.ReservedEndDays" >
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>层级</label>
+          <input type="number" ng-model="vm.data.Level" >
         </md-input-container>
         <md-select ng-model="weapon" placeholder="关联工序" class="md-block" multiple>
           <md-select-header class="sxt-select-header">
@@ -25,12 +41,12 @@
             <md-option value="{{gx.id}}" ng-repeat="gx in vm.procedure | filter:searchTerm">{{gx.name}}</md-option>
           </md-optgroup>
         </md-select>
-        <md-checkbox ng-model="data.cb1" aria-label="Checkbox 1">
+        <md-checkbox ng-model="vm.data.ManuallyClose" aria-label="Checkbox 1">
           手工关闭
         </md-checkbox>
 
       </form>
-      <md-button ng-click="close()" class="md-primary md-raised">
+      <md-button ng-click="vm.ClickSaveleft(vm.data)" class="md-primary md-raised">
         保存
       </md-button>
     </md-tab-content>
