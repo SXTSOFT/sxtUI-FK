@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function planTask(template,$mdSidenav){
+  function planTask($scope,template,$mdSidenav,utils,$mdDialog,$mdSelect,$element){
     var vm = this,
       temp;
     vm.toggleRight = function () {
@@ -157,6 +157,32 @@
     vm.remove = function () {
       temp && temp.remove(vm.current);
       vm.closeRight();
+    }
+    vm.procedure=[{
+      name:'工序1',
+      id:1
+    },{
+      name:'工序2',
+      id:2
+    },{
+      name:'工序3',
+      id:3
+    }]
+    vm.stop = function(ev){
+      ev.stopPropagation();
+    }
+    vm.add = function(){
+      $mdSelect
+        .destroy();
+      $mdDialog.show($mdDialog.prompt({
+        title:'输入关联工序',
+        textContent:'输入关联工序名',
+        placeholder:'输入关联工序',
+        ok:'确定',
+        cancel:'取消'
+      })).then(function(r){
+        console.log(r)
+      })
     }
 
   }
