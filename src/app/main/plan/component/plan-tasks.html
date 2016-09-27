@@ -1,8 +1,14 @@
 <md-toolbar class="md-hue-2">
-  <div class="md-toolbar-tools">
+  <div class="md-toolbar-tools tasks-list">
     <h2>
       <span>任务管理</span>
     </h2>
+    <span flex="5"></span>
+    <md-select class="simplified" ng-model="vm.selectedFilter" ng-init="vm.selectedFilter = 0" placeholder="Level 0">
+      <md-option value="0" translate="Level 0">Level 0</md-option>
+      <md-option value="1" translate="Level 1">Level 1</md-option>
+      <md-option value="2" translate="Level 2">Level 2</md-option>
+    </md-select>
     <span flex></span>
     <md-button class="md-icon-button" aria-label="More">
       <md-icon md-font-icon="icon-plus" ui-sref="app.plan.task.detail({id:'add'})"></md-icon>
@@ -25,7 +31,7 @@
   </thead>
 
   <tbody>
-  <tr ng-repeat="item in vm.items">
+  <tr ng-repeat="item in vm.items | filter:{Level :vm.selectedFilter}">
     <td class="name">{{item.Name}}</td>
     <td class="time">{{item.Type}}</td>
     <td class="time">{{item.Variable}}</td>

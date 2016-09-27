@@ -56,6 +56,15 @@
         },
         deleteFlow:function (id) {
           return $http.delete('/api/TaskFlows/'+id)
+        },
+        resetTaskFlowRoles:function(id,data){
+          return $http.post($http.url('/api/TaskFlows/'+id+'/TaskFlowRoles/Reset'),data)
+        },
+        getRoleByFlowId:function(id){
+          return $http.get($http.url('/api/TaskFlows/'+id+'/TaskFlowRoles'))
+        },
+        resetTaskFlow:function(id,data){
+          return $http.post($http.url('/api/TaskFlows/'+id+'/TaskLibrarys/Reset'),data)
         }
       },
       /** /api/TaskLibrary 任务 **/
@@ -104,7 +113,10 @@
         },
         query:function (param) {
           return $http.get($http.url('/api/UserGroup',param))
-        }
+        },
+        //reset:function(param){
+        //  return $http.post($http.url('/api/TaskFlowRoles/Reset'),param)
+        //}
       },
       TaskFlowRole:{
         queryByFlowId:function (flowId) {

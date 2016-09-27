@@ -6,3 +6,19 @@
     }
   }
 }
+.tasks-list{
+  md-select{
+    &.md-pink-theme{
+      .md-select-value{
+        &.md-select-placeholder{
+          color:#fff;
+        }
+      }
+      &:not([disabled]):focus{
+        .md-select-value{
+          color:#fff;
+        }
+      }
+    }
+  }
+}

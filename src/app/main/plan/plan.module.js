@@ -63,7 +63,10 @@
         url:'/build',
         template:'<plan_build flex layout="column"></plan_build>'
       })
-
+      .state('app.plan.gantts',{
+        url:'/gantts',
+        template:'<plan-ganttlist flex layout="column"></plan-ganttlist>'
+      })
 
     msNavigationServiceProvider.saveItem('plan', {
       title: '计划管理',
@@ -78,7 +81,7 @@
     });
     msNavigationServiceProvider.saveItem('plan.gantt', {
       title: '查看计划',
-      state: 'app.plan.gantt',
+      state: 'app.plan.gantts',
       icon: 'icon-account',
       weight: 1
     });

@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function planTask(template,$mdSidenav,$stateParams,api,$state,$mdDialog){
+  function planTask(template,$mdSidenav,$stateParams,api,$state,$mdDialog,$mdSelect){
     var vm = this,
       temp,task,
       id = $state.params["id"];
@@ -86,6 +86,29 @@
       temp = new template({
         onClick:function (e) {
           vm.current = e.data;
+          console.log(vm.current)
+          api.plan.TaskFlow.getRoleByFlowId(vm.current.TaskFlowId).then(function(r){
+            //console.log('r',r)
+            vm.users = r.data.Items;
+            //var user = [
+            //    {
+            //      "Id": 0,
+            //      "RoleId": "a54317ac1e394f24870bc729c5822163",
+            //      "RoleName": "user001",
+            //      "NotificationType": "Started"
+            //    },{
+            //      "Id": 0,
+            //      "RoleId": "d7858909bac14330a3b4f31316f5d694",
+            //      "RoleName": "2",
+            //      "NotificationType": "EarlyWarning"
+            //    },{
+            //      "Id": 0,
+            //      "RoleId": "3995f36b22834146ac57eb36a5cc7288",
+            //      "RoleName": "aa",
+            //      "NotificationType": "Closed"
+            //    }]
+            dealRole(vm.users);
+          })
           vm.toggleRight();
         }
       });
@@ -94,13 +117,39 @@
         vm.toggleRight();
       }
     }
-
+    vm.saveNoticeStarted = [];
+    vm.saveNoticeEarlyWarning=[];
+    vm.saveNoticeClosed=[];
+    function dealRole(users){
+      if(!vm.nextUserGroups&&vm.nextUserGroups) return;
+      if(!users&&users.length) return;
+      vm.nextUserGroups.forEach(function(r){
+        var f = users.find(function(_r){
+          return _r.RoleId == r.GroupID;
+        })
+        if(f){
+          r['selected'+ f.NotificationType] = true;
+        }
+      })
+      users.forEach(function(r){
+        if(r.NotificationType == 'Started'){
+          vm.saveNoticeStarted.push(r.RoleId);
+        }
+        if(r.NotificationType == 'EarlyWarning'){
+          vm.saveNoticeEarlyWarning.push(r.RoleId);
+        }
+        if(r.NotificationType == 'Closed'){
+          vm.saveNoticeClosed.push(r.RoleId);
+        }
+      })
+    }
     vm.save = function () {
       api.plan.TaskLibrary.update(vm.current).then(function () {
         temp && temp.edit(vm.current);
         vm.closeRight();
       })
     }
+    //vm.saveNoticeEarlyWarning = ['a54317ac1e394f24870bc729c5822163']
     vm.nextSave = function () {
       var next = angular.extend({
         TaskLibraryId:task.TaskLibraryId,
@@ -154,7 +203,9 @@
         vm.nextTasks = r.data.Items;
       })
     }
+
     vm.addSubTask = function (ev) {
+      $mdSelect.destroy();
       $mdDialog.show({
         controller: 'planTaskMiniController',
         templateUrl: 'app/main/plan/component/plan-task-mini.html',
@@ -172,7 +223,7 @@
 
         });
     }
-    vm.saveSubTask = function () {
+    vm.saveSubTasks = function () {
       var tasks = [];
       vm.saveTasks && vm.saveTasks.forEach(function (tid) {
         tasks.push({
@@ -180,7 +231,9 @@
           TaskLibraryId:tid
         });
       })
+      api.plan.TaskFlow.resetTaskFlow(vm.current.TaskFlowId,tasks).then(function(r){
 
+      })
       console.log('vm.saveTasks',vm.saveTasks)
     }
     vm.getUseGroups = function () {
@@ -188,7 +241,12 @@
         vm.nextUserGroups = r.data.Items;
       })
     }
+    vm.getUseGroups();
+    vm.stop = function(ev){
+      ev.stopPropagation();
+    }
     vm.addRole = function (ev) {
+      $mdSelect.destroy();
         var confirm = $mdDialog.prompt()
           .title('添加新的角色')
           .textContent('请输入角色名字')
@@ -202,16 +260,26 @@
             "GroupName": result,
             "SystemID": "plan",
             "Description": result
+          }).then(function(r){
+            $mdDialog.show(
+              $mdDialog.alert()
+                .title('添加成功')
+            )
           })
         }, function() {
 
         });
     }
     vm.saveUserGroup = function (type) {
+      var users = [];
       var datas = vm['saveNotice'+type];
-      if(datas && datas.length){
-
-      }
+      console.log(datas)
+      datas&&datas.forEach(function(r){
+        users.push({RoleId:r,NotificationType:type})
+      })
+      api.plan.TaskFlow.resetTaskFlowRoles(vm.current.TaskFlowId,users).then(function(r){
+        console.log('a')
+      })
     }
   }
 })(angular,undefined);
