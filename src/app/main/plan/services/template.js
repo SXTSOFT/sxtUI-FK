@@ -7,7 +7,6 @@
     .factory('template',template);
   /** @ngInject */
   function template($window) {
-
     $window.GitGraph.Commit.prototype._render = $window.GitGraph.Commit.prototype.render;
     $window.GitGraph.Commit.prototype.render = function () {
       this._render();

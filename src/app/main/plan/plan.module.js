@@ -72,10 +72,6 @@
         url: '/{id}',
         template: '<plan-bcAdd flex layout="column"></plan-bcAdd>'
       })
-      .state('app.plan.bc.edit', {
-        url: '/edit/{id}',
-        template: '<plan-bcEdit flex layout="column"></plan-bcEdit>'
-      })
       .state('app.plan.buildPlan',{
         url:'/build',
         template:'<plan-build flex layout="column"></plan-build>'
