@@ -1,5 +1,25 @@
+<div layout="row" flex>
+  <md-content layout="column" class="md-padding white-bg" flex >
+    <canvas id="gitGraph"></canvas>
+  </md-content>
+  <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+    <md-toolbar class="md-theme-light">
+      <h1 class="md-toolbar-tools">Sidenav Right</h1>
+    </md-toolbar>
+    <md-content layout-padding>
+      <form>
+        <md-input-container>
+          <label for="testInput">Test input</label>
+          <input type="text" id="testInput"
+                 ng-model="data" md-autofocus>
+        </md-input-container>
+      </form>
+    </md-content>
+  </md-sidenav>
+</div>
+<!--
 <ms-form-wizard flex>
-  <md-tabs md-dynamic-height md-selected="msWizard.selectedIndex" md-center-tabs="true">
+  <md-tabs flex md-selected="msWizard.selectedIndex" md-center-tabs="true">
     <md-tab>
       <md-tab-label>
             <span class="ms-form-wizard-step-label">
@@ -10,7 +30,7 @@
                 <span class="ms-form-wizard-step-text">基本信息</span>
             </span>
       </md-tab-label>
-      <md-tab-body>
+      <md-tab-body >
         <div layout="row" layout-algin="space-between center">
 
         </div>
@@ -137,3 +157,4 @@
     </md-button>
   </div>
 </ms-form-wizard>
+-->

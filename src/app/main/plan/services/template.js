@@ -60,7 +60,8 @@
     }
     FTemplate.prototype.init = function () {
       var g = $window.$('#gitGraph'),
-        p = g.parent();
+        p = g.parent(),
+        scrollTop = p.scrollTop();
       g.remove();
       p.append('<canvas id="gitGraph"></canvas>');
 
@@ -78,6 +79,10 @@
         //console.log( "You just left this commit ->", event.data );
         this.style.cursor = "auto";
       });
+
+      gitGraph.canvas.addEventListener('graph:render',function () {
+        p.scrollTop(scrollTop);
+      })
     }
     FTemplate.prototype.load = function load(task) {
       this.task = task;
@@ -100,9 +105,9 @@
     FTemplate.prototype.render = function () {
       this.gitGraph = null;
       this.init();
-      var self = this,times = this.times,
-        Branch = this.Branch = [],
-        gitGraph = this.gitGraph;
+      var self = this,times = self.times,
+        Branch = self.Branch = [],
+        gitGraph = self.gitGraph;
       function onClick(e) {
         self.onClick(e);
       }
@@ -135,7 +140,9 @@
                 dotSize:ix===0?1:0,
                 dotStrokeWidth:ix===0?1:0,
                 dotStrokeColor:ix===0?'transparent':0,
-                onClick:onClick
+                onClick:onClick,
+                color:self.options.onNodeColor && self.options.onNodeColor(t),
+                dotColor:self.options.onNodeDotColor && self.options.onNodeDotColor(t)
               });
               ix++;
             });
@@ -147,7 +154,9 @@
                 tag: (t.seq+1)+'、'+ t.Name,
                 displayTagBox:false,
                 message:t.Name,
-                onClick:onClick
+                onClick:onClick,
+                color:self.options.onNodeColor && self.options.onNodeColor(t),
+                dotColor:self.options.onNodeDotColor && self.options.onNodeDotColor(t)
               });
             }
             break;

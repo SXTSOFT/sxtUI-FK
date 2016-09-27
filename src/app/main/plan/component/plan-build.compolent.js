@@ -10,14 +10,12 @@
     });
 
   /** @ngInject */
-  function planBuild($scope,api){
-    $scope.msWizard = {
-      selectedIndex:2
-    }
+  function planBuild($scope,api,template,$q,$mdSidenav){
     var vm = this;
     vm.data = {
 
     }
+
 
     //获取模板
     api.plan.TaskTemplates.GetList({Skip:0,Limit:100}).then(function (r) {
@@ -41,16 +39,58 @@
         vm.data.buildings = r.data;
       })
     }
+    vm.getFloors = function (bid) {
+      return api.xhsc.Project.GetAreaChildenbyID(bid).then(function (r) {
+        vm.data.floors = r.data;
+        return r.data;
+      })
+    }
+    vm.getTask = function (templateId) {
+      return api.plan.TaskTemplates.getItem(templateId).then(function (r) {
+        return api.plan.TaskLibrary.getTaskFlow(r.data.RootTaskLibraryId).then(function (r1) {
+          return r1.data;
+        })
+      })
+    }
+    vm.toggleRight = function () {
+      return $mdSidenav('right')
+        .open();
+    }
+    vm.closeRight = function () {
+      return $mdSidenav('right')
+        .close();
+    }
 
-    $scope.$watch('msWizard.selectedIndex',function () {
-      switch ($scope.msWizard.selectedIndex){
-        case 1:
+    $q.all([
+      vm.getFloors('000370000000000'),
+      vm.getTask(4)
+    ]).then(function (rs) {
+      var fs = rs[0],
+        task = rs[1];
+      console.log('fs',fs,task);
+      var temp = new template({
+        onClick:function (e) {
+          vm.current = e.data;
+          vm.toggleRight();
+        },
+        onNodeColor:function (t) {
 
-          break;
-      }
+        },
+        onNodeDotColor:function (t) {
+
+        }
+      });
+      temp.load(task);
     })
 
-    var task = {
+    $scope.$watch('msWizard.selectedIndex',function () {
+      /*      switch ($scope.msWizard.selectedIndex){
+       case 1:
+
+       break;
+       }*/
+    })
+/*    var task = {
       taskId: 0,
       name: '楼栋模板',
       master: [{
@@ -149,6 +189,6 @@
           tasks: []
         }]
       ]
-    };
+    };*/
   }
 })(angular,undefined);
