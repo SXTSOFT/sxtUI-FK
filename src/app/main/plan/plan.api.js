@@ -77,6 +77,11 @@
         getItem:function(id){
           return $http.get($http.url('/api/TaskLibrarys/'+id));
         },
+        /**
+         *
+         * @param taskId 任务ID
+         * @returns {object}
+         */
         getTaskFlow:function (taskId) {
           return $http.get($http.url('/api/TaskLibrarys/'+taskId+'/Tree'));
         }

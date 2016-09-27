@@ -156,7 +156,9 @@
     }
     vm.addSubTask = function (ev) {
       $mdDialog.show({
-        controller: 'planTaskMiniController',
+        controller: ['api','$scope',function (api,$scope) {
+
+        }],
         templateUrl: 'app/main/plan/component/plan-task-mini.html',
         parent: angular.element(document.body),
         targetEvent: ev,
@@ -173,13 +175,16 @@
         });
     }
     vm.saveSubTask = function () {
-      var tasks = [];
+      var data = {
+        TaskFlowId:vm.current.TaskFlowId,
+        TaskLibraryId:[
+
+        ]
+      }
       vm.saveTasks && vm.saveTasks.forEach(function (tid) {
-        tasks.push({
-          TaskFlowId:vm.current.TaskFlowId,
-          TaskLibraryId:tid
-        });
+        data.TaskLibraryId.push(tid);
       })
+
 
       console.log('vm.saveTasks',vm.saveTasks)
     }
