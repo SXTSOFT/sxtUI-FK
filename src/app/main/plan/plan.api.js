@@ -96,6 +96,9 @@
         },
         delete:function(id){
           return $http.delete('/api/Compensates/'+id);
+        },
+        getBaseRegion:function(){
+          return $http.get($http.url('/api/SysDataDictionarys?ddicType=SXT.EMBD.Base.Region'));
         }
       },
       UserGroup:{
