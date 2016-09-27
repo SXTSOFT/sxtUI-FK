@@ -115,7 +115,8 @@
         queryByFlowId:function (flowId) {
           return $http.get('/api/TaskFlowRoles/'+flowId);
         }
-      }
+      },
+
     });
   }
 })(angular,undefined);

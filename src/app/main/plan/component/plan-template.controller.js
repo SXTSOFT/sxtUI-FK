@@ -24,9 +24,13 @@
       })
     }
 
+    api.plan.TaskLibrary.GetList({Level:0}).then(function (r) {
+      vm.tasks = r.data.Items||[];
+    });
+
     vm.ClickSave = function(data){
       if(id=='add'){
-        api.plan.TaskTemplates.Create({Name:data.Name,AreaId:data.AreaId}).then(function (r) {
+        api.plan.TaskTemplates.Create(data).then(function (r) {
           $state.go('app.plan.template.list');
         });
         console.log( data,"保存")
