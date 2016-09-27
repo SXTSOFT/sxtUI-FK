@@ -5,7 +5,20 @@
   'use strict';
 
   angular
-    .module('app.plan', ['app.core','app.xhsc'])
+    .module('app.plan', ['app.core','app.xhsc',
+      'gantt',
+      'gantt.sortable',
+      'gantt.movable',
+      'gantt.drawtask',
+      'gantt.tooltips',
+      'gantt.bounds',
+      'gantt.progress',
+      'gantt.table',
+      'gantt.tree',
+      'gantt.groups',
+      'gantt.dependencies',
+      'gantt.overlap',
+      'gantt.resizeSensor'])
     .config(config);
 
   /** @ngInject */
@@ -61,9 +74,12 @@
       })
       .state('app.plan.buildPlan',{
         url:'/build',
-        template:'<plan_build flex layout="column"></plan_build>'
+        template:'<plan-build flex layout="column"></plan-build>'
       })
-
+      .state('app.plan.gantt',{
+        url:'/gantt',
+        template:'<plan-gantt flex layout="column"></plan-gantt>'
+      })
 
     msNavigationServiceProvider.saveItem('plan', {
       title: '计划管理',
