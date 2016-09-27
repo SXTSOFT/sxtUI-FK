@@ -5,7 +5,7 @@
     </h2>
     <span flex></span>
     <md-button class="md-icon-button" aria-label="More">
-      <md-icon md-font-icon="icon-plus" ui-sref="app.plan.bc.detail({id:'add'})"></md-icon>
+      <md-icon md-font-icon="icon-plus" ui-sref="app.plan.bc.detail"></md-icon>
     </md-button>
   </div>
 </md-toolbar>
@@ -16,8 +16,6 @@
     <th>日期类型</th>
     <th>前补偿天数</th>
     <th>后补偿天数</th>
-    <th>扩展名称</th>
-    <th>标识</th>
     <th>是否全面停工</th>
     <th>操作</th>
   </tr>
@@ -35,13 +33,11 @@
     <td>{{item.TimeType == 0?'公历':'农历'}}</td>
     <td>{{item.FrontDays}}</td>
     <td>{{item.BackDay}}</td>
-    <td>{{item.ExtendName}}</td>
-    <td>{{item.Sign}}</td>
     <td>{{item.IsAllStopWork?'是':'否'}}</td>
     <td>
-      <md-button flex class="md-primary"  aria-label="Settings" ui-sref="app.plan.bc.detail({id:item.Id})">更新</md-button>
+      <md-button class="md-primary md-mini md-fab" aria-label="Settings" ui-sref="app.plan.bc.detail({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
 
-      <md-button flex class="md-primary"  aria-label="Settings" ng-click="vm.delete(item.Id)">删除</md-button>
+      <md-button class="md-primary md-mini md-fab" aria-label="Settings" ng-click="vm.delete(item.Id)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
 
     </td>
   </tr>

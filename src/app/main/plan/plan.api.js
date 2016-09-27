@@ -86,6 +86,11 @@
         getItem:function(id){
           return $http.get($http.url('/api/TaskLibrarys/'+id));
         },
+        /**
+         *
+         * @param taskId 任务ID
+         * @returns {object}
+         */
         getTaskFlow:function (taskId) {
           return $http.get($http.url('/api/TaskLibrarys/'+taskId+'/Tree'));
         }
@@ -105,6 +110,9 @@
         },
         delete:function(id){
           return $http.delete('/api/Compensates/'+id);
+        },
+        getBaseRegion:function(){
+          return $http.get($http.url('/api/SysDataDictionarys?ddicType=SXT.EMBD.Base.Region'));
         }
       },
       UserGroup:{

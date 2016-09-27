@@ -149,7 +149,6 @@
         vm.closeRight();
       })
     }
-    //vm.saveNoticeEarlyWarning = ['a54317ac1e394f24870bc729c5822163']
     vm.nextSave = function () {
       var next = angular.extend({
         TaskLibraryId:task.TaskLibraryId,
