@@ -16,7 +16,9 @@
 
     var vm = this;
     vm.AttachmentSHow = false;
-
+    vm.parentLoad = function () {
+      $scope.$parent.vm.load();
+    }
     vm.checkData={};
     vm.EnclosureType = [];
     vm.checkData.WgCheck = 1;
@@ -59,6 +61,16 @@
         utils.alert('请输入合同编号');
         return;
       }
+      if ($scope.data.imgs1.length == 0 &&
+        $scope.data.imgs2.length == 0 &&
+        $scope.data.imgs3.length == 0 &&
+        $scope.data.imgs4.length == 0 &&
+        $scope.data.imgs5.length == 0
+      ) {
+        utils.alert('请添加附件');
+        return;
+      }
+
 
       vm.checkData.InspectionReport = vm.checkData.sjReport;
       vm.checkData.ProjectId = $scope.project.projectId;
@@ -67,7 +79,7 @@
       vm.checkData.RegionId = $scope.project.pid;
       vm.checkData.ProjectName = $scope.project.projectName;
       vm.checkData.RegionName = $scope.project.typeName;
-      $scope.$parent.vm.load();
+
       if(vm.checkData.WgCheck == 0 || vm.checkData.InspectionReport == 0) {
         $mdDialog.show({
           controller: ['$scope',function ($scope) {
@@ -96,7 +108,7 @@
                   $scope.isSaveing = false;
                   utils.alert('提交完成').then(function () {
                     $state.go('app.szgc.ys');
-                    console.log($scope)
+                    vm.parentLoad();
                   });
                 }else{
                   utils.alert('提交失败').then(function () {
@@ -107,6 +119,7 @@
             };
 
           }],
+          parent: angular.element(document.body),
           templateUrl: 'app/main/material/ys/treatmentOption.html',
           bindToController:true,
           fullscreen: $scope.customFullscreen
@@ -121,7 +134,6 @@
           if (vm.checkData.InspectionReport == null)
             vm.checkData.InspectionReport = 3; //   N/A
         }
-
         vm._save(addForm);
       }
     };
@@ -136,6 +148,7 @@
           $scope.isSaveing = false;
           utils.alert('提交完成').then(function () {
             $state.go('app.szgc.ys');
+            vm.parentLoad();
           });
         }else{
           utils.alert('提交失败').then(function () {
@@ -157,6 +170,7 @@
     if(vm.checkDataId != ''){
       vm.AttachmentSHow = true;
       vm.fjType = 16;
+      vm.checkData.sjReport = 1;
       vm.Type.find(function (t) {
         if(t.value == 16){
           vm.groupId_16 =  t.groupId;
@@ -208,9 +222,12 @@
     }
 
     vm.ok = function(){
-      $scope.$parent.vm.load();
       vm.checkData.HandleOption = null;
       if(vm.checkDataId != ''){
+        if ($scope.data.imgs4.length == 0) {
+          utils.alert('请添加送检报告附件');
+          return;
+        }
         if(vm.checkData.sjReport == 0){
           $mdDialog.show({
             controller: ['$scope',function ($scope) {
@@ -235,6 +252,7 @@
                   if(result){
                     utils.alert('提交完成').then(function () {
                       $state.go('app.szgc.ys');
+                      vm.parentLoad();
                     });
                   }else{
                     utils.alert('提交失败').then(function () {
@@ -255,6 +273,7 @@
             if(result){
               utils.alert('提交完成').then(function () {
                 $state.go('app.szgc.ys');
+                vm.parentLoad();
               });
             }else{
               utils.alert('提交失败').then(function () {
