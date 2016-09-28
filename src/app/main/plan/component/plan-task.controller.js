@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function planTask(template,$mdSidenav,$stateParams,api,$state,$mdDialog,$mdSelect,$q){
+  function planTask(template,$mdSidenav,$stateParams,api,$state,$mdDialog,$mdSelect,$q,utils){
     var vm = this,
       temp,task,
       id = $state.params["id"];
@@ -176,14 +176,17 @@
 
     }
     vm.remove = function () {
-      api.plan.TaskFlow.deleteFlow(vm.current.TaskFlowId).then(function () {
-        temp && temp.remove(vm.current);
-        vm.closeRight();
-        //$state.go('app.plan.task.list');
+      utils.confirm('确认删除',null).then(function(){
+        api.plan.TaskFlow.deleteFlow(vm.current.TaskFlowId).then(function () {
+          temp && temp.remove(vm.current);
+          vm.closeRight();
+          //$state.go('app.plan.task.list');
+        })
       })
     }
 
     vm.getNextTasks = function () {
+      vm.saveTasks =[];
       var promises = [
         api.plan.TaskLibrary.GetList({Level:task.Level+1}),
         api.plan.TaskFlow.getSubTasks(vm.current.TaskFlowId)

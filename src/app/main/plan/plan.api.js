@@ -45,15 +45,15 @@
         postTaskFlow:function(param){
           return $http.post('/api/TaskLibrarys', param)
         },
-        getFlowById:function(taskFlowId){
-          return $http.get($http.url('/api/TaskLibrarys/'+taskFlowId))
-        },
+        //getFlowById:function(taskFlowId){
+        //  return $http.get($http.url('/api/TaskLibrarys/'+taskFlowId))
+        //},
         updateFlowById:function(taskFlowId){
           return $http.put($http.url('/api/TaskLibrarys/'+taskFlowId))
         },
-        getFlowTree:function(taskFlowId){
-          return $http.get($http.url('/api/TaskLibrarys/'+taskFlowId+'/Tree'))
-        },
+        //getFlowTree:function(taskFlowId){
+        //  return $http.get($http.url('/api/TaskLibrarys/'+taskFlowId+'/Tree'))
+        //},
         deleteFlow:function (id) {
           return $http.delete('/api/TaskFlows/'+id)
         },

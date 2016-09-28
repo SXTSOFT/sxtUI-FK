@@ -1,25 +1,24 @@
-<div layout="row" flex>
-  <md-content layout="column" class="md-padding white-bg" flex >
-    <canvas id="gitGraph"></canvas>
-  </md-content>
-  <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
-    <md-toolbar class="md-theme-light">
-      <h1 class="md-toolbar-tools">Sidenav Right</h1>
-    </md-toolbar>
-    <md-content layout-padding>
-      <form>
-        <md-input-container>
-          <label for="testInput">Test input</label>
-          <input type="text" id="testInput"
-                 ng-model="data" md-autofocus>
-        </md-input-container>
-      </form>
-    </md-content>
-  </md-sidenav>
-</div>
-<!--
-<ms-form-wizard flex>
-  <md-tabs flex md-selected="msWizard.selectedIndex" md-center-tabs="true">
+<!--<div layout="row" flex>-->
+  <!--<md-content layout="column" class="md-padding white-bg" flex >-->
+    <!--<canvas id="gitGraph"></canvas>-->
+  <!--</md-content>-->
+  <!--<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">-->
+    <!--<md-toolbar class="md-theme-light">-->
+      <!--<h1 class="md-toolbar-tools">Sidenav Right</h1>-->
+    <!--</md-toolbar>-->
+    <!--<md-content layout-padding>-->
+      <!--<form>-->
+        <!--<md-input-container>-->
+          <!--<label for="testInput">Test input</label>-->
+          <!--<input type="text" id="testInput"-->
+                 <!--ng-model="data" md-autofocus>-->
+        <!--</md-input-container>-->
+      <!--</form>-->
+    <!--</md-content>-->
+  <!--</md-sidenav>-->
+<!--</div>-->
+<ms-form-wizard flex class="create-plan">
+  <md-tabs md-dynamic-height md-selected="msWizard.selectedIndex" md-center-tabs="true">
     <md-tab>
       <md-tab-label>
             <span class="ms-form-wizard-step-label">
@@ -34,11 +33,11 @@
         <div layout="row" layout-algin="space-between center">
 
         </div>
-        <form name="wizardStep1" class="md-inline-form" ms-form-wizard-form novalidate>
+        <form name="wizardStep1" flex  ms-form-wizard-form novalidate>
           <div layout="row" >
-            <md-input-container flex="100" >
+            <md-input-container flex="100" class="md-block">
               <input type="text" name="planName" ng-model="vm.formWizard.planName" placeholder="计划名称" required>
-              <div ng-messages="wizardStep1.firstname.$error" ng-show="wizardStep1.planName.$touched" role="alert">
+              <div ng-messages="wizardStep1.planName.$error" ng-show="wizardStep1.planName.$touched" role="alert">
                 <div ng-message="required">
                   <span>请输入计划名称.</span>
                 </div>
@@ -80,7 +79,7 @@
               </div>
             </md-input-container>
           </div>
-          <div  layout-gt-sm="row">
+          <div layout="row">
             <md-input-container class="md-block" flex-gt-sm>
               <label>请选择模板</label>
               <md-select name="templateId" ng-disabled="!vm.formWizard.projectId" ng-model="vm.formWizard.templateId"  md-on-open="vm.getTemplates()">
@@ -107,7 +106,7 @@
                 <span class="ms-form-wizard-step-number md-accent-bg" ng-if="wizardStep2.$valid">
                     <i class="icon-check s16"></i>
                 </span>
-                <span class="ms-form-wizard-step-text">流程确认</span>
+                <span class="ms-form-wizard-step-text">设置任务</span>
             </span>
       </md-tab-label>
       <md-tab-body>
@@ -134,7 +133,7 @@
             <input type="text" name="cardholder" ng-model="vm.formWizard.cardholder" placeholder="Card Holder" required>
             <div ng-messages="wizardStep3.cardholder.$error" ng-show="wizardStep3.cardholder.$dirty" role="alert">
               <div ng-message="required">
-                <span>Card holder field is required.</span>
+                <span>请选择人员分配.</span>
               </div>
             </div>
           </md-input-container>
@@ -157,4 +156,4 @@
     </md-button>
   </div>
 </ms-form-wizard>
--->
+

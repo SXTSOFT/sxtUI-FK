@@ -5,7 +5,7 @@
     </h2>
     <span flex></span>
     <md-button class="md-icon-button" aria-label="More">
-      <md-icon md-font-icon="icon-plus" ui-sref="app.plan.gantt"></md-icon>
+      <md-icon md-font-icon="icon-plus" ui-sref="app.plan.buildPlan"></md-icon>
     </md-button>
   </div>
 </md-toolbar>
@@ -25,6 +25,14 @@
       <td class="actions">
         <md-button ng-click="vm.Query(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon></md-button>
         <md-button ng-click="vm.Delete(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
+      </td>
+    </tr>
+    <tr>
+      <td class="name">a</td>
+      <td class="time">{{2016-6-6|date:'yyyy-M-d'}}</td>
+      <td class="actions">
+        <md-button ng-click="vm.Query()" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon></md-button>
+        <md-button ng-click="vm.Delete()" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
       </td>
     </tr>
     </tbody>

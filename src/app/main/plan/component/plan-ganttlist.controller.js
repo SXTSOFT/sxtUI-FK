@@ -13,8 +13,11 @@
     });
 
   /**@ngInject*/
-  function  planGanttlist(){
+  function  planGanttlist($state){
     var vm = this;
     vm.items = [];
+    vm.Query = function(){
+      $state.go('app.plan.gantt')
+    }
   }
 })();

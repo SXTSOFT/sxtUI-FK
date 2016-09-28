@@ -82,7 +82,9 @@
       });
       temp.load(task);
     })
-
+    vm.change = function(){
+      console.log('a')
+    }
     $scope.$watch('msWizard.selectedIndex',function () {
       /*      switch ($scope.msWizard.selectedIndex){
        case 1:
