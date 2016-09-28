@@ -37,8 +37,10 @@
     app: {
 
       couchDb:'http://ggem.sxtsoft.com:5984',
-      //api:'http://xhszgc.sxtsoft.com:7091',
+      //api:'http://vkde.sxtsoft.com:8091',
       api:'http://xhszgc.sxtsoft.com:9091',
+      //api:'http://xhszgc.sxtsoft.com:7091',
+      //api:'http://xhszgc.sxtsoft.com:9091',
       //api:'http://10.0.8.183:9091',
       //fs:'http://xhszgc.sxtsoft.com:8090'
       fs:'http://xhszgc.sxtsoft.com:9090'
