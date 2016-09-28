@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function planTask(template,$mdSidenav,$stateParams,api,$state,$mdDialog,$mdSelect){
+  function planTask(template,$mdSidenav,$stateParams,api,$state,$mdDialog,$mdSelect,$q){
     var vm = this,
       temp,task,
       id = $state.params["id"];
@@ -88,26 +88,9 @@
           vm.current = e.data;
           console.log(vm.current)
           api.plan.TaskFlow.getRoleByFlowId(vm.current.TaskFlowId).then(function(r){
-            //console.log('r',r)
             vm.users = r.data.Items;
-            //var user = [
-            //    {
-            //      "Id": 0,
-            //      "RoleId": "a54317ac1e394f24870bc729c5822163",
-            //      "RoleName": "user001",
-            //      "NotificationType": "Started"
-            //    },{
-            //      "Id": 0,
-            //      "RoleId": "d7858909bac14330a3b4f31316f5d694",
-            //      "RoleName": "2",
-            //      "NotificationType": "EarlyWarning"
-            //    },{
-            //      "Id": 0,
-            //      "RoleId": "3995f36b22834146ac57eb36a5cc7288",
-            //      "RoleName": "aa",
-            //      "NotificationType": "Closed"
-            //    }]
             dealRole(vm.users);
+            vm.getNextTasks();
           })
           vm.toggleRight();
         }
@@ -117,12 +100,13 @@
         vm.toggleRight();
       }
     }
-    vm.saveNoticeStarted = [];
-    vm.saveNoticeEarlyWarning=[];
-    vm.saveNoticeClosed=[];
+
     function dealRole(users){
       if(!vm.nextUserGroups&&vm.nextUserGroups) return;
       if(!users&&users.length) return;
+      vm.saveNoticeStarted = [];
+      vm.saveNoticeEarlyWarning=[];
+      vm.saveNoticeClosed=[];
       vm.nextUserGroups.forEach(function(r){
         var f = users.find(function(_r){
           return _r.RoleId == r.GroupID;
@@ -132,14 +116,18 @@
         }
       })
       users.forEach(function(r){
-        if(r.NotificationType == 'Started'){
-          vm.saveNoticeStarted.push(r.RoleId);
-        }
-        if(r.NotificationType == 'EarlyWarning'){
-          vm.saveNoticeEarlyWarning.push(r.RoleId);
-        }
-        if(r.NotificationType == 'Closed'){
-          vm.saveNoticeClosed.push(r.RoleId);
+        switch (r.NotificationType){
+          case 1:
+            vm.saveNoticeStarted.push(r.RoleId);
+                break;
+          case 2:
+            vm.saveNoticeEarlyWarning.push(r.RoleId);
+                break;
+          case 4:
+                break;
+          case 8:
+            vm.saveNoticeClosed.push(r.RoleId);
+                break;
         }
       })
     }
@@ -196,11 +184,26 @@
     }
 
     vm.getNextTasks = function () {
-      api.plan.TaskLibrary.GetList({
-        Level:task.Level+1
-      }).then(function (r) {
-        vm.nextTasks = r.data.Items;
+      var promises = [
+        api.plan.TaskLibrary.GetList({Level:task.Level+1}),
+        api.plan.TaskFlow.getSubTasks(vm.current.TaskFlowId)
+      ];
+      $q.all(promises).then(function(res){
+        vm.nextTasks = res[0].data.Items;
+        vm.nextTasks.forEach(function(r){
+          var f = res[1].data.Items&&res[1].data.Items.find(function(_r){
+            return _r.TaskLibraryId == r.TaskLibraryId;
+          })
+          if(f){
+            r.selected = true;
+          }
+        })
       })
+      //api.plan.TaskLibrary.GetList({
+      //  Level:task.Level+1
+      //}).then(function (r) {
+      //  vm.nextTasks = r.data.Items;
+      //})
     }
 
     vm.addSubTask = function (ev) {
@@ -270,14 +273,15 @@
         });
     }
     vm.saveUserGroup = function (type) {
-      var users = [];
+      var users ={
+        roleIds:[]
+      };
       var datas = vm['saveNotice'+type];
       console.log(datas)
       datas&&datas.forEach(function(r){
-        users.push({RoleId:r,NotificationType:type})
+        users.roleIds.push(r)
       })
-      api.plan.TaskFlow.resetTaskFlowRoles(vm.current.TaskFlowId,users).then(function(r){
-        console.log('a')
+      api.plan.TaskFlow.resetTaskFlowRolesByType(vm.current.TaskFlowId,type,users.roleIds).then(function(r){
       })
     }
   }

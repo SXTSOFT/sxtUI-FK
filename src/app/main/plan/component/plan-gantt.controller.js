@@ -427,6 +427,7 @@
         }
       },
       treeHeaderContent       : '{{getHeader()}}',
+      treeHeader:'abc',
       columnsHeaderContents   : {
         'model.name': '{{getHeader()}}',
         'from'      : '{{getHeader()}}',

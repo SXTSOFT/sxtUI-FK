@@ -38,6 +38,7 @@
 
       couchDb:'http://ggem.sxtsoft.com:5984',
       api:'http://vkde.sxtsoft.com:8091',
+      //api:'http://xhszgc.sxtsoft.com:9091',
       //api:'http://xhszgc.sxtsoft.com:7091',
       //api:'http://xhszgc.sxtsoft.com:9091',
       //api:'http://10.0.8.183:9091',

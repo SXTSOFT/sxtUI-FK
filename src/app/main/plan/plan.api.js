@@ -60,11 +60,17 @@
         resetTaskFlowRoles:function(id,data){
           return $http.post($http.url('/api/TaskFlows/'+id+'/TaskFlowRoles/Reset'),data)
         },
+        resetTaskFlowRolesByType:function(id,type,data){
+          return $http.post($http.url('/api/TaskFlows/'+id+'/TaskFlowRoles/Reset/'+type),data)
+        },
         getRoleByFlowId:function(id){
           return $http.get($http.url('/api/TaskFlows/'+id+'/TaskFlowRoles'))
         },
         resetTaskFlow:function(id,data){
           return $http.post($http.url('/api/TaskFlows/'+id+'/TaskLibrarys/Reset'),data)
+        },
+        getSubTasks:function(id){
+          return $http.get($http.url('/api/TaskFlows/'+id+'/TaskLibrarys'))
         }
       },
       /** /api/TaskLibrary 任务 **/

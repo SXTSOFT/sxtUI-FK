@@ -50,14 +50,14 @@
                   <input type="text" ng-model="vm.current.Name" md-autofocus>
                 </md-input-container>
                 <md-checkbox ng-model="vm.current.IsFloor" ng-if="vm.data.Level===0">此节点对应楼层 </md-checkbox>
-                <md-select ng-model="vm.saveTasks" placeholder="备选任务" class="md-block" multiple md-on-open="vm.getNextTasks()" md-on-close="vm.saveSubTasks()">
+                <md-select ng-model="vm.saveTasks" placeholder="备选任务" class="md-block" multiple md-on-close="vm.saveSubTasks()">
                   <md-select-header class="sxt-select-header">
                     <md-input-container md-no-float class="md-block">
                       <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >
                       <md-icon md-font-icon="icon-plus" style="display:inline-block;" ng-click="vm.addSubTask()"></md-icon>
                     </md-input-container>
                   </md-select-header>
-                  <md-option ng-value="tk.TaskLibraryId" ng-repeat="tk in vm.nextTasks">{{tk.Name}}</md-option>
+                  <md-option ng-value="tk.TaskLibraryId" ng-selected="tk.selected" ng-repeat="tk in vm.nextTasks">{{tk.Name}}</md-option>
                 </md-select>
                 <md-select ng-model="vm.saveNoticeStarted" placeholder="开始通知" class="md-block" multiple md-on-close="vm.saveUserGroup('Started')">
                   <md-select-header class="sxt-select-header">

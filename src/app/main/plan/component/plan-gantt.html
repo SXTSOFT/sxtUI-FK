@@ -134,7 +134,7 @@
              time-frames-magnet="vm.options.timeFramesMagnet"
              api="vm.options.api"
              column-magnet="vm.options.columnMagnet">
-          <gantt-tree enabled="vm.options.sideMode === 'Tree' || vm.options.sideMode === 'TreeTable'"
+          <gantt-tree header="vm.options.treeHeader" enabled="vm.options.sideMode === 'Tree' || vm.options.sideMode === 'TreeTable'"
                       header-content="vm.options.treeHeaderContent"
                       keep-ancestor-on-filter-row="true">
           </gantt-tree>
@@ -153,15 +153,15 @@
           <gantt-bounds></gantt-bounds>
           <gantt-progress></gantt-progress>
           <gantt-sortable></gantt-sortable>
-          <gantt-movable enabled="!vm.options.readOnly"></gantt-movable>
-          <gantt-draw-task
-            enabled="vm.options.canDraw"
-            move-threshold="2"
-            task-factory="vm.options.drawTaskFactory">
-          </gantt-draw-task>
+          <!--<gantt-movable enabled="!vm.options.readOnly"></gantt-movable>-->
+          <!--<gantt-draw-task-->
+            <!--enabled="vm.options.canDraw"-->
+            <!--move-threshold="2"-->
+            <!--task-factory="vm.options.drawTaskFactory">-->
+          <!--</gantt-draw-task>-->
           <gantt-overlap></gantt-overlap>
           <gantt-resize-sensor></gantt-resize-sensor>
-          <gantt-dependencies></gantt-dependencies>
+          <gantt-dependencies read-only="true"></gantt-dependencies>
         </div>
 
       </md-content>
