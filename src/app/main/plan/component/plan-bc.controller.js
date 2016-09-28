@@ -18,16 +18,16 @@
     $scope.pageing={
       page:1,
       pageSize:10,
-      total:50
-    }
+      total:0
+    };
+
+    vm.pageAction = function(title, page, pageSize, total){
+      $scope.pageing.page = page;
+    };
 
     $scope.$watch("vm.pageing",function(){
       Load();
     },true);
-
-    vm.Query = function (item) {
-      //todo:模板点击查询
-    }
 
     function Load() {
       var page=api.plan.GetPage($scope.pageing);

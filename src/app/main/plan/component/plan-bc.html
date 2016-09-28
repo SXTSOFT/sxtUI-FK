@@ -9,40 +9,34 @@
     </md-button>
   </div>
 </md-toolbar>
-<table class="simple" ms-responsive-table>
-  <thead>
-  <tr>
-    <th>日期</th>
-    <th>日期类型</th>
-    <th>前补偿天数</th>
-    <th>后补偿天数</th>
-    <th>是否全面停工</th>
-    <th>操作</th>
-  </tr>
-  </thead>
+<md-content flex layout="column" ms-scroll>
+  <table class="simple">
+    <thead>
+    <tr>
+      <th>日期</th>
+      <th>日期类型</th>
+      <th>前补偿天数</th>
+      <th>后补偿天数</th>
+      <th>是否全面停工</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in vm.data">
+      <td>{{item.Time | date:'yyyy-MM-dd'}}</td>
+      <td>{{item.TimeType == 0?'公历':'农历'}}</td>
+      <td>{{item.FrontDays}}</td>
+      <td>{{item.BackDay}}</td>
+      <td>{{item.IsAllStopWork?'是':'否'}}</td>
+      <td class="actions">
+        <md-button class="md-primary md-mini md-fab" aria-label="Settings" ui-sref="app.plan.bc.detail({id:item.CompensateId})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
+        <md-button class="md-primary md-mini md-fab" aria-label="Settings" ng-click="vm.delete(item.CompensateId)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
 
-  <tfoot>
-  <tr>
-    <td></td>
-  </tr>
-  </tfoot>
-
-  <tbody>
-  <tr ng-repeat="item in vm.data">
-    <td>{{item.Time | date:'yyyy-MM-dd'}}</td>
-    <td>{{item.TimeType == 0?'公历':'农历'}}</td>
-    <td>{{item.FrontDays}}</td>
-    <td>{{item.BackDay}}</td>
-    <td>{{item.IsAllStopWork?'是':'否'}}</td>
-    <td>
-      <md-button class="md-primary md-mini md-fab" aria-label="Settings" ui-sref="app.plan.bc.detail({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
-
-      <md-button class="md-primary md-mini md-fab" aria-label="Settings" ng-click="vm.delete(item.Id)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
-
-    </td>
-  </tr>
-  </tbody>
-</table>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</md-content>
 <div layout="row">
   <span flex></span>
   <md-select ng-model="pageing.pageSize" class="pageSZ">
