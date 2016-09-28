@@ -83,7 +83,7 @@
 
           return $http.put('/api/TaskLibrarys/'+taskLibrary.TaskLibraryId,item);
         },
-        deleteFlowById:function(id){
+        delete:function(id){
           return $http.delete($http.url('/api/TaskLibrarys/'+id))
         },
         GetList:function(param){
@@ -103,7 +103,7 @@
       },
       compensate:{
         createBc:function (values) {
-          return $http.post('/api/Compensates', values)
+          return $http.post('/api/Compensates', values);
         },
         getList:function(param){
           return $http.get($http.url('/api/Compensates',{Skip:param.Skip,Limit:param.Limit}));
@@ -112,13 +112,16 @@
           return $http.get($http.url('/api/Compensates/'+id));
         },
         putCompensate:function(data){
-          return $http.put('/api/Compensates/'+data.Id,data);
+          return $http.put('/api/Compensates/'+data.CompensateId,data);
         },
         delete:function(id){
           return $http.delete('/api/Compensates/'+id);
         },
         getBaseRegion:function(){
           return $http.get($http.url('/api/SysDataDictionarys?ddicType=SXT.EMBD.Base.Region'));
+        },
+        postAreaReset:function (param) {
+          return $http.post('/api/Compensates/' + param.id + '/Area/Reset', param.areaIds);
         }
       },
       UserGroup:{
@@ -137,6 +140,13 @@
           return $http.get('/api/TaskFlowRoles/'+flowId);
         }
       },
+      //获取集字典
+      SysDataDictionary:{
+        Get:function(ddicType){
+          var param = {Skip:0,Limit:100,ddicType:ddicType};
+          return $http.get($http.url('/api/SysDataDictionarys',param));
+        }
+      }
 
     });
   }

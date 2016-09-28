@@ -27,7 +27,15 @@
     api.plan.TaskLibrary.GetList({Level:0}).then(function (r) {
       vm.tasks = r.data.Items||[];
     });
+    vm.AreaList = [];
 
+    api.plan.SysDataDictionary.Get('SXT.EMBD.Base.Region').then(function (r) {
+
+      r.data.Items.forEach(function(f){
+        vm.AreaList.push({Value:f.DDicMember,Text:f.DDicMemberName})
+      });
+
+    })
     vm.ClickSave = function(data){
       if(id=='add'){
         api.plan.TaskTemplates.Create(data).then(function (r) {

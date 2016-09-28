@@ -121,7 +121,7 @@
     });
 
     msNavigationServiceProvider.saveItem('plan.template.bc', {
-      title: '补尝',
+      title: '补偿',
       state: 'app.plan.bc.list',
       icon: 'icon-account',
       weight: 1
