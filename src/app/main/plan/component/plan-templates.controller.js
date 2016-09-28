@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function planTemplates($scope,api,$state){
+  function planTemplates($scope,api,$state,utils){
     var vm = this;
     $scope.pageing={
       page:1,
@@ -30,22 +30,27 @@
     },true);
 
     vm.Query = function (item) {
-      //todo:模板点击查询
       $state.go("app.plan.template.detail",{id:item.Id});
 
     }
 
     vm.Delete = function(item){
-      //todo:模板点击删除
+      utils.confirm('是否确认删除模板？').then(function (r) {
+        api.plan.TaskTemplates.delete(item.Id).then(function (r) {
+          Load();
+        });
+      });
+
     }
 
     function Load() {
-      var page=api.plan.GetPage($scope.pageing);
+      var page=utils.getPage($scope.pageing);
 
       api.plan.TaskTemplates.GetList({Skip:page.Skip,Limit:page.Limit}).then(function (r) {
         vm.items=r.data.Items||[];
         $scope.pageing.total = r.data.TotalCount;
       });
+
     }
   }
 })(angular,undefined);

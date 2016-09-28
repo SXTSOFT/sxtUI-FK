@@ -83,7 +83,7 @@
 
           return $http.put('/api/TaskLibrarys/'+taskLibrary.TaskLibraryId,item);
         },
-        deleteFlowById:function(id){
+        delete:function(id){
           return $http.delete($http.url('/api/TaskLibrarys/'+id))
         },
         GetList:function(param){
@@ -137,6 +137,13 @@
           return $http.get('/api/TaskFlowRoles/'+flowId);
         }
       },
+      //获取集字典
+      SysDataDictionary:{
+        Get:function(ddicType){
+          var param = {Skip:0,Limit:100,ddicType:ddicType};
+          return $http.get($http.url('/api/SysDataDictionarys',param));
+        }
+      }
 
     });
   }

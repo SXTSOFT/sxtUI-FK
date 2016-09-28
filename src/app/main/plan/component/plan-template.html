@@ -12,13 +12,17 @@
 <md-content flex layout-fill class="white-bg" layout-padding >
 <form>
   <md-input-container class="md-block">
-    <label>名称</label>
+    <label>名 称</label>
     <input type="text" ng-model="vm.data.Name" md-autofocus>
   </md-input-container>
+
   <md-input-container class="md-block">
-    <label>区域ID</label>
-    <input type="text" ng-model="vm.data.AreaId" md-autofocus>
+    <label>区 域</label>
+    <md-select  ng-model="vm.data.AreaId" name="type" >
+      <md-option ng-repeat="item in vm.AreaList" ng-value="item.Value" >{{item.Text}}</md-option>
+    </md-select>
   </md-input-container>
+
   <md-input-container class="md-block">
     <label>关联任务</label>
     <md-select name="rootTaskLibraryId" ng-model="vm.data.RootTaskLibraryId"  >

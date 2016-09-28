@@ -45,6 +45,7 @@
       confirm:confirmMessage,
       error:errorMessage,
       copy:copyFn,
+      getPage:getPage,
       cookies:{
         c:{},
         put:function(name,value){
@@ -142,7 +143,7 @@
           .targetEvent(ev)
           .ok(ok || '确定')
           .cancel(cancel || '取消')
-      );
+      )
     }
 
     function copyFn(a,b,c,d){
@@ -161,6 +162,10 @@
           })
           .hideDelay(3000)
       );
+    }
+
+    function getPage(param){
+      return {Skip:(param.page - 1) * param.pageSize,Limit:param.pageSize};
     }
   }
 })();
