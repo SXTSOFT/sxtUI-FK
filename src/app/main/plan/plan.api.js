@@ -103,7 +103,7 @@
       },
       compensate:{
         createBc:function (values) {
-          return $http.post('/api/Compensates', values)
+          return $http.post('/api/Compensates', values);
         },
         getList:function(param){
           return $http.get($http.url('/api/Compensates',{Skip:param.Skip,Limit:param.Limit}));
@@ -119,6 +119,9 @@
         },
         getBaseRegion:function(){
           return $http.get($http.url('/api/SysDataDictionarys?ddicType=SXT.EMBD.Base.Region'));
+        },
+        postAreaReset:function (param) {
+          return $http.post('/api/Compensates/' + param.id + '/Area/Reset', param.areaIds);
         }
       },
       UserGroup:{
