@@ -16,6 +16,7 @@
   function planBcAdd($scope,api,utils,$state,$stateParams){
     var vm = this;
     vm.data = {};
+    vm.data.IsAllStopWork = 'true';
     vm.data.CompensateId = $stateParams.id;
 
     api.plan.compensate.getBaseRegion().then(function (r) {
@@ -30,26 +31,27 @@
         var areaIds = [];
         r.data.CompensateAreas.forEach(function (a) {
           areaIds.push(a.AreaId);
-        })
+        });
         vm.data.AreaIds = areaIds;
       });
     }
 
     vm.save = function(){
-      //vm.data.TimeType = (vm.data.TimeType == 'GregorianCalendar'?0:1);
       if(!vm.data.CompensateId){
-        var r = api.plan.compensate.createBc(vm.data);
-        if(r){
+        api.plan.compensate.createBc(vm.data).then(function () {
           utils.alert("提交成功",null,function(){
             $state.go("app.plan.bc.list");
           });
-        }
+        })
       }else{
-        api.plan.compensate.putCompensate(vm.data);
-        api.plan.compensate.postAreaReset({id:vm.data.CompensateId,areaIds:vm.data.AreaIds});
-        utils.alert("提交成功",null,function(){
-          $state.go("app.plan.bc.list");
-        });
+        vm.data.Id = vm.data.CompensateId;
+        api.plan.compensate.putCompensate(vm.data).then(function () {
+          api.plan.compensate.postAreaReset({id:vm.data.CompensateId,areaIds:vm.data.AreaIds}).then(function () {
+            utils.alert("提交成功",null,function(){
+              $state.go("app.plan.bc.list");
+            });
+          })
+        })
       }
     };
   }

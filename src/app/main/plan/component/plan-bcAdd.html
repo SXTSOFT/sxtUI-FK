@@ -12,11 +12,11 @@
   <form>
     <md-input-container class="md-block">
       <label>日期</label>
-      <md-datepicker ng-model="vm.data.Time" md-open-on-focus></md-datepicker>
+      <md-datepicker ng-model="vm.data.Time" md-open-on-focus required=""></md-datepicker>
     </md-input-container>
-    <md-input-container class="md-block">
+    <md-input-container class="md-block" style="height: 58px;">
       <label>日期类型</label>
-      <md-select ng-model="vm.data.TimeType" placeholder="日期类型">
+      <md-select ng-model="vm.data.TimeType">
         <md-option value="0">公历</md-option>
         <md-option value="1">农历</md-option>
       </md-select>
@@ -29,7 +29,7 @@
       <label>后补偿天数</label>
       <input type="number" ng-model="vm.data.BackDay">
     </md-input-container>
-    <md-input-container class="md-block">
+    <md-input-container class="md-block" style="height: 58px;">
       <label>适用区域</label>
       <md-select ng-model="vm.data.AreaIds" multiple>
         <md-option value="{{item.DDicMember}}" ng-repeat="item in vm.Areas">{{item.DDicMemberName}}</md-option>

@@ -112,7 +112,7 @@
           return $http.get($http.url('/api/Compensates/'+id));
         },
         putCompensate:function(data){
-          return $http.put('/api/Compensates/'+data.Id,data);
+          return $http.put('/api/Compensates/'+data.CompensateId,data);
         },
         delete:function(id){
           return $http.delete('/api/Compensates/'+id);
