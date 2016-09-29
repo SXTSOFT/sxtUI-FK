@@ -61,29 +61,69 @@
         .close();
     }
 
-    $q.all([
-      vm.getFloors('000370000000000'),
-      vm.getTask(4)
-    ]).then(function (rs) {
-      var fs = rs[0],
-        task = rs[1];
-      console.log('fs',fs,task);
-      var temp = new template({
-        onClick:function (e) {
-          vm.current = e.data;
-          vm.toggleRight();
-        },
-        onNodeColor:function (t) {
-
-        },
-        onNodeDotColor:function (t) {
-
+    //$q.all([
+    //  vm.getFloors('000370000000000'),
+    //  vm.getTask(4)
+    //]).then(function (rs) {
+    //  var fs = rs[0],
+    //    task = rs[1];
+    //  console.log('fs',fs,task);
+    //  var temp = new template({
+    //    onClick:function (e) {
+    //      vm.current = e.data;
+    //      vm.toggleRight();
+    //    },
+    //    onNodeColor:function (t) {
+    //
+    //    },
+    //    onNodeDotColor:function (t) {
+    //
+    //    }
+    //  });
+    //  temp.load(task);
+    //})
+    vm.nextStep = function(i){
+      api.plan.BuildPlan.getBuildPlanFlowTree(13).then(function(r){
+        var temp = new template({
+          onClick:function (e) {
+            vm.current = e.data;
+            vm.toggleRight();
+          }
+        });
+        temp.load(r.data.RootTask);
+      })
+      if(i==0){
+        var data = {
+          "BuildingId": vm.formWizard.buildingId,
+          "Name":vm.formWizard.planName,
+          "TaskTemplateId": vm.formWizard.templateId,
+          "StartTime": vm.formWizard.beginDate
         }
-      });
-      temp.load(task);
-    })
+        //api.plan.BuildPlan.post(data).then(function(r){
+        //
+        //  if(r.data){
+        //
+        //  }
+        //})
+      }
+      console.log('a',i)
+    }
     vm.change = function(){
       console.log('a')
+    }
+    vm.stop = function(ev){
+      ev.stopPropagation();
+    }
+    vm.sendForm = function(){
+      //var data = {
+      //  "BuildingId": vm.formWizard.buildingId,
+      //  "Name":vm.formWizard.planName,
+      //  "TaskTemplateId": vm.formWizard.templateId,
+      //  "StartTime": vm.formWizard.beginDate
+      //}
+      //api.plan.BuildPlan.post(data).then(function(r){
+      //
+      //})
     }
     $scope.$watch('msWizard.selectedIndex',function () {
       /*      switch ($scope.msWizard.selectedIndex){

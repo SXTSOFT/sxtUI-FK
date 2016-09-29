@@ -132,7 +132,12 @@
       })
     }
     vm.save = function () {
-      api.plan.TaskLibrary.update(vm.current).then(function () {
+      var data={
+        "Id": vm.current.TaskFlowId,
+        "Name": vm.current.Name,
+        "IsFloor": vm.current.IsFloor
+      }
+      api.plan.TaskFlow.updateTaskById(data).then(function () {
         temp && temp.edit(vm.current);
         vm.closeRight();
       })

@@ -71,6 +71,23 @@
         },
         getSubTasks:function(id){
           return $http.get($http.url('/api/TaskFlows/'+id+'/TaskLibrarys'))
+        },
+        updateTaskById:function(data){
+          return $http.put($http.url('/api/TaskFlows/'+data.Id),data)
+        }
+      },
+      BuildPlan:{
+        getList:function(param){
+          //return $http.get($http.url('/api/BuildingPlans'))
+        },
+        post:function(params){
+          return $http.post($http.url('/api/BuildingPlans'),params)
+        },
+        getBuildPlanRoleUsers:function(id){
+          return $http.get($http.url('/api/BuildingPlans/'+id+'/BuildingPlanRoleUsers'))
+        },
+        getBuildPlanFlowTree:function(id){
+          return $http.get($http.url('/api/BuildingPlans/'+id+'/FlowTree'))
         }
       },
       /** /api/TaskLibrary 任务 **/
