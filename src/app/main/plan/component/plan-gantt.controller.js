@@ -427,7 +427,7 @@
         }
       },
       treeHeaderContent       : '{{getHeader()}}',
-      treeHeader:'abc',
+      treeHeader:'名称',
       columnsHeaderContents   : {
         'model.name': '{{getHeader()}}',
         'from'      : '{{getHeader()}}',
