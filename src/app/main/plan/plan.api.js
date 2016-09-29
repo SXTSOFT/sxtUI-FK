@@ -13,10 +13,6 @@
     var $http = apiProvider.$http,
       $q = apiProvider.$q;
     apiProvider.register('plan',{
-      GetPage:function(param) {
-        return {Skip:(param.page - 1) * param.pageSize,Limit:param.pageSize};
-      },
-
       /** /api/TaskTemplates 模板 **/
       TaskTemplates:{
         GetList:function(param){
@@ -169,7 +165,7 @@
           return $http.get('/api/TaskFlowRoles/'+flowId);
         }
       },
-      //获取集字典
+      /**  /api/SysDataDictionary 获取集字典 **/
       SysDataDictionary:{
         Get:function(ddicType){
           var param = {Skip:0,Limit:100,ddicType:ddicType};

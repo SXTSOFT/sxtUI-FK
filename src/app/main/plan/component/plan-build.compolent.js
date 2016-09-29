@@ -163,6 +163,8 @@
        break;
        }*/
     })
+
+    vm.RoleAllots = [{value:'AAA',text:'AAA'},{value:'AAA2',text:'AAA2'}];
 /*    var task = {
       taskId: 0,
       name: '楼栋模板',
