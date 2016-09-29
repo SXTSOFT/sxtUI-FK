@@ -83,11 +83,23 @@
         post:function(params){
           return $http.post($http.url('/api/BuildingPlans'),params)
         },
+        update:function (id,params) {
+          return $http.post($http.url('/api/BuildingPlans/'+id),params)
+        },
         getBuildPlanRoleUsers:function(id){
           return $http.get($http.url('/api/BuildingPlans/'+id+'/BuildingPlanRoleUsers'))
         },
         getBuildPlanFlowTree:function(id){
           return $http.get($http.url('/api/BuildingPlans/'+id+'/FlowTree'))
+        },
+        flowTasksReset:function (id,items) {
+          return $http.post('/api/BuildingPlans/'+id+'/BuildingPlanFlowTasks/Reset',items)
+        },
+        getBuildingPlanRoles:function (id) {
+          return $http.get('/api/BuildingPlans/'+id+'/BuildingPlanRoles')
+        },
+        buildingRolesReset:function (id,items) {
+          return $http.post('/api/BuildingPlans/'+id+'/BuildingPlanRoleUsers/Reset',items)
         }
       },
       /** /api/TaskLibrary 任务 **/

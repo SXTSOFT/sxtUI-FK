@@ -4,16 +4,17 @@
       <form>
         <md-input-container class="md-block">
           <label>名称</label>
-          <input type="text" ng-model="vm.data.Name" md-autofocus>
+          <input type="text" ng-model="vm.data.Name" >
         </md-input-container>
-        <!--<md-input-container class="md-block">
-          <label>变量名</label>
-          <input type="text" ng-model="vm.data.Variable" md-autofocus>
-        </md-input-container>
+        <div ng-if="vm.data.Level!==0">
         <md-input-container class="md-block">
+          <label>变量名</label>
+          <input type="text" ng-model="vm.data.Variable" >
+        </md-input-container>
+        <md-input-container class="md-block" >
           <label>工期</label>
           <input type="text" ng-model="vm.data.Duration" >
-        </md-input-container>
+          </md-input-container>
         <md-select ng-model="weapon" placeholder="关联工序" class="md-block" multiple>
           <md-select-header class="sxt-select-header">
             <md-input-container md-no-float class="md-block">
@@ -27,8 +28,7 @@
         </md-select>
         <md-checkbox ng-model="vm.data.ManuallyClose" ng-if="vm.data.Level!==0" aria-label="手工关闭">
           手工关闭
-        </md-checkbox>-->
-
+        </md-checkbox></div>
       </form>
       <md-button ng-click="vm.ClickSaveleft(vm.data)" class="md-primary md-raised">
         保存

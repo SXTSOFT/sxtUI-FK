@@ -56,3 +56,21 @@
 [0806/120353:ERROR:process_info.cc(372)] NtQuerySystemInformation SystemExtendedHandleInformation: {没有足够配额} 没有足够的虚拟内存或分页文件配额以完成指定的操作。  (0xc0000017)
 [0806/120607:ERROR:process_info.cc(372)] NtQuerySystemInformation SystemExtendedHandleInformation: {没有足够配额} 没有足够的虚拟内存或分页文件配额以完成指定的操作。  (0xc0000017)
 [0806/120845:ERROR:process_info.cc(372)] NtQuerySystemInformation SystemExtendedHandleInformation: {没有足够配额} 没有足够的虚拟内存或分页文件配额以完成指定的操作。  (0xc0000017)
+[0928/163224:ERROR:process_info.cc(608)] range at 0xb8313fb200000000, size 0x22a fully unreadable
+[0928/163224:ERROR:process_info.cc(608)] range at 0xb831401400000000, size 0x22a fully unreadable
+[0928/163224:ERROR:process_info.cc(608)] range at 0x0, size 0x22a fully unreadable
+[0928/163224:ERROR:process_info.cc(608)] range at 0xc4413fb600000000, size 0x1cb fully unreadable
+[0928/163224:ERROR:process_info.cc(608)] range at 0xc441401800000000, size 0x1cb fully unreadable
+[0928/163224:ERROR:process_info.cc(608)] range at 0x0, size 0x1cb fully unreadable
+[0928/163224:WARNING:in_range_cast.h(38)] value 2382502232980 out of range
+[0928/163224:WARNING:in_range_cast.h(38)] value 2382502227986 out of range
+[0928/163224:WARNING:in_range_cast.h(38)] value 2382502233428 out of range
+[0928/163224:WARNING:in_range_cast.h(38)] value 2382502606992 out of range
+[0928/163224:WARNING:in_range_cast.h(38)] value 1974682715028 out of range
+[0928/163224:WARNING:in_range_cast.h(38)] value 1974682710034 out of range
+[0928/163224:WARNING:in_range_cast.h(38)] value 1974682715476 out of range
+[0928/163224:WARNING:in_range_cast.h(38)] value 1974683105152 out of range
+[0928/163224:ERROR:scoped_process_suspend.cc(38)] NtResumeProcess: 已尝试访问正在退出的过程。  (0xc000010a)
+[0928/163224:ERROR:process_reader_win.cc(233)] ReadMemory at 0x1cbd0be9c90 of 512 bytes failed: 仅完成部分的 ReadProcessMemory 或 WriteProcessMemory 请求。 (0x12B)
+[0928/163224:ERROR:crash_report_exception_handler.cc(98)] WriteEverything failed
+[0928/163224:ERROR:scoped_process_suspend.cc(38)] NtResumeProcess: 已尝试访问正在退出的过程。  (0xc000010a)

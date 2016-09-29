@@ -61,52 +61,78 @@
         .close();
     }
 
-    //$q.all([
-    //  vm.getFloors('000370000000000'),
-    //  vm.getTask(4)
-    //]).then(function (rs) {
-    //  var fs = rs[0],
-    //    task = rs[1];
-    //  console.log('fs',fs,task);
-    //  var temp = new template({
-    //    onClick:function (e) {
-    //      vm.current = e.data;
-    //      vm.toggleRight();
-    //    },
-    //    onNodeColor:function (t) {
-    //
-    //    },
-    //    onNodeDotColor:function (t) {
-    //
-    //    }
-    //  });
-    //  temp.load(task);
-    //})
-    vm.nextStep = function(i){
-      api.plan.BuildPlan.getBuildPlanFlowTree(13).then(function(r){
-        var temp = new template({
-          onClick:function (e) {
-            vm.current = e.data;
-            vm.toggleRight();
-          }
+    vm.resetName = function (item) {
+      item.Name = (item.FullName || item.TaskFlowName)+' - ' +
+        (item.selectedTask?item.selectedTask.Name:'') + ' - 可选('+item.OptionalTasks.length+')'
+    }
+    function setTask(item) {
+      var next = vm.rootTask.Master.find(function (it) {
+        return it.ParentId===item.Id && it.OptionalTasks.find(function (task) {
+          return task.TaskLibraryId===item.selectedTask.TaskLibraryId;
+        })!=null;
+      });
+      if(next){
+        next.selectedTask = next.OptionalTasks.find(function (task) {
+          return task.TaskLibraryId===item.selectedTask.TaskLibraryId;
         });
-        temp.load(r.data.RootTask);
-      })
-      if(i==0){
-        var data = {
-          "BuildingId": vm.formWizard.buildingId,
-          "Name":vm.formWizard.planName,
-          "TaskTemplateId": vm.formWizard.templateId,
-          "StartTime": vm.formWizard.beginDate
-        }
-        //api.plan.BuildPlan.post(data).then(function(r){
-        //
-        //  if(r.data){
-        //
-        //  }
-        //})
+        vm.resetName(next);
+        setTask(next);
       }
-      console.log('a',i)
+    }
+    vm.reloadTask = function () {
+      if(vm.current) {
+        vm.resetName(vm.current);
+        setTask(vm.current);
+      }
+      vm.temp.load(vm.rootTask);
+    }
+    vm.nextStep = function(i){
+      if(i==0){
+        (vm.formWizard.Id?
+          api.plan.BuildPlan.update(vm.formWizard.Id,vm.formWizard)
+          :api.plan.BuildPlan.post(vm.formWizard)
+        ).then(function(r) {
+          if (r.data) {
+            if(!vm.formWizard.Id)
+              vm.formWizard.Id = r.data.Id;
+
+            api.plan.BuildPlan.getBuildPlanFlowTree(vm.formWizard.Id).then(function(r){
+              r.data.RootTask.Master = r.data.RootTask.Master.map(function (item) {
+                item._TaskFlowId = item.TaskFlowId;
+                item.TaskFlowId = item.Id;
+                item.selectedTask = item.OptionalTasks.length==0?null:item.OptionalTasks[0];
+                vm.resetName(item);
+                return item;
+              })
+              vm.temp = new template({
+                onClick:function (e) {
+                  vm.current = e.data;
+                  vm.toggleRight();
+                }
+              });
+              vm.rootTask = r.data.RootTask;
+              vm.reloadTask();
+            });
+          }
+        })
+      }
+      else if(i===1){
+        var selected = [];
+        vm.rootTask.Master.forEach(function (item) {
+          if(item.selectedTask) {
+            selected.push({
+              BuildingPlanFlowId:item.Id,
+              TaskLibraryId:item.selectedTask.TaskLibraryId
+            });
+          }
+        })
+
+        api.plan.BuildPlan.flowTasksReset(vm.formWizard.Id,selected).then(function (r) {
+          api.plan.BuildPlan.getBuildingPlanRoles(vm.formWizard.Id).then(function (r) {
+            vm.currentRoles = r.data.Items;
+          });
+        });
+      }
     }
     vm.change = function(){
       console.log('a')
@@ -115,15 +141,20 @@
       ev.stopPropagation();
     }
     vm.sendForm = function(){
-      //var data = {
-      //  "BuildingId": vm.formWizard.buildingId,
-      //  "Name":vm.formWizard.planName,
-      //  "TaskTemplateId": vm.formWizard.templateId,
-      //  "StartTime": vm.formWizard.beginDate
-      //}
-      //api.plan.BuildPlan.post(data).then(function(r){
-      //
-      //})
+      var resets = [];
+      vm.currentRoles.forEach(function (r) {
+        resets.push(api.plan.BuildPlan.buildingRolesReset(vm.formWizard.Id,{
+          RoleId:r.RoleId,
+          UserIds:r.Users
+        }));
+      });
+
+      $q.all(resets).then(function (rs) {
+        //生成计划
+        api.plan.BuildPlan.buiding(vm.formWizard.Id).then(function (r) {
+
+        })
+      });
     }
     $scope.$watch('msWizard.selectedIndex',function () {
       /*      switch ($scope.msWizard.selectedIndex){
