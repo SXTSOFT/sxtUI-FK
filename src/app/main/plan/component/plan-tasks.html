@@ -5,9 +5,9 @@
     </h2>
     <span flex="5"></span>
     <md-select style="font-size:13px;" class="simplified" ng-model="vm.selectedFilter" ng-init="vm.selectedFilter = 0" placeholder="Level 0">
-      <md-option value="0" translate="Level 0">Level 0</md-option>
-      <md-option value="1" translate="Level 1">Level 1</md-option>
-      <md-option value="2" translate="Level 2">Level 2</md-option>
+      <md-option value="0" translate="1级任务">1级任务</md-option>
+      <md-option value="1" translate="2级任务">2级任务</md-option>
+      <md-option value="2" translate="3级任务">3级任务</md-option>
     </md-select>
     <span flex></span>
     <md-button class="md-icon-button" aria-label="More">
@@ -23,7 +23,7 @@
     <th>名称</th>
     <th>任务类型</th>
     <th>变量</th>
-    <th>工期</th>
+    <th ng-if="vm.selectedFilter != 0">工期</th>
     <th>预留开始</th>
     <th>预留结束</th>
     <th style="width: 160px">管理</th>
@@ -35,11 +35,11 @@
     <td class="name">{{item.Name}}</td>
     <td class="time">{{item.Type}}</td>
     <td class="time">{{item.Variable}}</td>
-    <td class="time">{{item.Duration}}</td>
+    <td class="time" ng-if="vm.selectedFilter != 0">{{item.Duration}}</td>
     <td class="time">{{item.ReservedStartDays}}</td>
     <td class="time">{{item.ReservedEndDays}}</td>
     <td class="actions">
-      <md-button ng-click="vm.Query(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon></md-button>
+      <md-button ng-click="vm.Query(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
       <md-button ng-click="vm.Delete(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
     </td>
   </tr>

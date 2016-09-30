@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function planTask(template,$mdSidenav,$stateParams,api,$state,$mdDialog,$mdSelect,$q,utils){
+  function planTask(template,$mdSidenav,$stateParams,api,$state,$mdDialog,$mdSelect,$q,utils,$timeout){
     var vm = this,
       temp,task,
       id = $state.params["id"];
@@ -86,13 +86,9 @@
       temp = new template({
         onClick:function (e) {
           vm.current = e.data;
-          console.log(vm.current)
-          api.plan.TaskFlow.getRoleByFlowId(vm.current.TaskFlowId).then(function(r){
-            vm.users = r.data.Items;
-            dealRole(vm.users);
-            vm.getNextTasks();
-          })
           vm.toggleRight();
+          vm.getUsers();
+          vm.getNextTasks();
         }
       });
       temp.load(task);
@@ -100,35 +96,41 @@
         vm.toggleRight();
       }
     }
-
-    function dealRole(users){
-      if(!vm.nextUserGroups&&vm.nextUserGroups) return;
-      if(!users&&users.length) return;
+    vm.getUsers = function(){
       vm.saveNoticeStarted = [];
       vm.saveNoticeEarlyWarning=[];
       vm.saveNoticeClosed=[];
-      vm.nextUserGroups.forEach(function(r){
-        var f = users.find(function(_r){
-          return _r.RoleId == r.GroupID;
+      var promise=[
+        api.plan.TaskFlow.getRoleByFlowId(vm.current.TaskFlowId),
+        api.plan.UserGroup.query()
+      ]
+      $q.all(promise).then(function(res){
+        var users = res[0].data.Items;
+        vm.nextUserGroups = res[1].data.Items;
+        if(!users&&users.length) return;
+        users.forEach(function(r){
+          var f = vm.nextUserGroups.find(function(_r){
+            return _r.GroupID == r.RoleId;
+          })
+          if(f){
+            f['selected'+ r.NotificationType] = true;
+          }
         })
-        if(f){
-          r['selected'+ f.NotificationType] = true;
-        }
-      })
-      users.forEach(function(r){
-        switch (r.NotificationType){
-          case 1:
-            vm.saveNoticeStarted.push(r.RoleId);
-                break;
-          case 2:
-            vm.saveNoticeEarlyWarning.push(r.RoleId);
-                break;
-          case 4:
-                break;
-          case 8:
-            vm.saveNoticeClosed.push(r.RoleId);
-                break;
-        }
+        users.forEach(function(r){
+          switch (r.NotificationType){
+            case 1:
+              vm.saveNoticeStarted.push(r.RoleId);
+              break;
+            case 2:
+              vm.saveNoticeEarlyWarning.push(r.RoleId);
+              break;
+            case 4:
+              break;
+            case 8:
+              vm.saveNoticeClosed.push(r.RoleId);
+              break;
+          }
+        })
       })
     }
     vm.save = function () {
@@ -246,12 +248,12 @@
       })
       console.log('vm.saveTasks',vm.saveTasks)
     }
-    vm.getUseGroups = function () {
-      api.plan.UserGroup.query().then(function (r) {
-        vm.nextUserGroups = r.data.Items;
-      })
-    }
-    vm.getUseGroups();
+    //vm.getUseGroups = function () {
+    //  api.plan.UserGroup.query().then(function (r) {
+    //    vm.nextUserGroups = r.data.Items;
+    //  })
+    //}
+    //vm.getUseGroups();
     vm.stop = function(ev){
       ev.stopPropagation();
     }
@@ -271,10 +273,13 @@
             "SystemID": "plan",
             "Description": result
           }).then(function(r){
-            $mdDialog.show(
-              $mdDialog.alert()
-                .title('添加成功')
-            )
+            utils.alert('添加成功',null).then(function(){
+
+            })
+            //$mdDialog.show(
+            //  $mdDialog.alert()
+            //    .title('添加成功')
+            //)
           })
         }, function() {
 
