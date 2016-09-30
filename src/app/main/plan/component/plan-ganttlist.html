@@ -21,18 +21,10 @@
     <tbody>
     <tr ng-repeat="item in vm.items">
       <td class="name">{{item.Name}}</td>
-      <td class="time">{{item.CreationTime|date:'yyyy-M-d'}}</td>
+      <td class="time">{{item.StartTime|date:'yyyy-M-d'}}</td>
       <td class="actions">
-        <md-button ng-click="vm.Query(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
+        <md-button ui-sref="app.plan.gantt({id:item.Id})" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
         <md-button ng-click="vm.Delete(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
-      </td>
-    </tr>
-    <tr>
-      <td class="name">a</td>
-      <td class="time">{{2016-6-6|date:'yyyy-M-d'}}</td>
-      <td class="actions">
-        <md-button ng-click="vm.Query()" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
-        <md-button ng-click="vm.Delete()" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
       </td>
     </tr>
     </tbody>

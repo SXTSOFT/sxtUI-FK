@@ -77,7 +77,7 @@
         template:'<plan-build flex layout="column"></plan-build>'
       })
       .state('app.plan.gantt',{
-        url:'/gantt',
+        url:'/gantts/{id}',
         template:'<plan-gantt flex layout="column"></plan-gantt>'
       })
       .state('app.plan.gantts',{

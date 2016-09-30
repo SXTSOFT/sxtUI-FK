@@ -74,7 +74,7 @@
       },
       BuildPlan:{
         getList:function(param){
-          //return $http.get($http.url('/api/BuildingPlans'))
+          return $http.get($http.url('/api/BuildingPlans',param))
         },
         post:function(params){
           return $http.post($http.url('/api/BuildingPlans'),params)
@@ -96,6 +96,9 @@
         },
         buildingRolesReset:function (id,items) {
           return $http.post('/api/BuildingPlans/'+id+'/BuildingPlanRoleUsers/Reset',items)
+        },
+        generate:function (id) {
+          return $http.post('/api/BuildingPlans/'+id+'/Generate',{id:id});
         }
       },
       /** /api/TaskLibrary 任务 **/
@@ -170,6 +173,11 @@
         Get:function(ddicType){
           var param = {Skip:0,Limit:100,ddicType:ddicType};
           return $http.get($http.url('/api/SysDataDictionarys',param));
+        }
+      },
+      Task:{
+        query:function (query) {
+          return $http.get($http.url('/api/Task',query));
         }
       }
 

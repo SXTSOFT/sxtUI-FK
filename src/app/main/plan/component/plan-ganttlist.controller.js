@@ -15,13 +15,9 @@
   /**@ngInject*/
   function  planGanttlist($state,api){
     var vm = this;
-    vm.items = [];
+    api.plan.BuildPlan.getList().then(function(r){
+      vm.items = r.data.Items;
+    });
 
-    //api.plan.BuildPlan.getList().then(function(r){
-    //
-    //})
-    vm.Query = function(){
-      $state.go('app.plan.gantt')
-    }
   }
 })();

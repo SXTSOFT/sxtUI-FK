@@ -151,8 +151,8 @@
 
       $q.all(resets).then(function (rs) {
         //生成计划
-        api.plan.BuildPlan.buiding(vm.formWizard.Id).then(function (r) {
-
+        api.plan.BuildPlan.generate(vm.formWizard.Id).then(function (r) {
+          //成生完成
         })
       });
     }
