@@ -15,17 +15,17 @@
   /** @ngInject */
   function planTemplates($scope,api,$state,utils){
     var vm = this;
+    vm.total=0;
     $scope.pageing={
       page:1,
-      pageSize:10,
-      total:0
+      pageSize:10
     }
 
     vm.pageAction = function(title, page, pageSize, total){
       $scope.pageing.page = page;
     }
 
-    $scope.$watch("vm.pageing",function(){
+    $scope.$watch("pageing",function(){
       Load();
     },true);
 
@@ -48,7 +48,7 @@
 
       api.plan.TaskTemplates.GetList({Skip:page.Skip,Limit:page.Limit}).then(function (r) {
         vm.items=r.data.Items||[];
-        $scope.pageing.total = r.data.TotalCount;
+        vm.total = r.data.TotalCount;
       });
 
     }
