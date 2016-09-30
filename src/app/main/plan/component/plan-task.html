@@ -37,7 +37,7 @@
   </md-tab>
   <md-tab label="任务流程" ng-disabled="!vm.data.TaskLibraryId" md-on-select="vm.onLoadTemplate()">
     <md-tab-content flex layout-fill layout="row">
-      <md-content layout="column" class="md-padding white-bg" flex >
+      <md-content layout="column" class="md-padding white-bg" flex ms-scroll>
         <canvas id="gitGraph"></canvas>
       </md-content>
       <md-sidenav layout="column" class="md-sidenav-right md-whiteframe-4dp white-bg" style="max-width: 600px;width:600px" md-component-id="right">
@@ -50,7 +50,7 @@
                   <input type="text" ng-model="vm.current.Name" md-autofocus>
                 </md-input-container>
                 <md-checkbox ng-model="vm.current.IsFloor" ng-if="vm.data.Level===0">此节点对应楼层 </md-checkbox>
-                <md-select ng-model="vm.saveTasks" placeholder="备选任务" class="md-block" multiple md-on-close="vm.saveSubTasks()">
+                <md-select ng-model="vm.saveTasks" placeholder="备选任务" class="md-block" md-on-open="vm.getNextTasks()" multiple md-on-close="vm.saveSubTasks()">
                   <md-select-header class="sxt-select-header">
                     <md-input-container md-no-float class="md-block">
                       <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >
@@ -59,32 +59,32 @@
                   </md-select-header>
                   <md-option ng-value="tk.TaskLibraryId" ng-selected="tk.selected" ng-repeat="tk in vm.nextTasks">{{tk.Name}}</md-option>
                 </md-select>
-                <md-select ng-model="vm.saveNoticeStarted" placeholder="开始通知" class="md-block" multiple md-on-close="vm.saveUserGroup('Started')">
+                <md-select ng-model="vm.saveNoticeStarted" placeholder="开始通知" class="md-block" md-on-open="vm.getUsers()" multiple  md-on-close="vm.saveUserGroup('Started')">
                   <md-select-header class="sxt-select-header">
                     <md-input-container md-no-float class="md-block">
                       <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >
                       <md-icon md-font-icon="icon-plus" style="display:inline-block;" ng-click="vm.addRole(1)"></md-icon>
                     </md-input-container>
                   </md-select-header>
-                    <md-option ng-value="g.GroupID" ng-selected="g.selectedStarted" ng-repeat="g in vm.nextUserGroups|filter:searchTerm">{{g.GroupName}}</md-option>
+                    <md-option ng-value="g.GroupID" ng-selected="g.selected1" ng-repeat="g in vm.nextUserGroups|filter:searchTerm">{{g.GroupName}}</md-option>
                 </md-select>
-                <md-select ng-model="vm.saveNoticeEarlyWarning" placeholder="预警通知" class="md-block" multiple md-on-close="vm.saveUserGroup('EarlyWarning')">
+                <md-select ng-model="vm.saveNoticeEarlyWarning" placeholder="预警通知" md-on-open="vm.getUsers()" class="md-block" multiple md-on-close="vm.saveUserGroup('EarlyWarning')">
                   <md-select-header class="sxt-select-header">
                     <md-input-container md-no-float class="md-block">
                       <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >
                       <md-icon md-font-icon="icon-plus" style="display:inline-block;" ng-click="vm.addRole(2)"></md-icon>
                     </md-input-container>
                   </md-select-header>
-                  <md-option ng-value="g.GroupID" ng-selected="g.selectedEarlyWarning" ng-repeat="g in vm.nextUserGroups |filter:{GroupName:searchTerm}">{{g.GroupName}}</md-option>
+                  <md-option ng-value="g.GroupID" ng-selected="g.selected2" ng-repeat="g in vm.nextUserGroups |filter:{GroupName:searchTerm}">{{g.GroupName}}</md-option>
                 </md-select>
-                <md-select ng-model="vm.saveNoticeClosed" placeholder="关闭通知" class="md-block" multiple md-on-close="vm.saveUserGroup('Closed')">
+                <md-select ng-model="vm.saveNoticeClosed" placeholder="关闭通知" class="md-block" md-on-open="vm.getUsers()" multiple md-on-close="vm.saveUserGroup('Closed')">
                   <md-select-header class="sxt-select-header">
                     <md-input-container md-no-float class="md-block">
                       <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >
                       <md-icon md-font-icon="icon-plus" style="display:inline-block;" ng-click="vm.addRole(3)"></md-icon>
                     </md-input-container>
                   </md-select-header>
-                  <md-option ng-value="g.GroupID" ng-selected="g.selectedClosed" ng-repeat="g in vm.nextUserGroups|filter:searchTerm">{{g.GroupName}}</md-option>
+                  <md-option ng-value="g.GroupID" ng-selected="g.selected8" ng-repeat="g in vm.nextUserGroups|filter:searchTerm">{{g.GroupName}}</md-option>
                 </md-select>
               </form>
               <md-button ng-click="vm.save()" class="md-primary md-raised md-mini">
@@ -126,4 +126,3 @@
     </md-tab-content>
   </md-tab>
 </md-tabs>
-

@@ -74,13 +74,13 @@
       },
       BuildPlan:{
         getList:function(param){
-          return $http.get($http.url('/api/BuildingPlans',param))
+          return $http.get($http.url('/api/BuildingPlans',{Skip:param.Skip,Limit:param.Limit}))
         },
         post:function(params){
           return $http.post($http.url('/api/BuildingPlans'),params)
         },
         update:function (id,params) {
-          return $http.post($http.url('/api/BuildingPlans/'+id),params)
+          return $http.put($http.url('/api/BuildingPlans/'+id),params)
         },
         getBuildPlanRoleUsers:function(id){
           return $http.get($http.url('/api/BuildingPlans/'+id+'/BuildingPlanRoleUsers'))
@@ -94,11 +94,17 @@
         getBuildingPlanRoles:function (id) {
           return $http.get('/api/BuildingPlans/'+id+'/BuildingPlanRoles')
         },
+        getBuildingPlanRoleUsers:function(id){
+          return $http.get('/api/BuildingPlans/'+id+'/BuildingPlanRoleUsers')
+        },
         buildingRolesReset:function (id,items) {
           return $http.post('/api/BuildingPlans/'+id+'/BuildingPlanRoleUsers/Reset',items)
         },
         generate:function (id) {
           return $http.post('/api/BuildingPlans/'+id+'/Generate',{id:id});
+        },
+        deleteBuildPlan:function(id){
+          return $http.delete('/api/BuildingPlans/'+id);
         }
       },
       /** /api/TaskLibrary 任务 **/
@@ -178,6 +184,11 @@
       Task:{
         query:function (query) {
           return $http.get($http.url('/api/Task',query));
+        }
+      },
+      users:{
+        query:function(){
+          return $http.get($http.url('/api/User'));
         }
       }
 

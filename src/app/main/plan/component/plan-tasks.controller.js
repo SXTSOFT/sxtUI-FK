@@ -13,19 +13,23 @@
     });
 
   /** @ngInject */
-  function planTask($scope,api,$state,utils){
+  function planTask($scope,api,$state,utils,$interval){
     var vm = this;
+    vm.total = 0;
+
     $scope.pageing={
       page:1,
       pageSize:10,
-      total:0
+      filterParam:{
+        level:0
+      }
     }
 
     vm.pageAction = function(title, page, pageSize, total){
       $scope.pageing.page = page;
     }
 
-    $scope.$watch("vm.pageing",function(){
+    $scope.$watch("pageing",function(){
       Load();
     },true);
 
@@ -40,11 +44,13 @@
         });
       });
     }
+
     function Load() {
      var page= utils.getPage($scope.pageing);
-       api.plan.TaskLibrary.GetList({Skip:page.Skip,Limit:page.Limit}).then(function (r) {
+      var postParams=angular.extend({Skip:page.Skip,Limit:page.Limit},$scope.pageing.filterParam);
+       api.plan.TaskLibrary.GetList(postParams).then(function (r) {
          vm.items = r.data.Items||[];
-         $scope.pageing.total = r.data.TotalCount;
+         vm.total = r.data.TotalCount;
        });
     }
 

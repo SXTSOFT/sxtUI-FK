@@ -132,7 +132,13 @@
             vm.currentRoles = r.data.Items;
           });
         });
+        //api.plan.BuildPlan.getBuildingPlanRoleUsers(vm.formWizard.Id).then(function(r){
+        //  vm.roleUsers = r.data.Items;
+        //})
       }
+      api.plan.users.query().then(function(r){
+        vm.roleUsers = r.data.Items;
+      })
     }
     vm.change = function(){
       console.log('a')
