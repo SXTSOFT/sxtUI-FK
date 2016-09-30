@@ -87,8 +87,14 @@
         onClick:function (e) {
           vm.current = e.data;
           vm.toggleRight();
-          vm.getUsers();
-          vm.getNextTasks();
+          vm.saveNoticeStarted = [];
+          vm.saveNoticeEarlyWarning=[];
+          vm.saveNoticeClosed=[];
+          $timeout(function(){
+            vm.getUsers();
+            vm.getNextTasks();
+          },300)
+
         }
       });
       temp.load(task);
@@ -97,9 +103,7 @@
       }
     }
     vm.getUsers = function(){
-      vm.saveNoticeStarted = [];
-      vm.saveNoticeEarlyWarning=[];
-      vm.saveNoticeClosed=[];
+
       var promise=[
         api.plan.TaskFlow.getRoleByFlowId(vm.current.TaskFlowId),
         api.plan.UserGroup.query()
