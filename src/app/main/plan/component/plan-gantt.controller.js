@@ -272,6 +272,7 @@
             ]
           }
         });
+        console.log(JSON.stringify(tasks))
         vm.data = tasks;
       })
 
