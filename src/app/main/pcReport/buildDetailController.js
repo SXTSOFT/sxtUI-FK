@@ -45,8 +45,27 @@
       vm.build.loading = true;
       vm.build.query();
     };
+
     $scope.$watch('vm.build.isOpen',function () {
+      if (!vm.build.isOpen&&vm.build.isOpen!==false){
+        vm.openGx();
+        return;
+      }
+      if (!vm.build.isOpen){
+        if (!$scope.gxSelected.length){
+          utils.alert('请选择要显示的工序').then(function () {
+            vm.openGx();
+          });
+          return;
+        }
+        if ($scope.gxSelected.length>4){
+          utils.alert('最多只能选择4个工序').then(function () {
+            vm.openGx();
+          })
+          return;
+        }
         vm.query();
+      }
     })
 
     $scope.selectSpecialtyLow=function(item,parent){
@@ -64,15 +83,5 @@
       regionID: $stateParams.regionID,
     };
     vm.openGx = buildToggler('procedure_right');
-    //$q.all([
-    //  remote.Procedure.queryProcedure()
-    //]).then(function (results) {
-    //  if(g && g.length) {
-    //    vm.query();
-    //  }
-    //  else{
-    //    vm.openGx();
-    //  }
-    //});
   }
 })();
