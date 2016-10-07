@@ -1,3 +1,79 @@
 /**
  * Created by lss on 2016/10/7.
  */
+(function(){
+  'use strict';
+
+  angular
+    .module('app.pcReport')
+    .controller('buildDetailController', buildDetailController);
+
+  /** @ngInject */
+  function buildDetailController($scope,$stateParams,$mdSidenav,api,$q,utils,remote)
+  {
+    function buildToggler(navID) {
+      return function() {
+        $mdSidenav(navID)
+          .toggle()
+          .then(function () {
+
+          });
+      }
+    }
+    var vm = this;
+    $scope.gxSelected=[];
+    remote.Procedure.queryProcedure().then(function(r){
+      if (r.data&&angular.isArray(r.data)){
+        $scope.procedures= r.data;
+      }
+    });
+    $scope.choosego=function(item){
+      var p=$scope.gxSelected.find(function(o){
+        return o.AcceptanceItemID==item.AcceptanceItemID;
+      });
+      if (!p&&!item.checked){
+        $scope.gxSelected.push(item)
+      }
+      if (p&&item.checked){
+        var index=$scope.gxSelected.indexOf(p);
+        $scope.gxSelected.splice(index,1);
+      }
+    }
+
+
+    vm.query = function () {
+      vm.build.loading = true;
+      vm.build.query();
+    };
+    $scope.$watch('vm.build.isOpen',function () {
+        vm.query();
+    })
+
+    $scope.selectSpecialtyLow=function(item,parent){
+      parent.WPAcceptanceList=item.WPAcceptanceList;
+    }
+    $scope.remove=function(item){
+      $timeout(function(){
+        var index=$scope.gxSelected.indexOf(item);
+        if (index>-1){
+          $scope.gxSelected.splice(index,1);
+          initGxName();
+        }
+      })
+    }
+    vm.build = {
+      regionID: $stateParams.regionID,
+    };
+    vm.openGx = buildToggler('procedure_right');
+    //$q.all([
+    //  remote.Procedure.queryProcedure()
+    //]).then(function (results) {
+    //  if(g && g.length) {
+    //    vm.query();
+    //  }
+    //  else{
+    //    vm.openGx();
+    //  }
+    //});
+  }
+})();

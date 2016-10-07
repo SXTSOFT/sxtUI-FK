@@ -9,7 +9,7 @@
           <md-list>
             <div layout="row" layout-wrap>
               <div flex="33" ng-repeat="b in m.children">
-                <md-button class="md-raised md-block" style="display: block; text-align:left;" ui-sref="app.pc.sctb({db:s.AssessmentID,regionId:b.RegionID,measureItemID:m.AcceptanceItemID,name:b.FullRegionName,pname:m.MeasureItemName})">
+                <md-button class="md-raised md-block" style="display: block; text-align:left;" ui-sref="app.pcReport_bdd({regionID:b.RegionID})">
                   {{b.RegionName}}
                 </md-button>
               </div>
