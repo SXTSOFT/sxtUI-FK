@@ -1,16 +1,16 @@
 <md-tabs flex md-border-bottom>
-  <md-tab ng-repeat="s in vm.sections.Sections" label="{{s.SectionName}}">
+  <md-tab  label="{{vm.projectName}}">
     <md-tab-content flex layout-fill layout="column"  >
       <div class="right engineer">
-        <div layout="column" ng-repeat="m in s.MeasurItems">
+        <div layout="column" ng-repeat="m in vm.area">
           <div style="border-bottom: 1px solid #d8d8d8;">
-            <h2 class="md-title" style="color:#e93030;font-size:16px;margin:16px;">{{m.MeasureItemName}}</h2>
+            <h2 class="md-title" style="color:#e93030;font-size:16px;margin:16px;">{{m.RegionName}}</h2>
           </div>
           <md-list>
             <div layout="row" layout-wrap>
-              <div flex="33" ng-repeat="b in m.ExtractionRegions">
+              <div flex="33" ng-repeat="b in m.children">
                 <md-button class="md-raised md-block" style="display: block; text-align:left;" ui-sref="app.pc.sctb({db:s.AssessmentID,regionId:b.RegionID,measureItemID:m.AcceptanceItemID,name:b.FullRegionName,pname:m.MeasureItemName})">
-                  {{b.FullRegionName}}
+                  {{b.RegionName}}
                 </md-button>
               </div>
             </div>

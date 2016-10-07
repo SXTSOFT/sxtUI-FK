@@ -21,6 +21,28 @@
           }
         }
       })
+      .state('app.pcReport_bd',{
+        noBack:true,
+        sendBt:false,
+        url:'/pcReport_bd/{projectId}/{projectName}',
+        views:{
+          'content@app':{
+            templateUrl: 'app/main/pcReport/build.html',
+            controller : 'buildController as vm',
+          }
+        }
+      })
+      .state('app.pcReport_bdd',{
+        noBack:true,
+        sendBt:false,
+        url:'/pcReport_bdd/{regionID}',
+        views:{
+          'content@app':{
+            templateUrl: 'app/main/pcReport/buildDetail.html',
+            controller : 'buildDetailController as vm',
+          }
+        }
+      })
     // Navigation
     msNavigationServiceProvider.saveItem('xh', {
       title : '星河集团',

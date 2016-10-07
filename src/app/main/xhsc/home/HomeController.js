@@ -39,7 +39,8 @@
 
       }
       function markerClick($current){
-        $state.go('app.xhsc.xxjd.xxjdmain',{projectId:$current.projectId, projectName:$current.title});
+        //$state.go('app.xhsc.xxjd.xxjdmain',{projectId:$current.projectId, projectName:$current.title});
+        $state.go('app.pcReport_bd',{projectId:$current.projectId, projectName:$current.title});
       }
     })
   }
