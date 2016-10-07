@@ -9,7 +9,7 @@
     .controller('buildDetailController', buildDetailController);
 
   /** @ngInject */
-  function buildDetailController($scope,$stateParams,$mdSidenav,api,$q,utils,remote)
+  function buildDetailController($scope,$stateParams,$mdSidenav,api,$q,utils,remote,$timeout)
   {
     function buildToggler(navID) {
       return function() {
@@ -57,7 +57,6 @@
         var index=$scope.gxSelected.indexOf(item);
         if (index>-1){
           $scope.gxSelected.splice(index,1);
-          initGxName();
         }
       })
     }
