@@ -21,6 +21,7 @@
   {
     $stateProvider
       .state('app.pcReport_pg',{
+        title:"现场评估报表",
         url:'/pcReport_pg',
         noBack:true,
         sendBt:false,

@@ -15,6 +15,7 @@
   {
     $stateProvider
     .state('app.pcReport_ys_gx',{
+      title:"工序验收报表",
       url:'/pcReport_ys_gx',
       noBack:true,
       sendBt:false,

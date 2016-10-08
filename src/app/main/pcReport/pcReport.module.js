@@ -13,6 +13,7 @@
   {
     $stateProvider
       .state('app.pcReport_hz',{
+        title:"评估汇总",
         url:'/pcReport_hz',
         noBack:true,
         sendBt:false,
@@ -24,6 +25,7 @@
         }
       })
       .state('app.pcReport_main',{
+        title:"报表中心",
         noBack:true,
         sendBt:false,
         url:'/pcReport_main',
@@ -35,6 +37,7 @@
         }
       })
       .state('app.pcReport_bd',{
+        title:"区域",
         noBack:true,
         sendBt:false,
         url:'/pcReport_bd/{projectId}/{projectName}',
@@ -46,6 +49,7 @@
         }
       })
       .state('app.pcReport_bdd',{
+        title:"验收状态",
         noBack:true,
         sendBt:false,
         url:'/pcReport_bdd/{regionID}',
