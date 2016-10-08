@@ -90,6 +90,7 @@
           tr = $timeout(function () {
             $('md-list-item', element).css('display', 'inline');
             $timeout(function () {
+              tr = null;
               $('md-list-item', element).css('display', 'flex');
             }, 10);
           }, 100);
