@@ -25,6 +25,8 @@
     vm.yearSource=[
       2015,2016,2017,2018,2019,2020
     ];
+    var mobileDetect = new MobileDetect(window.navigator.userAgent);
+    vm.isMobile=mobileDetect.mobile();
     vm.yearQuart=[{
       "id": 1,
       "text": "第一季度"

@@ -14,10 +14,23 @@
     $stateProvider
       .state('app.pcReport_hz',{
         url:'/pcReport_hz',
+        noBack:true,
+        sendBt:false,
         views:{
           'content@app':{
             templateUrl: 'app/main/pcReport/hzReport.html',
             controller : 'hzReportController as vm',
+          }
+        }
+      })
+      .state('app.pcReport_main',{
+        noBack:true,
+        sendBt:false,
+        url:'/pcReport_main',
+        views:{
+          'content@app':{
+            templateUrl: 'app/main/pcReport/pcReportMain.html',
+            controller : 'pcReportMainController as vm',
           }
         }
       })

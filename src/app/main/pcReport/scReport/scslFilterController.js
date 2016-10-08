@@ -18,7 +18,8 @@
   function scslFilterController($scope,remote,$mdDialog,$state,$rootScope,$timeout){
     var vm = this;
     $scope.currentSC;
-
+    var mobileDetect = new MobileDetect(window.navigator.userAgent);
+    vm.isMobile=mobileDetect.mobile();
     $scope.$watch('project.pid',function(){
       $scope.currentSC = null;
       remote.Project.GetMeasureItemInfoByAreaID($scope.project.pid).then(function(r){

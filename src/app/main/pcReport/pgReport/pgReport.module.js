@@ -22,6 +22,8 @@
     $stateProvider
       .state('app.pcReport_pg',{
         url:'/pcReport_pg',
+        noBack:true,
+        sendBt:false,
         views:{
           'content@app':{
             templateUrl: 'app/main/pcReport/pgReport/pgReportFilter.html',
@@ -31,6 +33,8 @@
       })
       .state('app.pcReport_pg_default',{
         url:'/pcReport_pg_default/{year}/{quart}',
+        noBack:true,
+        sendBt:false,
         views:{
           'content@app':{
             templateUrl: 'app/main/pcReport/pgReport/pgDefault.html',
@@ -39,6 +43,8 @@
         }
       })
       .state('app.pcReport_pg_pkresult',{
+        noBack:true,
+        sendBt:false,
         url:'/pkresult/{year}/{projectID}/{quarter}/{assessmentStage}',
         views :{
           'content@app':{
@@ -48,6 +54,8 @@
         }
       })
       .state('app.pcReport_pg_scRegion',{
+        noBack:true,
+        sendBt:false,
         url:'/scRegion/{year}/{projectID}/{quarter}/{assessmentStage}',
         views :{
           'content@app':{

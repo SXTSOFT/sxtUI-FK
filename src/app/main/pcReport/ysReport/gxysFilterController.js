@@ -17,6 +17,8 @@
     $scope.gxSelected=[];
     $scope.project=null;
     vm.regions=[];
+    var mobileDetect = new MobileDetect(window.navigator.userAgent);
+    vm.isMobile=mobileDetect.mobile();
     remote.Project.getMap().then(function (result) {
       vm.regions.push({
         RegionID: "",

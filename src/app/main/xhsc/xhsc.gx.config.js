@@ -36,7 +36,7 @@
         controller: 'gxmainController as vm'
       })
       .state('app.xhsc.gx.yw', {
-        noBack:false,
+        noBack:true,
         sendBt: false,
         rightArrow: false,
         leftArrow: false,

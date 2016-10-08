@@ -13,10 +13,10 @@
         <img src="app/main/xhsc/images/zbzg.png">
         <p>总包整改</p>
       </li>
-      <li ng-click="vm.setModule(8)">
-        <img src="app/main/xhsc/images/regionState.png">
-        <p>区域状态</p>
-      </li>
+      <!--<li ng-click="vm.setModule(8)">-->
+        <!--<img src="app/main/xhsc/images/regionState.png">-->
+        <!--<p>区域状态</p>-->
+      <!--</li>-->
       <li ng-click="vm.upload()">
         <img src="app/main/xhsc/images/upload.png">
         <p>离线上传</p>
@@ -25,7 +25,7 @@
   </div>
   <div flex style="background-color: white;overflow: scroll">
     <md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
-                          md-mode="indeterminate" md-diameter="32">
+                          md-mode="indeterminate" md-diameter="28">
     </md-progress-circular>
     <md-list ng-show="vm.isOver">
       <md-list-item ng-click="vm.zbzgAction(item)" layout="row" ng-repeat="item in vm.zglist|filter:{Status:4}">
