@@ -92,8 +92,8 @@
             $timeout(function () {
               tr = null;
               $('md-list-item', element).css('display', 'flex');
-            }, 10);
-          }, 100);
+            }, 0);
+          }, 1000);
         }
         var syncValue = function () {
           if (!scope.selectors.length || !scope.selectors[0].selected) {
