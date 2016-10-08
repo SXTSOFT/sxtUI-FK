@@ -605,7 +605,7 @@
         getAuth().getUser().then(function (user) {
           $http({
             method: method,
-            url: 'http://szapi.vanke.com' + api,
+            url: 'http://szmp.vanke.com' + api,
             headers: {
               'Authorization': 'Bearer '+user.Token,
               'Corporation-Id': user.CropId
