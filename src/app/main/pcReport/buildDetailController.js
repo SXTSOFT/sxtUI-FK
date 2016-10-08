@@ -48,7 +48,9 @@
 
     $scope.$watch('vm.build.isOpen',function () {
       if (!vm.build.isOpen&&vm.build.isOpen!==false){
-        vm.openGx();
+        $timeout(function(){
+          vm.openGx();
+        });
         return;
       }
       if (!vm.build.isOpen){
