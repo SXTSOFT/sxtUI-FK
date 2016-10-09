@@ -73,7 +73,7 @@
         .close();
     }
     vm.onLoadTemplate = function () {
-      if(temp)return;
+
       if(!task) {
         task = {
           taskId: 0,
@@ -82,7 +82,10 @@
           Branch: []
         }
       }
-
+      if(task.Master.length===0) {
+        vm.toggleRight();
+      }
+      if(temp)return;
       temp = new template({
         onClick:function (e) {
           vm.current = e.data;
@@ -98,9 +101,7 @@
         }
       });
       temp.load(task);
-      if(task.Master.length===0) {
-        vm.toggleRight();
-      }
+
     }
     vm.getUsers = function(){
 

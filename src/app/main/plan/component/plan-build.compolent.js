@@ -10,12 +10,11 @@
     });
 
   /** @ngInject */
-  function planBuild($scope,api,template,$q,$mdSidenav){
+  function planBuild($scope,api,template,$q,$mdSidenav,utils,$timeout){
     var vm = this;
     vm.data = {
 
     }
-
 
     //获取模板
     api.plan.TaskTemplates.GetList({Skip:0,Limit:100}).then(function (r) {
@@ -86,13 +85,13 @@
       }
       vm.temp.load(vm.rootTask);
     }
-    vm.nextStep = function(i){
+    vm.nextStep = function(i,f){
       if(i==0){
         (vm.formWizard.Id?
           api.plan.BuildPlan.update(vm.formWizard.Id,vm.formWizard)
           :api.plan.BuildPlan.post(vm.formWizard)
         ).then(function(r) {
-          if (r.data) {
+          if (r.data|| r.status==200) {
             if(!vm.formWizard.Id)
               vm.formWizard.Id = r.data.Id;
 
@@ -103,6 +102,13 @@
                 item.selectedTask = item.OptionalTasks.length==0?null:item.OptionalTasks[0];
                 vm.resetName(item);
                 return item;
+              });
+              r.data.RootTask.Branch.forEach(function(_t){
+                _t.forEach(function(_tt){
+                  _tt._TaskFlowId = _tt.TaskFlowId;
+                  _tt.TaskFlowId = _tt.Id;
+                  _tt.Name = _tt.FullName||_tt.TaskFlowName;
+                })
               })
               vm.temp = new template({
                 onClick:function (e) {
@@ -112,12 +118,20 @@
               });
               vm.rootTask = r.data.RootTask;
               vm.reloadTask();
+              f();
+              //$scope.$$childHead.msWizard.nextStep();
             });
+          }
+        },function(err){
+          if(err.status == -1){
+            utils.alert('创建计划失败');
+            return;
           }
         })
       }
       else if(i===1){
         var selected = [];
+        f();
         vm.rootTask.Master.forEach(function (item) {
           if(item.selectedTask) {
             selected.push({
@@ -136,13 +150,17 @@
         //  vm.roleUsers = r.data.Items;
         //})
       }
-      api.plan.users.query().then(function(r){
-        vm.roleUsers = r.data.Items;
-      })
     }
-    vm.change = function(){
-      console.log('a')
+    vm.loadUser = function(){
+      if(vm.roleUsers&&vm.roleUsers.length) return;
+        return api.plan.users.query().then(function(r){
+          vm.roleUsers = r.data.Items;
+        })
     }
+    //
+    //vm.change = function(){
+    //  console.log('a')
+    //}
     vm.stop = function(ev){
       ev.stopPropagation();
     }

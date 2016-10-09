@@ -145,6 +145,7 @@
           vm.load();
 
           objectModel = new GanttObjectModel(vm.api);
+
         });
       }
     };
@@ -279,6 +280,7 @@
       // Fix for Angular-gantt-chart issue
       $animate.enabled(true);
       $animate.enabled($document.find('#gantt'), false);
+
 
     }
 

@@ -121,9 +121,8 @@
       <md-tab-body>
         <form name="wizardStep3" ms-form-wizard-form novalidate>
           <div layout="row" flex ng-repeat="r in vm.currentRoles">
-            <md-input-container flex required>
               <!--<label>{{r.RoleName}}</label>-->
-              <md-select  ng-model="r.Users" placeholder="{{r.RoleName}}" class="md-block" multiple flex>
+              <md-select  ng-model="r.Users" placeholder="{{r.RoleName}}" class="md-block" multiple flex md-on-open="vm.loadUser()">
                 <md-select-header class="sxt-select-header">
                   <md-input-container md-no-float class="md-block">
                     <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >
@@ -131,7 +130,7 @@
                 </md-select-header>
                 <md-option ng-value="p.Id" ng-repeat="p in vm.roleUsers|filter:searchTerm">{{p.UserName}}</md-option>
               </md-select>
-            </md-input-container>
+
           </div>
         </form>
       </md-tab-body>
@@ -144,7 +143,7 @@
     <div class="steps">
       <span ng-repeat="form in msWizard.forms" ng-class="{'selected md-accent-bg':msWizard.selectedIndex === $index}"></span>
     </div>
-    <md-button class="md-raised md-accent" ng-click="vm.nextStep(msWizard.selectedIndex);msWizard.nextStep();" ng-hide="msWizard.isLastStep()" ng-disabled="msWizard.currentStepInvalid()">
+    <md-button class="md-raised md-accent" ng-click="vm.nextStep(msWizard.selectedIndex,msWizard.nextStep);" ng-hide="msWizard.isLastStep()" ng-disabled="msWizard.currentStepInvalid()">
       下一步
     </md-button>
     <md-button class="md-raised md-warn" ng-click="vm.sendForm(); msWizard.resetForm();" ng-show="msWizard.isLastStep()" ng-disabled="msWizard.formsIncomplete()">
