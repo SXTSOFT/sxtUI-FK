@@ -7,8 +7,15 @@
             <h2 class="md-title" style="color:#e93030;font-size:16px;margin:16px;">{{m.MeasureItemName}}</h2>
           </div>
           <md-list>
-            <div layout="row" layout-wrap>
+            <div layout="row" hide-xs hide-sm layout-wrap>
               <div flex="33" ng-repeat="b in m.ExtractionRegions">
+                <md-button class="md-raised md-block" style="display: block; text-align:left;" ui-sref="app.pc.sctb({db:s.AssessmentID,regionId:b.RegionID,measureItemID:m.AcceptanceItemID,name:b.FullRegionName,pname:m.MeasureItemName})">
+                  {{b.FullRegionName}}
+                </md-button>
+              </div>
+            </div>
+            <div layout="column"  hide-gt-sm   layout-wrap>
+              <div ng-repeat="b in m.ExtractionRegions">
                 <md-button class="md-raised md-block" style="display: block; text-align:left;" ui-sref="app.pc.sctb({db:s.AssessmentID,regionId:b.RegionID,measureItemID:m.AcceptanceItemID,name:b.FullRegionName,pname:m.MeasureItemName})">
                   {{b.FullRegionName}}
                 </md-button>

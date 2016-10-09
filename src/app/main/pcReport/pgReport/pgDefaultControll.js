@@ -17,41 +17,16 @@
     .controller('pgDefaultController',pgDefaultController);
 
   /**@ngInject*/
-  function pgDefaultController($scope,remote,$mdDialog,$state,$rootScope,$timeout){
+  function pgDefaultController($scope,remote,$mdDialog,$state,$rootScope,$timeout,$stateParams){
     var vm = this;
-    vm.yearSource=[
-      2015,2016,2017,2018,2019,2020
-    ];
-    $scope.year="";
-    $scope.quart="";
-    vm.yearQuart=[{
-      "id": 1,
-      "text": "第一季度"
-    }, {
-      "id": 2,
-      "text": "第二季度"
-    }, {
-      "id": 3,
-      "text": "第三季度"
-    }, {
-      "id": 4,
-      "text": "第四季度"
-    }];
+    $scope.year=$stateParams.year?$stateParams.year:"";
+    $scope.quart=$stateParams.quart?$stateParams.quart:"";
     $scope.pageing={
       page:1,
       pageSize:10,
       total:0
     }
-    $scope.$watch("year",function(){
-      if ($scope.year){
-        load();
-      }
-    });
-    $scope.$watch("quart",function(){
-      if ($scope.quart){
-        load();
-      }
-    });
+    vm.show=false;
     $scope.$watch("pageing.pageSize",function(){
       if ($scope.pageing.pageSize){
         load();
@@ -69,7 +44,9 @@
         if (r&& r.data){
           vm.source= r.data.Data;
         }
+        vm.show=true;
       }).catch(function(){
+        vm.show=true;
       });
     }
 
@@ -93,9 +70,9 @@
         assessmentStage:item.AssessmentStage
       })
     }
-    //vm.goBack=function(){
-    //  window.history.go(-1);
-    //}
+    vm.goBack=function(){
+      window.history.go(-1);
+    }
   }
 })();
 /**

@@ -169,10 +169,13 @@
       load();
     }
     vm.filter=function(){
-      $rootScope.gxSelected= $scope.gxSelected;
+      var p= vm.regions.find(function(k){
+          return k.RegionID==$scope.project;
+      })
+
       $rootScope.gxParams={
         gxSelected:$scope.gxSelected,
-        secSelected:$scope.project&&$scope.project!=="-"?[$scope.project]:[]
+        secSelected:p&&p.RegionID?[p]:[]
       }
       $state.go("app.pcReport_ys_rp");
     }

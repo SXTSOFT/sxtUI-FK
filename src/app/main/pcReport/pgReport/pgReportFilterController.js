@@ -47,11 +47,17 @@
       total:0
     }
     $scope.$watch("year",function(){
+      if (vm.isMobile&&!vm.isiPad){
+        return;
+      }
       if ($scope.year){
         load();
       }
     });
     $scope.$watch("quart",function(){
+      if (vm.isMobile&&!vm.isiPad){
+        return;
+      }
       if ($scope.quart){
         load();
       }
@@ -61,7 +67,12 @@
         load();
       }
     },true);
-
+    vm.ck=function(item){
+      $scope.year=item;
+    }
+    vm.ck_quart=function(item){
+      $scope.quart=item.id;
+    }
     function load(){
       remote.Assessment.GetAsssmentReportLst({
         Curpage:$scope.pageing.page-1,
@@ -77,6 +88,12 @@
       });
     }
 
+    vm.filter=function(){
+      $state.go("app.pcReport_pg_default",{
+        year:$scope.year,
+        quart:$scope.quart
+      });
+    }
     vm.pageAction=function(title, page, pageSize, total){
       $scope.pageing.page=page;
       load();

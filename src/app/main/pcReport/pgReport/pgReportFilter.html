@@ -12,7 +12,7 @@
         <md-input-container  md-theme="default" flex>
           <label>年份</label>
           <md-select  ng-model="year" name="type" >
-            <md-option ng-repeat="item in vm.yearSource" ng-value="item" >{{item}}</md-option>
+            <md-option ng-click="vm.ck(item)" ng-repeat="item in vm.yearSource" ng-value="item" >{{item}}</md-option>
           </md-select>
         </md-input-container>
       </div>
@@ -20,7 +20,7 @@
         <md-input-container  md-theme="default" flex>
           <label>季度</label>
           <md-select  ng-model="quart"  name="type" >
-            <md-option ng-repeat="item in vm.yearQuart" ng-value="item.id">{{item.text}}</md-option>
+            <md-option ng-click="vm.ck_quart(item)" ng-repeat="item in vm.yearQuart" ng-value="item.id">{{item.text}}</md-option>
           </md-select>
         </md-input-container>
       </div>
@@ -85,7 +85,7 @@
       <md-input-container  md-theme="default" flex>
         <label>年份</label>
         <md-select  ng-model="year" name="type" >
-          <md-option ng-repeat="item in vm.yearSource" ng-value="item" >{{item}}</md-option>
+          <md-option ng-click="vm.ck(item)" ng-repeat="item in vm.yearSource" ng-value="item" >{{item}}</md-option>
         </md-select>
       </md-input-container>
     </div>
@@ -93,12 +93,12 @@
       <md-input-container  md-theme="default" flex>
         <label>季度</label>
         <md-select  ng-model="quart"  name="type" >
-          <md-option ng-repeat="item in vm.yearQuart" ng-value="item.id">{{item.text}}</md-option>
+          <md-option  ng-click="vm.ck_quart(item)" ng-repeat="item in vm.yearQuart" ng-value="item.id">{{item.text}}</md-option>
         </md-select>
       </md-input-container>
     </div>
     <div layout="row">
-      <md-button style="margin: 12px 0px"  class="md-raised md-primary" flex ng-click="vm.filter()"> 确定</md-button>
+      <md-button style="margin: 24px 0px"  class="md-raised md-primary" flex ng-click="vm.filter()"> 确定</md-button>
     </div>
   </section>
 </div>

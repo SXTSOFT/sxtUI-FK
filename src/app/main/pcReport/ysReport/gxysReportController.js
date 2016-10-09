@@ -69,7 +69,7 @@
         PageSize:$scope.pageing.pageSize,
         CurPage:$scope.pageing.page-1,
         status:31,
-        ProjectId: vm.secSelected.length?vm.secSelected[0]:"",
+        ProjectId: vm.secSelected.length?vm.secSelected[0].RegionID:"",
         AcceptanceItemIDs:tmp
       }).then(function(r){
         $scope.pageing.total= r.data.TotalCount;
