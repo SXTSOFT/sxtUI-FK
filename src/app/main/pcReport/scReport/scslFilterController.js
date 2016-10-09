@@ -60,7 +60,6 @@
           pname: item.MeasureItemName
         });
       }
-
       //业务数据包
     }).catch(function(r){});
 
@@ -104,5 +103,9 @@
     };
 
 
+    //--------------------------------------------以下为移动适配---------------------------------------
+    vm.source=remote.Project.getMap();
+    vm.gxSelected=[];
+    vm.secSelected=[];
   }
 })();

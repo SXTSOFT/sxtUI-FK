@@ -18,14 +18,13 @@
         source:'=',
         gxSelected:"=",
         secSelected:"=",
-        level:"=",
-        submit:"&"
+        level:"="
       },
       controller:p_controller,
       link:link,
       templateUrl:"/app/main/xhsc/directive/sectionFilter.html",
     }
-    function  p_controller($timeout,remote,$scope,$q,$mdSidenav){
+    function  p_controller($timeout,remote,$scope,$q,$mdSidenav,$state ){
       var vm = this;
       if (! $scope.gxSelected){
         $scope.gxSelected=[];
@@ -33,10 +32,13 @@
       if (!$scope.secSelected){
         $scope.secSelected=[];
       }
-      if (!$scope.submit){
-        $scope.submit=function(){
-
-        }
+      $scope.submit=function(){
+        var gxSelected=$scope.gxSelected;
+        var secSelected= $scope.secSelected
+        $state.go("app.pcReport_sl_rp",{
+          scSelected:"",
+          secSelected:secSelected.length?secSelected[secSelected.length-1].RegionID:""
+        });
       }
       if ($scope.level){
         $scope.level=parseInt($scope.level);
@@ -60,7 +62,12 @@
       if ($scope.source.then){
         $scope.source.then(function(r){
             if (r&& r.data&&angular.isArray( r.data)){
-              vm.secSource[0]= r.data;
+              r.data.forEach(function(k){
+                vm.secSource[0].push({
+                  RegionID: k.ProjectID,
+                  RegionName: k.ProjectName
+                });
+              });
             }
         })
       }
@@ -72,7 +79,6 @@
           function child(){
             return  remote.Project.GetAreaChildenbyID(item.RegionID);
           }
-
           switch ((""+item.RegionID).length){
             case 5:
               item.index=0;

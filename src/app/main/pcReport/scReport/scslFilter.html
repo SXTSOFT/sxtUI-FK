@@ -70,4 +70,8 @@
   </div>
 </div>
 
+<div flex layout="column"  ng-if="vm.isMobile||!vm.isiPad">
+    <section-filter flex layout="column" source="vm.source" gx-selected="vm.gxSelected" sec-selected="vm.secSelected"></section-filter>
+</div>
+
 
