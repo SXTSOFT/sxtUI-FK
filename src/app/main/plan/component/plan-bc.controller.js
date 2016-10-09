@@ -35,6 +35,7 @@
       api.plan.compensate.getList({Skip:page.Skip,Limit:page.Limit}).then(function (r) {
         vm.data = r.data.Items||[];
         vm.total = r.data.TotalCount;
+        console.log(r.data,'------------')
       });
     }
 
