@@ -16,7 +16,6 @@
         $mdSidenav(navID)
           .toggle()
           .then(function () {
-
           });
       }
     }
