@@ -34,12 +34,6 @@
       }
     });
 
-
-    remote.Procedure.queryProcedure().then(function(r){
-      if (r.data&&angular.isArray(r.data)){
-        $scope.procedures= r.data;
-      }
-    });
     $scope.choosego=function(item){
       var p=$scope.gxSelected.find(function(o){
         return o.AcceptanceItemID==item.AcceptanceItemID;
