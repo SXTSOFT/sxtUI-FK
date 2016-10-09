@@ -32,7 +32,12 @@
     $scope.$watch("pageing",function(){
       Load();
     },true);
-
+    $scope.$watch("vm.selectedFilter",function(){
+      if(vm.selectedFilter){
+        $scope.pageing.filterParam.level = vm.selectedFilter;
+        //Load();
+      }
+    });
     vm.Query = function (item) {
       $state.go("app.plan.task.detail",{id:item.TaskLibraryId});
     }
