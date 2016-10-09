@@ -9,6 +9,7 @@
       <md-option value="1" translate="2级任务">2级任务</md-option>
       <md-option value="2" translate="3级任务">3级任务</md-option>
     </md-select>
+    <task-categories ng-model="vm.selectedCategory"></task-categories>
     <span flex></span>
     <md-button class="md-icon-button" aria-label="More">
       <md-icon md-font-icon="icon-plus" ui-sref="app.plan.task.detail({id:'add'})"></md-icon>
@@ -31,7 +32,7 @@
   </thead>
 
   <tbody>
-  <tr ng-repeat="item in vm.items">
+  <tr ng-repeat="item in vm.items|filter:{Type:vm.selectedCategory}">
     <td class="name">{{item.Name}}</td>
     <td class="time">{{item.Type}}</td>
     <td class="time">{{item.Variable}}</td>
@@ -46,20 +47,3 @@
   </tbody>
 </table>
 </md-content>
-
-<div layout="row">
-  <span flex></span>
-  <md-select ng-model="pageing.pageSize" class="pageSZ">
-    <md-option value="10">10</md-option>
-    <md-option value="20">20</md-option>
-    <md-option value="40">40</md-option>
-    <md-option value="80">80</md-option>
-    <md-option value="100">100</md-option>
-  </md-select>
-  <div style="text-align: right;margin-right: 15px"
-       paging page="pageing.page"
-       page-size="pageing.pageSize"
-       total="vm.total"
-       paging-action="vm.pageAction('bar', page, pageSize, total)">
-  </div>
-</div>

@@ -7,6 +7,10 @@
           <input type="text" ng-model="vm.data.Name" >
         </md-input-container>
         <div ng-if="vm.data.Level!==0">
+          <md-input-container class="md-block">
+            <label>分类</label>
+            <task-categories ng-model="vm.data.Type" ></task-categories>
+          </md-input-container>
         <md-input-container class="md-block">
           <label>变量名</label>
           <input type="text" ng-model="vm.data.Variable" >
@@ -28,7 +32,10 @@
         </md-select>
         <md-checkbox ng-model="vm.data.ManuallyClose" ng-if="vm.data.Level!==0" aria-label="手工关闭">
           手工关闭
-        </md-checkbox></div>
+        </md-checkbox>
+
+
+        </div>
       </form>
       <md-button ng-click="vm.ClickSaveleft(vm.data)" class="md-primary md-raised">
         保存
@@ -50,16 +57,19 @@
                   <input type="text" ng-model="vm.current.Name" md-autofocus>
                 </md-input-container>
                 <md-checkbox ng-model="vm.current.IsFloor" ng-if="vm.data.Level===0">此节点对应楼层 </md-checkbox>
-                <md-select ng-model="vm.saveTasks" placeholder="备选任务" class="md-block" md-on-open="vm.getNextTasks()" multiple md-on-close="vm.saveSubTasks()">
+                <div layout="row">
+                <task-categories flex ng-model="vm.selectedCategory"></task-categories>
+                <md-select flex ng-model="vm.saveTasks" placeholder="备选任务" class="md-block" md-on-open="vm.getNextTasks()" multiple md-on-close="vm.saveSubTasks()">
                   <md-select-header class="sxt-select-header">
                     <md-input-container md-no-float class="md-block">
-                      <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >
+                      <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="vm.searchTerm" class="md-text" placeholder="输入关键字" >
                       <md-icon md-font-icon="icon-plus" style="display:inline-block;" ng-click="vm.addSubTask()"></md-icon>
                     </md-input-container>
                   </md-select-header>
-                  <md-option ng-value="tk.TaskLibraryId" ng-selected="tk.selected" ng-repeat="tk in vm.nextTasks">{{tk.Name}}</md-option>
+                  <md-option ng-value="tk.TaskLibraryId" ng-selected="tk.selected" ng-repeat="tk in vm.nextTasks|filter:{Name:vm.searchTerm,Type:vm.selectedCategory}">{{tk.Name}}</md-option>
                 </md-select>
-                <md-select ng-model="vm.saveNoticeStarted" placeholder="开始通知" class="md-block" md-on-open="vm.getUsers()" multiple  md-on-close="vm.saveUserGroup('Started')">
+                </div>
+                  <md-select ng-model="vm.saveNoticeStarted" placeholder="开始通知" class="md-block" md-on-open="vm.getUsers()" multiple  md-on-close="vm.saveUserGroup('Started')">
                   <md-select-header class="sxt-select-header">
                     <md-input-container md-no-float class="md-block">
                       <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >

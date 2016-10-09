@@ -18,9 +18,14 @@
           <label>变量名</label>
           <input type="text" ng-model="data.Variable" md-autofocus>
         </md-input-container>
+
         <md-input-container class="md-block">
           <label>工期</label>
           <input type="text" ng-model="data.Duration" >
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>分类</label>
+          <task-categories ng-model="data.Type" ></task-categories>
         </md-input-container>
       </form></div>
     </md-dialog-content>
