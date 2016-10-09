@@ -20,6 +20,7 @@
     $scope.currentSC;
     var mobileDetect = new MobileDetect(window.navigator.userAgent);
     vm.isMobile=mobileDetect.mobile();
+    vm.isiPad=mobileDetect.mobile()=="iPad";
     $scope.$watch('project.pid',function(){
       $scope.currentSC = null;
       remote.Project.GetMeasureItemInfoByAreaID($scope.project.pid).then(function(r){

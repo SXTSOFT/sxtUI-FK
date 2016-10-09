@@ -5,8 +5,88 @@
     </h4>
   </div>
 </md-toolbar>
-<md-card style="background-color: white;" md-theme-watch>
-  <md-card-content>
+<div ng-if="!vm.isMobile||vm.isiPad">
+  <md-card style="background-color: white;" md-theme-watch>
+    <md-card-content>
+      <div flex layout="row">
+        <md-input-container md-theme="default" flex>
+          <label>项目</label>
+          <md-select ng-model="project">
+            <md-option  ng-click="vm.ck(item)" ng-repeat="item in vm.regions" ng-value="item.RegionID">
+              {{item.RegionName}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div style="width: 20px"></div>
+      <div flex layout="row" ng-click="click()">
+        <md-input-container md-theme="default" style="padding-left: 2px" flex><label style="left: 0px">工序</label>
+          <div><input ng-model="gxNames" disabled/>
+            <md-button class="md-icon-button md-primary" style="position: absolute;right: -8px;"
+                       aria-label="Settings">
+              <md-icon md-font-icon="icon-magnify" class="icon s24"></md-icon>
+            </md-button>
+          </div>
+        </md-input-container>
+      </div>
+    </md-card-content>
+  </md-card>
+  <div flex style="margin: 24px 16px">
+    <table class="table table-hover ">
+      <thead>
+      <tr>
+        <th style="text-align: center">序号</th>
+        <th style="text-align: center">工序</th>
+        <th style="text-align: center">区域</th>
+        <th style="text-align: center">报验时间</th>
+        <th style="min-width: 50px;text-align: center">状态</th>
+        <th style="text-align: center">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr data-ng-repeat="item in vm.source">
+        <td style="text-align: center;vertical-align: middle;width: 50px">{{$index+1}}</td>
+        <td style="text-align: left;min-width: 120px;vertical-align: middle">{{item.AcceptanceItemName}}</td>
+        <td style="text-align: left;min-width: 120px;vertical-align: middle">
+          <md-list  style="padding: 0px 15px" ng-cloak>
+            <md-list-item ng-repeat="k in item.Children">
+              {{k.RegionName}}
+            </md-list-item>
+          </md-list>
+        </td>
+        <td  style="text-align: center;vertical-align: middle;">
+          {{item.InspectionTime}}
+        </td>
+        <td  style="text-align: center;vertical-align: middle;width: 80px">
+          {{item.statusName}}
+        </td>
+        <td  style="text-align: center;width: 80px;vertical-align: middle;">
+          <md-button ng-click="vm.Lookintoys(item)" class="md-primary"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>查看</md-button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div layout="row">
+      <span flex></span>
+      <md-select ng-model="pageing.pageSize" class="pageSZ">
+        <md-option value="10">10</md-option>
+        <md-option value="20">20</md-option>
+        <md-option value="40">40</md-option>
+        <md-option value="80">80</md-option>
+        <md-option value="100">100</md-option>
+      </md-select>
+      <div style="text-align: right;margin-right: 15px"
+           paging page="pageing.page"
+           page-size="pageing.pageSize"
+           total="pageing.total"
+           paging-action="vm.pageAction('', page, pageSize, total)">
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-if="vm.isMobile&&!vm.isiPad" style="position: relative">
+
+  <section  style="padding: 18px 12px">
     <div flex layout="row">
       <md-input-container md-theme="default" flex>
         <label>项目</label>
@@ -28,65 +108,16 @@
         </div>
       </md-input-container>
     </div>
-  </md-card-content>
-</md-card>
-<div flex style="margin: 24px 16px">
-  <table class="table table-hover ">
-    <thead>
-    <tr>
-      <th style="text-align: center">序号</th>
-      <th style="text-align: center">工序</th>
-      <th style="text-align: center">区域</th>
-      <th style="text-align: center">报验时间</th>
-      <th style="min-width: 50px;text-align: center">状态</th>
-      <th style="text-align: center">操作</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr data-ng-repeat="item in vm.source">
-      <td style="text-align: center;vertical-align: middle;width: 50px">{{$index+1}}</td>
-      <td style="text-align: left;min-width: 120px;vertical-align: middle">{{item.AcceptanceItemName}}</td>
-      <td style="text-align: left;min-width: 120px;vertical-align: middle">
-        <md-list  style="padding: 0px 15px" ng-cloak>
-          <md-list-item ng-repeat="k in item.Children">
-            {{k.RegionName}}
-          </md-list-item>
-        </md-list>
-      </td>
-      <td  style="text-align: center;vertical-align: middle;">
-        {{item.InspectionTime}}
-      </td>
-      <td  style="text-align: center;vertical-align: middle;width: 80px">
-        {{item.statusName}}
-      </td>
-      <td  style="text-align: center;width: 80px;vertical-align: middle;">
-        <md-button ng-click="vm.Lookintoys(item)" class="md-primary"  aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>查看</md-button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-  <div layout="row">
-    <span flex></span>
-    <md-select ng-model="pageing.pageSize" class="pageSZ">
-      <md-option value="10">10</md-option>
-      <md-option value="20">20</md-option>
-      <md-option value="40">40</md-option>
-      <md-option value="80">80</md-option>
-      <md-option value="100">100</md-option>
-    </md-select>
-    <div style="text-align: right;margin-right: 15px"
-         paging page="pageing.page"
-         page-size="pageing.pageSize"
-         total="pageing.total"
-         paging-action="vm.pageAction('', page, pageSize, total)">
+    <div layout="row">
+      <md-button style="margin: 12px 0px"  class="md-raised md-primary" flex ng-click="vm.filter()"> 确定</md-button>
     </div>
-  </div>
+  </section>
 </div>
 <md-sidenav id="gx_nav" layout="column" style="min-width: 80%" class="md-sidenav-right md-whiteframe-4dp"
             md-component-id="right">
   <div flex layout="column" style="border-top: 1px solid #f5f5f9">
     <md-tabs md-border-bottom flex style="background-color:white">
-      <md-tab label="已选工序">
+      <md-tab label="已选工序({{gxSelected.length}})">
         <md-tab-content layout="column">
           <md-content flex layout="row">
             <md-list style="box-shadow:1px 0px 15px 0 #d8d8d8 " flex="40" ms-scroll>

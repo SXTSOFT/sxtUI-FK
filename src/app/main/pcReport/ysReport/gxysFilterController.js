@@ -15,10 +15,11 @@
   function gxysFilterController($scope,remote,$mdSidenav,$state,$rootScope,$timeout){
     var vm = this;
     $scope.gxSelected=[];
-    $scope.project=null;
+    $scope.project="";
     vm.regions=[];
     var mobileDetect = new MobileDetect(window.navigator.userAgent);
     vm.isMobile=mobileDetect.mobile();
+    vm.isiPad=mobileDetect.mobile()=="iPad";
     remote.Project.getMap().then(function (result) {
       vm.regions.push({
         RegionID: "",
@@ -31,7 +32,9 @@
         })
       });
     });
-
+    vm.ck=function(item){
+      $scope.project=item.RegionID;
+    }
     $scope.click=function(){
       $mdSidenav("right").toggle()
     }
@@ -115,11 +118,17 @@
       }
     },true);
     $scope.$watch("project",function(){
+      if (vm.isMobile&&!vm.isiPad){
+        return;
+      }
       if ($scope.project||$scope.project===""){
         load();
       }
     });
     $scope.$watchCollection("gxSelected",function(){
+      if (vm.isMobile&&!vm.isiPad){
+        return;
+      }
       if ($scope.gxSelected.length||$scope.gxSelected.isGo){
         load();
       }else {
@@ -159,10 +168,15 @@
       $scope.pageing.page=page;
       load();
     }
-
-    vm.goBack=function(){
-      window.history.go(-1);
+    vm.filter=function(){
+      $rootScope.gxSelected= $scope.gxSelected;
+      $rootScope.gxParams={
+        gxSelected:$scope.gxSelected,
+        secSelected:$scope.project?[$scope.project]:[]
+      }
+      $state.go("app.pcReport_ys_rp");
     }
+
     vm.Lookintoys = function(item){
       $state.go('app.xhsc.gx.gxzgreport',{InspectionId:item.InspectionId, acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,projectId:item.ProjectID});
     }
