@@ -15,7 +15,7 @@
   function gxysFilterController($scope,remote,$mdSidenav,$state,$rootScope,$timeout){
     var vm = this;
     $scope.gxSelected=[];
-    $scope.project="";
+    $scope.project="-";
     vm.regions=[];
     var mobileDetect = new MobileDetect(window.navigator.userAgent);
     vm.isMobile=mobileDetect.mobile();
@@ -172,7 +172,7 @@
       $rootScope.gxSelected= $scope.gxSelected;
       $rootScope.gxParams={
         gxSelected:$scope.gxSelected,
-        secSelected:$scope.project?[$scope.project]:[]
+        secSelected:$scope.project&&$scope.project!=="-"?[$scope.project]:[]
       }
       $state.go("app.pcReport_ys_rp");
     }
