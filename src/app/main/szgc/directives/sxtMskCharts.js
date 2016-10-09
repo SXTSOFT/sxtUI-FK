@@ -54,9 +54,9 @@
             var bid = scope.value.split('>'),
               legend = [
                 {value: 0, label: '未验收', color: 'rgba(225,225,225,1)'},
-                {value: 1, label: '总包已验', color: 'rgba(44,157,251,1)'},
+                {value: 1, label: '施工单位已验', color: 'rgba(44,157,251,1)'},
                 {value: 2, label: '监理已验', color: 'rgba(0,195,213,1)'},
-                {value: 3, label: '监理/总包', color: 'rgba(0,150,136,1)'}/*,
+                {value: 3, label: '监理/施工单位', color: 'rgba(0,150,136,1)'}/*,
                 {value: 4, label: '监理不合格', color: 'rgba(249,98,78,1)'}*/
               ],
               gx = [];
@@ -82,7 +82,7 @@
 
                 n1 = getNumName(i1.name),
                   n2 = getNumName(i2.name);
-                if (!isNaN(n1) && !isNaN(n2))
+                if (!isNaN(n1) && !isNaN(n2) && n1!=n2)
                   return n1 - n2;
                 else if ((isNaN(n1) && !isNaN(n2)))
                   return 1;

@@ -36,6 +36,7 @@
       idtree = $scope.$parent.project.idTree || $stateParams.idTree,
       nametree = $scope.$parent.project.nameTree || $stateParams.nameTree,
       token = $stateParams.token,
+      checkRequirement = $stateParams.checkRequirement,
       flag = $stateParams.flag;
 
     var tid = procedure+idtree+pid,
@@ -54,6 +55,7 @@
     $scope.data = {
       pics: [],
       pics2:[],
+      CheckRequirement:checkRequirement,
       isFirst: !batchId || batchId == 'new',
       projectName: nametree,
       procedureName: procedureName,
@@ -422,7 +424,7 @@
                 getPassRatio: function () {
                   var sum=0,l=0;
                   this.items.forEach(function (item) {
-                                            if (item.checked && item.PassRatio) {
+                    if (item.checked && item.PassRatio) {
                       sum = utils.math.sum(item.PassRatio, sum);
                       l++;
                     }
@@ -661,8 +663,18 @@
       }
 
     }
-    $scope.$watch('data.curHistory.ParentCompanyId', resetGroup)
-    $scope.$watch('data.curHistory.CompanyId', resetGroup);
+    $scope.$watch('data.curHistory.ParentCompanyId', function () {
+      if($scope.data.curHistory.ParentCompanyId) {
+        $scope.data.curHistory.CompanyId = undefined;
+        resetGroup();
+      }
+    })
+    $scope.$watch('data.curHistory.CompanyId', function () {
+      if($scope.data.curHistory.CompanyId) {
+        $scope.data.curHistory.ParentCompanyId = undefined;
+        resetGroup();
+      }
+    });
 
     function getGroups(sp,field,v) {
       if(!sp)return [];
@@ -763,7 +775,7 @@
     }
 
     $scope.save = function(addForm) {
-
+      $scope.btnToSave =false;
       var m = /(((20[0-9][0-9]-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|(20[0-3][0-9]-(0[2469]|11)-(0[1-9]|[12][0-9]|30))) (20|21|22|23|[0-1][0-9]):[0-5][0-9]:[0-5][0-9])/
       var s = $scope.m.CheckDate;
       if (!m.test(s)) {
@@ -817,7 +829,10 @@
         if (ix != -1)
           step.CheckWorkerName = step.CheckWorkerName.substring(0, ix);
       }
-
+      if (!step.CheckWorkerName) {
+        step.CheckWorker = user.Id;
+        step.CheckWorkerName = user.RealName;
+      }
 
       batch.ProcedureId = procedure;
       batch.EngineeringProjectId = idtree.split('>')[0];
@@ -870,6 +885,7 @@
       return;*/
       api.szgc.addProcessService.postCheckData({
         Id:sxt.uuid(),
+        tid:tid,
         Batch: data.batchs,
         Step: step,
         CheckData: targets,
@@ -987,11 +1003,6 @@
             max = min;
             min = parseFloat(isIn[0]);
           }
-        }
-        if (max < min) {
-          var t11 = max;
-          max = min;
-          min = t11;
         }
 
         if (op == '±') {

@@ -60,6 +60,9 @@
             api.clearDb(function (persent) {
               $scope.cacheInfo = parseInt(persent * 100) + '%';
             }, function () {
+              api.uploadTask(function () {
+                return true;
+              },null);
               $scope.cacheInfo = null;
               $mdDialog.hide();
               utils.alert('清除完成');

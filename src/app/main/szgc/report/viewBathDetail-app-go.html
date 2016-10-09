@@ -36,6 +36,10 @@
                         <td>施工班组负责人</td>
                         <td>{{titol.GrpName}}</td>
                     </tr>
+                  <tr ng-if="titol.CheckRequirement">
+                    <td>{{titol.CheckRequirement}}</td>
+                    <td colspan="5"><span ng-repeat="ap in titol.Applications">{{ap.RoleId|roleId}}第{{ap.CheckNo}}次：{{ap.Application}}；</span></td>
+                  </tr>
                 </table>
                 <table class="target" border="0" cellspacing="0" cellpadding="0" style="margin-top: 5px;border-collapse: collapse;width:100%;">
                     <tr>
@@ -92,7 +96,7 @@
                                     <td align="center">检查点数</td>
                                     <td align="center">合格率</td>
                                     <td align="center">最大偏差</td>
-                                    <td colspan="2" align="center">总包自检</td>
+                                    <td colspan="2" align="center">施工单位自检</td>
                                     <td colspan="2" align="center">万科、第三方抽验</td>
                                     <td rowspan="2" align="center">备注</td>
                                 </tr>
@@ -159,7 +163,7 @@
       <fieldset style="padding:0 20px;">
         <legend style="margin-left:-20px;">验收表</legend>
         <fieldset ng-if="data.ps.zb">
-          <legend style="font-size:14px">总包</legend>
+          <legend style="font-size:14px">施工单位</legend>
 <div class="target2">
           <table  ng-if="data.ps.zb1" border="1" cellspacing="0" cellpadding="4" style="border-collapse: collapse;width:100%;">
             <tr>
@@ -283,7 +287,7 @@
       <fieldset style="padding:0 20px;" sxt-image-view is-container="true">
         <legend style="margin-left:-20px;">附件</legend>
         <fieldset  ng-if="data.ps.zb">
-          <legend style="font-size:14px">总包</legend>
+          <legend style="font-size:14px">施工单位</legend>
           <div><sxt-images ng-model="data.selected.zb.GroupImg2" project="data.projectInfo"></sxt-images></div>
         </fieldset>
         <fieldset  ng-if="data.ps.jl">

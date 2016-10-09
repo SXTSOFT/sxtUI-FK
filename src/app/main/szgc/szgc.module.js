@@ -306,13 +306,15 @@
       })
       .state('app.szgc.ys.add', {
         title:'添加验收',
+        hideFootbar:true,
         url: '/new/{projectid}/{name}/{batchId}/{procedureTypeId}/{procedureId}/{type}/{idTree}/{procedureName}/{nameTree}/{flag}',
         controller: 'AddProcessController as vm',
         templateUrl: 'app/main/szgc/ys/addProcess-app.html'
       })
       .state('app.szgc.ys.addnew', {
         title:'添加验收',
-        url: '/newadd/{projectid}/{name}/{batchId}/{procedureTypeId}/{procedureId}/{type}/{idTree}/{procedureName}/{nameTree}/{flag}',
+        hideFootbar:true,
+        url: '/newadd/{projectid}/{name}/{batchId}/{procedureTypeId}/{procedureId}/{type}/{idTree}/{procedureName}/{nameTree}/{flag}/{checkRequirement}',
         controller: 'AddProcessNewController as vm',
         templateUrl: 'app/main/szgc/ys/addProcess-appnew.html'
       })
@@ -321,6 +323,20 @@
         url: '/upload/{projectid}/{name}/{type}/{idTree}/{nameTree}',
         controller: 'uploadProcessController as vm',
         templateUrl: 'app/main/szgc/ys/upload.html'
+      })
+
+      .state('app.szgc.ys.material',{
+        title:'添加验收',
+        url:'/mys/{id}',
+        controller:'MMyProcessController as vm',
+        templateUrl:'app/main/material/ys/myProcess-app.html'
+      })
+
+      .state('app.szgc.ys.detail', {
+        title:'材料验收详情',
+        url: '/detail/{id}',
+        controller: 'CheckDataDetailController as vm',
+        templateUrl: 'app/main/material/ys/checkDataDetail-app.html'
       })
 
 

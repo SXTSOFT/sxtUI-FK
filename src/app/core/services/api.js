@@ -295,7 +295,7 @@
           });
           progress && progress(percent, current, total);
         }, complete, fail, options);
-      });
+      },fail);
       return groups;
     }
 
@@ -348,10 +348,10 @@
                     cfg.fn.call(cfg, row).then(function (result) {
                       if (result && result.status == 200 && result.data && !result.data.ErrorCode) {
                         options.uploaded && options.uploaded(cfg, row, result);
-                        resolve();
+                        resolve(row);
                       }
                       else{
-                        resolve();
+                        resolve(row);
                         //reject(result);
                       }
                     }).catch(reject);
@@ -364,6 +364,10 @@
             group.total = group.end - group.start;
           });
           resolve(tasks);
+        },function (reason) {
+          reason = reason||{};
+          reason.errcode = '08001'
+          reject(reason)
         })
       });
     }
@@ -377,9 +381,11 @@
         return t(progress, function () {
           networkState = oNetworkState;
           success && success();
-        }, function () {
+        }, function (reason) {
+          reason = reason||{};
+          reason.errcode = reason.errcode||'08002';
           networkState = oNetworkState;
-          fail && fail();
+          fail && fail(reason);
         }, options);
       };
     }
@@ -416,7 +422,7 @@
             total: len
           });
 
-        if (!progress || progress(i * 1.0 / len, i, len) !== false) {
+        if (!progress || progress(i * 1.0 / len, i, len,fn) !== false) {
           if (!fn) {
             if (config && config.event)
               provider.$rootScope.$emit(config.event, {
@@ -435,7 +441,7 @@
                 next.r = true;
                 next();
               }
-            }).catch(function (err) {
+            },function (err) {
               provider.$rootScope.$emit('applicationError', {exception: err});
               d = 0;
               if (config && config.event)
@@ -443,7 +449,10 @@
                   target: config.target,
                   event: 'fail'
                 });
-              fail && fail();
+              err = err||{};
+              err.errcode=err.errcode||'08003'
+              fail && fail(err);
+              provider.$q.$q.reject(err);
             });
             provider.$timeout(function () {
               if (d && !next.r) {

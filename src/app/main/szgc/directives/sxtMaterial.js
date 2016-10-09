@@ -23,7 +23,7 @@
         inc :'@'
       },
       template:'<div layout="row">' +
-      '<md-input-container flex md-no-float class="md-block"><label>可选材料({{Plength}})</label><input  ng-model="nameValue" readonly></md-input-container>'+
+      '<md-input-container style="margin:8px 0;" flex md-no-float class="md-block"><label>可选材料({{Plength}})</label><input  ng-model="nameValue" readonly></md-input-container>'+
       '<md-menu flex="none">\
     <md-button aria-label="Open  menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">\
     <md-icon md-menu-origin  md-font-icon="icon-arrow-down"></md-icon>\
@@ -66,6 +66,7 @@
       api.material.MaterialTypeService.GetProcedureType().then(function (result) {
         var s = [];
         result.data.Rows.forEach(function (item) {
+          if(!item.ParentName)return;
           var gn = s.find(function(g){return item.ParentName== g.name});
           if(!gn){
             gn = {
@@ -112,18 +113,8 @@
             break;
         }
 
-        if (scope.inc) {
-          t = 0;
-          /*          q.isGetChilde=1;
-           q.batchTypeList = ex.join(',');
-           //q = '&isGetChilde=1&batchTypeList='+ex.join(',')*/
-          ex.forEach(function (t1) {
-            t = t | t1;
-          })
-        }
-        q.batchType = t;
-
         api.material.BatchSetService.getAll(q).then(function(result) {
+          console.log(result);
           var data = [];
           result.data.Rows.forEach(function(item) {
             data.push(item);

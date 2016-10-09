@@ -15,7 +15,6 @@
   function MMyProcessController($scope, api, utils, $state,$q,sxt,xhUtils,$timeout, $mdDialog,$stateParams){
 
     var vm = this;
-    vm.fjType = null;
     vm.AttachmentSHow = false;
 
     vm.checkData={};
@@ -32,18 +31,44 @@
       imgs5:[]
 
     };
-
+    vm.change = function (item) {
+      vm.fjType=item.value;
+    }
     $scope.save = function(addForm) {
-      vm.checkData.InspectionReport = vm.sjReport;
+      if(!$scope.project.procedureId){
+        utils.alert('请选择材料');
+        return;
+      }
+
+      if(!vm.checkData.SupplierId){
+        utils.alert('请选择供货方');
+        return;
+      }
+
+      if(!vm.checkData.Manufactor){
+        utils.alert('请输入厂家/品牌');
+        return;
+      }
+
+      if(!vm.checkData.Number){
+        utils.alert('请输入数量');
+        return;
+      }
+
+      if(!vm.checkData.ContractNumber){
+        utils.alert('请输入合同编号');
+        return;
+      }
+
+      vm.checkData.InspectionReport = vm.checkData.sjReport;
       vm.checkData.ProjectId = $scope.project.projectId;
       vm.checkData.MaterialId = $scope.project.procedureId;
       vm.checkData.RegionNameTree = $scope.project.nameTree;
       vm.checkData.RegionId = $scope.project.pid;
       vm.checkData.ProjectName = $scope.project.projectName;
       vm.checkData.RegionName = $scope.project.typeName;
-
-
-      if(vm.checkData.WgCheck == false ||(vm.fjType == 16 && vm.checkData.sjReport == false)) {
+      $scope.$parent.vm.load();
+      if(vm.checkData.WgCheck == 0 || vm.checkData.InspectionReport == 0) {
         $mdDialog.show({
           controller: ['$scope',function ($scope) {
             $scope.hide = function() {
@@ -53,9 +78,15 @@
               $mdDialog.cancel();
             };
             $scope.answer = function() {
+              if(!$scope.clyj){
+                utils.alert('请输入处理意见');
+                return;
+              }
               vm.checkData.CheckResult = 0;  //状态：不合格
-              vm.checkData.HandleOption = $scope.clyj;
+              if (vm.checkData.InspectionReport == null)
+                vm.checkData.InspectionReport = 3; //   N/A
 
+              vm.checkData.HandleOption = $scope.clyj;
               api.material.addProcessService.Insert({
                 Id:sxt.uuid(),
                 CheckData:vm.checkData,
@@ -65,6 +96,7 @@
                   $scope.isSaveing = false;
                   utils.alert('提交完成').then(function () {
                     $state.go('app.szgc.ys');
+                    console.log($scope)
                   });
                 }else{
                   utils.alert('提交失败').then(function () {
@@ -79,17 +111,22 @@
           bindToController:true,
           fullscreen: $scope.customFullscreen
         });
+      }
+      else{
+        if (vm.checkData.WgCheck == 1 && vm.checkData.InspectionReport == null && vm.checkData.IsInspection == 1) {
+          vm.checkData.CheckResult = 2; //状态：未知
+          vm.checkData.InspectionReport = 2; //未提供
+        }else{
+          vm.checkData.CheckResult = 1; //状态：合格
+          if (vm.checkData.InspectionReport == null)
+            vm.checkData.InspectionReport = 3; //   N/A
+        }
 
-      }else{
         vm._save(addForm);
       }
     };
 
     vm._save = function (addForm) {
-      if (vm.checkData.WgCheck == 1 && vm.checkData.InspectionReport == null && vm.checkData.IsInspection == 1)
-        vm.checkData.CheckResult = 2; //状态：未知
-      else
-        vm.checkData.CheckResult = 1; //状态：合格
       api.material.addProcessService.Insert({
         Id:sxt.uuid(),
         CheckData:vm.checkData,
@@ -171,6 +208,7 @@
     }
 
     vm.ok = function(){
+      $scope.$parent.vm.load();
       vm.checkData.HandleOption = null;
       if(vm.checkDataId != ''){
         if(vm.checkData.sjReport == 0){
@@ -183,6 +221,11 @@
                 $mdDialog.cancel();
               };
               $scope.answer = function() {
+                if(!$scope.clyj){
+                  utils.alert('请输入处理意见');
+                  return;
+                }
+
                 vm.checkData.HandleOption = $scope.clyj;
 
                 api.material.addProcessService.Insert({

@@ -22,6 +22,7 @@
 
     function link(scope,element,attr,ctrl){
       //console.log('a',scope.value)
+
       $rootScope.$on('keyboard:setvalue',function(e,v){
         scope.value = v;
       })
@@ -75,6 +76,7 @@
         }
         $rootScope.$emit('keyboard:value',str);
         scope.value = str;
+
       }
     }
   }

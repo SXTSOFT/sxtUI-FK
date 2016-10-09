@@ -19,6 +19,7 @@
         regionType:'=',
         value:'=ngModel',
         nameValue:'=',
+        checkRequirement:'=',
         inc :'@'
       },
       template:'<div layout="row">' +
@@ -57,6 +58,7 @@
         scope.procedureTypeId = p.ProcedureTypeId;
         scope.value = p.ProcedureId;
         scope.nameValue = p.ProcedureName;
+        scope.checkRequirement = p.CheckRequirement;
         ctrl.$setViewValue(scope.value);
       }
       scope.Plength = 0;

@@ -439,6 +439,7 @@
       var r = rs[0];
       $stateParams.titol = r.data;
       $scope.titol = r.data;
+      $scope.titol.Applications = [];
       //截取班组组长名称
       var fishIndex = 0;
       var lastIndex = 0;
@@ -460,6 +461,9 @@
 
       $scope.egTitol = {};
       cbr.data.Rows.forEach(function(item) {
+        if (item.Application) {
+          $scope.titol.Applications.push({ RoleId: item.RoleId, CheckNo: item.CheckNo, Application: item.Application });
+        }
         if (item.RoleId == "jl") {
           $scope.jlTitol = item;
         } else if (item.RoleId == "eg") {

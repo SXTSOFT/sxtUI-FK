@@ -15,6 +15,9 @@
   function MyProcessController($scope, api, utils, $state,$q,sxt,xhUtils,$timeout,$window){
 
     var vm = this;
+    $scope.isPartner = api.szgc.vanke.isPartner();
+    vm.hasMaterial = !api.szgc.vanke.isPartner()||api.szgc.vanke.getRoleId()=='jl';
+
     $scope.is = function(route){
       return $state.is(route);
     };
@@ -36,22 +39,29 @@
     };
 
     $scope.getImgURl = function (img) {
-      return sxt.app.api + img.substring(1);
+      if(img != null)
+        return sxt.app.api + img.substring(1);
     };
 
     $scope.getNetwork = function () {
       return api.getNetwork();
     };
 
-/*    api.material.MaterialService.GetAll().then(function(result){
-      $scope.mlCheckData = result.data.Rows;
-    });*/
+    //获取所有材料验收信息
+    vm.load = function () {
+      api.material.MaterialService.GetAll().then(function(result){
+        $scope.mlCheckData = result.data.Rows;
+      });
+    };
+    if(vm.hasMaterial) {
+      vm.load();
+    }
 
     $scope.goMaterialDetail = function (id) {
-      $state.go('app.material.ys.detail',{id:id});
+      $state.go('app.szgc.ys.detail',{id:id});
     };
 
-    $scope.isPartner = api.szgc.vanke.isPartner();
+
     $scope.roleId = api.szgc.vanke.getRoleId();
     $scope.project = {
       isMore: true,
@@ -424,6 +434,32 @@
         function () {
           return api.szgc.ProcedureBathSettingService.query();
         },
+
+        //获取材料供应商
+        function () {
+          return api.material.SupplierService.GetAll({startrowIndex:0,maximumRows:100,Status:4});
+        },
+
+        //获取材料类型
+        function () {
+          return api.material.MaterialTypeService.GetProcedureType();
+        },
+
+        //获取材料
+        function () {
+          return api.material.BatchSetService.getAll({status:4});
+        },
+
+        //获取所有材料验收详细信息
+        function () {
+          return api.material.MaterialService.GetInfoById();
+        },
+
+        //获取所有材料验收所选附件
+        function () {
+          return api.material.MaterialService.GetMLFilesById();
+        },
+
         //工序验收表
         function () {
           return api.szgc.TargetService.getAll()
@@ -496,10 +532,20 @@
           return false;
         }
         return true;
-      },function (percent,current,total) {
+      },function (percent,current,total,task) {
         $scope.project.percent = parseInt(percent *100) +' %';
         $scope.project.current = current;
         $scope.project.total = total;
+        task && task.then(function (row) {
+          try {
+            api.upload(function (up) {
+              return up._id == row.Id || up._id == row.tid;
+            }, null);
+          }catch (ex){
+
+          }
+          return row;
+        })
       },function () {
         $scope.project.uploaded = 1;
         api.uploadTask(function () {
@@ -533,9 +579,9 @@
         }
         $scope.project.tasks = [];
         $scope.uploading= false;
-      },function () {
+      },function (err) {
         $scope.project.uploaded = 0;
-        utils.alert('上传失败');
+        utils.alert('上传失败'+(err && err.errcode));
         $scope.uploading =false;
       },{
         timeout:600000,
