@@ -21,13 +21,16 @@
     }
     var vm = this;
     $scope.gxSelected=[];
-    var  regionID=$stateParams.regionID.substring(0,5);
+    vm.build={};
+    var  regionID=$stateParams.regionID;
     var pro=[
-      remote.Project.queryAllBulidings(regionID),
+      remote.Project.getRegionAndChildren(regionID),
       remote.Procedure.getRegionStatus(regionID),
       remote.Procedure.queryProcedure()
     ]
     $q.all(pro).then(function(res){
+      vm.build.regions=res[0].data;
+      vm.build.status=res[1].data;
       var r=res[2];
       if (r.data&&angular.isArray(r.data)){
         $scope.procedures= r.data;
@@ -49,7 +52,6 @@
 
 
     vm.query = function () {
-      vm.build.loading = true;
       vm.build.query();
     };
 
@@ -88,9 +90,6 @@
         }
       })
     }
-    vm.build = {
-      regionID: $stateParams.regionID,
-    };
     vm.openGx = buildToggler('procedure_right');
   }
 })();

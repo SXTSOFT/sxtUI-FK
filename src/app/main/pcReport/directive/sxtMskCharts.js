@@ -47,7 +47,6 @@
       },
       link: function (scope, element) {
         var query = null;
-        scope.build.loading = false;
         scope.build.query = function () {
           var  legend = [
               {value: 1, label: '待验', color: 'rgba(225,225,225,1)'},
@@ -56,7 +55,19 @@
               {value: 8, label: '未整改', color: 'rgba(0,150,136,1)'},
               {value: 16, label: '已整改', color: 'rgba(249,98,78,1)'}
             ];
-
+          function setYAxis(){
+            var regions=scope.build.regions;
+            if (!angular.isArray(regions)||!regions.length){
+                return [];
+            }
+            var  floors=[];
+            regions.forEach(function(k){
+                if (k.RegionType==8){
+                  floors.push(k.RegionName);
+                }
+            });
+            return floors;
+          }
           var option = {
             tooltip: {
             },
@@ -64,7 +75,7 @@
             },
             xAxis: {
               type: 'category',
-              data: [],
+              data:["a","b","c"],
               axisLabel: {
                 interval: function (index, value) {
                   //return index % (maxRooms + 1) == parseInt((maxRooms + 1)/2);
@@ -78,7 +89,7 @@
             },
             yAxis: {
               type: 'category',
-              data: [],
+              data: setYAxis(),
               min: 0,
               max: 50,
               interval: 1,
@@ -97,15 +108,15 @@
               pieces: legend,
               show: true,
               min: 0,
-              max: 5,
+              max: 32,
               calculable: false,
-              itemWidth: 5,
+              //itemWidth: 5,
               orient: 'horizontal'
             }],
             series: [
               {
                 type: 'heatmap',
-                data: [],
+                data: [[0,2,2],[1,2,4]],
                 label: {
                   normal: {
                     show: false,
@@ -127,103 +138,10 @@
               }
             ]
           };
-          scope.build.loading = false;
           $timeout(function(){
             var myChart = $window.echarts.init(element[0]);
             myChart.setOption(option);
           })
-          //(query||(query=$q.all([
-          //  remote.Project.queryAllBulidings(projectId),
-          //  remote.Procedure.getRegionStatus(projectId)]))
-          //).then(function (rs) {
-          //
-          //  var option = {
-          //    tooltip: {
-          //    },
-          //    grid: {
-          //    },
-          //    xAxis: {
-          //      type: 'category',
-          //      data: [],
-          //      axisLabel: {
-          //        interval: function (index, value) {
-          //          //return index % (maxRooms + 1) == parseInt((maxRooms + 1)/2);
-          //          return true;
-          //        },
-          //        show: true
-          //      },
-          //      splitArea: {
-          //        show: false
-          //      }
-          //    },
-          //    yAxis: {
-          //      type: 'category',
-          //      data: [],
-          //      min: 0,
-          //      max: 50,
-          //      interval: 1,
-          //      axisLabel: {
-          //        textStyle: {
-          //          fontSize: 8
-          //        }
-          //      },
-          //      splitArea: {
-          //        show: false
-          //      }
-          //    },
-          //    visualMap: [{
-          //      top:0,
-          //      type: 'piecewise',
-          //      pieces: legend,
-          //      show: true,
-          //      min: 0,
-          //      max: 5,
-          //      calculable: false,
-          //      itemWidth: 5,
-          //      orient: 'horizontal'
-          //    }],
-          //    series: [
-          //      {
-          //        type: 'heatmap',
-          //        data: [],
-          //        label: {
-          //          normal: {
-          //            show: false,
-          //            textStyle: {
-          //              fontSize: 5
-          //            }
-          //          }
-          //        },
-          //        itemStyle: {
-          //          normal: {
-          //            borderWidth: 1,
-          //            borderColor: 'rgba(255, 255, 255, 1)'
-          //          },
-          //          emphasis: {
-          //            shadowBlur: 10,
-          //            shadowColor: 'rgba(0, 0, 0, 1)'
-          //          }
-          //        }
-          //      },
-          //      {
-          //        name:'不合格',
-          //        type:'scatter',
-          //        data:points,
-          //        symbolSize: function (data) {
-          //          return 7;
-          //        },
-          //        itemStyle:{
-          //          normal:{
-          //            color:'rgb(255,0,0)'
-          //          }
-          //        }
-          //      }
-          //    ]
-          //  };
-          //  var myChart = $window.echarts.init(element[0]);
-          //  myChart.setOption(option);
-          //  scope.build.loading = false;
-          //});
         };
       }
     }

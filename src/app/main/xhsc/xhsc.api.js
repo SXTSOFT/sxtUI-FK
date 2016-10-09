@@ -111,6 +111,17 @@
         }).bind(function (projectId) {
           return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByid', {projectId: projectId}));
         }),
+        getRegionAndChildren: $http.db({
+          _id: 'regions',
+          idField: 'RegionID',
+          dataType: 1,
+          filter: function (item,regionId) {
+            return item.RegionID == regionId;
+          }
+        }).bind(function (regionId) {
+          return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByIdEx', {areaId: regionId}));
+        }),
+
         getInspectionList:$http.db({
           _id:'Inspection',
           idField:'InspectionId',
