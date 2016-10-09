@@ -184,6 +184,48 @@
       Task:{
         query:function (query) {
           return $http.get($http.url('/api/Task',query));
+        },
+        Categories:{
+          query:function () {
+            return $q(function (resolve,reject) {
+              resolve({
+                data:[
+                  {
+                    name:'商业',
+                    children:[
+                      {
+                        name:'多层办公楼、酒店'
+                      },
+                      {
+                        name:'高层办公楼、酒店'
+                      },{
+                        name:'商场'
+                      }
+                    ]
+                  },
+                  {name:'住宅',children:[
+                    {name:'别墅'},
+                    {name:'多层'},
+                    {name:'小高层'},
+                    {name:'高层'},
+                    {name:'超高层'}
+                  ]},
+                  {name:'关键节点',children:[
+                    {name:'基坑支护'},
+                    {name:'桩基础'},
+                    {name:'土方'},
+                    {name:'基础结构'},
+                    {name:'屋面结构'},
+                    {name:'内外饰面与落架'},
+                    {name:'公装/室外'}
+                  ]},
+                  {
+                    name:'其它'
+                  }
+                ]
+              })
+            })
+          }
         }
       },
       users:{

@@ -1,0 +1,9 @@
+<md-select ng-model="value" >
+    <md-optgroup label="{{item.name}}"  ng-repeat="item in data" ng-if="item.children && item.children.length">
+      <md-option value="{{item.name + '>' + it.name}}" ng-repeat="it in item.children ">{{it.name}}</md-option>
+    </md-optgroup>
+    <md-optgroup label="其它" >
+      <md-option ng-value="item.name" ng-repeat="item in data" ng-if="!item.children || !item.children.length">{{item.name}}</md-option>
+    </md-optgroup>
+</md-select>
+
