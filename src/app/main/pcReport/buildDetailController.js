@@ -21,6 +21,20 @@
     }
     var vm = this;
     $scope.gxSelected=[];
+    var  regionID=$stateParams.regionID.substring(0,5);
+    var pro=[
+      remote.Project.queryAllBulidings(regionID),
+      remote.Procedure.getRegionStatus(regionID),
+      remote.Procedure.queryProcedure()
+    ]
+    $q.all(pro).then(function(res){
+      var r=res[2];
+      if (r.data&&angular.isArray(r.data)){
+        $scope.procedures= r.data;
+      }
+    });
+
+
     remote.Procedure.queryProcedure().then(function(r){
       if (r.data&&angular.isArray(r.data)){
         $scope.procedures= r.data;
