@@ -1,7 +1,7 @@
 <section layout="column" flex>
-  <!--<div flex="none" ng-if="vm.loading" layout="row">-->
-    <!--<md-progress-circular flex="none"  md-mode="indeterminate" md-diameter="20px"></md-progress-circular> <h4 flex style="text-align: center">{{vm.build.name}}</h4>-->
-  <!--</div>-->
+  <div flex="none"  layout="row">
+    <md-progress-circular flex="none" ng-if="vm.loading" md-mode="indeterminate" md-diameter="20px"></md-progress-circular> <h4 flex style="text-align: center">{{vm.build.name}}</h4>
+  </div>
   <div flex sxt-msk-charts  build="vm.build" procedures="vm.procedures" >
   </div>
   <md-sidenav layout="column" class="md-sidenav-right" md-is-open="vm.build.isOpen" md-component-id="procedure_right">

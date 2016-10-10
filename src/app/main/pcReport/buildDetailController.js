@@ -20,6 +20,7 @@
       }
     }
     var vm = this;
+    vm.loading=true;
     $scope.gxSelected=[];
     vm.build={};
     var  regionID=$stateParams.regionID;
@@ -30,11 +31,21 @@
     ]
     $q.all(pro).then(function(res){
       vm.build.regions=res[0].data;
+      var b=vm.build.regions.find(function(k){
+          return k.RegionType==4;
+      })
+      vm.build.name=b? b.RegionName:"";
       vm.build.status=res[1].data;
       var r=res[2];
       if (r.data&&angular.isArray(r.data)){
         $scope.procedures= r.data;
       }
+      vm.loading=false;
+      $timeout(function(){
+        vm.openGx();
+      });
+    }).catch(function(){
+      vm.openGx();
     });
 
     $scope.choosego=function(item){
@@ -57,9 +68,6 @@
 
     $scope.$watch('vm.build.isOpen',function () {
       if (!vm.build.isOpen&&vm.build.isOpen!==false){
-        $timeout(function(){
-          vm.openGx();
-        });
         return;
       }
       if (!vm.build.isOpen){

@@ -9,37 +9,6 @@
 
   /** @ngInject */
   function sxtMskCharts(api,$window,$timeout,$state,$q,remote) {
-    function getNumName(str) {
-      str = str.replace('十', '10')
-        .replace('九', '9')
-        .replace('八', '8')
-        .replace('七', '7')
-        .replace('六', '6')
-        .replace('五', '5')
-        .replace('四', '4')
-        .replace('三', '3')
-        .replace('二', '2')
-        .replace('一', '1')
-        .replace('十一', '11')
-        .replace('十二', '12')
-        .replace('十三', '13')
-        .replace('十四', '14')
-        .replace('十五', '15')
-        .replace('十六', '16')
-        .replace('十七', '17')
-        .replace('十八', '18')
-        .replace('十九', '19')
-        .replace('二十', '20');
-      var n = parseInt(/[-]?\d+/.exec(str));
-      return n;
-    }
-    function getLast(d1,d2) {
-      //var arr = Array.prototype.slice.call(arguments);
-      if(d1 && d2){
-        return d1.localeCompare(d2)>0?d1:d2
-      }
-      return d1||d2;
-    }
     return {
       scope: {
         build:'=',
@@ -75,7 +44,7 @@
             },
             xAxis: {
               type: 'category',
-              data:["a","b","c"],
+              data:["02钢筋绑扎","03钢筋捆绑","地面"],
               axisLabel: {
                 interval: function (index, value) {
                   //return index % (maxRooms + 1) == parseInt((maxRooms + 1)/2);
@@ -116,7 +85,7 @@
             series: [
               {
                 type: 'heatmap',
-                data: [[0,2,2],[1,2,4]],
+                data: [[0,1,2],[1,2,4],[1,15,4]],
                 label: {
                   normal: {
                     show: false,
