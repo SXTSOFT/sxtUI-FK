@@ -14,22 +14,40 @@
     vm.projectId = $stateParams.projectId;
     vm.role=$stateParams.role;
 
-    vm.selectSpecialty=function(item){
-          vm.gxClassType=item.SpecialtyChildren;
-          vm.acceptanceItem=[];
-        //}
-    }
-    vm.acceptanceItem=[];
-    vm.selectSpecialtyLow=function(item){
-      vm.acceptanceItem=item.WPAcceptanceList?item.WPAcceptanceList:[];
-    }
+    //vm.selectSpecialty=function(item){
+    //      vm.gxClassType=item.SpecialtyChildren;
+    //      vm.acceptanceItem=[];
+    //    //}
+    //}
+    //vm.acceptanceItem=[];
+    //vm.selectSpecialtyLow=function(item){
+    //  vm.acceptanceItem=item.WPAcceptanceList?item.WPAcceptanceList:[];
+    //}
+    //
+    //vm.comeBack=function(){
+    //  vm.acceptanceItem=[];
+    //}
 
-    vm.comeBack=function(){
-      vm.acceptanceItem=[];
-    }
+
+
     remote.Procedure.queryProcedure().then(function(result){
      vm.data=result.data;
+      vm.show=true;
     })
+    vm.showTab=function(item){
+      if (!item.SpecialtyChildren||!item.SpecialtyChildren.length){
+        return false;
+      }
+      var gx= item.SpecialtyChildren;
+      for (var  i=0;i<gx.length;i++){
+        if (gx[i].WPAcceptanceList&&gx[i].WPAcceptanceList.length){
+          return true;
+        }
+      }
+      return false;
+    }
+
+
     vm.choosego = function(i){
       if(!vm.role){
         $state.go('app.xhsc.gx.zjhouseChoose',{role:vm.role,acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,areaId:vm.areaId,maxRegion:i.maxRegion})

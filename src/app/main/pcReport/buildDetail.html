@@ -25,20 +25,18 @@
           </md-content>
         </md-tab-content>
       </md-tab>
-      <md-tab ng-repeat="gx1 in procedures" label="{{gx1.SpecialtyName}}">
-        <md-tab-content layout="column">
+      <md-tab ng-if="vm.showTab(gx1)" ng-repeat="gx1 in procedures" label="{{gx1.SpecialtyName}}">
+        <md-tab-content flex layout-fill layout="column">
           <md-list>
-            <md-list-item  layout="column"  ng-repeat="item in  gx1.SpecialtyChildren">
+            <section  ng-if="item.WPAcceptanceList.length" ng-repeat="item in  gx1.SpecialtyChildren">
               <md-subheader class="md-no-sticky" style="background:transparent">{{item.SpecialtyName}}</md-subheader>
-              <md-list>
-                <md-list-item layout="row" style="background: white" ng-repeat="k in  item.WPAcceptanceList">
-                  <md-checkbox ng-click="choosego(k)" ng-model="k.checked" style="margin-right: 8px">
-                  </md-checkbox>
-                  <p flex>{{k.AcceptanceItemName}}</p>
-                  <md-divider style="margin-left: 16px; " ng-if="!$last"></md-divider>
-                </md-list-item>
-              </md-list>
-            </md-list-item>
+               <md-list-item layout="row" style="background: white" ng-repeat="k in  item.WPAcceptanceList">
+                <md-checkbox ng-click="choosego(k)" ng-model="k.checked" style="margin-right: 8px">
+                </md-checkbox>
+                <p flex>{{k.AcceptanceItemName}}</p>
+                <md-divider style="margin-left: 16px; " ng-if="!$last"></md-divider>
+              </md-list-item>
+            </section>
           </md-list>
         </md-tab-content>
       </md-tab>

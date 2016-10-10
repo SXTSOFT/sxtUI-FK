@@ -1,45 +1,22 @@
+<md-progress-circular id="toolbar-progress" ng-if="!vm.show" class="md-accent"
+                      md-mode="indeterminate" md-diameter="28">
+</md-progress-circular>
+ <md-tabs md-border-bottom flex ng-if="vm.show">
+   <md-tab ng-if="vm.showTab(gx1)" ng-repeat="gx1 in vm.data" label="{{gx1.SpecialtyName}}">
+     <md-tab-content flex layout-fill layout="column">
+       <md-list>
+         <section  ng-if="item.WPAcceptanceList.length" ng-repeat="item in  gx1.SpecialtyChildren">
+           <md-subheader class="md-no-sticky"  style="background:#f0f0f0 ">{{item.SpecialtyName}}</md-subheader>
+           <md-list-item ng-click="vm.choosego(k)" style="background: white;" ng-repeat="k in  item.WPAcceptanceList">
 
-  <div flex layout="row" class="gx-list" style="position: relative" ng-class="{'narrow':level == 2}">
-    <div flex="33" layout="column">
-      <md-content class="list-left" flex style="background: #f0f0f0;border-right:1px solid #dedede;">
-        <div style="padding: 5%">
-          <md-list ng-cloak style="padding-top:0;padding-bottom: 0;">
-            <md-list-item ng-class="{'active':gx1.checked}" ng-repeat="gx1 in vm.data">
-              <md-button flex ng-click="vm.selectSpecialty(gx1)"> {{gx1.SpecialtyName}}</md-button>
-              <span class="border1px bottom1px"></span>
-            </md-list-item>
-          </md-list>
-        </div>
-      </md-content>
-    </div>
-    <div flex ng-show="!vm.acceptanceItem.length" layout="column" style="background: #fff;position:relative;">
-      <md-content class="list-right" flex>
-        <div class="floors" layout="column">
-          <md-list>
-            <md-list-item ng-click="vm.selectSpecialtyLow(item)" layout="row" ng-repeat="item in  vm.gxClassType" >
-              <p >{{item.SpecialtyName}}</p>
-              <span class="border1px bottom1px"></span>
-            </md-list-item>
-          </md-list>
-        </div>
-      </md-content>
-    </div>
-    <div flex ng-show="vm.acceptanceItem.length" layout="column" style="background: #fff;position:relative;">
-      <md-content class="list-right" flex>
-        <div class="floors" layout="column">
-          <md-list>
-            <md-list-item ng-click="vm.choosego(item)" layout="row" ng-repeat="item in  vm.acceptanceItem" >
-              <p flex>{{item.AcceptanceItemName}}</p>
-              <span class="border1px bottom1px"></span>
-            </md-list-item>
-          </md-list>
-        </div>
-      </md-content>
-    </div>
-    <div ng-show="vm.acceptanceItem.length" style="position: absolute;right:5px">
-      <md-button class="md-fab" ng-click="vm.comeBack()">
-        <md-icon md-svg-src="app/main/xhsc/images/icon-comeback.svg"></md-icon>
-      </md-button>
+              <p flex>{{k.AcceptanceItemName}}</p>
+                <!--<md-divider  ng-if="!$last"></md-divider>-->
 
-    </div>
-  </div>
+             <md-divider  style="margin-left: 16px"  ng-if="!$last"></md-divider>
+           </md-list-item>
+         </section>
+       </md-list>
+     </md-tab-content>
+   </md-tab>
+ </md-tabs>
+

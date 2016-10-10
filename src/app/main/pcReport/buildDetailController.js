@@ -23,6 +23,18 @@
     vm.loading=true;
     $scope.gxSelected=[];
     vm.build={};
+    vm.showTab=function(item){
+      if (!item.SpecialtyChildren||!item.SpecialtyChildren.length){
+          return false;
+      }
+      var gx= item.SpecialtyChildren;
+      for (var  i=0;i<gx.length;i++){
+        if (gx[i].WPAcceptanceList&&gx[i].WPAcceptanceList.length){
+          return true;
+        }
+      }
+      return false;
+    }
     var  regionID=$stateParams.regionID;
     var pro=[
       remote.Project.getRegionAndChildren(regionID),
@@ -85,9 +97,6 @@
       }
     })
 
-    $scope.selectSpecialtyLow=function(item,parent){
-      parent.WPAcceptanceList=item.WPAcceptanceList;
-    }
     $scope.remove=function(item){
       $timeout(function(){
         var index=$scope.gxSelected.indexOf(item);
