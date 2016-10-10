@@ -341,7 +341,7 @@
           }).bind(function(projectId,Sign) {
           return $http.get($http.url('/Api/InspectionApi/GetUserInspectionInfo', {
             projectId: projectId,
-            Sign:!Sign? "":Sign
+            Sign:!Sign?5:Sign
           })).then(function (r) {
             r.data.forEach(function (row) {
               row.projectId = projectId;

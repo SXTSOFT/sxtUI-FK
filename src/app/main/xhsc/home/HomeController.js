@@ -34,7 +34,7 @@
       }
       vm.changeItem = function(item){
         $timeout(function(){
-          $state.go('app.xhsc.choose',{pid:item.projectId, pname: item.title});
+          $state.go('app.pcReport_bd',{projectId:item.projectId, projectName: item.title});
         },200)
 
       }
