@@ -6,6 +6,11 @@
     }
   }
 }
+.nomargin{
+  md-select{
+    margin:0 0 26px 0;
+  }
+}
 .tasks-list{
   md-select{
     &.md-pink-theme{

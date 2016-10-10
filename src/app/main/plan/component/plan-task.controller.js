@@ -33,11 +33,34 @@
       }else{
         api.plan.TaskLibrary.update(data).then(function (r) {
           //$state.go('app.plan.task.list');
+          if(r.status == 200){
+            utils.alert('保存成功！');
+          }
         });
       }
 
     }
+    //工序
+    api.plan.procedure.query().then(function(r){
+      vm.procedures = r.data;
+    })
+    api.plan.MeasureInfo.query().then(function(r){
+      vm.measureInfo = r.data
+    })
+    vm.selectSpecialtyLow=function(item,parent){
+      parent.WPAcceptanceList=item.WPAcceptanceList;
+    }
 
+    vm.selectedGx = [];
+    vm.choosego = function(item){
+      vm.gxNames = item.AcceptanceItemName;
+      vm.data.CloseRelatedObjectId = item.AcceptanceItemID;
+      $mdSidenav('gx_nav').close();
+    }
+
+    vm.selectProcedure = function(){
+      $mdSidenav('gx_nav').open();
+    }
     vm.isNew = $stateParams.id=='add';
 
     vm.createTask = function(){
@@ -47,7 +70,7 @@
         });
       }
       else{
-        api.plan.TaskLibrary.update(vm.data.TaskLibraryId,vm.data).then(function () {
+        api.plan.TaskLibrary.update(vm.data.TaskLibraryId,vm.data).then(function (r) {
 
         })
       }
@@ -210,6 +233,7 @@
             return _r.TaskLibraryId == r.TaskLibraryId;
           })
           if(f){
+            vm.selectedCategory = r.Type;
             r.selected = true;
           }
         })
@@ -231,7 +255,8 @@
         clickOutsideToClose: true,
         fullscreen: false,
         locals:{
-          parentTask:task
+          parentTask:task,
+          selected:vm.selectedCategory&&vm.selectedCategory
         }
       })
         .then(function (newTask) {
@@ -251,7 +276,7 @@
       api.plan.TaskFlow.resetTaskFlow(vm.current.TaskFlowId,tasks).then(function(r){
 
       })
-      console.log('vm.saveTasks',vm.saveTasks)
+      //console.log('vm.saveTasks',vm.saveTasks)
     }
     //vm.getUseGroups = function () {
     //  api.plan.UserGroup.query().then(function (r) {
@@ -295,7 +320,7 @@
         roleIds:[]
       };
       var datas = vm['saveNotice'+type];
-      console.log(datas)
+      //console.log(datas)
       datas&&datas.forEach(function(r){
         users.roleIds.push(r)
       })

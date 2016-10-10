@@ -181,6 +181,16 @@
           return $http.get($http.url('/api/SysDataDictionarys',param));
         }
       },
+      procedure:{
+        query:function(){
+          return $http.get($http.url('/api/WPAcceptanceApi/GetWPAcceptanceInfo'));
+        }
+      },
+      MeasureInfo:{
+        query:function(){
+          return $http.get($http.url('/api/MeasureInfo/GetMeasureItemInfo'))
+        }
+      },
       Task:{
         query:function (query) {
           return $http.get($http.url('/api/Task',query));

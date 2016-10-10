@@ -85,6 +85,14 @@
       }
       vm.temp.load(vm.rootTask);
     }
+
+    //vm.save = function(){
+    //  if(!vm.duration){
+    //    utils.alert('请输入工期');
+    //    return;
+    //  };
+    //  vm.closeRight();
+    //}
     vm.nextStep = function(i,f){
       if(i==0){
         (vm.formWizard.Id?
@@ -136,7 +144,8 @@
           if(item.selectedTask) {
             selected.push({
               BuildingPlanFlowId:item.Id,
-              TaskLibraryId:item.selectedTask.TaskLibraryId
+              TaskLibraryId:item.selectedTask.TaskLibraryId,
+              Duration:item.selectedTask.duration
             });
           }
         })
@@ -187,8 +196,40 @@
        break;
        }*/
     })
-
-    vm.RoleAllots = [{value:'AAA',text:'AAA'},{value:'AAA2',text:'AAA2'}];
+    vm.change = function(){
+      vm.inputChange = true;
+    }
+    $scope.$watch('vm.formWizard.projectId',function(){
+      if(vm.formWizard&&vm.formWizard.projectId&&!vm.inputChange){
+        var f=vm.data.projects.find(function(r){
+          return r.ProjectID == vm.formWizard.projectId;
+        })
+        if(f){
+          vm.formWizard.Name = f.ProjectName;
+        }
+      }
+    });
+    $scope.$watch('vm.formWizard.sectionId',function(){
+      if(vm.formWizard&&vm.formWizard.sectionId&&!vm.inputChange){
+        var f=vm.data.sections.find(function(r){
+          return r.RegionID == vm.formWizard.sectionId;
+        })
+        if(f){
+          vm.formWizard.Name = (vm.formWizard.Name||'') + f.RegionName;
+        }
+      }
+    })
+    $scope.$watch('vm.formWizard.BuildingId',function(){
+      if(vm.formWizard&&vm.formWizard.BuildingId&&!vm.inputChange){
+        var f=vm.data.buildings.find(function(r){
+          return r.RegionID == vm.formWizard.BuildingId;
+        })
+        if(f){
+          vm.formWizard.Name = (vm.formWizard.Name||'') + f.RegionName;
+        }
+      }
+    })
+    //vm.RoleAllots = [{value:'AAA',text:'AAA'},{value:'AAA2',text:'AAA2'}];
 /*    var task = {
       taskId: 0,
       name: '楼栋模板',

@@ -16,7 +16,7 @@
         <form name="wizardStep1" flex  ms-form-wizard-form novalidate>
           <div layout="row" >
             <md-input-container flex="100" class="md-block">
-              <input type="text" name="planName" ng-model="vm.formWizard.Name" placeholder="计划名称" required>
+              <input type="text" name="planName" ng-change="vm.change()" ng-model="vm.formWizard.Name" placeholder="计划名称" required>
               <div ng-messages="wizardStep1.planName.$error" ng-show="wizardStep1.planName.$touched" role="alert">
                 <div ng-message="required">
                   <span>请输入计划名称.</span>
@@ -154,9 +154,6 @@
 </ms-form-wizard>
 
 <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right" layout="column">
-  <!--<md-toolbar class="md-theme-light">-->
-    <!--<h1 class="md-toolbar-tools">选择任务</h1>-->
-  <!--</md-toolbar>-->
   <md-tabs md-border-bottom flex >
     <md-tab label="选择任务">
       <md-tab-content layout-padding >
@@ -166,8 +163,22 @@
             <md-option  ng-repeat="m in vm.current.OptionalTasks" ng-value="m">{{m.Name}}</md-option>
           </md-select>
         </md-input-container>
-        </md-tab-content>
-      </md-tab>
-    </md-tabs>
+        <div ng-show="vm.current.selectedTask&&!vm.current.selectedTask.Duration">
+          <form name="durationForm">
+            <md-input-container class="md-block">
+              <label>输入工期</label>
+              <input type="text" required name="Duration" ng-model="vm.current.selectedTask.duration" md-auto-focus>
+              <div ng-messages="durationForm.Duration.$error">
+                <div ng-message="required">必填工期。</div>
+              </div>
+            </md-input-container>
+          </form>
+          <!--<md-button ng-click="vm.save()" class="md-primary md-raised md-mini">-->
+            <!--保存-->
+          <!--</md-button>-->
+        </div>
+      </md-tab-content>
+    </md-tab>
+  </md-tabs>
 </md-sidenav>
 

@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function planTemplate(api,$state){
+  function planTemplate(api,$state,utils){
     var vm = this;
 
     var id = $state.params["id"];
@@ -39,12 +39,20 @@
     vm.ClickSave = function(data){
       if(id=='add'){
         api.plan.TaskTemplates.Create(data).then(function (r) {
-          $state.go('app.plan.template.list');
+          if(r.status == 200){
+            utils.alert('保存成功').then(function(){
+              $state.go('app.plan.template.list');
+            })
+          }
         });
-        console.log( data,"保存")
+        //console.log( data,"保存")
       }else{
         api.plan.TaskTemplates.update(data).then(function (r) {
-          $state.go('app.plan.template.list');
+          if(r.status == 200){
+            utils.alert('保存成功').then(function(){
+              $state.go('app.plan.template.list');
+            })
+          }
         });
       }
     };

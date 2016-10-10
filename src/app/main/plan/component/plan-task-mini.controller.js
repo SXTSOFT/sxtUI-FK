@@ -9,9 +9,10 @@
     .controller('planTaskMiniController',planTaskMiniController)
 
   /** @ngInject */
-  function planTaskMiniController($scope,api, $mdDialog,parentTask){
+  function planTaskMiniController($scope,api, $mdDialog,parentTask,selected){
     $scope.data = {
-      Level:parentTask.Level+1
+      Level:parentTask.Level+1,
+      Type:selected
     }
     $scope.hide = function () {
       api.plan.TaskLibrary.create($scope.data).then(function (r) {
