@@ -1,14 +1,17 @@
 /**
+ * Created by lss on 2016/10/10.
+ */
+/**
  * Created by lss on 2016/10/7.
  */
 (function () {
   'use strict';
   angular
     .module('app.pcReport_sl')
-    .directive('sxtMskCharts',sxtMskCharts);
+    .directive('sxtScMskCharts',sxtScMskCharts);
 
   /** @ngInject */
-  function sxtMskCharts(api,$window,$timeout,$state,$q,remote) {
+  function sxtScMskCharts(api,$window,$timeout,$state,$q,remote) {
     return {
       scope: {
         build:'=',
@@ -18,36 +21,36 @@
         var query = null;
         scope.build.query = function () {
           var  legend = [
-              {value: 0, label: '未报验', color: 'rgba(225,225,225,1)'},
-              {value: 1, label: '待验', color: 'rgba(0,150,136,1)'},
-              {value: 2, label: '合格', color: 'rgba(44,157,251,1)'},
-              {value: 4, label: '不合格', color: 'red'},
-              //{value: 8, label: '未整改', color: 'rgba(0,150,136,1)'},
-              //{value: 16, label: '已整改', color: 'rgba(249,98,78,1)'}
-            ];
+            {value: 0, label: '未验', color: 'rgba(225,225,225,1)'},
+            {value: 2, label: '总包已验', color: 'rgba(0,150,136,1)'},
+            {value: 4, label: '监理已验收', color: 'rgba(44,157,251,1)'},
+            //{value: 4, label: '不合格', color: 'red'},
+            //{value: 8, label: '未整改', color: 'rgba(0,150,136,1)'},
+            //{value: 16, label: '已整改', color: 'rgba(249,98,78,1)'}
+          ];
           function setYAxis(){
             var regions=[];
             scope.build.regions.forEach(function(k){
               regions.push(angular.extend({},k));
             });
             if (!angular.isArray(regions)||!regions.length){
-                return [];
+              return [];
             }
             var  floors=[];
 
             regions.forEach(function(k){
-                if (k.RegionType==8){
-                  floors.push(k);
-                }
+              if (k.RegionType==8){
+                floors.push(k);
+              }
             });
             var maxRoomLen=0;
             floors.forEach(function(k){
               k.rooms=[];
               regions.forEach(function(n){
-                  if (n.RegionType==16&& n.RegionID.indexOf(k.RegionID)>-1){
-                    n.parent=k;
-                    k.rooms.push(n);
-                  }
+                if (n.RegionType==16&& n.RegionID.indexOf(k.RegionID)>-1){
+                  n.parent=k;
+                  k.rooms.push(n);
+                }
               });
               if (k.rooms.length>maxRoomLen){
                 maxRoomLen=k.rooms.length;
@@ -55,7 +58,7 @@
               scope.procedures.forEach(function(n){
                 //AcceptanceItemID
                 var st= scope.build.status.find(function(m){
-                    return m.AcceptanceItemID== n.AcceptanceItemID&& k.RegionID== m.AreaId;
+                  return m.AcceptanceItemID== n.AcceptanceItemID&& k.RegionID== m.AreaId;
                 })
                 if (st){
                   k.status= k.status?k.status:{};
@@ -64,50 +67,51 @@
               })
             })
             floors.maxRoomLen=maxRoomLen;
+
             floors.forEach(function(k){
-              if (!k.rooms.length){
-                if (!floors.maxRoomLen){
-                  k.rooms.push({
-                    parent:k,
-                    RegionID:-1,
-                    RegionName:""
-                  })
-                  floors.maxRoomLen=1;
-                }else {
-                  for (var i=0;i<floors.maxRoomLen;i++){
+                if (!k.rooms.length){
+                  if (!floors.maxRoomLen){
                     k.rooms.push({
                       parent:k,
                       RegionID:-1,
-                      RegionName: k.RegionName+i>9?i:("0"+i)
+                      RegionName:""
                     })
+                    floors.maxRoomLen=1;
+                  }else {
+                    for (var i=0;i<floors.maxRoomLen;i++){
+                      k.rooms.push({
+                        parent:k,
+                        RegionID:-1,
+                        RegionName: k.RegionName+i>9?i:("0"+i)
+                      })
+                    }
                   }
                 }
-              }
             })
             return floors;
           }
-         //y轴
+          //y轴
           var yAxisSource=setYAxis();
           var yAxis= $.map(yAxisSource,function(k){
-              return k.RegionName;
+            return k.RegionName;
           })
-         //X轴
-         function setXAxis(){
-           var maxRoomLen=yAxisSource.maxRoomLen;
-           var xAxis=[];
-           scope.procedures.forEach(function(k){
+          //X轴
+          function setXAxis(){
+            var maxRoomLen=yAxisSource.maxRoomLen;
+            var xAxis=[];
+            scope.procedures.forEach(function(k){
               for (var i=0;i<=maxRoomLen;i++){
                 xAxis.push({
                   AcceptanceItemID: k.AcceptanceItemID,
-                  AcceptanceItemName:k.AcceptanceItemName
+                  MeasureItemName:k.MeasureItemName
                 });
               }
-           })
-           return xAxis;
+            })
+            return xAxis;
           }
           var xAxisSource=setXAxis();
           var xAxis= $.map(xAxisSource,function(k){
-            return k.AcceptanceItemName;
+            return k.MeasureItemName;
           });
           //设置serial
           function  setSeries(){
@@ -119,7 +123,7 @@
                 var acceptanceItemID= x.AcceptanceItemID;
                 var parent=room.parent;
                 if (parent.status&&(parent.status[acceptanceItemID]||parent.status[acceptanceItemID]===0)){
-                    return parent.status[acceptanceItemID];
+                  return parent.status[acceptanceItemID];
                 }
                 var st= scope.build.status.find(function(m){
                   return m.AcceptanceItemID== acceptanceItemID&& room.RegionID== m.AreaId;

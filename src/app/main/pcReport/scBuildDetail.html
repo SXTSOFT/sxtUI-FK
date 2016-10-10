@@ -13,14 +13,14 @@
       <md-tab label="实测实量({{gxSelected.length}})">
         <md-tab-content layout="column">
           <md-content flex layout="row">
-            <md-list style="box-shadow:1px 0px 15px 0 #d8d8d8 " flex="40" ms-scroll>
-              <md-list-item ng-repeat="item in gxSelected">
+            <md-list style="box-shadow:1px 0px 15px 0 #d8d8d8 " flex ms-scroll>
+              <md-list-item ng-repeat="item in procedures" style="background: white">
                 <md-checkbox ng-click="remove(item)" ng-model="item.checked" style="margin-right: 8px">
-                  {{item.AcceptanceItemName}}
                 </md-checkbox>
-                <p flex>{{item.AcceptanceItemName}}</p>
+                <p flex>{{item.MeasureItemName}}</p>
+                <md-divider style="margin-left: 16px; " ng-if="!$last"></md-divider>
               </md-list-item>
-              <span flex></span>
+              <!--<span flex></span>-->
             </md-list>
           </md-content>
         </md-tab-content>
@@ -30,7 +30,7 @@
   </md-sidenav>
   <div style="position: fixed; top:45px; right:0px;" ng-if="!vm.loading">
     <md-button class="md-fab md-mini"  ng-click="vm.openGx()">
-      工序
+      实测
     </md-button>
   </div>﻿
 </section>

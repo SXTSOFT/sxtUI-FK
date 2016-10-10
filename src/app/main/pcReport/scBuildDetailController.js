@@ -40,8 +40,8 @@
       vm.build.name=b? b.RegionName:"";
       vm.build.status=res[1].data;
       var r=res[2];
-      if (r.data&&angular.isArray(r.data)){
-        $scope.procedures= r.data;
+      if (r.data&&angular.isArray(r.data.data)){
+        $scope.procedures= r.data.data;
       }
       vm.loading=false;
     }).catch(function(){
@@ -49,18 +49,6 @@
     $timeout(function(){
       vm.openGx();
     });
-    $scope.choosego=function(item){
-      var p=$scope.gxSelected.find(function(o){
-        return o.AcceptanceItemID==item.AcceptanceItemID;
-      });
-      if (!p&&!item.checked){
-        $scope.gxSelected.push(item)
-      }
-      if (p&&item.checked){
-        var index=$scope.gxSelected.indexOf(p);
-        $scope.gxSelected.splice(index,1);
-      }
-    }
 
 
     vm.query = function () {
@@ -79,7 +67,7 @@
           return;
         }
         if ($scope.gxSelected.length>4){
-          utils.alert('最多只能选择4个工序').then(function () {
+          utils.alert('最多只能选择4个实测项').then(function () {
             vm.openGx();
           })
           return;
@@ -88,14 +76,15 @@
       }
     })
 
-    $scope.selectSpecialtyLow=function(item,parent){
-      parent.WPAcceptanceList=item.WPAcceptanceList;
-    }
     $scope.remove=function(item){
       $timeout(function(){
-        var index=$scope.gxSelected.indexOf(item);
-        if (index>-1){
-          $scope.gxSelected.splice(index,1);
+        if (item.checked){
+          $scope.gxSelected.push(item)
+        }else {
+          var index=$scope.gxSelected.indexOf(item);
+          if (index>-1){
+            $scope.gxSelected.splice(index,1);
+          }
         }
       })
     }

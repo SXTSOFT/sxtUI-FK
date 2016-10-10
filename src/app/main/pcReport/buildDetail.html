@@ -8,16 +8,17 @@
     <md-toolbar flex="none" class="md-theme-indigo">
       <h4 class="md-toolbar-tools">选择工序(点击左侧灰色区关闭)</h4>
     </md-toolbar>
-    <md-tabs md-border-bottom flex style="background-color:white">
+    <md-tabs md-border-bottom flex>
       <md-tab label="已选工序({{gxSelected.length}})">
         <md-tab-content layout="column">
           <md-content flex layout="row">
-            <md-list style="box-shadow:1px 0px 15px 0 #d8d8d8 " flex="40" ms-scroll>
-              <md-list-item ng-repeat="item in gxSelected">
+            <md-list  flex ms-scroll>
+              <md-list-item style="background: white"  ng-repeat="item in gxSelected">
                 <md-checkbox ng-click="remove(item)" ng-model="item.checked" style="margin-right: 8px">
                   {{item.AcceptanceItemName}}
                 </md-checkbox>
                 <p flex>{{item.AcceptanceItemName}}</p>
+                <md-divider style="margin-left: 16px; " ng-if="!$last"></md-divider>
               </md-list-item>
               <span flex></span>
             </md-list>
@@ -26,25 +27,19 @@
       </md-tab>
       <md-tab ng-repeat="gx1 in procedures" label="{{gx1.SpecialtyName}}">
         <md-tab-content layout="column">
-          <md-content flex layout="column">
-            <div flex layout="row">
-              <div flex="40" style="position: relative" ms-scroll layout="column">
-                <md-list style="margin-left:8px ">
-                  <md-list-item ng-click="selectSpecialtyLow(item,gx1)" layout="row"
-                                ng-repeat="item in  gx1.SpecialtyChildren">
-                    <p>{{item.SpecialtyName}}</p>
-                  </md-list-item>
-                </md-list>
-              </div>
-              <md-list flex style="box-shadow:-1px 0px 15px 0 #d8d8d8 ">
-                <md-list-item layout="row" ng-repeat="item in  gx1.WPAcceptanceList">
-                  <md-checkbox ng-click="choosego(item)" ng-model="item.checked" style="margin-right: 8px">
+          <md-list>
+            <md-list-item  layout="column"  ng-repeat="item in  gx1.SpecialtyChildren">
+              <md-subheader class="md-no-sticky" style="background:transparent">{{item.SpecialtyName}}</md-subheader>
+              <md-list>
+                <md-list-item layout="row" style="background: white" ng-repeat="k in  item.WPAcceptanceList">
+                  <md-checkbox ng-click="choosego(k)" ng-model="k.checked" style="margin-right: 8px">
                   </md-checkbox>
-                  <p flex>{{item.AcceptanceItemName}}</p>
+                  <p flex>{{k.AcceptanceItemName}}</p>
+                  <md-divider style="margin-left: 16px; " ng-if="!$last"></md-divider>
                 </md-list-item>
               </md-list>
-            </div>
-          </md-content>
+            </md-list-item>
+          </md-list>
         </md-tab-content>
       </md-tab>
     </md-tabs>
