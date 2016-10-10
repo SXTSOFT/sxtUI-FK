@@ -8,10 +8,13 @@
           </div>
           <md-list>
             <div layout="row" layout-wrap>
-              <div flex="33" ng-repeat="b in m.children">
-                <md-button class="md-raised md-block" style="display: block; text-align:left;" ui-sref="app.pcReport_bdd({regionID:b.RegionID})">
+              <div flex="33" layout="row" ng-repeat="b in m.children">
+                <md-button flex class="md-raised md-block" ng-click="vm.showECs($event,b)" style="display: block; text-align:left;">
                   {{b.RegionName}}
                 </md-button>
+                <!--<md-button  class="md-raised md-block"  style="display: block; text-align:left;" ui-sref="app.pcReport_bdd({regionID:b.RegionID})">-->
+                  <!--{{b.RegionName}}-->
+                <!--</md-button>-->
               </div>
             </div>
           </md-list>

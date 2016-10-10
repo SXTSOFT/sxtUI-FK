@@ -1,15 +1,16 @@
+<!DOCTYPE html>
 <section layout="column" flex>
   <div flex="none"  layout="row">
     <md-progress-circular flex="none" ng-if="false" md-mode="indeterminate" md-diameter="20px"></md-progress-circular> <h4 flex ng-if="!vm.loading" style="text-align: center">{{vm.build.name}}</h4>
   </div>
-  <div flex sxt-msk-charts  build="vm.build" procedures="gxSelected" >
+  <div flex sxt-sc-msk-charts  build="vm.build" procedures="gxSelected" >
   </div>
   <md-sidenav layout="column" class="md-sidenav-right" md-is-open="vm.build.isOpen" md-component-id="procedure_right">
     <md-toolbar flex="none" class="md-theme-indigo">
-      <h4 class="md-toolbar-tools">选择工序(点击左侧灰色区关闭)</h4>
+      <h4 class="md-toolbar-tools">选择实测项(点击左侧灰色区关闭)</h4>
     </md-toolbar>
     <md-tabs md-border-bottom flex style="background-color:white">
-      <md-tab label="已选工序({{gxSelected.length}})">
+      <md-tab label="实测实量({{gxSelected.length}})">
         <md-tab-content layout="column">
           <md-content flex layout="row">
             <md-list style="box-shadow:1px 0px 15px 0 #d8d8d8 " flex="40" ms-scroll>
@@ -24,29 +25,7 @@
           </md-content>
         </md-tab-content>
       </md-tab>
-      <md-tab ng-repeat="gx1 in procedures" label="{{gx1.SpecialtyName}}">
-        <md-tab-content layout="column">
-          <md-content flex layout="column">
-            <div flex layout="row">
-              <div flex="40" style="position: relative" ms-scroll layout="column">
-                <md-list style="margin-left:8px ">
-                  <md-list-item ng-click="selectSpecialtyLow(item,gx1)" layout="row"
-                                ng-repeat="item in  gx1.SpecialtyChildren">
-                    <p>{{item.SpecialtyName}}</p>
-                  </md-list-item>
-                </md-list>
-              </div>
-              <md-list flex style="box-shadow:-1px 0px 15px 0 #d8d8d8 ">
-                <md-list-item layout="row" ng-repeat="item in  gx1.WPAcceptanceList">
-                  <md-checkbox ng-click="choosego(item)" ng-model="item.checked" style="margin-right: 8px">
-                  </md-checkbox>
-                  <p flex>{{item.AcceptanceItemName}}</p>
-                </md-list-item>
-              </md-list>
-            </div>
-          </md-content>
-        </md-tab-content>
-      </md-tab>
+
     </md-tabs>
   </md-sidenav>
   <div style="position: fixed; top:45px; right:0px;" ng-if="!vm.loading">
@@ -55,3 +34,4 @@
     </md-button>
   </div>﻿
 </section>
+

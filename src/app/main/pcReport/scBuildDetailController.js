@@ -1,4 +1,7 @@
 /**
+ * Created by lss on 2016/10/10.
+ */
+/**
  * Created by lss on 2016/10/7.
  */
 (function(){
@@ -6,10 +9,10 @@
 
   angular
     .module('app.pcReport')
-    .controller('buildDetailController', buildDetailController);
+    .controller('scBuildDetailController', scBuildDetailController);
 
   /** @ngInject */
-  function buildDetailController($scope,$stateParams,$mdSidenav,api,$q,utils,remote,$timeout)
+  function scBuildDetailController($scope,$stateParams,$mdSidenav,api,$q,utils,remote,$timeout)
   {
     function buildToggler(navID) {
       return function() {
@@ -27,12 +30,12 @@
     var pro=[
       remote.Project.getRegionAndChildren(regionID),
       remote.Procedure.getRegionStatus(regionID),
-      remote.Procedure.queryProcedure()
+      remote.Assessment.GetMeasureItemInfoByAreaID(regionID)
     ]
     $q.all(pro).then(function(res){
       vm.build.regions=res[0].data;
       var b=vm.build.regions.find(function(k){
-          return k.RegionType==4;
+        return k.RegionType==4;
       })
       vm.build.name=b? b.RegionName:"";
       vm.build.status=res[1].data;

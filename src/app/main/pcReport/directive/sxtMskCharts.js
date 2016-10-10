@@ -141,7 +141,7 @@
               data:xAxis,
               axisLabel: {
                 interval: function (index, value) {
-                  return index % (yAxisSource.maxRoomLen + 1) == parseInt((yAxisSource.maxRoomLen + 1)/2);
+                  return index % (yAxisSource.maxRoomLen + 1) == parseInt((yAxisSource.maxRoomLen)/2);
                   return true;
                 },
                 show: true

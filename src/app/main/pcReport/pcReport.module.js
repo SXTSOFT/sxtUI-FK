@@ -60,6 +60,18 @@
           }
         }
       })
+      .state('app.pcReport_scbdd',{
+        title:"实测状态",
+        noBack:true,
+        sendBt:false,
+        url:'/pcReport_scbdd/{regionID}',
+        views:{
+          'content@app':{
+            templateUrl: 'app/main/pcReport/scBuildDetail.html',
+            controller : 'scBuildDetailController as vm',
+          }
+        }
+      })
     // Navigation
     msNavigationServiceProvider.saveItem('xh', {
       title : '星河集团',
