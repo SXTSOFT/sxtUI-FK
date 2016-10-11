@@ -434,6 +434,14 @@
           vm.z_isOver=true;
         }).catch(function(){
           vm.projects = result.data;
+          switch (vm.yw){
+            case 0:
+            case 2:
+              if (!vm.projects.length){
+                utils.alert("暂时没有找到数据");
+              }
+              break;
+          }
         });
       });
 
@@ -455,7 +463,27 @@
               })
             }
             vm.zglist=zg;
+            var alert=false;
+            switch (vm.yw){
+              case "4":
+                var  t=vm.zglist.find(function(k){
+                  return k.Status==4;
+                });
+                alert=t?false:true;
+                break;
+              case "32":
+                var  t=vm.zglist.find(function(k){
+                  return k.Status==16;
+                });
+                alert=t?false:true;
+                break;
+            }
+            if (alert){
+              utils.alert("暂时没有数据!");
+            }
             vm.f_isOver=true;
+
+
           });
         }
       });
@@ -477,6 +505,9 @@
               })
             }
             vm.Inspections=ys;
+            if (vm.yw==16&&!vm.Inspections.length){
+              utils.alert("暂时没有找到数据");
+            }
             vm.y_isOver=true;
           });
         }

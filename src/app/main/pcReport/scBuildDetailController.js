@@ -12,7 +12,7 @@
     .controller('scBuildDetailController', scBuildDetailController);
 
   /** @ngInject */
-  function scBuildDetailController($scope,$stateParams,$mdSidenav,api,$q,utils,remote,$timeout)
+  function scBuildDetailController($scope,$stateParams,$mdSidenav,api,$q,utils,remote,$timeout,cookie)
   {
     function buildToggler(navID) {
       return function() {
@@ -27,11 +27,39 @@
     $scope.gxSelected=[];
     vm.build={};
     var  regionID=$stateParams.regionID;
+
+    function  setgxSelectedValue(procedures){
+      if (!angular.isArray(cookie.sc)||!cookie.sc.length){
+        cookie.sc=[];
+        return;
+      }
+      var t;
+      cookie.sc.forEach(function(k){
+        t= procedures.find(function(m){
+          return m.AcceptanceItemID== k.AcceptanceItemID;
+        })
+        if (t){
+          t.checked=true;
+          $scope.gxSelected.push(t);
+        }
+      });
+    }
+
     var pro=[
       remote.Project.getRegionAndChildren(regionID),
       remote.Procedure.getRegionStatus(regionID),
       remote.Assessment.GetMeasureItemInfoByAreaID(regionID)
     ]
+    function render(){
+      $timeout(function(){
+        if (!cookie.sc||!cookie.sc.length){
+          vm.openGx();
+          return;
+        }
+        vm.query();
+      });
+    }
+
     $q.all(pro).then(function(res){
       vm.build.regions=res[0].data;
       var b=vm.build.regions.find(function(k){
@@ -42,12 +70,13 @@
       var r=res[2];
       if (r.data&&angular.isArray(r.data.data)){
         $scope.procedures= r.data.data;
+        setgxSelectedValue($scope.procedures);
       }
+      render();
       vm.loading=false;
     }).catch(function(){
-    });
-    $timeout(function(){
-      vm.openGx();
+      vm.loading=false;
+      render();
     });
 
 
@@ -86,6 +115,7 @@
             $scope.gxSelected.splice(index,1);
           }
         }
+        cookie.sc= $scope.gxSelected;
       })
     }
     vm.openGx = buildToggler('procedure_right');

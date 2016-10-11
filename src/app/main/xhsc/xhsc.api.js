@@ -124,7 +124,16 @@
         }).bind(function (regionId) {
           return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByIdEx', {areaId: regionId}));
         }),
-
+        getRegionWithRight: $http.db({
+          _id: 'regions',
+          idField: 'RegionID',
+          dataType: 1,
+          filter: function (item,regionId) {
+            return item.RegionID == regionId;
+          }
+        }).bind(function (regionId) {
+          return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByIdExAuthority', {areaId: regionId}));
+        }),
         getInspectionList:$http.db({
           _id:'Inspection',
           idField:'InspectionId',
@@ -353,6 +362,32 @@
             return r;
           });
         }),
+        getRegionStatusEx:$http.db({
+          _id:'project_status',
+          idField:function (item) {
+            return item.Sign + item.AcceptanceItemID+item.AreaId;
+          },
+          dataType:1,
+          filter:function (item,projectId,Sign) {
+            return item.projectId==projectId && item.Sign==Sign
+          }
+        }).bind(function(projectId,Sign,AcceptanceItemID) {
+          var  param={
+            projectId:projectId,
+            sign:Sign?Sign:5
+          }
+          if (AcceptanceItemID){
+            param.AcceptanceItemID=AcceptanceItemID;
+          }
+          return $http.get($http.url('/api/InspectionApi/GetUserInspectionInfoEx',param)).then(function (r) {
+            r.data.forEach(function (row) {
+              row.projectId = projectId;
+              row.Sign = Sign;
+            });
+            return r;
+          });
+        }),
+
         postInspection:$http.db({
           _id:'Inspection',
           upload:true,

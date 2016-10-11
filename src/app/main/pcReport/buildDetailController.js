@@ -6,10 +6,10 @@
 
   angular
     .module('app.pcReport')
-    .controller('buildDetailController', buildDetailController);
-
+    .controller('buildDetailController', buildDetailController)
+    .constant('cookie', {})
   /** @ngInject */
-  function buildDetailController($scope,$stateParams,$mdSidenav,api,$q,utils,remote,$timeout)
+  function buildDetailController($scope,$stateParams,$mdSidenav,api,$q,utils,remote,$timeout,cookie)
   {
     function buildToggler(navID) {
       return function() {
@@ -19,6 +19,7 @@
           });
       }
     }
+
     var vm = this;
     vm.loading=true;
     $scope.gxSelected=[];
@@ -36,11 +37,46 @@
       return false;
     }
     var  regionID=$stateParams.regionID;
+
+    function  setgxSelectedValue(procedures){
+      if (!angular.isArray(cookie.gx)||!cookie.gx.length){
+        cookie.gx=[];
+        return;
+      }
+      var arr=[];
+      procedures.forEach(function(m){
+        m.SpecialtyChildren.forEach(function(n){
+          n.WPAcceptanceList.forEach(function(k){
+            arr.push(k);
+          });
+        })
+      });
+      var t;
+      cookie.gx.forEach(function(k){
+        t= arr.find(function(m){
+          return m.AcceptanceItemID== k.AcceptanceItemID;
+        })
+        if (t){
+          t.checked=true;
+          $scope.gxSelected.push(t);
+        }
+      });
+    }
     var pro=[
       remote.Project.getRegionAndChildren(regionID),
-      remote.Procedure.getRegionStatus(regionID),
+      remote.Procedure.getRegionStatusEx(regionID),
       remote.Procedure.queryProcedure()
     ]
+    function render(){
+      $timeout(function(){
+        if (!cookie.gx||!cookie.gx.length){
+          vm.openGx();
+          return;
+        }
+        vm.query();
+      });
+    }
+
     $q.all(pro).then(function(res){
       vm.build.regions=res[0].data;
       var b=vm.build.regions.find(function(k){
@@ -51,12 +87,13 @@
       var r=res[2];
       if (r.data&&angular.isArray(r.data)){
         $scope.procedures= r.data;
+        setgxSelectedValue($scope.procedures);
       }
+      render();
       vm.loading=false;
     }).catch(function(){
-    });
-    $timeout(function(){
-      vm.openGx();
+      vm.loading=false;
+      render();
     });
     $scope.choosego=function(item){
       var p=$scope.gxSelected.find(function(o){
@@ -69,6 +106,7 @@
         var index=$scope.gxSelected.indexOf(p);
         $scope.gxSelected.splice(index,1);
       }
+      cookie.gx=$scope.gxSelected;
     }
 
 
@@ -103,6 +141,7 @@
         if (index>-1){
           $scope.gxSelected.splice(index,1);
         }
+        cookie.gx=$scope.gxSelected;
       })
     }
     vm.openGx = buildToggler('procedure_right');

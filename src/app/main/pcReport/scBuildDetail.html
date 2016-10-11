@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <section layout="column" flex>
   <div flex="none"  layout="row">
-    <md-progress-circular flex="none" ng-if="false" md-mode="indeterminate" md-diameter="20px"></md-progress-circular> <h4 flex ng-if="!vm.loading" style="text-align: center">{{vm.build.name}}</h4>
+    <md-progress-circular flex="none" ng-if="vm.loading" md-mode="indeterminate" md-diameter="20px"></md-progress-circular> <h4 flex ng-if="!vm.loading" style="text-align: center">{{vm.build.name}}</h4>
   </div>
   <div flex sxt-sc-msk-charts  build="vm.build" procedures="gxSelected" >
   </div>
