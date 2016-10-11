@@ -309,6 +309,7 @@
               var myChart = $window.echarts.init(element[0]);
               myChart.setOption(option);
               scope.build.loading = false;
+              console.log(option);
               /*
               scope.build.gx = gx;
               scope.build.selected = gx[0];
