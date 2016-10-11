@@ -10,7 +10,8 @@
   function xhscService(){
     return {
       //
-      qualified:qualified
+      qualified:qualified,
+      buildRegionTree:buildRegionTree
     };
    //单个测量点的
     function qualified(items){
@@ -19,7 +20,27 @@
 
 
     }
-    //多个测量点的
 
+    function buildRegionTree(regions,rootType){
+        function buildRegion(region){
+          if (region&&region.RegionType<16){
+            region.children=[];
+            regions.forEach(function(k){
+              if (k.RegionType==region.RegionType*2&&k.RegionID.indexOf(region.RegionID)>-1){
+                region.children.push(buildRegionTree(k))
+              }
+            });
+          }
+          return region;
+        }
+        var  root=regions.find(function(k){
+            return k.RegionType==rootType;
+        })
+        if (!root){
+            return null;
+        }
+       return buildRegion(root);
+
+    }
   }
 })();

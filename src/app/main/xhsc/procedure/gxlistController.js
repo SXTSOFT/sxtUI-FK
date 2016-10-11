@@ -14,22 +14,6 @@
     vm.projectId = $stateParams.projectId;
     vm.role=$stateParams.role;
 
-    //vm.selectSpecialty=function(item){
-    //      vm.gxClassType=item.SpecialtyChildren;
-    //      vm.acceptanceItem=[];
-    //    //}
-    //}
-    //vm.acceptanceItem=[];
-    //vm.selectSpecialtyLow=function(item){
-    //  vm.acceptanceItem=item.WPAcceptanceList?item.WPAcceptanceList:[];
-    //}
-    //
-    //vm.comeBack=function(){
-    //  vm.acceptanceItem=[];
-    //}
-
-
-
     remote.Procedure.queryProcedure().then(function(result){
      vm.data=result.data;
       vm.show=true;
@@ -49,14 +33,27 @@
 
 
     vm.choosego = function(i){
+      var applicableArea= i.ApplicableArea;
+      var area=-1;
+      if (applicableArea){
+         var arr=applicableArea.split(",");
+          var t;
+          arr.forEach(function(k){
+              t=parseInt(k);
+              if (area<t){
+                area=t;
+              }
+          })
+
+      }
       if(!vm.role){
-        $state.go('app.xhsc.gx.zjhouseChoose',{role:vm.role,acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,areaId:vm.areaId,maxRegion:i.maxRegion})
+        $state.go('app.xhsc.gx.zjhouseChoose',{role:vm.role,acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,maxRegion:area})
       }else{
         if (vm.role=='regionState'){
-          $state.go('app.xhsc.gx.regionStates',{acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,maxRegion:i.maxRegion});
+          $state.go('app.xhsc.gx.regionStates',{acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,maxRegion:area});
           return;
         }
-        $state.go('app.xhsc.gx.gxhousechoose',{role:vm.role,acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,areaId:vm.areaId,maxRegion:i.maxRegion})
+        $state.go('app.xhsc.gx.gxhousechoose',{role:vm.role,acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,maxRegion:area})
       }
     }
   }

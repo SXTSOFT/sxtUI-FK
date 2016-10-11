@@ -166,7 +166,7 @@
                   function (tasks) {
                     var group=[];
                     var inspections=[];
-                    return remote.Procedure.getRegionStatus(item.ProjectID,"8").then(function (result) {
+                    return remote.Procedure.getRegionStatusEx(item.ProjectID,"8").then(function (result) {
                       result.data.forEach(function (item) {
                         if(item.AcceptanceItemID && item.AreaId && item.InspectionId&&!group.find(function(k){
                             return k.AcceptanceItemID==item.AcceptanceItemID&& k.AreaId==item.AreaId&&k.InspectionId==item.InspectionId

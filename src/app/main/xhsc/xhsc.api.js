@@ -125,7 +125,7 @@
           return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByIdEx', {areaId: regionId}));
         }),
         getRegionWithRight: $http.db({
-          _id: 'regions',
+          _id: 'regionsRight',
           idField: 'RegionID',
           dataType: 1,
           filter: function (item,regionId) {
