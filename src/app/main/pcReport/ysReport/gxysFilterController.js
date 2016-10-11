@@ -121,7 +121,7 @@
       if (vm.isMobile&&!vm.isiPad){
         return;
       }
-      if ($scope.project||$scope.project===""){
+      if ($scope.project&&$scope.project!="-"||$scope.project===""){
         load();
       }
     });
@@ -147,7 +147,7 @@
         PageSize:$scope.pageing.pageSize,
         CurPage:$scope.pageing.page-1,
         status:31,
-        ProjectId:$scope.project?$scope.project:"",
+        ProjectId:$scope.project&&$scope.project!="-"?$scope.project:"",
         AcceptanceItemIDs:t
       }).then(function(r){
         $scope.pageing.total= r.data.TotalCount;

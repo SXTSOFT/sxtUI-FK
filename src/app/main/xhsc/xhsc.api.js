@@ -101,6 +101,9 @@
         }).bind(function (drawingId) {
           return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawing', {drawingId: drawingId}));
         }),
+        getDrawingOnline: function (drawingId) {
+          return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawing', {drawingId: drawingId}));
+        },
         queryAllBulidings: $http.db({
           _id: 'Projects',
           idField: 'ProjectID',

@@ -109,7 +109,7 @@
                 });
               }
               if (imgId) {
-                remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
+                remote.Project.getDrawingOnline(imgId.DrawingID).then(function (result2) {
                   if(!result2.data.DrawingContent){
                     utils.alert('未找到图纸,请与管理员联系!(2)');
                     return;

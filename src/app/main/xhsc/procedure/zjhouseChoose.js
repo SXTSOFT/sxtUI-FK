@@ -147,16 +147,15 @@
       }
       $q.all([
         remote.Project.queryAllBulidings(projectId),
-        remote.Procedure.getRegionStatus(projectId,8),
-        remote.Procedure.authorityByUserId()
+        remote.Procedure.getRegionStatus(projectId,8)
+        //remote.Procedure.authorityByUserId()
       ]).then(function(res){
         vm.loading = true;
         var result=res[0];
         var status=res[1]&&res[1].data?res[1].data:[];
-        var permissionRegion = res[2].data;
-        var find = res[2].data.forEach(function(p){
-          return p.ProjectID == projectId;
-        })
+        //var find = res[2].data.forEach(function(p){
+        //  return p.ProjectID == projectId;
+        //})
 
         result.data[0].RegionRelations.forEach(function(d){
           filterOrSetting(status,d);

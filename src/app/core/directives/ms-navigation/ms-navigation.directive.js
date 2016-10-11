@@ -393,53 +393,47 @@
   function MsNavigationController($scope, msNavigationService, remote,nav) {
     var vm = this;
     // Data
-    if (!nav.length){
-      nav=nav.length?nav:
-        $scope.root? msNavigationService.getNavigationObject($scope.root):msNavigationService.getNavigationObject();
-    }
-    var  navigation=nav;
-    remote.profile().then(function (role) {
-      //if ($scope.root) {
-      //  vm.navigation = msNavigationService.getNavigationObject($scope.root);
-      //}
-      //else {
-      //  vm.navigation = msNavigationService.getNavigationObject();
-      //}
-      var arr=[];
-      navigation.forEach(function(k){
-        arr.push($.extend(true,{},k));
-      })
-      vm.navigation=arr;
-      if (role && role.data && role.data) {
-        var mem = role.data.Role.MemberType;
-        if (mem===0||mem===2){
-          var  child=vm.navigation.length?vm.navigation[0].children:null;
-          if (child&&child.length){
-            for (var  i=child.length-1;i>=0;i--){
-                if (child[i]._id!=="pcenter"){
-                  child.splice(i,1);
-                }
-            }
-          }
-        }
-      }
-      init();
-    }).catch(function(){
-      //if ($scope.root) {
-      //  vm.navigation = msNavigationService.getNavigationObject($scope.root);
-      //}
-      //else {
-      //  vm.navigation = msNavigationService.getNavigationObject();
-      //}
-      vm.navigation=navigation;
-      init();
-    });
+    //if (!nav.length){
+    //  nav=nav.length?nav:
+    //    $scope.root? msNavigationService.getNavigationObject($scope.root):msNavigationService.getNavigationObject();
+    //}
+    //var  navigation=nav;
+    //remote.profile().then(function (role) {
+    //  //if ($scope.root) {
+    //  //  vm.navigation = msNavigationService.getNavigationObject($scope.root);
+    //  //}
+    //  //else {
+    //  //  vm.navigation = msNavigationService.getNavigationObject();
+    //  //}
+    //  var arr=[];
+    //  navigation.forEach(function(k){
+    //    arr.push($.extend(true,{},k));
+    //  })
+    //  vm.navigation=arr;
+    //  if (role && role.data && role.data) {
+    //    var mem = role.data.Role.MemberType;
+    //    if (mem===0||mem===2){
+    //      var  child=vm.navigation.length?vm.navigation[0].children:null;
+    //      if (child&&child.length){
+    //        for (var  i=child.length-1;i>=0;i--){
+    //            if (child[i]._id!=="pcenter"){
+    //              child.splice(i,1);
+    //            }
+    //        }
+    //      }
+    //    }
+    //  }
+    //  init();
+    //}).catch(function(){
+    //  vm.navigation=navigation;
+    //  init();
+    //});
     // Methods
     vm.toggleHorizontalMobileMenu = toggleHorizontalMobileMenu;
 
     //////////
-
-    //init();
+    vm.navigation= $scope.root? msNavigationService.getNavigationObject($scope.root):msNavigationService.getNavigationObject();
+    init();
 
     /**
      * Initialize

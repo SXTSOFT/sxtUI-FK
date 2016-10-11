@@ -141,7 +141,7 @@
             <tr ng-repeat="area in vm.Regions">
               <td colspan="4" width="50%">
                 <div style="height:500px;" class="mapcheck" layout="column" flex inspection-id="vm.Inspection" disable-inspect="true" sxt-report-map="vm.rectificationIDs" ct="vm.info" procedure="vm.acceptanceItemId" disable-drag region-id="area.AreaId">
-                  <div flex layout="row" layout-align="center center" ng-if="vm.info.loading"><md-progress-circular md-mode="indeterminate" ></md-progress-circular></div>
+                  <div flex layout="row" layout-align="center center" ng-if="vm.info.loading"><md-progress-circular md-mode="indeterminate" md-diameter="28" ></md-progress-circular></div>
                 </div>
               </td>
               <td colspan="4"><p>问题描述：</p>
