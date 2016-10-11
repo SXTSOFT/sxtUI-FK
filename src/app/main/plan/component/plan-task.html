@@ -49,13 +49,13 @@
         <md-checkbox ng-model="vm.data.ManuallyClose" ng-if="vm.data.Level!==0" aria-label="手工关闭">
           手工关闭
         </md-checkbox>
-
-
         </div>
       </form>
-      <md-button ng-click="vm.ClickSaveleft(vm.data)" class="md-primary md-raised">
-        保存
-      </md-button>
+      <div layout="row" flex>
+        <md-button ng-click="vm.ClickSaveleft(vm.data)" class="md-primary md-raised">
+          保存
+        </md-button>
+      </div>
     </md-tab-content>
   </md-tab>
   <md-tab label="任务流程" ng-disabled="!vm.data.TaskLibraryId" md-on-select="vm.onLoadTemplate()">
@@ -72,7 +72,7 @@
                   <label>名称</label>
                   <input type="text" ng-model="vm.current.Name" md-autofocus>
                 </md-input-container>
-                <md-checkbox ng-model="vm.current.Required">必选 </md-checkbox>
+                <md-checkbox ng-model="vm.current.IsRequired">必选 </md-checkbox>
                 <md-checkbox ng-model="vm.current.IsFloor" ng-if="vm.data.Level===0">此节点对应楼层 </md-checkbox>
                 <div layout="row">
                 <task-categories flex ng-model="vm.selectedCategory"></task-categories><span flex="5"></span>
@@ -86,25 +86,25 @@
                   <md-option ng-value="tk.TaskLibraryId" ng-selected="tk.selected" ng-repeat="tk in vm.nextTasks|filter:{Name:vm.searchTerm,Type:vm.selectedCategory}">{{tk.Name}}</md-option>
                 </md-select>
                 </div>
-                  <md-select ng-model="vm.saveNoticeStarted" placeholder="开始通知" class="md-block" md-on-open="vm.getUsers()" multiple  md-on-close="vm.saveUserGroup('Started')">
+                  <md-select ng-model="vm.saveNotice7" placeholder="通知" class="md-block" md-on-open="vm.getUsers()" multiple  md-on-close="vm.saveUserGroup('7')">
                   <md-select-header class="sxt-select-header">
                     <md-input-container md-no-float class="md-block">
                       <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >
                       <md-icon md-font-icon="icon-plus" style="display:inline-block;" ng-click="vm.addRole(1)"></md-icon>
                     </md-input-container>
                   </md-select-header>
-                    <md-option ng-value="g.GroupID" ng-selected="g.selected1" ng-repeat="g in vm.nextUserGroups|filter:searchTerm">{{g.GroupName}}</md-option>
+                    <md-option ng-value="g.GroupID" ng-selected="g.selected7" ng-repeat="g in vm.nextUserGroups|filter:searchTerm">{{g.GroupName}}</md-option>
                 </md-select>
-                <md-select ng-model="vm.saveNoticeEarlyWarning" placeholder="预警通知" md-on-open="vm.getUsers()" class="md-block" multiple md-on-close="vm.saveUserGroup('EarlyWarning')">
-                  <md-select-header class="sxt-select-header">
-                    <md-input-container md-no-float class="md-block">
-                      <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >
-                      <md-icon md-font-icon="icon-plus" style="display:inline-block;" ng-click="vm.addRole(2)"></md-icon>
-                    </md-input-container>
-                  </md-select-header>
-                  <md-option ng-value="g.GroupID" ng-selected="g.selected2" ng-repeat="g in vm.nextUserGroups |filter:{GroupName:searchTerm}">{{g.GroupName}}</md-option>
-                </md-select>
-                <md-select ng-model="vm.saveNoticeClosed" placeholder="关闭通知" class="md-block" md-on-open="vm.getUsers()" multiple md-on-close="vm.saveUserGroup('Closed')">
+                <!--<md-select ng-model="vm.saveNoticeEarlyWarning" placeholder="执行" md-on-open="vm.getUsers()" class="md-block" multiple md-on-close="vm.saveUserGroup('8')">-->
+                  <!--<md-select-header class="sxt-select-header">-->
+                    <!--<md-input-container md-no-float class="md-block">-->
+                      <!--<input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >-->
+                      <!--<md-icon md-font-icon="icon-plus" style="display:inline-block;" ng-click="vm.addRole(2)"></md-icon>-->
+                    <!--</md-input-container>-->
+                  <!--</md-select-header>-->
+                  <!--<md-option ng-value="g.GroupID" ng-selected="g.selected2" ng-repeat="g in vm.nextUserGroups |filter:{GroupName:searchTerm}">{{g.GroupName}}</md-option>-->
+                <!--</md-select>-->
+                <md-select ng-model="vm.saveNoticeClosed" placeholder="执行" class="md-block" md-on-open="vm.getUsers()" multiple md-on-close="vm.saveUserGroup('Closed')">
                   <md-select-header class="sxt-select-header">
                     <md-input-container md-no-float class="md-block">
                       <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >
@@ -114,12 +114,14 @@
                   <md-option ng-value="g.GroupID" ng-selected="g.selected8" ng-repeat="g in vm.nextUserGroups|filter:searchTerm">{{g.GroupName}}</md-option>
                 </md-select>
               </form>
-              <md-button ng-click="vm.save()" class="md-primary md-raised md-mini">
-                保存
-              </md-button>
-              <md-button ng-click="vm.remove()" class="md-warn md-raised md-mini">
-                删除
-              </md-button>
+              <div layout="row" flex>
+                <md-button ng-click="vm.save()" class="md-primary md-raised md-mini">
+                  保存
+                </md-button>
+                <md-button ng-click="vm.remove()" class="md-warn md-raised md-mini">
+                  删除
+                </md-button>
+              </div>
             </md-tab-content>
           </md-tab>
           <md-tab label="添加下一流程" ng-disabled="vm.current && vm.current.hasNext">
@@ -130,9 +132,11 @@
                   <input type="text" ng-model="vm.next.Name" md-autofocus>
                 </md-input-container>
               </form>
-              <md-button ng-click="vm.nextSave()" class="md-primary md-raised  md-mini">
-                添加
-              </md-button>
+              <div layout="row" flex>
+                <md-button ng-click="vm.nextSave()" class="md-primary md-raised  md-mini">
+                  添加
+                </md-button>
+              </div>
             </md-tab-content>
           </md-tab>
           <md-tab label="添加分支">
@@ -143,9 +147,11 @@
                   <input type="text" ng-model="vm.branch.Name" md-autofocus>
                 </md-input-container>
               </form>
-              <md-button ng-click="vm.nextBranch()" class="md-primary md-raised  md-mini" >
-                添加
-              </md-button>
+              <div layout="row" flex>
+                <md-button ng-click="vm.nextBranch()" class="md-primary md-raised  md-mini" >
+                  添加
+                </md-button>
+              </div>
             </md-tab-content>
           </md-tab>
         </md-tabs>

@@ -1,5 +1,5 @@
-
-<ms-form-wizard flex class="create-plan">
+<md-content layout="column" flex>
+<ms-form-wizard flex class="create-plan" id="formWizard">
   <div  scroll-top="msWizard.selectedIndex">
   <md-tabs md-dynamic-height md-selected="msWizard.selectedIndex" md-center-tabs="true">
     <md-tab>
@@ -95,17 +95,6 @@
             <canvas id="gitGraph"></canvas>
           </md-content>
         </form>
-        <!--<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right" layout="column">-->
-          <!--<md-toolbar class="md-theme-light">-->
-            <!--<h1 class="md-toolbar-tools">选择任务</h1>-->
-          <!--</md-toolbar>-->
-          <!--<md-input-container>-->
-            <!--<label>选择任务</label>-->
-            <!--<md-select ng-model="vm.current.selectedTask" md-on-close="vm.reloadTask()">-->
-              <!--<md-option  ng-repeat="m in vm.current.OptionalTasks" ng-value="m">{{m.Name}}</md-option>-->
-            <!--</md-select>-->
-          <!--</md-input-container>-->
-        <!--</md-sidenav>-->
       </md-tab-body>
     </md-tab>
     <md-tab ng-disabled="wizardStep1.$invalid || wizardStep2.$invalid">
@@ -152,8 +141,9 @@
   </div>
   </div>
 </ms-form-wizard>
-
-<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right" layout="column">
+</md-content>
+<div body-background="vm.showBg" class="body-background"></div>
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right" layout="column" md-disable-backdrop="true">
   <md-tabs md-border-bottom flex >
     <md-tab label="选择任务">
       <md-tab-content layout-padding >
@@ -174,11 +164,13 @@
             </md-input-container>
           </form>
           <!--<md-button ng-click="vm.save()" class="md-primary md-raised md-mini">-->
-            <!--保存-->
+          <!--保存-->
           <!--</md-button>-->
+        </div>
+        <div ng-show="!vm.current.IsRequired">
+          <md-button class="md-primary md-raised" ng-click="vm.deleteTaskLib()">删除节点</md-button>
         </div>
       </md-tab-content>
     </md-tab>
   </md-tabs>
 </md-sidenav>
-

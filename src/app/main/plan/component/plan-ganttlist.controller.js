@@ -28,7 +28,7 @@
     },true);
     function load(){
       var page= utils.getPage($scope.pageing);
-      api.plan.BuildPlan.getList({Skip:page.Skip,Limit:page.Limit}).then(function(r){
+      api.plan.BuildPlan.getList({status:'Generated',Skip:page.Skip,Limit:page.Limit}).then(function(r){
         vm.items = r.data.Items;
         $scope.pageing.total = r.data.TotalCount;
       });

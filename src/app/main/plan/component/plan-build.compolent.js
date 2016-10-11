@@ -85,7 +85,6 @@
       }
       vm.temp.load(vm.rootTask);
     }
-
     //vm.save = function(){
     //  if(!vm.duration){
     //    utils.alert('请输入工期');
@@ -103,32 +102,9 @@
             if(!vm.formWizard.Id)
               vm.formWizard.Id = r.data.Id;
 
-            api.plan.BuildPlan.getBuildPlanFlowTree(vm.formWizard.Id).then(function(r){
-              r.data.RootTask.Master = r.data.RootTask.Master.map(function (item) {
-                item._TaskFlowId = item.TaskFlowId;
-                item.TaskFlowId = item.Id;
-                item.selectedTask = item.OptionalTasks.length==0?null:item.OptionalTasks[0];
-                vm.resetName(item);
-                return item;
-              });
-              r.data.RootTask.Branch.forEach(function(_t){
-                _t.forEach(function(_tt){
-                  _tt._TaskFlowId = _tt.TaskFlowId;
-                  _tt.TaskFlowId = _tt.Id;
-                  _tt.Name = _tt.FullName||_tt.TaskFlowName;
-                })
-              })
-              vm.temp = new template({
-                onClick:function (e) {
-                  vm.current = e.data;
-                  vm.toggleRight();
-                }
-              });
-              vm.rootTask = r.data.RootTask;
-              vm.reloadTask();
-              f();
-              //$scope.$$childHead.msWizard.nextStep();
-            });
+            getDataTemplate();
+
+            f();
           }
         },function(err){
           if(err.status == -1){
@@ -160,6 +136,36 @@
         //})
       }
     }
+
+    function getDataTemplate(){
+      api.plan.BuildPlan.getBuildPlanFlowTree(vm.formWizard.Id).then(function(r){
+        r.data.RootTask.Master = r.data.RootTask.Master.map(function (item) {
+          item._TaskFlowId = item.TaskFlowId;
+          item.TaskFlowId = item.Id;
+          item.selectedTask = item.OptionalTasks.length==0?null:item.OptionalTasks[0];
+          vm.resetName(item);
+          return item;
+        });
+        r.data.RootTask.Branch.forEach(function(_t){
+          _t.forEach(function(_tt){
+            _tt._TaskFlowId = _tt.TaskFlowId;
+            _tt.TaskFlowId = _tt.Id;
+            _tt.Name = _tt.FullName||_tt.TaskFlowName;
+          })
+        })
+        vm.temp = new template({
+          onClick:function (e) {
+            vm.current = e.data;
+            vm.showBg = true;
+            vm.toggleRight();
+          }
+        });
+        vm.rootTask = r.data.RootTask;
+        vm.reloadTask();
+
+        //$scope.$$childHead.msWizard.nextStep();
+      });
+    }
     vm.loadUser = function(){
       if(vm.roleUsers&&vm.roleUsers.length) return;
         return api.plan.users.query().then(function(r){
@@ -170,6 +176,18 @@
     //vm.change = function(){
     //  console.log('a')
     //}
+    vm.deleteTaskLib = function(){
+      //api.plan.BuildPlan.deleteTaskLibById(vm.formWizard.Id,vm.current._TaskFlowId).then(function(r){
+      //  //console.log(r)
+      //  if(r.status == 200){
+      //    utils.alert('删除成功').then(function(){
+      //      vm.showBg = false;
+      //      vm.closeRight();
+      //      getDataTemplate();
+      //    })
+      //  }
+      //})
+    }
     vm.stop = function(ev){
       ev.stopPropagation();
     }

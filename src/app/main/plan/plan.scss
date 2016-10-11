@@ -11,6 +11,21 @@
     margin:0 0 26px 0;
   }
 }
+.body-background{
+  position: absolute;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  background-color: rgba(33,33,33,0);
+  display: none;
+  transition: opacity 450ms;
+}
+.body-background{
+  &.on{
+    background-color: rgba(33,33,33,0.48);
+  }
+}
 .tasks-list{
   md-select{
     &.md-pink-theme{

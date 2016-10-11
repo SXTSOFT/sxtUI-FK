@@ -113,8 +113,9 @@
         onClick:function (e) {
           vm.current = e.data;
           vm.toggleRight();
-          vm.saveNoticeStarted = [];
-          vm.saveNoticeEarlyWarning=[];
+          vm.saveNotice7=[];
+          //vm.saveNoticeStarted = [];
+          //vm.saveNoticeEarlyWarning=[];
           vm.saveNoticeClosed=[];
           $timeout(function(){
             vm.getUsers();
@@ -127,7 +128,6 @@
 
     }
     vm.getUsers = function(){
-
       var promise=[
         api.plan.TaskFlow.getRoleByFlowId(vm.current.TaskFlowId),
         api.plan.UserGroup.query()
@@ -146,16 +146,25 @@
         })
         users.forEach(function(r){
           switch (r.NotificationType){
+            //case 1:
+            //  vm.saveNoticeStarted.push(r.RoleId);
+            //  break;
+            //case 2:
+            //  vm.saveNoticeEarlyWarning.push(r.RoleId);
+            //  break;
             case 1:
-              vm.saveNoticeStarted.push(r.RoleId);
               break;
             case 2:
-              vm.saveNoticeEarlyWarning.push(r.RoleId);
               break;
             case 4:
               break;
+            case 7:
+              vm.saveNotice7.push(r.RoleId);
+              break;
             case 8:
               vm.saveNoticeClosed.push(r.RoleId);
+              break;
+            default:
               break;
           }
         })
@@ -165,7 +174,8 @@
       var data={
         "Id": vm.current.TaskFlowId,
         "Name": vm.current.Name,
-        "IsFloor": vm.current.IsFloor
+        "IsFloor": vm.current.IsFloor,
+        "IsRequired":vm.current.IsRequired
       }
       api.plan.TaskFlow.updateTaskById(data).then(function () {
         temp && temp.edit(vm.current);

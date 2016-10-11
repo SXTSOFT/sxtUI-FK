@@ -74,7 +74,7 @@
       },
       BuildPlan:{
         getList:function(param){
-          return $http.get($http.url('/api/BuildingPlans',{Skip:param.Skip,Limit:param.Limit}))
+          return $http.get($http.url('/api/BuildingPlans',{status:param.status,Skip:param.Skip,Limit:param.Limit}))
         },
         post:function(params){
           return $http.post($http.url('/api/BuildingPlans'),params)
@@ -105,6 +105,9 @@
         },
         deleteBuildPlan:function(id){
           return $http.delete('/api/BuildingPlans/'+id);
+        },
+        deleteTaskLibById:function(id,taskLibraryId){
+          return $http.delete($http.url('/api/TaskFlows/'+id+'/TaskLibrarys/'+taskLibraryId))
         }
       },
       /** /api/TaskLibrary 任务 **/
