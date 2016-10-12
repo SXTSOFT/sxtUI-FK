@@ -162,7 +162,8 @@
   </div>
 </ms-form-wizard>
 </md-content>
-<div body-background="vm.showBg" class="body-background"></div>
+<body-background body-show="vm.showBg" body-data="durationForm.Duration.$error.min" class="body-background">
+</body-background>
 <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right" layout="column" md-disable-backdrop="true">
   <md-tabs md-border-bottom flex >
     <md-tab label="选择任务">
@@ -173,10 +174,10 @@
             <md-option  ng-repeat="m in vm.current.OptionalTasks" ng-value="m">{{m.Name}}</md-option>
           </md-select>
         </md-input-container>
-          <form name="durationForm">
+          <form name="durationForm" ng-show="vm.current.selectedTask">
             <md-input-container class="md-block">
               <label>输入工期</label>
-              <input type="number" step="0.5" ng-min="vm.min" required name="Duration" ng-blur="vm.changeDuration()" ng-model="vm.current.selectedTask.Duration" md-auto-focus>
+              <input type="number" step="0.5" ng-min="vm.min" required name="Duration" ng-blur="vm.changeDuration()" ng-model="vm.current.selectedTask.duration">
               <div ng-messages="durationForm.Duration.$error">
                 <div ng-message="required">必填工期。</div>
                 <div ng-message="min">工期应大于基本工期的80%。</div>
