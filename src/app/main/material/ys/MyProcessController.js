@@ -18,13 +18,15 @@
     vm.AttachmentSHow = false;
     vm.parentLoad = function () {
       $scope.$parent.vm.load();
-    }
+    };
     vm.checkData={};
     vm.EnclosureType = [];
     vm.checkData.WgCheck = 1;
     vm.checkData.IsInspection = 1;
     vm.checkData.CheckTime = new Date();
     vm.checkData.sjReport = null;
+    vm.checkData.MaterialTargets = [];
+
     $scope.data = {
       imgs1:[],
       imgs2:[],
@@ -95,8 +97,10 @@
                 return;
               }
               vm.checkData.CheckResult = 0;  //状态：不合格
-              if (vm.checkData.InspectionReport == null)
-                vm.checkData.InspectionReport = 3; //   N/A
+              if (vm.checkData.InspectionReport == null){
+                vm.checkData.IsInspection = 2;     //是否送检：N/A
+                vm.checkData.InspectionReport = 3; //送检报告：N/A
+              }
 
               vm.checkData.HandleOption = $scope.clyj;
               api.material.addProcessService.Insert({
@@ -139,6 +143,17 @@
     };
 
     vm._save = function (addForm) {
+      $scope.Targets.forEach(function (r) {
+        if (r.isOK) {
+          var n = {
+            ProjectId: vm.checkData.ProjectId,
+            MaterialId: vm.checkData.MaterialId,
+            TargetId: r.Id
+          };
+          vm.checkData.MaterialTargets.push(n);
+        }
+      });
+
       api.material.addProcessService.Insert({
         Id:sxt.uuid(),
         CheckData:vm.checkData,
@@ -221,6 +236,28 @@
       });
     }
 
+    $scope.$watch('project.procedureId',
+      function () {
+        if ($scope.project.procedureId) {
+          api.material.TargetService.getAll($scope.project.procedureId)
+            .then(function (data) {
+              $scope.Targets = data.data.Rows;
+              api.material.TargetRelationService.getByProjectId({projectId:$scope.project.projectId,materialId:$scope.project.procedureId,isChecked:true})
+                .then(function (data) {
+                  for (var i = 0; i < $scope.Targets.length; i++) {
+                    for (var j = 0; j < data.data.Rows.length; j++) {
+                      if ($scope.Targets[i].Id == data.data.Rows[j].TargetId) {
+                        $scope.Targets[i].isOK = true;
+                        $scope.Targets[i].need = true;
+                        break;
+                      }
+                    }
+                  }
+                });
+            });
+        }
+      });
+
     vm.ok = function(){
       vm.checkData.HandleOption = null;
       if(vm.checkDataId != ''){
@@ -244,9 +281,9 @@
                 }
 
                 vm.checkData.HandleOption = $scope.clyj;
-
+                console.log(vm.checkData);
                 api.material.addProcessService.Insert({
-                  CheckData:{Id:vm.checkDataId,InspectionReport:vm.checkData.sjReport,CheckResult:vm.checkData.sjReport,HandleOption:vm.checkData.HandleOption},
+                  CheckData:{Id:vm.checkDataId,InspectionReport:vm.checkData.sjReport,CheckResult:vm.checkData.sjReport,HandleOption:vm.checkData.HandleOption,CheckReportRemark:vm.checkData.CheckReportRemark},
                   CheckDataOptions:[{OptionType:16,GroupImg:vm.groupId_16}]
                 }).then(function (result) {
                   if(result){
@@ -301,9 +338,6 @@
     api.material.SupplierService.GetAll({startrowIndex:0,maximumRows:100,Status:4}).then(function(result){
       $scope.supplier = result.data.Rows;
     });
-
-
-
 
     $scope.is = function(route){
       return $state.is(route);

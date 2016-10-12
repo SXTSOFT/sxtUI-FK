@@ -79,7 +79,6 @@
 
       vm.ok = function(){
         if(vm.checkDataId != ''){
-
           api.material.addProcessService.Insert({
             CheckData:{Id:vm.checkDataId,InspectionReport:$scope.sjReport,CheckResult:$scope.sjReport},
             CheckDataOptions:[{OptionType:16,GroupImg:vm.groupId_16}]

@@ -248,19 +248,29 @@
           return $http.post('/api/PPBatchRelation/GetRelationReportData', { regionTreeId: regionTreeId })
         }
       },
-      TargetService:{
-        getAll:$http.db({
-          _id:'s_pTarget',
+      TargetRelationService:{
+        create: $http.db({
+          _id:'Ms_MaterialTargetRelation',
+          idField:'Id',
+          upload:true
+        }).bind(function (data) {
+          return $http.post($http.url('/api/MaterialTargetRelation'), data);
+        }),
+        getByProjectId:$http.db({
+          _id:'Ms_MaterialTargetRelationList',
           idField:'Id',
           dataType:5,
-          filter:function (item,procedureId) {
-            return item.ProcedureId==procedureId;
-          }
-        }).bind(function(procedureId){
-          if(procedureId)
-            return $http.get($http.url('/api/PProcedure/' + procedureId + '/EngineeringTarget'));
-          else
-            return $http.get($http.url('/api/PProcedure/EngineeringTarget/All'));
+        }).bind(function (args) {
+          return $http.get($http.url('/api/MaterialTargetRelation/GetByProjectId',args));
+        })
+      },
+      TargetService:{
+        getAll:$http.db({
+          _id:'Ms_MaterialTargetList',
+          idField:'Id',
+          dataType:5,
+        }).bind(function (args) {
+          return $http.get($http.url('/api/MLPProcedure/' + args + '/MLEngineeringTarget'));
         })
       }
     })
