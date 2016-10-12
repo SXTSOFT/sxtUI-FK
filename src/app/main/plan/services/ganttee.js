@@ -389,7 +389,7 @@
 
     var defaultHeadersFormats = {'year': 'YYYY', 'quarter': '[Q]Q YYYY', month: 'YYYY-MM', week: 'w', day: 'D', hour: 'H', minute:'HH:mm'};
     var defaultDayHeadersFormats = {day: 'LL', hour: 'H', minute:'HH:mm'};
-    var defaultYearHeadersFormats = {'year': 'YYYY', 'quarter': '[Q]Q', month: 'MMMM'};
+    var defaultYearHeadersFormats = {'year': 'YYYY', 'quarter': '[Q]Q', month: 'MM'};
 
     ColumnsManager.prototype.getHeaderFormat = function(unit) {
       var format;

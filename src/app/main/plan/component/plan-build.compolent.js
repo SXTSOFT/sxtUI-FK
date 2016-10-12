@@ -59,7 +59,6 @@
       return $mdSidenav('right')
         .close();
     }
-    console.log($mdSidenav('right'),'=====================')
     vm.resetName = function (item) {
       item.Name = (item.FullName || item.TaskFlowName)+' - ' +
         (item.selectedTask?item.selectedTask.Name:'') + ' - 可选('+item.OptionalTasks.length+')'
@@ -190,7 +189,9 @@
           utils.alert('删除成功').then(function(){
             vm.showBg = false;
             vm.closeRight();
-            getDataTemplate();
+            $timeout(function(){
+              getDataTemplate();
+            },500)
           })
         }
       })
