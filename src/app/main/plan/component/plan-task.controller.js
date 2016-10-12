@@ -244,11 +244,17 @@
       })
     }
     $scope.$watch('vm.selectedCategory',function(){
-      if(vm.selectedCategory)
-      vm.categoryChanged = true;
+      if(vm.selectedCategory&&vm.selectedCategory!=vm.cselectedCategory){
+        vm.categoryChanged = true;
+      }else{
+        vm.categoryChanged = false;
+        vm.getNextTasks();
+      }
+
     })
     vm.getNextTasks = function () {
       vm.saveTasks =[];
+      vm.nextTasks=[];
       var promises = [
         api.plan.TaskLibrary.GetList({Level:task.Level+1}),
         api.plan.TaskFlow.getSubTasks(vm.current.TaskFlowId)
@@ -260,6 +266,7 @@
             return _r.TaskLibraryId == r.TaskLibraryId;
           })
           if(f&&!vm.categoryChanged){
+              vm.cselectedCategory = r.Type;
               vm.selectedCategory = r.Type;
               r.selected = true;
           }

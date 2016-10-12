@@ -12,7 +12,8 @@
   function bodyBackground($mdSidenav,utils){
     return {
       scope:{
-        value:'=bodyBackground'
+        value:'=bodyShow',
+        data:'=bodyData'
       },
       link:link
     }
@@ -29,8 +30,12 @@
       })
 
       $(element).on('click',function(){
+        if(scope.data){
+          utils.alert('工期大于');
+          return;
+        }
         if(scope.$parent.vm.current.selectedTask&&!scope.$parent.vm.current.selectedTask.Duration&&!scope.$parent.vm.current.selectedTask.duration){
-          utils.alert('请填写工期')
+          utils.alert('工期大于0')
           return;
         }else{
           scope.value = false;
@@ -39,7 +44,6 @@
           $mdSidenav('right')
             .close();
         }
-
       })
 
       scope.$on('$destroy',function(){
