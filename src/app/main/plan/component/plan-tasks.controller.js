@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function planTask($scope,api,$state,utils,$interval){
+  function planTask($scope,api,$state,utils,$interval,$mdDialog){
     var vm = this;
     vm.selectedFilter = 0;
     $scope.$watch("vm.selectedFilter",function(){
@@ -22,8 +22,28 @@
     vm.Query = function (item) {
       $state.go("app.plan.task.detail",{id:item.TaskLibraryId});
     }
+    vm.a = 10;
+    vm.blur = function(){
+      //var min = 10*0.8;
+      if(vm.b){
+        vm.min = vm.a *0.8;
+        //if(vm.a && vm.b<min){
+        //  utils.alert('输入工期不能小于此工期的80%')
+        //}
+      }
 
+    }
     vm.Delete = function(item){
+      //$mdDialog.show(
+      //  $mdDialog.prompt()
+      //    .title('输入')
+      //    .textContent('shu')
+      //    .placeholder('a')
+      //    .ok('ok')
+      //    //.parent(angular.element('#content'))
+      //).then(function(r){
+      //  alert(r)
+      //})
       utils.confirm('是否确认删除任务？').then(function (r) {
         api.plan.TaskLibrary.delete(item.TaskLibraryId).then(function (r) {
           Load();

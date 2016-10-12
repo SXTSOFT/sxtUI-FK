@@ -121,7 +121,7 @@
             selected.push({
               BuildingPlanFlowId:item.Id,
               TaskLibraryId:item.selectedTask.TaskLibraryId,
-              Duration:item.selectedTask.duration
+              Duration:item.selectedTask.Duration
             });
           }
         })
@@ -156,6 +156,12 @@
         vm.temp = new template({
           onClick:function (e) {
             vm.current = e.data;
+            vm.current.selectedTask.Duration = parseInt(vm.current.selectedTask.Duration);
+            //if(vm.current.selectedTask.Duration){
+            //  vm.duration = parseInt(vm.current.selectedTask.Duration);
+            //}else{
+            //  vm.duration = 0;
+            //}
             vm.showBg = true;
             vm.toggleRight();
           }
@@ -177,16 +183,16 @@
     //  console.log('a')
     //}
     vm.deleteTaskLib = function(){
-      //api.plan.BuildPlan.deleteTaskLibById(vm.formWizard.Id,vm.current._TaskFlowId).then(function(r){
-      //  //console.log(r)
-      //  if(r.status == 200){
-      //    utils.alert('删除成功').then(function(){
-      //      vm.showBg = false;
-      //      vm.closeRight();
-      //      getDataTemplate();
-      //    })
-      //  }
-      //})
+      api.plan.BuildPlan.deleteTaskLibById(vm.formWizard.Id,vm.current._TaskFlowId).then(function(r){
+        //console.log(r)
+        if(r.status == 200){
+          utils.alert('删除成功').then(function(){
+            vm.showBg = false;
+            vm.closeRight();
+            getDataTemplate();
+          })
+        }
+      })
     }
     vm.stop = function(ev){
       ev.stopPropagation();
@@ -217,6 +223,11 @@
     vm.change = function(){
       vm.inputChange = true;
     }
+    //$scope.$watch(function(){
+    //  if(!vm.inputChange){
+    //    return
+    //  }
+    //})
     $scope.$watch('vm.formWizard.projectId',function(){
       if(vm.formWizard&&vm.formWizard.projectId&&!vm.inputChange){
         var f=vm.data.projects.find(function(r){
@@ -247,6 +258,13 @@
         }
       }
     })
+    vm.changeDuration = function(){
+      if(vm.current.selectedTask.Duration){
+        vm.min = Math.round(vm.current.selectedTask.Duration * 0.8,1);
+        console.log(vm.min)
+      }
+    }
+
     //vm.RoleAllots = [{value:'AAA',text:'AAA'},{value:'AAA2',text:'AAA2'}];
 /*    var task = {
       taskId: 0,

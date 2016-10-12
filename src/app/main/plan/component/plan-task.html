@@ -21,18 +21,18 @@
         </md-input-container>
           <md-input-container class="md-block">
             <label>关联项选择</label>
-            <md-select flex class="md-block" ng-model="vm.relationType" placeholder="关联项选择">
-              <md-option value="0">关联工序</md-option>
-              <md-option value="1">关联实测项</md-option>
+            <md-select flex class="md-block" ng-model="vm.data.CloseRelatedObjectType" placeholder="关联项选择">
+              <md-option ng-value="p.type" ng-repeat="p in vm.relationTypes">{{p.name}}</md-option>
+              <!--<md-option value="1">关联实测项</md-option>-->
             </md-select>
           </md-input-container>
         <div layout="row" flex>
-          <div flex ng-click="vm.selectProcedure()" ng-if="vm.relationType == 0">
+          <div flex ng-click="vm.selectProcedure()" ng-if="vm.data.CloseRelatedObjectType == 'Inspection'">
             <md-input-container layout="row" flex><label>关联工序</label>
               <input ng-model="vm.gxNames" disabled/>
             </md-input-container>
           </div>
-          <md-input-container flex  ng-if="vm.relationType == 1 ">
+          <md-input-container flex  ng-if="vm.data.CloseRelatedObjectType == 'PQMeasure' ">
             <label>关联实测项</label>
             <md-select ng-model="vm.data.CloseRelatedObjectId" placeholder="关联实测项" flex>
               <md-select-header class="sxt-select-header">
