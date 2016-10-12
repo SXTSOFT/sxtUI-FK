@@ -213,7 +213,9 @@
                     });
                   }
                 })
-              });
+              }).catch(function(r){
+                console.log(r);
+              });;
             }
           },
           onUpdate:function(layer,isNew,group){
@@ -283,7 +285,9 @@
                   };
                   v.MeasureValueId = v._id;
                   data.addOrUpdate(v);
+                  fg.data= fg.data? fg.data: [];
                   fg.data.push(v);
+
                 });
               })
             }

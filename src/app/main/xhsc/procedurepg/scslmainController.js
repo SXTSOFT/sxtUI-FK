@@ -46,6 +46,9 @@
               $q.all(arr).then(function(res){
                 var result=res[0],offPics=res[1].rows;
                 var pics = [];
+                var r=result.data.find(function(t){
+                  return t.AcceptanceItemID  =='c9ba481a76644c949d13fdb14b4b4adb';
+                });
                 result.data.forEach(function (item) {
                   if (pics.indexOf(item.DrawingID) == -1&&!offPics.find(function(r){
                       return r._id==item.DrawingID;

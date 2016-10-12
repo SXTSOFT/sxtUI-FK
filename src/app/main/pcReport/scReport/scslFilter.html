@@ -25,7 +25,7 @@
       <thead>
       <tr>
         <th style="width: 60px;text-align: center">序号</th>
-        <th style="width:20%;text-align: center">公司</th>
+        <th style="width:20%;text-align: center">时间</th>
         <th style="width:20%;text-align: center">项目</th>
         <th style="width: 20%;text-align: center">实测项</th>
         <th style="text-align: center">区域</th>
@@ -35,7 +35,7 @@
       <tbody>
       <tr data-ng-repeat="item in vm.source">
         <td style="vertical-align: middle">{{$index+1}}</td>
-        <td style="text-align: left;padding-left: 36px;min-width: 120px;vertical-align: middle">{{item.CompanyName}}</td>
+        <td style="text-align: left;padding-left: 36px;min-width: 120px;vertical-align: middle">{{item.MeasureTime}}</td>
         <td style="text-align: left;padding-left: 32px;min-width: 120px;vertical-align: middle">
           {{item.ProjectName}}
         </td>
