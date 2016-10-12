@@ -254,7 +254,7 @@
     })
     vm.getNextTasks = function () {
       vm.saveTasks =[];
-      //vm.nextTasks=[];
+      vm.nextTasks=[];
       var promises = [
         api.plan.TaskLibrary.GetList({Level:task.Level+1}),
         api.plan.TaskFlow.getSubTasks(vm.current.TaskFlowId)
