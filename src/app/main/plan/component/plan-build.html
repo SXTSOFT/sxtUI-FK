@@ -25,7 +25,7 @@
             </md-input-container>
           </div>
           <div layout="row">
-            <md-input-container class="md-block" flex-gt-sm>
+            <md-input-container class="md-block" flex="50">
               <label>请选择项目</label>
               <md-select name="projectId" ng-model="vm.formWizard.projectId" required md-on-open="vm.getMaps()">
                 <md-option ng-value="p.ProjectID" ng-repeat="p in vm.data.projects">{{p.ProjectName}}</md-option>
@@ -36,7 +36,7 @@
                 </div>
               </div>
             </md-input-container>
-            <md-input-container class="md-block" flex-gt-sm flex="25">
+            <md-input-container class="md-block" flex="25">
               <label>请选择分期</label>
               <md-select name="sectionId" ng-model="vm.formWizard.sectionId" required md-on-open="vm.getSections()">
                 <md-option ng-value="p.RegionID " ng-repeat="p in vm.data.sections">{{p.RegionName}}</md-option>
@@ -47,7 +47,7 @@
                 </div>
               </div>
             </md-input-container>
-            <md-input-container class="md-block" flex-gt-sm flex="25">
+            <md-input-container class="md-block" flex="25">
               <label>请选择楼栋</label>
               <md-select name="buildingId" ng-model="vm.formWizard.BuildingId" required md-on-open="vm.getBuildings()">
                 <md-option ng-value="p.RegionID" ng-repeat="p in vm.data.buildings">{{p.RegionName}}</md-option>
@@ -59,8 +59,8 @@
               </div>
             </md-input-container>
           </div>
-          <div layout="row">
-            <md-input-container class="md-block" flex-gt-sm>
+          <div layout="row" layout-md="column" layout-sm="column">
+            <md-input-container class="md-block" flex-md="100" flex-sm="100" flex="50">
               <label>请选择模板</label>
               <md-select name="templateId" ng-disabled="!vm.formWizard.projectId" ng-model="vm.formWizard.TaskTemplateId"  md-on-open="vm.getTemplates()">
                 <md-option ng-value="p.Id" ng-repeat="p in vm.data.templates">{{p.Name}}</md-option>
@@ -71,11 +71,31 @@
                 </div>
               </div>
             </md-input-container>
-            <md-input-container flex-gt-sm>
+            <div flex layout="row">
+            <md-input-container>
               <label>开始日期</label>
               <md-datepicker name="beginDate" ng-model="vm.formWizard.StartTime" required md-open-on-focus></md-datepicker>
             </md-input-container>
+            <md-input-container>
+              <label>预售时间</label>
+              <md-datepicker name="beginDate" ng-model="vm.formWizard.PreSalesTime" required md-open-on-focus></md-datepicker>
+            </md-input-container>
+            <md-input-container>
+              <label>预期结束时间</label>
+              <md-datepicker name="beginDate" ng-model="vm.formWizard.ExpectEndTime" required md-open-on-focus></md-datepicker>
+            </md-input-container>
+            </div>
           </div>
+          <!--<div layout="row">-->
+            <!--<md-input-container flex-gt-sm>-->
+              <!--<label>预售时间</label>-->
+              <!--<md-datepicker name="beginDate" ng-model="vm.formWizard.PreSalesTime" required md-open-on-focus></md-datepicker>-->
+            <!--</md-input-container>-->
+            <!--<md-input-container flex-gt-sm>-->
+              <!--<label>预期结束时间</label>-->
+              <!--<md-datepicker name="beginDate" ng-model="vm.formWizard.ExpectEndTime" required md-open-on-focus></md-datepicker>-->
+            <!--</md-input-container>-->
+          <!--</div>-->
         </form>
       </md-tab-body>
     </md-tab>
@@ -153,20 +173,16 @@
             <md-option  ng-repeat="m in vm.current.OptionalTasks" ng-value="m">{{m.Name}}</md-option>
           </md-select>
         </md-input-container>
-        <div ng-show="vm.current.selectedTask&&!vm.current.selectedTask.Duration">
           <form name="durationForm">
             <md-input-container class="md-block">
               <label>输入工期</label>
-              <input type="text" required name="Duration" ng-model="vm.current.selectedTask.duration" md-auto-focus>
+              <input type="number" step="0.5" ng-min="vm.min" required name="Duration" ng-blur="vm.changeDuration()" ng-model="vm.current.selectedTask.Duration" md-auto-focus>
               <div ng-messages="durationForm.Duration.$error">
                 <div ng-message="required">必填工期。</div>
+                <div ng-message="min">工期应大于基本工期的80%。</div>
               </div>
             </md-input-container>
           </form>
-          <!--<md-button ng-click="vm.save()" class="md-primary md-raised md-mini">-->
-          <!--保存-->
-          <!--</md-button>-->
-        </div>
         <div ng-show="!vm.current.IsRequired">
           <md-button class="md-primary md-raised" ng-click="vm.deleteTaskLib()">删除节点</md-button>
         </div>

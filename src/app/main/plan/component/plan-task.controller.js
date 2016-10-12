@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function planTask(template,$mdSidenav,$stateParams,api,$state,$mdDialog,$mdSelect,$q,utils,$timeout){
+  function planTask($scope,template,$mdSidenav,$stateParams,api,$state,$mdDialog,$mdSelect,$q,utils,$timeout){
     var vm = this,
       temp,task,
       id = $state.params["id"];
@@ -95,6 +95,13 @@
       return $mdSidenav('right')
         .close();
     }
+    vm.relationTypes = [{
+      name:'关联实测项',
+      type:'PQMeasure'
+    },{
+      name:'关联工序',
+      type:'Inspection'
+    }]
     vm.onLoadTemplate = function () {
 
       if(!task) {
@@ -120,6 +127,7 @@
           $timeout(function(){
             vm.getUsers();
             vm.getNextTasks();
+            vm.categoryChanged = false;
           },300)
 
         }
@@ -127,14 +135,20 @@
       temp.load(task);
 
     }
+    api.plan.UserGroup.query().then(function(r){
+      vm.nextUserGroups = r.data.Items;
+    })
     vm.getUsers = function(){
       var promise=[
-        api.plan.TaskFlow.getRoleByFlowId(vm.current.TaskFlowId),
-        api.plan.UserGroup.query()
+        api.plan.TaskFlow.getRoleByFlowId(vm.current.TaskFlowId)
+        //api.plan.UserGroup.query()
       ]
-      $q.all(promise).then(function(res){
-        var users = res[0].data.Items;
-        vm.nextUserGroups = res[1].data.Items;
+      if(!vm.nextUserGroups) return;
+     // $q.all(promise).then(function(res){
+        api.plan.TaskFlow.getRoleByFlowId(vm.current.TaskFlowId).then(function(res){
+        //var users = res[0].data.Items;
+        //vm.nextUserGroups = res[1].data.Items;
+        var users = res.data.Items;
         if(!users&&users.length) return;
         users.forEach(function(r){
           var f = vm.nextUserGroups.find(function(_r){
@@ -229,7 +243,10 @@
         })
       })
     }
-
+    $scope.$watch('vm.selectedCategory',function(){
+      if(vm.selectedCategory)
+      vm.categoryChanged = true;
+    })
     vm.getNextTasks = function () {
       vm.saveTasks =[];
       var promises = [
@@ -242,9 +259,9 @@
           var f = res[1].data.Items&&res[1].data.Items.find(function(_r){
             return _r.TaskLibraryId == r.TaskLibraryId;
           })
-          if(f){
-            vm.selectedCategory = r.Type;
-            r.selected = true;
+          if(f&&!vm.categoryChanged){
+              vm.selectedCategory = r.Type;
+              r.selected = true;
           }
         })
       })

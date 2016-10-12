@@ -39,7 +39,7 @@
     vm.ClickSave = function(data){
       if(id=='add'){
         api.plan.TaskTemplates.Create(data).then(function (r) {
-          if(r.status == 200){
+          if(r.data || r.status == 200){
             utils.alert('保存成功').then(function(){
               $state.go('app.plan.template.list');
             })

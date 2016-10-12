@@ -106,8 +106,8 @@
         deleteBuildPlan:function(id){
           return $http.delete('/api/BuildingPlans/'+id);
         },
-        deleteTaskLibById:function(id,taskLibraryId){
-          return $http.delete($http.url('/api/TaskFlows/'+id+'/TaskLibrarys/'+taskLibraryId))
+        deleteTaskLibById:function(id,buildingPlanFlowId){
+          return $http.delete($http.url('/api/BuildingPlans/'+id+'/BuildingPlanFlows/'+buildingPlanFlowId))
         }
       },
       /** /api/TaskLibrary 任务 **/
