@@ -82,7 +82,7 @@
 
                 n1 = getNumName(i1.name),
                   n2 = getNumName(i2.name);
-                if (!isNaN(n1) && !isNaN(n2))
+                if (!isNaN(n1) && !isNaN(n2) && n1!=n2)
                   return n1 - n2;
                 else if ((isNaN(n1) && !isNaN(n2)))
                   return 1;
@@ -309,6 +309,7 @@
               var myChart = $window.echarts.init(element[0]);
               myChart.setOption(option);
               scope.build.loading = false;
+              console.log(option);
               /*
               scope.build.gx = gx;
               scope.build.selected = gx[0];

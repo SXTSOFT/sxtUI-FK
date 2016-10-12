@@ -314,7 +314,7 @@
       .state('app.szgc.ys.addnew', {
         title:'添加验收',
         hideFootbar:true,
-        url: '/newadd/{projectid}/{name}/{batchId}/{procedureTypeId}/{procedureId}/{type}/{idTree}/{procedureName}/{nameTree}/{flag}',
+        url: '/newadd/{projectid}/{name}/{batchId}/{procedureTypeId}/{procedureId}/{type}/{idTree}/{procedureName}/{nameTree}/{flag}/{checkRequirement}',
         controller: 'AddProcessNewController as vm',
         templateUrl: 'app/main/szgc/ys/addProcess-appnew.html'
       })

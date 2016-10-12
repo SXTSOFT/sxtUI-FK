@@ -86,13 +86,17 @@
         scope.isMore = true;
         tr = null;
         scope.resetUI = function() {
-          if (tr || $window.navigator.userAgent.indexOf('Android')==-1) return;
+          var ua = $window.navigator.userAgent||'';
+          if (tr || ua.indexOf('android')==-1) return;
+          if( ua.indexOf('samsung')!=-1 || ua.indexOf('mi')!=-1 ) return;
+
           tr = $timeout(function () {
             $('md-list-item', element).css('display', 'inline');
             $timeout(function () {
+              tr = null;
               $('md-list-item', element).css('display', 'flex');
-            }, 10);
-          }, 100);
+            }, 0);
+          }, 1000);
         }
         var syncValue = function () {
           if (!scope.selectors.length || !scope.selectors[0].selected) {

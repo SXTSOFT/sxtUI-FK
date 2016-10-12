@@ -21,8 +21,8 @@
           });
       }
     }
-    var vm = this;
-    var selected = {
+    var vm = this,selected;
+    vm.selected = selected = {
       name:'已选择',
       children:[{
         name:'已选择',
@@ -104,7 +104,7 @@
       api.szgc.BatchSetService.getAll({status:4,batchType:255})
     ]).then(function (results) {
 
-      var s = [selected],result = results[0];
+      var s = [],result = results[0];
       result.data.data.forEach(function (item) {
         if(!item.parent)return;
         var gn = s.find(function(g){return item.parent.name== g.name});

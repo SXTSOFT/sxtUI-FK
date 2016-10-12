@@ -76,7 +76,7 @@
                     },
                     'toolbar@app'   : {
                         templateUrl: layouts[layoutStyle].toolbar,
-                        controller : 'ToolbarController as vm'
+                      controller : 'ToolbarController as vm'
                     },
                     'navigation@app': {
                         templateUrl: layouts[layoutStyle].navigation,

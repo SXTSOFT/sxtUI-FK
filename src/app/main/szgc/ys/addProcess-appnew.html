@@ -60,6 +60,32 @@
           </md-checkbox>
           <p flex>如果未选择施工单位已验，提交后施工单位将不允许录入验收记录</p>
         </md-list-item>
+        <div ng-if="data.CheckRequirement">
+        <md-subheader  class="md-no-sticky">地面标高</md-subheader>
+        <md-list-item >
+          <md-input-container  class="md-block" style="width: 100%">
+            <input type="number" required ng-model="data.curStep.D1">
+          </md-input-container>米
+        </md-list-item>
+        <md-subheader  class="md-no-sticky">桩顶标高</md-subheader>
+        <md-list-item >
+          <md-input-container  class="md-block" style="width: 100%">
+            <input type="number" required ng-model="data.curStep.D2">
+          </md-input-container>米
+        </md-list-item>
+        <md-subheader  class="md-no-sticky">入岩标高</md-subheader>
+        <md-list-item >
+          <md-input-container  class="md-block" style="width: 100%">
+            <input type="number" required ng-model="data.curStep.D3">
+          </md-input-container>米
+        </md-list-item>
+        <md-subheader  class="md-no-sticky">桩底标高</md-subheader>
+        <md-list-item >
+          <md-input-container  class="md-block" style="width: 100%">
+            <input type="number" required ng-model="data.curStep.D4">
+          </md-input-container>米
+        </md-list-item>
+        </div>
       </md-list>
 
 

@@ -328,47 +328,63 @@
             }
           }
         });
-        provider.$q.$q.all(p).then(function (rs) {
-          var i = 0;
-          rs.forEach(function (result) {
-            var group = groups[i++], cfg = group.cfg;
-            result.rows.forEach(function (row) {
-              tasks.push(function () {
-                return provider.$q(function (resolve,reject) {
-                  provider.$q(function (r1,r2) {
-                    if(!cfg.fileField  || !row._id){
-                      r1(row);
-                    }
-                    else{
-                      initDb(cfg).get(row._id,cfg).then(function (newRow) {
-                        r1(newRow);
-                      },r2)
-                    }
-                  }).then(function (row) {
-                    cfg.fn.call(cfg, row).then(function (result) {
-                      if (result && result.status == 200 && result.data && !result.data.ErrorCode) {
-                        options.uploaded && options.uploaded(cfg, row, result);
-                        resolve();
+        provider.$q.$q.all(p).then(
+          function (rs) {
+            var i = 0;
+            rs.forEach(function (result) {
+              var group = groups[i++], cfg = group.cfg;
+              result.rows.forEach(function (row) {
+                tasks.push(function () {
+                  return provider.$q(function (resolve, reject) {
+                    provider.$q(function (r1, r2) {
+                      if (!cfg.fileField || !row._id) {
+                        r1(row);
                       }
-                      else{
-                        resolve();
-                        //reject(result);
+                      else {
+                        initDb(cfg).get(row._id, cfg).then(function (newRow) {
+                          r1(newRow);
+                        }, function (err) {
+                          err = err || {};
+                          err.errcode = err.errcode || '080004';
+                          r2(err);
+                        });
                       }
-                    }).catch(reject);
-                  }).catch(reject);
+                    }).then(
+                      function (row) {
+                        cfg.fn.call(cfg, row).then(function (result) {
+                          if (result && result.status == 200 && result.data && !result.data.ErrorCode) {
+                            options.uploaded && options.uploaded(cfg, row, result);
+                            resolve(row);
+                          }
+                          else {
+                            resolve(row);
+                            //reject(result);
+                          }
+                        }, function (err) {
+                          err = err || {};
+                          err.errcode = err.errcode || '080005';
+                          reject(err)
+                        });
+                      },
+                      function (err) {
+                        err = err || {};
+                        err.errcode = err.errcode || '080006';
+                        reject(err)
+                      });
+                  });
                 });
               });
+              group.end = tasks.length;
+              group.current = 0;
+              group.total = group.end - group.start;
             });
-            group.end = tasks.length;
-            group.current = 0;
-            group.total = group.end - group.start;
-          });
-          resolve(tasks);
-        },function (reason) {
-          reason = reason||{};
-          reason.errcode = '08001'
-          reject(reason)
-        })
+            resolve(tasks);
+          },
+          function (reason) {
+            reason = reason || {};
+            reason.errcode = reason.errcode || '08001';
+            reject(reason)
+          })
       });
     }
 
@@ -422,7 +438,7 @@
             total: len
           });
 
-        if (!progress || progress(i * 1.0 / len, i, len) !== false) {
+        if (!progress || progress(i * 1.0 / len, i, len,fn) !== false) {
           if (!fn) {
             if (config && config.event)
               provider.$rootScope.$emit(config.event, {

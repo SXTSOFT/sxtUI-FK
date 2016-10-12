@@ -36,6 +36,10 @@
                         <td>施工班组负责人</td>
                         <td>{{titol.GrpName}}</td>
                     </tr>
+                  <tr ng-if="titol.CheckRequirement">
+                    <td>{{titol.CheckRequirement}}</td>
+                    <td colspan="5"><span ng-repeat="ap in titol.Applications">{{ap.RoleId|roleId}}第{{ap.CheckNo}}次：{{ap.Application}}；</span></td>
+                  </tr>
                 </table>
                 <table class="target" border="0" cellspacing="0" cellpadding="0" style="margin-top: 5px;border-collapse: collapse;width:100%;">
                     <tr>
