@@ -121,7 +121,7 @@
             selected.push({
               BuildingPlanFlowId:item.Id,
               TaskLibraryId:item.selectedTask.TaskLibraryId,
-              Duration:item.selectedTask.Duration
+              Duration:item.selectedTask.duration
             });
           }
         })
@@ -156,12 +156,13 @@
         vm.temp = new template({
           onClick:function (e) {
             vm.current = e.data;
-            vm.current.selectedTask.Duration = parseInt(vm.current.selectedTask.Duration);
-            //if(vm.current.selectedTask.Duration){
-            //  vm.duration = parseInt(vm.current.selectedTask.Duration);
-            //}else{
-            //  vm.duration = 0;
-            //}
+            if(vm.current.selectedTask&&vm.current.selectedTask){
+              if(vm.current.selectedTask.Duration&&!vm.current.selectedTask.duration){
+                vm.current.selectedTask.duration = parseInt(vm.current.selectedTask.Duration);
+              }else if(!vm.current.selectedTask.duration){
+                vm.current.selectedTask.duration = -0;
+              }
+            }
             vm.showBg = true;
             vm.toggleRight();
           }
@@ -183,7 +184,7 @@
     //  console.log('a')
     //}
     vm.deleteTaskLib = function(){
-      api.plan.BuildPlan.deleteTaskLibById(vm.formWizard.Id,vm.current._TaskFlowId).then(function(r){
+      api.plan.BuildPlan.deleteTaskLibById(vm.formWizard.Id,vm.current.TaskFlowId).then(function(r){
         //console.log(r)
         if(r.status == 200){
           utils.alert('删除成功').then(function(){
@@ -261,7 +262,8 @@
     vm.changeDuration = function(){
       if(vm.current.selectedTask.Duration){
         vm.min = Math.round(vm.current.selectedTask.Duration * 0.8,1);
-        console.log(vm.min)
+      }else{
+        vm.min = 0;
       }
     }
 
