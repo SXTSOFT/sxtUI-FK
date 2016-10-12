@@ -69,7 +69,7 @@
       var iWinWidth = $(window).width();
 
       //itemp=(scope.floorNum)*18+107+34+50;
-       itemp=(scope.floorNum)*17+143+50;
+       itemp=(scope.floorNum)*17+143+120;
 
       iWinHeight = $(window).height()-130;
       var newobj={},iflayerWidth=0;
