@@ -3497,3 +3497,77 @@ table {
 .table th {
   padding: 0;
 }
+
+.floor-layer {
+  text-align: center;
+  position: relative; }
+.floor-layer .item {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin: 0 auto; }
+.floor-layer .item a {
+  color: #333; }
+.floor-layer .item a:hover {
+  color: #f00; }
+.floor-layer .item a p {
+  white-space: nowrap;
+  overflow: hidden;
+  margin: 0; }
+.floor-layer .item a .whole {
+  position: relative;
+  width: 180px;
+  margin: 0 auto;
+  overflow: hidden; }
+.floor-layer .item a .whole .whole-progress {
+  position: absolute;
+  bottom: 0; }
+.floor-layer .item a .whole ul {
+  -webkit-padding-start: 0; }
+.floor-layer .item a .whole ul li {
+  list-style: none; }
+.floor-layer .item a .whole .whole-target .wall-t, .floor-layer .item a .whole .whole-target .wall-m, .floor-layer .item a .whole .whole-target .build-b {
+  filter: alpha(opacity=20);
+  opacity: 0.2; }
+.floor-layer .item a .whole .build-t {
+  position: relative;
+  background-image: url(../app/main/xhsc/images/build-t.png);
+  width: 184px;
+  height: 107px;
+  margin: 0 0 -89px 0; }
+.floor-layer .item a .whole .build-m {
+  position: relative;
+  background-image: url(../app/main/xhsc/images/build-m.png);
+  width: 184px;
+  height: 109px;
+  margin: 0 0 -92px 0; }
+.floor-layer .item a .whole .build-b {
+  position: relative;
+  background-image: url(../app/main/xhsc/images/build-b.png);
+  width: 184px;
+  height: 129px;
+  margin: -95px 0 0 0; }
+.floor-layer .item a .whole .wall-t {
+  position: relative;
+  background-image: url(../app/main/xhsc/images/wall-t.png);
+  width: 184px;
+  height: 107px;
+  margin: 0 0 -89px 0; }
+.floor-layer .item a .whole .wall-m {
+  position: relative;
+  background-image: url(../app/main/xhsc/images/wall-m.png);
+  width: 184px;
+  height: 109px;
+  margin: 0 0 -92px 0; }
+.floor-layer .item a .whole .build-m-presell {
+  position: relative;
+  background-image: url(../app/main/xhsc/images/build-m-red.png);
+  width: 184px;
+  height: 109px;
+  margin: 0 0 -92px 0; }
+.floor-layer .item a .whole .wall-m-presell {
+  position: relative;
+  background-image: url(../app/main/xhsc/images/wall-m-red.png);
+  width: 184px;
+  height: 109px;
+  margin: 0 0 -92px 0; }

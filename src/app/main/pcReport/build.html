@@ -1,23 +1,31 @@
 <md-tabs flex md-border-bottom>
   <md-tab  label="{{vm.projectName}}">
     <md-tab-content flex layout-fill layout="column"  >
-      <div class="right engineer">
-        <div layout="column" ng-repeat="m in vm.area">
-          <div style="border-bottom: 1px solid #d8d8d8;">
-            <h2 class="md-title" style="color:#e93030;font-size:16px;margin:16px;">{{m.RegionName}}</h2>
-          </div>
-          <md-list>
-            <div layout="row" layout-wrap>
-              <div flex="33" layout="row" ng-repeat="b in m.children">
-                <md-button flex class="md-raised md-block" ng-click="vm.showECs($event,b)" style="display: block; text-align:left;">
-                  {{b.RegionName}}
-                </md-button>
-                <!--<md-button  class="md-raised md-block"  style="display: block; text-align:left;" ui-sref="app.pcReport_bdd({regionID:b.RegionID})">-->
+      <!--<div class="right engineer">-->
+        <!--<div layout="column" ng-repeat="m in vm.area">-->
+          <!--<div style="border-bottom: 1px solid #d8d8d8;">-->
+            <!--<h2 class="md-title" style="color:#e93030;font-size:16px;margin:16px;">{{m.RegionName}}</h2>-->
+          <!--</div>-->
+          <!--<md-list>-->
+            <!--<div layout="row" layout-wrap>-->
+              <!--<div flex="33" layout="row" ng-repeat="b in m.children">-->
+                <!--<md-button flex class="md-raised md-block" ng-click="vm.showECs($event,b)" style="display: block; text-align:left;">-->
                   <!--{{b.RegionName}}-->
                 <!--</md-button>-->
-              </div>
-            </div>
-          </md-list>
+                <!--&lt;!&ndash;<md-button  class="md-raised md-block"  style="display: block; text-align:left;" ui-sref="app.pcReport_bdd({regionID:b.RegionID})">&ndash;&gt;-->
+                  <!--&lt;!&ndash;{{b.RegionName}}&ndash;&gt;-->
+                <!--&lt;!&ndash;</md-button>&ndash;&gt;-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</md-list>-->
+        <!--</div>-->
+      <!--</div>-->
+      <div hm-dir style="width:100%;">
+        <div id="pinch" hm-drag="dragEvent($event)" hm-dragend="dragend($event)" hm-pinch="pinch($event)" hm-pinchmove="pinchmove($event)" hm-pinchend="pinchend($event)" style="position: relative;">
+          <div id="floorlayer" style="margin:10px 0;position:relative;">
+            <floor-layer style="float:left;" build-len="vm.builds.length" ng-repeat="sxtfloor in vm.builds" sxtfloor="sxtfloor" floor-num="sxtfloor.floors" sell-line="vm.sellLine" ng-click="vm.setFloor(sxtfloor)" ui-sref="app.szgc.project.buildinglist.building({buildId:sxtfloor.building_id,buildName:sxtfloor.name,floors:sxtfloor.floors})"></floor-layer>
+            <div style="clear:both;display:table;"></div>
+          </div>
         </div>
       </div>
     </md-tab-content>
