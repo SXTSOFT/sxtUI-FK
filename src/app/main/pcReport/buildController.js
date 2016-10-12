@@ -59,10 +59,10 @@
             k.builds.push(n);
           }
         });
-        for (var i=0;i<2;i++){
-          var  z=   $.extend(true,{},builds[i])
-          k.builds.push(z)
-        }
+        //for (var i=0;i<2;i++){
+        //  var  z=   $.extend(true,{},builds[i])
+        //  k.builds.push(z)
+        //}
       })
     });
 
