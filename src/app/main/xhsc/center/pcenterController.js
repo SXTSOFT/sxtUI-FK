@@ -9,7 +9,7 @@
     .controller('pcenterController',pcenterController);
 
   /**@ngInject*/
-  function pcenterController($scope,$mdDialog,db,auth,$rootScope,api,utils,$q,remote,versionUpdate ){
+  function pcenterController($scope,$mdDialog,db,auth,$rootScope,api,utils,$q,remote,versionUpdate,$state ){
     var vm = this;
 
     vm.serverAppVersion = versionUpdate.version;
@@ -36,17 +36,9 @@
       }
     });
 
-
-    //auth.getUser().then(function(r){
-    //  if (r){
-    //    vm.user={
-    //      Name: r.Name,
-    //      UserName: r.UserName
-    //    };
-    //  }
-    //  vm.user={};
-    //   console.log(r)
-    //});
+    vm.goMsg=function(){
+      $state.go("app.xhsc.mcenter");
+    }
 
     $rootScope.$on('sxt:online', function(event, state){
       vm.networkState = api.getNetwork();
