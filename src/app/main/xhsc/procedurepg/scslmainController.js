@@ -49,6 +49,7 @@
                 var r=result.data.find(function(t){
                   return t.AcceptanceItemID  =='c9ba481a76644c949d13fdb14b4b4adb';
                 });
+
                 result.data.forEach(function (item) {
                   if (pics.indexOf(item.DrawingID) == -1&&!offPics.find(function(r){
                       return r._id==item.DrawingID;
@@ -229,7 +230,7 @@
                   }
                 });
               }],
-              template: '<md-dialog aria-label="正在下载"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+              template: '<md-dialog aria-label="正在上传..."  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
               parent: angular.element(document.body),
               clickOutsideToClose:false,
               fullscreen: false
@@ -277,23 +278,23 @@
       }
 
       vm.go=function(item){
-        api.setNetwork(1).then(function(){
           remote.Assessment.GetRegionTreeInfo(item.ProjectID,"pack"+item.AssessmentID).then(function(r){
-            if (r&& r.data&& r.data.data&& r.data.data.Children.length){
-              var areas=r.data.data.Children;
-              var  routeData={
-                projectId:item.ProjectID,
-                assessmentID:item.AssessmentID,
-                role:vm.role
-              };
-              if (angular.isArray(areas)&&areas.length>1){
-                $state.go("app.xhsc.scsl.chooseArea",routeData)
+            api.setNetwork(1).then(function(){
+              if (r&& r.data&& r.data.data&& r.data.data.Children.length){
+                var areas=r.data.data.Children;
+                var  routeData={
+                  projectId:item.ProjectID,
+                  assessmentID:item.AssessmentID,
+                  role:vm.role
+                };
+                if (angular.isArray(areas)&&areas.length>1){
+                  $state.go("app.xhsc.scsl.chooseArea",routeData)
+                }else {
+                  $state.go("app.xhsc.scsl.sclist",angular.extend(routeData,{area:areas[0].RegionID}));
+                }
               }else {
-                $state.go("app.xhsc.scsl.sclist",angular.extend(routeData,{area:areas[0].RegionID}));
+                utils.alert('该项目没有设置分期');
               }
-            }else {
-              utils.alert('该项目没有设置分期');
-            }
           })
         })
       }

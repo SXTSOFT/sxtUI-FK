@@ -16,9 +16,11 @@
     var vm=this;
     vm.projectName=$stateParams.projectName;
     $q.all([
-      remote.Project.getRegionAndChildren($stateParams.projectId)
+      remote.Project.getRegionAndChildren($stateParams.projectId),
+      remote.Project.getZTjd($stateParams.projectId)
     ]).then(function(res){
         var r=res[0];
+        var zt=res[1].data;
         vm.areas = [];
         var builds = [];
         var floors = [];
@@ -52,10 +54,18 @@
               arr.push(n);
             }
           })
+
+          zt.find(function(n){
+            return
+          });
           k.floors = arr.length;
           k.sellLine=parseInt(k.floors*0.67)
           k.floorData = arr;
         })
+
+        //getZTjd
+
+
         vm.maxLen=0
         vm.areas.forEach(function(k){
           k.builds=[];
