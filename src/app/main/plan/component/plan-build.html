@@ -25,7 +25,7 @@
             </md-input-container>
           </div>
           <div layout="row">
-            <md-input-container class="md-block" flex="50">
+            <md-input-container class="md-block" flex="40">
               <label>请选择项目</label>
               <md-select name="projectId" ng-model="vm.formWizard.projectId" required md-on-open="vm.getMaps()">
                 <md-option ng-value="p.ProjectID" ng-repeat="p in vm.data.projects">{{p.ProjectName}}</md-option>
@@ -36,7 +36,7 @@
                 </div>
               </div>
             </md-input-container>
-            <md-input-container class="md-block" flex="25">
+            <md-input-container class="md-block" flex="30">
               <label>请选择分期</label>
               <md-select name="sectionId" ng-model="vm.formWizard.sectionId" required md-on-open="vm.getSections()">
                 <md-option ng-value="p.RegionID " ng-repeat="p in vm.data.sections">{{p.RegionName}}</md-option>
@@ -47,7 +47,7 @@
                 </div>
               </div>
             </md-input-container>
-            <md-input-container class="md-block" flex="25">
+            <md-input-container class="md-block" flex="30">
               <label>请选择楼栋</label>
               <md-select name="buildingId" ng-model="vm.formWizard.BuildingId" required md-on-open="vm.getBuildings()">
                 <md-option ng-value="p.RegionID" ng-repeat="p in vm.data.buildings">{{p.RegionName}}</md-option>
@@ -60,7 +60,7 @@
             </md-input-container>
           </div>
           <div layout="row" layout-md="column" layout-sm="column">
-            <md-input-container class="md-block" flex-md="100" flex-sm="100" flex="50">
+            <md-input-container class="md-block" flex-md="100" flex-sm="100" flex="40">
               <label>请选择模板</label>
               <md-select name="templateId" ng-disabled="!vm.formWizard.projectId" ng-model="vm.formWizard.TaskTemplateId"  md-on-open="vm.getTemplates()">
                 <md-option ng-value="p.Id" ng-repeat="p in vm.data.templates">{{p.Name}}</md-option>
@@ -72,15 +72,15 @@
               </div>
             </md-input-container>
             <div flex layout="row">
-            <md-input-container>
+            <md-input-container flex>
               <label>开始日期</label>
               <md-datepicker name="beginDate" ng-model="vm.formWizard.StartTime" required md-open-on-focus></md-datepicker>
             </md-input-container>
-            <md-input-container>
+            <md-input-container flex>
               <label>预售时间</label>
               <md-datepicker name="beginDate" ng-model="vm.formWizard.PreSalesTime" required md-open-on-focus></md-datepicker>
             </md-input-container>
-            <md-input-container>
+            <md-input-container flex>
               <label>预期结束时间</label>
               <md-datepicker name="beginDate" ng-model="vm.formWizard.ExpectEndTime" required md-open-on-focus></md-datepicker>
             </md-input-container>

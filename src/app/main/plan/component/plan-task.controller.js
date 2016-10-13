@@ -200,7 +200,7 @@
       var next = angular.extend({
         TaskLibraryId:task.TaskLibraryId,
         IsFloor:false,
-        //Type:vm.current?vm.current.line:0,
+        Type:vm.current?vm.current.line:0,
         ParentId:vm.current?vm.current.TaskFlowId:0
       },vm.next);
       vm.next = {};
@@ -219,7 +219,7 @@
       var next = angular.extend({
         TaskLibraryId:task.TaskLibraryId,
         IsFloor:false,
-        //Type:vm.current?vm.current.line+1:0,
+        Type:vm.data.Branch.length+1,//vm.current?vm.current.line+1:0,
         ParentId:vm.current?vm.current.TaskFlowId:0
       },vm.branch);
       vm.branch = {};
@@ -246,7 +246,7 @@
     $scope.$watch('vm.selectedCategory',function(){
       if(vm.selectedCategory&&vm.selectedCategory!=vm.cselectedCategory){
         vm.categoryChanged = true;
-      }else{
+      }else if(vm.selectedCategory){
         vm.categoryChanged = false;
         vm.getNextTasks();
       }

@@ -64,7 +64,7 @@
         'from'      : '{{getHeader()}}',
         'to'        : '{{getHeader()}}'
       },
-      autoExpand              : 'both',
+      autoExpand              : 'none',
       taskOutOfRange          : 'truncate',
       fromDate                : '',
       toDate                  : '',
@@ -140,6 +140,9 @@
       api                     : function (ganttApi)
       {
         vm.api = ganttApi;
+        //vm.api.tasks.on.change($scope,function(){
+        //  console.log($scope.vm.data)
+        //})
         vm.api.core.on.ready($scope, function ()
         {
           vm.load();
