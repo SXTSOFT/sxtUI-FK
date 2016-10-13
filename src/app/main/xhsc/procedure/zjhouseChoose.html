@@ -42,7 +42,7 @@
                 </md-list-item>
                <section>
                  <div class="roomllist" >
-                   <md-list-item ng-show="vm.regionfilterByStatus(r)" ng-repeat="r in vm.floors">
+                   <md-list-item ng-show="vm.regionfilterByStatus(r)" ng-repeat="r in d.floors">
                      <div class="room-st {{r.style}}" ng-click="vm.selected(r)" ng-class="{'checked':r.checked}">
                        <div style="height:100%;width:{{r.Percentage}}%;"></div><span>{{r.RegionName}}</span>
                      </div>

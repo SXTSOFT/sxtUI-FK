@@ -155,6 +155,7 @@
           d.projectTree =  d.RegionName;
           d.projectTitle = result.data[0].ProjectName + d.RegionName;
           d.Children && d.Children.forEach(function(c){
+            c.floors=[];
             filterOrSetting(status,c)
             c.projectTree = d.projectTree + c.RegionName;
             c.checked = false;
@@ -164,6 +165,9 @@
               filterOrSetting(status,r);
               vm.floors=vm.floors?vm.floors:[];
               vm.floors.push(r);
+              if (! r.Children||!r.Children.length){
+                c.floors.push(r);
+              }
               r.Children && r.Children.forEach(function(_r){
                 _r.projectTree = r.projectTree + _r.RegionName;
                 _r.checked = false;
@@ -232,7 +236,6 @@
     }
     //监理点击事件
     function jlSelected(r){
-      console.log('r',r)
       if(r.inspectionRows.length>1){
         $mdDialog.show({
           controller:['$scope','$state','$timeout',function($scope,$state,$timeout){
@@ -252,7 +255,6 @@
           clickOutsideToClose:true
         })
       }else{
-        //console.log('area',areaId)
         switch (r.status){
           case 1:
             $state.go('app.xhsc.gx.gxtest',{InspectionId: r.inspectionRows[0].InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,

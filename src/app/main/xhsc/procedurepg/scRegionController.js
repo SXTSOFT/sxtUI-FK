@@ -42,6 +42,7 @@
     }
 
     function  load(){
+
       vm.nums={
         qb:0,
         wtj:0,//未提交
@@ -65,15 +66,21 @@
         }
         function _init(region){
           if (region&&region.RegionType==8||region&&region.RegionType==16){
-            //if (isReport=='0'||isReport==0){
               region.style= ConvertClass(region.Status);
-            //}
-            setNum(region.Status,region);
+              setNum(region.Status,region);
           }
           if (region&&region.Children.length){
             region.Children.forEach(function(r){
               _init(r);
             });
+          }
+          if (region.RegionType==4){
+            region.floors=[];
+            region.Children.forEach(function(k){
+              if (!k.Children.length){
+                region.floors.push(k)
+              }
+            })
           }
         }
         _init(region);
@@ -97,11 +104,11 @@
         vm.loading = true;
         var project= r.data.data,_area;
         if (angular.isArray(project.Children)){
-          _area=project.Children.find(function(k){
-            return k.RegionID==area;
+          project.Children.forEach(function(k){
+            initRegion(k);
           });
-          initRegion(_area);
-          vm.houses =  [_area];
+
+          vm.houses =  project.Children;
         }
       }
       remote.Assessment.GetRegionTreeInfo(projectId,'pack'+assessmentID).then(callBack);

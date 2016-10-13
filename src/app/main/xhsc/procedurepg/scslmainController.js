@@ -278,25 +278,31 @@
       }
 
       vm.go=function(item){
-          remote.Assessment.GetRegionTreeInfo(item.ProjectID,"pack"+item.AssessmentID).then(function(r){
-            api.setNetwork(1).then(function(){
-              if (r&& r.data&& r.data.data&& r.data.data.Children.length){
-                var areas=r.data.data.Children;
-                var  routeData={
-                  projectId:item.ProjectID,
-                  assessmentID:item.AssessmentID,
-                  role:vm.role
-                };
-                if (angular.isArray(areas)&&areas.length>1){
-                  $state.go("app.xhsc.scsl.chooseArea",routeData)
-                }else {
-                  $state.go("app.xhsc.scsl.sclist",angular.extend(routeData,{area:areas[0].RegionID}));
-                }
-              }else {
-                utils.alert('该项目没有设置分期');
-              }
-          })
+        var  routeData={
+          projectId:item.ProjectID,
+          assessmentID:item.AssessmentID,
+          role:vm.role
+        };
+        api.setNetwork(1).then(function(){
+          $state.go("app.xhsc.scsl.sclist",routeData)
         })
+
+
+        //  remote.Assessment.GetRegionTreeInfo(item.ProjectID,"pack"+item.AssessmentID).then(function(r){
+        //    api.setNetwork(1).then(function(){
+        //      if (r&& r.data&& r.data.data&& r.data.data.Children.length){
+        //        var areas=r.data.data.Children;
+        //
+        //        if (angular.isArray(areas)&&areas.length>1){
+        //
+        //        }else {
+        //          $state.go("app.xhsc.scsl.sclist",angular.extend(routeData,{area:areas[0].RegionID}));
+        //        }
+        //      }else {
+        //        utils.alert('该项目没有设置分期');
+        //      }
+        //  })
+        //})
       }
 
       vm.action=function(item,evt){
