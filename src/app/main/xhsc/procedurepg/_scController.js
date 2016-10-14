@@ -61,7 +61,7 @@
         for (var i=vm.MeasureIndexes.length-1;i>=0;i--){
           t=[];
           for (var j=0;j<arr.length;j++){
-            if ( vm.info.regionId== arr[j].CheckRegionID&&vm.MeasureIndexes[i].AcceptanceItemID==arr[j].AcceptanceItemID){
+            if ( vm.info.regionId== arr[j].CheckRegionID&&vm.MeasureIndexes[i].AcceptanceIndexID==arr[j].AcceptanceIndexID){
               if (!arr[j].MeasurePointID){
                 vm.MeasureIndexes[i].hide=true;
                 //合格
