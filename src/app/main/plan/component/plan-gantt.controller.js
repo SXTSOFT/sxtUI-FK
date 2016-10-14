@@ -71,7 +71,7 @@
       rowContentEnabled       : true,
       rowContent              : '{{row.model.name}}',
       taskContentEnabled      : true,
-      taskContent             : '<span class="gantt-task-name" style="display: block;" flex ng-click="scope.vm.editDialog($event,task.model)">\n    {{task.model.name}}\n    <md-tooltip md-direction="top" class="gantt-chart-task-tooltip">\n        <div layout="column" layout-align="center center">\n            <div class="tooltip-name">\n                {{task.model.name}}\n            </div>\n            <div class="tooltip-date">\n                <span>\n                    {{task.model.from.format(\'MMM DD, HH:mm\')}}\n                </span>\n                <span>-</span>\n                <span>\n                    {{task.model.to.format(\'MMM DD, HH:mm\')}}\n                </span>\n            </div>\n        </div>\n    </md-tooltip>\n</span>',
+      taskContent             : '<span class="gantt-task-name" style="display: block;" flex ng-click="scope.vm.editDialog($event,task.model)">\n    {{task.model.name}}\n    <md-tooltip md-direction="top" class="gantt-chart-task-tooltip">\n        <div layout="column" layout-align="center center">\n            <div class="tooltip-name">\n                {{task.model.name}}\n            </div>\n            <div class="tooltip-date">\n                <span>\n                    {{task.model.from.format(\'MM月DD日A\')}}\n                </span>\n                <span>-</span>\n                <span>\n                    {{task.model.to.format(\'MM月DD日A\')}}\n                </span>\n            </div>\n        </div>\n    </md-tooltip>\n</span>',
       allowSideResizing       : true,
       labelsEnabled           : true,
       currentDate             : 'line',
@@ -156,7 +156,21 @@
             }
           ]
           api.plan.BuildPlan.adjustPlan($stateParams.id,changeData).then(function(r){
-            //load();
+            vm.data.forEach(function(group){
+              var next = group.tasks.find(function(t){
+                return t.dependencies.find(function(d){
+                  return d.from == task.model.id;
+                })!=null;
+              });
+              next  && (next.from = task.model.to);
+              var prev = group.tasks.find(function(t){
+                return task.model.dependencies.find(function(d){
+                  return t.id == d.from;
+                })!=null;
+
+              });
+              prev && (prev.to = task.model.from);
+            })
           })
         })
       }
@@ -303,7 +317,8 @@
               id: m.Id,
               name: m.Name,
               from:from,
-              to: m.MilestoneTime
+              to: m.MilestoneTime,
+              dependencies:[]
             };
             from = m.MilestoneTime;
             return r;
