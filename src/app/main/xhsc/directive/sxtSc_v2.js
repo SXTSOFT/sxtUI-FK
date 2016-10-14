@@ -112,7 +112,7 @@
           //渲染图纸
           loadPic(img);
           //渲染几何点
-          function historydata(layer){
+          function historydata(layer,index){
             var layer = layer;
             if (layer.loaded)return;
             layer.loaded = true;
@@ -153,7 +153,6 @@
                 var points=req[0].data&&req[0].data.data?req[0].data.data:[];
                 if (points&&points.length){
                   var g;
-                  var index=0;
                   points.forEach(function(m){
                     if (m.DrawingID==img.DrawingID&& scope.measureIndexes.find(function (n) {
                         return n.AcceptanceIndexID == m.AcceptanceIndexID
@@ -181,7 +180,6 @@
               remote.Assessment.GetMeasurePointGeometry(ProjectID).then(function(req){
                 var geometry=req.data&&req.data.data?req.data.data:[];
                 var g;
-                var index=0;
                 raltePoints.forEach(function(k){
                   g=geometry.find(function(n){
                     return n.MeasurePointID== k.MeasurePointID;
@@ -191,12 +189,11 @@
                     addData(k,index);
                     index++;
                   }
-                  index++;
                 });
               })
             }
           }
-          function currentdata(layer) {
+          function currentdata(layer,index) {
             var _r = function (o) {  //过滤值
               if (o.AcceptanceItemID == scope.acceptanceItem && scope.measureIndexes.length
                 && !!scope.measureIndexes.find(function (m) {
@@ -225,10 +222,11 @@
                       else {
                         o.geometry.options.color = 'red';
                       }
-                      o.geometry.options.v = i;
+                      o.geometry.options.v = index;
                       o.geometry.options.seq = o.geometry.properties.seq;
                       o.geometry.options.customSeq = true;
                       o.CreateTime = moment(o.CreateTime).toDate();
+                      index++;
                       return true;
                     }
                     return false;
@@ -255,8 +253,9 @@
 
           fg = new L.SvFeatureGroup({
             onLoad:function(){
-              historydata(this);
-              currentdata(this);
+              var  index=0;
+              historydata(this,index);
+              currentdata(this,index);
             },
             onUpdate: function (layer, isNew, group) {
               //这里是修正用户点的位置,尽可能在最近点的同一水平或竖直线上
@@ -501,7 +500,7 @@
                   regionId: scope.regionId,
                   regionType: scope.regionType,
                   acceptanceItem: scope.acceptanceItem,
-                  values: fg.data
+                  values: fg.data?fg.data:[]
                 };
 
                 edit.scope.readonly = scope.readonly;
