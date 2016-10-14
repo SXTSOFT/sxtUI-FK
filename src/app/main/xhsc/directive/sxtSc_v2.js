@@ -139,6 +139,7 @@
               layData.geometry.options.v = index;
               layData.geometry.options.seq = layData.geometry.properties.seq;
               layData.geometry.options.customSeq = true;
+              layData.geometry.options.move = false;
               layData.CreateTime = moment(layData.CreateTime).toDate();
               layer.addData(layData.geometry);
             }
