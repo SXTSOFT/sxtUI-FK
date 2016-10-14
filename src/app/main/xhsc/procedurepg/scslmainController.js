@@ -6,7 +6,7 @@
   angular
     .module('app.xhsc')
     .controller('scslmainController',scslmainController);
-  function scslmainController($mdDialog,db,scRemote,sxt,$rootScope,$scope,scPack,utils,$q,api,$state,$mdBottomSheet){
+  function scslmainController($mdDialog,db,scRemote,sxt,$rootScope,$http,$scope,scPack,utils,$q,api,$state,$mdBottomSheet){
     var vm = this;
     var remote=  scRemote;
     var pack=scPack;
@@ -19,6 +19,7 @@
         }else {
           vm.role=0;
         }
+        $rootScope.role=vm.role;
         //业务数据包
         xcpk.get('xcpk').then(function (result) {
           vm.data = result;
@@ -80,6 +81,55 @@
         ]
       }
 
+      //function createDesignDoc(name, mapFunction) {
+      //  var ddoc = {
+      //    _id: '_design/' + name,
+      //    views: {
+      //    }
+      //  };
+      //  ddoc.views[name] = { map: mapFunction.toString() };
+      //  return ddoc;
+      //}
+      //var pouch = new PouchDB('mydb');
+      //var designDoc = createDesignDoc('my_index', function (doc) {
+      //  emit(doc.CheckRegionID);
+      //});
+      //AcceptanceIndexID
+      //  :
+      //  "5da3cc0e2d88476ebce0015761cd52fb"
+      //AcceptanceItemID
+      //  :
+      //  "d7579fa6e26b4850967d105ac8ed6893"
+      //CheckRegionID
+      //  :
+      //  "00037000000000000000"
+
+      //function addORrUpdate(puchdb){
+      //  $http.get("http://emp.chngalaxy.com:9091/api/MeasureInfo/GetUserMeasureValue?projectId=00037&recordType=1&relationId=scsl00037_0").then(function(r){
+      //    var data= r.data;
+      //    data.forEach(function(k){
+      //      puchdb.get(k.AcceptanceIndexID+"_"+ k.MeasurePointID).then(function(doc){
+      //        k._id=k.AcceptanceIndexID+"_"+ k.MeasurePointID;
+      //        k._rev = doc._rev;
+      //        return puchdb.put(k);
+      //      }).catch(function(r){
+      //        k._id=k.AcceptanceIndexID+"_"+ k.MeasurePointID;
+      //        return puchdb.put(k).then(function(r){
+      //          //console.log(r)
+      //        });
+      //      });
+      //    })
+      //  })
+      //}
+      //
+      //pouch.put(designDoc).then(function (doc) {
+      //  addORrUpdate(pouch);
+      //}).catch(function (err) {
+      //  addORrUpdate(pouch);
+      //});
+
+
+
       vm.download=function(item,isReflsh){
         if (api.getNetwork()==1){
           utils.alert('请打开网络!');
@@ -130,10 +180,13 @@
             $scope.item=item;
             var tasks = [];
             tasks.push(function () {
-              return remote.Assessment.getUserMeasureValue(item.ProjectID,1,item.AssessmentID,"Pack"+item.AssessmentID+"sc",sxt);
+              return remote.Assessment.GetMeasurePointAll(item.ProjectID);
             });
             tasks.push(function () {
-              return remote.Assessment.getUserMeasurePoint(item.ProjectID,1,"Pack"+item.AssessmentID+"point");
+              return remote.Assessment.GetMeasurePointByRole(item.ProjectID,vm.role);
+            });
+            tasks.push(function () {
+              return remote.Assessment.GetMeasurePointGeometry(item.ProjectID);
             });
             tasks.push(function(){
               return remote.Assessment.getAllMeasureReportData({RegionID:item.ProjectID,RecordType:1})
@@ -221,7 +274,7 @@
                       remote.Assessment.sumReportTotal(item.AssessmentID).then(function () {
                         xcpk.addOrUpdate(vm.data);
                         utils.alert('同步完成');
-                        pack.sc.remove(item.AssessmentID,function(){});
+                        pack.sc.removeSc(item.AssessmentID,function(){});
                       })
                     else {
                       utils.alert('同步发生错误,未完成!');
@@ -286,23 +339,6 @@
         api.setNetwork(1).then(function(){
           $state.go("app.xhsc.scsl.sclist",routeData)
         })
-
-
-        //  remote.Assessment.GetRegionTreeInfo(item.ProjectID,"pack"+item.AssessmentID).then(function(r){
-        //    api.setNetwork(1).then(function(){
-        //      if (r&& r.data&& r.data.data&& r.data.data.Children.length){
-        //        var areas=r.data.data.Children;
-        //
-        //        if (angular.isArray(areas)&&areas.length>1){
-        //
-        //        }else {
-        //          $state.go("app.xhsc.scsl.sclist",angular.extend(routeData,{area:areas[0].RegionID}));
-        //        }
-        //      }else {
-        //        utils.alert('该项目没有设置分期');
-        //      }
-        //  })
-        //})
       }
 
       vm.action=function(item,evt){

@@ -101,20 +101,14 @@
         return db.remove(doc);
       });
     },
-    findAll:function (filter,startKey) {
-      var def={include_docs:true};
-      if (startKey){
-        def.startKey=startKey;
+    findAll:function (filter,options) {
+      if (!options){
+        options={};
       }
-      return _allDoc.apply(this,[filter,def])
-      //_allDoc({include_docs:true,startKey:startKey});
-    },
-    fundAllWithOption:function(filter,option){
-        var def={include_docs:true};
-        if (angular.isObject(option)){
-          angular.extend(def,option);
-        }
-        return _allDoc.apply(this,[filter,def]);
+      if (!options.include_docs){
+        options.include_docs=true;
+      }
+      return _allDoc.apply(this,[filter,options])
     },
     find:function (filter,option) {
       var def={include_docs:true};
@@ -228,6 +222,7 @@
       if($window.cordova){
         options = options||{};
         options.adapter = 'websql';
+        options.auto_compaction=true;
         options.iosDatabaseLocation = 'default';
       }
       if (name!='localBD'){

@@ -56,7 +56,8 @@
           })
 
           zt.find(function(n){
-            return
+            //var max=
+            return;
           });
           k.floors = arr.length;
           k.sellLine=parseInt(k.floors*0.67)

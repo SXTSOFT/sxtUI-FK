@@ -681,6 +681,48 @@
             return r;
           });
         }),
+        GetMeasurePointAll: $http.db({
+          _id: 'prePoint',
+          idField: "projectID" ,
+          dataType: 3
+        }).bind(function (projectID) {
+          return $http.get($http.url('/api/MeasurePointApi/GetMeasurePointAll', {projectID: projectID})).then(function(result){
+            return {
+              data:{
+                projectID:projectID,
+                data: result.data
+              }
+            }
+          });
+        }),
+        GetMeasurePointByRole: $http.db({
+          _id: 'pointRelate',
+          idField: "projectID" ,
+          dataType: 3
+        }).bind(function (projectID,role) {
+          return $http.get($http.url('/api/MeasurePointApi/GetMeasurePointByRole', {projectID: projectID,role:role})).then(function(result){
+            return {
+              data:{
+                projectID:projectID,
+                data: result.data
+              }
+            }
+          });
+        }),
+        GetMeasurePointGeometry: $http.db({
+          _id: 'geometrys',
+          idField: 'projectID',
+          dataType: 3
+        }).bind(function (projectID) {
+          return $http.get($http.url('/api/MeasurePointApi/GetMeasurePointGeometry', {projectID: projectID})).then(function(result){
+            return {
+              data:{
+                projectID:projectID,
+                data: result.data
+              }
+            };
+          })
+        }),
         getUserMeasurePoint:$http.db({
           db:function (projectId,recordType,db) {
             return db;
