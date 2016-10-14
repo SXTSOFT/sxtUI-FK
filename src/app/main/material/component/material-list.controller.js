@@ -13,6 +13,6 @@
   });
   /** @ngInject */
   function material($scope,api,utils){
-    console.log('aaa');
+    
   }
 })(angular,undefined);
