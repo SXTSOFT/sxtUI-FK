@@ -60,9 +60,6 @@
     })
 
 
-
-    console.log(vm.messages)
-
     vm.messages&&vm.messages.forEach(function(t){
       t.checked = false;
     })
@@ -84,19 +81,16 @@
     function operateMsg(ev){
 
       utils.confirm('确认全部删除?',ev,'','').then(function(){
-        remote.message.deleteAllMessage().then(function () {
-
-          utils.alert('删除成功!');
-          reloadMessage();
-
+       remote.message.deleteAllMessage().then(function () {
+          vm.messages = [];
         })
-
       })
-
-
-      }
-    $rootScope.$on('operateMsg',operateMsg);
-
-
+    }
+    var event=   $rootScope.$on('operateMsg',operateMsg);
+    $scope.$on("$destroy",function(){
+      //$mdDialog
+      event();
+      event=null;
+    });
   }
 })();

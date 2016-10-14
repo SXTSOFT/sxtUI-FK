@@ -1,13 +1,14 @@
+<h2 style="width: 100%;position: absolute;top: -5px">
+  <md-icon class="arrows icon s32" ng-show="$root.leftArrow===true" md-font-icon="icon-chevron-left" style="color:#fff;" ng-click="toLeft()"></md-icon>
+  <span style="width:70%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" ng-class="{'subtitle':$root.leftArrow===true}">{{$root.subtitle||$root.title || '星河大数据工程管理平台'}}</span>
+  <md-icon class="arrows icon s32" ng-show="$root.rightArrow===true" md-font-icon="icon-chevron-right" style="color:#fff;" ng-click="toRight()"></md-icon>
+</h2>
 <div class="md-toolbar-tools grzx" style="padding: 0" layout="row">
-    <!--<md-icon md-font-icon="icon-chevron-left" style="color:white;" ng-click="goBack();" class="icon s32"></md-icon>-->
   <md-button flex="none" ng-show="$root.noBack" ng-click="goBack();" >返回</md-button>
-<md-button flex="none" ng-show="$root.showgrzx" ui-sref="app.xhsc.pcenter"><md-icon><img src="app/main/xhsc/images/grzx.png" width="21"></md-icon></md-button>
+  <md-button flex="none" ng-show="$root.showgrzx" ui-sref="app.xhsc.pcenter"><md-icon><img src="app/main/xhsc/images/grzx.png" width="21"></md-icon></md-button>
+  <span flex></span>
 
-  <h2 flex>
-    <md-icon class="arrows icon s32" ng-show="$root.leftArrow===true" md-font-icon="icon-chevron-left" style="color:#fff;" ng-click="toLeft()"></md-icon>
-    <span style="width:70%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" ng-class="{'subtitle':$root.leftArrow===true}">{{$root.subtitle||$root.title || '星河大数据工程管理平台'}}</span>
-    <md-icon class="arrows icon s32" ng-show="$root.rightArrow===true" md-font-icon="icon-chevron-right" style="color:#fff;" ng-click="toRight()"></md-icon>
-  </h2>
+
   <md-button flex="none" class="md-icon-button" aria-label="net work" >
     <md-icon md-svg-icon="assets/images/online.svg" ng-if="vm.networkState==0" style="color:#e0e0e0"></md-icon>
     <md-icon md-svg-icon="assets/images/offline.svg" ng-if="vm.networkState==1" style="color:#e0e0e0"></md-icon>
@@ -15,10 +16,10 @@
     <md-button  flex="none" style="font-size:14px;" ng-show="$root.sendBt" ng-click="vm.sendGxResult()">
       提交
     </md-button>
-<md-button  flex="none" style="font-size:14px;" ng-show="$root.opBtn" ng-click="vm.operateMsg($event)">
+   <md-button  flex="none" style="font-size:14px;" ng-show="$root.opBtn" ng-click="vm.operateMsg($event)">
       清除
     </md-button>
- <md-button flex="none" style="font-size:14px;" ng-show="$root.refreshBtn===true" class="md-link md-mini">
+   <md-button flex="none" style="font-size:14px;" ng-show="$root.refreshBtn===true" class="md-link md-mini">
       <md-icon><img src="app/main/xhsc/images/refresh.png"></md-icon>
     </md-button>
   <md-button flex="none" style="font-size:14px;" ng-show="$root.showgrzx" ui-sref="app.xhsc.mcenter"><md-icon><img src="app/main/xhsc/images/msg.png" width="21"></md-icon></md-button>
