@@ -39,12 +39,12 @@
       couchDb:'http://ggem.sxtsoft.com:5984',
       //api:'http://vkde.sxtsoft.com:8091',
       //api:'http://xhszgc.sxtsoft.com:9091',
-      //api:'http://emp.chngalaxy.com:9091',
-      api:'http://10.0.9.79:7091',
+      api:'http://emp.chngalaxy.com:9091',
+      //api:'http://10.0.9.79:7091',
       //api:'http://xhszgc.sxtsoft.com:9091',
       //api:'http://10.0.8.183:9091',
       //fs:'http://xhszgc.sxtsoft.com:8090'
-      fs:'http://10.0.9.79:7090'
+      fs:'http://emp.chngalaxy.com:9090'
     },
     angular:{
 
