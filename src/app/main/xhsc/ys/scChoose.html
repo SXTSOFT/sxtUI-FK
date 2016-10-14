@@ -12,7 +12,8 @@
     <md-list>
       <md-list-item  ng-if="!sc.hide" ng-repeat="sc in scList" ng-click="checkSc(sc)">
         <p ng-class="{'red':sc.checked}">{{sc.IndexName}}</p>
-        <md-switch class="md-secondary" ng-model="sc.checked" ng-if="!sc.ishide"></md-switch>
+        <md-switch class="md-secondary" ng-model="sc.checked" ng-if="!sc.hidebutton"></md-switch>
+        <md-divider ng-if="!$last&&!sc.hidebutton"></md-divider>
       </md-list-item>
     </md-list>
   </md-dialog-content>

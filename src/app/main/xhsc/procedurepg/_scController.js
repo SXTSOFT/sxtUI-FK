@@ -32,10 +32,10 @@
       var packdb = db('pack'+vm.info.db);
       var arr=[
         packdb.get('GetMeasureItemInfoByAreaID'),
-        remote.Assessment.GetMeasurePointByRole(vm.info.regionId.subStr(0,5))
+        remote.Assessment.GetMeasurePointByRole(vm.info.regionId.substr(0,5))
       ]
 
-      $.all(arr).then(function(res){
+      $q.all(arr).then(function(res){
         var  r=res[0];
         var  n=res[1];
 
@@ -57,53 +57,59 @@
           t.checked = false;
         })
         var arr= n.data.data,t;
+        var index=1
         for (var i=vm.MeasureIndexes.length-1;i>=0;i--){
           t=[];
-          for (var j=0;j<n.length;j++){
-            if ( vm.info.regionId== n[j].CheckRegionID&&vm.MeasureIndexes[i].AcceptanceItemID==n[j].AcceptanceItemID){
-              if (!k.MeasurePointID){
+          for (var j=0;j<arr.length;j++){
+            if ( vm.info.regionId== arr[j].CheckRegionID&&vm.MeasureIndexes[i].AcceptanceItemID==arr[j].AcceptanceItemID){
+              if (!arr[j].MeasurePointID){
                 vm.MeasureIndexes[i].hide=true;
                 //合格
               }else {
                 vm.MeasureIndexes[i].hidebutton=true;
               }
-              t.push(k);
+              index++;
+              break;
             }
           }
         }
-        $timeout(function () {
-          vm.scChoose();
-        },500);
-
-
-
-      });
-
-      packdb.get('GetMeasureItemInfoByAreaID').then (function (r) {
-        var find = r.data.find(function (it) {
-          return it.AcceptanceItemID == vm.info.acceptanceItemID;
-        });
-        if(!find){ //TODO:一般不可能找不到,找不到肯定后台有问题,这里可能需要提示并去掉
-          find = r.data.find(function () {
-            return true;
-          })
+        if (index==vm.MeasureIndexes.length){
+          utils.alert("该实测项下面的所有指标检测合格");
+          return;
         }
-        var m=[];
-        find.MeasureIndexList.forEach(function(item) {
-          m.push(item);
-        });
-        vm.MeasureIndexes = m;
-        vm.MeasureIndexes.forEach(function(t){
-          t._id = sxt.uuid();//指标结构表
-          t.checked = false;
-        })
         $timeout(function () {
           vm.scChoose();
         },500);
 
-      },function(err){
+
 
       });
+
+      //packdb.get('GetMeasureItemInfoByAreaID').then (function (r) {
+      //  var find = r.data.find(function (it) {
+      //    return it.AcceptanceItemID == vm.info.acceptanceItemID;
+      //  });
+      //  if(!find){ //TODO:一般不可能找不到,找不到肯定后台有问题,这里可能需要提示并去掉
+      //    find = r.data.find(function () {
+      //      return true;
+      //    })
+      //  }
+      //  var m=[];
+      //  find.MeasureIndexList.forEach(function(item) {
+      //    m.push(item);
+      //  });
+      //  vm.MeasureIndexes = m;
+      //  vm.MeasureIndexes.forEach(function(t){
+      //    t._id = sxt.uuid();//指标结构表
+      //    t.checked = false;
+      //  })
+      //  $timeout(function () {
+      //    vm.scChoose();
+      //  },500);
+      //
+      //},function(err){
+      //
+      //});
       vm.scChoose = function($event){
         $mdDialog.show({
             controller: ['$scope','$mdDialog',function($scope, $mdDialog) {
