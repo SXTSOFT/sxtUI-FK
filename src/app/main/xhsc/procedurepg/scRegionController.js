@@ -107,7 +107,6 @@
           project.Children.forEach(function(k){
             initRegion(k);
           });
-
           vm.houses =  project.Children;
         }
       }

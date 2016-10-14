@@ -32,7 +32,7 @@
           if (k.RegionType == 4) {
             builds.push({
               building_id: k.RegionID,
-              gx1: 5,
+              gx1: 0,
               gx2: 0,
               name: k.RegionName,
               //sellLine: -100,
@@ -55,17 +55,17 @@
             }
           })
 
-          zt.find(function(n){
-            //var max=
-            return;
+          var x= zt.find(function(n){
+            return n.RegionID== k.building_id;
           });
+          if (x){
+            k.gx1= x.Max;
+          }
+
           k.floors = arr.length;
           k.sellLine=parseInt(k.floors*0.67)
           k.floorData = arr;
         })
-
-        //getZTjd
-
 
         vm.maxLen=0
         vm.areas.forEach(function(k){

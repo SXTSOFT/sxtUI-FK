@@ -11,7 +11,7 @@
     .module('app.xhsc')
     .controller('_scController',_scController)
   /** @ngInject */
-  function _scController($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,scPack,sxt,$timeout,$state,remote,api) {
+  function _scController($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,scPack,sxt,$timeout,$state,remote,api,$q) {
     var vm = this;
     var  pack=scPack;
     vm.info = {
@@ -30,6 +30,55 @@
     api.setNetwork(1).then(function(){
       $rootScope.title =vm.info.name;
       var packdb = db('pack'+vm.info.db);
+      var arr=[
+        packdb.get('GetMeasureItemInfoByAreaID'),
+        remote.Assessment.GetMeasurePointByRole(vm.info.regionId.subStr(0,5))
+      ]
+
+      $.all(arr).then(function(res){
+        var  r=res[0];
+        var  n=res[1];
+
+        var find = r.data.find(function (it) {
+          return it.AcceptanceItemID == vm.info.acceptanceItemID;
+        });
+        if(!find){ //TODO:一般不可能找不到,找不到肯定后台有问题,这里可能需要提示并去掉
+          find = r.data.find(function () {
+            return true;
+          })
+        }
+        var m=[];
+        find.MeasureIndexList.forEach(function(item) {
+          m.push(item);
+        });
+        vm.MeasureIndexes = m;
+        vm.MeasureIndexes.forEach(function(t){
+          t._id = sxt.uuid();//指标结构表
+          t.checked = false;
+        })
+        var arr= n.data.data,t;
+        for (var i=vm.MeasureIndexes.length-1;i>=0;i--){
+          t=[];
+          for (var j=0;j<n.length;j++){
+            if ( vm.info.regionId== n[j].CheckRegionID&&vm.MeasureIndexes[i].AcceptanceItemID==n[j].AcceptanceItemID){
+              if (!k.MeasurePointID){
+                vm.MeasureIndexes[i].hide=true;
+                //合格
+              }else {
+                vm.MeasureIndexes[i].hidebutton=true;
+              }
+              t.push(k);
+            }
+          }
+        }
+        $timeout(function () {
+          vm.scChoose();
+        },500);
+
+
+
+      });
+
       packdb.get('GetMeasureItemInfoByAreaID').then (function (r) {
         var find = r.data.find(function (it) {
           return it.AcceptanceItemID == vm.info.acceptanceItemID;

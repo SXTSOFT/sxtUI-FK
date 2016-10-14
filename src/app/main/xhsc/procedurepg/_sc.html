@@ -23,7 +23,8 @@
   <!--</md-tabs>-->
 <!--</div>-->
 <!--<sxt-sc flex area-id="vm.info.areaId" tooltip="vm.info.tooltip" db="vm.info.db" image-url="vm.info.imageUrl" region-id="vm.info.regionId" region-type="vm.info.regionType" acceptance-item="vm.info.acceptanceItemID" region-name="vm.info.name"  measure-indexes="vm.info.MeasureIndexes" ></sxt-sc>-->
-<sxt-sc-new flex area-id="vm.info.areaId" tooltip="vm.info.tooltip" db="vm.info.db" image-url="vm.info.imageUrl" region-id="vm.info.regionId" region-type="vm.info.regionType" acceptance-item="vm.info.acceptanceItemID" region-name="vm.info.name"  measure-indexes="vm.info.MeasureIndexes" >
+<sxt-sc-new flex area-id="vm.info.areaId" tooltip="vm.info.tooltip" db="vm.info.db" image-url="vm.info.imageUrl" region-id="vm.info.regionId" region-type="vm.info.regionType" acceptance-item="vm.info.acceptanceItemID" region-name="vm.info.name"  measure-indexes="vm.info.MeasureIndexes"
+           sc-choose="vm.scChoose()">
   <div style="position:absolute;left:10px;bottom:10px;z-index:1000;" ng-if=" vm.showState&&vm.info.MeasureIndexes">
     <button style="width:51px;height:51px;background: rgba(0,0,0,.6);border-radius: 4px;color:#fff;" ng-click="vm.stateGo()">查看</button>
   </div>
