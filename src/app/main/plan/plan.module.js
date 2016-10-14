@@ -84,6 +84,14 @@
         url:'/gantts',
         template:'<plan-ganttlist flex layout="column"></plan-ganttlist>'
       })
+      //.state('app.plan.milestone',{
+      //  url:'/milestone',
+      //  template:'<ui-view layout="column" flex></ui-view>'
+      //})
+      //.state('app.plan.milestone.list',{
+      //  url:'/list',
+      //  template:'<plan-milestone flex layout="column"></plan-milestone>'
+      //})
     msNavigationServiceProvider.saveItem('plan', {
       title: '计划管理',
       group: true,

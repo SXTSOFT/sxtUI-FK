@@ -108,6 +108,23 @@
         },
         deleteTaskLibById:function(id,buildingPlanFlowId){
           return $http.delete($http.url('/api/BuildingPlans/'+id+'/BuildingPlanFlows/'+buildingPlanFlowId))
+        },
+        getMileStone:function(id){
+          return $http.get($http.url('/api/BuildingPlans/'+id+'/Milestones'))
+        },
+        adjustPlan:function(id,params){
+          return $http.post($http.url('/api/BuildingPlans/'+id+'/Adjust'),params)
+        }
+      },
+      MileStone:{
+        create:function(data){
+          return $http.post($http.url('/api/MileStones'),data)
+        },
+        query:function(params){
+          return $http.get($http.url('/api/MileStones',{RelatedFlowId:params.RelatedFlowId}))
+        },
+        update:function(Id,data){
+          return $http.put($http('/api/MileStones/'+Id,data))
         }
       },
       /** /api/TaskLibrary 任务 **/

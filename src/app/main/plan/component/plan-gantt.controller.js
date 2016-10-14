@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function plangantt($mdDialog, $document, $animate, $scope, $timeout, ganttUtils, GanttObjectModel, ganttDebounce, moment, $window, $mdSidenav,api,$stateParams){
+  function plangantt($mdDialog, $document, $animate, $scope, $timeout, ganttUtils, GanttObjectModel, ganttDebounce, moment, $window, $mdSidenav,api,$stateParams,$q){
     var vm = this;
     var objectModel;
     vm.timespans = [
@@ -140,16 +140,25 @@
       api                     : function (ganttApi)
       {
         vm.api = ganttApi;
-        //vm.api.tasks.on.change($scope,function(){
-        //  console.log($scope.vm.data)
-        //})
+        //console.log(ganttApi)
+
         vm.api.core.on.ready($scope, function ()
         {
           vm.load();
-
           objectModel = new GanttObjectModel(vm.api);
-
         });
+        ganttApi.tasks.on.change($scope,function(task){
+          var changeData = [
+            {
+              "TaskId": task.model.id,
+              "ScheduledStartTime": task.model.from,
+              "ScheduledEndTime": task.model.to
+            }
+          ]
+          api.plan.BuildPlan.adjustPlan($stateParams.id,changeData).then(function(r){
+            //load();
+          })
+        })
       }
     };
 
@@ -192,7 +201,7 @@
     }
 
     function editDialog(ev,data){
-      //console.log('a',data)
+      console.log('a',data)
     }
 
 
@@ -255,10 +264,11 @@
     // Reload data action
     function load()
     {
-      api.plan.Task.query({
+      $q.all([api.plan.Task.query({
         Type:'BuildingPlan',
         Source:$stateParams.id
-      }).then(function (r) {
+      }),api.plan.BuildPlan.getMileStone($stateParams.id)]).then(function (rs) {
+        var r = rs[0];
         var tasks = r.data.Items.map(function (item) {
           var reuslt = {
             id:item.Id+'-group',
@@ -283,8 +293,22 @@
           }
           return reuslt;
         });
-        console.log(JSON.stringify(tasks))
-        vm.data = tasks;
+        var from = tasks[0].tasks[0].from;
+        //console.log(JSON.stringify(tasks))
+        vm.data=[{
+          id:'__',
+          name:'里程碑',
+          tasks:rs[1].data.map(function(m){
+            var r =  {
+              id: m.Id,
+              name: m.Name,
+              from:from,
+              to: m.MilestoneTime
+            };
+            from = m.MilestoneTime;
+            return r;
+          })
+        }].concat(tasks);
       })
 
       // Fix for Angular-gantt-chart issue
