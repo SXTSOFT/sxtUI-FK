@@ -244,13 +244,15 @@
       })
     }
     $scope.$watch('vm.selectedCategory',function(){
+      if(!vm.cselectedCategory){
+        vm.cselectedCategory = vm.selectedCategory;
+      }
       if(vm.selectedCategory&&vm.selectedCategory!=vm.cselectedCategory){
         vm.categoryChanged = true;
       }else if(vm.selectedCategory){
         vm.categoryChanged = false;
         vm.getNextTasks();
       }
-
     })
     vm.getNextTasks = function () {
       vm.saveTasks =[];
@@ -261,6 +263,7 @@
       ];
       $q.all(promises).then(function(res){
         vm.nextTasks = res[0].data.Items;
+        vm.selectedTasks =  res[1].data.Items;
         vm.nextTasks.forEach(function(r){
           var f = res[1].data.Items&&res[1].data.Items.find(function(_r){
             return _r.TaskLibraryId == r.TaskLibraryId;
@@ -294,6 +297,22 @@
         }
       })
         .then(function (newTask) {
+          if(!angular.isArray(vm.saveTasks)){
+            vm.saveTasks=[];
+          }
+          vm.saveTasks.push(newTask.TaskLibraryId);
+          var tasks = [];
+          vm.saveTasks && vm.saveTasks.forEach(function (tid) {
+            tasks.push({
+              TaskFlowId:vm.current.TaskFlowId,
+              TaskLibraryId:tid
+            });
+          })
+          api.plan.TaskFlow.resetTaskFlow(vm.current.TaskFlowId,tasks).then(function(r){
+            if(r.status == 200 || r.data){
+              vm.getNextTasks();
+            }
+          })
 
         }, function () {
 

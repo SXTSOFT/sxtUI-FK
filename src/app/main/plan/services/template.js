@@ -25,7 +25,7 @@
         mergeStyle: "straight",
         showLabel: true,
         // display Branch names on graph
-        labelFont: "normal 13pt Arial"
+        font: "normal 14pt Arial"
       },
       commit: {
         spacingY: -60,

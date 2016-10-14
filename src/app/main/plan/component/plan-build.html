@@ -155,7 +155,7 @@
     <md-button class="md-raised md-accent" ng-click="vm.nextStep(msWizard.selectedIndex,msWizard.nextStep);" ng-hide="msWizard.isLastStep()" ng-disabled="msWizard.currentStepInvalid()">
       下一步
     </md-button>
-    <md-button class="md-raised md-warn" ng-click="vm.sendForm(); msWizard.resetForm();" ng-show="msWizard.isLastStep()" ng-disabled="msWizard.formsIncomplete()">
+    <md-button class="md-raised md-warn" ng-click="vm.sendForm(msWizard.resetForm)" ng-show="msWizard.isLastStep()" ng-disabled="msWizard.formsIncomplete()">
       生成任务
     </md-button>
   </div>
