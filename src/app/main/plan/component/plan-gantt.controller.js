@@ -260,7 +260,7 @@
         Source:$stateParams.id
       }).then(function (r) {
         var tasks = r.data.Items.map(function (item) {
-          return {
+          var reuslt = {
             id:item.Id+'-group',
             name:item.Name,
             tasks:[
@@ -277,6 +277,11 @@
               }
             ]
           }
+          if(item.ExtendedParameters)
+          {
+           return angular.extend(reuslt,{parent:item.ExtendedParameters+'-group'})
+          }
+          return reuslt;
         });
         console.log(JSON.stringify(tasks))
         vm.data = tasks;
