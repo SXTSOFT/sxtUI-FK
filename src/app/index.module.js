@@ -13,6 +13,7 @@
             'app.auth',
             'app.pcReport',
             'app.xhsc',
-            'app.plan'
+            'app.plan',
+            'app.material'
         ]);
 })();
