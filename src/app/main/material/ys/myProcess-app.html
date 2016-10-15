@@ -16,7 +16,6 @@
           </md-list-item>
           <md-divider></md-divider>
           <md-list-item>
-
             <div class="md-list-item-text" flex="25" layout="column">
               <p style="text-align: left;">合同编号</p>
             </div>
@@ -46,57 +45,64 @@
           <md-divider></md-divider>
           <md-list-item>
             <div class="md-list-item-text" flex="25" layout="column">
-              <p style="text-align: left;">合同编号</p>
-            </div>
-            <!--<md-select placeholder="" ng-model="vm.checkData.Manufactor" style="width:75%;">-->
-            <!--</md-select>-->
-            <md-input-container class="md-block" flex-gt-sm style="width: 75%;margin: 18px 0 0 0;">
-              <input style="width: 100%;" ng-model="vm.checkData.ContractNumber">
-            </md-input-container>
-          </md-list-item>
-          <md-divider></md-divider>
-          <md-list-item>
-            <div class="md-list-item-text" flex="25" layout="column">
               <p style="text-align: left;">验收时间</p>
             </div>
             <div flex></div>
-            <md-datepicker ng-model="vm.checkData.CheckTime" md-open-on-focus="" style="margin: 18px 0 18px 0;padding-right: 0;"></md-datepicker>
+            <md-datepicker ng-model="vm.checkData.CheckTime" md-open-on-focus style="margin: 18px 0 18px 0;padding-right: 0;"></md-datepicker>
           </md-list-item>
           <md-divider></md-divider>
           <md-list-item>
             <div class="md-list-item-text" flex="25" layout="column" style="height: 76px; line-height: 48px;">
               <p style="text-align: left;">外观检查</p>
             </div>
-            <!--<md-radio-group ng-model="vm.checkData.WgCheck">-->
-              <!--<md-radio-button value="1" class="md-primary">合格</md-radio-button>-->
-              <!--<md-radio-button value="0">不合格</md-radio-button>-->
-            <!--</md-radio-group>-->
-            <md-switch class="md-secondary" ng-model="vm.checkData.WgCheck" ng-true-value="1" ng-false-value="0"></md-switch>
+            <md-switch class="md-secondary" ng-model="vm.checkData.WgCheck" ng-true-value="1" ng-false-value="0">
+              {{vm.checkData.WgCheck ? '合格':'不合格' }}
+            </md-switch>
           </md-list-item>
           <md-divider></md-divider>
-          <md-list-item>
+          <md-list-item ng-show="vm.checkData.WgCheck==0">
+            <div class="md-list-item-text" flex="25" layout="column">
+              <p style="text-align: left;">不合格说明</p>
+            </div>
+            <md-input-container class="md-block" flex-gt-sm style="width: 75%;margin: 18px 0 0 0;">
+              <input style="width: 100%;" ng-model="vm.checkData.WgFailedRemark">
+            </md-input-container>
+          </md-list-item>
+          <md-divider ng-show="vm.checkData.WgCheck==0"></md-divider>
+          <md-list-item ng-show="vm.checkData.WgCheck==1">
             <div class="md-list-item-text" flex="25" layout="column" style="height: 76px; line-height: 48px;">
               <p  style="text-align: left;">是否送检</p>
             </div>
-            <!--<md-radio-group ng-model="vm.checkData.IsInspection" ng-disabled="vm.checkData.WgCheck == 0">-->
-              <!--<md-radio-button value="1" class="md-primary">需要</md-radio-button>-->
-              <!--<md-radio-button value="0">不需要</md-radio-button>-->
-            <!--</md-radio-group>-->
-            <md-switch style="height: 76px;" class="md-secondary" ng-model="vm.checkData.IsInspection" ng-true-value="1" ng-false-value="0" ng-disabled="vm.checkData.WgCheck == 0"></md-switch>
+            <md-switch style="height: 76px;" class="md-secondary" ng-model="vm.checkData.IsInspection" ng-true-value="1" ng-false-value="0" ng-disabled="vm.checkData.WgCheck == 0">
+              {{vm.checkData.IsInspection ? '需要':'不需要' }}
+            </md-switch>
           </md-list-item>
-          <md-divider></md-divider>
+          <md-divider ng-show="vm.checkData.WgCheck==1"></md-divider>
+          <div class="md-padding" ng-if="vm.checkData.WgCheck==1 && vm.checkData.IsInspection==1 && project.procedureId" style="color: rgba(0,0,0,0.87);">
+            <fieldset>
+              <legend style="font-size: 1.6rem;">检查指标</legend>
+              <md-list>
+                <md-list-item ng-repeat="n in Targets" ng-click="n.isOK=!n.isOK" ng-disabled="n.need">
+                  <div class="md-list-item-text" flex layout="column">
+                    <h3 style="margin-top: 10px; margin-bottom: 5px;font-size: 1.6rem">{{$index+1}}、{{n.TargetName}}</h3>
+                    <p ng-if="n.Remark" style="margin: 0;line-height: 120%;font-size: 13px !important; ">
+                      {{n.Remark}}
+                    </p>
+                  </div>
+                  <md-switch ng-disabled="n.need" ng-click="$event.stopPropagation()" ng-model="n.isOK"></md-switch>
+                </md-list-item>
+              </md-list>
+            </fieldset>
+          </div>
+          <md-divider ng-if="vm.checkData.WgCheck==1 && vm.checkData.IsInspection==1 && project.procedureId"></md-divider>
           <md-list-item  ng-click="vm.AttachmentSHow = true">
             <div class="md-list-item-text" flex="25" layout="column" style="height: 76px; line-height: 48px;">
               <p style="text-align: left;">附件</p>
             </div>
-            <!--<md-radio-group ng-model="vm.checkData.IsInspection" ng-disabled="vm.checkData.WgCheck == 0">-->
-            <!--<md-radio-button value="1" class="md-primary">需要</md-radio-button>-->
-            <!--<md-radio-button value="0">不需要</md-radio-button>-->
-            <!--</md-radio-group>-->
             <a class="md-secondary">添加</a>
           </md-list-item>
           <md-divider></md-divider>
-          <md-subheader style="background-color: #f5f6f7;" class="md-no-sticky">附件</md-subheader>
+          <md-subheader style="background-color: #f5f6f7;" class="md-no-sticky" ng-hide="data.imgs1.length == 0 && data.imgs2.length == 0 && data.imgs3.length == 0&& data.imgs4.length == 0&& data.imgs5.length == 0">附件</md-subheader>
           <md-list-item ng-show="vm.EnclosureType.length != 0">
             <div  sxt-image-view is-container="true">
               <p ng-repeat="item in vm.EnclosureType">
@@ -104,7 +110,7 @@
               </p>
             </div>
           </md-list-item>
-          <md-divider></md-divider>
+          <md-divider ng-hide="data.imgs1.length == 0 && data.imgs2.length == 0 && data.imgs3.length == 0&& data.imgs4.length == 0&& data.imgs5.length == 0"></md-divider>
         </md-list>
 
       </sxt-projects-jd>
@@ -139,6 +145,17 @@
           </div>
         </div>
         <md-divider></md-divider>
+      <div class="row" ng-show="vm.checkData.sjReport == 0">
+        <div layout='row' style="padding: 0 15px 0 8px;" layout-align="start center" >
+          <div flex>
+            <h3>不合格说明</h3>
+          </div>
+          <md-input-container class="md-block" flex-gt-sm style="width: 75%;margin: 18px 0 0 0;">
+            <input style="width: 100%;" ng-model="vm.checkData.CheckReportRemark">
+          </md-input-container>
+        </div>
+      </div>
+      <md-divider></md-divider>
         <div class="md-padding">
           <fieldset ng-show="vm.fjType == 2">
             <legend>出厂合格证</legend>

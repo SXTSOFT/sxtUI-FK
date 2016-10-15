@@ -16,13 +16,17 @@
 
     var vm = this;
     vm.AttachmentSHow = false;
-
+    vm.parentLoad = function () {
+      $scope.$parent.vm.load();
+    };
     vm.checkData={};
     vm.EnclosureType = [];
     vm.checkData.WgCheck = 1;
     vm.checkData.IsInspection = 1;
     vm.checkData.CheckTime = new Date();
     vm.checkData.sjReport = null;
+    vm.checkData.MaterialTargets = [];
+
     $scope.data = {
       imgs1:[],
       imgs2:[],
@@ -59,6 +63,16 @@
         utils.alert('请输入合同编号');
         return;
       }
+      if ($scope.data.imgs1.length == 0 &&
+        $scope.data.imgs2.length == 0 &&
+        $scope.data.imgs3.length == 0 &&
+        $scope.data.imgs4.length == 0 &&
+        $scope.data.imgs5.length == 0
+      ) {
+        utils.alert('请添加附件');
+        return;
+      }
+
 
       vm.checkData.InspectionReport = vm.checkData.sjReport;
       vm.checkData.ProjectId = $scope.project.projectId;
@@ -67,7 +81,7 @@
       vm.checkData.RegionId = $scope.project.pid;
       vm.checkData.ProjectName = $scope.project.projectName;
       vm.checkData.RegionName = $scope.project.typeName;
-      $scope.$parent.vm.load();
+
       if(vm.checkData.WgCheck == 0 || vm.checkData.InspectionReport == 0) {
         $mdDialog.show({
           controller: ['$scope',function ($scope) {
@@ -83,8 +97,10 @@
                 return;
               }
               vm.checkData.CheckResult = 0;  //状态：不合格
-              if (vm.checkData.InspectionReport == null)
-                vm.checkData.InspectionReport = 3; //   N/A
+              if (vm.checkData.InspectionReport == null){
+                vm.checkData.IsInspection = 2;     //是否送检：N/A
+                vm.checkData.InspectionReport = 3; //送检报告：N/A
+              }
 
               vm.checkData.HandleOption = $scope.clyj;
               api.material.addProcessService.Insert({
@@ -96,7 +112,7 @@
                   $scope.isSaveing = false;
                   utils.alert('提交完成').then(function () {
                     $state.go('app.szgc.ys');
-                    console.log($scope)
+                    vm.parentLoad();
                   });
                 }else{
                   utils.alert('提交失败').then(function () {
@@ -107,6 +123,7 @@
             };
 
           }],
+          parent: angular.element(document.body),
           templateUrl: 'app/main/material/ys/treatmentOption.html',
           bindToController:true,
           fullscreen: $scope.customFullscreen
@@ -121,12 +138,22 @@
           if (vm.checkData.InspectionReport == null)
             vm.checkData.InspectionReport = 3; //   N/A
         }
-
         vm._save(addForm);
       }
     };
 
     vm._save = function (addForm) {
+      $scope.Targets.forEach(function (r) {
+        if (r.isOK) {
+          var n = {
+            ProjectId: vm.checkData.ProjectId,
+            MaterialId: vm.checkData.MaterialId,
+            TargetId: r.Id
+          };
+          vm.checkData.MaterialTargets.push(n);
+        }
+      });
+
       api.material.addProcessService.Insert({
         Id:sxt.uuid(),
         CheckData:vm.checkData,
@@ -136,6 +163,7 @@
           $scope.isSaveing = false;
           utils.alert('提交完成').then(function () {
             $state.go('app.szgc.ys');
+            vm.parentLoad();
           });
         }else{
           utils.alert('提交失败').then(function () {
@@ -157,6 +185,7 @@
     if(vm.checkDataId != ''){
       vm.AttachmentSHow = true;
       vm.fjType = 16;
+      vm.checkData.sjReport = 1;
       vm.Type.find(function (t) {
         if(t.value == 16){
           vm.groupId_16 =  t.groupId;
@@ -207,10 +236,35 @@
       });
     }
 
+    $scope.$watch('project.procedureId',
+      function () {
+        if ($scope.project.procedureId) {
+          api.material.TargetService.getAll($scope.project.procedureId)
+            .then(function (data) {
+              $scope.Targets = data.data.Rows;
+              api.material.TargetRelationService.getByProjectId({projectId:$scope.project.projectId,materialId:$scope.project.procedureId,isChecked:true})
+                .then(function (data) {
+                  for (var i = 0; i < $scope.Targets.length; i++) {
+                    for (var j = 0; j < data.data.Rows.length; j++) {
+                      if ($scope.Targets[i].Id == data.data.Rows[j].TargetId) {
+                        $scope.Targets[i].isOK = true;
+                        $scope.Targets[i].need = true;
+                        break;
+                      }
+                    }
+                  }
+                });
+            });
+        }
+      });
+
     vm.ok = function(){
-      $scope.$parent.vm.load();
       vm.checkData.HandleOption = null;
       if(vm.checkDataId != ''){
+        if ($scope.data.imgs4.length == 0) {
+          utils.alert('请添加送检报告附件');
+          return;
+        }
         if(vm.checkData.sjReport == 0){
           $mdDialog.show({
             controller: ['$scope',function ($scope) {
@@ -227,14 +281,15 @@
                 }
 
                 vm.checkData.HandleOption = $scope.clyj;
-
+                console.log(vm.checkData);
                 api.material.addProcessService.Insert({
-                  CheckData:{Id:vm.checkDataId,InspectionReport:vm.checkData.sjReport,CheckResult:vm.checkData.sjReport,HandleOption:vm.checkData.HandleOption},
+                  CheckData:{Id:vm.checkDataId,InspectionReport:vm.checkData.sjReport,CheckResult:vm.checkData.sjReport,HandleOption:vm.checkData.HandleOption,CheckReportRemark:vm.checkData.CheckReportRemark},
                   CheckDataOptions:[{OptionType:16,GroupImg:vm.groupId_16}]
                 }).then(function (result) {
                   if(result){
                     utils.alert('提交完成').then(function () {
                       $state.go('app.szgc.ys');
+                      vm.parentLoad();
                     });
                   }else{
                     utils.alert('提交失败').then(function () {
@@ -255,6 +310,7 @@
             if(result){
               utils.alert('提交完成').then(function () {
                 $state.go('app.szgc.ys');
+                vm.parentLoad();
               });
             }else{
               utils.alert('提交失败').then(function () {
@@ -282,9 +338,6 @@
     api.material.SupplierService.GetAll({startrowIndex:0,maximumRows:100,Status:4}).then(function(result){
       $scope.supplier = result.data.Rows;
     });
-
-
-
 
     $scope.is = function(route){
       return $state.is(route);

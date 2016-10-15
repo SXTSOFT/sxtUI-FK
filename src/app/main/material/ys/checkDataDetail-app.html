@@ -45,11 +45,21 @@
       <label>{{dataInfo.WgCheck}}</label>
     </md-list-item>
     <md-divider></md-divider>
+    <md-list-item ng-show="dataInfo.WgCheck=='不合格'">
+      <label flex>外观检查不合格说明</label>
+      <label>{{dataInfo.WgFailedRemark}}</label>
+    </md-list-item>
+    <md-divider ng-show="dataInfo.WgCheck=='不合格'"></md-divider>
     <md-list-item>
       <label flex>送检报告</label>
       <label>{{dataInfo.InspectionReport}}</label>
     </md-list-item>
     <md-divider></md-divider>
+    <md-list-item ng-show="dataInfo.InspectionReport=='不合格'">
+      <label flex>送检报告不合格说明</label>
+      <label>{{dataInfo.CheckReportRemark}}</label>
+    </md-list-item>
+    <md-divider ng-show="dataInfo.InspectionReport=='不合格'"></md-divider>
     <md-list-item>
       <label flex>合格情况</label>
       <label>{{dataInfo.CheckResult}}</label>
