@@ -12,7 +12,7 @@
         <md-list-item>
           <p>{{data.procedureName}}</p>
         </md-list-item>
-        <md-subheader ng-hide="roleId=='3rd'||roleId=='zb'" class="md-no-sticky">监理单位</md-subheader>
+        <md-subheader ng-hide="roleId=='3rd'" class="md-no-sticky">监理单位</md-subheader>
         <md-list-item ng-hide="roleId=='3rd'" layout="row">
           <sxt-select flex name="jldw" ng-disabled="!data.isFirst" required ng-model="data.curHistory.SupervisorCompanyId" name-value="data.curHistory.SupervisorCompanyName" sources="data.construction" text-field="UnitName" value-field="UnitId"></sxt-select>
         </md-list-item>
