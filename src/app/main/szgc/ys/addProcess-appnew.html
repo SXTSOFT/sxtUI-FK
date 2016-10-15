@@ -1,16 +1,7 @@
-<!--<md-content>-->
-  <!--<div style="height:100%;position: relative;">-->
-    <!--<div class="ybxm" style="overflow: auto;position: relative;">-->
-      <!--<div style="height:700px;background: #ccc"></div>-->
-      <!--<div>-->
-        <!--<sxt-number ng-model="user"></sxt-number>-->
-      <!--</div>-->
-      <!--<div style="height:500px;"></div>-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</md-content>-->
-
-  <md-content flex sxt-number-list show="vm.keyboard.show" class="md-padding selector">
+<div layout="row" ng-if="vm.loading" layout-sm="column" layout-align="space-around">
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+  <md-content flex ng-if="!vm.loading" sxt-number-list show="vm.keyboard.show" class="md-padding selector">
     <form name="addForm" class="form-horizontal addform" ng-submit="save(addForm)">
       <md-list>
         <md-subheader class="md-no-sticky">项目</md-subheader>

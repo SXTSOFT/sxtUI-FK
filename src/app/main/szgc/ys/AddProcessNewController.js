@@ -14,6 +14,7 @@
   function AddProcessNewController($scope, $filter, $stateParams, utils,  $q, api,auth,$state,sxt){
 
     var vm = this;
+    vm.loading = true;
     vm.keyboard = { show:false};
 
     var dateFilter = $filter('date');
@@ -659,9 +660,12 @@
           if($scope.data.batchgp){
             $scope.data.groups.push($scope.data.batchgp);
           }
+          vm.loading = false;
         })
       }
-
+      else{
+        vm.loading =false;
+      }
     }
     $scope.$watch('data.curHistory.ParentCompanyId', function () {
       if($scope.data.curHistory.ParentCompanyId) {
