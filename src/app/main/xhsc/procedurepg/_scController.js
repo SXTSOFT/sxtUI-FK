@@ -73,10 +73,7 @@
             }
           }
         }
-        if (index==vm.MeasureIndexes.length){
-          utils.alert("该实测项下面的所有指标检测合格");
-          return;
-        }
+
         $timeout(function () {
           vm.scChoose();
         },500);
