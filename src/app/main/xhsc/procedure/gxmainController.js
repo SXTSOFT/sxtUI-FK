@@ -278,6 +278,9 @@
               if(cfg._id=='s_files' && item && item.Url.indexOf('base64')==-1){
                 return false;
               }
+              if (cfg._id=="s_offline"){
+                return false;
+              }
               return true;
             },function (percent,current,total) {
               vm.uploadInfo.percent = parseInt(percent *100) +' %';
@@ -289,7 +292,7 @@
                 return true
               },null);
               $mdDialog.hide();
-              db("s_offline").destroy();
+              //db("s_offline").destroy();
               utils.alert('上传成功');
               load();
               vm.uploadInfo.tasks = [];

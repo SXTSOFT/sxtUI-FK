@@ -138,7 +138,12 @@
           return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByIdExAuthority', {areaId: regionId}));
         }),
         getInspectionList:$http.db({
-          _id:'Inspection',
+           db:function(inspectionId,db){
+             if (db){
+               return db
+             }
+             return "Inspection_zj"
+           },
           idField:'InspectionId',
           dataType:1,
           filter:function (item,inspectionId) {

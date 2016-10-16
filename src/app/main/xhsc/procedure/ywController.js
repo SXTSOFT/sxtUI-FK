@@ -182,7 +182,7 @@
                       })
                       inspections.forEach(function(id){
                         tasks.push(function(){
-                          return remote.Project.getInspectionList(id);
+                          return remote.Project.getInspectionList(id,"Inspection_zj");
                         });
                         //tasks.push(function(){
                         //  return remote.Procedure.InspectionIndexJoinApi.query(id)
@@ -194,9 +194,6 @@
                     })
                   }
                 ])
-                .concat(function(){
-                  return remote.offline.create({Id:'zj'+item.ProjectID});
-                });
               api.task(tasks,{
                 event:'downloadzj',
                 target:item
@@ -205,6 +202,7 @@
                 item.isOffline = true;
                 $mdDialog.hide();
                 utils.alert('下载完成');
+                return remote.offline.create({Id:'zj'+item.ProjectID});
                 resolve();
               }, function () {
                 item.percent = item.current = item.total = null;
@@ -351,60 +349,6 @@
         }
       }
     },$scope);
-
-    vm.uploadInfo={}
-    vm.uploadInfo.uploading=false;
-    vm.upload =function () {
-      api.setNetwork(0).then(function(){
-        vm.uploadInfo.uploading = true;
-        vm.uploadInfo.percent='0%'
-        $mdDialog.show({
-          controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
-            $scope.uploadInfo=vm.uploadInfo;
-
-            api.upload(function (cfg,item) {
-              if(cfg._id=='s_files' && item && item.Url.indexOf('base64')==-1){
-                return false;
-              }
-              return true;
-            },function (percent,current,total) {
-              vm.uploadInfo.percent = parseInt(percent *100) +' %';
-              vm.uploadInfo.current = current;
-              vm.uploadInfo.total = total;
-            },function (tasks) {
-              vm.uploadInfo.uploaded = 1;
-              api.uploadTask(function () {
-                return true
-              },null);
-              $mdDialog.hide();
-              db("s_offline").destroy();
-              utils.alert('上传成功');
-              load();
-              vm.uploadInfo.tasks = [];
-              vm.uploadInfo.uploading= false;
-            },function (timeout) {
-              $mdDialog.hide();
-              var msg='上传失败,请检查网络!'
-              if(timeout){
-                msg='请求超时,请检查网络!';
-              }
-              utils.alert(msg);
-              vm.uploadInfo.uploaded = 0;
-              vm.uploadInfo.uploading =false;
-            },{
-              uploaded:function (cfg,row,result) {
-                cfg.db && cfg.db.delete(row._id);
-              }
-            });
-          }],
-          template: '<md-dialog aria-label="正在上传"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在上传：{{uploadInfo.percent}}({{uploadInfo.current}}/{{uploadInfo.total}})</p></md-dialog-content></md-dialog>',
-          parent: angular.element(document.body),
-          clickOutsideToClose:false,
-          fullscreen: false
-        });
-      });
-    }
-
 
     vm.MemberType = [];
     vm.by=function(r){

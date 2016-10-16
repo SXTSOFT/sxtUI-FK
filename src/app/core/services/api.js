@@ -298,6 +298,8 @@
         cfgs.forEach(function (cfg) {
           if (cfg.upload && cfg.fn) {
             if (filter && filter(cfg) === false)return;
+            //if (cfg.)
+
             var group = {
               name: cfg.name || '其它-' + cfg._id,
               start: tasks.length,
