@@ -3571,3 +3571,24 @@ table {
   width: 184px;
   height: 109px;
   margin: 0 0 -92px 0; }
+
+
+.nmmPanel{
+  position: absolute;left:-56px;top:30px;width:auto;z-index:10005;display:none;
+}
+
+//.numberPanel{
+//  position: absolute;
+//  left: 194px;
+//  top: 0px;
+//  width: auto;
+//  z-index: 10005;
+//  display: block;
+//}
+
+
+@media screen and (max-width: 600px){
+  .nmmPanel{
+    left:0px !important;
+  }
+}
