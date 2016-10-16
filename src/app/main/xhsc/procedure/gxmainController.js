@@ -305,7 +305,10 @@
               vm.uploadInfo.uploading =false;
             },{
               uploaded:function (cfg,row,result) {
-                cfg.db && cfg.db.delete(row._id);
+                if (cfg.db&&cfg.db.delete)
+                 cfg.db.delete(row._id);
+                else
+                  cfg._db.delete(row._id);
               }
             });
           }],

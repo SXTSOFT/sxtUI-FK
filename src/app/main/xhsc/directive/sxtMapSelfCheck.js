@@ -43,11 +43,17 @@
               cb();
             },
             onLoad: function (cb) {
-              function find(db) {
+              function find(isload) {
+                var inspectionCheckpoint;
+                var inspectionPoint;
+                if (isload){
+                   inspectionCheckpoint="InspectionCheckpoint_zj";
+                   inspectionPoint="InspectionPoint_zj";
+                }
                 return $q(function (resolve, reject) {
-                  remote.Procedure.InspectionCheckpoint.query(scope.procedure, scope.regionId, scope.inspectionId, db).then(function (r) {
-                    remote.Procedure.InspectionPoint.query(scope.inspectionId, scope.procedure, scope.regionId, db).then(function (r1) {
-                      fg.data = r.data, fs = [];
+                  remote.Procedure.InspectionCheckpoint.query(scope.procedure, scope.regionId, scope.inspectionId, inspectionCheckpoint).then(function (r) {
+                    remote.Procedure.InspectionPoint.query(scope.inspectionId, scope.procedure, scope.regionId, inspectionPoint).then(function (r1) {
+                      fg.data =fg.data?fg.data.concat(r.data):r.data , fs = [];
                       r.data.forEach(function (c) {
                         var p = r1.data.find(function (p1) {
                           return p1.MeasurePointID == c.PositionID;
