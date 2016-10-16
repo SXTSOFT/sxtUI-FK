@@ -110,6 +110,9 @@
       });
     }
     load();
+
+
+
     vm.selected = function(r){
       remote.Procedure.getRegionStatusEx(projectId,"8").then(function (r1) {
         var fd = r1.data.find(function (item) {

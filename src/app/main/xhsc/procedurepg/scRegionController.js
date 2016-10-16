@@ -57,7 +57,7 @@
               style="wait";
               break;
             case 1:
-              style="dy";
+              style="pass";
               break;
             default:
               break;
@@ -65,6 +65,16 @@
           return style;
         }
         function _init(region){
+          function setStatus(statusArr){
+            if (angular.isArray(statusArr)&&statusArr.find(function(k){
+                    return k==acceptanceItemID;
+              })){
+                return 1;
+            }
+            return 0;
+          }
+          region.Status=setStatus(region.StatusList)
+
           if (region&&region.RegionType==8||region&&region.RegionType==16){
               region.style= ConvertClass(region.Status);
               setNum(region.Status,region);

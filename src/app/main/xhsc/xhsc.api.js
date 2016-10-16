@@ -179,7 +179,12 @@
           return $http.get($http.url('/Api/WPAcceptanceApi/GetWPAcceptanceInfo'));
         }),
         InspectionPoint:$http.db({
-          _id:'InspectionPoint',
+          db:function(inspectionId,acceptanceItemId,areaId,db){
+            if (db){
+              return db;
+            }
+            return "InspectionPoint";
+          },
           idField:'MeasurePointID',
           methods:{
             query:{
@@ -242,7 +247,12 @@
           }).bind()
         },
         InspectionCheckpoint:$http.db({
-          _id:'InspectionCheckpoint',
+          db:function(acceptanceItemId,areaId,inspectionId,db){
+            if (db){
+              return db;
+            }
+            return "InspectionCheckpoint";
+          },
           idField:'CheckpointID',
           methods:{
             query:{
@@ -272,7 +282,10 @@
         }),
         InspectionProblemRecord:{
           query:$http.db({
-            _id:'InspectionProblemRecord',
+            db:function(checkpointId,db){
+              if(db) return db;
+              return "InspectionProblemRecord";
+            },
             idField:'ProblemRecordID',
             dataType:1,
             filter:function (item,CheckpointID) {
@@ -298,7 +311,12 @@
         },
         InspectionProblemRecordFile:{
           query:$http.db({
-            _id:'InspectionProblemRecordFile',
+            db:function(problemRecordId,arg,db){
+              if (db){
+                return db;
+              }
+              return "InspectionProblemRecordFile";
+            },
             idField:function(d) {
               return d.Id|| d.ProblemRecordFileID
             }, dataType:1,
@@ -366,7 +384,12 @@
           });
         }),
         getRegionStatusEx:$http.db({
-          _id:'project_status',
+          db:function (projectId,Sign,AcceptanceItemID,db) {
+            if (db){
+              return db;
+            }
+            return "project_status_zj"
+          },
           idField:function (item) {
             return item.Sign + item.AcceptanceItemID+item.AreaId;
           },

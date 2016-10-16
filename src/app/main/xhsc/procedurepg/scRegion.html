@@ -2,7 +2,7 @@
   <md-list flex layout="row" class="gxfilter">
     <md-list-item  flex ng-class="{'active':vm.filterNum == -1}"><md-button ng-click="vm.filter(-1)" style="margin:6px auto;"><span>全部</span><span>{{vm.nums.qb}}</span></md-button></md-list-item>
     <md-list-item  flex ng-class="{'active':vm.filterNum == 0}"><md-button ng-click="vm.filter(0)" style="margin:6px auto;"><span><i class="wait"></i>未检</span><span>{{vm.nums.wtj}}</span></md-button></md-list-item>
-    <md-list-item  flex ng-class="{'active':vm.filterNum == 1}"><md-button ng-click="vm.filter(1)" style="margin:6px auto;"><span><i  class="dy"></i>已检</span><span>{{vm.nums.ytj}}</span></md-button></md-list-item>
+    <md-list-item  flex ng-class="{'active':vm.filterNum == 1}"><md-button ng-click="vm.filter(1)" style="margin:6px auto;"><span><i  class="pass"></i>已检</span><span>{{vm.nums.ytj}}</span></md-button></md-list-item>
   </md-list>
 </div>
 <md-content flex ng-cloak  style="background:#f4f4f4;">
