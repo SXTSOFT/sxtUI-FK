@@ -318,7 +318,10 @@
               name: m.Name,
               from:from,
               to: m.MilestoneTime,
-              dependencies:[]
+              dependencies:[],
+              classes:[
+                "md-red-200-bg"
+              ]
             };
             from = m.MilestoneTime;
             return r;

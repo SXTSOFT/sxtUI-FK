@@ -59,8 +59,8 @@
               </div>
             </md-input-container>
           </div>
-          <div layout="row" layout-md="column" layout-sm="column">
-            <md-input-container class="md-block" flex-md="100" flex-sm="100" flex="40">
+          <div layout="row">
+            <md-input-container class="md-block" flex="40">
               <label>请选择模板</label>
               <md-select name="templateId" ng-disabled="!vm.formWizard.projectId" ng-model="vm.formWizard.TaskTemplateId"  md-on-open="vm.getTemplates()">
                 <md-option ng-value="p.Id" ng-repeat="p in vm.data.templates">{{p.Name}}</md-option>
@@ -71,20 +71,24 @@
                 </div>
               </div>
             </md-input-container>
-            <div flex layout="row">
             <md-input-container flex>
               <label>开始日期</label>
               <md-datepicker name="beginDate" ng-model="vm.formWizard.StartTime" required md-open-on-focus></md-datepicker>
             </md-input-container>
-            <!--<md-input-container flex>
-              <label>预售时间</label>
-              <md-datepicker name="beginDate" ng-model="vm.formWizard.PreSalesTime" required md-open-on-focus></md-datepicker>
-            </md-input-container>
-            <md-input-container flex>
-              <label>预期结束时间</label>
-              <md-datepicker name="beginDate" ng-model="vm.formWizard.ExpectEndTime" required md-open-on-focus></md-datepicker>
-            </md-input-container>-->
-            </div>
+            <!--<div flex layout="row">-->
+            <!--<md-input-container flex>-->
+              <!--<label>开始日期</label>-->
+              <!--<md-datepicker name="beginDate" ng-model="vm.formWizard.StartTime" required md-open-on-focus></md-datepicker>-->
+            <!--</md-input-container>-->
+            <!--<md-input-container flex>-->
+              <!--<label>预售时间</label>-->
+              <!--<md-datepicker name="beginDate" ng-model="vm.formWizard.PreSalesTime" required md-open-on-focus></md-datepicker>-->
+            <!--</md-input-container>-->
+            <!--<md-input-container flex>-->
+              <!--<label>预期结束时间</label>-->
+              <!--<md-datepicker name="beginDate" ng-model="vm.formWizard.ExpectEndTime" required md-open-on-focus></md-datepicker>-->
+            <!--</md-input-container>-->
+            <!--</div>-->
           </div>
           <!--<div layout="row">-->
             <!--<md-input-container flex-gt-sm>-->
