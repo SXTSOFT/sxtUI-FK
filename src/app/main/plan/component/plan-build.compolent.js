@@ -85,6 +85,7 @@
         }else if(!vm.current.selectedTask.duration){
           vm.current.selectedTask.duration = -0;
         }
+        vm.setMin();
       }
     })
     vm.setDuration = function(item){
