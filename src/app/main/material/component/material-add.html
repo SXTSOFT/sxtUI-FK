@@ -1,0 +1,42 @@
+
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools">
+    <h2>
+      <span>材料管理</span>
+    </h2>
+    <span flex></span>
+  </div>
+</md-toolbar>
+
+<md-content flex layout-fill class="white-bg" layout-padding >
+  <form>
+    <md-input-container class="md-block" style="height: 58px;">
+      <label>材料分类</label>
+      <md-select ng-model="vm.data.MaterialClassId">
+        <md-option value="{{item.val}}" ng-repeat="item in vm.materialType">{{item.name}}</md-option>
+      </md-select>
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label>材料名称</label>
+      <input type="text" ng-model="vm.data.MaterialName">
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label>型号</label>
+      <input type="text" ng-model="vm.data.Model">
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label>规格</label>
+      <input type="text" ng-model="vm.data.Specifications">
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label>厂家/品牌</label>
+      <input type="text" ng-model="vm.data.Brands">
+    </md-input-container>
+  </form>
+  <div layout="row" flex>
+    <md-button ng-click="vm.save()" class="md-primary md-raised">
+      保存
+    </md-button>
+  </div>
+</md-content>
+

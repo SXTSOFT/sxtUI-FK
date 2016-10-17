@@ -5,7 +5,7 @@
     </h2>
     <span flex></span>
     <md-button class="md-icon-button" aria-label="More">
-      <md-icon md-font-icon="icon-plus" ui-sref="app.plan.bc.detail"></md-icon>
+      <md-icon md-font-icon="icon-plus" ui-sref="app.material.add"></md-icon>
     </md-button>
   </div>
 </md-toolbar>
@@ -29,7 +29,7 @@
       <td>{{item.Specifications}}</td>
       <td>{{item.Brands}}</td>
       <td class="actions">
-        <md-button class="md-primary md-mini md-fab" aria-label="Settings" ui-sref="app.plan.bc.detail({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
+        <md-button class="md-primary md-mini md-fab" aria-label="Settings" ui-sref="app.material.add({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
         <md-button class="md-primary md-mini md-fab" aria-label="Settings" ng-click="vm.delete(item.Id)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
 
       </td>
