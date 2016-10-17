@@ -20,7 +20,7 @@
         k.sort= k.SpecialtyName.replace(/[^0-9]/g,"");
       });
       vm.data.sort(function(a,b){
-         return a.sort> b.sort;
+         return a.SpecialtyName.localeCompare(b.SpecialtyName);
       });
       vm.show=true;
     })
