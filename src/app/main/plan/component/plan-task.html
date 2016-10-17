@@ -75,11 +75,23 @@
                 <div layout="row">
                   <md-checkbox ng-model="vm.current.IsRequired">必选 </md-checkbox>
                   <md-checkbox ng-model="vm.current.IsFloor" ng-if="vm.data.Level===0">此节点对应楼层 </md-checkbox>
+                  <md-checkbox ng-model="vm.current.Memorial">里程碑 </md-checkbox>
                 </div>
-                <div layout="row">
-                  <md-checkbox ng-model="vm.current.Memorial">插入里程碑 </md-checkbox>
+                <!--<div layout="row">-->
+                  <!--<md-checkbox ng-model="vm.current.Memorial">里程碑 </md-checkbox>-->
+                <!--</div>-->
+                <div layout="row"  ng-if="vm.current.Memorial">
+                  <md-input-container class="mb-0" flex>
+                    <label>里程碑名称</label>
+                    <input type="text" ng-model="vm.current.MemorialName">
+                  </md-input-container>
+                  <span flex="5"></span>
+                  <md-input-container flex class="mb-0">
+                    <label>百分比</label>
+                    <input type="text" ng-model="vm.current.Percentage">
+                  </md-input-container>
                 </div>
-                <div layout="row">
+                <div layout="row" class="nomar">
                 <task-categories flex ng-model="vm.selectedCategory"></task-categories><span flex="5"></span>
                 <md-select flex ng-model="vm.saveTasks" placeholder="备选任务" class="md-block" md-on-open="vm.getNextTasks()" multiple md-on-close="vm.saveSubTasks()">
                   <md-select-header class="sxt-select-header">

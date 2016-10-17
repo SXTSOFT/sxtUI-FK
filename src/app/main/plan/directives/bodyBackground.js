@@ -31,7 +31,7 @@
 
       $(element).on('click',function(){
         if(scope.data){
-          utils.alert('工期大于');
+          utils.alert('工期输入错误');
           return;
         }
         if(scope.$parent.vm.current.selectedTask&&!scope.$parent.vm.current.selectedTask.Duration&&!scope.$parent.vm.current.selectedTask.duration){

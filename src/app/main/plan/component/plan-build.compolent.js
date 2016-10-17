@@ -81,7 +81,7 @@
     $scope.$watch('vm.current.selectedTask',function(){
       if(vm.current&&vm.current.selectedTask){
         if(vm.current.selectedTask.Duration&&!vm.current.selectedTask.duration){
-          vm.current.selectedTask.duration = parseInt(vm.current.selectedTask.Duration);
+          vm.current.selectedTask.duration = Math.round(vm.current.selectedTask.Duration*10)*0.1;
         }else if(!vm.current.selectedTask.duration){
           vm.current.selectedTask.duration = -0;
         }
@@ -98,7 +98,7 @@
           return task.TaskLibraryId === item.selectedTask.TaskLibraryId;
         });
         if (next.selectedTask) {
-          next.selectedTask.duration = parseInt(item.selectedTask.duration);
+          next.selectedTask.duration = Math.round(item.selectedTask.duration*10)*0.1;
         }
         vm.setDuration(next)
       }
@@ -119,9 +119,7 @@
           if (r.data|| r.status==200) {
             if(!vm.formWizard.Id)
               vm.formWizard.Id = r.data.Id;
-
             getDataTemplate();
-
             f();
           }
         },function(err){
@@ -176,19 +174,18 @@
             vm.current = e.data;
             if(vm.current.selectedTask&&vm.current.selectedTask){
               if(vm.current.selectedTask.Duration&&!vm.current.selectedTask.duration){
-                vm.current.selectedTask.duration = parseInt(vm.current.selectedTask.Duration);
+                vm.current.selectedTask.duration = Math.round(vm.current.selectedTask.Duration*10)*0.1;
               }else if(!vm.current.selectedTask.duration){
                 vm.current.selectedTask.duration = -0;
               }
             }
+            vm.setMin();
             vm.showBg = true;
             vm.toggleRight();
           }
         });
         vm.rootTask = r.data.RootTask;
         vm.reloadTask();
-
-        //$scope.$$childHead.msWizard.nextStep();
       });
     }
     vm.loadUser = function(){
@@ -278,115 +275,16 @@
         }
       }
     })
-    vm.changeDuration = function(){
+    vm.setMin = function(){
       if(vm.current.selectedTask.Duration){
-        vm.min = Math.round(vm.current.selectedTask.Duration * 0.8,1);
+        vm.min = Math.round(vm.current.selectedTask.Duration * 0.8*10)*0.1;
       }else{
         vm.min = 0;
       }
+    }
+    vm.changeDuration = function(){
+      vm.setMin();
       vm.setDuration(vm.current);
     }
-
-    //vm.RoleAllots = [{value:'AAA',text:'AAA'},{value:'AAA2',text:'AAA2'}];
-/*    var task = {
-      taskId: 0,
-      name: '楼栋模板',
-      master: [{
-        categoryId: 1,
-        name: '前期准备',
-        tasks: []
-      }, {
-        categoryId: 2,
-        name: '开工',
-        tasks: []
-      }, {
-        categoryId: 3,
-        name: '基坑',
-        tasks: []
-      }, {
-        categoryId: 4,
-        name: '基坑土方',
-        tasks: []
-      }, {
-        categoryId: 5,
-        name: '桩基',
-        tasks: []
-      }, {
-        categoryId: 6,
-        name: '桩基土方',
-        tasks: []
-      }, {
-        categoryId: 7,
-        name: '结构基础',
-        tasks: []
-      }, {
-        categoryId: 8,
-        name: '楼层',
-        tasks: []
-      }, {
-        categoryId: 9,
-        name: '外墙面',
-        tasks: []
-      }, {
-        categoryId: 10,
-        name: '落架',
-        tasks: []
-      }, {
-        categoryId: 11,
-        name: '室外景观',
-        tasks: []
-      }, {
-        categoryId: 12,
-        name: '竣工验收',
-        tasks: []
-      }, {
-        categoryId: 13,
-        name: '加建',
-        tasks: []
-      }, {
-        categoryId: 14,
-        name: '土建移交',
-        tasks: []
-      }, {
-        categoryId: 15,
-        name: '批量精装',
-        tasks: []
-      }, {
-        categoryId: 16,
-        name: '管理权移交',
-        tasks: []
-      }],
-      branch: [
-        [
-          {
-            categoryId: 30,
-            parentCategoryId: 2,
-            name: '前期准备验收',
-            tasks: []
-          },
-          {
-            categoryId: 31,
-
-            parentCategoryId: 30,
-            name: '前期准备验收1',
-            tasks: []
-          },
-          {
-            categoryId: 32,
-            endFlagCategoryId: 7,
-            parentCategoryId: 31,
-            name: '前期准备验收4',
-            tasks: []
-          }
-        ],
-        [{
-          categoryId: 42,
-          parentCategoryId: 31,
-          endFlagCategoryId: 8,
-          name: '前期准备验收2',
-          tasks: []
-        }]
-      ]
-    };*/
   }
 })(angular,undefined);

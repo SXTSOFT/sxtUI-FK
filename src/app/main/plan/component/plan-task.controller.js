@@ -127,6 +127,7 @@
           $timeout(function(){
             vm.getUsers();
             vm.getNextTasks();
+            vm.getMilestone();
             vm.categoryChanged = false;
           },300)
 
@@ -134,6 +135,16 @@
       });
       temp.load(task);
 
+    }
+    vm.getMilestone = function(){
+      api.plan.MileStone.query({RelatedFlowId:vm.current.TaskFlowId}).then(function(r){
+        if(r.data&&r.data.Items.length){
+          vm.MileStone = r.data.Items[0];
+          vm.current.Memorial = true;
+          vm.current.MemorialName = vm.MileStone.Name;
+          vm.current.Percentage = vm.MileStone.Percentage;
+        }
+      })
     }
     api.plan.UserGroup.query().then(function(r){
       vm.nextUserGroups = r.data.Items;
@@ -195,6 +206,24 @@
         temp && temp.edit(vm.current);
         vm.closeRight();
       })
+      if(vm.current.Memorial){
+        var mdata = {
+          "Name": vm.current.MemorialName,
+          "RelatedFlowId": vm.current.TaskFlowId,
+          "Percentage": vm.current.Percentage
+        }
+        if(vm.MileStone){
+          mdata.Id = vm.MileStone.Id;
+          api.plan.MileStone.update(vm.MileStone.Id,mdata).then(function(){
+
+          })
+        }else{
+          api.plan.MileStone.create(mdata).then(function(r){
+
+          })
+        }
+
+      }
     }
     vm.nextSave = function () {
       var next = angular.extend({

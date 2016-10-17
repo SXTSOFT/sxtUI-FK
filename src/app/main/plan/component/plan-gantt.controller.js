@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function plangantt($mdDialog, $document, $animate, $scope, $timeout, ganttUtils, GanttObjectModel, ganttDebounce, moment, $window, $mdSidenav,api,$stateParams){
+  function plangantt($mdDialog, $document, $animate, $scope, $timeout, ganttUtils, GanttObjectModel, ganttDebounce, moment, $window, $mdSidenav,api,$stateParams,$q){
     var vm = this;
     var objectModel;
     vm.timespans = [
@@ -71,7 +71,7 @@
       rowContentEnabled       : true,
       rowContent              : '{{row.model.name}}',
       taskContentEnabled      : true,
-      taskContent             : '<span class="gantt-task-name" style="display: block;" flex ng-click="scope.vm.editDialog($event,task.model)">\n    {{task.model.name}}\n    <md-tooltip md-direction="top" class="gantt-chart-task-tooltip">\n        <div layout="column" layout-align="center center">\n            <div class="tooltip-name">\n                {{task.model.name}}\n            </div>\n            <div class="tooltip-date">\n                <span>\n                    {{task.model.from.format(\'MMM DD, HH:mm\')}}\n                </span>\n                <span>-</span>\n                <span>\n                    {{task.model.to.format(\'MMM DD, HH:mm\')}}\n                </span>\n            </div>\n        </div>\n    </md-tooltip>\n</span>',
+      taskContent             : '<span class="gantt-task-name" style="display: block;" flex ng-click="scope.vm.editDialog($event,task.model)">\n    {{task.model.name}}\n    <md-tooltip md-direction="top" class="gantt-chart-task-tooltip">\n        <div layout="column" layout-align="center center">\n            <div class="tooltip-name">\n                {{task.model.name}}\n            </div>\n            <div class="tooltip-date">\n                <span>\n                    {{task.model.from.format(\'MM月DD日A\')}}\n                </span>\n                <span>-</span>\n                <span>\n                    {{task.model.to.format(\'MM月DD日A\')}}\n                </span>\n            </div>\n        </div>\n    </md-tooltip>\n</span>',
       allowSideResizing       : true,
       labelsEnabled           : true,
       currentDate             : 'line',
@@ -140,16 +140,39 @@
       api                     : function (ganttApi)
       {
         vm.api = ganttApi;
-        //vm.api.tasks.on.change($scope,function(){
-        //  console.log($scope.vm.data)
-        //})
+        //console.log(ganttApi)
+
         vm.api.core.on.ready($scope, function ()
         {
           vm.load();
-
           objectModel = new GanttObjectModel(vm.api);
-
         });
+        ganttApi.tasks.on.change($scope,function(task){
+          var changeData = [
+            {
+              "TaskId": task.model.id,
+              "ScheduledStartTime": task.model.from,
+              "ScheduledEndTime": task.model.to
+            }
+          ]
+          api.plan.BuildPlan.adjustPlan($stateParams.id,changeData).then(function(r){
+            vm.data.forEach(function(group){
+              var next = group.tasks.find(function(t){
+                return t.dependencies.find(function(d){
+                  return d.from == task.model.id;
+                })!=null;
+              });
+              next  && (next.from = task.model.to);
+              var prev = group.tasks.find(function(t){
+                return task.model.dependencies.find(function(d){
+                  return t.id == d.from;
+                })!=null;
+
+              });
+              prev && (prev.to = task.model.from);
+            })
+          })
+        })
       }
     };
 
@@ -192,7 +215,7 @@
     }
 
     function editDialog(ev,data){
-      //console.log('a',data)
+      console.log('a',data)
     }
 
 
@@ -255,10 +278,11 @@
     // Reload data action
     function load()
     {
-      api.plan.Task.query({
+      $q.all([api.plan.Task.query({
         Type:'BuildingPlan',
         Source:$stateParams.id
-      }).then(function (r) {
+      }),api.plan.BuildPlan.getMileStone($stateParams.id)]).then(function (rs) {
+        var r = rs[0];
         var tasks = r.data.Items.map(function (item) {
           var reuslt = {
             id:item.Id+'-group',
@@ -283,8 +307,23 @@
           }
           return reuslt;
         });
-        console.log(JSON.stringify(tasks))
-        vm.data = tasks;
+        var from = tasks[0].tasks[0].from;
+        //console.log(JSON.stringify(tasks))
+        vm.data=[{
+          id:'__',
+          name:'里程碑',
+          tasks:rs[1].data.map(function(m){
+            var r =  {
+              id: m.Id,
+              name: m.Name,
+              from:from,
+              to: m.MilestoneTime,
+              dependencies:[]
+            };
+            from = m.MilestoneTime;
+            return r;
+          })
+        }].concat(tasks);
       })
 
       // Fix for Angular-gantt-chart issue
