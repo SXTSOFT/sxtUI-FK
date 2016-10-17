@@ -82,7 +82,7 @@
             })
             .then(function(answer) {
             }, function() {
-
+              utils.alert('清除成功');
             });
           return;
         }
