@@ -85,7 +85,6 @@
                 }
 
                 v.MeasureValue=!v.MeasureValue?"0":v.MeasureValue;
-                console.log( v.MeasureValue)
                 geo.options.MeasureValue = v.MeasureValue;
                 geo.options.ExtendedField1 = v.ExtendedField1;
                 geo.options.seq = v.MeasureValue;
