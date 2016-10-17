@@ -418,7 +418,15 @@
             return r;
           });
         }),
-
+        getMeasureMosaic:function(projectId,acceptanceItemId){
+          var  param={
+            projectId:projectId,
+          }
+          if (acceptanceItemId){
+            param.acceptanceItemId=acceptanceItemId;
+          }
+          return $http.get($http.url('/api/MeasureInfo/GetMeasureMosaic',param))
+        },
         postInspection:$http.db({
           _id:'Inspection',
           upload:true,
