@@ -25,11 +25,11 @@
     </md-progress-circular>
     <md-list ng-show="vm.isOver">
       <md-list-item ng-click="vm.zbzgAction(item)" layout="row" ng-repeat="item in vm.zglist|filter:{Status:4}">
-        <div  layout="column">
-          <p style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
+        <div  layout="column" style="padding-bottom: 16px">
+          <p style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
             {{item.AcceptanceItemName}}<span style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">总包整改</span>
           </p>
-          <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span
+          <p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px;max-height: 28px"><span
             ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>
         </div>
         <span flex></span>
@@ -65,13 +65,13 @@
     </md-progress-circular>
     <md-list ng-show="vm.isOver">
       <md-list-item layout="row" ng-click="vm.jlysAction(item)" ng-repeat="item in vm.Inspections">
-        <div layout="column">
-          <p style="padding-right: 120px;font-size:14px;line-height: 20px;padding-left:8px;">
+        <div layout="column"  style="padding-bottom: 16px">
+          <p  style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
             {{item.AcceptanceItemName}}
             <span
               style="margin-left:2%;color:white;background-color: #359df5;font-size:12px;border-radius: 3px">监理验收</span>
           </p>
-          <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;">
+          <p tyle="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px;max-height: 28px">
             <span ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span>
           </p>
         </div>
@@ -82,12 +82,12 @@
         <span class="border1px bottom1px"></span>
       </md-list-item>
       <md-list-item ng-click="vm.jlfyAction(item)" ng-repeat="item in vm.zglist|filter:{Status:16}">
-        <div class="md-list-item-text" layout="column">
-          <p style="padding-right: 120px;font-size:16px;line-height: 20px;padding-left:8px;">
+        <div style="padding-bottom: 16px" layout="column">
+          <p  style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
             {{item.AcceptanceItemName}} <span
             style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">监理复验</span>
           </p>
-          <p style="color:#999;padding-right: 120px;margin:0;font-size:12px;padding-left:8px;"><span
+          <p tyle="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px;max-height: 28px"><span
             ng-repeat="area in item.Children" style="display: block;"> {{area.RegionName}} </span></p>
         </div>
         <span flex></span>
