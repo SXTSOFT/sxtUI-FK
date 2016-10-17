@@ -16,9 +16,6 @@
 
     remote.Procedure.queryProcedure().then(function(result){
       vm.data=result.data;
-      vm.data.forEach(function(k){
-        k.sort= k.SpecialtyName.replace(/[^0-9]/g,"");
-      });
       vm.data.sort(function(a,b){
          return a.SpecialtyName.localeCompare(b.SpecialtyName);
       });
