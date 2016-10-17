@@ -26,23 +26,6 @@
         if(!map){
           map = new L.SXT.Project(element[0]);
         }
-        //if(scope.data.Region.DrawingContent) {
-        //  $timeout(function () {
-        //    map.loadSvgXml(scope.data.Region.DrawingContent, {
-        //      filterLine: function (line) {
-        //        line.attrs.stroke = 'black';
-        //        line.options = line.options || {};
-        //        //line.options.color = 'black';
-        //
-        //        line.attrs['stroke-width'] = line.attrs['stroke-width'] * 6;
-        //      },
-        //      filterText: function (text) {
-        //        //return false;
-        //      }
-        //    });
-        //    map.center();
-        //  }, 0)
-        //}
         $timeout(function(){
           remote.Project.getDrawingRelations(scope.regionId.substring(0,5)).then(function (result) {
             var imgId = result.data.find(function (item) {
@@ -101,6 +84,8 @@
                   v.ExtendedField1 = v.MeasureValue+','+v.DesignValue;
                 }
 
+                v.MeasureValue=!v.MeasureValue?"0":v.MeasureValue;
+                console.log( v.MeasureValue)
                 geo.options.MeasureValue = v.MeasureValue;
                 geo.options.ExtendedField1 = v.ExtendedField1;
                 geo.options.seq = v.MeasureValue;

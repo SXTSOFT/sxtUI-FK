@@ -103,7 +103,7 @@
                 if(!v.ExtendedField1 && v.DesignValue){
                   v.ExtendedField1 = v.MeasureValue+','+v.DesignValue;
                 }
-
+                v.MeasureValue=!v.MeasureValue?"0":v.MeasureValue;
                 geo.options.MeasureValue = v.MeasureValue;
                 geo.options.ExtendedField1 = v.ExtendedField1;
                 geo.options.seq = v.MeasureValue;
