@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function plangantt($mdDialog, $document, $animate, $scope, $timeout, ganttUtils, GanttObjectModel, ganttDebounce, moment, $window, $mdSidenav,api,$stateParams,$q){
+  function plangantt($mdDialog, $document, $animate, $scope, $timeout,utils, ganttUtils, GanttObjectModel, ganttDebounce, moment, $window, $mdSidenav,api,$stateParams,$q){
     var vm = this;
     var objectModel;
     vm.timespans = [
@@ -148,11 +148,35 @@
           objectModel = new GanttObjectModel(vm.api);
         });
         ganttApi.tasks.on.change($scope,function(task){
+          var diff1,diff2,from,to;
+          //diff1 = moment(task.model.to-task.model.from);
+          //var find = vm.backData.find(function(r){
+          //  return r.id == task.model.id+'-group';
+          //})
+          //if(find){
+          //  diff2 = (moment(find.tasks[0].to)-moment(find.tasks[0].from))*0.8;
+          //}
+          //if(diff1._i<diff2){
+          //  utils.alert('工期应大于此工期的80%');
+          //  if(find.tasks[0].from == task.model.from._i){
+          //    from = task.model.from;
+          //    to = moment(moment(find.tasks[0].from) + diff2);
+          //    console.log('from')
+          //  }else if(find.tasks[0].to == task.model.to._i){
+          //    from = task.model.from;
+          //    to = task.model.to;
+          //  }
+          //}else{
+          //  from = task.model.from;
+          //  to = task.model.to;
+          //}
+          from = task.model.from;
+          to = task.model.to;
           var changeData = [
             {
               "TaskId": task.model.id,
-              "ScheduledStartTime": task.model.from,
-              "ScheduledEndTime": task.model.to
+              "ScheduledStartTime": from,//task.model.from,
+              "ScheduledEndTime": to//task.model.to
             }
           ]
           api.plan.BuildPlan.adjustPlan($stateParams.id,changeData).then(function(r){
@@ -312,6 +336,9 @@
         vm.data=[{
           id:'__',
           name:'里程碑',
+          classes:[
+            "md-light-blue-100-bg"
+          ],
           tasks:rs[1].data.map(function(m){
             var r =  {
               id: m.Id,
@@ -320,13 +347,14 @@
               to: m.MilestoneTime,
               dependencies:[],
               classes:[
-                "md-red-200-bg"
+                "md-light-blue-200-bg"
               ]
             };
             from = m.MilestoneTime;
             return r;
           })
         }].concat(tasks);
+        vm.backData = angular.copy(vm.data);
       })
 
       // Fix for Angular-gantt-chart issue
