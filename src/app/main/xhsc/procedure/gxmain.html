@@ -21,7 +21,7 @@
   </div>
   <div flex style="background-color: white;">
     <md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
-                          md-mode="indeterminate" md-diameter="28">
+                          md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
     </md-progress-circular>
     <md-list ng-show="vm.isOver">
       <md-list-item ng-click="vm.zbzgAction(item)" layout="row" ng-repeat="item in vm.zglist|filter:{Status:4}">
@@ -61,7 +61,7 @@
   </div>
   <div flex style="background-color: white;">
     <md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
-                          md-mode="indeterminate" md-diameter="32">
+                          md-mode="indeterminate" md-diameter="32" style="margin-left: 8px;margin-top: 8px">
     </md-progress-circular>
     <md-list ng-show="vm.isOver">
       <md-list-item layout="row" ng-click="vm.jlysAction(item)" ng-repeat="item in vm.Inspections">

@@ -3,7 +3,7 @@
     <md-tab-content  style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
       <md-content class="download" style="padding: 0px">
         <md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
-                              md-mode="indeterminate" md-diameter="32">
+                              md-mode="indeterminate" md-diameter="32" style="margin-left: 8px;margin-top: 8px">
         </md-progress-circular>
         <div ng-show="vm.isOver" layout="column">
           <md-subheader ng-if="vm.offlines.length"><span style="margin-left: -18px">已下载列表</span></md-subheader>
