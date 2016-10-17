@@ -55,6 +55,7 @@
                 && o.AcceptanceIndexID == m.AcceptanceIndexID;
             })
           };
+          o.v=o.v? o.v:{};
           scope.data.updates.push(o);
           if (m.IndexType == 'SelectMaterial') {
 
