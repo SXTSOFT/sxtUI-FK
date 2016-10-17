@@ -24,6 +24,10 @@
         url:'/list',
         template:'<material-list flex layout="column"></material-list>'
       })
+      .state('app.material.add', {
+        url: '/add/{id}',
+        template: '<material-add flex layout="column"></material-add>'
+      })
       .state('app.material.type', {
         url:'/type',
         template:'<material-type flex layout="column"></material-type>'
