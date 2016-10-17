@@ -52,6 +52,45 @@
     },function () {
       api.setNetwork(vm.networkState);
     });
+
+    vm.clearCache=function(){
+      utils.confirm('确定清除所有缓存数据吗?').then(function (result) {
+        vm.trueClear = function (exclude) {
+          $mdDialog.show({
+              controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+                api.clearDb(function (persent) {
+                  $scope.cacheInfo = parseInt(persent * 100) + '%';
+                }, function () {
+                  $scope.cacheInfo = null;
+                  //$rootScope.$emit('clearDbSuccess');
+                  $mdDialog.hide();
+                  //utils.alert('清除成功');
+                }, function () {
+                  $scope.cacheInfo = null;
+                  $mdDialog.cancel();
+                  utils.alert('清除失败');
+
+                }, {
+                  exclude: exclude,
+                  timeout: 3000
+                })
+              }],
+              template: '<md-dialog aria-label="正在清除"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular> 正在清除数据，请稍候……({{cacheInfo}})</md-dialog-content></md-dialog>',
+              parent: angular.element(document.body),
+              clickOutsideToClose:false,
+              fullscreen: false
+            })
+            .then(function(answer) {
+            }, function() {
+
+            });
+          return;
+        }
+        vm.trueClear(['v_profile']);
+      });
+    }
+
+
     vm.logout = function(){
       utils.confirm('确定清除所有缓存数据吗?').then(function (result) {
         vm.trueClear = function (exclude) {
