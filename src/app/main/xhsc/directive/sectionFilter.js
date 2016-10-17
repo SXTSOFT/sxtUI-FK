@@ -22,7 +22,7 @@
       },
       controller:p_controller,
       link:link,
-      templateUrl:"/app/main/xhsc/directive/sectionFilter.html",
+      templateUrl:"app/main/xhsc/directive/sectionFilter.html",
     }
     function  p_controller($timeout,remote,$scope,$q,$mdSidenav,$state ){
       var vm = this;
