@@ -1,6 +1,6 @@
-<div ng-if="vm.yw==0" flex style="background-color: white;overflow: scroll">
+<div ng-if="vm.yw==0" flex style="background-color: white;">
   <md-progress-circular id="toolbar-progress" ng-if="!vm.z_isOver" class="md-accent"
-                        md-mode="indeterminate" md-diameter="28">
+                        md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
   </md-progress-circular>
   <md-list style="overflow-x: hidden;">
     <md-list-item ng-click="vm.zbzjAction(item)" layout="row" ng-repeat="item in vm.projects">
@@ -16,9 +16,9 @@
     </md-list-item>
   </md-list>
 </div>
-<div ng-if="vm.yw==2" flex style="background-color: white;overflow: scroll">
+<div ng-if="vm.yw==2" flex style="background-color: white;">
   <md-progress-circular id="toolbar-progress" ng-if="!vm.z_isOver" class="md-accent"
-                        md-mode="indeterminate" md-diameter="28">
+                        md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
   </md-progress-circular>
   <md-list style="overflow-x: hidden;">
     <md-list-item layout="row" ng-click="vm.by(item)" ng-repeat="item in vm.projects">
@@ -34,9 +34,9 @@
     </md-list-item>
   </md-list>
 </div>
-<div ng-if="vm.yw==4" flex style="background-color: white;overflow: scroll">
+<div ng-if="vm.yw==4" flex style="background-color: white;">
   <md-progress-circular id="toolbar-progress" ng-if="!vm.f_isOver" class="md-accent"
-                        md-mode="indeterminate" md-diameter="28">
+                        md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
   </md-progress-circular>
   <md-list>
     <md-list-item ng-click="vm.zbzgAction(item)" layout="row" ng-repeat="item in vm.zglist|filter:{Status:4}">
@@ -55,9 +55,9 @@
     </md-list-item>
   </md-list>
 </div>
-<div ng-if="vm.yw==8" flex style="background-color: white;overflow: scroll">
+<div ng-if="vm.yw==8" flex style="background-color: white;">
   <md-progress-circular id="toolbar-progress" ng-if="!vm.z_isOver" class="md-accent"
-                        md-mode="indeterminate" md-diameter="28">
+                        md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
   </md-progress-circular>
   <md-list style="overflow-x: hidden;">
     <md-list-item layout="row" ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})"
@@ -76,9 +76,9 @@
     </md-list>
 </div>
 
-<div ng-if="vm.yw==16" flex style="background-color: white;overflow: scroll">
+<div ng-if="vm.yw==16" flex style="background-color: white;">
   <md-progress-circular id="toolbar-progress" ng-if="!vm.y_isOver" class="md-accent"
-                        md-mode="indeterminate" md-diameter="28">
+                        md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
   </md-progress-circular>
   <md-list>
     <md-list-item layout="row" ng-click="vm.jlysAction(item)" ng-repeat="item in vm.Inspections">
@@ -101,9 +101,9 @@
   </md-list>
 </div>
 
-<div ng-if="vm.yw==32" flex style="background-color: white;overflow: scroll">
+<div ng-if="vm.yw==32" flex style="background-color: white;">
   <md-progress-circular id="toolbar-progress" ng-if="!vm.f_isOver" class="md-accent"
-                        md-mode="indeterminate" md-diameter="28">
+                        md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
   </md-progress-circular>
   <md-list>
     <md-list-item ng-click="vm.jlfyAction(item)" ng-repeat="item in vm.zglist|filter:{Status:16}">

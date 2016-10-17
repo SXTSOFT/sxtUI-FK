@@ -157,6 +157,7 @@
           serial.shift();
           var option = {
             tooltip: {
+              show:false
             },
             grid: {
             },

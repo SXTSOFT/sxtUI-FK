@@ -22,8 +22,6 @@
               {value: 1, label: '待验', color: 'rgba(0,150,136,1)'},
               {value: 2, label: '合格', color: 'rgba(44,157,251,1)'},
               {value: 4, label: '不合格', color: 'red'},
-              //{value: 8, label: '未整改', color: 'rgba(0,150,136,1)'},
-              //{value: 16, label: '已整改', color: 'rgba(249,98,78,1)'}
             ];
           function setYAxis(){
             var regions=[];
@@ -153,6 +151,7 @@
           serial.shift();
           var option = {
             tooltip: {
+              show:false
             },
             grid: {
             },

@@ -12,9 +12,11 @@
     .controller('pcReportMainController',pcReportMainController);
 
   /** @ngInject */
-  function pcReportMainController(remote,$state,$q,utils,$mdDialog,$mdSidenav,$rootScope){
+  function pcReportMainController(remote,$state,$q,utils,$mdDialog,$mdSidenav,$rootScope,api){
     var vm=this;
+    api.setNetwork(0).then(function(){
 
+    })
   }
 })();
 /**

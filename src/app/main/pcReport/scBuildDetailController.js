@@ -47,7 +47,7 @@
 
     var pro=[
       remote.Project.getRegionAndChildren(regionID),
-      remote.Procedure.getRegionStatus(regionID),
+      remote.Procedure.getMeasureMosaic(regionID),
       remote.Assessment.GetMeasureItemInfoByAreaID(regionID)
     ]
     function render(){
