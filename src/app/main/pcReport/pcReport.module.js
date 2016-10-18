@@ -26,8 +26,9 @@
       })
       .state('app.pcReport_main',{
         title:"报表中心",
-        noBack:true,
+        noBack:false,
         sendBt:false,
+        showgrzx:true,
         url:'/pcReport_main',
         views:{
           'content@app':{

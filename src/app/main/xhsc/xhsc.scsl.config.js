@@ -25,6 +25,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
+        showgrzx:true,
         title: '实测实量',
         url: '',
         templateUrl: 'app/main/xhsc/procedurepg/scslmain.html',

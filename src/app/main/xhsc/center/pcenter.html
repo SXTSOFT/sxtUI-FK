@@ -1,5 +1,5 @@
-<md-tabs md-border-bottom flex>
-  <md-tab label="个人中心">
+<md-tabs  flex>
+  <md-tab label="个人信息">
     <md-tab-content style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
     </md-tab-content>
     <div class="pcenter">
@@ -33,14 +33,14 @@
             <span class="border1px bottom1px"></span>
           </div>
         </md-list-item>
-        <md-list-item>
-          <p>模式({{vm.networkState?'离线':'在线'}})</p>
-          <p class="md-secondary md-hue-3">
-            <md-switch ng-disabled="true" ng-model="vm.networkState" ng-disabled="true" aria-label="模式"
-                       ng-true-value="0" ng-false-value="1" class="md-warn"></md-switch>
-          </p>
-          <!--<span class="border1px bottom1px"></span>-->
-        </md-list-item>
+        <!--<md-list-item>-->
+          <!--<p>模式({{vm.networkState?'离线':'在线'}})</p>-->
+          <!--<p class="md-secondary md-hue-3">-->
+            <!--<md-switch ng-disabled="true" ng-model="vm.networkState" ng-disabled="true" aria-label="模式"-->
+                       <!--ng-true-value="0" ng-false-value="1" class="md-warn"></md-switch>-->
+          <!--</p>-->
+          <!--&lt;!&ndash;<span class="border1px bottom1px"></span>&ndash;&gt;-->
+        <!--</md-list-item>-->
         <md-list-item>
           <p>缓存 </p>
           <md-button class="md-secondary md-raised md-primary" ng-click="vm.clearCache()">清空</md-button>
@@ -60,22 +60,6 @@
   </md-tab>
   <md-tab label="消息中心">
     <md-tab-content style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
-        <!--<md-list style="overflow: hidden;" class="slide-del" ng-repeat="item in vm.messages">-->
-        <!--<md-list-item layout="row" class="slideli">-->
-        <!--<md-checkbox style="margin-right:0;" ng-show="vm.showCheck" ng-model="item.checked"></md-checkbox>-->
-        <!--<div class="slidelist" layout="row">-->
-        <!--<div class="circle" flex="none"><span>{{item.name}}</span></div>-->
-        <!--<div flex>-->
-        <!--<h3 style="padding-right: 105px;">{{item.title}}<span>{{item.time|date:'MM-dd HH:mm'}}</span></h3>-->
-        <!--<p style="word-break: break-all;">{{item.description}}</p>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div style="position: absolute;right:-160px;top:0;height:100%;overflow: hidden;">-->
-        <!--<md-button style="min-width:80px;height: 100%;background: #c8c7cd;color:#fff;padding:0;margin:0;font-size:0;-webkit-text-size-adjust:none;border-radius: 0;"><img src="app/main/xhsc/images/plus.png"><div style="font-size: 14px;">更多</div>-->
-        <!--</md-button><md-button style="min-width:81px;height: 100%;background: #ff3534;color:#fff;padding:0;margin:0;font-size:0;-webkit-text-size-adjust:none;border-radius:0;"><img src="app/main/xhsc/images/plus.png"><div style="font-size: 14px;">删除</div></md-button>-->
-        <!--</div>-->
-        <!--</md-list-item>-->
-        <!--</md-list>-->
         <md-virtual-repeat-container id="vertical-container" class="slide-del" flex>
           <div md-virtual-repeat="item in vm.dynamicItems" class="repeat" md-on-demand flex>
            <md-list-item layout="row" class="slideli" style="border-bottom: 0px solid">

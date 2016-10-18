@@ -26,6 +26,7 @@
         noBack:false,
         sendBt: false,
         rightArrow: false,
+        showgrzx:true,
         leftArrow: false,
         title: '安全文明',
         url: '',

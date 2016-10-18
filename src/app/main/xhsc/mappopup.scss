@@ -3250,10 +3250,9 @@ a:hover{
     margin: 0px;
     list-style:none;
     float: left;
-    text-align: center;
   }
   li img{
-    max-width: 70px;
+    max-width: 64px;
     width: 60%;
   }
   li p{
@@ -3275,14 +3274,9 @@ a:hover{
 }
 
 @media screen and (min-width: 600px) and(max-width: 1280px){
-  .gxheadzb{
+  .gxheadzb,.gxheadjl{
     li{
       width:20%;
-    }
-  }
-  .gxheadjl{
-    li{
-      width:25%;
     }
   }
 }
