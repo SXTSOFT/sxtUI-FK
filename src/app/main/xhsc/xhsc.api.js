@@ -1203,6 +1203,9 @@
             },
             deleteAllMessage:function(){
               return $http.post($http.url('/api/Message/Clear'));
+            },
+            deleteMessage:function(id){
+              return $http.delete($http.url('/api/Message/'+id));
             }
         },
       Report:{
