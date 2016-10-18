@@ -125,6 +125,9 @@
         },
         update:function(Id,data){
           return $http.put($http.url('/api/MileStones/'+Id),data)
+        },
+        delete:function(id){
+          return $http.delete($http.url('/api/MileStones/'+id));
         }
       },
       /** /api/TaskLibrary 任务 **/
