@@ -3250,6 +3250,7 @@ a:hover{
     margin: 0px;
     list-style:none;
     float: left;
+    text-align: center;
   }
   li img{
     max-width: 64px;
@@ -3271,6 +3272,9 @@ a:hover{
     height: 120px;
     width: 120px;
   }
+  .nullImg{
+    width: 50%;
+  }
 }
 
 @media screen and (min-width: 600px) and(max-width: 1280px){
@@ -3278,6 +3282,9 @@ a:hover{
     li{
       width:20%;
     }
+  }
+  .nullImg{
+    width: 80%;
   }
 }
 

@@ -17,6 +17,7 @@
     var  dbpics=db('pics')
     vm.procedure=[];
     vm.yw=$stateParams.yw;
+    vm.isShowbg=false;
     //所有全局任务
     var globalTask = [
       function () {
@@ -383,7 +384,7 @@
             case 0:
             case 2:
               if (!vm.projects.length){
-                utils.alert("暂时没有找到数据");
+                vm.isShowbg=true;
               }
               break;
           }
@@ -424,7 +425,7 @@
                 break;
             }
             if (alert){
-              utils.alert("暂时没有数据!");
+              vm.isShowbg=true;
             }
             vm.f_isOver=true;
 
@@ -451,7 +452,7 @@
             }
             vm.Inspections=ys;
             if (vm.yw==16&&!vm.Inspections.length){
-              utils.alert("暂时没有找到数据");
+              vm.isShowbg=true;
             }
             vm.y_isOver=true;
           });
