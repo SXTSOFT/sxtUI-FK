@@ -123,7 +123,7 @@
           vm.saveNotice7=[];
           //vm.saveNoticeStarted = [];
           //vm.saveNoticeEarlyWarning=[];
-          vm.saveNoticeClosed=[];
+          vm.saveNotice8=[];
           $timeout(function(){
             vm.getUsers();
             vm.getNextTasks();
@@ -187,7 +187,7 @@
               vm.saveNotice7.push(r.RoleId);
               break;
             case 8:
-              vm.saveNoticeClosed.push(r.RoleId);
+              vm.saveNotice8.push(r.RoleId);
               break;
             default:
               break;
@@ -224,6 +224,13 @@
         }
 
       }
+    }
+    vm.getSelectedText = function(){
+      vm.saveTasks && vm.saveTasks.map(function(r){
+        console.log(r)
+       // return r.split('-')[0];
+      })
+      return vm.saveTasks;
     }
     vm.nextSave = function () {
       var next = angular.extend({
