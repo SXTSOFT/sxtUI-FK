@@ -131,10 +131,12 @@
         })
       }
       else if(i===1){
-        var selected = [];
-        f();
+        var selected = [],goFlag;
         vm.rootTask.Master.forEach(function (item) {
           if(item.selectedTask) {
+            if(!item.selectedTask.duration){
+              goFlag = true;
+            }
             selected.push({
               BuildingPlanFlowId:item.Id,
               TaskLibraryId:item.selectedTask.TaskLibraryId,
@@ -142,15 +144,17 @@
             });
           }
         })
-
-        api.plan.BuildPlan.flowTasksReset(vm.formWizard.Id,selected).then(function (r) {
-          api.plan.BuildPlan.getBuildingPlanRoles(vm.formWizard.Id).then(function (r) {
-            vm.currentRoles = r.data.Items;
+        if(!goFlag){
+          f();
+          api.plan.BuildPlan.flowTasksReset(vm.formWizard.Id,selected).then(function (r) {
+            api.plan.BuildPlan.getBuildingPlanRoles(vm.formWizard.Id).then(function (r) {
+              vm.currentRoles = r.data.Items;
+            });
           });
-        });
-        //api.plan.BuildPlan.getBuildingPlanRoleUsers(vm.formWizard.Id).then(function(r){
-        //  vm.roleUsers = r.data.Items;
-        //})
+        }else{
+          utils.alert('有未设置工期项存在');
+        }
+
       }
     }
 
@@ -179,8 +183,9 @@
               }else if(!vm.current.selectedTask.duration){
                 vm.current.selectedTask.duration = -0;
               }
+              vm.setMin();
             }
-            vm.setMin();
+
             vm.showBg = true;
             vm.toggleRight();
           }

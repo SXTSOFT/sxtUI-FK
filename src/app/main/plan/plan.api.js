@@ -124,7 +124,7 @@
           return $http.get($http.url('/api/MileStones',{RelatedFlowId:params.RelatedFlowId}))
         },
         update:function(Id,data){
-          return $http.put($http('/api/MileStones/'+Id,data))
+          return $http.put($http.url('/api/MileStones/'+Id),data)
         }
       },
       /** /api/TaskLibrary 任务 **/
