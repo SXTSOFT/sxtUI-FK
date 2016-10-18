@@ -1,53 +1,97 @@
-<div class="pcenter">
-  <md-list style="padding:0">
-    <md-list-item style="margin:0px;border: 0px solid">
-      <div class="md-list-item-text" layout="row" flex>
-        <p style="width: 60px;text-align-last: justify">姓名</p>
-        <p  style="padding-left: 30px">{{vm.user.name}}</p>
-      </div>
-      <span class="border1px bottom1px"></span>
-    </md-list-item>
-    <md-list-item  style="margin:0px;border: 0px solid">
-      <div class="md-list-item-text" layout="row" flex>
-        <p style="width: 60px;text-align-last: justify">角色</p>
-        <p  style="padding-left: 30px" layout="row">{{vm.user.role}}</p>
-        <span class="border1px bottom1px"></span>
-      </div>
-    </md-list-item>
-    <md-list-item  style="margin:0px;border: 0px solid">
-      <div class="md-list-item-text" layout="row"  flex>
-        <p style="width: 60px;text-align-last: justify">手机号码</p>
-        <p  style="padding-left: 30px">{{vm.user.userName}}</p>
-        <span class="border1px bottom1px"></span>
-      </div>
-    </md-list-item>
-    <md-list-item  style="margin:0px;border: 0px solid">
-      <div class="md-list-item-text" layout="row"  flex>
-        <p style="width: 60px;text-align-last: justify">当前版本</p>
+<md-tabs md-border-bottom flex>
+  <md-tab label="个人中心">
+    <md-tab-content style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
+    </md-tab-content>
+    <div class="pcenter">
+      <md-list style="padding-top:0">
+        <md-list-item style="margin:0px;border: 0px solid">
+          <div class="md-list-item-text" layout="row" flex>
+            <p style="width: 60px;text-align-last: justify">姓名</p>
+            <p style="padding-left: 52px;letter-spacing:12px">{{vm.user.name}}</p>
+          </div>
+          <span class="border1px bottom1px"></span>
+        </md-list-item>
+        <md-list-item style="margin:0px;border: 0px solid">
+          <div class="md-list-item-text" layout="row" flex>
+            <p style="width: 60px;text-align-last: justify">角色</p>
+            <p style="padding-left: 52px;letter-spacing:12px" layout="row">{{vm.user.role}}</p>
+            <span class="border1px bottom1px"></span>
+          </div>
+        </md-list-item>
+        <md-list-item style="margin:0px;border: 0px solid">
+          <div class="md-list-item-text" layout="row" flex>
+            <p style="width: 60px;text-align-last: justify">手机号码</p>
+            <p style="padding-left: 52px">{{vm.user.userName}}</p>
+            <span class="border1px bottom1px"></span>
+          </div>
+        </md-list-item>
+        <md-list-item style="margin:0px;border: 0px solid">
+          <div class="md-list-item-text" layout="row" flex>
+            <p style="width: 60px;text-align-last: justify">当前版本</p>
 
-        <p  style="padding-left: 30px">{{ vm.serverAppVersion}}</p>
-        <span class="border1px bottom1px"></span>
+            <p style="padding-left: 52px">{{ vm.serverAppVersion}}</p>
+            <span class="border1px bottom1px"></span>
+          </div>
+        </md-list-item>
+        <md-list-item>
+          <p>模式({{vm.networkState?'离线':'在线'}})</p>
+          <p class="md-secondary md-hue-3">
+            <md-switch ng-disabled="true" ng-model="vm.networkState" ng-disabled="true" aria-label="模式"
+                       ng-true-value="0" ng-false-value="1" class="md-warn"></md-switch>
+          </p>
+          <!--<span class="border1px bottom1px"></span>-->
+        </md-list-item>
+        <md-list-item>
+          <p>缓存 </p>
+          <md-button class="md-secondary md-raised md-primary" ng-click="vm.clearCache()">清空</md-button>
+        </md-list-item>
+        <md-divider></md-divider>
+        <!--<md-list-item layout="row">-->
+        <!--<md-button flex ng-click="vm.goMsg()"> 消息中心</md-button>-->
+        <!--</md-list-item>-->
+      </md-list>
+      <div flex>
+        <md-button flex
+                   style="display: block;width:100%;margin-left:0;margin-right:0;background:#fff;border:1px solid #d8d8d8;min-height:48px;line-height:48px;"
+                   ng-click="vm.logout()">退出登录
+        </md-button>
       </div>
-    </md-list-item>
-    <md-list-item>
-      <p>模式({{vm.networkState?'离线':'在线'}})</p> <p class="md-secondary md-hue-3">
-      <md-switch ng-disabled="true" ng-model="vm.networkState" ng-disabled="true" aria-label="模式" ng-true-value="0" ng-false-value="1" class="md-warn"></md-switch></p>
-      <!--<span class="border1px bottom1px"></span>-->
-    </md-list-item>
-    <md-list-item>
-      <p>缓存 </p>
-      <md-button class="md-secondary md-raised md-primary" ng-click="vm.clearCache()">清空</md-button>
-    </md-list-item>
-    <md-divider></md-divider>
-
-
-    <md-list-item layout="row">
-      <md-button flex ng-click="vm.goMsg()"> 消息中心</md-button>
-    </md-list-item>
-  </md-list>
-  <div flex>
-    <md-button flex style="display: block;width:100%;margin-left:0;margin-right:0;background:#fff;border:1px solid #d8d8d8;min-height:48px;line-height:48px;" ng-click="vm.logout()">退出登录</md-button>
-  </div>
-</div>
+    </div>
+  </md-tab>
+  <md-tab label="消息中心">
+    <md-tab-content style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
+        <!--<md-list style="overflow: hidden;" class="slide-del" ng-repeat="item in vm.messages">-->
+        <!--<md-list-item layout="row" class="slideli">-->
+        <!--<md-checkbox style="margin-right:0;" ng-show="vm.showCheck" ng-model="item.checked"></md-checkbox>-->
+        <!--<div class="slidelist" layout="row">-->
+        <!--<div class="circle" flex="none"><span>{{item.name}}</span></div>-->
+        <!--<div flex>-->
+        <!--<h3 style="padding-right: 105px;">{{item.title}}<span>{{item.time|date:'MM-dd HH:mm'}}</span></h3>-->
+        <!--<p style="word-break: break-all;">{{item.description}}</p>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div style="position: absolute;right:-160px;top:0;height:100%;overflow: hidden;">-->
+        <!--<md-button style="min-width:80px;height: 100%;background: #c8c7cd;color:#fff;padding:0;margin:0;font-size:0;-webkit-text-size-adjust:none;border-radius: 0;"><img src="app/main/xhsc/images/plus.png"><div style="font-size: 14px;">更多</div>-->
+        <!--</md-button><md-button style="min-width:81px;height: 100%;background: #ff3534;color:#fff;padding:0;margin:0;font-size:0;-webkit-text-size-adjust:none;border-radius:0;"><img src="app/main/xhsc/images/plus.png"><div style="font-size: 14px;">删除</div></md-button>-->
+        <!--</div>-->
+        <!--</md-list-item>-->
+        <!--</md-list>-->
+        <md-virtual-repeat-container id="vertical-container" class="slide-del" flex>
+          <div md-virtual-repeat="item in vm.dynamicItems" class="repeat" md-on-demand flex>
+           <md-list-item layout="row" class="slideli" style="border-bottom: 0px solid">
+              <md-checkbox style="margin-right:0;" ng-show="vm.showCheck" ng-model="item.checked"></md-checkbox>
+              <div class="slidelist" layout="row">
+                <div class="circle" flex="none"><span>{{item.name}}</span></div>
+                <div flex>
+                  <h3 style="padding-right: 105px;">{{item.title}}<span>{{item.time|date:'MM-dd HH:mm'}}</span></h3>
+                  <p style="word-break: break-all;">{{item.description}}</p>
+                </div>
+              </div>
+            </md-list-item>
+          </div>
+        </md-virtual-repeat-container>
+    </md-tab-content>
+  </md-tab>
+</md-tabs>
 <!--ng-show="vm.showmyDialog"-->
 <my-dialog dialog-show="vm.showmyDialog" dialog-sure="确定" dialog-msg="确定退出登录"></my-dialog>
