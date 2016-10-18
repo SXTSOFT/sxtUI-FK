@@ -1,0 +1,74 @@
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools">
+    <h2>
+      <span>材料进场计划</span>
+    </h2>
+    <span flex ="5"></span>
+    <md-select style="font-size:13px;margin-right:20px;" name="projectId" ng-model="vm.data.ProjectId" md-on-open="vm.getMaps()">
+      <md-option ng-value="p.ProjectID" ng-repeat="p in vm.projects">{{p.ProjectName}}</md-option>
+    </md-select>
+    <md-select style="font-size:13px;margin-right:20px;" name="sectionId" ng-model="vm.data.RegionId" md-on-open="vm.getSections()">
+      <md-option ng-value="p.RegionID" ng-repeat="p in vm.sections">{{p.RegionName}}</md-option>
+    </md-select>
+    <!--<md-select style="font-size:13px;margin-right:20px;" name="sectionId" ng-model="vm.formWizard.sectionId" required md-on-open="vm.getSections()">-->
+      <!--<md-option ng-value="p.RegionID " ng-repeat="p in vm.data.sections">{{p.RegionName}}</md-option>-->
+    <!--</md-select>-->
+    <span flex></span>
+    <md-button class="md-icon-button" aria-label="More">
+      <md-icon md-font-icon="icon-plus" ui-sref="app.material.plan"></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+<md-content flex layout="column" ms-scroll>
+  <table class="simple">
+    <thead>
+    <tr>
+      <th>计划名称</th>
+      <th>材料/设备名称</th>
+      <th>型号</th>
+      <th>规格</th>
+      <th>进场计划时间</th>
+      <th>进场计划数量</th>
+      <th>使用部位</th>
+      <th>合同编号</th>
+      <th>供货方式</th>
+      <th>状态</th>
+      <th style="width: 160px">管理</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in vm.plans">
+      <td>{{item.PlanName}}</td>
+      <td>{{item.MaterialName}}</td>
+      <td>{{item.Model}}</td>
+      <td>{{item.Specifications}}</td>
+      <td>{{item.PlanTime}}</td>
+      <td>{{item.PlanCount}}</td>
+      <td>{{item.Position}}</td>
+      <td>{{item.Contract}}</td>
+      <td>{{item.SupplyType}}</td>
+      <td>{{item.Status}}</td>
+      <td class="actions">
+        <md-button class="md-primary md-mini md-fab" aria-label="Settings" ui-sref="app.material.plan({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
+        <md-button class="md-primary md-mini md-fab" aria-label="Settings" ng-click="vm.delete(item.Id)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</md-content>
+<div layout="row">
+  <span flex></span>
+  <md-select ng-model="pageing.pageSize" class="pageSZ">
+    <md-option value="10">10</md-option>
+    <md-option value="20">20</md-option>
+    <md-option value="40">40</md-option>
+    <md-option value="80">80</md-option>
+    <md-option value="100">100</md-option>
+  </md-select>
+  <div style="text-align: right;margin-right: 15px"
+       paging page="pageing.page"
+       page-size="pageing.pageSize"
+       total="vm.total"
+       paging-action="vm.pageAction('bar', page, pageSize, total)">
+  </div>
+</div>

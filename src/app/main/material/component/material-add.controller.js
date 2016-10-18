@@ -12,6 +12,7 @@
       controllerAs:'vm'
     });
 
+  /** @ngInject */
   function materialAdd(api,utils,$stateParams,$state){
     var vm = this;
     vm.data = {};
