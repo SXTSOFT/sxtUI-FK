@@ -31,6 +31,13 @@
       .state('app.material.type', {
         url:'/type',
         template:'<material-type flex layout="column"></material-type>'
+      })
+      .state('app.material.plans',{
+        url:'/plans',
+        template:'<material-plans flex layout="column"></material-plans>'
+      }).state('app.material.plan',{
+        url:'/plan/{id}',
+        template:'<material-plan flex layout="column"></material-plan>'
       });
 
     msNavigationServiceProvider.saveItem('material', {
@@ -50,6 +57,13 @@
       title: '材料',
       icon: 'icon-account',
       state: 'app.material.list',
+      weight: 1
+    });
+
+    msNavigationServiceProvider.saveItem('material.plans', {
+      title: '材料进场计划',
+      icon: 'icon-account',
+      state: 'app.material.plans',
       weight: 1
     });
   }

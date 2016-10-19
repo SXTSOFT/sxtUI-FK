@@ -28,6 +28,23 @@
         delete:function(id){
           return $http.delete('/api/MaterialScience/'+id);
         }
+      },
+      materialPlan:{
+        Create:function (args) {
+          return $http.post('/api/MaterialPlan', args)
+        },
+        getList:function(args){
+          return $http.get($http.url('/api/MaterialPlan',{Skip:args.Skip,Limit:args.Limit}))
+        },
+        getMaterial:function(id){
+          return $http.get($http.url('/api/MaterialPlan/'+id));
+        },
+        putMaterial:function(data){
+          return $http.put('/api/MaterialPlan/'+data.Id,data);
+        },
+        delete:function(id){
+          return $http.delete('/api/MaterialPlan/'+id);
+        }
       }
     })
   }

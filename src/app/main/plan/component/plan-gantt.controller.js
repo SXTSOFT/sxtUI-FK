@@ -159,24 +159,24 @@
           //if(diff1._i<diff2){
           //  utils.alert('工期应大于此工期的80%');
           //  if(find.tasks[0].from == task.model.from._i){
-          //    from = task.model.from;
-          //    to = moment(moment(find.tasks[0].from) + diff2);
+          //    task.model.from = task.model.from;
+          //    task.model.to = moment(moment(find.tasks[0].from) + diff2);
           //    console.log('from')
           //  }else if(find.tasks[0].to == task.model.to._i){
-          //    from = task.model.from;
-          //    to = task.model.to;
+          //    task.model.from = moment(task.model.from+(moment(find.tasks[0].to)-moment(find.tasks[0].from))*0.2);
+          //    task.model.to =  task.model.to;
           //  }
           //}else{
-          //  from = task.model.from;
-          //  to = task.model.to;
+          //  task.model.from = task.model.from;
+          //  task.model.to = task.model.to;
           //}
           from = task.model.from;
           to = task.model.to;
           var changeData = [
             {
               "TaskId": task.model.id,
-              "ScheduledStartTime": from,//task.model.from,
-              "ScheduledEndTime": to//task.model.to
+              "ScheduledStartTime": task.model.from,
+              "ScheduledEndTime": task.model.to
             }
           ]
           api.plan.BuildPlan.adjustPlan($stateParams.id,changeData).then(function(r){
