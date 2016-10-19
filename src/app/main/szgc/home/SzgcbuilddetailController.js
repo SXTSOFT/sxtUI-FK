@@ -53,7 +53,12 @@
         vm.query();
       }
     })
-
+    vm.clearAll = function(){
+      vm.selected.ps=[];
+      vm.procedures.forEach(function(r){
+        r.checked = false;
+      })
+    }
     vm.itemChecked1 = function (p) {
       p.checked = !p.checked;
       vm.itemChecked(p);

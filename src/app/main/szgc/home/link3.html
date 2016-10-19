@@ -5,7 +5,7 @@
   <!--</div>-->
 <!--</panzoom>-->
 <div hm-dir style="width:100%;">
-<div id="pinch" hm-drag="dragEvent($event)" hm-dragend="dragend($event)" hm-pinch="pinch($event)" hm-pinchmove="pinchmove($event)" hm-pinchend="pinchend($event)" style="position: relative;">
+<div id="pinch" style="position: relative;">
   <div id="floorlayer" style="margin:10px 0;position:relative;">
   <floor-layer style="float:left;" build-len="vm.buildLen" ng-repeat="sxtfloor in vm.data.builds" sxtfloor="sxtfloor" floor-num="vm.data.floorNum" sell-line="vm.sellLine" ng-click="vm.setFloor(sxtfloor)" ui-sref="app.szgc.project.buildinglist.building({buildId:sxtfloor.building_id,buildName:sxtfloor.name,floors:sxtfloor.floors})"></floor-layer>
   <div style="clear:both;display:table;"></div>
