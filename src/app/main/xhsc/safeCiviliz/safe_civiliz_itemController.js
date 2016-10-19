@@ -51,7 +51,7 @@
           }
         })
       }
-      $state.go('app.xhsc.gx.sfhouse',{role:vm.role,acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,maxRegion:area})
+      $state.go('app.xhsc.sf.sfhouse',{role:vm.role,acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,maxRegion:area})
     }
   }
 })();

@@ -9,10 +9,10 @@
 
   angular
     .module('app.xhsc')
-    .controller('safe_houseController',safe_houseController);
+    .controller('safe_civiliz_houseController',safe_civiliz_houseController);
 
   /** @ngInject */
-  function safe_houseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils,api){
+  function safe_civiliz_houseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils,api){
     var vm=this,
       id = $stateParams.assessmentID,
       AssessmentTypeID = $stateParams.AssessmentTypeID,

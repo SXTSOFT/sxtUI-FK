@@ -419,13 +419,13 @@
       if (!item.isOffline){
         vm.downloadys(item).then(function(){
           api.setNetwork(1).then(function(){
-            $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
+            $state.go('app.xhsc.sf.sfaccept',{acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
               projectId:item.ProjectID,areaId:item.Children[0].AreaID,InspectionId:item.InspectionId})
           });
         })
       }else {
         api.setNetwork(1).then(function(){
-          $state.go('app.xhsc.gx.gxtest',{acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
+          $state.go('app.xhsc.sf.sfaccept',{acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,name:item.Children[0].newName,
             projectId:item.ProjectID,areaId:item.Children[0].AreaID,InspectionId:item.InspectionId})
         });
       }
@@ -460,12 +460,12 @@
       if (!item.isOffline){
         vm.downloadzg(item).then(function(){
           api.setNetwork(1).then(function(){
-            $state.go('app.xhsc.gx.gxzg',{Role:'zb',InspectionID: item.InspectionId,AcceptanceItemID: item.AcceptanceItemID,RectificationID: item.RectificationID,AcceptanceItemName: item.AcceptanceItemName});
+            $state.go('app.xhsc.sf.rectify',{Role:'zb',InspectionID: item.InspectionId,AcceptanceItemID: item.AcceptanceItemID,RectificationID: item.RectificationID,AcceptanceItemName: item.AcceptanceItemName});
           });
         })
       }else {
         api.setNetwork(1).then(function(){
-          $state.go('app.xhsc.gx.gxzg',{Role:'zb',InspectionID: item.InspectionId,AcceptanceItemID: item.AcceptanceItemID,RectificationID: item.RectificationID,AcceptanceItemName: item.AcceptanceItemName});
+          $state.go('app.xhsc.sf.rectify',{Role:'zb',InspectionID: item.InspectionId,AcceptanceItemID: item.AcceptanceItemID,RectificationID: item.RectificationID,AcceptanceItemName: item.AcceptanceItemName});
         });
       }
     }
