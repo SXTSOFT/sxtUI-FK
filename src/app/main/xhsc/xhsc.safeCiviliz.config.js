@@ -61,7 +61,7 @@
         rightArrow: false,
         leftArrow: false,
         url: '/sfhouse/{InspectionId}/{role}/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}/{maxRegion}',
-        templateUrl: 'app/main/xhsc/procedure/safe_house.html',
+        templateUrl: 'app/main/xhsc/safeCiviliz/safe_house.html',
         controller: 'safe_houseController as vm'
       })
 
