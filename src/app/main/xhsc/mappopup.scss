@@ -1504,11 +1504,12 @@ md-tabs[md-align-tabs="bottom"]{
           }
         }
         &.circle{
-          width:50px;
-          height:50px;
+          width:70px;
+          height:70px;
           span{
-            width:50px;
-            height:50px;
+            line-height: 70px !important;
+            width:70px;
+            height:70px;
             display: block;
             background: #f00;
             border-radius: 50%;
@@ -1518,6 +1519,7 @@ md-tabs[md-align-tabs="bottom"]{
             overflow: hidden;
             color:#fff;
             margin-right: 12px;
+            margin-left: -12px;;
           }
         }
         h3{
@@ -3286,6 +3288,9 @@ a:hover{
   .nullImg{
     width: 80%;
   }
+  .my-md-hide{
+    display: none !important;
+  }
 }
 
 
@@ -3582,7 +3587,9 @@ table {
   .nmmPanel{
     left:0px !important;
      top: 33px !important;
-
+  }
+  .my-xs-hide{
+    display: none !important;
   }
 }
 

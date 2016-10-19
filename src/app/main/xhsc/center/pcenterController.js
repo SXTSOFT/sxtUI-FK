@@ -131,9 +131,24 @@
      return  remote.message.messageList(0, 0).then(function (result) {
         vm.messages = [];
         result.data.Items.forEach(function (item) {
-          var name="系统";
+          var name="系统提示";
+          item.style={
+            background:"#f00"
+          }
           if (item.ExtrasContent&&item.ExtrasContent.Status&&item.ExtrasContent.Status<4){
-            name="业务";
+            switch (item.ExtrasContent.Status){
+              case 1:
+                name="工序验收";
+                break;
+              case 2:
+                name="工序整改";
+                break;
+              case 3:
+               name="工序复验";
+                break;
+              case 4:
+            }
+            item.style.background="#ff6d1f"
           }
           vm.messages.push({
             id: item.Id,
@@ -141,7 +156,8 @@
             time: item.SendTime,
             title: item.Title,
             description: item.Content,
-            ExtrasContent:item.ExtrasContent
+            ExtrasContent:item.ExtrasContent,
+            style:item.style
           });
         })
 
@@ -246,15 +262,16 @@
             action: function () {
               $mdBottomSheet.hide();
               if (item.ExtrasContent&&item.ExtrasContent.Status){
+                item.ExtrasContent.id=item.id;
                 switch (item.ExtrasContent.Status){
                   case 1:
-                   vm.jlysAction(item);
+                   vm.jlysAction(item.ExtrasContent);
                         break;
                   case 2:
-                    vm.zbzgAction(item)
+                    vm.zbzgAction(item.ExtrasContent)
                         break;
                   case 3:
-                    vm.jlfyAction(item);
+                    vm.jlfyAction(item.ExtrasContent);
                     break;
                   case 4:
                     break;
@@ -284,6 +301,12 @@
 
 
     //业务逻辑
+    var dbpics = db('pics');
+    var globalTask = [
+      function () {
+        return remote.Procedure.queryProcedure();
+      }
+    ];
     function projectTask(projectId, areas, acceptanceItemID) {
       return [
         function (tasks) {
@@ -330,7 +353,7 @@
       var t = [function () {
         return remote.Project.getInspectionList(item.InspectionId);
       }];
-      item.Children.forEach(function (area) {
+      item.AreaList.forEach(function (area) {
         t.push(function (tasks, down) {
           return remote.Procedure.InspectionCheckpoint.query(item.AcceptanceItemID, area.AreaID, item.InspectionId).then(function (result) {
             result.data.forEach(function (p) {
@@ -384,14 +407,14 @@
             controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
               $scope.item = item;
               var tasks = [].concat(globalTask)
-                .concat(projectTask(item.ProjectID, item.Children, item.AcceptanceItemID))
+                .concat(projectTask(item.AreaList[0].substring(0, 5), item.AreaList, item.AcceptanceItemID))
                 .concat(InspectionTask(item))
                 .concat(function () {
                   return remote.offline.create({Id: 'ys' + item.InspectionId});
                 })
               api.task(tasks, {
                 event: 'downloadys',
-                target: item.InspectionId
+                target: item
               })(null, function () {
                 item.percent = item.current = item.total = null;
                 item.isOffline = true;
@@ -414,31 +437,27 @@
       });
     }
     api.event('downloadys', function (s, e) {
-      var current = vm.Inspections && vm.Inspections.find(function (item) {
-          return item.InspectionId == e.target;
-        });
-      if (current) {
-        switch (e.event) {
-          case 'progress':
-            current.percent = parseInt(e.percent * 100) + ' %';
-            current.current = e.current;
-            current.total = e.total;
-            break;
-          case 'success':
-            current.isOffline = true;
-            break;
-        }
+      var current = e.target;
+      switch (e.event) {
+        case 'progress':
+          current.percent = parseInt(e.percent * 100) + ' %';
+          current.current = e.current;
+          current.total = e.total;
+          break;
+        case 'success':
+          break;
       }
     }, $scope);
 
     vm.downloadzg = function (item) {
+      item.InspectionId=item.InspectionId?item.InspectionId:item.InspectionID;
       return $q(function (resolve, reject) {
         api.setNetwork(0).then(function () {
           $mdDialog.show({
             controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
               $scope.item = item;
               var tasks = [].concat(globalTask)
-                .concat(projectTask(item.Children[0].AreaID.substring(0, 5), item.Children, item.AcceptanceItemID))
+                .concat(projectTask(item.AreaList[0].substring(0, 5), item.AreaList, item.AcceptanceItemID))
                 .concat(InspectionTask(item))
                 .concat(rectificationTask(item))
                 .concat(function () {
@@ -446,7 +465,7 @@
                 });
               api.task(tasks, {
                 event: 'downloadzg',
-                target: item.RectificationID
+                target: item
               })(null, function () {
                 item.percent = item.current = item.total = null;
                 item.isOffline = true;
@@ -472,9 +491,7 @@
 
     }
     api.event('downloadzg', function (s, e) {
-      var current = vm.zglist && vm.zglist.find(function (item) {
-          return item.RectificationID == e.target;
-        });
+      var current = e.target;
       if (current) {
         switch (e.event) {
           case 'progress':
@@ -490,79 +507,53 @@
     }, $scope);
 
     vm.jlfyAction = function (item) {
-      if (!item.isOffline) {
-        vm.downloadzg(item).then(function () {
-          api.setNetwork(1).then(function () {
+      item.InspectionId=item.InspectionId?item.InspectionId:item.InspectionID;
+      vm.downloadzg(item).then(function () {
+        api.setNetwork(1).then(function () {
+          remote.message.deleteMessage(item.id).then(function(){
             $state.go('app.xhsc.gx.gxzg', {
               Role: 'jl',
               InspectionID: item.InspectionId,
               AcceptanceItemID: item.AcceptanceItemID,
               RectificationID: item.RectificationID
             })
-          });
-        })
-      } else {
-        api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.gx.gxzg', {
-            Role: 'jl',
-            InspectionID: item.InspectionId,
-            AcceptanceItemID: item.AcceptanceItemID,
-            RectificationID: item.RectificationID
           })
         });
-      }
+      })
     }
-    vm.jlfyAction = function (item) {
-      if (!item.isOffline) {
+    vm.zbzgAction = function (item) {
+        item.InspectionId=item.InspectionId?item.InspectionId:item.InspectionID;
         vm.downloadzg(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go('app.xhsc.gx.gxzg', {
-              Role: 'jl',
-              InspectionID: item.InspectionId,
-              AcceptanceItemID: item.AcceptanceItemID,
-              RectificationID: item.RectificationID
+            remote.message.deleteMessage(item.id).then(function(){
+              $state.go('app.xhsc.gx.gxzg', {
+                Role: 'zb',
+                InspectionID: item.InspectionId,
+                AcceptanceItemID: item.AcceptanceItemID,
+                RectificationID: item.RectificationID,
+                AcceptanceItemName: item.AcceptanceItemName
+              });
             })
           });
         })
-      } else {
-        api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.gx.gxzg', {
-            Role: 'jl',
-            InspectionID: item.InspectionId,
-            AcceptanceItemID: item.AcceptanceItemID,
-            RectificationID: item.RectificationID
-          })
-        });
-      }
     }
     vm.jlysAction = function (item) {
-      if (!item.isOffline) {
-        vm.downloadys(item).then(function () {
-          api.setNetwork(1).then(function () {
+      item.InspectionId=item.InspectionId?item.InspectionId:item.InspectionID;
+      vm.downloadys(item).then(function () {
+        api.setNetwork(1).then(function () {
+          remote.message.deleteMessage(item.id).then(function(){
             $state.go('app.xhsc.gx.gxtest', {
               acceptanceItemID: item.AcceptanceItemID,
               acceptanceItemName: item.AcceptanceItemName,
-              name: item.Children[0].newName,
-              projectId: item.ProjectID,
-              areaId: item.Children[0].AreaID,
+              name: item.AreaList[0].newName,
+              projectId: item.AreaList[0].substring(0, 5),
+              areaId: item.AreaList[0],
               InspectionId: item.InspectionId
             })
-          });
-        })
-      } else {
-        api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.gx.gxtest', {
-            acceptanceItemID: item.AcceptanceItemID,
-            acceptanceItemName: item.AcceptanceItemName,
-            name: item.Children[0].newName,
-            projectId: item.ProjectID,
-            areaId: item.Children[0].AreaID,
-            InspectionId: item.InspectionId
           })
         });
-      }
+      })
     }
-
 
     $scope.$on("$destroy",function(){
       event();

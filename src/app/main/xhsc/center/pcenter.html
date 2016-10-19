@@ -65,8 +65,12 @@
            <md-list-item layout="row" class="slideli" ng-click="vm.action(item,$event)" style="border-bottom: 0px solid">
               <md-checkbox style="margin-right:0;" ng-show="vm.showCheck" ng-model="item.checked"></md-checkbox>
               <div class="slidelist" layout="row">
-                <div class="circle" flex="none"><span>{{item.name}}</span></div>
-                <div flex>
+                <div class="circle" flex="none"><span ng-style="item.style">{{item.name}}</span></div>
+                <div class="my-md-hide" flex>
+                  <h3>{{item.title}}<p style="margin: 0px">{{item.time|date:'MM-dd HH:mm'}}</p></span></h3>
+                  <p style="word-break: break-all;margin-top: 0px">{{item.description}}</p>
+                </div>
+                <div flex class="my-xs-hide">
                   <h3 style="padding-right: 105px;">{{item.title}}<span>{{item.time|date:'MM-dd HH:mm'}}</span></h3>
                   <p style="word-break: break-all;">{{item.description}}</p>
                 </div>
