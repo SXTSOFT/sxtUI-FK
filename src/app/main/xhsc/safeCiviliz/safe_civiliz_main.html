@@ -1,6 +1,10 @@
 <div flex ng-if="vm.role==0" class="gxbg" layout="column" ms-scroll>
   <div class="gxheadzb">
     <ul>
+      <li ng-click="vm.setModule(0)">
+        <img src="app/main/xhsc/images/zbzj.png">
+        <p>总包自检</p>
+      </li>
       <li ng-click="vm.setModule(2)">
         <img src="app/main/xhsc/images/zbby.png">
         <p>总包报验</p>
@@ -25,7 +29,7 @@
           <p style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
             {{item.AcceptanceItemName}}<span style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">总包整改</span>
           </p>
-          <p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px;"><span
+          <p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px"><span
             ng-repeat="area in item.Children" style="display: block;height: 24px"> {{area.RegionName}} </span></p>
         </div>
         <span flex></span>
@@ -49,14 +53,6 @@
         <img src="app/main/xhsc/images/jlfy.png">
         <p>监理复验</p>
       </li>
-      <li>
-        <img src="app/main/xhsc/images/week.png">
-        <p>周安全检查</p>
-      </li>
-      <li>
-        <img src="app/main/xhsc/images/dynmic.png">
-        <p>动态危险源</p>
-      </li>
       <li ng-click="vm.upload()">
         <img src="app/main/xhsc/images/upload.png">
         <p>离线上传</p>
@@ -75,7 +71,7 @@
             <span
               style="margin-left:2%;color:white;background-color: #359df5;font-size:12px;border-radius: 3px">监理验收</span>
           </p>
-          <p style="color:#999;padding-left:8px;padding-right: 20px;margin:0;font-size:12px;">
+          <p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px;">
             <span ng-repeat="area in item.Children" style="display: block;height: 24px"> {{area.RegionName}} </span>
           </p>
         </div>
@@ -91,7 +87,7 @@
             {{item.AcceptanceItemName}} <span
             style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">监理复验</span>
           </p>
-          <p tyle="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px;"><span
+          <p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px;"><span
             ng-repeat="area in item.Children" style="display: block;height: 24px"> {{area.RegionName}} </span></p>
         </div>
         <span flex></span>

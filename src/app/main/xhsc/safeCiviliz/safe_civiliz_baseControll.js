@@ -1,5 +1,8 @@
 /**
- * Created by lss on 2016/10/18.
+ * Created by lss on 2016/10/19.
+ */
+/**
+ * Created by lss on 2016/9/22.
  */
 /**
  * Created by emma on 2016/6/21.
@@ -9,13 +12,14 @@
 
   angular
     .module('app.xhsc')
-    .controller('safeCiviliz_mainController',safeCiviliz_mainController);
+    .controller('safe_civiliz_baseController',safe_civiliz_baseController);
 
-  /**@ngInject*/
-  function safeCiviliz_mainController(remote,xhUtils,$rootScope,utils,api,$q,$state,$scope,$mdDialog,db,$mdBottomSheet){
+  function safe_civiliz_baseController(remote,xhUtils,$rootScope,utils,api,$q,$state,$scope,$mdDialog,db,$mdBottomSheet,$stateParams){
     var vm = this;
     var  dbpics=db('pics')
     vm.procedure=[];
+    vm.yw=$stateParams.yw;
+    vm.isShowbg=false;
     //所有全局任务
     var globalTask = [
       function () {
@@ -134,16 +138,16 @@
 
     function InspectionZjTask(t,AcceptanceItemID,AreaID,InspectionId) {
       t.push(function () {
-        return remote.Procedure.InspectionPoint.query(InspectionId,AcceptanceItemID,AreaID)
+        return remote.Procedure.InspectionPoint.query(InspectionId,AcceptanceItemID,AreaID,"InspectionPoint_zj")
       })
       t.push(function (tasks,down) {
-        return remote.Procedure.InspectionCheckpoint.query(AcceptanceItemID,AreaID,InspectionId).then(function (result) {
+        return remote.Procedure.InspectionCheckpoint.query(AcceptanceItemID,AreaID,InspectionId,"InspectionCheckpoint_zj").then(function (result) {
           result.data.forEach(function (p) {
             tasks.push(function () {
-              return remote.Procedure.InspectionProblemRecord.query(p.CheckpointID).then(function (result) {
+              return remote.Procedure.InspectionProblemRecord.query(p.CheckpointID,"InspectionProblemRecord_zj").then(function (result) {
                 result.data.forEach(function (r) {
                   tasks.push(function () {
-                    return remote.Procedure.InspectionProblemRecordFile.query(r.ProblemRecordID).then(function (result) {
+                    return remote.Procedure.InspectionProblemRecordFile.query(r.ProblemRecordID,"","InspectionProblemRecordFile_zj").then(function (result) {
                     })
                   })
                 })
@@ -153,6 +157,88 @@
         })
       });
     }
+
+    vm.downloadzj = function (item) {
+      return api.setNetwork(0).then(function(){
+        return $q(function(resolve,reject){
+          $mdDialog.show({
+            controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+              $scope.item=item;
+              var tasks = [].concat(globalTask)
+                .concat(item.isOffline?[]:projectTask(item.ProjectID))
+                .concat([
+                  function (tasks) {
+                    var group=[];
+                    var inspections=[];
+                    return remote.Procedure.getRegionStatusEx(item.ProjectID,"8",null,"project_status_zj").then(function (result) {
+                      result.data.forEach(function (item) {
+                        if(item.AcceptanceItemID && item.AreaId && item.InspectionId&&!group.find(function(k){
+                            return k.AcceptanceItemID==item.AcceptanceItemID&& k.AreaId==item.AreaId&&k.InspectionId==item.InspectionId
+                          })) {
+                          group.push([item.AcceptanceItemID,item.AreaId,item.InspectionId]);
+                        }
+                        if(item.AcceptanceItemID && item.AreaId && item.InspectionId&&!inspections.find(function(k){
+                            return k.InspectionId==item.InspectionId;
+                          })){
+                          inspections.push(item.InspectionId);
+                        }
+                      })
+                      inspections.forEach(function(id){
+                        tasks.push(function(){
+                          return remote.Project.getInspectionList(id,"Inspection_zj");
+                        });
+                        //tasks.push(function(){
+                        //  return remote.Procedure.InspectionIndexJoinApi.query(id)
+                        //});
+                      });
+                      group.forEach(function(data){
+                        InspectionZjTask(tasks,data[0],data[1],data[2]);
+                      })
+                    })
+                  }
+                ])
+              api.task(tasks,{
+                event:'downloadzj',
+                target:item
+              })(null, function () {
+                item.percent = item.current = item.total = null;
+                item.isOffline = true;
+                $mdDialog.hide();
+                utils.alert('下载完成');
+                return remote.offline.create({Id:'zj'+item.ProjectID});
+                resolve();
+              }, function () {
+                item.percent = item.current = item.total = null;
+                $mdDialog.cancel();
+                utils.alert('下载失败,请检查网络');
+                reject()
+              })
+            }],
+            template: '<md-dialog aria-label="正在下载基础数据"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+            parent: angular.element(document.body),
+            clickOutsideToClose:false,
+            fullscreen: false
+          });
+        })
+      })
+    };
+
+    api.event('downloadzj',function (s,e) {
+      var current = vm.projects && vm.projects.find(function (item) {
+          return item.ProjectID==e.target.ProjectID;
+        });
+      if(current) {
+        switch (e.event) {
+          case 'progress':
+            current.percent = parseInt(e.percent * 100) + ' %';
+            current.current = e.current;
+            current.total = e.total;
+            break;
+          case 'success':
+        }
+      }
+    },$scope);
+
     vm.downloadys = function (item) {
       return api.setNetwork(0).then(function(){
         return $q(function(resolve,reject){
@@ -267,67 +353,12 @@
       }
     },$scope);
 
-    vm.uploadInfo={}
-    vm.uploadInfo.uploading=false;
-    vm.upload =function () {
+    vm.MemberType = [];
+    vm.by=function(r){
       api.setNetwork(0).then(function(){
-        vm.uploadInfo.uploading = true;
-        vm.uploadInfo.percent='0%'
-        $mdDialog.show({
-          controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
-            $scope.uploadInfo=vm.uploadInfo;
-
-            api.upload(function (cfg,item) {
-              if(cfg._id=='s_files' && item && item.Url.indexOf('base64')==-1){
-                return false;
-              }
-              if (cfg._id=="s_offline"){
-                return false;
-              }
-              return true;
-            },function (percent,current,total) {
-              vm.uploadInfo.percent = parseInt(percent *100) +' %';
-              vm.uploadInfo.current = current;
-              vm.uploadInfo.total = total;
-            },function (tasks) {
-              vm.uploadInfo.uploaded = 1;
-              api.uploadTask(function () {
-                return true
-              },null);
-              $mdDialog.hide();
-              //db("s_offline").destroy();
-              utils.alert('上传成功');
-              load();
-              vm.uploadInfo.tasks = [];
-              vm.uploadInfo.uploading= false;
-            },function (timeout) {
-              $mdDialog.hide();
-              var msg='上传失败,请检查网络!'
-              if(timeout){
-                msg='请求超时,请检查网络!';
-              }
-              utils.alert(msg);
-              vm.uploadInfo.uploaded = 0;
-              vm.uploadInfo.uploading =false;
-            },{
-              uploaded:function (cfg,row,result) {
-                if (cfg.db&&cfg.db.delete)
-                  cfg.db.delete(row._id);
-                else
-                  cfg._db.delete(row._id);
-              }
-            });
-          }],
-          template: '<md-dialog aria-label="正在上传"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在上传：{{uploadInfo.percent}}({{uploadInfo.current}}/{{uploadInfo.total}})</p></md-dialog-content></md-dialog>',
-          parent: angular.element(document.body),
-          clickOutsideToClose:false,
-          fullscreen: false
-        });
+        $state.go('app.xhsc.sf.sfitem', {role:'zb',projectId:r.ProjectID});
       });
     }
-
-
-    vm.MemberType = [];
     api.setNetwork(0).then(function(){
       remote.profile().then(function(r){
         if (r.data&& r.data.Role){
@@ -340,71 +371,94 @@
     })
 
     function load(){
-      $q.all([
-        remote.Procedure.getZGlist(23).then(function (r) {
-          return  $q(function(resolve,reject){
-            vm.zglist = [];
-            if (angular.isArray(r.data)){
-              var zg=[];
-              r.data.forEach(function(o){
-                zg.push(o);
-              });
-              remote.offline.query().then(function(r){
-                if (angular.isArray(r.data)){
-                  zg.forEach(function(k){
-                    if (r.data.find(function(m){
-                        return m.Id=="zg"+k.RectificationID;
-                      })){
-                      k.isOffline=true;
-                    }
-                  })
-                }
-                vm.zglist=zg;
-                // 值不存在提示
-                resolve();
-              }).catch(function(){
-                resolve();
-              });
-            }
-            else {
-              resolve();
-            }
-          })
+      remote.Project.getMap().then(function(result){
+        remote.offline.query().then(function (r) {
+          if (r&& r.data&& r.data.length){
+            result.data.forEach(function (item) {
+              item.isOffline =true;
+            });
+          }
+          vm.projects = result.data;
+          vm.z_isOver=true;
+        }).catch(function(){
+          vm.projects = result.data;
+          switch (vm.yw){
+            case 0:
+            case 2:
+              if (!vm.projects.length){
+                vm.isShowbg=true;
+              }
+              break;
+          }
+        });
+      });
 
-        }),
-        remote.Procedure.getInspections(1).then(function(r){
-          $q(function(resolve,reject){
-            vm.Inspections=[];
-            if (angular.isArray(r.data)){
-              var ys=[];
-              r.data.forEach(function(o){
-                ys.push(o);
-              });
-              remote.offline.query().then(function(r){
-                if (angular.isArray(r.data)){
-                  ys.forEach(function(k){
-                    if (r.data.find(function(m){
-                        return m.Id=="ys"+k.InspectionId;
-                      })){
-                      k.isOffline=true;
-                    }
-                  })
-                }
-                vm.Inspections=ys;
-                if (vm.yw==16&&!vm.Inspections.length){
-                  utils.alert("暂时没有找到数据");
-                }
-                resolve();
-              }).catch(function(){
-                resolve();
-              });
-            }else {
-              resolve();
-            }
+      remote.Procedure.getZGlist(23).then(function (r) {
+        vm.zglist = [];
+        if (angular.isArray(r.data)){
+          var zg=[];
+          r.data.forEach(function(o){
+            zg.push(o);
           });
-        })
-      ]).then(function(){
-        vm.isOver=true;
+          remote.offline.query().then(function(r){
+            if (angular.isArray(r.data)){
+              zg.forEach(function(k){
+                if (r.data.find(function(m){
+                    return m.Id=="zg"+k.RectificationID;
+                  })){
+                  k.isOffline=true;
+                }
+              })
+            }
+            vm.zglist=zg;
+            var alert=false;
+            switch (vm.yw){
+              case "4":
+                var  t=vm.zglist.find(function(k){
+                  return k.Status==4;
+                });
+                alert=t?false:true;
+                break;
+              case "32":
+                var  t=vm.zglist.find(function(k){
+                  return k.Status==16;
+                });
+                alert=t?false:true;
+                break;
+            }
+            if (alert){
+              vm.isShowbg=true;
+            }
+            vm.f_isOver=true;
+
+
+          });
+        }
+      });
+      remote.Procedure.getInspections(1).then(function(r){
+        vm.Inspections=[];
+        if (angular.isArray(r.data)){
+          var ys=[];
+          r.data.forEach(function(o){
+            ys.push(o);
+          });
+          remote.offline.query().then(function(r){
+            if (angular.isArray(r.data)){
+              ys.forEach(function(k){
+                if (r.data.find(function(m){
+                    return m.Id=="ys"+k.InspectionId;
+                  })){
+                  k.isOffline=true;
+                }
+              })
+            }
+            vm.Inspections=ys;
+            if (vm.yw==16&&!vm.Inspections.length){
+              vm.isShowbg=true;
+            }
+            vm.y_isOver=true;
+          });
+        }
       });
     }
     api.setNetwork(0).then(function(){
@@ -412,7 +466,47 @@
     })
 
     vm.setModule=function(val){
-      $state.go('app.xhsc.gx.yw',{yw:val})
+      vm.bodyFlag=val;
+    }
+    vm.zbzjAction=function(item){
+      if (!item.isOffline){
+        vm.downloadzj(item).then(function(){
+          api.setNetwork(1).then(function(){
+            $state.go('app.xhsc.sf.sfitem', {role:'',projectId:item.ProjectID});
+          });
+        })
+      }else {
+        api.setNetwork(1).then(function(){
+          $state.go('app.xhsc.sf.sfitem', {role:'',projectId:item.ProjectID});
+        });
+      }
+    }
+
+    vm.zbzjbtnAction=function(item,evt){
+      $mdBottomSheet.show({
+        templateUrl: 'app/main/xhsc/procedure/action.html',
+        controller:function($scope){
+          $scope.btns=[{
+            title:'自 检',
+            action:function(){
+              $mdBottomSheet.hide();
+              vm.zbzjAction(item);
+            }
+          },{
+            title:'下 载',
+            action:function(){
+              $mdBottomSheet.hide();
+              vm.downloadzj(item);
+            }
+          },{
+            title:'取 消',
+            action:function(){
+              $mdBottomSheet.hide();
+            }
+          }]
+        }
+      });
+      evt.stopPropagation();
     }
 
     vm.jlysAction=function(item){
