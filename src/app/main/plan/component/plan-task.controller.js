@@ -121,6 +121,7 @@
           vm.current = e.data;
           vm.toggleRight();
           vm.saveNotice7=[];
+          vm.MileStone = [];
           //vm.saveNoticeStarted = [];
           //vm.saveNoticeEarlyWarning=[];
           vm.saveNotice8=[];
@@ -212,7 +213,7 @@
           "RelatedFlowId": vm.current.TaskFlowId,
           "Percentage": vm.current.Percentage
         }
-        if(vm.MileStone){
+        if(vm.MileStone&&vm.MileStone.length){
           mdata.Id = vm.MileStone.Id;
           api.plan.MileStone.update(vm.MileStone.Id,mdata).then(function(){
 
@@ -222,7 +223,10 @@
 
           })
         }
-
+      }else if(!vm.current.Memorial&&vm.MileStone){
+        api.plan.MileStone.delete(vm.MileStone.Id).then(function(r){
+          console.log(r)
+        })
       }
     }
     vm.getSelectedText = function(){

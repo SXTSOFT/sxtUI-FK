@@ -1,6 +1,7 @@
 <md-content layout="column" flex>
 <ms-form-wizard flex class="create-plan" id="formWizard">
   <div  scroll-top="msWizard.selectedIndex">
+    {{vm.result}}
   <md-tabs md-dynamic-height md-selected="msWizard.selectedIndex" md-center-tabs="true">
     <md-tab>
       <md-tab-label>
@@ -14,16 +15,7 @@
       </md-tab-label>
       <md-tab-body>
         <form name="wizardStep1" flex  ms-form-wizard-form novalidate>
-          <div layout="row" >
-            <md-input-container flex="100" class="md-block">
-              <input type="text" name="planName" ng-change="vm.change()" ng-model="vm.formWizard.Name" placeholder="计划名称" required>
-              <div ng-messages="wizardStep1.planName.$error" ng-show="wizardStep1.planName.$touched" role="alert">
-                <div ng-message="required">
-                  <span>请输入计划名称.</span>
-                </div>
-              </div>
-            </md-input-container>
-          </div>
+
           <div layout="row">
             <md-input-container class="md-block" flex="40">
               <label>请选择项目</label>
@@ -73,7 +65,7 @@
             </md-input-container>
             <md-input-container flex>
               <label>开始日期</label>
-              <md-datepicker name="beginDate" ng-model="vm.formWizard.StartTime" required md-open-on-focus></md-datepicker>
+              <md-datepicker name="beginDate" ng-model="vm.formWizard.StartTime" md-placeholder="日期" required md-open-on-focus></md-datepicker>
             </md-input-container>
             <!--<div flex layout="row">-->
             <!--<md-input-container flex>-->
@@ -100,6 +92,16 @@
               <!--<md-datepicker name="beginDate" ng-model="vm.formWizard.ExpectEndTime" required md-open-on-focus></md-datepicker>-->
             <!--</md-input-container>-->
           <!--</div>-->
+          <div layout="row" >
+            <md-input-container flex="100" class="md-block">
+              <input type="text" name="planName" ng-change="vm.change()" ng-model="vm.formWizard.Name" placeholder="计划名称" required>
+              <div ng-messages="wizardStep1.planName.$error" ng-show="wizardStep1.planName.$touched" role="alert">
+                <div ng-message="required">
+                  <span>请输入计划名称.</span>
+                </div>
+              </div>
+            </md-input-container>
+          </div>
         </form>
       </md-tab-body>
     </md-tab>
@@ -166,7 +168,7 @@
   </div>
 </ms-form-wizard>
 </md-content>
-<body-background body-show="vm.showBg" body-data="durationForm.Duration.$error.min" class="body-background">
+<body-background body-show="vm.showBg" body-data="durationForm.eDuration.$error.min" class="body-background">
 </body-background>
 <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right" layout="column" md-disable-backdrop="true">
   <md-tabs md-border-bottom flex >
@@ -178,14 +180,19 @@
             <md-option  ng-repeat="m in vm.current.OptionalTasks" ng-value="m">{{m.Name}}</md-option>
           </md-select>
         </md-input-container>
+
           <form name="durationForm" ng-show="vm.current.selectedTask">
             <md-input-container class="md-block">
-              <label>输入工期</label>
-              <input type="number" step="0.5" ng-min="vm.min" required name="Duration" ng-blur="vm.changeDuration()" ng-model="vm.current.selectedTask.duration">
-              <div ng-messages="durationForm.Duration.$error">
+              <label>工期(公式={{vm.getVars(vm.current.selectedTask)}})</label>
+              <input type="text" required name="eDuration" ng-model="vm.current.selectedTask.eDuration">
+              <div ng-messages="durationForm.eDuration.$error">
                 <div ng-message="required">必填工期。</div>
                 <div ng-message="min">工期应大于基本工期的80%。</div>
               </div>
+            </md-input-container>
+            <md-input-container class="md-block" ng-repeat="v in vm.vars">
+              <label>变量{{v.key}}</label>
+              <input type="text" required name="Duration" ng-model="v.value">
             </md-input-container>
           </form>
         <div ng-show="!vm.current.IsRequired">

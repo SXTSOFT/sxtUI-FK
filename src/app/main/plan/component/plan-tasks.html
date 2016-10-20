@@ -16,8 +16,8 @@
     </md-button>
   </div>
 </md-toolbar>
+<md-content layout="column" flex ms-scroll layout-padding="15">
 
-<md-content layout="column" flex ms-scroll>
 <table class="simple">
   <thead>
   <tr>
@@ -27,7 +27,7 @@
     <th ng-if="vm.selectedFilter != 0">工期</th>
     <th>预留开始</th>
     <th>预留结束</th>
-    <th style="width: 160px">管理</th>
+    <th style="width: 160px"><span class="pl-16">管理</span></th>
   </tr>
   </thead>
 
@@ -40,8 +40,21 @@
     <td class="time">{{item.ReservedStartDays}}</td>
     <td class="time">{{item.ReservedEndDays}}</td>
     <td class="actions">
-      <md-button ng-click="vm.Query(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
-      <md-button ng-click="vm.Delete(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
+      <md-menu>
+        <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+          <md-icon md-font-icon="icon-dots-vertical"></md-icon>
+        </md-button>
+        <md-menu-content>
+          <md-menu-item>
+            <md-button ng-click="vm.Query(item)" class="md-primary"  aria-label="Settings"> <md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon>编辑</md-button>
+          </md-menu-item>
+          <md-menu-item>
+            <md-button ng-click="vm.Delete(item)" class="md-primary"  aria-label="Settings"> <md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon>删除</md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+      <!--<md-button ng-click="vm.Query(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>-->
+      <!--<md-button ng-click="vm.Delete(item)" class="md-primary md-mini md-fab"  aria-label="Settings"> <md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>-->
     </td>
   </tr>
   </tbody>

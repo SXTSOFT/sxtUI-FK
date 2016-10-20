@@ -25,17 +25,17 @@
         mergeStyle: "straight",
         showLabel: true,
         // display Branch names on graph
-        font: "normal 14pt Arial"
+        labelFont: "normal 14px arial"
       },
       commit: {
-        spacingY: -60,
+        spacingY: -45,
         dot: {
-          size: 16,
+          size: 14,
           strokeColor: "white",
-          strokeWidth: 4
+          strokeWidth: 2
         },
         tag: {
-          font: "normal 13pt Arial",
+          font: "normal 13px arial",
           strokeWidth: 1
         },
         message: {
@@ -43,10 +43,10 @@
         },
         shouldDisplayTooltipsInCompactMode:false
       },
-      arrow: {
-        size: 8,
-        offset: 0.5
-      }
+      //arrow: {
+      //  size: 8,
+      //  offset: 0.5
+      //}
     });
 
     function FTemplate(options) {

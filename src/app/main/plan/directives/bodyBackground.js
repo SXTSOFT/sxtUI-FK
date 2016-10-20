@@ -34,8 +34,12 @@
           utils.alert('工期应大于基本工期的80%');
           return;
         }
-        if(scope.$parent.vm.current.selectedTask&&!scope.$parent.vm.current.selectedTask.Duration&&!scope.$parent.vm.current.selectedTask.duration){
-          utils.alert('工期大于0')
+        if(scope.$parent.vm.current.selectedTask&&
+          (
+            !scope.$parent.vm.current.selectedTask.xDuration ||
+            isNaN(parseInt(scope.$parent.vm.current.selectedTask.xDuration))
+          )){
+          utils.alert('工期计划结果不合法')
           return;
         }else{
           scope.value = false;

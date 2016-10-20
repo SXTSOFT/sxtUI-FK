@@ -15,7 +15,77 @@
     vm.data = {
 
     }
+    var gs = (function () {
+      var vars = [],r = /[a-z]/gi,
+        compare = function (s1,s2) {
+          return s1.key.localeCompare(s2.key);
+        };
+      return {
+        getVars:function (g) {
+          var vs = g.toUpperCase().match(r),
+            rs = [];
+          if(!vs || vs.length===0) return rs;
+          vs.forEach(function (v) {
+            var r = vars.find(function (n) {
+              return n.key == v;
+            });
+            if(!r){
+              r = {
+                key:v
+              };
+              vars.push(r);
 
+            }
+            rs.push(r);
+          });
+          vars.sort(compare);
+          rs.sort(compare);
+          return rs;
+        },
+        setVars:function (g) {
+          var vs = g.toUpperCase().match(r),f = true;
+          if(!vs ||vs.length===0){
+            try {
+              return eval(g);
+            }catch (e){
+              return g;
+            }
+          }
+          vs.forEach(function (v) {
+            var r = vars.find(function (n) {
+              return n.key == v;
+            });
+            if(r && (r.value || r.value===0)){
+              g = g.replace(new RegExp(v,'gi'),r.value);
+            }
+            else{
+              f = false;
+            }
+          });
+
+          if(f) {
+            try {
+              return eval(g);
+            }catch (e){
+              return g;
+            }
+          }
+          else
+            return g;
+        }
+      }
+    })();
+
+    vm.getVars = function (task) {
+      if(!task) return;
+      if(task.eDuration !='' && !task.eDuration)
+        task.eDuration = task.Duration||'';
+
+      vm.vars = gs.getVars(task.eDuration);
+      var r = gs.setVars(task.eDuration);
+      task.xDuration = r;
+      return r;
+    };
     //获取模板
     api.plan.TaskTemplates.GetList({Skip:0,Limit:100}).then(function (r) {
       vm.data.templates = r.data.Items||[];
@@ -61,7 +131,8 @@
     }
     vm.resetName = function (item) {
       item.Name = (item.FullName || item.TaskFlowName)+' - ' +
-        (item.selectedTask?item.selectedTask.Name:'') + ' - 可选('+item.OptionalTasks.length+')';
+        (item.selectedTask?item.selectedTask.Name:'')
+      + ' - 可选('+item.OptionalTasks.length+')';
 
     }
     function setTask(item) {
@@ -74,20 +145,13 @@
         next.selectedTask = next.OptionalTasks.find(function (task) {
           return task.TaskLibraryId===item.selectedTask.TaskLibraryId;
         });
+        next.selectedTask.eDuration = item.selectedTask.eDuration;
+        next.selectedTask.xDuration = item.selectedTask.xDuration;
         vm.resetName(next);
         setTask(next);
       }
     }
-    $scope.$watch('vm.current.selectedTask',function(){
-      if(vm.current&&vm.current.selectedTask){
-        if(vm.current.selectedTask.Duration&&!vm.current.selectedTask.duration){
-          vm.current.selectedTask.duration = Math.round(vm.current.selectedTask.Duration*10)*0.1;
-        }else if(!vm.current.selectedTask.duration){
-          vm.current.selectedTask.duration = -0;
-        }
-        vm.setMin();
-      }
-    })
+
     vm.setDuration = function(item){
       var next = vm.rootTask.Master.find(function (it) {
         return it.ParentId===item.Id && it.OptionalTasks.find(function (task) {
@@ -99,7 +163,8 @@
           return task.TaskLibraryId === item.selectedTask.TaskLibraryId;
         });
         if (next.selectedTask) {
-          next.selectedTask.duration = Math.round(item.selectedTask.duration*10)*0.1;
+          next.selectedTask.eDuration = vm.current.selectedTask.eDuration;//Math.round(item.selectedTask.duration*10)*0.1;
+          next.selectedTask.xDuration = vm.current.selectedTask.xDuration;
         }
         vm.setDuration(next)
       }
@@ -134,16 +199,17 @@
         var selected = [],goFlag;
         vm.rootTask.Master.forEach(function (item) {
           if(item.selectedTask) {
-            if(!item.selectedTask.duration){
+            if(!item.selectedTask.xDuration){
               goFlag = true;
             }
             selected.push({
               BuildingPlanFlowId:item.Id,
               TaskLibraryId:item.selectedTask.TaskLibraryId,
-              Duration:item.selectedTask.duration
+              Duration:item.selectedTask.xDuration
             });
           }
         })
+
         if(!goFlag){
           f();
           api.plan.BuildPlan.flowTasksReset(vm.formWizard.Id,selected).then(function (r) {
@@ -164,6 +230,8 @@
           item._TaskFlowId = item.TaskFlowId;
           item.TaskFlowId = item.Id;
           item.selectedTask = item.OptionalTasks.length==0?null:item.OptionalTasks[0];
+          vm.getVars(item.selectedTask);
+          //item.selectedTask.Duration = item.selectedTask.Duration?item.selectedTask.Duration:null;
           vm.resetName(item);
           return item;
         });
@@ -173,18 +241,18 @@
             _tt.TaskFlowId = _tt.Id;
             _tt.Name = _tt.FullName||_tt.TaskFlowName;
           })
-        })
+        });
         vm.temp = new template({
           onClick:function (e) {
             vm.current = e.data;
-            if(vm.current.selectedTask&&vm.current.selectedTask){
+/*            if(vm.current.selectedTask&&vm.current.selectedTask){
               if(vm.current.selectedTask.Duration&&!vm.current.selectedTask.duration){
-                vm.current.selectedTask.duration = Math.round(vm.current.selectedTask.Duration*10)*0.1;
-              }else if(!vm.current.selectedTask.duration){
-                vm.current.selectedTask.duration = -0;
+                vm.current.selectedTask.duration = vm.current.selectedTask.Duration;//Math.round(vm.current.selectedTask.Duration*10)*0.1;
+              }else if(!vm.current.selectedTask.Duration){
+                vm.current.selectedTask.Duration = -0;
               }
-              vm.setMin();
-            }
+              //vm.setMin();
+            }*/
 
             vm.showBg = true;
             vm.toggleRight();
@@ -201,17 +269,19 @@
         })
     }
     vm.deleteTaskLib = function(){
-      api.plan.BuildPlan.deleteTaskLibById(vm.formWizard.Id,vm.current.TaskFlowId).then(function(r){
-        //console.log(r)
-        if(r.status == 200){
-          utils.alert('删除成功').then(function(){
-            vm.showBg = false;
-            vm.closeRight();
-            $timeout(function(){
-              getDataTemplate();
-            },500)
-          })
-        }
+      utils.confirm('确认删除',null,'确定','取消').then(function(){
+        api.plan.BuildPlan.deleteTaskLibById(vm.formWizard.Id,vm.current.TaskFlowId).then(function(r){
+          //console.log(r)
+          if(r.status == 200){
+            utils.alert('删除成功').then(function(){
+              vm.showBg = false;
+              vm.closeRight();
+              $timeout(function(){
+                getDataTemplate();
+              },500)
+            })
+          }
+        })
       })
     }
     vm.stop = function(ev){
@@ -289,7 +359,7 @@
       }
     }
     vm.changeDuration = function(){
-      vm.setMin();
+      //vm.setMin();
       vm.setDuration(vm.current);
     }
   }
