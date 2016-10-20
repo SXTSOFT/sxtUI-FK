@@ -1,0 +1,48 @@
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools">
+    <h2>
+      <span>材料分类管理</span>
+    </h2>
+    <span flex></span>
+    <md-button class="md-icon-button" aria-label="More">
+      <md-icon md-font-icon="icon-plus" ui-sref="app.material.typeAdd"></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+<md-content flex layout="column" ms-scroll>
+  <table class="simple">
+    <thead>
+    <tr>
+      <th>分类ID</th>
+      <th>材料分类名称</th>
+      <th style="width: 160px">管理</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in vm.data">
+      <td>{{item.Id}}</td>
+      <td>{{item.CategoryName}}</td>
+      <td class="actions">
+        <md-button class="md-primary md-mini md-fab" aria-label="Settings" ui-sref="app.material.typeAdd({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
+        <md-button class="md-primary md-mini md-fab" aria-label="Settings" ng-click="vm.delete(item.Id)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</md-content>
+<div layout="row">
+  <span flex></span>
+  <md-select ng-model="pageing.pageSize" class="pageSZ">
+    <md-option value="10">10</md-option>
+    <md-option value="20">20</md-option>
+    <md-option value="40">40</md-option>
+    <md-option value="80">80</md-option>
+    <md-option value="100">100</md-option>
+  </md-select>
+  <div style="text-align: right;margin-right: 15px"
+       paging page="pageing.page"
+       page-size="pageing.pageSize"
+       total="vm.total"
+       paging-action="vm.pageAction('bar', page, pageSize, total)">
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools">
+    <h2>
+      <span>材料分类管理</span>
+    </h2>
+    <span flex></span>
+  </div>
+</md-toolbar>
+
+<md-content flex layout-fill class="white-bg" layout-padding >
+  <form>
+    <md-input-container class="md-block">
+      <label>材料分类名称</label>
+      <input type="text" ng-model="vm.data.CategoryName">
+    </md-input-container>
+  </form>
+  <div layout="row" flex>
+    <md-button ng-click="vm.save()" class="md-primary md-raised">
+      保存
+    </md-button>
+  </div>
+</md-content>
+

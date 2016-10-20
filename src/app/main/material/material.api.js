@@ -11,9 +11,26 @@
   function config(apiProvider){
     var $http = apiProvider.$http,
       $q = apiProvider.$q;
-    apiProvider.register('material',{
-      materialScience:{
-        Create:function (args) {
+    apiProvider.register('material', {
+      type: {
+        getList: function (param) {
+          return $http.get($http.url('/api/MaterialClass', {Skip: param.Skip, Limit: param.Limit}));
+        },
+        getItem: function (id) {
+          return $http.get($http.url('/api/MaterialClass/' + id));
+        },
+        create: function (id,param) {
+          return $http.post('/api/MaterialClass/', id);
+        },
+        delete: function (id) {
+          return $http.delete('/api/MaterialClass/' + id);
+        },
+        update: function (param) {
+          return $http.put('/api/MaterialClass/' + param.Id, param);
+        }
+      },
+      materialScience: {
+        Create: function (args) {
           return $http.post('/api/MaterialScience', args)
         },
         getList:function(args){
@@ -23,7 +40,7 @@
           return $http.get($http.url('/api/MaterialScience/'+id));
         },
         putMaterial:function(data){
-          return $http.put('/api/MaterialScience/'+data.Id,data);
+          return $http.put('/api/MaterialScience/' + data.Id,data);
         },
         delete:function(id){
           return $http.delete('/api/MaterialScience/'+id);
@@ -34,7 +51,7 @@
           return $http.post('/api/MaterialPlan', args)
         },
         getList:function(args){
-          return $http.get($http.url('/api/MaterialPlan',{Skip:args.Skip,Limit:args.Limit}))
+          return $http.get($http.url('/api/MaterialPlan',{RegionId:args.RegionId,SectionId:args.SectionId,Skip:args.Skip,Limit:args.Limit}))
         },
         getMaterial:function(id){
           return $http.get($http.url('/api/MaterialPlan/'+id));
@@ -44,6 +61,9 @@
         },
         delete:function(id){
           return $http.delete('/api/MaterialPlan/'+id);
+        },
+        GetProjectSection:function (args) {
+          return $http.get($http.url('/api/ProjectInfoApi/GetProjectSection',{areaId:args}));
         }
       }
     })

@@ -13,20 +13,20 @@
     <div layout="row">
       <md-input-container class="md-block" flex="40">
         <label>项目</label>
-        <md-select name="projectId" ng-model="vm.data.ProjectId" md-on-open="vm.getMaps()">
+        <md-select name="projectId" ng-model="vm.data.ProjectId">
           <md-option ng-value="p.ProjectID" ng-repeat="p in vm.projects">{{p.ProjectName}}</md-option>
         </md-select>
       </md-input-container>
       <md-input-container class="md-block" flex="30">
         <label>分期</label>
-        <md-select name="sectionId" ng-model="vm.data.RegionId" md-on-open="vm.getSections()">
-          <md-option ng-value="p.RegionID " ng-repeat="p in vm.regions">{{p.RegionName}}</md-option>
+        <md-select name="sectionId" ng-model="vm.data.RegionId">
+          <md-option ng-value="p.RegionID " ng-selected="p.selected" ng-repeat="p in vm.regions">{{p.RegionName}}</md-option>
         </md-select>
       </md-input-container>
       <md-input-container class="md-block" flex="30">
         <label>标段</label>
         <md-select name="sectionId" ng-model="vm.data.SectionId">
-          <md-option ng-value="p.RegionID " ng-repeat="p in vm.sections">{{p.RegionName}}</md-option>
+          <md-option ng-value="p.RegionID" ng-selected="p.selected" ng-repeat="p in vm.sections">{{p.RegionName}}</md-option>
         </md-select>
       </md-input-container>
     </div>
@@ -34,7 +34,7 @@
       <md-input-container class="md-block" style="height: 58px;" flex="40">
         <label>材料/设备名称</label>
         <md-select ng-model="vm.data.Material">
-          <md-option ng-value="item" ng-repeat="item in vm.materials" ng-click="vm.init(item)">{{item.MaterialName}}</md-option>
+          <md-option ng-value="item"  ng-selected="item.selected" ng-repeat="item in vm.materials" ng-click="vm.init(item)">{{item.MaterialName}}</md-option>
         </md-select>
       </md-input-container>
       <md-input-container class="md-block" style="height: 58px;" flex="20">
@@ -48,10 +48,10 @@
     </div>
     <md-input-container class="md-block">
       <label>计划进场时间</label>
-      <md-datepicker ng-model="vm.data.PlanTime" md-open-on-focus></md-datepicker>
+      <md-datepicker ng-model="vm.data.PlanTime" md-placeholder="a" md-open-on-focus></md-datepicker>
     </md-input-container>
     <md-input-container class="md-block">
-      <label>计划进场数量</label>
+      <label>计划进场数量 </label>
       <input type="number" ng-model="vm.data.PlanCount">
     </md-input-container>
     <md-input-container class="md-block">
