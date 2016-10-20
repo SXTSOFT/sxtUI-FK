@@ -5,19 +5,18 @@
     <md-list-item  flex ng-class="{'active':vm.filterNum == 1}"><md-button ng-click="vm.filter(1)" style="margin:6px auto;"><span><i  class="pass"></i>已检</span><span>{{vm.nums.ytj}}</span></md-button></md-list-item>
   </md-list>
 </div>
-<md-content flex ng-cloak  style="background:#f4f4f4;">
+<md-content flex ng-cloak  style="background:#f4f4f4;" layout="column">
   <div layout="row" layout-sm="column" layout-align="space-around" ng-show="!vm.loading">
     <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular>
   </div>
-  <div flex ng-repeat="h in vm.houses">
+  <div flex ng-repeat="h in vm.houses" layout="column">
     <p style="font-size:12px;background: #f4f4f6;padding:10px;margin:0;" ng-show="vm.loading">{{h.FullRegionName }}</p>
-    <div class="floor-list gxroomlist" ng-show="vm.loading">
-      <div>
-        <md-list>
-          <md-list-item   ng-repeat="d in h.Children"  style="padding:0;background: #fff;margin-bottom:10px;border-top:1px solid #dedede;">
+    <div class="floor-list gxroomlist" ng-show="vm.loading" layout="column" flex>
+        <md-virtual-repeat-container flex>
+          <md-list-item   md-virtual-repeat="d in vm.dynamicItems" class="repeat"  md-on-demand
+                          style="padding:0;background: #fff;margin-bottom:10px;border-top:1px solid #dedede;">
             <div flex>
               <div flex class="gxrooms" style="padding-left:10px;padding-right:10px;"><span class="roomname">{{d.RegionName}}</span><md-button ng-click="vm.zk(d)" style="color:#49affe;min-width: 50px;"><span ng-show="d.show">展开</span><span ng-show="!d.show">收起</span></md-button></div>
-
               <md-list ng-if="!d.show&&vm.maxRegion>8" style="padding-left:10px;padding-right:10px;">
                 <md-list-item  ng-if="c.Children.length&&vm.isRegionShow(c)"  ng-repeat="c in d.Children|filter:{}">
                   <div flex layout="column">
@@ -59,8 +58,7 @@
               </div>
             </div>
           </md-list-item>
-        </md-list>
-      </div>
+        </md-virtual-repeat-container>
     </div>
   </div>
 </md-content>
