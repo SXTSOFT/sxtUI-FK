@@ -24,6 +24,7 @@
     if(role == "zb"){
       $rootScope.sendBt = true;
     }
+    vm.building=[];
     function  load(){
       vm.nums={
         qb:0, //全部
@@ -161,6 +162,7 @@
             filterOrSetting(status,c)
             c.projectTree = d.projectTree + c.RegionName;
             c.checked = false;
+            vm.building.push(c);
             c.Children && c.Children.forEach(function(r){
               r.projectTree = c.projectTree + r.RegionName;
               r.checked = false;
@@ -179,6 +181,60 @@
           })
         })
         vm.houses =  result.Children;
+        function DynamicItems() {
+          /**
+           * @type {!Object<?Array>} Data pages, keyed by page number (0-index).
+           */
+          this.loadedPages = {};
+
+          /** @type {number} Total number of items. */
+          this.numItems = 0;
+
+          /** @const {number} Number of items to fetch per request. */
+          this.PAGE_SIZE = 1;
+
+          this.fetchNumItems_();
+        };
+        // Required.
+        DynamicItems.prototype.getItemAtIndex = function (index) {
+          var pageNumber = Math.floor(index / this.PAGE_SIZE);
+          var page = this.loadedPages[pageNumber];
+
+          if (page) {
+            return page[index % this.PAGE_SIZE];
+          } else if (page !== null) {
+            this.fetchPage_(pageNumber);
+          }
+        };
+        // Required.
+        DynamicItems.prototype.getLength = function () {
+          return this.numItems;
+        };
+
+        DynamicItems.prototype.fetchPage_ = function (pageNumber) {
+          // Set the page to null so we know it is already being fetched.
+          this.loadedPages[pageNumber] = null;
+
+          // For demo purposes, we simulate loading more items with a timed
+          // promise. In real code, this function would likely contain an
+          // $http request.
+          $timeout(angular.noop, 0).then(angular.bind(this, function () {
+            this.loadedPages[pageNumber] = [];
+            var pageOffset = pageNumber * this.PAGE_SIZE;
+            for (var i = pageOffset; i < pageOffset + this.PAGE_SIZE; i++) {
+              if (vm.building[i]) {
+                this.loadedPages[pageNumber].push(vm.building[i]);
+              }
+            }
+          }));
+        };
+
+        DynamicItems.prototype.fetchNumItems_ = function () {
+          $timeout(angular.noop, 0).then(angular.bind(this, function () {
+            this.numItems = vm.building.length;
+          }));
+        };
+        vm.dynamicItems = new DynamicItems();
         return vm.houses;
       });
     }
@@ -186,90 +242,21 @@
     load();
 
     vm.callBack=function(){
-      load().then(function(){
-        $mdDialog.hide();
-        utils.alert('报验成功')
-      });
+      utils.alert('报验成功',null,function(){
+        $state.go("app.xhsc.gx.gxmain");
+      })
     };
     vm.selected = function(r){
-      switch (role){
-        case "zb":
-          zbSelected(r);
+      switch (r.status){
+        case 0:
+          r.checked = !r.checked;
           break;
-        case "jl":
-          jlSelected(r);
-          break;
-        default:
-          jfSelect();
+        case 1:
+          r.checked = r.Percentage==100?false:(!r.checked);
           break;
       }
     }
-    //总包点击事件
-    function zbSelected(r){
-        function validateChecked(r){
-           switch(r.RegionType){
-             case 8:
-               r.Children&&r.Children.forEach(function(m){
-                  if (m.checked){
-                    r.checked=false;
-                  }
-               });
-              break;
-             case 16:
-               var parent=vm.floors.find(function(m){
-                 return r.RegionID.indexOf(m.RegionID)>-1;
-               });
-               if (parent&&parent.checked){
-                 r.checked=false;
-               }
-               break;
-           }
-        }
 
-        switch (r.status){
-          case 0:
-            r.checked = !r.checked;
-          break;
-          case 1:
-            r.checked = r.Percentage==100?false:(!r.checked);
-            break;
-        }
-        validateChecked(r);
-    }
-    //监理点击事件
-    function jlSelected(r){
-      if(r.inspectionRows.length>1){
-        $mdDialog.show({
-          controller:['$scope','$state','$timeout',function($scope,$state,$timeout){
-            $scope.lists = r;
-            $scope.goTo = function(item){
-              $mdDialog.hide();
-              $timeout(function(){
-                $state.go('app.xhsc.gx.gxtest',{InspectionId: item.InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:$scope.lists.projectTree,
-                  regionId:$scope.lists.RegionID,projectId:projectId,areaId:item.AreaId})
-              })
-            }
-          }],
-          template: '<md-dialog><md-dialog-content style="padding:10px;"><p style="padding-left:10px;margin:10px 0 0;font-size:14px;">验收批列表</p><md-list>' +
-          '<md-list-item ng-repeat="item in lists.inspectionRows" ng-click="goTo(item)">{{$index+1}}、{{lists.projectTree}}{{item.Describe}}</md-list-item></md-list></md-dialog-content></md-dialog>',
-          parent: angular.element(document.body),
-          focusOnOpen:false,
-          clickOutsideToClose:true
-        })
-      }else{
-        switch (r.status){
-          case 1:
-            $state.go('app.xhsc.gx.gxtest',{InspectionId: r.inspectionRows[0].InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
-              regionId:r.RegionID,projectId:projectId,areaId:areaId});
-            break;
-        }
-      }
-
-    }
-    //甲方点击事件
-    function  jfSelect(){
-
-    }
 
     vm.zk = function(item){
       item.show = !item.show;
