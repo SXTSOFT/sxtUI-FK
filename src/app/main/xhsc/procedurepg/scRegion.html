@@ -18,7 +18,7 @@
             <div flex>
               <div flex class="gxrooms" style="padding-left:10px;padding-right:10px;"><span class="roomname">{{d.RegionName}}</span><md-button ng-click="vm.zk(d)" style="color:#49affe;min-width: 50px;"><span ng-show="d.show">展开</span><span ng-show="!d.show">收起</span></md-button></div>
 
-              <md-list ng-if="!d.show" style="padding-left:10px;padding-right:10px;" ng-show="vm.maxRegion>8">
+              <md-list ng-if="!d.show&&vm.maxRegion>8" style="padding-left:10px;padding-right:10px;">
                 <md-list-item  ng-if="c.Children.length&&vm.isRegionShow(c)"  ng-repeat="c in d.Children|filter:{}">
                   <div flex layout="column">
                     <div flex class="gxrooms" style="overflow: hidden;">
