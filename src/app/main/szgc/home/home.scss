@@ -140,6 +140,22 @@
 
 
 }
+.newinput{
+  .md-icon-button + .md-datepicker-input-container{
+    margin-left:0;
+  }
+  .md-datepicker-triangle-button{
+    right:8px;
+    &.md-button{
+      min-height: 24px;
+      &.md-icon-button{
+        width:24px;
+        height: 24px;
+        padding: 0;
+      }
+    }
+  }
+}
 .yhyd
 {
   .btn{

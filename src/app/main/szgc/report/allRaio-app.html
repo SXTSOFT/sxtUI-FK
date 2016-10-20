@@ -22,14 +22,24 @@
         </div>
       </fieldset>
     </div>
-    <div layout="row" class="newinput">
-      <div flex="50" style="text-align: center">
-        从 <md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间"></md-datepicker>
-      </div>
-      <div flex style="text-align: center">
-          至 <md-datepicker ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间"></md-datepicker>
+    <div flex>
+      <div layout="row" class="newinput pt-8">
+        <div flex="50" style="text-align: center">
+          从<md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间" md-open-on-focus></md-datepicker>
+        </div>
+        <div flex style="text-align: center">
+          至<md-datepicker style="margin-right:0;padding-right:0;" ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间" md-open-on-focus></md-datepicker>
+        </div>
       </div>
     </div>
+    <!--<div layout="row" class="newinput">-->
+      <!--<div flex="50" style="text-align: center">-->
+        <!--从 <md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间"></md-datepicker>-->
+      <!--</div>-->
+      <!--<div flex style="text-align: center">-->
+          <!--至 <md-datepicker ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间"></md-datepicker>-->
+      <!--</div>-->
+    <!--</div>-->
 
 
     <div class="md-padding" layout="row">
