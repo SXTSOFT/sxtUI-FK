@@ -118,7 +118,7 @@
               if (result.data.Rows) {
                 result.data.Rows.forEach(function (item) {
                   var state = $scope.project.states.find(function (it) {
-                    return it.id == item.ECCheckResult || it.id == -1
+                    return it.id == item.ECCheckResult
                   });
                   if (state) {
                     state.c++;

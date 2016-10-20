@@ -12,7 +12,8 @@
     return {
       scope: {
         values:'=sxtAreaYjAdd',
-        project:'='
+        project:'=',
+        roleId:'='
       },
       link: function (scope, element, attrs, ctrl) {
         var map,layer,el;
@@ -34,7 +35,7 @@
               maxZoom: 3,
               scrollWheelZoom: true,
               annotationBar: false,
-              zoomControl: true,
+              zoomControl: false,
               attributionControl: false
             }),
               layer = tileLayer.tile({api:sxt.app.api,Url:fs.data.Files[0].Url});
@@ -95,15 +96,28 @@
             }
             function openPopup(layer) {
               var batchs = layer.data.batchs;
-              var conents = ['<div>',
-                  '<table><tr><td>1</td></tr></table>',
-                '<button>新验收批</button>',
-                  '</div>'],
+              var conents = [];
+              conents.push('<div class="yj">');
+              if(batchs.length){
+                conents.push('<div><table><thead><tr><th>批</th><th>状态</th><th>操作</th></tr></thead><tbody>');
+              }
+              batchs.forEach(function(r){
+                conents.push('<tr><td>'+r.BatchNo+'</td><td>'+r.stateName+'</td><td><div class="office" ng-if="'+!layer.data.hasTasks+'">\
+                  <a class="btn btn-white btn-xs goto">'+(scope.roleId=='zb'?'录入':'复验')+'</a></div>\
+                   </td></tr><div>'+'已验未传'+'</div>')
+              })
+              if(batchs.length){
+                conents.push('</tbody></table></div>')
+              }
+              conents.push('<button class="btn">新验收批</button></div>');
                 el = $(conents.join(''));
               var popup = L.popup()
                 .setLatLng(layer.getBounds().getCenter())
                 .setContent(el[0])
                 .openOn(map);
+              el.on('click','.goto',function(){
+                console.log('a')
+              })
               el.on('click','button',function () {
                 var item = layer.data,
                   project = scope.project;

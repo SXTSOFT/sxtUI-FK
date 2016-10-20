@@ -9,7 +9,7 @@
     .controller('viewBathController',viewBathController);
 
   /** @ngInject */
-  function viewBathController($scope,api,$q,$timeout,$state,utils){
+  function viewBathController($scope,api,$q,$timeout,$state,utils,$mdSideNav){
     var vm = this;
     vm.is = function(route){
       return $state.is(route);

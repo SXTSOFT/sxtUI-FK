@@ -501,6 +501,30 @@ md-content{
     }
   }
 }
+.yj table{
+  border-collapse: collapse;
+  tr {
+    td, th {
+      border: 1px solid #d8d8d8;
+      text-align: center;
+      padding: 6px;
+      white-space: nowrap;
+    }
+    th {
+
+      text-align: center;
+    }
+  }
+
+}
+.yj{
+  .btn{
+    margin-top:8px;
+    border:1px solid #dedede;
+    padding:4px 6px;
+    border-radius: 4px;
+  }
+}
 .reportT table{
   border-collapse: collapse;
   tr{
