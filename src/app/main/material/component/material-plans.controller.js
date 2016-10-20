@@ -84,8 +84,6 @@
 
       ProjectId = RegionId != '' ? RegionId : ProjectId;
 
-      console.log(ProjectId+"……"+RegionId+"……"+SectionId);
-
       var page = utils.getPage($scope.pageing);
       api.material.materialPlan.getList({RegionId:ProjectId,SectionId:SectionId,Skip:page.Skip,Limit:page.Limit}).then(function (q) {
         vm.data = q.data.Items||[];

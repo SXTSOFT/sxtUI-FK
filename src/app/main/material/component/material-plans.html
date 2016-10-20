@@ -11,7 +11,7 @@
       <md-option ng-value="p.RegionID " ng-selected="p.selected" ng-repeat="p in vm.regions">{{p.RegionName}}</md-option>
     </md-select>
     <md-select style="font-size:13px;margin-right:20px;" name="sectionId" ng-model="vm.SectionId">
-      <md-option ng-value="p.RegionID" ng-selected="p.selected" ng-repeat="p in vm.sections">{{p.RegionID}}+{{p.RegionName}}</md-option>
+      <md-option ng-value="p.RegionID" ng-selected="p.selected" ng-repeat="p in vm.sections">{{p.RegionName}}</md-option>
     </md-select>
     <span flex></span>
     <md-button class="md-icon-button" aria-label="More">
