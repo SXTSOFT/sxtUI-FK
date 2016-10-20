@@ -21,7 +21,6 @@
     $rootScope.title = $stateParams.acceptanceItemName;
     $rootScope.sendBt = false;
     vm.maxRegion = $stateParams.maxRegion;
-    //var _db=db('pack'+ assessmentID);
     vm.nums={
       qb:0,
       wtj:0,//未提交
@@ -137,11 +136,6 @@
         pname:acceptanceItemName
       }
       $state.go('app.xhsc.scsl._sc',routeData);
-      //if (isReport=='0'||isReport==0){
-      //  $state.go('app.xhsc.scsl._sc',routeData);
-      //}else {
-      //  $state.go('app.xhsc.scsl.schztb',routeData);
-      //}
     }
     //总包点击事件
 

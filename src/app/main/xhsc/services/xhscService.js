@@ -39,10 +39,14 @@
     function buildRegionTree(regions,rootType){
         function buildRegion(region){
           if (region&&region.RegionType<16){
-            region.children=[];
+            region.Children=[];
             regions.forEach(function(k){
               if (k.RegionType==region.RegionType*2&&k.RegionID.indexOf(region.RegionID)>-1){
-                region.children.push(buildRegionTree(k))
+                if (!region.Children.find(function(o){
+                    return o.RegionID== k.RegionID
+                  })){
+                  region.Children.push(buildRegion(k))
+                }
               }
             });
           }

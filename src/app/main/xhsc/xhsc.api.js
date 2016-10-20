@@ -142,7 +142,7 @@
              if (db){
                return db
              }
-             return "Inspection_zj"
+             return "Inspection"
            },
           idField:'InspectionId',
           dataType:1,
@@ -393,7 +393,7 @@
             if (db){
               return db;
             }
-            return "project_status_zj"
+            return "project_status_right"
           },
           idField:function (item) {
             return item.Sign + item.AcceptanceItemID+item.AreaId;
@@ -418,6 +418,39 @@
             return r;
           });
         }),
+        getRegionStatusEx_v2:$http.db({
+          db:function (projectId,Sign,AcceptanceItemID,db) {
+            if (db){
+              return db;
+            }
+            return "project_status_right"
+          },
+          idField:function (item) {
+            return item.indentiy;
+          },
+          dataType:3
+        }).bind(function(projectId,Sign,AcceptanceItemID) {
+          var  param={
+            projectId:projectId,
+            sign:Sign?Sign:5
+          }
+          if (AcceptanceItemID){
+            param.AcceptanceItemID=AcceptanceItemID;
+          }
+          return $http.get($http.url('/api/InspectionApi/GetUserInspectionInfoEx',param)).then(function (r) {
+            r.data.forEach(function (row) {
+              row.projectId = projectId;
+              row.Sign = Sign;
+            });
+            return {
+              data:{
+                indentiy:"status",
+                data:r.data
+              }
+            }
+          });
+        }),
+
         getMeasureMosaic:function(projectId,acceptanceItemId){
           var  param={
             projectId:projectId,

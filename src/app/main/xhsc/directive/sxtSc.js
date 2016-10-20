@@ -66,10 +66,10 @@
                       //line.options.color = 'black';
 
                       line.attrs['stroke-width'] = line.attrs['stroke-width']*6;
-                    },
-                    filterText: function (text) {
-                      return false;
                     }
+                    //filterText: function (text) {
+                    //  return false;
+                    //}
                   });
                   map.center();
                   scope.tooltip = '';

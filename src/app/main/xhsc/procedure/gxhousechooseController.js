@@ -9,7 +9,7 @@
     .controller('gxhousechooseController',gxhousechooseController);
 
   /** @ngInject */
-  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils,api){
+  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils,api,xhscService){
     var vm=this,
       id = $stateParams.assessmentID,
       AssessmentTypeID = $stateParams.AssessmentTypeID,
@@ -144,16 +144,18 @@
         return style;
       }
       return $q.all([
-        remote.Project.queryAllBulidings(projectId),
+        //remote.Project.queryAllBulidings(projectId),
+        remote.Project.getRegionWithRight(projectId),
         remote.Procedure.getRegionStatus(projectId)
+
       ]).then(function(res){
         vm.loading = true;
-        var result=res[0];
+        var result= xhscService.buildRegionTree(res[0].data,1);
         var status=res[1]&&res[1].data?res[1].data:[];
-        result.data[0].RegionRelations.forEach(function(d){
+        result.Children.forEach(function(d){
           filterOrSetting(status,d);
-          d.projectTree =  d.RegionName;
-          d.projectTitle = result.data[0].ProjectName + d.RegionName;
+          d.projectTree =  result.RegionName;
+          d.projectTitle = result.RegionName + d.RegionName;
           d.Children && d.Children.forEach(function(c){
             c.floors=[];
             filterOrSetting(status,c)
@@ -176,7 +178,7 @@
             })
           })
         })
-        vm.houses =  result.data[0].RegionRelations;
+        vm.houses =  result.Children;
         return vm.houses;
       });
     }

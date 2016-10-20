@@ -74,7 +74,7 @@
       vm.floors=[];
       $q.all([
         remote.Project.queryAllBulidings(projectId),
-        remote.Procedure.getRegionStatusEx(projectId,8)
+        remote.Procedure.getRegionStatusEx(projectId,8,null,"project_status_zj")
       ]).then(function(res){
         vm.loading = true;
         var result=res[0];
