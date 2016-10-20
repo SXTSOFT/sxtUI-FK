@@ -44,5 +44,47 @@
           }
         }
       })
+      .state('app.xhsc.pcmain',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'个人中心',
+        url   :'/pcmain',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/center/pcenter_main.html',
+            controller:'pcenter_mainController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.person',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'个人信息',
+        url   :'/person',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/center/person.html',
+            controller:'personController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.message',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :' ',
+        url   :'/message',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/center/message.html',
+            controller:'messageController as vm'
+          }
+        }
+      })
   }
 })();

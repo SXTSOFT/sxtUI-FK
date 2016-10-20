@@ -5,7 +5,7 @@
 </h2>
 <div class="md-toolbar-tools grzx" style="padding: 0" layout="row">
   <md-button flex="none" ng-show="$root.noBack" ng-click="goBack();" >返回</md-button>
-  <md-button flex="none" ng-show="$root.showgrzx" ui-sref="app.xhsc.pcenter"><md-icon><img src="app/main/xhsc/images/grzx.png" width="21"></md-icon></md-button>
+  <md-button flex="none" ng-show="$root.showgrzx" ui-sref="app.xhsc.pcmain"><md-icon><img src="app/main/xhsc/images/grzx.png" width="21"></md-icon></md-button>
   <span flex></span>
   <md-button flex="none" class="md-icon-button" aria-label="net work" >
     <md-icon md-svg-icon="assets/images/online.svg" ng-if="vm.networkState==0" style="color:#e0e0e0"></md-icon>
@@ -26,3 +26,10 @@
                      <!--md-mode="indeterminate" md-diameter="40">-->
 <!--</md-progress-circular></div>-->
 </div>
+<div ng-if="$root.msg" style="margin: auto;position: absolute; top: 0; left: 0; bottom: 0; right: 0; height: 34px;width: 194px" layout="row" layout-align="center center">
+     <div layout="row"  style="height: 32px;border-radius:8px;border:1px solid #ffffff" layout-align="center stretch">
+       <span style="font-size: 14px;line-height: 32px;padding: 0px 20px " ng-click="setMsg(msgFlag)" ng-class="{'messager_active':msgFlag,'no_messager_active':!msgFlag}">待办通知</span>
+       <span style="font-size: 14px;line-height: 32px ;padding: 0px 20px" ng-click="setMsg(msgFlag)" ng-class="{'messager_active':!msgFlag,'no_messager_active':msgFlag}" >系统消息</span>
+     </div>
+</div>
+

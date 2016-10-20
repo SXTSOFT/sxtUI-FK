@@ -114,7 +114,7 @@
 
 
     vm.selected = function(r){
-      remote.Procedure.getRegionStatusEx(projectId,"8").then(function (r1) {
+      remote.Procedure.getRegionStatusEx(projectId,"8",null,"project_status_zj").then(function (r1) {
         var fd = r1.data.find(function (item) {
           return item.AreaId==r.RegionID&&item.AcceptanceItemID==acceptanceItemID;
         });

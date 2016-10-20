@@ -39,7 +39,17 @@
       vm.operateMsg = function(){
         $rootScope.$emit('operateMsg');
       }
-    }
 
+      $scope.$on("$destroy",function(){
+        //change();
+        //sendGxResult();
+        //operateMsg();
+      });
+      $scope.msgFlag=true;
+      $scope.setMsg=function(flag){
+        $rootScope.$emit('sendMsg',flag);
+        $scope.msgFlag=!$scope.msgFlag;
+      }
+    }
 
 })();
