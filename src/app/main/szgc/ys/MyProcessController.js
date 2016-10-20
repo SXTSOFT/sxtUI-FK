@@ -116,6 +116,17 @@
             $scope.project.data.total = $scope.project.data.items.length;
             if ($scope.project.type === 128) {
               if (result.data.Rows) {
+                result.data.Rows.forEach(function (item) {
+                  var state = $scope.project.states.find(function (it) {
+                    return it.id == item.ECCheckResult || it.id == -1
+                  });
+                  if (state) {
+                    state.c++;
+                    item.color = state.color;
+                    item.stateName = state.title + ((item.ECCheckResult == 1 || item.ECCheckResult == 3) && item.MinPassRatio && item.MinPassRatio >= 80 ? '(偏差)' : '');
+                  }
+                  item.hasTask = $scope.hasTasks(item);
+                })
                 $scope.project.data.items.forEach(function (item) {
                   item.batchs = result.data.Rows.filter(function (it) {
                     return it.RegionId == item.$id;

@@ -94,6 +94,7 @@
 
             }
             function openPopup(layer) {
+              var batchs = layer.data.batchs;
               var conents = ['<div>',
                   '<table><tr><td>1</td></tr></table>',
                 '<button>新验收批</button>',
