@@ -35,7 +35,7 @@
           strokeWidth: 2
         },
         tag: {
-          font: "normal 14px arial",
+          font: "normal 13px arial",
           strokeWidth: 1
         },
         message: {
