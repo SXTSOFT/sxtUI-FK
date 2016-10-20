@@ -11,7 +11,7 @@
     .filter('sxtProcedureS',sxtProcedureS)
 
   /** @ngInject */
-  function sxtProcedure(api){
+  function sxtProcedure(api,appCookie,$timeout){
     return {
       require:'ngModel',
       scope:{
@@ -20,20 +20,12 @@
         value:'=ngModel',
         nameValue:'=',
         checkRequirement:'=',
+        onSelect:'&',
         inc :'@'
       },
-      template:'<div layout="row">' +
-      '<md-input-container flex md-no-float class="md-block"><label>可选工序({{Plength}})</label><input  ng-model="nameValue" readonly></md-input-container>'+
-        '<md-menu flex="none">\
-      <md-button aria-label="Open  menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">\
-      <md-icon md-menu-origin  md-font-icon="icon-arrow-down"></md-icon>\
-      </md-button>\
-      <md-menu-content width="6" >\
-     <md-tabs md-border-bottom >\
-      <md-tab ng-repeat="g in types|sxtProcedureS">\
-      <md-tab-label><span sxt-procedure-tb>{{g.name}}({{g.ps.length}})</span></md-tab-label>\
-      <md-tab-body>\
-      <md-content>\
+      template:'<md-tabs flex md-border-bottom >\
+      <md-tab ng-repeat="g in types|sxtProcedureS" label="{{g.name}}({{g.ps.length}})">\
+      <md-tab-content flex layout-fill layout="column">\
       <section ng-repeat="c in g.children|sxtProcedureS">\
       <md-subheader class="md-primary">{{c.name}}({{c.ps.length}})</md-subheader>\
       <md-list style="padding:0;" class="newheight">\
@@ -42,13 +34,9 @@
       </md-list-item>\
       </md-list>\
       </section>\
-      </md-content>\
-     </md-tab-body>\
+     </md-tab-content>\
       </md-tab>\
-      </md-tabs>\
-    </md-menu-content>\
-    </md-menu>'+
-        '</div>',
+      </md-tabs>',
       link:link
     };
 
@@ -60,6 +48,8 @@
         scope.nameValue = p.ProcedureName;
         scope.checkRequirement = p.CheckRequirement;
         ctrl.$setViewValue(scope.value);
+        appCookie.put('prev_proc',p.ProcedureId);
+        scope.onSelect && scope.onSelect({$selected:scope.value});
       }
       scope.Plength = 0;
 
@@ -81,6 +71,7 @@
         resetSources();
       });
       scope.$watch('regionType',function(){
+        if(!scope.regionType) return;
         scope.value = null;
         scope.nameValue = null;
         ctrl.$setViewValue();
@@ -92,19 +83,27 @@
         switch (scope.regionType) {
           case 1:
             t = 2;
-            ex = ex.concat([2,8,32,64]);
+            ex = ex.concat([2,8,32,64,128,256]);
             break;
           case 2:
             t = 8;
-            ex = ex.concat([ 8,32,64])
+            ex = ex.concat([ 8,32,64,128,256]);
             break;
           case 8:
             t = 32;
-            ex = ex.concat([32,64])
+            ex = ex.concat([32,64]);
             break;
           case 32:
             t = 64;
-            ex = ex.concat([64])
+            ex = ex.concat([64]);
+            break;
+          case 128:
+            t = 128;
+            ex = ex.concat([128]);
+            break;
+          case 256:
+            t = 256;
+            ex = ex.concat([256]);
             break;
           default:
             ex = ex.concat([2, 8, 32, 64]);
@@ -148,6 +147,14 @@
               })
             });
           });
+          var pre = appCookie.get('prev_proc');
+          if(pre){
+            var prev = scope.procedures.find(function (p) {
+              return p.ProcedureId == pre;
+            });
+            if(prev)
+              scope.sett(prev);
+          }
         }
       }
     }

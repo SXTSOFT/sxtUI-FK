@@ -238,23 +238,7 @@
           projectId: idtree,
           unitType: 3
         }),
-        isB&&!flag && $scope.roleId!='jl' ? $q(function (resolve) {
-          if ($scope.roleId == 'zb') {
-            resolve({
-              data: {Rows: []}
-            });
-          }
-          else {
-            resolve({
-              data: {
-                Rows: [{
-                  UnitId: batch.SupervisorCompanyId,
-                  UnitName: batch.SupervisorCompanyName
-                }]
-              }
-            });
-          }
-        }) : api.szgc.vanke.isPartner(1) ? api.szgc.vanke.getPermissin() : api.szgc.ProjectSettingsSevice.query({
+        api.szgc.vanke.isPartner(1) ? api.szgc.vanke.getPermissin() : api.szgc.ProjectSettingsSevice.query({
           treeId: idtree,
           unitType: 1,
           includeChild: true

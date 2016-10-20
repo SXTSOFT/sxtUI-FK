@@ -55,6 +55,7 @@
                 case 3: scope.regionType = 32; break;
                 case 4: scope.regionType = 64; break;
               }
+              scope.regionType = c.selected.type || scope.regionType;
               ck.push(c.selected);
               c = p.selectors[++i];
               //console.log('scope.regionType',scope.regionType)
@@ -117,6 +118,11 @@
                 innerScope && scope.onChanged(innerScope);
                 return api.szgc.vanke.buildings({ page_number: 1, page_size: 10000, project_item_id: value }).then(function (result) {
                   //scope.onQueryed && scope.onQueryed(result.data);
+                  /*if(scope.yjFlag){
+                    var fd = result.data.data.filter(function (it) {
+                      return it.type === 128 || it.type===256;
+                    });
+                  }*/
                   var s = new st(index, 'building_id', 'name', result.data.data, '楼栋');
                   scope.onQueryed && scope.onQueryed(s);
                   return s;
@@ -126,7 +132,7 @@
             case 3:
 
               if (init && cookie && cookie[index]) {
-                return $q(function (r) { r(new st(index, 'floor_id', 'name', [cookie[index]], '楼层', cookie[index])) });
+                return $q(function (r) { r(new st(index, 'floor_id', 'name', [cookie[index]], value.length===32?'区域/桩基':'楼层', cookie[index])) });
               }
               else {
                 init = false;
@@ -137,9 +143,13 @@
                   result.data.data.forEach(function (item) {
                     if (item == '')
                       return;
-                    data.push({ 'floor_id': value + '-' + item, name: item + '层' });
+                    if(item.floor_id)
+                      data.push(item);
+                    else
+                      data.push({ 'floor_id': value + '-' + item, name: item + '层' });
                   });
-                  var s = new st(index, 'floor_id', 'name', data, '楼层');
+                  //console.log('result.data.data',data);
+                  var s = new st(index, 'floor_id', 'name', data, value.length===32?'区域/桩基':'楼层');
                   scope.onQueryed && scope.onQueryed(s);
                   return s;
                 });

@@ -16,6 +16,26 @@
     max-height: 0;
   }
 }
+.no-padding.md-subheader {
+  .md-subheader-inner{
+    padding: 0;
+  }
+}
+.div-table {
+  line-height: 200%;
+  border-bottom:1px solid silver;
+  div{
+    padding: 10px;
+  }
+}
+.div-table-row{
+  line-height: 200%;
+  border-bottom:1px solid silver;
+  div{
+    padding: 10px;
+  }
+}
+
 .panel>.table-responsive{
   border-top:2px solid rgb(221, 221, 221);
 }

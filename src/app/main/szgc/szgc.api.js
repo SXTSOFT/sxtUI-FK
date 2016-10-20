@@ -272,6 +272,23 @@
         })
       },
       ProjectSettingsSevice:{
+        ex: {
+          create: function (ex) {
+            return $http.post('/api/ExProject', ex);
+          },
+          update: function (id, ex) {
+            return $http.put('/api/ExProject/' + id, ex);
+          },
+          delete: function (id) {
+            return $http.delete('/api/ExProject/' + id);
+          },
+          get: function (id) {
+            return $http.get('/api/ExProject/' + id);
+          },
+          query: function (regionId, status) {
+            return $http.get($http.url('/api/ExProject', { regionTreeId: regionId, status: status }));
+          }
+        },
         query:$http.db({
           _id:'s_projectSttting',
           idField:function (item) {

@@ -10,7 +10,7 @@
     .directive('sxtSelectJd', sxtSelectJdDirective);
 
   /** @ngInject */
-  function sxtSelectJdDirective($rootScope,$timeout,$window)
+  function sxtSelectJdDirective($rootScope,$timeout,$window,$q)
   {
     var joinArr = function (arr) {
       var n = [];
@@ -166,6 +166,9 @@
             });
           }
         };
+        scope.$on('$destroy',$rootScope.$on('sxtSelect:setSelected',function (s,e) {
+          scope.item_selected(e.item,e.index,e.noSync);
+        }));
         scope.item_selected = function (item, index, noSync) {
           if(!item)return;
           if(index==0){
@@ -173,7 +176,7 @@
           }
           var cnt = scope.selectors[index];
           cnt.selected = item;
-          var next = scope.selectors[index + 1];
+          //var next = scope.selectors[index + 1];
           if (noSync !== false)
             syncValue();
 

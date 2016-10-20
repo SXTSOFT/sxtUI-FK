@@ -351,7 +351,19 @@
             return item.project_item.project_item_id == arg.project_item_id;
           }
         }).bind(function (arg) {
-          return get(http.url('/common/v1/buildings', arg));
+          var me = this;
+          return get(http.url('/common/v1/buildings', arg)).then(function (r1) {
+            return me.root.szgc.vanke.yj(arg.project_item_id,4).then(function (r2) {
+              r2.data.Rows.forEach(function (r) {
+                r1.data.data.push({
+                  building_id: r.Id,
+                  name: r.RegionName,
+                  type: r.RegionType
+                });
+              });
+              return r1;
+            });
+          });
         },function (result) {
           result.data.data.sort(function (i1, i2) {
             var n1 = getNumName(i1.name),
@@ -367,6 +379,9 @@
           });
           return result;
         }),
+        yj:function(regionIdTree){
+          return this.root.szgc.ProjectSettingsSevice.ex.query(regionIdTree, 4);
+        },
         floors: http.db({
           _id:'v_rooms',
           idField:function (item) {
@@ -389,6 +404,20 @@
             return item;
           }*/
         }).bind(function (building_id) {
+          if(building_id.length===32){
+            return this.root.szgc.vanke.yj(building_id,4).then(function (result) {
+              var r1 = {data:{building_id:building_id,rooms:[]}};
+              result.data.Rows.forEach(function (r) {
+                r1.data.rooms.push({
+                  floor_id: r.Id,
+                  geoJSON:r.GeoJSON,
+                  name: r.RegionName,
+                  type: r.RegionType
+                });
+              });
+              return r1;
+            });
+          }
           return get(http.url('/common/v1/buildings/'+building_id+'/rooms',{page_size:0,page_number:1})).then(function (result) {
             result.data.data.forEach(function (item) {
               item.building_id=building_id;
@@ -403,13 +432,18 @@
         },function (result) {
           var floors = [];
           result.data.rooms.forEach(function (room) {
-            if(floors.indexOf(room.floor)==-1){
-              floors.push(room.floor);
+            if(room.floor) {
+              if (floors.indexOf(room.floor) == -1) {
+                floors.push(room.floor);
+              }
+            }
+            else if(room.floor_id){
+              floors.push(room);
             }
           });
           floors.sort (function (i1, i2) {
-            var n1 = getNumName (i1),
-              n2 = getNumName (i2);
+            var n1 = getNumName (i1.name||i1),
+              n2 = getNumName (i2.name||i2);
             if (!isNaN (n1) && !isNaN (n2))
               return n1 - n2;
             else if ((isNaN (n1) && !isNaN (n2)))
@@ -446,6 +480,23 @@
           }*/
         })
           .bind(function (building_id,arg,incHide) {
+            if(building_id.length===32){
+              return this.root.szgc.vanke.yj(building_id,4).then(function (r) {
+                var r1 = {data:{
+                  building_id:building_id,
+                  rooms:[]
+                }};
+                r.data.Rows.forEach(function (r) {
+                  r1.data.rooms.push({
+                    building_id: r.Id,
+                    name: r.RegionName,
+                    geoJSON:r.GeoJSON,
+                    type: r.RegionType
+                  });
+                });
+                return r1;
+              })
+            }
           return get(http.url('/common/v1/buildings/'+arg.building_id+'/rooms', {/*floor:arg.floor, */page_size: 0, page_number: 1})).then(function (result) {
             result.data.data.forEach(function (item) {
               item.building_id=arg.building_id;
@@ -458,6 +509,7 @@
             };
           });
         },function (result,cfg,args) {
+          console.log('result.data.rooms',result.data.rooms)
             var rooms = result.data.rooms.filter(function (item) {
               return (!args[1].floor || item.floor == args[1].floor)
                && (args[2] === true || item.engineering.status != 'hide')
