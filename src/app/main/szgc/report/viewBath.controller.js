@@ -9,7 +9,7 @@
     .controller('viewBathController',viewBathController);
 
   /** @ngInject */
-  function viewBathController($scope,api,$q,$timeout,$state,utils,$mdSideNav){
+  function viewBathController($scope,api,$q,$timeout,$state,utils,$mdSidenav){
     var vm = this;
     vm.is = function(route){
       return $state.is(route);
@@ -50,6 +50,12 @@
         return item.id==s;
       });
       return f?f.color:'';
+    }
+    vm.openSide = function(){
+      $mdSidenav('nav_region').open()
+    }
+    vm.closeNav = function(id){
+      $mdSidenav('nav_region').close()
     }
     $scope.$on('$destroy',$scope.$on('goBack',function (s,e) {
       if($state.is('app.szgc.report.viewBath')) {

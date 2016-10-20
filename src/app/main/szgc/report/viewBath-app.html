@@ -1,11 +1,25 @@
-﻿
+﻿<md-sidenav
+  class="md-sidenav-left"
+  md-component-id="nav_region",
+  md-whiteframe="4" layout="column">
+  <md-content flex layout="column" style="background: white">
+    <sxt-procedure flex layout="column" inc="true" on-select="vm.closeNav('nav_procedure')" ng-model="vm.project.procedureId" name-value="vm.project.procedureName" region-type="vm.project.type" check-requirement="project.CheckRequirement" class="md-block">
+    <!--<sxt-procedure style="width:100%" inc="true" ng-model="vm.project.procedureId" name-value="vm.project.procedureName" region-type="vm.project.type" class="md-block"></sxt-procedure>-->
+    <!--<sxt-projects-jd flex ng-model="vm.project.procedureId" object-scope="project" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">-->
+    <!--</sxt-projects-jd>-->
+  </md-content>
+</md-sidenav>
 <md-content flex layout="column" ng-show="!vm.searBarHide && vm.is('app.szgc.report.viewBath')" class="menu-toggle-list">
   <div flex style="overflow: auto">
         <sxt-projects-jd ng-model="vm.project.pid" object-scope="vm" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree" is-more="vm.project.isMore" on-queryed="vm.project.onQueryed">
 <md-list>
   <md-subheader>工序</md-subheader>
   <md-list-item>
-    <sxt-procedure style="width:100%" inc="true" ng-model="vm.project.procedureId" name-value="vm.project.procedureName" region-type="vm.project.type" class="md-block"></sxt-procedure>
+    <md-input-container  ng-click="vm.openSide()" flex>
+      <label>工序</label>
+      <input type="text" ng-model="vm.project.procedureName" disabled>
+    </md-input-container>
+    <!--<sxt-procedure style="width:100%" inc="true" ng-model="vm.project.procedureId" name-value="vm.project.procedureName" region-type="vm.project.type" class="md-block"></sxt-procedure>-->
   </md-list-item>
   <md-list-item>班组</md-list-item>
   <md-list-item>
