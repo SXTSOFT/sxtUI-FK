@@ -372,7 +372,20 @@
                   tk.push(api.szgc.FilesService.group(build.building_id));
                 }
               });
-              resolve();
+              $q.all(tk).then(function (rs) {
+                var pics = xhUtils.getMapPic(2);
+                rs.forEach(function (r) {
+                  if(r.data.Files && r.data.Files.length){
+                    var f = r.data.Files[0];
+                    pics.forEach(function (tile) {
+                      tasks.push(function () {
+                        return downFile('map','tile_'+f.Id+'_'+tile+'.jpg',sxt.app.api+'/api/picMap/load/'+tile+'.png?path='+f.Url.replace('/s_','/')+'&size=256');
+                      });
+                    })
+                  }
+                });
+                resolve();
+              },reject);
             },reject);
           });
         },//下载户型

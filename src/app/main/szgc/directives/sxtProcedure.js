@@ -23,18 +23,36 @@
         onSelect:'&',
         inc :'@'
       },
+/*      template:'<md-tabs flex md-border-bottom >\
+       <md-tab ng-repeat="g in types|sxtProcedureS" >\
+       <md-tab-label><div style="line-height: 100%">{{g.name}}<div style="font-size: 10px;">({{g.ps.length}})</div></div></md-tab-label>\
+       <md-tab-body flex layout-fill layout="column">\
+       <section ng-repeat="c in g.children|sxtProcedureS">\
+       <md-subheader class="md-primary">{{c.name}}({{c.ps.length}})</md-subheader>\
+       <md-list style="padding:0;" class="newheight">\
+       <md-list-item ng-click="sett(p)" ng-repeat="p in c.ps"  style="padding:0;">\
+       {{p.ProcedureName}}\
+       </md-list-item>\
+       </md-list>\
+       </section>\
+       </md-tab-body>\
+       </md-tab>\
+       </md-tabs>',*/
       template:'<md-tabs flex md-border-bottom >\
-      <md-tab ng-repeat="g in types|sxtProcedureS" label="{{g.name}}({{g.ps.length}})">\
-      <md-tab-content flex layout-fill layout="column">\
-      <section ng-repeat="c in g.children|sxtProcedureS">\
-      <md-subheader class="md-primary">{{c.name}}({{c.ps.length}})</md-subheader>\
+      <md-tab ng-repeat="g in types|sxtProcedureS" >\
+      <md-tab-label><div style="line-height: 100%">{{g.name}}<div style="font-size: 10px;">({{g.ps.length}})</div></div></md-tab-label>\
+      <md-tab-body flex layout-fill layout="column"><div flex layout="column">\
+      <div flex="none"  ng-init="g.current=g.children[0]">\
+        <md-button class="md-raised" style="min-width:inherit;" ng-class="{\'md-primary\':g.current===c}" class="md-block" ng-click="g.current=c" ng-repeat="c in g.children|sxtProcedureS">{{c.name}}</md-button>\
+      <md-divider></md-divider></div><md-content style="background: white;">\
       <md-list style="padding:0;" class="newheight">\
-      <md-list-item ng-click="sett(p)" ng-repeat="p in c.ps"  style="padding:0;">\
+      <md-list-item ng-click="sett(p)" ng-repeat="p in g.current.ps"  style="padding:0;">\
       {{p.ProcedureName}}\
+      <md-divider ng-if="!$last"></md-divider>\
       </md-list-item>\
       </md-list>\
-      </section>\
-     </md-tab-content>\
+      </md-content></div>\
+     </md-tab-body>\
       </md-tab>\
       </md-tabs>',
       link:link
@@ -48,7 +66,9 @@
         scope.nameValue = p.ProcedureName;
         scope.checkRequirement = p.CheckRequirement;
         ctrl.$setViewValue(scope.value);
-        appCookie.put('prev_proc',p.ProcedureId);
+        if(!scope.inc) {
+          appCookie.put('prev_proc', p.ProcedureId);
+        }
         scope.onSelect && scope.onSelect({$selected:scope.value});
       }
       scope.Plength = 0;
@@ -71,7 +91,7 @@
         resetSources();
       });
       scope.$watch('regionType',function(){
-        if(!scope.regionType) return;
+        if(!scope.inc && !scope.regionType) return;
         scope.value = null;
         scope.nameValue = null;
         ctrl.$setViewValue();
@@ -147,13 +167,15 @@
               })
             });
           });
-          var pre = appCookie.get('prev_proc');
-          if(pre){
-            var prev = scope.procedures.find(function (p) {
-              return p.ProcedureId == pre;
-            });
-            if(prev)
-              scope.sett(prev);
+          if(!scope.inc) {
+            var pre = appCookie.get('prev_proc');
+            if (pre) {
+              var prev = scope.procedures.find(function (p) {
+                return p.ProcedureId == pre;
+              });
+              if (prev)
+                scope.sett(prev);
+            }
           }
         }
       }

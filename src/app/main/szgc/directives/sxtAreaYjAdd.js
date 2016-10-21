@@ -38,7 +38,7 @@
               zoomControl: false,
               attributionControl: false
             }),
-              layer = tileLayer.tile({api:sxt.app.api,Url:fs.data.Files[0].Url});
+              layer = tileLayer.tile({api:sxt.app.api,Id:fs.data.Files[0].Id,Url:fs.data.Files[0].Url});
             layer.addTo(map);
 
             var drawnItems = L.featureGroup(),
@@ -99,7 +99,7 @@
               var l = 1;//batchs.length;
               if(l) {
                 var conents = [];
-                conents.push('<div class="yj">');
+                conents.push('<div class="yj"><strong>'+layer.data.name+'</strong>');
                 conents.push('<div><table><thead><tr><th>批</th><th>状态</th><th>操作</th></tr></thead><tbody>');
                 batchs.forEach(function (r) {
                   conents.push('<tr><td>' + r.BatchNo + '</td><td>' + r.stateName + '</td><td>');
@@ -108,19 +108,21 @@
                     conents.push('已验未传')
                   }
                   else if (scope.project.roleId != '3rd' && r.ZbChecked !== false && scope.project.isPartner) {
-                    conents.push('<a class="btn btn-white btn-xs zb">' + ((scope.project.roleId == 'zb' && !r.ZbCount) || (scope.project.roleId == 'jl' && !r.JLCount) ? '录入' : '复验') + '</a>')
+                    conents.push('<a class="btn btn-white btn-xs zb" batch="'+r.Id+'">' + ((scope.project.roleId == 'zb' && !r.ZbCount) || (scope.project.roleId == 'jl' && !r.JLCount) ? '录入' : '复验') + '</a>')
                   }
-                  else if (scope.project.roleId != '3rd' && !scope.project.isPartner && r.checkedCount) {
-                    conents.push('<a class="btn btn-white btn-xs zb">' + (r.CheckDate1 ? '复验' : '抽验') + '</a>')
+                  else if (scope.project.roleId != '3rd' && !scope.project.isPartner && ((r.JLCount||0) + (r.WKCount||0) + (r.ZbCount||0))) {
+                    conents.push('<a class="btn btn-white btn-xs zb" batch="'+r.Id+'">' + (r.CheckDate1 ? '复验' : '抽验') + '</a>')
                   }
                   else if (scope.project.roleId == '3rd') {
-                    conents.push('<a class="btn btn-white btn-xs rd">抽验</a>')
+                    conents.push('<a class="btn btn-white btn-xs rd" batch="'+r.Id+'">抽验</a>')
                   }
                   conents.push('</td></tr>');
                 })
-                conents.push('</tbody></table></div>')
-
-                conents.push('<button class="btn new">新验收批</button></div>');
+                conents.push('</tbody></table></div>');
+                if (scope.project.roleId != 'eg') {
+                  conents.push('<button class="btn new">新验收批</button>');
+                }
+                conents.push('</div>')
                 el = $(conents.join(''));
                 var popup = L.popup()
                   .setLatLng(layer.getBounds().getCenter())
@@ -147,13 +149,14 @@
                     checkRequirement: project.CheckRequirement
                   });
                 });
-                el.on('click', 'a.zb', function () {
+                el.on('click', 'a.zb', function (e) {
                   var item = layer.data,
-                    project = scope.project;
+                    project = scope.project,
+                    Id = $(e.target).attr('batch');
                   $state.go('app.szgc.ys.addnew', {
                     projectid: item.$id,
                     name: item.$name,
-                    batchId: item.BatchRelationId,
+                    batchId: Id,
                     procedureTypeId: project.procedureTypeId,
                     procedureId: project.procedureId,
                     type: project.type,
@@ -165,11 +168,12 @@
                 })
                 el.on('click', 'a.rd', function () {
                   var item = layer.data,
-                    project = scope.project;
+                    project = scope.project,
+                    Id = $(e.target).attr('batch');;
                   $state.go('app.szgc.ys.addnew', {
                     projectid: item.$id,
                     name: item.$name,
-                    batchId: item.BatchRelationId ? item.BatchRelationId : '',
+                    batchId: Id || '',
                     procedureId: project.procedureId,
                     type: project.type,
                     idTree: project.idTree,

@@ -285,9 +285,16 @@
           get: function (id) {
             return $http.get('/api/ExProject/' + id);
           },
-          query: function (regionId, status) {
+          query: $http.db({
+            _id:'s_exProject',
+            idField:'Id',
+            dataType:5,
+            filter:function (item,regionId,status) {
+              return item.RegionTreeId.indexOf(regionId)!=-1;
+            }
+          }).bind(function (regionId, status) {
             return $http.get($http.url('/api/ExProject', { regionTreeId: regionId, status: status }));
-          }
+          })
         },
         query:$http.db({
           _id:'s_projectSttting',

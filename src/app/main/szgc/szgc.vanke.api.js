@@ -357,6 +357,9 @@
               r2.data.Rows.forEach(function (r) {
                 r1.data.data.push({
                   building_id: r.Id,
+                  project_item:{
+                    project_item_id:arg.project_item_id
+                  },
                   name: r.RegionName,
                   type: r.RegionType
                 });
