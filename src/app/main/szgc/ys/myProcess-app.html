@@ -26,18 +26,19 @@
           <md-list-item ng-click="vm.openNav('nav_procedure')" layout="row"><p flex="none">工序：</p><p flex style="text-align:right;text-overflow:ellipsis;direction: rtl;">{{project.procedureName}}</p></md-list-item>
           <md-divider></md-divider>
         </md-list>
+
           <md-progress-circular md-mode="indeterminate" ng-show="vm.loading"></md-progress-circular>
           <div flex ng-if="!vm.loading && project.type!==128 && project.type!==256">
             <md-subheader class="no-padding">
               <div layout="row" class="div-table">
-                <div flex="20">部位</div>
+                <div flex="20"><div style="padding:0 0 0 6px">部位</div></div>
                 <div flex="20">批</div>
                 <div flex="20">状态</div>
                 <div flex="40">操作</div>
               </div>
             </md-subheader>
               <div layout="row" class="div-table-row" ng-repeat="item in project.rows">
-                <div flex="20" class="name">{{item.$name}}</div>
+                <div flex="20" class="name"><div style="padding:0 0 0 6px">{{item.$name}}</div></div>
                 <div flex="20">{{item.BatchNo}}</div>
                 <div flex="20" class="position">{{roleId=='zb'?item.MinPassRatio0 : item.stateName}}</div>
                 <div flex="40" class="office" ng-if="!hasTasks(item)">
@@ -51,8 +52,10 @@
                 <div flex="40" ng-if="hasTasks(item)">已验未传</div>
               </div>
           </div>
+
           <div flex sxt-area-yj-add="project.data.items" project="project" role-id="roleId" ng-if="!vm.loading && (project.type===128 || project.type===256) && is('app.szgc.ys')">
           </div>
+
         </div>
 
       </md-content>

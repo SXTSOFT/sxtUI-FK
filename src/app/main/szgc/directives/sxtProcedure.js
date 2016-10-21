@@ -42,8 +42,8 @@
       <md-tab ng-repeat="g in types|sxtProcedureS" >\
       <md-tab-label><div style="line-height: 100%">{{g.name}}<div style="font-size: 10px;">({{g.ps.length}})</div></div></md-tab-label>\
       <md-tab-body flex layout-fill layout="column"><div flex layout="column">\
-      <div flex="none"  ng-init="g.current=g.children[0]">\
-        <md-button class="md-raised" style="min-width:inherit;" ng-class="{\'md-primary\':g.current===c}" class="md-block" ng-click="g.current=c" ng-repeat="c in g.children|sxtProcedureS">{{c.name}}</md-button>\
+      <div flex="none" >\
+        <md-button class="md-raised" style="min-width:inherit;" ng-class="{\'md-primary\':g.current===c}" class="md-block" ng-click="g.current=c" ng-repeat="c in g.children|sxtProcedureS">{{c.name}}({{c.ps.length}})</md-button>\
       <md-divider></md-divider></div><md-content style="background: white;">\
       <md-list style="padding:0;" class="newheight">\
       <md-list-item ng-click="sett(p)" ng-repeat="p in g.current.ps"  style="padding:0;">\
@@ -165,6 +165,9 @@
                   g.ps.push(p);
                 }
               })
+            });
+            g.current = g.children.find(function (c) {
+              return c.ps.length!==0;
             });
           });
           if(!scope.inc) {
