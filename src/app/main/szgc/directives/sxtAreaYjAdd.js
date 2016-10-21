@@ -96,46 +96,109 @@
             }
             function openPopup(layer) {
               var batchs = layer.data.batchs;
-              var conents = [];
-              conents.push('<div class="yj">');
-              if(batchs.length){
+              var l = 1;//batchs.length;
+              if(l) {
+                var conents = [];
+                conents.push('<div class="yj">');
                 conents.push('<div><table><thead><tr><th>批</th><th>状态</th><th>操作</th></tr></thead><tbody>');
-              }
-              batchs.forEach(function(r){
-                conents.push('<tr><td>'+r.BatchNo+'</td><td>'+r.stateName+'</td><td><div class="office" ng-if="'+!layer.data.hasTasks+'">\
-                  <a class="btn btn-white btn-xs goto">'+(scope.roleId=='zb'?'录入':'复验')+'</a></div>\
-                   </td></tr><div>'+'已验未传'+'</div>')
-              })
-              if(batchs.length){
+                batchs.forEach(function (r) {
+                  conents.push('<tr><td>' + r.BatchNo + '</td><td>' + r.stateName + '</td><td>');
+
+                  if (r.hasTask) {
+                    conents.push('已验未传')
+                  }
+                  else if (scope.project.roleId != '3rd' && r.ZbChecked !== false && scope.project.isPartner) {
+                    conents.push('<a class="btn btn-white btn-xs zb">' + ((scope.project.roleId == 'zb' && !r.ZbCount) || (scope.project.roleId == 'jl' && !r.JLCount) ? '录入' : '复验') + '</a>')
+                  }
+                  else if (scope.project.roleId != '3rd' && !scope.project.isPartner && r.checkedCount) {
+                    conents.push('<a class="btn btn-white btn-xs zb">' + (r.CheckDate1 ? '复验' : '抽验') + '</a>')
+                  }
+                  else if (scope.project.roleId == '3rd') {
+                    conents.push('<a class="btn btn-white btn-xs rd">抽验</a>')
+                  }
+                  conents.push('</td></tr>');
+                })
                 conents.push('</tbody></table></div>')
-              }
-              conents.push('<button class="btn">新验收批</button></div>');
+
+                conents.push('<button class="btn new">新验收批</button></div>');
                 el = $(conents.join(''));
-              var popup = L.popup()
-                .setLatLng(layer.getBounds().getCenter())
-                .setContent(el[0])
-                .openOn(map);
-              el.on('click','.goto',function(){
-                console.log('a')
-              })
-              el.on('click','button',function () {
+                var popup = L.popup()
+                  .setLatLng(layer.getBounds().getCenter())
+                  .setContent(el[0])
+                  .openOn(map);
+                el.on('click', '.goto', function () {
+                  console.log('a')
+                })
+                el.on('click', 'button.new', function () {
+                  var item = layer.data,
+                    project = scope.project;
+                  $state.go('app.szgc.ys.addnew', {
+                    projectid: item.$id,
+                    name: item.$name,
+                    batchId: 'new',
+                    procedureTypeId: project.procedureTypeId,
+                    procedureId: project.procedureId,
+                    type: project.type,
+                    idTree: project.idTree,
+                    procedureName: project.procedureName,
+                    nameTree: project.nameTree,
+                    flag: true,
+                    project_item_id: item.project_item_id,
+                    checkRequirement: project.CheckRequirement
+                  });
+                });
+                el.on('click', 'a.zb', function () {
+                  var item = layer.data,
+                    project = scope.project;
+                  $state.go('app.szgc.ys.addnew', {
+                    projectid: item.$id,
+                    name: item.$name,
+                    batchId: item.BatchRelationId,
+                    procedureTypeId: project.procedureTypeId,
+                    procedureId: project.procedureId,
+                    type: project.type,
+                    idTree: project.idTree,
+                    procedureName: project.procedureName,
+                    nameTree: project.nameTree,
+                    checkRequirement: project.CheckRequirement
+                  });
+                })
+                el.on('click', 'a.rd', function () {
+                  var item = layer.data,
+                    project = scope.project;
+                  $state.go('app.szgc.ys.addnew', {
+                    projectid: item.$id,
+                    name: item.$name,
+                    batchId: item.BatchRelationId ? item.BatchRelationId : '',
+                    procedureId: project.procedureId,
+                    type: project.type,
+                    idTree: project.idTree,
+                    procedureName: project.procedureName,
+                    nameTree: project.nameTree,
+                    procedureTypeId: project.procedureTypeId,
+                    checkRequirement: project.CheckRequirement
+                  });
+                })
+                popup.layer = layer;
+              }
+              else{
                 var item = layer.data,
                   project = scope.project;
                 $state.go('app.szgc.ys.addnew',{
                   projectid:item.$id,
                   name:item.$name,
-                  batchId:item.BatchRelationId,
+                  batchId:'new',
                   procedureTypeId:project.procedureTypeId,
                   procedureId:project.procedureId,
                   type:project.type,
                   idTree:project.idTree,
                   procedureName:project.procedureName,
                   nameTree:project.nameTree,
+                  flag:true,
+                  project_item_id:item.project_item_id,
                   checkRequirement:project.CheckRequirement
                 });
-                console.log('add',layer);
-              })
-              popup.layer = layer;
+              }
             }
           });
         }

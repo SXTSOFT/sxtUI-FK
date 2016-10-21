@@ -59,6 +59,7 @@
     $scope.roleId = api.szgc.vanke.getRoleId();
     $scope.project = {
       roleId:$scope.roleId,
+      isPartner:$scope.isPartner,
       isMore: true,
       states: [{
         id: -1,
@@ -354,18 +355,25 @@
       var idTree = project.project_id+'>'+item.project_item_id;
       api.download([
         //项目区域
-        function (tasks) {
-          return api.szgc.vanke.buildings({
-            project_id: item.project_id,
-            project_item_id: item.project_item_id,
-            page_size: 0,
-            page_number: 1
-          }).then(function (result) {
-            result.data.data.forEach(function (build) {
-              tasks.push(function () {
-                return api.szgc.vanke.floors(build.building_id);
+        function (tasks,downFile) {
+          return $q(function (resolve,reject) {
+            api.szgc.vanke.buildings({
+              project_id: item.project_id,
+              project_item_id: item.project_item_id,
+              page_size: 0,
+              page_number: 1
+            }).then(function (result) {
+              var tk = [];
+              result.data.data.forEach(function (build) {
+                tasks.push(function () {
+                  return api.szgc.vanke.floors(build.building_id);
+                });
+                if(build.building_id.length === 32){
+                  tk.push(api.szgc.FilesService.group(build.building_id));
+                }
               });
-            });
+              resolve();
+            },reject);
           });
         },//下载户型
         function (tasks,downFile) {

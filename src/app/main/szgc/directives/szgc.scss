@@ -524,6 +524,11 @@ md-content{
     padding:4px 6px;
     border-radius: 4px;
   }
+  td{
+    .btn{
+      margin-top:0px;
+    }
+  }
 }
 .reportT table{
   border-collapse: collapse;

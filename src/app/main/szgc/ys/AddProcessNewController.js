@@ -794,6 +794,7 @@
 
 
     $scope._save = function (addForm) {
+
       $scope.isSaveing = true;
       //addForm
       var data = $scope.data,
