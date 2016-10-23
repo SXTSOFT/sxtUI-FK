@@ -112,6 +112,15 @@
            return $state.includes(route);
         }
 
+        vm.active_selected=function(route){
+          vm.current_active=route;
+        }
+        vm.current_active="app.xhsc.home";
+
+
+
+
+
         /**
          * Toggle sidenav
          *
