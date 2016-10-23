@@ -19,7 +19,7 @@
     }
     function toNum(n) {
       var r = parseInt(n);
-      var s = '000'+new String(isNaN(r)?0:r)
+      var s = '000'+new String(isNaN(r)?0:r);
       return s.substring(s.length-3);
     }
     this.check = function () {

@@ -213,15 +213,27 @@
           }
         }
         scope.querySearch = function(array, text) {
-          var k = [];
-          if (array) {
-            array.forEach(function (item) {
-              if (!text || text == '' || item.$name.indexOf(text) != -1 || item.$letter.indexOf(text) != -1) {
-                k.push(item);
-              }
+          return $q(function (r) {
+            var k = [];
+            if (array) {
+              array.forEach(function (item) {
+                if (!text || text == '' || item.$name.indexOf(text) != -1 || item.$letter.indexOf(text) != -1) {
+                  k.push(item);
+                }
+              })
+            }
+            k.sort(function (s1,s2) {
+              var x = s1.$name.indexOf(text),
+                y = s2.$name.indexOf(text);
+              if(x==-1)
+                x = s1.$letter.indexOf(text);
+              if(y==-1)
+                y = s2.$letter.indexOf(text);
+              return x - y;
             })
-          }
-          return k;
+            r(k);
+          })
+
         }
         $timeout(function () {
           scope.onQuery(0, newSt, scope.value,scope).then(function (result) {
