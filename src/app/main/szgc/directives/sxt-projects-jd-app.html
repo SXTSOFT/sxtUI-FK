@@ -7,7 +7,7 @@
 
     <div ng-repeat="st in selectors" data-title="{{st.label}}" ng-if="st.items.length"  ng-show="isShow(st)">
 <div class="md-padding">
-  <md-autocomplete class="md-block" ng-model="st.current" ng-disabled="st.loading" md-selected-item-change="item_selected(item, st.index)" md-item-text="item.$name" placeholder="{{st.label}}" md-min-length="0"  md-items="item in querySearch(st.items,searchText)" md-search-text="searchText">
+  <md-autocomplete ng-if="$index===0" class="md-block" ng-model="st.current" ng-disabled="st.loading" md-selected-item-change="item_selected(item, st.index)" md-item-text="item.$name" placeholder="{{st.label}}" md-min-length="0"  md-items="item in querySearch(st.items,searchText)" md-search-text="searchText">
     <md-item-template>
       {{item.$name}}
     </md-item-template>
@@ -15,14 +15,14 @@
       未找到匹配项
     </md-not-found>
   </md-autocomplete>
-<!--      <md-input-container class="md-block" ng-disabled="st.loading">
+      <md-input-container ng-if="$index!==0" class="md-block" ng-disabled="st.loading">
         <label>{{st.label}}</label>
         <md-select ng-model="st.current" ng-disabled="st.loading" md-on-close="st.current && item_selected(st.current, st.index)">
           <md-option ng-repeat="item in st.filters" ng-value="item">
             {{item.$name}}
           </md-option>
         </md-select>
-      </md-input-container>-->
+      </md-input-container>
 </div>
       <md-list>
         </md-list>
