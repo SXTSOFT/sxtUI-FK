@@ -26,10 +26,11 @@
                      <!--md-mode="indeterminate" md-diameter="40">-->
 <!--</md-progress-circular></div>-->
 </div>
-<div ng-if="$root.msg" style="margin: auto;position: absolute; top: 0; left: 0; bottom: 0; right: 0; height: 34px;width: 194px" layout="row" layout-align="center center">
-     <div layout="row"  style="height: 32px;border-radius:8px;border:1px solid #ffffff" layout-align="center stretch">
-       <span style="font-size: 14px;line-height: 32px;padding: 0px 20px " ng-click="setMsg(msgFlag)" ng-class="{'messager_active':msgFlag,'no_messager_active':!msgFlag}">待办通知</span>
-       <span style="font-size: 14px;line-height: 32px ;padding: 0px 20px" ng-click="setMsg(msgFlag)" ng-class="{'messager_active':!msgFlag,'no_messager_active':msgFlag}" >系统消息</span>
-     </div>
+<div ng-if="$root.msg" style="margin: auto;position: absolute; top: 0; left: 0; bottom: 0; right: 0; height: 34px;width: 200px" layout="row" layout-align="center stretch">
+     <!--<div layout="row"  flex style="height: 32px;border-radius:8px;border:1px solid #ffffff" layout-align="center stretch">-->
+       <span style="font-size: 14px;line-height: 32px;padding: 0px 20px;border-radius:8px;border:1px solid #ffffff;border-top-right-radius: 0px;border-bottom-right-radius:0px"
+             ng-click="setMsg(msgFlag)" ng-class="{'messager_active':msgFlag,'no_messager_active':!msgFlag}">待办通知</span>
+       <span style="font-size: 14px;line-height: 32px ;padding: 0px 20px;border-radius:8px;border:1px solid #ffffff;border-top-left-radius: 0px;border-bottom-left-radius:0px" ng-click="setMsg(msgFlag)" ng-class="{'messager_active':!msgFlag,'no_messager_active':msgFlag}" >系统消息</span>
+     <!--</div>-->
 </div>
 
