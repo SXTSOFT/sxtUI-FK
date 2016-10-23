@@ -512,7 +512,6 @@
             };
           });
         },function (result,cfg,args) {
-          console.log('result.data.rooms',result.data.rooms)
             var rooms = result.data.rooms.filter(function (item) {
               return (!args[1].floor || item.floor == args[1].floor)
                && (args[2] === true || item.engineering.status != 'hide')

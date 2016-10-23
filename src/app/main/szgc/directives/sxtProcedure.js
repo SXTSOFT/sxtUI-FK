@@ -12,6 +12,15 @@
 
   /** @ngInject */
   function sxtProcedure(api,appCookie,$timeout){
+
+    function sort(compares) {
+      return function (p1,p2) {
+        var ix = compares.indexOf(p1.ProcedureId),
+          ix1 = compares.indexOf(p2.ProcedureId);
+        return ix-ix1;
+      }
+    }
+
     return {
       require:'ngModel',
       scope:{
@@ -67,14 +76,39 @@
         scope.checkRequirement = p.CheckRequirement;
         ctrl.$setViewValue(scope.value);
         if(!scope.inc) {
-          appCookie.put('prev_proc', p.ProcedureId);
+          var odd = appCookie.get('prev_proc'),
+            odds =(odd?odd.split(','):[]).filter(function (p) {
+              return !!p;
+            });
+          var ix = odds.indexOf(p.ProcedureId);
+          if(ix!==0) {
+            if (ix != -1)
+              odds.splice(ix, 1);
+            odds = [p.ProcedureId].concat(odds);
+            if(scope.types[0].ps.indexOf(p)==-1){
+              scope.types[0].ps.push(p);
+              scope.types[0].children[0].ps.push(p);
+            }
+            scope.types[0].ps.sort(sort(odds));
+            scope.types[0].children[0].ps.sort(sort(odds));
+            if (odds.length > 5)
+              odds.length = 5;
+            appCookie.put('prev_proc', odds.join(','));
+          }
         }
         scope.onSelect && scope.onSelect({$selected:scope.value});
       }
       scope.Plength = 0;
 
       api.szgc.vanke.skills({ page_number: 1, page_size: 0 }).then(function (result) {
-        var s = [];
+        var s = [{
+          name:'最近',
+          ps:[],
+          children:[{
+            name:'最近',
+            ps:[]
+          }]
+        }];
         result.data.data.forEach(function (item) {
           if(!item.parent)return;
           var gn = s.find(function(g){return item.parent.name== g.name});
@@ -173,8 +207,21 @@
           if(!scope.inc) {
             var pre = appCookie.get('prev_proc');
             if (pre) {
-              var prev = scope.procedures.find(function (p) {
-                return p.ProcedureId == pre;
+              pre = pre.split(',');
+              var prev;
+              pre.forEach(function (p1) {
+                var prev1 = scope.procedures.find(function (p) {
+                  return p.ProcedureId == p1;
+                });
+                if(prev1) {
+
+                  scope.types[0].ps.push(prev1);
+                  scope.types[0].children[0].ps.push(prev1);
+                  if (!prev) {
+                    prev = prev1;
+                    scope.types[0].current = scope.types[0].children[0];
+                  }
+                }
               });
               if (prev)
                 scope.sett(prev);
