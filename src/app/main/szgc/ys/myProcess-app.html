@@ -8,7 +8,7 @@
         <md-content flex layout="column" style="background: white">
             <sxt-projects-jd yj-flag="true" yj-flags="project.yj" flex ng-model="project.pid" object-scope="project" region-type="project.type" region-name="project.typeName" project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed" is-more="project.isMore">
               <div class="md-padding" layout="row" ng-show="project.type==64">
-                <md-button type="submit" flex ui-sref="app.szgc.ys.upload({projectid:project.pid,name:project.typeName,type:project.item.type.type_id||project.item.type,idTree:project.idTree,nameTree:project.nameTree})" class="md-raised md-primary"> 隐蔽工程照片  </md-button>
+                <md-button type="submit" flex ng-click="vm.closeNav('nav_region')" ui-sref="app.szgc.ys.upload({projectid:project.pid,name:project.typeName,type:project.item.type.type_id||project.item.type,idTree:project.idTree,nameTree:project.nameTree})" class="md-raised md-primary"> 隐蔽工程照片  </md-button>
               </div>
             </sxt-projects-jd>
             <div flex="none" class="md-padding" ng-hide="project.type==64" layout="row">

@@ -1,7 +1,7 @@
 /**
  * Created by zhangzhaoyong on 16/1/28.
  */
-(function ()
+(function (angular)
 {
   'use strict';
 
@@ -55,8 +55,10 @@
                 case 3: scope.regionType = 32; break;
                 case 4: scope.regionType = 64; break;
               }
-              scope.regionType = c.selected.type || scope.regionType;
-              ck.push(c.selected);
+              scope.regionType = angular.isNumber(c.selected.type)? c.selected.type : scope.regionType;
+              if(scope.regionType!==64) {
+                ck.push(c.selected);
+              }
               c = p.selectors[++i];
               //console.log('scope.regionType',scope.regionType)
             }
@@ -185,4 +187,4 @@
       }
     }
   }
-})();
+})(angular);
