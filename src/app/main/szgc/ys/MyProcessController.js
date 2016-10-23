@@ -299,7 +299,7 @@
         if(!$scope.project.pid){
           vm.openNav('nav_region');
         }
-        else if(!$scope.project.procedureId){
+        else if(!$scope.project.procedureId && $scope.project.type!==64){
           vm.openNav('nav_procedure');
         }
         //utils.alert("必须选择项目和工序！");
