@@ -407,7 +407,7 @@
             return item;
           }*/
         }).bind(function (building_id) {
-          if(building_id.length===32){
+          if(building_id.length>=32){
             return this.root.szgc.vanke.yj(building_id,4).then(function (result) {
               var r1 = {data:{building_id:building_id,rooms:[]}};
               result.data.Rows.forEach(function (r) {
@@ -483,7 +483,7 @@
           }*/
         })
           .bind(function (building_id,arg,incHide) {
-            if(building_id.length===32){
+            if(building_id.length>=32){
               return this.root.szgc.vanke.yj(building_id,4).then(function (r) {
                 var r1 = {data:{
                   building_id:building_id,
