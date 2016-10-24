@@ -10,7 +10,7 @@
 
 
   /** @ngInject */
-  function  utilsFactory($mdToast,$mdDialog,$window){
+  function  utilsFactory($mdToast,$mdDialog,$window,$rootScope){
 
     var storage = $window.localStorage;
     return {
@@ -46,6 +46,7 @@
       error:errorMessage,
       copy:copyFn,
       getPage:getPage,
+      onCmd:onCmd,
       cookies:{
         c:{},
         put:function(name,value){
@@ -64,6 +65,15 @@
         }
       }
     };
+
+    function onCmd($scope,cmd,fn,seq) {
+      $scope.$on('$destroy', $rootScope.$on('toolbar:cmd'+(seq||''), function (s, e) {
+        cmd = angular.isString(cmd) ? [cmd] : cmd;
+        if (cmd.indexOf(e.cmd) != -1) {
+          fn && fn(e.cmd, e);
+        }
+      }));
+    }
 
     function accSub(arg2, arg1) {
       var r1, r2, m, n;

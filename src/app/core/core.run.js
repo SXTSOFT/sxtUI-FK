@@ -64,6 +64,7 @@
           $rootScope.title = toState.title || $rootScope.title;
           $rootScope.showgrzx =  toState.showgrzx;
           $rootScope.opBtn = toState.opBtn;
+          $rootScope.swap = toState.swap;
         }
       });
 

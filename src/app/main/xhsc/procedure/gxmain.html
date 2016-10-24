@@ -1,4 +1,73 @@
-<div flex ng-if="vm.role==0" class="gxbg" layout="column" ms-scroll>
+<div flex ng-if="vm.material" layout="column" class="download">
+  <md-subheader>已下载列表</md-subheader>
+  <span class="border1px"></span>
+  <md-list style="overflow-x: hidden; padding: 0;">
+    <md-list-item layout="row" ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})">
+      <p style="font-size:14px;">
+        深圳星河雅宝项目一期一号标段</span>
+      </p>
+      <span flex></span>
+      <span class="border1px bottom1px"></span>
+      <md-button ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" style="color: black;margin-right: 0px">上传</md-button>
+    </md-list-item>
+    <md-list-item layout="row" ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})">
+      <p style="font-size:14px;">
+        深圳星河传奇项目一期一号标段</span>
+      </p>
+      <span flex></span>
+      <span class="border1px bottom1px"></span>
+      <md-button ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" style="color: black;margin-right: 0px">上传</md-button>
+    </md-list-item>
+    <md-list-item layout="row" ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})">
+      <p style="font-size:14px;">
+        深圳沙井项目一期一号标段</span>
+      </p>
+      <span flex></span>
+      <span class="border1px bottom1px"></span>
+      <md-button ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" style="color: black;margin-right: 0px">上传</md-button>
+    </md-list-item>
+    <md-list-item layout="row" ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})">
+      <p style="font-size:14px;">
+        深圳银湖谷项目一期一号标段</span>
+      </p>
+      <span flex></span>
+      <span class="border1px bottom1px"></span>
+      <md-button ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" style="color: black;margin-right: 0px">上传</md-button>
+    </md-list-item>
+  </md-list>
+
+  <md-subheader>未下载列表</md-subheader>
+  <span class="border1px"></span>
+  <md-list style="overflow-x: hidden; padding: 0;">
+    <md-list-item layout="row" ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})">
+      <p style="font-size:14px;">
+        常州雅宝项目一期一号标段</span>
+      </p>
+      <span flex></span>
+      <span class="border1px bottom1px"></span>
+      <md-button ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" style="color: black;margin-right: 0px">下载</md-button>
+    </md-list-item>
+    <md-list-item layout="row" ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})">
+      <p style="font-size:14px;">
+        惠州丹堤项目一期一号标段</span>
+      </p>
+      <span flex></span>
+      <span class="border1px bottom1px"></span>
+      <md-button ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" style="color: black;margin-right: 0px">下载</md-button>
+    </md-list-item>
+    <md-list-item layout="row" ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})">
+      <p style="font-size:14px;">
+        广州星河丹堤项目一期一号标段</span>
+      </p>
+      <span flex></span>
+      <span class="border1px bottom1px"></span>
+      <md-button ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" style="color: black;margin-right: 0px">下载</md-button>
+    </md-list-item>
+
+  </md-list>
+</div>
+
+<div flex ng-if="vm.role==0 && !vm.material" class="gxbg" layout="column" ms-scroll>
   <div class="gxheadzb">
     <ul>
       <li ng-click="vm.setModule(0)">
@@ -87,7 +156,7 @@
   </div>
 </div>
 
-<div flex ng-if="vm.role==2" class="gxbg" layout="column" ms-scroll>
+<div flex ng-if="vm.role==2 && !vm.material" class="gxbg" layout="column" ms-scroll>
   <div class="gxheadjl">
     <ul>
       <li ng-click="vm.setModule(2)">
@@ -162,7 +231,7 @@
   </div>
 </div>
 
-<div flex ng-if="vm.role!=2&&vm.role!=0" class="gxbg" layout="column">
+<div flex ng-if="vm.role!=2&&vm.role!=0 && !vm.material" class="gxbg" layout="column">
   <md-list style="overflow-x: hidden;">
     <md-list-item layout="row" ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})" ng-repeat="item in vm.projects">
       <p style="font-size:14px;">
