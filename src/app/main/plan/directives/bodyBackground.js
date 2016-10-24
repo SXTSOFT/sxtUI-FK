@@ -13,7 +13,8 @@
     return {
       scope:{
         value:'=bodyShow',
-        data:'=bodyData'
+        data:'=bodyData',
+        bodyMin:'='
       },
       link:link
     }
@@ -30,7 +31,7 @@
       })
 
       $(element).on('click',function(){
-        if(scope.data){
+        if(scope.bodyMin){
           utils.alert('工期应大于基本工期的80%');
           return;
         }

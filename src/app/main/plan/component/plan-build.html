@@ -1,7 +1,6 @@
 <md-content layout="column" flex>
 <ms-form-wizard flex class="create-plan" id="formWizard">
   <div  scroll-top="msWizard.selectedIndex">
-    {{vm.result}}
   <md-tabs md-dynamic-height md-selected="msWizard.selectedIndex" md-center-tabs="true">
     <md-tab>
       <md-tab-label>
@@ -117,7 +116,7 @@
       </md-tab-label>
       <md-tab-body>
         <form name="wizardStep2" ms-form-wizard-form novalidate>
-          <md-content layout="column" flex>
+          <md-content layout="column" flex class="opacity0" ng-class="{'opacity':vm.loading}">
             <canvas id="gitGraph"></canvas>
           </md-content>
         </form>
@@ -168,7 +167,7 @@
   </div>
 </ms-form-wizard>
 </md-content>
-<body-background body-show="vm.showBg" body-data="durationForm.eDuration.$error.min" class="body-background">
+<body-background body-show="vm.showBg" body-data="durationForm.eDuration.$error.min" body-min="vm.minError" class="body-background">
 </body-background>
 <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right" layout="column" md-disable-backdrop="true">
   <md-tabs md-border-bottom flex >
@@ -184,10 +183,11 @@
           <form name="durationForm" ng-show="vm.current.selectedTask">
             <md-input-container class="md-block">
               <label>工期(公式={{vm.getVars(vm.current.selectedTask)}})</label>
-              <input type="text" required name="eDuration" ng-model="vm.current.selectedTask.eDuration">
+              <input type="text" required name="eDuration" ng-blur="vm.changeDuration()" ng-model="vm.current.selectedTask.eDuration">
+              <!--<input type="number" step="0.5" ng-min="vm.min" ng-if="!vm.current.selectedTask.vars.length" ng-blur="vm.changeDuration()" required name="eDuration" ng-model="vm.current.selectedTask.eDuration">-->
               <div ng-messages="durationForm.eDuration.$error">
                 <div ng-message="required">必填工期。</div>
-                <div ng-message="min">工期应大于基本工期的80%。</div>
+                <!--<div ng-message="min">工期应大于基本工期的80%。</div>-->
               </div>
             </md-input-container>
             <md-input-container class="md-block" ng-repeat="v in vm.vars">

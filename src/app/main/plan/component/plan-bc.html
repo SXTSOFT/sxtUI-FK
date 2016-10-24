@@ -18,7 +18,7 @@
       <th>前补偿天数</th>
       <th>后补偿天数</th>
       <th>是否全面停工</th>
-      <th style="width: 160px">管理</th>
+      <th style="width: 160px"><span class="pl-16">管理</span></th>
     </tr>
     </thead>
     <tbody>
@@ -29,8 +29,9 @@
       <td>{{item.BackDay}}</td>
       <td>{{item.IsAllStopWork?'是':'否'}}</td>
       <td class="actions">
-        <md-button class="md-primary md-mini md-fab" aria-label="Settings" ui-sref="app.plan.bc.detail({id:item.CompensateId})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
-        <md-button class="md-primary md-mini md-fab" aria-label="Settings" ng-click="vm.delete(item.CompensateId)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
+
+        <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.plan.bc.detail({id:item.CompensateId})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
+        <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.delete(item.CompensateId)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
 
       </td>
     </tr>

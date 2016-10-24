@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function plangantt($mdDialog, $document, $animate, $scope, $timeout,utils, ganttUtils, GanttObjectModel, ganttDebounce, moment, $window, $mdSidenav,api,$stateParams,$q){
+  function plangantt($mdDialog, $document,$rootScope, $animate, $scope, $timeout,utils, ganttUtils,$mdPanel, GanttObjectModel, ganttDebounce, moment, $window, $mdSidenav,api,$stateParams,$q){
     var vm = this;
     var objectModel;
     vm.timespans = [
@@ -23,6 +23,24 @@
         name: 'Sprint 1 Timespan'
       }
     ];
+
+    $mdDialog.show({
+      controller:['$scope',function($scope){
+        $scope.hide = function(){
+          $mdDialog.cancel();
+        }
+      }],
+      template: '<md-dialog style="background-color: transparent;box-shadow: none;"><md-dialog-content ><div layout="row" layout-align="center center"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div><div layout="row" layout-align="center center">正在生成，请稍后...</div></md-dialog-content></md-dialog>',
+      parent: angular.element('#content'),
+      clickOutsideToClose:false,
+      hasBackdrop:true,
+      escapeToClose: true,
+      focusOnOpen: true
+    })
+
+    $scope.$watch('vm.gantt',function(){
+      $mdDialog.hide();
+    })
     // Data
     vm.live = {};
     vm.options = {
@@ -144,7 +162,9 @@
 
         vm.api.core.on.ready($scope, function ()
         {
-          vm.load();
+          vm.load().then(function(){
+            vm.gantt = true;
+          });
           objectModel = new GanttObjectModel(vm.api);
         });
         ganttApi.tasks.on.change($scope,function(task){
@@ -302,7 +322,7 @@
     // Reload data action
     function load()
     {
-      $q.all([api.plan.Task.query({
+      return $q.all([api.plan.Task.query({
         Type:'BuildingPlan',
         Source:$stateParams.id
       }),api.plan.BuildPlan.getMileStone($stateParams.id)]).then(function (rs) {

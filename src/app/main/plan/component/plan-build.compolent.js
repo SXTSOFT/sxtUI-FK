@@ -10,7 +10,7 @@
     });
 
   /** @ngInject */
-  function planBuild($scope,api,template,$q,$mdSidenav,utils,$timeout){
+  function planBuild($scope,api,template,$q,$mdSidenav,utils,$timeout,$mdDialog,$mdPanel,$rootScope){
     var vm = this;
     vm.data = {
 
@@ -81,8 +81,11 @@
       if(task.eDuration !='' && !task.eDuration)
         task.eDuration = task.Duration||'';
 
-      vm.vars = gs.getVars(task.eDuration);
+      task.vars = vm.vars = gs.getVars(task.eDuration);
       var r = gs.setVars(task.eDuration);
+      if(!task.vars.length){
+        task.minValue = task.Duration*0.8;
+      }
       task.xDuration = r;
       return r;
     };
@@ -96,7 +99,6 @@
         vm.data.projects = r.data;
       })
     }
-
     vm.getSections = function () {
       return api.xhsc.Project.GetAreaChildenbyID(vm.formWizard.projectId).then(function (r) {
         vm.data.sections = r.data;
@@ -175,9 +177,43 @@
         setTask(vm.current);
       }
       vm.temp.load(vm.rootTask);
+
     }
+
     vm.nextStep = function(i,f){
+
       if(i==0){
+
+        var parent = vm;
+        var position = $mdPanel.newPanelPosition()
+          .relativeTo('md-tabs-wrapper')
+          .addPanelPosition($mdPanel.xPosition.CENTER, $mdPanel.yPosition.BELOW)
+
+        $mdPanel.open({
+          controller: function (mdPanelRef,$scope,utils) {
+            var vm = this;
+            parent.loading = false;
+            parent.closePanel = function() {
+              return mdPanelRef.close().then(function () {
+                mdPanelRef.destroy();
+                parent.loading = true;
+                parent.closePanel = null;
+              });
+            }
+          },
+          controllerAs: 'vm',
+          template: '<div layout="row" class="mt-20" layout-align="center center"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div>',
+          hasBackdrop: false,
+          //panelClass: 'lib-list',
+          position: position,
+          trapFocus: true,
+          zIndex: 5000,
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          focusOnOpen: true,
+          attachTo:angular.element('#content')
+        });
+
         (vm.formWizard.Id?
           api.plan.BuildPlan.update(vm.formWizard.Id,vm.formWizard)
           :api.plan.BuildPlan.post(vm.formWizard)
@@ -185,10 +221,13 @@
           if (r.data|| r.status==200) {
             if(!vm.formWizard.Id)
               vm.formWizard.Id = r.data.Id;
-            getDataTemplate();
+            getDataTemplate().then(function(){
+              parent.closePanel();
+            });
             f();
           }
         },function(err){
+          parent.closePanel();
           if(err.status == -1){
             utils.alert('创建计划失败');
             return;
@@ -225,7 +264,7 @@
     }
 
     function getDataTemplate(){
-      api.plan.BuildPlan.getBuildPlanFlowTree(vm.formWizard.Id).then(function(r){
+      return api.plan.BuildPlan.getBuildPlanFlowTree(vm.formWizard.Id).then(function(r){
         r.data.RootTask.Master = r.data.RootTask.Master.map(function (item) {
           item._TaskFlowId = item.TaskFlowId;
           item.TaskFlowId = item.Id;
@@ -352,14 +391,22 @@
       }
     })
     vm.setMin = function(){
-      if(vm.current.selectedTask.Duration){
-        vm.min = Math.round(vm.current.selectedTask.Duration * 0.8*10)*0.1;
+      if(vm.current.selectedTask.eDuration){
+        vm.min = Math.round(vm.current.selectedTask.eDuration * 0.8*10)*0.1;
       }else{
         vm.min = 0;
       }
     }
     vm.changeDuration = function(){
       //vm.setMin();
+      if(!vm.current.selectedTask.vars.length){
+        if(vm.current.selectedTask.eDuration<vm.current.selectedTask.minValue){
+          //console.log('min')
+          vm.minError = true;
+        }else{
+          vm.minError = false;
+        }
+      }
       vm.setDuration(vm.current);
     }
   }

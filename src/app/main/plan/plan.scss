@@ -6,6 +6,13 @@
     }
   }
 }
+.opacity0{
+  opacity: 0;
+  &.opacity{
+    opacity: 1;
+  }
+}
+
 .nomargin{
   md-select{
     margin:0 0 26px 0;
