@@ -1556,6 +1556,25 @@ md-tabs[md-align-tabs="bottom"]{
     margin: 0;
     padding: 0;
   }
+  .mbtn2{
+    width: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+  }
+}
+.mbtn2{
+  >div{
+    height:28px;
+    line-height: 28px;
+    border:1px solid #fff;
+    border-radius: 4px;
+    margin-top: 3px;
+    .active{
+      background: #fff;
+      color:#e93030;
+    }
+  }
 }
 //.animate-enter, .animate-leave {
 //  transition: 500ms ease-in all;

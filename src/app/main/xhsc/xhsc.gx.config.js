@@ -30,8 +30,12 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        title: '工序验收',
+        //title: '工序验收',
         url: '',
+        swap:[
+          {active:true,label:'材料验收',material:true},
+          {active:false,label:'工序验收',material:false}
+        ],
         templateUrl: 'app/main/xhsc/procedure/gxmain.html',
         controller: 'gxmainController as vm'
       })

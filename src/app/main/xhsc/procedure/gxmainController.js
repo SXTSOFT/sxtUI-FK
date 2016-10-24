@@ -13,6 +13,11 @@
     var vm = this;
     var  dbpics=db('pics')
     vm.procedure=[];
+    vm.material = true;
+    utils.onCmd($scope,['swap'],function(cmd,e){
+      vm.material = e.arg.material;
+    });
+
     //所有全局任务
     var globalTask = [
       function () {

@@ -3,11 +3,18 @@
   <md-button flex="none" ng-show="$root.noBack" ng-click="goBack();" >返回</md-button>
 <md-button flex="none" ng-show="$root.showgrzx" ui-sref="app.xhsc.pcenter"><md-icon><img src="app/main/xhsc/images/grzx.png" width="21"></md-icon></md-button>
 
-  <h2 flex>
+  <h2 flex ng-if="$root.title && !$root.swap">
     <md-icon class="arrows icon s32" ng-show="$root.leftArrow===true" md-font-icon="icon-chevron-left" style="color:#fff;" ng-click="toLeft()"></md-icon>
     <span style="width:70%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" ng-class="{'subtitle':$root.leftArrow===true}">{{$root.subtitle||$root.title || '星河大数据工程管理平台'}}</span>
     <md-icon class="arrows icon s32" ng-show="$root.rightArrow===true" md-font-icon="icon-chevron-right" style="color:#fff;" ng-click="toRight()"></md-icon>
   </h2>
+  <div ng-if="$root.swap" class="mbtn2">
+    <div layout="row" layout-align="space-between center" style="text-align: center;line-height: 50px;font-size:16px;overflow: hidden;">
+      <div ng-class="{'active':item.active}" ng-repeat="item in $root.swap" flex layout="column" layout-align="center center" ng-click="vm.cmd('swap',item)">
+        {{item.label}}
+      </div>
+    </div>
+  </div>
   <md-button flex="none" class="md-icon-button" aria-label="net work" >
     <md-icon md-svg-icon="assets/images/online.svg" ng-if="vm.networkState==0" style="color:#e0e0e0"></md-icon>
     <md-icon md-svg-icon="assets/images/offline.svg" ng-if="vm.networkState==1" style="color:#e0e0e0"></md-icon>
