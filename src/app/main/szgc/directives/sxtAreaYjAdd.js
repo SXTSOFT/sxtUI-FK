@@ -38,7 +38,7 @@
               zoomControl: false,
               attributionControl: false
             }),
-              layer = tileLayer.tile({api:sxt.app.api,Id:fs.data.Files[0].Id,Url:fs.data.Files[0].Url});
+              layer = tileLayer.tile({api:sxt.app.api,Id:fs.data.Files[0].Id,Url:fs.data.Files[0].Url.replace('/s_','/')});
             layer.addTo(map);
 
             var drawnItems = L.featureGroup(),

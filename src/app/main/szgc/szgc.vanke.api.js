@@ -454,7 +454,7 @@
             else if ((!isNaN (n1) && isNaN (n2)))
               return -1;
             else
-              return i1.localeCompare (i2);
+              return new String(i1).localeCompare (i2);
           });
           return {data:{data: floors}};
         }),

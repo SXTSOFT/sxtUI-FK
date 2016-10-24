@@ -368,7 +368,7 @@
                 tasks.push(function () {
                   return api.szgc.vanke.floors(build.building_id);
                 });
-                if(build.building_id.length === 32){
+                if(build.building_id.length >= 32){
                   tk.push(api.szgc.FilesService.group(build.building_id));
                 }
               });
