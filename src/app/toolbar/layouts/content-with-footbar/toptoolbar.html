@@ -2,7 +2,7 @@
   <div style="position: absolute;width: 100%" layout="row">
     <h2 flex style="line-height: 44px">
       <span ng-if="!vm.networking">{{$root.title || '万科数字工程'}}</span>
-      <span ng-if="vm.networking"><img src="assets/images/loader.gif"> 连接中...</span>
+      <span ng-if="vm.networking"><img style="vertical-align: middle" src="assets/images/loader.gif"> 连接中...</span>
     </h2>
   </div>
   <md-button flex="none" class="md-icon-button" ng-show="!$root.noBack" ng-click="goBack();" >
