@@ -15,7 +15,7 @@
   function materialPlanList($rootScope,$stateParams,api,utils,$state){
     var vm = this;
     $rootScope.title = 'aaa';
-    api.xhsc.materialPlan.getMaterialPlan($stateParams.id).then(function (r) {
+    api.xhsc.materialPlan.getMaterialPlanBatch($stateParams.id).then(function (r) {
       vm.planList = r.data;
     });
     // vm.planList = [

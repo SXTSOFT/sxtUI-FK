@@ -15,12 +15,12 @@
       $q = apiProvider.$q;
     apiProvider.register('xhsc',{
       materialPlan:{
-        getMaterialPlan: $http.db({
+        getMaterialPlanBatch: $http.db({
           _id: 'materialPlan',
           idField: 'Id',
           dataType: 1
         }).bind(function (sectionId) {
-          return $http.get($http.url('/api/MaterialPlan/GetMaterialPlansBySectionId?sectionId='+ sectionId))
+          return $http.get($http.url('/api/MaterialPlan/GetMaterialPlansBatchBySectionId?sectionId='+ sectionId))
         })
       }
     });

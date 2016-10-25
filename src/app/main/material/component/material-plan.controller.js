@@ -75,6 +75,7 @@
         vm.data = r.data;
         vm.data.ProjectId = r.data.RegionId.substr(0,5);
         vm.data.RegionId = r.data.RegionId.substr(5,10);
+        vm.data.SectionId = r.data.SectionId;
         vm.data.PlanTime = r.data.PlanTime == null ? new Date() : new moment(r.data.PlanTime).toDate();
       });
     }

@@ -11,14 +11,14 @@
   /**@ngInject*/
   function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,$scope,$mdDialog,db,$mdBottomSheet){
     var vm = this;
-    var  dbpics=db('pics'),scpk = db('scpk');
+    var  dbpics=db('pics');
     vm.procedure=[];
 
     vm.material = true;
     utils.onCmd($scope,['swap'],function(cmd,e){
       vm.material = e.arg.material;
     });
-    loadSection()
+    loadSection();
     function loadSection() {
       vm.offlines = [];
 
@@ -63,7 +63,7 @@
               $scope.item=item;
               var tasks = []
                 .concat(function () {
-                  return api.xhsc.materialPlan.getMaterialPlan(item.SectionID)
+                  return api.xhsc.materialPlan.getMaterialPlanBatch(item.SectionID)
                 })
                 .concat(function(){
                   return remote.offline.create({Id:'msy'+item.SectionID});
