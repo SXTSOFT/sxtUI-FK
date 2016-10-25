@@ -14,23 +14,23 @@
     <md-tabs md-border-bottom flex >
       <md-tab label="流程信息" ng-disabled="!vm.current">
         <md-tab-content layout-padding >
-          <form>
-            <md-input-container class="md-block">
-              <label>名称</label>
-              <input type="text" ng-model="vm.current.Name" disabled>
-            </md-input-container>
-            <div layout="row">
-              <md-input-container flex>
-                <label>开始时间:</label>
-                <input type="text" ng-model="vm.current.StartTime" disabled>
-              </md-input-container>
-              <span flex="5"></span>
-              <md-input-container flex class="md-block">
-                <label>结束时间:</label>
-                <input type="text" ng-model="vm.current.EndTime" disabled>
-              </md-input-container>
-            </div>
-          </form>
+          <md-list style="font-size:14px;">
+            <md-list-item>
+              <label flex>名称：</label>
+              <span>名称</span>
+              <md-divider></md-divider>
+            </md-list-item>
+            <md-list-item>
+              <label flex>开始时间：</label>
+              <span>2011-11-11</span>
+              <md-divider></md-divider>
+            </md-list-item>
+            <md-list-item>
+              <label flex>结束时间：</label>
+              <span>2011-11-11</span>
+              <md-divider></md-divider>
+            </md-list-item>
+          </md-list>
           <div layout="row" flex>
             <md-button class="md-primary md-raised md-mini">手工关闭</md-button>
             <!--<md-button ng-click="vm.save()" class="md-primary md-raised md-mini">-->
