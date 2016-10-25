@@ -13,8 +13,14 @@
     });
 
   /** @ngInject */
-  function materialysDetail($scope,api,utils){
+  function materialysDetail($scope,api,utils,$stateParams){
+    var vm = this;
+    vm.data = {};
+    vm.data.Id = $stateParams.id;
+
+    api.xhsc.materialPlan.getMaterialPlanDetail(vm.data.Id).then(function (q) {
+      vm.data = q.data;
+    });
 
   }
-
 })(angular,undefined);
