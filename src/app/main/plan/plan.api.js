@@ -219,18 +219,16 @@
           return $http.get($http.url('/api/Task',query));
         },
         start:function (taskId,force) {
-          return $http.get($http.post('/api/Task/'+taskId+'/Start', {
+          return $http.post('/api/Task/'+taskId+'/Start', {
             "TaskId": taskId,
-            "ActualStartTime": new Date(),
             "Force": force || false
-          }));
+          });
         },
         end:function (taskId,force) {
-          return $http.get($http.post('/api/Task/'+taskId+'/End', {
+          return $http.post('/api/Task/'+taskId+'/End', {
             "TaskId": taskId,
-            "ActualEndTime": new Date(),
             "Force": force || false
-          }));
+          });
         },
         Categories:{
           query:function () {

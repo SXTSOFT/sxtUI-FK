@@ -38,6 +38,10 @@
         abstract: true,
         template: '<ui-view flex layout="column"></ui-view>'
       })
+      .state('app.plan.task.demo', {
+        url: '/demo/taskTable',
+        template: '<div task-table flex></div>'
+      })
       .state('app.plan.task.list', {
         url: '',
         template: '<plan-tasks flex layout="column"></plan-tasks>'
@@ -124,6 +128,12 @@
     msNavigationServiceProvider.saveItem('plan.template.task', {
       title: '任务',
       state: 'app.plan.task.list',
+      icon: 'icon-account',
+      weight: 1
+    });
+    msNavigationServiceProvider.saveItem('plan.template.task', {
+      title: 'demo',
+      state: 'app.plan.task.demo',
       icon: 'icon-account',
       weight: 1
     });
