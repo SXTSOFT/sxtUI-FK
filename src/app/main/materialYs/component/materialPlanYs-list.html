@@ -1,0 +1,74 @@
+<div ng-cloak>
+  <md-content>
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="全部">
+        <md-content class="md-padding">
+          <md-list flex>
+            <md-list-item ng-repeat="item in vm.planList" class="noright">
+                <md-button ng-disabled="true" class="md-fab md-mini">{{item.status}}</md-button>
+              <p>{{item.planName}}</p>
+                <md-button class="md-raised" ui-sref="app.xhsc.materialys.planDetail">进厂</md-button>
+              <span class="border1px bottom1px"></span>
+            </md-list-item>
+          </md-list>
+        </md-content>
+      </md-tab>
+      <md-tab label="未进场">
+        <md-list flex>
+          <md-list-item ng-repeat="item in vm.NotIntoFactoryList" class="noright">
+            <md-button ng-disabled="true" class="md-fab md-mini">{{item.status}}</md-button>
+            <p>{{item.planName}}</p>
+            <md-button class="md-raised" ng-click="vm.AllBtnClick(item.index,item.id)">进厂</md-button>
+            <span class="border1px bottom1px"></span>
+          </md-list-item>
+        </md-list>
+      </md-tab>
+      <md-tab label="未验收">
+        <md-list flex>
+          <md-list-item ng-repeat="item in vm.NotAcceptanceList" class="noright">
+            <md-button ng-disabled="true" class="md-fab md-mini">{{item.status}}</md-button>
+            <p>{{item.planName}}</p>
+            <md-button class="md-raised" ng-click="vm.AllBtnClick(item.index,item.id)">进厂</md-button>
+            <span class="border1px bottom1px"></span>
+          </md-list-item>
+        </md-list>
+      </md-tab>
+      <md-tab label="未送检">
+        <md-content class="md-padding">
+          <md-list flex>
+            <md-list-item ng-repeat="item in vm.NotCheckList" class="noright">
+              <md-button ng-disabled="true" class="md-fab md-mini">{{item.status}}</md-button>
+              <p>{{item.planName}}</p>
+              <md-button class="md-raised" ng-click="vm.AllBtnClick(item.index,item.id)">进厂</md-button>
+              <span class="border1px bottom1px"></span>
+            </md-list-item>
+          </md-list>
+        </md-content>
+      </md-tab>
+      <md-tab label="未归档">
+        <md-content class="md-padding">
+          <md-list flex>
+            <md-list-item ng-repeat="item in vm.NotArchivedList" class="noright">
+              <md-button ng-disabled="true" class="md-fab md-mini">{{item.status}}</md-button>
+              <p>{{item.planName}}</p>
+              <md-button class="md-raised" ng-click="vm.AllBtnClick(item.index,item.id)">进厂</md-button>
+              <span class="border1px bottom1px"></span>
+            </md-list-item>
+          </md-list>
+        </md-content>
+      </md-tab>
+      <md-tab label="未批示">
+        <md-content class="md-padding">
+          <md-list flex>
+            <md-list-item ng-repeat="item in vm.NotInstructionsList" class="noright">
+              <md-button ng-disabled="true" class="md-fab md-mini">{{item.status}}</md-button>
+              <p>{{item.planName}}</p>
+              <md-button class="md-raised" ng-click="vm.AllBtnClick(item.index,item.id)">进厂</md-button>
+              <span class="border1px bottom1px"></span>
+            </md-list-item>
+          </md-list>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+</div>

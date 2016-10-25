@@ -31,7 +31,7 @@
       vm.regions = [];
       vm.sections = [];
       api.xhsc.Project.GetAreaChildenbyID(vm.data.ProjectId).then(function (r) {
-        vm.regions = r.data;
+        vm.regions = r.data || [];
         vm.regions.forEach(function (r) {
           r.tempId = r.RegionID.substr(5,10);
           if(r.tempId == vm.data.RegionId){
@@ -43,9 +43,9 @@
 
     $scope.$watch('vm.data.RegionId',function () {
       api.material.materialPlan.GetProjectSection(vm.data.RegionId).then(function (e) {
-        vm.sections = e.data;
+        vm.sections = e.data || [];
         vm.sections.forEach(function (p) {
-          if(p.RegionID == vm.data.RegionId){
+          if(p.AreaID == vm.data.RegionId){
             p.selected = true;
           }
         });
@@ -54,8 +54,7 @@
 
     $scope.$watch('vm.data.Material',function () {
       api.material.materialScience.getList({Skip:0,Limit:100}).then(function (r) {
-        vm.materials = r.data.Items||[];
-        console.log(r.data.Items);
+        vm.materials = r.data.Items || [];
         vm.materials.forEach(function (q) {
           if(q.Id == vm.data.MaterialId){
             q.selected = true;
@@ -76,9 +75,8 @@
         vm.data = r.data;
         vm.data.ProjectId = r.data.RegionId.substr(0,5);
         vm.data.RegionId = r.data.RegionId.substr(5,10);
-        vm.data.SectionId = r.data.SectionId;
-        vm.data.PlanTime = new moment(r.data.PlanTime).toDate();
-      })
+        vm.data.PlanTime = r.data.PlanTime == null ? new Date() : new moment(r.data.PlanTime).toDate();
+      });
     }
 
     vm.save = function () {
@@ -98,7 +96,6 @@
           });
         });
       }
-
     }
   }
 })(angular,undefined);

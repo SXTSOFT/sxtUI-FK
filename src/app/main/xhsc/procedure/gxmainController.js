@@ -11,12 +11,105 @@
   /**@ngInject*/
   function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,$scope,$mdDialog,db,$mdBottomSheet){
     var vm = this;
-    var  dbpics=db('pics')
+    var  dbpics=db('pics'),scpk = db('scpk');
     vm.procedure=[];
+
     vm.material = true;
     utils.onCmd($scope,['swap'],function(cmd,e){
       vm.material = e.arg.material;
     });
+    loadSection()
+    function loadSection() {
+      vm.offlines = [];
+
+      remote.Project.getUserProjectSection().then(function (result) {
+        if(!result || result.data.length==0){
+          utils.alert('暂无项目！');
+        }
+        else {
+          remote.offline.query().then(function (r2) {
+            result.data.forEach(function (r) {
+              r2.data.forEach(function (p) {
+                if('msy'+r.SectionID == p.Id){
+                  vm.offlines.push(r);
+                  result.data.splice(r,1);
+                }
+              })
+            })
+            vm.section=result.data;
+          }).catch(function(){
+            vm.section = result.data;
+          });
+        }
+      })
+    }
+    vm.downloadPlan=function(item,isReflsh){
+      //下载成功回掉
+      function callBack(){
+        var ix = vm.section.indexOf(item);
+        if (ix != -1)
+          vm.section.splice(ix, 1);
+        ix = vm.offlines.indexOf(item);
+        if(ix!=-1){
+          vm.offlines.splice(ix, 1);
+        }
+        vm.offlines.push(item);
+
+      }
+      return api.setNetwork(0).then(function(){
+        return $q(function(resolve,reject){
+          $mdDialog.show({
+            controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+              $scope.item=item;
+              var tasks = []
+                .concat(function () {
+                  return api.xhsc.materialPlan.getMaterialPlan(item.SectionID)
+                })
+                .concat(function(){
+                  return remote.offline.create({Id:'msy'+item.SectionID});
+                });
+              api.task(tasks,{
+                event:'downloadPlan',
+                target:item
+              })(null, function () {
+                item.percent = item.current = item.total = null;
+                item.isOffline = true;
+                $mdDialog.hide();
+                callBack();
+                utils.alert('下载完成');
+                //resolve();
+              }, function () {
+                $mdDialog.cancel();
+                utils.alert('下载失败,请检查网络');
+                item.percent = item.current = item.total = null;
+                reject();
+              })
+            }],
+            template: '<md-dialog aria-label="正在下载" ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载： {{item.Name}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+            parent: angular.element(document.body),
+            clickOutsideToClose:false,
+            fullscreen: false
+          });
+        })
+      });
+    };
+
+    api.event('downloadPlan',function (s,e) {
+      var current = vm.section && vm.section.find(function (item) {
+          return item.SectionID==e.target.SectionID;
+        });
+      if(current) {
+        switch (e.event) {
+          case 'progress':
+            current.percent = parseInt(e.percent * 100) + ' %';
+            current.current = e.current;
+            current.total = e.total;
+            break;
+          case 'success':
+        }
+      }
+    },$scope);
+
 
     //所有全局任务
     var globalTask = [
