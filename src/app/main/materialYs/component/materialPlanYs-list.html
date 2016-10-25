@@ -7,7 +7,7 @@
             <md-list-item ng-repeat="item in vm.planList" class="noright">
               <md-button ng-disabled="true" class="md-fab md-mini">{{item.Status}}</md-button>
               <p>{{item.PlanName}}</p>
-              <md-button ui-sref="app.xhsc.materialys.planDetail({id:item.id})" style="color: black;margin-right: 0px">进场</md-button>
+              <md-button ui-sref="app.xhsc.materialys.planDetail({id:item.PlanId})" style="color: black;margin-right: 0px">进场</md-button>
               <span class="border1px bottom1px"></span>
             </md-list-item>
           </md-list>
