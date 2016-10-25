@@ -1,0 +1,28 @@
+<div layout="column" style="min-width: 800px;">
+<md-content layout="column" class="md-padding" flex ms-scroll>
+  <canvas id="gitGraph"></canvas>
+  <md-sidenav layout="column" class="md-sidenav-right md-whiteframe-4dp white-bg" style="max-width: 600px;width:600px" md-component-id="right">
+    <md-tabs md-border-bottom flex >
+      <md-tab label="流程信息" ng-disabled="!vm.current">
+        <md-tab-content layout-padding >
+          <form>
+            <md-input-container class="md-block">
+              <label>名称</label>
+              <input type="text" ng-model="vm.current.Name" md-autofocus>
+            </md-input-container>
+          </form>
+          <div layout="row" flex>
+            <md-button ng-click="vm.save()" class="md-primary md-raised md-mini">
+              保存
+            </md-button>
+            <md-button ng-click="vm.remove()" class="md-warn md-raised md-mini">
+              删除
+            </md-button>
+          </div>
+        </md-tab-content>
+      </md-tab>
+    </md-tabs>
+  </md-sidenav>
+</md-content>
+
+</div>
