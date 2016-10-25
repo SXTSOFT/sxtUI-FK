@@ -222,14 +222,14 @@
           return $http.get($http.post('/api/Task/'+taskId+'/Start', {
             "TaskId": taskId,
             "ActualStartTime": new Date(),
-            "Force": force || false
+            "Force": force || true
           }));
         },
         end:function (taskId,force) {
           return $http.get($http.post('/api/Task/'+taskId+'/End', {
             "TaskId": taskId,
             "ActualEndTime": new Date(),
-            "Force": force || false
+            "Force": force || true
           }));
         },
         Categories:{
