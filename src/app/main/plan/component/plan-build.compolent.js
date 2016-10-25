@@ -250,10 +250,39 @@
         })
 
         if(!goFlag){
+          var parent = vm;
+          var position = $mdPanel.newPanelPosition()
+            .relativeTo('md-tabs-wrapper')
+            .addPanelPosition($mdPanel.xPosition.CENTER, $mdPanel.yPosition.BELOW)
+
+          $mdPanel.open({
+            controller: function (mdPanelRef,$scope,utils) {
+              var vm = this;
+              parent.loading = false;
+              parent.closePanel = function() {
+                return mdPanelRef.close().then(function () {
+                  mdPanelRef.destroy();
+                  parent.loading = true;
+                  parent.closePanel = null;
+                });
+              }
+            },
+            controllerAs: 'vm',
+            template: '<div layout="row" class="mt-20" layout-align="center center"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div>',
+            hasBackdrop: false,
+            position: position,
+            trapFocus: true,
+            zIndex: 5000,
+            clickOutsideToClose: true,
+            escapeToClose: true,
+            focusOnOpen: true,
+            attachTo:angular.element('#content')
+          });
           f();
           api.plan.BuildPlan.flowTasksReset(vm.formWizard.Id,selected).then(function (r) {
             api.plan.BuildPlan.getBuildingPlanRoles(vm.formWizard.Id).then(function (r) {
               vm.currentRoles = r.data.Items;
+              parent.closePanel();
             });
           });
         }else{

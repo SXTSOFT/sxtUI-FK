@@ -1,23 +1,44 @@
 <div layout="column" style="min-width: 800px;">
+  <md-toolbar class="md-hue-2 h-50">
+    <div class="md-toolbar-tools">
+      <h2>
+        <span>{{vm.dialogData.formView.name}}</span>
+      </h2>
+      <span flex></span>
+    </div>
+  </md-toolbar>
 <md-content layout="column" class="md-padding" flex ms-scroll>
+  <div layout="row" class="ph-20" layout-align="center center" ng-if="vm.subloading"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div>
   <canvas id="gitGraph"></canvas>
-  <md-sidenav layout="column" class="md-sidenav-right md-whiteframe-4dp white-bg" style="max-width: 600px;width:600px" md-component-id="right">
+  <md-sidenav layout="column" class="md-sidenav-right md-whiteframe-4dp white-bg" style="max-width: 550px;width:600px" md-component-id="right">
     <md-tabs md-border-bottom flex >
       <md-tab label="流程信息" ng-disabled="!vm.current">
         <md-tab-content layout-padding >
           <form>
             <md-input-container class="md-block">
               <label>名称</label>
-              <input type="text" ng-model="vm.current.Name" md-autofocus>
+              <input type="text" ng-model="vm.current.Name" disabled>
             </md-input-container>
+            <div layout="row">
+              <md-input-container flex>
+                <label>开始时间:</label>
+                <input type="text" ng-model="vm.current.StartTime" disabled>
+              </md-input-container>
+              <span flex="5"></span>
+              <md-input-container flex class="md-block">
+                <label>结束时间:</label>
+                <input type="text" ng-model="vm.current.EndTime" disabled>
+              </md-input-container>
+            </div>
           </form>
           <div layout="row" flex>
-            <md-button ng-click="vm.save()" class="md-primary md-raised md-mini">
-              保存
-            </md-button>
-            <md-button ng-click="vm.remove()" class="md-warn md-raised md-mini">
-              删除
-            </md-button>
+            <md-button class="md-primary md-raised md-mini">手工关闭</md-button>
+            <!--<md-button ng-click="vm.save()" class="md-primary md-raised md-mini">-->
+              <!--保存-->
+            <!--</md-button>-->
+            <!--<md-button ng-click="vm.remove()" class="md-warn md-raised md-mini">-->
+              <!--删除-->
+            <!--</md-button>-->
           </div>
         </md-tab-content>
       </md-tab>

@@ -17,14 +17,14 @@
     <tr>
       <th>名称</th>
       <th>时间</th>
-      <th style="width: 160px;text-align: center;"><span class="pl-16">管理</span></th>
+      <th style="width: 160px;"><span class="pl-16">管理</span></th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="item in vm.items">
       <td class="name">{{item.Name}}</td>
       <td class="time">{{item.CreationTime|date:'yyyy-M-d'}}</td>
-      <td class="actions" style="text-align: center;">
+      <td class="actions">
         <!--<md-menu>-->
           <!--<md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">-->
             <!--<md-icon md-font-icon="icon-dots-vertical"></md-icon>-->
