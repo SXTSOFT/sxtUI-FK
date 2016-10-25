@@ -16,6 +16,15 @@
   function plangantt($mdDialog, $document,$rootScope, $animate, $scope, $timeout,utils, ganttUtils,$mdPanel, GanttObjectModel, ganttDebounce, moment, $window, $mdSidenav,api,$stateParams,$q){
     var vm = this;
     var objectModel;
+    vm.isStarted = true;
+    vm.startPlan = function () {
+      var s = vm.data[1].tasks[0];
+      api.plan.Task.start(s.id,true).then(function () {
+        s.from = new Date();
+        vm.isStarted = true;
+        utils.alert('计划已经开启');
+      });
+    }
     vm.timespans = [
       {
         from: new Date(2013, 9, 21, 8, 0, 0),
@@ -301,6 +310,7 @@
         Source:$stateParams.id
       }),api.plan.BuildPlan.getMileStone($stateParams.id)]).then(function (rs) {
         var r = rs[0];
+        vm.originData = r.data;
         var tasks = r.data.Items.filter(function (item) {
           return !item.ExtendedParameters;
         }).map(function (item) {
@@ -311,8 +321,10 @@
               {
                 id:item.Id,
                 name:item.Name,
-                from:item.ScheduledStartTime,
-                to:item.ScheduledEndTime,
+                isStarted:!!item.ActualStartTime,
+                isEnded:!!item.ActualEndTime,
+                from:item.ActualStartTime || item.ScheduledStartTime,
+                to:item.ActualEndTime || item.ScheduledEndTime,
                 dependencies:item.Dependencies.map(function (d) {
                   return {
                     from:d.DependencyTaskID
@@ -328,6 +340,7 @@
           return result;
         });
         var from = tasks[0].tasks[0].from;
+        vm.isStarted = tasks[0].tasks[0].isStarted;
         //console.log(JSON.stringify(tasks))
         vm.data=[{
           id:'__',
@@ -350,7 +363,7 @@
             return r;
           })
         }].concat(tasks);
-        vm.backData = angular.copy(vm.data);
+        //vm.backData = angular.copy(vm.data);
       })
 
       // Fix for Angular-gantt-chart issue
@@ -377,16 +390,124 @@
             chartData : vm.data,
             formView  : formView,
             formData  : formData
-          }
+          },
+          originData:vm.originData
         }
       });
     }
 
     /** @ngInject */
-    function GanttChartAddEditDialogController(dialogData,template,$timeout,$mdPanel) {
-      console.log('dialogData',dialogData)
+    function GanttChartAddEditDialogController(dialogData,originData,template,$timeout,$mdPanel) {
+      console.log('dialogData',dialogData);
       var vm = this;
+      var taskId = dialogData.formView.id;
 
+
+      function stopTask(task,changeds) {
+        changeds.push({task:task,stop:true});
+        //找到依赖他执行的任务
+        var deps = originData.Items.filter(function (it) {
+          return it.Dependencies.find(function (d) {
+            return d.DependencyTaskID==task.Id;
+          });
+        });
+        if(deps.length==0){
+          //如果非主线
+          if(task.Description){
+            try{
+              var t = eval('('+task.Description+')');
+              if(t && t.Type===0) { //如果是主线
+                if(task.ExtendedParameters) {
+                  var parent = originData.Items.find(function (it) {
+                    return it.Id == task.ExtendedParameters;
+                  });
+                  if (parent) {
+                    return stopTask(parent, changeds);
+                  }
+                  else{
+                    return -2;//有异常
+                  }
+                }
+                else{
+                  return 1;//返回主线结束
+                }
+              }
+              else{
+                return -1;//有异常
+              }
+            }
+            catch(ex) {
+              return -3;//有异常
+            }
+          }
+          else {
+            return 1;//全结束
+          }
+        }
+        else{
+          deps.forEach(function (d) {
+            //要开始的任务
+            changeds.push({task:d,stop:false});
+          });
+          return 0;//正常下走
+        }
+      }
+
+      function toStopTask(task) {
+        var changes =[],querys=[];
+        var r = stopTask(task,changes);
+        changes.forEach(function (c) {
+          if(c.stop)
+            querys.push(api.plan.Task.end(c.task.Id,true));
+          else
+            querys.push(api.plan.Task.start(c.task.Id,true));
+        });
+        $q.all(querys).then(function (rs) {
+          changes.forEach(function (c) {
+            if(c.stop) {
+              c.task.ActualEndTime = new Date();
+              vm.data.forEach(function (t) {
+                var f = t.tasks.find(function (t1) {
+                  return t1.id==c.task.Id;
+                });
+                if(f){
+                  f.to = new Date();
+                }
+              })
+            }
+            else{
+              c.task.ActualStartTime = new Date();
+              vm.data.forEach(function (t) {
+                var f = t.tasks.find(function (t1) {
+                  return t1.id==c.task.Id;
+                });
+                if(f){
+                  f.from = new Date();
+                }
+              })
+            }
+          })
+          if(r===0){
+            utils.alert('操作成功');
+          }
+          else if(r>0){
+            utils.alert('计划全部完成');
+          }
+          else{
+            utils.alert('部分计划不能正常继续');
+          }
+        });
+      }
+      vm.toStopTask = function () {
+        var tid = vm.current?vm.current.Eid:taskId;
+        var task = originData.Items.find(function (it) {
+          return it.Id == tid;
+        });
+        utils.confirm('确定关闭'+task.Name+'"吗?').then(function () {
+          toStopTask(task);
+        });
+      };
+      //toStopTask();
       vm.dialogData = dialogData;
       vm.data = {"Master":[{"TaskLibraryId":78,"TaskFlowId":303,"Name":"放线","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":0,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":304,"Name":"验线","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":303,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":305,"Name":"层间凿毛与清理","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":304,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":306,"Name":"墙柱钢筋绑扎","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":305,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":307,"Name":"墙柱验筋","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":306,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":308,"Name":"墙柱封模","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":307,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":309,"Name":"整体板模加固","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":308,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":310,"Name":"梁板钢筋绑扎","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":309,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":311,"Name":"整体报验","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":310,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":312,"Name":"浇筑前整改","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":311,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":313,"Name":"浇筑许可","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":312,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":314,"Name":"浇筑","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":313,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":315,"Name":"调整板面标高","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":314,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":316,"Name":"收面","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":315,"EndFlagTaskFlowId":null}],"Branch":[[{"TaskLibraryId":78,"TaskFlowId":317,"Name":"砼龄期","IsFloor":false,"IsRequired":false,"Type":1,"ParentId":316,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":318,"Name":"拆墙柱模","IsFloor":false,"IsRequired":false,"Type":1,"ParentId":317,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":319,"Name":"拆板模","IsFloor":false,"IsRequired":false,"Type":1,"ParentId":318,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":320,"Name":"工完场清","IsFloor":false,"IsRequired":false,"Type":1,"ParentId":319,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":321,"Name":"实测实量","IsFloor":false,"IsRequired":false,"Type":1,"ParentId":320,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":322,"Name":"观感检查","IsFloor":false,"IsRequired":false,"Type":1,"ParentId":321,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":323,"Name":"整改","IsFloor":false,"IsRequired":false,"Type":1,"ParentId":322,"EndFlagTaskFlowId":null}],[{"TaskLibraryId":78,"TaskFlowId":324,"Name":"放砌筑双控线","IsFloor":false,"IsRequired":false,"Type":2,"ParentId":320,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":325,"Name":"验线","IsFloor":false,"IsRequired":false,"Type":2,"ParentId":324,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":326,"Name":"打孔清孔","IsFloor":false,"IsRequired":false,"Type":2,"ParentId":325,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":327,"Name":"植筋","IsFloor":false,"IsRequired":false,"Type":2,"ParentId":326,"EndFlagTaskFlowId":null}]],"Variable":"Y","Duration":"5","ReservedStartDays":0,"ReservedEndDays":0,"Status":0,"CloseRelatedObjectType":null,"CloseRelatedObjectId":null,"ManuallyClose":true,"CreatorUserId":null,"CreationTime":"2016-10-12T14:43:07.103","TaskLibraryId":78,"Name":"2.8m~3.6m(预售前)","Type":"住宅>高层","Level":1};
       //vm.data = vm.dialogData.formView;
@@ -399,24 +520,20 @@
         return $mdSidenav('right')
           .close();
       }
-      var task,temp;
+      var temp;
       vm.onLoadTemplate = function () {
-
-        if(!task) {
-          task = vm.data;
-        }
-        if(task.Master.length===0) {
-          vm.toggleRight();
-        }
         if(temp)return;
         temp = new template({
+          onNodeColor:function (t) {
+            return t.isStarted?'black':null
+          },
           onClick:function (e) {
             vm.current = e.data;
             console.log(e);
             vm.toggleRight();
           }
         });
-        temp.load(task);
+        temp.load(vm.data);
 
       }
       $timeout(function () {
