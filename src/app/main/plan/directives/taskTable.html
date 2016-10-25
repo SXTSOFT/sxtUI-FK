@@ -1,0 +1,29 @@
+<md-content flex>
+<table class="simple">
+  <thead>
+    <tr>
+      <th style="width: 120px">流程</th>
+      <th>工期</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="task in data.template">
+    <td>{{task.FullName || task.getFullName()}}</td>
+    <td>
+      <md-menu>
+        <span ng-click="$mdOpenMenu($event);">
+          {{task.selectedTask?task.selectedTask.Name:'请选择'}}
+        </span>
+        <md-menu-content width="4">
+          <md-menu-item ng-repeat="op in (task.OptionalTasks||task.getOptionalTasks())">
+            <md-button ng-click="task.selectedTask = op">
+              {{op.Name}}
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</md-content>

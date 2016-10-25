@@ -400,8 +400,11 @@
     function GanttChartAddEditDialogController(dialogData,originData,template,$timeout,$mdPanel) {
       console.log('dialogData',dialogData);
       var vm = this;
-      var taskId = dialogData.formView.id;
 
+      var taskId = dialogData.formView.id;
+      vm.hasFlow = !!originData.Items.find(function (it) {
+        return it.ExtendedParameters == taskId;
+      });
 
       function stopTask(task,changeds) {
         changeds.push({task:task,stop:true});
@@ -509,6 +512,7 @@
       };
       //toStopTask();
       vm.dialogData = dialogData;
+
       vm.data = {"Master":[{"TaskLibraryId":78,"TaskFlowId":303,"Name":"放线","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":0,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":304,"Name":"验线","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":303,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":305,"Name":"层间凿毛与清理","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":304,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":306,"Name":"墙柱钢筋绑扎","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":305,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":307,"Name":"墙柱验筋","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":306,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":308,"Name":"墙柱封模","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":307,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":309,"Name":"整体板模加固","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":308,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":310,"Name":"梁板钢筋绑扎","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":309,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":311,"Name":"整体报验","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":310,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":312,"Name":"浇筑前整改","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":311,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":313,"Name":"浇筑许可","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":312,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":314,"Name":"浇筑","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":313,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":315,"Name":"调整板面标高","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":314,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":316,"Name":"收面","IsFloor":false,"IsRequired":false,"Type":0,"ParentId":315,"EndFlagTaskFlowId":null}],"Branch":[[{"TaskLibraryId":78,"TaskFlowId":317,"Name":"砼龄期","IsFloor":false,"IsRequired":false,"Type":1,"ParentId":316,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":318,"Name":"拆墙柱模","IsFloor":false,"IsRequired":false,"Type":1,"ParentId":317,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":319,"Name":"拆板模","IsFloor":false,"IsRequired":false,"Type":1,"ParentId":318,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":320,"Name":"工完场清","IsFloor":false,"IsRequired":false,"Type":1,"ParentId":319,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":321,"Name":"实测实量","IsFloor":false,"IsRequired":false,"Type":1,"ParentId":320,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":322,"Name":"观感检查","IsFloor":false,"IsRequired":false,"Type":1,"ParentId":321,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":323,"Name":"整改","IsFloor":false,"IsRequired":false,"Type":1,"ParentId":322,"EndFlagTaskFlowId":null}],[{"TaskLibraryId":78,"TaskFlowId":324,"Name":"放砌筑双控线","IsFloor":false,"IsRequired":false,"Type":2,"ParentId":320,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":325,"Name":"验线","IsFloor":false,"IsRequired":false,"Type":2,"ParentId":324,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":326,"Name":"打孔清孔","IsFloor":false,"IsRequired":false,"Type":2,"ParentId":325,"EndFlagTaskFlowId":null},{"TaskLibraryId":78,"TaskFlowId":327,"Name":"植筋","IsFloor":false,"IsRequired":false,"Type":2,"ParentId":326,"EndFlagTaskFlowId":null}]],"Variable":"Y","Duration":"5","ReservedStartDays":0,"ReservedEndDays":0,"Status":0,"CloseRelatedObjectType":null,"CloseRelatedObjectId":null,"ManuallyClose":true,"CreatorUserId":null,"CreationTime":"2016-10-12T14:43:07.103","TaskLibraryId":78,"Name":"2.8m~3.6m(预售前)","Type":"住宅>高层","Level":1};
       //vm.data = vm.dialogData.formView;
       vm.toggleRight = function () {
@@ -536,7 +540,9 @@
 
       }
       $timeout(function () {
-        vm.onLoadTemplate();
+        if(vm.hasFlow) {
+          vm.onLoadTemplate();
+        }
       },300)
 
 
