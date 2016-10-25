@@ -5,9 +5,9 @@
         <md-content class="md-padding">
           <md-list flex>
             <md-list-item ng-repeat="item in vm.planList" class="noright">
-                <md-button ng-disabled="true" class="md-fab md-mini">{{item.status}}</md-button>
-              <p>{{item.planName}}</p>
-                <md-button class="md-raised" ui-sref="app.xhsc.materialys.planDetail">进厂</md-button>
+              <md-button ng-disabled="true" class="md-fab md-mini">{{item.Status}}</md-button>
+              <p>{{item.PlanName}}</p>
+              <md-button ui-sref="app.xhsc.materialys.planDetail" style="color: black;margin-right: 0px">进场</md-button>
               <span class="border1px bottom1px"></span>
             </md-list-item>
           </md-list>
@@ -18,7 +18,7 @@
           <md-list-item ng-repeat="item in vm.NotIntoFactoryList" class="noright">
             <md-button ng-disabled="true" class="md-fab md-mini">{{item.status}}</md-button>
             <p>{{item.planName}}</p>
-            <md-button class="md-raised" ng-click="vm.AllBtnClick(item.index,item.id)">进厂</md-button>
+            <md-button ng-click="vm.AllBtnClick(item.index,item.id)" style="color: black;margin-right: 0px">进场</md-button>
             <span class="border1px bottom1px"></span>
           </md-list-item>
         </md-list>

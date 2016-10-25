@@ -80,6 +80,7 @@
     }
 
     vm.save = function () {
+      vm.data.PlanName = vm.data.Material.MaterialName + '_' + vm.Specifications + '_' + vm.Model + '_' + vm.data.PlanCount + vm.data.Unit + '_' + new Date(vm.data.PlanTime).Format('yyMMdd');
       if(vm.data.Id){
         api.material.materialPlan.putMaterial(vm.data).then(function () {
           utils.alert("提交成功", null, function () {
@@ -88,7 +89,6 @@
         });
       }else{
         vm.data.MaterialId = vm.data.Material.Id;
-        vm.data.PlanName = vm.data.Material.MaterialName + '_' + vm.Specifications + '_' + vm.Model + '_' + vm.data.PlanCount + vm.data.Unit + '_' + new Date(vm.data.PlanTime).Format('yyMMdd');
         vm.data.PlanTime = new Date(vm.data.PlanTime);
         api.material.materialPlan.Create(vm.data).then(function () {
           utils.alert("提交成功",null,function(){

@@ -36,7 +36,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url:'',
+        url:'/planList/{id}',
         template: '<material-plan-list flex layout="column"></material-plan-list>'
       })
       .state('app.xhsc.materialys.planDetail',{
@@ -48,9 +48,9 @@
         template:'<material-plan-detail></material-plan-detail>'
       })
       .state('app.xhsc.materialys.intoFactory',{
-        title:'材料进厂',
+        title:'材料进场',
         noBack:true,
-        sendBt: true,
+        sendBt: false,
         rightArrow: false,
         leftArrow: false,
         url:'',

@@ -12,14 +12,18 @@
     });
 
   /** @ngInject */
-  function materialPlanList($scope,api,utils){
+  function materialPlanList($rootScope,$stateParams,api,utils,$state){
     var vm = this;
-    vm.planList = [
-      {'id':1,'planName':'AAA','status':'未进','index':0},
-      {'id':2,'planName':'BBB','status':'未验','index':1},
-      {'id':3,'planName':'CCC','status':'未检','index':2},
-      {'id':4,'planName':'DDD','status':'未档','index':3}
-    ];
+    $rootScope.title = 'aaa';
+    api.xhsc.materialPlan.getMaterialPlan($stateParams.id).then(function (r) {
+      vm.planList = r.data;
+    });
+    // vm.planList = [
+    //   {'id':1,'planName':'AAA','status':'未进','index':0},
+    //   {'id':2,'planName':'BBB','status':'未验','index':1},
+    //   {'id':3,'planName':'CCC','status':'未检','index':2},
+    //   {'id':4,'planName':'DDD','status':'未档','index':3}
+    // ];
 
     vm.NotIntoFactoryList = [
       {'id':1,'planName':'AAA','status':'未进','index':0},

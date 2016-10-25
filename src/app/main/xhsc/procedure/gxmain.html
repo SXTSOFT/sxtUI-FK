@@ -2,8 +2,8 @@
   <md-subheader ng-if="vm.offlines.length">已下载列表</md-subheader>
   <span class="border1px"></span>
   <md-list style="overflow-x: hidden; padding: 0;">
-    <md-list-item layout="row" ng-repeat="item in vm.offlines" ui-sref="app.xhsc.materialys.planList">
-      <p style="font-size:14px;">
+    <md-list-item layout="row" ng-repeat="item in vm.offlines" ui-sref="app.xhsc.materialys.planList({id:item.SectionID})">
+      <p style="font-size:14px; padding-left: 3%">
         <span>{{item.Name}}</span>
       </p>
       <span flex></span>
@@ -14,8 +14,8 @@
   <md-subheader>未下载列表</md-subheader>
   <span class="border1px"></span>
   <md-list style="overflow-x: hidden; padding: 0;" ng-repeat="item in vm.section">
-    <md-list-item layout="row" ui-sref="app.xhsc.gx.gxlist({role:'regionState',projectId:item.ProjectID})">
-      <p style="font-size:14px;">
+    <md-list-item layout="row">
+      <p style="font-size:14px; padding-left: 3%">
         <span>{{item.Name}}</span>
       </p>
       <span flex></span>
