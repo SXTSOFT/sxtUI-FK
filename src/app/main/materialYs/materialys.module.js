@@ -56,18 +56,7 @@
         url:'',
         template:'<material-into-factory></material-into-factory>'
       })
-      .state('app.xhsc.materialys.materialAccept',{
-        noBack:true,
-        sendBt: true,
-        rightArrow: false,
-        leftArrow: true,
-        url:'',
-        swap:[
-          {active:true,label:'材料验收',url:'app.xhsc.materialys.download'},
-          {active:false,label:'工序验收',url:'app.xhsc.gx.gxmain'}
-        ],
-        template:'<material-plan-accept></material-plan-accept>'
-      });
+
   }
 
 })(angular,undefined);
