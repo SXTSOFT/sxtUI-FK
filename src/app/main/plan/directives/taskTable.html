@@ -3,6 +3,7 @@
   <thead>
     <tr>
       <th style="width: 120px">流程</th>
+      <th>可选任务</th>
       <th>工期</th>
       <th>操作</th>
     </tr>
@@ -23,29 +24,28 @@
           </md-menu-item>
         </md-menu-content>
       </md-menu>
-      /工期：
-      <input type="text" style="border-bottom:1px solid #dedede;" placeholder="输入工期" ng-model="task.selectedTask.Duration">
-      <!--<md-input-container md-no-float>-->
-        <!--<lable>工期</lable>-->
-        <!---->
-      <!--</md-input-container>-->
+     </td>
+    <td>
+
+      <md-input-container class="m-0" md-no-float>
+        <input type="text" placeholder="输入工期" ng-model="task.selectedTask.Duration">
+      </md-input-container>
+      <md-input-container class="md-block" ng-repeat="v in vars">
+        <label>变量{{v.key}}</label>
+        <input type="text" required name="Duration" ng-model="v.value">
+      </md-input-container>
     </td>
     <td>
-      <md-menu ng-if="task.IsFloor">
-        <md-button class="md-icon-button" ng-click="$mdOpenMenu($event);">
-          <md-icon md-font-icon="icon-plus"></md-icon>
-        </md-button>
-        <md-menu-content width="4">
-          <md-menu-item ng-repeat="op in task.Floors">
-            <md-button ng-click="addFloor(op)">
-              {{op.FloorName}}
-            </md-button>
-          </md-menu-item>
-        </md-menu-content>
-      </md-menu>
+      <div layout="row" layout-align="start start">
+      <md-select ng-if="task.IsFloor" ng-model="task.selectedFloor" flex>
+        <md-option ng-repeat="op in task.Floors" ng-value="op">
+          {{op.FloorName}}
+        </md-option>
+      </md-select>
       <md-button ng-if="!task.IsRequired">
         删除节点
       </md-button>
+      </div>
     </td>
   </tr>
   </tbody>

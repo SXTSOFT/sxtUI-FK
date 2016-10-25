@@ -134,7 +134,7 @@
       </md-tab-label>
       <md-tab-body>
         <form name="wizardStep3" ms-form-wizard-form novalidate>
-          <div layout="row" flex ng-repeat="r in vm.currentRoles" ng-if="vm.loading">
+          <div layout="row" flex ng-repeat="r in vm.currentRoles" ng-if="">
               <!--<label>{{r.RoleName}}</label>-->
               <md-select  ng-model="r.Users" placeholder="{{r.RoleName}}" class="md-block" multiple flex md-on-open="vm.loadUser()">
                 <md-select-header class="sxt-select-header">
