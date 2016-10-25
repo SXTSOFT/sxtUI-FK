@@ -501,12 +501,12 @@
       if (!item.isOffline){
         vm.downloadzg(item).then(function(){
           api.setNetwork(1).then(function(){
-            $state.go('app.xhsc.gx.gxzg',{Role:'jl',InspectionID: item.InspectionId,AcceptanceItemID: item.AcceptanceItemID,RectificationID: item.RectificationID})
+            $state.go('app.xhsc.sf.rectify',{Role:'jl',InspectionID: item.InspectionId,AcceptanceItemID: item.AcceptanceItemID,RectificationID: item.RectificationID})
           });
         })
       }else {
         api.setNetwork(1).then(function(){
-          $state.go('app.xhsc.gx.gxzg',{Role:'jl',InspectionID: item.InspectionId,AcceptanceItemID: item.AcceptanceItemID,RectificationID: item.RectificationID})
+          $state.go('app.xhsc.sf.rectify',{Role:'jl',InspectionID: item.InspectionId,AcceptanceItemID: item.AcceptanceItemID,RectificationID: item.RectificationID})
         });
       }
     }
