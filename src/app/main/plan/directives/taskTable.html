@@ -2,6 +2,7 @@
 <table class="simple">
   <thead>
     <tr>
+      <th style="width: 20px">序号</th>
       <th style="width: 120px">流程</th>
       <th>可选任务</th>
       <th>工期</th>
@@ -10,6 +11,7 @@
   </thead>
   <tbody>
   <tr ng-repeat="task in data.template">
+    <td>{{$index+1}}</td>
     <td>{{task.FullName || task.getFullName()}}</td>
     <td>
       <md-menu>
@@ -18,7 +20,7 @@
         </span>
         <md-menu-content width="4">
           <md-menu-item ng-repeat="op in (task.OptionalTasks||task.getOptionalTasks())">
-            <md-button ng-click="task.selectedTask = op">
+            <md-button ng-click="reloadTask(task,op);task.selectedTask = op">
               {{op.Name}}
             </md-button>
           </md-menu-item>
@@ -26,26 +28,33 @@
       </md-menu>
      </td>
     <td>
-
-      <md-input-container class="m-0" md-no-float>
-        <input type="text" placeholder="输入工期" ng-model="task.selectedTask.Duration">
-      </md-input-container>
-      <md-input-container class="md-block" ng-repeat="v in vars">
+      <label style="display: none;">(公式={{getVars(task.selectedTask)}})</label>
+      <input type="text" style="border-bottom: 1px solid #dedede;width:50px;" placeholder="工期值" ng-model="task.selectedTask.eDuration"  ng-blur="batchDuration(task)">
+      <span ng-repeat="v in vars" ng-show="task.selectedTask">
         <label>变量{{v.key}}</label>
-        <input type="text" required name="Duration" ng-model="v.value">
-      </md-input-container>
+        <input type="text" style="border-bottom: 1px solid #dedede;width:50px;" placeholder="变量值" required name="Duration" ng-model="v.value">
+      </span>
+      <!--<md-input-container class="m-0" md-no-float>-->
+        <!--<input type="text" placeholder="输入工期" ng-model="task.selectedTask.eDuration">-->
+      <!--</md-input-container>-->
+      <!--<md-input-container class="md-block" ng-repeat="v in vars" ng-show="task.selectedTask">-->
+        <!--<label>变量{{v.key}}</label>-->
+        <!--<input type="text" required name="Duration" ng-model="v.value">-->
+      <!--</md-input-container>-->
     </td>
     <td>
-      <div layout="row" layout-align="start start">
-      <md-select ng-if="task.IsFloor" ng-model="task.selectedFloor" flex>
-        <md-option ng-repeat="op in task.Floors" ng-value="op">
-          {{op.FloorName}}
-        </md-option>
-      </md-select>
-      <md-button ng-if="!task.IsRequired">
-        删除节点
-      </md-button>
-      </div>
+      <!--<md-select ng-if="task.IsFloor" ng-model="task.selectedFloor" flex>-->
+        <!--<md-option ng-repeat="op in task.Floors" ng-value="op">-->
+          <!--{{op.FloorName}}-->
+        <!--</md-option>-->
+      <!--</md-select>-->
+        <md-icon md-font-icon="icon-arrow-down" ng-click="downDot(task)"></md-icon>
+        <md-icon md-font-icon="icon-arrow-up" ng-click="upDot(task)"></md-icon>
+        <md-icon md-font-icon="icon-delete" ng-if="!task.IsRequired"  ng-click="deleteDot(task)"></md-icon>
+      <!--<md-button ng-if="!task.IsRequired" class="md-icon-button">-->
+        <!---->
+      <!--</md-button>-->
+
     </td>
   </tr>
   </tbody>
