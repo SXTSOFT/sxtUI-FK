@@ -82,6 +82,27 @@
           }
         }
       })
+      .state('app.szgc.project.yj',{
+        //title :'形象进度',
+        url   :'/yj/{projectType}/{itemId}/{itemName}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/szgc/home/yj.html',
+            controller:'HomeYjController as vm',
+            resolve:{
+              yj:['$stateParams', 'api','$q',function($stateParams, api){
+                return api.szgc.vanke.yj($stateParams.itemId).then(function (r) {
+                  return {
+                    itemId:$stateParams.itemId,
+                    itemName:$stateParams.itemName,
+                    items:r.data.Rows
+                  }
+                })
+              }]
+            }
+          }
+        }
+      })
       .state('app.szgc.project.buildinglist.building',{
         //title :'形象进度',
         url   :'/building/{buildId}/{buildName}/{floors}',
@@ -116,19 +137,15 @@
                       }
                     });
 
-                    //pageload.datapoints = gx;
                     var tempdata = [];
                       tempdata = gx;
-                  console.log(gx)
                     tempdata.forEach(function(item){
                       if(!item.y){
-                       // pageload.datapoints.push(item);
                         item.color = null;
                       }
                       pageload.datapoints.push(item);
                     })
                     var char = angular.copy(pageload);
-                    //char.datapoints.splice(0, 1);
                     return [char];
                   });
               }]

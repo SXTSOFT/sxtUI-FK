@@ -172,23 +172,23 @@
     //获取资料表数据
     var t1,queryTable = function() {
       vm.norecords = false;
-      if(t1)
+      if (t1)
         $timeout.cancel(t1);
       vm.baths = {};
 
-      t1 = $timeout(function(){
+      t1 = $timeout(function () {
         var batchParems = {
           isGetChilde: 1,
           produreId: vm.project.procedureId,
-          workGropId:vm.workGroupkey,// vm.project.workGroupId,
+          workGropId: vm.workGroupkey,// vm.project.workGroupId,
           companyId: vm.project.companyId,
           regionIdTree: vm.project.idTree
         }
-         //console.log('vm.project',batchParems)
-        api.szgc.addProcessService.queryByProjectAndProdure3(vm.project.projectId, batchParems).then(function(result) {
+        //console.log('vm.project',batchParems)
+        api.szgc.addProcessService.queryByProjectAndProdure3(vm.project.projectId, batchParems).then(function (result) {
           //cb(result.data);
           if (result.data.Rows.length > 0) {
-            result.data.Rows.forEach(function(item) {
+            result.data.Rows.forEach(function (item) {
               if (item.AccordRatio > 0) {
                 item.AccordRatio = item.AccordRatio * 100;
               } else {
@@ -199,26 +199,21 @@
           vm.baths = result.data;
           //initWorkGroup();
           //console.log('a',vm.baths.Rows)
-          if(vm.baths.Rows.length){
+          if (vm.baths.Rows.length) {
             vm.norecords = false;
-          }else {
+          } else {
             vm.norecords = true;
           }
           //截取班组组长名称
           var fishIndex = 0;
           var lastIndex = 0;
           vm.workGroupSources = [];
-          vm.baths.Rows.forEach(function(item) {
+          vm.baths.Rows.forEach(function (item) {
             fishIndex = 0;
-            item.RegionNameTree = item.RegionNameTree.replace(vm.project.nameTree,'').replace('>>','');
-            if(item.RegionNameTree.indexOf('>')==0){
+            item.RegionNameTree = item.RegionNameTree.replace(vm.project.nameTree, '').replace('>>', '');
+            if (item.RegionNameTree.indexOf('>') == 0) {
               item.RegionNameTree = item.RegionNameTree.substr(1);
             }
-            //var idx =item.JLFirst.split('.');
-            //if(idx[1]){
-            //  item.JLFirst = Number(item.JLFirst).toFixed(1);
-            //}
-
             if (item.GrpName) {
               item.firstName = item.GrpName.split("(")[0];
               fishIndex = item.GrpName.indexOf("(");
@@ -228,11 +223,13 @@
               } else {
                 item.GrpWokerName = "";
               }
-              if (item.firstName&&item.GrpWokerName&&vm.workGroupSources.find(function (t) { return item.firstName == t.firstName; }) == null) {
+              if (item.firstName && item.GrpWokerName && vm.workGroupSources.find(function (t) {
+                  return item.firstName == t.firstName;
+                }) == null) {
                 vm.workGroupSources.push({
                   id: item.GrpId,
                   name: item.GrpWokerName,
-                  firstName:item.firstName,
+                  firstName: item.firstName,
                   text: item.GrpWokerName,
                   selected: false
                 });
@@ -240,154 +237,8 @@
             }
 
           });
-      })
-
-        //vm.newBaths= vm.baths.rows.slice(0,100);
-        //console.log('vm.new',vm.newBaths)
-        //$timeout(function() {
-        //  vm.reverse = false;
-        //  //vm.toggleSort('JLDate');
-        //}, 1000);
-
-      },500);
-
-      //function initWorkGroup() {
-      //  var fishIndex = 0;
-      //  var lastIndex = 0;
-      //  vm.workGroup.sources = [];
-      //  vm.baths.Rows.forEach(function (item) {
-      //    fishIndex = 0;
-      //    if (item.GrpName) {
-      //      fishIndex = item.GrpName.indexOf("(");
-      //      lastIndex = item.GrpName.indexOf(")");
-      //      if (fishIndex > 0 && lastIndex > 0) {
-      //        item.GrpWokerName = item.GrpName.substring(fishIndex + 1, lastIndex);
-      //      } else {
-      //        item.GrpWokerName = "";
-      //      }
-      //      if (item.GrpWokerName&&vm.workGroup.sources.find(function (t) { return item.GrpWokerName == t.name; }) == null) {
-      //        vm.workGroup.sources.push({
-      //          id: item.GrpId,
-      //          name: item.GrpWokerName,
-      //          text: item.GrpWokerName,
-      //          selected: false
-      //        });
-      //      }
-      //    }
-      //  });
-      //}
-      //t1 = $timeout(function(){
-      //  if (vm.project.pid) {
-      //    var batchParems = {
-      //      isGetChilde: 1,
-      //      produreId: vm.project.procedureId,
-      //      workGropId: vm.project.workGroupId,
-      //      companyId: vm.project.companyId,
-      //      regionIdTree: vm.project.idTree
-      //    }
-      //    api.szgc.addProcessService.queryByProjectAndProdure3(vm.project.projectId, batchParems).then(function(result) {
-      //      //cb(result.data);
-      //      if (result.data.Rows.length > 0) {
-      //        result.data.Rows.forEach(function(item) {
-      //          if (item.AccordRatio > 0) {
-      //            item.AccordRatio = item.AccordRatio * 100;
-      //          } else {
-      //            item.AccordRatio = undefined;
-      //          }
-      //        })
-      //      }
-      //      vm.baths = result.data;
-      //      console.log('a',vm.baths.Rows)
-      //      //console.log(" vm.baths ", result.data,vm.baths.Rows.length);
-      //      if(vm.baths.Rows.length){
-      //        vm.norecords = false;
-      //      }else {
-      //        vm.norecords = true;
-      //      }
-      //      //截取班组组长名称
-      //      var fishIndex = 0;
-      //      var lastIndex = 0;
-      //      vm.baths.Rows.forEach(function(item) {
-      //        fishIndex = 0;
-      //        //var idx =item.JLFirst.split('.');
-      //        //if(idx[1]){
-      //        //  item.JLFirst = Number(item.JLFirst).toFixed(1);
-      //        //}
-      //
-      //        if (item.GrpName) {
-      //
-      //          fishIndex = item.GrpName.indexOf("(");
-      //          lastIndex = item.GrpName.indexOf(")");
-      //          if (fishIndex > 0 && lastIndex > 0) {
-      //            item.GrpWokerName = item.GrpName.substring(fishIndex + 1, lastIndex);
-      //          } else {
-      //            item.GrpWokerName = "";
-      //          }
-      //        }
-      //
-      //      });
-      //      $timeout(function() {
-      //        vm.reverse = false;
-      //        //vm.toggleSort('JLDate');
-      //      }, 1000);
-      //
-      //    });
-      //
-      //  }
-      //  else if (vm.project.data) {
-      //    var df = [],
-      //      batchParems = {
-      //        isGetChilde: 1,
-      //        produreId: vm.project.procedureId,
-      //        workGropId: vm.project.workGroupId,
-      //        companyId: vm.project.companyId,
-      //        regionIdTree: vm.project.idTree
-      //      }
-      //
-      //    vm.project.data.items.forEach(function(p) {
-      //      batchParems.regionIdTree = p.$id;
-      //      df.push(api.szgc.addProcessService.queryByProjectAndProdure2(p.$id, batchParems));
-      //    })
-      //    $q.all(df).then(function(rs) {
-      //      var bs = [];
-      //      rs.forEach(function(r) {
-      //        r.data.Rows.forEach(function(item) {
-      //          if (item.AccordRatio > 0) {
-      //            item.AccordRatio = (item.AccordRatio * 100).toFixed(1);
-      //          } else {
-      //            item.AccordRatio = undefined;
-      //          }
-      //          bs.push(item);
-      //        });
-      //      });
-      //      vm.baths = {
-      //        Rows: bs
-      //      };
-      //
-      //      //截取班组组长名称
-      //      var fishIndex = 0;
-      //      var lastIndex = 0;
-      //
-      //      vm.baths.Rows.forEach(function(item) {
-      //        // console.log("vm.GrpName", item.GrpName)
-      //        if (item.GrpName) {
-      //          fishIndex = 0;
-      //          fishIndex = item.GrpName.indexOf("(");
-      //          lastIndex = item.GrpName.indexOf(")");
-      //          if (fishIndex > 0 && lastIndex > 0) {
-      //            item.GrpWokerName = item.GrpName.substring(fishIndex + 1, lastIndex);
-      //          } else {
-      //            item.GrpWokerName = "";
-      //          }
-      //        }
-      //      });
-      //      $timeout(function() {
-      //        vm.reverse = false;
-      //        //vm.toggleSort('JLDate');
-      //      }, 1000);
-      //    })
-      //  }
-      //},500);
+        })
+      }, 500);
     }
 
 
@@ -417,16 +268,8 @@
     //班组改变
     vm.changeWorkGrop = function(workGropId) {
       vm.project.workGroupId = workGropId;
-      //queryTable();
       checkState(workGropId);
     }
-    //动态加载工序
-    //$scope.$watch(function(){
-    //  return vm.project.procedureTypeId
-    //}, queryProcedures);
-    //$scope.$watch(function(){
-    //  return vm.project.type;
-    //}, queryProcedures);
 
 
   }

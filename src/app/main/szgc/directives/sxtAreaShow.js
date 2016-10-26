@@ -78,10 +78,10 @@
                     annotationBar: false,
                     attributionControl: false
                   }),
-                    layer = L.tileLayer(sxt.app.api + '/api/picMap/load/{z}_{x}_{y}.png?size=256&path='+fs.data.Files[0].Url.replace('/s_', '/'), {
-                      noWrap:true,
-                      continuousWorld:false,
-                      tileSize:256
+                    layer = L.tileLayer(sxt.app.api + '/api/picMap/load/{z}_{x}_{y}.png?size=256&path=' + fs.data.Files[0].Url.replace('/s_', '/'), {
+                      noWrap: true,
+                      continuousWorld: false,
+                      tileSize: 256
                     });
                   //console.log('picUrl',scope.picUrl)
                   map.projectId = scope.projectId;
@@ -89,7 +89,7 @@
 
                   var apiLayer = L.GeoJSON.api({
                     get: function (cb) {
-                      scope.groups =null;
+                      scope.groups = null;
                       if (project.AreaRemark) {
                         try {
                           var d = JSON.parse(project.AreaRemark);
@@ -97,17 +97,19 @@
                           if (d.features.length) {
                             var g = [];
                             d.features.forEach(function (f) {
-                              if (f.options.gid && g.find(function(a){return a ==f.options.gid;})==null) {
-                                g.push (f.options.gid);
+                              if (f.options.gid && g.find(function (a) {
+                                  return a == f.options.gid;
+                                }) == null) {
+                                g.push(f.options.gid);
                               }
-                              if(f.options.icon && f.options.icon.options && f.options.icon.options.iconUrl){
-                                f.options.icon.options.iconUrl = f.options.icon.options.iconUrl.replace('/dp/libs/','assets/')
+                              if (f.options.icon && f.options.icon.options && f.options.icon.options.iconUrl) {
+                                f.options.icon.options.iconUrl = f.options.icon.options.iconUrl.replace('/dp/libs/', 'assets/')
                               }
                             });
                             if (g.length) {
                               scope.groups = g;
                             }
-                            scope.$watch('scope.groups',function(){
+                            scope.$watch('scope.groups', function () {
                               //console.log('change',scope.groups)
                               $rootScope.temp = scope.groups;
                             })
@@ -127,7 +129,7 @@
                         var x, y;
                         if (w > h) {
                           x = 0.5;
-                          y = h/w*0.5;
+                          y = h / w * 0.5;
                         }
                         else {
                           y = 0.5;
@@ -157,13 +159,39 @@
                           }
                         }
                         else {
-                          $state.go('app.szgc.project.buildinglist', { itemId: layer.options.itemId, itemName: layer.options.itemName, projectType: 2 })
+                          var el, conents = [];
+                          conents.push('<div>'+(layer.options.itemName||'')+'<br /><button class="md-button md-raised ld" style="margin: 4px 2px 4px -4px;width:44px;min-width: 44px;">主体</button>');
+                          conents.push('<button class="md-button md-raised yj" style="margin: 4px -4px 4px 2px;width:44px;min-width: 44px;" disabled>园建</button></div>');
+                          el = $(conents.join(''));
+                          api.szgc.vanke.yj(layer.options.itemId).then(function (r) {
+                            layer.options.yj = r.data.Rows.find(function (it) { return it.RegionType == 128; });
+                            layer.options.zj = r.data.Rows.find(function (it) { return it.RegionType == 256; });
+                            if(layer.options.yj){
+                              el.find('.yj').prop('disabled',false);
+                            }
+                          });
+                          var popup = L.popup()
+                            .setLatLng(layer.getBounds().getCenter())
+                            .setContent(el[0])
+                            .openOn(map);
+                          el.on('click', '.ld', function () {
+                            $state.go('app.szgc.project.buildinglist', {
+                              itemId: layer.options.itemId,
+                              itemName: layer.options.itemName,
+                              projectType: 2
+                            })
+                          });
+                          el.on('click', '.yj', function () {
+                            $state.go('app.szgc.project.yj', {
+                              itemId: scope.projectId+'>'+ layer.options.itemId+'>'+layer.options.yj.Id,
+                              itemName: layer.options.itemName,
+                              projectType: 2
+                            })
+                          });
                         }
                       }
-
                     }
                   }).addTo(map);
-
                 });
               };
             });
