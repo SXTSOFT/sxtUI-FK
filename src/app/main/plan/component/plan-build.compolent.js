@@ -192,11 +192,11 @@
         $mdPanel.open({
           controller: function (mdPanelRef,$scope,utils) {
             var vm = this;
-            parent.loading = false;
+            parent.loading = true;
             parent.closePanel = function() {
               return mdPanelRef.close().then(function () {
                 mdPanelRef.destroy();
-                parent.loading = true;
+                parent.loading = false;
                 parent.closePanel = null;
               });
             }
@@ -221,9 +221,9 @@
           if (r.data|| r.status==200) {
             if(!vm.formWizard.Id)
               vm.formWizard.Id = r.data.Id;
-            getDataTemplate().then(function(){
-              parent.closePanel();
-            });
+            //getDataTemplate().then(function(){
+            //  parent.closePanel();
+            //});
             f();
           }
         },function(err){
@@ -236,6 +236,7 @@
       }
       else if(i===1){
         var selected = [],goFlag;
+        console.log(vm.allTasks);
         vm.rootTask.Master.forEach(function (item) {
           if(item.selectedTask) {
             if(!item.selectedTask.xDuration){
@@ -310,24 +311,16 @@
             _tt.Name = _tt.FullName||_tt.TaskFlowName;
           })
         });
-        vm.temp = new template({
-          onClick:function (e) {
-            vm.current = e.data;
-/*            if(vm.current.selectedTask&&vm.current.selectedTask){
-              if(vm.current.selectedTask.Duration&&!vm.current.selectedTask.duration){
-                vm.current.selectedTask.duration = vm.current.selectedTask.Duration;//Math.round(vm.current.selectedTask.Duration*10)*0.1;
-              }else if(!vm.current.selectedTask.Duration){
-                vm.current.selectedTask.Duration = -0;
-              }
-              //vm.setMin();
-            }*/
-
-            vm.showBg = true;
-            vm.toggleRight();
-          }
-        });
+        //vm.temp = new template({
+        //  onClick:function (e) {
+        //    vm.current = e.data;
+        //    vm.showBg = true;
+        //    vm.toggleRight();
+        //  }
+        //});
         vm.rootTask = r.data.RootTask;
-        vm.reloadTask();
+        //vm.showDirective = !vm.showDirective;
+       // vm.reloadTask();
       });
     }
     vm.loadUser = function(){
