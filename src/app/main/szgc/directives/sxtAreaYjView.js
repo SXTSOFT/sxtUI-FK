@@ -30,7 +30,7 @@
                   return 256 * Math.pow(2, e);
                 }
               }),
-              center: [.48531902026005, .5],
+              center: [.4853, .5],
               zoom: 1,
               minZoom: 0,
               maxZoom: 3,
