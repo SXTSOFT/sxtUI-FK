@@ -2,22 +2,21 @@
   <md-content>
     <md-tabs md-dynamic-height md-border-bottom>
       <md-tab label="全部">
-        <md-content class="md-padding">
-          <md-list flex>
-            <md-list-item ng-repeat="item in vm.planList" class="noright">
-              <md-button ng-disabled="true" class="md-fab md-mini">{{item.Status}}</md-button>
-              <p>{{item.PlanName}}</p>
-              <md-button ui-sref="app.xhsc.materialys.planDetail({id:item.PlanId})" style="color: black;margin-right: 0px">进场</md-button>
-              <span class="border1px bottom1px"></span>
-            </md-list-item>
-          </md-list>
-        </md-content>
+        <md-list flex>
+          <md-list-item ng-repeat="item in vm.planList" class="noright">
+            <md-button ng-disabled="true" class="md-fab md-mini">{{item.Status}}</md-button>
+            <p>{{item.PlanName}}</p>
+            <md-button ng-if="item.Status == 1" ui-sref="app.xhsc.materialys.planDetail({id:item.PlanId})" style="color: black;margin-right: 0px">进场</md-button>
+            <md-button ng-if="item.Status == 2" ui-sref="app.xhsc.materialys.planDetail({id:item.PlanId})" style="color: black;margin-right: 0px">验收</md-button>
+            <span class="border1px bottom1px"></span>
+          </md-list-item>
+        </md-list>
       </md-tab>
       <md-tab label="未进场">
         <md-list flex>
-          <md-list-item ng-repeat="item in vm.NotIntoFactoryList" class="noright">
-            <md-button ng-disabled="true" class="md-fab md-mini">{{item.status}}</md-button>
-            <p>{{item.planName}}</p>
+          <md-list-item ng-repeat="item in vm.planList | filter:{Status:1}" class="noright">
+            <md-button ng-disabled="true" class="md-fab md-mini">{{item.Status}}</md-button>
+            <p>{{item.PlanName}}</p>
             <md-button ng-click="vm.AllBtnClick(item.index,item.id)" style="color: black;margin-right: 0px">进场</md-button>
             <span class="border1px bottom1px"></span>
           </md-list-item>
@@ -25,10 +24,10 @@
       </md-tab>
       <md-tab label="未验收">
         <md-list flex>
-          <md-list-item ng-repeat="item in vm.NotAcceptanceList" class="noright">
-            <md-button ng-disabled="true" class="md-fab md-mini">{{item.status}}</md-button>
-            <p>{{item.planName}}</p>
-            <md-button class="md-raised" ng-click="vm.AllBtnClick(item.index,item.id)">进厂</md-button>
+          <md-list-item ng-repeat="item in vm.planList | filter:{Status:2}" class="noright">
+            <md-button ng-disabled="true" class="md-fab md-mini">{{item.Status}}</md-button>
+            <p>{{item.PlanName}}</p>
+            <md-button style="color: black;margin-right: 0px" ui-sref="app.xhsc.materialys.checkInfo({id:item.Id})">验收</md-button>
             <span class="border1px bottom1px"></span>
           </md-list-item>
         </md-list>

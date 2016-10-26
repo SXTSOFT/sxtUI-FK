@@ -12,10 +12,13 @@
     });
 
   /** @ngInject */
-  function materialPlanList($rootScope,$stateParams,api,utils,$state){
+  function materialPlanList($rootScope,$stateParams,api,utils,$state,auth){
     var vm = this;
     $rootScope.title = 'aaa';
-    api.xhsc.materialPlan.getMaterialPlanBatch($stateParams.id).then(function (r) {
+    ///api.setNetwork(1).then(function(){});
+    var user = auth.current();
+    var status = user.Role.MemberType==0?1:2;
+    api.xhsc.materialPlan.getMaterialPlanBatch($stateParams.id,status).then(function (r) {
       vm.planList = r.data;
     });
     // vm.planList = [

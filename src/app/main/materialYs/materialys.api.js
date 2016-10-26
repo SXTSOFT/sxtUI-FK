@@ -19,8 +19,8 @@
           _id: 'materialPlan',
           idField: 'Id',
           dataType: 1
-        }).bind(function (sectionId) {
-          return $http.get($http.url('/api/MaterialPlan/GetMaterialPlansBatchBySectionId?sectionId='+ sectionId))
+        }).bind(function (sectionId,status) {
+          return $http.get($http.url('/api/MaterialPlan/GetMaterialPlansBatchBySectionId',{sectionId:sectionId,status:status}));
         }),
         getMaterialPlanDetail:$http.db({
           _id:'materialPlan',
@@ -29,6 +29,13 @@
         }).bind(function (mpid) {
           return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanAsync?mpid='+mpid));
 
+        }),
+        PostCheckInfo: $http.db({
+          _id: 'materialPlan',
+          idField: 'Id',
+          upload:true
+        }).bind(function (data) {
+          return $http.put('/api/MaterialPlan/InsertCheckInfo', data);
         })
       }
     });

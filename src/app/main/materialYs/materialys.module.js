@@ -45,7 +45,7 @@
         rightArrow: false,
         leftArrow: false,
         url:'/planDetail/{id}',
-        template:'<material-plan-detail flex layout="column"></material-plan-detail>'
+        template:'<material-plan-detail></material-plan-detail>'
       })
       .state('app.xhsc.materialys.intoFactory',{
         title:'材料进场',
@@ -55,6 +55,13 @@
         leftArrow: false,
         url:'/intoFactory/{id}',
         template:'<material-into-factory flex layout="column"></material-into-factory>'
+      })
+      .state('app.xhsc.materialys.checkInfo',{
+        noBack:true,
+        sendBt:true,
+        title:'材料验收',
+        url:'/checkInfo/{id}',
+        template: '<material-ys-check-info flex layout="column"></material-ys-check-info>'
       })
 
   }
