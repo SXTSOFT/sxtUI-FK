@@ -59,7 +59,12 @@
           return $http.get($http.url('/api/ProjectInfoApi/GetMapProjectList'))
         }),
         getDrawingRelations: $http.db({
-          _id: 'DrawingRelation',
+          db: function(projectId,db){
+              if (db){
+                return db;
+              }
+            return  'DrawingRelation';
+          },
           idField: 'ProjectId',
           //fileFiled:['FileContent'],
           dataType: 3
@@ -77,8 +82,11 @@
             data:result.data.Relations
           }
         }),
-        GetAreaChildenbyID:function(regionID){
+        GetAreaChildenbyID:function(regionID,regionType){
           return  $http.get($http.url('/api/ProjectInfoApi/GetAreaChildenById', {areaId: regionID}))
+        },
+        getAllRegionWithRight:function(regionID,regionType){
+          return  $http.get($http.url('/api/ProjectInfoApi/GetProjectRelationRole', {areaId: regionID,regionType:regionType}));
         },
         getZTjd:function(areaId){
           return  $http.get($http.url('/api/ProjectInfoApi/GetSubjectSchedule', {areaId: areaId}))

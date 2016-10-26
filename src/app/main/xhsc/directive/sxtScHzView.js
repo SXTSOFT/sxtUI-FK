@@ -70,25 +70,6 @@
       }, 0);
 
 
-        //if(scope.data.Region.DrawingContent) {
-        //  $timeout(function () {
-        //    map.loadSvgXml(scope.data.Region.DrawingContent, {
-        //      filterLine: function (line) {
-        //        line.attrs.stroke = 'black';
-        //        line.options = line.options || {};
-        //        //line.options.color = 'black';
-        //
-        //        line.attrs['stroke-width'] = line.attrs['stroke-width'] * 6;
-        //      },
-        //      filterText: function (text) {
-        //        //return false;
-        //      }
-        //    });
-        //    map.center();
-        //  }, 0)
-        //}
-
-
         fg = new L.SvFeatureGroup({
           onLoad:function(){
             var layer = this;
@@ -117,8 +98,8 @@
                     geo.options.color = '#eb7400';
                     break;
                 }
-                layer.addData(geo);
               }
+              layer.addData(geo);
             });
 
             layer.eachLayer(function (layer) {

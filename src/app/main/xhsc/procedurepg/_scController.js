@@ -32,12 +32,12 @@
       var packdb = db('pack'+vm.info.db);
       var arr=[
         packdb.get('GetMeasureItemInfoByAreaID'),
-        remote.Assessment.GetMeasurePointByRole(vm.info.regionId.substr(0,5))
+        remote.Assessment.GetMeasurePointByRole($rootScope.sc_Area)
       ]
 
       $q.all(arr).then(function(res){
         var  r=res[0];
-        var  n=res[1];
+        //var  n=res[1];
 
         var find = r.data.find(function (it) {
           return it.AcceptanceItemID == vm.info.acceptanceItemID;
@@ -56,23 +56,23 @@
           t._id = sxt.uuid();//指标结构表
           t.checked = false;
         })
-        var arr= n.data.data,t;
-        var index=1
-        for (var i=vm.MeasureIndexes.length-1;i>=0;i--){
-          t=[];
-          for (var j=0;j<arr.length;j++){
-            if ( vm.info.regionId== arr[j].CheckRegionID&&vm.MeasureIndexes[i].AcceptanceIndexID==arr[j].AcceptanceIndexID){
-              if (!arr[j].MeasurePointID){
-                vm.MeasureIndexes[i].hide=true;
-                //合格
-              }else {
-                vm.MeasureIndexes[i].hidebutton=true;
-              }
-              index++;
-              break;
-            }
-          }
-        }
+        //var arr= n.data.data,t;
+        //var index=1
+        //for (var i=vm.MeasureIndexes.length-1;i>=0;i--){
+        //  t=[];
+        //  for (var j=0;j<arr.length;j++){
+        //    if ( vm.info.regionId== arr[j].CheckRegionID&&vm.MeasureIndexes[i].AcceptanceIndexID==arr[j].AcceptanceIndexID){
+        //      if (!arr[j].MeasurePointID){
+        //        vm.MeasureIndexes[i].hide=true;
+        //        //合格
+        //      }else {
+        //        vm.MeasureIndexes[i].hidebutton=true;
+        //      }
+        //      index++;
+        //      break;
+        //    }
+        //  }
+        //}
 
         $timeout(function () {
           vm.scChoose();

@@ -3645,5 +3645,12 @@ table {
       color: #ff3434 !important;
     }
   }
+}
 
+.transform_90{
+  transform:rotate(90deg);
+  -ms-transform:rotate(90deg); 	/* IE 9 */
+  -moz-transform:rotate(90deg); 	/* Firefox */
+  -webkit-transform:rotate(90deg); /* Safari 和 Chrome */
+  -o-transform:rotate(90deg);
 }

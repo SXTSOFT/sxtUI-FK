@@ -133,18 +133,6 @@
                         fn(7);
                         p.destroyDb('Pack'+id+'stzl_images', function () {
                           fn(8);
-                          //p.destroyDb('prePoint', function () {
-                          //  fn(9);
-                          //  p.destroyDb('pointRelate', function () {
-                          //    fn(10)
-                          //    p.destroyDb('geometrys', function () {
-                          //      fn(11)
-                          //      cb();
-                          //    });
-                          //
-                          //  })
-                          //
-                          //})
                         });
                       });
                     })

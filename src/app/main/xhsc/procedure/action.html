@@ -1,7 +1,7 @@
 <md-bottom-sheet>
 <md-list>
     <md-list-item ng-repeat="item in btns" layout="row" style="position: relative">
-      <md-button ng-click="item.action()" flex style="text-align: center;margin: 0px">
+      <md-button ng-click="item.action($event)" flex style="text-align: center;margin: 0px">
         <span  style="color: #359df5;font-size:16px;" >{{item.title}}</span>
       </md-button>
       <span  class="border1px bottom1px" style="bottom: 6px"></span>
