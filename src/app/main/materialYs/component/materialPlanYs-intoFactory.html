@@ -1,53 +1,60 @@
 <md-content  flex layout-padding>
   <md-list>
     <md-divider class="md-no-sticky"></md-divider>
-    <md-list-item class="secondary-button-padding">
-      <p>进厂时间</p>
-      <md-input>2016-10-24</md-input>
-    </md-list-item>
-    <md-divider class="md-no-sticky"></md-divider>
-    <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
-      <p>进场数量</p>
-      <md-input>100吨</md-input>
+      <label flex="50">进场时间</label>
+      <md-datepicker flex="50" ng-model="vm.data.ApproachTime" ng-disabled="true"></md-datepicker>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
-      <p>厂家/品牌</p>
-      <md-input>龙泰利</md-input>
+      <label flex="50">进场数量</label>
+      <md-input-container  style="margin:0;padding: 0;">
+        <input type="text" ng-model="vm.data.ApproachCount" style="top: 10px;position: relative; text-align: right;"/>
+      </md-input-container>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
-      <p>供货方</p>
-      <md-input>肯德基</md-input>
+      <label flex="50">厂家/品牌</label>
+      <md-input-container flex="50" style="margin:0;padding: 0;">
+        <input type="text" ng-model="vm.data.Brand"style="top: 10px;position: relative; text-align: right;"/>
+      </md-input-container>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
-      <p>有无封样</p>
-      <md-switch class="md-secondary" ng-model="setting.enabled"></md-switch>
+      <label flex="50">供货方</label>
+      <md-input-container flex="50"style="margin:0;padding: 0;">
+        <input type="text" ng-model="vm.data.Supplier" style="top: 10px;position: relative; text-align: right;"/>
+      </md-input-container>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
-      <p>检查人</p>
-      <md-input>张三、李四</md-input>
+      <label flex="50">有无封样</label>
+      <md-switch class="md-secondary" ng-model="vm.data.IsPacking"></md-switch>
+    </md-list-item>
+    <md-divider class="md-no-sticky"></md-divider>
+    <md-list-item>
+      <label flex="50">检查人</label>
+      <md-input-container flex="50"style="margin:0;padding: 0;">
+        <input type="text" ng-model="vm.data.Inspector" style="top: 10px;position: relative; text-align: right;"/>
+      </md-input-container>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-subheader class="md-no-sticky" style="font-size: 1.1em;background-color: #F2F2F2;">检查照片</md-subheader>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
-      <p>车辆</p>
+      <label flex="50">车辆</label>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
-      <p>货物</p>
+      <label flex="50">货物</label>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
-      <p>检查人</p>
+      <label flex="50">检查人</label>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
-      <p>合格证</p>
+      <label flex="50">合格证</label>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
   </md-list>

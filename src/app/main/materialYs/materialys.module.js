@@ -50,10 +50,10 @@
       .state('app.xhsc.materialys.intoFactory',{
         title:'材料进场',
         noBack:true,
-        sendBt: false,
+        sendBt: true,
         rightArrow: false,
         leftArrow: false,
-        url:'/intoFactory/{id}',
+        url:'/intoFactory/{status}/{id}',
         template:'<material-into-factory flex layout="column"></material-into-factory>'
       })
       .state('app.xhsc.materialys.checkInfo',{

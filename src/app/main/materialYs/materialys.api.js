@@ -43,6 +43,13 @@
           upload:true
         }).bind(function (data) {
           return $http.put('/api/MaterialPlan/InsertReportInfo', data);
+        }),
+        CreateMaterialPlanBatch:$http.db({
+          _id:'materialPlanBatch',
+          idField:'Id',
+          dataType:3
+        }).bind(function (data) {
+          return $http.post('/api/MaterialPlan/CreateMaterialPlanBatchAsync',data);
         })
       }
     });
