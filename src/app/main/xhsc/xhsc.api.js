@@ -459,7 +459,18 @@
           });
         }),
 
-        getMeasureMosaic:function(projectId,acceptanceItemId){
+        getMeasureMosaic:$http.db({
+          db:function (projectId,acceptanceItemId,db) {
+            if (db){
+              return db;
+            }
+            return "scStutas";
+          },
+          idField:function () {
+            return "sc";
+          },
+          dataType:3
+        }).bind(function(projectId,acceptanceItemId,db){
           var  param={
             projectId:projectId,
           }
@@ -467,7 +478,7 @@
             param.acceptanceItemId=acceptanceItemId;
           }
           return $http.get($http.url('/api/MeasureInfo/GetMeasureMosaic',param))
-        },
+        }),
         postInspection:$http.db({
           _id:'Inspection',
           upload:true,
