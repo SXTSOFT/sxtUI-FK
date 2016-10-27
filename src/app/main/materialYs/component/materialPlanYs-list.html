@@ -7,7 +7,8 @@
             <md-button ng-disabled="true" class="md-fab md-mini">{{item.Status}}</md-button>
             <p>{{item.PlanName}}</p>
             <md-button ng-if="item.Status == 1" ui-sref="app.xhsc.materialys.planDetail({id:item.PlanId})" style="color: black;margin-right: 0px">进场</md-button>
-            <md-button ng-if="item.Status == 2" ui-sref="app.xhsc.materialys.planDetail({id:item.PlanId})" style="color: black;margin-right: 0px">验收</md-button>
+            <md-button ng-if="item.Status == 2" ui-sref="app.xhsc.materialys.checkInfo({id:item.Id})" style="color: black;margin-right: 0px">验收</md-button>
+            <md-button ng-if="item.Status == 8" ui-sref="app.xhsc.materialys.inspectionReport({id:item.Id})" style="color: black;margin-right: 0px">归档</md-button>
             <span class="border1px bottom1px"></span>
           </md-list-item>
         </md-list>
@@ -45,16 +46,14 @@
         </md-content>
       </md-tab>
       <md-tab label="未归档">
-        <md-content class="md-padding">
-          <md-list flex>
-            <md-list-item ng-repeat="item in vm.NotArchivedList" class="noright">
-              <md-button ng-disabled="true" class="md-fab md-mini">{{item.status}}</md-button>
-              <p>{{item.planName}}</p>
-              <md-button class="md-raised" ng-click="vm.AllBtnClick(item.index,item.id)">进厂</md-button>
-              <span class="border1px bottom1px"></span>
-            </md-list-item>
-          </md-list>
-        </md-content>
+        <md-list flex>
+          <md-list-item ng-repeat="item in vm.planList | filter:{Status:8}" class="noright">
+            <md-button ng-disabled="true" class="md-fab md-mini">{{item.Status}}</md-button>
+            <p>{{item.PlanName}}</p>
+            <md-button class="md-raised" ui-sref="app.xhsc.materialys.inspectionReport({id:item.Id})">归档</md-button>
+            <span class="border1px bottom1px"></span>
+          </md-list-item>
+        </md-list>
       </md-tab>
       <md-tab label="未批示">
         <md-content class="md-padding">
@@ -62,7 +61,7 @@
             <md-list-item ng-repeat="item in vm.NotInstructionsList" class="noright">
               <md-button ng-disabled="true" class="md-fab md-mini">{{item.status}}</md-button>
               <p>{{item.planName}}</p>
-              <md-button class="md-raised" ng-click="vm.AllBtnClick(item.index,item.id)">进厂</md-button>
+              <md-button class="md-raised" ui-sref="app.xhsc.materialys.approval">批示</md-button>
               <span class="border1px bottom1px"></span>
             </md-list-item>
           </md-list>

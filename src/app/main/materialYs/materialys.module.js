@@ -63,7 +63,21 @@
         url:'/checkInfo/{id}',
         template: '<material-ys-check-info flex layout="column"></material-ys-check-info>'
       })
+      .state('app.xhsc.materialys.inspectionReport',{
+        noBack:true,
+        sendBt:true,
+        title:'送检报告归档',
+        url:'/inspectionReport/{id}',
+        template: '<material-ys-inspection-report flex layout="column"></material-ys-inspection-report>'
+      })
 
+      .state('app.xhsc.materialys.approval',{
+        noBack:true,
+        sendBt:true,
+        title:'材料验收详情',
+        url:'/approval/{id}',
+        template: '<material-ys-approval flex layout="column"></material-ys-approval>'
+      })
   }
 
 })(angular,undefined);
