@@ -42,13 +42,17 @@
       if (!points)
         points = pk.point.db;
 
-
       //var yxzAcceptanceIndexID = 'c1c7a2150bb742d8bd3eeefd2cf3de89';//尺寸一直性指标ID
       var install = function () {
+
         if (!scope.db || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
         if (!map) {
           map = new L.SXT.Project(element[0]);
         }
+        if(fg)
+          map._map.removeLayer(fg);
+        if(toolbar)
+          map._map.removeControl(toolbar);
         var ProjectID = scope.regionId.substr(0, 5);
         var areaId= scope.regionId.substr(0, 10);
         var arr = [
@@ -253,11 +257,6 @@
             }).catch(function (r) {
             });
           }
-
-          if (fg)
-            map._map.removeLayer(fg);
-          if (toolbar)
-            map._map.removeControl(toolbar);
 
           fg = new L.SvFeatureGroup({
             onLoad:function(){
@@ -529,16 +528,6 @@
         }).catch(function(r){
 
         });
-        toolbar = new L.Control.Draw({
-          featureGroup: fg,
-          group: {
-            lineGroup: false,
-            areaGroup: scope.measureIndexes.length && !!scope.measureIndexes.find(function (m) {
-              return m.QSKey == '4'
-            })
-          }
-        }).addTo(map._map);
-
       };
       $timeout(function () {
         scope.$watchCollection('measureIndexes', function () {
