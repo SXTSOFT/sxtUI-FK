@@ -11,10 +11,10 @@
   /** @ngInject */
   function scRegionController($scope, $stateParams, sxt, $rootScope, xhUtils, remote, $timeout, $q, $state, $mdDialog, utils, db) {
     var vm = this,
-      projectId = $stateParams.projectId,
+      area=$stateParams.projectId,
+      projectId =area.substr(0,5),
       acceptanceItemID = $stateParams.acceptanceItemID,
       acceptanceItemName = $stateParams.acceptanceItemName,
-      area = $stateParams.area,
       assessmentID = $stateParams.assessmentID,
       isReport = vm.isReport = $stateParams.isReport;
     vm.maxRegion = $stateParams.maxRegion;
@@ -76,6 +76,9 @@
           }
 
           region.Status = setStatus(region.StatusList)
+          if (region.RegionType==2&&region.RegionID==area){
+            region.selected=true;
+          }
           if (region.RegionType == 4) {
             vm.building.push(region);
           }

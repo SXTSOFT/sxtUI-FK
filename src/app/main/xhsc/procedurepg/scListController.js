@@ -15,9 +15,9 @@
   function sclistController($scope,scRemote,$stateParams,db,$state){
     var vm=this;
     var remote=  scRemote;
-    vm.projectId = $stateParams.projectId;
+    vm.area= $stateParams.projectId;
+    vm.projectId = vm.area.substr(0,5);
     vm.assessmentID=$stateParams.assessmentID;
-    vm.area=$stateParams.area;
     //var isReport=vm.isReport=$stateParams.isReport;
 
     function  callback(result){
@@ -51,9 +51,8 @@
     vm.go=function(item){
       $state.go('app.xhsc.scsl.scRegion',{
         assessmentID:vm.assessmentID,
-        area:vm.area,
         acceptanceItemID:item.AcceptanceItemID ,
-        projectId: vm.projectId,
+        projectId: vm.area,
         acceptanceItemName:item.MeasureItemName,
         maxRegion: getMax(item.SplitRule)
         //isReport:vm.isReport

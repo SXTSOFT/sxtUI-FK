@@ -9,7 +9,7 @@
   <div layout="row" layout-sm="column" layout-align="space-around" ng-show="!vm.loading">
     <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular>
   </div>
-  <div flex ng-repeat="h in vm.houses" layout="column">
+  <div flex ng-if="h.selected" ng-repeat="h in vm.houses" layout="column">
     <p style="font-size:12px;background: #f4f4f6;padding:10px;margin:0;" ng-show="vm.loading">{{h.FullRegionName }}</p>
     <div class="floor-list gxroomlist" ng-show="vm.loading" layout="column" flex>
         <md-virtual-repeat-container flex>

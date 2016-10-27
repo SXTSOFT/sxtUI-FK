@@ -272,7 +272,7 @@
 
       vm.go = function (item) {
         var routeData = {
-          projectId: item.RegionID.substr(0, 5),
+          projectId: item.RegionID,
           assessmentID: item.AssessmentID,
           role: vm.role
         };

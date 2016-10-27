@@ -23,7 +23,7 @@
     <md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
                           md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
     </md-progress-circular>
-    <md-list ng-show="vm.isOver">
+    <md-list ng-show="vm.isOver" style="background-color: #FFFFFF">
       <md-list-item ng-click="vm.zbzgAction(item)" layout="row" ng-repeat="item in vm.zglist|filter:{Status:4}">
         <div  layout="column" style="padding-bottom: 16px">
           <p style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
@@ -63,7 +63,7 @@
     <md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
                           md-mode="indeterminate" md-diameter="32" style="margin-left: 8px;margin-top: 8px">
     </md-progress-circular>
-    <md-list ng-show="vm.isOver">
+    <md-list ng-show="vm.isOver" style="background-color: #FFFFFF">
       <md-list-item layout="row" ng-click="vm.jlysAction(item)" ng-repeat="item in vm.Inspections">
         <div layout="column"  style="padding-bottom: 16px">
           <p  style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
