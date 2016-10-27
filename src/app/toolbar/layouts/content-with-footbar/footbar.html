@@ -31,12 +31,12 @@
       <div class="md-grid-text" style="line-height: 20px" ng-style="{'color':vm.current_active=='app.xhsc.download'?'#e93030':'rgba(0,0,0,0.54)'}"> 现场评估</div>
     </md-button>
   </md-list-item>
-  <md-list-item ng-if="vm.role==0||vm.role==2"  flex>
-    <md-button  ui-sref="app.xhsc.sf.sfmain" ng-click="vm.active_selected('app.xhsc.sf.sfmain')" class="ys">
-      <md-icon md-svg-src="app/toolbar/images/safe.svg" class="icon s32" ng-class="{'active':vm.current_active=='app.xhsc.sf.sfmain'}"></md-icon>
-      <div class="md-grid-text" style="line-height: 20px"  ng-style="{'color':vm.current_active=='app.xhsc.sf.sfmain'?'#e93030':'rgba(0,0,0,0.54)'}">安全文明</div>
-    </md-button>
-  </md-list-item>
+  <!--<md-list-item ng-if="vm.role==0||vm.role==2"  flex>-->
+    <!--<md-button  ui-sref="app.xhsc.sf.sfmain" ng-click="vm.active_selected('app.xhsc.sf.sfmain')" class="ys">-->
+      <!--<md-icon md-svg-src="app/toolbar/images/safe.svg" class="icon s32" ng-class="{'active':vm.current_active=='app.xhsc.sf.sfmain'}"></md-icon>-->
+      <!--<div class="md-grid-text" style="line-height: 20px"  ng-style="{'color':vm.current_active=='app.xhsc.sf.sfmain'?'#e93030':'rgba(0,0,0,0.54)'}">安全文明</div>-->
+    <!--</md-button>-->
+  <!--</md-list-item>-->
 
   <md-list-item flex>
     <md-button ng-click="vm.active_selected('app.pcReport_main')" ui-sref="app.pcReport_main" class=" ys">
@@ -46,11 +46,11 @@
   </md-list-item>
 
 
-  <!--<md-list-item flex>-->
-  <!--<md-button ng-click="vm.active_selected('app.xhsc.pcmain')"  ui-sref="app.xhsc.pcmain" class=" ys">-->
-  <!--<md-icon md-svg-src="app/toolbar/images/xhchange.svg" class="icon s32" ng-class="{'active':vm.current_active=='app.xhsc.pcmain'}"></md-icon>-->
-  <!--<div class="md-grid-text" style="line-height: 20px"  ng-style="{'color':vm.is('app.xhsc.pcenter')?'#e93030':'rgba(0,0,0,0.54)'}"> 设置 </div>-->
-  <!--</md-button>-->
-  <!--</md-list-item>-->
+  <md-list-item flex>
+  <md-button ng-click="vm.active_selected('app.xhsc.pcmain')"  ui-sref="app.xhsc.pcmain" class=" ys">
+  <md-icon md-svg-src="app/toolbar/images/xhchange.svg" class="icon s32" ng-class="{'active':vm.current_active=='app.xhsc.pcmain'}"></md-icon>
+  <div class="md-grid-text" style="line-height: 20px"  ng-style="{'color':vm.is('app.xhsc.pcenter')?'#e93030':'rgba(0,0,0,0.54)'}"> 设置 </div>
+  </md-button>
+  </md-list-item>
   <span flex="25" flex-xs="5"></span>
 </md-list>
