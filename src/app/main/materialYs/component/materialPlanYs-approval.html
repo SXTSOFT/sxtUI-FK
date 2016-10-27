@@ -1,73 +1,95 @@
 <md-content>
-  <md-list ng-cloak style="padding-top: 0;">
+  <md-list flex style="padding-top: 0;">
     <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">材料计划信息</div>
     <md-list-item>
-      <p>计划名称</p>
+      <p flex="30">计划名称</p>
+      <p>{{vm.data.PlanName}}</p>
     </md-list-item>
     <md-list-item>
-      <p>材料/设备名称</p>
+      <p flex="30">材料/设备名称</p>
+      <p>{{vm.data.MaterialName}}</p>
     </md-list-item>
     <md-list-item>
-      <p>规格</p>
+      <p flex="30">规格</p>
+      <p>{{vm.data.Specifications}}</p>
     </md-list-item>
     <md-list-item>
-      <p>型号</p>
+      <p flex="30">型号</p>
+      <p>{{vm.data.Model}}</p>
     </md-list-item>
     <md-list-item>
-      <p>厂家/品牌</p>
+      <p flex="30">厂家/品牌</p>
+      <p>{{vm.data.Brands}}</p>
     </md-list-item>
     <md-list-item>
-      <p>计划进场时间</p>
+      <p flex="30">计划进场时间</p>
+      <p>{{vm.data.PlanTime}}</p>
     </md-list-item>
     <md-list-item>
-      <p>计划进场数量</p>
+      <p flex="30">计划进场数量</p>
+      <p>{{vm.data.PlanCount + vm.data.Unit}}</p>
     </md-list-item>
     <md-list-item>
-      <p>使用部位</p>
+      <p flex="30">使用部位</p>
+      <p>{{vm.data.Position}}</p>
     </md-list-item>
     <md-list-item>
-      <p>合同编号</p>
+      <p flex="30">合同编号</p>
+      <p>{{vm.data.Contract}}</p>
     </md-list-item>
     <md-list-item>
-      <p>供货方式</p>
+      <p flex="30">供货方式</p>
+      <p ng-if="vm.data.SupplyType == 1">甲供</p>
+      <p ng-if="vm.data.SupplyType == 2">认质认价</p>
+      <p ng-if="vm.data.SupplyType == 4">甲指乙供</p>
     </md-list-item>
     <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">材料进场信息</div>
     <md-list-item>
-      <p>进场时间</p>
+      <p flex="30">进场时间</p>
+      <p>{{vm.data.ApproachTime}}</p>
     </md-list-item>
     <md-list-item>
-      <p>进场数量</p>
+      <p flex="30">进场数量</p>
+      <p>{{vm.data.ApproachCount + vm.data.Unit}}</p>
     </md-list-item>
     <md-list-item>
-      <p>厂家/品牌</p>
+      <p flex="30">厂家/品牌</p>
+      <p>{{vm.data.Brand}}</p>
     </md-list-item>
     <md-list-item>
-      <p>供货方</p>
+      <p flex="30">供货方</p>
+      <p>{{vm.data.Supplier}}</p>
     </md-list-item>
     <md-list-item>
-      <p>有无封样</p>
+      <p flex="30">有无封样</p>
+      <p>{{vm.data.IsPacking?'有':'无'}}</p>
     </md-list-item>
     <md-list-item>
-      <p>检查人</p>
+      <p flex="30">检查人</p>
+      <p>{{vm.data.Inspector}}</p>
     </md-list-item>
     <md-list-item>
-      <p>进场照片</p>
+      <p flex="30">进场照片</p>
     </md-list-item>
     <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">监理验收信息</div>
     <md-list-item>
-      <p>验收时间</p>
+      <p flex="30">验收时间</p>
+      <p>{{vm.data.AcceptanceTime}}</p>
     </md-list-item>
     <md-list-item>
-      <p>现场检查</p>
+      <p flex="30">现场检查</p>
+      <p>{{vm.data.WgCheck?'合格':'不合格'}}</p>
     </md-list-item>
     <md-list-item>
-      <p>是否送检</p>
+      <p flex="30">是否送检</p>
+      <p>{{vm.data.IsInspection?'需要':'不需要'}}</p>
     </md-list-item>
     <md-list-item>
-      <p>验收人</p>
+      <p flex="30">验收人</p>
+      <p>{{vm.data.Accepter}}</p>
     </md-list-item>
     <md-list-item>
-      <p>验收照片</p>
+      <p flex="30">验收照片</p>
     </md-list-item>
   </md-list>
 </md-content>

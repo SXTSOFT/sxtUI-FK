@@ -44,6 +44,13 @@
         }).bind(function (data) {
           return $http.put('/api/MaterialPlan/InsertReportInfo', data);
         }),
+        PostApprovalInfo: $http.db({
+          _id: 'materialPlan',
+          idField: 'Id',
+          upload:true
+        }).bind(function (data) {
+          return $http.put('/api/MaterialPlan/InsertApproval', data);
+        }),
         CreateMaterialPlanBatch:$http.db({
           _id:'materialPlanBatch',
           idField:'Id',
