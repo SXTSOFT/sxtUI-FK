@@ -158,6 +158,9 @@
             q.then(function (result) {
               var next = result;
               scope.selectors[index] = next;
+              if(next.selected){
+                scope.item_selected(next.selected,index,true);
+              }
               if(!$rootScope.$$phase){
                 scope.$apply();
 

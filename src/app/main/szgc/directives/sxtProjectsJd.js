@@ -1,7 +1,7 @@
 /**
  * Created by zhangzhaoyong on 16/1/28.
  */
-(function (angular)
+(function (angular,undefined)
 {
   'use strict';
 
@@ -90,7 +90,7 @@
                 init = false;
                 innerScope && scope.onChanged(innerScope);
                 return api.szgc.vanke.projects({ page_size: 1000, page_number: 1 }).then(function (result) {
-                  var s = new st(index, 'project_id', 'name', result.data.data, '项目');
+                  var s = new st(index, 'project_id', 'name', result.data.data, '项目',result.data.data.length==1?result.data.data[0]:undefined);
                   scope.onQueryed && scope.onQueryed(s);
                   return s;
                 });
@@ -187,4 +187,4 @@
       }
     }
   }
-})(angular);
+})(angular,undefined);

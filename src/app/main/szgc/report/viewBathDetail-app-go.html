@@ -43,8 +43,8 @@
                 </table>
                 <table class="target" border="0" cellspacing="0" cellpadding="0" style="margin-top: 5px;border-collapse: collapse;width:100%;">
                     <tr>
-                        <td style="padding:0;">
-                            <table border="1" cellspacing="0" cellpadding="4" style="border-collapse: collapse;width:100%;">
+                        <td style="padding:0;border:0">
+                            <table border="1" cellspacing="0" cellpadding="4" style="border-collapse: collapse;width:100%; border:0">
                                 <tr>
                                     <td style="width:50%" rowspan="2" colspan="{{data.selected.d.info.zyColLength+2}}" align="center">
                                         施工质量验收规范的规定
@@ -65,16 +65,16 @@
                                     </td>
                                 </tr>
                                 <tr ng-repeat="n in data.selected.d.zk" >
-                                    <td rowspan="{{data.selected.d.info.zyCount()}}" ng-if="$index==0" align="center" style="width:50px;">
+                                    <td rowspan="{{data.selected.d.info.zyCount()}}" ng-if="$index==0" align="center" style="width:50px;border-bottom:0">
                                         <p>主</p>
                                         <p>控</p>
                                         <p>项</p>
                                         <p>目</p>
                                     </td>
-                                    <td align="center" style="width:40px;">{{$index+1}}</td>
-                                    <td ng-repeat="m in n.names" ng-click="data.selected.d.info.zyColSelected=$index" ng-if="m.rowspan!=0 && m.colspan!=0" rowspan="{{m.rowspan||1}}" colspan="{{m.colspan||1}}">{{m.name}}</td>
-                                    <td style="width:40%">{{n.Remark}}</td>
-                                    <td class="targettd" style="width:150px; text-align:center;">
+                                    <td align="center" style="width:40px;border-bottom:0">{{$index+1}}</td>
+                                    <td style="border-bottom:0" ng-repeat="m in n.names" ng-click="data.selected.d.info.zyColSelected=$index" ng-if="m.rowspan!=0 && m.colspan!=0" rowspan="{{m.rowspan||1}}" colspan="{{m.colspan||1}}">{{m.name}}</td>
+                                    <td style="width:40%;border-bottom:0">{{n.Remark}}</td>
+                                    <td class="targettd" style="width:150px; text-align:center;border-bottom:0">
                                        {{n.MPCheckValue==0?n.NoPassText:n.PassText}}
                                     </td>
                                 </tr>
@@ -82,8 +82,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="padding:0;">
-                            <table border="1" cellspacing="0" cellpadding="4" style="border-collapse: collapse;width:100%;">
+                        <td style="padding:0;border:0">
+                            <table border="1" cellspacing="0" cellpadding="4" style="border-collapse: collapse;width:100%;border:0">
                                 <tr>
                                     <td style="width:50px;">&nbsp;</td>
                                     <td style="width:40px;">&nbsp;</td>
@@ -144,7 +144,7 @@
                                 <tr ng-if="data.selected.d.yb.length">
                                     <td colspan="{{data.selected.d.yb[0].names.length+2}}"></td>
                                     <!--<td style="width:150px" align="center"></td>-->
-                                    <td align="center" colspan="8">主控：{{zkIsOk(data.selected.d.zk)?"合格":"不合格"}} &nbsp;&nbsp;
+                                    <td align="center" colspan="9">主控：{{zkIsOk(data.selected.d.zk)?"合格":"不合格"}} &nbsp;&nbsp;
                                     一般：{{ybIsOk(data.selected.d.yb)?"合格":"不合格"}}({{ybHGL(data.selected.d.yb)}}) &nbsp;&nbsp;
                                      总体({{ybHGLPJ(data.selected.d.yb)|number:2}}) &nbsp;&nbsp;
                                      结果：{{zkIsOk(data.selected.d.zk)&&ybIsOk(data.selected.d.yb)?"合格":"不合格"}}

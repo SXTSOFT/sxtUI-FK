@@ -31,14 +31,12 @@
 
           <md-progress-circular md-mode="indeterminate" ng-show="vm.loading"></md-progress-circular>
           <div flex ng-if="!vm.loading && project.type!==128 && project.type!==256">
-            <md-subheader class="no-padding">
-              <div layout="row" class="div-table">
+            <div layout="row" class="div-table">
                 <div flex="20"><div style="padding:0 0 0 6px">部位</div></div>
                 <div flex="20">批</div>
                 <div flex="20">状态</div>
                 <div flex="40">操作</div>
               </div>
-            </md-subheader>
               <div layout="row" class="div-table-row" ng-repeat="item in project.rows">
                 <div flex="20" class="name"><div style="padding:0 0 0 6px">{{item.$name}}</div></div>
                 <div flex="20">{{item.BatchNo}}</div>

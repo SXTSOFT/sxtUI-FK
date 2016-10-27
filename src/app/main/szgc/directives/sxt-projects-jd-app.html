@@ -1,7 +1,7 @@
 ﻿<div>
     <md-list >
         <md-subheader class="md-no-sticky">已选择项</md-subheader>
-         <md-list-item ng-repeat="st in selectors" ng-if="st.selected"><p>{{st.label}}：{{st.selected.$name}}</p><md-checkbox class="md-secondary"  ng-click="item_clear(st.index)"  ng-checked="1"></md-checkbox></md-list-item>
+         <md-list-item ng-repeat="st in selectors" ng-if="st.selected"><p>{{st.label}}：{{st.selected.$name}}</p><md-checkbox  class="md-secondary"  ng-click="item_clear(st.index)"  ng-checked="1"></md-checkbox></md-list-item>
         <md-divider></md-divider>
 </md-list>
 

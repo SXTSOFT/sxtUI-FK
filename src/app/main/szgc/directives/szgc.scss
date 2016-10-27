@@ -593,6 +593,16 @@ fieldset fieldset{
 fieldset fieldset legend{
   font-size: 12px;
 }
+.target{
+  border: 1px solid rgb(229, 229, 229);
+  border-collapse: collapse;
+  th{
+    border: 1px solid rgb(229, 229, 229);
+  }
+  td{
+    border: 1px solid rgb(229, 229, 229);
+  }
+}
 .target2{
   overflow: auto;
   td{
