@@ -13,11 +13,12 @@
     var vm=this,
       id = $stateParams.assessmentID,
       AssessmentTypeID = $stateParams.AssessmentTypeID,
-      projectId = $stateParams.projectId,
+      areaId = $stateParams.projectId,
+      projectId = areaId.substr(0,5),
       acceptanceItemID=$stateParams.acceptanceItemID,
       acceptanceItemName = $stateParams.acceptanceItemName,
-      role=$stateParams.role,
-      areaId = $stateParams.areaId;
+      role=$stateParams.role;
+      ;
       vm.maxRegion = $stateParams.maxRegion;
 
     $rootScope.title = $stateParams.acceptanceItemName;
@@ -145,7 +146,6 @@
         return style;
       }
       return $q.all([
-        //remote.Project.queryAllBulidings(projectId),
         remote.Project.getRegionWithRight(projectId),
         remote.Procedure.getRegionStatus(projectId)
 
@@ -154,6 +154,9 @@
         var result= xhscService.buildRegionTree(res[0].data,1);
         var status=res[1]&&res[1].data?res[1].data:[];
         result.Children.forEach(function(d){
+          if (d.RegionID==areaId){
+            d.selected=true;
+          }
           filterOrSetting(status,d);
           d.projectTree =  result.RegionName;
           d.projectTitle = result.RegionName + d.RegionName;

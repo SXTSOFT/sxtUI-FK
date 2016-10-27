@@ -12,7 +12,7 @@
     .controller('ywController',ywController);
 
   /**@ngInject*/
-  function ywController(remote,xhUtils,$rootScope,utils,api,$q,$state,$scope,$mdDialog,db,$mdBottomSheet,$stateParams){
+  function ywController(remote,xhUtils,$rootScope,utils,api,$q,$state,$scope,$mdDialog,db,xhscService,$mdBottomSheet,$stateParams){
     var vm = this;
     var  dbpics=db('pics')
     vm.procedure=[];
@@ -354,7 +354,7 @@
     vm.MemberType = [];
     vm.by=function(r){
       api.setNetwork(0).then(function(){
-        $state.go('app.xhsc.gx.gxlist', {role:'zb',projectId:r.ProjectID});
+        $state.go('app.xhsc.gx.gxlist', {role:'zb',projectId:r.RegionID});
       });
     }
     api.setNetwork(0).then(function(){
@@ -382,7 +382,7 @@
           vm.projects = result.data;
           switch (vm.yw){
             case 0:
-            case 2:
+            //case 2:
               if (!vm.projects.length){
                 vm.isShowbg=true;
               }
@@ -458,6 +458,21 @@
           });
         }
       });
+      remote.Project.getAllRegionWithRight("", 3).then(function (r) {
+        if (vm.yw==2){
+          vm.z_isOver=true;
+          if (!r || r.data.length == 0) {
+            vm.isShowbg=true;
+            return;
+          }
+          vm.by_project = xhscService.buildMutilRegionTree(r.data, 1);
+        }
+
+      }).catch(function () {
+        vm.z_isOver=true;
+        vm.isShowbg=true;
+      });
+
     }
     api.setNetwork(0).then(function(){
       load();
@@ -603,31 +618,8 @@
       }
     }
 
-    vm.jlfybtnAction=function(item,evt){
-      $mdBottomSheet.show({
-        templateUrl: 'app/main/xhsc/procedure/action.html',
-        controller:function($scope){
-          $scope.btns=[{
-            title:'复 验',
-            action:function(){
-              $mdBottomSheet.hide();
-              vm.jlfyAction(item);
-            }
-          },{
-            title:'下 载',
-            action:function(){
-              $mdBottomSheet.hide();
-              vm.downloadzg(item)
-            }
-          },{
-            title:'取 消',
-            action:function(){
-              $mdBottomSheet.hide();
-            }
-          }]
-        }
-      });
-      evt.stopPropagation();
+    vm.stretch = function (item) {
+      item.stretch = !item.stretch;
     }
   }
 })();
