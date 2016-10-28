@@ -9,12 +9,14 @@
     .controller('gxmainController',gxmainController);
 
   /**@ngInject*/
-  function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,$scope,$mdDialog,db,$mdBottomSheet){
+  function gxmainController(remote,xhUtils,$rootScope,utils,api,$q,$state,$scope,$mdDialog,db,$mdBottomSheet,auth){
     var vm = this;
     var  dbpics=db('pics');
     vm.procedure=[];
 
     vm.material = true;
+    var user = auth.current();
+
     utils.onCmd($scope,['swap'],function(cmd,e){
       vm.material = e.arg.material;
     });
@@ -29,13 +31,13 @@
         else {
           remote.offline.query().then(function (r2) {
             result.data.forEach(function (r) {
-              r2.data.forEach(function (p) {
-                if('msy'+r.SectionID == p.Id){
-                  vm.offlines.push(r);
-                  result.data.splice(r,1);
-                }
-              })
-            })
+              var fd = r2.data.find(function (a) {
+                return a.Id == 'msy' + r.SectionID;
+              });
+              if (fd) {
+                vm.offlines.push(r);
+              }
+            });
             vm.section=result.data;
           }).catch(function(){
             vm.section = result.data;
@@ -44,6 +46,7 @@
       })
     }
     vm.downloadPlan=function(item,isReflsh){
+      var status = user.Role.MemberType==0?1:2;
       //下载成功回掉
       function callBack(){
         var ix = vm.section.indexOf(item);
@@ -56,42 +59,37 @@
         vm.offlines.push(item);
 
       }
-      return api.setNetwork(0).then(function(){
-        return $q(function(resolve,reject){
-          $mdDialog.show({
-            controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
-              $scope.item=item;
-              var tasks = []
-                .concat(function () {
-                  return api.xhsc.materialPlan.getMaterialPlanBatch(item.SectionID)
-                })
-                .concat(function(){
-                  return remote.offline.create({Id:'msy'+item.SectionID});
-                });
-              api.task(tasks,{
-                event:'downloadPlan',
-                target:item
-              })(null, function () {
-                item.percent = item.current = item.total = null;
-                item.isOffline = true;
-                $mdDialog.hide();
-                callBack();
-                utils.alert('下载完成');
-                //resolve();
-              }, function () {
-                $mdDialog.cancel();
-                utils.alert('下载失败,请检查网络');
-                item.percent = item.current = item.total = null;
-                reject();
-              })
-            }],
-            template: '<md-dialog aria-label="正在下载" ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载： {{item.Name}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
-            parent: angular.element(document.body),
-            clickOutsideToClose:false,
-            fullscreen: false
-          });
-        })
+      $mdDialog.show({
+        controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+          $scope.item=item;
+          var tasks = []
+            .concat(function () {
+              return api.xhsc.materialPlan.getMaterialPlanBatch(item.SectionID,status);
+            })
+            .concat(function(){
+              return remote.offline.create({Id:'msy'+item.SectionID});
+            });
+          api.task(tasks,{
+            event:'downloadPlan',
+            target:item
+          })(null, function () {
+            item.percent = item.current = item.total = null;
+            $mdDialog.hide();
+            callBack();
+            utils.alert('下载完成');
+            //resolve();
+          }, function () {
+            $mdDialog.cancel();
+            utils.alert('下载失败,请检查网络');
+            item.percent = item.current = item.total = null;
+          })
+        }],
+        template: '<md-dialog aria-label="正在下载" ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载： {{item.Name}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+        parent: angular.element(document.body),
+        clickOutsideToClose:false,
+        fullscreen: false
       });
+
     };
 
     api.event('downloadPlan',function (s,e) {
