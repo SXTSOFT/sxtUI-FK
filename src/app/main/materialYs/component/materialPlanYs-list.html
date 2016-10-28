@@ -68,6 +68,19 @@
           </md-list>
         </md-content>
       </md-tab>
+
+      <md-tab label="已关闭">
+        <md-content class="md-padding">
+          <md-list flex>
+            <md-list-item ng-repeat="item in vm.planList | filter:{Status:64}" class="noright">
+              <md-button ng-disabled="true" class="md-fab md-mini">{{item.Status}}</md-button>
+              <p>{{item.PlanName}}</p>
+              <md-button style="color: black;margin-right: 0px" ui-sref="app.xhsc.materialys.exit({id:item.PlanId})">退场</md-button>
+              <span class="border1px bottom1px"></span>
+            </md-list-item>
+          </md-list>
+        </md-content>
+      </md-tab>
     </md-tabs>
   </md-content>
 </div>

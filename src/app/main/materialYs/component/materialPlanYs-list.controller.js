@@ -17,7 +17,7 @@
     $rootScope.title = 'aaa';
     ///api.setNetwork(1).then(function(){});
     var user = auth.current();
-    var status = user.Role.MemberType==0?1:30;
+    var status = user.Role.MemberType==0?17:110;
     api.xhsc.materialPlan.getMaterialPlanBatch($stateParams.id,status).then(function (r) {
       vm.planList = r.data;
     });
