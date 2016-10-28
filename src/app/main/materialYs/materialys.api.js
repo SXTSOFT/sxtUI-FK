@@ -64,6 +64,13 @@
           dataType:3
         }).bind(function (data) {
           return $http.post('/api/MaterialPlan/CreateMaterialPlanBatchAsync',data);
+        }),
+        MaterialInspection:$http.db({
+          _id:'materialPlanBatch',
+          idField:'Id',
+          dataType:3
+        }).bind(function (data) {
+          return $http.put('/api/MaterialPlan/MaterialInspection',data);
         })
       }
     });

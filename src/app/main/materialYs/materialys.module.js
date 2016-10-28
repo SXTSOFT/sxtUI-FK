@@ -78,6 +78,20 @@
         url:'/approval/{planId}/{id}',
         template: '<material-ys-approval flex layout="column"></material-ys-approval>'
       })
+      .state('app.xhsc.materialys.inspection',{
+        noBack:true,
+        sendBt:true,
+        title:'材料送检',
+        url:'/inspection/{id}',
+        template: '<material-plan-inspection flex layout="column"></material-plan-inspection>'
+      })
+      .state('',{
+        noback:true,
+        sendBt:true,
+        title:'材料退场',
+        url:'materialApprovalDetail/{id}',
+        template:'<material-approval-detail></material-approval-detail>'
+      })
 
       .state('app.xhsc.materialys.exit',{
         noBack:true,
