@@ -90,17 +90,42 @@
         return arr;
       };
       scope.upDot = function(item){
+        scope.data.template.forEach(function(r){
+          r.selected = false;
+        })
+        item.selected = true;
         var idx = scope.data.template.indexOf(item);
         if(idx!=0){
           swapItems( scope.data.template, idx, idx - 1);
         }
-
+        var data={
+          BeforeBuildingPlanFlowId: scope.data.template[idx-1].Id,
+          AfterBuildingPlanFlowId: scope.data.template[idx].Id
+        }
+        api.plan.BuildPlan.swapOrder(scope.flowId,data).then(function(r){
+          if(r.data || r.status==200){
+            utils.alert('交换完成!')
+          }
+        })
       }
       scope.downDot = function(item){
+        scope.data.template.forEach(function(r){
+          r.selected = false;
+        })
+        item.selected = true;
         var idx = scope.data.template.indexOf(item);
         if(idx != scope.data.template.length-1){
           swapItems(scope.data.template, idx, idx + 1)
         }
+        var data={
+          BeforeBuildingPlanFlowId: scope.data.template[idx].Id,
+          AfterBuildingPlanFlowId: scope.data.template[idx+1].Id
+        }
+        api.plan.BuildPlan.swapOrder(scope.flowId,data).then(function(r){
+          if(r.data || r.status==200){
+            utils.alert('交换完成!')
+          }
+        })
       }
       scope.changeFloor = function(item){
        // console.log(item,scope.data.template)
@@ -194,8 +219,28 @@
           setTask(item);
         setDuration(item);
       }
+      function setMin(item){
+        var result;
+        if(!item.selectedTask.vars.length&&item.selectedTask.Duration){
+          item.min = item.selectedTask.Duration*0.8;
+          if(item.selectedTask.eDuration < item.min){
+            utils.alert('输入值应大于基本工期的80%').then(function(){
+              item.show = true;
+              //item.selectedTask.eDuration = item.selectedTask.Duration;
+              result =  false;
+            })
+          }else{
+            item.show = false;
+            result = true;
+          }
+        }
+        return result;
+      }
       scope.batchDuration = function(task){
-        setDuration(task);
+        var f = setMin(task);
+        if(f){
+          setDuration(task);
+        }
       }
       scope.deleteDot = function(item){
           utils.confirm('确认删除',null,'确定','取消').then(function(){

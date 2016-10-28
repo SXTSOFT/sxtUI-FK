@@ -61,3 +61,33 @@
     }
   }
 }
+table{
+  &.simple{
+    thead,tbody{
+      tr{
+        th{
+          font-size: 14px;
+          min-width: 100px;
+          font-weight: bold;
+          color:#000;
+        }
+        &.active{
+          background: rgb(255,255,204);
+        }
+        td{
+          font-size: 12px;
+          padding:8px;
+          input{
+            padding:5px 0;
+          }
+          .md-button{
+            font-size:12px;
+          }
+        }
+      }
+    }
+  }
+}
+.gantt-column-duration{
+  width:80px;
+}
