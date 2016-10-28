@@ -62,17 +62,19 @@
       width                   : true,
       zoom                    : 1,
       rowSortable             : false,
-      columns                 : ['model.name', 'from', 'to'],
-      treeTableColumns        : ['from', 'to'],
+      columns                 : ['model.name', 'from', 'to','duration'],
+      treeTableColumns        : ['from', 'to','duration'],
       columnsHeaders          : {
         'model.name': 'Name',
         'from'      : '开始时间',
-        'to'        : '结束时间'
+        'to'        : '结束时间',
+        'duration':'工期'
       },
       columnsClasses          : {
         'model.name': 'gantt-column-name',
         'from'      : 'gantt-column-from',
-        'to'        : 'gantt-column-to'
+        'to'        : 'gantt-column-to',
+        'duration':'gantt-column-duration'
       },
       columnsFormatters       : {
         'from': function (from)
@@ -82,6 +84,9 @@
         'to'  : function (to)
         {
           return angular.isDefined(to) ? to.format('YY-MM-DD') : undefined;
+        },
+        'duration':function(from,to){
+          //return to.format('YY-MM-DD');
         }
       },
       treeHeaderContent       : '{{getHeader()}}',
@@ -89,8 +94,10 @@
       columnsHeaderContents   : {
         'model.name': '{{getHeader()}}',
         'from'      : '{{getHeader()}}',
-        'to'        : '{{getHeader()}}'
+        'to'        : '{{getHeader()}}',
+        'duration'        : '{{getHeader()}}'
       },
+      sideWidth:450,
       autoExpand              : 'none',
       taskOutOfRange          : 'truncate',
       fromDate                : '',
@@ -325,6 +332,7 @@
                 isEnded:!!item.ActualEndTime,
                 from:item.ActualStartTime || item.ScheduledStartTime,
                 to:item.ActualEndTime || item.ScheduledEndTime,
+                duration:20,//moment(item.ActualEndTime-item.ActualStartTime)||moment(item.ScheduledEndTime-item.ScheduledStartTime),
                 dependencies:item.Dependencies.map(function (d) {
                   return {
                     from:d.DependencyTaskID

@@ -228,8 +228,8 @@
           }
         },function(err){
           parent.closePanel();
-          if(err.status == -1){
-            utils.alert('创建计划失败');
+          if(err.status != 200){
+            utils.alert(err.data);
             return;
           }
         })
@@ -237,7 +237,7 @@
       else if(i===1){
         var selected = [],goFlag;
         console.log(vm.allTasks);
-        vm.rootTask.Master.forEach(function (item) {
+        vm.allTasks.forEach(function (item) {
           if(item.selectedTask) {
             if(!item.selectedTask.xDuration){
               goFlag = true;
@@ -259,12 +259,12 @@
           $mdPanel.open({
             controller: function (mdPanelRef,$scope,utils) {
               var vm = this;
-              parent.loading = false;
-              parent.closePanel = function() {
+              parent.loading1 = false;
+              parent.closePanel1 = function() {
                 return mdPanelRef.close().then(function () {
                   mdPanelRef.destroy();
-                  parent.loading = true;
-                  parent.closePanel = null;
+                  parent.loading1 = true;
+                  parent.closePanel1 = null;
                 });
               }
             },
@@ -283,7 +283,7 @@
           api.plan.BuildPlan.flowTasksReset(vm.formWizard.Id,selected).then(function (r) {
             api.plan.BuildPlan.getBuildingPlanRoles(vm.formWizard.Id).then(function (r) {
               vm.currentRoles = r.data.Items;
-              parent.closePanel();
+              parent.closePanel1();
             });
           });
         }else{
@@ -319,7 +319,6 @@
         //  }
         //});
         vm.rootTask = r.data.RootTask;
-        //vm.showDirective = !vm.showDirective;
        // vm.reloadTask();
       });
     }
@@ -350,6 +349,20 @@
     }
     vm.sendForm = function(fn){
       var resets = [];
+      var p = vm;
+      $mdDialog.show({
+        controller:['$scope',function($scope){
+          p.hide = function(){
+            $mdDialog.cancel();
+          }
+        }],
+        template: '<md-dialog style="background-color: transparent;box-shadow: none;"><md-dialog-content ><div layout="row" layout-align="center center"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div><div layout="row" layout-align="center center">正在生成，请稍后...</div></md-dialog-content></md-dialog>',
+        parent: angular.element('#content'),
+        clickOutsideToClose:false,
+        hasBackdrop:true,
+        escapeToClose: true,
+        focusOnOpen: true
+      })
       vm.currentRoles.forEach(function (r) {
         resets.push(api.plan.BuildPlan.buildingRolesReset(vm.formWizard.Id,{
           RoleId:r.RoleId,
@@ -364,6 +377,7 @@
           if(r.status==200|| r.data){
             utils.alert('创建计划成功').then(function(){
               fn();
+              p.hide();
             })
           }
         })

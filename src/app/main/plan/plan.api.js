@@ -114,6 +114,9 @@
         },
         adjustPlan:function(id,params){
           return $http.post($http.url('/api/BuildingPlans/'+id+'/Adjust'),params)
+        },
+        swapOrder:function(id,data){
+          return $http.put($http.url('/api/BuildingPlans/'+id+'/BuildingPlanFlows/SwapOrder'),data)
         }
       },
       MileStone:{

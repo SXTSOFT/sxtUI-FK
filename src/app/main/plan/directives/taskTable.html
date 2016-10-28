@@ -1,23 +1,24 @@
-<md-content flex>
+<md-content flex layout="column" ms-scroll ng-if="!tasks">
 <table class="simple">
   <thead>
     <tr>
       <th style="width: 20px">序号</th>
       <th style="width: 120px">流程</th>
-      <th>可选任务</th>
+      <th><span class="pl-16">可选任务</span></th>
       <th>工期</th>
-      <th>操作</th>
+      <th><span class="pl-16">操作</span></th>
     </tr>
   </thead>
   <tbody>
-  <tr ng-repeat="task in data.template">
+  <tr ng-repeat="task in data.template" ng-class="{'active':task.selected}">
     <td>{{$index+1}}</td>
     <td>{{task.FullName || task.getFullName()}}</td>
     <td>
       <md-menu>
-        <span ng-click="$mdOpenMenu($event);">
+        <md-button ng-click="$mdOpenMenu($event);">
           {{task.selectedTask?task.selectedTask.Name:'请选择'}}
-        </span>
+          <md-icon class="s24" md-font-icon="icon-menu-down"></md-icon>
+        </md-button>
         <md-menu-content width="4">
           <md-menu-item ng-repeat="op in (task.OptionalTasks||task.getOptionalTasks())">
             <md-button ng-click="reloadTask(task,op);task.selectedTask = op">
@@ -29,32 +30,26 @@
      </td>
     <td>
       <label style="display: none;">(公式={{getVars(task.selectedTask)}})</label>
-      <input type="text" style="border-bottom: 1px solid #dedede;width:50px;" placeholder="工期值" ng-model="task.selectedTask.eDuration"  ng-blur="batchDuration(task)">
+      <!--<label>设置值：{{task.selectedTask.Duration}}</label>-->
+      <label style="position:relative;">
+        <input type="text" style="border-bottom: 1px solid #dedede;width:50px;" required placeholder="工期值" ng-model="task.selectedTask.eDuration" ng-blur="batchDuration(task)">
+        <div style="position: absolute;left: 0;top:120%;font-size:12px;color:red;width:auto;background: #fff;white-space: nowrap;" ng-show="task.show">输入工期应大于基本工期80%</div>
+      </label>
       <span ng-repeat="v in vars" ng-show="task.selectedTask">
-        <label>变量{{v.key}}</label>
+        <label>变量{{v.key}}值：</label>
         <input type="text" style="border-bottom: 1px solid #dedede;width:50px;" placeholder="变量值" required name="Duration" ng-model="v.value">
       </span>
-      <!--<md-input-container class="m-0" md-no-float>-->
-        <!--<input type="text" placeholder="输入工期" ng-model="task.selectedTask.eDuration">-->
-      <!--</md-input-container>-->
-      <!--<md-input-container class="md-block" ng-repeat="v in vars" ng-show="task.selectedTask">-->
-        <!--<label>变量{{v.key}}</label>-->
-        <!--<input type="text" required name="Duration" ng-model="v.value">-->
-      <!--</md-input-container>-->
     </td>
     <td>
-      <!--<md-select ng-if="task.IsFloor" ng-model="task.selectedFloor" flex>-->
-        <!--<md-option ng-repeat="op in task.Floors" ng-value="op">-->
-          <!--{{op.FloorName}}-->
-        <!--</md-option>-->
-      <!--</md-select>-->
+      <md-button class="md-icon-button">
         <md-icon md-font-icon="icon-arrow-down" ng-click="downDot(task)"></md-icon>
+      </md-button>
+      <md-button class="md-icon-button">
         <md-icon md-font-icon="icon-arrow-up" ng-click="upDot(task)"></md-icon>
+      </md-button>
+      <md-button class="md-icon-button">
         <md-icon md-font-icon="icon-delete" ng-if="!task.IsRequired"  ng-click="deleteDot(task)"></md-icon>
-      <!--<md-button ng-if="!task.IsRequired" class="md-icon-button">-->
-        <!---->
-      <!--</md-button>-->
-
+      </md-button>
     </td>
   </tr>
   </tbody>
