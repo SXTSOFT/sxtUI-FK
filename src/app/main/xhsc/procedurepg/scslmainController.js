@@ -28,7 +28,7 @@
 
       function queryOnline() {
         vm.offlines = [];
-        remote.Project.getAllRegionWithRight("", 3).then(function (r) {
+        remote.Project.getAllRegionWithRight("", 3,"scRigthRegions").then(function (r) {
           if (!r || r.data.length == 0) {
             utils.alert('暂无项目！');
             vm.isOver = true;
@@ -153,6 +153,9 @@
             });
             tasks.push(function () {
               return remote.Assessment.GetMeasurePointGeometry(item.RegionID);
+            });
+            tasks.push(function () {
+              return remote.Procedure.getMeasureMosaic(item.regionID,null,"scslStutas");
             });
             tasks.push(function () {
               return remote.Assessment.getAllMeasureReportData({RegionID: projectId, RecordType: 1})

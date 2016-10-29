@@ -1,0 +1,42 @@
+<md-progress-circular id="toolbar-progress" ng-if="!vm.show" class="md-accent"
+    md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+</md-progress-circular>
+<md-tabs md-border-bottom flex ng-if="vm.show">
+<md-tab  ng-repeat="item in  vm.scItems" label="{{item.MeasureItemName}}">
+    <md-tab-content flex layout-fill layout="column">
+      <md-autocomplete md-no-cache="true" flex="none"  md-selected-item-change="item.changeItem(r)" md-item-text="r.DrawingName" placeholder="请输入图纸名称" md-min-length="0"
+                       md-items="r in item.querySearch(vm.searchText)" md-search-text="vm.searchText">
+        <md-item-template>
+          {{r.DrawingName}}
+        </md-item-template>
+        <md-not-found>
+          未找到匹配项
+        </md-not-found>
+      </md-autocomplete>
+      <md-virtual-repeat-container flex layout="column">
+        <div  md-virtual-repeat="d in item.dynamicItems" class="repeat"  md-on-demand  ng-click="vm.stretch(d)"  layout="column" style="position: relative;margin:0px 3%">
+          <div layout="row" style="position: relative">
+            <p style="font-size:14px;">
+              {{d.DrawingName}}
+            </p>
+            <span flex></span>
+            <md-icon ng-class="{'transform_90':item.stretch}"  md-svg-icon="app/main/xhsc/images/come_in.svg" ></md-icon>
+            <span ng-if="item.stretch" class="border1px bottom1px"></span>
+          </div>
+          <md-list ng-if="d.stretch" style="padding:0px;margin: 0px;" >
+            <md-list-item  ng-repeat="k in d.indexs"  layout="row">
+              <p style="font-size:12px;padding-left:1%">
+                {{k.IndexName}}
+              </p>
+              <span flex></span>
+              <md-button ng-click="vm.action(k,$event)"  style="margin: 6px -28px"   aria-label="More">
+                <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+              </md-button>
+            </md-list-item>
+          </md-list>
+          <span class="border1px bottom1px"></span>
+        </div>
+      </md-virtual-repeat-container>
+    </md-tab-content>
+  </md-tab>
+</md-tabs>

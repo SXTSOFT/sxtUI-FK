@@ -11,8 +11,8 @@
   /** @ngInject */
   function scRegionController($scope, $stateParams, sxt, $rootScope, xhUtils, remote, $timeout, $q, $state, $mdDialog, utils, db) {
     var vm = this,
-      area=$stateParams.projectId,
-      projectId =area.substr(0,5),
+      area = $stateParams.projectId,
+      projectId = area.substr(0, 5),
       acceptanceItemID = $stateParams.acceptanceItemID,
       acceptanceItemName = $stateParams.acceptanceItemName,
       assessmentID = $stateParams.assessmentID,
@@ -49,7 +49,7 @@
         ytj: 0//已检查
       }
 
-      function initRegion(region) {
+      function initRegion(region, sc_status) {
         function ConvertClass(status) {
           var style;
           switch (status) {
@@ -66,7 +66,20 @@
         }
 
         function _init(region) {
-          function setStatus(statusArr) {
+          function setStatus(status,statusArr) {
+            //var st=null;
+            //for (var sProp in status) {
+            //  if (status[sProp].AreaId==region.RegionID&&status[sProp].AcceptanceItemID==acceptanceItemID){
+            //    st=status[sProp];
+            //    break;
+            //  }
+            //}
+            //var st = status.find(function (k) {
+            //  return k.AreaId = region.RegionID && acceptanceItemID == k.AcceptanceItemID
+            //});
+            //if (st){
+            // return st.Status
+            //}
             if (angular.isArray(statusArr) && statusArr.find(function (k) {
                 return k == acceptanceItemID;
               })) {
@@ -75,9 +88,9 @@
             return 0;
           }
 
-          region.Status = setStatus(region.StatusList)
-          if (region.RegionType==2&&region.RegionID==area){
-            region.selected=true;
+          region.Status = setStatus(sc_status,region.StatusList);
+          if (region.RegionType == 2 && region.RegionID == area) {
+            region.selected = true;
           }
           if (region.RegionType == 4) {
             vm.building.push(region);
@@ -118,12 +131,13 @@
         return region.Status == vm.filterNum || vm.filterNum == -1;
       }
 
-      function callBack(r) {
+      function callBack(res) {
         vm.loading = true;
+        var r = res[0], status = res[1];
         var project = r.data.data, _area;
         if (angular.isArray(project.Children)) {
           project.Children.forEach(function (k) {
-            initRegion(k);
+            initRegion(k, status.data);
           });
         }
         vm.houses = project.Children;
@@ -183,7 +197,12 @@
         vm.dynamicItems = new DynamicItems();
       }
 
-      remote.Assessment.GetRegionTreeInfo(projectId, 'pack' + assessmentID).then(callBack);
+      var arr = [
+        remote.Assessment.GetRegionTreeInfo(projectId, 'pack' + assessmentID),
+        remote.Procedure.getMeasureMosaic(area, null, "scslStutas")
+      ]
+      $q.all(arr).then(callBack);
+      //remote.Assessment.GetRegionTreeInfo(projectId, 'pack' + assessmentID).then(callBack);
     }
 
     load();

@@ -12,10 +12,10 @@
   /** @ngInject */
   function zjhouseChooseController($scope,$stateParams,sxt,remote,$timeout,$q,$state,$mdDialog,utils,api,xhscService,$rootScope){
     var vm=this,
-      projectId = $stateParams.projectId,
+      areaId= $stateParams.projectId,
+      projectId = area.substr(0,5),
       acceptanceItemID=$stateParams.acceptanceItemID,
-      acceptanceItemName = $stateParams.acceptanceItemName,
-      areaId = $stateParams.areaId;
+      acceptanceItemName = $stateParams.acceptanceItemName
     vm.maxRegion = $stateParams.maxRegion;
     $rootScope.title = $stateParams.acceptanceItemName;
     $rootScope.sendBt = false;
@@ -80,6 +80,9 @@
         var result=res[0];
         var status=res[1]&&res[1].data?res[1].data:[];
         result.data[0].RegionRelations.forEach(function(d){
+          if (d.RegionID==areaId){
+            d.selected=true;
+          }
           filterOrSetting(status,d);
           d.projectTree =  d.RegionName;
 

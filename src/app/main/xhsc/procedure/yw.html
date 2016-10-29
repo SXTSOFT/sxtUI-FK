@@ -3,17 +3,43 @@
                         md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
   </md-progress-circular>
   <md-list style="overflow-x: hidden;">
-    <md-list-item ng-click="vm.zbzjAction(item)" layout="row" ng-repeat="item in vm.projects">
-      <p style="font-size:14px;">
-        {{item.ProjectName}}
-        <span style="margin-left:2%;color:white;background-color: #00b6de;font-size:12px;border-radius: 3px">总包自检</span>
-      </p>
-      <span flex></span>
-      <md-button ng-click="vm.zbzjbtnAction(item,$event)" class="md-icon-button" aria-label="More">
-        <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
-      </md-button>
+    <div ng-repeat="item in vm.zj_project"  ng-click="vm.stretch(item)"  layout="column" style="position: relative;margin:0px 3%">
+      <div layout="row" style="position: relative">
+        <p style="font-size:14px;">
+          {{item.RegionName}}
+        </p>
+        <span flex></span>
+        <md-icon ng-class="{'transform_90':item.stretch}"  md-svg-icon="app/main/xhsc/images/come_in.svg" ></md-icon>
+        <span ng-if="item.stretch" class="border1px bottom1px"></span>
+      </div>
+      <md-list ng-if="item.stretch&&item.Children&&item.Children.length" style="padding:0px;margin: 0px;" >
+        <md-list-item ng-click="vm.click(k,$event)" ng-repeat="k in item.Children"  layout="row">
+          <p style="font-size:12px;padding-left:1%">
+            {{k.RegionName}}
+          </p>
+          <span flex></span>
+          <md-button ng-click="vm.downloadzj(k,$event)" ng-if="!k.isComplete" style="margin: 6px -28px" >
+            <i class="icon icon-download s30"></i>
+          </md-button>
+          <md-button ng-click="vm.zbzjbtnAction(k,$event)"  ng-if="k.isComplete" style="margin: 6px -28px"   aria-label="More">
+            <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+          </md-button>
+        </md-list-item>
+      </md-list>
       <span class="border1px bottom1px"></span>
-    </md-list-item>
+    </div>
+
+    <!--<md-list-item ng-click="vm.zbzjAction(item)" layout="row" ng-repeat="item in vm.projects">-->
+      <!--<p style="font-size:14px;">-->
+        <!--{{item.ProjectName}}-->
+        <!--<span style="margin-left:2%;color:white;background-color: #00b6de;font-size:12px;border-radius: 3px">总包自检</span>-->
+      <!--</p>-->
+      <!--<span flex></span>-->
+      <!--<md-button ng-click="vm.zbzjbtnAction(item,$event)" class="md-icon-button" aria-label="More">-->
+        <!--<md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>-->
+      <!--</md-button>-->
+      <!--<span class="border1px bottom1px"></span>-->
+    <!--</md-list-item>-->
   </md-list>
 </div>
 <div ng-if="vm.yw==2" flex="none" style="background-color: white;">
@@ -42,21 +68,6 @@
     </md-list>
     <span class="border1px bottom1px"></span>
   </div>
-
-
-  <!--<md-list style="overflow-x: hidden;">-->
-    <!--<md-list-item layout="row" ng-click="vm.by(item)" ng-repeat="item in vm.projects">-->
-      <!--<p style="font-size:14px;">-->
-        <!--{{item.ProjectName}} <span-->
-        <!--style="margin-left:2%;color:white;background-color: #359df5;font-size:12px;border-radius: 3px">总包报验</span>-->
-      <!--</p>-->
-      <!--<span flex></span>-->
-      <!--<md-button  ng-click="vm.by(item)" class="md-icon-button" aria-label="More">-->
-      <!--<md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>-->
-      <!--</md-button>-->
-      <!--<span class="border1px bottom1px"></span>-->
-    <!--</md-list-item>-->
-  <!--</md-list>-->
 </div>
 <div ng-if="vm.yw==4" flex="none" style="background-color: white;">
   <md-progress-circular id="toolbar-progress" ng-if="!vm.f_isOver" class="md-accent"

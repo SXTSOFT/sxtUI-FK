@@ -10,7 +10,7 @@
     <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular>
   </div>
 
-  <div  flex ng-repeat="h in vm.houses">
+  <div ng-if="vm.selected"  flex ng-repeat="h in vm.houses">
     <p style="font-size:12px;background: #f4f4f6;padding:10px;margin:0;" ng-show="vm.loading">{{h.projectTitle }}</p>
     <div class="floor-list gxroomlist" ng-show="vm.loading">
       <div>

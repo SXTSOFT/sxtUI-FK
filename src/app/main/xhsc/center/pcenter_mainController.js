@@ -89,5 +89,8 @@
       });
     }
       //消息中心
+    vm.scStandar=function(){
+      $state.go("app.xhsc.scPiclst");
+    }
   }
 })();

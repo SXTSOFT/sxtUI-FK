@@ -38,7 +38,8 @@
       }
     ];
     //项目包
-    function projectTask(projectId,areas,acceptanceItemID) {
+    function projectTask(regionID,areas,acceptanceItemID) {
+     var projectId=regionID.substr(0,5);
       return [
         function (tasks) {
           return $q(function(resolve) {
@@ -58,7 +59,7 @@
                     return r._id==item.DrawingID;
                   })&&vm.procedure.find(function(k){
                     return k.AcceptanceItemID==item.AcceptanceItemID;
-                  })) {
+                  })&& item.RegionId.indexOf(regionID) > -1) {
                   pics.push(item.DrawingID);
                 }
               });
@@ -156,14 +157,17 @@
       });
     }
 
-     vm.downloadzj = function (item) {
+     vm.downloadzj = function (item,evt) {
+       if (evt){
+         evt.stopPropagation();
+       }
        return api.setNetwork(0).then(function(){
           return $q(function(resolve,reject){
           $mdDialog.show({
             controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
               $scope.item=item;
               var tasks = [].concat(globalTask)
-                .concat(item.isOffline?[]:projectTask(item.ProjectID))
+                .concat(item.isOffline?[]:projectTask(item.RegionID))
                 .concat([
                   function (tasks) {
                     var group=[];
@@ -185,9 +189,6 @@
                         tasks.push(function(){
                           return remote.Project.getInspectionList(id,"Inspection_zj");
                         });
-                        //tasks.push(function(){
-                        //  return remote.Procedure.InspectionIndexJoinApi.query(id)
-                        //});
                       });
                       group.forEach(function(data){
                         InspectionZjTask(tasks,data[0],data[1],data[2]);
@@ -203,7 +204,8 @@
                 item.isOffline = true;
                 $mdDialog.hide();
                 utils.alert('下载完成');
-                return remote.offline.create({Id:'zj'+item.ProjectID});
+                item.isComplete=true;
+                return remote.offline.create({Id:'zj'+item.RegionID});
                 resolve();
               }, function () {
                 item.percent = item.current = item.total = null;
@@ -222,9 +224,12 @@
     };
 
      api.event('downloadzj',function (s,e) {
-       var current = vm.projects && vm.projects.find(function (item) {
-           return item.ProjectID==e.target.ProjectID;
+       var project = vm.zj_project && vm.zj_project.find(function (item) {
+           return e.target.RegionID.indexOf( item.RegionID)>-1;
          });
+       var current=project&&project.Children&&project.Children.find(function(item){
+         return e.target.RegionID== item.RegionID;
+       })
        if(current) {
          switch (e.event) {
            case 'progress':
@@ -369,28 +374,27 @@
     })
 
     function load(){
-      remote.Project.getMap().then(function(result){
-        remote.offline.query().then(function (r) {
-          if (r&& r.data&& r.data.length){
-            result.data.forEach(function (item) {
-              item.isOffline =true;
-            });
-          }
-          vm.projects = result.data;
-          vm.z_isOver=true;
-        }).catch(function(){
-          vm.projects = result.data;
-          switch (vm.yw){
-            case 0:
-            //case 2:
-              if (!vm.projects.length){
-                vm.isShowbg=true;
-              }
-              break;
-          }
-        });
-      });
-
+      //remote.Project.getMap().then(function(result){
+      //  remote.offline.query().then(function (r) {
+      //    if (r&& r.data&& r.data.length){
+      //      result.data.forEach(function (item) {
+      //        item.isOffline =true;
+      //      });
+      //    }
+      //    vm.projects = result.data;
+      //    vm.z_isOver=true;
+      //  }).catch(function(){
+      //    vm.projects = result.data;
+      //    switch (vm.yw){
+      //      case 0:
+      //      //case 2:
+      //        if (!vm.projects.length){
+      //          vm.isShowbg=true;
+      //        }
+      //        break;
+      //    }
+      //  });
+      //});
       remote.Procedure.getZGlist(23).then(function (r) {
         vm.zglist = [];
         if (angular.isArray(r.data)){
@@ -429,7 +433,6 @@
             }
             vm.f_isOver=true;
 
-
           });
         }
       });
@@ -458,16 +461,32 @@
           });
         }
       });
-      remote.Project.getAllRegionWithRight("", 3).then(function (r) {
-        if (vm.yw==2){
+      remote.Project.getAllRegionWithRight("", 3).then(function (n) {
+        if (vm.yw==2||vm.yw==0){
           vm.z_isOver=true;
-          if (!r || r.data.length == 0) {
+          if (!n || n.data.length == 0) {
             vm.isShowbg=true;
             return;
           }
-          vm.by_project = xhscService.buildMutilRegionTree(r.data, 1);
-        }
+          remote.offline.query().then(function(r){
+            vm.by_project = xhscService.buildMutilRegionTree(n.data, 1);
+            vm.zj_project= $.extend([],vm.by_project,true);
 
+
+            vm.zj_project.forEach(function(k){
+              if (k.Children){
+                k.Children.forEach(function(n){
+                  if (r.data.find(function(m){
+                      return m.Id=='zj'+n.RegionID;
+                    })){
+                    n.isComplete=true;
+                  }
+                })
+              }
+            });
+
+          })
+        }
       }).catch(function () {
         vm.z_isOver=true;
         vm.isShowbg=true;
@@ -485,12 +504,12 @@
       if (!item.isOffline){
         vm.downloadzj(item).then(function(){
           api.setNetwork(1).then(function(){
-            $state.go('app.xhsc.gx.gxlist', {role:'',projectId:item.ProjectID});
+            $state.go('app.xhsc.gx.gxlist', {role:'',projectId:item.RegionID});
           });
         })
       }else {
         api.setNetwork(1).then(function(){
-          $state.go('app.xhsc.gx.gxlist', {role:'',projectId:item.ProjectID});
+          $state.go('app.xhsc.gx.gxlist', {role:'',projectId:item.RegionID});
         });
       }
     }
@@ -521,7 +540,14 @@
       });
       evt.stopPropagation();
     }
-
+    vm.click=function(item,evt){
+      if (item.isComplete) {
+        api.setNetwork(1).then(function(){
+          $state.go('app.xhsc.gx.gxlist', {role:'',projectId:item.RegionID});
+        });
+      }
+      evt.stopPropagation();
+    }
     vm.jlysAction=function(item){
       if (!item.isOffline){
         vm.downloadys(item).then(function(){

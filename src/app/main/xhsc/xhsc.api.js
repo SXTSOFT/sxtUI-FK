@@ -54,6 +54,7 @@
         getMap: $http.db({
           _id: 'mapPoroject',
           idField: 'ProjectID',
+          mode:2,
           dataType: 1
         }).bind(function () {
           return $http.get($http.url('/api/ProjectInfoApi/GetMapProjectList'))
@@ -85,9 +86,21 @@
         GetAreaChildenbyID:function(regionID,regionType){
           return  $http.get($http.url('/api/ProjectInfoApi/GetAreaChildenById', {areaId: regionID}))
         },
-        getAllRegionWithRight:function(regionID,regionType){
+        getAllRegionWithRight: $http.db({
+          db:function(regionID,regionType,db){
+            if (db){
+              return db;
+            }
+            return "sxtRigthRetions"
+          },
+          idField:function(d){
+            return d.RegionID;
+          },
+          mode:2,
+          dataType: 1,
+        }).bind( function(regionID,regionType){
           return  $http.get($http.url('/api/ProjectInfoApi/GetProjectRelationRole', {areaId: regionID,regionType:regionType}));
-        },
+        }),
         getZTjd:function(areaId){
           return  $http.get($http.url('/api/ProjectInfoApi/GetSubjectSchedule', {areaId: areaId}))
         },
@@ -512,6 +525,7 @@
           _id:'InspectionInfoList',
           idField:'InspectionId',
           dataType:1,
+          mode:2,
           filter:function (item,status) {
             return item.status|status==status;
           }
@@ -565,7 +579,8 @@
         getZGlist:$http.db({
           _id:'tblEMBDInspectionRectification',
           idField:'RectificationID',
-          dataType:1
+          dataType:1,
+          mode:2
         }).bind(function(status){
           return $http.get($http.url('/api/InspectionRectificationApi/GetByStatus',{status:status}));
         }),
@@ -630,6 +645,7 @@
         }),
         //根据当前登陆人获取权限
         authorityByUserId:$http.db({
+          mode:1,
           _id:'ProjectPermissions',
           idField:'ProjectID',
           dataType:1,
@@ -1263,6 +1279,23 @@
       Report:{
         Summary:function(){
           return $http.get(sxt.app.api + '/api/ReportApi/Summary');
+        }
+      },
+      PQMeasureStandard:{
+        messageList: function ( DrawingID,AcceptanceIndexID) {
+          return $http.get($http.url('/api/MeasureStandardApi/GetListByDrawingOrIndex',{DrawingID:DrawingID,AcceptanceIndexID:AcceptanceIndexID}))
+        },
+        updateScStandar: function (id) {
+          return $http.put($http.url('/api/MeasureStandardApi/'+id))
+        },
+        delectScStandar:function(id){
+          return $http.delete($http.url('/api/MeasureStandardApi/'+id))
+        },
+         getAllScStandar:function(){
+          return $http.get($http.url('/api/MeasureStandardApi'))
+        },
+        GetProjectDrawing:function(){
+          return $http.get($http.url('/api/MeasureStandardApi/GetProjectDrawing'))
         }
       }
     });
