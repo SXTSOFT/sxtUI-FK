@@ -100,5 +100,19 @@
           }
         }
       })
+      .state('app.xhsc.scPiclst',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'实测标准化',
+        url   :'/sc_standar/{AcceptanceItemID}/{DrawingID}/{AcceptanceIndexID}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/center/sc_standar.html',
+            controller:'sc_standarController as vm'
+          }
+        }
+      })
   }
 })();

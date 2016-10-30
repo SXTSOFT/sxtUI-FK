@@ -23,9 +23,7 @@
     ];
     vm.searchText="";
     vm.selectedItem=null;
-    vm.click=function(){
-      alert(1);
-    }
+
     $q.all(arr).then(function(res){
       vm.scItems=res[0]? res[0].data:[];
       var  draws=res[1]? res[1].data:[];
@@ -35,6 +33,7 @@
           if (k.Type== o.MeasurePictureType){
             var pic={
               DrawingID: k.DrawingID,
+              AcceptanceItemID: o.AcceptanceItemID,
               DrawingName: k.DrawingName
             }
             pic.indexs=[];
@@ -42,7 +41,8 @@
             o.MeasureIndexList.forEach(function(n){
               pic.indexs.push({
                 AcceptanceIndexID: n.AcceptanceIndexID,
-                AcceptanceItemID: n.AcceptanceItemID,
+                AcceptanceItemID: o.AcceptanceItemID,
+                DrawingID:k.DrawingID,
                 IndexName: n.IndexName
               });
             });
@@ -83,6 +83,14 @@
     vm.stretch = function (item) {
       item.stretch = !item.stretch;
     }
+    vm.go=function(AcceptanceItemID,drawingID,AcceptanceIndexID){
+      $state.go("app.xhsc.scPiclst",{
+        AcceptanceItemID:AcceptanceItemID,
+        drawingID:drawingID,
+        AcceptanceIndexID:AcceptanceIndexID
+      })
+    }
+
     vm.action = function (item, evt) {
       $mdBottomSheet.show({
         templateUrl: 'app/main/xhsc/procedure/action.html',
@@ -91,7 +99,7 @@
             title: '标准化',
             action: function () {
               $mdBottomSheet.hide();
-              vm.go(item);
+              vm.go(item.AcceptanceItemID,item.DrawingID,item.AcceptanceIndexID);
             }
           }, {
             title: '删 除',

@@ -1,0 +1,14 @@
+<div layout="row" class="scTop">
+  <div flex class="scleft">
+    <span>{{vm.info.aItem.MeasureItemName}}：</span>
+    <md-button class="md-mini" ng-click="vm.scChoose($event)">
+      <label style="margin-bottom: 0;font-weight: normal;"><span ng-repeat="sc in vm.info.MeasureIndexes" style="color:#f00;">{{sc.IndexName}}</span></label>
+      <img src="app/main/xhsc/images/pop.png" style="vertical-align: middle;margin-left: 10px;"></md-button>
+    <span style="color:darkslategray;font-style: italic;">{{vm.info.tooltip}}</span>
+  </div>
+</div>
+<sxt-sc-standar acceptance-item="vm.info.acceptanceItemID"  measure-indexes="vm.info.MeasureIndexes" drawing="vm.drawing"  flex>
+</sxt-sc-standar>
+<div style="display: none">
+  <sxt-sc-standar-pop></sxt-sc-standar-pop>
+</div>
