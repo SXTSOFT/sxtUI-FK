@@ -1,26 +1,25 @@
 /**
- * Created by HangQingFeng on 2016/10/27.
+ * Created by HuangQingFeng on 2016/10/28.
  */
-
 (function () {
   'use strict';
   angular
     .module('app.xhsc')
-    .component('materialPlanInspection',{
-      templateUrl:'app/main/materialYs/component/materialPlanYs-inspection.html',
-      controller:materialPlanInspection,
+    .component('materialUnqualifiedExit',{
+      templateUrl:'app/main/materialYs/component/materialYs-UnqualifiedExit.html',
+      controller:materialUnqualifiedExit,
       controllerAs:'vm'
     });
 
   /** @ngInject */
-  function materialPlanInspection($rootScope,$scope,api,utils,$stateParams){
+  function materialUnqualifiedExit($rootScope,$scope,api,utils){
     var vm = this;
     vm.data = {};
-    vm.data.Id = $stateParams.id;
-    vm.data.InspectionTime = new Date();
+    vm.data.ExitReason = '材料不合格';
+
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
-      api.xhsc.materialPlan.MaterialInspection(vm.data).then(function (q) {
+      api.xhsc.materialPlan.materialUnqualifiedExit(vm.data).then(function (q) {
         utils.alert("提交成功", null, function () {
           $state.go("app.xhsc.materialys.planList");
         });
@@ -31,7 +30,5 @@
       sendgxResult();
       sendgxResult=null;
     });
-
-
   }
-})(angular,undefined);
+})(angular,undefined)

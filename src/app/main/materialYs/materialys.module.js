@@ -78,6 +78,27 @@
         url:'/approval/{planId}/{id}',
         template: '<material-ys-approval flex layout="column"></material-ys-approval>'
       })
+      .state('app.xhsc.materialys.inspection',{
+        noBack:true,
+        sendBt:true,
+        title:'材料送检',
+        url:'/inspection/{id}',
+        template: '<material-plan-inspection flex layout="column"></material-plan-inspection>'
+      })
+      .state('app.xhsc.materialys.exit',{
+        noBack:true,
+        sendBt:true,
+        title:'材料退场',
+        url:'/exit/{id}',
+        template: '<material-ys-exit flex layout="column"></material-ys-exit>'
+      })
+      .state('app.xhsc.materialys.unqualifiedExit',{
+        noBack:true,
+        sendBt:true,
+        title:'材料退场',
+        url:'/unqualifiedExit/{id}',
+        template: '<material-unqualified-exit flex layout="column"></material-unqualified-exit>'
+      })
   }
 
 })(angular,undefined);

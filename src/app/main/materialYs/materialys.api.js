@@ -51,12 +51,33 @@
         }).bind(function (data) {
           return $http.put('/api/MaterialPlan/InsertApproval', data);
         }),
+        PostExitInfo: $http.db({
+          _id: 'materialPlan',
+          idField: 'Id',
+          upload:true
+        }).bind(function (data) {
+          return $http.post('/api/MaterialPlan/InsertExitInfo', data);
+        }),
         CreateMaterialPlanBatch:$http.db({
           _id:'materialPlanBatch',
           idField:'Id',
           dataType:3
         }).bind(function (data) {
           return $http.post('/api/MaterialPlan/CreateMaterialPlanBatchAsync',data);
+        }),
+        MaterialInspection:$http.db({
+          _id:'materialPlanBatch',
+          idField:'Id',
+          dataType:3
+        }).bind(function (data) {
+          return $http.put('/api/MaterialPlan/MaterialInspection',data);
+        }),
+        materialUnqualifiedExit:$http.db({
+          _id:'materialPlanBatch',
+          idField:'Id',
+          dataType:3
+        }).bind(function (data) {
+          return $http.put('/api/MaterialPlan/UnMaterialExit',data);
         })
       }
     });

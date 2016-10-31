@@ -22,6 +22,7 @@
       {type:2,name:'认质认价'},
       {type:4,name:'甲指乙供'}
     ];
+    vm.data.PlanTime=new Date();
 
     api.xhsc.Project.getMap().then(function (r) {
       vm.projects = r.data;
