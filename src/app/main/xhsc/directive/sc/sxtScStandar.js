@@ -19,7 +19,6 @@
     function now() {
       return new Date().toISOString();
     }
-
     return {
       scope: {
         acceptanceItem: '=',//实测项
@@ -43,43 +42,68 @@
           map._map.removeLayer(fg);
         if(toolbar)
           map._map.removeControl(toolbar);
-        var arr=[];
-
-        $q.all(arr).then(function (res) {
-          //图纸
-          $timeout(function () {
-            if (scope.drawing) {
-              map.loadSvgXml(scope.Drawing.DrawingContent, {
-                filterLine: function (line) {
-                  line.attrs.stroke = 'black';
-                  line.options = line.options || {};
-                  line.attrs['stroke-width'] = line.attrs['stroke-width'] * 6;
+          //渲染几何点
+          function historydata(layer,index){
+            var layer = layer;
+            if (layer.loaded)return;
+            layer.loaded = true;
+            var reqArr=[
+              remote.Assessment.GetMeasurePointAll()
+            ]
+            $q.all(reqArr).then(function(req){
+              //图纸
+              $timeout(function () {
+                if (scope.drawing&&scope.drawing.data&&scope.drawing.data.DrawingContent) {
+                  map.loadSvgXml(scope.drawing.data.DrawingContent, {
+                    filterLine: function (line) {
+                      line.attrs.stroke = 'black';
+                      line.options = line.options || {};
+                      line.attrs['stroke-width'] = line.attrs['stroke-width'] * 6;
+                    }
+                  });
+                  map.center();
+                  scope.tooltip = '';
+                }
+                else {
+                  utils.alert('未找到图纸,请与管理员联系!');
+                  scope.ct && (scope.ct.loading = false);
                 }
               });
-              map.center();
-              scope.tooltip = '';
-            }
-            else {
-                utils.alert('未找到图纸,请与管理员联系!');
-                scope.ct && (scope.ct.loading = false);
-            }
-          });
-          //渲染几何点
+              var points=req[0].data&&req[0].data.data?req[0].data.data:[];
+              var po;
+              function addData(layData,index,color){
+                if(!layData.geometry && layData.Geometry){
+                  layData.geometry = JSON.parse(layData.Geometry.Geometry);
+                }
+                if(!layData.geometry) return;
+                layData.geometry.options={
+                  color : color,
+                  v:index,
+                  seq:layData.geometry.properties.seq,
+                  customSeq:true,
+                  move:false
+                }
+                layer.addLayer(layData.geometry);
+              }
+              if (points&&points.length){
+                var g;
+                points.forEach(function(m){
+                  if (m.DrawingID==img.DrawingID&& scope.measureIndexes.find(function (n) {
+                      return n.AcceptanceIndexID == m.AcceptanceIndexID
+                    })){
+                    var color="green"
+                    addData(m,index,color);
+                    index++;
+                  }
+                });
+              }
+            });
+          }
+
           fg = new L.SvFeatureGroup({
             onLoad:function(){
-              //function addData(layData,index,color){
-              //  if(!layData.geometry && layData.Geometry){
-              //    layData.geometry = JSON.parse(layData.Geometry.Geometry);
-              //  }
-              //  if(!layData.geometry) return;
-              //  layData.geometry.options.color = color;
-              //  layData.geometry.options.v = index;
-              //  layData.geometry.options.seq = layData.geometry.properties.seq;
-              //  layData.geometry.options.customSeq = true;
-              //  layData.geometry.options.move = false;
-              //  layData.CreateTime = moment(layData.CreateTime).toDate();
-              //  layer.addData(layData.geometry);
-              //}
+              var  index=0;
+              historydata(this,index);
             },
             onUpdate: function (layer, isNew, group) {
               //这里是修正用户点的位置,尽可能在最近点的同一水平或竖直线上
@@ -115,6 +139,7 @@
                 }
               }
               var point = layer.toGeoJSON();
+
               point = {
                 _id: point.properties.$id,
                 geometry: point
@@ -134,6 +159,8 @@
                   values.forEach(function (v) {
                     v.ParentMeasureValueID = null;
                     data.addOrUpdate(v);
+
+
                   })
                 }
                 else {//添加或更改groupId
@@ -206,6 +233,9 @@
 
             },
             onDelete: function (layer) {
+              var l=layer.toGeoJSON();
+              remote.PQMeasureStandard.delectScStandar(l.options.AcceptanceIndexID,l.options.DrawingID,
+                l.options.MeasurePointID)
             },
             onPopup: function (e) {
               if (e.layer instanceof L.Stamp
@@ -245,14 +275,12 @@
               })
             }
           }).addTo(map._map);
-        }).catch(function(r){
+        }
 
-        });
-      };
       $timeout(function () {
         scope.$watchCollection('measureIndexes', function () {
           install();
-        });
+        },true);
       }, 500);
     }
   }

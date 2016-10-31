@@ -18,18 +18,18 @@
     var vm = this;
     vm.info = {
       acceptanceItemID:$stateParams.AcceptanceItemID,
-      acceptanceIndexID:$stateParams.acceptanceIndexID,
-      drawingID:$stateParams.DrawingID
+      acceptanceIndexID:$stateParams.AcceptanceIndexID,
+      drawing:$stateParams.DrawingID
     };
       var arr=[
         remote.Project.GetMeasureItemInfoByAreaID(),
-        remote.Project.getDrawing(vm.info.drawingID)
+        remote.Project.getDrawing(vm.info.drawing)
       ]
-
+      vm.selected=[];
       $q.all(arr).then(function(res){
         var  r=res[0];
         vm.drawing=res[1];
-
+        vm.scroll=true;
         var find = r.data.find(function (it) {
           return it.AcceptanceItemID == vm.info.acceptanceItemID;
         });
@@ -41,6 +41,11 @@
               item.checked=true;
             }
             m.push(item);
+          });
+          vm.selected= $.map(m,function(r){
+            if (r.checked){
+              return r;
+            }
           });
           vm.MeasureIndexes = m;
           $timeout(function () {
@@ -84,7 +89,13 @@
             templateUrl: 'app/main/xhsc/ys/scChoose.html',
             parent:angular.element('#content'),
             clickOutsideToClose:vm.info.MeasureIndexes
-          })
+          }).then(function(m){
+          vm.selected= $.map(m,function(r){
+            if (r.checked){
+              return r;
+            }
+          });
+        })
       }
   }
 })();

@@ -1,14 +1,19 @@
 <div layout="row" class="scTop">
   <div flex class="scleft">
-    <span>{{vm.title}}：</span>
-    <md-button class="md-mini" ng-click="vm.scChoose($event)">
-      <label style="margin-bottom: 0;font-weight: normal;"><span ng-repeat="sc in vm.info.MeasureIndexes" style="color:#f00;">{{sc.IndexName}}</span></label>
-      <img src="app/main/xhsc/images/pop.png" style="vertical-align: middle;margin-left: 10px;"></md-button>
-    <span style="color:darkslategray;font-style: italic;">{{vm.info.tooltip}}</span>
+    <md-progress-circular id="toolbar-progress" ng-if="!vm.scroll" class="md-accent"
+        md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+    </md-progress-circular>
+    <div ng-if="vm.scroll">
+      <span>{{vm.title}}：</span>
+      <md-button class="md-mini" ng-click="vm.scChoose($event)">
+        <label style="margin-bottom: 0;font-weight: normal;"><span ng-repeat="sc in vm.selected" style="color:#f00;">{{sc.IndexName}}</span></label>
+        <img src="app/main/xhsc/images/pop.png" style="vertical-align: middle;margin-left: 10px;"></md-button>
+      <span style="color:darkslategray;font-style: italic;">{{vm.info.tooltip}}</span>
+    </div>
   </div>
 </div>
-<!--<sxt-sc-standar acceptance-item="vm.info.acceptanceItemID"  measure-indexes="vm.info.MeasureIndexes" drawing="vm.drawing"  flex>-->
-<!--</sxt-sc-standar>-->
+<sxt-sc-standar acceptance-item="vm.info.acceptanceItemID"  measure-indexes="vm.selected" tooltip="" drawing="vm.drawing"  flex>
+</sxt-sc-standar>
 <!--<div style="display: none">-->
   <!--<sxt-sc-standar-pop></sxt-sc-standar-pop>-->
 <!--</div>-->

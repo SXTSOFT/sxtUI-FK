@@ -86,7 +86,7 @@
     vm.go=function(AcceptanceItemID,drawingID,AcceptanceIndexID){
       $state.go("app.xhsc.sc_standar",{
         AcceptanceItemID:AcceptanceItemID,
-        drawingID:drawingID,
+        DrawingID:drawingID,
         AcceptanceIndexID:AcceptanceIndexID
       })
     }

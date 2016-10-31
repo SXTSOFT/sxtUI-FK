@@ -1288,8 +1288,12 @@
         updateScStandar: function (id) {
           return $http.put($http.url('/api/MeasureStandardApi/'+id))
         },
-        delectScStandar:function(id){
-          return $http.delete($http.url('/api/MeasureStandardApi/'+id))
+        delectScStandar:function(AcceptanceIndexID,DrawingID,MeasurePointID){
+          return $http.delete($http.url('/api/MeasureStandardApi',{
+            AcceptanceIndexID:AcceptanceIndexID,
+            DrawingID:DrawingID,
+            MeasurePointID:MeasurePointID
+          }))
         },
          getAllScStandar:function(){
           return $http.get($http.url('/api/MeasureStandardApi'))

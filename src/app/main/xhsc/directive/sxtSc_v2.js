@@ -13,7 +13,7 @@
 
   /** @Inject */
   function sxtScNew($timeout, mapPopupSerivce, db, sxt, xhUtils, scPack, remote, utils, $q, api, $rootScope) {
-    var pack=scPack;
+   var pack=scPack;
     function now() {
       return new Date().toISOString();
     }
@@ -293,7 +293,7 @@
                       DrawingID:img.DrawingID,
                       MeasurePointID:point._id
                     }
-                    scStandar.addOrUpdate(point);
+                    scStandar.addOrUpdate(standar);
                   });
                 })
               }
