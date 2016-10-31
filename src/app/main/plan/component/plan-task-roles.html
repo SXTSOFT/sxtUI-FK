@@ -1,0 +1,45 @@
+<md-dialog>
+  <md-toolbar class="md-hue-2">
+    <div class="md-toolbar-tools tasks-list">
+      <h2>
+        <span>角色选择</span>
+      </h2>
+      <span flex></span>
+      <md-button class="md-icon-button" aria-label="More">
+        <md-icon md-font-icon="icon-plus" ></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content style="padding: 0">
+    <md-list>
+      <md-list-item ng-repeat="item in vm.nextUserGroups">
+        <md-checkbox ng-model="item.selected"></md-checkbox>
+        <div class="md-list-item-text">
+          {{item.GroupName}}
+        </div>
+        <md-divider></md-divider>
+      </md-list-item>
+    </md-list>
+    <!--<table class="simple">-->
+      <!--<thead>-->
+      <!--<tr>-->
+        <!--<th>选择</th>-->
+        <!--<th>名称</th>-->
+      <!--</tr>-->
+      <!--</thead>-->
+      <!--<tbody>-->
+      <!--<tr ng-repeat="item in vm.nextUserGroups">-->
+        <!--<td><md-checkbox ng-model="item.selected" aria-label="选择">-->
+        <!--</md-checkbox></td>-->
+        <!--<td class="name">{{item.GroupName}}</td>-->
+      <!--</tr>-->
+      <!--</tbody>-->
+    <!--</table>-->
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <md-button ng-click="vm.select('useful')">
+      确定
+    </md-button>
+  </md-dialog-actions>
+</md-dialog>
+
