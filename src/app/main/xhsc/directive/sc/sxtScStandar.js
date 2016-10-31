@@ -145,6 +145,49 @@
                 geometry: point
               };
               //points.addOrUpdate(point);
+              if (isNew || !fg.data.find(function (d) {
+                  return d.MeasurePointID == point._id;
+                })) {
+                scope.measureIndexes.forEach(function (m) {
+                  var ms = [];
+                  if (m.Children && m.Children.length) {
+                    m.Children.forEach(function (m1) {
+                      ms.push(m1);
+                    });
+                  }
+                  else {
+                    ms.push(m);
+                  }
+                  ms.forEach(function (m) {
+                    var v = {
+                      _id: sxt.uuid(),
+                      RecordType: 1,
+                      CreateTime: now(),
+                      RelationID: scope.db,
+                      MeasurePointID: point._id,
+                      DrawingID: scope.imageUrl,
+                      CheckRegionID: scope.regionId,
+                      RegionType: scope.regionType,
+                      AcceptanceItemID: scope.acceptanceItem,
+                      AcceptanceIndexID: m.AcceptanceIndexID
+                    };
+                    v.MeasureValueId = v._id;
+                    data.addOrUpdate(v);
+                    fg.data = fg.data ? fg.data : [];
+                    fg.data.push(v);
+                    //实测标准化
+                    var standar={
+                      _id: sxt.uuid(),
+                      AcceptanceIndexID: m.AcceptanceIndexID,
+                      AcceptanceItemID:scope.acceptanceItem,
+                      DrawingID:img.DrawingID,
+                      MeasurePointID:point._id
+                    }
+                    scStandar.addOrUpdate(standar);
+                  });
+                })
+              }
+
               if (group) {
                 var groupId = group.getValue().$id,//添加或移出的groupId
                   measureIndexs = xhUtils.findAll(scope.measureIndexes, function (m) {
@@ -159,8 +202,6 @@
                   values.forEach(function (v) {
                     v.ParentMeasureValueID = null;
                     data.addOrUpdate(v);
-
-
                   })
                 }
                 else {//添加或更改groupId
