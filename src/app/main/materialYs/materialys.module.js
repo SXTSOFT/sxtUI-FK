@@ -85,20 +85,19 @@
         url:'/inspection/{id}',
         template: '<material-plan-inspection flex layout="column"></material-plan-inspection>'
       })
-      .state('',{
-        noback:true,
-        sendBt:true,
-        title:'材料退场',
-        url:'materialApprovalDetail/{id}',
-        template:'<material-approval-detail></material-approval-detail>'
-      })
-
       .state('app.xhsc.materialys.exit',{
         noBack:true,
         sendBt:true,
         title:'材料退场',
         url:'/exit/{id}',
         template: '<material-ys-exit flex layout="column"></material-ys-exit>'
+      })
+      .state('app.xhsc.materialys.unqualifiedExit',{
+        noBack:true,
+        sendBt:true,
+        title:'材料退场',
+        url:'/unqualifiedExit/{id}',
+        template: '<material-unqualified-exit flex layout="column"></material-unqualified-exit>'
       })
   }
 

@@ -1,0 +1,34 @@
+<md-content flex layout-padding>
+  <md-list>
+    <md-list ng-cloak>
+      <md-divider class="md-no-sticky"></md-divider>
+      <md-list-item style="height: 48px;">
+        <label flex="40">退场原因</label>
+        <md-input-container flex="60" class="md-block" style="height: 48px; margin: 0;padding: 0;">
+          <input type="text" ng-model="vm.data.ExitReason"  ng-disabled="true" style="padding: 0;margin-top: 10px;text-align: right;" />
+        </md-input-container>
+      </md-list-item>
+      <md-divider  class="md-no-sticky"></md-divider>
+      <md-list-item>
+        <label flex="40">退场数量</label>
+        <md-input-container flex="60" class="md-block" style="height: 48px; margin: 0;padding: 0;">
+          <input type="number" ng-model="vm.data.ExitCount" min="0" style="padding: 0;margin-top: 10px;text-align: right;">
+        </md-input-container>
+      </md-list-item>
+      <md-divider class="md-no-sticky"></md-divider>
+      <md-list-item style="height: 48px;">
+        <label flex="40">退场见证人</label>
+        <md-input-container flex="60" class="md-block" style="height: 48px; margin: 0;padding: 0;">
+          <input ng-model="vm.data.ExitWitness" style="padding: 0;margin-top: 10px;text-align: right;">
+        </md-input-container>
+      </md-list-item>
+      <md-divider class="md-no-sticky"></md-divider>
+      <md-subheader class="md-no-sticky" style="font-size: 1.1em;background-color: #F2F2F2;">退场照片</md-subheader>
+      <md-divider class="md-no-sticky"></md-divider>
+      <md-list-item>
+        我是照片
+      </md-list-item>
+      <md-divider class="md-no-sticky"></md-divider>
+    </md-list>
+  </md-list>
+</md-content>
