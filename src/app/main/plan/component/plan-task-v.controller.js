@@ -6,40 +6,18 @@
 
   angular
     .module('app.plan')
-    .component('planTask',{
-      templateUrl:'app/main/plan/component/plan-task.html',
-      controller:planTask,
+    .component('planTaskV',{
+      templateUrl:'app/main/plan/component/plan-task-v.html',
+      controller:planTaskV,
       controllerAs:'vm'
     });
 
   /** @ngInject */
-  function planTask($scope,template,$mdSidenav,$stateParams,api,$state,$mdDialog,$mdSelect,$q,utils,$timeout){
+  function planTaskV($scope,template,$mdSidenav,$stateParams,api,$state,$mdDialog,$mdSelect,$q,utils,$timeout){
     var vm = this,
       temp,task,
       id = $state.params["id"];
 
-/*    if(id!='add'){
-      api.plan.TaskLibrary.getItem(id).then(function (r) {
-        vm.data = r.data;
-      })
-    }*/
-    //保存任务左边的基础信息
-    vm.ClickSaveleft = function(data){
-      if(id=='add'){
-        api.plan.TaskLibrary.create(data).then(function (r) {
-          $state.go('app.plan.task.list');
-        });
-
-      }else{
-        api.plan.TaskLibrary.update(data).then(function (r) {
-          //$state.go('app.plan.task.list');
-          if(r.status == 200){
-            utils.alert('保存成功！');
-          }
-        });
-      }
-
-    }
     //工序
     api.plan.procedure.query().then(function(r){
       vm.procedures = r.data;
@@ -47,38 +25,30 @@
     api.plan.MeasureInfo.query().then(function(r){
       vm.measureInfo = r.data
     })
-    vm.selectSpecialtyLow=function(item,parent){
-      parent.WPAcceptanceList=item.WPAcceptanceList;
-    }
 
-    vm.selectedGx = [];
-    vm.choosego = function(item){
-      vm.gxNames = item.AcceptanceItemName;
-      vm.data.CloseRelatedObjectId = item.AcceptanceItemID;
-      $mdSidenav('gx_nav').close();
-    }
-
-    vm.selectProcedure = function(){
-      $mdSidenav('gx_nav').open();
-    }
     vm.isNew = $stateParams.id=='add';
-
-    vm.createTask = function(){
-      if(vm.isNew) {
-        api.plan.TaskLibrary.create(vm.data).then(function (r) {
-          $state.go('app.plan.task.detail',{id: r.data.TaskLibraryId});
-        });
-      }
-      else{
-        api.plan.TaskLibrary.update(vm.data.TaskLibraryId,vm.data).then(function (r) {
-
-        })
-      }
-    }
-
     if(!vm.isNew){
       api.plan.TaskLibrary.getTaskFlow($stateParams.id).then(function (r) {
         task = vm.data = r.data;
+        task.Master.forEach(function (flow) {
+          if(flow.Description)
+            angular.extend(flow,angular.fromJson(flow.Description));
+          flow.oMilestone=flow.Milestone;
+          flow.oName=flow.Name;
+          flow.oReservedEndDays = flow.ReservedEndDays;
+          flow.oDuration = flow.Duration;
+        });
+        task.Branch.forEach(function (b) {
+          b.forEach(function (flow) {
+            if(flow.Description)
+              angular.extend(flow,angular.fromJson(flow.Description));
+            flow.oMilestone=flow.Milestone;
+            flow.oName=flow.Name;
+            flow.oReservedEndDays = flow.ReservedEndDays;
+            flow.oDuration = flow.Duration;
+          })
+        });
+        vm.onLoadTemplate();
       })
     }
     else{
@@ -86,14 +56,11 @@
         Level:0
       }
     }
-
-    vm.toggleRight = function () {
-      return $mdSidenav('right')
-        .open();
-    }
-    vm.closeRight = function () {
-      return $mdSidenav('right')
-        .close();
+    vm.setEndFlow = function (flow,endFlow) {
+      flow.EndFlagTaskFlowId = endFlow.TaskFlowId;
+      vm.updateFlow(flow).then(function () {
+        vm.flows = temp.load(temp.task);
+      });
     }
     vm.relationTypes = [{
       name:'关联实测项',
@@ -102,8 +69,143 @@
       name:'关联工序',
       type:'Inspection'
     }]
-    vm.onLoadTemplate = function () {
+    vm.addNext = function (ev,flow,isBranch) {
+      var confirm = $mdDialog.prompt()
+        .title('添加'+(isBranch?'下一分支':'下一流程'))
+        .placeholder((isBranch?'分支名称':'流程名称'))
+        .ariaLabel((isBranch?'分支名称':'流程名称'))
+        .targetEvent(ev)
+        .ok('确定')
+        .cancel('取消');
 
+      return $mdDialog.show(confirm).then(function(result) {
+        var next = {
+          TaskLibraryId: id,
+          IsFloor: false,
+          Type: isBranch ? temp.task.Branch.length+1 : flow ? flow.line : 0,
+          ParentId: flow ? flow.TaskFlowId : 0,
+          Name: result
+        };
+        return api.plan.TaskFlow.post(
+          next
+        ).then(function (r) {
+          next.TaskFlowId = r.data.TaskFlowId;
+          if(vm.data.Level==1){
+            return api.plan.TaskLibrary.create({
+              Name:result
+            }).then(function (r1) {
+              return api.plan.TaskFlow.resetTaskFlow(next.TaskFlowId,[{
+                TaskFlowId:next.TaskFlowId,
+                TaskLibraryId:r1.data.TaskLibraryId
+              }]);
+            });
+          }
+        }).then(function () {
+          vm.flows = temp.add(next,flow,isBranch);
+        });
+      });
+    }
+    vm.removeFlow = function (ev,flow) {
+      return utils.confirm('确认删除'+flow.Name+'？',null).then(function(){
+        return api.plan.TaskFlow.resetTaskFlow(flow.TaskFlowId,[]).then(function (r) {
+          return api.plan.TaskFlow.deleteFlow(flow.TaskFlowId).then(function () {
+            if (vm.data.Level === 1) {
+              return api.plan.TaskFlow.getSubTasks(flow.TaskFlowId).then(function (r) {
+                return api.plan.TaskLibrary.delete(r.data.Items[0].TaskLibraryId);
+              });
+            }
+          }).then(function () {
+            vm.flows = temp.remove(flow);
+          })
+        });
+      });
+    }
+    vm.updateFlowName = function (flow) {
+      if(flow.oName != flow.Name){
+        flow.oName = flow.Name;
+        return vm.updateFlow(flow);
+      }
+    }
+    vm.updateMilestone = function (flow) {
+      if(flow.oMilestone != flow.Milestone){
+        flow.oMilestone = flow.Milestone;
+        return api.plan.MileStone.query({RelatedFlowId:flow.TaskFlowId}).then(function(r){
+          var m = r.data && r.data.Items[0];
+          if(!flow.Milestone){
+            if(m) {
+              return api.plan.MileStone.delete(m.Id);
+            }
+          }
+          else{
+            if(m) {
+              m.Name = flow.Milestone;
+              return api.plan.MileStone.update(m.Id, m)
+            }
+            else{
+              return api.plan.MileStone.create({
+                Name:flow.Milestone,
+                RelatedFlowId:flow.TaskFlowId,
+                Percentage:100
+              });
+            }
+          }
+        }).then(function () {
+          return vm.updateFlow(flow);
+        })
+      }
+    }
+    vm.updateFlow = function (flow) {
+      return api.plan.TaskFlow.updateTaskById({
+        Id:flow.TaskFlowId,
+        Name:flow.Name,
+        IsFloor:flow.IsFloor,
+        IsRequired:flow.IsRequired,
+        EndFlagTaskFlowId:flow.EndFlagTaskFlowId,
+        Description:angular.toJson({
+          ReservedEndDays:flow.ReservedEndDays,
+          Duration: flow.Duration,
+          Milestone:flow.Milestone,
+          OptionalTask:flow.OptionalTask,
+          Notices:flow.Notices,
+          CarryOut:flow.CarryOut
+        })
+      }).then(function () {
+
+      })
+    }
+    vm.updateDuration = function (flow) {
+      if(flow.oDuration != flow.Duration){
+        flow.oDuration = flow.Duration;
+        return api.plan.TaskFlow.getSubTasks(flow.TaskFlowId).then(function (r) {
+          var taskLib = r.data.Items[0];
+          taskLib.Id = taskLib.TaskLibraryId;
+          taskLib.Duration = flow.Duration;
+          return api.plan.TaskFlow.updateTaskById(taskLib).then(function () {
+            return vm.updateFlow(flow);
+          })
+        });
+      }
+    }
+    vm.updateReservedEndDays = function (flow) {
+      if(flow.oReservedEndDays != flow.ReservedEndDays){
+        flow.oReservedEndDays = flow.ReservedEndDays;
+        return api.plan.TaskFlow.getSubTasks(flow.TaskFlowId).then(function (r) {
+          var taskLib = r.data.Items[0];
+          taskLib.Id = taskLib.TaskLibraryId;
+          taskLib.ReservedEndDays = flow.ReservedEndDays;
+          return api.plan.TaskFlow.updateTaskById(taskLib).then(function () {
+            return vm.updateFlow(flow);
+          })
+        });
+      }
+    }
+    vm.loadTemlpate = function () {
+      return api.plan.TaskLibrary.getTaskFlow($stateParams.id).then(function (r) {
+        task = vm.data = r.data;
+        vm.onLoadTemplate();
+      });
+    }
+    vm.onLoadTemplate = function () {
       if(!task) {
         task = {
           taskId: 0,
@@ -112,314 +214,55 @@
           Branch: []
         }
       }
-      if(task.Master.length===0) {
-        vm.toggleRight();
-      }
       if(temp)return;
       temp = new template({
         onClick:function (e) {
           vm.current = e.data;
-          vm.toggleRight();
           vm.saveNotice7=[];
           vm.MileStone = [];
           //vm.saveNoticeStarted = [];
           //vm.saveNoticeEarlyWarning=[];
           vm.saveNotice8=[];
-          $timeout(function(){
-            vm.getUsers();
-            vm.getNextTasks();
-            vm.getMilestone();
-            vm.categoryChanged = false;
-          },300)
 
         }
       });
-      temp.load(task);
+      vm.flows = temp.load(task);
 
     }
-    vm.getMilestone = function(){
-      api.plan.MileStone.query({RelatedFlowId:vm.current.TaskFlowId}).then(function(r){
-        if(r.data&&r.data.Items.length){
-          vm.MileStone = r.data.Items[0];
-          vm.current.Memorial = true;
-          vm.current.MemorialName = vm.MileStone.Name;
-          vm.current.Percentage = vm.MileStone.Percentage;
-        }
-      })
-    }
-    api.plan.UserGroup.query().then(function(r){
-      vm.nextUserGroups = r.data.Items;
-    })
-    vm.getUsers = function(){
-      var promise=[
-        api.plan.TaskFlow.getRoleByFlowId(vm.current.TaskFlowId)
-        //api.plan.UserGroup.query()
-      ]
-      if(!vm.nextUserGroups) return;
-     // $q.all(promise).then(function(res){
-        api.plan.TaskFlow.getRoleByFlowId(vm.current.TaskFlowId).then(function(res){
-        //var users = res[0].data.Items;
-        //vm.nextUserGroups = res[1].data.Items;
-        var users = res.data.Items;
-        if(!users&&users.length) return;
-        users.forEach(function(r){
-          var f = vm.nextUserGroups.find(function(_r){
-            return _r.GroupID == r.RoleId;
-          })
-          if(f){
-            f['selected'+ r.NotificationType] = true;
+
+    vm.selectOptionalTask =function (flow) {
+      return $mdDialog.show({
+        controller: ['$mdDialog', function ($mdDialog) {
+          var vm = this;
+          vm.flow = flow;
+
+          vm.select = function () {
+            $mdDialog.hide(vm.items.filter(function (t) {
+              return t.selected;
+            }));
           }
-        })
-        users.forEach(function(r){
-          switch (r.NotificationType){
-            //case 1:
-            //  vm.saveNoticeStarted.push(r.RoleId);
-            //  break;
-            //case 2:
-            //  vm.saveNoticeEarlyWarning.push(r.RoleId);
-            //  break;
-            case 1:
-              break;
-            case 2:
-              break;
-            case 4:
-              break;
-            case 7:
-              vm.saveNotice7.push(r.RoleId);
-              break;
-            case 8:
-              vm.saveNotice8.push(r.RoleId);
-              break;
-            default:
-              break;
-          }
-        })
-      })
-    }
-
-    vm.save = function () {
-      var data={
-        "Id": vm.current.TaskFlowId,
-        "Name": vm.current.Name,
-        "IsFloor": vm.current.IsFloor,
-        "IsRequired":vm.current.IsRequired
-      }
-      api.plan.TaskFlow.updateTaskById(data).then(function () {
-        temp && temp.edit(vm.current);
-        vm.closeRight();
-      })
-      if(vm.current.Memorial){
-        var mdata = {
-          "Name": vm.current.MemorialName,
-          "RelatedFlowId": vm.current.TaskFlowId,
-          "Percentage": vm.current.Percentage
-        }
-        if(vm.MileStone&&vm.MileStone.length){
-          mdata.Id = vm.MileStone.Id;
-          api.plan.MileStone.update(vm.MileStone.Id,mdata).then(function(){
-
-          })
-        }else{
-          api.plan.MileStone.create(mdata).then(function(r){
-
-          })
-        }
-      }else if(!vm.current.Memorial&&vm.MileStone){
-        api.plan.MileStone.delete(vm.MileStone.Id).then(function(r){
-          console.log(r)
-        })
-      }
-    }
-    vm.getSelectedText = function(){
-      vm.saveTasks && vm.saveTasks.map(function(r){
-        console.log(r)
-       // return r.split('-')[0];
-      })
-      return vm.saveTasks;
-    }
-    vm.nextSave = function () {
-      var next = angular.extend({
-        TaskLibraryId:task.TaskLibraryId,
-        IsFloor:false,
-        Type:vm.current?vm.current.line:0,
-        ParentId:vm.current?vm.current.TaskFlowId:0
-      },vm.next);
-      vm.next = {};
-      api.plan.TaskFlow.post(
-        next
-      ).then(function (r) {
-        next.TaskFlowId = r.data.TaskFlowId;
-        next.TaskLibraryId = task.TaskLibraryId;
-        //next.categoryId = new Date().getTime();
-        temp && temp.add(next,vm.current);
-        vm.closeRight();
-      });
-
-    }
-    vm.nextBranch = function () {
-      var next = angular.extend({
-        TaskLibraryId:task.TaskLibraryId,
-        IsFloor:false,
-        Type:vm.data.Branch.length+1,//vm.current?vm.current.line+1:0,
-        ParentId:vm.current?vm.current.TaskFlowId:0
-      },vm.branch);
-      vm.branch = {};
-      api.plan.TaskFlow.post(
-        next
-      ).then(function (r) {
-        next.TaskFlowId = r.data.TaskFlowId;
-        next.TaskLibraryId = task.TaskLibraryId;
-        //next.categoryId = new Date().getTime();
-        temp && temp.add(next,vm.current,true);
-        vm.closeRight();
-      });
-
-    }
-    vm.remove = function () {
-      utils.confirm('确认删除',null).then(function(){
-        api.plan.TaskFlow.deleteFlow(vm.current.TaskFlowId).then(function () {
-          temp && temp.remove(vm.current);
-          vm.closeRight();
-          //$state.go('app.plan.task.list');
-        })
-      })
-    }
-    $scope.$watch('vm.selectedCategory',function(){
-      if(!vm.cselectedCategory){
-        vm.cselectedCategory = vm.selectedCategory;
-      }
-      if(vm.selectedCategory&&vm.selectedCategory!=vm.cselectedCategory){
-        vm.categoryChanged = true;
-      }else if(vm.selectedCategory){
-        vm.categoryChanged = false;
-        vm.getNextTasks();
-      }
-    })
-    vm.getNextTasks = function () {
-      vm.saveTasks =[];
-      vm.nextTasks=[];
-      var promises = [
-        api.plan.TaskLibrary.GetList({Level:task.Level+1}),
-        api.plan.TaskFlow.getSubTasks(vm.current.TaskFlowId)
-      ];
-      $q.all(promises).then(function(res){
-        vm.nextTasks = res[0].data.Items;
-        vm.selectedTasks =  res[1].data.Items;
-        vm.nextTasks.forEach(function(r){
-          var f = res[1].data.Items&&res[1].data.Items.find(function(_r){
-            return _r.TaskLibraryId == r.TaskLibraryId;
-          })
-          if(f&&!vm.categoryChanged){
-              vm.cselectedCategory = r.Type;
-              vm.selectedCategory = r.Type;
-              r.selected = true;
-          }
-        })
-      })
-      //api.plan.TaskLibrary.GetList({
-      //  Level:task.Level+1
-      //}).then(function (r) {
-      //  vm.nextTasks = r.data.Items;
-      //})
-    }
-
-    vm.addSubTask = function (ev) {
-      $mdSelect.destroy();
-      $mdDialog.show({
-        controller: 'planTaskMiniController',
-        templateUrl: 'app/main/plan/component/plan-task-mini.html',
+          api.plan.TaskLibrary.GetList({Skip: 0, Limit: 10000, Level: 1}).then(function (r) {
+            vm.items = r.data.Items || [];
+          });
+        }],
+        controllerAs: 'vm',
+        templateUrl: 'app/main/plan/component/plan-task-subs.html',
         parent: angular.element(document.body),
-        targetEvent: ev,
-        clickOutsideToClose: true,
-        fullscreen: false,
-        locals:{
-          parentTask:task,
-          selected:vm.selectedCategory&&vm.selectedCategory
-        }
-      })
-        .then(function (newTask) {
-          if(!angular.isArray(vm.saveTasks)){
-            vm.saveTasks=[];
-          }
-          vm.saveTasks.push(newTask.TaskLibraryId);
-          var tasks = [];
-          vm.saveTasks && vm.saveTasks.forEach(function (tid) {
-            tasks.push({
-              TaskFlowId:vm.current.TaskFlowId,
-              TaskLibraryId:tid
+        clickOutsideToClose: true
+      }).then(function (tasks) {
+          var ts = [];
+          tasks.forEach(function (t) {
+            ts.push({
+              TaskFlowId: flow.TaskFlowId,
+              TaskLibraryId: t.TaskLibraryId
             });
           })
-          api.plan.TaskFlow.resetTaskFlow(vm.current.TaskFlowId,tasks).then(function(r){
-            if(r.status == 200 || r.data){
-              vm.getNextTasks();
-            }
+          return api.plan.TaskFlow.resetTaskFlow(flow.TaskFlowId, ts).then(function (r) {
+            flow.OptionalTask = tasks.length ?
+              (tasks.length > 1 ? tasks.length + '任务' : tasks[0].Name) : undefined;
+            return vm.updateFlow(flow);
           })
-
-        }, function () {
-
         });
-    }
-    vm.saveSubTasks = function () {
-      var tasks = [];
-      vm.saveTasks && vm.saveTasks.forEach(function (tid) {
-        tasks.push({
-          TaskFlowId:vm.current.TaskFlowId,
-          TaskLibraryId:tid
-        });
-      })
-      api.plan.TaskFlow.resetTaskFlow(vm.current.TaskFlowId,tasks).then(function(r){
-
-      })
-      //console.log('vm.saveTasks',vm.saveTasks)
-    }
-    //vm.getUseGroups = function () {
-    //  api.plan.UserGroup.query().then(function (r) {
-    //    vm.nextUserGroups = r.data.Items;
-    //  })
-    //}
-    //vm.getUseGroups();
-    vm.stop = function(ev){
-      ev.stopPropagation();
-    }
-    vm.addRole = function (ev) {
-      $mdSelect.destroy();
-        var confirm = $mdDialog.prompt()
-          .title('添加新的角色')
-          .textContent('请输入角色名字')
-          .placeholder('角色名字')
-          .ariaLabel('角色名字')
-          .initialValue('')
-          .ok('添加')
-          .cancel('取消');
-        $mdDialog.show(confirm).then(function(result) {
-          api.plan.UserGroup.create({
-            "GroupName": result,
-            "SystemID": "plan",
-            "Description": result
-          }).then(function(r){
-            utils.alert('添加成功',null).then(function(){
-
-            })
-            //$mdDialog.show(
-            //  $mdDialog.alert()
-            //    .title('添加成功')
-            //)
-          })
-        }, function() {
-
-        });
-    }
-    vm.saveUserGroup = function (type) {
-      var users ={
-        roleIds:[]
-      };
-      var datas = vm['saveNotice'+type];
-      //console.log(datas)
-      datas&&datas.forEach(function(r){
-        users.roleIds.push(r)
-      })
-      api.plan.TaskFlow.resetTaskFlowRolesByType(vm.current.TaskFlowId,type,users.roleIds).then(function(r){
-      })
     }
   }
 })(angular,undefined);

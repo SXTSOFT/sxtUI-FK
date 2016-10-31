@@ -48,7 +48,7 @@
       })
       .state('app.plan.task.detail', {
         url: '/{id}',
-        template: '<plan-task flex layout="column"></plan-task>'
+        template: '<plan-task-v flex layout="column"></plan-task-v>'
       })
       .state('app.plan.template', {
         url: '/temp',

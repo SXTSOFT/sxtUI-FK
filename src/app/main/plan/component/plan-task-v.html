@@ -1,5 +1,97 @@
 <md-tabs md-border-bottom flex layout="column">
-  <md-tab label="基础信息">
+  <md-tab label="任务流程"  >
+    <md-tab-content flex layout-fill layout="row">
+      <md-content layout="row" flex ms-scroll>
+        <div flex="80">
+        <table class="simple">
+          <thead>
+          <tr>
+            <th>流程</th>
+            <th style="width: 24px;min-width: 24px">
+              <md-menu ng-show="vm.flows && vm.flows.length===0">
+                <span aria-label="任务流程" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                  <md-icon md-font-icon="icon-plus" ng-click="$mdOpenMenu($event)"></md-icon>
+                </span>
+                <md-menu-content>
+                  <md-menu-item>
+                    <md-button ng-click="vm.addNext($event)">
+                      任务流程
+                    </md-button>
+                  </md-menu-item>
+                </md-menu-content>
+              </md-menu>
+            </th>
+            <th ng-if="vm.data.Level==0" style="width: 24px;min-width: 24px">必选</th>
+            <th ng-if="vm.data.Level==0" style="width: 80px;min-width: 80px">可选任务</th>
+            <th ng-if="vm.data.Level==1" style="width: 24px;min-width: 24px">工期</th>
+            <th ng-if="vm.data.Level==1" style="width: 24px;min-width: 24px">龄期</th>
+            <th style="width: 80px;min-width: 80px">通知</th>
+            <th style="width: 80px;min-width: 80px">执行</th>
+            <th ng-if="vm.data.Level==0" style="width: 80px;min-width: 80px">里程碑</th>
+            <th ng-if="vm.data.Level==0" style="width: 24px;min-width: 24px">楼层</th>
+          </tr>
+          </thead>
+          <tr ng-repeat="flow in vm.flows track by flow.TaskFlowId">
+            <td ng-style="{'padding-left':10+(flow.line*12)+'px'}">
+              {{$index+1}}、<input type="text" ng-blur="vm.updateFlowName(flow)"  ng-model="flow.Name">
+            </td>
+            <td>
+              <md-menu>
+                <span aria-label="添加" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                  <md-icon md-font-icon="icon-plus" ng-click="$mdOpenMenu($event)"></md-icon>
+                </span>
+              <md-menu-content>
+                <md-menu-item>
+                  <md-button ng-click="vm.addNext($event,flow)">
+                    下一流程
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="vm.addNext($event,flow,true)">
+                    分支流程
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="flow.line!==0">
+                  <md-menu>
+                    <md-button style="margin:0;padding: 0 16px;height: 48px" ng-click="$mdOpenMenu()">后置任务</md-button>
+                    <md-menu-content>
+                      <md-menu-item ng-repeat="f2 in vm.flows">
+                        <md-button ng-click="vm.setEndFlow(flow,f2)">
+                          {{f2.Name}}
+                        </md-button>
+                      </md-menu-item>
+                    </md-menu-content>
+                  </md-menu>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="vm.removeFlow($event,flow)">
+                    删除流程
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+            </td>
+            <td ng-if="vm.data.Level==0" align="center"><input type="checkbox" ng-model="flow.IsRequired" ng-click="vm.updateFlow(flow)"></td>
+            <td ng-if="vm.data.Level==0">
+              <div style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.selectOptionalTask(flow)">{{flow.OptionalTask||'未选择'}}</div>
+            </td>
+            <td ng-if="vm.data.Level==1"><input type="text" ng-model="flow.Duration" ng-blur="vm.updateDuration(flow)"></td>
+            <td ng-if="vm.data.Level==1"><input type="number" step="0.5" ng-model="flow.ReservedEndDays"></td>
+            <td></td>
+            <td></td>
+            <td ng-if="vm.data.Level==0">
+              <input ng-show="!flow.IsFloor" ng-if="flow.line===0" style="width: 90%" placeholder="未录入" type="text" ng-blur="vm.updateMilestone(flow)"  ng-model="flow.Milestone">
+            </td>
+            <td ng-if="vm.data.Level==0" align="center"><input type="checkbox" ng-model="flow.IsFloor" ng-if="flow.line===0" ng-click="vm.updateFlow(flow)"></td>
+          </tr>
+        </table>
+        </div>
+        <div flex="20" style="padding-top:68px">
+          <div id="gitGraph"></div>
+        </div>
+      </md-content>
+    </md-tab-content>
+    <md-tab label="基础信息">
     <md-tab-content flex layout-fill class="white-bg" layout-padding>
       <form>
         <md-input-container class="md-block">
@@ -58,166 +150,6 @@
       </div>
     </md-tab-content>
   </md-tab>
-  <md-tab label="任务流程" ng-disabled="!vm.data.TaskLibraryId" md-on-select="vm.onLoadTemplate()">
-    <md-tab-content flex layout-fill layout="row">
-      <md-content layout="column" class="md-padding" flex ms-scroll>
-        <canvas id="gitGraph"></canvas>
-      </md-content>
-      <md-sidenav layout="column" class="md-sidenav-right md-whiteframe-4dp white-bg" style="max-width: 600px;width:600px" md-component-id="right">
-        <md-tabs md-border-bottom flex >
-          <md-tab label="流程信息" ng-disabled="!vm.current">
-            <md-tab-content layout-padding >
-              <form>
-                <md-input-container class="md-block">
-                  <label>名称</label>
-                  <input type="text" ng-model="vm.current.Name" md-autofocus>
-                </md-input-container>
-                <div layout="row">
-                  <md-checkbox ng-model="vm.current.IsRequired">必选 </md-checkbox>
-                  <md-checkbox ng-model="vm.current.IsFloor" ng-if="vm.data.Level===0">此节点对应楼层 </md-checkbox>
-                  <md-checkbox ng-model="vm.current.Memorial">里程碑 </md-checkbox>
-                </div>
-                <!--<div layout="row">-->
-                  <!--<md-checkbox ng-model="vm.current.Memorial">里程碑 </md-checkbox>-->
-                <!--</div>-->
-                <div layout="row"  ng-if="vm.current.Memorial">
-                  <md-input-container class="mb-0" flex>
-                    <label>里程碑名称</label>
-                    <input type="text" ng-model="vm.current.MemorialName">
-                  </md-input-container>
-                  <span flex="5"></span>
-                  <md-input-container flex class="mb-0">
-                    <label>百分比</label>
-                    <input type="text" ng-model="vm.current.Percentage">
-                  </md-input-container>
-                </div>
-                <div layout="row" class="nomar">
-                <task-categories flex ng-model="vm.selectedCategory"></task-categories><span flex="5"></span>
-                <md-select flex ng-model="vm.saveTasks" placeholder="备选任务" class="md-block" md-on-open="vm.getNextTasks()" multiple md-on-close="vm.saveSubTasks()">
-                  <md-select-header class="sxt-select-header">
-                    <md-input-container md-no-float class="md-block">
-                      <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="vm.searchTerm" class="md-text" placeholder="输入关键字" >
-                      <md-icon md-font-icon="icon-plus" style="display:inline-block;" ng-click="vm.addSubTask()"></md-icon>
-                    </md-input-container>
-                  </md-select-header>
-                  <md-option ng-value="tk.TaskLibraryId" ng-selected="tk.selected" ng-repeat="tk in vm.nextTasks|filter:{Name:vm.searchTerm,Type:vm.selectedCategory}">{{tk.Name}}</md-option>
-                </md-select>
-                </div>
-                  <md-select ng-model="vm.saveNotice7" placeholder="通知" class="md-block" md-on-open="vm.getUsers()" multiple  md-on-close="vm.saveUserGroup('7')">
-                  <md-select-header class="sxt-select-header">
-                    <md-input-container md-no-float class="md-block">
-                      <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >
-                      <md-icon md-font-icon="icon-plus" style="display:inline-block;" ng-click="vm.addRole(1)"></md-icon>
-                    </md-input-container>
-                  </md-select-header>
-                    <md-option ng-value="g.GroupID" ng-selected="g.selected7" ng-repeat="g in vm.nextUserGroups|filter:searchTerm">{{g.GroupName}}</md-option>
-                </md-select>
-                <!--<md-select ng-model="vm.saveNoticeEarlyWarning" placeholder="执行" md-on-open="vm.getUsers()" class="md-block" multiple md-on-close="vm.saveUserGroup('8')">-->
-                  <!--<md-select-header class="sxt-select-header">-->
-                    <!--<md-input-container md-no-float class="md-block">-->
-                      <!--<input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >-->
-                      <!--<md-icon md-font-icon="icon-plus" style="display:inline-block;" ng-click="vm.addRole(2)"></md-icon>-->
-                    <!--</md-input-container>-->
-                  <!--</md-select-header>-->
-                  <!--<md-option ng-value="g.GroupID" ng-selected="g.selected2" ng-repeat="g in vm.nextUserGroups |filter:{GroupName:searchTerm}">{{g.GroupName}}</md-option>-->
-                <!--</md-select>-->
-                <md-select ng-model="vm.saveNotice8" placeholder="执行" class="md-block" md-on-open="vm.getUsers()" multiple md-on-close="vm.saveUserGroup('8')">
-                  <md-select-header class="sxt-select-header">
-                    <md-input-container md-no-float class="md-block">
-                      <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >
-                      <md-icon md-font-icon="icon-plus" style="display:inline-block;" ng-click="vm.addRole(3)"></md-icon>
-                    </md-input-container>
-                  </md-select-header>
-                  <md-option ng-value="g.GroupID" ng-selected="g.selected8" ng-repeat="g in vm.nextUserGroups|filter:searchTerm">{{g.GroupName}}</md-option>
-                </md-select>
-              </form>
-              <div layout="row" flex>
-                <md-button ng-click="vm.save()" class="md-primary md-raised md-mini">
-                  保存
-                </md-button>
-                <md-button ng-click="vm.remove()" class="md-warn md-raised md-mini">
-                  删除
-                </md-button>
-              </div>
-            </md-tab-content>
-          </md-tab>
-          <md-tab label="添加下一流程" ng-disabled="vm.current && vm.current.hasNext">
-            <md-tab-content  layout-padding>
-              <form>
-                <md-input-container class="md-block">
-                  <label>下一流程名称</label>
-                  <input type="text" ng-model="vm.next.Name" md-autofocus>
-                </md-input-container>
-              </form>
-              <div layout="row" flex>
-                <md-button ng-click="vm.nextSave()" class="md-primary md-raised  md-mini">
-                  添加
-                </md-button>
-              </div>
-            </md-tab-content>
-          </md-tab>
-          <md-tab label="添加分支">
-            <md-tab-content  layout-padding>
-              <form>
-                <md-input-container class="md-block">
-                  <label>分支流程名称</label>
-                  <input type="text" ng-model="vm.branch.Name" md-autofocus>
-                </md-input-container>
-              </form>
-              <div layout="row" flex>
-                <md-button ng-click="vm.nextBranch()" class="md-primary md-raised  md-mini" >
-                  添加
-                </md-button>
-              </div>
-            </md-tab-content>
-          </md-tab>
-        </md-tabs>
-      </md-sidenav>
-    </md-tab-content>
+
   </md-tab>
 </md-tabs>
-<md-sidenav id="gx_nav" layout="column" style="min-width: 80%" class="md-sidenav-right md-whiteframe-4dp"
-            md-component-id="gx_nav">
-  <div flex layout="column" style="border-top: 1px solid #f5f5f9">
-    <md-tabs md-border-bottom flex style="background-color:white">
-      <!--<md-tab label="已选工序">-->
-        <!--<md-tab-content layout="column">-->
-          <!--<md-content flex layout="row">-->
-            <!--<md-list style="box-shadow:1px 0px 15px 0 #d8d8d8 " flex="40" ms-scroll>-->
-              <!--<md-list-item ng-repeat="item in gxSelected">-->
-                <!--<md-checkbox ng-click="remove(item)" ng-model="item.checked" style="margin-right: 8px">-->
-                  <!--{{item.AcceptanceItemName}}-->
-                <!--</md-checkbox>-->
-                <!--<p flex>{{item.AcceptanceItemName}}</p>-->
-              <!--</md-list-item>-->
-              <!--<span flex></span>-->
-            <!--</md-list>-->
-          <!--</md-content>-->
-        <!--</md-tab-content>-->
-      <!--</md-tab>-->
-      <md-tab ng-repeat="gx1 in vm.procedures" label="{{gx1.SpecialtyName}}">
-        <md-tab-content layout="column">
-          <md-content flex layout="column">
-            <div flex layout="row">
-              <div flex="40" style="position: relative" ms-scroll layout="column">
-                <md-list style="margin-left:8px ">
-                  <md-list-item ng-click="vm.selectSpecialtyLow(item,gx1)" layout="row"
-                                ng-repeat="item in  gx1.SpecialtyChildren">
-                    <p>{{item.SpecialtyName}}</p>
-                  </md-list-item>
-                </md-list>
-              </div>
-              <md-list flex style="box-shadow:-1px 0px 15px 0 #d8d8d8 ">
-                <md-list-item layout="row" ng-repeat="item in  gx1.WPAcceptanceList" ng-click="vm.choosego(item)">
-                  <!--<md-checkbox ng-click="vm.choosego(item)" ng-model="item.checked" style="margin-right: 8px">-->
-                  <!--</md-checkbox>-->
-                  <p flex>{{item.AcceptanceItemName}}{{item.checked}}</p>
-                </md-list-item>
-              </md-list>
-            </div>
-          </md-content>
-        </md-tab-content>
-      </md-tab>
-    </md-tabs>
-  </div>
-</md-sidenav>

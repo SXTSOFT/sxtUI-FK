@@ -7,8 +7,9 @@
     .factory('template',template);
   /** @ngInject */
   function template($window) {
-    $window.GitGraph.Commit.prototype._render = $window.GitGraph.Commit.prototype.render;
-    $window.GitGraph.Commit.prototype.render = function () {
+    var GitGraph = $window.GitGraph;
+    GitGraph.Commit.prototype._render = GitGraph.Commit.prototype.render;
+    GitGraph.Commit.prototype.render = function () {
       this._render();
       this.context.fillStyle = 'white';
       if(this.tag) {
@@ -16,8 +17,37 @@
         this.context.fillText(seq, this.x-(seq.length==1?5:8), this.y+5);
       }
     }
+    GitGraph.Branch.prototype.merge = function ( target, commitOptions ) {
+      // Merge target
+      var targetBranch = target || this.parent.HEAD;
 
-    var graphTemplate = new $window.GitGraph.Template({
+      // Check integrity of target
+      if ( targetBranch instanceof GitGraph.Branch === false || targetBranch === this ) {
+        return this;
+      }
+      // Add points to path
+      var targetCommit = targetBranch.commits.slice( -1 )[ 0 ];
+      var endOfBranch = {
+        x: this.offsetX + this.template.commit.spacingX * (targetCommit.showLabel ? 3 : 2) - this.parent.commitOffsetX,
+        y: this.offsetY + this.template.commit.spacingY * (targetCommit.showLabel ? 3 : 2) - this.parent.commitOffsetY,
+        type: "join"
+      };
+      this.pushPath( JSON.parse( JSON.stringify( endOfBranch ) ) ); // Elegant way for cloning an object
+
+      var mergeCommit = {
+        x: targetCommit.x,
+        y: targetCommit.y,
+        type: "end"
+      };
+      this.pushPath( mergeCommit );
+      endOfBranch.type = "start";
+      this.pushPath( endOfBranch );
+      this.parent.render();
+      this.parent.HEAD = targetBranch;
+      return this;
+    };
+
+/*    var graphTemplate = new $window.GitGraph.Template({
       colors: [ "#ffae4b", "#00b8ff", "#00c98f","#4cd9b0" ],
       branch: {
         lineWidth: 6,
@@ -47,8 +77,40 @@
       //  size: 8,
       //  offset: 0.5
       //}
-    });
+    });*/
+    var graphTemplate = new $window.GitGraph.Template({
+      colors: [ "#fb9013", "#ffba13", "#93ed12","#11ea6d","#05ecce","0ab5f4" ],
+      branch: {
+        lineWidth: 1,
+        spacingX: 20,
+        mergeStyle: "bezier",
+        showLabel: false,
+        // display Branch names on graph
+        labelFont: "normal 12px arial"
+      },
+      commit: {
 
+        spacingY: -44,
+        dot: {
+          size: 8,
+          strokeColor: "white",
+          strokeWidth: 1
+        },
+        tag: {
+          font: "normal 13px arial",
+          strokeWidth: 1,
+          display:false
+        },
+        message: {
+          display:false
+        },
+        shouldDisplayTooltipsInCompactMode:false
+      },
+      //arrow: {
+      //  size: 8,
+      //  offset: 0.5
+      //}
+    });
     function FTemplate(options) {
       this.options = extend(options, {});
       this.options.config = extend(this.options.config,{
@@ -95,6 +157,9 @@
       });
       this.times = times;
       this.render();
+      return times.filter(function (t) {
+        return t.type !== 'line';
+      })
     }
     FTemplate.prototype.onClick = function (e) {
       var data = this.times.find(function (d) {
@@ -124,7 +189,7 @@
               line: t.line,
               b: gitGraph.branch({
                 name: t.Name || ('b' + Branch.length),
-                showLabel: !!t.Name,
+                showLabel: false,
                 column: t.line,
                 parentBranch: getBranch(t.parent)
               })
@@ -132,10 +197,20 @@
             break;
           case 'merge':
             var ix=t.merge.length===1?2:0;
+            getBranch(t.line).commit({
+             author:t.TaskFlowId,
+             //tag: (t.seq+1)+'、'+ t.Name,
+             displayTagBox:false,
+             message:t.Name,
+             onClick:onClick,
+             color:self.options.onNodeColor && self.options.onNodeColor(t),
+             dotColor:self.options.onNodeDotColor && self.options.onNodeDotColor(t)
+             });
             t.merge.forEach(function (m) {
               getBranch(m).merge(getBranch(t.line),{
                 author:t.TaskFlowId,
-                tag:ix!==0?(t.seq+1)+'、'+ t.Name:undefined,
+                seq:t.seq+1,
+                //tag:ix!==0?(t.seq+1)+'、'+ t.Name:undefined,
                 displayTagBox:false,
                 dotSize:ix===0?1:0,
                 dotStrokeWidth:ix===0?1:0,
@@ -146,12 +221,14 @@
               });
               ix++;
             });
+
             break;
           default:
             if(t.line || t.line===0){
+              //console.log('commnt',t.Name);
               getBranch(t.line).commit({
                 author:t.TaskFlowId,
-                tag: (t.seq+1)+'、'+ t.Name,
+                //tag: (t.seq+1)+'、'+ t.Name,
                 displayTagBox:false,
                 message:t.Name,
                 onClick:onClick,
@@ -178,7 +255,7 @@
       else{
         container.push(data);
       }
-      this.load(this.task);
+      return this.load(this.task);
     }
     FTemplate.prototype.edit = function (data) {
       this.render();
@@ -211,10 +288,7 @@
           this.task.Branch.splice(l,1);
         }
       }
-      this.load(this.task);
-    }
-    function getLast(array) {
-      return array.length?array[array.length-1]:null;
+      return this.load(this.task);
     }
     function extend(obj,ext) {
       obj = obj||{};
@@ -258,8 +332,6 @@
             fd.type = 'merge';
           }
           fd.merge.push(e.line);
-          //var eRoot = findLineRoot(groups,e);
-          //appendRoot(times,groups,lines,eRoot);
         })
         if(fd.line != gp.line){
           var line = lines.find(function (l) {
