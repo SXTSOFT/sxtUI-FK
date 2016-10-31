@@ -84,7 +84,7 @@
       item.stretch = !item.stretch;
     }
     vm.go=function(AcceptanceItemID,drawingID,AcceptanceIndexID){
-      $state.go("app.xhsc.scPiclst",{
+      $state.go("app.xhsc.sc_standar",{
         AcceptanceItemID:AcceptanceItemID,
         drawingID:drawingID,
         AcceptanceIndexID:AcceptanceIndexID

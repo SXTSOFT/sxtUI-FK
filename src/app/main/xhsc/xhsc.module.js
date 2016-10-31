@@ -100,7 +100,7 @@
           }
         }
       })
-      .state('app.xhsc.scPiclst',{
+      .state('app.xhsc.sc_standar',{
         noBack:true,
         sendBt:false,
         rightArrow:false,
