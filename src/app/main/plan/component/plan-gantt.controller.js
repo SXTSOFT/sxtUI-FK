@@ -85,8 +85,8 @@
         {
           return angular.isDefined(to) ? to.format('YY-MM-DD') : undefined;
         },
-        'duration':function(from,to){
-          //return to.format('YY-MM-DD');
+        'duration':function(duration){
+          return duration;
         }
       },
       treeHeaderContent       : '{{getHeader()}}',
@@ -105,7 +105,7 @@
       rowContentEnabled       : true,
       rowContent              : '{{row.model.name}}',
       taskContentEnabled      : true,
-      taskContent             : '<span class="gantt-task-name" style="display: block;" flex ng-click="scope.vm.editDialog($event,task.model)">\n    {{task.model.name}}\n    <md-tooltip md-direction="top" class="gantt-chart-task-tooltip">\n        <div layout="column" layout-align="center center">\n            <div class="tooltip-name">\n                {{task.model.name}}\n            </div>\n            <div class="tooltip-date">\n                <span>\n                    {{task.model.from.format(\'MM月DD日A\')}}\n                </span>\n                <span>-</span>\n                <span>\n                    {{task.model.to.format(\'MM月DD日A\')}}\n                </span>\n            </div>\n        </div>\n    </md-tooltip>\n</span>',
+      taskContent             : '<span class="gantt-task-name" style="display: block;" flex ng-click="scope.vm.editDialog($event,task,task.model)">\n    {{task.model.name}}\n    <md-tooltip md-direction="top" class="gantt-chart-task-tooltip">\n        <div layout="column" layout-align="center center">\n            <div class="tooltip-name">\n                {{task.model.name}}\n            </div>\n            <div class="tooltip-date">\n                <span>\n                    {{task.model.from.format(\'MM月DD日A\')}}\n                </span>\n                <span>-</span>\n                <span>\n                    {{task.model.to.format(\'MM月DD日A\')}}\n                </span>\n            </div>\n        </div>\n    </md-tooltip>\n</span>',
       allowSideResizing       : true,
       labelsEnabled           : true,
       currentDate             : 'line',
@@ -182,11 +182,15 @@
             vm.gantt = true;
           });
           objectModel = new GanttObjectModel(vm.api);
+          vm.api.side.setWidth(380);
         });
         ganttApi.tasks.on.change($scope,function(task){
-          var diff1,diff2,from,to;
+          var from,to,copytask;
+          if(!task.type) return;
+          copytask = task;
           from = task.model.from;
           to = task.model.to;
+          task.row.duration = moment(to).endOf('day').diff(moment(from).startOf('day'),'d');
           var changeData = [
             {
               "TaskId": task.model.id,
@@ -202,16 +206,37 @@
                 })!=null;
               });
               next  && (next.from = task.model.to);
+              next && (next.duration = moment(next.to).endOf('day').diff(moment(next.from).startOf('day'),'d'));
+              if(next){
+                var id = task.rowsManager.rows.find(function(r){
+                  return r.model.id == next.id+'-group'
+                })
+                if(id){
+                  id.from = task.model.to;
+                  id.duration = next.duration;
+                }
+              }
               var prev = group.tasks.find(function(t){
                 return task.model.dependencies.find(function(d){
                   return t.id == d.from;
                 })!=null;
-
               });
               prev && (prev.to = task.model.from);
+              prev && (prev.duration = moment(prev.to).endOf('day').diff(moment(prev.from).startOf('day'),'d'));
+              if(prev){
+                  var id = task.rowsManager.rows.find(function(r){
+                    return r.model.id == prev.id+'-group'
+                  })
+                  if(id){
+                    id.to = task.model.from;
+                    id.duration = prev.duration;
+                  }
+              }
             })
           })
+
         })
+
       }
     };
 
@@ -321,6 +346,8 @@
         var tasks = r.data.Items.filter(function (item) {
           return !item.ExtendedParameters;
         }).map(function (item) {
+          var sdate = moment(item.ScheduledStartTime).startOf('day');
+          var edate = moment(item.ScheduledEndTime).endOf('day');
           var result = {
             id:item.Id+'-group',
             name:item.Name,
@@ -332,7 +359,8 @@
                 isEnded:!!item.ActualEndTime,
                 from:item.ActualStartTime || item.ScheduledStartTime,
                 to:item.ActualEndTime || item.ScheduledEndTime,
-                duration:20,//moment(item.ActualEndTime-item.ActualStartTime)||moment(item.ScheduledEndTime-item.ScheduledStartTime),
+                movable:true,
+                duration:edate.diff(sdate,'d'),
                 dependencies:item.Dependencies.map(function (d) {
                   return {
                     from:d.DependencyTaskID
@@ -348,6 +376,8 @@
           return result;
         });
         var from = tasks[0].tasks[0].from;
+        var mstart = moment(from).startOf('day');
+        var endtime = moment(rs[1].data[rs[1].data.length-1].MilestoneTime).endOf('day');
         vm.isStarted = tasks[0].tasks[0].isStarted;
         //console.log(JSON.stringify(tasks))
         vm.data=[{
@@ -362,7 +392,9 @@
               name: m.Name,
               from:from,
               to: m.MilestoneTime,
+              duration:endtime.diff(mstart,'d'),
               dependencies:[],
+              movable:false,
               classes:[
                 "md-light-blue-200-bg"
               ]
