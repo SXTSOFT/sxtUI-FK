@@ -12,7 +12,8 @@
     .directive('sxtScNew', sxtScNew);
 
   /** @Inject */
-  function sxtScNew($timeout, mapPopupSerivce, db, sxt, xhUtils, pack, remote, utils, $q, api, $rootScope) {
+  function sxtScNew($timeout, mapPopupSerivce, db, sxt, xhUtils, scPack, remote, utils, $q, api, $rootScope) {
+    var pack=scPack;
     function now() {
       return new Date().toISOString();
     }
@@ -34,13 +35,16 @@
     }
 
     function link(scope, element, attr, ctrl) {
-      var map, tile, fg, toolbar, data, points, pk;
+      var map, tile, fg, toolbar, data, points, pk,scStandar;
       if (!pk)
         pk = pack.sc.up(scope.db);
       if (!data)
         data = pk.sc.db;
       if (!points)
         points = pk.point.db;
+      if (!scStandar){
+        scStandar= pk.scStandar.db
+      }
 
       //var yxzAcceptanceIndexID = 'c1c7a2150bb742d8bd3eeefd2cf3de89';//尺寸一直性指标ID
       var install = function () {
@@ -56,11 +60,9 @@
         var ProjectID = scope.regionId.substr(0, 5);
         var areaId= scope.regionId.substr(0, 10);
         var arr = [
-          //remote.Assessment.GetMeasurePointByRole($rootScope.sc_Area),
           remote.Project.getDrawingRelations(ProjectID,"scDrawingRelation")
         ];
         $q.all(arr).then(function (res) {
-          //var r = res[0];
           var picRelate = res[0]
 
           function findImg(source){
@@ -118,92 +120,42 @@
             var layer = layer;
             if (layer.loaded)return;
             layer.loaded = true;
-            //var raltePoints = [];
-            //r.data.data.forEach(function (k) {
-            //  if (scope.regionId == k.CheckRegionID && scope.measureIndexes.find(function (n) {
-            //      return n.AcceptanceIndexID == k.AcceptanceIndexID
-            //    })) {
-            //    raltePoints.push(k);
-            //    if (k.MeasurePointID) {
-            //      raltePoints.hasharm = true;
-            //    }
-            //  }
-            //});
-            //var layoutData=[];
-            //添加几何点
-
-            //if (!raltePoints.length) {
-              var reqArr=[
-                remote.Assessment.GetMeasurePointAll(areaId),
-                remote.Assessment.GetMeasurePointGeometry(areaId),
-                remote.Assessment.GetMeasurePointByRole(areaId)
-              ]
-              $q.all(reqArr).then(function(req){
-                var geometry=req[1].data&&req[1].data.data?req[1].data.data:[];
-                var points=req[0].data&&req[0].data.data?req[0].data.data:[];
-                var nofit=req[2].data&&req[2].data.data?req[2].data.data:[];
-                var po;
-                function addData(layData,index,color){
-                  if(!layData.geometry && layData.Geometry){
-                    layData.geometry = JSON.parse(layData.Geometry.Geometry);
+            var reqArr=[
+              remote.Assessment.GetMeasurePointAll(areaId)
+              //remote.Assessment.GetMeasurePointGeometry(areaId),
+              //remote.Assessment.GetMeasurePointByRole(areaId)
+            ]
+            $q.all(reqArr).then(function(req){
+              //var geometry=req[1].data&&req[1].data.data?req[1].data.data:[];
+              var points=req[0].data&&req[0].data.data?req[0].data.data:[];
+              //var nofit=req[2].data&&req[2].data.data?req[2].data.data:[];
+              var po;
+              function addData(layData,index,color){
+                if(!layData.geometry && layData.Geometry){
+                  layData.geometry = JSON.parse(layData.Geometry.Geometry);
+                }
+                if(!layData.geometry) return;
+                layData.geometry.options.color = color;
+                layData.geometry.options.v = index;
+                layData.geometry.options.seq = layData.geometry.properties.seq;
+                layData.geometry.options.customSeq = true;
+                layData.geometry.options.move = false;
+                layData.CreateTime = moment(layData.CreateTime).toDate();
+                layer.addData(layData.geometry);
+              }
+              if (points&&points.length){
+                var g;
+                points.forEach(function(m){
+                  if (m.DrawingID==img.DrawingID&& scope.measureIndexes.find(function (n) {
+                      return n.AcceptanceIndexID == m.AcceptanceIndexID
+                    })){
+                    var color="green"
+                    addData(m,index,color);
+                    index++;
                   }
-                  if(!layData.geometry) return;
-                  layData.geometry.options.color = color;
-                  layData.geometry.options.v = index;
-                  layData.geometry.options.seq = layData.geometry.properties.seq;
-                  layData.geometry.options.customSeq = true;
-                  layData.geometry.options.move = false;
-                  layData.CreateTime = moment(layData.CreateTime).toDate();
-                  layer.addData(layData.geometry);
-                }
-                if (points&&points.length){
-                  var g;
-                  points.forEach(function(m){
-                    if (m.CheckRegionID==scope.regionId&& scope.measureIndexes.find(function (n) {
-                        return n.AcceptanceIndexID == m.AcceptanceIndexID
-                      })){
-                      g=geometry.find(function(n){
-                        return n.MeasurePointID== m.MeasurePointID;
-                      });
-                      if (g){
-                        var color="green"
-                        m.Geometry=g;
-                        po=nofit.find(function(k){
-                          return k.CheckRegionID==m.CheckRegionID&&m.AcceptanceIndexID== k.AcceptanceIndexID&& k.MeasurePointID== m.MeasurePointID;
-                        });
-                        if (po){
-                          color="red"
-                        }
-                        addData(m,index,color);
-                        index++;
-                      }
-                    }
-                  });
-                }
-              });
-              return;
-            //}
-            //全部合格
-            //if (!raltePoints.hasharm) {
-            //  utils.alert("改区域已实测且全部合格", function () {
-            //    window.history.go(-1);
-            //  })
-            //} else { //含不合格点
-            //  remote.Assessment.GetMeasurePointGeometry(ProjectID).then(function(req){
-            //    var geometry=req.data&&req.data.data?req.data.data:[];
-            //    var g;
-            //    raltePoints.forEach(function(k){
-            //      g=geometry.find(function(n){
-            //        return n.MeasurePointID== k.MeasurePointID;
-            //      });
-            //      if (g){
-            //        k.Geometry=g;
-            //        addData(k,index);
-            //        index++;
-            //      }
-            //    });
-            //  })
-            //}
+                });
+              }
+            });
           }
           function currentdata(layer,index) {
             var _r = function (o) {  //过滤值
@@ -333,10 +285,19 @@
                     data.addOrUpdate(v);
                     fg.data = fg.data ? fg.data : [];
                     fg.data.push(v);
-
+                    //实测标准化
+                    var standar={
+                      _id: sxt.uuid(),
+                      AcceptanceIndexID: m.AcceptanceIndexID,
+                      AcceptanceItemID:scope.acceptanceItem,
+                      DrawingID:img.DrawingID,
+                      MeasurePointID:point._id
+                    }
+                    scStandar.addOrUpdate(point);
                   });
                 })
               }
+
               if (group) {
                 var groupId = group.getValue().$id,//添加或移出的groupId
                   measureIndexs = xhUtils.findAll(scope.measureIndexes, function (m) {

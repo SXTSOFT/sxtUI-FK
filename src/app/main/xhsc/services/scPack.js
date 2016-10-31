@@ -53,6 +53,10 @@
                 url:sxt.app.api+'/Api/MeasurePointApi/CreatePoint',
                 type: 'data'
               },
+              scStandar:{
+                url:sxt.app.api+'/api/MeasureStandardApi/Insert',
+                type: 'data'
+              },
               indexs:{
                 url:sxt.app.api+'/Api/MeasureValueApi/MeasureIndexSubmit',
                 type:'data'

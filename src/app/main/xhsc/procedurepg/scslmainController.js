@@ -148,12 +148,12 @@
             tasks.push(function () {
               return remote.Assessment.GetMeasurePointAll(item.RegionID);
             });
-            tasks.push(function () {
-              return remote.Assessment.GetMeasurePointByRole(item.RegionID, vm.role);
-            });
-            tasks.push(function () {
-              return remote.Assessment.GetMeasurePointGeometry(item.RegionID);
-            });
+            //tasks.push(function () {
+            //  return remote.Assessment.GetMeasurePointByRole(item.RegionID, vm.role);
+            //});
+            //tasks.push(function () {
+            //  return remote.Assessment.GetMeasurePointGeometry(item.RegionID);
+            //});
             tasks.push(function () {
               return remote.Procedure.getMeasureMosaic(item.regionID,null,"scslStutas");
             });

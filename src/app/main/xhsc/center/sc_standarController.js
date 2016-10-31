@@ -21,7 +21,6 @@
       acceptanceIndexID:$stateParams.acceptanceIndexID,
       drawingID:$stateParams.DrawingID
     };
-      $rootScope.title =vm.info.name;
       var arr=[
         remote.Project.GetMeasureItemInfoByAreaID(),
         remote.Project.getDrawing(vm.info.drawingID)
@@ -35,7 +34,7 @@
           return it.AcceptanceItemID == vm.info.acceptanceItemID;
         });
         if (find){
-          $rootScope.title =find.MeasureItemName;
+          vm.title= $rootScope.title =find.MeasureItemName;
           var m=[];
           find.MeasureIndexList.forEach(function(item) {
             if(item.AcceptanceIndexID==vm.info.acceptanceIndexID){

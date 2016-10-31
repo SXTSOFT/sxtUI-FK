@@ -31,8 +31,7 @@
       $rootScope.title =vm.info.name;
       var packdb = db('pack'+vm.info.db);
       var arr=[
-        packdb.get('GetMeasureItemInfoByAreaID'),
-        remote.Assessment.GetMeasurePointByRole($rootScope.sc_Area)
+        packdb.get('GetMeasureItemInfoByAreaID')
       ]
 
       $q.all(arr).then(function(res){
@@ -56,24 +55,6 @@
           t._id = sxt.uuid();//指标结构表
           t.checked = false;
         })
-        //var arr= n.data.data,t;
-        //var index=1
-        //for (var i=vm.MeasureIndexes.length-1;i>=0;i--){
-        //  t=[];
-        //  for (var j=0;j<arr.length;j++){
-        //    if ( vm.info.regionId== arr[j].CheckRegionID&&vm.MeasureIndexes[i].AcceptanceIndexID==arr[j].AcceptanceIndexID){
-        //      if (!arr[j].MeasurePointID){
-        //        vm.MeasureIndexes[i].hide=true;
-        //        //合格
-        //      }else {
-        //        vm.MeasureIndexes[i].hidebutton=true;
-        //      }
-        //      index++;
-        //      break;
-        //    }
-        //  }
-        //}
-
         $timeout(function () {
           vm.scChoose();
         },500);
