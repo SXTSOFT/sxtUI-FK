@@ -107,16 +107,32 @@
     }
     vm.removeFlow = function (ev,flow) {
       return utils.confirm('确认删除'+flow.Name+'？',null).then(function(){
-        return api.plan.TaskFlow.resetTaskFlow(flow.TaskFlowId,[]).then(function (r) {
-          return api.plan.TaskFlow.deleteFlow(flow.TaskFlowId).then(function () {
-            if (vm.data.Level === 1) {
-              return api.plan.TaskFlow.getSubTasks(flow.TaskFlowId).then(function (r) {
-                return api.plan.TaskLibrary.delete(r.data.Items[0].TaskLibraryId);
-              });
-            }
-          }).then(function () {
-            vm.flows = temp.remove(flow);
-          })
+        return $q(function (resolve) {
+          if (vm.data.Level === 1) {
+            return api.plan.TaskFlow.getSubTasks(flow.TaskFlowId).then(function (r) {
+              if(r.data.Items.length){
+                var q=[];
+                r.data.Items.forEach(function (t) {
+                  q.push(api.plan.TaskLibrary.delete(t.TaskLibraryId));
+                });
+                $q.all(q).then(function () {
+                  resolve();
+                })
+              }
+              else{
+                resolve();
+              }
+            });
+          }
+          else {
+            resolve();
+          }
+        }).then(function () {
+          return api.plan.TaskFlow.resetTaskFlow(flow.TaskFlowId,[]).then(function (r) {
+            return api.plan.TaskFlow.deleteFlow(flow.TaskFlowId).then(function () {
+              vm.flows = temp.remove(flow);
+            })
+          });
         });
       });
     }

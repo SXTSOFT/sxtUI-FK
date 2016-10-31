@@ -71,18 +71,18 @@
               </md-menu-content>
             </md-menu>
             </td>
-            <td ng-if="vm.data.Level==0" align="center"><input type="checkbox" ng-model="flow.IsRequired" ng-click="vm.updateFlow(flow)"></td>
+            <td ng-if="vm.data.Level==0" align="center"><input  ng-if="flow.line==0" type="checkbox" ng-model="flow.IsRequired" ng-click="vm.updateFlow(flow)"></td>
             <td ng-if="vm.data.Level==0">
               <div style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.selectOptionalTask(flow)">{{flow.OptionalTask||'未选择'}}</div>
             </td>
             <td ng-if="vm.data.Level==1"><input type="text" ng-model="flow.Duration" ng-blur="vm.updateDuration(flow)"></td>
-            <td ng-if="vm.data.Level==1"><input type="number" step="0.5" ng-model="flow.ReservedEndDays"></td>
+            <td ng-if="vm.data.Level==1"><input type="text" step="0.5" ng-model="flow.ReservedEndDays"></td>
             <td></td>
             <td></td>
             <td ng-if="vm.data.Level==0">
               <input ng-show="!flow.IsFloor" ng-if="flow.line===0" style="width: 90%" placeholder="未录入" type="text" ng-blur="vm.updateMilestone(flow)"  ng-model="flow.Milestone">
             </td>
-            <td ng-if="vm.data.Level==0" align="center"><input type="checkbox" ng-model="flow.IsFloor" ng-if="flow.line===0" ng-click="vm.updateFlow(flow)"></td>
+            <td ng-if="vm.data.Level==0" align="center"><input type="checkbox" ng-model="flow.IsFloor"  ng-click="vm.updateFlow(flow)"></td>
           </tr>
         </table>
         </div>
