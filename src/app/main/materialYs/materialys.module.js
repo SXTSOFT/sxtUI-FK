@@ -36,7 +36,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url:'',
+        url:'/planList/{id}',
         template: '<material-plan-list flex layout="column"></material-plan-list>'
       })
       .state('app.xhsc.materialys.planDetail',{
@@ -44,19 +44,40 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url:'',
+        url:'/planDetail/{id}',
         template:'<material-plan-detail></material-plan-detail>'
       })
       .state('app.xhsc.materialys.intoFactory',{
-        title:'材料进厂',
+        title:'材料进场',
         noBack:true,
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
-        url:'',
-        template:'<material-into-factory></material-into-factory>'
+        url:'/intoFactory/{status}/{id}',
+        template:'<material-into-factory flex layout="column"></material-into-factory>'
+      })
+      .state('app.xhsc.materialys.checkInfo',{
+        noBack:true,
+        sendBt:true,
+        title:'材料验收',
+        url:'/checkInfo/{id}',
+        template: '<material-ys-check-info flex layout="column"></material-ys-check-info>'
+      })
+      .state('app.xhsc.materialys.inspectionReport',{
+        noBack:true,
+        sendBt:true,
+        title:'送检报告归档',
+        url:'/inspectionReport/{id}',
+        template: '<material-ys-inspection-report flex layout="column"></material-ys-inspection-report>'
       })
 
+      .state('app.xhsc.materialys.approval',{
+        noBack:true,
+        sendBt:true,
+        title:'材料验收详情',
+        url:'/approval/{planId}/{id}',
+        template: '<material-ys-approval flex layout="column"></material-ys-approval>'
+      })
   }
 
 })(angular,undefined);

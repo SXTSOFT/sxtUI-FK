@@ -1,0 +1,22 @@
+<form name="projectForm">
+  <md-list ng-cloak>
+    <md-list-item style="height: 48px;">
+      <p flex="50">报告日期</p>
+      <p style="text-align: right;">{{vm.data.ReportTime}}</p>
+    </md-list-item>
+    <md-divider></md-divider>
+    <md-list-item style="height: 48px;">
+      <p flex="30">报告单编号</p>
+      <md-input-container flex="70" class="md-block" style="height: 48px; margin: 0;padding: 0;">
+        <input ng-model="vm.data.Report" style="padding: 0;margin-top: 10px;">
+      </md-input-container>
+    </md-list-item>
+    <md-divider></md-divider>
+    <md-list-item>
+      <p>实验室检查</p>
+      {{vm.data.LabCheck?'合格':'不合格'}}
+      <md-switch class="md-secondary" ng-model="vm.data.LabCheck"></md-switch>
+    </md-list-item>
+    <md-divider></md-divider>
+  </md-list>
+</form>

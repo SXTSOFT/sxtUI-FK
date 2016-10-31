@@ -192,11 +192,11 @@
         $mdPanel.open({
           controller: function (mdPanelRef,$scope,utils) {
             var vm = this;
-            parent.loading = false;
+            parent.loading = true;
             parent.closePanel = function() {
               return mdPanelRef.close().then(function () {
                 mdPanelRef.destroy();
-                parent.loading = true;
+                parent.loading = false;
                 parent.closePanel = null;
               });
             }
@@ -221,22 +221,23 @@
           if (r.data|| r.status==200) {
             if(!vm.formWizard.Id)
               vm.formWizard.Id = r.data.Id;
-            getDataTemplate().then(function(){
-              parent.closePanel();
-            });
+            //getDataTemplate().then(function(){
+            //  parent.closePanel();
+            //});
             f();
           }
         },function(err){
           parent.closePanel();
-          if(err.status == -1){
-            utils.alert('创建计划失败');
+          if(err.status != 200){
+            utils.alert(err.data);
             return;
           }
         })
       }
       else if(i===1){
         var selected = [],goFlag;
-        vm.rootTask.Master.forEach(function (item) {
+        console.log(vm.allTasks);
+        vm.allTasks.forEach(function (item) {
           if(item.selectedTask) {
             if(!item.selectedTask.xDuration){
               goFlag = true;
@@ -258,12 +259,12 @@
           $mdPanel.open({
             controller: function (mdPanelRef,$scope,utils) {
               var vm = this;
-              parent.loading = false;
-              parent.closePanel = function() {
+              parent.loading1 = false;
+              parent.closePanel1 = function() {
                 return mdPanelRef.close().then(function () {
                   mdPanelRef.destroy();
-                  parent.loading = true;
-                  parent.closePanel = null;
+                  parent.loading1 = true;
+                  parent.closePanel1 = null;
                 });
               }
             },
@@ -282,7 +283,7 @@
           api.plan.BuildPlan.flowTasksReset(vm.formWizard.Id,selected).then(function (r) {
             api.plan.BuildPlan.getBuildingPlanRoles(vm.formWizard.Id).then(function (r) {
               vm.currentRoles = r.data.Items;
-              parent.closePanel();
+              parent.closePanel1();
             });
           });
         }else{
@@ -310,24 +311,15 @@
             _tt.Name = _tt.FullName||_tt.TaskFlowName;
           })
         });
-        vm.temp = new template({
-          onClick:function (e) {
-            vm.current = e.data;
-/*            if(vm.current.selectedTask&&vm.current.selectedTask){
-              if(vm.current.selectedTask.Duration&&!vm.current.selectedTask.duration){
-                vm.current.selectedTask.duration = vm.current.selectedTask.Duration;//Math.round(vm.current.selectedTask.Duration*10)*0.1;
-              }else if(!vm.current.selectedTask.Duration){
-                vm.current.selectedTask.Duration = -0;
-              }
-              //vm.setMin();
-            }*/
-
-            vm.showBg = true;
-            vm.toggleRight();
-          }
-        });
+        //vm.temp = new template({
+        //  onClick:function (e) {
+        //    vm.current = e.data;
+        //    vm.showBg = true;
+        //    vm.toggleRight();
+        //  }
+        //});
         vm.rootTask = r.data.RootTask;
-        vm.reloadTask();
+       // vm.reloadTask();
       });
     }
     vm.loadUser = function(){
@@ -357,6 +349,20 @@
     }
     vm.sendForm = function(fn){
       var resets = [];
+      var p = vm;
+      $mdDialog.show({
+        controller:['$scope',function($scope){
+          p.hide = function(){
+            $mdDialog.cancel();
+          }
+        }],
+        template: '<md-dialog style="background-color: transparent;box-shadow: none;"><md-dialog-content ><div layout="row" layout-align="center center"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div><div layout="row" layout-align="center center">正在生成，请稍后...</div></md-dialog-content></md-dialog>',
+        parent: angular.element('#content'),
+        clickOutsideToClose:false,
+        hasBackdrop:true,
+        escapeToClose: true,
+        focusOnOpen: true
+      })
       vm.currentRoles.forEach(function (r) {
         resets.push(api.plan.BuildPlan.buildingRolesReset(vm.formWizard.Id,{
           RoleId:r.RoleId,
@@ -371,6 +377,7 @@
           if(r.status==200|| r.data){
             utils.alert('创建计划成功').then(function(){
               fn();
+              p.hide();
             })
           }
         })

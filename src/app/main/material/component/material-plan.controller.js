@@ -75,11 +75,13 @@
         vm.data = r.data;
         vm.data.ProjectId = r.data.RegionId.substr(0,5);
         vm.data.RegionId = r.data.RegionId.substr(5,10);
+        vm.data.SectionId = r.data.SectionId;
         vm.data.PlanTime = r.data.PlanTime == null ? new Date() : new moment(r.data.PlanTime).toDate();
       });
     }
 
     vm.save = function () {
+      vm.data.PlanName = vm.data.Material.MaterialName + '_' + vm.Specifications + '_' + vm.Model + '_' + vm.data.PlanCount + vm.data.Unit + '_' + new Date(vm.data.PlanTime).Format('yyMMdd');
       if(vm.data.Id){
         api.material.materialPlan.putMaterial(vm.data).then(function () {
           utils.alert("提交成功", null, function () {
@@ -88,7 +90,6 @@
         });
       }else{
         vm.data.MaterialId = vm.data.Material.Id;
-        vm.data.PlanName = vm.data.Material.MaterialName + '_' + vm.Specifications + '_' + vm.Model + '_' + vm.data.PlanCount + vm.data.Unit + '_' + new Date(vm.data.PlanTime).Format('yyMMdd');
         vm.data.PlanTime = new Date(vm.data.PlanTime);
         api.material.materialPlan.Create(vm.data).then(function () {
           utils.alert("提交成功",null,function(){

@@ -131,12 +131,12 @@
       icon: 'icon-account',
       weight: 1
     });
-    msNavigationServiceProvider.saveItem('plan.template.taskdemo', {
-      title: 'demo',
-      state: 'app.plan.task.demo',
-      icon: 'icon-account',
-      weight: 1
-    });
+    //msNavigationServiceProvider.saveItem('plan.template.task.demo', {
+    //  title: 'demo',
+    //  state: 'app.plan.task.demo',
+    //  icon: 'icon-account',
+    //  weight: 1
+    //});
 
     msNavigationServiceProvider.saveItem('plan.template.bc', {
       title: '补偿',
