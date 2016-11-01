@@ -25,8 +25,9 @@
           </div>
           <md-list ng-if="d.stretch" style="padding:0px;margin: 0px;" >
             <md-list-item  ng-repeat="k in d.indexs"  layout="row">
-              <p style="font-size:12px;padding-left:1%">
+              <p style="font-size:12px;padding-left:1%" layout="row">
                 {{k.IndexName}}
+                <span ng-if="k.standar" style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">已标准化</span>
               </p>
               <span flex></span>
               <md-button ng-click="vm.action(k,$event)"  style="margin: 6px -28px"   aria-label="More">

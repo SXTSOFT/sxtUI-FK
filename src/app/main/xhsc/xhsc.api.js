@@ -1282,8 +1282,8 @@
         }
       },
       PQMeasureStandard:{
-        messageList: function ( DrawingID,AcceptanceIndexID) {
-          return $http.get($http.url('/api/MeasureStandardApi/GetListByDrawingOrIndex',{DrawingID:DrawingID,AcceptanceIndexID:AcceptanceIndexID}))
+        messageList: function ( DrawingID,AcceptanceItemID,AcceptanceIndexID) {
+          return $http.get($http.url('/api/MeasureStandardApi/GetListByDrawingOrIndex',{DrawingID:DrawingID,AcceptanceIndexID:AcceptanceIndexID,AcceptanceItemID:AcceptanceItemID}))
         },
         updateScStandar: function (id) {
           return $http.put($http.url('/api/MeasureStandardApi/'+id))
@@ -1295,11 +1295,20 @@
             MeasurePointID:MeasurePointID
           }))
         },
-         getAllScStandar:function(){
+        getAllScStandar:function(){
           return $http.get($http.url('/api/MeasureStandardApi'))
         },
         GetProjectDrawing:function(){
           return $http.get($http.url('/api/MeasureStandardApi/GetProjectDrawing'))
+        },
+        DeletePoin:function(MeasurePointID){
+          return $http.get($http.url('/api/MeasureStandardApi/DeletePoint',{MeasurePointID:MeasurePointID}))
+        },
+        UpdatePoint:function(MeasurePointID,Geometry){
+          return $http.put($http.url('/api/MeasureStandardApi/UpdatePoint'),{MeasurePointID:MeasurePointID,Geometry:Geometry})
+        },
+        insertStandar:function(arr){
+          return $http.put($http.url('/api/MeasureStandardApi/Insert'),arr)
         }
       }
     });

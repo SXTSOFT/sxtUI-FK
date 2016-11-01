@@ -102,7 +102,11 @@
                           fn(8);
                           p.destroyDb('Pack'+id+'stzl_images', function () {
                             fn(9);
-                            cb();
+                            p.destroyDb("Pack"+id+"scStandar",function(){
+                              fn(10)
+                              cb();
+                            })
+
                           });
                         });
                       })
@@ -136,7 +140,11 @@
                       p.destroyDb('Pack'+id+'stzl_question',function () {
                         fn(7);
                         p.destroyDb('Pack'+id+'stzl_images', function () {
-                          fn(8);
+                          fn(8)
+                          p.destroyDb("Pack"+id+"scStandar",function(){
+                            fn(9)
+                            cb();
+                          })
                         });
                       });
                     })

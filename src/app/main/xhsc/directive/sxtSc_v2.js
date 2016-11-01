@@ -126,10 +126,18 @@
               points.findAll()
             ]
             $q.all(reqArr).then(function(req){
-              var points=req[0].data&&req[0].data.data?req[0].data.data:[];
+              var t=req[0].data&&req[0].data.data?req[0].data.data:[];
               var sc=req[1].rows?req[1].rows:[];
               var gem=req[2].rows?req[2].rows:[];
-              points=points.concat(sc);
+              t=t.concat(sc)
+              var points=[];
+              t.forEach(function(o){
+                  if (!points.find(function(k){
+                        return o.AcceptanceIndexID == k.AcceptanceIndexID&&k.DrawingID==o.DrawingID&& k.MeasurePointID== o.MeasurePointID;
+                    })){
+                    points.push(o)
+                  }
+              });
               var po;
               function addData(layData,index,color){
                 if (!layData.geometry&&!layData.Geometry){

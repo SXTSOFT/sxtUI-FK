@@ -148,12 +148,6 @@
             tasks.push(function () {
               return remote.Assessment.GetMeasurePointAll(item.RegionID);
             });
-            //tasks.push(function () {
-            //  return remote.Assessment.GetMeasurePointByRole(item.RegionID, vm.role);
-            //});
-            //tasks.push(function () {
-            //  return remote.Assessment.GetMeasurePointGeometry(item.RegionID);
-            //});
             tasks.push(function () {
               return remote.Procedure.getMeasureMosaic(item.regionID,null,"scslStutas");
             });
@@ -234,6 +228,7 @@
             $mdDialog.show({
               controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
                 $scope.item = item;
+                $scope.loading=false;
                 var pk = pack.sc.up(item.AssessmentID);
                 pk.upload(function (proc, curent, total) {
                   if (proc != -1) {
@@ -241,15 +236,32 @@
                     item.current = curent;
                     item.total = total;
                   } else {
-                    $mdDialog.hide();
                     item.current = item.total = null;
                     item.completed = pk.completed;
                     if (item.completed)
-                      remote.Assessment.sumReportTotal(item.AssessmentID).then(function () {
-                        //xcpk.addOrUpdate(vm.data);
+                      $q(function(resolve,reject){
+                        $scope.loading=true;
+                        remote.Assessment.sumReportTotal(item.AssessmentID).then(function () {
+                          pack.sc.removeSc(item.AssessmentID, function () {
+                            $q.all([
+                              remote.Assessment.GetMeasurePointAll(item.RegionID),
+                              remote.Assessment.GetRegionTreeInfo(item.ProjectID, "pack" + item.AssessmentID)
+                            ]).then(function(){
+                              resolve()
+                            }).catch(function(){
+                              reject();
+                            })
+                           ;//刷新状态
+                          });
+                        }).catch(function(){
+                          reject();
+                        })
+                      }).then(function(){
+                        $mdDialog.hide();
                         utils.alert('同步完成');
-                        pack.sc.removeSc(item.AssessmentID, function () {
-                        });
+                      }).catch(function(){
+                        $mdDialog.hide();
+                        utils.alert('在刷新数据的时候发生了错误');
                       })
                     else {
                       utils.alert('同步发生错误,未完成!');
@@ -258,7 +270,7 @@
                   }
                 });
               }],
-              template: '<md-dialog aria-label="正在上传..."  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+              template: '<md-dialog aria-label="正在上传..."  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p ng-if="!loading" style="padding-left: 6px;">正在上传：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p><p ng-if="loading" style="padding-left: 6px;">正在刷新数据,请稍后....</p></md-dialog-content></md-dialog>',
               parent: angular.element(document.body),
               clickOutsideToClose: false,
               fullscreen: false

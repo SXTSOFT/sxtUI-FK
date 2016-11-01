@@ -82,6 +82,17 @@
 
     vm.stretch = function (item) {
       item.stretch = !item.stretch;
+      if (item.stretch){
+        remote.PQMeasureStandard.messageList(item.DrawingID,item.AcceptanceItemID).then(function(r){
+          item.indexs.forEach(function(k){
+            if (r.data.find(function(m){
+                return m.AcceptanceIndexID== k.AcceptanceIndexID
+              })){
+              k.standar=true;
+            }
+          })
+        })
+      }
     }
     vm.go=function(AcceptanceItemID,drawingID,AcceptanceIndexID){
       $state.go("app.xhsc.sc_standar",{
@@ -105,6 +116,9 @@
             title: '删 除',
             action: function (evt) {
               utils.confirm('删除图纸所有的点位?', evt, '', '').then(function () {
+                remote.PQMeasureStandard.delectScStandar(item.AcceptanceIndexID,item.DrawingID).then(function(){
+                  utils.alert("删除成功!");
+                });
               });
               $mdBottomSheet.hide();
               evt.stopPropagation();
