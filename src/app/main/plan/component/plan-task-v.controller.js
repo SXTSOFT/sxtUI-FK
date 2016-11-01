@@ -235,7 +235,7 @@
 
     vm.selectOptionalTask =function (flow) {
       return $mdDialog.show({
-        controller: ['$mdDialog', function ($mdDialog) {
+        controller: ['$mdDialog','$scope', function ($mdDialog,$scope) {
           var vm = this;
           vm.flow = flow;
           var promises = [
@@ -254,14 +254,28 @@
               }
             })
           })
-          vm.select = function () {
-            $mdDialog.hide(vm.items.filter(function (t) {
-              return t.selected;
-            }));
+          vm.add = function(){
+            vm.current = 'add';
           }
-          //api.plan.TaskLibrary.GetList({Skip: 0, Limit: 10000, Level: 1}).then(function (r) {
-          //  vm.items = r.data.Items || [];
-          //});
+          $scope.data ={
+            Level:task.Level+1
+          }
+          vm.select = function () {
+            if(vm.current == 'default'){
+              $mdDialog.hide(vm.items.filter(function (t) {
+                return t.selected;
+              }));
+            }else{
+              api.plan.TaskLibrary.create($scope.data).then(function(r){
+                if(r.status == 200 || r.data){
+                  vm.current = 'default';
+                  api.plan.TaskLibrary.GetList({Skip: 0, Limit: 10000, Level: task.Level+1}).then(function(r){
+                    vm.items = r.data.Items;
+                  })
+                }
+              })
+            }
+          }
         }],
         controllerAs: 'vm',
         templateUrl: 'app/main/plan/component/plan-task-subs.html',
@@ -298,13 +312,32 @@
         controller:['$scope',function($scope){
           var vm = this;
           vm.type = type;
-          api.plan.UserGroup.query().then(function(r){
-            vm.nextUserGroups = r.data.Items;
-          });
+          vm.loadUser = loadUser;
+          vm.loadUser();
           vm.select = function () {
-            $mdDialog.hide(vm.nextUserGroups.filter(function (t) {
-              return t.selected;
-            }));
+            if(vm.current == 'default'){
+              $mdDialog.hide(vm.nextUserGroups.filter(function (t) {
+                return t.selected;
+              }));
+            }else{
+              api.plan.UserGroup.create({
+                "GroupName": vm.dataName,
+                "SystemID": "plan",
+                "Description": vm.dataName
+              }).then(function(r){
+                //utils.alert('添加成功',null).then(function(){
+                //
+                //})
+                vm.current = 'default';
+                loadUser();
+              })
+            }
+
+          }
+          function loadUser(){
+            api.plan.UserGroup.query().then(function(r){
+              vm.nextUserGroups = r.data.Items;
+            });
           }
           api.plan.TaskFlow.getRoleByFlowId(item.TaskFlowId).then(function(res){
             var users = res.data.Items;
