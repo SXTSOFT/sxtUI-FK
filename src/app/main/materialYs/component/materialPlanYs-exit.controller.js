@@ -1,37 +1,30 @@
 /**
- * Created by HangQingFeng on 2016/10/28.
+ * Created by 陆科桦 on 2016/10/28.
  */
-
-(function () {
+(function (angular,undefined) {
   'use strict';
   angular
     .module('app.xhsc')
-    .component('materialPlanInspection',{
-      templateUrl:'app/main/materialYs/component/materialPlanYs-inspection.html',
-      controller:materialPlanInspection,
+    .component('materialYsExit',{
+      templateUrl:'app/main/materialYs/component/materialPlanYs-Exit.html',
+      controller:exit,
       controllerAs:'vm'
     });
 
   /** @ngInject */
-  function materialPlanInspection($rootScope,$scope,api,utils,$stateParams){
+  function exit($rootScope,$scope,$stateParams,api,utils){
     var vm = this;
-    vm.data = {};
-    vm.data.Id = $stateParams.id;
-    vm.data.InspectionTime = new Date();
-
-    var sendgxResult =$rootScope.$on('sendGxResult',function(){
-      api.xhsc.materialPlan.MaterialInspection(vm.data).then(function (q) {
-        utils.alert("提交成功", null, function () {
-          $state.go("app.xhsc.materialys.planList");
-        });
-      });
-    });
+    vm.data = {PlanId:$stateParams.id};
 
     $scope.$on("$destroy",function(){
-      sendgxResult();
-      sendgxResult=null;
+      sendCheckResult();
+      sendCheckResult = null;
     });
 
-
+    var sendCheckResult = $rootScope.$on('sendGxResult',function() {
+      api.xhsc.materialPlan.PostExitInfo(vm.data).then(function (r) {
+        utils.alert('提交成功!');
+      })
+    });
   }
 })(angular,undefined);
