@@ -46,7 +46,7 @@
       })
     }
     vm.downloadPlan=function(item,isReflsh){
-      var status = user.Role.MemberType==0?1:2;
+      var status = user.Role.MemberType==0?17:110;
       //下载成功回掉
       function callBack(){
         var ix = vm.section.indexOf(item);

@@ -351,12 +351,21 @@
                 "GroupName": vm.dataName,
                 "SystemID": "plan",
                 "Description": vm.dataName
-              }).then(function(r){
-                //utils.alert('添加成功',null).then(function(){
-                //
-                //})
+              }).then(function(res){
+                console.log(res)
                 vm.current = 'default';
-                loadUser();
+                api.plan.UserGroup.query().then(function(r){
+                  //vm.nextUserGroups = r.data.Items;
+                  if(vm.nextUserGroups){
+                    r.data.Items.forEach(function (item) {
+                      item.selected = !!vm.nextUserGroups.find(function (it) {
+                        return it.GroupID == item.GroupID && it.selected;
+                      })
+                    });
+                  }
+                  vm.nextUserGroups = r.data.Items;
+                });
+                //loadUser();
               })
             }
 
@@ -398,7 +407,6 @@
         })
       })
     }
-
     //获取所有角色
     api.plan.UserGroup.query().then(function(r){
       vm.nextUserGroups = r.data.Items;
@@ -421,6 +429,78 @@
       api.plan.TaskFlow.resetTaskFlowRolesByType(flow.TaskFlowId,type,users.roleIds).then(function(r){
         flow['saveNotice'+type] = datas;
         return vm.updateFlow(flow);
+      })
+    }
+
+    api.plan.procedure.query().then(function(r){
+      vm.procedures = r.data;
+    })
+    api.plan.MeasureInfo.query().then(function(r){
+      vm.measureInfo = r.data;
+    })
+    //vm.selectSpecialtyLow=function(item,parent){
+    //  parent.WPAcceptanceList=item.WPAcceptanceList;
+    //}
+    vm.setMeasureInfo = function(flow){
+      return $mdDialog.show({
+        controller:['$scope','pdata','mdata','data',function($scope,pdata,mdata,data){
+          var vm = this;
+          vm.data = data;
+          vm.current = null;
+          vm.gxName = '';
+          vm.proceduresData = pdata;
+          vm.measureData = mdata;
+          setVaule();
+          function setVaule(){
+            var f = vm.measureData.find(function(_r){
+              return _r.AcceptanceItemID == vm.data.CloseRelatedObjectId;
+            })
+            vm.proceduresData.forEach(function(_r){
+              _r.SpecialtyChildren.forEach(function(_rr){
+                var g=_rr.WPAcceptanceList && _rr.WPAcceptanceList.find(function(t){
+                  return t.AcceptanceItemID ==  vm.data.CloseRelatedObjectId;
+                })
+                if(g){
+                  vm.current = g;
+                  vm.gxName = flow.MeasureInfo;
+                }
+              })
+            })
+            if(f){
+              vm.current = f;
+            }
+          }
+          vm.choose = function(item){
+            vm.current = item;
+            vm.data.CloseRelatedObjectId = item.AcceptanceItemID;
+            vm.gxName = item.AcceptanceItemName;
+            flow.MeasureInfo = item.AcceptanceItemName;
+          }
+          vm.select = function(index){
+              if(index==0){
+                vm.data.CloseRelatedObjectType = 'PQMeasure';
+                vm.data.CloseRelatedObjectId = vm.CloseRelatedObjectId.AcceptanceItemID;
+                flow.MeasureInfo = vm.CloseRelatedObjectId.MeasureItemName;
+              }else{
+                vm.data.CloseRelatedObjectType = 'Inspection';
+              }
+            $mdDialog.hide(vm.data);
+          }
+        }],
+        controllerAs:'vm',
+        templateUrl:'app/main/plan/component/plan-task-measureinfo.html',
+        parent: angular.element(document.body),
+        clickOutsideToClose: true,
+        locals:{
+          pdata:vm.procedures && vm.procedures,
+          mdata:vm.measureInfo && vm.measureInfo,
+          data:vm.data && vm.data
+        }
+      }).then(function(data){
+        api.plan.TaskLibrary.update(data).then(function (r) {
+          console.log(r)
+          return vm.updateFlow(flow);
+        });
       })
     }
     vm.ClickSaveleft = function(data){
