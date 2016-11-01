@@ -5,39 +5,37 @@
         <span>角色选择</span>
       </h2>
       <span flex></span>
-      <md-button class="md-icon-button" aria-label="More">
+      <md-button ng-if="vm.current !='add'" class="md-icon-button" aria-label="More" ng-click="vm.current='add'">
         <md-icon md-font-icon="icon-plus" ></md-icon>
+      </md-button>
+      <md-button ng-if="vm.current =='add'" class="md-icon-button" ng-click="vm.current ='default'">
+        <md-icon md-font-icon="icon-keyboard-return"></md-icon>
       </md-button>
     </div>
   </md-toolbar>
-  <md-dialog-content style="padding: 0">
-    <md-list>
-      <md-list-item ng-repeat="item in vm.nextUserGroups">
-        <md-checkbox ng-model="item.selected"></md-checkbox>
-        <div class="md-list-item-text">
-          {{item.GroupName}}
-        </div>
-        <md-divider></md-divider>
-      </md-list-item>
-    </md-list>
-    <!--<table class="simple">-->
-      <!--<thead>-->
-      <!--<tr>-->
-        <!--<th>选择</th>-->
-        <!--<th>名称</th>-->
-      <!--</tr>-->
-      <!--</thead>-->
-      <!--<tbody>-->
-      <!--<tr ng-repeat="item in vm.nextUserGroups">-->
-        <!--<td><md-checkbox ng-model="item.selected" aria-label="选择">-->
-        <!--</md-checkbox></td>-->
-        <!--<td class="name">{{item.GroupName}}</td>-->
-      <!--</tr>-->
-      <!--</tbody>-->
-    <!--</table>-->
+  <md-dialog-content style="padding: 0;min-width: 300px;">
+    <div ng-switch="vm.current">
+      <div ng-switch-default>
+        <md-list>
+          <md-list-item ng-repeat="item in vm.nextUserGroups">
+            <md-checkbox ng-model="item.selected"></md-checkbox>
+            <div class="md-list-item-text">
+              {{item.GroupName}}
+            </div>
+            <md-divider></md-divider>
+          </md-list-item>
+        </md-list>
+      </div>
+      <div ng-switch-when="add" layout-padding="15">
+        <md-input-container class="md-block">
+          <label>角色名字</label>
+          <input type="text" ng-model="vm.dataName" md-autofocus>
+        </md-input-container>
+      </div>
+    </div>
   </md-dialog-content>
   <md-dialog-actions layout="row">
-    <md-button ng-click="vm.select('useful')">
+    <md-button ng-click="vm.select()" class="md-raised">
       确定
     </md-button>
   </md-dialog-actions>
