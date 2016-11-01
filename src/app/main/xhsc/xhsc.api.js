@@ -1308,7 +1308,7 @@
           return $http.put($http.url('/api/MeasureStandardApi/UpdatePoint'),{MeasurePointID:MeasurePointID,Geometry:Geometry})
         },
         insertStandar:function(arr){
-          return $http.put($http.url('/api/MeasureStandardApi/Insert'),arr)
+          return $http.post($http.url('/api/MeasureStandardApi/Insert'),arr)
         }
       }
     });

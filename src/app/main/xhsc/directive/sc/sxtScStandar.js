@@ -44,8 +44,8 @@
           map._map.removeControl(toolbar);
           //渲染几何点
           function historydata(layer,index){
-            var layer = layer;
-            if (layer.loaded)return;
+            //var layer = layer;
+            if (layer&&layer.loaded)return;
             layer.loaded = true;
             var reqArr=[
               remote.Assessment.GetMeasurePointAll()
@@ -81,7 +81,7 @@
               var po;
               function addData(layData,index,color){
                 if(!layData.geometry && layData.Geometry){
-                  layData.geometry = JSON.parse(layData.Geometry.Geometry);
+                  layData.geometry = JSON.parse(layData.Geometry);
                 }
                 if(!layData.geometry) return;
                 layData.geometry.options={
@@ -153,7 +153,7 @@
                 _id: point.properties.$id,
                 geometry: point
               };
-              remote.PQMeasureStandard.UpdatePoint(point._id,point.geometry);
+              remote.PQMeasureStandard.UpdatePoint(point._id,JSON.stringify(point.geometry));
 
               if (isNew) {
                 scope.measureIndexes.forEach(function (m) {
@@ -173,7 +173,7 @@
                       //_id: sxt.uuid(),
                       AcceptanceIndexID: m.AcceptanceIndexID,
                       AcceptanceItemID:scope.acceptanceItem,
-                      DrawingID:img.DrawingID,
+                      DrawingID:scope.drawing.data.DrawingID,
                       MeasurePointID:point._id
                     });
                     remote.PQMeasureStandard.insertStandar(arr);
@@ -240,9 +240,22 @@
 
             },
             onDelete: function (layer) {
-              var l=layer.toGeoJSON();
-              remote.PQMeasureStandard.delectScStandar(l.options.AcceptanceIndexID,l.options.DrawingID,
-                l.options.MeasurePointID)
+              var id = layer.getValue().$id;
+                //values = xhUtils.findAll(fg.data, function (d) {
+                //  return d.MeasurePointID == id && !!scope.measureIndexes.find(function (m) {
+                //      return m.AcceptanceIndexID == d.AcceptanceIndexID;
+                //    });
+                //});
+              remote.PQMeasureStandard.DeletePoin(id).then(function(){
+                scope.measureIndexes.forEach(function(k){
+                  remote.PQMeasureStandard.delectScStandar(k.AcceptanceIndexID,scope.drawing.data.DrawingID,id).then(function(){
+                    utils.alert("删除成功!");
+                  });
+                });
+              });
+              values.forEach(function (v) {
+                data.delete(v._id);
+              })
             },
             onPopup: function (e) {
               if (e.layer instanceof L.Stamp
@@ -268,7 +281,7 @@
                 };
 
                 edit.scope.readonly = scope.readonly;
-                edit.scope.apply && edit.scope.apply();
+                //edit.scope.apply && edit.scope.apply();
                 return edit.el[0];
               }
             }

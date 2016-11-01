@@ -235,7 +235,8 @@
         options:cfg('options'),
         head:cfg('head'),
         resource:cfg('resource'),
-        custom:cfg('custom')
+        custom:cfg('custom'),
+        put:cfg('put')
       });
     }
 
