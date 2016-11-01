@@ -39,6 +39,8 @@
           flow.oDuration = flow.Duration;
           flow.oNotice7 = flow.Notice7;
           flow.oNotice8 = flow.Notice8;
+          flow.oMeasureInfo = flow.MeasureInfo;
+          flow.oExpression = flow.Expression;
         });
         task.Branch.forEach(function (b) {
           b.forEach(function (flow) {
@@ -50,9 +52,10 @@
             flow.oDuration = flow.Duration;
             flow.oNotice7 = flow.Notice7;
             flow.oNotice8 = flow.Notice8;
+            flow.oMeasureInfo = flow.MeasureInfo;
+            flow.oExpression = flow.Expression;
           })
         });
-        console.log(task)
         vm.onLoadTemplate();
       })
     }
@@ -62,7 +65,7 @@
       }
     }
     vm.setEndFlow = function (flow,endFlow) {
-      flow.EndFlagTaskFlowId = endFlow.TaskFlowId;
+      flow.EndFlagTaskFlowId = endFlow? endFlow.TaskFlowId:0;
       vm.updateFlow(flow).then(function () {
         vm.flows = temp.load(temp.task);
       });
@@ -97,6 +100,7 @@
           next.TaskFlowId = r.data.TaskFlowId;
           if(vm.data.Level==1){
             return api.plan.TaskLibrary.create({
+              Level:vm.data.Level+1,
               Name:result
             }).then(function (r1) {
               return api.plan.TaskFlow.resetTaskFlow(next.TaskFlowId,[{
@@ -147,6 +151,12 @@
         return vm.updateFlow(flow);
       }
     }
+    vm.updateExpression = function (flow) {
+      if(flow.oExpression != flow.Expression){
+        flow.oExpression = flow.Expression;
+        return vm.updateFlow(flow);
+      }
+    }
     vm.updateMilestone = function (flow) {
       if(flow.oMilestone != flow.Milestone){
         flow.oMilestone = flow.Milestone;
@@ -182,6 +192,7 @@
         IsFloor:flow.IsFloor,
         IsRequired:flow.IsRequired,
         EndFlagTaskFlowId:flow.EndFlagTaskFlowId,
+        Expression:flow.Expression,
         Description:angular.toJson({
           ReservedEndDays:flow.ReservedEndDays,
           Duration: flow.Duration,
@@ -190,7 +201,8 @@
           Notices:flow.Notices,
           CarryOut:flow.CarryOut,
           Notice7: flow.Notice7,
-          Notice8: flow.Notice8
+          Notice8: flow.Notice8,
+          MeasureInfo:flow.MeasureInfo
         })
       }).then(function () {
 
@@ -222,12 +234,6 @@
         });
       }
     }
-    //vm.loadTemlpate = function () {
-    //  return api.plan.TaskLibrary.getTaskFlow($stateParams.id).then(function (r) {
-    //    task = vm.data = r.data;
-    //    vm.onLoadTemplate();
-    //  });
-    //}
     vm.onLoadTemplate = function () {
       if(!task) {
         task = {
@@ -298,17 +304,7 @@
           })
         });
     }
-    //获取所有角色
-    api.plan.UserGroup.query().then(function(r){
-      vm.nextUserGroups = r.data.Items;
-    })
-    vm.stop = function(ev){
-      ev.stopPropagation();
-    }
-    vm.setUsers = function(items){
-
-    }
-    vm.getUsers = function(item,type){
+    vm.selectUsers = function(item,type){
       return $mdDialog.show({
         templateUrl:'app/main/plan/component/plan-task-roles.html',
         controller:['$scope',function($scope){
@@ -327,8 +323,8 @@
             if(!users.length) return;
             users&&users.forEach(function(r){
               var f = vm.nextUserGroups&&vm.nextUserGroups.find(function(_r){
-                return _r.GroupID == r.RoleId;
-              })
+                  return _r.GroupID == r.RoleId;
+                })
               if(f&& r.NotificationType == vm.type){
                 f.selected = true;
               }
@@ -354,6 +350,18 @@
         })
       })
     }
+
+    //获取所有角色
+    api.plan.UserGroup.query().then(function(r){
+      vm.nextUserGroups = r.data.Items;
+    })
+    vm.stop = function(ev){
+      ev.stopPropagation();
+    }
+    vm.setUsers = function(items){
+
+    }
+
     vm.saveUserGroup = function (flow,type) {
       var users ={
         roleIds:[]

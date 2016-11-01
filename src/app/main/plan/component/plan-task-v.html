@@ -15,7 +15,7 @@
                 <md-menu-content>
                   <md-menu-item>
                     <md-button ng-click="vm.addNext($event)">
-                      任务流程
+                      添加主线
                     </md-button>
                   </md-menu-item>
                 </md-menu-content>
@@ -23,11 +23,12 @@
             </th>
             <th ng-if="vm.data.Level==0" style="width: 24px;min-width: 24px">必选</th>
             <th ng-if="vm.data.Level==0" style="width: 80px;min-width: 80px">可选任务</th>
-            <th ng-if="vm.data.Level==1" style="width: 24px;min-width: 24px">工期</th>
-            <th ng-if="vm.data.Level==1" style="width: 24px;min-width: 24px">龄期</th>
+            <th ng-if="vm.data.Level==1" style="width: 30px;min-width: 24px">工期</th>
+            <th ng-if="vm.data.Level==1" style="width: 30px;min-width: 24px">龄期</th>
+            <th ng-if="vm.data.Level==1" style="width: 124px;min-width: 124px">关联工序</th>
             <th style="width: 100px;min-width: 80px">通知</th>
             <th style="width: 100px;min-width: 80px">执行</th>
-            <th ng-if="vm.data.Level==0" style="width: 80px;min-width: 80px">里程碑</th>
+            <th ng-if="vm.data.Level==0" style="width: 80px;min-width: 80px">里程碑/介入点</th>
             <th ng-if="vm.data.Level==0" style="width: 24px;min-width: 24px">楼层</th>
           </tr>
           </thead>
@@ -43,18 +44,23 @@
               <md-menu-content>
                 <md-menu-item>
                   <md-button ng-click="vm.addNext($event,flow)">
-                    下一流程
+                    下一主线
                   </md-button>
                 </md-menu-item>
                 <md-menu-item>
                   <md-button ng-click="vm.addNext($event,flow,true)">
-                    分支流程
+                    添加穿插
                   </md-button>
                 </md-menu-item>
                 <md-menu-item ng-if="flow.line!==0">
                   <md-menu>
                     <md-button style="margin:0;padding: 0 16px;height: 48px" ng-click="$mdOpenMenu()">后置任务</md-button>
                     <md-menu-content>
+                      <md-menu-item ng-if="flow.EndFlagTaskFlowId">
+                        <md-button ng-click="vm.setEndFlow(flow)">
+                          清除后置
+                        </md-button>
+                      </md-menu-item>
                       <md-menu-item ng-repeat="f2 in vm.flows">
                         <md-button ng-click="vm.setEndFlow(flow,f2)">
                           {{f2.Name}}
@@ -65,7 +71,7 @@
                 </md-menu-item>
                 <md-menu-item>
                   <md-button ng-click="vm.removeFlow($event,flow)">
-                    删除流程
+                    删除节点
                   </md-button>
                 </md-menu-item>
               </md-menu-content>
@@ -75,38 +81,26 @@
             <td ng-if="vm.data.Level==0">
               <div style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.selectOptionalTask(flow)">{{flow.OptionalTask||'未选择'}}</div>
             </td>
-            <td ng-if="vm.data.Level==1"><input type="text" ng-model="flow.Duration" ng-blur="vm.updateDuration(flow)"></td>
-            <td ng-if="vm.data.Level==1"><input type="number" step="0.5" ng-model="flow.ReservedEndDays"></td>
+            <td ng-if="vm.data.Level==1"><input type="text" style="width:20px" placeholder="无" ng-model="flow.Duration" ng-blur="vm.updateDuration(flow)"></td>
+            <td ng-if="vm.data.Level==1"><input type="text" style="width:20px" placeholder="无" ng-model="flow.ReservedEndDays" ng-blur="vm.updateReservedEndDays(flow)"></td>
+            <td ng-if="vm.data.Level==1">
+              <div  style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.selectUsers(flow,7)">
+                {{flow.MeasureInfo||'未关联'}}
+              </div>
+            </td>
             <td>
-              <div  style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.getUsers(flow,7)">
+              <div  style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.selectUsers(flow,7)">
                 {{flow.Notice7||'未选择'}}
               </div>
-              <!--<md-select  style="width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" ng-model="flow.saveNotice7" placeholder="通知" class="md-block m-0" multiple md-on-open="vm.getUsers(flow)" md-on-close="vm.saveUserGroup(flow,'7')">-->
-                <!--<md-select-header class="sxt-select-header">-->
-                  <!--<md-input-container md-no-float class="md-block">-->
-                    <!--<input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字">-->
-                    <!--<md-icon md-font-icon="icon-plus" style="display:inline-block;" ng-click="vm.addRole(1)"></md-icon>-->
-                  <!--</md-input-container>-->
-                <!--</md-select-header>-->
-                <!--<md-option ng-value="g.GroupID" ng-repeat="g in vm.nextUserGroups|filter:searchTerm">{{g.GroupName}}</md-option>-->
-              <!--</md-select>-->
             </td>
             <td>
-              <div  style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.getUsers(flow,8)">
+              <div  style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.selectUsers(flow,8)">
                 {{flow.Notice8||'未选择'}}
               </div>
-              <!--<md-select  style="width:100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" ng-model="flow.saveNotice8" placeholder="执行" class="md-block m-0" multiple md-on-open="vm.getUsers(flow)" md-on-close="vm.saveUserGroup(flow,'8')">-->
-                <!--<md-select-header class="sxt-select-header">-->
-                  <!--<md-input-container md-no-float class="md-block">-->
-                    <!--<input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >-->
-                    <!--<md-icon md-font-icon="icon-plus" style="display:inline-block;" ng-click="vm.addRole(1)"></md-icon>-->
-                  <!--</md-input-container>-->
-                <!--</md-select-header>-->
-                <!--<md-option ng-value="g.GroupID" ng-repeat="g in vm.nextUserGroups|filter:searchTerm">{{g.GroupName}}</md-option>-->
-              <!--</md-select>-->
             </td>
             <td ng-if="vm.data.Level==0">
-              <input ng-show="!flow.IsFloor" ng-if="flow.line===0" style="width: 90%" placeholder="未录入" type="text" ng-blur="vm.updateMilestone(flow)"  ng-model="flow.Milestone">
+              <input ng-show="!flow.IsFloor" ng-if="flow.line===0" style="width: 90%" placeholder="无里程碑" type="text" ng-blur="vm.updateMilestone(flow)"  ng-model="flow.Milestone">
+              <span ng-show="flow.IsFloor && flow.EndFlagTaskFlowId" ng-if="flow.line!==0"><input  style="width:90%;color:#C62828" placeholder="无介入点" type="text" ng-blur="vm.updateExpression(flow)" ng-model="flow.Expression"></span>
             </td>
             <td ng-if="vm.data.Level==0" align="center"><input type="checkbox" ng-model="flow.IsFloor"  ng-click="vm.updateFlow(flow)"></td>
           </tr>
@@ -120,6 +114,17 @@
     <md-tab label="基础信息">
     <md-tab-content flex layout-fill class="white-bg" layout-padding>
       <form>
+        <md-input-container>
+          <label>级别</label>
+          <md-select ng-model="vm.data.Level">
+            <md-option ng-value="0" >
+              一/二级
+            </md-option>
+            <md-option ng-value="1" >
+              三级
+            </md-option>
+          </md-select>
+        </md-input-container>
         <md-input-container class="md-block">
           <label>名称</label>
           <input type="text" ng-model="vm.data.Name" >
