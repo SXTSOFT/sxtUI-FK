@@ -153,9 +153,13 @@
                 _id: point.properties.$id,
                 geometry: point
               };
-              remote.PQMeasureStandard.UpdatePoint(point._id,JSON.stringify(point.geometry));
+              remote.PQMeasureStandard.UpdatePoint(point._id,JSON.stringify(point.geometry)).then(function () {
+                scope.measureIndexes.forEach(function (k) {
+                  k.isSubmit=true;
+                })
+              });
 
-              if (isNew) {
+              // if (isNew) {
                 scope.measureIndexes.forEach(function (m) {
                   var ms = [];
                   if (m.Children && m.Children.length) {
@@ -179,7 +183,7 @@
                     remote.PQMeasureStandard.insertStandar(arr);
                   });
                 })
-              }
+              // }
 
               //如果是画区域,而区域内没有点的话,默认生成9点或5个点
               if (isNew && layer instanceof L.AreaGroup) {
@@ -249,7 +253,6 @@
               remote.PQMeasureStandard.DeletePoin(id).then(function(){
                 scope.measureIndexes.forEach(function(k){
                   remote.PQMeasureStandard.delectScStandar(k.AcceptanceIndexID,scope.drawing.data.DrawingID,id).then(function(){
-                    utils.alert("删除成功!");
                   });
                 });
               });

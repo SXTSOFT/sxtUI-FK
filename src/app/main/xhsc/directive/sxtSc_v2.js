@@ -42,9 +42,7 @@
         data = pk.sc.db;
       if (!points)
         points = pk.point.db;
-      if (!scStandar){
-        scStandar= pk.scStandar.db
-      }
+
 
       //var yxzAcceptanceIndexID = 'c1c7a2150bb742d8bd3eeefd2cf3de89';//尺寸一直性指标ID
       var install = function () {
@@ -60,7 +58,8 @@
         var ProjectID = scope.regionId.substr(0, 5);
         var areaId= scope.regionId.substr(0, 10);
         var arr = [
-          remote.Project.getDrawingRelations(ProjectID,"scDrawingRelation")
+          remote.Project.getDrawingRelations(ProjectID,"scDrawingRelation"),
+          remote.Assessment.GetMeasurePointAll(areaId)
         ];
         $q.all(arr).then(function (res) {
           var picRelate = res[0]
@@ -78,6 +77,22 @@
             return img;
           }
           var img=findImg(picRelate);
+          var t=res[1].data&&res[1].data.data?res[1].data.data:[];
+          var msg=[];
+
+          scope.measureIndexes.forEach(function (o) {
+            if (!t.find(function (k) {
+                return  o.AcceptanceIndexID == k.AcceptanceIndexID&&k.DrawingID==img.DrawingID
+                &&k.Status==1;
+              })){
+              msg.push(o.IndexName)
+            }
+          });
+          if (msg.length){
+            utils.alert("指标："+msg.join(",")+"尚未标准化，请联系项目同事标准化!");
+            return;
+          }
+
 
           function  loadPic(img){
             if (!tile || tile != scope.regionId) {
@@ -122,14 +137,10 @@
             layer.loaded = true;
             var reqArr=[
               remote.Assessment.GetMeasurePointAll(areaId),
-              scStandar.findAll(),
-              points.findAll()
+              data.findAll()
             ]
             $q.all(reqArr).then(function(req){
               var t=req[0].data&&req[0].data.data?req[0].data.data:[];
-              var sc=req[1].rows?req[1].rows:[];
-              var gem=req[2].rows?req[2].rows:[];
-              t=t.concat(sc)
               var points=[];
               t.forEach(function(o){
                   if (!points.find(function(k){
@@ -138,21 +149,18 @@
                     points.push(o)
                   }
               });
+
+              var u=req[1].rows;
+
               var po;
               function addData(layData,index,color){
-                if (!layData.geometry&&!layData.Geometry){
-                  var g= gem.find(function(o){
-                    return o._id==layData.MeasurePointID
-                  })
-                  if (g){
-                    layData.geometry= g.geometry;
-                  }
-                }
                 if(!layData.geometry && layData.Geometry){
                   layData.geometry = JSON.parse(layData.Geometry);
                 }
+
                 if(!layData.geometry) return;
                 layData.geometry.options.color = color;
+                layData.geometry.options.fill = true;
                 layData.geometry.options.v = index;
                 layData.geometry.options.seq = layData.geometry.properties.seq;
                 layData.geometry.options.customSeq = true;
@@ -166,7 +174,13 @@
                   if (m.DrawingID==img.DrawingID&& scope.measureIndexes.find(function (n) {
                       return n.AcceptanceIndexID == m.AcceptanceIndexID
                     })){
-                    var color="green"
+                    var values = u.filter(function (v) {
+                      return m.MeasurePointID == v.MeasurePointID && v.CheckRegionID==scope.regionId &&
+                        scope.measureIndexes.find(function (n) {
+                          return n.AcceptanceIndexID == v.AcceptanceIndexID
+                        })
+                    });
+                    var color=values.length == scope.measureIndexes.length ?'blue':'red';
                     addData(m,index,color);
                     index++;
                   }
@@ -303,14 +317,6 @@
                     fg.data = fg.data ? fg.data : [];
                     fg.data.push(v);
                     //实测标准化
-                    var standar={
-                      _id: sxt.uuid(),
-                      AcceptanceIndexID: m.AcceptanceIndexID,
-                      AcceptanceItemID:scope.acceptanceItem,
-                      DrawingID:img.DrawingID,
-                      MeasurePointID:point._id
-                    }
-                    scStandar.addOrUpdate(standar);
                   });
                 })
               }
@@ -432,6 +438,8 @@
                     AcceptanceIndexID: m.m.AcceptanceIndexID
                   }, m.v);
                   m.v.MeasureValueId = m.v._id;
+                  fg.data.push(m.v);
+
                 }
                 if (m.v.values) {
                   var minV = 1000000, maxV = -1000000, vs = [];
@@ -449,8 +457,9 @@
                   m.v.DesignValue = minV;
                   m.v.ExtendedField1 = vs.join(',');
                 }
-
+                console.log('data.addOrUpdate',m.v);
                 data.addOrUpdate(m.v);
+
               });
             },
             onDelete: function (layer) {
@@ -494,15 +503,16 @@
               }
             }
           }).addTo(map._map);
-          toolbar = new L.Control.Draw({
-            featureGroup: fg,
-            group: {
-              lineGroup: false,
-              areaGroup: scope.measureIndexes.length && !!scope.measureIndexes.find(function (m) {
-                return m.QSKey == '4'
-              })
-            }
-          }).addTo(map._map);
+
+          // toolbar = new L.Control.Draw({
+          //   featureGroup: fg,
+          //   group: {
+          //     lineGroup: false,
+          //     areaGroup: scope.measureIndexes.length && !!scope.measureIndexes.find(function (m) {
+          //       return m.QSKey == '4'
+          //     })
+          //   }
+          // }).addTo(map._map);
         }).catch(function(r){
 
         });

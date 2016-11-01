@@ -84,12 +84,16 @@
       item.stretch = !item.stretch;
       if (item.stretch){
         remote.PQMeasureStandard.messageList(item.DrawingID,item.AcceptanceItemID).then(function(r){
+          var t=""
           item.indexs.forEach(function(k){
-            if (r.data.find(function(m){
-                return m.AcceptanceIndexID== k.AcceptanceIndexID
-              })){
-              k.standar=true;
-            }
+            r.data.forEach(function(m){
+               if (m.AcceptanceIndexID== k.AcceptanceIndexID){
+                 k.standar=k.standar=="completed"?k.standar:"no";
+                 if (m.Status==1){
+                   k.standar="completed"
+                 }
+               }
+            });
           })
         })
       }
@@ -102,7 +106,18 @@
       })
     }
 
+    vm.click=function (item,evt) {
+      evt.stopPropagation();
+      if (item.standar=='completed'){
+        return;
+      }
+      vm.go(item.AcceptanceItemID,item.DrawingID,item.AcceptanceIndexID);
+    }
     vm.action = function (item, evt) {
+      evt.stopPropagation();
+      if (item.standar=="completed"){
+        return;
+      }
       $mdBottomSheet.show({
         templateUrl: 'app/main/xhsc/procedure/action.html',
         controller: function ($scope) {
@@ -112,18 +127,20 @@
               $mdBottomSheet.hide();
               vm.go(item.AcceptanceItemID,item.DrawingID,item.AcceptanceIndexID);
             }
-          }, {
-            title: '删 除',
-            action: function (evt) {
-              utils.confirm('删除图纸所有的点位?', evt, '', '').then(function () {
-                remote.PQMeasureStandard.delectScStandar(item.AcceptanceIndexID,item.DrawingID).then(function(){
-                  utils.alert("删除成功!");
-                });
-              });
-              $mdBottomSheet.hide();
-              evt.stopPropagation();
-            }
-          }, {
+          },
+          //   {
+          //   title: '删 除',
+          //   action: function (evt) {
+          //     utils.confirm('删除图纸所有的点位?', evt, '', '').then(function () {
+          //       remote.PQMeasureStandard.delectScStandar(item.AcceptanceIndexID,item.DrawingID).then(function(){
+          //         utils.alert("删除成功!");
+          //       });
+          //     });
+          //     $mdBottomSheet.hide();
+          //     evt.stopPropagation();
+          //   }
+          // },
+            {
             title: '取 消',
             action: function () {
               $mdBottomSheet.hide();
@@ -131,7 +148,7 @@
           }]
         }
       });
-      evt.stopPropagation();
+
     }
     function DynamicItems(source) {
       /**
@@ -188,5 +205,7 @@
         this.numItems = this.source.length;
       }));
     };
+
+
   }
 })();

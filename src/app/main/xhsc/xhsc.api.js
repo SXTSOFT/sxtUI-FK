@@ -1289,7 +1289,7 @@
           return $http.put($http.url('/api/MeasureStandardApi/'+id))
         },
         delectScStandar:function(AcceptanceIndexID,DrawingID,MeasurePointID){
-          return $http.delete($http.url('/api/MeasureStandardApi'),{
+          return $http.post($http.url('/api/MeasureStandardApi'),{
             AcceptanceIndexID:AcceptanceIndexID,
             DrawingID:DrawingID,
             MeasurePointID:MeasurePointID
@@ -1302,14 +1302,23 @@
           return $http.get($http.url('/api/MeasureStandardApi/GetProjectDrawing'))
         },
         DeletePoin:function(MeasurePointID){
-          return $http.delete($http.url('/api/MeasureStandardApi/DeletePoint'),{MeasurePointID:MeasurePointID})
+          return $http.post($http.url('/api/MeasureStandardApi/DeletePoint'),{MeasurePointID:MeasurePointID})
         },
         UpdatePoint:function(MeasurePointID,Geometry){
           return $http.put($http.url('/api/MeasureStandardApi/UpdatePoint'),{MeasurePointID:MeasurePointID,Geometry:Geometry})
         },
         insertStandar:function(arr){
           return $http.post($http.url('/api/MeasureStandardApi/Insert'),arr)
+        },
+        standarSubmit:function(AcceptanceIndexID,AcceptanceItemID,DrawingID){
+          return $http.post($http.url('/api/MeasureStandardApi/Submit'),{
+            AcceptanceIndexID: AcceptanceIndexID,
+            AcceptanceItemID: AcceptanceItemID,
+            DrawingID: DrawingID
+          })
         }
+
+
       }
     });
   }

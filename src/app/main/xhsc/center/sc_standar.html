@@ -1,4 +1,4 @@
-<div layout="row" class="scTop">
+<div layout="row" class="scTop" style="position: relative">
   <div flex class="scleft">
     <md-progress-circular id="toolbar-progress" ng-if="!vm.scroll" class="md-accent"
         md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
@@ -11,9 +11,14 @@
       <span style="color:darkslategray;font-style: italic;">{{vm.info.tooltip}}</span>
     </div>
   </div>
+  <md-button ng-click="vm.submit()"  style="position: absolute;right: 8px;top:0px;min-width: 50px;min-height: 50px;z-index: 999" class="md-fab md-mini" ng-click="vm.goBack()">
+    <!--<md-icon></md-icon>-->
+    提交
+  </md-button>
 </div>
 <sxt-sc-standar acceptance-item="vm.info.acceptanceItemID"  measure-indexes="vm.selected" tooltip="" drawing="vm.drawing"  flex>
 </sxt-sc-standar>
 <div style="display: none">
   <sxt-sc-standar-pop></sxt-sc-standar-pop>
 </div>
+

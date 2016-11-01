@@ -19,7 +19,7 @@
       scope:{
         readonly:'='
       },
-      templateUrl:'app/main/xhsc/directive/sxtScPopup.html',
+      templateUrl:'app/main/xhsc/directive/sc/sxtScStandarPop.html',
       link:link
     }
 

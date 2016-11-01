@@ -53,10 +53,10 @@
                 url:sxt.app.api+'/Api/MeasurePointApi/CreatePoint',
                 type: 'data'
               },
-              scStandar:{
-                url:sxt.app.api+'/api/MeasureStandardApi/Insert',
-                type: 'data'
-              },
+              // scStandar:{
+              //   url:sxt.app.api+'/api/MeasureStandardApi/Insert',
+              //   type: 'data'
+              // },
               indexs:{
                 url:sxt.app.api+'/Api/MeasureValueApi/MeasureIndexSubmit',
                 type:'data'
@@ -102,10 +102,7 @@
                           fn(8);
                           p.destroyDb('Pack'+id+'stzl_images', function () {
                             fn(9);
-                            p.destroyDb("Pack"+id+"scStandar",function(){
-                              fn(10)
-                              cb();
-                            })
+                            cb();
 
                           });
                         });
