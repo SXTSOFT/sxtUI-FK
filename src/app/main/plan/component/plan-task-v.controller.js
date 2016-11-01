@@ -37,6 +37,8 @@
           flow.oName=flow.Name;
           flow.oReservedEndDays = flow.ReservedEndDays;
           flow.oDuration = flow.Duration;
+          flow.oNotice7 = flow.Notice7;
+          flow.oNotice8 = flow.Notice8;
         });
         task.Branch.forEach(function (b) {
           b.forEach(function (flow) {
@@ -46,8 +48,11 @@
             flow.oName=flow.Name;
             flow.oReservedEndDays = flow.ReservedEndDays;
             flow.oDuration = flow.Duration;
+            flow.oNotice7 = flow.Notice7;
+            flow.oNotice8 = flow.Notice8;
           })
         });
+        console.log(task)
         vm.onLoadTemplate();
       })
     }
@@ -183,7 +188,9 @@
           Milestone:flow.Milestone,
           OptionalTask:flow.OptionalTask,
           Notices:flow.Notices,
-          CarryOut:flow.CarryOut
+          CarryOut:flow.CarryOut,
+          Notice7: flow.Notice7,
+          Notice8: flow.Notice8
         })
       }).then(function () {
 
@@ -215,12 +222,12 @@
         });
       }
     }
-    vm.loadTemlpate = function () {
-      return api.plan.TaskLibrary.getTaskFlow($stateParams.id).then(function (r) {
-        task = vm.data = r.data;
-        vm.onLoadTemplate();
-      });
-    }
+    //vm.loadTemlpate = function () {
+    //  return api.plan.TaskLibrary.getTaskFlow($stateParams.id).then(function (r) {
+    //    task = vm.data = r.data;
+    //    vm.onLoadTemplate();
+    //  });
+    //}
     vm.onLoadTemplate = function () {
       if(!task) {
         task = {
@@ -234,16 +241,12 @@
       temp = new template({
         onClick:function (e) {
           vm.current = e.data;
-          vm.saveNotice7=[];
-          vm.MileStone = [];
-          //vm.saveNoticeStarted = [];
-          //vm.saveNoticeEarlyWarning=[];
-          vm.saveNotice8=[];
-
+          //vm.saveNotice7=[];
+          //vm.MileStone = [];
+          //vm.saveNotice8=[];
         }
       });
       vm.flows = temp.load(task);
-
     }
 
     vm.selectOptionalTask =function (flow) {
@@ -251,15 +254,30 @@
         controller: ['$mdDialog', function ($mdDialog) {
           var vm = this;
           vm.flow = flow;
-
+          var promises = [
+            api.plan.TaskLibrary.GetList({Skip: 0, Limit: 10000, Level: task.Level+1}),
+            api.plan.TaskFlow.getSubTasks(flow.TaskFlowId)
+          ];
+          $q.all(promises).then(function(res){
+            vm.items = res[0].data.Items;
+            vm.selectedTasks =  res[1].data.Items;
+            vm.items.forEach(function(r){
+              var f = res[1].data.Items&&res[1].data.Items.find(function(_r){
+                  return _r.TaskLibraryId == r.TaskLibraryId;
+                })
+              if(f){
+                r.selected = true;
+              }
+            })
+          })
           vm.select = function () {
             $mdDialog.hide(vm.items.filter(function (t) {
               return t.selected;
             }));
           }
-          api.plan.TaskLibrary.GetList({Skip: 0, Limit: 10000, Level: 1}).then(function (r) {
-            vm.items = r.data.Items || [];
-          });
+          //api.plan.TaskLibrary.GetList({Skip: 0, Limit: 10000, Level: 1}).then(function (r) {
+          //  vm.items = r.data.Items || [];
+          //});
         }],
         controllerAs: 'vm',
         templateUrl: 'app/main/plan/component/plan-task-subs.html',
@@ -279,6 +297,91 @@
             return vm.updateFlow(flow);
           })
         });
+    }
+    //获取所有角色
+    api.plan.UserGroup.query().then(function(r){
+      vm.nextUserGroups = r.data.Items;
+    })
+    vm.stop = function(ev){
+      ev.stopPropagation();
+    }
+    vm.setUsers = function(items){
+
+    }
+    vm.getUsers = function(item,type){
+      return $mdDialog.show({
+        templateUrl:'app/main/plan/component/plan-task-roles.html',
+        controller:['$scope',function($scope){
+          var vm = this;
+          vm.type = type;
+          api.plan.UserGroup.query().then(function(r){
+            vm.nextUserGroups = r.data.Items;
+          });
+          vm.select = function () {
+            $mdDialog.hide(vm.nextUserGroups.filter(function (t) {
+              return t.selected;
+            }));
+          }
+          api.plan.TaskFlow.getRoleByFlowId(item.TaskFlowId).then(function(res){
+            var users = res.data.Items;
+            if(!users.length) return;
+            users&&users.forEach(function(r){
+              var f = vm.nextUserGroups&&vm.nextUserGroups.find(function(_r){
+                return _r.GroupID == r.RoleId;
+              })
+              if(f&& r.NotificationType == vm.type){
+                f.selected = true;
+              }
+            })
+          })
+
+        }],
+        controllerAs: 'vm',
+        parent: angular.element(document.body),
+        clickOutsideToClose: true
+      }).then(function(back){
+        var users ={
+          roleIds:[]
+        };
+        var datas = back;
+        datas&&datas.forEach(function(r){
+          users.roleIds.push(r.GroupID)
+        })
+        api.plan.TaskFlow.resetTaskFlowRolesByType(item.TaskFlowId,type,users.roleIds).then(function(r){
+          item['Notice'+type] = back.length ?
+            (back.length > 1 ? back.length + '角色' : back[0].GroupName) : undefined;
+          return vm.updateFlow(item);
+        })
+      })
+    }
+    vm.saveUserGroup = function (flow,type) {
+      var users ={
+        roleIds:[]
+      };
+      var datas = flow['saveNotice'+type];
+      datas&&datas.forEach(function(r){
+        users.roleIds.push(r)
+      })
+      api.plan.TaskFlow.resetTaskFlowRolesByType(flow.TaskFlowId,type,users.roleIds).then(function(r){
+        flow['saveNotice'+type] = datas;
+        return vm.updateFlow(flow);
+      })
+    }
+    vm.ClickSaveleft = function(data){
+      if(id=='add'){
+        api.plan.TaskLibrary.create(data).then(function (r) {
+          $state.go('app.plan.task.list');
+        });
+
+      }else{
+        api.plan.TaskLibrary.update(data).then(function (r) {
+          //$state.go('app.plan.task.list');
+          if(r.status == 200){
+            utils.alert('保存成功！');
+          }
+        });
+      }
+
     }
   }
 })(angular,undefined);
