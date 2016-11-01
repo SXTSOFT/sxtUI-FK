@@ -154,7 +154,7 @@
                 if (result.data.Rows) {
                   result.data.Rows.forEach(function (it) {
                     var qd = item;
-                    if (it.RegionId == qd.$id) {
+                    if (it.RegionId == qd.$id || it.RegionName== qd.$name) {
                       if (!qd.BatchNo)
                         qd.BatchNo = it.BatchNo;
                       else if (qd.BatchNo != it.BatchNo) {
