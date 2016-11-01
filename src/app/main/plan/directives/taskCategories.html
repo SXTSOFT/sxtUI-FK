@@ -1,5 +1,6 @@
 <md-select ng-model="value" placeholder="类别">
-    <md-optgroup label="{{item.name}}"  ng-repeat="item in data" ng-if="item.children && item.children.length">
+  <md-option ng-value="" >所有</md-option>
+  <md-optgroup label="{{item.name}}"  ng-repeat="item in data" ng-if="item.children && item.children.length">
       <md-option value="{{item.name + '>' + it.name}}" ng-repeat="it in item.children ">{{it.name}}</md-option>
     </md-optgroup>
     <md-optgroup label="其它" >

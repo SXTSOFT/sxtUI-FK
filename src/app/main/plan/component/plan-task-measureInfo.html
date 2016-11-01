@@ -1,0 +1,47 @@
+<md-dialog>
+  <md-toolbar class="md-hue-2">
+    <div class="md-toolbar-tools tasks-list">
+      <h2>
+        <span>关联项选择</span>
+      </h2>
+      <span flex></span>
+    </div>
+  </md-toolbar>
+  <md-dialog-content style="padding: 0;min-width: 300px;">
+    <div layout-padding="15">
+      <md-input-container class="md-block mt-20">
+        <label>关联项选择</label>
+        <md-select flex class="md-block" ng-model="vm.data.CloseRelatedObjectType" placeholder="关联项选择">
+          <md-option ng-value="p.type" ng-repeat="p in vm.relationTypes">{{p.name}}</md-option>
+          <!--<md-option value="1">关联实测项</md-option>-->
+        </md-select>
+      </md-input-container>
+      <div layout="row" flex>
+        <div flex ng-click="vm.selectProcedure()" ng-if="vm.data.CloseRelatedObjectType == 'Inspection'">
+          <md-input-container layout="row" flex><label>关联工序</label>
+            <input ng-model="vm.gxNames"/>
+          </md-input-container>
+        </div>
+        <md-input-container flex  ng-if="vm.data.CloseRelatedObjectType == 'PQMeasure' ">
+          <label>关联实测项</label>
+          <md-select ng-model="vm.data.CloseRelatedObjectId" placeholder="关联实测项" flex>
+            <md-select-header class="sxt-select-header">
+              <md-input-container md-no-float class="md-block">
+                <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >
+              </md-input-container>
+            </md-select-header>
+            <md-optgroup>
+              <md-option ng-value="m.AcceptanceItemID" ng-repeat="m in vm.measureData | filter:searchTerm">{{m.MeasureItemName}}</md-option>
+            </md-optgroup>
+          </md-select>
+        </md-input-container>
+      </div>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <md-button ng-click="vm.select()" class="md-raised">
+      确定
+    </md-button>
+  </md-dialog-actions>
+</md-dialog>
+

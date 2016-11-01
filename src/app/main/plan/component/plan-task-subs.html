@@ -4,37 +4,71 @@
     <h2>
       <span>任务选择</span>
     </h2>
-    <task-categories ng-model="vm.selectedCategory" style="font-size:13px;"></task-categories>
+    <task-categories ng-if="vm.current !='add'" ng-model="vm.selectedCategory" style="font-size:13px;"></task-categories>
     <span flex></span>
-    <md-button class="md-icon-button" aria-label="More">
+    <md-button ng-if="vm.current !='add'" class="md-icon-button" aria-label="More" ng-click="vm.add('add')">
       <md-icon md-font-icon="icon-plus" ></md-icon>
+    </md-button>
+    <md-button ng-if="vm.current =='add'" class="md-icon-button" ng-click="vm.add('default')">
+      <md-icon md-font-icon="icon-keyboard-return"></md-icon>
     </md-button>
   </div>
 </md-toolbar>
-<md-dialog-content style="padding: 0">
-<table class="simple">
-  <thead>
-  <tr>
-    <th>选择</th>
-    <th>名称</th>
-    <th>工期</th>
-    <th>龄期</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr ng-repeat="item in vm.items|filter:{Type:vm.selectedCategory}">
-    <td><md-checkbox ng-model="item.selected" aria-label="选择">
-    </md-checkbox></td>
-    <td class="name">{{item.Name}}</td>
-    <td class="time">{{item.Duration}}</td>
-    <td class="time">{{item.ReservedEndDays}}</td>
-  </tr>
-  </tbody>
-</table>
+
+<md-dialog-content style="padding: 0;min-width:300px;">
+  <div ng-switch="vm.current">
+    <div ng-switch-default>
+    <table class="simple">
+      <thead>
+      <tr>
+        <th>选择</th>
+        <th>名称</th>
+        <th>工期</th>
+        <th>龄期</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="item in vm.items|filter:{Type:vm.selectedCategory||vm.flow.Name}">
+        <td><md-checkbox class="mv-5" ng-model="item.selected" aria-label="选择">
+        </md-checkbox></td>
+        <td class="name">{{item.Name}}</td>
+        <td class="time">{{item.Duration}}</td>
+        <td class="time">{{item.ReservedEndDays}}</td>
+      </tr>
+      </tbody>
+    </table>
+    </div>
+    <div ng-switch-when="add" layout-padding="15">
+      <md-input-container class="md-block">
+        <label>名称</label>
+        <input type="text" ng-model="vm.data.Name" md-autofocus>
+      </md-input-container>
+      <!--<md-input-container class="md-block">-->
+        <!--<label>变量名</label>-->
+        <!--<input type="text" ng-model="data.Variable">-->
+      <!--</md-input-container>-->
+      <md-input-container class="md-block">
+        <label>工期</label>
+        <input type="text" ng-model="vm.data.Duration" >
+      </md-input-container>
+      <md-input-container class="md-block">
+        <label>龄期</label>
+        <input type="text" ng-model="vm.data.ReservedEndDays" >
+      </md-input-container>
+      <md-input-container class="md-block">
+        <label>分类</label>
+        <task-categories ng-model="vm.data.Type" ></task-categories>
+      </md-input-container>
+    </div>
+  </div>
 </md-dialog-content>
   <md-dialog-actions layout="row">
-    <md-button ng-click="vm.select('useful')">
+    <md-button ng-show="vm.current!='add'" ng-click="vm.select()">
       确定
     </md-button>
+    <md-button ng-show="vm.current=='add'" ng-click="vm.submit()">
+      添加
+    </md-button>
   </md-dialog-actions>
+
 </md-dialog>

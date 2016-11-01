@@ -4,10 +4,16 @@
       <span>任务管理</span>
     </h2>
     <span flex="5"></span>
-    <md-select style="font-size:13px;margin-right:20px;" ng-model="vm.selectedFilter" placeholder="1级任务">
-      <md-option value="0" translate="1级任务">1级任务</md-option>
-      <md-option value="1" translate="2级任务">2级任务</md-option>
-      <md-option value="2" translate="3级任务">3级任务</md-option>
+    <md-select style="font-size:13px;margin-right:20px;" ng-model="vm.selectedFilter" placeholder="级别">
+      <md-option ng-value="0" >
+        一/二级
+      </md-option>
+      <md-option ng-value="1" >
+        三级
+      </md-option>
+      <md-option ng-value="2" >
+        四级
+      </md-option>
     </md-select>
     <task-categories ng-model="vm.selectedCategory" style="font-size:13px;"></task-categories>
     <span flex></span>
