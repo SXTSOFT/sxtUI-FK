@@ -23,6 +23,8 @@
         <input ng-model="vm.data.Accepter" style="padding: 0;margin-top: 10px;">
       </md-input-container>
     </md-list-item>
-    <md-divider></md-divider>
+    <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">验收照片</div>
+    <md-button ng-click="addPhoto(question)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
+    <md-button class="md-button" ng-click="delete(item)" style="margin:0;"><md-icon style="width: 28px;height:28px;"><img src="app/main/xhsc/images/del1.png"></md-icon></md-button>
   </md-list>
 </form>

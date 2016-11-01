@@ -13,11 +13,24 @@
     });
 
   /** @ngInject */
-  function materialPlanYsCheckInfo($rootScope,$scope,api,utils,$stateParams){
+  function materialPlanYsCheckInfo($rootScope,$scope,api,utils,$stateParams,xhUtils){
     //拍照事件
-    // xhUtils.photo().then(function(r){
-    //   console.log(r);
-    // })
+    $scope.addPhoto = function () {
+      xhUtils.photo().then(function (image) {
+        if(image){
+          var _id = sxt.uuid();
+          upstzl_images.addOrUpdate({
+            _id:_id,
+            Id: sxt.uuid(),
+            BatchId: $stateParams.id,
+            ImageName:_id+".jpeg",
+            ImageUrl:_id+".jpeg",
+            ImageByte: image
+          });
+        }
+      });
+    };
+
 
     var vm = this;
     vm.data = {};
