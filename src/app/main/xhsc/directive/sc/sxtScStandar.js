@@ -91,7 +91,7 @@
                   customSeq:true,
                   move:false
                 }
-                layer.addLayer(layData.geometry);
+                layer.addData(layData.geometry);
               }
               if (points&&points.length){
                 var g;
@@ -253,9 +253,9 @@
                   });
                 });
               });
-              values.forEach(function (v) {
-                data.delete(v._id);
-              })
+              // values.forEach(function (v) {
+              //   data.delete(v._id);
+              // })
             },
             onPopup: function (e) {
               if (e.layer instanceof L.Stamp
