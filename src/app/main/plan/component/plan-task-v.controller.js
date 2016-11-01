@@ -216,7 +216,7 @@
           var taskLib = r.data.Items[0];
           taskLib.Id = taskLib.TaskLibraryId;
           taskLib.Duration = flow.Duration;
-          return api.plan.TaskFlow.updateTaskById(taskLib).then(function () {
+          return api.plan.TaskLibrary.update(taskLib).then(function () {
             return vm.updateFlow(flow);
           })
         });

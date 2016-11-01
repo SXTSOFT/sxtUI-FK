@@ -123,6 +123,9 @@
         create:function(data){
           return $http.post($http.url('/api/MileStones'),data)
         },
+        queryByTaskId:function (taskId) {
+          return $http.get('/api/Milestones/ByTaskLibraryId',{TaskLibraryId:taskId});
+        },
         query:function(params){
           return $http.get($http.url('/api/MileStones',{RelatedFlowId:params.RelatedFlowId}))
         },
@@ -282,6 +285,11 @@
       users:{
         query:function(){
           return $http.get($http.url('/api/User'));
+        }
+      },
+      Project:{
+        query:function (buildingId) {
+          return $http.get($http.url('/api/ProjectInfoApi/GetProjectBuildingFloors',{buildingId:buildingId}));
         }
       }
 

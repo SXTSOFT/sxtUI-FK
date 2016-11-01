@@ -458,3 +458,25 @@
         }
     }
 }
+
+tr {
+  &.deleted {
+    text-decoration: line-through;
+    font-style: italic;
+    input {
+      text-decoration: line-through;
+      font-style: italic;
+    }
+  }
+  &.mainbar{
+    background: #239bfe;
+    color: #ffffff;
+  }
+  &.milestone{
+    background: #dcefff;
+    td{
+      color:#1f89e0;
+    }
+
+  }
+}

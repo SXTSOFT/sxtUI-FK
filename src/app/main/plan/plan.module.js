@@ -80,6 +80,10 @@
         url:'/build',
         template:'<plan-build flex layout="column"></plan-build>'
       })
+      .state('app.plan.create',{
+        url:'/create',
+        template:'<plan-create flex layout="column"></plan-create>'
+      })
       .state('app.plan.gantt',{
         url:'/gantts/{id}',
         template:'<plan-gantt flex layout="column"></plan-gantt>'

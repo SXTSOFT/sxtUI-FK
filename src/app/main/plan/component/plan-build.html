@@ -115,8 +115,9 @@
       </md-tab-label>
       <md-tab-body>
         <form name="wizardStep2" ms-form-wizard-form novalidate>
-          <md-content layout="column" flex ms-scroll>
-            <task-table tasks="vm.loading" flow-id="vm.formWizard.Id" all-tasks="vm.allTasks"></task-table>
+          <md-content layout="row" flex ms-scroll>
+            <plan-create flex build-id=""></plan-create>
+            <!--<task-table tasks="vm.loading" flow-id="vm.formWizard.Id" all-tasks="vm.allTasks"></task-table>-->
           </md-content>
           <!--<md-content layout="column" flex class="opacity0" ng-class="{'opacity':vm.loading}">-->
             <!--<canvas id="gitGraph"></canvas>-->
