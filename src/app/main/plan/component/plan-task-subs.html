@@ -15,7 +15,7 @@
   </div>
 </md-toolbar>
 
-<md-dialog-content style="padding: 0;min-width:300px;">
+<md-dialog-content style="padding: 10px;min-width:400px;width:auto;">
   <div ng-switch="vm.current">
     <div ng-switch-default>
     <table class="simple">
@@ -63,10 +63,10 @@
   </div>
 </md-dialog-content>
   <md-dialog-actions layout="row">
-    <md-button ng-show="vm.current!='add'" ng-click="vm.select()">
+    <md-button ng-show="vm.current!='add'" class="md-raised" ng-click="vm.select()">
       确定
     </md-button>
-    <md-button ng-show="vm.current=='add'" ng-click="vm.submit()">
+    <md-button ng-show="vm.current=='add'" class="md-raised" ng-click="vm.submit()">
       添加
     </md-button>
   </md-dialog-actions>
