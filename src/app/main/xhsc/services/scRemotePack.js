@@ -124,7 +124,7 @@
           data.push(item.data);
         });
         $http.post(url,data).then(function (r) {
-          if (r&& r.data&&! r.data.ErrorCode){
+          if (r.status==200){
             tasks.forEach(function (task) {
               task.completed = true;
             });

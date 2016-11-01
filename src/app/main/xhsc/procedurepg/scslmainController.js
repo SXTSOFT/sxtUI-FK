@@ -321,7 +321,7 @@
                         });
                       })
                     }],
-                    template: '<md-dialog aria-label="正在删除"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在删除,请稍后...</p></md-dialog-content></md-dialog>',
+                    template: '<md-dialog aria-label="正在删除"  ng-cloak><md-dialog-content> <md-progress-circular  md-diameter="28" md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在删除,请稍后...</p></md-dialog-content></md-dialog>',
                     parent: angular.element(document.body),
                     clickOutsideToClose: false,
                     fullscreen: false

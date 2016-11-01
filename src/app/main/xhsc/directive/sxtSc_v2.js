@@ -121,18 +121,27 @@
             if (layer.loaded)return;
             layer.loaded = true;
             var reqArr=[
-              remote.Assessment.GetMeasurePointAll(areaId)
-              //remote.Assessment.GetMeasurePointGeometry(areaId),
-              //remote.Assessment.GetMeasurePointByRole(areaId)
+              remote.Assessment.GetMeasurePointAll(areaId),
+              scStandar.findAll(),
+              points.findAll()
             ]
             $q.all(reqArr).then(function(req){
-              //var geometry=req[1].data&&req[1].data.data?req[1].data.data:[];
               var points=req[0].data&&req[0].data.data?req[0].data.data:[];
-              //var nofit=req[2].data&&req[2].data.data?req[2].data.data:[];
+              var sc=req[1].rows?req[1].rows:[];
+              var gem=req[2].rows?req[2].rows:[];
+              points=points.concat(sc);
               var po;
               function addData(layData,index,color){
+                if (!layData.geometry&&!layData.Geometry){
+                  var g= gem.find(function(o){
+                    return o._id==layData.MeasurePointID
+                  })
+                  if (g){
+                    layData.geometry= g.geometry;
+                  }
+                }
                 if(!layData.geometry && layData.Geometry){
-                  layData.geometry = JSON.parse(layData.Geometry.Geometry);
+                  layData.geometry = JSON.parse(layData.Geometry);
                 }
                 if(!layData.geometry) return;
                 layData.geometry.options.color = color;

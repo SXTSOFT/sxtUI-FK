@@ -145,126 +145,126 @@
                 geometry: point
               };
               //points.addOrUpdate(point);
-              if (isNew || !fg.data.find(function (d) {
-                  return d.MeasurePointID == point._id;
-                })) {
-                scope.measureIndexes.forEach(function (m) {
-                  var ms = [];
-                  if (m.Children && m.Children.length) {
-                    m.Children.forEach(function (m1) {
-                      ms.push(m1);
-                    });
-                  }
-                  else {
-                    ms.push(m);
-                  }
-                  ms.forEach(function (m) {
-                    var v = {
-                      _id: sxt.uuid(),
-                      RecordType: 1,
-                      CreateTime: now(),
-                      RelationID: scope.db,
-                      MeasurePointID: point._id,
-                      DrawingID: scope.imageUrl,
-                      CheckRegionID: scope.regionId,
-                      RegionType: scope.regionType,
-                      AcceptanceItemID: scope.acceptanceItem,
-                      AcceptanceIndexID: m.AcceptanceIndexID
-                    };
-                    v.MeasureValueId = v._id;
-                    data.addOrUpdate(v);
-                    fg.data = fg.data ? fg.data : [];
-                    fg.data.push(v);
-                    //实测标准化
-                    var standar={
-                      _id: sxt.uuid(),
-                      AcceptanceIndexID: m.AcceptanceIndexID,
-                      AcceptanceItemID:scope.acceptanceItem,
-                      DrawingID:img.DrawingID,
-                      MeasurePointID:point._id
-                    }
-                    scStandar.addOrUpdate(standar);
-                  });
-                })
-              }
+              //if (isNew || !fg.data.find(function (d) {
+              //    return d.MeasurePointID == point._id;
+              //  })) {
+              //  scope.measureIndexes.forEach(function (m) {
+              //    var ms = [];
+              //    if (m.Children && m.Children.length) {
+              //      m.Children.forEach(function (m1) {
+              //        ms.push(m1);
+              //      });
+              //    }
+              //    else {
+              //      ms.push(m);
+              //    }
+              //    ms.forEach(function (m) {
+              //      var v = {
+              //        _id: sxt.uuid(),
+              //        RecordType: 1,
+              //        CreateTime: now(),
+              //        RelationID: scope.db,
+              //        MeasurePointID: point._id,
+              //        DrawingID: scope.imageUrl,
+              //        CheckRegionID: scope.regionId,
+              //        RegionType: scope.regionType,
+              //        AcceptanceItemID: scope.acceptanceItem,
+              //        AcceptanceIndexID: m.AcceptanceIndexID
+              //      };
+              //      v.MeasureValueId = v._id;
+              //      data.addOrUpdate(v);
+              //      fg.data = fg.data ? fg.data : [];
+              //      fg.data.push(v);
+              //      //实测标准化
+              //      var standar={
+              //        _id: sxt.uuid(),
+              //        AcceptanceIndexID: m.AcceptanceIndexID,
+              //        AcceptanceItemID:scope.acceptanceItem,
+              //        DrawingID:img.DrawingID,
+              //        MeasurePointID:point._id
+              //      }
+              //      scStandar.addOrUpdate(standar);
+              //    });
+              //  })
+              //}
 
-              if (group) {
-                var groupId = group.getValue().$id,//添加或移出的groupId
-                  measureIndexs = xhUtils.findAll(scope.measureIndexes, function (m) {
-                    return m.QSKey == '4';
-                  }),//需要区测量的指标
-                  values = xhUtils.findAll(fg.data, function (d) {
-                    return d.MeasurePointID == point._id && !!measureIndexs.find(function (m) {
-                        return m.AcceptanceIndexID == d.AcceptanceIndexID;
-                      });
-                  });//相关操作记录值
-                if (!point.geometry.properties.$groupId) {//清除groupId
-                  values.forEach(function (v) {
-                    v.ParentMeasureValueID = null;
-                    data.addOrUpdate(v);
-                  })
-                }
-                else {//添加或更改groupId
-                  values.forEach(function (v) {
-                    var parent = fg.data.find(function (m) {
-                      return m.AcceptanceIndexID == v.AcceptanceIndexID && m.MeasurePointID == groupId;
-                    });
-                    v.ParentMeasureValueID = parent._id;
-                    data.addOrUpdate(v);
-                  });
-                }
-              }
-              //如果是画区域,而区域内没有点的话,默认生成9点或5个点
-              if (isNew && layer instanceof L.AreaGroup) {
-                var p = null, b = layer.getBounds();
-                fg.eachLayer(function (ly) {
-                  if (p === null && ly instanceof L.Stamp) {
-                    if (L.SvFeatureGroup.isMiddleNumber(b._southWest.lat, b._northEast.lat, ly._latlng.lat)
-                      && L.SvFeatureGroup.isMiddleNumber(b._southWest.lng, b._northEast.lng, ly._latlng.lng)) {
-                      p = ly;
-                    }
-                  }
-                });
-                if (p == null) {
-                  var b = layer.getBounds(),
-                    x1 = b._northEast.lat,
-                    y1 = b._northEast.lng,
-                    x2 = b._southWest.lat,
-                    y2 = b._southWest.lng;
-                  var ps = [], ps1 = [];
-                  var offsetX = Math.abs(x2 - x1) / 8,
-                    minX = Math.min(x2, x1),
-                    offsetY = Math.abs(y2 - y1) / 8,
-                    minY = Math.min(y2, y2);
-                  for (var i = 1; i <= 3; i++) {
-                    for (var j = 1; j <= 3; j++) {
-                      ps.push([minX + offsetX * (i == 1 ? 1 : i == 2 ? 4 : 7), minY + offsetY * (j == 1 ? 1 : j == 2 ? 4 : 7)]);
-                    }
-                  }
-                  ps1[0] = ps[0];
-                  ps1[1] = ps[1];
-                  ps1[2] = ps[2];
-                  ps1[3] = ps[5];
-                  ps1[4] = ps[8];
-                  ps1[5] = ps[7];
-                  ps1[6] = ps[6];
-                  ps1[7] = ps[3];
-                  ps1[8] = ps[4];
-                  if (!scope.measureIndexes.find(function (m) {
-                      return m.QSKey == '4' && m.QSOtherValue == '9'
-                    }) && scope.measureIndexes.find(function (m) {
-                      return m.QSKey == '4' && m.QSOtherValue == '5';
-                    })) {
-                    ps1.splice(7, 1);
-                    ps1.splice(5, 1);
-                    ps1.splice(3, 1);
-                    ps1.splice(1, 1);
-                  }
-                  ps1.forEach(function (p) {
-                    fg.addLayer(new L.Stamp(p), false);
-                  });
-                }
-              }
+              //if (group) {
+              //  var groupId = group.getValue().$id,//添加或移出的groupId
+              //    measureIndexs = xhUtils.findAll(scope.measureIndexes, function (m) {
+              //      return m.QSKey == '4';
+              //    }),//需要区测量的指标
+              //    values = xhUtils.findAll(fg.data, function (d) {
+              //      return d.MeasurePointID == point._id && !!measureIndexs.find(function (m) {
+              //          return m.AcceptanceIndexID == d.AcceptanceIndexID;
+              //        });
+              //    });//相关操作记录值
+              //  if (!point.geometry.properties.$groupId) {//清除groupId
+              //    values.forEach(function (v) {
+              //      v.ParentMeasureValueID = null;
+              //      data.addOrUpdate(v);
+              //    })
+              //  }
+              //  else {//添加或更改groupId
+              //    values.forEach(function (v) {
+              //      var parent = fg.data.find(function (m) {
+              //        return m.AcceptanceIndexID == v.AcceptanceIndexID && m.MeasurePointID == groupId;
+              //      });
+              //      v.ParentMeasureValueID = parent._id;
+              //      data.addOrUpdate(v);
+              //    });
+              //  }
+              //}
+              ////如果是画区域,而区域内没有点的话,默认生成9点或5个点
+              //if (isNew && layer instanceof L.AreaGroup) {
+              //  var p = null, b = layer.getBounds();
+              //  fg.eachLayer(function (ly) {
+              //    if (p === null && ly instanceof L.Stamp) {
+              //      if (L.SvFeatureGroup.isMiddleNumber(b._southWest.lat, b._northEast.lat, ly._latlng.lat)
+              //        && L.SvFeatureGroup.isMiddleNumber(b._southWest.lng, b._northEast.lng, ly._latlng.lng)) {
+              //        p = ly;
+              //      }
+              //    }
+              //  });
+              //  if (p == null) {
+              //    var b = layer.getBounds(),
+              //      x1 = b._northEast.lat,
+              //      y1 = b._northEast.lng,
+              //      x2 = b._southWest.lat,
+              //      y2 = b._southWest.lng;
+              //    var ps = [], ps1 = [];
+              //    var offsetX = Math.abs(x2 - x1) / 8,
+              //      minX = Math.min(x2, x1),
+              //      offsetY = Math.abs(y2 - y1) / 8,
+              //      minY = Math.min(y2, y2);
+              //    for (var i = 1; i <= 3; i++) {
+              //      for (var j = 1; j <= 3; j++) {
+              //        ps.push([minX + offsetX * (i == 1 ? 1 : i == 2 ? 4 : 7), minY + offsetY * (j == 1 ? 1 : j == 2 ? 4 : 7)]);
+              //      }
+              //    }
+              //    ps1[0] = ps[0];
+              //    ps1[1] = ps[1];
+              //    ps1[2] = ps[2];
+              //    ps1[3] = ps[5];
+              //    ps1[4] = ps[8];
+              //    ps1[5] = ps[7];
+              //    ps1[6] = ps[6];
+              //    ps1[7] = ps[3];
+              //    ps1[8] = ps[4];
+              //    if (!scope.measureIndexes.find(function (m) {
+              //        return m.QSKey == '4' && m.QSOtherValue == '9'
+              //      }) && scope.measureIndexes.find(function (m) {
+              //        return m.QSKey == '4' && m.QSOtherValue == '5';
+              //      })) {
+              //      ps1.splice(7, 1);
+              //      ps1.splice(5, 1);
+              //      ps1.splice(3, 1);
+              //      ps1.splice(1, 1);
+              //    }
+              //    ps1.forEach(function (p) {
+              //      fg.addLayer(new L.Stamp(p), false);
+              //    });
+              //  }
+              //}
 
             },
             onPopupClose: function (e) {
