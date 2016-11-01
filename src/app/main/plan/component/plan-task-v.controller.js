@@ -341,7 +341,15 @@
                 //
                 //})
                 vm.current = 'default';
-                loadUser();
+                api.plan.UserGroup.query().then(function(r){
+                  //vm.nextUserGroups = r.data.Items;
+                  if(vm.nextUserGroups){
+                    vm.nextUserGroups.forEach(function(item){
+                      
+                    })
+                  }
+                });
+                //loadUser();
               })
             }
 
@@ -383,7 +391,6 @@
         })
       })
     }
-
     //获取所有角色
     api.plan.UserGroup.query().then(function(r){
       vm.nextUserGroups = r.data.Items;
@@ -406,6 +413,43 @@
       api.plan.TaskFlow.resetTaskFlowRolesByType(flow.TaskFlowId,type,users.roleIds).then(function(r){
         flow['saveNotice'+type] = datas;
         return vm.updateFlow(flow);
+      })
+    }
+
+    api.plan.procedure.query().then(function(r){
+      vm.procedures = r.data;
+    })
+    api.plan.MeasureInfo.query().then(function(r){
+      vm.measureInfo = r.data
+    })
+    //vm.selectSpecialtyLow=function(item,parent){
+    //  parent.WPAcceptanceList=item.WPAcceptanceList;
+    //}
+    vm.setMeasureInfo = function(){
+      return $mdDialog.show({
+        controller:['$scope','pdata','mdata',function($scope,pdata,mdata){
+          var vm = this;
+          vm.relationTypes = [{
+            name:'关联实测项',
+            type:'PQMeasure'
+          },{
+            name:'关联工序',
+            type:'Inspection'
+          }];
+          vm.proceduresData = pdata;
+          vm.measureData = mdata;
+          vm.select = function(){
+
+          }
+        }],
+        controllerAs:'vm',
+        templateUrl:'app/main/plan/component/plan-task-measureinfo.html',
+        parent: angular.element(document.body),
+        clickOutsideToClose: true,
+        locals:{
+          pdata:vm.procedures && vm.procedures,
+          mdata:vm.measureInfo && vm.measureInfo
+        }
       })
     }
     vm.ClickSaveleft = function(data){
