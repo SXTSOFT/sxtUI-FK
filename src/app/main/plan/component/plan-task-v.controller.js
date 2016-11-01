@@ -30,6 +30,7 @@
     if(!vm.isNew){
       api.plan.TaskLibrary.getTaskFlow($stateParams.id).then(function (r) {
         task = vm.data = r.data;
+        task.oType = task.Type;
         task.Master.forEach(function (flow) {
           if(flow.Description)
             angular.extend(flow,angular.fromJson(flow.Description));
@@ -257,9 +258,10 @@
 
     vm.selectOptionalTask =function (flow) {
       return $mdDialog.show({
-        controller: ['$mdDialog','$scope', function ($mdDialog,$scope) {
+        controller: ['$mdDialog','$scope', function ($mdDialog) {
           var vm = this;
           vm.flow = flow;
+          vm.data = {};
           var promises = [
             api.plan.TaskLibrary.GetList({Skip: 0, Limit: 10000, Level: task.Level+1}),
             api.plan.TaskFlow.getSubTasks(flow.TaskFlowId)
@@ -276,28 +278,41 @@
               }
             })
           })
-          vm.add = function(){
-            vm.current = 'add';
-          }
-          $scope.data ={
-            Level:task.Level+1
+          vm.add = function(cmd){
+            vm.current = cmd;
+            vm.data = {};
           }
           vm.select = function () {
-            if(vm.current == 'default'){
-              $mdDialog.hide(vm.items.filter(function (t) {
-                return t.selected;
-              }));
-            }else{
-              api.plan.TaskLibrary.create($scope.data).then(function(r){
+            $mdDialog.hide(vm.items.filter(function (t) {
+              return t.selected;
+            }));
+          }
+          vm.submit = function () {
+            vm.data.Type = vm.data.Type || flow.Name;
+            vm.data.Level = task.Level+1
+              api.plan.TaskLibrary.create(vm.data).then(function(r){
                 if(r.status == 200 || r.data){
                   vm.current = 'default';
-                  api.plan.TaskLibrary.GetList({Skip: 0, Limit: 10000, Level: task.Level+1}).then(function(r){
-                    vm.items = r.data.Items;
+                  api.plan.TaskLibrary.GetList({Skip: 0, Limit: 10000, Level: task.Level+1}).then(function(r1){
+
+                    if(vm.items){
+                      r1.data.Items.forEach(function (item) {
+                        item.selected = !!vm.items.find(function (it) {
+                          return it.TaskLibraryId == item.TaskLibraryId && it.selected;
+                        })
+                      });
+                    }
+                    var newItem = r1.data.Items.find(function (it) {
+                      return it.TaskLibraryId == r.data.TaskLibraryId;
+                    });
+                    if(newItem)
+                      newItem.selected = true;
+
+                    vm.items = r1.data.Items;
                   })
                 }
               })
             }
-          }
         }],
         controllerAs: 'vm',
         templateUrl: 'app/main/plan/component/plan-task-subs.html',
@@ -409,12 +424,14 @@
       })
     }
     vm.ClickSaveleft = function(data){
+      data.Type = data.Type || data.oType;
       if(id=='add'){
         api.plan.TaskLibrary.create(data).then(function (r) {
           $state.go('app.plan.task.list');
         });
 
       }else{
+
         api.plan.TaskLibrary.update(data).then(function (r) {
           //$state.go('app.plan.task.list');
           if(r.status == 200){
