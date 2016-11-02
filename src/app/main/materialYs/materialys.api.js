@@ -18,7 +18,7 @@
         getMaterialPlanBatch: $http.db({
           _id: 'materialPlan',
           idField: 'Id',
-          dataType: 3
+          dataType: 1
         }).bind(function (sectionId,status) {
           return $http.get($http.url('/api/MaterialPlan/GetMaterialPlansBatchBySectionId',{sectionId:sectionId,status:status}));
         }),

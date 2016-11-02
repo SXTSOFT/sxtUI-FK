@@ -39,7 +39,7 @@
         <md-content class="md-padding">
           <md-list flex>
             <md-list-item ng-repeat="item in vm.planList | filter:{Status:4}" class="noright">
-              <md-button ng-disabled="true" class="md-fab md-mini">{{item.status}}</md-button>
+              <md-button ng-disabled="true" class="md-fab md-mini">{{item.Status}}</md-button>
               <p>{{item.PlanName}}</p>
               <md-button ng-if="item.Status == 4" ui-sref="app.xhsc.materialys.inspection({id:item.Id})" style="color: black;margin-right: 0px">送检</md-button>
               <span class="border1px bottom1px"></span>
