@@ -245,6 +245,12 @@
                       case "547fc0e7699731702f9cf306":
                         item.name = '三区配套';
                         break;
+                      case '56a892352f774bbc36f2313b':
+                        item.name = '智园D区';
+                            break;
+                      case '56a892262f774bbc36f22f7f':
+                        item.name = '崇文花园三期';
+                        break;
                     }
                     if (st) {
                       if (!st.IsEnable) {
