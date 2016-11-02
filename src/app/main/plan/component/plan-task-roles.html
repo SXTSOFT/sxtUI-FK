@@ -35,8 +35,11 @@
     </div>
   </md-dialog-content>
   <md-dialog-actions layout="row">
-    <md-button ng-click="vm.select()" class="md-raised">
+    <md-button ng-if="vm.current !='add'" ng-click="vm.select()" class="md-raised">
       确定
+    </md-button>
+    <md-button  ng-if="vm.current =='add'" ng-click="vm.add()" class="md-raised">
+      添加
     </md-button>
   </md-dialog-actions>
 </md-dialog>
