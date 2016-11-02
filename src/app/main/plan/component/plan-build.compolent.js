@@ -10,7 +10,7 @@
     });
 
   /** @ngInject */
-  function planBuild($scope,api,template,$q,$mdSidenav,utils,$timeout,$mdDialog,$mdPanel,$rootScope){
+  function planBuild($scope,api,template,$q,$mdSidenav,utils,$timeout,$mdDialog,$mdPanel,$state){
     var vm = this;
     vm.data = {
 
@@ -211,7 +211,7 @@
             "DependentTaskFlowId": prev && prev._id,
             "TaskFlowId": current._TaskFlowId || current.TaskFlowId,
             "FloorId": current.FloorId,
-            "FloorName": current.Name,
+            "FloorName": current.FloorName,
             "Type": current.Type,
             "OptionalTask": {
               "TaskLibraryId": current.currentTask.TaskLibraryId,
@@ -228,7 +228,7 @@
             "DependentTaskFlowId": null,
             "TaskFlowId": current.TaskFlowId,
             "FloorId": current.FloorId,
-            "FloorName": current.Name,
+            "FloorName": current.FloorName,
             "Type": current.Type,
             "OptionalTask": {
               "TaskLibraryId": current.currentTask.TaskLibraryId,
@@ -379,9 +379,10 @@
 
       $q.all(resets).then(function (rs) {
         //生成计划
-          utils.alert('人员设置完成').then(function(){
-            fn();
-            p.hide();
+          utils.alert('生成计划完成').then(function(){
+            $state.go('app.plan.gantts');
+            //fn();
+            //p.hide();
           })
 
         //api.plan.BuildPlan.generate(vm.formWizard.Id).then(function (r) {

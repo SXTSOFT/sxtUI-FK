@@ -4,7 +4,7 @@
 /**
  * Created by jiuyuong on 2016/10/25.
  */
-(function (angular) {
+(function (angular,undefined) {
   angular
     .module('app.plan')
     .directive('planCreating',planCreating);
@@ -117,11 +117,13 @@
               t1.FloorId = f.FloorId;
               t1._TaskFlowId = tid;
               t1.Name = f.FloorName;
+              t1.FloorName = f.FloorName;
               flows.push(t1);
               if (f.IsPresalesMilestone) {
                 flows.push({
                   selected: true,
                   FloorId: f.FloorId,
+                  FloorName: f.FloorName,
                   TaskFlowId: f.FloorId + '-' + tid + '-0',
                   Id: 0,
                   RelatedFlowId: tid,
@@ -222,19 +224,20 @@
         scope.buildDate();
       }
       scope.buildBranch = function (task) {
-        var t = lastFloorTask.Master.find(function (t) {
+       /* var t = lastFloorTask.Master.find(function (t) {
           return t.Name.indexOf('砼收面') != -1;
         });
         if (!t) {
           utils.alert(lastFloorTask.Name + '中未找到砼收面流程');
         }
-        else {
-          var days = 0, idx = lastFloorTask.Master.indexOf(t), nt;
+        else {*/
+        /*var days = 0, idx = lastFloorTask.Master.indexOf(t), nt;
           for (var i = 0; i < idx; i++) {
             nt = parseFloat(lastFloorTask.Master[i].OptionalTasks[0].Duration);
             if (!isNaN(nt))
               days = utils.math.sum(days, nt);
-          }
+          }*/
+
           scope.banchs.forEach(function (b) {
             /*          var flow = vm.flows.find(function (f) {
              return b.EndFlagTaskFlowId == f.TaskFlowId;
@@ -244,21 +247,21 @@
               days2 = undefined;
             }
             if (days2) {
-              b.start = moment(task.start).add(utils.math.sum(days, days2), 'days');
+              b.start = moment(task.end).add(days2, 'days');
             }
             var tk = b.currentTask = b.currentTask || b.OptionalTasks[0];
             if (tk) {
               var days3 = gs.setVars(tk.Duration);
               if (days3 !== tk.Duration) {
-                b.days = days3;
-                b.end = moment(b.start).add(days3, 'days');
+                b.end = moment(task.end).add(days3, 'days');
+                b.days = moment.duration(b.end.diff(b.start)).asDays();
               }
             }
             else {
               b.days = undefined;
             }
           })
-        }
+        //}
       }
       scope.buildDate = function () {
         if (!scope.flows) return;
@@ -271,10 +274,10 @@
           if (prev && prev.IsFloor && prev.end && !current.IsFloor) {
             //request = true;
             if (!lastFloorTask || lastFloorTask.TaskLibraryId != prev.currentTask.TaskLibraryId) {
-              api.plan.TaskLibrary.getTaskFlow(prev.currentTask.TaskLibraryId).then(function (r) {
-                lastFloorTask = r.data;
+              //api.plan.TaskLibrary.getTaskFlow(prev.currentTask.TaskLibraryId).then(function (r) {
+                //lastFloorTask = r.data;
                 scope.buildBranch(prev);
-              });
+              //});
             }
             else {
               scope.buildBranch(prev);
@@ -431,4 +434,4 @@
       //  }
     }
   }
-})(angular);
+})(angular,undefined);
