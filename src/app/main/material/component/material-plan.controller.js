@@ -53,18 +53,9 @@
       });
     },true);
 
-    $scope.$watch('vm.data.Material',function () {
-      api.material.materialScience.getList({Skip:0,Limit:100}).then(function (r) {
-        vm.materials = r.data.Items || [];
-        vm.materials.forEach(function (q) {
-          if(q.Id == vm.data.MaterialId){
-            q.selected = true;
-            vm.Specifications = q.Specifications;
-            vm.Model = q.Model;
-          }
-        });
-      });
-    },true);
+    api.material.materialScience.getList({Skip:0,Limit:100}).then(function (r) {
+      vm.materials = r.data.Items||[];
+    });
 
     vm.init = function (m) {
       vm.Specifications = m.Specifications;
@@ -78,6 +69,18 @@
         vm.data.RegionId = r.data.RegionId.substr(5,10);
         vm.data.SectionId = r.data.SectionId;
         vm.data.PlanTime = r.data.PlanTime == null ? new Date() : new moment(r.data.PlanTime).toDate();
+
+        api.material.materialScience.getList({Skip:0,Limit:100}).then(function (r) {
+          vm.materials = r.data.Items||[];
+          vm.materials.forEach(function (q) {
+            if(q.Id == vm.data.MaterialId){
+              q.selected = true;
+              vm.Specifications = q.Specifications;
+              vm.Model = q.Model;
+            }
+          });
+        });
+
       });
     }
 

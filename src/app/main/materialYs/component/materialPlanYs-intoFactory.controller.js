@@ -24,7 +24,7 @@
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
       api.xhsc.materialPlan.CreateMaterialPlanBatch(vm.data).then(function (q) {
         utils.alert("提交成功", null, function () {
-          $state.go("app.xhsc.materialys.planList");
+          $state.go("app.xhsc.gx.gxmain");
         });
       });
     });

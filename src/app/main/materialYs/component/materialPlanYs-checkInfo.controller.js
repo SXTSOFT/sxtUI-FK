@@ -31,7 +31,6 @@
       });
     };
 
-
     var vm = this;
     vm.data = {};
     vm.data.Id = $stateParams.id;

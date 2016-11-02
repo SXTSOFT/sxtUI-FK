@@ -22,7 +22,7 @@
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
       api.xhsc.materialPlan.MaterialInspection(vm.data).then(function (q) {
         utils.alert("提交成功", null, function () {
-          $state.go("app.xhsc.materialys.planList");
+          $state.go("app.xhsc.gx.gxmain");
         });
       });
     });
@@ -31,7 +31,6 @@
       sendgxResult();
       sendgxResult=null;
     });
-
 
   }
 })(angular,undefined);
