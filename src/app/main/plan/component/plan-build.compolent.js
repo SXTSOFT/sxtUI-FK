@@ -15,6 +15,10 @@
     vm.data = {
 
     }
+    vm.formWizard={
+
+    }
+    vm.formWizard.StartTime ?vm.formWizard.StartTime:vm.formWizard.StartTime = new Date();
     var gs = (function () {
       var vars = [],r = /[a-z]/gi,
         compare = function (s1,s2) {
