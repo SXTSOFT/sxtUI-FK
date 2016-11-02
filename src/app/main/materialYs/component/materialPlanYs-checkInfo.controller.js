@@ -15,7 +15,6 @@
   /** @ngInject */
   function materialPlanYsCheckInfo($rootScope,$scope,api,utils,$stateParams,xhUtils,sxt){
 
-
     var vm = this;
     vm.images = [];
     vm.vehicleImgs = [];

@@ -36,7 +36,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url:'/planList/{id}',
+        url:'/planList/{id}/{title}',
         template: '<material-plan-list flex layout="column"></material-plan-list>'
       })
       .state('app.xhsc.materialys.planDetail',{
@@ -96,7 +96,7 @@
         noBack:true,
         sendBt:true,
         title:'材料退场',
-        url:'/unqualifiedExit/{id}',
+        url:'/unqualifiedExit/{id}/{max}',
         template: '<material-unqualified-exit flex layout="column"></material-unqualified-exit>'
       })
   }

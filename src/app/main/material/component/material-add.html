@@ -13,7 +13,7 @@
     <md-input-container class="md-block" style="height: 58px;">
       <label>材料分类</label>
       <md-select ng-model="vm.data.MaterialClassId">
-        <md-option value="{{item.val}}" ng-repeat="item in vm.materialType">{{item.name}}</md-option>
+        <md-option value="{{item.Id}}" ng-repeat="item in vm.materialType">{{item.CategoryName}}</md-option>
       </md-select>
     </md-input-container>
     <md-input-container class="md-block">

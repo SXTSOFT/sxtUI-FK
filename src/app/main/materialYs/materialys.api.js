@@ -28,7 +28,6 @@
           dataType:3
         }).bind(function (mpid) {
           return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanAsync?mpid='+mpid));
-
         }),
         PostCheckInfo: $http.db({
           _id: 'materialPlan',

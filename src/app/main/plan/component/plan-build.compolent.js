@@ -10,7 +10,7 @@
     });
 
   /** @ngInject */
-  function planBuild($scope,api,template,$q,$mdSidenav,utils,$timeout,$mdDialog,$mdPanel,$rootScope){
+  function planBuild($scope,api,template,$q,$mdSidenav,utils,$timeout,$mdDialog,$mdPanel,$state){
     var vm = this;
     vm.data = {
 
@@ -179,78 +179,84 @@
       vm.temp.load(vm.rootTask);
 
     }
-
+    vm.flows=null;
+    vm.branches=null;
     vm.nextStep = function(i,f){
-
       if(i==0){
-
-        var parent = vm;
-        var position = $mdPanel.newPanelPosition()
-          .relativeTo('md-tabs-wrapper')
-          .addPanelPosition($mdPanel.xPosition.CENTER, $mdPanel.yPosition.BELOW)
-
-        $mdPanel.open({
-          controller: function (mdPanelRef,$scope,utils) {
-            var vm = this;
-            parent.loading = true;
-            parent.closePanel = function() {
-              return mdPanelRef.close().then(function () {
-                mdPanelRef.destroy();
-                parent.loading = false;
-                parent.closePanel = null;
-              });
-            }
-          },
-          controllerAs: 'vm',
-          template: '<div layout="row" class="mt-20" layout-align="center center"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div>',
-          hasBackdrop: false,
-          //panelClass: 'lib-list',
-          position: position,
-          trapFocus: true,
-          zIndex: 5000,
-          clickOutsideToClose: true,
-          escapeToClose: true,
-          focusOnOpen: true,
-          attachTo:angular.element('#content')
-        });
-
-        (vm.formWizard.Id?
-          api.plan.BuildPlan.update(vm.formWizard.Id,vm.formWizard)
-          :api.plan.BuildPlan.post(vm.formWizard)
-        ).then(function(r) {
-          if (r.data|| r.status==200) {
-            if(!vm.formWizard.Id)
-              vm.formWizard.Id = r.data.Id;
-            //getDataTemplate().then(function(){
-            //  parent.closePanel();
-            //});
-            f();
-          }
-        },function(err){
-          parent.closePanel();
-          if(err.status != 200){
-            utils.alert(err.data);
-            return;
-          }
+        var find=vm.data.templates.find(function(r){
+          return r.RootTaskLibraryId==vm.formWizard.RootTaskLibraryId
         })
+        if(find){
+          vm.formWizard.TaskTemplateId = find.Id;
+        }
+        f();
       }
       else if(i===1){
-        var selected = [],goFlag;
-        console.log(vm.allTasks);
-        vm.allTasks.forEach(function (item) {
-          if(item.selectedTask) {
-            if(!item.selectedTask.xDuration){
-              goFlag = true;
-            }
-            selected.push({
-              BuildingPlanFlowId:item.Id,
-              TaskLibraryId:item.selectedTask.TaskLibraryId,
-              Duration:item.selectedTask.xDuration
+        var tasks = [], milestones = [];
+        vm.flows.reduce(function (prev, current) {
+          if (!current.selected) return prev;
+          if (current.type) {
+            milestones.push({
+              Name: current.Name,
+              RelatedFlowId: current.RelatedFlowId,
+              MilestoneTime: current.end.format('YYYY-MM-DD')
             });
+            return prev;
           }
-        })
+          if (!current._id)
+            current._id = sxt.uuid();
 
-        if(!goFlag){
+          tasks.push({
+            "Id": current._id,
+            "DependentTaskFlowId": prev && prev._id,
+            "TaskFlowId": current._TaskFlowId || current.TaskFlowId,
+            "FloorId": current.FloorId,
+            "FloorName": current.FloorName,
+            "Type": current.Type,
+            "OptionalTask": {
+              "TaskLibraryId": current.currentTask.TaskLibraryId,
+              "PlanBeginTime": current.start.format('YYYY-MM-DD'),
+              "PlanEndTime": current.end.format('YYYY-MM-DD'),
+              "Days": current.days
+            }
+          })
+          return current;
+        }, null);
+        vm.branches.forEach(function (current) {
+          tasks.push({
+            "Id": sxt.uuid(),
+            "DependentTaskFlowId": null,
+            "TaskFlowId": current.TaskFlowId,
+            "FloorId": current.FloorId,
+            "FloorName": current.FloorName,
+            "Type": current.Type,
+            "OptionalTask": {
+              "TaskLibraryId": current.currentTask.TaskLibraryId,
+              "PlanBeginTime": current.start.format('YYYY-MM-DD'),
+              "PlanEndTime": current.end.format('YYYY-MM-DD'),
+              "Days": current.days
+            }
+          })
+        });
+        var b = {
+          "BuildingPlanInput": {
+            "BuildingId": vm.formWizard.BuildingId,
+            "Name": vm.formWizard.Name,
+            "TaskTemplateId": vm.formWizard.TaskTemplateId,
+            "StartTime": vm.formWizard.StartTime,
+            "PreSalesTime": "",
+            "ExpectEndTime": ""
+          },
+          "TaskFlows": tasks,
+          "Milestones": milestones
+        };
+        var fg = true;
+        tasks.forEach(function (t) {
+          if(!t.OptionalTask.PlanEndTime){
+            fg = false;
+          }
+        });
+        if(!fg) return fg;
           var parent = vm;
           var position = $mdPanel.newPanelPosition()
             .relativeTo('md-tabs-wrapper')
@@ -280,19 +286,20 @@
             attachTo:angular.element('#content')
           });
           f();
-          api.plan.BuildPlan.flowTasksReset(vm.formWizard.Id,selected).then(function (r) {
-            api.plan.BuildPlan.getBuildingPlanRoles(vm.formWizard.Id).then(function (r) {
+          api.plan.BuildPlan.post(b).then(function(r){
+            if(!vm.formWizard.Id)
+              vm.formWizard.Id = r.data.Id;
+            api.plan.BuildPlan.getBuildingPlanRoles(r.data.Id).then(function (r) {
               vm.currentRoles = r.data.Items;
               parent.closePanel1();
             });
+          },function(err){
+            parent.closePanel1();
+            utils.alert(err.data||'提交失败');
+            return;
           });
-        }else{
-          utils.alert('有未设置工期项存在');
-        }
-
       }
     }
-
     function getDataTemplate(){
       return api.plan.BuildPlan.getBuildPlanFlowTree(vm.formWizard.Id).then(function(r){
         r.data.RootTask.Master = r.data.RootTask.Master.map(function (item) {
@@ -372,15 +379,25 @@
 
       $q.all(resets).then(function (rs) {
         //生成计划
-        api.plan.BuildPlan.generate(vm.formWizard.Id).then(function (r) {
-          //成生完成
-          if(r.status==200|| r.data){
-            utils.alert('创建计划成功').then(function(){
-              fn();
-              p.hide();
-            })
-          }
-        })
+          utils.alert('生成计划完成').then(function(){
+            $state.go('app.plan.gantts');
+            //fn();
+            //p.hide();
+          })
+
+        //api.plan.BuildPlan.generate(vm.formWizard.Id).then(function (r) {
+        //  //成生完成
+        //  if(r.status==200|| r.data){
+        //    utils.alert('创建计划成功').then(function(){
+        //      fn();
+        //      p.hide();
+        //    })
+        //  }
+        //},function(err){
+        //  utils.alert(err.data||'创建计划成功').then(function(){
+        //    p.hide();
+        //  })
+        //})
       });
     }
     vm.change = function(){

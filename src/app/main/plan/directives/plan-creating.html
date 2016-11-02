@@ -1,0 +1,72 @@
+<table class="simple">
+  <thead>
+  <tr>
+    <th style="width: 24px;min-width: 24px">启用</th>
+    <th style="width: 120px;min-width: 120px">流程</th>
+    <th>
+      任务
+    </th>
+    <th style="width: 120px;min-width: 120px">工期</th>
+    <th style="width: 24px;min-width: 24px">天数</th>
+    <th style="width: 80px;min-width: 80px">开始日期</th>
+    <th style="width: 80px;min-width: 80px">结束日期</th>
+    <th style="width: 24px;min-width: 24px; text-align: center">上</th>
+    <th style="width: 24px;min-width: 24px; text-align: center">下</th>
+  </tr>
+  </thead>
+  <tr class="mainbar">
+    <td colspan="9">主线</td>
+  </tr>
+  <tr ng-class="{deleted:!flow.selected,milestone:!!flow.type}"  ng-repeat="flow in flows track by flow.TaskFlowId">
+    <td ng-if="!flow.type"><input ng-if="!flow.IsRequired" ng-click="vm.buildDate()" type="checkbox" ng-model="flow.selected"></td>
+    <td ng-if="!flow.type" ng-style="{'padding-left':10+(flow.line*12)+'px'}">
+      {{$index+1}}、{{flow.Name}}
+    </td>
+    <td ng-if="!flow.type">
+      <md-menu>
+      <span aria-label="添加" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+        {{flow.currentTask.Name}}
+      </span>
+        <md-menu-content>
+          <md-menu-item ng-repeat="task in flow.OptionalTasks">
+            <md-button ng-click="setCurrent(flow,task)">
+              {{task.Name}}
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+    </td>
+    <td ng-if="!flow.type">
+      <input type="text" required placeholder="工期" ng-click="setVars(flow)" ng-blur="buildDate()" ng-model="flow.currentTask.Duration">
+    </td>
+    <td ng-if="!flow.type">
+      {{flow.days}}
+    </td>
+    <td ng-if="!flow.type">{{flow.start && flow.start.format('YYYY-MM-DD')}}</td>
+    <td ng-if="flow.type" colspan="6">{{flow.Name}}</td>
+    <td>{{flow.end && flow.end.format('YYYY-MM-DD')}}</td>
+    <td><md-icon ng-if="!flow.type && !flow.IsFloor" md-font-icon="icon-arrow-up" ng-click="up(flow)"></md-icon></td>
+    <td><md-icon ng-if="!flow.type && !flow.IsFloor" md-font-icon="icon-arrow-down" ng-click="down(flow)"></md-icon></td>
+
+  </tr>
+  <tr class="mainbar">
+    <td colspan="9">穿插</td>
+  </tr>
+  <tr ng-repeat="flow in banchs track by flow.TaskFlowId">
+    <td colspan="3">
+      {{$index+1}}、{{flow.Name}}
+    </td>
+    <td>
+      <input type="text" ng-click="setVars(flow)"  ng-blur="buildDate()" ng-model="flow.Expression">
+    </td>
+    <td>
+      {{flow.days}}
+    </td>
+    <td>{{flow.start && flow.start.format('YYYY-MM-DD')}}</td>
+    <td>{{flow.end && flow.end.format('YYYY-MM-DD')}}</td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+
+
