@@ -63,15 +63,15 @@
         utils.alert('请输入合同编号');
         return;
       }
-      if ($scope.data.imgs1.length == 0 &&
-        $scope.data.imgs2.length == 0 &&
-        $scope.data.imgs3.length == 0 &&
-        $scope.data.imgs4.length == 0 &&
-        $scope.data.imgs5.length == 0
-      ) {
-        utils.alert('请添加附件');
-        return;
-      }
+      // if ($scope.data.imgs1.length == 0 &&
+      //   $scope.data.imgs2.length == 0 &&
+      //   $scope.data.imgs3.length == 0 &&
+      //   $scope.data.imgs4.length == 0 &&
+      //   $scope.data.imgs5.length == 0
+      // ) {
+      //   utils.alert('请添加附件');
+      //   return;
+      // }
 
 
       vm.checkData.InspectionReport = vm.checkData.sjReport;
@@ -245,6 +245,11 @@
               api.material.TargetRelationService.getByProjectId({projectId:$scope.project.projectId,materialId:$scope.project.procedureId,isChecked:true})
                 .then(function (data) {
                   for (var i = 0; i < $scope.Targets.length; i++) {
+                    if ($scope.Targets[i].IsCheck) {
+                      $scope.Targets[i].isOK = true;
+                      $scope.Targets[i].need = true;
+                      continue;
+                    }
                     for (var j = 0; j < data.data.Rows.length; j++) {
                       if ($scope.Targets[i].Id == data.data.Rows[j].TargetId) {
                         $scope.Targets[i].isOK = true;

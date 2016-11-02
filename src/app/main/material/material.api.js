@@ -270,7 +270,7 @@
           idField:'Id',
           dataType:5,
         }).bind(function (args) {
-          return $http.get($http.url('/api/MLPProcedure/' + args + '/MLEngineeringTarget'));
+          return $http.get($http.url('/api/MLPProcedure/' + args + '/MLEngineeringTarget/null'));
         })
       }
     })

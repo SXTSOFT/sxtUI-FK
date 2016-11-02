@@ -511,6 +511,14 @@
           return api.material.MaterialService.GetMLFilesById();
         },
 
+        function (){
+          return api.material.TargetService.getAll(0);
+        },
+
+        function (){
+          return api.material.TargetRelationService.getByProjectId({projectId:project.project_id,materialId:null,isChecked:true});
+        },
+
         //工序验收表
         function () {
           return api.szgc.TargetService.getAll()
