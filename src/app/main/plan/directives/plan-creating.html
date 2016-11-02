@@ -17,7 +17,7 @@
   <tr class="mainbar">
     <td colspan="9">主线</td>
   </tr>
-  <tr ng-class="{deleted:!flow.selected,milestone:!!flow.type}"  ng-repeat="flow in vm.flows track by flow.TaskFlowId">
+  <tr ng-class="{deleted:!flow.selected,milestone:!!flow.type}"  ng-repeat="flow in flows track by flow.TaskFlowId">
     <td ng-if="!flow.type"><input ng-if="!flow.IsRequired" ng-click="vm.buildDate()" type="checkbox" ng-model="flow.selected"></td>
     <td ng-if="!flow.type" ng-style="{'padding-left':10+(flow.line*12)+'px'}">
       {{$index+1}}、{{flow.Name}}
@@ -29,15 +29,15 @@
       </span>
         <md-menu-content>
           <md-menu-item ng-repeat="task in flow.OptionalTasks">
-            <md-button ng-click="vm.setCurrent(flow,task)">
+            <md-button ng-click="setCurrent(flow,task)">
               {{task.Name}}
             </md-button>
           </md-menu-item>
-          </md-menu-content>
+        </md-menu-content>
       </md-menu>
     </td>
     <td ng-if="!flow.type">
-      <input type="text" ng-click="vm.setVars(flow)" ng-blur="vm.buildDate()" ng-model="flow.currentTask.Duration">
+      <input type="text" ng-click="setVars(flow)" ng-blur="buildDate()" ng-model="flow.currentTask.Duration">
     </td>
     <td ng-if="!flow.type">
       {{flow.days}}
@@ -45,19 +45,19 @@
     <td ng-if="!flow.type">{{flow.start && flow.start.format('YYYY-MM-DD')}}</td>
     <td ng-if="flow.type" colspan="6">{{flow.Name}}</td>
     <td>{{flow.end && flow.end.format('YYYY-MM-DD')}}</td>
-    <td><md-icon ng-if="!flow.type && !flow.IsFloor" md-font-icon="icon-arrow-up" ng-click="vm.up(flow)"></md-icon></td>
-    <td><md-icon ng-if="!flow.type && !flow.IsFloor" md-font-icon="icon-arrow-down" ng-click="vm.down(flow)"></md-icon></td>
+    <td><md-icon ng-if="!flow.type && !flow.IsFloor" md-font-icon="icon-arrow-up" ng-click="up(flow)"></md-icon></td>
+    <td><md-icon ng-if="!flow.type && !flow.IsFloor" md-font-icon="icon-arrow-down" ng-click="down(flow)"></md-icon></td>
 
   </tr>
   <tr class="mainbar">
     <td colspan="9">穿插</td>
   </tr>
-  <tr ng-repeat="flow in vm.banchs track by flow.TaskFlowId">
+  <tr ng-repeat="flow in banchs track by flow.TaskFlowId">
     <td colspan="3">
       {{$index+1}}、{{flow.Name}}
     </td>
     <td>
-      <input type="text" ng-click="setVars(flow)"  ng-blur="vm.buildDate()" ng-model="flow.Expression">
+      <input type="text" ng-click="setVars(flow)"  ng-blur="buildDate()" ng-model="flow.Expression">
     </td>
     <td>
       {{flow.days}}
@@ -68,4 +68,5 @@
     <td></td>
   </tr>
 </table>
+
 

@@ -341,34 +341,32 @@
           vm.type = type;
           vm.loadUser = loadUser;
           vm.loadUser();
+          vm.add = function(){
+            api.plan.UserGroup.create({
+              "GroupName": vm.dataName,
+              "SystemID": "plan",
+              "Description": vm.dataName
+            }).then(function(res){
+              console.log(res)
+              vm.current = 'default';
+              api.plan.UserGroup.query().then(function(r){
+                //vm.nextUserGroups = r.data.Items;
+                if(vm.nextUserGroups){
+                  r.data.Items.forEach(function (item) {
+                    item.selected = !!vm.nextUserGroups.find(function (it) {
+                      return it.GroupID == item.GroupID && it.selected;
+                    })
+                  });
+                }
+                vm.nextUserGroups = r.data.Items;
+              });
+              //loadUser();
+            })
+          }
           vm.select = function () {
-            if(vm.current == 'default'){
               $mdDialog.hide(vm.nextUserGroups.filter(function (t) {
                 return t.selected;
               }));
-            }else{
-              api.plan.UserGroup.create({
-                "GroupName": vm.dataName,
-                "SystemID": "plan",
-                "Description": vm.dataName
-              }).then(function(res){
-                console.log(res)
-                vm.current = 'default';
-                api.plan.UserGroup.query().then(function(r){
-                  //vm.nextUserGroups = r.data.Items;
-                  if(vm.nextUserGroups){
-                    r.data.Items.forEach(function (item) {
-                      item.selected = !!vm.nextUserGroups.find(function (it) {
-                        return it.GroupID == item.GroupID && it.selected;
-                      })
-                    });
-                  }
-                  vm.nextUserGroups = r.data.Items;
-                });
-                //loadUser();
-              })
-            }
-
           }
           function loadUser(){
             api.plan.UserGroup.query().then(function(r){

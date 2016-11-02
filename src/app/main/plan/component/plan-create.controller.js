@@ -13,6 +13,7 @@
         buildId:'<',
         begin:'<',
         libraryId:'<',
+        templateId:'<',
         ct:'<',
         onUpdate:'&'
       },
@@ -388,7 +389,7 @@
         "BuildingPlanInput": {
           "BuildingId": "000420000000006",
           "Name": "测试计划",
-          "TaskTemplateId": 40,
+          "TaskTemplateId": vm.templateId,
           "StartTime": "2016-10-01T00:00:00.412Z",
           "PreSalesTime": "2016-11-01T14:37:07.412Z",
           "ExpectEndTime": "2016-11-01T14:37:07.412Z"
