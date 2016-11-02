@@ -198,9 +198,27 @@
         scope.branch = scope.banchs = banchs;
         scope.buildDate();
       });
+      function setTask(item){
+        var index =  scope.flows.indexOf(item);
+        var floorArr = scope.flows.filter(function(r){
+          return r.IsFloor;
+        })
+        var r=floorArr.indexOf(item);
+        if(r>0){
+          for(var i=index;i<floorArr.length+index-r+1;i++){
+            var f = scope.flows[i].OptionalTasks&&scope.flows[i].OptionalTasks.find(function (task) {
+              return task.TaskLibraryId===item.currentTask.TaskLibraryId;
+            });
+            if(f){
+              scope.flows[i].currentTask = f;
+            }
+          }
+        }
 
+      }
       scope.setCurrent = function (flow, task) {
         flow.currentTask = task;
+        setTask(flow);
         scope.buildDate();
       }
       scope.buildBranch = function (task) {

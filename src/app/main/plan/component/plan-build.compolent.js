@@ -183,35 +183,6 @@
     vm.branches=null;
     vm.nextStep = function(i,f){
       if(i==0){
-        //var parent = vm;
-        //var position = $mdPanel.newPanelPosition()
-        //  .relativeTo('md-tabs-wrapper')
-        //  .addPanelPosition($mdPanel.xPosition.CENTER, $mdPanel.yPosition.BELOW)
-        //
-        //$mdPanel.open({
-        //  controller: function (mdPanelRef,$scope,utils) {
-        //    var vm = this;
-        //    parent.loading = true;
-        //    parent.closePanel = function() {
-        //      return mdPanelRef.close().then(function () {
-        //        mdPanelRef.destroy();
-        //        parent.loading = false;
-        //        parent.closePanel = null;
-        //      });
-        //    }
-        //  },
-        //  controllerAs: 'vm',
-        //  template: '<div layout="row" class="mt-20" layout-align="center center"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div>',
-        //  hasBackdrop: false,
-        //  //panelClass: 'lib-list',
-        //  position: position,
-        //  trapFocus: true,
-        //  zIndex: 5000,
-        //  clickOutsideToClose: true,
-        //  escapeToClose: true,
-        //  focusOnOpen: true,
-        //  attachTo:angular.element('#content')
-        //});
         var find=vm.data.templates.find(function(r){
           return r.RootTaskLibraryId==vm.formWizard.RootTaskLibraryId
         })
@@ -219,25 +190,6 @@
           vm.formWizard.TaskTemplateId = find.Id;
         }
         f();
-        //(vm.formWizard.Id?
-        //  api.plan.BuildPlan.update(vm.formWizard.Id,vm.formWizard)
-        //  :api.plan.BuildPlan.post(vm.formWizard)
-        //).then(function(r) {
-        //  if (r.data|| r.status==200) {
-        //    if(!vm.formWizard.Id)
-        //      vm.formWizard.Id = r.data.Id;
-        //    //getDataTemplate().then(function(){
-        //    //  parent.closePanel();
-        //    //});
-        //    f();
-        //  }
-        //},function(err){
-        //  parent.closePanel();
-        //  if(err.status != 200){
-        //    utils.alert(err.data||'任务创建失败！');
-        //    return;
-        //  }
-        //})
       }
       else if(i===1){
         var tasks = [], milestones = [];
