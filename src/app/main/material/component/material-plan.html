@@ -33,7 +33,7 @@
     <div layout="row">
       <md-input-container class="md-block" style="height: 58px;" flex="40">
         <label>材料/设备名称</label>
-        <md-select ng-model="vm.data.Material">
+        <md-select name="MaterialId"  ng-model="vm.data.Material" md-on-open="loadMaterial()">
           <md-option ng-value="item"  ng-selected="item.selected" ng-repeat="item in vm.materials" ng-click="vm.init(item)">{{item.MaterialName}}</md-option>
         </md-select>
       </md-input-container>
