@@ -114,6 +114,7 @@
             t1.TaskFlowId = f.FloorId + '-' + tid;
             t1.FloorId = f.FloorId;
             t1._TaskFlowId = tid;
+            t1.FloorName = f.FloorName;
             t1.Name = f.FloorName;
             flows.push(t1);
             if (f.IsPresalesMilestone) {
@@ -230,8 +231,8 @@
           if (tk) {
             var days3 = gs.setVars(tk.Duration);
             if (days3 !== tk.Duration) {
-              b.days = days3;
-              b.end = moment(b.start).add(days3, 'days');
+              b.end = moment(task.start).add(utils.math.sum(days,days3), 'days');
+              b.days = moment.duration(b.end.diff(b.start)).asDays();
             }
           }
           else {
@@ -357,7 +358,7 @@
           "DependentTaskFlowId": prev && prev._id,
           "TaskFlowId": current._TaskFlowId || current.TaskFlowId,
           "FloorId": current.FloorId,
-          "FloorName": current.Name,
+          "FloorName": current.FloorName,
           "Type": current.Type,
           "OptionalTask": {
             "TaskLibraryId": current.currentTask.TaskLibraryId,
@@ -374,7 +375,7 @@
           "DependentTaskFlowId": null,
           "TaskFlowId": current.TaskFlowId,
           "FloorId": current.FloorId,
-          "FloorName": current.Name,
+          "FloorName": current.FloorName,
           "Type": current.Type,
           "OptionalTask": {
             "TaskLibraryId": current.currentTask.TaskLibraryId,
@@ -403,6 +404,7 @@
         }
       });
       if(!fg) return fg;
+      console.log(JSON.stringify(b));
       return api.plan.BuildPlan.post(b);
     }
     if (vm.ct)
