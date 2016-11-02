@@ -175,7 +175,7 @@
                       return n.AcceptanceIndexID == m.AcceptanceIndexID
                     })){
                     var values = u.filter(function (v) {
-                      return m.MeasurePointID == v.MeasurePointID && v.CheckRegionID==scope.regionId &&
+                      return v.MeasureValue&&m.MeasurePointID == v.MeasurePointID && v.CheckRegionID==scope.regionId &&
                         scope.measureIndexes.find(function (n) {
                           return n.AcceptanceIndexID == v.AcceptanceIndexID
                         })
@@ -285,7 +285,7 @@
                 _id: point.properties.$id,
                 geometry: point
               };
-              points.addOrUpdate(point);
+              // points.addOrUpdate(point);
               if (isNew || !fg.data.find(function (d) {
                   return d.MeasurePointID == point._id;
                 })) {

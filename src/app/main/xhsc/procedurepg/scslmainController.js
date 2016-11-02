@@ -200,7 +200,7 @@
               utils.alert(msg);
             })
           }],
-          template: '<md-dialog aria-label="正在下载"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+          template: '<md-dialog aria-label="正在下载"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
           parent: angular.element(document.body),
           clickOutsideToClose: false,
           fullscreen: false
@@ -244,7 +244,7 @@
                         remote.Assessment.sumReportTotal(item.AssessmentID).then(function () {
                           pack.sc.removeSc(item.AssessmentID, function () {
                             $q.all([
-                              remote.Assessment.GetMeasurePointAll(item.RegionID),
+                              // remote.Assessment.GetMeasurePointAll(item.RegionID),
                               remote.Assessment.GetRegionTreeInfo(item.ProjectID, "pack" + item.AssessmentID)
                             ]).then(function(){
                               resolve()
@@ -270,7 +270,7 @@
                   }
                 });
               }],
-              template: '<md-dialog aria-label="正在上传..."  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p ng-if="!loading" style="padding-left: 6px;">正在上传：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p><p ng-if="loading" style="padding-left: 6px;">正在刷新数据,请稍后....</p></md-dialog-content></md-dialog>',
+              template: '<md-dialog aria-label="正在上传..."  ng-cloak><md-dialog-content> <md-progress-circular md-diameter="28" md-mode="indeterminate"></md-progress-circular><p ng-if="!loading" style="padding-left: 6px;">正在上传：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p><p ng-if="loading" style="padding-left: 6px;">正在刷新数据,请稍后....</p></md-dialog-content></md-dialog>',
               parent: angular.element(document.body),
               clickOutsideToClose: false,
               fullscreen: false

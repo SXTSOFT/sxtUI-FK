@@ -13,7 +13,7 @@
   function zjhouseChooseController($scope,$stateParams,sxt,remote,$timeout,$q,$state,$mdDialog,utils,api,xhscService,$rootScope){
     var vm=this,
       areaId= $stateParams.projectId,
-      projectId = area.substr(0,5),
+      projectId = areaId.substr(0,5),
       acceptanceItemID=$stateParams.acceptanceItemID,
       acceptanceItemName = $stateParams.acceptanceItemName
     vm.maxRegion = $stateParams.maxRegion;

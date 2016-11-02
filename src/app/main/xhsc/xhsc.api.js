@@ -421,7 +421,7 @@
           },
           dataType:1,
           filter:function (item,projectId,Sign) {
-            return item.projectId==projectId && item.Sign==Sign
+            return item.AreaId.indexOf(projectId)>-1 && item.Sign==Sign
           }
         }).bind(function(projectId,Sign,AcceptanceItemID) {
           var  param={
