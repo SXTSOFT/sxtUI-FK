@@ -22,12 +22,20 @@
     <md-divider class="md-no-sticky"></md-divider>
     <md-subheader class="md-no-sticky" style="font-size: 1.1em;background-color: #F2F2F2;">送检照片</md-subheader>
     <md-divider class="md-no-sticky"></md-divider>
-    <md-list-item>
-      <label flex="50">抽样过程</label>
+    <md-list-item style="padding-right: 0;">
+      <label flex="30" style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">抽样过程</label>
+      <div flex="60" ng-repeat="img in vm.samplingProcessImgs" sxt-images="vm.samplingProcessImgs" style="text-align: center;margin:5px 0;">
+        <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
+      </div>
+      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(1)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
-    <md-list-item>
-      <label flex="50">检查单</label>
+    <md-list-item style="padding-right: 0;">
+      <label flex="30"style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">检查单</label>
+      <div flex="60" ng-repeat="img in vm.checkListImgs" sxt-images="vm.checkListImgs" style="text-align: center;margin:5px 0;">
+        <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
+      </div>
+      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(2)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
   </md-list>
