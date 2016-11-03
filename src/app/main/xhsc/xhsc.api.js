@@ -101,6 +101,9 @@
         }).bind( function(regionID,regionType){
           return  $http.get($http.url('/api/ProjectInfoApi/GetProjectRelationRole', {areaId: regionID,regionType:regionType}));
         }),
+        getAllRegionWithRight_no_db:function (regionID,regionType) {
+          return  $http.get($http.url('/api/ProjectInfoApi/GetProjectRelationRole', {areaId: regionID,regionType:regionType}));
+        },
 
         getZTjd:function(areaId){
           return  $http.get($http.url('/api/ProjectInfoApi/GetSubjectSchedule', {areaId: areaId}))
@@ -1307,6 +1310,9 @@
         },
         UpdatePoint:function(MeasurePointID,Geometry){
           return $http.put($http.url('/api/MeasureStandardApi/UpdatePoint'),{MeasurePointID:MeasurePointID,Geometry:Geometry})
+        },
+        UpdatePoint_tran:function(Point,ListStandards){
+          return $http.put($http.url('/api/MeasureStandardApi/UpdatePointTransaction'),{Point:Point,ListStandards:ListStandards})
         },
         insertStandar:function(arr){
           return $http.post($http.url('/api/MeasureStandardApi/Insert'),arr)

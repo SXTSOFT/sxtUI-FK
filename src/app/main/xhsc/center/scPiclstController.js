@@ -100,7 +100,6 @@
       item.stretch = !item.stretch;
       if (item.stretch){
         remote.PQMeasureStandard.messageList(item.DrawingID,item.AcceptanceItemID).then(function(r){
-          var t=""
           item.indexs.forEach(function(k){
             r.data.forEach(function(m){
                if (m.AcceptanceIndexID== k.AcceptanceIndexID){

@@ -153,37 +153,42 @@
                 _id: point.properties.$id,
                 geometry: point
               };
-              remote.PQMeasureStandard.UpdatePoint(point._id,JSON.stringify(point.geometry)).then(function () {
+              var arr=[]
+              scope.measureIndexes.forEach(function (m) {
+                var ms = [];
+                if (m.Children && m.Children.length) {
+                  m.Children.forEach(function (m1) {
+                    ms.push(m1);
+                  });
+                }
+                else {
+                  ms.push(m);
+                }
+
+                ms.forEach(function (m) {
+                  //实测标准化
+                  arr.push({
+                    AcceptanceIndexID: m.AcceptanceIndexID,
+                    AcceptanceItemID:scope.acceptanceItem,
+                    DrawingID:scope.drawing.data.DrawingID,
+                    MeasurePointID:point._id
+                  });
+                });
+              })
+              remote.PQMeasureStandard.UpdatePoint_tran({
+                MeasurePointID:point._id,
+                Geometry:JSON.stringify(point.geometry)
+              }, arr).then(function () {
                 scope.measureIndexes.forEach(function (k) {
                   k.isSubmit=true;
                 })
+              }).catch(function () {
+                utils.alert("由于网络或者后台服务异常，导致更新或插入失败！",null,function () {
+                  $timeout(function () {
+                    install()
+                  },300)
+                });
               });
-
-              // if (isNew) {
-                scope.measureIndexes.forEach(function (m) {
-                  var ms = [];
-                  if (m.Children && m.Children.length) {
-                    m.Children.forEach(function (m1) {
-                      ms.push(m1);
-                    });
-                  }
-                  else {
-                    ms.push(m);
-                  }
-                  var arr=[]
-                  ms.forEach(function (m) {
-                    //实测标准化
-                    arr.push({
-                      //_id: sxt.uuid(),
-                      AcceptanceIndexID: m.AcceptanceIndexID,
-                      AcceptanceItemID:scope.acceptanceItem,
-                      DrawingID:scope.drawing.data.DrawingID,
-                      MeasurePointID:point._id
-                    });
-                    remote.PQMeasureStandard.insertStandar(arr);
-                  });
-                })
-              // }
 
               //如果是画区域,而区域内没有点的话,默认生成9点或5个点
               if (isNew && layer instanceof L.AreaGroup) {
@@ -245,10 +250,11 @@
             },
             onDelete: function (layer) {
               var id = layer.getValue().$id;
-              remote.PQMeasureStandard.DeletePoin(id).then(function(r){
-                scope.measureIndexes.forEach(function(k){
-                  remote.PQMeasureStandard.delectScStandar(k.AcceptanceIndexID,scope.drawing.data.DrawingID,id).then(function(){
-                  });
+              remote.PQMeasureStandard.DeletePoin(id).catch(function () {
+                utils.alert("由于网络或者后台服务异常，导致更新或插入失败！",null,function () {
+                  $timeout(function () {
+                    install()
+                  },300)
                 });
               });
             },
