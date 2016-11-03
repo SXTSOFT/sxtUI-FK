@@ -250,7 +250,7 @@
                 //      return m.AcceptanceIndexID == d.AcceptanceIndexID;
                 //    });
                 //});
-              remote.PQMeasureStandard.DeletePoin(id).then(function(){
+              remote.PQMeasureStandard.DeletePoin(id).then(function(r){
                 scope.measureIndexes.forEach(function(k){
                   remote.PQMeasureStandard.delectScStandar(k.AcceptanceIndexID,scope.drawing.data.DrawingID,id).then(function(){
                   });
