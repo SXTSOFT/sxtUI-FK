@@ -21,10 +21,12 @@
     vm.goodsImgs = [];
     vm.checkerImgs = [];
     vm.certificateImgs = [];
-    $rootScope.$on('delete',function (data,index) {
-      console.log(data,index)
 
-    })
+    //删除图片操作
+    $rootScope.$on('delete',function (data,index) {
+      $scope.$apply();
+    });
+
     vm.addPhoto = function (type) {
       switch (type){
         case 1:

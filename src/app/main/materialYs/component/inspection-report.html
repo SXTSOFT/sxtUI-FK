@@ -17,6 +17,13 @@
       {{vm.data.LabCheck?'合格':'不合格'}}
       <md-switch class="md-secondary" ng-model="vm.data.LabCheck"></md-switch>
     </md-list-item>
+    <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">报告单照片</div>
+    <md-list-item style="padding-right: 0;">
+      <div flex="60" ng-repeat="img in vm.reportImgs" sxt-images="vm.reportImgs" style="text-align: center;margin: 5px 0;">
+        <img ng-src="{{img.ImageByte}}" style="width: 450px;" flex="95" style="display: block;"/>
+      </div>
+      <md-button class="md-secondary" ng-click="vm.addPhoto(64)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+    </md-list-item>
     <md-divider></md-divider>
   </md-list>
 </form>
