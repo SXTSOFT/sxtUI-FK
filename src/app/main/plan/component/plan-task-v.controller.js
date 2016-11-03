@@ -289,7 +289,7 @@
           }
           vm.submit = function () {
             vm.data.Type = vm.data.Type || flow.Name;
-            vm.data.Level = task.Level+1
+            vm.data.Level = task.Level+1;
               api.plan.TaskLibrary.create(vm.data).then(function(r){
                 if(r.status == 200 || r.data){
                   vm.current = 'default';
@@ -340,14 +340,13 @@
           var vm = this;
           vm.type = type;
           vm.loadUser = loadUser;
-          vm.loadUser();
+          loadUser();
           vm.add = function(){
             api.plan.UserGroup.create({
               "GroupName": vm.dataName,
               "SystemID": "plan",
               "Description": vm.dataName
             }).then(function(res){
-              console.log(res)
               vm.current = 'default';
               api.plan.UserGroup.query().then(function(r){
                 //vm.nextUserGroups = r.data.Items;
@@ -406,9 +405,9 @@
       })
     }
     //获取所有角色
-    api.plan.UserGroup.query().then(function(r){
-      vm.nextUserGroups = r.data.Items;
-    })
+    //api.plan.UserGroup.query().then(function(r){
+    //  vm.nextUserGroups = r.data.Items;
+    //})
     vm.stop = function(ev){
       ev.stopPropagation();
     }
@@ -468,6 +467,9 @@
               vm.current = f;
             }
           }
+          vm.stop = function(ev){
+            ev.stopPropagation();
+          }
           vm.choose = function(item){
             vm.current = item;
             vm.data.CloseRelatedObjectId = item.AcceptanceItemID;
@@ -496,7 +498,6 @@
         }
       }).then(function(data){
         api.plan.TaskLibrary.update(data).then(function (r) {
-          console.log(r)
           return vm.updateFlow(flow);
         });
       })
