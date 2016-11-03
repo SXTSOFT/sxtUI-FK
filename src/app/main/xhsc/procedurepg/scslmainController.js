@@ -107,9 +107,6 @@
               });
             })
           }
-          //function () {
-          //  return remote.Project.queryAllBulidings(projectId);
-          //}
         ]
       }
 

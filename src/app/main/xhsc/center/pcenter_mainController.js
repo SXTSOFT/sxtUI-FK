@@ -14,11 +14,12 @@
   /**@ngInject*/
   function pcenter_mainController($scope,$mdDialog,db,auth,$rootScope,api,utils,$q,remote,versionUpdate,$state,$timeout,$mdBottomSheet){
     var vm = this;
-    vm.serverAppVersion = versionUpdate.version;
-    vm.clearCache=function(){
-      utils.confirm('确定清除所有缓存数据吗?').then(function (result) {
-        vm.trueClear = function (exclude) {
-          $mdDialog.show({
+    api.setNetwork(0).then(function () {
+      vm.serverAppVersion = versionUpdate.version;
+      vm.clearCache=function(){
+        utils.confirm('确定清除所有缓存数据吗?').then(function (result) {
+          vm.trueClear = function (exclude) {
+            $mdDialog.show({
               controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
                 api.clearDb(function (persent) {
                   $scope.cacheInfo = parseInt(persent * 100) + '%';
@@ -42,19 +43,19 @@
               clickOutsideToClose:false,
               fullscreen: false
             })
-            .then(function(answer) {
-            }, function() {
-              utils.alert('清除成功');
-            });
-          return;
-        }
-        vm.trueClear(['v_profile']);
-      });
-    }
-    vm.logout = function(){
-      utils.confirm('确定清除所有缓存数据吗?').then(function (result) {
-        vm.trueClear = function (exclude) {
-          $mdDialog.show({
+              .then(function(answer) {
+              }, function() {
+                utils.alert('清除成功');
+              });
+            return;
+          }
+          vm.trueClear(['v_profile']);
+        });
+      }
+      vm.logout = function(){
+        utils.confirm('确定清除所有缓存数据吗?').then(function (result) {
+          vm.trueClear = function (exclude) {
+            $mdDialog.show({
               controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
                 api.clearDb(function (persent) {
                   $scope.cacheInfo = parseInt(persent * 100) + '%';
@@ -78,19 +79,20 @@
               clickOutsideToClose:false,
               fullscreen: false
             })
-            .then(function(answer) {
-              auth.logout();
-            }, function() {
+              .then(function(answer) {
+                auth.logout();
+              }, function() {
 
-            });
-          return;
-        }
-        vm.trueClear(['v_profile']);
-      });
-    }
+              });
+            return;
+          }
+          vm.trueClear(['v_profile']);
+        });
+      }
       //消息中心
-    vm.scStandar=function(){
-      $state.go("app.xhsc.scPiclst");
-    }
+      vm.scStandar=function(){
+        $state.go("app.xhsc.scPiclst");
+      }
+    })
   }
 })();
