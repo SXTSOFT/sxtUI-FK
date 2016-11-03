@@ -1302,8 +1302,8 @@
         getAllScStandar:function(){
           return $http.get($http.url('/api/MeasureStandardApi'))
         },
-        GetProjectDrawing:function(){
-          return $http.get($http.url('/api/MeasureStandardApi/GetProjectDrawing'))
+        GetProjectDrawing:function(projectID){
+          return $http.get($http.url('/api/MeasureStandardApi/GetProjectDrawing/'+projectID))
         },
         DeletePoin:function(MeasurePointID){
           return $http.post($http.url('/api/MeasureStandardApi/DeletePoint'),{MeasurePointID:MeasurePointID})

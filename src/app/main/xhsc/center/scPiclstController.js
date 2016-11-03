@@ -15,11 +15,11 @@
     .controller('scPiclstController',scPiclstController);
 
   /**@ngInject*/
-  function scPiclstController($scope,$q,remote,$state,$timeout,$mdBottomSheet,utils){
+  function scPiclstController($scope,$q,remote,$stateParams,$state,$timeout,$mdBottomSheet,utils){
     var vm = this;
     var  arr=[
       remote.Project.GetMeasureItemInfoByAreaID(),
-      remote.PQMeasureStandard.GetProjectDrawing()
+      remote.PQMeasureStandard.GetProjectDrawing($stateParams.projectID)
     ];
     vm.searchText="";
     vm.selectedItem=null;
