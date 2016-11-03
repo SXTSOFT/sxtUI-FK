@@ -43,8 +43,6 @@
       if (!points)
         points = pk.point.db;
 
-
-      //var yxzAcceptanceIndexID = 'c1c7a2150bb742d8bd3eeefd2cf3de89';//尺寸一直性指标ID
       var install = function () {
 
         if (!scope.db || !scope.regionId || !scope.measureIndexes || !scope.measureIndexes.length)return;
@@ -71,7 +69,7 @@
             });
             if (!img) {
               img = result.data.find(function (item) {
-                return item.RegionId == scope.regionId;
+                return item.AcceptanceItemID == scope.acceptanceItem&&scope.regionId.indexOf(item.RegionId)>-1;
               });
             }
             return img;
@@ -503,16 +501,6 @@
               }
             }
           }).addTo(map._map);
-
-          // toolbar = new L.Control.Draw({
-          //   featureGroup: fg,
-          //   group: {
-          //     lineGroup: false,
-          //     areaGroup: scope.measureIndexes.length && !!scope.measureIndexes.find(function (m) {
-          //       return m.QSKey == '4'
-          //     })
-          //   }
-          // }).addTo(map._map);
         }).catch(function(r){
 
         });

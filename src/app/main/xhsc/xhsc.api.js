@@ -101,6 +101,7 @@
         }).bind( function(regionID,regionType){
           return  $http.get($http.url('/api/ProjectInfoApi/GetProjectRelationRole', {areaId: regionID,regionType:regionType}));
         }),
+
         getZTjd:function(areaId){
           return  $http.get($http.url('/api/ProjectInfoApi/GetSubjectSchedule', {areaId: areaId}))
         },

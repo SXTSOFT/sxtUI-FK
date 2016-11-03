@@ -14,7 +14,27 @@
   /**@ngInject*/
   function pcenter_mainController($scope,$mdDialog,db,auth,$rootScope,api,utils,$q,remote,versionUpdate,$state,$timeout,$mdBottomSheet){
     var vm = this;
+    vm.projects=[];
     api.setNetwork(0).then(function () {
+      var arr=[
+        remote.profile(),
+        remote.Project.getAllRegionWithRight("", 1)
+      ];
+      $q.all(arr).then(function (res) {
+        var r=res[0];
+        vm.show=true;
+        if (r.data && r.data.Role) {
+          vm.role = r.data.Role.MemberType === 0 || r.data.Role.MemberType ? r.data.Role.MemberType : -100;
+          vm.OUType=r.data.Role.OUType===0||r.data.Role.OUType?r.data.Role.OUType:-100;
+        }
+        var k=res[1];
+        if (k&&k.data){
+          vm.projects=k.data;
+        }
+      }).catch(function () {
+        vm.show=true;
+        utils.alert("当前网络异常！");
+      });
       vm.serverAppVersion = versionUpdate.version;
       vm.clearCache=function(){
         utils.confirm('确定清除所有缓存数据吗?').then(function (result) {
@@ -91,7 +111,28 @@
       }
       //消息中心
       vm.scStandar=function(){
-        $state.go("app.xhsc.scPiclst");
+        if (!vm.projects.length){
+          utils.alert("您当前无任何项目权限，请联系项目部同事!");
+          return;
+        }
+        if (vm.projects.length>1){
+          $mdDialog.show({
+            controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
+              $scope.projects=vm.projects;
+              $scope.go=function (item) {
+                $state.go("app.xhsc.scPiclst",{projectID:item.RegionID});
+                $mdDialog.hide();
+              }
+            }],
+            templateUrl:"app/main/xhsc/center/projectlst.html" ,
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false
+          });
+
+        }else {
+          $state.go("app.xhsc.scPiclst",vm.projects[0].RegionID);
+        }
       }
     })
   }

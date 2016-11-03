@@ -92,7 +92,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'实测图纸列表',
-        url   :'/scPiclst',
+        url   :'/scPiclst/{projectID}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/center/scPiclst.html',

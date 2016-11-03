@@ -29,23 +29,39 @@
       var  draws=res[1]? res[1].data:[];
       function init(o,draws){
         o.pics=[];
+
+        function build(o,k) {
+          var pic={
+            DrawingID: k.DrawingID,
+            AcceptanceItemID: o.AcceptanceItemID,
+            DrawingName: k.DrawingName
+          }
+          pic.indexs=[];
+          o.pics.push(pic);
+          o.MeasureIndexList.forEach(function(n){
+            pic.indexs.push({
+              AcceptanceIndexID: n.AcceptanceIndexID,
+              AcceptanceItemID: o.AcceptanceItemID,
+              DrawingID:k.DrawingID,
+              IndexName: n.IndexName
+            });
+          });
+        }
+
         draws.forEach(function(k){
           if (k.Type== o.MeasurePictureType){
-            var pic={
-              DrawingID: k.DrawingID,
-              AcceptanceItemID: o.AcceptanceItemID,
-              DrawingName: k.DrawingName
+            build(o,k)
+          }else {
+            var split=o.SplitRule;
+            var apply=[];
+            if (split){
+              apply=split.split(",");
             }
-            pic.indexs=[];
-            o.pics.push(pic);
-            o.MeasureIndexList.forEach(function(n){
-              pic.indexs.push({
-                AcceptanceIndexID: n.AcceptanceIndexID,
-                AcceptanceItemID: o.AcceptanceItemID,
-                DrawingID:k.DrawingID,
-                IndexName: n.IndexName
-              });
-            });
+            if (k.Type=-3&&apply.find(function (o) {
+                return o=="16"||o==16;
+              })){
+              build(o,k)
+            }
           }
         });
         o.dynamicItems=new DynamicItems(o.pics);
@@ -128,18 +144,6 @@
               vm.go(item.AcceptanceItemID,item.DrawingID,item.AcceptanceIndexID);
             }
           },
-          //   {
-          //   title: '删 除',
-          //   action: function (evt) {
-          //     utils.confirm('删除图纸所有的点位?', evt, '', '').then(function () {
-          //       remote.PQMeasureStandard.delectScStandar(item.AcceptanceIndexID,item.DrawingID).then(function(){
-          //         utils.alert("删除成功!");
-          //       });
-          //     });
-          //     $mdBottomSheet.hide();
-          //     evt.stopPropagation();
-          //   }
-          // },
             {
             title: '取 消',
             action: function () {

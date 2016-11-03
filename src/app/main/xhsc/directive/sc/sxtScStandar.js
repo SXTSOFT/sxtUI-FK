@@ -245,20 +245,12 @@
             },
             onDelete: function (layer) {
               var id = layer.getValue().$id;
-                //values = xhUtils.findAll(fg.data, function (d) {
-                //  return d.MeasurePointID == id && !!scope.measureIndexes.find(function (m) {
-                //      return m.AcceptanceIndexID == d.AcceptanceIndexID;
-                //    });
-                //});
               remote.PQMeasureStandard.DeletePoin(id).then(function(r){
                 scope.measureIndexes.forEach(function(k){
                   remote.PQMeasureStandard.delectScStandar(k.AcceptanceIndexID,scope.drawing.data.DrawingID,id).then(function(){
                   });
                 });
               });
-              // values.forEach(function (v) {
-              //   data.delete(v._id);
-              // })
             },
             onPopup: function (e) {
               if (e.layer instanceof L.Stamp
