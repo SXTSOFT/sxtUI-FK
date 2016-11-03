@@ -29,22 +29,27 @@
         }).bind(function (mpid) {
           return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanAsync?mpid='+mpid));
         }),
+
+        getMaterialPlanBatchById:function (id) {
+          return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanBatchById?id='+id));
+        },
+
         PostCheckInfo: $http.db({
-          _id: 'materialPlan',
+          _id: 'materialPlanCheckInfo',
           idField: 'Id',
           upload:true
         }).bind(function (data) {
           return $http.put('/api/MaterialPlan/InsertCheckInfo', data);
         }),
         PostReportInfo: $http.db({
-          _id: 'materialPlan',
+          _id: 'materialPlanReportInfo',
           idField: 'Id',
           upload:true
         }).bind(function (data) {
           return $http.put('/api/MaterialPlan/InsertReportInfo', data);
         }),
         PostApprovalInfo: $http.db({
-          _id: 'materialPlan',
+          _id: 'materialPlanApprovalInfo',
           idField: 'Id',
           upload:true
         }).bind(function (data) {

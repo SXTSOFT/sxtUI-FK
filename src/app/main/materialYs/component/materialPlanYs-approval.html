@@ -71,6 +71,11 @@
     <md-list-item>
       <p flex="30">进场照片</p>
     </md-list-item>
+    <md-list-item>
+      <div flex ng-repeat="img in vm.intoFactoryImgs" sxt-images="vm.intoFactoryImgs" style="text-align: center;margin:5px 0;">
+        <img ng-src="{{img.FileUrl}}" style="width: 450px;" flex="95" style="display: block;"/>
+      </div>
+    </md-list-item>
     <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">监理验收信息</div>
     <md-list-item>
       <p flex="30">验收时间</p>
@@ -90,6 +95,11 @@
     </md-list-item>
     <md-list-item>
       <p flex="30">验收照片</p>
+    </md-list-item>
+    <md-list-item>
+      <div flex ng-repeat="img in vm.checkedImgs" sxt-images="vm.checkedImgs" style="text-align: center;margin:5px 0;">
+        <img ng-src="{{img.FileUrl}}" style="width: 450px;" flex="95" style="display: block;"/>
+      </div>
     </md-list-item>
   </md-list>
 </md-content>
