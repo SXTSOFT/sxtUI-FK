@@ -11,13 +11,14 @@
             <md-button ng-if="item.Status == 4" ui-sref="app.xhsc.materialys.inspection({id:item.Id})" style="color: black;margin-right: 0px">送检</md-button>
             <md-button ng-if="item.Status == 8" ui-sref="app.xhsc.materialys.inspectionReport({id:item.Id})" style="color: black;margin-right: 0px">归档</md-button>
             <md-button ng-if="item.Status == 16" style="color: black;margin-right: 0px" ui-sref="app.xhsc.materialys.approval({planId:item.PlanId,id:item.Id})">批示</md-button>
+            <md-button ng-if="item.Status == 32" style="color: black;margin-right: 0px" ui-sref="app.xhsc.materialys.unqualifiedExit({id:item.Id,max:item.PlanCount})">退场</md-button>
             <span class="border1px bottom1px"></span>
           </md-list-item>
         </md-list>
       </md-tab>
       <md-tab label="未进场">
         <md-list flex>
-          <md-list-item ng-repeat="item in vm.planList | filter:{Status:1}" class="noright">
+          <md-list-item ng-repeat="item in vm.planList | filter:{Status:1}:true" class="noright">
             <md-button ng-disabled="true" class="md-fab md-mini">{{item.Status}}</md-button>
             <p>{{item.PlanName}}</p>
             <md-button ng-if="item.Status == 1" ui-sref="app.xhsc.materialys.planDetail({id:item.PlanId})" style="color: black;margin-right: 0px">进场</md-button>
@@ -27,7 +28,7 @@
       </md-tab>
       <md-tab label="未验收">
         <md-list flex>
-          <md-list-item ng-repeat="item in vm.planList | filter:{Status:2}" class="noright">
+          <md-list-item ng-repeat="item in vm.planList | filter:{Status:2}:true" class="noright">
             <md-button ng-disabled="true" class="md-fab md-mini">{{item.Status}}</md-button>
             <p>{{item.PlanName}}</p>
             <md-button style="color: black;margin-right: 0px" ui-sref="app.xhsc.materialys.checkInfo({id:item.Id})">验收</md-button>
@@ -49,7 +50,7 @@
       </md-tab>
       <md-tab label="未归档">
         <md-list flex>
-          <md-list-item ng-repeat="item in vm.planList | filter:{Status:8}" class="noright">
+          <md-list-item ng-repeat="item in vm.planList | filter:{Status:8}:true" class="noright">
             <md-button ng-disabled="true" class="md-fab md-mini">{{item.Status}}</md-button>
             <p>{{item.PlanName}}</p>
             <md-button style="color: black;margin-right: 0px" ui-sref="app.xhsc.materialys.inspectionReport({id:item.Id})">归档</md-button>
@@ -60,11 +61,7 @@
       <md-tab label="未批示">
         <md-content class="md-padding">
           <md-list flex>
-            <md-list-item ng-repeat="item in vm.planList | filter:{Status:16}" class="noright">
-              <md-button ng-disabled="true" class="md-fab md-mini">{{item.status}}</md-button>
-              <p>{{item.planName}}</p>
-              <md-button class="md-raised" ui-sref="app.xhsc.materialys.approval">批示</md-button>
-            <md-list-item ng-repeat="item in vm.planList | filter:{Status:16}" class="noright">
+            <md-list-item ng-repeat="item in vm.planList | filter:{Status:16}:true" class="noright">
               <md-button ng-disabled="true" class="md-fab md-mini">{{item.Status}}</md-button>
               <p>{{item.PlanName}}</p>
               <md-button style="color: black;margin-right: 0px" ui-sref="app.xhsc.materialys.approval({planId:item.PlanId,id:item.Id})">批示</md-button>
@@ -73,14 +70,25 @@
           </md-list>
         </md-content>
       </md-tab>
-
+      <md-tab label="未退场">
+        <md-content class="md-padding">
+          <md-list flex>
+            <md-list-item ng-repeat="item in vm.planList | filter:{Status:32}:true" class="noright">
+              <md-button ng-disabled="true" class="md-fab md-mini">{{item.Status}}</md-button>
+              <p>{{item.PlanName}}</p>
+              <md-button style="color: black;margin-right: 0px" ng-if="item.Status == 32" ui-sref="app.xhsc.materialys.unqualifiedExit({id:item.Id,max:item.PlanCount})">退场</md-button>
+              <span class="border1px bottom1px"></span>
+            </md-list-item>
+          </md-list>
+        </md-content>
+      </md-tab>
       <md-tab label="已关闭">
         <md-content class="md-padding">
           <md-list flex>
-            <md-list-item ng-repeat="item in vm.planList | filter:{Status:64}" class="noright">
+            <md-list-item ng-repeat="item in vm.planList | filter:{Status:64}:true" class="noright">
               <md-button ng-disabled="true" class="md-fab md-mini">{{item.Status}}</md-button>
               <p>{{item.PlanName}}</p>
-              <md-button style="color: black;margin-right: 0px" ui-sref="app.xhsc.materialys.exit({id:item.PlanId})">退场</md-button>
+              <md-button style="color: black;margin-right: 0px" ng-if="item.Status == 64" ui-sref="app.xhsc.materialys.exit({id:item.Id,max:item.PlanCount})">退场</md-button>
               <span class="border1px bottom1px"></span>
             </md-list-item>
           </md-list>
