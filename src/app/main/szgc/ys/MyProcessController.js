@@ -62,7 +62,7 @@
       addzj:function (item) {
         $scope.project.zjs.push(item);
       },
-      searchTerm:'1',
+      searchTerm:'',
       addSearchTerm:function (k) {
         if(!k){
           $scope.project.searchTerm = ''
