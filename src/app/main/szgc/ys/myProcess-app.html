@@ -23,7 +23,7 @@
       <md-content flex layout="column" ng-hide="is('app.szgc.ys.addnew')||is('app.szgc.ys.upload')" >
         <div flex layout="column" ng-hide="is('app.szgc.ys.addnew')||is('app.szgc.ys.upload')">
         <md-list flex="none">
-          <md-list-item ng-click="vm.openNav('nav_region')" layout="row"><p style="white-space: nowrap;" flex="none">项目：</p><p flex style="text-align:right; white-space: nowrap;overflow: hidden;text-overflow:ellipsis;direction: rtl;">{{project.nameTree}}</p></md-list-item>
+          <md-list-item ng-click="vm.openNav('nav_region')" layout="row"><p style="white-space: nowrap;" flex="none">部位：</p><p flex style="text-align:right; white-space: nowrap;overflow: hidden;text-overflow:ellipsis;direction: rtl;">{{project.nameTree}}</p></md-list-item>
           <md-divider></md-divider>
           <md-list-item ng-click="vm.openNav('nav_procedure')" layout="row"><p flex="none">工序：</p><p flex style="text-align:right;text-overflow:ellipsis;">{{project.procedureName}}</p></md-list-item>
           <md-divider></md-divider>
@@ -32,8 +32,8 @@
           <md-progress-circular md-mode="indeterminate" ng-show="vm.loading"></md-progress-circular>
           <div flex ng-if="!vm.loading && project.type!==128 && project.type!==256">
             <div layout="row" class="div-table">
-                <div flex="20"><div style="padding:0 0 0 6px">部位</div></div>
-                <div flex="20">批</div>
+                <div flex="20"><div style="padding:0 0 0 6px">检验批</div></div>
+                <div flex="20">批次</div>
                 <div flex="20">状态</div>
                 <div flex="40">操作</div>
               </div>

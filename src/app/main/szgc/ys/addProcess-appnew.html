@@ -4,20 +4,20 @@
   <md-content flex ng-if="!vm.loading" sxt-number-list show="vm.keyboard.show" class="md-padding selector">
     <form name="addForm" class="form-horizontal addform" ng-submit="save(addForm)">
       <md-list>
-        <md-subheader class="md-no-sticky">项目</md-subheader>
+        <md-subheader class="md-no-sticky" style="height: 25px;">项目</md-subheader>
         <md-list-item>
           <p>项目{{data.projectName}} {{data.rName}}</p>
         </md-list-item>
-        <md-subheader class="md-no-sticky">工序</md-subheader>
+        <md-subheader class="md-no-sticky" style="height: 25px;">工序</md-subheader>
         <md-list-item>
           <p>{{data.procedureName}}</p>
         </md-list-item>
-        <md-subheader ng-hide="roleId=='3rd'" class="md-no-sticky">监理单位</md-subheader>
+        <md-subheader ng-hide="roleId=='3rd'" class="md-no-sticky" style="height: 25px;">所属单位</md-subheader>
         <md-list-item ng-hide="roleId=='3rd'" layout="row">
           <sxt-select flex name="jldw" ng-disabled="!data.isFirst" required ng-model="data.curHistory.SupervisorCompanyId" name-value="data.curHistory.SupervisorCompanyName" sources="data.construction" text-field="UnitName" value-field="UnitId"></sxt-select>
         </md-list-item>
-        <md-subheader class="md-no-sticky">验收人</md-subheader>
-        <md-list-item layout="row">
+        <md-subheader class="md-no-sticky" style="height: 25px;">验收人</md-subheader>
+        <md-list-item layout="colum">
           <sxt-select flex name="ysr" required ng-model="data.curStep.CheckWorker" obj-value="data.submitUser" name-value="data.curStep.CheckWorkerName" sources="data.submitUsers" text-field="name" value-field="id"></sxt-select>
         </md-list-item>
         <div ng-hide="roleId=='3rd'" ng-repeat="batch in data.batchs">
@@ -33,15 +33,15 @@
           </div>
 
         </div>
-        <md-subheader ng-hide="roleId=='3rd'" class="md-no-sticky">总承包</md-subheader>
+        <md-subheader ng-hide="roleId=='3rd'" class="md-no-sticky" style="height: 25px;">总承包</md-subheader>
         <md-list-item ng-hide="roleId=='3rd'" layout="row">
           <sxt-select flex required name="zid"  ng-model="data.curHistory.ParentCompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.ParentCompanyName" sources="data.supervision1" text-field="UnitName" value-field="UnitId"></sxt-select>
         </md-list-item>
-        <md-subheader ng-hide="roleId=='3rd'" class="md-no-sticky">专业承包</md-subheader>
+        <md-subheader ng-hide="roleId=='3rd'" class="md-no-sticky" style="height: 25px;">专业承包</md-subheader>
         <md-list-item layout="row">
           <sxt-select ng-hide="roleId=='3rd'" flex required name="zid"  ng-model="data.curHistory.CompanyId" ng-disabled="!data.isFirst" name-value="data.curHistory.CompanyName" sources="data.supervision" text-field="UnitName" value-field="UnitId"></sxt-select>
         </md-list-item>
-        <md-subheader ng-hide="roleId=='3rd'" class="md-no-sticky">施工班组</md-subheader>
+        <md-subheader ng-hide="roleId=='3rd'" class="md-no-sticky" style="height: 25px;">施工班组</md-subheader>
         <md-list-item ng-hide="roleId=='3rd'" layout="row">
           <sxt-select flex required  ng-model="data.curHistory.GrpId" ng-disabled="!data.isFirst" name="gid" name-value="data.curHistory.GrpName" sources="data.groups" text-field="name" value-field="id"></sxt-select>
         </md-list-item>
