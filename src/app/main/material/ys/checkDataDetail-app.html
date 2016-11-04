@@ -76,11 +76,23 @@
     <md-list-item style="background-color: #f5f6f7;">
       <label>附件</label>
     </md-list-item>
+    <md-divider></md-divider>
     <md-list-item>
       <div sxt-image-view is-container="true">
-        <p ng-repeat="item in files">
-          <sxt-images  ng-model="item.GroupImg"></sxt-images>
-        </p>
+        <div ng-repeat="item in files">
+          <div layout="column" flex>
+            <div flex layout="row" class="md-padding">
+              <span ng-if="item.OptionType == 2">出厂合格证</span>
+              <span ng-if="item.OptionType == 4">材料验收单</span>
+              <span ng-if="item.OptionType == 8">实拍照片</span>
+              <span ng-if="item.OptionType == 16">送检报告</span>
+              <span ng-if="item.OptionType == 32">其他</span>
+            </div>
+            <div flex layout="row">
+              <sxt-images  ng-model="item.GroupImg"></sxt-images>
+            </div>
+          </div>
+        </div>
       </div>
     </md-list-item>
   </md-list>

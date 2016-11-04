@@ -290,6 +290,12 @@
           }]
         }
       })
+      .state('app.szgc.report.visitResult', {
+        title:'项目负责人访问统计',
+        url:'/visitResult',
+        controller: 'visitResultController as vm',
+        templateUrl: 'app/main/szgc/report/visitResult-app.html'
+      })
       .state('app.szgc.settings',{
         noBack:true,
         title:'设置',

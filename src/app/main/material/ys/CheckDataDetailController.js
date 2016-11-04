@@ -13,7 +13,6 @@
       });
 
       api.material.MaterialService.GetMLFilesById($stateParams.id).then(function(result){
-        console.log(result);
         $scope.files = result.data.Rows;
       });
 

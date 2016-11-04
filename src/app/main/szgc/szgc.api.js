@@ -220,6 +220,10 @@
         },
         GetBatchCountDetail : function (args) {
           return $http.get($http.url('/api/Report/GetBatchCountDetail', args));
+        },
+        //项目负责人访问统计
+        getVisitResult:function (args) {
+          return $http.get($http.url('/api/Report/GetVisitResult' + args));
         }
       },
       CheckStepService:{
