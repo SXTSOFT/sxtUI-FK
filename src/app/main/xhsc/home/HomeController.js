@@ -25,12 +25,11 @@
         var k=[];
         if(vm.markers){
           vm.markers.forEach(function(item){
-            if(!text || text=='' || item.title.indexOf(text)!=-1){
+            var py=window.Pinyin.getPinyinArrayFirst(item.title)
+            py=py.join("");
+            if(!text || text=='' || item.title.indexOf(text)!=-1||py.toLowerCase().indexOf(text.toLowerCase())>-1){
               k.push(item);
             }
-            //if(!text || text=='' || item.title.indexOf(text)!=-1 || item.pinyin.indexOf(text)!=-1){
-            //  k.push(item);
-            //}
           })
         }
         return k;

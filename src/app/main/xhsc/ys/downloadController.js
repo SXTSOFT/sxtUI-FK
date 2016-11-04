@@ -242,7 +242,9 @@
       vm.searchText="";
       vm.querySearch=function(text){
         return vm.cache.filter(function (o) {
-          return o.fullName.indexOf(text);
+          var py=window.Pinyin.getPinyinArrayFirst(o.fullName)
+          py=py.join("");
+          return o.fullName.indexOf(text)>-1||py.toLowerCase().indexOf(text.toLowerCase())>-1;
         })
       }
       vm.changeItem=function (r) {
