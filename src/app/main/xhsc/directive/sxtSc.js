@@ -48,16 +48,22 @@
                 return item.AcceptanceItemID == scope.acceptanceItem && item.RegionId == scope.regionId;
               });
 
-              if (!imgId){
+              if (!imgId&&scope.regionId.length>20){
                 var imgId = result.data.find(function (item) {
                   return item.RegionId == scope.regionId;
                 });
+              }
+              if (!imgId){
+                imgId={
+                  DrawingID:scope.imageUrl
+                }
               }
               if (!imgId) {
                 imgId = result.data.find(function (item) {
                   return item.AcceptanceItemID == scope.acceptanceItem&&scope.regionId.indexOf(item.RegionId)>-1;
                 });
               }
+
               if (imgId) {
                 remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
                   if(!result2.data||!result2.data.DrawingContent){

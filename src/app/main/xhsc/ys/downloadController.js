@@ -46,6 +46,14 @@
                       pics.push(item.DrawingID);
                     }
                   });
+                  chooseArea.forEach(function (k) {
+                    if (k.DrawingID&&pics.indexOf(k.DrawingID) == -1&&!offPics.find(function(r){
+                        return r._id==k.DrawingID;
+                      })){
+                      pics.push(k.DrawingID);
+                    }
+                  });
+
                   pics.forEach(function (drawingID) {
                     tasks.push(function () {
                       return remote.Project.getDrawing(drawingID).then(function(){
@@ -231,6 +239,15 @@
 
         });
       }
+      vm.searchText="";
+      vm.querySearch=function(text){
+
+      }
+      vm.changeItem=function (r) {
+        
+      }
+
+
       remote.Assessment.queryItemResults().then(function(result){
         result.data.forEach(function(t){
           t.fullName = ((t.Year+'年')||'') +'第'+t.Quarter +'季度'+ (t.ProjectName||'')+'项目得分汇总';

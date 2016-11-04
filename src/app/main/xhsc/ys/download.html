@@ -61,7 +61,17 @@
     <md-tab-content  style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
         <md-content class="download" style="padding: 0px">
         <div layout="column">
-          <md-subheader ng-if="vm.offlines.length">项目汇总列表</md-subheader>
+          <md-subheader ng-if="vm.offlines.length" style="margin-left: -10px">项目汇总列表</md-subheader>
+          <md-autocomplete style="padding-left: 5px;" md-no-cache="true" flex="none"  md-selected-item-change="vm.changeItem(r)" md-item-text="r.ProjectName" placeholder="搜索" md-min-length="0"
+                           md-items="r in vm.querySearch(vm.searchText)" md-search-text="vm.searchText">
+            <md-item-template>
+              {{r.DrawingName}}
+            </md-item-template>
+            <md-not-found>
+              未找到匹配项
+            </md-not-found>
+          </md-autocomplete>
+
           <span class="border1px"></span>
           <md-list>
             <md-list-item style="margin: 0px -32px" ng-repeat="item in vm.projects">
