@@ -67,6 +67,11 @@
             var img = result.data.find(function (item) {
               return item.AcceptanceItemID == scope.acceptanceItem && item.RegionId == scope.regionId;
             });
+            if (!img){
+              var img = result.data.find(function (item) {
+                return item.RegionId == scope.regionId;
+              });
+            }
             if (!img) {
               img = result.data.find(function (item) {
                 return item.AcceptanceItemID == scope.acceptanceItem&&scope.regionId.indexOf(item.RegionId)>-1;

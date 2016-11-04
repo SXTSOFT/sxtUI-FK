@@ -47,8 +47,14 @@
               var imgId = result.data.find(function (item) {
                 return item.AcceptanceItemID == scope.acceptanceItem && item.RegionId == scope.regionId;
               });
-              if (!img) {
-                img = result.data.find(function (item) {
+
+              if (!imgId){
+                var imgId = result.data.find(function (item) {
+                  return item.RegionId == scope.regionId;
+                });
+              }
+              if (!imgId) {
+                imgId = result.data.find(function (item) {
                   return item.AcceptanceItemID == scope.acceptanceItem&&scope.regionId.indexOf(item.RegionId)>-1;
                 });
               }
