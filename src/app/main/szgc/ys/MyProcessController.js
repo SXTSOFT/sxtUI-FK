@@ -58,6 +58,7 @@
 
     $scope.roleId = api.szgc.vanke.getRoleId();
     $scope.project = {
+      zjs:[],
       roleId:$scope.roleId,
       isPartner:$scope.isPartner,
       isMore: true,
@@ -134,6 +135,15 @@
                   });
                 });
               }
+              vm.loading = false;
+            }
+            else if($scope.project.type === 256){
+              if($scope.project.data.items){
+                $scope.project.data.items.forEach(function (item) {
+                  $scope.project.zjs.push(item);
+                })
+              }
+
               vm.loading = false;
             }
             else {

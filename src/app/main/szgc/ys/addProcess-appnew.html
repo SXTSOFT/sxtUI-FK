@@ -4,9 +4,9 @@
   <md-content flex ng-if="!vm.loading" sxt-number-list show="vm.keyboard.show" class="md-padding selector">
     <form name="addForm" class="form-horizontal addform" ng-submit="save(addForm)">
       <md-list>
-        <md-subheader class="md-no-sticky">项目</md-subheader>
+        <md-subheader class="md-no-sticky">部位</md-subheader>
         <md-list-item>
-          <p>项目{{data.projectName}} {{data.rName}}</p>
+          <p>{{data.projectName}} {{data.rName}}</p>
         </md-list-item>
         <md-subheader class="md-no-sticky">工序</md-subheader>
         <md-list-item>
@@ -25,7 +25,7 @@
           <md-subheader class="md-no-sticky">{{$index==0?'验收批':''}} <!--<button ng-if="$index==0 && data.isFirst" type="button" ng-click="addBatch()" class="btn btn-white btn-xs"><i class="fa fa-plus"></i></button>--></md-subheader>
           <div class="col-sm-6 col-lg-7">
             <div class="input-group">
-              <span class="input-group-addon" >验收批{{batch.BatchNo}}</span>
+              <span class="input-group-addon" >批次{{batch.BatchNo}}</span>
               <input type="text" class="form-control" ng-disabled="!data.isFirst" ng-model="batch.Remark" placeholder="验收批描述" />
               <span class="input-group-addon" ng-if="$index==0">第{{batch.Count}}次验收</span>
               <span class="input-group-btn" ng-if="$index!=0"><button ng-click="removeBatch(batch)" type="button" class="btn btn-white"><i class="fa fa-times"></i></button></span>
@@ -45,12 +45,7 @@
         <md-list-item ng-hide="roleId=='3rd'" layout="row">
           <sxt-select flex required  ng-model="data.curHistory.GrpId" ng-disabled="!data.isFirst" name="gid" name-value="data.curHistory.GrpName" sources="data.groups" text-field="name" value-field="id"></sxt-select>
         </md-list-item>
-        <md-subheader ng-show="roleId=='jl'" class="md-no-sticky">施工单位已自检</md-subheader>
-        <md-list-item ng-show="roleId=='jl'" layout="row">
-          <md-checkbox ng-disabled="!data.isFirst" flex="none" ng-model="data.curHistory.ZbChecked" aria-label="施工单位已验">
-          </md-checkbox>
-          <p flex>如果未选择施工单位已验，提交后施工单位将不允许录入验收记录</p>
-        </md-list-item>
+
         <div ng-if="data.CheckRequirement">
         <md-subheader  class="md-no-sticky">地面标高</md-subheader>
         <md-list-item >
@@ -83,12 +78,7 @@
       <div><div class="clearfix"></div></div>
 
 
-      <fieldset>
-        <legend>验收件</legend>
-        <span class="fs-display-1 display-block">添加验收照片</span>
-        <div> <small></small></div>
-        <sxt-images ng-model="data.curStep.GroupImg2"  files="data.pics2" project="data.projectInfo" edit="true"></sxt-images>
-      </fieldset>
+
       <fieldset>
         <legend>主控项目</legend>
         <md-list>
@@ -149,7 +139,20 @@
 
         </div>
       </div>
-
+      <fieldset>
+        <legend>验收件</legend>
+        <span class="fs-display-1 display-block">添加验收照片</span>
+        <div> <small></small></div>
+        <sxt-images ng-model="data.curStep.GroupImg2"  files="data.pics2" project="data.projectInfo" edit="true"></sxt-images>
+      </fieldset>
+      <md-list>
+        <md-subheader ng-show="roleId=='jl'" class="md-no-sticky">施工单位已自检</md-subheader>
+        <md-list-item ng-show="roleId=='jl'" layout="row">
+          <md-checkbox ng-disabled="!data.isFirst" flex="none" ng-model="data.curHistory.ZbChecked" aria-label="施工单位已验">
+          </md-checkbox>
+          <p flex>如果未选择施工单位已验，提交后施工单位将不允许录入验收记录</p>
+        </md-list-item>
+      </md-list>
       <div class="md-padding" layout="row">
 
         <md-button type="submit" flex ng-disabled="isSaveing"  class="md-raised md-primary">{{ isSaveing ?'正在提交...':'提交'}}  </md-button>

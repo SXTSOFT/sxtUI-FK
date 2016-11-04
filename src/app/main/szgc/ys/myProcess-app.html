@@ -16,7 +16,7 @@
             <div flex="none" class="md-padding" ng-hide="project.type==64" layout="row">
               <md-button ng-show="vm.yjButton(128)" type="submit" flex ng-click="vm.setYJ(128)"  class="md-raised md-primary">园建</md-button>
               <md-button ng-show="vm.yjButton(256)" type="submit" flex ng-click="vm.setYJ(256)"  class="md-raised md-primary">桩基</md-button>
-              <md-button type="submit" flex ng-click="vm.closeNav('nav_region')"  class="md-raised md-primary">确定</md-button>
+              <md-button type="submit" flex ng-click="vm.closeNav('nav_region')"  class="md-raised md-primary">{{vm.yjButton(256) || vm.yjButton(128)?'楼栋':'确定'}}</md-button>
             </div>
         </md-content>
       </md-sidenav>
@@ -32,8 +32,8 @@
           <md-progress-circular md-mode="indeterminate" ng-show="vm.loading"></md-progress-circular>
           <div flex ng-if="!vm.loading && project.type!==128 && project.type!==256">
             <div layout="row" class="div-table">
-                <div flex="20"><div style="padding:0 0 0 6px">部位</div></div>
-                <div flex="20">批</div>
+                <div flex="20"><div style="padding:0 0 0 6px">检验批</div></div>
+                <div flex="20">批次</div>
                 <div flex="20">状态</div>
                 <div flex="40">操作</div>
               </div>
@@ -53,7 +53,58 @@
               </div>
           </div>
 
-          <div flex sxt-area-yj-add="project.data.items" project="project" role-id="roleId" ng-if="!vm.loading && (project.type===128 || project.type===256) && is('app.szgc.ys')">
+          <div flex sxt-area-yj-add="project.data.items" project="project" role-id="roleId" ng-if="!vm.loading && project.type===128 && is('app.szgc.ys')">
+          </div>
+
+          <div flex class="zjinput" layout="column" sxt-zj-add="project.data.items" project="project" role-id="roleId" ng-if="!vm.loading && project.type===256 && is('app.szgc.ys')">
+            <md-chips flex="none" ng-model="project.zjs" name="zj"
+                      md-removable="true" readonly="true" >
+              <md-chip-template>
+                {{$chip.name}}
+              </md-chip-template>
+            </md-chips>
+            <md-divider></md-divider>
+            <md-content flex>
+              <md-button class="md-raised md-mini" ng-repeat="item in project.data.items" aria-label="Eat cake">
+                {{item.name}}
+              </md-button>
+            </md-content>
+            <md-divider></md-divider>
+            <div flex="none">
+              <md-button class="md-fab md-mini" aria-label="Eat cake">
+                1
+              </md-button>
+              <md-button class="md-fab md-mini" aria-label="Eat cake">
+                2
+              </md-button>
+              <md-button class="md-fab md-mini" aria-label="Eat cake">
+                3
+              </md-button>
+              <md-button class="md-fab md-mini" aria-label="Eat cake">
+                4
+              </md-button>
+              <md-button class="md-fab md-mini" aria-label="Eat cake">
+                5
+              </md-button>
+              <md-button class="md-fab md-mini" aria-label="Eat cake">
+                6
+              </md-button>
+              <md-button class="md-fab md-mini" aria-label="Eat cake">
+                7
+              </md-button>
+              <md-button class="md-fab md-mini" aria-label="Eat cake">
+                8
+              </md-button>
+              <md-button class="md-fab md-mini" aria-label="Eat cake">
+                9
+              </md-button>
+              <md-button class="md-fab md-mini" aria-label="Eat cake">
+                0
+              </md-button>
+              <md-button class="md-fab md-mini" aria-label="Eat cake">
+                清
+              </md-button>
+            </div>
           </div>
 
         </div>
