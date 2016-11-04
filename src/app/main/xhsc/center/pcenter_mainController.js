@@ -131,7 +131,7 @@
           });
 
         }else {
-          $state.go("app.xhsc.scPiclst",vm.projects[0].RegionID);
+          $state.go("app.xhsc.scPiclst",{projectID:vm.projects[0].RegionID});
         }
       }
     })

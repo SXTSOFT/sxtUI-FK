@@ -9,6 +9,15 @@
   /** @ngInject */
   function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
   {
+
+
+    msNavigationServiceProvider.saveItem('xh.pcmain', {
+      title: '设置',
+      state: 'app.xhsc.pcmain',
+      icon:'icon-account',
+      weight:1
+    });
+
     // State
     $stateProvider
       .state('app.xhsc.scsl',{

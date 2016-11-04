@@ -7,7 +7,7 @@
         .run(runBlock);
 
     /** @ngInject */
-    function runBlock($rootScope, $timeout, $state) {
+    function runBlock($rootScope, $timeout, $state,msNavigationService,remote) {
       // Activate loading indicator
       var stateChangeStartEvent = $rootScope.$on('$stateChangeStart', function () {
         $rootScope.loadingProgress = true;
@@ -28,6 +28,9 @@
         stateChangeStartEvent();
         stateChangeSuccessEvent();
       })
-      //window.plugins &&  window.plugins.jPushPlugin && window.plugins.jPushPlugin.init();
+
+
+
+
     }
 })();
