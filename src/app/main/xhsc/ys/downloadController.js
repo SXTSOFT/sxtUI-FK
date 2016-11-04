@@ -241,10 +241,18 @@
       }
       vm.searchText="";
       vm.querySearch=function(text){
-
+        return vm.cache.filter(function (o) {
+          return o.fullName.indexOf(text);
+        })
       }
       vm.changeItem=function (r) {
-        
+        if (!r){
+          vm.projects=vm.cache;
+        }else {
+          vm.projects=vm.cache.filter(function (o) {
+            return o.ProjectID==r.ProjectID;
+          });
+        }
       }
 
 
@@ -252,7 +260,7 @@
         result.data.forEach(function(t){
           t.fullName = ((t.Year+'年')||'') +'第'+t.Quarter +'季度'+ (t.ProjectName||'')+'项目得分汇总';
         })
-        vm.projects = result.data;
+        vm.projects=vm.cache = result.data;
       })
       vm.showECs = function(ev,item) {
         $mdDialog.show({

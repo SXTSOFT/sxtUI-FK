@@ -3654,3 +3654,25 @@ table {
   -webkit-transform:rotate(90deg); /* Safari 和 Chrome */
   -o-transform:rotate(90deg);
 }
+
+#auto{
+
+
+  input::-webkit-input-placeholder {
+    padding-left:15px  !important;
+  }
+
+  input:-moz-placeholder { /* Firefox 18- */
+    padding-left:15px  !important;
+  }
+
+  input::-moz-placeholder {  /* Firefox 19+ */
+    padding-left:15px  !important;
+  }
+
+  input:-ms-input-placeholder {
+    padding-left:15px  !important;
+  }
+
+
+}
