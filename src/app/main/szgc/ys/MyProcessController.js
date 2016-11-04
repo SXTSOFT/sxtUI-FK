@@ -67,6 +67,9 @@
         if(!k){
           $scope.project.searchTerm = ''
         }
+        else{
+          $scope.project.searchTerm +=k;
+        }
       },
       toggerBoard:function(){
         $rootScope.hideFootbar = !$rootScope.hideFootbar;
