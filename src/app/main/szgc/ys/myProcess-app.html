@@ -57,52 +57,49 @@
           </div>
 
           <div flex class="zjinput" layout="column" sxt-zj-add="project.data.items" project="project" role-id="roleId" ng-if="!vm.loading && project.type===256 && is('app.szgc.ys')">
-            <md-chips flex="none" ng-model="project.zjs" name="zj"
-                      md-removable="true" readonly="true" >
-              <md-chip-template>
-                {{$chip.name}}
-              </md-chip-template>
-            </md-chips>
-            <md-divider></md-divider>
             <md-content flex>
-              <md-button class="md-raised md-mini" ng-repeat="item in project.data.items" aria-label="Eat cake">
-                {{item.name}}
+              <md-button class="md-raised md-warn">Primary</md-button>
+              <md-button ng-click="project.addzj(item)" ng-repeat="item in project.data.items|filter:{name:project.searchTerm}" class="md-raised md-mini"  aria-label="Eat cake">
+               <span  md-highlight-text="project.searchTerm">{{item.name}}</span>
               </md-button>
             </md-content>
             <md-divider></md-divider>
             <div flex="none">
-              <md-button class="md-fab md-mini" aria-label="Eat cake">
+              <md-button class="md-fab md-mini" fast-click="project.addSearchTerm('1')" aria-label="Eat cake">
                 1
               </md-button>
-              <md-button class="md-fab md-mini" aria-label="Eat cake">
+              <md-button class="md-fab md-mini" fast-click="project.addSearchTerm('2')" aria-label="Eat cake">
                 2
               </md-button>
-              <md-button class="md-fab md-mini" aria-label="Eat cake">
+              <md-button class="md-fab md-mini" fast-click="project.addSearchTerm('3')" aria-label="Eat cake">
                 3
               </md-button>
-              <md-button class="md-fab md-mini" aria-label="Eat cake">
+              <md-button class="md-fab md-mini" fast-click="project.addSearchTerm('4')" aria-label="Eat cake">
                 4
               </md-button>
-              <md-button class="md-fab md-mini" aria-label="Eat cake">
+              <md-button class="md-fab md-mini" fast-click="project.addSearchTerm('5')" aria-label="Eat cake">
                 5
               </md-button>
-              <md-button class="md-fab md-mini" aria-label="Eat cake">
+              <md-button class="md-fab md-mini" fast-click="project.addSearchTerm('6')" aria-label="Eat cake">
                 6
               </md-button>
-              <md-button class="md-fab md-mini" aria-label="Eat cake">
+              <md-button class="md-fab md-mini" fast-click="project.addSearchTerm('7')" aria-label="Eat cake">
                 7
               </md-button>
-              <md-button class="md-fab md-mini" aria-label="Eat cake">
+              <md-button class="md-fab md-mini" fast-click="project.addSearchTerm('8')" aria-label="Eat cake">
                 8
               </md-button>
-              <md-button class="md-fab md-mini" aria-label="Eat cake">
+              <md-button class="md-fab md-mini" fast-click="project.addSearchTerm('9')">
                 9
               </md-button>
-              <md-button class="md-fab md-mini" aria-label="Eat cake">
+              <md-button class="md-fab md-mini" fast-click="project.addSearchTerm('0')">
                 0
               </md-button>
-              <md-button class="md-fab md-mini" aria-label="Eat cake">
+              <md-button class="md-fab md-mini" fast-click="project.addSearchTerm('')">
                 清
+              </md-button>
+              <md-button ng-click="project.toggerBoard()" class="md-fab md-mini" aria-label="Eat cake">
+                键盘
               </md-button>
             </div>
           </div>

@@ -59,6 +59,18 @@
     $scope.roleId = api.szgc.vanke.getRoleId();
     $scope.project = {
       zjs:[],
+      addzj:function (item) {
+        $scope.project.zjs.push(item);
+      },
+      searchTerm:'1',
+      addSearchTerm:function (k) {
+        if(!k){
+          $scope.project.searchTerm = ''
+        }
+      },
+      toggerBoard:function(){
+        $rootScope.hideFootbar = !$rootScope.hideFootbar;
+      },
       roleId:$scope.roleId,
       isPartner:$scope.isPartner,
       isMore: true,
