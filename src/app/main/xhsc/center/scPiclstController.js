@@ -71,7 +71,9 @@
           o.querySearch=function(text){
             var k=[];
             o.pics.forEach(function(n){
-              if (text&&n.DrawingName.indexOf(text)>-1){
+              var py=window.Pinyin.getPinyinArrayFirst(n.DrawingName)
+              py=py.join("");
+              if (text&&n.DrawingName.indexOf(text)>-1||py.toLowerCase().indexOf(text.toLowerCase())>-1){
                 k.push({
                   DrawingID: n.DrawingID,
                   DrawingName: n.DrawingName
