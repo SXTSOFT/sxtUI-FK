@@ -26,7 +26,7 @@
       <td rowspan="{{item.rows.length}}" ng-if="$index == 0" style="padding: 0;">
         <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">
           <tr>
-            <td style="white-space: nowrap;"><a  ng-click="vm.go(row,item)">{{item.AcceptanceIndexName}}</a></td>
+            <td style="white-space: nowrap;"><a  ui-sref="app.xhsc.sctbdetail({recordId:vm.stateParams.regionId,itemId:item.AcceptanceIndexID,AcceptanceItemID:vm.stateParams.measureItemID})">{{item.AcceptanceIndexName}}</a></td>
           </tr>
         </table>
       </td>
@@ -41,7 +41,7 @@
         <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">
           <tr ng-repeat="row in item.Children">
             <td rowspan="{{item.Children.length}}" ng-if="$index == 0">{{item.AcceptanceIndexName}}</td>
-            <td><a  ng-click="vm.go(row,item)">{{row.AcceptanceIndexName}}</a></td>
+            <td><a  ui-sref="app.xhsc.sctbdetail({recordId:vm.stateParams.regionId,itemId:item.AcceptanceIndexID,AcceptanceItemID:vm.stateParams.measureItemID})">{{row.AcceptanceIndexName}}</a></td>
           </tr>
         </table>
       </td>

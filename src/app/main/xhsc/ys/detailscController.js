@@ -18,7 +18,7 @@
     };
     $rootScope.title = vm.info.name+'('+vm.info.pname+')';
     vm.back = function () {
-      history.back();
+      history.go(-1);
     }
     remote.Assessment.getMeasureNew({
       RegionID:$stateParams.regionId,
@@ -147,6 +147,8 @@
         }
 
       });
+
+      vm.stateParams=$stateParams;
       vm.go=function(row,item){
         $state.go("app.pc.sctbdetail",{recordId:$stateParams.regionId,itemId:item.AcceptanceIndexID,AcceptanceItemID:$stateParams.measureItemID});
         //ui-sref="()"

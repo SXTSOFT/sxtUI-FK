@@ -22,7 +22,7 @@
       }
     });
     vm.back = function () {
-      history.back();
+      history.go(-1);
     }
   }
 
