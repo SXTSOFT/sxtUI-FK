@@ -102,7 +102,7 @@
       })
       .state('app.xhsc.sc_standar',{
         noBack:true,
-        sendBt:false,
+        sendBt:true,
         rightArrow:false,
         leftArrow:false,
         title :'实测标准化',

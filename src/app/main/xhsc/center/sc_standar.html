@@ -11,7 +11,7 @@
       <span style="color:darkslategray;font-style: italic;">{{vm.info.tooltip}}</span>
     </div>
   </div>
-  <md-button ng-click="vm.submit()"  style="position: absolute;right: 8px;top:0px;min-width: 50px;min-height: 50px;z-index: 999" class="md-fab md-mini" ng-click="vm.goBack()">
+  <md-button ng-if="!vm.show" ng-click="vm.submit()"  style="position: absolute;right: 8px;top:0px;min-width: 50px;min-height: 50px;z-index: 999" class="md-fab md-mini" >
     <!--<md-icon></md-icon>-->
     提交
   </md-button>

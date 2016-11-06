@@ -14,7 +14,7 @@
     .module('app.xhsc')
     .controller('sc_standarController', sc_standarController)
   /** @ngInject */
-  function sc_standarController($rootScope, utils, xhUtils, $stateParams, $mdDialog, sxt, $timeout, $state, remote, $q) {
+  function sc_standarController($rootScope,$scope, utils, xhUtils, $stateParams, $mdDialog, sxt, $timeout, $state, remote, $q) {
     var vm = this;
     vm.info = {
       acceptanceItemID: $stateParams.AcceptanceItemID,
@@ -27,6 +27,8 @@
       remote.PQMeasureStandard.messageList(vm.info.drawing, vm.info.AcceptanceItemID)
     ]
     vm.selected = [];
+    var mobileDetect = new MobileDetect(window.navigator.userAgent);
+    vm.show=mobileDetect.mobile();
     $q.all(arr).then(function (res) {
       var r = res[0];
       vm.drawing = res[1];
@@ -65,7 +67,6 @@
           }
         }, 500);
       }
-
       vm.submit = function () {
 
         $mdDialog.show({
@@ -206,6 +207,13 @@
 
         })
       }
+      $rootScope.$on("sendGxResult",function () {
+        vm.submit();
+      })
+      $scope.$on("$destroy",function(){
+        sendgxResult();
+        sendgxResult=null;
+      });
     }).catch(function (err) {
     });
   }
