@@ -12,7 +12,7 @@
     .controller('pcenter_mainController',pcenter_mainController);
 
   /**@ngInject*/
-  function pcenter_mainController($scope,$mdDialog,db,auth,$rootScope,api,utils,$q,remote,versionUpdate,$state,$timeout,$mdBottomSheet){
+  function pcenter_mainController($scope,xhscService,$mdDialog,db,auth,$rootScope,api,utils,$q,remote,versionUpdate,$state,$timeout,$mdBottomSheet){
     var vm = this;
     vm.projects=[];
     api.setNetwork(0).then(function () {
@@ -69,6 +69,7 @@
               });
             return;
           }
+          xhscService.clear_Root_uglyVal();
           vm.trueClear(['v_profile']);
         });
       }
@@ -100,6 +101,8 @@
               fullscreen: false
             })
               .then(function(answer) {
+
+
                 auth.logout();
               }, function() {
 

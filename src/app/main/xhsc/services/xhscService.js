@@ -7,7 +7,7 @@
     .module('app.core')
     .factory('xhscService', xhscService);
   /** @ngInject */
-  function xhscService() {
+  function xhscService($rootScope) {
     return {
       //
       qualified: qualified,
@@ -27,6 +27,13 @@
           y: y,
           z: z
         }
+      },
+      clear_Root_uglyVal:function () {
+        $rootScope.pgReportFilter_load=null;
+        $rootScope.pgDefault_load=null;
+        $rootScope.scslFilter=null;
+        $rootScope.scslReport_load=null;
+        $rootScope.gxysFilter_load=null;
       }
     };
     //单个测量点的
