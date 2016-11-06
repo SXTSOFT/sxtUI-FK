@@ -332,9 +332,9 @@
       return self.findAll(function (item) {
         return  (id && self.idFn(item) == id) || (self.cfg.filter && self.cfg.filter(id)) ||self.cfg.single===true;
       }).then(function (r) {
-        if(cfg.fileField && r.rows && r.rows[0]){
+/*        if(self.cfg.fileField && r.rows && r.rows[0]){
           return self.db.get(r.rows[0]._id)
-        }
+        }*/
         return r.rows[0];
       });
     }
