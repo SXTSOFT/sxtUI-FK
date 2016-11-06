@@ -11,15 +11,6 @@
     vm.scSelected=$stateParams.scSelected?$stateParams.scSelected:"";
     vm.secSeleced=$stateParams.secSelected;
 
-    if ($rootScope.scslReport_load){
-      $scope.pageing=$rootScope.scslReport_load.pageing;
-    }else {
-      $scope.pageing={
-        page:1,
-        pageSize:10,
-        total:0
-      }
-    }
 
     vm.show=false;
     remote.Procedure.authorityByUserId().then(function(res){
@@ -61,9 +52,6 @@
         $scope.pageing.total= r.data.TotalCount;
         vm.source= r.data.Data;
         vm.show=true;
-        $rootScope.scslReport_load={
-          pageing:$scope.pageing
-        }
 
       }).catch(function(){
         vm.show=true;

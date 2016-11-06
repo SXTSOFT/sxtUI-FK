@@ -66,14 +66,12 @@
     if ($rootScope.scslFilter){
       $scope.currentSC=$rootScope.scslFilter.currentSC;
       $scope.project=$rootScope.scslFilter.project;
-      $scope.pageing=$rootScope.scslFilter.pageing;
 
-    }else {
-      $scope.pageing={
-        page:1,
-        pageSize:10,
-        total:0
-      }
+    }
+    $scope.pageing={
+      page:1,
+      pageSize:10,
+      total:0
     }
     $scope.$watch("pageing.pageSize",function(){
       if ($scope.pageing.pageSize){
@@ -92,7 +90,6 @@
         vm.source= r.data.Data;
         $rootScope.scslFilter={
           currentSC:$scope.currentSC,
-          pageing:$scope.pageing,
           project:$scope.project
         }
 

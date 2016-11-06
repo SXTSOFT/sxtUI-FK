@@ -109,7 +109,6 @@
     if ($rootScope.gxysFilter_load){
       $scope.gxSelected=$rootScope.gxysFilter_load.gxSelected;
       $scope.project=$rootScope.gxysFilter_load.project;;
-      $scope.pageing=$rootScope.gxysFilter_load.pageing;
       $scope.gxNames=$rootScope.gxysFilter_load.gxNames
     }else {
       $scope.gxSelected=[];
@@ -165,7 +164,6 @@
         });
         $rootScope.gxysFilter_load={
           gxSelected:$scope.gxSelected,
-          pageing:$scope.pageing,
           project:$scope.project,
           gxNames:$scope.gxNames
         }
