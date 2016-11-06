@@ -12,7 +12,7 @@
       <md-list-item>
         <label flex="40">退场数量</label>
         <md-input-container flex="60" class="md-block" style="height: 48px; margin: 0;padding: 0;">
-          <input type="number" ng-model="vm.data.ExitCount" min="0" style="padding: 0;margin-top: 10px;text-align: right;">
+          <input type="number" required ng-model="vm.data.ExitCount" min="0" style="padding: 0;margin-top: 10px;text-align: right;" />
         </md-input-container>
       </md-list-item>
       <md-divider class="md-no-sticky"></md-divider>
@@ -25,8 +25,11 @@
       <md-divider class="md-no-sticky"></md-divider>
       <md-subheader class="md-no-sticky" style="font-size: 1.1em;background-color: #F2F2F2;">退场照片</md-subheader>
       <md-divider class="md-no-sticky"></md-divider>
-      <md-list-item>
-        我是照片
+      <md-list-item style="padding-right:0;">
+        <div flex="70" ng-repeat="img in vm.data.MaterialPlanFiles" sxt-images="vm.data.MaterialPlanFiles" style="text-align: center;margin:5px 0;">
+          <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
+        </div>
+        <md-button flex="30" class="md-secondary" ng-click="vm.addPhoto(128)" style="padding-right: 0;"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
       </md-list-item>
       <md-divider class="md-no-sticky"></md-divider>
     </md-list>

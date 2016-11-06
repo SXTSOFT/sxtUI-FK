@@ -18,10 +18,14 @@
     vm.data = {};
     vm.data.Id = $stateParams.id;
 
-    vm.materialType = [
-      {val:1,name:'土建'},
-      {val:2,name:'基建'}
-    ];
+    // vm.materialType = [
+    //   {val:1,name:'土建'},
+    //   {val:2,name:'基建'}
+    // ];
+
+    api.material.type.getList({Skip: 0, Limit: 999}).then(function (g) {
+      vm.materialType = g.data.Items || [];
+    });
 
     if(vm.data.Id){
       api.material.materialScience.getMaterial(vm.data.Id).then(function (r) {

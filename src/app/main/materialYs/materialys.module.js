@@ -36,7 +36,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url:'/planList/{id}',
+        url:'/planList/{id}/{title}',
         template: '<material-plan-list flex layout="column"></material-plan-list>'
       })
       .state('app.xhsc.materialys.planDetail',{
@@ -53,7 +53,7 @@
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
-        url:'/intoFactory/{status}/{id}',
+        url:'/intoFactory/{status}/{id}/{max}',
         template:'<material-into-factory flex layout="column"></material-into-factory>'
       })
       .state('app.xhsc.materialys.checkInfo',{
@@ -89,14 +89,14 @@
         noBack:true,
         sendBt:true,
         title:'材料退场',
-        url:'/exit/{id}',
+        url:'/exit/{id}/{max}',
         template: '<material-ys-exit flex layout="column"></material-ys-exit>'
       })
       .state('app.xhsc.materialys.unqualifiedExit',{
         noBack:true,
         sendBt:true,
         title:'材料退场',
-        url:'/unqualifiedExit/{id}',
+        url:'/unqualifiedExit/{id}/{max}',
         template: '<material-unqualified-exit flex layout="column"></material-unqualified-exit>'
       })
   }

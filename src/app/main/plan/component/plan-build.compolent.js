@@ -15,6 +15,10 @@
     vm.data = {
 
     }
+    vm.formWizard={
+
+    }
+    vm.formWizard.StartTime ?vm.formWizard.StartTime:vm.formWizard.StartTime = new Date();
     var gs = (function () {
       var vars = [],r = /[a-z]/gi,
         compare = function (s1,s2) {
@@ -110,6 +114,18 @@
         vm.data.buildings = r.data;
       })
     }
+    vm.getYT = function(Id){
+      if(!Id) return;
+      var find = vm.data.projects.find(function(r){
+          return r.ProjectID == Id;
+        })
+      if(find){
+        vm.YT={
+          ProjectFormatName:find.ProjectFormatName?find.ProjectFormatName:'',
+          RegionName:find.RegionName?find.RegionName:''
+        }
+      }
+    }
     vm.getFloors = function (bid) {
       return api.xhsc.Project.GetAreaChildenbyID(bid).then(function (r) {
         vm.data.floors = r.data;
@@ -192,14 +208,15 @@
         f();
       }
       else if(i===1){
-        var tasks = [], milestones = [];
+        var tasks = [], milestones = [],flag;
         vm.flows.reduce(function (prev, current) {
+          if(current.show) flag=true;
           if (!current.selected) return prev;
           if (current.type) {
             milestones.push({
               Name: current.Name,
               RelatedFlowId: current.RelatedFlowId,
-              MilestoneTime: current.end.format('YYYY-MM-DD')
+              MilestoneTime: current.end&&current.end.format('YYYY-MM-DD')
             });
             return prev;
           }
@@ -215,8 +232,8 @@
             "Type": current.Type,
             "OptionalTask": {
               "TaskLibraryId": current.currentTask.TaskLibraryId,
-              "PlanBeginTime": current.start.format('YYYY-MM-DD'),
-              "PlanEndTime": current.end.format('YYYY-MM-DD'),
+              "PlanBeginTime": current.start&&current.start.format('YYYY-MM-DD'),
+              "PlanEndTime": current.end&&current.end.format('YYYY-MM-DD'),
               "Days": current.days
             }
           })
@@ -232,8 +249,8 @@
             "Type": current.Type,
             "OptionalTask": {
               "TaskLibraryId": current.currentTask.TaskLibraryId,
-              "PlanBeginTime": current.start.format('YYYY-MM-DD'),
-              "PlanEndTime": current.end.format('YYYY-MM-DD'),
+              "PlanBeginTime": current.start&&current.start.format('YYYY-MM-DD'),
+              "PlanEndTime": current.end&&current.end.format('YYYY-MM-DD'),
               "Days": current.days
             }
           })
@@ -256,7 +273,16 @@
             fg = false;
           }
         });
-        if(!fg) return fg;
+        if(!fg){
+          utils.alert('有工期设置不恰当项存在!').then(function(){
+          });
+        return fg;
+        };
+        if(flag){
+          utils.alert('工期应大于基本工期的80%!').then(function(){
+          });
+          return;
+        };
           var parent = vm;
           var position = $mdPanel.newPanelPosition()
             .relativeTo('md-tabs-wrapper')
@@ -370,7 +396,7 @@
         escapeToClose: true,
         focusOnOpen: true
       })
-      vm.currentRoles.forEach(function (r) {
+      vm.currentRoles&&vm.currentRoles.forEach(function (r) {
         resets.push(api.plan.BuildPlan.buildingRolesReset(vm.formWizard.Id,{
           RoleId:r.RoleId,
           UserIds:r.Users
@@ -398,6 +424,8 @@
         //    p.hide();
         //  })
         //})
+      },function(err){
+        console.log(err)
       });
     }
     vm.change = function(){

@@ -1,6 +1,3 @@
-﻿/**
- * Created by emma on 2016/11/2.
- */
 /**
  * Created by jiuyuong on 2016/10/25.
  */

@@ -99,7 +99,7 @@
           imagedata.splice(nowIndex,1);
           viewer.hide();
           if(imagedata.length) delplayer(nowIndex);
-          $rootScope.$broadcast('delete',nowIndex)
+          $rootScope.$emit('delete',nowIndex)
         })
 
       }

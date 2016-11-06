@@ -24,7 +24,37 @@
       </md-input-container>
     </md-list-item>
     <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">验收照片</div>
-    <md-button ng-click="addPhoto(question)"><md-icon><img src="app/main/xhsc/images/plus.png"></md-icon></md-button>
-    <md-button class="md-button" ng-click="delete(item)" style="margin:0;"><md-icon style="width: 28px;height:28px;"><img src="app/main/xhsc/images/del1.png"></md-icon></md-button>
+    <md-list-item style="padding-right: 0;">
+      <p flex="30">车辆</p>
+      <div flex="30" ng-repeat="img in vm.vehicleImgs" sxt-images="vm.vehicleImgs" style="text-align: center;margin: 5px 0;">
+        <img ng-src="{{img.ImageByte}}" style="width: 450px;" flex="95" style="display: block;"/>
+      </div>
+      <md-button class="md-secondary" ng-click="vm.addPhoto(1)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+    </md-list-item>
+    <md-divider></md-divider>
+    <md-list-item style="padding-right: 0;">
+      <p flex="30">货物</p>
+      <div flex="30" ng-repeat="img in vm.goodsImgs" sxt-images="vm.goodsImgs" style="text-align: center;margin: 5px 0;">
+        <img ng-src="{{img.ImageByte}}" style="width: 450px;" flex="95" style="display: block;"/>
+      </div>
+      <md-button class="md-secondary" ng-click="vm.addPhoto(2)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+    </md-list-item>
+    <md-divider></md-divider>
+    <md-list-item style="padding-right: 0;">
+      <p flex="30">验收人</p>
+      <div flex="30" ng-repeat="img in vm.checkerImgs" sxt-images="vm.checkerImgs" style="text-align: center;margin:5px 0;">
+        <img ng-src="{{img.ImageByte}}" style="width: 450px;" flex="95" style="display: block;"/>
+      </div>
+      <md-button class="md-secondary" ng-click="vm.addPhoto(4)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+    </md-list-item>
+    <md-divider></md-divider>
+    <md-list-item style="padding-right: 0;">
+      <p flex="30">合格证</p>
+      <div flex="30" ng-repeat="img in vm.certificateImgs" sxt-images="vm.certificateImgs" style="text-align: center;margin:5px 0;">
+        <img ng-src="{{img.ImageByte}}" style="width: 450px;" flex="95" style="display: block;"/>
+      </div>
+      <md-button class="md-secondary" ng-click="vm.addPhoto(8)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+    </md-list-item>
+    <md-divider></md-divider>
   </md-list>
 </form>
