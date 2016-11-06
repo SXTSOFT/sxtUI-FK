@@ -113,11 +113,11 @@
     }else {
       $scope.gxSelected=[];
       $scope.project="-";
-      $scope.pageing={
-        page:1,
-        pageSize:10,
-        total:0
-      }
+    }
+    $scope.pageing={
+      page:1,
+      pageSize:10,
+      total:0
     }
     $scope.$watch("pageing.pageSize",function(){
       if ($scope.pageing.pageSize){
