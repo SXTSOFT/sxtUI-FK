@@ -221,7 +221,7 @@
     return function pouchDB(name, options) {
       if($window.cordova){
         options = options||{};
-        options.adapter = 'websql';
+        // options.adapter = 'websql';
         options.auto_compaction=true;
         options.iosDatabaseLocation = 'default';
       }
