@@ -171,7 +171,7 @@
           this.numItems = 0;
 
           /** @const {number} Number of items to fetch per request. */
-          this.PAGE_SIZE = 10;
+          this.PAGE_SIZE = 50;
 
           this.fetchNumItems_();
         };
