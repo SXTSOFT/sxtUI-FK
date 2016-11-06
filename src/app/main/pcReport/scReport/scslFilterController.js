@@ -63,12 +63,18 @@
       //业务数据包
     }).catch(function(r){});
 
-    $scope.pageing={
-      page:1,
-      pageSize:10,
-      total:0
-    }
+    if ($rootScope.scslFilter){
+      $scope.currentSC=$rootScope.scslFilter.currentSC;
+      $scope.project=$rootScope.scslFilter.project;
+      $scope.pageing=$rootScope.scslFilter.pageing;
 
+    }else {
+      $scope.pageing={
+        page:1,
+        pageSize:10,
+        total:0
+      }
+    }
     $scope.$watch("pageing.pageSize",function(){
       if ($scope.pageing.pageSize){
         load();
@@ -84,6 +90,12 @@
       }).then(function(r){
         $scope.pageing.total= r.data.TotalCount;
         vm.source= r.data.Data;
+        $rootScope.scslFilter={
+          currentSC:$scope.currentSC,
+          pageing:$scope.pageing,
+          project:$scope.project
+        }
+
       }).catch(function(){
       });
     }

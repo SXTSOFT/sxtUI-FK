@@ -41,10 +41,16 @@
       "id": 4,
       "text": "第四季度"
     }];
-    $scope.pageing={
-      page:1,
-      pageSize:10,
-      total:0
+    if ($rootScope.pgReportFilter_load){
+      $scope.year=$rootScope.pgReportFilter_load.year;
+      $scope.quart=$rootScope.pgReportFilter_load.quart;
+      $scope.pageing=$rootScope.pgReportFilter_load.pageing;
+    }else {
+      $scope.pageing={
+        page:1,
+        pageSize:10,
+        total:0
+      }
     }
     $scope.$watch("year",function(){
       if (vm.isMobile&&!vm.isiPad){
@@ -83,6 +89,11 @@
         $scope.pageing.total= r.data.TotalCount;
         if (r&& r.data){
           vm.source= r.data.Data;
+        }
+        $rootScope.pgReportFilter_load={
+          year:$scope.year,
+          quart:$scope.quart,
+          pageing:$scope.pageing
         }
       }).catch(function(){
       });

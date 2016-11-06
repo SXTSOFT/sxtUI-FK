@@ -7,8 +7,20 @@
   /**@ngInject*/
   function scslReportController($scope,remote,$mdDialog,$stateParams,$state,$rootScope ,$q){
     var vm = this;
+
     vm.scSelected=$stateParams.scSelected?$stateParams.scSelected:"";
     vm.secSeleced=$stateParams.secSelected;
+
+    if ($rootScope.scslReport_load){
+      $scope.pageing=$rootScope.scslReport_load.pageing;
+    }else {
+      $scope.pageing={
+        page:1,
+        pageSize:10,
+        total:0
+      }
+    }
+
     vm.show=false;
     remote.Procedure.authorityByUserId().then(function(res){
       if (res&&res.data&&res.data.length){
@@ -32,11 +44,6 @@
       //业务数据包
     }).catch(function(r){});
 
-    $scope.pageing={
-      page:1,
-      pageSize:10,
-      total:0
-    }
 
     $scope.$watch("pageing.pageSize",function(){
       if ($scope.pageing.pageSize){
@@ -54,6 +61,10 @@
         $scope.pageing.total= r.data.TotalCount;
         vm.source= r.data.Data;
         vm.show=true;
+        $rootScope.scslReport_load={
+          pageing:$scope.pageing
+        }
+
       }).catch(function(){
         vm.show=true;
       });

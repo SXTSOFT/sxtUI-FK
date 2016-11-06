@@ -14,8 +14,6 @@
   /**@ngInject*/
   function gxysFilterController($scope,remote,$mdSidenav,$state,$rootScope,$timeout){
     var vm = this;
-    $scope.gxSelected=[];
-    $scope.project="-";
     vm.regions=[];
     var mobileDetect = new MobileDetect(window.navigator.userAgent);
     vm.isMobile=mobileDetect.mobile();
@@ -106,12 +104,22 @@
       return zt;
     }
 
-    $scope.pageing={
-      page:1,
-      pageSize:10,
-      total:0
-    }
 
+
+    if ($rootScope.gxysFilter_load){
+      $scope.gxSelected=$rootScope.gxysFilter_load.gxSelected;
+      $scope.project=$rootScope.gxysFilter_load.project;;
+      $scope.pageing=$rootScope.gxysFilter_load.pageing;
+      $scope.gxNames=$rootScope.gxysFilter_load.gxNames
+    }else {
+      $scope.gxSelected=[];
+      $scope.project="-";
+      $scope.pageing={
+        page:1,
+        pageSize:10,
+        total:0
+      }
+    }
     $scope.$watch("pageing.pageSize",function(){
       if ($scope.pageing.pageSize){
         load();
@@ -152,15 +160,15 @@
       }).then(function(r){
         $scope.pageing.total= r.data.TotalCount;
         r.data.Data.forEach(function(o){
-          //非自检单并根据工序过滤
-          //if (o.InspectionTime){
-          //  var d=new Date(o.InspectionTime)
-          //    .Format("yyyy-MM-dd hh:mm:ss");
-          //  o.InspectionTime=d;
-          //}
           o.statusName=convertStatus(o.Status)
           vm.source.push(o);
         });
+        $rootScope.gxysFilter_load={
+          gxSelected:$scope.gxSelected,
+          pageing:$scope.pageing,
+          project:$scope.project,
+          gxNames:$scope.gxNames
+        }
       }).catch(function(){
       });
     }

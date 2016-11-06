@@ -19,13 +19,20 @@
   /**@ngInject*/
   function pgDefaultController($scope,remote,$mdDialog,$state,$rootScope,$timeout,$stateParams){
     var vm = this;
+
     $scope.year=$stateParams.year?$stateParams.year:"";
     $scope.quart=$stateParams.quart?$stateParams.quart:"";
-    $scope.pageing={
-      page:1,
-      pageSize:10,
-      total:0
+
+    if ($rootScope.pgDefault_load){
+      $scope.pageing=$rootScope.pgDefault_load.pageing;
+    }else {
+      $scope.pageing={
+        page:1,
+        pageSize:10,
+        total:0
+      }
     }
+
     vm.show=false;
     $scope.$watch("pageing.pageSize",function(){
       if ($scope.pageing.pageSize){
@@ -43,6 +50,9 @@
         $scope.pageing.total= r.data.TotalCount;
         if (r&& r.data){
           vm.source= r.data.Data;
+        }
+        $rootScope.pgDefault_load={
+          pageing:$scope.pageing
         }
         vm.show=true;
       }).catch(function(){
