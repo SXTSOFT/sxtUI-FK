@@ -207,7 +207,7 @@
 
         })
       }
-      $rootScope.$on("sendGxResult",function () {
+      var sendgxResult= $rootScope.$on("sendGxResult",function () {
         vm.submit();
       })
       $scope.$on("$destroy",function(){
