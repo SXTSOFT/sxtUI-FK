@@ -82,5 +82,22 @@
         "variables": {
             "API_KEY": "2de17df7f407b88bc0a6f745"
         }
+    },
+    "cordova-plugin-ios-camera-permissions": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Cordobo/cordova-plugin-ios-camera-permissions.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-sqlite-storage": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-sqlite-storage"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

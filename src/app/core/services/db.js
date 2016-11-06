@@ -9,6 +9,7 @@
     .provider('db',pouchDB);
 /** @ngInject */
   function pouchDB() {
+
   var self = this;
   self.methods = {
     destroy: 'qify',
@@ -147,6 +148,7 @@
 
   /** @ngInject */
   function $get($window, $q) {
+    $window.PouchDB.plugin(PouchAdapterCordovaSqlite);
     var pouchDBDecorators = {
       qify: function (fn) {
         return function () {
@@ -221,7 +223,7 @@
     return function pouchDB(name, options) {
       if($window.cordova){
         options = options||{};
-        // options.adapter = 'websql';
+        options.adapter = 'cordova-sqlite';
         options.auto_compaction=true;
         options.iosDatabaseLocation = 'default';
       }
