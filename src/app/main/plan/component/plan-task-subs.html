@@ -4,7 +4,7 @@
     <h2>
       <span>任务选择</span>
     </h2>
-    <task-categories ng-if="vm.current !='add'" ng-model="vm.selectedCategory" style="font-size:13px;"></task-categories>
+    <task-categories ng-if="vm.current !='add'" data="vm.categories" ng-model="vm.selectedCategory" style="font-size:13px;"></task-categories>
     <span flex></span>
     <md-button ng-if="vm.current !='add'" class="md-icon-button" aria-label="More" ng-click="vm.add('add')">
       <md-icon md-font-icon="icon-plus" ></md-icon>
@@ -28,7 +28,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="item in vm.items|filter:{Type:vm.selectedCategory||vm.flow.Name}">
+      <tr ng-repeat="item in vm.items|filter:{Type:vm.selectedCategory}">
         <td><md-checkbox class="mv-5" ng-model="item.selected" aria-label="选择">
         </md-checkbox></td>
         <td class="name">{{item.Name}}</td>

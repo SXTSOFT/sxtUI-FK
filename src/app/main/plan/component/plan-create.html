@@ -19,7 +19,7 @@
   </tr>
   <tr ng-class="{deleted:!flow.selected,milestone:!!flow.type}"  ng-repeat="flow in vm.flows track by flow.TaskFlowId">
     <td ng-if="!flow.type"><input ng-if="!flow.IsRequired" ng-click="vm.buildDate()" type="checkbox" ng-model="flow.selected"></td>
-    <td ng-if="!flow.type" ng-style="{'padding-left':10+(flow.line*12)+'px'}">
+    <td ng-if="!flow.type" ng-style="{'padding-left':(10+((t.line<5?t.line:(t.line % 5)+1)*12))+'px'}">
       {{$index+1}}、{{flow.Name}}
     </td>
     <td ng-if="!flow.type">
@@ -57,7 +57,7 @@
       {{$index+1}}、{{flow.Name}}
     </td>
     <td>
-      <input type="text" ng-click="setVars(flow)"  ng-blur="vm.buildDate()" ng-model="flow.Expression">
+      <input type="text" ng-click="vm.setVars(flow)"  ng-blur="vm.buildDate()" ng-model="flow.Expression">
     </td>
     <td>
       {{flow.days}}

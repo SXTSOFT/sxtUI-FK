@@ -262,18 +262,38 @@
           var vm = this;
           vm.flow = flow;
           vm.data = {};
+          vm.selectedCategory = flow.Name;
+          vm.categories = [{
+            name:flow.Name
+          }];
           var promises = [
             api.plan.TaskLibrary.GetList({Skip: 0, Limit: 10000, Level: task.Level+1}),
             api.plan.TaskFlow.getSubTasks(flow.TaskFlowId)
           ];
           $q.all(promises).then(function(res){
             vm.items = res[0].data.Items;
-            vm.selectedTasks =  res[1].data.Items;
             vm.items.forEach(function(r){
               var f = res[1].data.Items&&res[1].data.Items.find(function(_r){
                   return _r.TaskLibraryId == r.TaskLibraryId;
-                })
+                });
+              if(r.Type)
+                r.Type = '其它';
+              var tags = r.Type.split('>');
+              tags.reduce(function (prev,current) {
+                var fd = prev.find(function (t) {
+                  return t.name == current;
+                });
+                if(!fd){
+                  fd = {
+                    name:current,
+                    children:[]
+                  }
+                  prev.push(fd);
+                }
+                return fd.children;
+              },vm.categories);
               if(f){
+                r.Type = flow.Name;
                 r.selected = true;
               }
             })

@@ -22,18 +22,19 @@
               </md-menu>
             </th>
             <th ng-if="vm.data.Level==0" style="width: 24px;min-width: 24px">必选</th>
+            <th style="width: 24px;min-width: 24px">变量</th>
             <th ng-if="vm.data.Level==0" style="width: 80px;min-width: 80px">可选任务</th>
             <th ng-if="vm.data.Level==1" style="width: 30px;min-width: 24px">工期</th>
             <th ng-if="vm.data.Level==1" style="width: 30px;min-width: 24px">龄期</th>
             <th ng-if="vm.data.Level==1" style="width: 124px;min-width: 124px">关联工序</th>
             <th style="width: 100px;min-width: 80px">通知</th>
             <th style="width: 100px;min-width: 80px">执行</th>
-            <th ng-if="vm.data.Level==0" style="width: 80px;min-width: 80px">里程碑/介入点</th>
+            <th ng-if="vm.data.Level==0" style="width: 110px;min-width: 110px">里程碑/介入点</th>
             <th ng-if="vm.data.Level==0" style="width: 24px;min-width: 24px">楼层</th>
           </tr>
           </thead>
           <tr ng-repeat="flow in vm.flows track by flow.TaskFlowId">
-            <td ng-style="{'padding-left':10+(flow.line*12)+'px'}">
+            <td ng-style="{'padding-left':(10+(flow.line===0?0:1)*12)+'px'}">
               {{$index+1}}、<input type="text" ng-blur="vm.updateFlowName(flow)"  ng-model="flow.Name">
             </td>
             <td>
@@ -42,17 +43,17 @@
                   <md-icon md-font-icon="icon-plus" ng-click="$mdOpenMenu($event)"></md-icon>
                 </span>
               <md-menu-content>
-                <md-menu-item>
+                <md-menu-item ng-if="vm.data.Level!==0 || flow.line===0">
                   <md-button ng-click="vm.addNext($event,flow)">
                     下一主线
                   </md-button>
                 </md-menu-item>
-                <md-menu-item>
+                <md-menu-item ng-if="vm.data.Level!==0 || flow.line===0">
                   <md-button ng-click="vm.addNext($event,flow,true)">
                     添加穿插
                   </md-button>
                 </md-menu-item>
-                <md-menu-item ng-if="flow.line!==0">
+<!--                <md-menu-item ng-if="flow.line!==0">
                   <md-menu>
                     <md-button style="margin:0;padding: 0 16px;height: 48px" ng-click="$mdOpenMenu()">后置任务</md-button>
                     <md-menu-content>
@@ -68,7 +69,7 @@
                       </md-menu-item>
                     </md-menu-content>
                   </md-menu>
-                </md-menu-item>
+                </md-menu-item>-->
                 <md-menu-item>
                   <md-button ng-click="vm.removeFlow($event,flow)">
                     删除节点
@@ -78,6 +79,7 @@
             </md-menu>
             </td>
             <td ng-if="vm.data.Level==0" align="center"><input  ng-if="flow.line==0" type="checkbox" ng-model="flow.IsRequired" ng-click="vm.updateFlow(flow)"></td>
+            <td><input ng-if="flow.line==0" style="width:90%;color:#C62828" placeholder="无" type="text" ng-blur="vm.updateExpression(flow)" ng-model="flow.Expression" ></td>
             <td ng-if="vm.data.Level==0">
               <div style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.selectOptionalTask(flow)">{{flow.OptionalTask||'未选择'}}</div>
             </td>
@@ -100,9 +102,9 @@
             </td>
             <td ng-if="vm.data.Level==0">
               <input ng-show="!flow.IsFloor" ng-if="flow.line===0" style="width: 90%" placeholder="无里程碑" type="text" ng-blur="vm.updateMilestone(flow)"  ng-model="flow.Milestone">
-              <span ng-show="flow.IsFloor && flow.EndFlagTaskFlowId" ng-if="flow.line!==0"><input  style="width:90%;color:#C62828" placeholder="无介入点" type="text" ng-blur="vm.updateExpression(flow)" ng-model="flow.Expression"></span>
+              <span ng-if="flow.line!==0"><input  style="width:100%;color:#C62828" placeholder="无介入点" type="text" ng-blur="vm.updateExpression(flow)" ng-model="flow.Expression"></span>
             </td>
-            <td ng-if="vm.data.Level==0" align="center"><input type="checkbox" ng-model="flow.IsFloor"  ng-click="vm.updateFlow(flow)"></td>
+            <td ng-if="vm.data.Level==0" align="center"><input ng-if="flow.line===0" type="checkbox" ng-model="flow.IsFloor"  ng-click="vm.updateFlow(flow)"></td>
           </tr>
         </table>
         </div>

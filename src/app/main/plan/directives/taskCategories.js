@@ -12,16 +12,19 @@
     return {
       require:'ngModel',
       scope:{
-        value:'=ngModel'
+        value:'=ngModel',
+        data:'=?'
       },
       templateUrl:'app/main/plan/directives/taskCategories.html',
       link:link
     }
 
     function link(scope,element,attrs,ctrl) {
-      api.plan.Task.Categories.query().then(function (r) {
-        scope.data = r.data;
-      });
+      if(!scope.data) {
+        api.plan.Task.Categories.query().then(function (r) {
+          scope.data = r.data;
+        });
+      }
     }
   }
 })(angular,undefined);
