@@ -17,8 +17,8 @@
     </section>
     <md-divider class="md-no-sticky"></md-divider>
     <section layout="row" layout-align="center">
-      <md-button flex="50" class="groupX middle" ng-disabled="!vm.confirm" style="color: black;margin-right: 0px" ui-sref="app.xhsc.materialys.intoFactory({status:1,id:vm.data.Id})">分批进场</md-button>
-      <md-button flex="50" class="groupX middle" ng-disabled="!vm.confirm" ui-sref="app.xhsc.materialys.intoFactory({status:0,id:vm.data.Id})" style="color: black;margin-right: 0px">一次性进场</md-button>
+      <md-button flex="50" class="groupX middle" ng-disabled="!vm.confirm" style="color: black;margin-right: 0px" ui-sref="app.xhsc.materialys.intoFactory({status:1,Id:vm.data.Id,BatchId:vm.data.BatchId,max:vm.data.PlanCount})">分批进场</md-button>
+      <md-button flex="50" class="groupX middle" ng-disabled="!vm.confirm" ui-sref="app.xhsc.materialys.intoFactory({status:0,Id:vm.data.Id,BatchId:vm.data.BatchId,max:vm.data.PlanCount})" style="color: black;margin-right: 0px">一次性进场</md-button>
     </section>
     <md-divider class="md-no-sticky"></md-divider>
 </md-content>

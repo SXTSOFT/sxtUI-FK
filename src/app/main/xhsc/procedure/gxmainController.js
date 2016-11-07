@@ -66,6 +66,9 @@
             .concat(function () {
               return api.xhsc.materialPlan.getMaterialPlanBatch(item.SectionID,status);
             })
+            .concat(function () {
+              return api.xhsc.materialPlan.getMaterialPlanDetailList(item.SectionID,status);
+            })
             .concat(function(){
               return remote.offline.create({Id:'msy'+item.SectionID});
             });
@@ -454,6 +457,8 @@
             $scope.uploadInfo=vm.uploadInfo;
 
             api.upload(function (cfg,item) {
+              console.log(cfg)
+              console.log(item)
               if(cfg._id=='s_files' && item && item.Url.indexOf('base64')==-1){
                 return false;
               }

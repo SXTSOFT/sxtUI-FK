@@ -22,18 +22,23 @@
         }).bind(function (sectionId,status) {
           return $http.get($http.url('/api/MaterialPlan/GetMaterialPlansBatchBySectionId',{sectionId:sectionId,status:status}));
         }),
+        getMaterialPlanDetailList:$http.db({
+          _id:'materialPlanDetailList',
+          idField:'Id',
+          dataType:1
+        }).bind(function (sectionId,status) {
+          return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanListAsync',{sectionId:sectionId,status:status}));
+        }),
         getMaterialPlanDetail:$http.db({
-          _id:'materialPlan',
+          _id:'materialPlanDetailList',
           idField:'Id',
           dataType:3
-        }).bind(function (mpid) {
-          return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanAsync?mpid='+mpid));
+          }).bind(function (id,batchId) {
+          return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanAsync?id='+id+'batchId='+batchId));
         }),
-
         getMaterialPlanBatchById:function (id) {
           return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanBatchById?id='+id));
         },
-
         PostCheckInfo: $http.db({
           _id: 'materialPlanCheckInfo',
           idField: 'Id',
@@ -56,22 +61,21 @@
           return $http.put('/api/MaterialPlan/InsertApproval', data);
         }),
         PostExitInfo: $http.db({
-          _id: 'materialPlan',
+          _id: 'materialExitInfo',
           idField: 'Id',
           upload:true
         }).bind(function (data) {
           return $http.post('/api/MaterialPlan/InsertExitInfo', data);
         }),
-        CreateMaterialPlanBatch:$http.db({
-          _id:'materialPlanBatch',
+        IntoFactoryMaterialBatch:$http.db({
+          _id:'materialBatchInitFactory',
           idField:'Id',
-          dataType:3,
           upload:true
         }).bind(function (data) {
-          return $http.post('/api/MaterialPlan/CreateMaterialPlanBatchAsync',data);
+          return $http.post('/api/MaterialPlan/IntoFactoryMaterialBatch',data);
         }),
         MaterialInspection:$http.db({
-          _id:'materialPlanBatch',
+          _id:'materialBatchInspection',
           idField:'Id',
           dataType:3,
           upload:true
@@ -79,7 +83,7 @@
           return $http.put('/api/MaterialPlan/MaterialInspection',data);
         }),
         materialUnqualifiedExit:$http.db({
-          _id:'materialPlanBatch',
+          _id:'materialUnqualifiedExit',
           idField:'Id',
           dataType:3,
           upload:true

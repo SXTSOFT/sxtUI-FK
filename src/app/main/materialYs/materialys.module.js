@@ -44,7 +44,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url:'/planDetail/{id}',
+        url:'/planDetail/{batchId}/{planId}',
         template:'<material-plan-detail></material-plan-detail>'
       })
       .state('app.xhsc.materialys.intoFactory',{
@@ -53,7 +53,7 @@
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
-        url:'/intoFactory/{status}/{id}/{max}',
+        url:'/intoFactory/{status}/{Id}/{BatchId}/{max}',
         template:'<material-into-factory flex layout="column"></material-into-factory>'
       })
       .state('app.xhsc.materialys.checkInfo',{
@@ -70,7 +70,6 @@
         url:'/inspectionReport/{id}',
         template: '<material-ys-inspection-report flex layout="column"></material-ys-inspection-report>'
       })
-
       .state('app.xhsc.materialys.approval',{
         noBack:true,
         sendBt:true,
@@ -100,5 +99,4 @@
         template: '<material-unqualified-exit flex layout="column"></material-unqualified-exit>'
       })
   }
-
 })(angular,undefined);

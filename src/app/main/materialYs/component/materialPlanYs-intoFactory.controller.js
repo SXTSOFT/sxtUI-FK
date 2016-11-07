@@ -16,7 +16,8 @@
   function materialIntoFactory($rootScope,$scope,api,utils,$state,$stateParams,sxt){
     var vm = this;
     vm.data = {};
-    vm.data.PlanId = $stateParams.id;
+    vm.data.Id = $stateParams.BatchId;
+    vm.data.PlanId = $stateParams.Id;
     vm.data.Status = $stateParams.status;
     vm.data.ApproachType = vm.data.Status == 1 ? 1 : 0;
     vm.data.ApproachTime=new Date();
@@ -34,8 +35,8 @@
     })
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
-      vm.data.MaterialPlanFiles = vm.vehicleImgs.concat(vm.goodsImgs,vm.rummagerImgs,vm.CertificateImgs);
-      api.xhsc.materialPlan.CreateMaterialPlanBatch(vm.data).then(function (q) {
+      vm.data.MaterialPlanFiles = vm.vehicleImgs.concat(vm.goodsImgs,vm.rummagerImgs,vm.CertificateImgs)
+      api.xhsc.materialPlan.IntoFactoryMaterialBatch(vm.data).then(function (q) {
         utils.alert("提交成功", null, function () {
           $state.go("app.xhsc.gx.gxmain");
         });
