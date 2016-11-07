@@ -6,23 +6,15 @@
   angular
     .module('app.xhsc')
     .component('materialYsExit',{
-      templateUrl:'app/main/materialYs/component/materialPlanYs-Exit.html',
+      templateUrl:'app/main/materialYs/component/materialYs-exit.html',
       controller:exit,
       controllerAs:'vm'
     });
 
   /** @ngInject */
-  function exit($rootScope,$scope,$stateParams,api,utils){
+  function exit($rootScope,$scope,$stateParams,api,utils,sxt){
     var vm = this;
-    vm.data = {PlanId:$stateParams.id};
-    vm.max = $stateParams.max;
-
-    $scope.$watch('vm.data.ExitCount',function () {
-      console.log();
-      if(vm.data.ExitCount > vm.max){
-        vm.data.ExitCount = parseFloat(vm.max);
-      }
-    });
+    vm.data = {Id:sxt.uuid(),PlanId:$stateParams.id};
 
     $scope.$on("$destroy",function(){
       sendCheckResult();
