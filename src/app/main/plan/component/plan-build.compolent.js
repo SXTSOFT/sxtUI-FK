@@ -311,13 +311,13 @@
             focusOnOpen: true,
             attachTo:angular.element('#content')
           });
-          f();
           api.plan.BuildPlan.post(b).then(function(r){
             if(!vm.formWizard.Id)
               vm.formWizard.Id = r.data.Id;
             api.plan.BuildPlan.getBuildingPlanRoles(r.data.Id).then(function (r) {
               vm.currentRoles = r.data.Items;
               parent.closePanel1();
+              f();
             });
           },function(err){
             parent.closePanel1();

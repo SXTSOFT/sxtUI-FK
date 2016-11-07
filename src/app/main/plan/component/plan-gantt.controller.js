@@ -184,9 +184,7 @@
           vm.api.side.setWidth(380);
         });
         ganttApi.tasks.on.change($scope,function(task){
-          var from,to,copytask;
-          if(!task.type) return;
-          copytask = task;
+          var from,to;
           from = task.model.from;
           to = task.model.to;
           task.row.duration = moment(to).endOf('day').diff(moment(from).startOf('day'),'d');
