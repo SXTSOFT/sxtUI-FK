@@ -61,11 +61,18 @@
       zjs:[],
       addzj:function (item) {
         $scope.project.zjs.push(item);
+        var idx = $scope.project.data.items.indexOf(item);
+        if(idx>0){
+          $scope.project.data.items.splice(idx,1);
+        }
+        $scope.project.searchTerm='';
       },
       searchTerm:'',
       addSearchTerm:function (k) {
         if(!k){
           $scope.project.searchTerm = ''
+        }else if(k=='x'){
+          $scope.project.searchTerm = $scope.project.searchTerm.length>0?$scope.project.searchTerm.substring (0, $scope.project.searchTerm.length - 1) : $scope.project.searchTerm;
         }
         else{
           $scope.project.searchTerm +=k;
@@ -73,6 +80,19 @@
       },
       toggerBoard:function(){
         $rootScope.hideFootbar = !$rootScope.hideFootbar;
+      },
+      ok:function(){
+        var f = $scope.project.data.items.find(function(r){
+                return r.name.indexOf($scope.project.searchTerm)>0;
+            })
+        if(f){
+          $scope.project.zjs.push(f);
+          var idx = $scope.project.data.items.indexOf(f);
+          if(idx>0){
+            $scope.project.data.items.splice(idx,1);
+          }
+          $scope.project.searchTerm='';
+        }
       },
       roleId:$scope.roleId,
       isPartner:$scope.isPartner,
@@ -155,7 +175,7 @@
             else if($scope.project.type === 256){
               if($scope.project.data.items){
                 $scope.project.data.items.forEach(function (item) {
-                  $scope.project.zjs.push(item);
+                 // $scope.project.zjs.push(item);
                 })
               }
 

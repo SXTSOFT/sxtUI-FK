@@ -95,7 +95,7 @@
               <div layout="row">
               <div layout="column" flex="25">
                 <md-button fast-click="project.addSearchTerm('1')" style="border-bottom: 1px solid #dedede;">1</md-button>
-                <md-button fast-click="project.addSearchTerm('new')" style="border-right: 1px solid #dedede;">fu</md-button>
+                <md-button fast-click="project.typeChange('new')" style="border-right: 1px solid #dedede;">新建</md-button>
               </div>
               <div layout="column" flex="25">
                 <md-button fast-click="project.addSearchTerm('2')" style="border-bottom: 1px solid #dedede;">2</md-button>
@@ -106,7 +106,7 @@
                 <md-button flex ng-click="project.toggerBoard()" style="border-right: 1px solid #dedede;">键盘</md-button>
               </div>
               <div layout="row" flex>
-                <md-button flex ng-click="project.toggerBoard()">确定</md-button>
+                <md-button flex ng-click="project.ok()">确定</md-button>
               </div>
               </div>
               <!--<div layout="row" flex>-->
