@@ -15,6 +15,14 @@
   function exit($rootScope,$scope,$stateParams,api,utils){
     var vm = this;
     vm.data = {PlanId:$stateParams.id};
+    vm.max = $stateParams.max;
+
+    $scope.$watch('vm.data.ExitCount',function () {
+      console.log();
+      if(vm.data.ExitCount > vm.max){
+        vm.data.ExitCount = parseFloat(vm.max);
+      }
+    });
 
     $scope.$on("$destroy",function(){
       sendCheckResult();
