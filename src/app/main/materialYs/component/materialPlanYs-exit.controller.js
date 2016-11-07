@@ -12,9 +12,9 @@
     });
 
   /** @ngInject */
-  function exit($rootScope,$scope,$stateParams,api,utils){
+  function exit($rootScope,$scope,$stateParams,api,utils,sxt){
     var vm = this;
-    vm.data = {PlanId:$stateParams.id};
+    vm.data = {Id:sxt.uuid(),PlanId:$stateParams.id};
 
     $scope.$on("$destroy",function(){
       sendCheckResult();
@@ -22,7 +22,6 @@
     });
 
     var sendCheckResult = $rootScope.$on('sendGxResult',function() {
-      console.log(vm.data)
       api.xhsc.materialPlan.PostExitInfo(vm.data).then(function (r) {
         utils.alert('提交成功!');
       })
