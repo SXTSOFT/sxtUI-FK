@@ -32,7 +32,7 @@
       api.plan.TaskLibrary.getTaskFlow($stateParams.id).then(function (r) {
         task = vm.data = r.data;
         vm.data._CloseRelatedObjectType = vm.data.CloseRelatedObjectType;
-        vm.data.CloseRelatedObjectType==0?vm.data.CloseRelatedObjectType ='PQMeasure':vm.data.CloseRelatedObjectType='Inspection';
+        vm.data.CloseRelatedObjectType&&vm.data.CloseRelatedObjectType==0?vm.data.CloseRelatedObjectType ='PQMeasure':vm.data.CloseRelatedObjectType='Inspection';
         task.oType = task.Type;
         vm.loading= false;
         task.Master.forEach(function (flow) {
