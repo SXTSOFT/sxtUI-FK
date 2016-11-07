@@ -23,6 +23,7 @@
     loadSection();
     function loadSection() {
       vm.offlines = [];
+      vm.section = [];
 
       remote.Project.getUserProjectSection().then(function (result) {
         if(!result || result.data.length==0){
@@ -36,9 +37,12 @@
               });
               if (fd) {
                 vm.offlines.push(r);
+
+              }else{
+                vm.section.push(r);
               }
             });
-            vm.section=result.data;
+            //vm.section=result.data;
           }).catch(function(){
             vm.section = result.data;
           });
