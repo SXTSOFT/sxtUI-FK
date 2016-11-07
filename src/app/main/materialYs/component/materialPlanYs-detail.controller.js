@@ -16,9 +16,10 @@
   function materialysDetail($scope,api,utils,$stateParams){
     var vm = this;
     vm.data = {};
-    vm.data.Id = $stateParams.id;
+    vm.data.Id = $stateParams.planId;
+    vm.data.BatchId = $stateParams.batchId;
 
-    api.xhsc.materialPlan.getMaterialPlanDetail(vm.data.Id).then(function (q) {
+    api.xhsc.materialPlan.getMaterialPlanDetail(vm.data.Id,vm.data.BatchId).then(function (q) {
       vm.data = q.data;
     });
 
