@@ -66,7 +66,7 @@
               pics.forEach(function (drawingID) {
                 tasks.push(function () {
                   return remote.Project.getDrawing(drawingID).then(function(){
-                    dbpics.addOrUpdate({
+                     return dbpics.addOrUpdate({
                       _id:drawingID
                     })
                   });
