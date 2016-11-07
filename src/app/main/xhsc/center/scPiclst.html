@@ -1,8 +1,8 @@
 <md-progress-circular id="toolbar-progress" ng-if="!vm.show" class="md-accent"
-    md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+                      md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
 </md-progress-circular>
 <md-tabs md-border-bottom flex ng-if="vm.show">
-<md-tab  ng-repeat="item in  vm.scItems" label="{{item.MeasureItemName}}">
+  <md-tab  ng-repeat="item in  vm.scItems" label="{{item.MeasureItemName}}">
     <md-tab-content flex layout-fill layout="column">
       <md-autocomplete md-no-cache="true" flex="none"  md-selected-item-change="item.changeItem(r)" md-item-text="r.DrawingName" placeholder="请输入图纸名称" md-min-length="0"
                        md-items="r in item.querySearch(vm.searchText)" md-search-text="vm.searchText">
@@ -42,5 +42,3 @@
     </md-tab-content>
   </md-tab>
 </md-tabs>
-
-
