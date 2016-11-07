@@ -26,7 +26,8 @@
         measureIndexes: '=', //实测指标
         drawing: '=',//图纸id
         readonly: '=',//只读
-        tooltip: '='
+        tooltip: '=',
+        projectId:"="
       },
       link: link
     }
@@ -53,7 +54,7 @@
           if (layer && layer.loaded)return;
           layer.loaded = true;
           var reqArr = [
-            remote.Assessment.GetMeasurePointAll()
+            remote.Assessment.GetMeasurePointAll(scope.projectId)
           ]
           $q.all(reqArr).then(function (req) {
             //图纸

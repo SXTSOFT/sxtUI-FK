@@ -19,7 +19,8 @@
     vm.info = {
       acceptanceItemID: $stateParams.AcceptanceItemID,
       acceptanceIndexID: $stateParams.AcceptanceIndexID,
-      drawing: $stateParams.DrawingID
+      drawing: $stateParams.DrawingID,
+      projectId:$stateParams.projectID
     };
     var arr = [
       remote.Project.GetMeasureItemInfoByAreaID(),

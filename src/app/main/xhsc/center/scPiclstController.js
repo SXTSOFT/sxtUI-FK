@@ -119,7 +119,8 @@
       $state.go("app.xhsc.sc_standar",{
         AcceptanceItemID:AcceptanceItemID,
         DrawingID:drawingID,
-        AcceptanceIndexID:AcceptanceIndexID
+        AcceptanceIndexID:AcceptanceIndexID,
+        projectID:$stateParams.projectID
       })
     }
 
