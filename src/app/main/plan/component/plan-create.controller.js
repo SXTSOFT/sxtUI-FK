@@ -26,13 +26,28 @@
       moment = $window.moment;
     var buildId = vm.buildId || '000420000000006',
       rootTaskLibraryId = vm.libraryId || 303,
-      begin = vm.begin ? moment(vm.begin) : moment('2016-10-1'),
-      lastFloorTask;
+      begin = vm.begin ? moment(vm.begin) : moment('2016-10-1');
     var gs = (function () {
-      var vars = [], r = /[a-z]/gi,
+      var vars = [], r = /[a-z]{1,3}/gi,
         compare = function (s1, s2) {
           return s1.key.localeCompare(s2.key);
-        };
+        },
+        getDate = function (key,g) {
+          var r = vars.find(function (n) {
+            return n.key == key;
+          });
+          if(r && r.value){
+            var date = new moment(r.value);
+            g = g.replace(key,'');
+            try{
+              var days = $window.eval(g);
+              return date.add(days,'days');
+            }catch (ex){
+              return false;
+            }
+          }
+          return false;
+      };
       return {
         setValue: function (k, value) {
           var v = vars.find(function (v) {
@@ -40,6 +55,12 @@
           });
           if (v)
             v.value = value;
+          else{
+            vars.push({
+              key:k,
+              value:value
+            });
+          }
         },
         getVars: function (g) {
           if (!g) return [];
@@ -55,44 +76,70 @@
                 key: v
               };
               vars.push(r);
-
             }
-            rs.push(r);
+            if(v.length ===1 && !rs.find(function (n) {
+                return n.key == v;
+              })) {
+              rs.push(r);
+            }
           });
           vars.sort(compare);
           rs.sort(compare);
           return rs;
         },
         setVars: function (g) {
-          var vs = g.toUpperCase().match(r), f = true;
+          var vs = g.toUpperCase().match(r), f = true, isDate = false,g1 = g;
+          //只有数字的计算
           if (!vs || vs.length === 0) {
             try {
-              return eval(g);
+              return eval(g1);
             } catch (e) {
-              return g;
+              return g1;
             }
           }
           vs.forEach(function (v) {
             var r = vars.find(function (n) {
               return n.key == v;
             });
-            if (r && (r.value || r.value === 0)) {
-              g = g.replace(new RegExp(v, 'gi'), r.value);
+            if (!isDate && v.length > 1) {
+              isDate = true;
+            }
+            if (v.length === 1 && r && (r.value || r.value === 0)) {
+              g1 = g1.replace(new RegExp(v, 'gi'), r.value);
             }
             else {
               f = false;
             }
           });
-
-          if (f) {
-            try {
-              return eval(g);
-            } catch (e) {
-              return g;
+          if (isDate) { //计算日期
+            var b = g1.split('~');
+            if(b.length===2) {
+              var s = b[0].match(r),
+                e = b[1].match(r);
+              var sd = getDate(s[0],b[0]),
+                ed = getDate(e[0],b[1]);
+              if(sd && ed){
+                return {
+                  s:sd,
+                  days: moment.duration(ed.diff(sd)).asDays(),
+                  e:ed
+                };
+              }
             }
-          }
-          else
             return g;
+          }
+          else {
+            //仅计算天数,没有日期
+            if (f) {
+              try {
+                return eval(g1);
+              } catch (e) {
+                return g1;
+              }
+            }
+            else
+              return g;
+          }
         }
       }
     })();
@@ -203,93 +250,84 @@
       flow.currentTask = task;
       vm.buildDate();
     }
-    vm.buildBranch = function (task) {
-      var t = lastFloorTask.Master.find(function (t) {
-        return t.Name.indexOf('砼收面') != -1;
-      });
-      if (!t) {
-        utils.alert(lastFloorTask.Name + '中未找到砼收面流程');
-      }
-      else {
-        var days = 0, idx = lastFloorTask.Master.indexOf(t), nt;
-        for (var i = 0; i < idx; i++) {
-          nt = parseFloat(lastFloorTask.Master[i].OptionalTasks[0].Duration);
-          if (!isNaN(nt))
-            days = utils.math.sum(days, nt);
+    vm.buildBranch = function () {
+      vm.banchs.forEach(function (flow) {
+        var d = gs.setVars(flow.Expression);
+        if(d){
+          flow.start = d.s;
+          flow.days = d.days;
+          flow.end = d.e;
         }
-        vm.banchs.forEach(function (b) {
-          /*          var flow = vm.flows.find(function (f) {
-           return b.EndFlagTaskFlowId == f.TaskFlowId;
-           });**/
-          var days2 = gs.setVars(b.Expression);
-          if (days2 === b.Expression) {
-            days2 = undefined;
-          }
-          if (days2) {
-            b.start = moment(task.start).add(utils.math.sum(days, days2), 'days');
-          }
-          var tk = b.currentTask = b.currentTask || b.OptionalTasks[0];
-          if (tk) {
-            var days3 = gs.setVars(tk.Duration);
-            if (days3 !== tk.Duration) {
-              b.end = moment(task.start).add(utils.math.sum(days,days3), 'days');
-              b.days = moment.duration(b.end.diff(b.start)).asDays();
-            }
-          }
-          else {
-            b.days = undefined;
-          }
-        })
-      }
+      });
     }
     vm.buildDate = function () {
       if (!vm.flows) return;
       vm.flows.reduce(function (prev, current, index, array) {
-        if (!current.selected) return prev;
-        if (current.type) {
+        if (!current.selected) return prev; //未选中
+        if (current.type) {//里程碑
           current.end = prev.end;
           return prev;
         }
-        if (prev && prev.IsFloor && prev.end && !current.IsFloor) {
-          //request = true;
-          if (!lastFloorTask || lastFloorTask.TaskLibraryId != prev.currentTask.TaskLibraryId) {
-            api.plan.TaskLibrary.getTaskFlow(prev.currentTask.TaskLibraryId).then(function (r) {
-              lastFloorTask = r.data;
-              vm.buildBranch(prev);
-            });
-          }
-          else {
-            vm.buildBranch(prev);
-          }
-        }
-        if (prev && !prev.end) {
-          current.days = current.start = current.end = undefined;
-          return current;
-        }
-        var start = prev ? moment(prev.end) : moment(begin),
-          end;
-        if (!start) {
+        if (prev && !prev.end) { //前置条件不足
           current.days = current.start = current.end = undefined;
         }
         else {
-          try {
-            var days = gs.setVars(current.currentTask.Duration);
-            if (days === current.currentTask.Duration)
-              days = undefined;
-            current.days = days;
-          } catch (ex) {
-          }
-          if (current.days) {
-            end = moment(start).add(current.days, 'days');
+          var start = prev ? moment(prev.end) : moment(begin),
+            end;
+          if (!start) {
+            current.days = current.start = current.end = undefined;
           }
           else {
-            end = undefined;
+            try {
+              var days = gs.setVars(current.currentTask.Duration);
+              if (days === current.currentTask.Duration)
+                days = undefined;
+              current.days = days;
+            } catch (ex) {
+            }
+            if (current.days) {
+              end = moment(start).add(current.days, 'days');
+            }
+            else {
+              end = undefined;
+            }
+            current.start = start;
+            current.end = end;
           }
-          current.start = start;
-          current.end = end;
+        }
+        if(prev && prev.IsFloor){
+          var pTask = prev.currentTask,
+            cTask = current.currentTask;
+          if(current.IsFloor) {
+            if (pTask.Name.indexOf('地') != -1 && cTask.Name.indexOf('地') == -1) {
+              gs.setValue(prev.Expression + 'D', prev.end);
+            }
+            else if (
+              (pTask.Name.indexOf('地') != -1 ||
+              pTask.Name.indexOf('裙') != -1 ||
+              pTask.Name.indexOf('转') != -1) &&
+              (cTask.Name.indexOf('地') == -1 &&
+              cTask.Name.indexOf('裙') == -1 &&
+              cTask.Name.indexOf('转') == -1)
+            ) {
+              gs.setValue(prev.Expression + 'B', current.start);
+            }
+          }
+          else{
+            gs.setValue(prev.Expression + 'S', prev.start);
+            gs.setValue(prev.Expression + 'F', prev.end);
+          }
+        }
+        if(current.Expression) {
+          if(!current.IsFloor){
+            gs.setValue(current.Expression+'S',current.start);
+            gs.setValue(current.Expression+'F',current.end);
+          }
+          //console.log('current.currentTask', current.currentTask);
         }
         return current;
       }, null);
+      vm.buildBranch();
       return '';
     }
 

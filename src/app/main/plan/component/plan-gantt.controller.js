@@ -54,7 +54,7 @@
     vm.live = {};
     vm.options = {
       mode                    : 'custom',
-      scale                   : 'day',
+      scale                   : 'year',
       sortMode                : undefined,
       sideMode                : 'TreeTable',
       daily                   : false,
@@ -68,13 +68,13 @@
         'model.name': 'Name',
         'from'      : '开始时间',
         'to'        : '结束时间',
-        'duration':'工期'
+        'duration'  :'工期'
       },
       columnsClasses          : {
         'model.name': 'gantt-column-name',
         'from'      : 'gantt-column-from',
         'to'        : 'gantt-column-to',
-        'duration':'gantt-column-duration'
+        'duration'  : 'gantt-column-duration'
       },
       columnsFormatters       : {
         'from': function (from)
@@ -348,6 +348,7 @@
           var result = {
             id:item.Id+'-group',
             name:item.Name,
+            parent:'__',
             tasks:[
               {
                 id:item.Id,
@@ -379,7 +380,7 @@
         //console.log(JSON.stringify(tasks))
         vm.data=[{
           id:'__',
-          name:'里程碑',
+          name:'关键进度',
           classes:[
             "md-light-blue-100-bg"
           ],

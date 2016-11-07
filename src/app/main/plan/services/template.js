@@ -190,7 +190,7 @@
               b: gitGraph.branch({
                 name: t.Name || ('b' + Branch.length),
                 showLabel: false,
-                column: t.line,
+                column: t.line<5?t.line:(t.line % 5)+1,
                 parentBranch: getBranch(t.parent)
               })
             });

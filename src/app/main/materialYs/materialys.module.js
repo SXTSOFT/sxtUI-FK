@@ -53,7 +53,7 @@
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
-        url:'/intoFactory/{status}/{id}',
+        url:'/intoFactory/{status}/{id}/{max}',
         template:'<material-into-factory flex layout="column"></material-into-factory>'
       })
       .state('app.xhsc.materialys.checkInfo',{
@@ -89,7 +89,7 @@
         noBack:true,
         sendBt:true,
         title:'材料退场',
-        url:'/exit/{id}',
+        url:'/exit/{id}/{max}',
         template: '<material-ys-exit flex layout="column"></material-ys-exit>'
       })
       .state('app.xhsc.materialys.unqualifiedExit',{
