@@ -88,6 +88,12 @@ table{
     }
   }
 }
+#gantt-chart .centera .content-card .content .gantt .gantt-row-label .gantt-valign-content span.gantt-label-text{
+  width:100px;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
 .gantt-column-duration{
   width:80px;
 }

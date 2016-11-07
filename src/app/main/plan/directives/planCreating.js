@@ -22,13 +22,29 @@
 
     function link(scope,element,attr,ctrl) {
       var  moment = $window.moment;
-      var buildId = scope.buildId || '000420000000006',
-        rootTaskLibraryId = scope.libraryId || 303,
-        begin = scope.begin ? moment(scope.begin) : moment('2016-10-1');
+      //var buildId = scope.buildId || '000420000000006',
+      //  rootTaskLibraryId = scope.libraryId || 303,
+      //  begin = scope.begin ? moment(scope.begin) : moment('2016-10-1');
+      scope.$watch('libraryId',function(){
+        if(!!scope.libraryId&&!!scope.buildId){
+          begin = scope.begin;
+          load();
+        }
+      })
+      scope.$watch('buildId',function(){
+        if(!!scope.libraryId&&!!scope.buildId){
+          begin = scope.begin;
+          load();
+        }
+      })
       scope.$watch('begin',function () {
         begin = scope.begin ? moment(scope.begin):null;
         console.log('begin',begin,scope.begin);
-        scope.buildDate();
+        //scope.buildDate();
+        if(!!scope.libraryId&&!!scope.buildId){
+          begin = scope.begin;
+          load();
+        }
       });
       var gs = (function () {
         var vars = [], r = /[a-z]{1,3}/gi,
@@ -147,116 +163,120 @@
         }
       })();
 
-      $q.all([
-        api.plan.TaskLibrary.getTaskFlow(rootTaskLibraryId),
-        api.plan.Project.query(buildId),
-        api.plan.MileStone.queryByTaskId(rootTaskLibraryId)
-      ]).then(function (rs) {
-        var rootTask = rs[0].data,
-          floors = rs[1].data,
-          mileStone = rs[2].data;
-        var flows = [], banchs = [];
-        rootTask.Master.forEach(function (t) {
-          if (t.IsFloor) {
-            floors.forEach(function (f) {
-              var t1 = angular.copy(t), tid = t1.TaskFlowId;
-              t1.IsFloor = true;
-              t1.IsRequired = t.IsRequired;
-              t1.TaskFlowId = f.FloorId + '-' + tid;
-              t1.FloorId = f.FloorId;
-              t1._TaskFlowId = tid;
-              t1.FloorName = f.FloorName;
-              t1.Name = f.FloorName;
-              flows.push(t1);
-              if (f.IsPresalesMilestone) {
-                flows.push({
-                  selected: true,
-                  FloorId: f.FloorId,
-                  TaskFlowId: f.FloorId + '-' + tid + '-0',
-                  Id: 0,
-                  RelatedFlowId: tid,
-                  type: 'm',
-                  Name: '开盘'
-                });
-              }
-            })
-          }
-          else {
-            flows.push(t);
-          }
-          var m = mileStone.Items.find(function (m1) {
-            return m1.RelatedFlowId == t.TaskFlowId;
-          });
-          if (m) {
-            flows.push({
-              selected: true,
-              TaskFlowId: m.Id + '-' + m.RelatedFlowId,
-              Id: m.Id,
-              RelatedFlowId: m.RelatedFlowId,
-              type: 'm',
-              Name: m.Name
+
+      function load() {
+        $q.all([
+          api.plan.TaskLibrary.getTaskFlow(scope.libraryId),
+          api.plan.Project.query(scope.buildId),
+          api.plan.MileStone.queryByTaskId(scope.libraryId)
+        ]).then(function (rs) {
+          var rootTask = rs[0].data,
+            floors = rs[1].data,
+            mileStone = rs[2].data;
+          var flows = [], banchs = [];
+          rootTask.Master.forEach(function (t) {
+            if (t.IsFloor) {
+              floors.forEach(function (f) {
+                var t1 = angular.copy(t), tid = t1.TaskFlowId;
+                t1.IsFloor = true;
+                t1.IsRequired = t.IsRequired;
+                t1.TaskFlowId = f.FloorId + '-' + tid;
+                t1.FloorId = f.FloorId;
+                t1._TaskFlowId = tid;
+                t1.FloorName = f.FloorName;
+                t1.Name = f.FloorName;
+                flows.push(t1);
+                if (f.IsPresalesMilestone) {
+                  flows.push({
+                    selected: true,
+                    FloorId: f.FloorId,
+                    TaskFlowId: f.FloorId + '-' + tid + '-0',
+                    Id: 0,
+                    RelatedFlowId: tid,
+                    type: 'm',
+                    Name: '开盘'
+                  });
+                }
+              })
+            }
+            else {
+              flows.push(t);
+            }
+            var m = mileStone.Items.find(function (m1) {
+              return m1.RelatedFlowId == t.TaskFlowId;
             });
-          }
-        });
-        flows.forEach(function (f) {
-          if (f.OptionalTasks) {
-            if (f.IsFloor) {
-              if (f.Name.indexOf('负') != -1) {
-                f.currentTask = f.OptionalTasks.find(function (t) {
-                  return t.Name.indexOf('负') != -1 || t.Name.indexOf('地') != -1
-                });
-              }
-              else if (f.Name.indexOf('裙') != -1) {
-                f.currentTask = f.OptionalTasks.find(function (t) {
-                  return t.Name.indexOf('裙') != -1;
-                });
-              }
-              else if (f.Name.indexOf('转') != -1) {
-                f.currentTask = f.OptionalTasks.find(function (t) {
-                  return t.Name.indexOf('转') != -1;
-                });
-              }
-              else {
-                f.currentTask = f.OptionalTasks.filter(function (t) {
-                  return t.Name.indexOf('负') == -1 &&
-                    t.Name.indexOf('裙') == -1 &&
-                    t.Name.indexOf('转') == -1;
-                })[0];
-              }
+            if (m) {
+              flows.push({
+                selected: true,
+                TaskFlowId: m.Id + '-' + m.RelatedFlowId,
+                Id: m.Id,
+                RelatedFlowId: m.RelatedFlowId,
+                type: 'm',
+                Name: m.Name
+              });
             }
-            if (!f.currentTask) {
-              f.currentTask = f.OptionalTasks[0];
-            }
-            f.selected = true;
-          }
-        });
-        rootTask.Branch.forEach(function (bs) {
-          bs.forEach(function (b) {
-            if (!b.currentTask) {
-              b.currentTask = b.OptionalTasks[0];
-            }
-            banchs.push(b);
           });
+          flows.forEach(function (f) {
+            if (f.OptionalTasks) {
+              if (f.IsFloor) {
+                if (f.Name.indexOf('负') != -1) {
+                  f.currentTask = f.OptionalTasks.find(function (t) {
+                    return t.Name.indexOf('负') != -1 || t.Name.indexOf('地') != -1
+                  });
+                }
+                else if (f.Name.indexOf('裙') != -1) {
+                  f.currentTask = f.OptionalTasks.find(function (t) {
+                    return t.Name.indexOf('裙') != -1;
+                  });
+                }
+                else if (f.Name.indexOf('转') != -1) {
+                  f.currentTask = f.OptionalTasks.find(function (t) {
+                    return t.Name.indexOf('转') != -1;
+                  });
+                }
+                else {
+                  f.currentTask = f.OptionalTasks.filter(function (t) {
+                    return t.Name.indexOf('负') == -1 &&
+                      t.Name.indexOf('裙') == -1 &&
+                      t.Name.indexOf('转') == -1;
+                  })[0];
+                }
+              }
+              if (!f.currentTask) {
+                f.currentTask = f.OptionalTasks[0];
+              }
+              f.selected = true;
+            }
+          });
+          rootTask.Branch.forEach(function (bs) {
+            bs.forEach(function (b) {
+              if (!b.currentTask) {
+                b.currentTask = b.OptionalTasks[0];
+              }
+              banchs.push(b);
+            });
+          });
+          gs.getVars('N');
+          gs.setValue('N', floors.filter(function (f) {
+            // 1	标准层
+            // 2	地下室
+            // 4	裙楼
+            // 8	转换层
+            return f.FloorTypeStatus != '2';
+          }).length);
+          scope.flow = scope.flows = flows;
+          scope.branch = scope.banchs = banchs;
+          scope.buildDate();
         });
-        gs.getVars('N');
-        gs.setValue('N', floors.filter(function (f) {
-          // 1	标准层
-          // 2	地下室
-          // 4	裙楼
-          // 8	转换层
-          return f.FloorTypeStatus != '2';
-        }).length);
-        scope.flow = scope.flows = flows;
-        scope.branch = scope.banchs = banchs;
-        scope.buildDate();
-      });
+      }
+
       function setTask(item) {
         var index = scope.flows.indexOf(item);
         var floorArr = scope.flows.filter(function (r) {
           return r.IsFloor;
         })
         var r = floorArr.indexOf(item);
-        if (r > 0) {
+        if (r != -1) {
           for (var i = index; i < floorArr.length + index - r + 1; i++) {
             var f = scope.flows[i].OptionalTasks && scope.flows[i].OptionalTasks.find(function (task) {
                 return task.TaskLibraryId === item.currentTask.TaskLibraryId;

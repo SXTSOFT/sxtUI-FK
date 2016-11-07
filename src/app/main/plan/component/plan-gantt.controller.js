@@ -181,7 +181,7 @@
             vm.gantt = true;
           });
           objectModel = new GanttObjectModel(vm.api);
-          vm.api.side.setWidth(380);
+          vm.api.side.setWidth(400);
         });
         ganttApi.tasks.on.change($scope,function(task){
           var from,to;
