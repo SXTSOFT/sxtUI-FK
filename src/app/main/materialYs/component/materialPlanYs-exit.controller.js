@@ -22,7 +22,6 @@
     });
 
     var sendCheckResult = $rootScope.$on('sendGxResult',function() {
-      console.log(vm.data)
       api.xhsc.materialPlan.PostExitInfo(vm.data).then(function (r) {
         utils.alert('提交成功!');
       })
