@@ -350,7 +350,7 @@
           var result = {
             id:item.Id+'-group',
             name:item.Name,
-            parent:'__',
+            //parent:'__',
             tasks:[
               {
                 id:item.Id,
@@ -382,7 +382,7 @@
         //console.log(JSON.stringify(tasks))
         vm.data=[{
           id:'__',
-          name:'关键进度',
+          name:'里程碑',
           classes:[
             "md-light-blue-100-bg"
           ],
