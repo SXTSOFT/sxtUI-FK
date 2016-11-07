@@ -244,6 +244,9 @@
               }
               if (!f.currentTask) {
                 f.currentTask = f.OptionalTasks[0];
+                f.currentTask.eDuration = f.currentTask.Duration;
+              }else{
+                f.currentTask.eDuration = f.currentTask.Duration;
               }
               f.selected = true;
             }
@@ -283,6 +286,7 @@
               });
             if (f) {
               scope.flows[i].currentTask = f;
+              scope.flows[i].currentTask.eDuration = f.Duration;
             }
           }
         }
@@ -304,7 +308,14 @@
       }
       scope.buildDate = function () {
         if (!scope.flows) return;
+        //if(item&&item.currentTask&&item.currentTask.eDuration < item.currentTask.Duration*0.8){
+        //  item&&(item.show = true);
+        //  return;
+        //}else{
+        //  item&&(item.show = false);
+        //};
         scope.flows.reduce(function (prev, current) {
+          if(current.show) return current;
           if (!current.selected) return prev;
           if (current.type) {
             current.end = prev.end;
@@ -323,6 +334,8 @@
               try {
                 var days = gs.setVars(current.currentTask.Duration);
                 if (days === current.currentTask.Duration)
+                //var days = gs.setVars(current.currentTask.eDuration);
+                //if (days === current.currentTask.eDuration)
                   days = undefined;
                 current.days = days;
               } catch (ex) {
