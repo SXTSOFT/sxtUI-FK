@@ -15,6 +15,7 @@
   function exit($rootScope,$scope,$stateParams,api,utils,sxt){
     var vm = this;
     vm.data = {Id:sxt.uuid(),PlanId:$stateParams.id};
+    vm.data.ExitReason = '材料多余';
 
     $scope.$on("$destroy",function(){
       sendCheckResult();

@@ -1,21 +1,23 @@
 <form name="projectForm">
   <md-list ng-cloak>
     <md-list-item style="height: 48px;">
-      <p flex="50">退场原因</p>
-      <p style="text-align: right;">材料多余</p>
+      <label flex="40">退场原因</label>
+      <md-input-container flex="60" class="md-block" style="height: 48px; margin: 0;padding: 0;">
+        <input type="text" ng-model="vm.data.ExitReason"  ng-disabled="true" style="padding: 0;margin-top: 10px;text-align: right;" />
+      </md-input-container>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item>
-      <p flex="30">退场数量</p>
-      <md-input-container flex="70" class="md-block" style="height: 48px; margin: 0;padding: 0;">
-        <input type="number" ng-model="vm.data.ExitCount" style="padding: 0;margin-top: 10px;">
+      <p flex="40">退场数量</p>
+      <md-input-container flex="60" class="md-block" style="height: 48px; margin: 0;padding: 0;">
+        <input type="number" ng-model="vm.data.ExitCount" style="padding: 0;margin-top: 10px;text-align: right;">
       </md-input-container>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item style="height: 48px;">
-      <p flex="30">退场见证人</p>
-      <md-input-container flex="70" class="md-block" style="height: 48px; margin: 0;padding: 0;">
-        <input ng-model="vm.data.ExitWitness" style="padding: 0;margin-top: 10px;">
+      <p flex="40">退场见证人</p>
+      <md-input-container flex="60" class="md-block" style="height: 48px; margin: 0;padding: 0;">
+        <input ng-model="vm.data.ExitWitness" style="padding: 0;margin-top: 10px;text-align: right;">
       </md-input-container>
     </md-list-item>
     <md-divider></md-divider>

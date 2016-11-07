@@ -17,17 +17,9 @@
     vm.data = {};
     vm.data.Id = $stateParams.id;
     vm.data.ExitReason = '材料不合格';
-    vm.max = $stateParams.max;
     vm.data.MaterialFiles = [];
 
-    $scope.$watch('vm.data.ExitCount',function () {
-      if( vm.data.ExitCount > vm.max){
-        vm.data.ExitCount = parseFloat(vm.max);
-      }
-    });
-
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
-      console.log(vm.data);
         api.xhsc.materialPlan.materialUnqualifiedExit(vm.data).then(function (q) {
           utils.alert("提交成功", null, function () {
             $state.go("app.xhsc.gx.gxmain");
