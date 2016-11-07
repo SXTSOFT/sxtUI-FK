@@ -106,7 +106,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'实测标准化',
-        url   :'/sc_standar/{AcceptanceItemID}/{DrawingID}/{AcceptanceIndexID}',
+        url   :'/sc_standar/{AcceptanceItemID}/{DrawingID}/{AcceptanceIndexID}/{projectID}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/center/sc_standar.html',
