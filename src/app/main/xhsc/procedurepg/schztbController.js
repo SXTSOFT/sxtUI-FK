@@ -42,7 +42,7 @@
 
       result.data[0].data.record.forEach(function (item) {
         //item.newList
-
+        item.rows=item.rows?item.rows:[];
         if(!item.List.length){
         //if(!item.newList.length){
           var rowSpan = 0,t1=0,t2 = 0,tempq=[],tempa=[];
