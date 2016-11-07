@@ -108,31 +108,34 @@
     msNavigationServiceProvider.saveItem('plan.build', {
       title: '创建计划',
       state: 'app.plan.buildPlan',
-      icon: 'icon-account',
+      icon: 'icon-open-in-new',
       weight: 1
     });
     msNavigationServiceProvider.saveItem('plan.gantt', {
       title: '查看计划',
       state: 'app.plan.gantts',
-      icon: 'icon-account',
+      icon: 'icon-poll',
       weight: 1
     });
     msNavigationServiceProvider.saveItem('plan.template', {
       title: '模板管理',
+      icon: 'icon-folder',
       weight: 1
     });
-
+    //msNavigationServiceProvider.saveItem('plan.table', {
+    //  title: '报表管理',
+    //  icon: 'icon-table',
+    //  weight: 1
+    //});
     msNavigationServiceProvider.saveItem('plan.template.template', {
       title: '模板',
       state: 'app.plan.template.list',
-      icon: 'icon-account',
       weight: 1
     });
 
     msNavigationServiceProvider.saveItem('plan.template.task', {
       title: '任务',
       state: 'app.plan.task.list',
-      icon: 'icon-account',
       weight: 1
     });
     //msNavigationServiceProvider.saveItem('plan.template.task.demo', {
@@ -145,7 +148,6 @@
     msNavigationServiceProvider.saveItem('plan.template.bc', {
       title: '补偿',
       state: 'app.plan.bc.list',
-      icon: 'icon-account',
       weight: 1
     });
   }

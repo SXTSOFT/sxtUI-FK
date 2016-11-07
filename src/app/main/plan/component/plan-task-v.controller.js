@@ -28,9 +28,13 @@
 
     vm.isNew = $stateParams.id=='add';
     if(!vm.isNew){
+      vm.loading= true;
       api.plan.TaskLibrary.getTaskFlow($stateParams.id).then(function (r) {
         task = vm.data = r.data;
+        vm.data._CloseRelatedObjectType = vm.data.CloseRelatedObjectType;
+        vm.data.CloseRelatedObjectType&&vm.data.CloseRelatedObjectType==0?vm.data.CloseRelatedObjectType ='PQMeasure':vm.data.CloseRelatedObjectType='Inspection';
         task.oType = task.Type;
+        vm.loading= false;
         task.Master.forEach(function (flow) {
           if(flow.Description)
             angular.extend(flow,angular.fromJson(flow.Description));
@@ -359,8 +363,6 @@
         controller:['$scope',function($scope){
           var vm = this;
           vm.type = type;
-          vm.loadUser = loadUser;
-          loadUser();
           vm.add = function(){
             api.plan.UserGroup.create({
               "GroupName": vm.dataName,
@@ -369,7 +371,6 @@
             }).then(function(res){
               vm.current = 'default';
               api.plan.UserGroup.query().then(function(r){
-                //vm.nextUserGroups = r.data.Items;
                 if(vm.nextUserGroups){
                   r.data.Items.forEach(function (item) {
                     item.selected = !!vm.nextUserGroups.find(function (it) {
@@ -379,21 +380,19 @@
                 }
                 vm.nextUserGroups = r.data.Items;
               });
-              //loadUser();
             })
           }
           vm.select = function () {
-              $mdDialog.hide(vm.nextUserGroups.filter(function (t) {
-                return t.selected;
-              }));
+            $mdDialog.hide(vm.nextUserGroups.filter(function (t) {
+              return t.selected;
+            }));
           }
-          function loadUser(){
-            api.plan.UserGroup.query().then(function(r){
-              vm.nextUserGroups = r.data.Items;
-            });
-          }
-          api.plan.TaskFlow.getRoleByFlowId(item.TaskFlowId).then(function(res){
-            var users = res.data.Items;
+          $q.all([
+            api.plan.UserGroup.query(),
+            api.plan.TaskFlow.getRoleByFlowId(item.TaskFlowId)
+          ]).then(function(res){
+            vm.nextUserGroups = res[0].data.Items;
+            var users = res[1].data.Items;
             if(!users.length) return;
             users&&users.forEach(function(r){
               var f = vm.nextUserGroups&&vm.nextUserGroups.find(function(_r){
@@ -404,7 +403,6 @@
               }
             })
           })
-
         }],
         controllerAs: 'vm',
         parent: angular.element(document.body),
@@ -426,15 +424,11 @@
     }
     //获取所有角色
     //api.plan.UserGroup.query().then(function(r){
-    //  vm.nextUserGroups = r.data.Items;
+    //  vm.nextUserGroup = r.data.Items;
     //})
     vm.stop = function(ev){
       ev.stopPropagation();
     }
-    vm.setUsers = function(items){
-
-    }
-
     vm.saveUserGroup = function (flow,type) {
       var users ={
         roleIds:[]

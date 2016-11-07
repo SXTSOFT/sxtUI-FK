@@ -2,7 +2,10 @@
   <md-tab label="任务流程"  >
     <md-tab-content flex layout-fill layout="row">
       <md-content layout="row" flex ms-scroll>
-        <div flex="80">
+        <div flex="100" layout="row"  layout-align="center start" class="mt-20" ng-show="vm.loading">
+          <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <div flex="80" ng-show="!vm.loading">
         <table class="simple">
           <thead>
           <tr>
@@ -131,10 +134,10 @@
           <label>名称</label>
           <input type="text" ng-model="vm.data.Name" >
         </md-input-container>
-        <div ng-if="vm.data.Level!==0">
+        <div ng-if="vm.data.Level!=0" ng-hide="true">
           <md-input-container class="md-block nomargin">
             <label>分类</label>
-            <task-categories ng-model="vm.data.Type" ></task-categories>
+            <task-categories ng-model="vm.data.Type"></task-categories>
           </md-input-container>
         <md-input-container class="md-block">
           <label>变量名</label>

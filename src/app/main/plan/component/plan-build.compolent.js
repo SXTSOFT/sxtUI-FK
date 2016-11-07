@@ -210,7 +210,7 @@
       else if(i===1){
         var tasks = [], milestones = [],flag;
         vm.flows.reduce(function (prev, current) {
-          if(current.show) flag=true;
+          //if(current.show) flag=true;
           if (!current.selected) return prev;
           if (current.type) {
             milestones.push({
@@ -278,11 +278,11 @@
           });
         return fg;
         };
-        if(flag){
-          utils.alert('工期应大于基本工期的80%!').then(function(){
-          });
-          return;
-        };
+        //if(flag){
+        //  utils.alert('工期应大于基本工期的80%!').then(function(){
+        //  });
+        //  return;
+        //};
           var parent = vm;
           var position = $mdPanel.newPanelPosition()
             .relativeTo('md-tabs-wrapper')
@@ -311,13 +311,13 @@
             focusOnOpen: true,
             attachTo:angular.element('#content')
           });
-          f();
           api.plan.BuildPlan.post(b).then(function(r){
             if(!vm.formWizard.Id)
               vm.formWizard.Id = r.data.Id;
             api.plan.BuildPlan.getBuildingPlanRoles(r.data.Id).then(function (r) {
               vm.currentRoles = r.data.Items;
               parent.closePanel1();
+              f();
             });
           },function(err){
             parent.closePanel1();

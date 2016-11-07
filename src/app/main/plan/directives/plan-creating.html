@@ -17,7 +17,7 @@
   <tr class="mainbar">
     <td colspan="9">主线</td>
   </tr>
-  <tr ng-class="{deleted:!flow.selected,milestone:!!flow.type,erro:flow.show}"  ng-repeat="flow in flows track by flow.TaskFlowId">
+  <tr ng-class="{deleted:!flow.selected,milestone:!!flow.type,error:flow.show}"  ng-repeat="flow in flows track by flow.TaskFlowId">
     <td ng-if="!flow.type"><input ng-if="!flow.IsRequired" ng-click="vm.buildDate()" type="checkbox" ng-model="flow.selected"></td>
     <td ng-if="!flow.type" ng-style="{'padding-left':10+(flow.line*12)+'px'}">
       {{$index+1}}、{{flow.Name}}
@@ -37,7 +37,7 @@
       </md-menu>
     </td>
     <td ng-if="!flow.type">
-      <input type="text" required placeholder="工期" ng-click="setVars(flow)" ng-blur="buildDate(flow)" ng-model="flow.currentTask.eDuration">
+      <input type="text" required placeholder="工期" ng-click="setVars(flow)" ng-blur="buildDate(flow)" ng-model="flow.currentTask.Duration">
     </td>
     <td ng-if="!flow.type">
       {{flow.days}}

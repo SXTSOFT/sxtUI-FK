@@ -181,12 +181,10 @@
             vm.gantt = true;
           });
           objectModel = new GanttObjectModel(vm.api);
-          vm.api.side.setWidth(380);
+          vm.api.side.setWidth(400);
         });
         ganttApi.tasks.on.change($scope,function(task){
-          var from,to,copytask;
-          if(!task.type) return;
-          copytask = task;
+          var from,to;
           from = task.model.from;
           to = task.model.to;
           task.row.duration = moment(to).endOf('day').diff(moment(from).startOf('day'),'d');
@@ -198,42 +196,41 @@
             }
           ]
           api.plan.BuildPlan.adjustPlan($stateParams.id,changeData).then(function(r){
-            vm.data.forEach(function(group){
-              var next = group.tasks.find(function(t){
-                return t.dependencies.find(function(d){
+          })
+          vm.data.forEach(function(group){
+            var next = group.tasks.find(function(t){
+              return t.dependencies.find(function(d){
                   return d.from == task.model.id;
                 })!=null;
-              });
-              next  && (next.from = task.model.to);
-              next && (next.duration = moment(next.to).endOf('day').diff(moment(next.from).startOf('day'),'d'));
-              if(next){
-                var id = task.rowsManager.rows.find(function(r){
-                  return r.model.id == next.id+'-group'
-                })
-                if(id){
-                  id.from = task.model.to;
-                  id.duration = next.duration;
-                }
+            });
+            next  && (next.from = task.model.to);
+            next && (next.duration = moment(next.to).endOf('day').diff(moment(next.from).startOf('day'),'d'));
+            if(next){
+              var id = task.rowsManager.rows.find(function(r){
+                return r.model.id == next.id+'-group'
+              })
+              if(id){
+                id.from = task.model.to;
+                id.duration = next.duration;
               }
-              var prev = group.tasks.find(function(t){
-                return task.model.dependencies.find(function(d){
+            }
+            var prev = group.tasks.find(function(t){
+              return task.model.dependencies.find(function(d){
                   return t.id == d.from;
                 })!=null;
-              });
-              prev && (prev.to = task.model.from);
-              prev && (prev.duration = moment(prev.to).endOf('day').diff(moment(prev.from).startOf('day'),'d'));
-              if(prev){
-                  var id = task.rowsManager.rows.find(function(r){
-                    return r.model.id == prev.id+'-group'
-                  })
-                  if(id){
-                    id.to = task.model.from;
-                    id.duration = prev.duration;
-                  }
+            });
+            prev && (prev.to = task.model.from);
+            prev && (prev.duration = moment(prev.to).endOf('day').diff(moment(prev.from).startOf('day'),'d'));
+            if(prev){
+              var id = task.rowsManager.rows.find(function(r){
+                return r.model.id == prev.id+'-group'
+              })
+              if(id){
+                id.to = task.model.from;
+                id.duration = prev.duration;
               }
-            })
+            }
           })
-
         })
 
       }
