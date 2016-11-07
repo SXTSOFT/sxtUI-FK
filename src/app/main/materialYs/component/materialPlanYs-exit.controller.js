@@ -6,7 +6,7 @@
   angular
     .module('app.xhsc')
     .component('materialYsExit',{
-      templateUrl:'app/main/materialYs/component/materialPlanYs-Exit.html',
+      templateUrl:'app/main/materialYs/component/materialPlanYs-exit.html',
       controller:exit,
       controllerAs:'vm'
     });
