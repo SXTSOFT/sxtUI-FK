@@ -127,7 +127,7 @@
                 $mdDialog.hide();
               }
             }],
-            templateUrl:"app/main/xhsc/center/projectlst.html" ,
+            templateUrl:"app/main/xhsc/center/scPiclst.html" ,
             parent: angular.element(document.body),
             clickOutsideToClose:true,
             fullscreen: false
