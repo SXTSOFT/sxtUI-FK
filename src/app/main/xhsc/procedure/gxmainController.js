@@ -50,7 +50,7 @@
       })
     }
     vm.downloadPlan=function(item,isReflsh){
-      var status = user.Role.MemberType==0?17:110;
+      var status = user.Role.MemberType==0?item.InChargeID != item.MainContractorHeadID?1:16:110;
       //下载成功回掉
       function callBack(){
         var ix = vm.section.indexOf(item);

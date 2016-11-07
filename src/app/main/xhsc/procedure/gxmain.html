@@ -7,7 +7,7 @@
   <md-list style="overflow-x: hidden; padding: 0;">
     <md-list-item layout="row" ng-repeat="item in vm.offlines" ui-sref="app.xhsc.materialys.planList({id:item.SectionID,title:item.Name})">
       <p style="font-size:14px; padding-left: 3%">
-        <span>{{item.Name}}</span>
+        <span>{{item.FullName}}</span>
       </p>
       <span flex></span>
       <span class="border1px bottom1px"></span>
@@ -18,7 +18,7 @@
   <md-list style="overflow-x: hidden; padding: 0;">
     <md-list-item layout="row" ng-repeat="item in vm.section">
       <p style="font-size:14px; padding-left: 5%">
-        <span>{{item.Name}}</span>
+        <span>{{item.FullName}}</span>
       </p>
       <span flex></span>
       <span class="border1px bottom1px"></span>
