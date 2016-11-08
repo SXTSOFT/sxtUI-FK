@@ -519,12 +519,26 @@
       }
 
       function id(d, db, args, cfg, cb) {
-        var _id = angular.isFunction(cfg.idField) ? cfg.idField(d,args) : d[cfg.idField];
-        if (_id && db) {
-          var defer = db.addOrUpdate(cfg.data ? cfg.data.apply(cfg, [angular.extend({_id: _id}, d)].concat(args)) : angular.extend({_id: _id}, d));
-          if (cb && cb(defer));
-        }
-        return _id;
+        return provider.$q.$q(function (resolve,reject) {
+          var _id = angular.isFunction(cfg.idField) ? cfg.idField(d,args) : d[cfg.idField];
+          if (_id && db){
+            return db.addOrUpdate(cfg.data ? cfg.data.apply(cfg, [angular.extend({_id: _id}, d)].concat(args))
+              : angular.extend({_id: _id}, d)).then(function (defer) {
+              if (cb && cb(defer));
+              resolve(_id);
+            }).catch(function (r) {
+              reject(_id);
+            })
+          }else {
+            resolve(_id);
+          }
+        })
+        // var _id = angular.isFunction(cfg.idField) ? cfg.idField(d,args) : d[cfg.idField];
+        // if (_id && db) {
+        //   var defer = db.addOrUpdate(cfg.data ? cfg.data.apply(cfg, [angular.extend({_id: _id}, d)].concat(args)) : angular.extend({_id: _id}, d));
+        //   if (cb && cb(defer));
+        // }
+        // return _id;
       }
 
       function bindData(result, rows, cfg) {
@@ -552,27 +566,61 @@
         return result;
       }
 
+      function _task(task) {
+        return provider.$q.$q(function (resolve,reject) {
+          if (!angular.isArray(task)||!task.length){
+            resolve();
+            return;
+          }
+          var len=task.length;
+          function  execute(fn,index) {
+            fn(task,index).then(function () {
+              if (index>0){
+                execute(task[index-1],index-1);
+              }else {
+                resolve();
+              }
+            }).catch(function () {
+               reject();
+            });
+          }
+          execute(task[task.length-1],task.length-1);
+        });
+      }
+
       function userOffline(caller, lodb, args, cb, fn) {
         var p2 = provider.$q.$q(function (resolve, reject) {
           if (!cfg._id&&!lodb) {
             resolve(bindData({}, [], cfg));
           }
           else if (cfg.delete) {
+            var tasks=[];
             args.forEach(function (d) {
-              lodb.delete(id(d, null, args, cfg) || d);
+              tasks.push(function (arr,index) {
+                return lodb.delete(id(d, null, args, cfg) || d)
+              })
             });
-            resolve(args);
+            _task(tasks).then(function () {
+              resolve(args);
+            }).catch(function () {
+              reject(args);
+            });
           }
           else if (cfg.upload) {
             var updates = [];
             args.forEach(function (d) {
-              id(d, lodb, args, cfg, function (defer) {
-                updates.push(defer);
+              updates.push(function (arr,index) {
+                return id(d, lodb, args, cfg)
               });
             });
-            provider.$q.$q.all(updates).then(function () {
+            _task(updates).then(function () {
               resolve({data:{ErrorCode:0,args:args}});
+            }).catch(function () {
+              reject();
             });
+            // provider.$q.$q.all(updates).then(function () {
+            //   resolve({data:{ErrorCode:0,args:args}});
+            // });
           }
           else {
             var result = {};
@@ -636,31 +684,65 @@
                 if (result.data) {
                   var data = result.data;
                   if (cfg.dataType == 1) {
+                    var arr=[];
                     data.forEach(function (d) {
-                      id(d, lodb, args, cfg);
+                      arr.push(function (arr,index) {
+                        return id(d, lodb, args, cfg);
+                      })
                     })
+                    _task(arr).then(function () {
+                      resolve(result);
+                    }).catch(function () {
+                      reject(result);
+                    });
                   }
                   else {
                     if (cfg.dataType == 3) {
-                      id(data, lodb, args, cfg);
+                      id(data, lodb, args, cfg).then(function () {
+                        resolve(result);
+                      }).catch(function () {
+                        reject(result);
+                      });
                     }
                     else if (data.rows && angular.isArray(data.rows)) {
+                      var  arr=[];
                       data.rows.forEach(function (d) {
-                        id(d, lodb, args, cfg);
+                        arr.push(function () {
+                          return id(d, lodb, args, cfg);
+                        })
+                      })
+                      arr.then(function () {
+                        resolve(result);
+                      }).catch(function () {
+                        reject(result);
                       })
                     }
                     else if (data.data && angular.isArray(data.data)) {
                       data.data.forEach(function (d) {
-                        id(d, lodb, args, cfg);
+                        arr.push(function () {
+                          return id(d, lodb, args, cfg);
+                        })
+                      })
+                      arr.then(function () {
+                        resolve(result);
+                      }).catch(function () {
+                        reject(result);
                       })
                     }
                     else if (data.Rows && angular.isArray(data.Rows)) {
                       data.Rows.forEach(function (d) {
-                        id(d, lodb, args, cfg);
+                        arr.push(function () {
+                          return id(d, lodb, args, cfg);
+                        })
+                      })
+                      arr.then(function () {
+                        resolve(result);
+                      }).catch(function () {
+                        reject(result);
                       })
                     }
                   }
-                  resolve(result);
+
                 }
                 else {
                   resolve(result);
