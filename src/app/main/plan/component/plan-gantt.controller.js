@@ -269,8 +269,9 @@
      */
     function calculateHeight()
     {
-      vm.options.maxHeight = $document.find('#chart-container')[0].offsetHeight;
-
+      //vm.options.maxHeight = $document.find('#chart-container')[0].offsetHeight;
+      var h = $(window).height()-130;
+      vm.options.maxHeight = h;
 
     }
 
@@ -371,35 +372,7 @@
           }*/
           return result;
         });
-        //var from = tasks[0].tasks[0].from;
-        //var mstart = moment(from).startOf('day');
-        //var endtime = moment(rs[1].data[rs[1].data.length-1].MilestoneTime).endOf('day');
         vm.isStarted = vm.data[0].tasks[0].isStarted;
-        //console.log(JSON.stringify(tasks))
-        //vm.data=[{
-        //  id:'__',
-        //  name:'里程碑',
-        //  classes:[
-        //    "md-light-blue-100-bg"
-        //  ],
-        //  tasks:rs[1].data.map(function(m){
-        //    var r =  {
-        //      id: m.Id,
-        //      name: m.Name,
-        //      from:from,
-        //      to: m.MilestoneTime,
-        //      duration:endtime.diff(mstart,'d'),
-        //      dependencies:[],
-        //      movable:false,
-        //      classes:[
-        //        "md-light-blue-200-bg"
-        //      ]
-        //    };
-        //    from = m.MilestoneTime;
-        //    return r;
-        //  })
-        //}].concat(tasks);
-        //vm.backData = angular.copy(vm.data);
       })
 
       // Fix for Angular-gantt-chart issue
