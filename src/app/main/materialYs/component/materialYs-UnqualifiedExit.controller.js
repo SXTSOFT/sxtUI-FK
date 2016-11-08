@@ -20,11 +20,28 @@
     vm.data.MaterialFiles = [];
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
-        api.xhsc.materialPlan.materialUnqualifiedExit(vm.data).then(function (q) {
-          utils.alert("提交成功", null, function () {
-            $state.go("app.xhsc.gx.gxmain");
-          });
+      if(vm.data.ExitReason == null){
+        utils.alert('退场原因不能为空');
+        return;
+      }
+      if(vm.data.ExitCount == null){
+        utils.alert('退场数量不能为空');
+        return;
+      }
+      if(vm.data.ExitWitness == null){
+        utils.alert('退场见证人不能为空');
+        return;
+      }
+      if(vm.data.MaterialPlanFiles.length == 0){
+        utils.alert('请至少上传一张材料退场照片');
+        return;
+      }
+
+      api.xhsc.materialPlan.materialUnqualifiedExit(vm.data).then(function (q) {
+        utils.alert("提交成功", null, function () {
+          $state.go("app.xhsc.gx.gxmain");
         });
+      });
     });
 
     $scope.$on("$destroy",function(){

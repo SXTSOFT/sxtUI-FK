@@ -1,5 +1,5 @@
-<md-content  flex layout-padding>
-  <md-list>
+<md-content>
+  <md-list ng-cloak>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
       <label flex="50">进场时间</label>
@@ -9,33 +9,33 @@
     <md-list-item>
       <label flex="50">进场数量</label>
       <md-input-container  style="margin:0;padding: 0;">
-        <input type="number" ng-model="vm.data.ApproachCount" style="top: 10px;position: relative; text-align: right;" min="0"/>
+        <input type="number" ng-model="vm.data.ApproachCount" style="top: 10px;position: relative; text-align: right;" min="0" required />
       </md-input-container>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
       <label flex="50">厂家/品牌</label>
       <md-input-container flex="50" style="margin:0;padding: 0;">
-        <input type="text" ng-model="vm.data.Brand"style="top: 10px;position: relative; text-align: right;"/>
+        <input type="text" ng-model="vm.data.Brand"style="top: 10px;position: relative; text-align: right;" required />
       </md-input-container>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
       <label flex="50">供货方</label>
       <md-input-container flex="50"style="margin:0;padding: 0;">
-        <input type="text" ng-model="vm.data.Supplier" style="top: 10px;position: relative; text-align: right;"/>
+        <input type="text" ng-model="vm.data.Supplier" style="top: 10px;position: relative; text-align: right;" required />
       </md-input-container>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
       <label flex="50">有无封样</label>
-      <md-switch class="md-secondary" ng-model="vm.data.IsPacking"></md-switch>
+      <md-switch class="md-secondary" ng-model="vm.data.IsPacking" required ></md-switch>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
       <label flex="50">检查人</label>
       <md-input-container flex="50"style="margin:0;padding: 0;">
-        <input type="text" ng-model="vm.data.Inspector" style="top: 10px;position: relative; text-align: right;"/>
+        <input type="text" ng-model="vm.data.Inspector" style="top: 10px;position: relative; text-align: right;" required />
       </md-input-container>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
@@ -46,7 +46,7 @@
       <div flex="60" ng-repeat="img in vm.vehicleImgs" sxt-images="vm.vehicleImgs" style="text-align: center;margin:5px 0;">
         <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
       </div>
-      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(256)" style="padding-right: 0;"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(256)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item  style="padding-right: 0;">
@@ -54,7 +54,7 @@
       <div flex="60" ng-repeat="img in vm.goodsImgs" sxt-images="vm.goodsImgs" style="text-align: center;margin:5px 0;">
         <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
       </div>
-      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(512)" style="padding-right: 0;"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(512)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item  style="padding-right: 0;">
@@ -62,7 +62,7 @@
       <div flex="60" ng-repeat="img in vm.rummagerImgs" sxt-images="vm.rummagerImgs" style="text-align: center;margin:5px 0;">
         <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
       </div>
-      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(1024)" style="padding-right: 0;"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(1024)" ><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item  style="padding-right: 0;">
@@ -70,7 +70,7 @@
       <div flex="60" ng-repeat="img in vm.CertificateImgs" sxt-images="vm.CertificateImgs" style="text-align: center;margin:5px 0;">
         <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
       </div>
-      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(2048)" style="padding-right: 0;"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(2048)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
   </md-list>

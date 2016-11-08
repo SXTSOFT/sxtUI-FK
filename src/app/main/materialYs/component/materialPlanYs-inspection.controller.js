@@ -23,6 +23,27 @@
     vm.data.MaterialPlanFiles = [];
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
+      if(vm.data.InspectionTime == null){
+        utils.alert('送检时间不能为空');
+        return;
+      }
+      if(vm.data.Inspectioner == null){
+        utils.alert('送检人不能为空');
+        return;
+      }
+      if(vm.data.CheckList == null){
+        utils.alert('送检单号不能为空');
+        return;
+      }
+      if(vm.samplingProcessImgs.length == 0){
+        utils.alert('请至少上传一张抽样过程照片');
+        return;
+      }
+      if(vm.checkListImgs.length == 0 ){
+        utils.alert('请至少上传一张检查单照片');
+        return;
+      }
+
       vm.data.MaterialPlanFiles = vm.samplingProcessImgs.concat(vm.checkListImgs);
       api.xhsc.materialPlan.MaterialInspection(vm.data).then(function (q) {
         utils.alert("提交成功", null, function () {
@@ -62,8 +83,6 @@
         //ImageByte: $scope.photos[0].ImageByte
       });
     }
-
-
 
 
 

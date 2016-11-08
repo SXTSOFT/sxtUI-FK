@@ -23,6 +23,15 @@
     });
 
     var sendCheckResult = $rootScope.$on('sendGxResult',function() {
+      if(vm.data.ExitCount == null){
+        utils.alert('材料退场数量不能为空');
+        return;
+      }
+      if(vm.data.ExitWitness == null){
+        utils.alert('退场见证人不能为空');
+        return;
+      }
+
       vm.data.MaterialFiles = vm.exitImgs;
       api.xhsc.materialPlan.PostExitInfo(vm.data).then(function (r) {
         utils.alert('提交成功!');

@@ -58,7 +58,6 @@
         //       photo(type,vm.certificateImgs,image);
         //   }
         // }
-
         //});
     };
 
@@ -86,6 +85,31 @@
       sendCheckResult = null;
     });
     var sendCheckResult = $rootScope.$on('sendGxResult',function() {
+      if(vm.data.AcceptanceTime == null){
+        utils.alert('验收时间不能为空');
+        return;
+      }
+      if(vm.data.Accepter == null){
+        utils.alert('验收人不能为空');
+        return;
+      }
+      if(vm.vehicleImgs.length == 0){
+        utils.alert('至少上传一张验收车辆照片');
+        return;
+      }
+      if(vm.goodsImgs.length == 0){
+        utils.alert('至少上传一张验收货物照片');
+        return;
+      }
+      if(vm.checkerImgs.length == 0){
+        utils.alert('至少上传一张验收检查人照片');
+        return;
+      }
+      if(vm.certificateImgs.length == 0){
+        utils.alert('至少上传一张验收合格证照片');
+        return;
+      }
+
       vm.images = vm.vehicleImgs.concat(vm.goodsImgs).concat(vm.checkerImgs).concat(vm.certificateImgs);
       vm.data.BatchFile = vm.images;
       api.xhsc.materialPlan.PostCheckInfo(vm.data).then(function (r) {

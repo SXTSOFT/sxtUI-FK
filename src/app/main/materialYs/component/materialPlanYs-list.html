@@ -12,6 +12,7 @@
             <md-button ng-if="item.Status == 8" ui-sref="app.xhsc.materialys.inspectionReport({id:item.Id})" style="color: black;margin-right: 0px">归档</md-button>
             <md-button ng-if="item.Status == 16" style="color: black;margin-right: 0px" ui-sref="app.xhsc.materialys.approval({planId:item.PlanId,id:item.Id})">批示</md-button>
             <md-button ng-if="item.Status == 32" style="color: black;margin-right: 0px" ui-sref="app.xhsc.materialys.unqualifiedExit({id:item.Id})">退场</md-button>
+            <md-button ng-if="item.Status == 64" style="color: black;margin-right: 0px" ui-sref="app.xhsc.materialys.exit({id:item.Id})">退场</md-button>
             <span class="border1px bottom1px"></span>
           </md-list-item>
         </md-list>

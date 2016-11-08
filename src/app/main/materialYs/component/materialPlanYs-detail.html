@@ -1,5 +1,5 @@
 <md-content flex layout-padding>
-    <div style="font-size: 1.1em;background-color: #F2F2F2;">材料计划信息</div>
+    <div style="background-color: #F2F2F2;font-size: 12px;color: #757575;padding-top: 16px;padding-bottom:  16px;">材料计划信息</div>
     <md-divider class="md-no-sticky"></md-divider>
     <div>计划名称：{{vm.data.PlanName}}</div>
     <div>材料/设备名称：{{vm.data.MaterialName}}</div>
@@ -10,15 +10,20 @@
     <div>计划进场数量：{{vm.data.PlanCount}}&nbsp;{{vm.data.Unit}}</div>
     <div>使用部位：{{vm.data.Position}}</div>
     <div>合同编号：{{vm.data.Contract}}</div>
-    <div>供货方式：{{vm.data.SupplyType}}</div>
+    <div>供货方式：
+      <!--{{vm.data.SupplyType}}-->
+      <label ng-if="vm.data.SupplyType == 1">甲供</label>
+      <label ng-if="vm.data.SupplyType == 2">认质认价</label>
+      <label ng-if="vm.data.SupplyType == 4">甲指乙供</label>
+    </div>
     <md-divider class="md-no-sticky"></md-divider>
     <section>
       <md-checkbox aria-label="Disabled checkbox" ng-model="vm.confirm">本人确认本批进场材料与上述材料计划信息相符</md-checkbox>
     </section>
     <md-divider class="md-no-sticky"></md-divider>
-    <section layout="row" layout-align="center">
-      <md-button flex="50" class="groupX middle" ng-disabled="!vm.confirm" style="color: black;margin-right: 0px" ui-sref="app.xhsc.materialys.intoFactory({status:1,Id:vm.data.Id,BatchId:vm.data.BatchId})">分批进场</md-button>
-      <md-button flex="50" class="groupX middle" ng-disabled="!vm.confirm" ui-sref="app.xhsc.materialys.intoFactory({status:0,Id:vm.data.Id,BatchId:vm.data.BatchId})" style="color: black;margin-right: 0px">一次性进场</md-button>
+    <section layout="row" layout-align="center" style="padding: 0;">
+      <md-button flex="50" class="groupX middle md-secondary" ng-disabled="!vm.confirm" style="color: black;margin-right: 0px" ui-sref="app.xhsc.materialys.intoFactory({status:1,Id:vm.data.Id,BatchId:vm.data.BatchId})">分批进场</md-button>
+      <md-button flex="50" class="groupX middle md-secondary" ng-disabled="!vm.confirm" ui-sref="app.xhsc.materialys.intoFactory({status:0,Id:vm.data.Id,BatchId:vm.data.BatchId})" style="color: black;margin-right: 0px">一次性进场</md-button>
     </section>
     <md-divider class="md-no-sticky"></md-divider>
 </md-content>
