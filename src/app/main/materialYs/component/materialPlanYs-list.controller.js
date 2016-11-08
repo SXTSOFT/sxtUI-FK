@@ -25,4 +25,4 @@
     });
 
   }
-})(angular,undefined)
+})(angular,undefined);
