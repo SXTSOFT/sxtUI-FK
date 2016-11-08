@@ -12,7 +12,7 @@
     });
 
   /** @ngInject */
-  function exit($rootScope,$scope,$stateParams,api,utils,sxt){
+  function exit($rootScope,$scope,$stateParams,api,utils,sxt,xhUtils){
     var vm = this;
     vm.data = {ExitId:sxt.uuid(),PlanId:$stateParams.id};
     vm.data.ExitReason = '材料多余';
@@ -23,6 +23,19 @@
     });
 
     var sendCheckResult = $rootScope.$on('sendGxResult',function() {
+      if(vm.data.ExitCount == null){
+        utils.alert('材料退场数量不能为空');
+        return;
+      }
+      if(vm.data.ExitWitness == null){
+        utils.alert('退场见证人不能为空');
+        return;
+      }
+      if(vm.exitImgs.length == 0){
+        utils.alert('至少上传一张退场照片');
+        return;
+      }
+
       vm.data.MaterialFiles = vm.exitImgs;
       api.xhsc.materialPlan.PostExitInfo(vm.data).then(function (r) {
         utils.alert('提交成功!');
@@ -37,26 +50,12 @@
     });
 
     vm.addPhoto = function (type) {
-      photo(type,vm.exitImgs,null);
       //拍照事件
-      //xhUtils.photo().then(function (image) {
-      // if(image){
-      //   switch (type){
-      //     case 1:
-      //       photo(type,vm.vehicleImgs,image);
-      //       break;
-      //     case 2:
-      //       photo(type,vm.goodsImgs,image);
-      //       break;
-      //     case 4:
-      //       photo(type,vm.checkerImgs,image);
-      //       break;
-      //     default:
-      //       photo(type,vm.certificateImgs,image);
-      //   }
-      // }
-
-      //});
+      xhUtils.photo().then(function (image) {
+        if(image){
+          photo(type,vm.exitImgs,image);
+        }
+      });
     };
 
     function photo(type,arr,image){
@@ -67,7 +66,7 @@
         ApproachStage:128,
         ImageName:_id+".jpeg",
         ImageUrl:_id+".jpeg",
-        ImageByte: $scope.photos[0].ImageByte
+        ImageByte: image
       });
     }
 

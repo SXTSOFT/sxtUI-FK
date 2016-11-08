@@ -46,7 +46,12 @@
       <td>{{item.PlanCount}}</td>
       <td>{{item.Position}}</td>
       <td>{{item.Contract}}</td>
-      <td>{{item.SupplyType}}</td>
+      <td>
+        <!--{{item.SupplyType}}-->
+        <label ng-if="item.SupplyType == 1">甲供</label>
+        <label ng-if="item.SupplyType == 2">认质认价</label>
+        <label ng-if="item.SupplyType == 4">甲指乙供</label>
+      </td>
       <td>{{item.Status}}</td>
       <td class="actions">
         <md-button class="md-primary md-mini md-fab" aria-label="Settings" ui-sref="app.material.plan({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>

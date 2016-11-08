@@ -8,8 +8,36 @@
       <md-button class="md-icon-button" ng-click="vm.close()"><md-icon md-font-icon="icon-close"></md-icon></md-button>
     </div>
   </md-toolbar>
-<md-content layout="column" class="md-padding" flex ms-scroll>
-  <div layout="row" class="ph-20" layout-align="center center" ng-if="vm.subloading"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div>
+<md-content layout="row" flex ms-scroll>
+
+  <div flex="80">
+    <table class="simple">
+      <thead>
+      <tr><th style="width: 25px;min-width: 25px"></th>
+        <th>流程</th>
+        <th>计划</th>
+        <th>实际</th>
+        <th>状态</th>
+      </tr></thead>
+      <tbody>
+      <tr ng-repeat="flow in vm.flows">
+        <td style="height: 44px;">
+          {{$index+1}}、
+        </td>
+        <td >
+          {{flow.Name}}
+        </td>
+        <td>{{flow.ScheduledStartTime|date:'yyyy-MM-dd'}}~{{flow.ScheduledEndTime|date:'yyyy-MM-dd'}}</td>
+        <td style="color:#1f6db4"><!--{{flow.ActualStartTime|date:'yyyy-MM-dd'}}~{{flow.ActualEndTime|date:'yyyy-MM-dd'}}--></td>
+        <td>未执行</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div flex="20">
+    <div style="height: 60px"></div>
+    <canvas id="gitGraph" ng-show="vm.hasFlow"></canvas>
+  </div>
   <div ng-show="!vm.hasFlow">
     <md-list style="font-size:14px;">
       <md-list-item>
@@ -33,7 +61,7 @@
       <md-button ng-click="vm.toStopTask()" class="md-primary md-raised md-mini">手工关闭</md-button>
     </div>
   </div>
-  <canvas id="gitGraph" ng-show="vm.hasFlow"></canvas>
+
   <md-sidenav layout="column" class="md-sidenav-right md-whiteframe-4dp white-bg" style="max-width: 550px;width:600px" md-component-id="right">
     <md-tabs md-border-bottom flex >
       <md-tab label="流程信息" ng-disabled="!vm.current">

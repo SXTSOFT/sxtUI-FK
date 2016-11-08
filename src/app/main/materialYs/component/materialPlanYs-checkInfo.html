@@ -1,31 +1,32 @@
 <form name="projectForm">
-  <md-list ng-cloak>
-    <md-list-item style="height: 48px;">
-      <p flex="50">验收时间</p>
-      <p style="text-align: right;">{{vm.data.AcceptanceTime}}</p>
+  <md-list ng-cloak flex>
+    <md-list-item>
+      <p flex="40">验收时间</p>
+      <p flex="60" style="text-align: right;">{{vm.data.AcceptanceTime}}</p>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item>
       <p>现场检查</p>
-      {{vm.data.WgCheck?'合格':'不合格'}}
+      {{vm.data.WgCheck?'合格':'不合格'}}&nbsp;
       <md-switch class="md-secondary" ng-model="vm.data.WgCheck"></md-switch>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item>
       <p>是否送检</p>
-      {{vm.data.IsInspection?'需要':'不需要'}}
+      {{vm.data.IsInspection?'需要':'不需要'}}&nbsp;
       <md-switch class="md-secondary" ng-model="vm.data.IsInspection"></md-switch>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item style="height: 48px;">
-      <p flex="30">验收人</p>
-      <md-input-container flex="70" class="md-block" style="height: 48px; margin: 0;padding: 0;">
-        <input ng-model="vm.data.Accepter" style="padding: 0;margin-top: 10px;">
+      <p flex="40">验收人</p>
+      <md-input-container flex="60" class="md-block" style="height: 48px; margin: 0;padding: 0;">
+        <input ng-model="vm.data.Accepter" style="padding: 0;margin-top: 10px;text-align: right;">
       </md-input-container>
     </md-list-item>
-    <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">验收照片</div>
+    <!--<div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">验收照片</div>-->
+    <md-subheader class="md-no-sticky" style="font-size: 1.1em;background-color: #F2F2F2;">验收照片</md-subheader>
     <md-list-item style="padding-right: 0;">
-      <p flex="30">车辆</p>
+      <p flex="30" class="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">车辆</p>
       <div flex="30" ng-repeat="img in vm.vehicleImgs" sxt-images="vm.vehicleImgs" style="text-align: center;margin: 5px 0;">
         <img ng-src="{{img.ImageByte}}" style="width: 450px;" flex="95" style="display: block;"/>
       </div>
@@ -33,7 +34,7 @@
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item style="padding-right: 0;">
-      <p flex="30">货物</p>
+      <label flex="30" class="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">货物</label>
       <div flex="30" ng-repeat="img in vm.goodsImgs" sxt-images="vm.goodsImgs" style="text-align: center;margin: 5px 0;">
         <img ng-src="{{img.ImageByte}}" style="width: 450px;" flex="95" style="display: block;"/>
       </div>
@@ -41,7 +42,7 @@
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item style="padding-right: 0;">
-      <p flex="30">验收人</p>
+      <label flex="30" class="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">验收人</label>
       <div flex="30" ng-repeat="img in vm.checkerImgs" sxt-images="vm.checkerImgs" style="text-align: center;margin:5px 0;">
         <img ng-src="{{img.ImageByte}}" style="width: 450px;" flex="95" style="display: block;"/>
       </div>
@@ -49,7 +50,7 @@
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item style="padding-right: 0;">
-      <p flex="30">合格证</p>
+      <label flex="30" class="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">合格证</label>
       <div flex="30" ng-repeat="img in vm.certificateImgs" sxt-images="vm.certificateImgs" style="text-align: center;margin:5px 0;">
         <img ng-src="{{img.ImageByte}}" style="width: 450px;" flex="95" style="display: block;"/>
       </div>
