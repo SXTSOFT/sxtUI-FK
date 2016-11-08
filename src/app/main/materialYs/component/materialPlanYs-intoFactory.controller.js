@@ -74,6 +74,11 @@
       sendgxResult=null;
     });
 
+    //删除图片操作
+    $rootScope.$on('delete',function (data,index) {
+      $scope.$apply();
+    });
+
     vm.addPhoto = function (type) {
       xhUtils.photo().then(function (image) {
         if (image) {

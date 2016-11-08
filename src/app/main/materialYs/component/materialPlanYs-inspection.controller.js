@@ -52,6 +52,11 @@
       });
     });
 
+    //删除图片操作
+    $rootScope.$on('delete',function (data,index) {
+      $scope.$apply();
+    });
+
     $scope.$on("$destroy",function(){
       sendgxResult();
       sendgxResult=null;
