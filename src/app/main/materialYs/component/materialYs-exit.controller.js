@@ -37,26 +37,13 @@
     });
 
     vm.addPhoto = function (type) {
-      photo(type,vm.exitImgs,null);
-      //拍照事件
-      //xhUtils.photo().then(function (image) {
-      // if(image){
-      //   switch (type){
-      //     case 1:
-      //       photo(type,vm.vehicleImgs,image);
-      //       break;
-      //     case 2:
-      //       photo(type,vm.goodsImgs,image);
-      //       break;
-      //     case 4:
-      //       photo(type,vm.checkerImgs,image);
-      //       break;
-      //     default:
-      //       photo(type,vm.certificateImgs,image);
-      //   }
-      // }
 
-      //});
+      //拍照事件
+      xhUtils.photo().then(function (image) {
+        if(image){
+          photo(type,vm.exitImgs,image);
+        }
+      });
     };
 
     function photo(type,arr,image){

@@ -28,38 +28,37 @@
     });
 
     vm.addPhoto = function (type) {
-      switch (type){
-        case 1:
-          photo(type,vm.vehicleImgs,null);
-          break;
-        case 2:
-          photo(type,vm.goodsImgs,null);
-          break;
-        case 4:
-          photo(type,vm.checkerImgs,null);
-          break;
-        default:
-          photo(type,vm.certificateImgs,null);
-      }
+      // switch (type){
+      //   case 1:
+      //     photo(type,vm.vehicleImgs,null);
+      //     break;
+      //   case 2:
+      //     photo(type,vm.goodsImgs,null);
+      //     break;
+      //   case 4:
+      //     photo(type,vm.checkerImgs,null);
+      //     break;
+      //   default:
+      //     photo(type,vm.certificateImgs,null);
+      // }
       //拍照事件
-        //xhUtils.photo().then(function (image) {
-        // if(image){
-        //   switch (type){
-        //     case 1:
-        //       photo(type,vm.vehicleImgs,image);
-        //       break;
-        //     case 2:
-        //       photo(type,vm.goodsImgs,image);
-        //       break;
-        //     case 4:
-        //       photo(type,vm.checkerImgs,image);
-        //       break;
-        //     default:
-        //       photo(type,vm.certificateImgs,image);
-        //   }
-        // }
-
-        //});
+      xhUtils.photo().then(function (image) {
+        if(image){
+          switch (type){
+            case 1:
+              photo(type,vm.vehicleImgs,image);
+              break;
+            case 2:
+              photo(type,vm.goodsImgs,image);
+              break;
+            case 4:
+              photo(type,vm.checkerImgs,image);
+              break;
+            default:
+              photo(type,vm.certificateImgs,image);
+          }
+        }
+      });
     };
 
     function photo(type,arr,image){
