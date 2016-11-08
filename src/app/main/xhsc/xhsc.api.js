@@ -1323,9 +1323,31 @@
             AcceptanceItemID: AcceptanceItemID,
             DrawingID: DrawingID
           })
-        }
+        },
+        GetListByWhere:function (drawingId,acceptanceIndexId) {
+          var  params={
+            drawingId:drawingId
+          };
+          if (acceptanceIndexId){
+            params.acceptanceIndexId=acceptanceIndexId
+          }
+          return $http.get($http.url('/api/MeasureStandardApi/GetListByWhere',params))
+        },
 
-
+        GetListByExtend:$http.db({
+          db:function (extend,db) {
+            if (db){
+              return db;
+            }
+            return "";
+          },
+          idField: function () {
+             return "points";
+          },
+          dataType:3
+        }).bind(function (extend) {
+          return $http.get($http.url('/api/MeasureStandardApi/GetListByExtend',{extend:extend}));
+        })
       }
     });
   }

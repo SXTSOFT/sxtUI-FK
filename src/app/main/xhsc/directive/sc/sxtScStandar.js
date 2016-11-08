@@ -36,9 +36,6 @@
       var map, fg, toolbar;
       var install = function () {
         if (!scope.measureIndexes || !scope.measureIndexes.length){
-          if (toolbar){
-            toolbar
-          }
           return;
         }
         if (!map) {
@@ -53,10 +50,7 @@
           //var layer = layer;
           if (layer && layer.loaded)return;
           layer.loaded = true;
-          var reqArr = [
-            remote.Assessment.GetMeasurePointAll(scope.projectId,scope.drawing.data.DrawingID)
-          ]
-          $q.all(reqArr).then(function (req) {
+          remote.PQMeasureStandard.GetListByWhere(scope.drawing.data.DrawingID).then(function (req) {
             //图纸
             $timeout(function () {
               if (scope.drawing && scope.drawing.data && scope.drawing.data.DrawingContent) {
@@ -75,7 +69,7 @@
                 scope.ct && (scope.ct.loading = false);
               }
             });
-            var t = req[0].data && req[0].data.data ? req[0].data.data : [];
+            var t = req.data ?req.data : [];
             var points = [];
             t.forEach(function (o) {
               if (!points.find(function (k) {
@@ -180,18 +174,15 @@
                   AcceptanceIndexID: m.AcceptanceIndexID,
                   AcceptanceItemID: scope.acceptanceItem,
                   DrawingID: scope.drawing.data.DrawingID,
-                  MeasurePointID: point._id
+                  MeasurePointID: point._id,
+                  Extend:scope.projectId
                 });
               });
             })
             remote.PQMeasureStandard.UpdatePoint_tran({
               MeasurePointID: point._id,
               Geometry: JSON.stringify(point.geometry)
-            }, arr).then(function () {
-              scope.measureIndexes.forEach(function (k) {
-                k.isSubmit = true;
-              })
-            }).catch(function () {
+            }, arr).catch(function () {
               utils.alert("由于网络或者后台服务异常，导致更新或插入失败！", null, function () {
                 $timeout(function () {
                   install()
