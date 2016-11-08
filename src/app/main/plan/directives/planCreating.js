@@ -13,8 +13,7 @@
         begin:'=',
         libraryId:'=',
         flow:'=',
-        branch:'=',
-        ct:'&'
+        branch:'='
       },
       templateUrl:'app/main/plan/directives/plan-creating.html',
       link:link
@@ -26,20 +25,19 @@
       //  rootTaskLibraryId = scope.libraryId || 303,
       //  begin = scope.begin ? moment(scope.begin) : moment('2016-10-1');
       scope.$watch('libraryId',function(){
-        if(!!scope.libraryId&&!!scope.buildId){
+        if(!!scope.libraryId&&!!scope.buildId) {
           begin = scope.begin;
           load();
         }
       })
       scope.$watch('buildId',function(){
-        if(!!scope.libraryId&&!!scope.buildId){
+        if(!!scope.libraryId&&!!scope.buildId) {
           begin = scope.begin;
           load();
         }
       })
       scope.$watch('begin',function () {
         begin = scope.begin ? moment(scope.begin):null;
-        console.log('begin',begin,scope.begin);
         //scope.buildDate();
         if(!!scope.libraryId&&!!scope.buildId){
           begin = scope.begin;
@@ -162,8 +160,6 @@
           }
         }
       })();
-
-
       function load() {
         $q.all([
           api.plan.TaskLibrary.getTaskFlow(scope.libraryId),
@@ -294,7 +290,7 @@
       scope.setCurrent = function (flow, task) {
         flow.currentTask = task;
         setTask(flow);
-        scope.buildDate();
+        scope.buildDate(flow);
       }
       scope.buildBranch = function () {
         scope.banchs.forEach(function (flow) {
@@ -306,14 +302,14 @@
           }
         });
       }
-      scope.buildDate = function () {
+      scope.buildDate = function (item) {
         if (!scope.flows) return;
-        //if(item&&item.currentTask&&item.currentTask.eDuration < item.currentTask.Duration*0.8){
-        //  item&&(item.show = true);
-        //  return;
-        //}else{
-        //  item&&(item.show = false);
-        //};
+        if(item&&item.currentTask&&item.currentTask.eDuration < item.currentTask.Duration*0.8){
+          item&&(item.show = true);
+          return;
+        }else{
+          item&&(item.show = false);
+        };
         scope.flows.reduce(function (prev, current) {
           if(current.show) return current;
           if (!current.selected) return prev;
@@ -332,10 +328,10 @@
             }
             else {
               try {
-                var days = gs.setVars(current.currentTask.Duration);
-                if (days === current.currentTask.Duration)
-                //var days = gs.setVars(current.currentTask.eDuration);
-                //if (days === current.currentTask.eDuration)
+                //var days = gs.setVars(current.currentTask.Duration);
+                //if (days === current.currentTask.Duration)
+                var days = gs.setVars(current.currentTask.eDuration);
+                if (days === current.currentTask.eDuration)
                   days = undefined;
                 current.days = days;
               } catch (ex) {

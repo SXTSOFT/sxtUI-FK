@@ -19,6 +19,9 @@
 
     }
     vm.formWizard.StartTime ?vm.formWizard.StartTime:vm.formWizard.StartTime = new Date();
+    //$scope.$watch('vm.formWizard',function(){
+    //  console.log(vm.formWizard)
+    //},true)
     var gs = (function () {
       var vars = [],r = /[a-z]/gi,
         compare = function (s1,s2) {
