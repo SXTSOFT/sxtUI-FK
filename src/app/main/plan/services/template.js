@@ -13,8 +13,9 @@
       this._render();
       this.context.fillStyle = 'white';
       if(this.tag) {
-        var seq = /\d+/.exec(this.tag)[0]
-        this.context.fillText(seq, this.x-(seq.length==1?5:8), this.y+5);
+        var r = /\d+/.exec(this.tag), seq = r && r[0];
+        if(r && seq)
+          this.context.fillText(seq, this.x-(seq.length==1?5:8), this.y+5);
       }
     }
     GitGraph.Branch.prototype.merge = function ( target, commitOptions ) {
@@ -97,7 +98,7 @@
           strokeWidth: 1
         },
         tag: {
-          font: "normal 13px arial",
+          font: "normal 12px arial",
           strokeWidth: 1,
           display:false
         },
@@ -211,6 +212,7 @@
                 author:t.TaskFlowId,
                 seq:t.seq+1,
                 //tag:ix!==0?(t.seq+1)+'、'+ t.Name:undefined,
+                tag:t.tag,
                 displayTagBox:false,
                 dotSize:ix===0?1:0,
                 dotStrokeWidth:ix===0?1:0,
@@ -229,6 +231,7 @@
               getBranch(t.line).commit({
                 author:t.TaskFlowId,
                 //tag: (t.seq+1)+'、'+ t.Name,
+                tag:t.tag,
                 displayTagBox:false,
                 message:t.Name,
                 onClick:onClick,
