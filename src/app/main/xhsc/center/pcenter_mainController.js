@@ -114,7 +114,7 @@
       //消息中心
       vm.scStandar=function(){
         if (!vm.projects.length){
-          utils.alert("您当前无任何项目权限，请联系项目部同事!");
+          utils.alert("您当前无任何项目权限!");
           return;
         }
         if (vm.projects.length>1){
