@@ -333,13 +333,12 @@
     // Reload data action
     function load()
     {
-      return $q.all([api.plan.Task.query({
+      return api.plan.Task.query({
         Type:'BuildingPlan',
         Source:$stateParams.id
-      }),api.plan.BuildPlan.getMileStone($stateParams.id)]).then(function (rs) {
-        var r = rs[0];
-        vm.originData = r.data;
-        var tasks = r.data.Items.filter(function (item) {
+      }).then(function (rs) {
+        vm.originData = rs.data;
+        vm.data = rs.data.Items.filter(function (item) {
           return !item.ExtendedParameters;
         }).map(function (item) {
           var sdate = moment(item.ScheduledStartTime).startOf('day');
@@ -372,34 +371,34 @@
           }*/
           return result;
         });
-        var from = tasks[0].tasks[0].from;
-        var mstart = moment(from).startOf('day');
-        var endtime = moment(rs[1].data[rs[1].data.length-1].MilestoneTime).endOf('day');
-        vm.isStarted = tasks[0].tasks[0].isStarted;
+        //var from = tasks[0].tasks[0].from;
+        //var mstart = moment(from).startOf('day');
+        //var endtime = moment(rs[1].data[rs[1].data.length-1].MilestoneTime).endOf('day');
+        vm.isStarted = vm.data[0].tasks[0].isStarted;
         //console.log(JSON.stringify(tasks))
-        vm.data=[{
-          id:'__',
-          name:'里程碑',
-          classes:[
-            "md-light-blue-100-bg"
-          ],
-          tasks:rs[1].data.map(function(m){
-            var r =  {
-              id: m.Id,
-              name: m.Name,
-              from:from,
-              to: m.MilestoneTime,
-              duration:endtime.diff(mstart,'d'),
-              dependencies:[],
-              movable:false,
-              classes:[
-                "md-light-blue-200-bg"
-              ]
-            };
-            from = m.MilestoneTime;
-            return r;
-          })
-        }].concat(tasks);
+        //vm.data=[{
+        //  id:'__',
+        //  name:'里程碑',
+        //  classes:[
+        //    "md-light-blue-100-bg"
+        //  ],
+        //  tasks:rs[1].data.map(function(m){
+        //    var r =  {
+        //      id: m.Id,
+        //      name: m.Name,
+        //      from:from,
+        //      to: m.MilestoneTime,
+        //      duration:endtime.diff(mstart,'d'),
+        //      dependencies:[],
+        //      movable:false,
+        //      classes:[
+        //        "md-light-blue-200-bg"
+        //      ]
+        //    };
+        //    from = m.MilestoneTime;
+        //    return r;
+        //  })
+        //}].concat(tasks);
         //vm.backData = angular.copy(vm.data);
       })
 

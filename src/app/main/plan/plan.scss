@@ -100,3 +100,17 @@ table{
 .gxselected{
   color:red;
 }
+table{
+  &.simple{
+    &.milestone{
+      tbody{
+        tr{
+          td{
+            padding-top:16px;
+            padding-bottom: 16px;
+          }
+        }
+      }
+    }
+  }
+}

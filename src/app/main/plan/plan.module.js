@@ -84,22 +84,25 @@
         url:'/create',
         template:'<plan-create flex layout="column"></plan-create>'
       })
-      .state('app.plan.gantt',{
-        url:'/gantts/{id}',
+
+      .state('app.plan.milestone',{
+        url:'/milestone/{id}',
+        abstract:true,
+        template:'<ui-view layout="column" flex></ui-view>'
+        //template:'<plan-milestone flex layout="column"></plan-milestone>'
+      })
+      .state('app.plan.milestone.gantt',{
+        url:'/gantt',
+        template:'<plan-milestone flex layout="column"></plan-milestone>'
+      })
+      .state('app.plan.milestone.item',{
+        url:'/item',
         template:'<plan-gantt flex layout="column"></plan-gantt>'
       })
       .state('app.plan.gantts',{
         url:'/gantts',
         template:'<plan-ganttlist flex layout="column"></plan-ganttlist>'
       })
-      //.state('app.plan.milestone',{
-      //  url:'/milestone',
-      //  template:'<ui-view layout="column" flex></ui-view>'
-      //})
-      //.state('app.plan.milestone.list',{
-      //  url:'/list',
-      //  template:'<plan-milestone flex layout="column"></plan-milestone>'
-      //})
     msNavigationServiceProvider.saveItem('plan', {
       title: '计划管理',
       group: true,
