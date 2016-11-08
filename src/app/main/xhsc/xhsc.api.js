@@ -150,14 +150,19 @@
           return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByIdEx', {areaId: regionId}));
         }),
         getRegionWithRight: $http.db({
-          _id: 'regionsRight',
-          idField: 'RegionID',
-          dataType: 1,
-          filter: function (item,regionId) {
-            return item.RegionID == regionId;
-          }
+          db: function (regionId,db) {
+            return db?db:null;
+          },
+          idField: function () {
+             return "regionId";
+          },
+          dataType: 3,
         }).bind(function (regionId) {
-          return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByIdExAuthority', {areaId: regionId}));
+          return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByIdExAuthority', {areaId: regionId})).then(function (result) {
+              return {
+                data:result.data
+              }
+          });
         }),
         getInspectionList:$http.db({
            db:function(inspectionId,db){
@@ -390,14 +395,13 @@
           })
         },
         getRegionStatus:$http.db({
-            _id:'project_status',
-            idField:function (item) {
-              return item.Sign + item.AcceptanceItemID+item.AreaId;
+            db:function (projectId,Sign,db) {
+                return db?db:null;
             },
-            dataType:1,
-            filter:function (item,projectId,Sign) {
-              return item.projectId==projectId && item.Sign==Sign
-            }
+            idField:function (item) {
+              return "items";
+            },
+            dataType:3,
           }).bind(function(projectId,Sign) {
           return $http.get($http.url('/Api/InspectionApi/GetUserInspectionInfo', {
             projectId: projectId,
@@ -407,7 +411,9 @@
               row.projectId = projectId;
               row.Sign = Sign;
             });
-            return r;
+            return {
+              data:r.data
+            };
           });
         }),
         getRegionStatusEx:$http.db({

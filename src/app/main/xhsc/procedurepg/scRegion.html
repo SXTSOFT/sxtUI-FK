@@ -13,7 +13,7 @@
     <p style="font-size:12px;background: #f4f4f6;padding:10px;margin:0;" ng-show="vm.loading">{{h.FullRegionName }}</p>
     <div class="floor-list gxroomlist" ng-show="vm.loading" layout="column" flex>
         <md-virtual-repeat-container flex>
-          <md-list-item   md-virtual-repeat="d in vm.dynamicItems" class="repeat"  md-on-demand
+          <md-list-item   md-virtual-repeat="d in vm.building" class="repeat"
                           style="padding:0;background: #fff;margin-bottom:10px;border-top:1px solid #dedede;">
             <div flex>
               <div flex class="gxrooms" style="padding-left:10px;padding-right:10px;"><span class="roomname">{{d.RegionName}}</span><md-button ng-click="vm.zk(d)" style="color:#49affe;min-width: 50px;"><span ng-show="d.show">展开</span><span ng-show="!d.show">收起</span></md-button></div>

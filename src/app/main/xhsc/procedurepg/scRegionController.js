@@ -67,19 +67,6 @@
 
         function _init(region) {
           function setStatus(status,statusArr) {
-            //var st=null;
-            //for (var sProp in status) {
-            //  if (status[sProp].AreaId==region.RegionID&&status[sProp].AcceptanceItemID==acceptanceItemID){
-            //    st=status[sProp];
-            //    break;
-            //  }
-            //}
-            //var st = status.find(function (k) {
-            //  return k.AreaId = region.RegionID && acceptanceItemID == k.AcceptanceItemID
-            //});
-            //if (st){
-            // return st.Status
-            //}
             if (angular.isArray(statusArr) && statusArr.find(function (k) {
                 return k == acceptanceItemID;
               })) {
@@ -133,76 +120,18 @@
 
       function callBack(res) {
         vm.loading = true;
-        var r = res[0], status = res[1];
+        var r = res, status = [];
         var project = r.data.data, _area;
         if (angular.isArray(project.Children)) {
           project.Children.forEach(function (k) {
-            initRegion(k, status.data);
+            if ( k.RegionID == area){
+              initRegion(k, status.data);
+            }
           });
         }
         vm.houses = project.Children;
-        function DynamicItems() {
-          /**
-           * @type {!Object<?Array>} Data pages, keyed by page number (0-index).
-           */
-          this.loadedPages = {};
-
-          /** @type {number} Total number of items. */
-          this.numItems = 0;
-
-          /** @const {number} Number of items to fetch per request. */
-          this.PAGE_SIZE = 1;
-
-          this.fetchNumItems_();
-        };
-        // Required.
-        DynamicItems.prototype.getItemAtIndex = function (index) {
-          var pageNumber = Math.floor(index / this.PAGE_SIZE);
-          var page = this.loadedPages[pageNumber];
-
-          if (page) {
-            return page[index % this.PAGE_SIZE];
-          } else if (page !== null) {
-            this.fetchPage_(pageNumber);
-          }
-        };
-        // Required.
-        DynamicItems.prototype.getLength = function () {
-          return this.numItems;
-        };
-
-        DynamicItems.prototype.fetchPage_ = function (pageNumber) {
-          // Set the page to null so we know it is already being fetched.
-          this.loadedPages[pageNumber] = null;
-
-          // For demo purposes, we simulate loading more items with a timed
-          // promise. In real code, this function would likely contain an
-          // $http request.
-          $timeout(angular.noop, 0).then(angular.bind(this, function () {
-            this.loadedPages[pageNumber] = [];
-            var pageOffset = pageNumber * this.PAGE_SIZE;
-            for (var i = pageOffset; i < pageOffset + this.PAGE_SIZE; i++) {
-              if (vm.building[i]) {
-                this.loadedPages[pageNumber].push(vm.building[i]);
-              }
-            }
-          }));
-        };
-
-        DynamicItems.prototype.fetchNumItems_ = function () {
-          $timeout(angular.noop, 0).then(angular.bind(this, function () {
-            this.numItems = vm.building.length;
-          }));
-        };
-        vm.dynamicItems = new DynamicItems();
       }
-
-      var arr = [
-        remote.Assessment.GetRegionTreeInfo(projectId, 'pack' + assessmentID),
-        remote.Procedure.getMeasureMosaic(area, null, "scslStutas")
-      ]
-      $q.all(arr).then(callBack);
-      //remote.Assessment.GetRegionTreeInfo(projectId, 'pack' + assessmentID).then(callBack);
+      remote.Assessment.GetRegionTreeInfo(projectId, 'pack' + assessmentID).then(callBack)
     }
 
     load();
