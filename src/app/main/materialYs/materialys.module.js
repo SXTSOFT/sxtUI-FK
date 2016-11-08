@@ -53,7 +53,7 @@
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
-        url:'/intoFactory/{status}/{Id}/{BatchId}/{max}',
+        url:'/intoFactory/{status}/{Id}/{BatchId}',
         template:'<material-into-factory flex layout="column"></material-into-factory>'
       })
       .state('app.xhsc.materialys.checkInfo',{
@@ -88,14 +88,14 @@
         noBack:true,
         sendBt:true,
         title:'材料退场',
-        url:'/exit/{id}/{max}',
+        url:'/exit/{id}',
         template: '<material-ys-exit flex layout="column"></material-ys-exit>'
       })
       .state('app.xhsc.materialys.unqualifiedExit',{
         noBack:true,
         sendBt:true,
         title:'材料退场',
-        url:'/unqualifiedExit/{id}/{max}',
+        url:'/unqualifiedExit/{id}',
         template: '<material-unqualified-exit flex layout="column"></material-unqualified-exit>'
       })
   }

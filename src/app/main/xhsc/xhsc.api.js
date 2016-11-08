@@ -81,7 +81,7 @@
           return  $http.get($http.url('/api/ProjectInfoApi/GetAreaChildenById', {areaId: regionID}))
         },
         getUserProjectSection:function(){
-          return  $http.get($http.url('/api/ProjectInfoApi/GetUserProjectSection'))
+          return  $http.get($http.url('/api/ProjectInfoApi/GetUserSection'))
         },
         getDrawings: $http.db({
           _id: 'Drawing',

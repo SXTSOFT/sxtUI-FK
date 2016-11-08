@@ -438,13 +438,7 @@
     function GanttChartAddEditDialogController(dialogData,originData,template,$timeout,$mdPanel) {
       console.log('dialogData',dialogData);
       var vm = this;
-      api.plan.Task.query({
-        ParentTaskId:dialogData.formData.id,
-        Type:'BuildingPlan',
-        Source:$stateParams.id
-      }).then(function(r){
-        console.log(r)
-      })
+
       var taskId = dialogData.formView.id;
       vm.hasFlow = !!originData.Items.find(function (it) {
         return it.ExtendedParameters == taskId;

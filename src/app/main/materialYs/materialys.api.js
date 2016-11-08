@@ -62,7 +62,7 @@
         }),
         PostExitInfo: $http.db({
           _id: 'materialExitInfo',
-          idField: 'Id',
+          idField: 'ExitId',
           upload:true
         }).bind(function (data) {
           return $http.post('/api/MaterialPlan/InsertExitInfo', data);

@@ -240,7 +240,6 @@
           return current;
         }, null);
         vm.branches.forEach(function (current) {
-          if(!current.end) return;
           tasks.push({
             "Id": sxt.uuid(),
             "DependentTaskFlowId": null,

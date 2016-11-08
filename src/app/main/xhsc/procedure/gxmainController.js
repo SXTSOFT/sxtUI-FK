@@ -23,6 +23,7 @@
     loadSection();
     function loadSection() {
       vm.offlines = [];
+      vm.section = [];
 
       remote.Project.getUserProjectSection().then(function (result) {
         if(!result || result.data.length==0){
@@ -36,9 +37,12 @@
               });
               if (fd) {
                 vm.offlines.push(r);
+
+              }else{
+                vm.section.push(r);
               }
             });
-            vm.section=result.data;
+            //vm.section=result.data;
           }).catch(function(){
             vm.section = result.data;
           });
@@ -46,7 +50,7 @@
       })
     }
     vm.downloadPlan=function(item,isReflsh){
-      var status = user.Role.MemberType==0?17:110;
+      var status = user.Role.MemberType==0?item.InChargeID != item.MainContractorHeadID?1:16:110;
       //下载成功回掉
       function callBack(){
         var ix = vm.section.indexOf(item);
