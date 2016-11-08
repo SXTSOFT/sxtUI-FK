@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function materialIntoFactory($rootScope,$scope,api,utils,$state,$stateParams,sxt){
+  function materialIntoFactory($rootScope,$scope,api,utils,$state,$stateParams,sxt,xhUtils){
     var vm = this;
     vm.data = {};
     vm.data.Id = $stateParams.BatchId;
@@ -75,24 +75,28 @@
     });
 
     vm.addPhoto = function (type) {
-      switch (type) {
-        case 256:{
-          photo(type,vm.vehicleImgs,null);
-          break;
+      xhUtils.photo().then(function (image) {
+        if (image) {
+          switch (type) {
+            case 256:{
+              photo(type,vm.vehicleImgs,image);
+              break;
+            }
+            case 512:{
+              photo(type,vm.goodsImgs,image);
+              break;
+            }
+            case 1024:{
+              photo(type,vm.rummagerImgs,image);
+              break;
+            }
+            case 2048:{
+              photo(type,vm.CertificateImgs,image);
+              break;
+            }
+          }
         }
-        case 512:{
-          photo(type,vm.goodsImgs,null);
-          break;
-        }
-        case 1024:{
-          photo(type,vm.rummagerImgs,null);
-          break;
-        }
-        case 2048:{
-          photo(type,vm.CertificateImgs,null);
-          break;
-        }
-      }
+      });
     }
 
     function photo(type,arr,image){
@@ -104,11 +108,9 @@
         ApproachStage:1,
         ImageName:_id+".jpeg",
         ImageUrl:_id+".jpeg",
-        //ImageByte: $scope.photos[0].ImageByte
+        ImageByte: image
       });
     }
-
-
 
   }
 })(angular,undefined);

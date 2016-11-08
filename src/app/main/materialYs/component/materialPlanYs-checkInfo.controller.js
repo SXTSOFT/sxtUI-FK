@@ -70,7 +70,7 @@
         ApproachStage:2,
         ImageName:_id+".jpeg",
         ImageUrl:_id+".jpeg",
-        //ImageByte: $scope.photos[0].ImageByte
+        ImageByte: image
       });
     }
 

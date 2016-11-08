@@ -12,7 +12,7 @@
     });
 
   /** @ngInject */
-  function exit($rootScope,$scope,$stateParams,api,utils,sxt){
+  function exit($rootScope,$scope,$stateParams,api,utils,sxt,xhUtils){
     var vm = this;
     vm.data = {ExitId:sxt.uuid(),PlanId:$stateParams.id};
     vm.data.ExitReason = '材料多余';
@@ -31,6 +31,10 @@
         utils.alert('退场见证人不能为空');
         return;
       }
+      if(vm.exitImgs.length == 0){
+        utils.alert('至少上传一张退场照片');
+        return;
+      }
 
       vm.data.MaterialFiles = vm.exitImgs;
       api.xhsc.materialPlan.PostExitInfo(vm.data).then(function (r) {
@@ -46,7 +50,6 @@
     });
 
     vm.addPhoto = function (type) {
-
       //拍照事件
       xhUtils.photo().then(function (image) {
         if(image){
@@ -63,7 +66,7 @@
         ApproachStage:128,
         ImageName:_id+".jpeg",
         ImageUrl:_id+".jpeg",
-        ImageByte: $scope.photos[0].ImageByte
+        ImageByte: image
       });
     }
 

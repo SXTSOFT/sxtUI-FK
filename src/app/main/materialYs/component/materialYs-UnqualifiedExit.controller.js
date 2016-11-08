@@ -12,7 +12,7 @@
     });
 
   /** @ngInject */
-  function materialUnqualifiedExit($rootScope,$scope,api,utils,$stateParams,$state,sxt){
+  function materialUnqualifiedExit($rootScope,$scope,api,utils,$stateParams,$state,sxt,xhUtils){
     var vm = this;
     vm.data = {};
     vm.data.Id = $stateParams.id;
@@ -50,7 +50,21 @@
     });
 
     vm.addPhoto = function (type) {
-      photo(type,vm.data.MaterialFiles,null);
+      //拍照事件
+      xhUtils.photo().then(function (image) {
+        if(image){
+          switch (type) {
+            case 16:{
+              photo(type,vm.samplingProcessImgs,image);
+              break;
+            }
+            case 32:{
+              photo(type,vm.checkListImgs,image);
+              break;
+            }
+          }
+        }
+      });
     }
 
     function photo(type,arr,image){
@@ -62,7 +76,7 @@
         ApproachStage:64,
         ImageName:_id+".jpeg",
         ImageUrl:_id+".jpeg",
-        //ImageByte: $scope.photos[0].ImageByte
+        ImageByte: image
       });
     }
 
