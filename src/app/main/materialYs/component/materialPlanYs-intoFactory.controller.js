@@ -18,21 +18,13 @@
     vm.data = {};
     vm.data.Id = $stateParams.BatchId;
     vm.data.PlanId = $stateParams.Id;
-    vm.data.Status = $stateParams.status;
-    vm.data.ApproachType = vm.data.Status == 1 ? 1 : 0;
+    vm.data.ApproachType = $stateParams.status == 1 ? 1 : 0;
     vm.data.ApproachTime=new Date();
     vm.data.MaterialPlanFiles = [];
-    vm.max = $stateParams.max;
     vm.vehicleImgs = [];
     vm.goodsImgs = [];
     vm.rummagerImgs = [];
     vm.CertificateImgs = [];
-
-    $scope.$watch('vm.data.ApproachCount',function () {
-      if (vm.data.ApproachCount > vm.max) {
-        vm.data.ApproachCount = parseFloat(vm.max);
-      }
-    })
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
       vm.data.MaterialPlanFiles = vm.vehicleImgs.concat(vm.goodsImgs,vm.rummagerImgs,vm.CertificateImgs)
