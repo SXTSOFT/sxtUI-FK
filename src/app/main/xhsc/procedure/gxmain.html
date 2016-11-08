@@ -5,7 +5,7 @@
   </div>
   <span class="border1px"></span>
   <md-list style="overflow-x: hidden; padding: 0;">
-    <md-list-item layout="row" ng-repeat="item in vm.offlines" ui-sref="app.xhsc.materialys.planList({id:item.SectionID,title:item.Name})">
+    <md-list-item layout="row" ng-repeat="item in vm.offlines" ui-sref="app.xhsc.materialys.planList({id:item.SectionID,title:item.FullName})">
       <p style="font-size:14px; padding-left: 3%">
         <span>{{item.FullName}}</span>
       </p>
