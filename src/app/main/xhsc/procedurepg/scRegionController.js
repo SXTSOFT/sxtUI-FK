@@ -92,7 +92,7 @@
           if (region.RegionType == 2 && region.RegionID == area) {
             region.selected = true;
           }
-          if (region.RegionType == 4) {
+          if (region.RegionType == 4&&region.ParentID==area) {
             vm.building.push(region);
           }
           if (region && region.RegionType == 8 || region && region.RegionType == 16) {
@@ -151,7 +151,7 @@
           this.numItems = 0;
 
           /** @const {number} Number of items to fetch per request. */
-          this.PAGE_SIZE = 5;
+          this.PAGE_SIZE = 1;
 
           this.fetchNumItems_();
         };
