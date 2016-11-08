@@ -793,8 +793,8 @@
           _id: 'prePoint',
           idField: "projectID" ,
           dataType: 3
-        }).bind(function (projectID) {
-          return $http.get($http.url('/api/MeasurePointApi/GetMeasurePointAll', {projectID: projectID})).then(function(result){
+        }).bind(function (projectID,drawingID) {
+          return $http.get($http.url('/api/MeasurePointApi/GetMeasurePointAll', {projectID: projectID,drawingID:drawingID})).then(function(result){
             return {
               data:{
                 projectID:projectID,
