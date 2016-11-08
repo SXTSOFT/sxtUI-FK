@@ -92,7 +92,7 @@
             }
           });
           if (msg.length){
-            utils.alert("指标："+msg.join(",")+"尚未标准化，请联系项目同事标准化!");
+            utils.alert("指标："+msg.join(",")+"尚未标准化，请先做标准化处理!");
             return;
           }
 
@@ -147,7 +147,7 @@
               var points=[];
               t.forEach(function(o){
                   if (!points.find(function(k){
-                        return o.AcceptanceIndexID == k.AcceptanceIndexID&&k.DrawingID==o.DrawingID&& k.MeasurePointID== o.MeasurePointID;
+                        return  k.MeasurePointID== o.MeasurePointID;
                     })){
                     points.push(o)
                   }

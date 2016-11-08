@@ -54,7 +54,7 @@
           if (layer && layer.loaded)return;
           layer.loaded = true;
           var reqArr = [
-            remote.Assessment.GetMeasurePointAll(scope.projectId)
+            remote.Assessment.GetMeasurePointAll(scope.projectId,scope.drawing.data.DrawingID)
           ]
           $q.all(reqArr).then(function (req) {
             //图纸
@@ -79,7 +79,7 @@
             var points = [];
             t.forEach(function (o) {
               if (!points.find(function (k) {
-                  return o.AcceptanceIndexID == k.AcceptanceIndexID && k.DrawingID == o.DrawingID && k.MeasurePointID == o.MeasurePointID;
+                  return  k.MeasurePointID == o.MeasurePointID;
                 })) {
                 points.push(o)
               }
