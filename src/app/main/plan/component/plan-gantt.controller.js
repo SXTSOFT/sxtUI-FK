@@ -269,9 +269,10 @@
      */
     function calculateHeight()
     {
-      vm.options.maxHeight = $document.find('#chart-container')[0].offsetHeight;
-
-
+      //vm.options.maxHeight = $document.find('#chart-container')[0].offsetHeight;
+      var h = $(window).height()-130;
+      vm.options.maxHeight = h;
+      console.log(h,$document.find('#chart-container')[0].offsetHeight)
     }
 
     /**
