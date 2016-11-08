@@ -148,7 +148,7 @@
 
   /** @ngInject */
   function $get($window, $q) {
-    $window.PouchDB.plugin(PouchAdapterCordovaSqlite);
+    // $window.PouchDB.plugin(PouchAdapterCordovaSqlite);
     var pouchDBDecorators = {
       qify: function (fn) {
         return function () {
@@ -223,9 +223,9 @@
     return function pouchDB(name, options) {
       if($window.cordova){
         options = options||{};
-        options.adapter = 'cordova-sqlite';
-        options.auto_compaction=true;
-        options.iosDatabaseLocation = 'default';
+        options.adapter = 'fruitdown';
+        // options.auto_compaction=true;
+        // options.iosDatabaseLocation = 'default';
       }
       if (name!='localBD'){
         pouchDB('localBD').addOrUpdate({
