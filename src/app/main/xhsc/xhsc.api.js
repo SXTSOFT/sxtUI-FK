@@ -61,10 +61,7 @@
         }),
         getDrawingRelations: $http.db({
           db: function(projectId,db){
-              if (db){
-                return db;
-              }
-            return  'DrawingRelation';
+            return db?db:'DrawingRelation';
           },
           idField: 'ProjectId',
           //fileFiled:['FileContent'],
@@ -1345,8 +1342,15 @@
              return "points";
           },
           dataType:3
-        }).bind(function (extend) {
-          return $http.get($http.url('/api/MeasureStandardApi/GetListByExtend',{extend:extend}));
+        }).bind(function (extend,db) {
+          return $http.get($http.url('/api/MeasureStandardApi/GetListByExtend',{extend:extend})).then(function (result) {
+            result.data=result.data?result.data:[];
+            return {
+              data: {
+                data:result.data
+            }
+          }
+          });
         })
       }
     });

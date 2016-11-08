@@ -143,7 +143,7 @@
             var tasks = [];
             var projectId = item.RegionID.substr(0, 5);
             tasks.push(function () {
-              return remote.Assessment.GetMeasurePointAll(item.RegionID);
+              return remote.PQMeasureStandard.GetListByExtend(projectId,"standard");
             });
             tasks.push(function () {
               return remote.Procedure.getMeasureMosaic(item.regionID,null,"scslStutas");
