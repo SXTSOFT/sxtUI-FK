@@ -11,6 +11,9 @@
   function cnFilter(){
     return function(items,o) {
       var r = [],b,v;
+      if (!items||!items.length){
+        return;
+      }
       items.forEach(function (item) {
         b = false;
         for(var k in o){
