@@ -57,7 +57,7 @@
         var ProjectID = scope.regionId.substr(0, 5);
         var areaId = scope.regionId.substr(0, 10);
         var arr = [
-          remote.Project.getDrawingRelations(ProjectID, "scDrawingRelation")
+          remote.Project.getDrawingRelations(scope.regionId, "scDrawingRelation")
           // remote.Assessment.GetMeasurePointAll(areaId)
         ];
         $q.all(arr).then(function (res) {
