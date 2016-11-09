@@ -24,12 +24,13 @@
         queryOnline();
       });
 
-      function projectTask(projectId,assessmentID) {
+      function projectTask(region,assessmentID) {
+        var projectId=region.substr(0,5);
         return [
           function (tasks) {
             return $q(function(resolve,reject) {
               var arr=[
-                remote.Project.getDrawingRelations(projectId),
+                remote.Project.getDrawingRelations(region),
                 dbpics.findAll(),
                 remote.Assessment.getCheckArea(assessmentID)
               ];
@@ -119,7 +120,7 @@
             tasks.push(function () {
               return remote.Assessment.GetRegionTreeInfo(item.ProjectID,"pack"+item.AssessmentID);
             });
-            tasks = tasks.concat(projectTask(item.ProjectID,item.AssessmentID));
+            tasks = tasks.concat(projectTask(item.AreaID,item.AssessmentID));
             item.percent = item.current =0; item.total = tasks.length;
             api.task(tasks,{
               event:'downloadxc',

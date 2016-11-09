@@ -202,7 +202,7 @@
             };
           }],
           targetEvent: $event,
-          templateUrl: 'app/main/xhsc/ys/scChoose.html',
+          templateUrl: 'app/main/xhsc/center/pcIndexChoose.html',
           parent: angular.element('#content'),
           clickOutsideToClose: false
         }).then(function (m) {

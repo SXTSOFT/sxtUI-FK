@@ -231,7 +231,7 @@
         pouchDB('localBD').addOrUpdate({
           _id:name
         }).then(function(){
-
+            console.log("name");
         }).catch(function(error){
           console.log(error);
         })

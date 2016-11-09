@@ -66,7 +66,7 @@
         }),
         getDrawingRelations: $http.db({
           db: function(projectId,db){
-            if (db="nodb"){
+            if (db=="nodb"){
               return null;
             }
             return db?db:'DrawingRelation';
@@ -905,7 +905,7 @@
         }),
         getMeasureNew:$http.db({
           db:function (param,db) {
-            if(db="nodb"){
+            if(db=="nodb"){
               return null;
             }
             return db?db:"getAllMeasureReportDataNew";

@@ -33,12 +33,13 @@
       }
     ];
     //项目包
-    function projectTask(projectId, areas, acceptanceItemID) {
+    function projectTask(region, areas, acceptanceItemID) {
+      var projectId=region.substr(0,5);
       return [
         function (tasks) {
           return $q(function (resolve) {
             var arr = [
-              remote.Project.getDrawingRelations(projectId),
+              remote.Project.getDrawingRelations(region),
               dbpics.findAll()
             ];
             $q.all(arr).then(function (res) {
@@ -157,8 +158,9 @@
           $mdDialog.show({
             controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
               $scope.item = item;
+              var areaID  =item.Children.length?item.Children[0].AreaID:item.ProjectID;
               var tasks = [].concat(globalTask)
-                .concat(projectTask(item.ProjectID, item.Children, item.AcceptanceItemID))
+                .concat(projectTask(areaID, item.Children, item.AcceptanceItemID))
                 .concat(InspectionTask(item))
                 .concat(function () {
                   return remote.offline.create({Id: 'ys' + item.InspectionId});
@@ -212,7 +214,7 @@
             controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
               $scope.item = item;
               var tasks = [].concat(globalTask)
-                .concat(projectTask(item.Children[0].AreaID.substring(0, 5), item.Children, item.AcceptanceItemID))
+                .concat(projectTask(item.Children[0].AreaID, item.Children, item.AcceptanceItemID))
                 .concat(InspectionTask(item))
                 .concat(rectificationTask(item))
                 .concat(function () {

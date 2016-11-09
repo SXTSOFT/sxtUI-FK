@@ -795,27 +795,49 @@
 
     function clearDb(progress,complete,fail,options) {
       var tasks = [];
-      var _db=pouchdb("localBD");
-      _db.findAll().then(function(r){
-        var  rows= r.rows,tmp;
-        if (rows&&rows.length>0){
+      task([function (tasks) {
+        var _db=pouchdb("localBD");
+        return _db.findAll().then(function(r){
+          var  rows= r.rows,tmp;
+          if (rows&&rows.length>0){
             rows.forEach(function(t){
-            if(!(options.exclude && options.exclude.indexOf(t._id)!=-1)){
-              tasks.push(function(){
-                return pouchdb(t._id).destroy().catch(function(err){
-                  console.log(err);
+              if(!(options.exclude && options.exclude.indexOf(t._id)!=-1)){
+                tasks.push(function(){
+                  return pouchdb(t._id).destroy().catch(function(err){
+                    console.log(err);
+                  });
                 });
-              });
-            }
-          });
-        }
-        tasks.push(function(){
-          return _db.destroy().catch(function(err){
-            console.log(err);
+              }
+            });
+          }
+          tasks.push(function(){
+            return _db.destroy().catch(function(err){
+              console.log(err);
+            });
           });
         });
-        return task(tasks,options)(progress,complete,fail,options);
-      })
+      }],options)(progress,complete,fail,options);
+      // var _db=pouchdb("localBD");
+      // _db.findAll().then(function(r){
+      //   var  rows= r.rows,tmp;
+      //   if (rows&&rows.length>0){
+      //       rows.forEach(function(t){
+      //       if(!(options.exclude && options.exclude.indexOf(t._id)!=-1)){
+      //         tasks.push(function(){
+      //           return pouchdb(t._id).destroy().catch(function(err){
+      //             console.log(err);
+      //           });
+      //         });
+      //       }
+      //     });
+      //   }
+      //   tasks.push(function(){
+      //     return _db.destroy().catch(function(err){
+      //       console.log(err);
+      //     });
+      //   });
+      //   return task(tasks,options)(progress,complete,fail,options);
+      // })
     }
   }
 

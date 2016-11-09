@@ -307,12 +307,13 @@
         return remote.Procedure.queryProcedure();
       }
     ];
-    function projectTask(projectId, areas, acceptanceItemID) {
+    function projectTask(region, areas, acceptanceItemID) {
+      var projectId=region.substr(0,5);
       return [
         function (tasks) {
           return $q(function (resolve) {
             var arr = [
-              remote.Project.getDrawingRelations(projectId),
+              remote.Project.getDrawingRelations(region),
               dbpics.findAll()
             ];
             $q.all(arr).then(function (res) {
@@ -407,7 +408,7 @@
             controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
               $scope.item = item;
               var tasks = [].concat(globalTask)
-                .concat(projectTask(item.AreaList[0].substring(0, 5), item.AreaList, item.AcceptanceItemID))
+                .concat(projectTask(item.AreaList[0].AreaID, item.AreaList, item.AcceptanceItemID))
                 .concat(InspectionTask(item))
                 .concat(function () {
                   return remote.offline.create({Id: 'ys' + item.InspectionId});
@@ -457,7 +458,7 @@
             controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
               $scope.item = item;
               var tasks = [].concat(globalTask)
-                .concat(projectTask(item.AreaList[0].substring(0, 5), item.AreaList, item.AcceptanceItemID))
+                .concat(projectTask(item.AreaList[0].AreaID, item.AreaList, item.AcceptanceItemID))
                 .concat(InspectionTask(item))
                 .concat(rectificationTask(item))
                 .concat(function () {
