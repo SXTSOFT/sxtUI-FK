@@ -480,6 +480,7 @@
               db("s_offline").destroy();
               utils.alert('上传成功');
               load();
+              loadSection();
               vm.uploadInfo.tasks = [];
               vm.uploadInfo.uploading= false;
             },function (timeout) {
