@@ -77,7 +77,7 @@
           function (tasks) {
             return $q(function (resolve, reject) {
               var arr = [
-                remote.Project.getDrawingRelations(projectId,'scDrawingRelation'),
+                remote.Project.getDrawingRelations(regionID,'scDrawingRelation'),
                 dbpics.findAll()
               ];
               $q.all(arr).then(function (res) {
