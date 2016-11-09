@@ -34,7 +34,7 @@
       AcceptanceItemID:$stateParams.measureItemID,//'c9ba481a76644c949d13fdb14b4b4adb',//,
       RecordType:1,
       RelationID:$stateParams.db//'a55164d5c46f454ca8df799f520bbba8'//
-    }).then(function (result){
+    },"nodb").then(function (result){
 
       console.log(result)
       var newD = [];

@@ -27,7 +27,7 @@
           map = new L.SXT.Project(element[0]);
         }
         $timeout(function(){
-        remote.Project.getDrawingRelations(scope.regionId.substring(0,5)).then(function (result) {
+        remote.Project.getDrawingRelations(scope.regionId,"nodb").then(function (result) {
           var imgId = result.data.find(function (item) {
             return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
           });

@@ -18,7 +18,7 @@
     var mobileDetect = new MobileDetect(window.navigator.userAgent);
     vm.isMobile=mobileDetect.mobile();
     vm.isiPad=mobileDetect.mobile()=="iPad";
-    remote.Project.getMap().then(function (result) {
+    remote.Project.getMap("nodb").then(function (result) {
       vm.regions.push({
         RegionID: "",
         RegionName:"全部"

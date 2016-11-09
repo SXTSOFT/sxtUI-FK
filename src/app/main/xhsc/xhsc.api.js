@@ -52,21 +52,29 @@
       }),
       Project: {
         getMap: $http.db({
-          _id: 'mapPoroject',
+          db:function (db) {
+            if (db=="nodb"){
+              return  null;
+            }
+            return db?db:"mapPoroject";
+          },
           idField: 'ProjectID',
           mode:2,
           dataType: 1
-        }).bind(function () {
+        }).bind(function (db) {
           return $http.get($http.url('/api/ProjectInfoApi/GetMapProjectList'))
         }),
         getDrawingRelations: $http.db({
           db: function(projectId,db){
+            if (db="nodb"){
+              return null;
+            }
             return db?db:'DrawingRelation';
           },
           idField: 'ProjectId',
           //fileFiled:['FileContent'],
           dataType: 3
-        }).bind(function (projectId) {
+        }).bind(function (projectId,db) {
           return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation', {projectId: projectId})).then(function(result){
             return {
               data:{
@@ -212,19 +220,18 @@
         }),
         InspectionPoint:$http.db({
           db:function(inspectionId,acceptanceItemId,areaId,db){
-            if (db){
-              return db;
-            }
-            return "InspectionPoint";
+            if (db=="nodb"){return null}
+            return db?db:"InspectionPoint";
+
+            return ;
           },
-          idField:'MeasurePointID',
           methods:{
             query:{
               dataType:1,
               filter:function (item,inspectionId,acceptanceItemId,areaId) {
                 return true;
               },
-              fn:function (inspectionId,acceptanceItemId,areaId) {
+              fn:function (inspectionId,acceptanceItemId,areaId,db) {
                 return $http.get($http.url('/api/InspectionCheckpointApi/GetMeasurePoint',{inspectionId:inspectionId,areaId:areaId,acceptanceItemId:acceptanceItemId}));
               }
             },
@@ -875,7 +882,9 @@
           return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo',{AreaID:areaID}));
         },
         getMeasure:$http.db({
-          _id:'getAllMeasureReportData',
+          db:function (param,db) {
+            return  db=="nodb"?null: 'getAllMeasureReportData';
+          },
           idField:function(item){
             return item.RegionID + item.AcceptanceItemID;
           },
@@ -895,7 +904,12 @@
           });
         }),
         getMeasureNew:$http.db({
-          _id:'getAllMeasureReportDataNew',
+          db:function (param,db) {
+            if(db="nodb"){
+              return null;
+            }
+            return db?db:"getAllMeasureReportDataNew";
+          },
           idField:function(item){
             return item.RegionID + item.AcceptanceItemID;
           },
@@ -903,7 +917,7 @@
             return item.CheckRegionID == param.RegionID && item.AcceptanceItemID == param.AcceptanceItemID;
           },
           dataType:1
-        }).bind(function(param){
+        }).bind(function(param,db){
           return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResultNew',param));
         }),
         getAllMeasureReportData:$http.db({
