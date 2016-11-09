@@ -128,15 +128,11 @@
             }
 
             valid().then(function (sub) {
+              var  sub=sub;
               return $q(function (resolve, reject) {
                 var msg = $.map(sub, function (r) {
                   return r.IndexName
                 })
-                if(!sub){
-                    var sub = $.map(vm.selected, function (o) {
-                      return o.IndexName;
-                    });
-                }
                 msg ="指标："+ msg.join(",")+"已经完毕，确认提交？";
                 $mdDialog.hide().then(function () {
                   utils.confirm(msg, null, '', '').then(function () {
