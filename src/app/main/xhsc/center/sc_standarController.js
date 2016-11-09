@@ -132,7 +132,12 @@
                 var msg = $.map(sub, function (r) {
                   return r.IndexName
                 })
-                msg ="指标："+ msg.join(",")+"已初始化，确认提交？";
+                if(!sub){
+                    var sub = $.map(vm.selected, function (o) {
+                      return o.IndexName;
+                    });
+                }
+                msg ="指标："+ msg.join(",")+"已经完毕，确认提交？";
                 $mdDialog.hide().then(function () {
                   utils.confirm(msg, null, '', '').then(function () {
                     var arr = [];

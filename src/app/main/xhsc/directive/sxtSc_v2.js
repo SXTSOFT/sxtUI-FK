@@ -125,13 +125,13 @@
             $q.all(reqArr).then(function (req) {
               var t = req[0].data && req[0].data.data ? req[0].data.data : [];
               var points = [];
-              t.forEach(function (o) {
-                if (!points.find(function (k) {
-                    return k.MeasurePointID == o.MeasurePointID;
-                  })) {
-                  points.push(o)
-                }
-              });
+              // t.forEach(function (o) {
+              //   if (!points.find(function (k) {
+              //       return k.MeasurePointID == o.MeasurePointID;
+              //     })) {
+              //     points.push(o)
+              //   }
+              // });
 
               var msg = [];
               scope.measureIndexes.forEach(function (o) {
@@ -171,12 +171,15 @@
                 layer.addData(layData.geometry);
               }
 
-              if (points && points.length) {
+              if (t && t.length) {
                 var g;
-                points.forEach(function (m) {
+                t.forEach(function (m) {
                   if (m.DrawingID == img.DrawingID && scope.measureIndexes.find(function (n) {
                       return n.AcceptanceIndexID == m.AcceptanceIndexID
-                    })) {
+                    })&&!points.find(function (n) {
+                    return n.MeasurePointID==m.MeasurePointID;
+                  })) {
+                    points.push(m);
                     var values = u.filter(function (v) {
                       return v.MeasureValue && m.MeasurePointID == v.MeasurePointID && v.CheckRegionID == scope.regionId &&
                         scope.measureIndexes.find(function (n) {

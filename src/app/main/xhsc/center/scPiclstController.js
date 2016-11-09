@@ -125,9 +125,9 @@
 
     vm.click=function (item,evt) {
       evt.stopPropagation();
-      if (item.standar=='completed'){
-        return;
-      }
+      // if (item.standar=='completed'){
+      //   return;
+      // }
       vm.go(item.AcceptanceItemID,item.DrawingID,item.AcceptanceIndexID);
     }
     vm.action = function (item, evt) {
