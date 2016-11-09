@@ -21,8 +21,10 @@
         <span>{{item.FullName}}</span>
       </p>
       <span flex></span>
+      <md-button ng-click="vm.downloadPlan(item,$event)" style="margin: 6px 0px" >
+        <i class="icon icon-download s30"></i>
+      </md-button>
       <span class="border1px bottom1px"></span>
-      <md-button ng-click="vm.downloadPlan(item,$event)" style="color: black;margin-right: 0px">下载</md-button>
     </md-list-item>
   </md-list>
 </div>
