@@ -20,7 +20,7 @@
   </div>
 </md-toolbar>
 <md-content flex layout="column" ms-scroll>
-  <table class="simple">
+  <table class="simple"  ms-responsive-table>
     <thead>
     <tr>
       <th>计划名称</th>
@@ -33,7 +33,7 @@
       <th>合同编号</th>
       <th>供货方式</th>
       <th>状态</th>
-      <th style="width: 160px">管理</th>
+      <th style="width: 160px;">管理</th>
     </tr>
     </thead>
     <tbody>
@@ -52,10 +52,15 @@
         <label ng-if="item.SupplyType == 2">认质认价</label>
         <label ng-if="item.SupplyType == 4">甲指乙供</label>
       </td>
-      <td>{{item.Status}}</td>
+      <td>
+        <!--{{item.Status}}-->
+        <label ng-if="item.Status == 1">未进场</label>
+        <label ng-if="item.Status == 2">未验收</label>
+        <label ng-if="item.Status == 4">已关闭</label>
+      </td>
       <td class="actions">
-        <md-button class="md-primary md-mini md-fab" aria-label="Settings" ui-sref="app.material.plan({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
-        <md-button class="md-primary md-mini md-fab" aria-label="Settings" ng-click="vm.delete(item.Id)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
+        <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.plan({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
+        <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.delete(item.Id)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
       </td>
     </tr>
     </tbody>
