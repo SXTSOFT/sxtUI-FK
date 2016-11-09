@@ -58,23 +58,23 @@
         var areaId = scope.regionId.substr(0, 10);
         var arr = [
           remote.Project.getDrawingRelations(scope.regionId, "scDrawingRelation")
-          // remote.Assessment.GetMeasurePointAll(areaId)
         ];
         $q.all(arr).then(function (res) {
           var picRelate = res[0]
+          //渲染图纸
           function findImg(source) {
             var result = source;
             var img = result.data.find(function (item) {
               return item.AcceptanceItemID == scope.acceptanceItem && item.RegionId == scope.regionId;
             });
             if (!img) {
-              var img = result.data.find(function (item) {
-                return item.RegionId == scope.regionId;
+              img = result.data.find(function (item) {
+                return item.AcceptanceItemID == scope.acceptanceItem && scope.regionId.indexOf(item.RegionId) > -1;
               });
             }
             if (!img) {
-              img = result.data.find(function (item) {
-                return item.AcceptanceItemID == scope.acceptanceItem && scope.regionId.indexOf(item.RegionId) > -1;
+              var img = result.data.find(function (item) {
+                return item.RegionId == scope.regionId;
               });
             }
             return img;
@@ -113,8 +113,6 @@
             }
             tile = scope.regionId;
           }
-          //渲染图纸
-          loadPic(img);
           //渲染几何点
           function historydata(layer, index) {
             var layer = layer;
@@ -145,9 +143,14 @@
                 }
               });
               if (msg.length) {
-                utils.alert("指标：" + msg.join(",") + "尚未标准化，请先做标准化处理!");
+                $timeout(function () {
+                  utils.alert("指标：" + msg.join(",") + "尚未标准化，请先做标准化处理!");
+                })
                 return;
               }
+
+
+              loadPic(img);
               var u = req[1].rows;
 
               var po;

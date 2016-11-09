@@ -71,13 +71,13 @@
             });
             var t = req.data ?req.data : [];
             var points = [];
-            t.forEach(function (o) {
-              if (!points.find(function (k) {
-                  return  k.MeasurePointID == o.MeasurePointID;
-                })) {
-                points.push(o)
-              }
-            });
+            // t.forEach(function (o) {
+            //   if (!points.find(function (k) {
+            //       return  k.MeasurePointID == o.MeasurePointID;
+            //     })) {
+            //     points.push(o)
+            //   }
+            // });
             var po;
 
             function addData(layData, index, color) {
@@ -95,13 +95,16 @@
               layer.addData(layData.geometry);
             }
 
-            if (points && points.length) {
+            if (t && t.length) {
               var g;
               if (scope.drawing && scope.drawing.data) {
-                points.forEach(function (m) {
+                t.forEach(function (m) {
                   if (m.DrawingID == scope.drawing.data.DrawingID && scope.measureIndexes.find(function (n) {
                       return n.AcceptanceIndexID == m.AcceptanceIndexID
+                    })&&!points.find(function (n) {
+                      return n.MeasurePointID==m.MeasurePointID;
                     })) {
+                    points.push(m);
                     var color = "green"
                     addData(m, index, color);
                     index++;

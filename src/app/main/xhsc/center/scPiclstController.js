@@ -103,7 +103,7 @@
         remote.PQMeasureStandard.messageList(item.DrawingID,item.AcceptanceItemID).then(function(r){
           item.indexs.forEach(function(k){
             r.data.forEach(function(m){
-               if (m.AcceptanceIndexID== k.AcceptanceIndexID){
+               if (m.AcceptanceIndexID== k.AcceptanceIndexID&&item.DrawingID==m.DrawingID){
                  k.standar=k.standar=="completed"?k.standar:"no";
                  if (m.Status==1){
                    k.standar="completed"
