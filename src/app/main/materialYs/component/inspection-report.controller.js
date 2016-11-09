@@ -27,6 +27,17 @@
     });
 
     var sendReportResult = $rootScope.$on('sendGxResult',function() {
+
+      if(!vm.data.Report){
+        utils.alert('请填写报告单编号');
+        return;
+      }
+
+      if(vm.checkerImgs.length == 0){
+        utils.alert('至少上传一张报告单照片');
+        return;
+      }
+
       vm.data.BatchFile = vm.reportImgs;
       api.xhsc.materialPlan.PostReportInfo(vm.data).then(function (r) {
         utils.alert('提交成功!');
@@ -60,7 +71,7 @@
         ApproachStage:8,
         ImageName:_id+".jpeg",
         ImageUrl:_id+".jpeg",
-        //ImageByte: $scope.photos[0].ImageByte
+        ImageByte: image
       });
     }
 
