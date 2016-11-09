@@ -43,8 +43,17 @@
         }
         if (fg)
           map._map.removeLayer(fg);
-        if (toolbar)
-          map._map.removeControl(toolbar);
+
+        if (scope.measureIndexes.find(function (o) {
+            return o.completed;
+          })){
+          scope.model="completed";
+        }else {
+          scope.model="no";
+        }
+
+        // if (toolbar)
+        //   map._map.removeControl(toolbar);
         //渲染几何点
         function historydata(layer, index) {
           //var layer = layer;
@@ -117,6 +126,7 @@
 
         fg = new L.SvFeatureGroup({
           onLoad: function () {
+            settoolbar(this);
             var index = 0;
             historydata(this, index);
           },
@@ -262,6 +272,9 @@
             });
           },
           onPopup: function (e) {
+            if (scope.model=="completed"){
+              return false;
+            }
             if (e.layer instanceof L.Stamp
               || e.layer instanceof L.AreaGroup
               || e.layer instanceof L.LineGroup)
@@ -289,15 +302,34 @@
             }
           }
         }).addTo(map._map);
-        toolbar = new L.Control.Draw({
-          featureGroup: fg,
-          group: {
-            lineGroup: false,
-            areaGroup: scope.measureIndexes.length && !!scope.measureIndexes.find(function (m) {
-              return m.QSKey == '4'
-            })
+
+        function  settoolbar(fg) {
+          if (toolbar){
+            map._map.removeControl(toolbar);
+            toolbar=null;
           }
-        }).addTo(map._map);
+          if (scope.model=="no"){
+            toolbar = new L.Control.Draw({
+              featureGroup: fg,
+              group: {
+                lineGroup: false,
+                areaGroup: scope.measureIndexes.length && !!scope.measureIndexes.find(function (m) {
+                  return m.QSKey == '4'
+                })
+              }
+            }).addTo(map._map);
+          }
+        }
+
+        // toolbar = new L.Control.Draw({
+        //   featureGroup: fg,
+        //   group: {
+        //     lineGroup: false,
+        //     areaGroup: scope.measureIndexes.length && !!scope.measureIndexes.find(function (m) {
+        //       return m.QSKey == '4'
+        //     })
+        //   }
+        // }).addTo(map._map);
       }
 
       $timeout(function () {

@@ -48,7 +48,7 @@
             item.completed = true;
           }
 
-          if (item.AcceptanceIndexID == vm.info.acceptanceIndexID && !item.completed) {
+          if (item.AcceptanceIndexID == vm.info.acceptanceIndexID) {
             item.checked = true;
           }
           m.push(item);
@@ -80,7 +80,7 @@
                     if (m.AcceptanceIndexID == k.AcceptanceIndexID) {
                       k.num++;
                       k.completed = m.Status == 1 ? true : k.completed;
-                      k.checked=k.checked&&k.completed?false:k.checked;
+                      k.checked=k.checked;
                     }
                   });
                 })
@@ -137,9 +137,9 @@
                 $mdDialog.hide().then(function () {
                   utils.confirm(msg, null, '', '').then(function () {
                     var arr = [];
-                    sub.forEach(function (item) {
-                      arr.push(remote.PQMeasureStandard.standarSubmit(item.AcceptanceIndexID, item.AcceptanceItemID, vm.drawing.data.DrawingID))
-                    })
+                    // sub.forEach(function (item) {
+                    //   arr.push(remote.PQMeasureStandard.standarSubmit(item.AcceptanceIndexID, item.AcceptanceItemID, vm.drawing.data.DrawingID))
+                    // })
                     $q.all(arr).then(function () {
                       resolve();
                     }).catch(function () {
@@ -192,6 +192,11 @@
             $scope.cancel = function () {
               $mdDialog.cancel();
             };
+            $scope.ok=function (answer) {
+
+              $mdDialog.hide(answer);
+            }
+
             $scope.answer = function (answer) {
               $mdDialog.hide(answer);
             };
