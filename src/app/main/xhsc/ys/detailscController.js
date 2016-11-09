@@ -25,7 +25,7 @@
       AcceptanceItemID:$stateParams.measureItemID,
       RecordType:4,
       RelationID:$stateParams.db
-    }).then(function (result){
+    },"nodb").then(function (result){
       var newD = [];
       result.data.forEach(function (item) {
         if(!item.MeasureValueList.length){
