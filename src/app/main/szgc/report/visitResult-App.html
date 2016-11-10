@@ -1,6 +1,6 @@
 <md-content flex layout="column" class="menu-toggle-list">
-  <div flex>
-    <div flex>
+  <div ng-if="!vm.searchResult">
+    <div>
       <div layout="row" class="newinput pt-8">
         <div flex="50" style="text-align: center">
           从<md-datepicker ng-model="vm.sDate" class="md-block" md-placeholder="开始时间" md-open-on-focus></md-datepicker>
@@ -14,7 +14,7 @@
       <md-button type="submit" flex ng-click="vm.seach()"  class="md-raised md-primary"> 确定  </md-button>
     </div>
   </div>
-  <div class="simple-table-container md-whiteframe-4dp">
+  <div class="simple-table-container md-whiteframe-4dp" ng-if="vm.searchResult">
     <table class="simple" ms-responsive-table>
       <thead>
       <tr>

@@ -16,6 +16,13 @@
     vm.sDate = date_tmp;
     var dateFilter = $filter('date');
 
+    $scope.$on('$destroy',$scope.$on('goBack',function (s,e) {
+      if(vm.searchResult){
+        vm.searchResult  = false;
+        e.cancel = true;
+      }
+    }));
+
     var initData = [
       { project: '渔一村', user: '官有风',times:0 },
       { project: '南科大', user: '王和贵', times: 0 },
@@ -53,6 +60,7 @@
       });
 
     vm.seach = function () {
+      vm.searchResult=true;
       api.szgc.projectMasterListService.getVisitResult('?fromDate=' + dateFilter(vm.sDate, 'yyyy-MM-dd') + '&toDate=' + dateFilter(vm.eDate, 'yyyy-MM-dd'))
         .then(function (result) {
           vm.data = [
