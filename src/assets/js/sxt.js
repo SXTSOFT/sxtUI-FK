@@ -20,11 +20,11 @@ window.sxt = (function(win)
     app: {
       appDir: appDir,
       serve: 'http://10.245.9.151:3000',
-      //api:'http://szdp.vanke.com:8088',
+      api:'http://szdp.vanke.com:8088',
       //api:'http://10.245.9.118:8090',
       //api:'http://192.168.31.146:8090',
       //api:'http://vkde.sxtsoft.com',
-      api:'http://localhost:46844',
+      //api:'http://localhost:46844',
       getUrl: getUrl,
       download: download
     },

@@ -316,7 +316,7 @@
         title:'项目负责人访问统计',
         url:'/visitResult',
         controller: 'visitResultController as vm',
-        templateUrl: 'app/main/szgc/report/visitResult-app.html'
+        templateUrl: 'app/main/szgc/report/visitResult-App.html'
       })
       .state('app.szgc.settings',{
         noBack:true,
