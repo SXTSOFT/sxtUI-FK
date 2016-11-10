@@ -8,9 +8,9 @@
     .module('app.szgc')
     .service('versionUpdate', versionUpdate);
 
-  function versionUpdate($mdDialog, $cordovaFileTransfer, $cordovaAppVersion, $window,$http) {
+  function versionUpdate($mdDialog, $window,$http) {
 
-    var version = '1.9.7';
+    var version = '1.9.10';
     this.version = version;
     function versionToNumber(version) {
       var n = version.split('.');
@@ -29,7 +29,7 @@
           if (versionToNumber(version) < versionToNumber(serverAppVersion)) {
             var confirm = $mdDialog.confirm()
               .title('发现新版本'+serverAppVersion)
-              .textContent('是否更新新版本？')
+              .htmlContent((data.data.vankeLog||'')+'<br/><b>是否更新新版本？</b>')
               .ok('更新!')
               .cancel('暂不更新');
             $mdDialog.show(confirm).then(function () {
