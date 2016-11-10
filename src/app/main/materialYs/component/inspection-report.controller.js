@@ -33,10 +33,10 @@
         return;
       }
 
-      if(vm.checkerImgs.length == 0){
-        utils.alert('至少上传一张报告单照片');
-        return;
-      }
+      // if(vm.checkerImgs.length == 0){
+      //   utils.alert('至少上传一张报告单照片');
+      //   return;
+      // }
 
       vm.data.BatchFile = vm.reportImgs;
       api.xhsc.materialPlan.PostReportInfo(vm.data).then(function (r) {

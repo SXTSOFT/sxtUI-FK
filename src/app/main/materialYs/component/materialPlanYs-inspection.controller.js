@@ -35,14 +35,14 @@
         utils.alert('送检单号不能为空');
         return;
       }
-      if(vm.samplingProcessImgs.length == 0){
-        utils.alert('请至少上传一张抽样过程照片');
-        return;
-      }
-      if(vm.checkListImgs.length == 0 ){
-        utils.alert('请至少上传一张检查单照片');
-        return;
-      }
+      // if(vm.samplingProcessImgs.length == 0){
+      //   utils.alert('请至少上传一张抽样过程照片');
+      //   return;
+      // }
+      // if(vm.checkListImgs.length == 0 ){
+      //   utils.alert('请至少上传一张检查单照片');
+      //   return;
+      // }
 
       vm.data.MaterialPlanFiles = vm.samplingProcessImgs.concat(vm.checkListImgs);
       api.xhsc.materialPlan.MaterialInspection(vm.data).then(function (q) {

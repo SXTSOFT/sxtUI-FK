@@ -19,8 +19,8 @@
     </md-button>
   </div>
 </md-toolbar>
-<md-content flex layout="column" ms-scroll>
-  <table class="simple"  ms-responsive-table>
+<md-content flex layout="column" ms-scroll style="overflow-y: auto;">
+  <table class="simple" ms-responsive-table>
     <thead>
     <tr>
       <th>计划名称</th>
@@ -28,11 +28,25 @@
       <th>型号</th>
       <th>规格</th>
       <th>进场计划时间</th>
-      <th>进场计划数量</th>
+      <th style="text-align: center;">进场计划数量</th>
       <th>使用部位</th>
       <th>合同编号</th>
       <th>供货方式</th>
-      <th>状态</th>
+      <th style="width: 50px;">状态</th>
+      <!--<th>进场时间</th>-->
+      <!--<th>进场数量</th>-->
+      <!--<th>厂家/品牌</th>-->
+      <!--<th>供货方</th>-->
+      <!--<th>有无封样</th>-->
+      <!--<th>检查人</th>-->
+      <!--<th>进场照片</th>-->
+      <!--<th>验收时间</th>-->
+      <!--<th>验收照片</th>-->
+      <!--<th>现场检查</th>-->
+      <!--<th>验收人</th>-->
+      <!--<th>是否送检</th>-->
+      <!--<th></th>-->
+      <!--<th></th>-->
       <th style="width: 160px;">管理</th>
     </tr>
     </thead>
@@ -42,8 +56,8 @@
       <td>{{item.MaterialName}}</td>
       <td>{{item.Model}}</td>
       <td>{{item.Specifications}}</td>
-      <td>{{item.PlanTime}}</td>
-      <td>{{item.PlanCount}}</td>
+      <td>{{item.PlanTime | date:'yyyy-MM-dd'}}</td>
+      <td style="text-align: center;">{{item.PlanCount + item.Unit}}</td>
       <td>{{item.Position}}</td>
       <td>{{item.Contract}}</td>
       <td>
@@ -58,7 +72,7 @@
         <label ng-if="item.Status == 2">未验收</label>
         <label ng-if="item.Status == 4">已关闭</label>
       </td>
-      <td class="actions">
+      <td>
         <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.plan({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
         <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.delete(item.Id)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
       </td>
