@@ -11,7 +11,7 @@
   function sxtAreaZjView(api,sxt,tileLayer,$state){
     return {
       scope: {
-        value:'=sxtAreaZjView',
+        value:'=sxtAreaZjView'
       },
       link: function (scope, element, attrs, ctrl) {
         var map,layer,el;
