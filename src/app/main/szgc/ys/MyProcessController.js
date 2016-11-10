@@ -59,12 +59,15 @@
     $scope.roleId = api.szgc.vanke.getRoleId();
     $scope.project = {
       zjs:[],
+      typeChange:function () {
+        $scope.project.data.switch = $scope.project.data.switch == 'batchs'?'new':'batchs'
+      },
+      removezj:function (item) {
+        var idx = $scope.project.zjs.indexOf(item);
+        $scope.project.zjs.splice(idx,1);
+      },
       addzj:function (item) {
         $scope.project.zjs.push(item);
-        var idx = $scope.project.data.items.indexOf(item);
-        if(idx>0){
-          $scope.project.data.items.splice(idx,1);
-        }
         $scope.project.searchTerm='';
       },
       searchTerm:'',
@@ -82,17 +85,24 @@
         $rootScope.hideFootbar = !$rootScope.hideFootbar;
       },
       ok:function(){
-        var f = $scope.project.data.items.find(function(r){
-                return r.name.indexOf($scope.project.searchTerm)>0;
-            })
-        if(f){
-          $scope.project.zjs.push(f);
-          var idx = $scope.project.data.items.indexOf(f);
-          if(idx>0){
-            $scope.project.data.items.splice(idx,1);
-          }
-          $scope.project.searchTerm='';
-        }
+        var project = $scope.project;
+        $state.go('app.szgc.ys.addnew', {
+          projectid: $scope.project.zjs.map(function (item) {
+            return item.$id;
+          }).join(','),
+          name: $scope.project.zjs.map(function (item) {
+            return item.$name;
+          }).join(','),
+          //batchId: ,
+          procedureTypeId: project.procedureTypeId,
+          procedureId: project.procedureId,
+          type: project.type,
+          idTree: project.idTree,
+          procedureName: project.procedureName,
+          nameTree: project.nameTree,
+          checkRequirement: project.CheckRequirement
+        });
+        $scope.project.zjs.length = 0;
       },
       roleId:$scope.roleId,
       isPartner:$scope.isPartner,
@@ -173,12 +183,26 @@
               vm.loading = false;
             }
             else if($scope.project.type === 256){
-              if($scope.project.data.items){
-                $scope.project.data.items.forEach(function (item) {
-                 // $scope.project.zjs.push(item);
-                })
+              $scope.project.data.items && $scope.project.data.items.forEach(function (t) {
+                t.hasV = false;
+              });
+              result.data.Rows.forEach(function (it) {
+                it.$id = it.RegionId;
+                it.$name = it.RegionName;
+                $scope.project.data.items && $scope.project.data.items.filter(function (t) {
+                  return it.$id.indexOf(t.$id)!=-1;
+                }).forEach(function (t) {
+                  t.hasV = true;
+                });
+              });
+              if($scope.project.data.items) {
+                $scope.project.data.items = $scope.project.data.items.filter(function (t) {
+                  return t.hasV === false;
+                });
+                $scope.project.data.switch = $scope.project.data.items.length>0?'new':'batchs';
               }
-
+              $scope.project.data.results = result.data.Rows;
+              $rootScope.hideFootbar = true;
               vm.loading = false;
             }
             else {

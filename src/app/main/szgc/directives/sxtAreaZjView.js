@@ -5,13 +5,13 @@
   'use strict';
   angular
     .module('app.szgc')
-    .directive('sxtAreaYjView',sxtAreaYjView);
+    .directive('sxtAreaZjView',sxtAreaZjView);
 
   /** @ngInject */
-  function sxtAreaYjView(api,sxt,tileLayer,$state){
+  function sxtAreaZjView(api,sxt,tileLayer,$state){
     return {
       scope: {
-        value:'=sxtAreaYjView',
+        value:'=sxtAreaZjView',
       },
       link: function (scope, element, attrs, ctrl) {
         var map,layer,el;
@@ -52,7 +52,12 @@
             map.addLayer(labels);
             map.addLayer(drawnItems);
 
-            scope.value.items.forEach(function (ly) {
+            // api.szgc.addProcessService.getBatchRelation({
+            //   //procedureId: $scope.project.procedureId,
+            //   regionIdTree: scope.value.itemId,
+            //   Status: 4
+            //}).then(function (result) {
+              scope.value.items.forEach(function (ly) {
               var geojson = JSON.parse(ly.GeoJSON),
                 options = geojson.options;
               switch (geojson.geometry.type) {
@@ -71,6 +76,7 @@
                 openPopup(layer);
               })
             });
+            //});
             function updateText(layer) {
               if (!layer.options.text) return;
               var ly = null;
@@ -106,17 +112,16 @@
                 .setLatLng(layer.getBounds().getCenter())
                 .setContent('loading')
                 .openOn(map);
-              api.szgc.addProcessService.queryByProjectAndProdure3(projectId,{
+              api.szgc.addProcessService.queryByProjectAndProdure3_1(projectId,{
                 regionIdTree: scope.value.itemId + '>' + layer.data.Id,
                 isGetChilde: 1
               }).then(function (result) {
-                console.log('result',result);
                 var conents = [];
                 conents.push('<div class="yj"><strong>' + layer.data.RegionName + '</strong>');
-                conents.push('<div><table style="width: 200px"><thead><tr><th>工序</th><th>批</th></tr></thead><tbody>');
+                conents.push('<div><table style="width: 200px"><thead><tr><th>工序</th></tr></thead><tbody>');
                 conents.push('</td></tr>');
                 result.data.Rows.forEach(function (row) {
-                  conents.push('<tr class="item" rid="'+row.Id+'" style="background: '+(row.JLDate && row.ZbDate?'rgba(0,150,136,1)':row.JLDate?'rgba(0,195,213,1)':row.ZbDate?'rgba(44,157,251,1)':'rgba(225,225,225,1)')+';color:'+(row.ECCheckResult==1||row.ECCheckResult==3?'red':'')+'"><td  style="white-space:normal">'+row.ProcedureName+'</td><td style="white-space:normal">'+row.BatchNo+(row.Remark?'-'+row.Remark:'')+'</td></tr>')
+                  conents.push('<tr class="item" rid="'+row.Id+'" style="background: '+(row.JLDate && row.ZbDate?'rgba(0,150,136,1)':row.JLDate?'rgba(0,195,213,1)':row.ZbDate?'rgba(44,157,251,1)':'rgba(225,225,225,1)')+';color:'+(row.ECCheckResult==1||row.ECCheckResult==3?'red':'')+'"><td  style="white-space:normal">'+row.ProcedureName+'</td></tr>')
                 })
                 conents.push('</tbody></table></div>');
                 conents.push('</div>');

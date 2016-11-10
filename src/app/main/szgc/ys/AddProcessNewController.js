@@ -170,7 +170,7 @@
         api.szgc.addProcessService.getBatchRelation({
           regionIdTree: idtree,
           procedureId: procedure,
-          regionId: pidp
+          regionId: pid
         }).then(function (result) {
           //如果已经录入了把第一条BatchNo最大的返回取它的BatchNo，把Id制空
           //没有Id才会插入一条数
