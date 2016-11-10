@@ -30,8 +30,8 @@
           <img src="app/main/szgc/images/i_3d31.png" class="md-avatar">
           <p>总承包单位验收合格率</p>
         </md-list-item>
-        <md-divider></md-divider>
-        <md-list-item ng-click="vm.goToReport('项目负责人访问统计','app.szgc.report.visitResult',$event)">
+        <md-divider ng-if="vm.userName=='陆荣秀' || vm.userName=='王茂伟' ||vm.userName=='郑建军' ||vm.userName=='孙哲'||vm.userName=='张招勇'"></md-divider>
+        <md-list-item ng-click="vm.goToReport('项目负责人访问统计','app.szgc.report.visitResult',$event)" ng-if="vm.userName=='陆荣秀' || vm.userName=='王茂伟' ||vm.userName=='郑建军' ||vm.userName=='孙哲'||vm.userName=='张招勇'">
           <img src="app/main/szgc/images/i_3d31.png" class="md-avatar">
           <p>项目负责人访问统计</p>
         </md-list-item>

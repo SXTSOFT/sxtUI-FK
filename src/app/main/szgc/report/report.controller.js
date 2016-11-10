@@ -10,10 +10,12 @@
     .controller('SzgcReportController', SzgcReportController);
 
   /** @ngInject */
-  function SzgcReportController($scope,$state,api,utils)
+  function SzgcReportController($scope,$state,api,utils,auth)
   {
 
     var vm = this;
+    var user=auth.current();
+    vm.userName = user.RealName;
     // Data
     vm.data = {
       name: '报表详细',
