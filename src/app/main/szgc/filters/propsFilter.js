@@ -4,7 +4,8 @@
 (function(){
   angular
     .module('app.szgc')
-    .filter('propsFilter',propsFilter);
+    .filter('propsFilter',propsFilter)
+    .filter('exists',exists);
   /** @ngInject */
   function propsFilter(){
     return function(items, props) {
@@ -34,6 +35,30 @@
       }
 
       return out;
+    }
+  }
+  function exists() {
+    return function (items,array,flag,prop) {
+      var r = [],ex;
+      flag = flag===true;
+      //console.log('exists',items,array,flag,prop)
+      items.forEach(function (item) {
+        if(prop){
+          ex = array && !!array.find(function (arr) {
+            return item[prop] == arr[prop]
+          });
+        }
+        else{
+          ex = array && array.indexOf(item)!=-1;
+        }
+        if(flag && ex){
+          r.push(item);
+        }
+        else if(!flag && !ex){
+          r.push(item);
+        }
+      });
+      return r;
     }
   }
 })();

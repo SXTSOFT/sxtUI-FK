@@ -633,3 +633,78 @@ fieldset fieldset legend{
     border: 1px solid #000000!important;
   }
 }
+.zjinput{
+  .highlight{
+    color: red;
+    font-weight: bold;
+  }
+  .md-chips {
+    md-chip{
+      margin:2px 2px 0 0;
+    }
+  }
+}
+.md-nbtn{
+  >div{
+    padding:5px;
+    >div{
+      border:1px solid #dedede;
+      border-radius: 3px;
+      padding:8px 0;
+      text-align: center;
+      position: relative;
+      &.active{
+        em{
+          background: url("main/szgc/images/circle-v.png") no-repeat center center;
+          background-size:100% auto;
+          display: block;
+          width:12px;
+          height:12px;
+          position: absolute;
+          right:1px;
+          top:1px;
+        }
+      }
+    }
+  }
+  .md-button{
+    min-width: 50px;
+    position: relative;
+    margin:0;
+    padding: 0;
+  }
+}
+.zdy-btn{
+  >div{
+    .md-button{
+      margin:0;
+      border-right: 1px solid #dedede;
+      border-bottom: 1px solid #dedede;
+      border-radius: 0;
+      //padding: 6px;
+      padding: 7px 0;
+      min-width: 60px;
+      background: #fbfbfb;
+      box-shadow: inset 0 0 1px #fff;
+      &:last-child{
+        border-right: none;
+      }
+    }
+    &:last-child{
+      .md-button{
+        border-bottom: none;
+      }
+    }
+  }
+
+
+  //span{
+  //  padding:5px;
+  //  text-align: center;
+  //  border-right:1px solid #dedede;
+  //  border-bottom:1px solid #dedede;
+  //  &:last-child{
+  //    border-right:none;
+  //  }
+  //}
+}

@@ -82,6 +82,8 @@
         })
     }
 
+    //api.szgc.ProcedureService
+
     var resetWorkRatio = function () {
       var bs = $scope.data.batchs,
         len = 0,

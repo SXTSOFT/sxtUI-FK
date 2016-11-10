@@ -419,6 +419,7 @@
               result.data.Rows.forEach(function (r) {
                 r1.data.rooms.push({
                   floor_id: r.Id,
+                  tp:r.UserId,
                   geoJSON:r.GeoJSON,
                   name: r.RegionName,
                   type: r.RegionType

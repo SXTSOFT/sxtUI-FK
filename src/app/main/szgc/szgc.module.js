@@ -103,6 +103,28 @@
           }
         }
       })
+      .state('app.szgc.project.zj',{
+        //title :'形象进度',
+        url   :'/zj/{projectType}/{itemId}/{itemName}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/szgc/home/zj.html',
+            controller:'HomeZjController as vm',
+            resolve:{
+              zj:['$stateParams', 'api','$q',function($stateParams, api){
+                return api.szgc.vanke.yj($stateParams.itemId).then(function (r) {
+                  return {
+                    itemId:$stateParams.itemId,
+                    itemName:$stateParams.itemName,
+                    items:r.data.Rows
+                  }
+                })
+              }]
+            }
+          }
+        }
+      })
+
       .state('app.szgc.project.buildinglist.building',{
         //title :'形象进度',
         url   :'/building/{buildId}/{buildName}/{floors}',

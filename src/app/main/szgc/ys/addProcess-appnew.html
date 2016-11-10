@@ -45,12 +45,6 @@
         <md-list-item ng-hide="roleId=='3rd'" layout="row">
           <sxt-select flex required  ng-model="data.curHistory.GrpId" ng-disabled="!data.isFirst" name="gid" name-value="data.curHistory.GrpName" sources="data.groups" text-field="name" value-field="id"></sxt-select>
         </md-list-item>
-        <md-subheader ng-show="roleId=='jl'" class="md-no-sticky">施工单位已自检</md-subheader>
-        <md-list-item ng-show="roleId=='jl'" layout="row">
-          <md-checkbox ng-disabled="!data.isFirst" flex="none" ng-model="data.curHistory.ZbChecked" aria-label="施工单位已验">
-          </md-checkbox>
-          <p flex>如果未选择施工单位已验，提交后施工单位将不允许录入验收记录</p>
-        </md-list-item>
         <div ng-if="data.CheckRequirement">
         <md-subheader  class="md-no-sticky">地面标高</md-subheader>
         <md-list-item >
@@ -83,12 +77,7 @@
       <div><div class="clearfix"></div></div>
 
 
-      <fieldset>
-        <legend>验收件</legend>
-        <span class="fs-display-1 display-block">添加验收照片</span>
-        <div> <small></small></div>
-        <sxt-images ng-model="data.curStep.GroupImg2"  files="data.pics2" project="data.projectInfo" edit="true"></sxt-images>
-      </fieldset>
+
       <fieldset>
         <legend>主控项目</legend>
         <md-list>
@@ -149,7 +138,21 @@
 
         </div>
       </div>
-
+      <md-divider></md-divider>
+      <fieldset>
+        <legend>验收件</legend>
+        <span class="fs-display-1 display-block">添加验收照片</span>
+        <div> <small></small></div>
+        <sxt-images ng-model="data.curStep.GroupImg2"  files="data.pics2" project="data.projectInfo" edit="true"></sxt-images>
+      </fieldset>
+      <md-list>
+        <md-subheader ng-show="roleId=='jl'" class="md-no-sticky">施工单位已自检</md-subheader>
+        <md-list-item ng-show="roleId=='jl'" layout="row">
+          <md-checkbox ng-disabled="!data.isFirst" flex="none" ng-model="data.curHistory.ZbChecked" aria-label="施工单位已验">
+          </md-checkbox>
+          <p flex>如果未选择施工单位已验，提交后施工单位将不允许录入验收记录</p>
+        </md-list-item>
+      </md-list>
       <div class="md-padding" layout="row">
 
         <md-button type="submit" flex ng-disabled="isSaveing"  class="md-raised md-primary">{{ isSaveing ?'正在提交...':'提交'}}  </md-button>
