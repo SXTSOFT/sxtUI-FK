@@ -34,10 +34,22 @@
         vm.data._CloseRelatedObjectType = vm.data.CloseRelatedObjectType;
         vm.data.CloseRelatedObjectType&&vm.data.CloseRelatedObjectType==0?vm.data.CloseRelatedObjectType ='PQMeasure':vm.data.CloseRelatedObjectType='Inspection';
         task.oType = task.Type;
+        vm.data._DurationType = vm.data.DurationType;
+        vm.data.DurationType == 0?vm.data.DurationType ='FixedDuration':vm.data.DurationType= 'VariableDuration';
         vm.loading= false;
         task.Master.forEach(function (flow) {
           if(flow.Description)
             angular.extend(flow,angular.fromJson(flow.Description));
+          //单项任务名改变时取值
+          if(flow.OptionalTask){
+            if(!(/^\d+$/.test(flow.OptionalTask.substr(0,1)))){
+              flow.OptionalTask =  flow.OptionalTasks.length&&flow.OptionalTasks[0].Name;
+            }else{
+              if(flow.OptionalTasks.length !=flow.OptionalTask.substr(0,1)){
+                flow.OptionalTask = flow.OptionalTasks.length==1?flow.OptionalTasks[0].Name:flow.OptionalTasks.length+'任务';
+              }
+            }
+          }
           flow.oMilestone=flow.Milestone;
           flow.oName=flow.Name;
           flow.oReservedEndDays = flow.ReservedEndDays;
@@ -51,6 +63,15 @@
           b.forEach(function (flow) {
             if(flow.Description)
               angular.extend(flow,angular.fromJson(flow.Description));
+            if(flow.OptionalTask){
+              if(!(/^\d+$/.test(flow.OptionalTask.substr(0,1)))){
+                flow.OptionalTask = flow.OptionalTasks.length&&flow.OptionalTasks[0].Name;
+              }else{
+               if(flow.OptionalTasks.length !=flow.OptionalTask.substr(0,1)){
+                 flow.OptionalTask = flow.OptionalTasks.length==1?flow.OptionalTasks[0].Name:flow.OptionalTasks.length+'任务';
+               }
+              }
+            }
             flow.oMilestone=flow.Milestone;
             flow.oName=flow.Name;
             flow.oReservedEndDays = flow.ReservedEndDays;
@@ -73,6 +94,15 @@
       flow.EndFlagTaskFlowId = endFlow? endFlow.TaskFlowId:0;
       vm.updateFlow(flow).then(function () {
         vm.flows = temp.load(temp.task);
+        //var f = vm.flows.indexOf(flow);
+        //if(f!=-1){
+        //  vm.flows.forEach(function(r,index){
+        //    if(index>f){
+        //      //r.showBack = true;
+        //    }
+        //  })
+        //}
+        //console.log(vm.flows)
       });
     }
     vm.relationTypes = [{
@@ -198,6 +228,7 @@
         IsRequired:flow.IsRequired,
         EndFlagTaskFlowId:flow.EndFlagTaskFlowId,
         Expression:flow.Expression,
+        IsMustComplete:flow.IsMustComplete,
         Description:angular.toJson({
           ReservedEndDays:flow.ReservedEndDays,
           Duration: flow.Duration,
@@ -212,6 +243,9 @@
       }).then(function () {
 
       })
+    }
+    vm.updateMust = function(flow){
+      return vm.updateFlow(flow);
     }
     vm.updateDuration = function (flow) {
       if(flow.oDuration != flow.Duration){
@@ -258,8 +292,21 @@
         }
       });
       vm.flows = temp.load(task);
+      //findEndType(vm.flows);
     }
+    function findEndType(items){
+      items.forEach(function(r){
 
+      })
+      //vm.flows.forEach(function(r){
+      //  var f = vm.flows.find(function(_r){
+      //    return r.line!=0&&_r.TaskFlowId == r.ParentId;
+      //  })
+      //  if(f){
+      //    r.EndFlagType = f.Type;
+      //  }
+      //})
+    }
     vm.selectOptionalTask =function (flow) {
       return $mdDialog.show({
         controller: ['$mdDialog','$scope', function ($mdDialog) {

@@ -326,6 +326,9 @@
           return -1;
         return 0;
       }).forEach(function (fd) {
+        if(fd.merge){
+          fd.merge = [];
+        }
         var ends = fd.TaskFlowId && groups.filter(function (g) {
             return g.EndFlagTaskFlowId === fd.TaskFlowId;
           });
