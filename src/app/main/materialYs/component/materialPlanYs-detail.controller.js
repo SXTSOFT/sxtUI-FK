@@ -20,6 +20,7 @@
 
     api.xhsc.materialPlan.getMaterialPlanDetail(vm.data.Id).then(function (q) {
       vm.data = q.data;
+      console.log(q.data)
     });
 
   }

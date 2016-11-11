@@ -17,7 +17,7 @@
     var vm = this;
     vm.data = {};
     vm.data.Id = $stateParams.BatchId;
-    vm.data.PlanId = $stateParams.Id;
+    vm.data.PlanId = $stateParams.PlanId;
     vm.data.ApproachType = $stateParams.status == 1 ? 1 : 0;
     vm.data.ApproachTime = new Date();
     vm.data.MaterialPlanFiles = [];
@@ -26,7 +26,7 @@
     vm.rummagerImgs = [];
     vm.CertificateImgs = [];
 
-    console.log(vm.data.ApproachTime);
+    console.log($stateParams)
 
     if(vm.data.ApproachType == 0){
       vm.data.ApproachCount = parseFloat($stateParams.PlanCount);
@@ -68,6 +68,8 @@
       //   utils.alert('请上传至少一张合格证照片');
       //   return;
       // }
+
+      console.log(vm.data)
 
       api.xhsc.materialPlan.IntoFactoryMaterialBatch(vm.data).then(function (q) {
         utils.alert("提交成功", null, function () {

@@ -53,7 +53,7 @@
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
-        url:'/intoFactory/{status}/{Id}/{BatchId}/{PlanCount}/{Brand}',
+        url:'/intoFactory/{status}/{BatchId}/{PlanId}/{PlanCount}/{Brand}',
         template:'<material-into-factory flex layout="column"></material-into-factory>'
       })
       .state('app.xhsc.materialys.checkInfo',{
