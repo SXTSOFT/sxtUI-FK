@@ -104,13 +104,29 @@
               layer.addData(layData.geometry);
             }
 
+            function find(index,source) {
+              if (source){
+                if (source.find(function (n) {
+                    return n.AcceptanceIndexID==index.AcceptanceIndexID;
+                  })){
+                  return true;
+                }else {
+                  for (var i=0;i<source.length;i++){
+                    if (find(index,source[i].Children)){
+                      return true;
+                    }
+                  }
+                  return false;
+                }
+              }else {
+                return false;
+              }
+            }
             if (t && t.length) {
               var g;
               if (scope.drawing && scope.drawing.data) {
                 t.forEach(function (m) {
-                  if (m.DrawingID == scope.drawing.data.DrawingID && scope.measureIndexes.find(function (n) {
-                      return n.AcceptanceIndexID == m.AcceptanceIndexID
-                    })&&!points.find(function (n) {
+                  if (m.DrawingID == scope.drawing.data.DrawingID && find(m,scope.measureIndexes)&&!points.find(function (n) {
                       return n.MeasurePointID==m.MeasurePointID;
                     })) {
                     points.push(m);

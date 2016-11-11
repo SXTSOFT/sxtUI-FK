@@ -77,7 +77,9 @@
                 vm.MeasureIndexes.forEach(function (k) {
                   k.num = 0;
                   r.data.forEach(function (m) {
-                    if (m.AcceptanceIndexID == k.AcceptanceIndexID) {
+                    if (m.AcceptanceIndexID == k.AcceptanceIndexID||(k.Children)&&k.Children.find(function (n) {
+                        return n.AcceptanceIndexID==m.AcceptanceIndexID;
+                      })) {
                       k.num++;
                       k.completed = m.Status == 1 ? true : k.completed;
                       k.checked=k.checked;
@@ -96,15 +98,6 @@
             function valid() {
               return $q(function (resolve, reject) {
                 reflash().then(function (r) {
-                  vm.selected.forEach(function (k) {
-                    k.num = 0;
-                    r.data.forEach(function (m) {
-                      if (m.AcceptanceIndexID == k.AcceptanceIndexID) {
-                        k.num++;
-                        k.completed = m.Status == 1 ? true : k.completed;
-                      }
-                    });
-                  })
                   var sub = $.map(vm.selected, function (o) {
                     if (o.completed)
                       return o.IndexName;
@@ -137,9 +130,9 @@
                 $mdDialog.hide().then(function () {
                   utils.confirm(msg, null, '', '').then(function () {
                     var arr = [];
-                    // sub.forEach(function (item) {
-                    //   arr.push(remote.PQMeasureStandard.standarSubmit(item.AcceptanceIndexID, item.AcceptanceItemID, vm.drawing.data.DrawingID))
-                    // })
+                    sub.forEach(function (item) {
+                      arr.push(remote.PQMeasureStandard.standarSubmit(item.AcceptanceIndexID, item.AcceptanceItemID, vm.drawing.data.DrawingID))
+                    })
                     $q.all(arr).then(function () {
                       resolve();
                     }).catch(function () {
