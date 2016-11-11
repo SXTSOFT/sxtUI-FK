@@ -57,8 +57,8 @@
           _id: 'materialPlanApprovalInfo',
           idField: 'Id',
           upload:true
-        }).bind(function (data) {
-          return $http.put('/api/MaterialPlan/InsertApproval', data);
+        }).bind(function (flag,data) {
+          return $http.put('/api/MaterialPlan/InsertApproval?flag='+flag, data);
         }),
         PostExitInfo: $http.db({
           _id: 'materialExitInfo',

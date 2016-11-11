@@ -76,6 +76,7 @@
               break;
             }
           }
+          vm.data.InspectionTime = new Date();
         }
       });
     }

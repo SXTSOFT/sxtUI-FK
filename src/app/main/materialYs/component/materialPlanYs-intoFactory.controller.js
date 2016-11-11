@@ -19,12 +19,19 @@
     vm.data.Id = $stateParams.BatchId;
     vm.data.PlanId = $stateParams.Id;
     vm.data.ApproachType = $stateParams.status == 1 ? 1 : 0;
-    vm.data.ApproachTime=new Date();
+    vm.data.ApproachTime = new Date();
     vm.data.MaterialPlanFiles = [];
     vm.vehicleImgs = [];
     vm.goodsImgs = [];
     vm.rummagerImgs = [];
     vm.CertificateImgs = [];
+
+    console.log(vm.data.ApproachTime);
+
+    if(vm.data.ApproachType == 0){
+      vm.data.ApproachCount = parseFloat($stateParams.PlanCount);
+      vm.data.Brand = $stateParams.Brand;
+    }
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
       vm.data.MaterialPlanFiles = vm.vehicleImgs.concat(vm.goodsImgs,vm.rummagerImgs,vm.CertificateImgs);
@@ -100,6 +107,7 @@
               break;
             }
           }
+          vm.data.ApproachTime = new Date();
         }
       });
     }
