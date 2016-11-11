@@ -113,6 +113,7 @@
 
       vm.images = vm.vehicleImgs.concat(vm.goodsImgs).concat(vm.checkerImgs).concat(vm.certificateImgs);
       vm.data.BatchFile = vm.images;
+      vm.data.IsInspection = !vm.data.WgCheck ? false : true;
       api.xhsc.materialPlan.PostCheckInfo(vm.data).then(function (r) {
         utils.alert('提交成功!',null,function () {
           $state.go("app.xhsc.gx.gxmain");

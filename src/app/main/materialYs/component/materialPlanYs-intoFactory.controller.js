@@ -26,8 +26,6 @@
     vm.rummagerImgs = [];
     vm.CertificateImgs = [];
 
-    console.log($stateParams)
-
     if(vm.data.ApproachType == 0){
       vm.data.ApproachCount = parseFloat($stateParams.PlanCount);
       vm.data.Brand = $stateParams.Brand;
@@ -68,8 +66,6 @@
       //   utils.alert('请上传至少一张合格证照片');
       //   return;
       // }
-
-      console.log(vm.data)
 
       api.xhsc.materialPlan.IntoFactoryMaterialBatch(vm.data).then(function (q) {
         utils.alert("提交成功", null, function () {
