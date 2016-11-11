@@ -44,7 +44,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url:'/planDetail/{batchId}/{planId}',
+        url:'/planDetail/{batchId}',
         template:'<material-plan-detail></material-plan-detail>'
       })
       .state('app.xhsc.materialys.intoFactory',{
