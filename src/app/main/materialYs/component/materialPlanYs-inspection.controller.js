@@ -17,7 +17,7 @@
     var vm = this;
     vm.data = {};
     vm.data.Id = $stateParams.id;
-    vm.data.InspectionTime = new Date();
+    vm.data.InspectionTime = new Date().Format('yyyy年MM月dd日');
     vm.samplingProcessImgs = [];
     vm.checkListImgs = [];
     vm.data.MaterialPlanFiles = [];
