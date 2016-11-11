@@ -99,11 +99,7 @@
 
       api.xhsc.materialPlan.PostApprovalInfo(vm.flag,batch).then(function (r) {
         utils.alert('提交成功!',null,function () {
-          if(handle == 2){
-            $state.go("app.xhsc.materialys.inspection",{id:batch.Id});
-          }else{
-            $state.go("app.xhsc.gx.gxmain");
-          }
+          $state.go("app.xhsc.gx.gxmain");
         });
       });
     }

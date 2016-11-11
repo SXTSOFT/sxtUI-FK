@@ -3,12 +3,15 @@
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
       <label flex="50">进场时间</label>
-      <md-datepicker flex="50" ng-model="vm.data.ApproachTime" ng-disabled="true"></md-datepicker>
+      <!--<md-datepicker flex="50" ng-model="vm.data.ApproachTime" ng-disabled="true"></md-datepicker>-->
+      <md-input-container flex="50" style="margin:0;padding: 0;">
+        <input type="text" ng-model="vm.data.ApproachTime"style="top: 10px;position: relative; text-align: right;" required ng-disabled="true" />
+      </md-input-container>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
       <label flex="50">进场数量</label>
-      <md-input-container  style="margin:0;padding: 0;">
+      <md-input-container flex="50"  style="margin:0;padding: 0;">
         <input type="number" ng-model="vm.data.ApproachCount" style="top: 10px;position: relative; text-align: right;" min="0" required ng-disabled="vm.data.ApproachType==0" />
       </md-input-container>
     </md-list-item>
@@ -29,11 +32,14 @@
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
       <label flex="50">有无封样</label>
-      <md-switch class="md-secondary" ng-model="vm.data.IsPacking" required ></md-switch>
+      <div flex="50">
+        <label style="float: right; padding-right: 10px;">有/无</label>
+        <md-switch class="md-secondary" ng-model="vm.data.IsPacking" required ></md-switch>
+      </div>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
-      <label flex="50">配检查人</label>
+      <label flex="50">配合检查人</label>
       <md-input-container flex="50"style="margin:0;padding: 0;">
         <input type="text" ng-model="vm.data.Inspector" style="top: 10px;position: relative; text-align: right;" required />
       </md-input-container>

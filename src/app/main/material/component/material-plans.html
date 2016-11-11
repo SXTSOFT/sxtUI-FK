@@ -19,10 +19,11 @@
     </md-button>
   </div>
 </md-toolbar>
-<md-content flex layout="column" ms-scroll style="overflow-y: auto;">
+<md-content flex layout="column" ms-scroll  style="overflow-y: auto;">
   <table class="simple">
     <thead>
     <tr>
+      <th style="min-width: 60px;padding-left: 12px;">序号</th>
       <th>计划名称</th>
       <th>材料/设备名称</th>
       <th>型号</th>
@@ -32,7 +33,7 @@
       <th>使用部位</th>
       <th>合同编号</th>
       <th>供货方式</th>
-      <th style="width: 50px;">状态</th>
+      <th style="min-width: 80px;">状态</th>
       <!--<th>进场时间</th>-->
       <!--<th>进场数量</th>-->
       <!--<th>厂家/品牌</th>-->
@@ -52,6 +53,7 @@
     </thead>
     <tbody>
     <tr ng-repeat="item in vm.data">
+      <td ng-bind="$index+1" style="min-width: 60px;">1</td>
       <td>{{item.PlanName}}</td>
       <td>{{item.MaterialName}}</td>
       <td>{{item.Model}}</td>
@@ -66,7 +68,7 @@
         <label ng-if="item.SupplyType == 2">认质认价</label>
         <label ng-if="item.SupplyType == 4">甲指乙供</label>
       </td>
-      <td>
+      <td style="min-width: 80px;">
         <!--{{item.Status}}-->
         <label ng-if="item.Status == 1">未进场</label>
         <label ng-if="item.Status == 2">未验收</label>
@@ -74,7 +76,7 @@
       </td>
       <td>
         <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.plan({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
-        <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.delete(item.Id)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
+        <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.delete(item.Id)" ng-hide="item.Status!=1"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
       </td>
     </tr>
     </tbody>

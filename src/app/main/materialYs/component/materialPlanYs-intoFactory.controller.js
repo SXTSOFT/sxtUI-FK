@@ -19,7 +19,7 @@
     vm.data.Id = $stateParams.BatchId;
     vm.data.PlanId = $stateParams.PlanId;
     vm.data.ApproachType = $stateParams.status == 1 ? 1 : 0;
-    vm.data.ApproachTime = new Date();
+    vm.data.ApproachTime = new Date().Format('yyyy年MM月dd日');
     vm.data.MaterialPlanFiles = [];
     vm.vehicleImgs = [];
     vm.goodsImgs = [];
