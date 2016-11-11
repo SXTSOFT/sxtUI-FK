@@ -44,7 +44,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url:'/planDetail/{batchId}/{planId}',
+        url:'/planDetail/{batchId}',
         template:'<material-plan-detail></material-plan-detail>'
       })
       .state('app.xhsc.materialys.intoFactory',{
@@ -53,7 +53,7 @@
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
-        url:'/intoFactory/{status}/{Id}/{BatchId}',
+        url:'/intoFactory/{status}/{BatchId}/{PlanId}/{PlanCount}/{Brand}',
         template:'<material-into-factory flex layout="column"></material-into-factory>'
       })
       .state('app.xhsc.materialys.checkInfo',{

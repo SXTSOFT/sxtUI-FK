@@ -13,11 +13,11 @@
     });
 
   /** @ngInject */
-  function inspectionReport($rootScope,$scope,api,utils,$stateParams,sxt){
+  function inspectionReport($rootScope,$scope,api,utils,$stateParams,sxt,$state){
     var vm = this;
     vm.data = {};
     vm.data.Id = $stateParams.id;
-    vm.data.ReportTime = new Date().Format('yyyy年MM月dd日');
+    vm.data.ReportTime = new Date();
     vm.data.LabCheck = true;
     vm.reportImgs = [];
 
@@ -40,12 +40,11 @@
 
       vm.data.BatchFile = vm.reportImgs;
       api.xhsc.materialPlan.PostReportInfo(vm.data).then(function (r) {
-        utils.alert('提交成功!');
+        utils.alert('提交成功!',null,function () {
+          $state.go("app.xhsc.gx.gxmain");
+        });
       })
     });
-
-
-
 
     //删除图片操作
     $rootScope.$on('delete',function (data,index) {
@@ -53,11 +52,11 @@
     });
 
     vm.addPhoto = function (type) {
-
       //拍照事件
       xhUtils.photo().then(function (image) {
         if(image){
           photo(type,vm.reportImgs,image);
+          vm.data.ReportTime = new Date();
         }
       });
     };

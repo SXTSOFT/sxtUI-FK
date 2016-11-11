@@ -12,10 +12,11 @@
     });
 
   /** @ngInject */
-  function exit($rootScope,$scope,$stateParams,api,utils,sxt,xhUtils){
+  function exit($rootScope,$scope,$stateParams,api,utils,sxt,xhUtils,$state){
     var vm = this;
     vm.data = {ExitId:sxt.uuid(),PlanId:$stateParams.id};
     vm.data.ExitReason = '材料多余';
+    vm.data.ExitOperatorTime = new Date();
 
     $scope.$on("$destroy",function(){
       sendCheckResult();
@@ -31,14 +32,16 @@
         utils.alert('退场见证人不能为空');
         return;
       }
-      if(vm.exitImgs.length == 0){
-        utils.alert('至少上传一张退场照片');
-        return;
-      }
+      // if(vm.exitImgs.length == 0){
+      //   utils.alert('至少上传一张退场照片');
+      //   return;
+      // }
 
       vm.data.MaterialFiles = vm.exitImgs;
       api.xhsc.materialPlan.PostExitInfo(vm.data).then(function (r) {
-        utils.alert('提交成功!');
+        utils.alert('提交成功!',null,function () {
+          $state.go("app.xhsc.gx.gxmain");
+        });
       })
     });
 
@@ -54,6 +57,7 @@
       xhUtils.photo().then(function (image) {
         if(image){
           photo(type,vm.exitImgs,image);
+          vm.data.ExitOperatorTime = new Date();
         }
       });
     };

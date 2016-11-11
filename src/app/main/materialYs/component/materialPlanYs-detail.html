@@ -80,8 +80,8 @@
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item style="height: 80px;">
-      <md-button flex="50" class="md-raised md-primary" ng-disabled="!vm.confirm" ui-sref="app.xhsc.materialys.intoFactory({status:1,Id:vm.data.Id,BatchId:vm.data.BatchId})">分批进场</md-button>
-      <md-button flex="50" class="md-raised md-primary" ng-disabled="!vm.confirm" ui-sref="app.xhsc.materialys.intoFactory({status:0,Id:vm.data.Id,BatchId:vm.data.BatchId})">一次性进场</md-button>
+      <md-button flex="50" class="md-raised md-primary" ng-disabled="!vm.confirm" ui-sref="app.xhsc.materialys.intoFactory({status:1,BatchId:vm.data.Id,PlanId:vm.data.PlanId,PlanCount:vm.data.PlanCount,Brand:vm.data.Brands})">分批进场</md-button>
+      <md-button flex="50" class="md-raised md-primary" ng-disabled="!vm.confirm" ui-sref="app.xhsc.materialys.intoFactory({status:0,BatchId:vm.data.Id,PlanId:vm.data.PlanId,PlanCount:vm.data.PlanCount,Brand:vm.data.Brands})">一次性进场</md-button>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
   </md-list>

@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function materialPlanYsCheckInfo($rootScope,$scope,api,utils,$stateParams,xhUtils,sxt){
+  function materialPlanYsCheckInfo($rootScope,$scope,api,utils,$stateParams,xhUtils,sxt,$state){
 
     var vm = this;
     vm.images = [];
@@ -57,6 +57,7 @@
             default:
               photo(type,vm.certificateImgs,image);
           }
+          vm.data.AcceptanceTime = new Date().Format('yyyy年MM月dd日');
         }
       });
     };
@@ -112,8 +113,11 @@
 
       vm.images = vm.vehicleImgs.concat(vm.goodsImgs).concat(vm.checkerImgs).concat(vm.certificateImgs);
       vm.data.BatchFile = vm.images;
+      vm.data.IsInspection = !vm.data.WgCheck ? false : true;
       api.xhsc.materialPlan.PostCheckInfo(vm.data).then(function (r) {
-        utils.alert('提交成功!');
+        utils.alert('提交成功!',null,function () {
+          $state.go("app.xhsc.gx.gxmain");
+        });
       })
     });
   }

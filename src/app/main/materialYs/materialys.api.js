@@ -33,8 +33,8 @@
           _id:'materialPlanDetailList',
           idField:'Id',
           dataType:3
-          }).bind(function (id,batchId) {
-          return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanAsync?id='+id+'batchId='+batchId));
+          }).bind(function (batchId) {
+          return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanAsync?batchId='+batchId));
         }),
         getMaterialPlanBatchById:function (id) {
           return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanBatchById?id='+id));
@@ -57,8 +57,8 @@
           _id: 'materialPlanApprovalInfo',
           idField: 'Id',
           upload:true
-        }).bind(function (data) {
-          return $http.put('/api/MaterialPlan/InsertApproval', data);
+        }).bind(function (flag,data) {
+          return $http.put('/api/MaterialPlan/InsertApproval?flag='+flag, data);
         }),
         PostExitInfo: $http.db({
           _id: 'materialExitInfo',

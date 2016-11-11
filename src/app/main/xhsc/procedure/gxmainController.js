@@ -96,7 +96,6 @@
         clickOutsideToClose:false,
         fullscreen: false
       });
-
     };
 
     api.event('downloadPlan',function (s,e) {
