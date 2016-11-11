@@ -26,11 +26,11 @@
             </th>
             <th ng-if="vm.data.Level==0" style="width: 24px;min-width: 24px">必选</th>
             <th style="width: 24px;min-width: 24px" ng-if="vm.data.Level !=0">必须完成</th>
-            <th style="width: 24px;min-width: 24px">变量</th>
+            <th style="width: 24px;min-width: 24px" ng-if="vm.data.Level==0">变量</th>
             <th ng-if="vm.data.Level==0" style="width: 80px;min-width: 80px">可选任务</th>
             <th ng-if="vm.data.Level==1" style="width: 30px;min-width: 24px">工期</th>
             <th ng-if="vm.data.Level==1" style="width: 30px;min-width: 24px">龄期</th>
-            <th ng-if="vm.data.Level==1" style="width: 124px;min-width: 124px">关联工序</th>
+            <th ng-if="vm.data.Level==1" style="width: 124px;min-width: 124px">关联项</th>
             <th style="width: 100px;min-width: 80px">通知</th>
             <th style="width: 100px;min-width: 80px">执行</th>
             <th ng-if="vm.data.Level==0" style="width: 110px;min-width: 110px">里程碑/介入点</th>
@@ -43,7 +43,7 @@
             </td>
             <td>
               <md-menu>
-                <span aria-label="添加" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                <span aria-label="添加" class="md-icon-button" ng-click="$mdOpenMenu($event);vm.setBack(flow)">
                   <md-icon md-font-icon="icon-plus"></md-icon>
                 </span>
               <md-menu-content>
@@ -66,7 +66,7 @@
                           清除后置
                         </md-button>
                       </md-menu-item>
-                      <md-menu-item ng-repeat="f2 in vm.flows">
+                      <md-menu-item ng-repeat="f2 in vm.flows|filter:{showBack:true}">
                         <md-button ng-click="vm.setEndFlow(flow,f2)">
                           {{f2.Name}}
                         </md-button>
@@ -86,7 +86,7 @@
             <td ng-if="vm.data.Level !=0">
               <input type="checkbox" ng-model="flow.IsMustComplete" ng-click="vm.updateMust(flow)">
             </td>
-            <td><input ng-if="flow.line==0" style="width:90%;color:#C62828" placeholder="无" type="text" ng-blur="vm.updateExpression(flow)" ng-model="flow.Expression" ></td>
+            <td ng-if="vm.data.Level == 0"><input ng-if="flow.line==0" style="width:90%;color:#C62828" placeholder="无" type="text" ng-blur="vm.updateExpression(flow)" ng-model="flow.Expression" ></td>
             <td ng-if="vm.data.Level==0">
               <div style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.selectOptionalTask(flow)">{{flow.OptionalTask||'未选择'}}</div>
             </td>
@@ -95,6 +95,7 @@
             <td ng-if="vm.data.Level==1">
               <div  style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.setMeasureInfo(flow)">
                 {{flow.MeasureInfo||'未关联'}}
+                <md-icon md-font-icon=""></md-icon>
               </div>
             </td>
             <td>

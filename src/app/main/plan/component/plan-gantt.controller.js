@@ -193,8 +193,7 @@
               "ScheduledEndTime": task.model.to
             }
           ]
-          api.plan.BuildPlan.adjustPlan($stateParams.id,changeData).then(function(r){
-          })
+          api.plan.BuildPlan.adjustPlan($stateParams.id,changeData);
           vm.data.forEach(function(group){
             var next = group.tasks.find(function(t){
               return t.dependencies.find(function(d){
@@ -331,7 +330,7 @@
     // Reload data action
     function load()
     {
-      return api.plan.Task.query({
+       return api.plan.Task.query({
         Type:'BuildingPlan',
         Source:$stateParams.id
       }).then(function (rs) {
@@ -370,8 +369,8 @@
           return result;
         });
         vm.isStarted = vm.data[0].tasks[0].isStarted;
+         console.log(vm.data)
       })
-
       // Fix for Angular-gantt-chart issue
       $animate.enabled(true);
       $animate.enabled($document.find('#gantt'), false);
@@ -468,7 +467,6 @@
           Name:'流程'
         };
         vm.data = task;
-        console.log(task)
         vm.onLoadTemplate();
       })
       var taskId = dialogData.formView.id;

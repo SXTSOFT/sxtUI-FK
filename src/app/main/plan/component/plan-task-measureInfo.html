@@ -10,6 +10,23 @@
   <md-dialog-content  style="padding: 0;width:400px;">
     <div>
       <md-tabs md-dynamic-height  md-selected="selectedIndex">
+        <md-tab label="关联任务">
+          <md-content  class="p-15" style="background-color: rgb(245,245,245)" layout="column" flex>
+            <md-input-container flex>
+              <label>关联任务</label>
+              <md-select ng-model="vm.relatedTask">
+                <md-select-header class="sxt-select-header">
+                  <md-input-container md-no-float class="md-block">
+                    <input ng-keydown="vm.stop($event)" type="search" name="search" ng-model="searchTerm" class="md-text" placeholder="输入关键字" >
+                  </md-input-container>
+                </md-select-header>
+                <md-optgroup>
+                  <md-option ng-value="m" ng-selected="vm.current == m" ng-repeat="m in vm.subTasks | filter:searchTerm">{{m.Name}}</md-option>
+                </md-optgroup>
+              </md-select>
+            </md-input-container>
+          </md-content>
+        </md-tab>
         <md-tab label="关联实测项">
           <md-content  class="p-15" style="background-color: rgb(245,245,245)" layout="column" flex>
             <md-input-container flex>

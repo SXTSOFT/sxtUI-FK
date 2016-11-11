@@ -103,6 +103,10 @@
         url:'/gantts',
         template:'<plan-ganttlist flex layout="column"></plan-ganttlist>'
       })
+      .state('app.plan.personplan',{
+        url:'/personplan',
+        template:'<plan-personplan layout="column" flex></plan-personplan>'
+      })
     msNavigationServiceProvider.saveItem('plan', {
       title: '计划管理',
       group: true,
@@ -123,6 +127,12 @@
     msNavigationServiceProvider.saveItem('plan.template', {
       title: '模板管理',
       icon: 'icon-folder',
+      weight: 1
+    });
+    msNavigationServiceProvider.saveItem('plan.personplan', {
+      title: '个人计划',
+      icon: 'icon-view-list',
+      state:'app.plan.personplan',
       weight: 1
     });
     //msNavigationServiceProvider.saveItem('plan.table', {
