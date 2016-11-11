@@ -41,7 +41,8 @@
         //scope.buildDate();
         if(!!scope.libraryId&&!!scope.buildId){
           begin = scope.begin;
-          load();
+          //load();
+          scope.buildDate();
         }
       });
       var gs = (function () {
@@ -289,6 +290,7 @@
       }
       scope.setCurrent = function (flow, task) {
         flow.currentTask = task;
+        flow.currentTask.eDuration = flow.currentTask.Duration;
         setTask(flow);
         scope.buildDate(flow);
       }
@@ -353,7 +355,7 @@
               if (pTask.Name.indexOf('地') != -1 && cTask.Name.indexOf('地') == -1) {
                 gs.setValue(prev.Expression + 'D', prev.end);
               }
-              else if (
+              if (
                 (pTask.Name.indexOf('地') != -1 ||
                 pTask.Name.indexOf('裙') != -1 ||
                 pTask.Name.indexOf('转') != -1) &&
@@ -401,7 +403,7 @@
         scope.buildDate();
       }
       scope.setVars = function (flow) {
-        var dur = flow.Expression ? flow.Expression : flow.currentTask.Duration;
+        var dur = flow.Type !=0 ? flow.Expression : flow.currentTask.Duration;
         var vars = gs.getVars(dur);
         if (vars.length == 0) return;
         return $mdDialog.show({

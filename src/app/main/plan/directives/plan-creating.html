@@ -24,9 +24,12 @@
     </td>
     <td ng-if="!flow.type">
       <md-menu>
-      <span aria-label="添加" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-        {{flow.currentTask.Name}}
-      </span>
+        <div ng-click="$mdOpenMenu($event)">
+          <span aria-label="添加" class="md-icon-button">
+            {{flow.currentTask.Name}}
+          </span>
+          <md-icon class="s24" md-font-icon="icon-menu-down"></md-icon>
+        </div>
         <md-menu-content>
           <md-menu-item ng-repeat="task in flow.OptionalTasks">
             <md-button ng-click="setCurrent(flow,task)">

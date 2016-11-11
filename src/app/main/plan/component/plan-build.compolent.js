@@ -124,8 +124,8 @@
         })
       if(find){
         vm.YT={
-          ProjectFormatName:find.ProjectFormatName?find.ProjectFormatName:'',
-          RegionName:find.RegionName?find.RegionName:''
+          ProjectFormatName:find.ProjectFormatName&&find.ProjectFormatName?find.ProjectFormatName:'',
+          RegionName:find.RegionName&&find.RegionName?find.RegionName:''
         }
       }
     }

@@ -24,6 +24,7 @@
         <th>选择</th>
         <th>名称</th>
         <th>工期</th>
+        <th>工期类型</th>
         <th>龄期</th>
       </tr>
       </thead>
@@ -33,6 +34,7 @@
         </md-checkbox></td>
         <td class="name">{{item.Name}}</td>
         <td class="time">{{item.Duration}}</td>
+        <td>{{item.DurationType=='0'?'固定工期':'比例工期'}}</td>
         <td class="time">{{item.ReservedEndDays}}</td>
       </tr>
       </tbody>
@@ -51,6 +53,14 @@
         <label>工期</label>
         <input type="text" ng-model="vm.data.Duration" >
       </md-input-container>
+      <md-input-container class="md-block">
+        <label>工期类型</label>
+        <md-select ng-model="vm.data.DurationType">
+          <md-option value="FixedDuration">固定工期</md-option>
+          <md-option value="VariableDuration">比例工期</md-option>
+        </md-select>
+      </md-input-container>
+      <div class="h-10"></div>
       <md-input-container class="md-block">
         <label>龄期</label>
         <input type="text" ng-model="vm.data.ReservedEndDays" >

@@ -184,10 +184,8 @@
           vm.api.side.setWidth(400);
         });
         ganttApi.tasks.on.change($scope,function(task){
-          var from,to;
-          from = task.model.from;
-          to = task.model.to;
-          task.row.duration = moment(to).endOf('day').diff(moment(from).startOf('day'),'d');
+
+          task.row.duration = moment(task.model.to).endOf('day').diff(moment(task.model.from).startOf('day'),'d');//moment.duration(task.model.to.diff(task.model.from)).asDays();
           var changeData = [
             {
               "TaskId": task.model.id,
@@ -204,14 +202,13 @@
                 })!=null;
             });
             next  && (next.from = task.model.to);
-            next && (next.duration = moment(next.to).endOf('day').diff(moment(next.from).startOf('day'),'d'));
             if(next){
               var id = task.rowsManager.rows.find(function(r){
                 return r.model.id == next.id+'-group'
               })
               if(id){
                 id.from = task.model.to;
-                id.duration = next.duration;
+                id.duration =  moment(next.to).endOf('day').diff(moment(next.from).startOf('day'),'d');
               }
             }
             var prev = group.tasks.find(function(t){
@@ -220,17 +217,17 @@
                 })!=null;
             });
             prev && (prev.to = task.model.from);
-            prev && (prev.duration = moment(prev.to).endOf('day').diff(moment(prev.from).startOf('day'),'d'));
             if(prev){
               var id = task.rowsManager.rows.find(function(r){
                 return r.model.id == prev.id+'-group'
               })
               if(id){
                 id.to = task.model.from;
-                id.duration = prev.duration;
+                id.duration = moment(prev.to).endOf('day').diff(moment(prev.from).startOf('day'),'d');
               }
             }
           })
+
         })
 
       }
@@ -407,7 +404,7 @@
 
     /** @ngInject */
     function GanttChartAddEditDialogController(dialogData,originData,template,$timeout,$mdPanel) {
-      console.log('dialogData',dialogData);
+      //console.log('dialogData',dialogData);
       var vm = this;
       api.plan.Task.query({
         ParentTaskId:dialogData.formData.id,
@@ -424,6 +421,7 @@
             }
           }).map(function (item) {
             return {
+              EndFlagTaskFlowId:eval('('+item.Description+')').EndFlagTaskId,
               ScheduledStartTime:item.ScheduledStartTime,
               ScheduledEndTime:item.ScheduledEndTime,
               ActualStartTime:item.ActualStartTime,
@@ -448,6 +446,7 @@
                     branchs[desc.Type - 1] = array;
                   }
                   array.push({
+                    EndFlagTaskFlowId:eval('('+t.Description+')').EndFlagTaskId,
                     ScheduledStartTime:t.ScheduledStartTime,
                     ScheduledEndTime:t.ScheduledEndTime,
                     ActualStartTime:t.ActualStartTime,
@@ -469,6 +468,7 @@
           Name:'流程'
         };
         vm.data = task;
+        console.log(task)
         vm.onLoadTemplate();
       })
       var taskId = dialogData.formView.id;
@@ -609,7 +609,7 @@
           onClick:function (e) {
             vm.current = e.data;
             console.log(e);
-            vm.toggleRight();
+            //vm.toggleRight();
           }
         });
         vm.flows = temp.load(vm.data);
