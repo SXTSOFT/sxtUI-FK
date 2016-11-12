@@ -64,6 +64,7 @@
             })
               .then(function(answer) {
               }, function() {
+                window.localStorage.removeItem("dbs");
                 utils.alert('清除成功');
               });
             return;
@@ -100,8 +101,7 @@
               fullscreen: false
             })
               .then(function(answer) {
-
-
+                window.localStorage.removeItem("dbs");
                 auth.logout();
               }, function() {
 
