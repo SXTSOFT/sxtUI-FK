@@ -31,7 +31,8 @@
         </md-list>
 
           <md-progress-circular md-mode="indeterminate" ng-show="vm.loading"></md-progress-circular>
-          <div flex ng-if="!vm.loading && project.type!==128 && project.type!==256">
+          <div ng-if="project.type===64"><md-button type="submit" flex ng-click="vm.closeNav('nav_region')" ui-sref="app.szgc.ys.upload({projectid:project.pid,name:project.typeName,type:project.item.type.type_id||project.item.type,idTree:project.idTree,nameTree:project.nameTree})" class="md-raised md-primary"> 隐蔽工程照片  </md-button></div>
+          <div flex ng-if="!vm.loading && project.type!==128 && project.type!==256 && project.type!==64">
             <div layout="row" class="div-table">
                 <div flex="20"><div style="padding:0 0 0 6px">检验批</div></div>
                 <div flex="20">批次</div>
