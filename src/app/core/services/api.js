@@ -680,6 +680,7 @@
               if(result && ((result.status>=200 && result.status<=299) || result.data)) {
                 if (result.data) {
                   var data = result.data;
+                  data.data=data.data?data.data:data.Data;
                   if (cfg.dataType == 1) {
                     var arr=[];
                     data.forEach(function (d) {
@@ -737,6 +738,8 @@
                       }).catch(function () {
                         reject(result);
                       })
+                    }else {
+                      resolve(result);
                     }
                   }
 
@@ -765,24 +768,13 @@
       if(cfg._id && cfg.db)
         localBD= cfg.db;
       if(cfg._id)
-        localBD= cfg.db = pouchdb(cfg._id);
+        localBD= cfg.db = pouchdb(cfg._id,cfg);
       else if(cfg.db){
         var id = cfg.db.apply(cfg,args);
         if(id)
-          localBD= cfg._db=pouchdb(id);
+          localBD= cfg._db=pouchdb(id,cfg);
       }
       return localBD;
-    //.then(function(result){
-    //    return  provider.$q.$q(function(resolver){
-    //      pouchdb("localBD").addOrUpdate({
-    //        _id:lodb._db_name
-    //      }).then(function(){
-    //        resolver(result);
-    //      })
-    //    })
-    //  }).catch(function (r) {
-    //    reject(r);
-    //  });
     }
 
 
@@ -796,26 +788,45 @@
     function clearDb(progress,complete,fail,options) {
       var tasks = [];
       task([function (tasks) {
-        var _db=pouchdb("localBD");
-        return _db.findAll().then(function(r){
-          var  rows= r.rows,tmp;
-          if (rows&&rows.length>0){
-            rows.forEach(function(t){
-              if(!(options.exclude && options.exclude.indexOf(t._id)!=-1)){
+        return provider.$q.$q(function (resove,reject) {
+          var dbs= window.localStorage.getItem("dbs");
+          if (dbs){
+            dbs=dbs.split(",");
+            dbs= dbs.filter(function (o) {
+              return o.toString()!="undefined"&&o.toString()!="NaN";
+            })
+            dbs.forEach(function (t) {
+              if(!(options.exclude && options.exclude.indexOf(t)!=-1)){
                 tasks.push(function(){
-                  return pouchdb(t._id).destroy().catch(function(err){
-                    console.log(err);
+                  return pouchdb(t).destroy().catch(function(err){
                   });
                 });
               }
             });
           }
-          tasks.push(function(){
-            return _db.destroy().catch(function(err){
-              console.log(err);
-            });
-          });
-        });
+          resove();
+        })
+
+        // var _db=pouchdb("localBD");
+        // return _db.findAll().then(function(r){
+        //   var  rows= r.rows,tmp;
+        //   if (rows&&rows.length>0){
+        //     rows.forEach(function(t){
+        //       if(!(options.exclude && options.exclude.indexOf(t._id)!=-1)){
+        //         tasks.push(function(){
+        //           return pouchdb(t._id).destroy().catch(function(err){
+        //             console.log(err);
+        //           });
+        //         });
+        //       }
+        //     });
+        //   }
+        //   tasks.push(function(){
+        //     return _db.destroy().catch(function(err){
+        //       console.log(err);
+        //     });
+        //   });
+        // });
       }],options)(progress,complete,fail,options);
       // var _db=pouchdb("localBD");
       // _db.findAll().then(function(r){

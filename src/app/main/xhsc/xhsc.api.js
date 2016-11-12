@@ -72,7 +72,6 @@
             return db?db:'DrawingRelation';
           },
           idField: 'ProjectId',
-          //fileFiled:['FileContent'],
           dataType: 3
         }).bind(function (projectId,db) {
           return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation', {projectId: projectId})).then(function(result){
@@ -128,6 +127,8 @@
           idField: 'DrawingID',
           dataType: 3,
           mode:1,
+          firstIsId:true,
+          fileField:['DrawingContent'],
           filter:function (item,drawingId) {
             return item.DrawingID == drawingId;
           }

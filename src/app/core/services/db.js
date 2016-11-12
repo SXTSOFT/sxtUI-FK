@@ -6,7 +6,7 @@
 
   angular
     .module('app.core')
-    .provider('db',pouchDB);
+    .provider('db',db);
 /** @ngInject */
   function pouchDB() {
 
@@ -148,7 +148,7 @@
 
   /** @ngInject */
   function $get($window, $q) {
-    // $window.PouchDB.plugin(PouchAdapterCordovaSqlite);
+
     var pouchDBDecorators = {
       qify: function (fn) {
         return function () {
@@ -190,7 +190,6 @@
         };
       }
     };
-
     function wrapMethods(db, methods, parent) {
       for (var method in methods) {
         var wrapFunction = methods[method];
@@ -219,22 +218,29 @@
       }
       return db;
     }
-
     return function pouchDB(name, options) {
-      if($window.cordova){
-        options = options||{};
-        options.adapter = 'fruitdown';
-        // options.auto_compaction=true;
-        // options.iosDatabaseLocation = 'default';
-      }
       if (name!='localBD'){
-        pouchDB('localBD').addOrUpdate({
-          _id:name
-        }).then(function(){
-            console.log("name");
-        }).catch(function(error){
-          console.log(error);
-        })
+        var dbs= window.localStorage.getItem("dbs");
+        if (!dbs){
+          dbs=[];
+          dbs.push(name);
+          window.localStorage.removeItem("dbs");
+          window.localStorage.setItem("dbs",dbs);
+        }else {
+          dbs=dbs.split(",");
+          if (!dbs.find(function (o) {
+              return name==o;
+            })){
+            dbs.push(name);
+            window.localStorage.removeItem("dbs");
+            window.localStorage.setItem("dbs",dbs);
+          }
+        }
+        // pouchDB('localBD').addOrUpdate({
+        //   _id:name
+        // }).then(function(){
+        // }).catch(function(error){
+        // })
       }
       var db = new $window.PouchDB(name, options);
       return wrapMethods(db, self.methods);
@@ -264,6 +270,7 @@
 
   /** @ngInject */
   function db() {
+    getApi.$inject = ["$q", "$window", "$cordovaFileTransfer", "$timeout", "$cordovaFile", "$rootScope"];
     var provider = this,globalDb={
       id:'sxt-global'
     };
@@ -279,10 +286,28 @@
       provider.$cordovaFile = $cordovaFile;
 
       return function pouchDB(name, options) {
+        var dbs= window.localStorage.getItem("dbs");
+        if (!dbs){
+          dbs=[];
+          dbs.push(name);
+          window.localStorage.removeItem("dbs");
+          window.localStorage.setItem("dbs",dbs);
+
+        }else {
+          dbs=dbs.split(",");
+          if (!dbs.find(function (o) {
+              return name==o;
+            })){
+            dbs.push(name);
+            window.localStorage.removeItem("dbs");
+            window.localStorage.setItem("dbs",dbs);
+          }
+        }
         return new SingleDB({
           idField:'_id',
           _id:name,
-          dataType:1
+          dataType:1,
+          fileField:options && options.fileField
         });
       };
     }
@@ -297,6 +322,12 @@
       };
     }
 
+    SingleDB.prototype.destroy = function(){
+      return get_globalDb().destroy(this.cfg._id);
+    }
+    SingleDB.prototype.clear = function(){
+      return get_globalDb().clear();
+    }
     SingleDB.prototype.findAll = function (filter) {
       return db_findAll(this.cfg, filter);
     }
@@ -306,7 +337,8 @@
 
       return db_save({
         _id: this.cfg._id,
-        delete: !0
+        delete: !0,
+        fileField:this.cfg.fileField,
       }, id, this.idFn);
     }
     SingleDB.prototype.addOrUpdate = function (items) {
@@ -316,7 +348,7 @@
 
       if (!angular.isArray(items))
         items = [items];
-      return db_save({_id: cfg._id, upload: !0}, items, this.idFn);
+      return db_save({_id: cfg._id, fileField:cfg.fileField, upload: !0}, items, this.idFn);
     }
     SingleDB.prototype.bulkAddOrUpdate=function(arr){
       return db_save(this.cfg,arr,this.idFn);
@@ -334,9 +366,9 @@
       return self.findAll(function (item) {
         return  (id && self.idFn(item) == id) || (self.cfg.filter && self.cfg.filter(id)) ||self.cfg.single===true;
       }).then(function (r) {
-/*        if(self.cfg.fileField && r.rows && r.rows[0]){
-          return self.db.get(r.rows[0]._id)
-        }*/
+        if(self.cfg.fileField && r.rows && r.rows[0]){
+          return get_globalDb().get(r.rows[0]._id)
+        }
         return r.rows[0];
       });
     }
@@ -357,6 +389,14 @@
               return provider.$q(function (resolve) {
                 resolve();
               })
+            },
+            clear: function () {
+              return provider.$cordovaFile.removeRecursively(provider.$window.cordova.file.dataDirectory, "")
+                .then(function (success) {
+                  alert(success);
+                }, function (error) {
+                  console.log(error);
+                });
             },
             destroy: function (id) {
               delete cache[id];
@@ -589,5 +629,4 @@
       }
     }
   }
-
 })(angular);

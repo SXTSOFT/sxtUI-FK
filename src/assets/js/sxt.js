@@ -28,10 +28,8 @@
     return fmt;
   }
 })();
-
 (function(win) {
   'use strict';
-
   win.sxt = {
     version: '1.1.12',
     app: {
@@ -45,5 +43,4 @@
 
     }
   };
-
 })(window);
