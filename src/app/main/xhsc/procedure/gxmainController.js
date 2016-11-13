@@ -70,9 +70,6 @@
               resolve(result);
             });
           })
-        },
-        function () {
-          return remote.Project.queryAllBulidings(projectId);
         }
       ]
     }
@@ -158,9 +155,20 @@
           $mdDialog.show({
             controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
               $scope.item = item;
-              var areaID  =item.Children.length?item.Children[0].AreaID:item.ProjectID;
+              var projectId  =item.Children.length?item.Children[0].AreaID.substr(0,5):item.ProjectID;
+              var t=[];
+              if (!item.Children){
+                t=t.concat(projectTask(item.ProjectID, item.Children, item.AcceptanceItemID)) ;
+              }else {
+                item.Children.forEach(function (o) {
+                  t=t.concat(projectTask(o.AreaID, [o], o.AcceptanceItemID));
+                });
+              }
               var tasks = [].concat(globalTask)
-                .concat(projectTask(areaID, item.Children, item.AcceptanceItemID))
+                .concat(t)
+                .concat(function () {
+                  return remote.Project.queryAllBulidings(projectId);
+                })
                 .concat(InspectionTask(item))
                 .concat(function () {
                   return remote.offline.create({Id: 'ys' + item.InspectionId});
@@ -213,8 +221,20 @@
           $mdDialog.show({
             controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
               $scope.item = item;
+              var projectId  =item.Children.length?item.Children[0].AreaID.substr(0,5):item.ProjectID;
+              var t=[];
+              if (!item.Children){
+                t=t.concat(projectTask(item.ProjectID, item.Children, item.AcceptanceItemID)) ;
+              }else {
+                item.Children.forEach(function (o) {
+                  t=t.concat(projectTask(o.AreaID, [o], o.AcceptanceItemID));
+                });
+              }
               var tasks = [].concat(globalTask)
-                .concat(projectTask(item.Children[0].AreaID, item.Children, item.AcceptanceItemID))
+                .concat(t)
+                .concat(function () {
+                  return remote.Project.queryAllBulidings(projectId);
+                })
                 .concat(InspectionTask(item))
                 .concat(rectificationTask(item))
                 .concat(function () {
