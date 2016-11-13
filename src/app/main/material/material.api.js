@@ -27,6 +27,9 @@
         },
         update: function (param) {
           return $http.put('/api/MaterialClass/' + param.Id, param);
+        },
+        getParent:function(){
+          return $http.get($http.url('/api/MaterialClass/GetParentMaterialClass'));
         }
       },
       materialScience: {

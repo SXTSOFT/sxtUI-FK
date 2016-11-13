@@ -9,8 +9,27 @@
 
 <md-content flex layout-fill class="white-bg" layout-padding >
   <form>
+    <md-input-container class="md-block" style="height: 58px;">
+      <select class="form-control" ng-model="vm.value">
+        <option value="">-- 请选择城市 --</option>
+        <optgroup ng-repeat="province in vm.provinces" label="{{province.label}}">
+          <option ng-repeat="city in province.cities" value="{{city.code}}">
+            {{city.label}} ( {{city.population|number}}万人 )
+          </option>
+        </optgroup>
+      </select>
+    </md-input-container>
+    <div>您选择的是：{{vm.value}}</div>
     <md-input-container class="md-block">
-      <label>材料分类名称</label>
+      <label>顶级分类</label>
+      <md-select ng-model="vm.data.ParentId">
+        <md-option ng-repeat="item in vm.ParentClass" ng-value="item.Id" ng-click="vm.selParent(item)">
+          {{item.CategoryName}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label>分类名称</label>
       <input type="text" ng-model="vm.data.CategoryName" required>
     </md-input-container>
   </form>

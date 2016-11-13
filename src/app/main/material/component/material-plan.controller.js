@@ -85,7 +85,7 @@
     }
 
     vm.save = function () {
-      vm.data.PlanName = vm.data.Material.MaterialName + '_' + vm.Specifications + '_' + vm.Model + '_' + vm.data.PlanCount + vm.data.Unit + '_' + new Date(vm.data.PlanTime).Format('yyMMdd');
+      vm.data.PlanName = vm.data.Material.MaterialName + '_' + vm.data.Specifications + '_' + vm.data.Model + '_' + vm.data.PlanCount + vm.data.Unit + '_' + new Date(vm.data.PlanTime).Format('yyMMdd');
 
       console.log(vm.data)
 

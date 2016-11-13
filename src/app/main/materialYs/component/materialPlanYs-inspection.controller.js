@@ -13,14 +13,16 @@
     });
 
   /** @ngInject */
-  function materialPlanInspection($rootScope,$scope,api,utils,$stateParams,$state,sxt,xhUtils){
+  function materialPlanInspection($rootScope,$scope,api,utils,$stateParams,$state,sxt,xhUtils,auth){
     var vm = this;
+    var user = auth.current();
     vm.data = {};
     vm.data.Id = $stateParams.id;
     vm.data.InspectionTime = new Date().Format('yyyy年MM月dd日');
     vm.samplingProcessImgs = [];
     vm.checkListImgs = [];
     vm.data.MaterialPlanFiles = [];
+    vm.data.Inspectioner = user.Name;
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
       if(vm.data.InspectionTime == null){
@@ -47,6 +49,7 @@
       vm.data.MaterialPlanFiles = vm.samplingProcessImgs.concat(vm.checkListImgs);
       api.xhsc.materialPlan.MaterialInspection(vm.data).then(function (q) {
         utils.alert("提交成功", null, function () {
+          api.xhsc.materialPlan.deleteMaterialPlanBatch(vm.data.Id);
           $state.go("app.xhsc.gx.gxmain");
         });
       });

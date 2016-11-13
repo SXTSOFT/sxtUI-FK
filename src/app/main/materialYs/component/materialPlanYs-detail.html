@@ -47,17 +47,17 @@
       <p flex="30">型号</p>
       <p>{{vm.data.Model}}</p>
     </md-list-item>
-    <md-list-item>
-      <p flex="30">厂家/品牌</p>
-      <p>{{vm.data.Brands}}</p>
-    </md-list-item>
+    <!--<md-list-item>-->
+      <!--<p flex="30">厂家/品牌</p>-->
+      <!--<p>{{vm.data.Brands}}</p>-->
+    <!--</md-list-item>-->
     <md-list-item>
       <p flex="30">计划进场时间</p>
-      <p>{{vm.data.PlanTime}}</p>
+      <p>{{vm.data.PlanTime | date:'yyyy-MM-dd'}}</p>
     </md-list-item>
     <md-list-item>
       <p flex="30">计划进场数量</p>
-      <p>{{vm.data.PlanCount}}</p>
+      <p>{{vm.data.PlanCount + vm.data.Unit}}</p>
     </md-list-item>
     <md-list-item>
       <p flex="30">使用部位</p>

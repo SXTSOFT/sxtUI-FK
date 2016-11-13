@@ -13,19 +13,18 @@
 
   /** @ngInject */
   function approval($rootScope,$scope,api,$mdBottomSheet,$stateParams,utils,$filter,$state,$mdDialog){
+    $rootScope.sendBtName = '批示';
     var vm = this;
     vm.data = {};
     vm.intoFactoryImgs = [];
     vm.checkedImgs = [];
-    api.setNetwork(0).then(function() {
-      api.xhsc.materialPlan.getMaterialPlanBatchById($stateParams.id).then(function (r) {
-        vm.data = r.data;
-        vm.intoFactoryImgs = $filter('filter')(vm.data.Images,{OptionType:1});
-        vm.checkedImgs = $filter('filter')(vm.data.Images,{OptionType:2});
-        vm.data.PlanTime = new Date(vm.data.PlanTime).Format('yyyy年MM月dd日');
-        vm.data.ApproachTime = new Date(vm.data.ApproachTime).Format('yyyy年MM月dd日');
-        vm.data.AcceptanceTime = new Date(vm.data.AcceptanceTime).Format('yyyy年MM月dd日');
-      });
+    api.xhsc.materialPlan.getMaterialPlanBatchById($stateParams.id).then(function (r) {
+      vm.data = r.data;
+      vm.intoFactoryImgs = $filter('filter')(vm.data.Images,{OptionType:1});
+      vm.checkedImgs = $filter('filter')(vm.data.Images,{OptionType:2});
+      vm.data.PlanTime = new Date(vm.data.PlanTime).Format('yyyy年MM月dd日');
+      vm.data.ApproachTime = new Date(vm.data.ApproachTime).Format('yyyy年MM月dd日');
+      vm.data.AcceptanceTime = new Date(vm.data.AcceptanceTime).Format('yyyy年MM月dd日');
     });
 
     $scope.$on("$destroy",function(){
@@ -99,6 +98,8 @@
 
       api.xhsc.materialPlan.PostApprovalInfo(vm.flag,batch).then(function (r) {
         utils.alert('提交成功!',null,function () {
+          api.xhsc.materialPlan.deleteMaterialPlanBatch(batch.Id);
+          $rootScope.sendBtName = '';
           $state.go("app.xhsc.gx.gxmain");
         });
       });
@@ -117,6 +118,8 @@
           vm.batch.Reason = result;
           api.xhsc.materialPlan.PostApprovalInfo(vm.flag,vm.batch).then(function (r) {
             utils.alert('提交成功!',null,function () {
+              api.xhsc.materialPlan.deleteMaterialPlanBatch(vm.batch.Id);
+              $rootScope.sendBtName = '';
               $state.go("app.xhsc.gx.gxmain");
             });
           });

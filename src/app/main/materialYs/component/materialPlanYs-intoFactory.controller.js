@@ -13,11 +13,10 @@
     });
 
   /** @ngInject */
-  function materialIntoFactory($rootScope,$scope,api,utils,$state,$stateParams,sxt,xhUtils){
+  function materialIntoFactory($rootScope,$scope,api,utils,$state,$stateParams,sxt,xhUtils,auth){
     var vm = this;
+    var user = auth.current();
     vm.data = {};
-    vm.data.Id = $stateParams.BatchId;
-    vm.data.PlanId = $stateParams.PlanId;
     vm.data.ApproachType = $stateParams.status == 1 ? 1 : 0;
     vm.data.ApproachTime = new Date().Format('yyyy年MM月dd日');
     vm.data.MaterialPlanFiles = [];
@@ -25,11 +24,19 @@
     vm.goodsImgs = [];
     vm.rummagerImgs = [];
     vm.CertificateImgs = [];
+    vm.data.Inspector = user.Name;
+    vm.data.IsPacking = true;
 
-    if(vm.data.ApproachType == 0){
-      vm.data.ApproachCount = parseFloat($stateParams.PlanCount);
-      vm.data.Brand = $stateParams.Brand;
-    }
+    api.xhsc.materialPlan.getMaterialPlanDetail($stateParams.BatchId).then(function (q) {
+      vm.data.Id =q.data.Id;
+      vm.data.PlanId = q.data.PlanId;
+      if(vm.data.ApproachType == 0){
+        vm.data.ApproachCount = parseFloat(q.data.PlanCount);
+        vm.Brands = q.data.Brands.split('，') || [];
+      }
+    });
+
+
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
       vm.data.MaterialPlanFiles = vm.vehicleImgs.concat(vm.goodsImgs,vm.rummagerImgs,vm.CertificateImgs);
@@ -69,6 +76,7 @@
 
       api.xhsc.materialPlan.IntoFactoryMaterialBatch(vm.data).then(function (q) {
         utils.alert("提交成功", null, function () {
+          api.xhsc.materialPlan.deleteMaterialPlanBatch(vm.data.Id);
           $state.go("app.xhsc.gx.gxmain");
         });
       });

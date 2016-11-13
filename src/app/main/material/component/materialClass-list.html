@@ -13,15 +13,17 @@
   <table class="simple">
     <thead>
     <tr>
-      <th>分类ID</th>
-      <th>材料分类名称</th>
+      <!--<th>分类ID</th>-->
+      <th>分类名称</th>
+      <th>上级分类</th>
       <th style="width: 160px">管理</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="item in vm.data">
-      <td>{{item.Id}}</td>
+      <!--<td>{{item.Id}}</td>-->
       <td>{{item.CategoryName}}</td>
+      <td>{{item.ParentName}}</td>
       <td class="actions">
         <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.typeAdd({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
         <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.delete(item.Id)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
@@ -46,3 +48,12 @@
        paging-action="vm.pageAction('bar', page, pageSize, total)">
   </div>
 </div>
+
+<!--<md-content flex layout="column" ms-scroll>-->
+  <!--<div ui-tree id="tree-root" data-drag-enabled="false">-->
+    <!--<ol ui-tree-nodes ng-model="treeSetting">-->
+      <!--<li ng-repeat="node in treeSetting" ui-tree-node ng-include="'nodes_renderer.html'"></li>-->
+    <!--</ol>-->
+  <!--</div>-->
+<!--</md-content>-->
+

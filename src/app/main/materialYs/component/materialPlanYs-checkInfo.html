@@ -16,7 +16,7 @@
       {{vm.data.IsInspection?'需要':'不需要'}}&nbsp;
       <md-switch class="md-secondary" ng-model="vm.data.IsInspection"></md-switch>
     </md-list-item>
-    <md-divider></md-divider>
+    <md-divider ng-hide="!vm.data.WgCheck"></md-divider>
     <md-list-item style="height: 48px;">
       <p flex="40">验收人</p>
       <md-input-container flex="60" class="md-block" style="height: 48px; margin: 0;padding: 0;">

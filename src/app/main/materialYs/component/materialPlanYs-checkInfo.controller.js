@@ -13,14 +13,17 @@
     });
 
   /** @ngInject */
-  function materialPlanYsCheckInfo($rootScope,$scope,api,utils,$stateParams,xhUtils,sxt,$state){
+  function materialPlanYsCheckInfo($rootScope,$scope,api,utils,$stateParams,xhUtils,sxt,$state,auth){
 
     var vm = this;
+    vm.data = {};
+    var user = auth.current();
     vm.images = [];
     vm.vehicleImgs = [];
     vm.goodsImgs = [];
     vm.checkerImgs = [];
     vm.certificateImgs = [];
+    vm.data.Accepter = user.Name;
 
     //删除图片操作
     $rootScope.$on('delete',function (data,index) {
@@ -75,7 +78,7 @@
       });
     }
 
-    vm.data = {};
+
     vm.data.Id = $stateParams.id;
     vm.data.AcceptanceTime = new Date().Format('yyyy年MM月dd日');
     vm.data.WgCheck = true;
@@ -116,6 +119,7 @@
       vm.data.IsInspection = !vm.data.WgCheck ? false : true;
       api.xhsc.materialPlan.PostCheckInfo(vm.data).then(function (r) {
         utils.alert('提交成功!',null,function () {
+          api.xhsc.materialPlan.deleteMaterialPlanBatch(vm.data.Id);
           $state.go("app.xhsc.gx.gxmain");
         });
       })

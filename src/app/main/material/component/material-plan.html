@@ -37,14 +37,14 @@
           <md-option ng-value="item"  ng-selected="item.selected" ng-repeat="item in vm.materials" ng-click="vm.init(item)">{{item.MaterialName}}</md-option>
         </md-select>
       </md-input-container>
-      <md-input-container class="md-block" style="height: 58px;" flex="20">
+      <md-input-container class="md-block" style="height: 58px;" flex="30">
         <label>规格</label>
         <!--<input type="text" ng-disabled="true" ng-model="vm.Specifications">-->
         <md-select name="Specifications"  ng-model="vm.data.Specifications">
           <md-option ng-value="item"  ng-selected="item.selected" ng-repeat="item in vm.Specifications">{{item}}</md-option>
         </md-select>
       </md-input-container>
-      <md-input-container class="md-block" style="height: 58px;" flex="20">
+      <md-input-container class="md-block" style="height: 58px;" flex="30">
         <label>型号</label>
         <!--<input type="text" ng-disabled="true" ng-model="vm.Model">-->
         <md-select name="Specifications"  ng-model="vm.data.Model">
