@@ -223,9 +223,8 @@
           db:function(inspectionId,acceptanceItemId,areaId,db){
             if (db=="nodb"){return null}
             return db?db:"InspectionPoint";
-
-            return ;
           },
+          idField:'MeasurePointID',
           methods:{
             query:{
               dataType:1,
