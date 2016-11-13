@@ -105,6 +105,20 @@
         sendBt:true,
         rightArrow:false,
         leftArrow:false,
+        title :'标准化区域',
+        url   :'/standar_regions/{projectID}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/center/standar_regions.html',
+            controller:'standar_regionsController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.sc_standar',{
+        noBack:true,
+        sendBt:true,
+        rightArrow:false,
+        leftArrow:false,
         title :'实测标准化',
         url   :'/sc_standar/{AcceptanceItemID}/{DrawingID}/{AcceptanceIndexID}/{projectID}',
         views :{

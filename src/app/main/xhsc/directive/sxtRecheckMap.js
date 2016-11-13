@@ -48,6 +48,7 @@
               cb();
             },
             onLoad: function (cb) {
+              $("#inspect").css("display","none");
               $q.all([remote.Procedure.getZGReginQues(scope.regionId,scope.item),
                   remote.Procedure.getZGReginQuesPoint(scope.regionId,scope.item)])
                 .then(function(res) {
