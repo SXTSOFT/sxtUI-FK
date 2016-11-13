@@ -6,7 +6,7 @@
 
   angular
     .module('app.core')
-    .provider('db',db);
+    .provider('db',pouchDB);
 /** @ngInject */
   function pouchDB() {
 
@@ -218,31 +218,25 @@
       }
       return db;
     }
-    return function pouchDB(name, options) {
-      if (name!='localBD'){
-        var dbs= window.localStorage.getItem("dbs");
-        if (!dbs){
-          dbs=[];
+    return function pouchDB(name) {
+      var dbs= window.localStorage.getItem("dbs");
+      if (!dbs){
+        dbs=[];
+        dbs.push(name);
+        window.localStorage.removeItem("dbs");
+        window.localStorage.setItem("dbs",dbs);
+
+      }else {
+        dbs=dbs.split(",");
+        if (!dbs.find(function (o) {
+            return name==o;
+          })){
           dbs.push(name);
           window.localStorage.removeItem("dbs");
           window.localStorage.setItem("dbs",dbs);
-        }else {
-          dbs=dbs.split(",");
-          if (!dbs.find(function (o) {
-              return name==o;
-            })){
-            dbs.push(name);
-            window.localStorage.removeItem("dbs");
-            window.localStorage.setItem("dbs",dbs);
-          }
         }
-        // pouchDB('localBD').addOrUpdate({
-        //   _id:name
-        // }).then(function(){
-        // }).catch(function(error){
-        // })
       }
-      var db = new $window.PouchDB(name, options);
+      var db = new $window.PouchDB(name);
       return wrapMethods(db, self.methods);
     };
   };
