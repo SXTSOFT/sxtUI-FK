@@ -100,17 +100,17 @@
           }
         }
       })
-      .state('app.xhsc.sc_standar',{
+      .state('app.xhsc.standarRegion',{
         noBack:true,
         sendBt:true,
         rightArrow:false,
         leftArrow:false,
         title :'标准化区域',
-        url   :'/standar_regions/{projectID}',
+        url   :'/standarRegion/{projectID}',
         views :{
           'content@app':{
-            templateUrl : 'app/main/xhsc/center/standar_regions.html',
-            controller:'standar_regionsController as vm'
+            templateUrl : 'app/main/xhsc/center/standarRegion.html',
+            controller:'standarRegionController as vm'
           }
         }
       })

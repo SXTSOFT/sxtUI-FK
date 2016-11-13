@@ -17,9 +17,12 @@
   /**@ngInject*/
   function scPiclstController($scope,$q,remote,$stateParams,$state,$timeout,$mdBottomSheet,utils){
     var vm = this;
+    var projectID=$stateParams.projectID.substr(0,5);
+    var region=$stateParams.projectID;
     var  arr=[
       remote.Project.GetMeasureItemInfoByAreaID(),
-      remote.PQMeasureStandard.GetProjectDrawing($stateParams.projectID)
+      remote.PQMeasureStandard.GetProjectDrawing(projectID),
+      remote.Project.getDrawingRelations(region,"nodb")
     ];
     vm.searchText="";
     vm.selectedItem=null;
@@ -27,6 +30,7 @@
     $q.all(arr).then(function(res){
       vm.scItems=res[0]? res[0].data:[];
       var  draws=res[1]? res[1].data:[];
+      var relate=res[2]?res[2].data:[];
       function init(o,draws){
         o.pics=[];
 
@@ -49,18 +53,22 @@
         }
 
         draws.forEach(function(k){
-          if (k.Type== o.MeasurePictureType){
-            build(o,k)
-          }else {
-            var split=o.SplitRule;
-            var apply=[];
-            if (split){
-              apply=split.split(",");
-            }
-            if (k.Type=-3&&apply.find(function (o) {
-                return o=="16"||o==16;
-              })){
+          if (relate.find(function (w) {
+               return w.DrawingID==k.DrawingID
+            })){ //判断区域
+            if (k.Type== o.MeasurePictureType){
               build(o,k)
+            }else {
+              var split=o.SplitRule;
+              var apply=[];
+              if (split){
+                apply=split.split(",");
+              }
+              if (k.Type=-3&&apply.find(function (o) {
+                    return o=="16"||o==16;
+                  })){
+                build(o,k)
+              }
             }
           }
         });
@@ -119,7 +127,7 @@
         AcceptanceItemID:AcceptanceItemID,
         DrawingID:drawingID,
         AcceptanceIndexID:AcceptanceIndexID,
-        projectID:$stateParams.projectID
+        projectID:projectID
       })
     }
 

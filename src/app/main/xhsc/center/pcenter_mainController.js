@@ -122,7 +122,7 @@
             controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
               $scope.projects=vm.projects;
               $scope.go=function (item) {
-                $state.go("app.xhsc.scPiclst",{projectID:item.RegionID});
+                $state.go("app.xhsc.standarRegion",{projectID:item.RegionID});
                 $mdDialog.hide();
               }
             }],
@@ -133,7 +133,7 @@
           });
 
         }else {
-          $state.go("app.xhsc.scPiclst",{projectID:vm.projects[0].RegionID});
+          $state.go("app.xhsc.standarRegion",{projectID:vm.projects[0].RegionID});
         }
       }
     })
