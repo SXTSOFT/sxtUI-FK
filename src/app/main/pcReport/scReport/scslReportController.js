@@ -5,7 +5,7 @@
     .controller('scslReportController',scslReportController);
 
   /**@ngInject*/
-  function scslReportController($scope,remote,$mdDialog,$stateParams,$state,$rootScope ,$q){
+  function scslReportController($scope,remote,$mdDialog,$stateParams,$state,$rootScope ,$q,$window){
     var vm = this;
 
     vm.scSelected=$stateParams.scSelected?$stateParams.scSelected:"";
@@ -56,6 +56,9 @@
       }).then(function(r){
         $scope.pageing.total= r.data.TotalCount;
         vm.source= r.data.Data;
+        vm.source.forEach(function (o) {
+          o.MeasureTime=$window.moment(o.MeasureTime).format("YYYY-MM-DD");
+        })
         vm.show=true;
 
       }).catch(function(){

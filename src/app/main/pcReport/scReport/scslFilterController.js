@@ -15,7 +15,7 @@
     .controller('scslFilterController',scslFilterController);
 
   /**@ngInject*/
-  function scslFilterController($scope,remote,$mdDialog,$state,$rootScope,$timeout){
+  function scslFilterController($scope,remote,$mdDialog,$state,$rootScope,$timeout,$window){
     var vm = this;
     $scope.currentSC;
     var mobileDetect = new MobileDetect(window.navigator.userAgent);
@@ -88,6 +88,9 @@
       }).then(function(r){
         $scope.pageing.total= r.data.TotalCount;
         vm.source= r.data.Data;
+        vm.source.forEach(function (o) {
+          o.MeasureTime=$window.moment(o.MeasureTime).format("YYYY-MM-DD");
+        })
         $rootScope.scslFilter={
           currentSC:$scope.currentSC,
           project:$scope.project

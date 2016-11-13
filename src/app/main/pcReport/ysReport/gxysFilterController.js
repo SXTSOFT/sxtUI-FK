@@ -12,7 +12,7 @@
     .controller('gxysFilterController',gxysFilterController);
 
   /**@ngInject*/
-  function gxysFilterController($scope,remote,$mdSidenav,$state,$rootScope,$timeout){
+  function gxysFilterController($scope,remote,$mdSidenav,$state,$rootScope,$timeout,$window){
     var vm = this;
     vm.regions=[];
     var mobileDetect = new MobileDetect(window.navigator.userAgent);
@@ -160,6 +160,7 @@
         $scope.pageing.total= r.data.TotalCount;
         r.data.Data.forEach(function(o){
           o.statusName=convertStatus(o.Status)
+          o.InspectionTime=$window.moment(o.InspectionTime).format("YYYY-MM-DD");
           vm.source.push(o);
         });
         $rootScope.gxysFilter_load={

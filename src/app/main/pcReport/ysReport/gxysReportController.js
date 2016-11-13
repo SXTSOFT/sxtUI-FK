@@ -15,7 +15,7 @@
     .controller('gxysReportController',gxysReportController);
 
   /**@ngInject*/
-  function gxysReportController($scope,remote,$mdDialog,$state,$rootScope ){
+  function gxysReportController($scope,remote,$mdDialog,$state,$rootScope,$window ){
     var vm = this;
     var params=$rootScope.gxParams;
     vm.gxSelected=params&&params.gxSelected? params.gxSelected:[];
@@ -79,7 +79,8 @@
             var d=new Date(o.InspectionTime).Format("yyyy-MM-dd hh:mm:ss");
             o.InspectionTime=d;
           }
-          o.statusName=convertStatus(o.Status)
+          o.statusName=convertStatus(o.Status);
+          o.InspectionTime=$window.moment(o.InspectionTime).format("YYYY-MM-DD");
           vm.source.push(o);
         });
         vm.show=true;
