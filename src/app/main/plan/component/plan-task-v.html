@@ -24,17 +24,12 @@
                 </md-menu-content>
               </md-menu>
             </th>
-            <th ng-if="vm.data.Level==0" style="width: 24px;min-width: 24px">必选</th>
             <th style="width: 24px;min-width: 24px" ng-if="vm.data.Level !=0">必须完成</th>
-            <th style="width: 24px;min-width: 24px" ng-if="vm.data.Level==0">变量</th>
-            <th ng-if="vm.data.Level==0" style="width: 80px;min-width: 80px">可选任务</th>
             <th ng-if="vm.data.Level==1" style="width: 30px;min-width: 24px">工期</th>
-            <th ng-if="vm.data.Level==1" style="width: 30px;min-width: 24px">龄期</th>
+            <!--<th ng-if="vm.data.Level==1" style="width: 30px;min-width: 24px">龄期</th>-->
             <th ng-if="vm.data.Level==1" style="width: 124px;min-width: 124px">关联项</th>
             <th style="width: 100px;min-width: 80px">通知</th>
             <th style="width: 100px;min-width: 80px">执行</th>
-            <th ng-if="vm.data.Level==0" style="width: 110px;min-width: 110px">里程碑/介入点</th>
-            <th ng-if="vm.data.Level==0" style="width: 24px;min-width: 24px">楼层</th>
           </tr>
           </thead>
           <tr ng-repeat="flow in vm.flows track by flow.TaskFlowId" style="height:44px;">
@@ -82,16 +77,11 @@
               </md-menu-content>
             </md-menu>
             </td>
-            <td ng-if="vm.data.Level==0" align="center"><input  ng-if="flow.line==0" type="checkbox" ng-model="flow.IsRequired" ng-click="vm.updateFlow(flow)"></td>
             <td ng-if="vm.data.Level !=0">
               <input type="checkbox" ng-model="flow.IsMustComplete" ng-click="vm.updateMust(flow)">
             </td>
-            <td ng-if="vm.data.Level == 0"><input ng-if="flow.line==0" style="width:90%;color:#C62828" placeholder="无" type="text" ng-blur="vm.updateExpression(flow)" ng-model="flow.Expression" ></td>
-            <td ng-if="vm.data.Level==0">
-              <div style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.selectOptionalTask(flow)">{{flow.OptionalTask||'未选择'}}</div>
-            </td>
             <td ng-if="vm.data.Level==1"><input type="text" style="width:20px" placeholder="无" ng-model="flow.Duration" ng-blur="vm.updateDuration(flow)"></td>
-            <td ng-if="vm.data.Level==1"><input type="text" style="width:20px" placeholder="无" ng-model="flow.ReservedEndDays" ng-blur="vm.updateReservedEndDays(flow)"></td>
+            <!--<td ng-if="vm.data.Level==1"><input type="text" style="width:20px" placeholder="无" ng-model="flow.ReservedEndDays" ng-blur="vm.updateReservedEndDays(flow)"></td>-->
             <td ng-if="vm.data.Level==1">
               <div  style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.setMeasureInfo(flow)">
                 {{flow.MeasureInfo||'未关联'}}
@@ -108,11 +98,6 @@
                 {{flow.Notice8||'未选择'}}
               </div>
             </td>
-            <td ng-if="vm.data.Level==0">
-              <input ng-show="!flow.IsFloor" ng-if="flow.line===0" style="width: 90%" placeholder="无里程碑" type="text" ng-blur="vm.updateMilestone(flow)"  ng-model="flow.Milestone">
-              <span ng-if="flow.line!==0"><input  style="width:100%;color:#C62828" placeholder="无介入点" type="text" ng-blur="vm.updateExpression(flow)" ng-model="flow.Expression"></span>
-            </td>
-            <td ng-if="vm.data.Level==0" align="center"><input ng-if="flow.line===0" type="checkbox" ng-model="flow.IsFloor"  ng-click="vm.updateFlow(flow)"></td>
           </tr>
         </table>
         </div>
@@ -139,17 +124,20 @@
           <label>名称</label>
           <input type="text" ng-model="vm.data.Name" >
         </md-input-container>
-        <md-input-container class="md-block" ng-if="vm.data.Level !=0">
+        <md-input-container class="md-block">
           <label>工期</label>
           <input type="text" ng-model="vm.data.Duration" >
         </md-input-container>
-        <md-input-container class="md-block"  ng-if="vm.data.Level !=0">
+        <md-input-container class="md-block">
           <label>工期类型</label>
           <md-select ng-model="vm.data.DurationType">
             <md-option value="FixedDuration">固定工期</md-option>
             <md-option value="VariableDuration">比例工期</md-option>
           </md-select>
         </md-input-container>
+        <md-checkbox ng-model="vm.data.ManuallyClose" aria-label="手工关闭">
+          手工关闭
+        </md-checkbox>
         <!--<div layout="column"  ng-if="vm.data.Level !=0">-->
           <!--<label class="md-block mb-10">工期类型</label>-->
           <!--<md-radio-group ng-model="vm.data.DurationType">-->
@@ -197,9 +185,7 @@
             </md-select>
           </md-input-container>
         </div>
-        <md-checkbox ng-model="vm.data.ManuallyClose" ng-if="vm.data.Level!==0" aria-label="手工关闭">
-          手工关闭
-        </md-checkbox>
+
         </div>
       </form>
       <div layout="row" flex>
