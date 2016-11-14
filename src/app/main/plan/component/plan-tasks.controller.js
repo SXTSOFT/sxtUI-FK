@@ -20,19 +20,13 @@
       Load();
     });
     vm.Query = function (item) {
-      $state.go("app.plan.task.detail",{id:item.TaskLibraryId});
-    }
-    vm.a = 10;
-    vm.blur = function(){
-      //var min = 10*0.8;
-      if(vm.b){
-        vm.min = vm.a *0.8;
-        //if(vm.a && vm.b<min){
-        //  utils.alert('输入工期不能小于此工期的80%')
-        //}
+      if(vm.selectedFilter == 0 ){
+        $state.go("app.plan.task.detailLevel",{id:item.TaskLibraryId});
+      }else{
+        $state.go("app.plan.task.detail",{id:item.TaskLibraryId});
       }
-
     }
+
     vm.Delete = function(item){
       //$mdDialog.show(
       //  $mdDialog.prompt()
