@@ -12,13 +12,15 @@
     });
 
   /** @ngInject */
-  function materialUnqualifiedExit($rootScope,$scope,api,utils,$stateParams,$state,sxt,xhUtils){
+  function materialUnqualifiedExit($rootScope,$scope,api,utils,$stateParams,$state,sxt,xhUtils,auth){
     var vm = this;
+    var user = auth.current();
     vm.data = {};
     vm.data.Id = $stateParams.id;
     vm.data.ExitReason = '材料不合格';
     vm.data.MaterialFiles = [];
     vm.data.ExitOperatorTime = new Date();
+    vm.data.ExitWitness = user.Name;
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
       if(vm.data.ExitReason == null){
@@ -40,6 +42,7 @@
 
       api.xhsc.materialPlan.materialUnqualifiedExit(vm.data).then(function (q) {
         utils.alert("提交成功", null, function () {
+          api.xhsc.materialPlan.deleteMaterialPlanBatch(vm.data.Id);
           $state.go("app.xhsc.gx.gxmain");
         });
       });

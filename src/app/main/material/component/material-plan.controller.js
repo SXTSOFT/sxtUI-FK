@@ -28,6 +28,10 @@
       vm.projects = r.data;
     });
 
+    api.material.materialScience.getList({Skip:0,Limit:100}).then(function (r) {
+      vm.materials = r.data.Items||[];
+    });
+
     $scope.$watch('vm.data.ProjectId',function () {
       vm.regions = [];
       vm.sections = [];
@@ -53,13 +57,9 @@
       });
     },true);
 
-    api.material.materialScience.getList({Skip:0,Limit:100}).then(function (r) {
-      vm.materials = r.data.Items||[];
-    });
-
     vm.init = function (m) {
-      vm.Specifications = m.Specifications;
-      vm.Model = m.Model;
+      vm.Specifications = m.Specifications.split('，') || [];
+      vm.Models = m.Model.split('，') || [];
     };
 
     if(vm.data.Id){
@@ -73,7 +73,7 @@
         api.material.materialScience.getList({Skip:0,Limit:100}).then(function (r) {
           vm.materials = r.data.Items||[];
           vm.materials.forEach(function (q) {
-            if(q.Id == vm.data.MaterialId){
+            if(q.Id == vm.data.Material.Id){
               q.selected = true;
               vm.Specifications = q.Specifications;
               vm.Model = q.Model;
@@ -85,7 +85,10 @@
     }
 
     vm.save = function () {
-      vm.data.PlanName = vm.data.Material.MaterialName + '_' + vm.Specifications + '_' + vm.Model + '_' + vm.data.PlanCount + vm.data.Unit + '_' + new Date(vm.data.PlanTime).Format('yyMMdd');
+      vm.data.PlanName = vm.data.Material.MaterialName + '_' + vm.data.Specifications + '_' + vm.data.Model + '_' + vm.data.PlanCount + vm.data.Unit + '_' + new Date(vm.data.PlanTime).Format('yyMMdd');
+
+      console.log(vm.data)
+
       if(vm.data.Id){
         api.material.materialPlan.putMaterial(vm.data).then(function () {
           utils.alert("提交成功", null, function () {

@@ -33,26 +33,32 @@
     <div layout="row">
       <md-input-container class="md-block" style="height: 58px;" flex="40">
         <label>材料/设备名称</label>
-        <md-select name="MaterialId"  ng-model="vm.data.Material" md-on-open="loadMaterial()">
+        <md-select name="MaterialId"  ng-model="vm.data.Material">
           <md-option ng-value="item"  ng-selected="item.selected" ng-repeat="item in vm.materials" ng-click="vm.init(item)">{{item.MaterialName}}</md-option>
         </md-select>
       </md-input-container>
-      <md-input-container class="md-block" style="height: 58px;" flex="20">
+      <md-input-container class="md-block" style="height: 58px;" flex="30">
         <label>规格</label>
-        <input type="text" ng-disabled="true" ng-model="vm.Specifications">
+        <!--<input type="text" ng-disabled="true" ng-model="vm.Specifications">-->
+        <md-select name="Specifications"  ng-model="vm.data.Specifications">
+          <md-option ng-value="item"  ng-selected="item.selected" ng-repeat="item in vm.Specifications">{{item}}</md-option>
+        </md-select>
       </md-input-container>
-      <md-input-container class="md-block" style="height: 58px;" flex="20">
+      <md-input-container class="md-block" style="height: 58px;" flex="30">
         <label>型号</label>
-        <input type="text" ng-disabled="true" ng-model="vm.Model">
+        <!--<input type="text" ng-disabled="true" ng-model="vm.Model">-->
+        <md-select name="Specifications"  ng-model="vm.data.Model">
+          <md-option ng-value="item"  ng-selected="item.selected" ng-repeat="item in vm.Models">{{item}}</md-option>
+        </md-select>
       </md-input-container>
     </div>
     <md-input-container class="md-block">
       <label>计划进场时间</label>
-      <md-datepicker ng-model="vm.data.PlanTime" md-placeholder="a" md-open-on-focus></md-datepicker>
+      <md-datepicker ng-model="vm.data.PlanTime" md-open-on-focus></md-datepicker>
     </md-input-container>
     <md-input-container class="md-block">
       <label>计划进场数量 </label>
-      <input type="number" ng-model="vm.data.PlanCount">
+      <input type="number" ng-model="vm.data.PlanCount" min="0">
     </md-input-container>
     <md-input-container class="md-block">
       <label>计量单位</label>

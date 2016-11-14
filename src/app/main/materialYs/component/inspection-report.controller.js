@@ -41,6 +41,7 @@
       vm.data.BatchFile = vm.reportImgs;
       api.xhsc.materialPlan.PostReportInfo(vm.data).then(function (r) {
         utils.alert('提交成功!',null,function () {
+          api.xhsc.materialPlan.deleteMaterialPlanBatch(vm.data.Id);
           $state.go("app.xhsc.gx.gxmain");
         });
       })

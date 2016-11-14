@@ -20,6 +20,19 @@
     utils.onCmd($scope,['swap'],function(cmd,e){
       vm.material = e.arg.material;
     });
+
+    function deleteMaterialPack(){
+      db("materialPlan").destroy();
+      db("materialPlanDetailList").destroy();
+      db("materialPlanCheckInfo").destroy();
+      db("materialPlanReportInfo").destroy();
+      db("materialPlanApprovalInfo").destroy();
+      db("materialExitInfo").destroy();
+      db("materialBatchInitFactory").destroy();
+      db("materialBatchInspection").destroy();
+      db("materialUnqualifiedExit").destroy();
+    }
+
     loadSection();
     function loadSection() {
       vm.offlines = [];
@@ -30,27 +43,31 @@
           utils.alert('暂无项目！');
         }
         else {
-          remote.offline.query().then(function (r2) {
-            result.data.forEach(function (r) {
-              var fd = r2.data.find(function (a) {
-                return a.Id == 'msy' + r.SectionID;
-              });
-              if (fd) {
-                vm.offlines.push(r);
+          if(user.Role.MemberType === ""){
+            vm.offlines = result.data;
+          }else{
+            remote.offline.query().then(function (r2) {
+              result.data.forEach(function (r) {
+                var fd = r2.data.find(function (a) {
+                  return a.Id == 'msy' + r.SectionID;
+                });
+                if (fd) {
+                  vm.offlines.push(r);
 
-              }else{
-                vm.section.push(r);
-              }
+                }else{
+                  vm.section.push(r);
+                }
+              });
+              //vm.section=result.data;
+            }).catch(function(){
+              vm.section = result.data;
             });
-            //vm.section=result.data;
-          }).catch(function(){
-            vm.section = result.data;
-          });
+          }
         }
       })
     }
     vm.downloadPlan=function(item,isReflsh){
-      var status = user.Role.MemberType==0?item.InChargeID != item.MainContractorHeadID?1:16:110;
+      var status = user.Role.MemberType == 0?1:110;
       //下载成功回掉
       function callBack(){
         var ix = vm.section.indexOf(item);
@@ -460,8 +477,6 @@
             $scope.uploadInfo=vm.uploadInfo;
 
             api.upload(function (cfg,item) {
-              console.log(cfg)
-              console.log(item)
               if(cfg._id=='s_files' && item && item.Url.indexOf('base64')==-1){
                 return false;
               }
@@ -477,6 +492,7 @@
               },null);
               $mdDialog.hide();
               db("s_offline").destroy();
+              deleteMaterialPack();
               utils.alert('上传成功');
               load();
               loadSection();

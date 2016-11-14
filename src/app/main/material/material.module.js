@@ -28,14 +28,14 @@
         url: '/add/{id}',
         template: '<material-add flex layout="column"></material-add>'
       })
-      .state('app.material.type', {
-        url:'/type',
-        template:'<material-type flex layout="column"></material-type>'
-      })
-      .state('app.material.typeAdd',{
-        url:'/typeAdd/{id}',
-        template:'<material-class-add flex layout="column"></material-class-add>'
-      })
+      // .state('app.material.type', {
+      //   url:'/type',
+      //   template:'<material-type flex layout="column"></material-type>'
+      // })
+      // .state('app.material.typeAdd',{
+      //   url:'/typeAdd/{id}',
+      //   template:'<material-class-add flex layout="column"></material-class-add>'
+      // })
       .state('app.material.plans',{
         url:'/plans',
         template:'<material-plans flex layout="column"></material-plans>'
@@ -50,12 +50,12 @@
       weight: 2
     });
 
-    msNavigationServiceProvider.saveItem('material.type', {
-      title: '材料分类',
-      icon: 'icon-account',
-      state: 'app.material.type',
-      weight: 1
-    });
+    // msNavigationServiceProvider.saveItem('material.type', {
+    //   title: '材料分类',
+    //   icon: 'icon-account',
+    //   state: 'app.material.type',
+    //   weight: 1
+    // });
 
     msNavigationServiceProvider.saveItem('material.list', {
       title: '材料',

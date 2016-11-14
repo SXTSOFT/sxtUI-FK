@@ -12,11 +12,13 @@
     });
 
   /** @ngInject */
-  function exit($rootScope,$scope,$stateParams,api,utils,sxt,xhUtils,$state){
+  function exit($rootScope,$scope,$stateParams,api,utils,sxt,xhUtils,$state,auth){
     var vm = this;
+    var user = auth.current();
     vm.data = {ExitId:sxt.uuid(),PlanId:$stateParams.id};
     vm.data.ExitReason = '材料多余';
     vm.data.ExitOperatorTime = new Date();
+    vm.data.ExitWitness = user.Name;
 
     $scope.$on("$destroy",function(){
       sendCheckResult();

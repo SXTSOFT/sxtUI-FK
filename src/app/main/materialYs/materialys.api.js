@@ -22,6 +22,14 @@
         }).bind(function (sectionId,status) {
           return $http.get($http.url('/api/MaterialPlan/GetMaterialPlansBatchBySectionId',{sectionId:sectionId,status:status}));
         }),
+
+        deleteMaterialPlanBatch:$http.db({
+          _id:'materialPlan',
+          idField:'Id',
+          delete:true,
+          local:true
+        }).bind(),
+
         getMaterialPlanDetailList:$http.db({
           _id:'materialPlanDetailList',
           idField:'Id',

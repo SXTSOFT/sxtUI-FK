@@ -28,6 +28,15 @@
       load();
     },true);
 
+    // $scope.treeSetting = [{
+    //   'id': 1,
+    //   'title': 'AAAAA',
+    //   'level': 0,
+    //   'nodes': [],
+    //   'isEnable': tmp,
+    //   'regionType':2
+    // }]
+
     function load(){
       var page= utils.getPage($scope.pageing);
       api.material.type.getList({Skip:page.Skip,Limit:page.Limit}).then(function(r){

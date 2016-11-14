@@ -13,7 +13,7 @@
     })
 
   /** @ngInject */
-  function materialPlans($scope,api,utils) {
+  function materialPlans($scope,api,utils,remote) {
     var vm = this;
     vm.data = {};
     vm.ProjectId = '';
@@ -23,6 +23,10 @@
       page:1,
       pageSize:10
     };
+
+    remote.Project.getUserProjectSection().then(function (result) {
+      console.log(result);
+    });
 
     api.xhsc.Project.getMap().then(function (r) {
       vm.projects = r.data;
