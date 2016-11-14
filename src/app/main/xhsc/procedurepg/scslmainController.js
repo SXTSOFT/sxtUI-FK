@@ -148,9 +148,9 @@
             tasks.push(function () {
               return remote.Procedure.getMeasureMosaic(item.regionID,null,"scslStutas");
             });
-            tasks.push(function () {
-              return remote.Assessment.getAllMeasureReportData({RegionID: projectId, RecordType: 1})
-            })
+            // tasks.push(function () {
+            //   return remote.Assessment.getAllMeasureReportData({RegionID: projectId, RecordType: 1})
+            // })
             tasks.push(function () {
               return remote.Assessment.GetMeasureItemInfoByAreaID(projectId, "pack" + item.AssessmentID);
             });
