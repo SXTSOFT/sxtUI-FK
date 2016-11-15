@@ -57,7 +57,7 @@
         $scope.pageing.total= r.data.TotalCount;
         vm.source= r.data.Data;
         vm.source.forEach(function (o) {
-          o.MeasureTime=$window.moment(o.MeasureTime).format("YYYY-MM-DD");
+          o.MeasureTime=o.MeasureTime?o.MeasureTime:"";
         })
         vm.show=true;
 

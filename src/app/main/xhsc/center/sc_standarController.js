@@ -73,7 +73,7 @@
         $mdDialog.show({
           controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
             function reflash() {
-              return remote.PQMeasureStandard.messageList(vm.info.drawing, vm.info.AcceptanceItemID).then(function (r) {
+              return remote.PQMeasureStandard.messageList(vm.info.drawing, vm.info.acceptanceItemID).then(function (r) {
                 vm.MeasureIndexes.forEach(function (k) {
                   k.num = 0;
                   r.data.forEach(function (m) {

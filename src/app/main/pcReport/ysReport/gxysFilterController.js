@@ -159,8 +159,7 @@
       }).then(function(r){
         $scope.pageing.total= r.data.TotalCount;
         r.data.Data.forEach(function(o){
-          o.statusName=convertStatus(o.Status)
-          o.InspectionTime=$window.moment(o.InspectionTime).format("YYYY-MM-DD");
+          o.statusName=convertStatus(o.Status);
           vm.source.push(o);
         });
         $rootScope.gxysFilter_load={
