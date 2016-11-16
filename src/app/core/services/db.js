@@ -268,7 +268,7 @@
     var provider = this,globalDb={
       id:'sxt-global'
     };
-
+    var poolss = {};
     provider.$get = getApi;
     /** @ngInject */
     function getApi($q, $window, $cordovaFileTransfer, $timeout,$cordovaFile,$rootScope) {
@@ -515,8 +515,37 @@
       }
       return o;
     }
+
     function db_save(cfg, result, idFn) {
-      if(!result) return;
+      return provider.$q(function (resolve, reject) {
+        var pools = poolss[cfg._id];
+        if(!pools)
+          pools = poolss[cfg._id] = [];
+        pools.push(task(cfg,result,idFn));
+        if(pools.length===1){
+          run();
+        }
+        function run() {
+          var first = pools[0];
+          if(first) {
+            first().then(function (r) {
+              pools.shift();
+              return r;
+            },function (r) {
+              pools.shift();
+              provider.$q.reject(r);
+            }).then(run, run);
+          }
+        }
+        function task(cfg, result, idFn) {
+          return function () {
+            return db_save1(cfg, result, idFn).then(resolve,reject);
+          }
+        }
+      });
+    }
+    function db_save1(cfg, result, idFn) {
+      if(!result) return provider.$q(function (resolve, reject) {resolve()});
       var db = get_globalDb();
       return provider.$q(function (resolve, reject) {
         db.get(cfg._id,cfg).then(save_to).catch(save_to);

@@ -87,7 +87,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        title: '安全验收信息',
+        title: '',
         url: '/sfinfo/{acceptanceItemName}/{acceptanceItemID}/{name}/{areaId}/{projectId}/{InspectionId}',
         templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_info.html',
         controller: 'safe_civiliz_infoController as vm'
@@ -101,6 +101,16 @@
         url: '/rectify/{Role}/{InspectionID}/{AcceptanceItemID}/{RectificationID}/{AcceptanceItemName}',
         templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_rectify.html',
         controller: 'safe_civiliz_rectifyController as vm'
+      })
+      .state('app.xhsc.sf.jc',{
+        noBack: true,
+        sendBt: true,
+        rightArrow: false,
+        leftArrow: false,
+        title: '安全验收',
+        url: '/jc/{id}',
+        templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_yw.html',
+        controller: 'safe_civiliz_ywController as vm'
       })
   }
 })();
