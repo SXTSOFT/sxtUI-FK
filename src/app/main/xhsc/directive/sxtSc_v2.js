@@ -446,7 +446,7 @@
                     && t.AcceptanceIndexID == m.m.AcceptanceIndexID;
                   });
                   if(p1)
-                    pid = p1._id;
+                    pid = parentIds[pidKey] = p1._id;
 
                   if(!pid){ //如果原来有值,使用原来的值,原来没有,生成新的parentId,不能用$groupId,因为它是模板化,会很多
 
