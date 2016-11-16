@@ -5,7 +5,7 @@
     </h2>
     <span flex ="5"></span>
     <md-select style="font-size:13px;margin-right:20px;" name="projectId" ng-model="vm.ProjectId">
-      <md-option ng-value="p.ProjectID" ng-repeat="p in vm.projects">{{p.ProjectName}}</md-option>
+      <md-option ng-value="p.ProjectID" ng-selected="p.selected" ng-repeat="p in vm.projects">{{p.ProjectName}}</md-option>
     </md-select>
     <md-select style="font-size:13px;margin-right:20px;" name="sectionId" ng-model="vm.RegionId">
       <md-option ng-value="p.RegionID " ng-selected="p.selected" ng-repeat="p in vm.regions">{{p.RegionName}}</md-option>

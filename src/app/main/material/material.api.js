@@ -67,6 +67,9 @@
         },
         GetProjectSection:function (args) {
           return $http.get($http.url('/api/ProjectInfoApi/GetProjectSection',{areaId:args}));
+        },
+        getUserProjectSectionForPc:function(){
+          return  $http.get($http.url('/api/ProjectInfoApi/GetUserSectionForPc'))
         }
       }
     })

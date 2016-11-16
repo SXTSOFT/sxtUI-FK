@@ -13,9 +13,11 @@
     });
 
   /** @ngInject */
-  function materialPlan($scope,api,utils,$stateParams,$state,moment){
+  function materialPlan($scope,api,utils,$stateParams,$state,moment,auth){
     var vm = this;
+    var user = auth.current();
     vm.data = {};
+    var role = [];
     vm.data.Id = $stateParams.id;
     vm.SupplyType = [
       {type:1,name:'甲供'},
@@ -24,8 +26,27 @@
     ];
     vm.data.PlanTime=new Date();
 
+    if(user.Role.MemberType !== ''){
+      api.material.materialPlan.getUserProjectSectionForPc().then(function (result) {
+        role = result.data;
+      });
+    }
+
+
+    vm.projects = [];
     api.xhsc.Project.getMap().then(function (r) {
-      vm.projects = r.data;
+      if(user.Role.MemberType !== ''){
+        role.forEach(function (o) {
+          var pj = r.data.find(function (p) {
+            return p.ProjectID == o.ProjectId;
+          });
+          if(pj){
+            vm.projects.push(pj);
+          }
+        })
+      }else {
+        vm.projects = r.data;
+      }
     });
 
     api.material.materialScience.getList({Skip:0,Limit:100}).then(function (r) {
@@ -36,7 +57,19 @@
       vm.regions = [];
       vm.sections = [];
       api.xhsc.Project.GetAreaChildenbyID(vm.data.ProjectId).then(function (r) {
-        vm.regions = r.data || [];
+        if(user.Role.MemberType !== ''){
+          role.forEach(function (o) {
+            var pj = r.data.find(function (p) {
+              return p.RegionID == o.AreaId;
+            });
+            if(pj){
+              vm.regions.push(pj);
+            }
+          });
+        }else{
+          vm.regions = r.data;
+        }
+
         vm.regions.forEach(function (r) {
           r.tempId = r.RegionID.substr(5,10);
           if(r.tempId == vm.data.RegionId){

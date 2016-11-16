@@ -109,33 +109,33 @@
     <md-tab label="基础信息">
     <md-tab-content flex layout-fill class="white-bg" layout-padding>
       <form>
-        <!--<md-input-container>-->
-          <!--<label>级别</label>-->
-          <!--<md-select ng-model="vm.data.Level">-->
-            <!--<md-option ng-value="0" >-->
-              <!--一/二级-->
-            <!--</md-option>-->
-            <!--<md-option ng-value="1" >-->
-              <!--三级-->
-            <!--</md-option>-->
-          <!--</md-select>-->
-        <!--</md-input-container>-->
+        <md-input-container>
+          <label>级别</label>
+          <md-select ng-model="vm.data.Level">
+            <md-option ng-value="0" >
+              一/二级
+            </md-option>
+            <md-option ng-value="1" >
+              三级
+            </md-option>
+          </md-select>
+        </md-input-container>
         <md-input-container class="md-block">
           <label>名称</label>
           <input type="text" ng-model="vm.data.Name" >
         </md-input-container>
-        <md-input-container class="md-block">
+        <md-input-container class="md-block" ng-if="vm.data.Level !=0">
           <label>工期</label>
           <input type="text" ng-model="vm.data.Duration" >
         </md-input-container>
-        <md-input-container class="md-block">
+        <md-input-container class="md-block" ng-if="vm.data.Level !=0">
           <label>工期类型</label>
           <md-select ng-model="vm.data.DurationType">
             <md-option value="FixedDuration">固定工期</md-option>
             <md-option value="VariableDuration">比例工期</md-option>
           </md-select>
         </md-input-container>
-        <md-checkbox ng-model="vm.data.ManuallyClose" aria-label="手工关闭">
+        <md-checkbox ng-model="vm.data.ManuallyClose" aria-label="手工关闭" ng-if="vm.data.Level !=0">
           手工关闭
         </md-checkbox>
         <!--<div layout="column"  ng-if="vm.data.Level !=0">-->
