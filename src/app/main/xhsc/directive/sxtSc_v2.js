@@ -57,7 +57,7 @@
         var ProjectID = scope.regionId.substr(0, 5);
         var areaId = scope.regionId.substr(0, 10);
         var arr = [
-          remote.Project.getDrawingRelations(scope.regionId, "scDrawingRelation")
+          remote.Project.getDrawingRelations(areaId, "scDrawingRelation")
         ];
         $q.all(arr).then(function (res) {
           var picRelate = res[0]
@@ -118,6 +118,7 @@
             var layer = layer;
             if (layer.loaded)return;
             layer.loaded = true;
+
             var reqArr = [
               remote.PQMeasureStandard.GetListByExtend(areaId.substr(0, 5), "standard"),
               data.findAll()
@@ -442,7 +443,8 @@
                     CheckRegionID: scope.regionId,
                     RegionType: scope.regionType,
                     AcceptanceItemID: scope.acceptanceItem,
-                    AcceptanceIndexID: m.m.AcceptanceIndexID
+                    AcceptanceIndexID: m.m.AcceptanceIndexID,
+                    ParentMeasureValueID:editScope.context.layer._value.$groupId
                   }, m.v);
                   m.v.MeasureValueId = m.v._id;
                   fg.data.push(m.v);

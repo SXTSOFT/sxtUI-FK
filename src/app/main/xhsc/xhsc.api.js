@@ -71,6 +71,9 @@
             }
             return db?db:'DrawingRelation';
           },
+          filter:function (item,projectId) {
+            return item.ProjectId==projectId;
+          },
           idField: 'ProjectId',
           dataType: 3
         }).bind(function (projectId,db) {
