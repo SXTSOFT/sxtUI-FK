@@ -451,21 +451,26 @@
                   if(!pid){ //如果原来有值,使用原来的值,原来没有,生成新的parentId,不能用$groupId,因为它是模板化,会很多
 
                     pid = parentIds[pidKey] = m.v.ParentMeasureValueID ||sxt.uuid();
-                    var pt = {
-                      _id: pid,
-                      MeasureValueId:pid,
-                      CreateTime: now(),
-                      RelationID: scope.db,
-                      RecordType: 1,
-                      DrawingID: scope.imageUrl,
-                      MeasurePointID: editScope.context.layer._value.$groupId,
-                      CheckRegionID: scope.regionId,
-                      RegionType: scope.regionType,
-                      AcceptanceItemID: scope.acceptanceItem,
-                      AcceptanceIndexID: m.m.AcceptanceIndexID
-                    };
-                    fg.data.push(pt);
-                    data.addOrUpdate(pt);//添加组的值
+                    p1 = fg.data.find(function (t) {
+                      return t._id == pid;
+                    });
+                    if(!p1) {
+                      var pt = {
+                        _id: pid,
+                        MeasureValueId: pid,
+                        CreateTime: now(),
+                        RelationID: scope.db,
+                        RecordType: 1,
+                        DrawingID: scope.imageUrl,
+                        MeasurePointID: editScope.context.layer._value.$groupId,
+                        CheckRegionID: scope.regionId,
+                        RegionType: scope.regionType,
+                        AcceptanceItemID: scope.acceptanceItem,
+                        AcceptanceIndexID: m.m.AcceptanceIndexID
+                      };
+                      fg.data.push(pt);
+                      data.addOrUpdate(pt);//添加组的值
+                    }
                   }
                 }
                 if (!m.v._id) {
