@@ -441,13 +441,14 @@
                 if(editScope.context.layer._value.$groupId) {
                   var pidKey = m.m.AcceptanceIndexID + editScope.context.layer._value.$groupId;
                   pid = parentIds[pidKey];
-                  var p1 = fg.data.find(function (t) {
-                    return t.MeasurePointID == editScope.context.layer._value.$groupId
-                    && t.AcceptanceIndexID == m.m.AcceptanceIndexID;
-                  });
-                  if(p1)
-                    pid = parentIds[pidKey] = p1._id;
-
+                  if(!pid) {
+                    var p1 = fg.data.find(function (t) {
+                      return t.MeasurePointID == editScope.context.layer._value.$groupId
+                        && t.AcceptanceIndexID == m.m.AcceptanceIndexID;
+                    });
+                    if (p1)
+                      pid = parentIds[pidKey] = p1._id;
+                  }
                   if(!pid){ //如果原来有值,使用原来的值,原来没有,生成新的parentId,不能用$groupId,因为它是模板化,会很多
 
                     pid = parentIds[pidKey] = m.v.ParentMeasureValueID ||sxt.uuid();
