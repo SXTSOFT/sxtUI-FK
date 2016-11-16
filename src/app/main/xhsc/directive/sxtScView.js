@@ -100,6 +100,9 @@
                 }
                 layer.addData(geo);
               }
+              else if(geo.geometry.type=='Stamp'){
+                layer.addData(geo);
+              }
             });
             layer.eachLayer(function (layer) {
               if(layer.options.MeasureValue || layer.options.MeasureValue===0) {
