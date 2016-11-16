@@ -445,7 +445,7 @@
                     pid = parentIds[pidKey] = m.v.ParentMeasureValueID ||sxt.uuid();
                     var pt = {
                       _id: pid,
-                      MeasureValueID:pid,
+                      MeasureValueId:pid,
                       CreateTime: now(),
                       RelationID: scope.db,
                       RecordType: 1,
