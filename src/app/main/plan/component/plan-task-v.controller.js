@@ -499,6 +499,9 @@
           vm.data = data;
           vm.current = null;
           vm.gxName = '';
+          api.plan.TaskFlow.getSubTasks(flow.TaskFlowId).then(function(r){
+            vm.data._taskFlowId =r.data.Items[0].TaskLibraryId;
+          })
           api.plan.procedure.query().then(function(r){
             vm.proceduresData = r.data;
           })
