@@ -51,6 +51,7 @@
           flow.oNotice8 = flow.Notice8;
           flow.oMeasureInfo = flow.MeasureInfo;
           flow.oExpression = flow.Expression;
+          flow.oisChuancha = flow.isChuancha;
         });
         task.Branch.forEach(function (b) {
           b.forEach(function (flow) {
@@ -73,6 +74,7 @@
             flow.oNotice8 = flow.Notice8;
             flow.oMeasureInfo = flow.MeasureInfo;
             flow.oExpression = flow.Expression;
+            flow.oisChuancha = flow.isChuancha;
           })
         });
         vm.onLoadTemplate();
@@ -132,6 +134,52 @@
           vm.flows = temp.add(next,flow,isBranch);
         });
       });
+    }
+    vm.addBranch = function(ev,flow,isBranch){
+      $mdDialog.show({
+        templateUrl:'app/main/plan/component/plan-branch.html',
+        controller:['$scope',function($scope){
+          var vm = this;
+            api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1}).then(function (r) {
+              vm.subTasks = r.data.Items||[];
+            });
+          vm.select = function(){
+            $mdDialog.hide(vm.relatedTask)
+          }
+        }],
+        parent: angular.element(document.body),
+        clickOutsideToClose: true,
+        controllerAs:'vm'
+      }).then(function(res){
+        var next = {
+          TaskLibraryId: id,
+          IsFloor: false,
+          Type: isBranch ? temp.task.Branch.length+1 : flow ? flow.line : 0,
+          ParentId: flow ? flow.TaskFlowId : 0,
+          Name: res.Name,
+          Description:angular.toJson({
+            isChuancha:true
+          })
+        };
+        return api.plan.TaskFlow.post(
+          next
+        ).then(function (r) {
+          next.TaskFlowId = r.data.TaskFlowId;
+          if(vm.data.Level==1) {
+            return api.plan.TaskFlow.resetTaskFlow(next.TaskFlowId, [{
+              TaskFlowId: next.TaskFlowId,
+              TaskLibraryId: res.TaskLibraryId
+            }]);
+          }
+        }).then(function () {
+          vm.flows = temp.add(next,flow,isBranch);
+          vm.flows.forEach(function(flow){
+            if(flow.Description)
+              angular.extend(flow,angular.fromJson(flow.Description));
+          })
+          //console.log(next,vm.flows)
+        });
+      })
     }
     vm.removeFlow = function (ev,flow) {
       return utils.confirm('确认删除'+flow.Name+'？',null).then(function(){
@@ -222,7 +270,8 @@
           CarryOut:flow.CarryOut,
           Notice7: flow.Notice7,
           Notice8: flow.Notice8,
-          MeasureInfo:flow.MeasureInfo
+          MeasureInfo:flow.MeasureInfo,
+          isChuancha:flow.isChuancha
         })
       }).then(function () {
 
@@ -494,7 +543,7 @@
     //}
     vm.setMeasureInfo = function(flow){
        $mdDialog.show({
-        controller:['$scope','pdata','mdata','data','subtasks',function($scope,pdata,mdata,data,subtasks){
+        controller:['$scope','data',function($scope,data){
           var vm = this;
           vm.data = data;
           vm.current = null;
@@ -505,12 +554,12 @@
           api.plan.procedure.query().then(function(r){
             vm.proceduresData = r.data;
           })
-          api.plan.MeasureInfo.query().then(function(r){
-            vm.measureData = r.data;
-          })
-          api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1}).then(function (r) {
-            vm.subTasks = r.data.Items||[];
-          });
+          //api.plan.MeasureInfo.query().then(function(r){
+          //  vm.measureData = r.data;
+          //})
+          //api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1}).then(function (r) {
+          //  vm.subTasks = r.data.Items||[];
+          //});
           //vm.proceduresData = pdata;
           //vm.measureData = mdata;
           //vm.subTasks = subtasks;
@@ -550,22 +599,23 @@
             flow.MeasureInfo = item.AcceptanceItemName;
           }
           vm.select = function(index){
-            switch (index){
-              case 0:
-                vm.data.CloseRelatedObjectType = null;
-                vm.data.CloseRelatedObjectId =  null;
-                vm.data.RelatedTaskId  = vm.relatedTask.TaskLibraryId;
-                flow.MeasureInfo = vm.relatedTask.Name;
-                    break;
-              case 1:
-                vm.data.CloseRelatedObjectType = 'PQMeasure';
-                vm.data.CloseRelatedObjectId = vm.CloseRelatedObjectId.AcceptanceItemID;
-                flow.MeasureInfo = vm.CloseRelatedObjectId.MeasureItemName;
-                    break;
-              case 2:
-                vm.data.CloseRelatedObjectType = 'Inspection';
-                    break;
-            }
+            vm.data.CloseRelatedObjectType = 'Inspection';
+            //switch (index){
+            //  case 0:
+            //    vm.data.CloseRelatedObjectType = null;
+            //    vm.data.CloseRelatedObjectId =  null;
+            //    vm.data.RelatedTaskId  = vm.relatedTask.TaskLibraryId;
+            //    flow.MeasureInfo = vm.relatedTask.Name;
+            //        break;
+            //  case 1:
+            //    vm.data.CloseRelatedObjectType = 'PQMeasure';
+            //    vm.data.CloseRelatedObjectId = vm.CloseRelatedObjectId.AcceptanceItemID;
+            //    flow.MeasureInfo = vm.CloseRelatedObjectId.MeasureItemName;
+            //        break;
+            //  case 2:
+            //    vm.data.CloseRelatedObjectType = 'Inspection';
+            //        break;
+            //}
             $mdDialog.hide(vm.data);
           }
         }],
@@ -574,12 +624,10 @@
         parent: angular.element(document.body),
         clickOutsideToClose: true,
         locals:{
-          pdata:vm.procedures && vm.procedures,
-          mdata:vm.measureInfo && vm.measureInfo,
-          data:vm.data && vm.data,
-          subtasks:vm.subTasks&&vm.subTasks
+          data:vm.data && vm.data
         }
       }).then(function(data){
+         console.log(data)
         api.plan.TaskLibrary.update(data).then(function (r) {
           return vm.updateFlow(flow);
         });
