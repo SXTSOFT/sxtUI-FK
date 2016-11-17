@@ -152,7 +152,7 @@
               </md-list>
             </md-list-item>
            </md-list>
-          <md-list ng-hide="!item.IsInspection">
+          <md-list ng-hide="!item.IsInspection || item.InspectionTime==null">
             <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">监理送检信息</div>
             <md-list-item>
               <p flex="15">送检时间：</p>
