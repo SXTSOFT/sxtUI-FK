@@ -20,7 +20,7 @@
     vm.back = function () {
       history.go(-1);
     }
-    remote.Assessment.getMeasure({
+    remote.Assessment.getMeasureNew({
       RegionID:$stateParams.regionId,
       AcceptanceItemID:$stateParams.measureItemID,
       RecordType:4,
