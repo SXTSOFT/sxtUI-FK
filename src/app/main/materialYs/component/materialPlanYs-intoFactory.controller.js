@@ -18,7 +18,8 @@
     var user = auth.current();
     vm.data = {};
     vm.data.ApproachType = $stateParams.status == 1 ? 1 : 0;
-    vm.data.ApproachTime = new Date().Format('yyyy年MM月dd日');
+    vm.outPutDate = new Date().Format('yyyy年MM月dd日');
+    vm.data.ApproachTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
     vm.data.MaterialPlanFiles = [];
     vm.vehicleImgs = [];
     vm.goodsImgs = [];
@@ -58,47 +59,22 @@
         utils.alert('检查人不能为空');
         return;
       }
-      // if(vm.vehicleImgs.length == 0){
-      //  utils.alert('请上传至少一张车辆检查照片');
-      //   return;
-      // }
-      // if(vm.goodsImgs.length == 0){
-      //   utils.alert('请上传至少一张货物检查照片');
-      //   return;
-      // }
-      // if(vm.rummagerImgs.length == 0){
-      //   utils.alert('请上传至少一张检查人照片');
-      //   return;
-      // }
-      // if(vm.CertificateImgs.length == 0){
-      //   utils.alert('请上传至少一张合格证照片');
-      //   return;
-      // }
-
-      // api.xhsc.materialPlan.getMaterialPlanDetail(vm.data.Id).then(function (q) {
-      //   if (q.data){
-      //     api.xhsc.materialPlan.getMaterialBatchInitFactory(q.data.Id).then(function (k) {
-      //       if(k.data && vm.data.ApproachType == 1){
-      //         vm.data.Id = sxt.uuid();
-      //       }
-      //
-      //       api.xhsc.materialPlan.addMaterialPlanBatch(q.data).then(function (r) {
-      //         console.log(r.data);
-      //       });
-      //     });
-      //   }
-      // });
-
-      // var batchData = vm.data;
-      // console.log(batchData);
-      // api.xhsc.materialPlan.getMaterialBatchInitFactory(vm.data.Id).then(function (k) {
-      //   if(k.data && k.data.length > 0 && vm.data.ApproachType == 1){
-      //     for (var i = 0; i < k.data.length; i++){
-      //       if (k.data[i].Id == batchData.Id){
-      //        batchData.Id = sxt.uuid();
-      //       }
-      //     }
-      //   }
+      if(vm.vehicleImgs.length == 0){
+       utils.alert('请上传至少一张车辆检查照片');
+        return;
+      }
+      if(vm.goodsImgs.length == 0){
+        utils.alert('请上传至少一张货物检查照片');
+        return;
+      }
+      if(vm.rummagerImgs.length == 0){
+        utils.alert('请上传至少一张检查人照片');
+        return;
+      }
+      if(vm.CertificateImgs.length == 0){
+        utils.alert('请上传至少一张合格证照片');
+        return;
+      }
 
         api.xhsc.materialPlan.IntoFactoryMaterialBatch(vm.data).then(function (q) {
           utils.alert("提交成功", null, function () {
@@ -106,8 +82,6 @@
             $state.go("app.xhsc.gx.gxmain");
           });
         });
-      // });
-
     });
 
     $scope.$on("$destroy",function(){

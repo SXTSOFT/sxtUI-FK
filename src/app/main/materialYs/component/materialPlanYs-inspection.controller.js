@@ -18,7 +18,8 @@
     var user = auth.current();
     vm.data = {};
     vm.data.Id = $stateParams.id;
-    vm.data.InspectionTime = new Date().Format('yyyy年MM月dd日');
+    vm.outPutDate = new Date().Format('yyyy年MM月dd日');
+    vm.data.InspectionTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
     vm.samplingProcessImgs = [];
     vm.checkListImgs = [];
     vm.data.MaterialPlanFiles = [];
@@ -37,14 +38,14 @@
         utils.alert('送检单号不能为空');
         return;
       }
-      // if(vm.samplingProcessImgs.length == 0){
-      //   utils.alert('请至少上传一张抽样过程照片');
-      //   return;
-      // }
-      // if(vm.checkListImgs.length == 0 ){
-      //   utils.alert('请至少上传一张检查单照片');
-      //   return;
-      // }
+      if(vm.samplingProcessImgs.length == 0){
+        utils.alert('请至少上传一张抽样过程照片');
+        return;
+      }
+      if(vm.checkListImgs.length == 0 ){
+        utils.alert('请至少上传一张检查单照片');
+        return;
+      }
 
       vm.data.MaterialPlanFiles = vm.samplingProcessImgs.concat(vm.checkListImgs);
       api.xhsc.materialPlan.MaterialInspection(vm.data).then(function (q) {
