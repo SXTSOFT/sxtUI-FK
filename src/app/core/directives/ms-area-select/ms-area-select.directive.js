@@ -16,7 +16,7 @@
 
     //隐藏与显示列表
     function toggleList(isShow) {
-        isShow
+        !!isShow
         ?
         (function () {
           $('.md-area-select .md-area-select-content').fadeOut();
@@ -66,6 +66,12 @@
 
     });
 
+    /* Region */
+    $scope.SelectedRegion=null;
+
+    /* Procedure */
+    $scope.SelectedProcedure=null;
+
     /* 初始化数据变量 */
     $scope.areaData={
       type:'area',//当前列表的数据类型
@@ -84,6 +90,7 @@
       $scope.itemCList=[];
       $scope.flexes=[50,50,0];
       $scope.currentType='area';
+
     };
 
     $scope.departmentData={
@@ -96,6 +103,7 @@
     };
 
     $scope.showDepartmentData=function () {
+
       $scope.itemAList=getItems($scope.areaData.selectedItems[1].RegionID);
 
       var secAItem=$scope.departmentData.selectedItems[0]||$scope.itemAList[0];
@@ -109,6 +117,7 @@
       $scope.flexes=[25,25,50];
       $scope.currentType='department';
       getOtherRegionList($scope.departmentData,1);
+
     };
 
     $scope.procedureData={
@@ -121,7 +130,7 @@
     };
 
     $scope.showProcedureData=function () {
-
+      //debugger
       $scope.itemAList=$scope.procedureTree;
 
       var secAItem=$scope.procedureData.selectedItems[0]||$scope.itemAList[0];
@@ -162,7 +171,7 @@
       }
       if(
         resItem&&listItem&&
-        (resItem.RegionID&&(resItem.RegionID===listItem.RegionID)
+        (resItem.RegionUnSelected||resItem.RegionID&&(resItem.RegionID===listItem.RegionID)
         ||
         (resItem.SpecialtyID&&(resItem.SpecialtyID===listItem.SpecialtyID))
           ||
@@ -228,7 +237,8 @@
             ParentID:null,
             RegionID:null,
             RegionName:'不到户',
-            RegionType:null
+            RegionType:null,
+            RegionUnSelected:true
           });
         }
 
@@ -250,7 +260,7 @@
       function combineName(data) {
         var res='';
         angular.forEach(data.selectedItems,function (v,i){
-          res+=v.RegionName;
+          res+=(v.RegionName||v.SpecialtyName||v.AcceptanceItemName);
           res+='->';
         });
         return res.replace(/\->$/,'');
@@ -274,11 +284,15 @@
           if($scope.itemCList.length>0){
             $scope.flexes=[25,25,50];
           }else{
+            $scope.SelectedProcedure=selB;
             $scope.flexes=[50,50,0];
+            toggleList(true);//隐藏列表
           }
         }else{
-
+          $scope.SelectedProcedure=$scope.procedureData.selectedItems[2];
+          toggleList(true);//隐藏列表
         }
+        //console.log($scope.SelectedProcedure);
         return false;
       }
 
@@ -311,6 +325,14 @@
           .removeClass('on')
           .eq(i+1)
           .addClass('on');
+
+        if(i===0){//选中区域项的最后一个
+
+        }else if(i===1){//选中部门项的最后一个
+          var selectedRegion=$scope.departmentData['selectedItems'][2];
+          $scope.SelectedRegion=(!!selectedRegion['RegionID'])?selectedRegion:$scope.departmentData['selectedItems'][1];
+          //console.log($scope.SelectedRegion);
+        }
 
         $scope[arrNames[i+1]]();
 
