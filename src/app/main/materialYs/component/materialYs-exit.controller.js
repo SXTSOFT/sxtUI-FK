@@ -17,7 +17,7 @@
     var user = auth.current();
     vm.data = {ExitId:sxt.uuid(),PlanId:$stateParams.id};
     vm.data.ExitReason = '材料多余';
-    vm.data.ExitOperatorTime = new Date();
+    vm.data.ExitOperatorTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
     vm.data.ExitWitness = user.Name;
 
     $scope.$on("$destroy",function(){
@@ -34,10 +34,10 @@
         utils.alert('退场见证人不能为空');
         return;
       }
-      // if(vm.exitImgs.length == 0){
-      //   utils.alert('至少上传一张退场照片');
-      //   return;
-      // }
+      if(vm.exitImgs.length == 0){
+        utils.alert('至少上传一张退场照片');
+        return;
+      }
 
       vm.data.MaterialFiles = vm.exitImgs;
       api.xhsc.materialPlan.PostExitInfo(vm.data).then(function (r) {

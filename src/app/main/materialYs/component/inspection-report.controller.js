@@ -17,7 +17,8 @@
     var vm = this;
     vm.data = {};
     vm.data.Id = $stateParams.id;
-    vm.data.ReportTime = new Date();
+    vm.outPutDate = new Date().Format('yyyy年MM月dd日');
+    vm.data.ReportTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
     vm.data.LabCheck = true;
     vm.reportImgs = [];
 
@@ -33,10 +34,10 @@
         return;
       }
 
-      // if(vm.checkerImgs.length == 0){
-      //   utils.alert('至少上传一张报告单照片');
-      //   return;
-      // }
+      if(vm.checkerImgs.length == 0){
+        utils.alert('至少上传一张报告单照片');
+        return;
+      }
 
       vm.data.BatchFile = vm.reportImgs;
       api.xhsc.materialPlan.PostReportInfo(vm.data).then(function (r) {

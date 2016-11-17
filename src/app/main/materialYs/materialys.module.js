@@ -100,7 +100,6 @@
       })
       .state('app.xhsc.materialys.materialPlanProgress',{
         noBack:true,
-        sendBt:true,
         title:'流程跟踪',
         url:'/materialPlanProgress/{id}',
         template: '<material-plan-progress flex layout="column"></material-plan-progress>'

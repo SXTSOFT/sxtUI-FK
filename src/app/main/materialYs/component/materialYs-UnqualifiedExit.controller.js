@@ -19,7 +19,7 @@
     vm.data.Id = $stateParams.id;
     vm.data.ExitReason = '材料不合格';
     vm.data.MaterialFiles = [];
-    vm.data.ExitOperatorTime = new Date();
+    vm.data.ExitOperatorTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
     vm.data.ExitWitness = user.Name;
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
@@ -35,10 +35,10 @@
         utils.alert('退场见证人不能为空');
         return;
       }
-      // if(vm.data.MaterialFiles.length == 0){
-      //   utils.alert('请至少上传一张材料退场照片');
-      //   return;
-      // }
+      if(vm.data.MaterialFiles.length == 0){
+        utils.alert('请至少上传一张材料退场照片');
+        return;
+      }
 
       api.xhsc.materialPlan.materialUnqualifiedExit(vm.data).then(function (q) {
         utils.alert("提交成功", null, function () {

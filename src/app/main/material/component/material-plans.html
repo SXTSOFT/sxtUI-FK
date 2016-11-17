@@ -32,8 +32,8 @@
       <th style="text-align: center;">进场计划数量</th>
       <th>使用部位</th>
       <th>合同编号</th>
-      <th>供货方式</th>
-      <th style="min-width: 80px;">状态</th>
+      <th style="min-width: 80px;">供货方式</th>
+      <th style="min-width: 70px;">状态</th>
       <!--<th>进场时间</th>-->
       <!--<th>进场数量</th>-->
       <!--<th>厂家/品牌</th>-->
@@ -68,14 +68,14 @@
         <label ng-if="item.SupplyType == 2">认质认价</label>
         <label ng-if="item.SupplyType == 4">甲指乙供</label>
       </td>
-      <td style="min-width: 80px;">
+      <td>
         <!--{{item.Status}}-->
         <label ng-if="item.Status == 1">未进场</label>
         <label ng-if="item.Status == 2">未验收</label>
         <label ng-if="item.Status == 4">已关闭</label>
       </td>
       <td class="actions">
-        <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.plan({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
+        <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.plan({id:item.Id})" ng-hide="item.Status!=1"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
         <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.delete(item.Id)" ng-hide="item.Status!=1"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
         <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.batchDetail({planId:item.Id})"><md-icon  md-font-icon="icon-document" class="icon s24"></md-icon></md-button>
       </td>
