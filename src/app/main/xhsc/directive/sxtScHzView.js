@@ -87,7 +87,7 @@
                 v.MeasureValue=!v.MeasureValue?"0":v.MeasureValue;
                 geo.options.MeasureValue = v.MeasureValue;
                 geo.options.ExtendedField1 = v.ExtendedField1;
-                geo.options.seq = v.MeasureValue;
+                geo.options.seq =geo.properties.seq;
                 geo.options.customSeq = true;
                 geo.options.PointChilden=point.PointChilden;
                 switch(v.MeasureStatus) {
@@ -106,7 +106,7 @@
               if(layer.options.MeasureValue || layer.options.MeasureValue===0) {
                 //layer.updateValue({seq: ''+layer.options.MeasureValue});
                 layer.on('mouseover',function (e) {
-                  var  PointChilden=layer.options.PointChilden;
+                  var  PointChilden=e.target.options.PointChilden;
                   var zb='',jl="",xmb='',t;
                   if (angular.isArray(PointChilden)){
                     t=PointChilden.find(function(o){
@@ -117,10 +117,16 @@
                     }
 
                     t=PointChilden.find(function(o){
-                      return o.MemberType==1;
+                      return o.MemberType==2;
                     });
                     if (t){
                       jl= t.Value;
+                    }
+                    t=PointChilden.find(function(o){
+                      return o.MemberType==4;
+                    });
+                    if (t){
+                      xmb= t.Value;
                     }
 
                   }
@@ -133,7 +139,9 @@
                     if (jl){
                       popArr.push( '<div class="row" style="margin-bottom: 10px;"><label style="display: block;width:50px;float: left;">监理：</label><p style="margin:0;margin-left: 50px;">'+(jl)+'</p></div>')
                     }
-
+                    if (xmb){
+                      popArr.push( '<div class="row" style="margin-bottom: 10px;"><label style="display: block;width:50px;float: left;">项目部：</label><p style="margin:0;margin-left: 50px;">'+(xmb)+'</p></div>')
+                    }
 
                     popArr.push('</div>')
                     layer.popup = L.popup({

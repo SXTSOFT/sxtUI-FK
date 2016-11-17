@@ -37,6 +37,7 @@
 
     function link(scope, element, attr, ctrl) {
       var map, tile, fg, toolbar, data, points, pk, scStandar;
+      var parentIds = {};//标准批后,用于存放区域测量的父ID
       if (!pk)
         pk = pack.sc.up(scope.db);
       if (!data)
@@ -57,8 +58,9 @@
         var ProjectID = scope.regionId.substr(0, 5);
         var areaId = scope.regionId.substr(0, 10);
         var arr = [
-          remote.Project.getDrawingRelations(scope.regionId, "scDrawingRelation")
+          remote.Project.getDrawingRelations(areaId, "scDrawingRelation")
         ];
+        parentIds = {};//重置为空
         $q.all(arr).then(function (res) {
           var picRelate = res[0]
           //渲染图纸
@@ -118,6 +120,7 @@
             var layer = layer;
             if (layer.loaded)return;
             layer.loaded = true;
+
             var reqArr = [
               remote.PQMeasureStandard.GetListByExtend(areaId.substr(0, 5), "standard"),
               data.findAll()
@@ -429,8 +432,48 @@
               }
             },
             onUpdateData: function (context, updates, editScope) {
+
+              //如果有
               updates.forEach(function (m) {
+
                 if (!m.v)return;
+                var pid;
+                if(editScope.context.layer._value.$groupId) {
+                  var pidKey = m.m.AcceptanceIndexID + editScope.context.layer._value.$groupId;
+                  pid = parentIds[pidKey];
+                  if(!pid) {
+                    var p1 = fg.data.find(function (t) {
+                      return t.MeasurePointID == editScope.context.layer._value.$groupId
+                        && t.AcceptanceIndexID == m.m.AcceptanceIndexID;
+                    });
+                    if (p1)
+                      pid = parentIds[pidKey] = p1._id;
+                  }
+                  if(!pid){ //如果原来有值,使用原来的值,原来没有,生成新的parentId,不能用$groupId,因为它是模板化,会很多
+
+                    pid = parentIds[pidKey] = m.v.ParentMeasureValueID ||sxt.uuid();
+                    p1 = fg.data.find(function (t) {
+                      return t._id == pid;
+                    });
+                    if(!p1) {
+                      var pt = {
+                        _id: pid,
+                        MeasureValueId: pid,
+                        CreateTime: now(),
+                        RelationID: scope.db,
+                        RecordType: 1,
+                        DrawingID: scope.imageUrl,
+                        MeasurePointID: editScope.context.layer._value.$groupId,
+                        CheckRegionID: scope.regionId,
+                        RegionType: scope.regionType,
+                        AcceptanceItemID: scope.acceptanceItem,
+                        AcceptanceIndexID: m.m.AcceptanceIndexID
+                      };
+                      fg.data.push(pt);
+                      data.addOrUpdate(pt);//添加组的值
+                    }
+                  }
+                }
                 if (!m.v._id) {
                   m.v = angular.extend({
                     _id: sxt.uuid(),
@@ -442,11 +485,11 @@
                     CheckRegionID: scope.regionId,
                     RegionType: scope.regionType,
                     AcceptanceItemID: scope.acceptanceItem,
-                    AcceptanceIndexID: m.m.AcceptanceIndexID
+                    AcceptanceIndexID: m.m.AcceptanceIndexID,
+                    ParentMeasureValueID:pid
                   }, m.v);
                   m.v.MeasureValueId = m.v._id;
                   fg.data.push(m.v);
-
                 }
                 if (m.v.values) {
                   var minV = 1000000, maxV = -1000000, vs = [];

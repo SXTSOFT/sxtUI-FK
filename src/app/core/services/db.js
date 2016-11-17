@@ -6,7 +6,7 @@
 
   angular
     .module('app.core')
-    .provider('db',pouchDB);
+    .provider('db',db);
 /** @ngInject */
   function pouchDB() {
 
@@ -148,7 +148,7 @@
 
   /** @ngInject */
   function $get($window, $q) {
-
+    // PouchDB.plugin(PouchAdapterCordovaSqlite);
     var pouchDBDecorators = {
       qify: function (fn) {
         return function () {
@@ -236,7 +236,7 @@
           window.localStorage.setItem("dbs",dbs);
         }
       }
-      var db = new $window.PouchDB(name,{adapter : 'websql'});
+      var db = new $window.PouchDB(name);
       return wrapMethods(db, self.methods);
     };
   };
