@@ -142,9 +142,9 @@
           return $http.post('/api/TaskLibrarys',taskLibrary);
         },
         update:function (taskLibrary) {
-          var item= angular.extend(taskLibrary,{Id:taskLibrary.TaskLibraryId});
+          var item= angular.extend(taskLibrary,{Id:taskLibrary._taskFlowId});
 
-          return $http.put('/api/TaskLibrarys/'+taskLibrary.TaskLibraryId,item);
+          return $http.put('/api/TaskLibrarys/'+taskLibrary._taskFlowId,item);
         },
         delete:function(id){
           return $http.delete($http.url('/api/TaskLibrarys/'+id))
