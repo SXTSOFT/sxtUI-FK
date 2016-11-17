@@ -16,7 +16,8 @@
     <div  layout-align="center none" layout-gt-xs="row" flex class="newhouse" layout="column" ng-if="!vm.show">
     <div flex sxt-area-houses param="vm.project" item-id="vm.project.itemId" item-name="vm.project.itemName" >
     </div>
-    <div flex="none" style="min-height: 200px;min-width: 260px">
+    <div flex="none" style="min-height: 200px;min-width: 260px;max-height: 250px;overflow: auto">
+
       <div style="padding: 5px 10px;font-weight: bold;">{{vm.project.itemName}}</div>
       <sxt-images-ybyd item-name="vm.project.itemName" item-id="vm.project.itemId" region-tree="vm.project.idTree" region-id="vm.project.pid"></sxt-images-ybyd>
     </div>
