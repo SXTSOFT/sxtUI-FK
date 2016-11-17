@@ -33,18 +33,24 @@
     <md-input-container class="md-block">
       <label>型号</label>
       <input type="text" ng-model="vm.data.Model">
+      <div class="hint">多个型号请用中文逗号"，"分隔</div>
     </md-input-container>
     <md-input-container class="md-block">
       <label>规格</label>
       <input type="text" ng-model="vm.data.Specifications">
+      <div class="hint">多个规格请用中文逗号"，"分隔</div>
     </md-input-container>
     <md-input-container class="md-block">
       <label>厂家/品牌</label>
       <input type="text" ng-model="vm.data.Brands">
+      <div class="hint">多个厂家/品牌请用中文逗号"，"分隔</div>
     </md-input-container>
     <div layout="row" flex>
       <md-button type="submit" class="md-primary md-raised">
         保存
+      </md-button>
+      <md-button ui-sref="app.material.list" class="md-primary md-raised">
+        返回
       </md-button>
     </div>
   </form>

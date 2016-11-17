@@ -17,8 +17,8 @@
       <th>材料名称</th>
       <th>型号</th>
       <th>规格</th>
-      <th>厂家/品牌</th>
-      <th style="width: 160px;"><span class="pl-16">管理</span></th>
+      <th style="width:350px;">厂家/品牌</th>
+      <th style="width:160px;"><span class="pl-16">管理</span></th>
     </tr>
     </thead>
     <tbody>
@@ -29,8 +29,12 @@
       <td>{{item.Specifications}}</td>
       <td>{{item.Brands}}</td>
       <td class="actions">
-        <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.add({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
-        <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.delete(item.Id)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
+        <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.add({id:item.Id})">
+          <md-icon md-font-icon="icon-pencil" class="icon s24"></md-icon>
+        </md-button>
+        <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.delete(item.Id)">
+          <md-icon md-font-icon="icon-delete" class="icon s24"></md-icon>
+        </md-button>
 
       </td>
     </tr>

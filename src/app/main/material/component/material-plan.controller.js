@@ -49,97 +49,33 @@
       })
     };
 
-    vm.getAreas = function (pId,selectId) {
+    vm.getAreas = function (pId) {
       return api.xhsc.Project.GetAreaChildenbyID(pId).then(function (r) {
-        if(selectId){
-          r.data.forEach(function (a) {
-            if(a.RegionID == selectId)
-              a.selected = true;
-          });
-        }
         vm.regions = r.data;
+
       });
     };
 
-    vm.getSections = function (aId,selectId) {
+    vm.getSections = function (aId) {
       api.material.materialPlan.GetProjectSection(aId).then(function (e) {
-        if(selectId){
-          e.data.forEach(function (a) {
-            if(a.RegionID == selectId)
-              a.selected = true;
-          });
-        }
-
         vm.sections = e.data;
       });
     };
     vm.upNext = function () {
       vm.regions = null;
       vm.sections = null;
-      vm.data.RegionId = null;
-      vm.data.SectionId = null;
+      vm.RegionId = null;
+      vm.SectionId = null;
     };
 
     vm.upSection = function () {
       vm.sections = null;
-      vm.data.SectionId = null;
+      vm.SectionId = null;
     };
 
-    // api.xhsc.Project.getMap().then(function (r) {
-    //   if(user.Role.MemberType !== ''){
-    //     role.forEach(function (o) {
-    //       var pj = r.data.find(function (p) {
-    //         return p.ProjectID == o.ProjectId;
-    //       });
-    //       if(pj){
-    //         vm.projects.push(pj);
-    //       }
-    //     })
-    //   }else {
-    //     vm.projects = r.data;
-    //   }
-    // });
-    //
     api.material.materialScience.getMaterialList().then(function (r) {
       vm.materials = r.data||[];
     });
-
-    // $scope.$watch('vm.data.ProjectId',function () {
-    //   vm.regions = [];
-    //   vm.sections = [];
-    //   api.xhsc.Project.GetAreaChildenbyID(vm.data.ProjectId).then(function (r) {
-    //     if(user.Role.MemberType !== ''){
-    //       role.forEach(function (o) {
-    //         var pj = r.data.find(function (p) {
-    //           return p.RegionID == o.AreaId;
-    //         });
-    //         if(pj){
-    //           vm.regions.push(pj);
-    //         }
-    //       });
-    //     }else{
-    //       vm.regions = r.data;
-    //     }
-    //
-    //     vm.regions.forEach(function (r) {
-    //       r.tempId = r.RegionID.substr(5,10);
-    //       if(r.tempId == vm.data.RegionId){
-    //         r.selected = true;
-    //       }
-    //     });
-    //   });
-    // },true);
-    //
-    // $scope.$watch('vm.data.RegionId',function () {
-    //   api.material.materialPlan.GetProjectSection(vm.data.RegionId).then(function (e) {
-    //     vm.sections = e.data || [];
-    //     vm.sections.forEach(function (p) {
-    //       if(p.AreaID == vm.data.RegionId){
-    //         p.selected = true;
-    //       }
-    //     });
-    //   });
-    // },true);
 
     vm.init = function (m) {
       vm.Specifications = m.Specifications.split('，') || [];
@@ -147,6 +83,7 @@
     };
 
     if(vm.data.Id){
+      vm.inputChange = true;
       vm.getMaps();
       api.material.materialPlan.getMaterial(vm.data.Id).then(function (r) {
         vm.data = r.data;
@@ -155,8 +92,10 @@
         vm.data.SectionId = r.data.SectionId;
         vm.data.PlanTime = r.data.PlanTime == null ? new Date() : new moment(r.data.PlanTime).toDate();
 
-        vm.getAreas(vm.data.ProjectId,vm.data.RegionId);
-        vm.getSections(vm.data.RegionId,vm.data.SectionId);
+        vm.getAreas(vm.data.ProjectId);
+        vm.RegionId = r.data.RegionId;
+        vm.getSections(vm.data.RegionId);
+        vm.SectionId = r.data.SectionId;
         api.material.materialScience.getMaterialList().then(function (r) {
           vm.materials = r.data||[];
           vm.materials.forEach(function (q) {
@@ -174,18 +113,17 @@
 
     vm.save = function () {
       if ($scope.myForm.$valid) {
-        vm.data.PlanName = vm.data.Material.MaterialName + '_' + vm.data.Specifications + '_' + vm.data.Model + '_' + vm.data.PlanCount + vm.data.Unit + '_' + new Date(vm.data.PlanTime).Format('yyMMdd');
-
+        vm.data.RegionId = vm.RegionId;
+        vm.data.SectionId = vm.SectionId;
+        vm.data.MaterialId = vm.data.Material.Id;
+        vm.data.PlanTime = new Date(vm.data.PlanTime);
         if(vm.data.Id){
-          vm.data.MaterialId = vm.data.Material.Id;
           api.material.materialPlan.putMaterial(vm.data).then(function () {
             utils.alert("提交成功", null, function () {
               $state.go("app.material.plans");
             });
           });
         }else{
-          vm.data.MaterialId = vm.data.Material.Id;
-          vm.data.PlanTime = new Date(vm.data.PlanTime);
           api.material.materialPlan.Create(vm.data).then(function () {
             utils.alert("提交成功",null,function(){
               $state.go("app.material.plans");
@@ -193,7 +131,52 @@
           });
         }
       }
-    }
+    };
+
+    vm.change = function(){
+      vm.inputChange = true;
+    };
+
+    var materialName='',specification='',model='',planCount = '',unit='';
+    $scope.$watch('vm.data.Material',function(){
+      if(vm.data&&vm.data.Material&&!vm.inputChange){
+        materialName = '';
+        materialName = vm.data.Material.MaterialName;
+        vm.data.PlanName = materialName + specification + model + planCount + unit;
+      }
+    });
+
+    $scope.$watch('vm.data.Specifications',function(){
+      if(vm.data&&vm.data.Specifications&&!vm.inputChange){
+        specification = '';
+        specification = '_' + vm.data.Specifications;
+        vm.data.PlanName = materialName + specification + model + planCount + unit;
+      }
+    });
+
+    $scope.$watch('vm.data.Model',function(){
+      if(vm.data&&vm.data.Model&&!vm.inputChange){
+        model = '';
+        model = '_' + vm.data.Model;
+        vm.data.PlanName = materialName + specification + model + planCount + unit;
+      }
+    });
+
+    $scope.$watch('vm.data.PlanCount',function(){
+      if(vm.data&&vm.data.PlanCount&&!vm.inputChange){
+        planCount = '';
+        planCount = '_' + vm.data.PlanCount;
+        vm.data.PlanName = materialName + specification + model + planCount + unit;
+      }
+    });
+
+    $scope.$watch('vm.data.Unit',function(){
+      if(vm.data&&vm.data.Unit&&!vm.inputChange){
+        unit = '';
+        unit = vm.data.Unit + '_' + new Date(vm.data.PlanTime).Format('yyMMdd');
+        vm.data.PlanName = materialName + specification + model + planCount + unit;
+      }
+    });
   }
 
 })(angular,undefined);
