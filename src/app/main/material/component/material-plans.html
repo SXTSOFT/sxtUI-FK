@@ -48,7 +48,7 @@
       <!--<th>是否送检</th>-->
       <!--<th></th>-->
       <!--<th></th>-->
-      <th style="width: 160px;">管理</th>
+      <th style="width: 160px;"><span class="pl-16">管理</span></th>
     </tr>
     </thead>
     <tbody>
@@ -74,7 +74,7 @@
         <label ng-if="item.Status == 2">未验收</label>
         <label ng-if="item.Status == 4">已关闭</label>
       </td>
-      <td>
+      <td class="actions">
         <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.plan({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
         <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.delete(item.Id)" ng-hide="item.Status!=1"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
       </td>

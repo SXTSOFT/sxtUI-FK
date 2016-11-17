@@ -9,16 +9,26 @@
 </md-toolbar>
 
 <md-content flex layout-fill class="white-bg" layout-padding >
-  <form>
-    <!--<md-input-container class="md-block" style="height: 58px;">-->
-      <!--<label>材料分类</label>-->
-      <!--<md-select ng-model="vm.data.MaterialClassId">-->
-        <!--<md-option value="{{item.Id}}" ng-repeat="item in vm.materialType">{{item.CategoryName}}</md-option>-->
-      <!--</md-select>-->
-    <!--</md-input-container>-->
+  <form name="myForm" ng-submit="vm.save()">
+    <md-input-container class="md-block" style="height: 58px;">
+      <label>材料分类</label>
+      <md-select name="MaterialClassId" required ng-model="vm.data.MaterialClassId">
+        <md-option value="{{item.Id}}" ng-repeat="item in vm.materialType">{{item.CategoryName}}</md-option>
+      </md-select>
+      <div ng-messages="myForm.MaterialClassId.$error" ng-show="myForm.MaterialClassId.$touched" role="alert">
+        <div ng-message="required">
+          <span>请选择材料分类.</span>
+        </div>
+      </div>
+    </md-input-container>
     <md-input-container class="md-block">
       <label>材料名称</label>
-      <input type="text" ng-model="vm.data.MaterialName">
+      <input name="MaterialName" required type="text" ng-model="vm.data.MaterialName">
+      <div ng-messages="myForm.MaterialName.$error" ng-show="myForm.MaterialName.$touched" role="alert">
+        <div ng-message="required">
+          <span>请材料分类.</span>
+        </div>
+      </div>
     </md-input-container>
     <md-input-container class="md-block">
       <label>型号</label>
@@ -32,11 +42,11 @@
       <label>厂家/品牌</label>
       <input type="text" ng-model="vm.data.Brands">
     </md-input-container>
+    <div layout="row" flex>
+      <md-button type="submit" class="md-primary md-raised">
+        保存
+      </md-button>
+    </div>
   </form>
-  <div layout="row" flex>
-    <md-button ng-click="vm.save()" class="md-primary md-raised">
-      保存
-    </md-button>
-  </div>
 </md-content>
 

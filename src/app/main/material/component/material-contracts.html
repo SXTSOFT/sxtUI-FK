@@ -1,11 +1,11 @@
 <md-toolbar class="md-hue-2">
   <div class="md-toolbar-tools">
     <h2>
-      <span>材料管理</span>
+      <span>合同管理</span>
     </h2>
     <span flex></span>
     <md-button class="md-icon-button" aria-label="More">
-      <md-icon md-font-icon="icon-plus" ui-sref="app.material.add"></md-icon>
+      <md-icon md-font-icon="icon-plus" ui-sref="app.material.contract"></md-icon>
     </md-button>
   </div>
 </md-toolbar>
@@ -13,25 +13,27 @@
   <table class="simple">
     <thead>
     <tr>
-      <th>材料分类</th>
-      <th>材料名称</th>
-      <th>型号</th>
-      <th>规格</th>
-      <th>厂家/品牌</th>
-      <th style="width: 160px;"><span class="pl-16">管理</span></th>
+      <th>项目</th>
+      <th>分期</th>
+      <th>标段</th>
+      <th>乙方（总包）</th>
+      <th>合同名称</th>
+      <th>合同编号</th>
+      <th>管理</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="item in vm.data">
-      <td>{{item.CategoryName}}</td>
-      <td>{{item.MaterialName}}</td>
-      <td>{{item.Model}}</td>
-      <td>{{item.Specifications}}</td>
-      <td>{{item.Brands}}</td>
-      <td class="actions">
-        <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.add({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
-        <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.delete(item.Id)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
-
+      <td>{{item.ProjectName}}</td>
+      <td>{{item.AreaName}}</td>
+      <td>{{item.SectionName}}</td>
+      <td>{{item.PartnerName}}</td>
+      <td>{{item.Name}}</td>
+      <td>{{item.Number}}</td>
+      <td>
+        <md-button aria-label="Settings" ui-sref="app.material.contract({id:item.Id})">编辑</md-button>
+        <md-button aria-label="Settings" ui-sref="app.material.contract({id:item.Id})">管理材料范围</md-button>
+        <md-button aria-label="Settings" ng-click="vm.delete(item.Id)">删除</md-button>
       </td>
     </tr>
     </tbody>

@@ -1,4 +1,3 @@
-
 <md-toolbar class="md-hue-2">
   <div class="md-toolbar-tools">
     <h2>
@@ -8,81 +7,144 @@
   </div>
 </md-toolbar>
 
-<md-content flex layout-fill class="white-bg" layout-padding >
-  <form>
+<md-content flex layout-fill class="white-bg" layout-padding>
+  <form name="myForm" ng-submit="vm.save()">
     <div layout="row">
       <md-input-container class="md-block" flex="40">
         <label>项目</label>
-        <md-select name="projectId" ng-model="vm.data.ProjectId">
-          <md-option ng-value="p.ProjectID" ng-repeat="p in vm.projects">{{p.ProjectName}}</md-option>
+        <md-select name="ProjectId" required md-on-open="vm.getMaps()" ng-model="vm.data.ProjectId">
+          <md-option ng-value="p.ProjectID" ng-click="vm.upNext()" ng-repeat="p in vm.projects">{{p.ProjectName}}
+          </md-option>
         </md-select>
+        <div ng-messages="myForm.ProjectID.$error" ng-show="myForm.ProjectID.$touched" role="alert">
+          <div ng-message="required">
+            <span>请选择项目.</span>
+          </div>
+        </div>
       </md-input-container>
       <md-input-container class="md-block" flex="30">
         <label>分期</label>
-        <md-select name="sectionId" ng-model="vm.data.RegionId">
-          <md-option ng-value="p.RegionID " ng-selected="p.selected" ng-repeat="p in vm.regions">{{p.RegionName}}</md-option>
+        <md-select name="RegionId" required md-on-open="vm.getAreas(vm.data.ProjectId)" ng-model="vm.data.RegionId">
+          <md-option ng-value="p.RegionID" ng-click="vm.upSection()" ng-selected="p.selected"
+                     ng-repeat="p in vm.regions">{{p.RegionName}}
+          </md-option>
         </md-select>
+        <div ng-messages="myForm.RegionId.$error" ng-show="myForm.RegionId.$touched" role="alert">
+          <div ng-message="required">
+            <span>请选择分期.</span>
+          </div>
+        </div>
       </md-input-container>
       <md-input-container class="md-block" flex="30">
         <label>标段</label>
-        <md-select name="sectionId" ng-model="vm.data.SectionId">
-          <md-option ng-value="p.RegionID" ng-selected="p.selected" ng-repeat="p in vm.sections">{{p.RegionName}}</md-option>
+        <md-select name="SectionId" required md-on-open="vm.getSections(vm.data.RegionId)" ng-model="vm.data.SectionId">
+          <md-option ng-value="p.RegionID" ng-selected="p.selected" ng-repeat="p in vm.sections">{{p.RegionName}}
+          </md-option>
         </md-select>
+        <div ng-messages="myForm.SectionId.$error" ng-show="myForm.SectionId.$touched" role="alert">
+          <div ng-message="required">
+            <span>请选择标段.</span>
+          </div>
+        </div>
       </md-input-container>
     </div>
     <div layout="row">
-      <md-input-container class="md-block" style="height: 58px;" flex="40">
+      <md-input-container style="height: 58px;" flex="40">
         <label>材料/设备名称</label>
-        <md-select name="MaterialId"  ng-model="vm.data.Material">
-          <md-option ng-value="item"  ng-selected="item.selected" ng-repeat="item in vm.materials" ng-click="vm.init(item)">{{item.MaterialName}}</md-option>
+        <md-select name="material" required ng-model="vm.data.Material" md-on-close="clearSearchTerm()"
+                   data-md-container-class="selectdemoSelectHeader">
+          <md-select-header class="demo-select-header">
+            <input ng-model="searchTerm"
+                   type="search"
+                   placeholder="搜索.."
+                   class="demo-header-searchbox md-text">
+          </md-select-header>
+          <md-optgroup label="{{item.CategoryName}}" ng-repeat="item in vm.materials">
+            <md-option ng-value="m" ng-selected="m.selected" ng-repeat="m in item.childrens | filter:searchTerm"
+                       ng-click="vm.init(m)">{{m.MaterialName}}
+            </md-option>
+          </md-optgroup>
         </md-select>
+        <div ng-messages="myForm.material.$error" ng-show="myForm.material.$touched" role="alert">
+          <div ng-message="required">
+            <span>请选择材料.</span>
+          </div>
+        </div>
       </md-input-container>
       <md-input-container class="md-block" style="height: 58px;" flex="30">
         <label>规格</label>
         <!--<input type="text" ng-disabled="true" ng-model="vm.Specifications">-->
-        <md-select name="Specifications"  ng-model="vm.data.Specifications">
-          <md-option ng-value="item"  ng-selected="item.selected" ng-repeat="item in vm.Specifications">{{item}}</md-option>
+        <md-select name="Specifications" ng-model="vm.data.Specifications">
+          <md-option ng-value="item" ng-repeat="item in vm.Specifications">{{item}}
+          </md-option>
         </md-select>
       </md-input-container>
       <md-input-container class="md-block" style="height: 58px;" flex="30">
         <label>型号</label>
         <!--<input type="text" ng-disabled="true" ng-model="vm.Model">-->
-        <md-select name="Specifications"  ng-model="vm.data.Model">
-          <md-option ng-value="item"  ng-selected="item.selected" ng-repeat="item in vm.Models">{{item}}</md-option>
+        <md-select name="Specifications" ng-model="vm.data.Model">
+          <md-option ng-value="item" ng-repeat="item in vm.Models">{{item}}</md-option>
         </md-select>
       </md-input-container>
     </div>
+
     <md-input-container class="md-block">
       <label>计划进场时间</label>
       <md-datepicker ng-model="vm.data.PlanTime" md-open-on-focus></md-datepicker>
     </md-input-container>
     <md-input-container class="md-block">
       <label>计划进场数量 </label>
-      <input type="number" ng-model="vm.data.PlanCount" min="0">
+      <input name="PlanCount" type="number" required ng-model="vm.data.PlanCount" min="0">
+      <div ng-messages="myForm.PlanCount.$error" ng-show="myForm.PlanCount.$touched" role="alert">
+        <div ng-message="required">
+          <span>请输入计划进场数量.</span>
+        </div>
+      </div>
+    </md-input-container>
     </md-input-container>
     <md-input-container class="md-block">
       <label>计量单位</label>
-      <input type="text" ng-model="vm.data.Unit">
+      <input name="Unit" type="text" required ng-model="vm.data.Unit">
+      <div ng-messages="myForm.Unit.$error" ng-show="myForm.Unit.$touched" role="alert">
+        <div ng-message="required">
+          <span>请输入计量单位.</span>
+        </div>
+      </div>
     </md-input-container>
     <md-input-container class="md-block">
       <label>使用部位</label>
-      <input type="text" ng-model="vm.data.Position">
+      <input name="Position" type="text" required ng-model="vm.data.Position">
+      <div ng-messages="myForm.Position.$error" ng-show="myForm.Position.$touched" role="alert">
+        <div ng-message="required">
+          <span>请输入使用部位.</span>
+        </div>
+      </div>
     </md-input-container>
     <md-input-container class="md-block" style="height: 58px;">
       <label>供货方式</label>
-      <md-select ng-model="vm.data.SupplyType">
+      <md-select name="SupplyType" required ng-model="vm.data.SupplyType">
         <md-option ng-value="item.type" ng-repeat="item in vm.SupplyType">{{item.name}}</md-option>
       </md-select>
+      <div ng-messages="myForm.SupplyType.$error" ng-show="myForm.SupplyType.$touched" role="alert">
+        <div ng-message="required">
+          <span>请选择供货方式.</span>
+        </div>
+      </div>
     </md-input-container>
     <md-input-container class="md-block">
       <label>合同编号</label>
-      <input type="text" ng-model="vm.data.Contract">
+      <input name="Contract" type="text" required ng-model="vm.data.Contract">
+      <div ng-messages="myForm.Contract.$error" ng-show="myForm.Contract.$touched" role="alert">
+        <div ng-message="required">
+          <span>请输入合同编号.</span>
+        </div>
+      </div>
     </md-input-container>
+    <div layout="row" flex>
+      <md-button type="submit" class="md-primary md-raised">
+        保存
+      </md-button>
+    </div>
   </form>
-  <div layout="row" flex>
-    <md-button ng-click="vm.save()" class="md-primary md-raised">
-      保存
-    </md-button>
-  </div>
 </md-content>
 

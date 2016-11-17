@@ -113,7 +113,7 @@
     },true);
 
     $scope.$watch('vm.SectionId',function () {
-      Load();
+        Load();
     },true);
 
     function Load() {

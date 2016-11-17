@@ -28,14 +28,22 @@
         url: '/add/{id}',
         template: '<material-add flex layout="column"></material-add>'
       })
-      // .state('app.material.type', {
-      //   url:'/type',
-      //   template:'<material-type flex layout="column"></material-type>'
+      // .state('app.material.contracts', {
+      //   url:'/contracts',
+      //   template:'<material-contracts flex layout="column"></material-contracts>'
       // })
-      // .state('app.material.typeAdd',{
-      //   url:'/typeAdd/{id}',
-      //   template:'<material-class-add flex layout="column"></material-class-add>'
+      // .state('app.material.contract', {
+      //   url:'/contract/{id}',
+      //   template:'<material-contract flex layout="column"></material-contract>'
       // })
+      .state('app.material.type', {
+        url:'/type',
+        template:'<material-type flex layout="column"></material-type>'
+      })
+      .state('app.material.typeAdd',{
+        url:'/typeAdd/{id}',
+        template:'<material-class-add flex layout="column"></material-class-add>'
+      })
       .state('app.material.plans',{
         url:'/plans',
         template:'<material-plans flex layout="column"></material-plans>'
@@ -45,24 +53,31 @@
       });
 
     msNavigationServiceProvider.saveItem('material', {
-      title: '材料管理',
+      title: '材料验收',
       group: true,
       weight: 2
     });
 
-    // msNavigationServiceProvider.saveItem('material.type', {
-    //   title: '材料分类',
-    //   icon: 'icon-account',
-    //   state: 'app.material.type',
-    //   weight: 1
-    // });
+    msNavigationServiceProvider.saveItem('material.type', {
+      title: '材料分类',
+      icon: 'icon-account',
+      state: 'app.material.type',
+      weight: 1
+    });
 
     msNavigationServiceProvider.saveItem('material.list', {
-      title: '材料',
+      title: '材料管理',
       icon: 'icon-account',
       state: 'app.material.list',
       weight: 1
     });
+
+    // msNavigationServiceProvider.saveItem('material.contracts', {
+    //   title: '合同管理',
+    //   icon: 'icon-account',
+    //   state: 'app.material.contracts',
+    //   weight: 1
+    // });
 
     msNavigationServiceProvider.saveItem('material.plans', {
       title: '材料进场计划',

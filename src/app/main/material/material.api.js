@@ -47,6 +47,9 @@
         },
         delete:function(id){
           return $http.delete('/api/MaterialScience/'+id);
+        },
+        getMaterialList:function () {
+          return $http.get($http.url('/api/MaterialScience/GetMaterialListAsync'))
         }
       },
       materialPlan:{
@@ -70,6 +73,23 @@
         },
         getUserProjectSectionForPc:function(){
           return  $http.get($http.url('/api/ProjectInfoApi/GetUserSectionForPc'))
+        }
+      },
+      contract:{
+        getSysOrgOU:function () {
+          return $http.get($http.url('/api/ProjectInfoApi/GetOrgOU'));
+        },
+        create: function (args) {
+          return $http.post('/api/MaterialContract', args)
+        },
+        update:function(data){
+          return $http.put('/api/MaterialContract/'+data.Id,data);
+        },
+        getList: function (param) {
+          return $http.get($http.url('/api/MaterialContract', {Skip: param.Skip, Limit: param.Limit}));
+        },
+        getById:function(id){
+          return $http.get($http.url('/api/MaterialContract/'+id));
         }
       }
     })
