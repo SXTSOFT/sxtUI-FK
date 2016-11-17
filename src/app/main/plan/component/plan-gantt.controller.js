@@ -426,6 +426,7 @@
               ActualStartTime:item.ActualStartTime,
               ActualEndTime:item.ActualEndTime,
               State:item.State,
+              switch:item.State==1?false:true,
               Flags:item.Flags,
               TaskFlowId:item.Id,
               ParentId:item.Dependencies[0].DependencyTaskID,
@@ -451,6 +452,7 @@
                     ActualStartTime:t.ActualStartTime,
                     ActualEndTime:t.ActualEndTime,
                     State:t.State,
+                    switch:item.State==1?false:true,
                     Flags:t.Flags,
                     TaskFlowId:t.Id,
                     ParentId:t.Dependencies[0].DependencyTaskID,
@@ -473,7 +475,19 @@
       vm.hasFlow = !!originData.Items.find(function (it) {
         return it.ExtendedParameters == taskId;
       });
+      vm.changeState = function(task,s){
+        var time = new Date();
+        if(s){
+          api.plan.Task.start(task.TaskFlowId,true,time).then(function (r) {
+            console.log(r)
+          });
+        }else{
+          api.plan.Task.end(task.TaskFlowId,true,time).then(function (r) {
+            console.log(r)
+          });
+        }
 
+      }
       function stopTask(task,changeds) {
         changeds.push({task:task,stop:true});
         //找到依赖他执行的任务

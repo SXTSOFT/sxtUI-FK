@@ -224,15 +224,17 @@
         query:function (query) {
           return $http.get($http.url('/api/Task',query));
         },
-        start:function (taskId,force) {
+        start:function (taskId,force,actualStartTime) {
           return $http.post('/api/Task/'+taskId+'/Start', {
             "TaskId": taskId,
+            "ActualStartTime":actualStartTime,
             "Force": force || false
           });
         },
-        end:function (taskId,force) {
+        end:function (taskId,force,actualEndTime) {
           return $http.post('/api/Task/'+taskId+'/End', {
             "TaskId": taskId,
+            "ActualEndTime":actualEndTime,
             "Force": force || false
           });
         },

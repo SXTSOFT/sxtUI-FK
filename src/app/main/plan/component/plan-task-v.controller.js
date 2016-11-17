@@ -52,6 +52,7 @@
           flow.oMeasureInfo = flow.MeasureInfo;
           flow.oExpression = flow.Expression;
           flow.oisChuancha = flow.isChuancha;
+          flow.oMeasureId = flow.MeasureId;
         });
         task.Branch.forEach(function (b) {
           b.forEach(function (flow) {
@@ -75,6 +76,7 @@
             flow.oMeasureInfo = flow.MeasureInfo;
             flow.oExpression = flow.Expression;
             flow.oisChuancha = flow.isChuancha;
+            flow.oMeasureId = flow.MeasureId;
           })
         });
         vm.onLoadTemplate();
@@ -135,21 +137,30 @@
         });
       });
     }
+    api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1}).then(function (r) {
+      vm.subTasks = r.data.Items||[];
+    });
     vm.addBranch = function(ev,flow,isBranch){
       $mdDialog.show({
         templateUrl:'app/main/plan/component/plan-branch.html',
-        controller:['$scope',function($scope){
+        controller:['$scope','items',function($scope,items){
           var vm = this;
-            api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1}).then(function (r) {
-              vm.subTasks = r.data.Items||[];
-            });
+          if(items){
+            vm.subTasks = items;
+          }
+            //api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1}).then(function (r) {
+            //  vm.subTasks = r.data.Items||[];
+            //});
           vm.select = function(){
             $mdDialog.hide(vm.relatedTask)
           }
         }],
         parent: angular.element(document.body),
         clickOutsideToClose: true,
-        controllerAs:'vm'
+        controllerAs:'vm',
+        locals:{
+          items:vm.subTasks && vm.subTasks
+        }
       }).then(function(res){
         var next = {
           TaskLibraryId: id,
@@ -271,7 +282,8 @@
           Notice7: flow.Notice7,
           Notice8: flow.Notice8,
           MeasureInfo:flow.MeasureInfo,
-          isChuancha:flow.isChuancha
+          isChuancha:flow.isChuancha,
+          MeasureId : flow.MeasureId
         })
       }).then(function () {
 
@@ -525,25 +537,17 @@
         return vm.updateFlow(flow);
       })
     }
-
-    function loadData(){
-      api.plan.procedure.query().then(function(r){
-        vm.procedures = r.data;
-      })
-      api.plan.MeasureInfo.query().then(function(r){
-        vm.measureInfo = r.data;
-      })
-      api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1}).then(function (r) {
-        vm.subTasks = r.data.Items||[];
-      });
-    }
+    api.plan.procedure.query().then(function(r){
+      vm.procedures = r.data;
+    })
 
     //vm.selectSpecialtyLow=function(item,parent){
     //  parent.WPAcceptanceList=item.WPAcceptanceList;
     //}
     vm.setMeasureInfo = function(flow){
+      vm.loadMeasure = false;
        $mdDialog.show({
-        controller:['$scope','data',function($scope,data){
+        controller:['$scope','data','items',function($scope,data,items){
           var vm = this;
           vm.data = data;
           vm.current = null;
@@ -551,44 +555,21 @@
           api.plan.TaskFlow.getSubTasks(flow.TaskFlowId).then(function(r){
             vm.data._taskFlowId =r.data.Items[0].TaskLibraryId;
           })
-          api.plan.procedure.query().then(function(r){
-            vm.proceduresData = r.data;
-          })
-          //api.plan.MeasureInfo.query().then(function(r){
-          //  vm.measureData = r.data;
-          //})
-          //api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1}).then(function (r) {
-          //  vm.subTasks = r.data.Items||[];
-          //});
-          //vm.proceduresData = pdata;
-          //vm.measureData = mdata;
-          //vm.subTasks = subtasks;
-         // setVaule();
-          //function setVaule(){
-          //  var f = vm.measureData.find(function(_r){
-          //    return _r.AcceptanceItemID == vm.data.CloseRelatedObjectId;
-          //  })
-          //  var h = vm.subTasks.find(function(r){
-          //    return r.TaskLibraryId =vm.data.RelatedTaskId;
-          //  })
-          //  vm.proceduresData.forEach(function(_r){
-          //    _r.SpecialtyChildren.forEach(function(_rr){
-          //      var g=_rr.WPAcceptanceList && _rr.WPAcceptanceList.find(function(t){
-          //        return t.AcceptanceItemID ==  vm.data.CloseRelatedObjectId;
-          //      })
-          //      if(g){
-          //        vm.current = g;
-          //        vm.gxName = flow.MeasureInfo;
-          //      }
-          //    })
-          //  })
-          //  if(f){
-          //    vm.current = f;
-          //  }else if(h){
-          //    vm.current =  h;
-          //  }
-          //
-          //}
+          if(items){
+            vm.loadMeasure = true;
+            vm.proceduresData = items;
+              vm.proceduresData.forEach(function(_r){
+                _r.SpecialtyChildren.forEach(function(_rr){
+                  var g=_rr.WPAcceptanceList && _rr.WPAcceptanceList.find(function(t){
+                    return t.AcceptanceItemID ==  flow.MeasureId;
+                  })
+                  if(g){
+                    vm.current = g;
+                    vm.gxName = flow.MeasureInfo;
+                  }
+                })
+              })
+          }
           vm.stop = function(ev){
             ev.stopPropagation();
           }
@@ -597,25 +578,10 @@
             vm.data.CloseRelatedObjectId = item.AcceptanceItemID;
             vm.gxName = item.AcceptanceItemName;
             flow.MeasureInfo = item.AcceptanceItemName;
+            flow.MeasureId = item.AcceptanceItemID;
           }
-          vm.select = function(index){
+          vm.select = function(){
             vm.data.CloseRelatedObjectType = 'Inspection';
-            //switch (index){
-            //  case 0:
-            //    vm.data.CloseRelatedObjectType = null;
-            //    vm.data.CloseRelatedObjectId =  null;
-            //    vm.data.RelatedTaskId  = vm.relatedTask.TaskLibraryId;
-            //    flow.MeasureInfo = vm.relatedTask.Name;
-            //        break;
-            //  case 1:
-            //    vm.data.CloseRelatedObjectType = 'PQMeasure';
-            //    vm.data.CloseRelatedObjectId = vm.CloseRelatedObjectId.AcceptanceItemID;
-            //    flow.MeasureInfo = vm.CloseRelatedObjectId.MeasureItemName;
-            //        break;
-            //  case 2:
-            //    vm.data.CloseRelatedObjectType = 'Inspection';
-            //        break;
-            //}
             $mdDialog.hide(vm.data);
           }
         }],
@@ -624,7 +590,8 @@
         parent: angular.element(document.body),
         clickOutsideToClose: true,
         locals:{
-          data:vm.data && vm.data
+          data:vm.data && vm.data,
+          items:vm.procedures
         }
       }).then(function(data){
          console.log(data)

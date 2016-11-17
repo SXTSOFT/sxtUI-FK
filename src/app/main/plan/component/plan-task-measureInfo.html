@@ -8,8 +8,9 @@
     </div>
   </md-toolbar>
   <md-dialog-content  style="padding: 0;width:400px;">
+    <div ng-if="!vm.loadMeasure">loading...</div>
     <div>
-      <md-tabs md-dynamic-height  md-selected="selectedIndex">
+      <md-tabs md-dynamic-height ng-if="vm.loadMeasure">
         <!--<md-tab label="关联任务">-->
           <!--<md-content  class="p-15" style="background-color: rgb(245,245,245)" layout="column" flex>-->
             <!--<md-input-container flex>-->

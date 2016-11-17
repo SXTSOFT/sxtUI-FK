@@ -18,6 +18,7 @@
           <th>计划</th>
           <th>实际</th>
           <th>状态</th>
+          <th>操作</th>
         </tr></thead>
         <tbody>
         <tr ng-repeat="flow in vm.flows">
@@ -30,6 +31,9 @@
           <td>{{flow.ScheduledStartTime|date:'yyyy-MM-dd'}}~{{flow.ScheduledEndTime|date:'yyyy-MM-dd'}}</td>
           <td style="color:#1f6db4"><!--{{flow.ActualStartTime|date:'yyyy-MM-dd'}}~{{flow.ActualEndTime|date:'yyyy-MM-dd'}}--></td>
           <td>未执行</td>
+          <td>
+            <md-switch ng-model="flow.switch" ng-change="vm.changeState(flow,flow.switch)">{{flow.switch==0?'关闭':'开启'}}</md-switch>
+          </td>
         </tr>
         <tr>
           <td colspan="5" ng-if="!vm.flows.length">无流程信息</td>
