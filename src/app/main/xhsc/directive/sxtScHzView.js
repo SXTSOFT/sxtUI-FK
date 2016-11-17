@@ -117,13 +117,13 @@
                     }
 
                     t=PointChilden.find(function(o){
-                      return o.MemberType==1;
+                      return o.MemberType==2;
                     });
                     if (t){
                       jl= t.Value;
                     }
                     t=PointChilden.find(function(o){
-                      return o.MemberType==2;
+                      return o.MemberType==4;
                     });
                     if (t){
                       xmb= t.Value;
