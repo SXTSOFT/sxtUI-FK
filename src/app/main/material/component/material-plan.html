@@ -24,8 +24,8 @@
       </md-input-container>
       <md-input-container class="md-block" flex="30">
         <label>分期</label>
-        <md-select name="RegionId" required md-on-open="vm.getAreas(vm.data.ProjectId)" ng-model="vm.data.RegionId">
-          <md-option ng-value="p.RegionID" ng-click="vm.upSection()" ng-selected="p.selected"
+        <md-select name="RegionId" required md-on-open="vm.getAreas(vm.data.ProjectId)" ng-model="vm.RegionId">
+          <md-option ng-value="p.RegionID" ng-click="vm.upSection()"
                      ng-repeat="p in vm.regions">{{p.RegionName}}
           </md-option>
         </md-select>
@@ -37,8 +37,8 @@
       </md-input-container>
       <md-input-container class="md-block" flex="30">
         <label>标段</label>
-        <md-select name="SectionId" required md-on-open="vm.getSections(vm.data.RegionId)" ng-model="vm.data.SectionId">
-          <md-option ng-value="p.RegionID" ng-selected="p.selected" ng-repeat="p in vm.sections">{{p.RegionName}}
+        <md-select name="SectionId" required md-on-open="vm.getSections(vm.RegionId)" ng-model="vm.SectionId">
+          <md-option ng-value="p.RegionID" ng-repeat="p in vm.sections">{{p.RegionName}}
           </md-option>
         </md-select>
         <div ng-messages="myForm.SectionId.$error" ng-show="myForm.SectionId.$touched" role="alert">
@@ -140,9 +140,21 @@
         </div>
       </div>
     </md-input-container>
+    <md-input-container class="md-block">
+      <label>计划名称</label>
+      <input name="PlanName" required type="text" ng-change="vm.change()" ng-model="vm.data.PlanName">
+      <div ng-messages="myForm.PlanName.$error" ng-show="myForm.PlanName.$touched" role="alert">
+        <div ng-message="required">
+          <span>请输入计划名称.</span>
+        </div>
+      </div>
+    </md-input-container>
     <div layout="row" flex>
       <md-button type="submit" class="md-primary md-raised">
         保存
+      </md-button>
+      <md-button ui-sref="app.material.plans" class="md-primary md-raised">
+        返回
       </md-button>
     </div>
   </form>

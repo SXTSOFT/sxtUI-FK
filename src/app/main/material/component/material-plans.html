@@ -77,6 +77,7 @@
       <td class="actions">
         <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.plan({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
         <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.delete(item.Id)" ng-hide="item.Status!=1"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
+        <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.batchDetail({planId:item.Id})"><md-icon  md-font-icon="icon-document" class="icon s24"></md-icon></md-button>
       </td>
     </tr>
     </tbody>

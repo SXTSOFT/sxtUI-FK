@@ -50,6 +50,10 @@
       }).state('app.material.plan',{
         url:'/plan/{id}',
         template:'<material-plan flex layout="column"></material-plan>'
+      })
+      .state('app.material.batchDetail',{
+        url:'/batchDetail/{planId}',
+        template:'<material-batch-detail flex layout="column"></material-batch-detail>'
       });
 
     msNavigationServiceProvider.saveItem('material', {
@@ -60,14 +64,14 @@
 
     msNavigationServiceProvider.saveItem('material.type', {
       title: '材料分类',
-      icon: 'icon-account',
+      icon: 'icon-sort-variant',
       state: 'app.material.type',
       weight: 1
     });
 
     msNavigationServiceProvider.saveItem('material.list', {
       title: '材料管理',
-      icon: 'icon-account',
+      icon: 'icon-view-list',
       state: 'app.material.list',
       weight: 1
     });
@@ -81,7 +85,7 @@
 
     msNavigationServiceProvider.saveItem('material.plans', {
       title: '材料进场计划',
-      icon: 'icon-account',
+      icon: 'icon-calendar-text',
       state: 'app.material.plans',
       weight: 1
     });

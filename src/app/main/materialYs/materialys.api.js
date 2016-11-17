@@ -22,12 +22,22 @@
         }).bind(function (sectionId,status) {
           return $http.get($http.url('/api/MaterialPlan/GetMaterialPlansBatchBySectionId',{sectionId:sectionId,status:status}));
         }),
-
         deleteMaterialPlanBatch:$http.db({
           _id:'materialPlan',
           idField:'Id',
           delete:true,
           local:true
+        }).bind(),
+        addMaterialPlanBatch:$http.db({
+          _id:'materialPlan',
+          idField:'Id',
+          upload:true,
+          local:true
+        }).bind(),
+        getMaterialBatchInitFactory:$http.db({
+          _id:'materialBatchInitFactory',
+          idField:'Id',
+          dataType:1
         }).bind(),
 
         getMaterialPlanDetailList:$http.db({
@@ -46,6 +56,9 @@
         }),
         getMaterialPlanBatchById:function (id) {
           return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanBatchById?id='+id));
+        },
+        GetMaterialPlanBatchByPlanId:function (planId) {
+          return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanBatchByPlanId?planId='+planId));
         },
         PostCheckInfo: $http.db({
           _id: 'materialPlanCheckInfo',
@@ -97,7 +110,19 @@
           upload:true
         }).bind(function (data) {
           return $http.put('/api/MaterialPlan/UnMaterialExit',data);
-        })
+        }),
+        getMaterialBatchProgress:$http.db({
+          _id:'materialBatchProgress',
+          idField:'Id',
+          dataType:1
+        }).bind(function (sectionId,status) {
+          return $http.get($http.url('/api/MaterialPlan/GetMaterialBatchProgress',{sectionId:sectionId,status:status}));
+        }),
+        getBatchProgressById:$http.db({
+          _id:'materialBatchProgress',
+          idField:'Id',
+          dataType:3
+        }).bind()
       }
     });
   }

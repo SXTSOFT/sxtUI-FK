@@ -28,6 +28,7 @@
 
     api.xhsc.materialPlan.getMaterialPlanBatch($stateParams.id,status).then(function (r) {
       vm.planList = r.data;
+      console.log(vm.planList)
     });
 
   }
