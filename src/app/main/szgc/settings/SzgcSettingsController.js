@@ -9,10 +9,13 @@
     .controller('SzgcSettingsController',SzgcSettingsController);
 
   /** @ngInject */
-  function SzgcSettingsController(profile,auth,api,$scope,utils,$rootScope,appCookie,$mdDialog,versionUpdate){
+  function SzgcSettingsController(auth,api,$scope,utils,$rootScope,appCookie,$mdDialog,versionUpdate){
 
     var vm = this;
-    vm.profile = profile.data.data;
+
+    api.szgc.vanke.profile().then(function (profile) {
+      vm.profile = profile.data.data;
+    });
     vm.logout = function(){
       api.uploadTask(function (cfg,item) {
         return true

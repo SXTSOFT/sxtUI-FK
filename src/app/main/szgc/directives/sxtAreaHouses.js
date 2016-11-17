@@ -146,7 +146,7 @@
                 layer.addTo(map);
 
                 var lys = [];
-                scope.procedures = ['1', '2', '3', '4', '5'];
+                scope.procedures = ['1', /*'2', '3', '4',*/ '5','7'];
                 scope.$watchCollection('procedures', function () {
 
                   lys.forEach(function (l) {

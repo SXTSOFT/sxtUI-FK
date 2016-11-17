@@ -325,16 +325,7 @@
         views :{
           'content@app':{
             controller:'SzgcSettingsController as vm',
-            templateUrl:'app/main/szgc/settings/settings.html',
-            resolve:{
-              profile:['api',function(api){
-                //api.useNetwork(0);
-                return api.szgc.vanke.profile().then(function (r) {
-                  //api.resolveNetwork();
-                  return r;
-                });
-              }]
-            }
+            templateUrl:'app/main/szgc/settings/settings.html'
           }
         }
       })
