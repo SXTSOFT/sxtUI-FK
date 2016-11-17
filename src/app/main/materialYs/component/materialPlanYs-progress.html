@@ -1,0 +1,41 @@
+<div class="track-rcol">
+  <div class="track-list">
+    <ul>
+      <li class="first">
+        <i class="node-icon"></i>
+        <span class="time">{{vm.data.PlanCreateTime | date:'yyyy-MM-dd HH:mm'}}</span>
+        <span class="txt"><b>创建计划</b>{{vm.data.PlanCreatorName}}</span>
+      </li>
+      <li ng-hide="vm.data.ApproachTime==null" class="first">
+        <i class="node-icon"></i>
+        <span class="time">{{vm.data.ApproachTime | date:'yyyy-MM-dd HH:mm'}}</span>
+        <span class="txt"><b>材料进场</b>{{vm.data.Inspector}}</span>
+      </li>
+      <li ng-hide="vm.data.AcceptanceTime==null" class="first">
+        <i class="node-icon"></i>
+        <span class="time">{{vm.data.AcceptanceTime | date:'yyyy-MM-dd HH:mm'}}</span>
+        <span class="txt"><b>监理验收</b>{{vm.data.Accepter}}</span>
+      </li>
+      <li ng-hide="vm.data.InspectionTime==null" class="first">
+        <i class="node-icon"></i>
+        <span class="time">{{vm.data.InspectionTime | date:'yyyy-MM-dd HH:mm'}}</span>
+        <span class="txt"><b>监理送检</b>{{vm.data.Inspectioner}}</span>
+      </li>
+      <li ng-hide="vm.data.ReportTime==null" class="first">
+        <i class="node-icon"></i>
+        <span class="time">{{vm.data.ReportTime | date:'yyyy-MM-dd HH:mm'}}</span>
+        <span class="txt"><b>送检报告归档</b>{{vm.data.InspectionReporterName}}</span>
+      </li>
+      <li ng-hide="vm.data.ApprovalTime==null" class="first">
+        <i class="node-icon"></i>
+        <span class="time">{{vm.data.ApprovalTime | date:'yyyy-MM-dd HH:mm'}}</span>
+        <span class="txt"><b>甲方经理批示</b>{{vm.data.PartyA}}</span>
+      </li>
+      <li ng-hide="vm.data.ExitOperatorTime==null" class="first">
+        <i class="node-icon"></i>
+        <span class="time">{{vm.data.ExitOperatorTime | date:'yyyy-MM-dd HH:mm'}}</span>
+        <span class="txt"><b>{{vm.data.ExitReason}}</b>{{vm.data.ExitOperatorName}}</span>
+      </li>
+    </ul>
+  </div>
+</div>

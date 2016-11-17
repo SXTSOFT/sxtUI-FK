@@ -90,6 +90,9 @@
             .concat(function () {
               return api.xhsc.materialPlan.getMaterialPlanDetailList(item.SectionID,status);
             })
+            .concat(function () {
+              return api.xhsc.materialPlan.getMaterialBatchProgress(item.SectionID,status);
+            })
             .concat(function(){
               return remote.offline.create({Id:'msy'+item.SectionID});
             });

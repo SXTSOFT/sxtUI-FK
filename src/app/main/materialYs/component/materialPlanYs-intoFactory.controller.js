@@ -26,17 +26,18 @@
     vm.CertificateImgs = [];
     vm.data.Inspector = user.Name;
     vm.data.IsPacking = true;
+    var status = user.Role.MemberType == 0 ? 1 : 110;
 
     api.xhsc.materialPlan.getMaterialPlanDetail($stateParams.BatchId).then(function (q) {
       vm.data.Id =q.data.Id;
       vm.data.PlanId = q.data.PlanId;
+      vm.Brands = q.data.Brands.split('，') || [];
       if(vm.data.ApproachType == 0){
         vm.data.ApproachCount = parseFloat(q.data.PlanCount);
-        vm.Brands = q.data.Brands.split('，') || [];
+      }else {
+        vm.data.Id = sxt.uuid();
       }
     });
-
-
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
       vm.data.MaterialPlanFiles = vm.vehicleImgs.concat(vm.goodsImgs,vm.rummagerImgs,vm.CertificateImgs);
@@ -74,12 +75,39 @@
       //   return;
       // }
 
-      api.xhsc.materialPlan.IntoFactoryMaterialBatch(vm.data).then(function (q) {
-        utils.alert("提交成功", null, function () {
-          api.xhsc.materialPlan.deleteMaterialPlanBatch(vm.data.Id);
-          $state.go("app.xhsc.gx.gxmain");
+      // api.xhsc.materialPlan.getMaterialPlanDetail(vm.data.Id).then(function (q) {
+      //   if (q.data){
+      //     api.xhsc.materialPlan.getMaterialBatchInitFactory(q.data.Id).then(function (k) {
+      //       if(k.data && vm.data.ApproachType == 1){
+      //         vm.data.Id = sxt.uuid();
+      //       }
+      //
+      //       api.xhsc.materialPlan.addMaterialPlanBatch(q.data).then(function (r) {
+      //         console.log(r.data);
+      //       });
+      //     });
+      //   }
+      // });
+
+      // var batchData = vm.data;
+      // console.log(batchData);
+      // api.xhsc.materialPlan.getMaterialBatchInitFactory(vm.data.Id).then(function (k) {
+      //   if(k.data && k.data.length > 0 && vm.data.ApproachType == 1){
+      //     for (var i = 0; i < k.data.length; i++){
+      //       if (k.data[i].Id == batchData.Id){
+      //        batchData.Id = sxt.uuid();
+      //       }
+      //     }
+      //   }
+
+        api.xhsc.materialPlan.IntoFactoryMaterialBatch(vm.data).then(function (q) {
+          utils.alert("提交成功", null, function () {
+            //api.xhsc.materialPlan.deleteMaterialPlanBatch(vm.data.Id);
+            $state.go("app.xhsc.gx.gxmain");
+          });
         });
-      });
+      // });
+
     });
 
     $scope.$on("$destroy",function(){

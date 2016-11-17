@@ -50,6 +50,10 @@
       }).state('app.material.plan',{
         url:'/plan/{id}',
         template:'<material-plan flex layout="column"></material-plan>'
+      })
+      .state('app.material.batchDetail',{
+        url:'/batchDetail/{planId}',
+        template:'<material-batch-detail flex layout="column"></material-batch-detail>'
       });
 
     msNavigationServiceProvider.saveItem('material', {
