@@ -29,10 +29,10 @@
             {{flow.Name}}
           </td>
           <td>{{flow.ScheduledStartTime|date:'yyyy-MM-dd'}}~{{flow.ScheduledEndTime|date:'yyyy-MM-dd'}}</td>
-          <td style="color:#1f6db4"><!--{{flow.ActualStartTime|date:'yyyy-MM-dd'}}~{{flow.ActualEndTime|date:'yyyy-MM-dd'}}--></td>
-          <td>未执行</td>
+          <td style="color:#1f6db4">{{flow.ActualStartTime|date:'yyyy-MM-dd'}}~{{flow.ActualEndTime|date:'yyyy-MM-dd'}}</td>
+          <td>{{flow.switch==0?'关闭':'开启'}}</td>
           <td>
-            <md-switch ng-model="flow.switch" ng-change="vm.changeState(flow,flow.switch)">{{flow.switch==0?'关闭':'开启'}}</md-switch>
+            <md-switch class="m-0" ng-disabled="flow.State==2||!flow.switch&&flow.openFlag" ng-model="flow.switch" ng-change="vm.changeState(flow,flow.switch)">{{flow.switch==0?'关闭':'开启'}}</md-switch>
           </td>
         </tr>
         <tr>

@@ -369,7 +369,6 @@
           return result;
         });
         vm.isStarted = vm.data[0].tasks[0].isStarted;
-         console.log(vm.data)
       })
       // Fix for Angular-gantt-chart issue
       $animate.enabled(true);
@@ -405,6 +404,24 @@
     function GanttChartAddEditDialogController(dialogData,originData,template,$timeout,$mdPanel) {
       //console.log('dialogData',dialogData);
       var vm = this;
+      function setSatus(i){
+        var str='';
+        switch (i){
+          case 1:
+                str = '关闭';
+                break;
+          case 2:
+                str='完成';
+                break;
+          case 4:
+                str='开启';
+                break;
+          case 8:
+                str='暂停';
+                break;
+        }
+        return str;
+      }
       api.plan.Task.query({
         ParentTaskId:dialogData.formData.id,
         Type:'BuildingPlan',
@@ -426,7 +443,8 @@
               ActualStartTime:item.ActualStartTime,
               ActualEndTime:item.ActualEndTime,
               State:item.State,
-              switch:item.State==1?false:true,
+              _State:setSatus(item.State),
+              switch:item.State!=4?false:true,
               Flags:item.Flags,
               TaskFlowId:item.Id,
               ParentId:item.Dependencies[0].DependencyTaskID,
@@ -451,8 +469,9 @@
                     ScheduledEndTime:t.ScheduledEndTime,
                     ActualStartTime:t.ActualStartTime,
                     ActualEndTime:t.ActualEndTime,
-                    State:t.State,
-                    switch:item.State==1?false:true,
+                    State: t.State,
+                    _State:setSatus(t.State),
+                    switch:t.State!=4?false:true,
                     Flags:t.Flags,
                     TaskFlowId:t.Id,
                     ParentId:t.Dependencies[0].DependencyTaskID,
@@ -479,11 +498,14 @@
         var time = new Date();
         if(s){
           api.plan.Task.start(task.TaskFlowId,true,time).then(function (r) {
-            console.log(r)
+            task.ActualStartTime = time;
+
+           // task.ActualEndTime = null;
           });
         }else{
           api.plan.Task.end(task.TaskFlowId,true,time).then(function (r) {
-            console.log(r)
+            task.ActualEndTime = time;
+            task.openFlag = true;
           });
         }
 

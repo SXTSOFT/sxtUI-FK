@@ -384,11 +384,13 @@
       };
       scope.down = function (flow) {
         var index = scope.flows.indexOf(flow);
-        if (index > 0) {
+        if (index >= 0) {
           var next = scope.flows[index + 1];
-          if (next) {
+          if (next&&!next.IsFloor) {
             scope.flows[index] = next;
             scope.flows[index + 1] = flow;
+          }else if(next&&next.IsFloor){
+            utils.alert('楼层不可交换')
           }
         }
         scope.buildDate();
@@ -396,9 +398,11 @@
       scope.up = function (flow) {
         var index = scope.flows.indexOf(flow);
         var next = scope.flows[index - 1];
-        if (next) {
+        if (next&&!next.IsFloor) {
           scope.flows[index] = next;
           scope.flows[index - 1] = flow;
+        }else if(next&&next.IsFloor){
+          utils.alert('楼层不可交换')
         }
         scope.buildDate();
       }
