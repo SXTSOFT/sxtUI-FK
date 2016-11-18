@@ -43,8 +43,19 @@
       result.data[0].data.record.forEach(function (item) {
         //item.newList
         item.rows=item.rows?item.rows:[];
+        var arr=[];
+        item.List.forEach(function (ee) {
+          if (!arr.find(function (m) {
+              return m.MeasurePointID==ee.MeasurePointID;
+            })){
+            arr.push(ee);
+          }
+        })
+        item.List=arr;
         if(!item.List.length){
         //if(!item.newList.length){
+        //   item.List=item.List.filter(function (o) {
+        //   });
           var rowSpan = 0,t1=0,t2 = 0,tempq=[],tempa=[];
           item.Children = result.data[0].data.record.filter(function (r) {
             if(r.ParentAcceptanceIndexID==item.AcceptanceIndexID){
@@ -288,9 +299,97 @@
           newD.push(item);
         }
 
+
+        //修正
+        // var role=[];
+        // item.QualifiedRate.forEach(function (ee) {
+        //   role.push(ee.Role);
+        // });
+
+        // buildSource(item,role);
+        // function  buildSource(item,role) {
+        //   var len= Math.ceil(item.List.length/20)
+        //   item.pointArr=[];
+        //   var arr;
+        //   for (var i=0;i<len;i++){
+        //     arr=item.List.slice(i*20,i*20+20);
+        //     item.pointArr.push(arr)
+        //   }
+        // }
+
+
+
+        // function  buildSource(item,role) {
+        //   var zb=item.List.filter(function (w) {
+        //     return w.MeasureValue.find(function (n) {
+        //       return n.Role==0;
+        //     })
+        //   });
+        //   zb.forEach(function (o) {
+        //       o.MeasureValue=o.MeasureValue.filter(function (t) {
+        //           return t.Role==0;
+        //       });
+        //   });
+        //   item.pointArr=[]
+        //   var zbArr=[];
+        //   var arr;
+        //   var len= Math.ceil(zb.length/20)
+        //   for (var i=0;i<len;i++){
+        //     arr=zb.slice(i*20,i*20+20);
+        //     zbArr.push(arr);
+        //     item.pointArr.push(arr)
+        //   }
+        //
+        //   var jl=item.List.filter(function (w) {
+        //     return w.MeasureValue.find(function (n) {
+        //       return n.Role==2;
+        //     })
+        //   });
+        //   jl.forEach(function (o) {
+        //     o.MeasureValue=o.MeasureValue.filter(function (t) {
+        //       return t.Role==2;
+        //     });
+        //   });
+        //   var jlArr=[];
+        //   len= Math.ceil(jl.length/20)
+        //   for (var i=0;i<len;i++){
+        //     arr=jl.slice(i*20,i*20+20);
+        //     jlArr.push(arr);
+        //     item.pointArr.push(arr)
+        //   }
+        //
+        //
+        //   var  xmb=item.List.filter(function (w) {
+        //     return w.MeasureValue.find(function (n) {
+        //       return n.Role==4;
+        //     })
+        //   });
+        //   xmb.forEach(function (o) {
+        //     o.MeasureValue=o.MeasureValue.filter(function (t) {
+        //       return t.Role==4;
+        //     });
+        //   });
+        //   var xmbArr=[];
+        //   len= Math.ceil(xmb.length/20)
+        //   for (var i=0;i<len;i++){
+        //     arr=jl.slice(i*20,i*20+20);
+        //     xmbArr.push(arr);
+        //     item.pointArr.push(arr)
+        //   }
+        //
+        //   item.points={
+        //     zbArr:zbArr,
+        //     jlArr:jlArr,
+        //     xmbArr:xmbArr
+        //   }
+        //
+        //
+        //   item.maxRow=xmbArr.length+jlArr.length+zbArr.length;
+        // }
       });
 
       vm.scData = newD;
+
       console.log(vm.scData)
     });
   }

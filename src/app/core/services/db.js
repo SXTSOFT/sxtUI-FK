@@ -148,7 +148,7 @@
 
   /** @ngInject */
   function $get($window, $q) {
-    // PouchDB.plugin(PouchAdapterCordovaSqlite);
+    PouchDB.plugin(PouchAdapterCordovaSqlite);
     var pouchDBDecorators = {
       qify: function (fn) {
         return function () {
@@ -236,6 +236,10 @@
           window.localStorage.setItem("dbs",dbs);
         }
       }
+      // var db = new $window.PouchDB(name,{
+      //   adapter: 'cordova-sqlite',
+      //   iosDatabaseLocation: 'Library'
+      // });
       var db = new $window.PouchDB(name);
       return wrapMethods(db, self.methods);
     };

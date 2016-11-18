@@ -354,11 +354,6 @@
     },$scope);
 
     vm.MemberType = [];
-    vm.by=function(r){
-      api.setNetwork(0).then(function(){
-        $state.go('app.xhsc.sf.sfitem', {role:'zb',projectId:r.ProjectID});
-      });
-    }
     api.setNetwork(0).then(function(){
       remote.profile().then(function(r){
         if (r.data&& r.data.Role){
@@ -631,5 +626,18 @@
       });
       evt.stopPropagation();
     }
+
+
+
+    //安全文明
+    vm.by=function(r){
+      api.setNetwork(0).then(function(){
+        $state.go('app.xhsc.sf.sfitem', {role:'zb',projectId:r.ProjectID});
+      });
+    }
+
+
+
+
   }
 })();

@@ -10,7 +10,7 @@
 
   function versionUpdate($mdDialog, $cordovaFileTransfer, $window,$http) {
 
-    var version = '1.2.5';
+    var version = '1.2.6';
     this.version = version;
     function versionToNumber(version) {
       var n = version.split('.');

@@ -1,21 +1,21 @@
-<div ng-if="vm.yw==0" flex="none" style="background-color: white;">
-  <md-progress-circular id="toolbar-progress" ng-if="!vm.z_isOver" class="md-accent"
-                        md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
-  </md-progress-circular>
-  <md-list style="overflow-x: hidden;">
-    <md-list-item ng-click="vm.zbzjAction(item)" layout="row" ng-repeat="item in vm.projects">
-      <p style="font-size:14px;">
-        {{item.ProjectName}}
-        <span style="margin-left:2%;color:white;background-color: #00b6de;font-size:12px;border-radius: 3px">总包自检</span>
-      </p>
-      <span flex></span>
-      <md-button ng-click="vm.zbzjbtnAction(item,$event)" class="md-icon-button" aria-label="More">
-        <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
-      </md-button>
-      <span class="border1px bottom1px"></span>
-    </md-list-item>
-  </md-list>
-</div>
+<!--<div ng-if="vm.yw==0" flex="none" style="background-color: white;">-->
+  <!--<md-progress-circular id="toolbar-progress" ng-if="!vm.z_isOver" class="md-accent"-->
+                        <!--md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">-->
+  <!--</md-progress-circular>-->
+  <!--<md-list style="overflow-x: hidden;">-->
+    <!--<md-list-item ng-click="vm.zbzjAction(item)" layout="row" ng-repeat="item in vm.projects">-->
+      <!--<p style="font-size:14px;">-->
+        <!--{{item.ProjectName}}-->
+        <!--<span style="margin-left:2%;color:white;background-color: #00b6de;font-size:12px;border-radius: 3px">总包自检</span>-->
+      <!--</p>-->
+      <!--<span flex></span>-->
+      <!--<md-button ng-click="vm.zbzjbtnAction(item,$event)" class="md-icon-button" aria-label="More">-->
+        <!--<md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>-->
+      <!--</md-button>-->
+      <!--<span class="border1px bottom1px"></span>-->
+    <!--</md-list-item>-->
+  <!--</md-list>-->
+<!--</div>-->
 <div ng-if="vm.yw==2" flex="none" style="background-color: white;">
   <md-progress-circular id="toolbar-progress" ng-if="!vm.z_isOver" class="md-accent"
                         md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">

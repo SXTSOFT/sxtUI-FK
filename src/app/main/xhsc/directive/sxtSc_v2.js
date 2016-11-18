@@ -139,7 +139,9 @@
               var msg = [];
               scope.measureIndexes.forEach(function (o) {
                 if (!t.find(function (k) {
-                    return o.AcceptanceIndexID == k.AcceptanceIndexID && k.DrawingID == img.DrawingID
+                    return (o.AcceptanceIndexID == k.AcceptanceIndexID||o.Children.find(function (e) {
+                        return e.AcceptanceIndexID==k.AcceptanceIndexID;
+                      })) && k.DrawingID == img.DrawingID
                       && k.Status == 1;
                   })) {
                   msg.push(o.IndexName)
@@ -173,13 +175,28 @@
                 layData.CreateTime = moment(layData.CreateTime).toDate();
                 layer.addData(layData.geometry);
               }
-
+              function find(index,source) {
+                if (source){
+                  if (source.find(function (n) {
+                      return n.AcceptanceIndexID==index.AcceptanceIndexID;
+                    })){
+                    return true;
+                  }else {
+                    for (var i=0;i<source.length;i++){
+                      if (find(index,source[i].Children)){
+                        return true;
+                      }
+                    }
+                    return false;
+                  }
+                }else {
+                  return false;
+                }
+              }
               if (t && t.length) {
                 var g;
                 t.forEach(function (m) {
-                  if (m.DrawingID == img.DrawingID && scope.measureIndexes.find(function (n) {
-                      return n.AcceptanceIndexID == m.AcceptanceIndexID
-                    })&&!points.find(function (n) {
+                  if (m.DrawingID == img.DrawingID &&find(m,scope.measureIndexes)&&!points.find(function (n) {
                     return n.MeasurePointID==m.MeasurePointID;
                   })) {
                     points.push(m);

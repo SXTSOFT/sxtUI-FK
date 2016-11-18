@@ -117,18 +117,6 @@
       api.resolveNetwork = function () {
         api.networkState(api.oNetwork);
       };
-
-      //$rootScope.$on('$cordovaNetwork:online', function(event, state){
-      //  api.resetNetwork();
-      //});
-      //$rootScope.$on('$cordovaNetwork:offline', function(event, state){
-      //  api.resetNetwork();
-      //});
-      //$timeout(function () {
-      //  $rootScope.$emit('$cordovaNetwork:online');
-      //},100);
-
-
       api.db = provider.$http.db;
       api.clearDb = clearDb;
       api.download = download;
@@ -457,6 +445,13 @@
           });
         }
       })
+    }
+
+    function wrap(cfg) {
+      if (!cfg.offline){
+
+      }
+      return cfg.fn;
     }
 
     /**

@@ -29,7 +29,6 @@
         },
         dataType:3
       }).bind(function () {
-        //return $http.get(sxt.app.api + '/api/Security/profile', {t: new Date().getTime()});
         return $http.get(sxt.app.api + '/api/UserInfo/profile');
       }),
       offline:$http.db({
@@ -1375,7 +1374,36 @@
           }
           });
         })
+      },
+      safe:{
+        getSecurityItem:function () {
+          return $http.get($http.url('/api/Acceptances/SecurityItem'));
+        },
+        createSafeBatch:function (acceptanceItemID,areaList) {
+          return $http.post($http.url('/Acceptances/SecurityInfo/Insert'),{
+            AcceptanceItemID:acceptanceItemID,
+            AreaList:areaList
+          });
+        },
+        getSafeStatus:function (RegionID) {
+          return $http.get($http.url('/api/Acceptances/SecurityInfo/GetUserSecurityInfo'),{
+            RegionID:RegionID
+          });
+        },
+        getSafeStatus_:{
+          offline:true,
+
+          callback:function () {
+
+          },
+          fn: function (RegionID) {
+                return $http.get($http.url('/api/Acceptances/SecurityInfo/GetUserSecurityInfo'),{
+                  RegionID:RegionID
+                });
+          }
+        }
       }
+
     });
   }
 })();
