@@ -1,7 +1,11 @@
-<div flex="none" class="mdselect">
-  <md-select ng-model="vm.yj1" md-on-close="vm.setYj(vm.yj1)" >
+<div flex="none" class="mdselect" layout="row">
+  <md-select flex ng-model="vm.yj1" md-on-close="vm.setYj(vm.yj1)" >
     <md-option ng-value="yj" ng-repeat="yj in vm.areas">{{yj.itemName}}</md-option>
   </md-select>
+  <div flex="none" style="padding: 0 10px">
+    <button class="md-button md-raised" ng-class="{'md-primary':vm.yj.zy==1}" ng-click="vm.yj.zy=1" style="margin: 4px -4px 4px 2px;width:44px;min-width: 44px;" >土建</button>
+    <button class="md-button md-raised" ng-class="{'md-primary':vm.yj.zy==2}" ng-click="vm.yj.zy=2"  style="margin: 4px -4px 4px 2px;width:44px;min-width: 44px;" >机电</button>
+  </div>
 </div>
 <div flex="none" layout="row" style="border: 1px solid silver;line-height: 150%;">
   <div flex style="background: rgba(225,225,225,1);text-align: center">未验</div>
