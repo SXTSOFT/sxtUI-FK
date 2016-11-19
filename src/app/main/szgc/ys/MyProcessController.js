@@ -465,7 +465,7 @@
               result.data.data.forEach(function (type) {
                 tk.push(api.szgc.FilesService.group(item.project_item_id+'-'+type.type_id));
                 //5类工序
-                [1,2,3,4,5,6].forEach(function (m) {
+                [1,5,7].forEach(function (m) {
                   tasks.push(function () {
                     return api.szgc.ProjectExService.get(item.project_item_id+'-'+type.type_id+'-'+m)
                   });
@@ -656,10 +656,6 @@
       }
       $scope.uploading = true;
       api.upload(function (cfg,item) {
-        if(cfg._id=='s_files' && item && item.Url.indexOf('base64')==-1){
-          return false;
-        }
-        return true;
       },function (percent,current,total,task) {
         $scope.project.percent = parseInt(percent *100) +' %';
         $scope.project.current = current;

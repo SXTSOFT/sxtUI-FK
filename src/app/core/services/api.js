@@ -845,7 +845,7 @@
 
       if (!angular.isArray(items))
         items = [items];
-      return db_save({_id: cfg._id, upload: !0}, items, this.idFn);
+      return db_save({_id: cfg._id, upload: !0,fileField:cfg.fileField}, items, this.idFn);
     }
     SingleDB.prototype.saveItems = function (result) {
       return db_save(this.cfg, result, this.idFn);
@@ -855,9 +855,9 @@
       return self.findAll(function (item) {
         return  (id && self.idFn(item) == id) || (self.cfg.filter && self.cfg.filter(id)) ||self.cfg.single===true;
       }).then(function (r) {
-/*        if(cfg.fileField && r.rows && r.rows[0]){
-          return self.db.get(r.rows[0]._id)
-        }*/
+        if(self.cfg.fileField && r.rows && r.rows[0]){
+          return get_globalDb().get(r.rows[0]._id)
+        }
         return r.rows[0];
       });
     }

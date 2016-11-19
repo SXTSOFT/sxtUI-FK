@@ -1,7 +1,7 @@
-<div class="md-toolbar-tools topbar" layout="row">
+<div class="md-toolbar-tools" layout="row">
   <div style="position: absolute;width: 100%" layout="row">
     <h2 flex style="line-height: 44px">
-      <span ng-if="!vm.networking&&false">{{$root.title || '万科数字工程'}}</span>
+      <span ng-if="!vm.networking">{{$root.title || '万科数字工程'}}</span>
       <span ng-if="vm.networking"><img style="vertical-align: middle" src="assets/images/loader.gif"> 连接中...</span>
     </h2>
   </div>
@@ -9,14 +9,6 @@
     <md-icon md-font-icon="icon-chevron-left" style="color:white;"></md-icon>
   </md-button>
   <h2 flex></h2>
-  <div class="swap-btn" ng-if="true">
-    <div layout="row" layout-align="space-between center" style="text-align: center;line-height: 44px;font-size:16px;overflow: hidden;">
-      <div class="active" flex layout="column" layout-align="center center">任务</div>
-      <div flex layout="column" layout-align="center center">问题</div>
-    </div>
-  </div>
-  <span flex></span>
-  <md-button flex="none" class="little-btn">统计</md-button>
   <md-button flex="none" class="md-icon-button" aria-label="net work" ng-click="vm.setNetwork()">
     <md-icon md-svg-icon="assets/images/online.svg" ng-if="vm.networkState==0" ></md-icon>
     <md-icon md-svg-icon="assets/images/offline.svg" ng-if="vm.networkState==1" ></md-icon>
