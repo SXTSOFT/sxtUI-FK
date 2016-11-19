@@ -16,6 +16,7 @@ window.sxt = (function(win)
   var db,sxt;
 
   sxt = {
+    requireSSL:false,
     version: '1.1.12',
     app: {
       appDir: appDir,

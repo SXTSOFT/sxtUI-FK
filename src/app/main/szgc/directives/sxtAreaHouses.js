@@ -8,7 +8,8 @@
     .module('app.szgc')
     .directive('sxtAreaHouses',sxtAreaHousesDirective);
   /** @ngInject */
-  function sxtAreaHousesDirective (sxt, api,$timeout,$q) {
+  function sxtAreaHousesDirective (sxt, api,$timeout,$q,selectLayer) {
+
     return {
       scope: {
         param: '=',
@@ -146,7 +147,7 @@
                 layer.addTo(map);
 
                 var lys = [];
-                scope.procedures = ['1', /*'2', '3', '4',*/ '5','7'];
+                scope.procedures = ['1', /*'2', '3', '4',*/ '7','5'];
                 scope.$watchCollection('procedures', function () {
 
                   lys.forEach(function (l) {
@@ -185,10 +186,13 @@
                                           g.options.t = '轻钢龙骨';
                                           break;
                                         case '5':
-                                          g.options.t = '吊顶';
+                                          g.options.t = '顶棚';
                                           break;
                                         case '6':
                                           g.options.t = '砌筑';
+                                          break;
+                                        case '7':
+                                          g.options.t = '墙体';
                                           break;
                                       }
 
@@ -266,17 +270,40 @@
 
                             }
                           });
-
-                          lys.push(layer)
+                          var name='';
+                          switch (m) {
+                            case '1':
+                              name = '楼板';
+                              break;
+                            case '5':
+                              name = '顶棚';
+                              break;
+                            case '7':
+                              name = '墙体';
+                              break;
+                          }
+                          lys.push({
+                            name:name,
+                            p:m,
+                            layer:layer
+                          })
                         }
-                        layer.hide = false;
-                      })(layer)
+                        //layer.hide = false;
+                      })(layer);
 
                   });
                   lys.forEach(function (l) {
-                    l.addTo(map);
-                  })
+                    l.layer.addTo(map);
+                  });
 
+                 var overlayers = {};
+                  lys.forEach(function (layer) {
+                    overlayers[layer.name] = layer.layer;
+                  })
+                  var control = selectLayer.selectLayers([layer], overlayers,{
+                    collapsed:false
+                  });
+                  control.addTo(map)
                 });
               }
             })

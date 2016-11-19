@@ -12,7 +12,7 @@
     .controller('MyProcessController',MyProcessController);
 
   /** @ngInject */
-  function MyProcessController($scope, api, utils, $state,$q,sxt,xhUtils,$timeout,$window,$mdSidenav,appCookie,$rootScope){
+  function MyProcessController($scope, api, utils, $state,$q,sxt,xhUtils,$timeout,$window,$mdSidenav,appCookie,$rootScope,$mdDialog){
 
     var vm = this;
     $scope.isPartner = api.szgc.vanke.isPartner();
@@ -32,10 +32,36 @@
     };
 
     vm.setYJ = function (f) {
-      var yj = $scope.project.data && $scope.project.data.items && $scope.project.data.items.find(function (it) {
+      var yjs = $scope.project.data && $scope.project.data.items && $scope.project.data.items.filter(function (it) {
           return it.type === f;
         });
-      $rootScope.$emit('sxtSelect:setSelected',{item:yj,index:$scope.project.data.index});
+      if(yjs.length===1) {
+        vm.goYJ(yjs[0]);
+      }
+      else{
+        $mdDialog.show({
+          controller: ['$scope',function ($scope) {
+            $scope.list = yjs;
+            $scope.choose = function (yj) {
+              $mdDialog.hide(yj);
+            }
+          }],
+          template: '<md-dialog aria-label="">' +
+          ' <md-dialog-content >' +
+          '<md-list>' +
+          '<md-list-item ng-click="choose(yj)" ng-repeat="yj in list"><p>{{yj.$name}}</p><md-divider ng-if="!$last"></md-divider></md-list-item>' +
+          '</md-list>' +
+          '</md-dialog-content>' +
+          '</md-dialog>',
+          clickOutsideToClose:true
+        })
+          .then(function(yj) {
+            vm.goYJ(yj)
+          });
+      }
+    }
+    vm.goYJ = function (yj) {
+      $rootScope.$emit('sxtSelect:setSelected', {item: yj, index: $scope.project.data.index});
       vm.closeNav('nav_region');
     }
     vm.yjButton = function (f) {
@@ -161,7 +187,7 @@
             Status: 4
           }).then(function (result) {
             $scope.project.data.total = $scope.project.data.items.length;
-            if ($scope.project.type === 128) {
+            if ($scope.project.type === 128 || $scope.project.type === 512) {
               if (result.data.Rows) {
                 result.data.Rows.forEach(function (item) {
                   var state = $scope.project.states.find(function (it) {
@@ -465,7 +491,7 @@
               result.data.data.forEach(function (type) {
                 tk.push(api.szgc.FilesService.group(item.project_item_id+'-'+type.type_id));
                 //5类工序
-                [1,2,3,4,5,6].forEach(function (m) {
+                [1,5,7].forEach(function (m) {
                   tasks.push(function () {
                     return api.szgc.ProjectExService.get(item.project_item_id+'-'+type.type_id+'-'+m)
                   });
@@ -656,10 +682,6 @@
       }
       $scope.uploading = true;
       api.upload(function (cfg,item) {
-        if(cfg._id=='s_files' && item && item.Url.indexOf('base64')==-1){
-          return false;
-        }
-        return true;
       },function (percent,current,total,task) {
         $scope.project.percent = parseInt(percent *100) +' %';
         $scope.project.current = current;

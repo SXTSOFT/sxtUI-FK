@@ -326,6 +326,12 @@
         get: function (id) {
           return $http.get('/api/Files/' + id);
         },
+        localFile:$http.db({
+          _id:'s_files',
+          idField:'Id',
+          dataType:3,
+          fileField:'Url'
+        }).bind(),
         group:$http.db({
           _id:'s_files',
           idField:'Id',

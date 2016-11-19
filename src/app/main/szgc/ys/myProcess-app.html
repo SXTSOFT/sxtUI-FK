@@ -16,7 +16,8 @@
             <div flex="none" class="md-padding" ng-hide="project.type==64" layout="row">
               <md-button ng-show="vm.yjButton(128)" type="submit" flex ng-click="vm.setYJ(128)"  class="md-raised md-primary">园建</md-button>
               <md-button ng-show="vm.yjButton(256)" type="submit" flex ng-click="vm.setYJ(256)"  class="md-raised md-primary">桩基</md-button>
-              <md-button type="submit" flex ng-click="vm.closeNav('nav_region')"  class="md-raised md-primary">{{vm.yjButton(256) || vm.yjButton(128)?'楼栋':'确定'}}</md-button>
+              <md-button ng-show="vm.yjButton(512)" type="submit" flex ng-click="vm.setYJ(512)"  class="md-raised md-primary">地下室</md-button>
+              <!--<md-button type="submit" flex ng-click="vm.closeNav('nav_region')"  class="md-raised md-primary">{{vm.yjButton(256) || vm.yjButton(128)?'楼栋':'确定'}}</md-button>-->
             </div>
         </md-content>
       </md-sidenav>
@@ -32,7 +33,7 @@
 
           <md-progress-circular md-mode="indeterminate" ng-show="vm.loading"></md-progress-circular>
           <div ng-if="project.type===64"><md-button type="submit" flex ng-click="vm.closeNav('nav_region')" ui-sref="app.szgc.ys.upload({projectid:project.pid,name:project.typeName,type:project.item.type.type_id||project.item.type,idTree:project.idTree,nameTree:project.nameTree})" class="md-raised md-primary"> 隐蔽工程照片  </md-button></div>
-          <div flex ng-if="!vm.loading && project.type!==128 && project.type!==256 && project.type!==64">
+          <div flex ng-if="!vm.loading && project.type!==128 && project.type!==256 && project.type!==64 && project.type!==256 && project.type!==512">
             <div layout="row" class="div-table">
                 <div flex="20"><div style="padding:0 0 0 6px">检验批</div></div>
                 <div flex="20">批次</div>
@@ -55,7 +56,7 @@
               </div>
           </div>
 
-          <div flex sxt-area-yj-add="project.data.items" project="project" role-id="roleId" ng-if="!vm.loading && project.type===128 && is('app.szgc.ys')">
+          <div flex sxt-area-yj-add="project.data.items" project="project" role-id="roleId" ng-if="!vm.loading && (project.type===128||project.type===512) && is('app.szgc.ys')">
           </div>
 
           <div flex class="zjinput" layout="column" sxt-zj-add="project.data.items" project="project" role-id="roleId" ng-if="!vm.loading && project.type===256 && is('app.szgc.ys')">
@@ -141,7 +142,7 @@
         md-whiteframe="4" layout="column">
         <md-content flex layout="column" style="background: white">
 
-                <sxt-procedure flex layout="column" on-select="vm.closeNav('nav_procedure')" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId" name-value="project.procedureName" region-type="project.type2" check-requirement="project.CheckRequirement" class="md-block"></sxt-procedure>
+                <sxt-procedure flex layout="column" on-select="vm.closeNav('nav_procedure')" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId" root-type-id="project.rootTypeId" name-value="project.procedureName" region-type="project.type2" check-requirement="project.CheckRequirement" class="md-block"></sxt-procedure>
 
           <div class="md-padding" layout="row">
 

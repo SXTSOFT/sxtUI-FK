@@ -17,6 +17,9 @@
         var map,layer,el;
         var ran = function () {
           if (!scope.value) return;
+          if(map)
+            map.remove();
+
           var yjId = scope.value.itemId.split('>'),
             projectId = yjId[0];
           yjId = yjId[yjId.length - 1];
@@ -55,6 +58,7 @@
             scope.value.items.forEach(function (ly) {
               var geojson = JSON.parse(ly.GeoJSON),
                 options = geojson.options;
+              if(scope.value.zy && options.zy && scope.value.zy!=options.zy)return;
               switch (geojson.geometry.type) {
                 case 'Circle':
                   layer = L.circle(L.GeoJSON.coordsToLatLng(geojson.geometry.coordinates), options.radius, options);
@@ -130,7 +134,8 @@
             }
           });
         }
-        scope.$watch('value', ran);
+        //scope.$watch('value', ran);
+        scope.$watch('value.zy',ran);
       }
     }
   }
