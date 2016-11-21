@@ -26,9 +26,9 @@
         }
       })
       .state('app.xhsc.gx.gxmain', {
-        noBack:false,
+        noBack:true,
         sendBt: false,
-        showgrzx:true,
+        showgrzx:false,
         rightArrow: false,
         leftArrow: false,
         title: '工序验收',

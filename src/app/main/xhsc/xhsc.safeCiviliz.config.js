@@ -23,10 +23,10 @@
         }
       })
       .state('app.xhsc.sf.sfmain', {
-        noBack:false,
+        noBack:true,
         sendBt: false,
         rightArrow: false,
-        showgrzx:true,
+        showgrzx:false,
         leftArrow: false,
         title: '安全文明',
         url: '',

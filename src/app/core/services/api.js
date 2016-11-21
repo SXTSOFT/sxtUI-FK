@@ -21,7 +21,8 @@
     //provider.setNetwork = function (state) { networkState = state;};
     provider.$http = bindHttp({
       url:url,
-      db:bindDb
+      db:bindDb,
+      wrap:wrap
     });
     provider.$q = function(){
       return provider.$q.$q.apply(provider,toArray(arguments));
@@ -88,7 +89,7 @@
         }
         api.setNetwork(networkState);
       };
-
+      api.wrap=wrap;
       api.useNetwork = function (state) {
         var cState,type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
         switch (type) {
@@ -448,10 +449,21 @@
     }
 
     function wrap(cfg) {
-      if (!cfg.offline){
-
+      var _cfg=$.extend(true,{},cfg);
+      function cfgSet(config) {
+        _cfg=$.extend(_cfg,config);
       }
-      return cfg.fn;
+      var  _cfg=bindDb(_cfg);
+      function f() {
+        var args = toArray(arguments);
+        if (!_cfg.offline){
+           return _cfg.fn(arguments);
+        }
+        var excute=_cfg.bind(_cfg.fn,_cfg.callback);
+        return excute(arguments);
+      }
+      f.cfgSet=cfgSet;
+      return f;
     }
 
     /**
@@ -801,49 +813,7 @@
           }
           resove();
         })
-
-        // var _db=pouchdb("localBD");
-        // return _db.findAll().then(function(r){
-        //   var  rows= r.rows,tmp;
-        //   if (rows&&rows.length>0){
-        //     rows.forEach(function(t){
-        //       if(!(options.exclude && options.exclude.indexOf(t._id)!=-1)){
-        //         tasks.push(function(){
-        //           return pouchdb(t._id).destroy().catch(function(err){
-        //             console.log(err);
-        //           });
-        //         });
-        //       }
-        //     });
-        //   }
-        //   tasks.push(function(){
-        //     return _db.destroy().catch(function(err){
-        //       console.log(err);
-        //     });
-        //   });
-        // });
       }],options)(progress,complete,fail,options);
-      // var _db=pouchdb("localBD");
-      // _db.findAll().then(function(r){
-      //   var  rows= r.rows,tmp;
-      //   if (rows&&rows.length>0){
-      //       rows.forEach(function(t){
-      //       if(!(options.exclude && options.exclude.indexOf(t._id)!=-1)){
-      //         tasks.push(function(){
-      //           return pouchdb(t._id).destroy().catch(function(err){
-      //             console.log(err);
-      //           });
-      //         });
-      //       }
-      //     });
-      //   }
-      //   tasks.push(function(){
-      //     return _db.destroy().catch(function(err){
-      //       console.log(err);
-      //     });
-      //   });
-      //   return task(tasks,options)(progress,complete,fail,options);
-      // })
     }
   }
 

@@ -1390,20 +1390,14 @@
             RegionID:RegionID
           });
         },
-        getSafeStatus_:{
-          offline:true,
-
-          callback:function () {
-
-          },
+        getSafeStatus_:$http.wrap({
           fn: function (RegionID) {
-                return $http.get($http.url('/api/Acceptances/SecurityInfo/GetUserSecurityInfo'),{
-                  RegionID:RegionID
-                });
+            return $http.get($http.url('/api/Acceptances/SecurityInfo/GetUserSecurityInfo'),{
+              RegionID:RegionID
+            });
           }
-        }
+        })
       }
-
     });
   }
 })();

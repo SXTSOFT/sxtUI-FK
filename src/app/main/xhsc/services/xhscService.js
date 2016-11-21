@@ -7,7 +7,7 @@
     .module('app.core')
     .factory('xhscService', xhscService);
   /** @ngInject */
-  function xhscService($rootScope) {
+  function xhscService($rootScope,remote,api,sxtlocaStorage,$q) {
     return {
       //
       qualified: qualified,
@@ -34,6 +34,28 @@
         $rootScope.scslFilter=null;
         $rootScope.scslReport_load=null;
         $rootScope.gxysFilter_load=null;
+      },
+      getProfile:function () {
+       return $q(function (resolve,reject) {
+         api.setNetwork(0).then(function () {
+           var  profile=sxtlocaStorage.getObj("profile");
+           if (profile){
+             resolve(profile);
+           }else {
+             remote.profile().then(function (r) {
+               profile={
+                 role:r.data.Role.MemberType === 0 || r.data.Role.MemberType ? r.data.Role.MemberType : null,
+                 ouType:r.data.Role.OUType === 0 || r.data.Role.OUType ? r.data.Role.OUType : null,
+                 user:r.data
+               }
+               sxtlocaStorage.setObj("profile",profile)
+               resolve(profile);
+             }).catch(function () {
+               reject(profile)
+             });
+           }
+         })
+       });
       }
     };
     //单个测量点的

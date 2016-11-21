@@ -101,7 +101,7 @@
               fullscreen: false
             })
               .then(function(answer) {
-                window.localStorage.removeItem("dbs");
+                window.localStorage.clear();
                 auth.logout();
               }, function() {
 

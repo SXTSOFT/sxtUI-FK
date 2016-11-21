@@ -9,7 +9,7 @@
     .controller('gxmainController', gxmainController);
 
   /**@ngInject*/
-  function gxmainController(remote, xhUtils, $rootScope, utils, api, $q, $state, $scope, $mdDialog, db, $mdBottomSheet) {
+  function gxmainController(remote, xhUtils, $rootScope, utils, api, $q, $state, $scope,xhscService, $mdDialog, db, $mdBottomSheet) {
     var vm = this;
     var dbpics = db('pics')
     vm.procedure = [];
@@ -346,17 +346,23 @@
     }
 
 
-    vm.MemberType = [];
-    api.setNetwork(0).then(function () {
-      remote.profile().then(function (r) {
-        if (r.data && r.data.Role) {
-          vm.role = r.data.Role.MemberType === 0 || r.data.Role.MemberType ? r.data.Role.MemberType : -100;
-          vm.OUType = r.data.Role.OUType === 0 || r.data.Role.OUType ? r.data.Role.OUType : -100;
-          vm.MemberType.push(vm.role);
-          vm.bodyFlag = vm.role;
-        }
-      });
-    })
+
+    xhscService.getProfile().then(function(profile){
+      vm.role=profile.role;
+      vm.OUType=profile.ouType;
+    });
+
+    // vm.MemberType = [];
+    // api.setNetwork(0).then(function () {
+    //   remote.profile().then(function (r) {
+    //     if (r.data && r.data.Role) {
+    //       vm.role = r.data.Role.MemberType === 0 || r.data.Role.MemberType ? r.data.Role.MemberType : -100;
+    //       vm.OUType = r.data.Role.OUType === 0 || r.data.Role.OUType ? r.data.Role.OUType : -100;
+    //       vm.MemberType.push(vm.role);
+    //       vm.bodyFlag = vm.role;
+    //     }
+    //   });
+    // })
 
     function load() {
       $q.all([

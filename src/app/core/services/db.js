@@ -6,7 +6,7 @@
 
   angular
     .module('app.core')
-    .provider('db',db);
+    .provider('db',pouchDB);
 /** @ngInject */
   function pouchDB() {
 
@@ -147,8 +147,8 @@
   self.$get = $get;
 
   /** @ngInject */
-  function $get($window, $q) {
-    PouchDB.plugin(PouchAdapterCordovaSqlite);
+  function $get($window, $q,sxtlocaStorage) {
+    // PouchDB.plugin(PouchAdapterCordovaSqlite);
     var pouchDBDecorators = {
       qify: function (fn) {
         return function () {
@@ -219,12 +219,11 @@
       return db;
     }
     return function pouchDB(name) {
-      var dbs= window.localStorage.getItem("dbs");
+      var dbs= sxtlocaStorage.getItem("dbs");
       if (!dbs){
         dbs=[];
         dbs.push(name);
-        window.localStorage.removeItem("dbs");
-        window.localStorage.setItem("dbs",dbs);
+        sxtlocaStorage.setItem("dbs",dbs);
 
       }else {
         dbs=dbs.split(",");
@@ -232,8 +231,7 @@
             return name==o;
           })){
           dbs.push(name);
-          window.localStorage.removeItem("dbs");
-          window.localStorage.setItem("dbs",dbs);
+          sxtlocaStorage.setItem("dbs",dbs);
         }
       }
       // var db = new $window.PouchDB(name,{

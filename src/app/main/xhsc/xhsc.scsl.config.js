@@ -30,11 +30,11 @@
         }
       })
       .state('app.xhsc.scsl.scslmain', {
-        noBack:false,
+        noBack:true,
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        showgrzx:true,
+        showgrzx:false,
         title: '实测实量',
         url: '',
         templateUrl: 'app/main/xhsc/procedurepg/scslmain.html',

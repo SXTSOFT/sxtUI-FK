@@ -15,6 +15,21 @@
       .state('app.xhsc', {
         abstract:true
       })
+      .state('app.xhsc.application',{
+        noBack:false,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        showgrzx:true,
+        title :'应用',
+        url   :'/application',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/home/application.html',
+            controller:'applicationController as vm'
+          }
+        }
+      })
       .state('app.xhsc.mcenter',{
         noBack:true,
         sendBt:false,
@@ -45,10 +60,11 @@
         }
       })
       .state('app.xhsc.pcmain',{
-        noBack:true,
+        noBack:false,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
+        showgrzx:true,
         title :'个人中心',
         url   :'/pcmain',
         views :{
