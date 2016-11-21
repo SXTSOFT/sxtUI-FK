@@ -27,7 +27,7 @@
             </md-list-item>
             <md-list-item>
               <p flex="15">计划进场时间：</p>
-              <p>{{item.PlanTime | date:'yyyy-MM-dd HH:mm'}}</p>
+              <p>{{item.PlanTime | date:'yyyy-MM-dd hh:mm'}}</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">计划进场数量：</p>
@@ -52,7 +52,7 @@
             <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">材料进场信息</div>
             <md-list-item>
               <p flex="15">进场时间：</p>
-              <p>{{item.ApproachTime | date:'yyyy-MM-dd HH:mm'}}</p>
+              <p>{{item.ApproachTime | date:'yyyy-MM-dd hh:m'}}</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">进场数量：</p>
@@ -80,25 +80,25 @@
                 <md-list-item style="padding-left:0;">
                   <label flex="15">车辆：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:256}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 450px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
                 <md-list-item style="padding-left:0;">
                   <label flex="15">货物：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:512}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 450px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
                 <md-list-item style="padding-left:0;">
                   <label flex="15">检查人：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:1024}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 450px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
                 <md-list-item style="padding-left:0;">
                   <label flex="15">检查人：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:2048}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 450px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
               </md-list>
@@ -108,7 +108,7 @@
             <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">监理验收信息</div>
             <md-list-item>
               <p flex="15">验收时间：</p>
-              <p>{{item.AcceptanceTime | date:'yyyy-MM-dd HH:mm'}}</p>
+              <p>{{item.AcceptanceTime | date:'yyyy-MM-dd hh:mm'}}</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">现场检查：</p>
@@ -128,25 +128,25 @@
                 <md-list-item style="padding-left:0;">
                   <label flex="15">车辆：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:1}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 450px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
                 <md-list-item style="padding-left:0;">
                   <label flex="15">货物：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:2}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 450px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
                 <md-list-item style="padding-left:0;">
                   <label flex="15">验收人：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:4}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 450px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
                 <md-list-item style="padding-left:0;">
                   <label flex="15">合格证：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:8}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 450px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
               </md-list>
@@ -156,7 +156,7 @@
             <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">监理送检信息</div>
             <md-list-item>
               <p flex="15">送检时间：</p>
-              <p>{{item.InspectionTime | date:'yyyy-MM-dd HH:mm'}}</p>
+              <p>{{item.InspectionTime | date:'yyyy-MM-dd hh:mm'}}</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">送检人：</p>
@@ -172,13 +172,13 @@
                 <md-list-item style="padding-left:0;">
                   <label flex="15">抽样过程：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:16}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 450px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
                 <md-list-item style="padding-left:0;">
                   <label flex="15">检查单：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:32}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 450px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
               </md-list>
@@ -188,7 +188,7 @@
             <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">送检报告信息</div>
             <md-list-item>
               <p flex="15">报告日期：</p>
-              <p>{{item.ReportTime | date:'yyyy-MM-dd HH:mm'}}</p>
+              <p>{{item.ReportTime | date:'yyyy-MM-dd hh:mm'}}</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">报告单单号：</p>
@@ -203,7 +203,7 @@
               <md-list flex="85" ng-cloak>
                 <md-list-item style="padding-left:0;">
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:64}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 450px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
               </md-list>
@@ -225,14 +225,14 @@
             </md-list-item>
             <md-list-item>
               <p flex="15">退场操作时间：</p>
-              <p>{{item.ExitOperatorTime | date:'yyyy-MM-dd HH:mm'}}</p>
+              <p>{{item.ExitOperatorTime | date:'yyyy-MM-dd hh:mm'}}</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">退场照片：</p>
               <md-list flex="85" ng-cloak>
                 <md-list-item style="padding-left:0;">
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:128}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 450px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
                 </md-list>
@@ -246,7 +246,7 @@
             </md-list-item>
             <md-list-item>
               <p flex="15">批示时间：</p>
-              <p>{{item.ApprovalTime | date:'yyyy-MM-dd HH:mm'}}</p>
+              <p>{{item.ApprovalTime | date:'yyyy-MM-dd hh:mm'}}</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">批示处理情况：</p>
@@ -259,6 +259,35 @@
             <md-list-item>
               <p flex="15">甲方意见：</p>
               <p>{{item.Opinion}}</p>
+            </md-list-item>
+          </md-list>
+        </md-content>
+      </md-tab>
+      <md-tab label="多余材料退场" ng-if="vm.data.BatchExitList.length>0">
+        <md-content class="md-padding">
+          <md-list  ng-repeat="item in vm.data.BatchExitList">
+            <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">多余材料退场批次 {{$index+1}}</div>
+            <md-list-item>
+              <p flex="15">退场数量：</p>
+              <p>{{item.ExitCount}}</p>
+            </md-list-item>
+            <md-list-item>
+              <p flex="15">退场见证人：</p>
+              <p>{{item.ExitWitness}}</p>
+            </md-list-item>
+            <md-list-item>
+              <p flex="15">退场操作时间：</p>
+              <p>{{item.ExitOperatorTime | date:'yyyy-MM-dd hh:mm'}}</p>
+            </md-list-item>
+            <md-list-item>
+              <p flex="15">退场照片：</p>
+              <md-list flex="85" ng-cloak>
+                <md-list-item style="padding-left:0;">
+                  <div flex ng-repeat="img in item.Images | filter:{OptionType:128}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
+                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
+                  </div>
+                </md-list-item>
+              </md-list>
             </md-list-item>
           </md-list>
         </md-content>

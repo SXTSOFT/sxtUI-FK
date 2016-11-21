@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function inspectionReport($rootScope,$scope,api,utils,$stateParams,sxt,$state){
+  function inspectionReport($rootScope,$scope,api,utils,$stateParams,sxt,$state,xhUtils){
     var vm = this;
     vm.data = {};
     vm.data.Id = $stateParams.id;
@@ -28,13 +28,11 @@
     });
 
     var sendReportResult = $rootScope.$on('sendGxResult',function() {
-
       if(!vm.data.Report){
         utils.alert('请填写报告单编号');
         return;
       }
-
-      if(vm.checkerImgs.length == 0){
+      if(vm.reportImgs.length == 0){
         utils.alert('至少上传一张报告单照片');
         return;
       }

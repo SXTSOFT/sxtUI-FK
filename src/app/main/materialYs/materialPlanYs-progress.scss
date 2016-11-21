@@ -1,11 +1,10 @@
 body{font-size: 15px;}
 ul li{list-style: none;}
-.track-rcol{width: 100%; border: 1px solid #eee;}
+.track-rcol{width: 100%; border: 1px solid #eee;margin-top:5px;}
 .track-list{margin: 20px 20px 20px 0px; padding-left: 5px; position: relative;}
-.track-list li{position: relative; padding: 0px 0 0 25px; line-height: 40px; border-left: 2px solid #d9d9d9; color: #999;}
-.track-list li .node-icon{position: absolute;left:-13px;top:26%;}
+.track-list li{position: relative; padding: 10px 0 10px 25px;border-left: 2px solid #d9d9d9;}
+.track-list li .node-icon{position: absolute;left:-13px;top:35%;}
 .track-list li .time{margin-right: 20px; position: relative; top: 4px; display: inline-block; vertical-align: middle;}
 .track-list li .txt{max-width: 600px; position: relative; top: 4px; display: inline-block; vertical-align: middle;}
 .track-list li .time{margin-right: 15px; }
-.track-list li .txt{max-width: 600px; }
-.track-list li .txt label{padding-right:20px;line-height: 40px;}
+.track-list li .txt label{padding-right:20px;}
