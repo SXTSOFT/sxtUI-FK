@@ -19,6 +19,12 @@
         var map,layer,el;
         var ran = function () {
           if(!scope.values || !scope.project || !scope.project.pid) return;
+          var zy = 0;
+          switch (scope.project.rootTypeId){
+            case '564d959b5a4155a678594890':zy=1;break;
+            case '565a6d15778e350743c2fb56':zy=2;break;
+          }
+          //console.log('scope.project.rootTypeId',scope.project.rootTypeId)
           api.szgc.FilesService.group(scope.project.pid).then(function (fs) {
             if (fs.data.Files.length == 0) return;
             map = L.map(element[0], {
@@ -50,6 +56,7 @@
             scope.values.forEach(function (ly) {
               var geojson = JSON.parse(ly.geoJSON),
                 options = geojson.options;
+              if(zy && options.zy && zy!=options.zy)return;
               switch (geojson.geometry.type) {
                 case 'Circle':
                   layer = L.circle(L.GeoJSON.coordsToLatLng(geojson.geometry.coordinates), options.radius, options);

@@ -3,17 +3,18 @@
 
   angular
     .module('app.szgc')
-    .controller('HomeYjController', HomeYjController);
+    .controller('HomeDxController', HomeDxController);
 
   /** @ngInject */
-  function HomeYjController($stateParams, api)
+  function HomeDxController($stateParams, api)
   {
     var vm = this;
     api.szgc.vanke.yj($stateParams.itemId).then(function (r) {
       vm.areas = r.data.Rows.filter(function (item) {
-        return item.RegionType==128;
+        return item.RegionType==512;
       }).map(function (item) {
         return {
+          zy:1,
           itemId:$stateParams.itemId+'>'+item.Id,
           itemName:$stateParams.itemName+'>'+item.RegionName
         }

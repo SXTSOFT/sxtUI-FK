@@ -9,8 +9,10 @@
   /** @ngInject */
   function config(apiProvider){
     var partner = [],zbPartner=[],procedureId = '2814510f-0188-4993-a153-559b40d0b5e8';
-
-    var $http,$q,auth,api,utils;
+    var ssl = sxt.requireSSL,
+      baseUri = ssl?'/sxt/v1/'+'':'/common/v1/',
+      host = ssl?'https://szapi2.vanke.com':'http://szmp.vanke.com';
+    var $http,$q,auth,api;
     angular.injector(['ng']).invoke([
       '$http','$q',function (_$http,_$q)
       {
@@ -59,7 +61,7 @@
             return true;
           }
         }).bind(function(){
-          return get('/common/v1/profile').then(function (result) {
+          return get(baseUri +'profile').then(function (result) {
             result.data.Id = result.data.data.employee_id;
             return result;
           });
@@ -111,7 +113,7 @@
             page_size: 0,
             page_number: 1
           },arg);
-          return get(http.url('/common/v1/projects', arg));
+          return get(http.url(baseUri +'projects', arg));
         }),
         projects: http.db({
           _id:'v_projects',
@@ -120,7 +122,7 @@
         }).bind(function (arg) {
           var me = this;
           if (!me.isPartner(1)) {
-            return get(http.url('/common/v1/DE/projects', arg));
+            return get(http.url(baseUri +'DE/projects', arg));
           }
           else {
             return $q(function (resolve) {
@@ -226,7 +228,7 @@
           }
         }).bind(function (arg) {
           var s = this;
-          return get(http.url('/common/v1/project_items', arg)).then(function (result) {
+          return get(http.url(baseUri +'project_items', arg)).then(function (result) {
             return $q(function (resolve,reject) {
                 if (!arg._filter) {
               s._filter(2).then(function (r) {
@@ -358,7 +360,7 @@
           }
         }).bind(function (arg) {
           var me = this;
-          return get(http.url('/common/v1/buildings', arg)).then(function (r1) {
+          return get(http.url(baseUri +'buildings', arg)).then(function (r1) {
             return me.root.szgc.vanke.yj(arg.project_item_id,4).then(function (r2) {
               r2.data.Rows.forEach(function (r) {
                 r1.data.data.push({
@@ -428,7 +430,7 @@
               return r1;
             });
           }
-          return get(http.url('/common/v1/buildings/'+building_id+'/rooms',{page_size:0,page_number:1})).then(function (result) {
+          return get(http.url(baseUri +'buildings/'+building_id+'/rooms',{page_size:0,page_number:1})).then(function (result) {
             result.data.data.forEach(function (item) {
               item.building_id=building_id;
             })
@@ -466,7 +468,7 @@
           return {data:{data: floors}};
         }),
         units: http.custom(function (arg) {
-          return get(http.url('/common/v1/buildings/' + arg + '/units', arg));
+          return get(http.url(baseUri +'buildings/' + arg + '/units', arg));
         }),
         _rooms: http.db({
           _id:'v_rooms',
@@ -507,7 +509,7 @@
                 return r1;
               })
             }
-          return get(http.url('/common/v1/buildings/'+arg.building_id+'/rooms', {/*floor:arg.floor, */page_size: 0, page_number: 1})).then(function (result) {
+          return get(http.url(baseUri +'buildings/'+arg.building_id+'/rooms', {/*floor:arg.floor, */page_size: 0, page_number: 1})).then(function (result) {
             result.data.data.forEach(function (item) {
               item.building_id=arg.building_id;
             })
@@ -549,20 +551,20 @@
             return item.project_item.project_item_id==project_item_id;
           }
         }).bind(function (project_item_id) {
-          return get(http.url('/common/v1/types', { project_item_id: project_item_id, page_size: 0, page_number:1}));
+          return get(http.url(baseUri +'types', { project_item_id: project_item_id, page_size: 0, page_number:1}));
         }),
         rooms:function (args) {
           return this.root.szgc.vanke._rooms(args.building_id,args);
         },
         partners: http.custom(function (arg) {
-          return get(http.url('/common/v1/partners', arg));
+          return get(http.url(baseUri +'partners', arg));
         }),
         skills: http.db({
           _id:'v_skills',
           idField:'skill_id',
           dataType:4
         }).bind(function (arg) {
-          return get(http.url('/common/v1/skills', arg));
+          return get(http.url(baseUri +'skills', arg));
         }),
         employees: http.db({
           _id:'v_employees',
@@ -572,7 +574,7 @@
             return item.partner.partner_id==arg;
           }
         }).bind(function (arg) {
-          return get(http.url('/common/v1/partners/'+arg+'/employees'));
+          return get(http.url(baseUri +'partners/'+arg+'/employees'));
         }),
         teams: http.db({
           _id:'v_partners',
@@ -586,7 +588,7 @@
             return item;
           }
         }).bind(function (partner_id) {
-          return get(http.url('/common/v1/partners/' + partner_id + '/teams',angular.extend({
+          return get(http.url(baseUri +'partners/' + partner_id + '/teams',angular.extend({
             page_size: 0,
             page_number: 1
           }))).then(function (result) {
@@ -598,7 +600,7 @@
         }),
         buildingsInfo:http.custom(function(type, typeId){
           if(type == 2) {
-            return get (http.url ('/common/v1/buildings', {
+            return get (http.url (baseUri +'buildings', {
               project_item_id: typeId,
               page_size: 0,
               page_number: 1
@@ -622,7 +624,7 @@
             });
           }
           else{
-            return get (http.url ('/common/v1/buildings', {
+            return get (http.url (baseUri +'buildings', {
               project_id: typeId,
               page_size: 0,
               page_number: 1
@@ -666,7 +668,7 @@
         getAuth().getUser().then(function (user) {
           $http({
             method: method,
-            url: 'http://szmp.vanke.com' + api,
+            url: host + api,
             headers: {
               'Authorization': 'Bearer '+user.Token,
               'Corporation-Id': user.CropId

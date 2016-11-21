@@ -1,7 +1,7 @@
-<md-dialog aria-label="添加拍照"  ng-cloak>
+<md-dialog aria-label=""  ng-cloak>
   <md-toolbar >
     <div class="md-toolbar-tools">
-      <h2 style="width: 80%;overflow: hidden;text-overflow: ellipsis;">{{vm.project.item.full_name}}</h2>
+      <h2 style="width: 80%;overflow: hidden;text-overflow: ellipsis;direction: rtl;">{{vm.project.nameTree}}</h2>
       <span flex></span>
       <md-button class="md-fab md-mini md-primary" ng-click="vm.show=true"  aria-label="Favorite">
         <md-icon md-font-icon="icon-calendar"></md-icon>
@@ -16,7 +16,8 @@
     <div  layout-align="center none" layout-gt-xs="row" flex class="newhouse" layout="column" ng-if="!vm.show">
     <div flex sxt-area-houses param="vm.project" item-id="vm.project.itemId" item-name="vm.project.itemName" >
     </div>
-    <div flex="none" style="min-height: 200px;min-width: 260px">
+    <div flex="none" style="min-height: 200px;min-width: 260px;max-height: 250px;overflow: auto">
+
       <div style="padding: 5px 10px;font-weight: bold;">{{vm.project.itemName}}</div>
       <sxt-images-ybyd item-name="vm.project.itemName" item-id="vm.project.itemId" region-tree="vm.project.idTree" region-id="vm.project.pid"></sxt-images-ybyd>
     </div>

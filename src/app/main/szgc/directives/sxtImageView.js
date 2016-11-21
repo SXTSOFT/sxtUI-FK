@@ -105,11 +105,15 @@
               viewer = o=null;
               def =false;
             },
+            viewed:function () {
+              viewer.view(defaultIndex);
+            },
             build:function(){
 
             }
           });
           viewer.show();
+
 
         });
         scope.$on('$destroy', function () {

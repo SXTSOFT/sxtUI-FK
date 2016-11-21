@@ -88,18 +88,17 @@
         views :{
           'content@app':{
             templateUrl : 'app/main/szgc/home/yj.html',
-            controller:'HomeYjController as vm',
-            resolve:{
-              yj:['$stateParams', 'api','$q',function($stateParams, api){
-                return api.szgc.vanke.yj($stateParams.itemId).then(function (r) {
-                  return {
-                    itemId:$stateParams.itemId,
-                    itemName:$stateParams.itemName,
-                    items:r.data.Rows
-                  }
-                })
-              }]
-            }
+            controller:'HomeYjController as vm'
+          }
+        }
+      })
+      .state('app.szgc.project.dx',{
+        //title :'形象进度',
+        url   :'/dx/{projectType}/{itemId}/{itemName}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/szgc/home/dx.html',
+            controller:'HomeDxController as vm'
           }
         }
       })
@@ -325,16 +324,7 @@
         views :{
           'content@app':{
             controller:'SzgcSettingsController as vm',
-            templateUrl:'app/main/szgc/settings/settings.html',
-            resolve:{
-              profile:['api',function(api){
-                //api.useNetwork(0);
-                return api.szgc.vanke.profile().then(function (r) {
-                  //api.resolveNetwork();
-                  return r;
-                });
-              }]
-            }
+            templateUrl:'app/main/szgc/settings/settings.html'
           }
         }
       })

@@ -18,7 +18,7 @@
       },
       template: '<div class="imageEdit" sxt-image-view is-container="true">\
       <div class="edititem" ng-repeat="item in files" uib-tooltip="{{item.Remark}}">\
-      <img style="height:150px;margin:0 5px;" date="{{item.CreateDate +\'-\'+itemName}}" osrc="{{item.Url.substring(1).replace(\'s_\',\'\')}}"  ng-src="{{item.Url|fileurl:150}}" class="img-thumbnail" />\
+      <img style="height:150px;margin:0 5px;" date="{{item.CreateDate +\'-\'+itemName}}" osrc="{{item.Url && item.Url.substring(1).replace(\'s_\',\'\')}}"  ng-src="{{item|fileurl:150}}" class="img-thumbnail" />\
       </div> <div style="padding:20px" ng-if="files.length==0">\
         暂无照片\
       </div>\

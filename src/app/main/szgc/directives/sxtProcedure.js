@@ -24,6 +24,7 @@
     return {
       require:'ngModel',
       scope:{
+        rootTypeId:'=',
         procedureTypeId: '=',
         regionType:'=',
         value:'=ngModel',
@@ -70,6 +71,7 @@
     function link(scope,element,attrs,ctrl){
 
       scope.sett = function(p){
+        scope.rootTypeId = p.rootTypeId;
         scope.procedureTypeId = p.ProcedureTypeId;
         scope.value = p.ProcedureId;
         scope.nameValue = p.ProcedureName;
@@ -195,6 +197,7 @@
               c.ps = [];
               scope.procedures.forEach(function(p){
                 if(p.ProcedureTypeId == c.skill_id){
+                  p.rootTypeId = c.parent.skill_id;
                   c.ps.push(p);
                   g.ps.push(p);
                 }
