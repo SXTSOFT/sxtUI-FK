@@ -13,8 +13,36 @@
     });
 
   /**@ngInject*/
-  function inspectionDesktopController(){
+  function inspectionDesktopController($state,utils,$scope,api){
     var vm = this;
+    vm.currenttab = 0;
+    vm.loading = false;
+    vm.inspection = function(num){
+      switch (num){
+        case 0:
+              vm.currenttab = 0;
+              break;
+        case 1:
+          vm.currenttab =1;
+          break;
+        case 2:
+          vm.currenttab = 2;
+          break;
+      }
+    };
+    api.inspection.deliverys.getLists().then(function(r){
+      console.log(r)
+    })
+    utils.onCmd($scope,['swap'],function(cmd,e){
+      if(e.arg.type){
+
+      }else{
+        $state.go('app.inspection.check')
+      }
+    })
+    vm.check = function(){
+      $state.go('app.inspection.check')
+    }
   }
 
 })();

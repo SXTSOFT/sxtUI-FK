@@ -10,7 +10,7 @@
 
 
   /** @ngInject */
-  function  utilsFactory($mdToast,$mdDialog,$q){
+  function  utilsFactory($mdToast,$mdDialog,$q,$rootScope){
     function accSub(arg2, arg1) {
       var r1, r2, m, n;
       try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
@@ -72,7 +72,8 @@
       alert:alertMessage,
       confirm:confirmMessage,
       error:errorMessage,
-      copy:copyFn
+      copy:copyFn,
+      onCmd:onCmd
     };
 
     function tipsMessage(message){
@@ -88,7 +89,14 @@
           .hideDelay(3000)
       );
     }
-
+    function onCmd($scope,cmd,fn,seq) {
+      $scope.$on('$destroy', $rootScope.$on('toolbar:cmd'+(seq||''), function (s, e) {
+        cmd = angular.isString(cmd) ? [cmd] : cmd;
+        if (cmd.indexOf(e.cmd) != -1) {
+          fn && fn(e.cmd, e);
+        }
+      }));
+    }
     function alertMessage(message,ev) {
       if (message.indexOf('出现错误')!=-1) {
         return $q(function (r) {

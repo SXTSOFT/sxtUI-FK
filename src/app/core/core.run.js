@@ -59,6 +59,16 @@
           $rootScope.noBack = toState.noBack;
           $rootScope.title = toState.title || $rootScope.title;
           $rootScope.hideFootbar = toState.hideFootbar;
+          $rootScope.shell = angular.extend($rootScope.shell||{},{
+            prevIcon:false,
+            yfbar:false,
+            prev:false,
+            next:false,
+            swap:null,
+            csb:false,
+            cjwt:false,
+            title:false
+          },toState.shell);
         }
         //console.log('toState',toState)
       });

@@ -22,6 +22,8 @@
       search: ''
     };
 
+    
+
     vm.bodyEl = angular.element('body');
 
     // Methods

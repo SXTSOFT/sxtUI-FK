@@ -1,0 +1,86 @@
+<md-content layout="column" flex style="background: #f0f0f0">
+<div class="comments">
+  <!--<md-list class="precent">-->
+    <!--<md-list-item ng-click="vm.addcomment()">-->
+      <!--<p class="p-label md-avatar">sc</p>-->
+      <!--<div class="md-list-item-text">-->
+        <!--有色差-->
+      <!--</div>-->
+      <!--<md-icon class="md-secondary" style="text-align: right;"><img src="app/main/images/arrow-right.png" width="13"></md-icon>-->
+      <!--<md-divider></md-divider>-->
+    <!--</md-list-item>-->
+  <!--</md-list>-->
+  <div class="precent" style="margin-top:10px;">
+    <md-list class="p-0">
+      <md-list-item>
+        <p flex="none" style="width: 80px;">问题编号</p>
+        <div class="md-list-item-text" flex style="text-align: right;">A12345</div>
+        <!--<div flex>手动阀手动阀手动阀手动阀</div>-->
+        <md-divider></md-divider>
+      </md-list-item>
+      <md-list-item>
+        <p flex="none" style="width: 80px;">问题</p>
+        <div class="md-list-item-text" flex style="text-align: right;">问题描述</div>
+        <!--<div flex>手动阀手动阀手动阀手动阀</div>-->
+        <md-divider></md-divider>
+      </md-list-item>
+      <md-list-item>
+        <p flex="none" style="width: 80px;">出现位置</p>
+        <div class="md-list-item-text" flex style="text-align: right;">厨房</div>
+        <md-divider></md-divider>
+      </md-list-item>
+      <md-list-item>
+        <p flex="none" style="width: 80px;">创建时间</p>
+        <div class="md-list-item-text" flex style="text-align: right;">2016-6-12-12 00：00</div>
+        <md-divider></md-divider>
+      </md-list-item>
+      <md-list-item>
+        <p flex="none" style="width: 80px;">责任单位</p>
+        <div class="md-list-item-text" flex style="text-align: right;">某某单位</div>
+        <md-divider></md-divider>
+      </md-list-item>
+      <!--<md-list-item ui-sref="app.project.comment.cperson">-->
+        <!--<p flex="none" style="width: 80px;">指派给</p>-->
+        <!--<div class="md-list-item-text" flex>-->
+          <!--<span ng-repeat="p in vm.participant">{{p.name}}</span>-->
+        <!--</div>-->
+        <!--<md-icon class="md-secondary" style="text-align: right;"><img src="app/main/images/arrow-right.png" width="13"></md-icon>-->
+      <!--</md-list-item>-->
+      <md-list-item>
+        <p flex="none" style="width: 80px;">状态</p>
+        <md-switch class="md-secondary" ng-model="vm.status"></md-switch>
+        <md-divider></md-divider>
+      </md-list-item>
+      <!--<md-list-item ui-sref="app.project.history">-->
+        <!--<p flex="none" style="width: 80px;">历史纪录</p>-->
+        <!--<md-icon class="md-secondary" style="text-align: right;"><img src="app/main/images/arrow-right.png" width="13"></md-icon>-->
+      <!--</md-list-item>-->
+    </md-list>
+  </div>
+  <div class="ml-20 mv-10">补充描述</div>
+  <div style="border-top:1px solid #dedede;border-bottom: 1px solid #dedede;padding:10px 20px;background: #fff;">
+    问题补充描述
+    <!--<textarea style="height:60px;line-height: 20px;resize:none;width:100%;padding:10px;"></textarea>-->
+  </div>
+  <div class="ml-20 mv-10">照片</div>
+  <div class="img-list ph-5 pv-15 white-bg">
+    <span><img src="app/main/szgc/images/pic.jpg"></span>
+    <span><img src="app/main/szgc/images/pic.jpg"></span>
+    <span><img src="app/main/szgc/images/pic.jpg"></span>
+    <span><img src="app/main/szgc/images/pic.jpg"></span>
+  </div>
+  <div layout="row" class="white-bg mt-10 mb-10 text-center" flex>
+    <md-button ng-click="vm.delete()" flex style="padding:5px;margin:0;">删除问题</md-button>
+  </div>
+  <!--<div style="background: #fff;border-top:1px solid #dedede;border-bottom: 1px solid #dedede;" class="pic-content">-->
+    <!--&lt;!&ndash;<pic-list images-data="vm.images" flex></pic-list>&ndash;&gt;-->
+    <!--<p ng-repeat="img in vm.images" class="pic-list">-->
+      <!--<b style="background-image: url('{{img.url}}')"></b>-->
+    <!--</p>-->
+    <!--<p ng-click="vm.addP()">-->
+      <!--<b style="background-image:url(app/main/images/plus.png)"></b>-->
+    <!--</p>-->
+    <!--<div style="clear:both;"></div>-->
+  <!--</div>-->
+</div>
+</md-content>

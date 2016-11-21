@@ -1,0 +1,27 @@
+<div layout="column" flex style="border-top:1px solid #dedede;">
+  <div layout="row" layout-align="space-between center" class="ph-16 pv-10">
+    <div ng-click="cancel()">取消</div>
+    <div ng-click="submit()">确定</div>
+  </div>
+  <md-divider></md-divider>
+  <div layout="row" layout-align="space-between center" class="ph-16 pv-10" ng-click="chooseQues()">
+    <div class="pr-10" flex="none">问题</div>
+    <div flex>问题描述</div>
+  </div>
+  <md-divider></md-divider>
+  <div layout="row" class="ph-16 pv-10">
+    <div layout="column" class="pr-10" flex="none">照片</div>
+    <div class="img-list" flex>
+      <span><img src="app/main/szgc/images/pic.jpg"></span>
+      <span><img src="app/main/szgc/images/pic.jpg"></span>
+      <span><img src="app/main/szgc/images/pic.jpg"></span>
+      <span><img src="app/main/szgc/images/pic.jpg"></span>
+      <span ng-click="addPhoto()"><img class="camera" src="app/main/szgc/images/add-photo.png" width="40"></span>
+    </div>
+  </div>
+  <md-divider></md-divider>
+  <label flex class="ph-16 pt-10">补充描述</label>
+  <div layout="row" class="ph-16 pv-10">
+    <textarea style="width: 100%;padding:5px;border:1px solid #dedede;" placeholder="补充描述" ng-model="description"></textarea>
+  </div>
+</div>
