@@ -1376,21 +1376,18 @@
         })
       },
       safe:{
-        getSecurityItem:function () {
-          return $http.get($http.url('/api/Acceptances/SecurityItem'));
-        },
+        getSecurityItem:$http.wrap({
+          fn: function () {
+            return $http.get($http.url('/api/Acceptances/SecurityItem'));
+          }
+        }),
         createSafeBatch:function (acceptanceItemID,areaList) {
           return $http.post($http.url('/Acceptances/SecurityInfo/Insert'),{
             AcceptanceItemID:acceptanceItemID,
             AreaList:areaList
           });
         },
-        getSafeStatus:function (RegionID) {
-          return $http.get($http.url('/api/Acceptances/SecurityInfo/GetUserSecurityInfo'),{
-            RegionID:RegionID
-          });
-        },
-        getSafeStatus_:$http.wrap({
+        getSafeStatus:$http.wrap({
           fn: function (RegionID) {
             return $http.get($http.url('/api/Acceptances/SecurityInfo/GetUserSecurityInfo'),{
               RegionID:RegionID

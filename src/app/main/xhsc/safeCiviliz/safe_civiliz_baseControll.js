@@ -14,7 +14,8 @@
     .module('app.xhsc')
     .controller('safe_civiliz_baseController',safe_civiliz_baseController);
 
-  function safe_civiliz_baseController(remote,xhUtils,$rootScope,utils,api,$q,$state,$scope,$mdDialog,db,$mdBottomSheet,$stateParams){
+  function safe_civiliz_baseController(remote,xhUtils,$rootScope,utils,api,$q,$state,$scope,$mdDialog,
+    db,$mdBottomSheet,$stateParams,xhscService){
     var vm = this;
     var  dbpics=db('pics')
     vm.procedure=[];
@@ -353,16 +354,9 @@
       }
     },$scope);
 
-    vm.MemberType = [];
-    api.setNetwork(0).then(function(){
-      remote.profile().then(function(r){
-        if (r.data&& r.data.Role){
-          vm.role= r.data.Role.MemberType===0|| r.data.Role.MemberType?r.data.Role.MemberType:-100;
-          vm.OUType=r.data.Role.OUType===0||r.data.Role.OUType?r.data.Role.OUType:-100;
-          vm.MemberType.push(vm.role);
-          vm.bodyFlag=vm.role;
-        }
-      });
+    xhscService.getProfile().then(function (profile) {
+      vm.role=profile.role;
+      vm.OUType=profile.ouType;
     })
 
     function load(){
@@ -460,9 +454,7 @@
       load();
     })
 
-    vm.setModule=function(val){
-      vm.bodyFlag=val;
-    }
+
     vm.zbzjAction=function(item){
       if (!item.isOffline){
         vm.downloadzj(item).then(function(){
@@ -635,9 +627,6 @@
         $state.go('app.xhsc.sf.sfitem', {role:'zb',projectId:r.ProjectID});
       });
     }
-
-
-
 
   }
 })();
