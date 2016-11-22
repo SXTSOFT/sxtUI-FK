@@ -1,0 +1,314 @@
+Index: src/app/main/material/ys/AddAttachmentController.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/app/main/material/ys/AddAttachmentController.js	(revision dd2460f24366c01446ecded2f54554eecc30c4fd)
++++ src/app/main/material/ys/AddAttachmentController.js	(revision )
+@@ -79,7 +79,6 @@
+ 
+       vm.ok = function(){
+         if(vm.checkDataId != ''){
+-
+           api.material.addProcessService.Insert({
+             CheckData:{Id:vm.checkDataId,InspectionReport:$scope.sjReport,CheckResult:$scope.sjReport},
+             CheckDataOptions:[{OptionType:16,GroupImg:vm.groupId_16}]
+Index: src/app/main/material/ys/MyProcessController.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/app/main/material/ys/MyProcessController.js	(revision dd2460f24366c01446ecded2f54554eecc30c4fd)
++++ src/app/main/material/ys/MyProcessController.js	(revision )
+@@ -18,13 +18,15 @@
+     vm.AttachmentSHow = false;
+     vm.parentLoad = function () {
+       $scope.$parent.vm.load();
+-    }
++    };
+     vm.checkData={};
+     vm.EnclosureType = [];
+     vm.checkData.WgCheck = 1;
+     vm.checkData.IsInspection = 1;
+     vm.checkData.CheckTime = new Date();
+     vm.checkData.sjReport = null;
++    vm.checkData.MaterialTargets = [];
++
+     $scope.data = {
+       imgs1:[],
+       imgs2:[],
+@@ -95,8 +97,10 @@
+                 return;
+               }
+               vm.checkData.CheckResult = 0;  //状态：不合格
+-              if (vm.checkData.InspectionReport == null)
+-                vm.checkData.InspectionReport = 3; //   N/A
++              if (vm.checkData.InspectionReport == null){
++                vm.checkData.IsInspection = 2;     //是否送检：N/A
++                vm.checkData.InspectionReport = 3; //送检报告：N/A
++              }
+ 
+               vm.checkData.HandleOption = $scope.clyj;
+               api.material.addProcessService.Insert({
+@@ -139,6 +143,17 @@
+     };
+ 
+     vm._save = function (addForm) {
++      $scope.Targets.forEach(function (r) {
++        if (r.isOK) {
++          var n = {
++            ProjectId: vm.checkData.ProjectId,
++            MaterialId: vm.checkData.MaterialId,
++            TargetId: r.Id
++          };
++          vm.checkData.MaterialTargets.push(n);
++        }
++      });
++
+       api.material.addProcessService.Insert({
+         Id:sxt.uuid(),
+         CheckData:vm.checkData,
+@@ -221,6 +236,28 @@
+       });
+     }
+ 
++    $scope.$watch('project.procedureId',
++      function () {
++        if ($scope.project.procedureId) {
++          api.material.TargetService.getAll($scope.project.procedureId)
++            .then(function (data) {
++              $scope.Targets = data.data.Rows;
++              api.material.TargetRelationService.getByProjectId({projectId:$scope.project.projectId,materialId:$scope.project.procedureId,isChecked:true})
++                .then(function (data) {
++                  for (var i = 0; i < $scope.Targets.length; i++) {
++                    for (var j = 0; j < data.data.Rows.length; j++) {
++                      if ($scope.Targets[i].Id == data.data.Rows[j].TargetId) {
++                        $scope.Targets[i].isOK = true;
++                        $scope.Targets[i].need = true;
++                        break;
++                      }
++                    }
++                  }
++                });
++            });
++        }
++      });
++
+     vm.ok = function(){
+       vm.checkData.HandleOption = null;
+       if(vm.checkDataId != ''){
+@@ -244,9 +281,9 @@
+                 }
+ 
+                 vm.checkData.HandleOption = $scope.clyj;
+-
++                console.log(vm.checkData);
+                 api.material.addProcessService.Insert({
+-                  CheckData:{Id:vm.checkDataId,InspectionReport:vm.checkData.sjReport,CheckResult:vm.checkData.sjReport,HandleOption:vm.checkData.HandleOption},
++                  CheckData:{Id:vm.checkDataId,InspectionReport:vm.checkData.sjReport,CheckResult:vm.checkData.sjReport,HandleOption:vm.checkData.HandleOption,CheckReportRemark:vm.checkData.CheckReportRemark},
+                   CheckDataOptions:[{OptionType:16,GroupImg:vm.groupId_16}]
+                 }).then(function (result) {
+                   if(result){
+@@ -301,9 +338,6 @@
+     api.material.SupplierService.GetAll({startrowIndex:0,maximumRows:100,Status:4}).then(function(result){
+       $scope.supplier = result.data.Rows;
+     });
+-
+-
+-
+ 
+     $scope.is = function(route){
+       return $state.is(route);
+Index: src/app/main/material/material.api.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/app/main/material/material.api.js	(revision dd2460f24366c01446ecded2f54554eecc30c4fd)
++++ src/app/main/material/material.api.js	(revision )
+@@ -248,19 +248,29 @@
+           return $http.post('/api/PPBatchRelation/GetRelationReportData', { regionTreeId: regionTreeId })
+         }
+       },
++      TargetRelationService:{
++        create: $http.db({
++          _id:'Ms_MaterialTargetRelation',
++          idField:'Id',
++          upload:true
++        }).bind(function (data) {
++          return $http.post($http.url('/api/MaterialTargetRelation'), data);
++        }),
++        getByProjectId:$http.db({
++          _id:'Ms_MaterialTargetRelationList',
++          idField:'Id',
++          dataType:5,
++        }).bind(function (args) {
++          return $http.get($http.url('/api/MaterialTargetRelation/GetByProjectId',args));
++        })
++      },
+       TargetService:{
+         getAll:$http.db({
+-          _id:'s_pTarget',
++          _id:'Ms_MaterialTargetList',
+           idField:'Id',
+           dataType:5,
+-          filter:function (item,procedureId) {
+-            return item.ProcedureId==procedureId;
+-          }
+-        }).bind(function(procedureId){
+-          if(procedureId)
+-            return $http.get($http.url('/api/PProcedure/' + procedureId + '/EngineeringTarget'));
+-          else
+-            return $http.get($http.url('/api/PProcedure/EngineeringTarget/All'));
++        }).bind(function (args) {
++          return $http.get($http.url('/api/MLPProcedure/' + args + '/MLEngineeringTarget'));
+         })
+       }
+     })
+Index: src/app/main/material/ys/checkDataDetail-app.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/app/main/material/ys/checkDataDetail-app.html	(revision dd2460f24366c01446ecded2f54554eecc30c4fd)
++++ src/app/main/material/ys/checkDataDetail-app.html	(revision )
+@@ -45,11 +45,21 @@
+       <label>{{dataInfo.WgCheck}}</label>
+     </md-list-item>
+     <md-divider></md-divider>
++    <md-list-item ng-show="dataInfo.WgCheck=='不合格'">
++      <label flex>外观检查不合格说明</label>
++      <label>{{dataInfo.WgFailedRemark}}</label>
++    </md-list-item>
++    <md-divider ng-show="dataInfo.WgCheck=='不合格'"></md-divider>
+     <md-list-item>
+       <label flex>送检报告</label>
+       <label>{{dataInfo.InspectionReport}}</label>
+     </md-list-item>
+     <md-divider></md-divider>
++    <md-list-item ng-show="dataInfo.InspectionReport=='不合格'">
++      <label flex>送检报告不合格说明</label>
++      <label>{{dataInfo.CheckReportRemark}}</label>
++    </md-list-item>
++    <md-divider ng-show="dataInfo.InspectionReport=='不合格'"></md-divider>
+     <md-list-item>
+       <label flex>合格情况</label>
+       <label>{{dataInfo.CheckResult}}</label>
+Index: src/app/main/material/ys/myProcess-app.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/app/main/material/ys/myProcess-app.html	(revision dd2460f24366c01446ecded2f54554eecc30c4fd)
++++ src/app/main/material/ys/myProcess-app.html	(revision )
+@@ -16,7 +16,6 @@
+           </md-list-item>
+           <md-divider></md-divider>
+           <md-list-item>
+-
+             <div class="md-list-item-text" flex="25" layout="column">
+               <p style="text-align: left;">合同编号</p>
+             </div>
+@@ -56,40 +55,54 @@
+             <div class="md-list-item-text" flex="25" layout="column" style="height: 76px; line-height: 48px;">
+               <p style="text-align: left;">外观检查</p>
+             </div>
+-            <!--<md-radio-group ng-model="vm.checkData.WgCheck">-->
+-              <!--<md-radio-button value="1" class="md-primary">合格</md-radio-button>-->
+-              <!--<md-radio-button value="0">不合格</md-radio-button>-->
+-            <!--</md-radio-group>-->
+             <md-switch class="md-secondary" ng-model="vm.checkData.WgCheck" ng-true-value="1" ng-false-value="0">
+               {{vm.checkData.WgCheck ? '合格':'不合格' }}
+             </md-switch>
+           </md-list-item>
+           <md-divider></md-divider>
+-          <md-list-item>
++          <md-list-item ng-show="vm.checkData.WgCheck==0">
++            <div class="md-list-item-text" flex="25" layout="column">
++              <p style="text-align: left;">不合格说明</p>
++            </div>
++            <md-input-container class="md-block" flex-gt-sm style="width: 75%;margin: 18px 0 0 0;">
++              <input style="width: 100%;" ng-model="vm.checkData.WgFailedRemark">
++            </md-input-container>
++          </md-list-item>
++          <md-divider ng-show="vm.checkData.WgCheck==0"></md-divider>
++          <md-list-item ng-show="vm.checkData.WgCheck==1">
+             <div class="md-list-item-text" flex="25" layout="column" style="height: 76px; line-height: 48px;">
+               <p  style="text-align: left;">是否送检</p>
+             </div>
+-            <!--<md-radio-group ng-model="vm.checkData.IsInspection" ng-disabled="vm.checkData.WgCheck == 0">-->
+-              <!--<md-radio-button value="1" class="md-primary">需要</md-radio-button>-->
+-              <!--<md-radio-button value="0">不需要</md-radio-button>-->
+-            <!--</md-radio-group>-->
+             <md-switch style="height: 76px;" class="md-secondary" ng-model="vm.checkData.IsInspection" ng-true-value="1" ng-false-value="0" ng-disabled="vm.checkData.WgCheck == 0">
+               {{vm.checkData.IsInspection ? '需要':'不需要' }}
+             </md-switch>
+           </md-list-item>
+-          <md-divider></md-divider>
++          <md-divider ng-show="vm.checkData.WgCheck==1"></md-divider>
++          <div class="md-padding" ng-if="vm.checkData.WgCheck==1 && vm.checkData.IsInspection==1 && project.procedureId" style="color: rgba(0,0,0,0.87);">
++            <fieldset>
++              <legend style="font-size: 1.6rem;">检查指标</legend>
++              <md-list>
++                <md-list-item ng-repeat="n in Targets" ng-click="n.isOK=!n.isOK" ng-disabled="n.need">
++                  <div class="md-list-item-text" flex layout="column">
++                    <h3 style="margin-top: 10px; margin-bottom: 5px;font-size: 1.6rem">{{$index+1}}、{{n.TargetName}}</h3>
++                    <p ng-if="n.Remark" style="margin: 0;line-height: 120%;font-size: 13px !important; ">
++                      {{n.Remark}}
++                    </p>
++                  </div>
++                  <md-switch ng-disabled="n.need" ng-click="$event.stopPropagation()" ng-model="n.isOK"></md-switch>
++                </md-list-item>
++              </md-list>
++            </fieldset>
++          </div>
++          <md-divider ng-if="vm.checkData.WgCheck==1 && vm.checkData.IsInspection==1 && project.procedureId"></md-divider>
+           <md-list-item  ng-click="vm.AttachmentSHow = true">
+             <div class="md-list-item-text" flex="25" layout="column" style="height: 76px; line-height: 48px;">
+               <p style="text-align: left;">附件</p>
+             </div>
+-            <!--<md-radio-group ng-model="vm.checkData.IsInspection" ng-disabled="vm.checkData.WgCheck == 0">-->
+-            <!--<md-radio-button value="1" class="md-primary">需要</md-radio-button>-->
+-            <!--<md-radio-button value="0">不需要</md-radio-button>-->
+-            <!--</md-radio-group>-->
+             <a class="md-secondary">添加</a>
+           </md-list-item>
+           <md-divider></md-divider>
+-          <md-subheader style="background-color: #f5f6f7;" class="md-no-sticky">附件</md-subheader>
++          <md-subheader style="background-color: #f5f6f7;" class="md-no-sticky" ng-hide="data.imgs1.length == 0 && data.imgs2.length == 0 && data.imgs3.length == 0&& data.imgs4.length == 0&& data.imgs5.length == 0">附件</md-subheader>
+           <md-list-item ng-show="vm.EnclosureType.length != 0">
+             <div  sxt-image-view is-container="true">
+               <p ng-repeat="item in vm.EnclosureType">
+@@ -97,7 +110,7 @@
+               </p>
+             </div>
+           </md-list-item>
+-          <md-divider></md-divider>
++          <md-divider ng-hide="data.imgs1.length == 0 && data.imgs2.length == 0 && data.imgs3.length == 0&& data.imgs4.length == 0&& data.imgs5.length == 0"></md-divider>
+         </md-list>
+ 
+       </sxt-projects-jd>
+@@ -129,9 +142,20 @@
+               <md-radio-button flex ng-value="1" style="display: inline-block;" class="md-primary" >合格</md-radio-button>
+               <md-radio-button flex ng-value="0" style="display: inline-block;" class="md-primary" >不合格</md-radio-button>
+             </md-radio-group>
++          </div>
++        </div>
++        <md-divider></md-divider>
++      <div class="row" ng-show="vm.checkData.sjReport == 0">
++        <div layout='row' style="padding: 0 15px 0 8px;" layout-align="start center" >
++          <div flex>
++            <h3>不合格说明</h3>
++          </div>
++          <md-input-container class="md-block" flex-gt-sm style="width: 75%;margin: 18px 0 0 0;">
++            <input style="width: 100%;" ng-model="vm.checkData.CheckReportRemark">
++          </md-input-container>
+-          </div>
+-        </div>
+-        <md-divider></md-divider>
++        </div>
++      </div>
++      <md-divider></md-divider>
+         <div class="md-padding">
+           <fieldset ng-show="vm.fjType == 2">
+             <legend>出厂合格证</legend>
