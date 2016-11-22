@@ -15,6 +15,18 @@
       earthwork: {
         create: function (data) {
           return $http.post('/api/Eartwork/', data);
+        },
+        getEarthworkList:function (args) {
+          return $http.get($http.url('/api/Eartwork/GetEarthworkList',{regionTreeId:args.regionTreeId,status:args.status}));
+        },
+        createEarthworkArea: function (data) {
+          return $http.post('/api/Eartwork/CreateEarthworkArea', data);
+        },
+        updateEarthworkArea: function (id,data) {
+          return $http.put('/api/Eartwork/UpdateEarthworkArea/' + id, data);
+        },
+        delete:function (id) {
+          return $http.delete('/api/Eartwork/' + id);
         }
       }
     })
