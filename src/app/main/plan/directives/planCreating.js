@@ -390,7 +390,7 @@
             scope.flows[index] = next;
             scope.flows[index + 1] = flow;
           }else if(next&&next.IsFloor){
-            utils.alert('楼层不可交换')
+            utils.alert('不可与楼层交换')
           }
         }
         scope.buildDate();
@@ -402,7 +402,7 @@
           scope.flows[index] = next;
           scope.flows[index - 1] = flow;
         }else if(next&&next.IsFloor){
-          utils.alert('楼层不可交换')
+          utils.alert('不可与楼层交换')
         }
         scope.buildDate();
       }

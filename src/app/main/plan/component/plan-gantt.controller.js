@@ -408,7 +408,7 @@
         var str='';
         switch (i){
           case 1:
-                str = '关闭';
+                str = '未启动';
                 break;
           case 2:
                 str='完成';
@@ -421,94 +421,104 @@
                 break;
         }
         return str;
-      }
-      api.plan.Task.query({
-        ParentTaskId:dialogData.formData.id,
-        Type:'BuildingPlan',
-        Source:$stateParams.id
-      }).then(function(r){
-        var task = {
-          Master:r.data.Items.filter(function (t) {
-            try{
-              var desc = eval('('+t.Description+')');
-              return desc.Type == 0;
-            }catch (ex){
-              return false;
-            }
-          }).map(function (item) {
-            return {
-              EndFlagTaskFlowId:eval('('+item.Description+')').EndFlagTaskId,
-              ScheduledStartTime:item.ScheduledStartTime,
-              ScheduledEndTime:item.ScheduledEndTime,
-              ActualStartTime:item.ActualStartTime,
-              ActualEndTime:item.ActualEndTime,
-              State:item.State,
-              _State:setSatus(item.State),
-              switch:item.State!=4?false:true,
-              Flags:item.Flags,
-              TaskFlowId:item.Id,
-              ParentId:item.Dependencies[0].DependencyTaskID,
-              Name:item.Name,
-              Type:0
-            }
-          }),
-          Branch:function(items) {
-            var branchs = [];
-            items.forEach(function (t) {
-              try {
+      };
+      loadSubTask();
+      function loadSubTask(){
+        api.plan.Task.query({
+          ParentTaskId:dialogData.formData.id,
+          Type:'BuildingPlan',
+          Source:$stateParams.id
+        }).then(function(r){
+          var task = {
+            Master:r.data.Items.filter(function (t) {
+              try{
                 var desc = eval('('+t.Description+')');
-                if(desc.Type!=0) {
-                  var array = branchs[desc.Type - 1];
-                  if(!array){
-                    array = [];
-                    branchs[desc.Type - 1] = array;
-                  }
-                  array.push({
-                    EndFlagTaskFlowId:eval('('+t.Description+')').EndFlagTaskId,
-                    ScheduledStartTime:t.ScheduledStartTime,
-                    ScheduledEndTime:t.ScheduledEndTime,
-                    ActualStartTime:t.ActualStartTime,
-                    ActualEndTime:t.ActualEndTime,
-                    State: t.State,
-                    _State:setSatus(t.State),
-                    switch:t.State!=4?false:true,
-                    Flags:t.Flags,
-                    TaskFlowId:t.Id,
-                    ParentId:t.Dependencies[0].DependencyTaskID,
-                    Name:t.Name,
-                    Type:desc.Type
-                  });
-                }
-              } catch (ex) {
+                return desc.Type == 0;
+              }catch (ex){
                 return false;
               }
-            });
-            return branchs;
-          }(r.data.Items),
-          Name:'流程'
-        };
-        vm.data = task;
-        vm.onLoadTemplate();
-      })
+            }).map(function (item) {
+              return {
+                EndFlagTaskFlowId:eval('('+item.Description+')').EndFlagTaskId,
+                ScheduledStartTime:item.ScheduledStartTime,
+                ScheduledEndTime:item.ScheduledEndTime,
+                ActualStartTime:item.ActualStartTime,
+                ActualEndTime:item.ActualEndTime,
+                State:item.State,
+                _State:setSatus(item.State),
+                switch:item.State!=4?false:true,
+                Flags:item.Flags,
+                TaskFlowId:item.Id,
+                ParentId:item.Dependencies[0].DependencyTaskID,
+                Name:item.Name,
+                Type:0
+              }
+            }),
+            Branch:function(items) {
+              var branchs = [];
+              items.forEach(function (t) {
+                try {
+                  var desc = eval('('+t.Description+')');
+                  if(desc.Type!=0) {
+                    var array = branchs[desc.Type - 1];
+                    if(!array){
+                      array = [];
+                      branchs[desc.Type - 1] = array;
+                    }
+                    array.push({
+                      EndFlagTaskFlowId:eval('('+t.Description+')').EndFlagTaskId,
+                      ScheduledStartTime:t.ScheduledStartTime,
+                      ScheduledEndTime:t.ScheduledEndTime,
+                      ActualStartTime:t.ActualStartTime,
+                      ActualEndTime:t.ActualEndTime,
+                      State: t.State,
+                      _State:setSatus(t.State),
+                      switch:t.State!=4?false:true,
+                      Flags:t.Flags,
+                      TaskFlowId:t.Id,
+                      ParentId:t.Dependencies[0].DependencyTaskID,
+                      Name:t.Name,
+                      Type:desc.Type
+                    });
+                  }
+                } catch (ex) {
+                  return false;
+                }
+              });
+              return branchs;
+            }(r.data.Items),
+            Name:'流程'
+          };
+          vm.data = task;
+          vm.onLoadTemplate();
+        })
+      }
       var taskId = dialogData.formView.id;
       vm.hasFlow = !!originData.Items.find(function (it) {
         return it.ExtendedParameters == taskId;
       });
-      vm.changeState = function(task,s){
+      vm.openTask = function(task){
         var time = new Date();
-        if(s){
-          api.plan.Task.start(task.TaskFlowId,true,time).then(function (r) {
-            task.ActualStartTime = time;
-
-           // task.ActualEndTime = null;
-          });
-        }else{
-          api.plan.Task.end(task.TaskFlowId,true,time).then(function (r) {
-            task.ActualEndTime = time;
-            task.openFlag = true;
-          });
-        }
-
+        api.plan.Task.start(task.TaskFlowId,true,time).then(function (r) {
+          task.ActualStartTime = time;
+          task._State='开启';
+          task.State =4;
+        });
+      }
+      vm.closeTask = function(task){
+        vm.currentIndex = 'end';
+        vm.currentTask = task;
+      }
+      vm.endTask = function(){
+        var time = new Date();
+        api.plan.Task.end(vm.currentTask.TaskFlowId,true,time).then(function (r) {
+          vm.currentTask.ActualEndTime = time;
+          vm.currentTask.openFlag = true;
+          vm.currentTask.closeF = true;
+          vm.currentTask._State='完成';
+          loadSubTask();
+          vm.currentIndex = 'default'
+        });
       }
       function stopTask(task,changeds) {
         changeds.push({task:task,stop:true});
@@ -630,9 +640,10 @@
         return $mdSidenav('right')
           .close();
       }
-      var temp;
+
       vm.onLoadTemplate = function () {
-        if(temp)return;
+        var temp;
+        //if(temp)return;
         temp = new template({
           onNodeDotColor:function (t) {
             return 'silver'
@@ -647,7 +658,6 @@
           }
         });
         vm.flows = temp.load(vm.data);
-
       }
 
 

@@ -117,6 +117,9 @@
         },
         swapOrder:function(id,data){
           return $http.put($http.url('/api/BuildingPlans/'+id+'/BuildingPlanFlows/SwapOrder'),data)
+        },
+        statisticsReport:function(){
+          return $http.get('/api/BuildingPlans/GroupStatisticsReport');
         }
       },
       MileStone:{

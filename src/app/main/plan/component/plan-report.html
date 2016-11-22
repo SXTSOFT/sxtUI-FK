@@ -1,0 +1,177 @@
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools">
+    <h2>
+      <span>报表</span>
+    </h2>
+  </div>
+</md-toolbar>
+<div>
+  <table width="100%" cellpadding="0" cellspacing="0" class="report">
+    <thead>
+      <tr>
+        <th colspan="8">节点完成统计报表</th>
+        <th>统计日期</th>
+        <th>2016-12-12</th>
+      </tr>
+      <tr>
+        <th style="width: 100px">
+          公司
+        </th>
+        <th style="width: 100px">
+          项目
+        </th>
+        <th style="width: 100px">
+          标段
+        </th>
+        <th>
+          节点
+        </th>
+        <th>
+          计划完成时间
+        </th>
+        <th>
+          实际完成时间
+        </th>
+        <th>
+          状态
+        </th>
+        <th>
+          延期天数
+        </th>
+        <th>
+          下一节点
+        </th>
+        <th>
+          下一节点工期
+        </th>
+      </tr>
+    </thead>
+    <tbody ng-repeat="d in vm.data.CompanyStatisticss">
+      <tr ng-repeat="p in d.ProjectStatisticss" style="width: 100px">
+        <td rowspan="{{d.ProjectStatisticss.length}}" ng-if="$index==0">
+          {{d.CompanyName}}
+        </td>
+        <td colspan="9">
+          <table style="width: 100%" class="inner">
+            <tr ng-repeat="s in p.SectionStatisticss">
+              <td rowspan="{{p.SectionStatisticss.length}}" ng-if="$index==0" style="width: 100px">{{p.ProjectName}}</td>
+              <td colspan="8">
+                <table width="100%" class="inner">
+                  <tr ng-repeat="t in s.TaskStatisticss">
+                    <td rowspan="{{s.TaskStatisticss.length}}" ng-if="$index==0" style="width: 100px">{{s.SectionName}}</td>
+                    <td>{{t.TaskName}}</td>
+                    <td>{{t.ScheduledEndTime|date:'yyyy-MM-dd'}}</td>
+                    <td>{{t.ActualEndTime|date:'yyyy-MM-dd'}}</td>
+                    <td>{{t.CompleteStatus}}</td>
+                    <td>{{t.DelayDays}}</td>
+                    <td>{{t.NextTaskName}}</td>
+                    <td>{{t.NextTaskDuration}}</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td rowspan="3">统计结果</td>
+        <td>总节点</td>
+        <td>提前完成</td>
+        <td>正常完成</td>
+        <td>轻度延期</td>
+        <td>中度延期</td>
+        <td>重度延期</td>
+        <td>严重延期</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <!--<tr>-->
+        <!--<td>-->
+          <!--公司-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--公司-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--公司-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--公司-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--公司-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--公司-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--公司-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--公司-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--公司-->
+        <!--</td>-->
+      <!--</tr>-->
+    </tbody>
+    <tbody>
+      <tr>
+        <td rowspan="3">地产集团统计结果</td>
+        <td>总节点</td>
+        <td>提前完成</td>
+        <td>正常完成</td>
+        <td>轻度延期</td>
+        <td>中度延期</td>
+        <td>重度延期</td>
+        <td>严重延期</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
