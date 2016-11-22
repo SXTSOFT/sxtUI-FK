@@ -243,9 +243,12 @@
           return current;
         }, null);
         vm.branches.forEach(function (current) {
+          var f=vm.flows.find(function(_t){
+            return _t.TaskFlowId == current.ParentId;
+          })
           tasks.push({
             "Id": sxt.uuid(),
-            "DependentTaskFlowId": null,
+            "DependentTaskFlowId": f&& f.ParentId||null,
             "TaskFlowId": current.TaskFlowId,
             "FloorId": current.FloorId,
             "FloorName": current.FloorName,
