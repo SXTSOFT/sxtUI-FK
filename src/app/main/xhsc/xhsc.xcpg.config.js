@@ -327,7 +327,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'实测详情',
-        url   :'/sctbdetail/{recordId}/{itemId}',
+        url   :'/sctbdetail/{recordId}/{itemId}/{MeasureRecordID}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/sctbdetail.html',
@@ -341,7 +341,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'实测详情',
-        url   :'/sctbdetail/{recordId}/{itemId}/{AcceptanceItemID}',
+        url   :'/sctbdetail/{recordId}/{itemId}/{AcceptanceItemID}/{MeasureRecordID}',
         views :{
           'content':{
             templateUrl : 'app/main/xhsc/ys/sctbdetail_pc.html',

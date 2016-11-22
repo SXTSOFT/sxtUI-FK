@@ -387,10 +387,7 @@
         //   item.maxRow=xmbArr.length+jlArr.length+zbArr.length;
         // }
       });
-
       vm.scData = newD;
-
-      console.log(vm.scData)
     });
   }
 })();

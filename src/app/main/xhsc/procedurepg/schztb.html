@@ -34,7 +34,7 @@
         <td rowspan="{{item.rows.length}}" ng-if="$index == 0" style="padding: 0;">
           <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">
             <tr>
-              <td style="white-space: nowrap;"><a ui-sref="app.xhsc.scsl.schztbdetail({regionId:vm.regionId,itemId:item.AcceptanceIndexID,acceptanceItemID:vm.AcceptanceItemID})">{{item.IndexName}}</a></td>
+              <td style="white-space: nowrap;"><a ui-sref="app.xhsc.scsl.schztbdetail({regionId:vm.regionId,itemId:item.AcceptanceIndexID,acceptanceItemID:vm.AcceptanceItemID,MeasureRecordID:item.MeasureRecordID})">{{item.IndexName}}</a></td>
             </tr>
           </table>
         </td>
@@ -71,7 +71,7 @@
           <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2" table-auto-height>
             <tr ng-repeat="row in item.Children">
               <td rowspan="{{item.Children.length}}" ng-if="$index == 0">{{item.IndexName}}</td>
-              <td><a ui-sref="app.xhsc.scsl.schztbdetail({regionId:vm.regionId,itemId:row.AcceptanceIndexID,acceptanceItemID:vm.AcceptanceItemID})">{{row.IndexName}}</a></td>
+              <td><a ui-sref="app.xhsc.scsl.schztbdetail({regionId:vm.regionId,itemId:row.AcceptanceIndexID,acceptanceItemID:vm.AcceptanceItemID,MeasureRecordID:item.MeasureRecordID})">{{row.IndexName}}</a></td>
             </tr>
           </table>
         </td>

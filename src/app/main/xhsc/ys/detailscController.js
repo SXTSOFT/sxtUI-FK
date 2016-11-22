@@ -150,7 +150,8 @@
 
       vm.stateParams=$stateParams;
       vm.go=function(row,item){
-        $state.go("app.pc.sctbdetail",{recordId:$stateParams.regionId,itemId:item.AcceptanceIndexID,AcceptanceItemID:$stateParams.measureItemID});
+        $state.go("app.pc.sctbdetail",{recordId:$stateParams.regionId,itemId:item.AcceptanceIndexID,
+          AcceptanceItemID:$stateParams.measureItemID,MeasureRecordID:item.MeasureRecordID});
         //ui-sref="()"
       }
       vm.scData = newD;

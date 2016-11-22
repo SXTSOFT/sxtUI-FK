@@ -16,8 +16,18 @@
     var vm=this;
     vm.projectId = $stateParams.projectId;
     vm.role=$stateParams.role;
+    var secItems=remote.safe.getSecurityItem.cfgSet({
+      _id:"secItems",
+      idField:"SpecialtyID",
+      offline:true,
+      filter:function (item) {
+        return true;
+      },
+      dataType:3
+    });
 
-    remote.Procedure.queryProcedure().then(function(result){
+
+    remote.safe.getSecurityItem().then(function(result){
       vm.data=result.data;
       vm.data.sort(function(a,b){
         return a.SpecialtyName.localeCompare(b.SpecialtyName);

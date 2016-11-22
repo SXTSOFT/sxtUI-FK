@@ -452,6 +452,7 @@
       var _cfg=$.extend(true,{},cfg);
       function cfgSet(config) {
         _cfg=$.extend(_cfg,config);
+        return f;
       }
       var  _cfg=bindDb(_cfg);
       function f() {
@@ -524,7 +525,7 @@
 
       function id(d, db, args, cfg, cb) {
         return provider.$q.$q(function (resolve,reject) {
-          var _id = angular.isFunction(cfg.idField) ? cfg.idField(d,args) : d[cfg.idField];
+          var _id = angular.isFunction(cfg.idField) ? cfg.idField(d,args) : (d[cfg.idField]?d[cfg.idField]:cfg.idField);
           if (_id && db){
             return db.addOrUpdate(cfg.data ? cfg.data.apply(cfg, [angular.extend({_id: _id}, d)].concat(args))
               : angular.extend({_id: _id}, d)).then(function (defer) {
@@ -537,12 +538,6 @@
             resolve(_id);
           }
         })
-        // var _id = angular.isFunction(cfg.idField) ? cfg.idField(d,args) : d[cfg.idField];
-        // if (_id && db) {
-        //   var defer = db.addOrUpdate(cfg.data ? cfg.data.apply(cfg, [angular.extend({_id: _id}, d)].concat(args)) : angular.extend({_id: _id}, d));
-        //   if (cb && cb(defer));
-        // }
-        // return _id;
       }
 
       function bindData(result, rows, cfg) {

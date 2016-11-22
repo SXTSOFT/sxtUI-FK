@@ -867,6 +867,9 @@
         GetMeasureIndexMeasureInfo:function (regionId,itemId) {
           return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfoNew',{RegionID:regionId,acceptanceIndexID:itemId}));
         },
+        GetMeasureIndexMeasureInfo_new:function (regionId,itemId,measureRecordID) {
+          return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfoNew2',{RegionID:regionId,acceptanceIndexID:itemId,measureRecordID:measureRecordID}));
+        },
         query:$http.db({
             _id:'projects',
             idField:'AssessmentID',
@@ -1378,7 +1381,8 @@
       safe:{
         getSecurityItem:$http.wrap({
           fn: function () {
-            return $http.get($http.url('/api/Acceptances/SecurityItem'));
+            return $http.get($http.url('/Api/WPAcceptanceApi/GetWPAcceptanceInfo'));
+            // return $http.get($http.url('/api/Acceptances/SecurityItem'));
           }
         }),
         createSafeBatch:function (acceptanceItemID,areaList) {

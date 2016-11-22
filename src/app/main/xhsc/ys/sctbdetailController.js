@@ -11,7 +11,7 @@
   /** @ngInject */
   function sctbdetailController($stateParams,remote,$rootScope) {
     var vm = this;
-    remote.Assessment.GetMeasureIndexMeasureInfo($stateParams.recordId,$stateParams.itemId).then(function (result) {
+    remote.Assessment.GetMeasureIndexMeasureInfo_new($stateParams.recordId,$stateParams.itemId,$stateParams.MeasureRecordID).then(function (result) {
       vm.data = result.data;
       vm.procedure=$stateParams.AcceptanceItemID;
       if (vm.data.Region){

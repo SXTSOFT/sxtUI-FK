@@ -1,8 +1,7 @@
 <md-list flex layout="row">
   <span class="border1px top1px"></span>
-  <span flex></span>
-  <md-list-item flex>
-    <md-button ng-click="vm.active_selected('app.xhsc.home')" ui-sref="app.xhsc.home">
+  <md-list-item layout="row" flex>
+    <md-button flex ng-click="vm.active_selected('app.xhsc.home')" ui-sref="app.xhsc.home">
       <md-icon md-svg-src="app/toolbar/images/xhhome.svg" class="icon s32"
                ng-class="{'active':vm.current_active=='app.xhsc.home'}"></md-icon>
       <div class="md-grid-text" style="line-height: 20px"
@@ -10,9 +9,8 @@
       </div>
     </md-button>
   </md-list-item>
-  <span flex></span>
-  <md-list-item flex>
-    <md-button ng-click="vm.active_selected('app.xhsc.application')" ui-sref="app.xhsc.application">
+  <md-list-item layout="row"  flex>
+    <md-button flex ng-click="vm.active_selected('app.xhsc.application')" ui-sref="app.xhsc.application">
       <md-icon md-svg-src="app/toolbar/images/xhproc.svg" class="icon s32"
                ng-class="{'active':vm.current_active=='app.xhsc.application'}"></md-icon>
       <div class="md-grid-text" style="line-height: 20px"
@@ -20,49 +18,8 @@
       </div>
     </md-button>
   </md-list-item>
-  <span flex></span>
-
-  <!--<md-list-item flex>-->
-  <!--<md-button  ui-sref="app.xhsc.gx.gxzbmain" class=" ys">-->
-  <!--<md-icon md-svg-src="app/toolbar/images/xhmeasure.svg" class="icon s32"  ng-class="{'active':vm.is('app.xhsc.gx.gxzbmain')}"></md-icon>-->
-  <!--<div class="md-grid-text" style="line-height: 20px"  ng-style="{'color':vm.is('app.xhsc.gx.gxzbmain')?'#e93030':'rgba(0,0,0,0.54)'}">总包工序</div>-->
-  <!--</md-button>-->
-  <!--</md-list-item>-->
-  <!--<md-list-item ng-if="vm.role==0||vm.role==2"  flex>-->
-  <!--<md-button ng-click="vm.active_selected('app.xhsc.gx.gxmain')" ui-sref="app.xhsc.gx.gxmain" class=" ys">-->
-  <!--<md-icon md-svg-src="app/toolbar/images/gx.svg" class="icon s32"  ng-class="{'active':vm.current_active== 'app.xhsc.gx.gxmain'}"></md-icon>-->
-  <!--<div class="md-grid-text" style="line-height: 20px"  ng-style="{'color':vm.current_active=='app.xhsc.gx.gxmain'?'#e93030':'rgba(0,0,0,0.54)'}">工序验收</div>-->
-  <!--</md-button>-->
-  <!--</md-list-item>-->
-  <!--<md-list-item ng-if="vm.role==0||vm.role==2||vm.role==4"   flex>-->
-  <!--<md-button ng-click="vm.active_selected('app.xhsc.scsl.scslmain')" ui-sref="app.xhsc.scsl.scslmain" class=" ys">-->
-  <!--<md-icon md-svg-src="app/toolbar/images/xhmeasure1.svg" class="icon s32"  ng-class="{'active':vm.current_active=='app.xhsc.scsl.scslmain'}"></md-icon>-->
-  <!--<div class="md-grid-text" style="line-height: 20px"  ng-style="{'color':vm.current_active=='app.xhsc.scsl.scslmain'?'#e93030':'rgba(0,0,0,0.54)'}">实测实量</div>-->
-  <!--</md-button>-->
-  <!--</md-list-item>-->
-  <!--<md-list-item ng-if="vm.OUType==1"  flex>-->
-  <!--<md-button ng-click="vm.active_selected('app.xhsc.download')" ui-sref="app.xhsc.download">-->
-  <!--<md-icon md-svg-src="app/toolbar/images/xhproc.svg" class="icon s32" ng-class="{'active':vm.current_active=='app.xhsc.download'}"></md-icon>-->
-  <!--<div class="md-grid-text" style="line-height: 20px" ng-style="{'color':vm.current_active=='app.xhsc.download'?'#e93030':'rgba(0,0,0,0.54)'}"> 现场评估</div>-->
-  <!--</md-button>-->
-  <!--</md-list-item>-->
-
-
-  <!--<md-list-item ng-if="vm.role==0||vm.role==2"  flex>-->
-  <!--<md-button  ui-sref="app.xhsc.sf.sfmain" ng-click="vm.active_selected('app.xhsc.sf.sfmain')" class="ys">-->
-  <!--<md-icon md-svg-src="app/toolbar/images/safe.svg" class="icon s32" ng-class="{'active':vm.current_active=='app.xhsc.sf.sfmain'}"></md-icon>-->
-  <!--<div class="md-grid-text" style="line-height: 20px"  ng-style="{'color':vm.current_active=='app.xhsc.sf.sfmain'?'#e93030':'rgba(0,0,0,0.54)'}">安全文明</div>-->
-  <!--</md-button>-->
-  <!--</md-list-item>-->
-  <!--<md-list-item ng-if="vm.role==0||vm.role==2"  flex>-->
-  <!--<md-button  ui-sref="app.xhsc.sf.jc" ng-click="vm.active_selected('app.xhsc.sf.sfmain')" class="ys">-->
-  <!--<md-icon md-svg-src="app/toolbar/images/safe.svg" class="icon s32" ng-class="{'active':vm.current_active=='app.xhsc.sf.sfmain'}"></md-icon>-->
-  <!--<div class="md-grid-text" style="line-height: 20px"  ng-style="{'color':vm.current_active=='app.xhsc.sf.sfmain'?'#e93030':'rgba(0,0,0,0.54)'}">安全文明</div>-->
-  <!--</md-button>-->
-  <!--</md-list-item>-->
-
-  <md-list-item flex>
-    <md-button ng-click="vm.active_selected('app.pcReport_main')" ui-sref="app.pcReport_main" class=" ys">
+  <md-list-item layout="row" flex >
+    <md-button flex="" ng-click="vm.active_selected('app.pcReport_main')" ui-sref="app.pcReport_main" class=" ys">
       <md-icon md-svg-src="app/toolbar/images/report.svg" class="icon s32"
                ng-class="{'active':vm.current_active=='app.pcReport_main'}"></md-icon>
       <div class="md-grid-text" style="line-height: 20px"
@@ -70,10 +27,8 @@
       </div>
     </md-button>
   </md-list-item>
-  <span flex></span>
-
-  <md-list-item flex>
-    <md-button ng-click="vm.active_selected('app.xhsc.pcmain')" ui-sref="app.xhsc.pcmain" class=" ys">
+  <md-list-item layout="row" flex>
+    <md-button flex ng-click="vm.active_selected('app.xhsc.pcmain')" ui-sref="app.xhsc.pcmain" class=" ys">
       <md-icon md-svg-src="app/toolbar/images/xhchange.svg" class="icon s32"
                ng-class="{'active':vm.current_active=='app.xhsc.pcmain'}"></md-icon>
       <div class="md-grid-text" style="line-height: 20px"
@@ -81,5 +36,4 @@
       </div>
     </md-button>
   </md-list-item>
-  <span flex></span>
 </md-list>

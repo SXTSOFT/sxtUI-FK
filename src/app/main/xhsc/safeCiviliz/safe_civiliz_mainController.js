@@ -12,7 +12,7 @@
     .controller('safe_civiliz_mainController',safe_civiliz_mainController);
 
   /**@ngInject*/
-  function safe_civiliz_mainController(remote,xhUtils,$rootScope,utils,api,$q,$state,$scope,$mdDialog,db,$mdBottomSheet){
+  function safe_civiliz_mainController(remote,xhUtils,$rootScope,utils,api,$q,$state,$scope,$mdDialog,db,$mdBottomSheet,xhscService){
     var vm = this;
     var  dbpics=db('pics')
     vm.procedure=[];
@@ -327,17 +327,11 @@
     }
 
 
-    vm.MemberType = [];
-    api.setNetwork(0).then(function(){
-      remote.profile().then(function(r){
-        if (r.data&& r.data.Role){
-          vm.role= r.data.Role.MemberType===0|| r.data.Role.MemberType?r.data.Role.MemberType:-100;
-          vm.OUType=r.data.Role.OUType===0||r.data.Role.OUType?r.data.Role.OUType:-100;
-          vm.MemberType.push(vm.role);
-          vm.bodyFlag=vm.role;
-        }
-      });
-    })
+
+    xhscService.getProfile().then(function (profile) {
+      vm.role=profile.role;
+      vm.OUType=profile.ouType;
+    });
 
     function load(){
       $q.all([
