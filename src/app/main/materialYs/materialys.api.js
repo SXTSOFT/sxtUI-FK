@@ -60,6 +60,9 @@
         GetMaterialPlanBatchByPlanId:function (planId) {
           return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanBatchByPlanId?planId='+planId));
         },
+        GetExcessMaterialExitByPlanId:function (planId) {
+            return $http.get($http.url('/api/MaterialPlan/GetExcessMaterialExitAsync?planId='+planId));
+        },
         PostCheckInfo: $http.db({
           _id: 'materialPlanCheckInfo',
           idField: 'Id',
