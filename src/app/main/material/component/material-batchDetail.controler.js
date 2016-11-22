@@ -22,6 +22,9 @@
       vm.data.BatchList = r.data||[];
     });
 
+    api.xhsc.materialPlan.GetExcessMaterialExitByPlanId(vm.data.PlanId).then(function (r) {
+        vm.data.BatchExitList = r.data||[];
+    });
 
   }
 })(angular,undefined);
