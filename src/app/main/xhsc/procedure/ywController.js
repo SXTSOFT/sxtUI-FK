@@ -14,7 +14,6 @@
   /**@ngInject*/
   function ywController(remote, xhUtils, $rootScope, utils, api, $q, $state, $scope, $mdDialog, db, xhscService, $mdBottomSheet, $stateParams) {
     var vm = this;
-    var dbpics = db('pics')
     vm.procedure = [];
     vm.yw = $stateParams.yw;
     vm.isShowbg = false;
@@ -40,44 +39,30 @@
     //项目包
     function projectTask(regionID, areas, acceptanceItemID) {
       var projectId = regionID.substr(0, 5);
+      function  filter(item) {
+        return (!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
+          (!areas || areas.find(function (a) {
+            return a.AreaID == item.RegionId;
+          })) && vm.procedure.find(function (k) {
+            return k.AcceptanceItemID == item.AcceptanceItemID;
+          })
+      }
       return [
         function (tasks) {
-          return $q(function (resolve) {
-            var arr = [
-              remote.Project.getDrawingRelations(regionID),
-              dbpics.findAll()
-            ];
-            $q.all(arr).then(function (res) {
-              var result = res[0], offPics = res[1].rows;
-              var pics = [];
-              result.data.forEach(function (item) {
-                if ((!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
-                  (!areas || areas.find(function (a) {
-                    return a.AreaID == item.RegionId;
-                  })) &&
-                  pics.indexOf(item.DrawingID) == -1 && !offPics.find(function (r) {
-                    return r._id == item.DrawingID;
-                  }) && vm.procedure.find(function (k) {
-                    return k.AcceptanceItemID == item.AcceptanceItemID;
-                  }) && item.RegionId.indexOf(regionID) > -1) {
-                  pics.push(item.DrawingID);
-                }
-              });
-              pics.forEach(function (drawingID) {
-                tasks.push(function () {
-                  return remote.Project.getDrawing(drawingID).then(function () {
-                    return dbpics.addOrUpdate({
-                      _id: drawingID
-                    })
-                  });
-                })
-              });
-              resolve(result);
+          return $q(function (resolve, reject) {
+            return xhscService.downloadPics(regionID,null,filter).then(function (t) {
+              t.forEach(function (m) {
+                tasks.push(m);
+              })
+              resolve();
+            }).catch(function () {
+              reject();
             });
           })
         }
       ]
     }
+
 
     function InspectionTask(item) {
       var t = [function () {
@@ -380,51 +365,14 @@
       }
     }, $scope);
 
-    vm.MemberType = [];
     vm.by = function (r) {
       api.setNetwork(0).then(function () {
         $state.go('app.xhsc.gx.gxlist', {role: 'zb', projectId: r.RegionID});
       });
     }
-    // xhscService.getProfile().then(function(profile){
-    //   vm.role=profile.role;
-    //   vm.OUType=profile.ouType;
-    // });
 
-
-    // api.setNetwork(0).then(function () {
-    //   remote.profile().then(function (r) {
-    //     if (r.data && r.data.Role) {
-    //       vm.role = r.data.Role.MemberType === 0 || r.data.Role.MemberType ? r.data.Role.MemberType : -100;
-    //       vm.OUType = r.data.Role.OUType === 0 || r.data.Role.OUType ? r.data.Role.OUType : -100;
-    //       vm.MemberType.push(vm.role);
-    //       vm.bodyFlag = vm.role;
-    //     }
-    //   });
-    // })
 
     function load() {
-      //remote.Project.getMap().then(function(result){
-      //  remote.offline.query().then(function (r) {
-      //    if (r&& r.data&& r.data.length){
-      //      result.data.forEach(function (item) {
-      //        item.isOffline =true;
-      //      });
-      //    }
-      //    vm.projects = result.data;
-      //    vm.z_isOver=true;
-      //  }).catch(function(){
-      //    vm.projects = result.data;
-      //    switch (vm.yw){
-      //      case 0:
-      //      //case 2:
-      //        if (!vm.projects.length){
-      //          vm.isShowbg=true;
-      //        }
-      //        break;
-      //    }
-      //  });
-      //});
       remote.Procedure.getZGlist(23).then(function (r) {
         vm.zglist = [];
         if (angular.isArray(r.data)) {
@@ -491,7 +439,7 @@
           });
         }
       });
-      remote.Project.getAllRegionWithRight("", 3).then(function (n) {
+      remote.Project.getAllRegionWithRight_no_db("", 3).then(function (n) {
         if (vm.yw == 2 || vm.yw == 0) {
           vm.z_isOver = true;
           if (!n || n.data.length == 0) {

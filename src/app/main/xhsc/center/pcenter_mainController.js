@@ -18,7 +18,7 @@
     api.setNetwork(0).then(function () {
       var arr=[
         remote.profile(),
-        remote.Project.getAllRegionWithRight("", 1)
+        remote.Project.getAllRegionWithRight_no_db("", 1)
       ];
       $q.all(arr).then(function (res) {
         var r=res[0];

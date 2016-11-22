@@ -14,8 +14,6 @@
   /** @ngInject */
   function safe_civiliz_houseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils,api,xhscService){
     var vm=this,
-      id = $stateParams.assessmentID,
-      AssessmentTypeID = $stateParams.AssessmentTypeID,
       projectId = $stateParams.projectId,
       acceptanceItemID=$stateParams.acceptanceItemID,
       acceptanceItemName = $stateParams.acceptanceItemName,
@@ -148,13 +146,11 @@
         return style;
       }
       return $q.all([
-        //remote.Project.queryAllBulidings(projectId),
-        remote.Project.getRegionWithRight(projectId),
-        remote.Procedure.getRegionStatus(projectId)
-
+        xhscService.getRegionTree(projectId,31,1),
+        remote.safe.getSafeStatus(projectId)
       ]).then(function(res){
         vm.loading = true;
-        var result= xhscService.buildRegionTree(res[0].data,1);
+        var result= res[0][0];
         var status=res[1]&&res[1].data?res[1].data:[];
         result.Children.forEach(function(d){
           filterOrSetting(status,d);
@@ -345,7 +341,6 @@
       }
     });
     $scope.$on("$destroy",function(){
-      //$mdDialog
       sendgxResult();
       sendgxResult=null;
     });

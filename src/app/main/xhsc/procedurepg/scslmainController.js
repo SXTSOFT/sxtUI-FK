@@ -52,47 +52,6 @@
           vm.isOver = true;
         })
       });
-
-      // remote.Project.getAllRegionWithRight("", 3,"scRigthRegions").then(function (r) {
-      //   if (!r || r.data.length == 0) {
-      //     utils.alert('暂无项目！');
-      //     vm.isOver = true;
-      //     return;
-      //   }
-      //   var result = xhscService.buildMutilRegionTree(r.data, 1);
-      //   itemDownLoad.findAll().then(function (u) {
-      //     var rows = u.rows;
-      //     result.forEach(function (m) {
-      //       m.AssessmentID = 'scsl' + m.RegionID + '_' + vm.role;
-      //       m.Children.forEach(function (n) {
-      //         var f;
-      //         n.AssessmentID = m.AssessmentID;
-      //         n.ProjectID = m.RegionID;
-      //         f = rows.find(function (e) {
-      //           return e._id == n.RegionID;
-      //         });
-      //         if (f) {
-      //           n.isComplete = true;
-      //         }
-      //         xcpk.addOrUpdate({
-      //           _id: m.RegionID,
-      //           data: m
-      //         }).then(function () {
-      //           vm.isOver = true;
-      //           vm.offlines.push(m);
-      //         });
-      //       });
-      //     });
-      //   })
-      //
-      // }).catch(function () {
-      //   xcpk.findAll().then(function (s) {
-      //     vm.offlines.push(s.rows);
-      //     vm.isOver = true;
-      //   }).catch(function () {
-      //     vm.isOver = true;
-      //   })
-      // });
     }
 
 

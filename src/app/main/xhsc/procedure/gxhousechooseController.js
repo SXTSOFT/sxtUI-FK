@@ -11,8 +11,6 @@
   /** @ngInject */
   function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils,api,xhscService){
     var vm=this,
-      id = $stateParams.assessmentID,
-      AssessmentTypeID = $stateParams.AssessmentTypeID,
       areaId = $stateParams.projectId,
       projectId = areaId.substr(0,5),
       acceptanceItemID=$stateParams.acceptanceItemID,
@@ -146,12 +144,11 @@
         return style;
       }
       return $q.all([
-        remote.Project.getRegionWithRight(projectId),
+        xhscService.getRegionTree(projectId,31,1),
         remote.Procedure.getRegionStatus(projectId)
-
       ]).then(function(res){
         vm.loading = true;
-        var result= xhscService.buildRegionTree(res[0].data,1);
+        var result= res[0][0];
         var status=res[1]&&res[1].data?res[1].data:[];
         result.Children.forEach(function(d){
           if (d.RegionID==areaId){

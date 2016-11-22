@@ -56,13 +56,13 @@
           })
         });
       },
-      getRegionTree: function (rootId, regionSize, regionType, db) {
+      getRegionTree: function (rootId, regionSize, rootType) {
         var self = this;
         return $q(function (resove, reject) {
-          return remote.Project.getAllRegionWithRight(rootId, regionSize, db).then(function (r) {
+          return remote.Project.getAllRegionWithRight_no_db(rootId, regionSize).then(function (r) {
             if (r && r.data.length > 0) {
-              regionType = regionType ? regionType : 1;
-              var data = self.buildMutilRegionTree(r.data, regionType);
+              rootType = rootType ? rootType : 1;
+              var data = self.buildMutilRegionTree(r.data, 1);
               resove(data);
               return;
             }
