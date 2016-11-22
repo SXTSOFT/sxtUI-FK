@@ -1381,8 +1381,8 @@
       safe:{
         getSecurityItem:$http.wrap({
           fn: function () {
-            return $http.get($http.url('/Api/WPAcceptanceApi/GetWPAcceptanceInfo'));
-            // return $http.get($http.url('/api/Acceptances/SecurityItem'));
+            // return $http.get($http.url('/Api/WPAcceptanceApi/GetWPAcceptanceInfo'));
+            return $http.get($http.url('/api/Acceptances/SecurityItem'));
           }
         }),
         createSafeBatch:function (acceptanceItemID,areaList) {

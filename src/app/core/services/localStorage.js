@@ -44,6 +44,73 @@
         }
         return null;
       },
+      getArr:function (name) {
+        var arr=this.getObj(name);
+        if (!angular.isArray(arr)){
+          arr=[];
+        }
+        return arr;
+      },
+      setArr:function (name,arr,compare) {
+        var old=this.getArr(name);
+        if (!angular.isArray(arr)){
+          arr=[arr];
+        }
+        if (!compare){
+          compare=function (item) {
+              return true;
+          }
+        }
+        arr.forEach(function (o) {
+           if (old.some(function (t) {
+                 return compare(t);
+             })){
+             old.push(o);
+           }
+        });
+        this.setObj(name,old);
+      },
+      setArr2:function (name,arr,compare) {
+        var old=this.getArr(name);
+        if (!angular.isArray(arr)){
+          arr=[arr];
+        }
+        if (!compare){
+          compare=function (_old,_new) {
+            return _new;
+          }
+        }
+        arr=compare(old,arr);
+        arr.forEach(function (o) {
+          old.push(o);
+        });
+        this.setObj(name,old);
+      },
+      removeArrItem:function (db,filter) {
+        var arr=this.getArr(db);
+        var t=[];
+        if (!filter){
+          filter=function (item) {
+            return true;
+          }
+        }
+        arr.forEach(function (o) {
+          if (!filter(o)){
+            t.push(o);
+          }
+        });
+        this.setObj(db,t);
+      },
+      removeArrItem2:function (db,filter) {
+        var arr=this.getArr(db);
+        if (!filter){
+          filter=function (source) {
+            return source;
+          }
+        }
+        arr=filter(arr);
+        this.setObj(db,arr);
+      },
       clear:function () {
         window.localStorage.clear();
       }

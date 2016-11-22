@@ -32,42 +32,26 @@
         })
       }
     ];
-    //项目包
-    function projectTask(region, areas, acceptanceItemID) {
-      var projectId=region.substr(0,5);
+    function projectTask(regionID, areas, acceptanceItemID) {
+      var projectId = regionID.substr(0, 5);
+      function  filter(item) {
+        return (!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
+          (!areas || areas.find(function (a) {
+            return a.AreaID == item.RegionId;
+          })) && vm.procedure.find(function (k) {
+            return k.AcceptanceItemID == item.AcceptanceItemID;
+          })
+      }
       return [
         function (tasks) {
-          return $q(function (resolve) {
-            var arr = [
-              remote.Project.getDrawingRelations(region),
-              dbpics.findAll()
-            ];
-            $q.all(arr).then(function (res) {
-              var result = res[0], offPics = res[1].rows;
-              var pics = [];
-              result.data.forEach(function (item) {
-                if ((!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
-                  (!areas || areas.find(function (a) {
-                    return a.AreaID == item.RegionId;
-                  })) &&
-                  pics.indexOf(item.DrawingID) == -1 && !offPics.find(function (r) {
-                    return r._id == item.DrawingID;
-                  }) && vm.procedure.find(function (k) {
-                    return k.AcceptanceItemID == item.AcceptanceItemID;
-                  })) {
-                  pics.push(item.DrawingID);
-                }
-              });
-              pics.forEach(function (drawingID) {
-                tasks.push(function () {
-                  return remote.Project.getDrawing(drawingID).then(function () {
-                    dbpics.addOrUpdate({
-                      _id: drawingID
-                    })
-                  });
-                })
-              });
-              resolve(result);
+          return $q(function (resolve, reject) {
+            return xhscService.downloadPics(regionID,null,filter).then(function (t) {
+              t.forEach(function (m) {
+                tasks.push(m);
+              })
+              resolve();
+            }).catch(function () {
+              reject();
             });
           })
         }
@@ -126,28 +110,6 @@
       ]
     }
 
-
-    function InspectionZjTask(t, AcceptanceItemID, AreaID, InspectionId) {
-      t.push(function () {
-        return remote.Procedure.InspectionPoint.query(InspectionId, AcceptanceItemID, AreaID)
-      })
-      t.push(function (tasks, down) {
-        return remote.Procedure.InspectionCheckpoint.query(AcceptanceItemID, AreaID, InspectionId).then(function (result) {
-          result.data.forEach(function (p) {
-            tasks.push(function () {
-              return remote.Procedure.InspectionProblemRecord.query(p.CheckpointID).then(function (result) {
-                result.data.forEach(function (r) {
-                  tasks.push(function () {
-                    return remote.Procedure.InspectionProblemRecordFile.query(r.ProblemRecordID).then(function (result) {
-                    })
-                  })
-                })
-              })
-            });
-          });
-        })
-      });
-    }
 
     vm.downloadys = function (item) {
       return api.setNetwork(0).then(function () {
@@ -352,17 +314,6 @@
       vm.OUType=profile.ouType;
     });
 
-    // vm.MemberType = [];
-    // api.setNetwork(0).then(function () {
-    //   remote.profile().then(function (r) {
-    //     if (r.data && r.data.Role) {
-    //       vm.role = r.data.Role.MemberType === 0 || r.data.Role.MemberType ? r.data.Role.MemberType : -100;
-    //       vm.OUType = r.data.Role.OUType === 0 || r.data.Role.OUType ? r.data.Role.OUType : -100;
-    //       vm.MemberType.push(vm.role);
-    //       vm.bodyFlag = vm.role;
-    //     }
-    //   });
-    // })
 
     function load() {
       $q.all([
