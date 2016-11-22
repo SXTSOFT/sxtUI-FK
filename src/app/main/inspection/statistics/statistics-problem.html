@@ -1,0 +1,29 @@
+
+<md-tabs md-dynamic-height md-border-bottom>
+  <md-tab ng-click="vm.tab('')" label="全部">
+  </md-tab>
+  <md-tab ng-click="vm.tab('notclose')" label="未关闭">
+  </md-tab>
+  <md-tab ng-click="vm.tab('alreadyclosed')" label="已关闭">
+  </md-tab>
+  <md-tab ng-click="vm.tab('meestablish')" label="我创建的">
+  </md-tab>
+  </md-tabs>
+
+    <md-content layout="column"  style="background-color: #f5f5f5;">
+      <div layout="column" >
+      <md-card layout="row" style="min-height: 130px;" flex ng-repeat="item in vm.data | filter:vm.data.type">
+        <md-card-title class="p-0 m-0" style="background-color: white;">
+          <md-card-title-text>
+            <div class="p-10" layout="row" layout-align="space-between center" style="color: #888888"><div style="white-space: nowrap" class="mr-10">{{item.datatime}}</div><div>{{item.title}}</div></div>
+            <md-divider></md-divider>
+            <div class="p-10" layout="row" layout-align="space-between center" ng-click="vm.qdetail(item)"><div class="mr-10"  style="max-height:50px;overflow: hidden;line-height: 25px;">{{item.content}}</div>
+              <div><md-icon md-font-icon="icon-chevron-right"></md-icon></div>
+            </div>
+            <md-divider></md-divider>
+            <span class="p-10">责任单位:{{item.responsibilityunit}}</span>
+          </md-card-title-text>
+        </md-card-title>
+        </md-card>
+      </div>
+</md-content>

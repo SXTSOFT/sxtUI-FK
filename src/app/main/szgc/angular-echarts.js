@@ -12,7 +12,12 @@ function getLinkFunction($http, theme, util, type) {
         var chartEvent = {};
         function getSizes(config) {
             width = config.width || parseInt(attrs.width) || $(window).width() || 320;
-            height = config.height || parseInt(attrs.height) || parentHeight || 240;
+          if(config.xyExchange){
+            height = config.height || parseInt(attrs.height) || $(window).height()+40|| 240;
+          }else{
+            height = config.height || parseInt(attrs.height) || $(window).height()|| 240;
+          }
+
             ndWrapper.style.width = width + 'px';
             ndWrapper.style.height = height + 'px';
         }
@@ -23,21 +28,56 @@ function getLinkFunction($http, theme, util, type) {
                 showYAxis: true,
                 showLegend: true
             }, config);
+          if(config.xyExchange){
+            var yAxis = angular.extend({
+              orient: 'top',
+              axisLine: { show: false }
+            }, angular.isObject(config.yAxis) ? config.yAxis : {});
+            var xAxis = angular.extend({
+              type: 'value',
+              orient: 'left',
+              scale: false,
+              axisLine: { show: false },
+              axisLabel: {
+                formatter: function (v) {
+                  return util.formatKMBT(v);
+                }
+              }
+            }, angular.isObject(config.xAxis) ? config.xAxis : {});
+            // basic config
+            var options = {
+              title: util.getTitle(data, config, type),
+              tooltip: util.getTooltip(data, config, type),
+              legend: util.getLegend(data, config, type),
+              toolbox: angular.extend({ show: false }, angular.isObject(config.toolbox) ? config.toolbox : {}),
+              yAxis: [ angular.extend(yAxis, util.getAxisTicks(data, config, type)) ],
+              xAxis: [ xAxis ],
+              dataZoom:[
+                {
+                  type: 'inside',
+                  show:true,
+                  start: 50,
+                  end: 100
+                }
+              ],
+              series: util.getSeries(data, config, type)
+            };
+          }else {
             var xAxis = angular.extend({
                     orient: 'top',
                     axisLine: { show: false }
-                }, angular.isObject(config.xAxis) ? config.xAxis : {});
+                }, angular.isObject(config.yAxis) ? config.yAxis : {});
             var yAxis = angular.extend({
                     type: 'value',
                     orient: 'right',
-                    scale: false,
+                    scale: true,
                     axisLine: { show: false },
                     axisLabel: {
                         formatter: function (v) {
                             return util.formatKMBT(v);
                         }
                     }
-                }, angular.isObject(config.yAxis) ? config.yAxis : {});
+                }, angular.isObject(config.xAxis) ? config.xAxis : {});
             // basic config
             var options = {
                     title: util.getTitle(data, config, type),
@@ -56,6 +96,7 @@ function getLinkFunction($http, theme, util, type) {
                     ],
                     series: util.getSeries(data, config, type)
                 };
+          }
             if (!config.showXAxis) {
                 angular.forEach(options.xAxis, function (axis) {
                     axis.axisLine = { show: false };
@@ -613,7 +654,7 @@ angular.module('angular-echarts.theme').factory('blue', function () {
             type:'inside',
           show:true// 手柄颜色
         },
-        grid: { borderWidth: 0 },
+        grid: { borderWidth: 0,containLabel: true },
         // 类目轴
         categoryAxis: {
             axisLine: {
@@ -853,7 +894,7 @@ angular.module('angular-echarts.theme').factory('dark', function () {
             show:true// 手柄颜色
         },
         // 网格
-        grid: { borderWidth: 0 },
+        grid: { borderWidth: 0,containLabel: true },
         // 类目轴
         categoryAxis: {
             axisLine: {
@@ -1167,7 +1208,7 @@ angular.module('angular-echarts.theme').factory('green', function () {
             show:true,
             handleColor: '#408829'    // 手柄颜色
         },
-        grid: { borderWidth: 0 },
+        grid: { borderWidth: 0 ,containLabel: true},
         // 类目轴
         categoryAxis: {
             axisLine: {
@@ -1402,7 +1443,7 @@ angular.module('angular-echarts.theme').factory('infographic', function () {
             handleColor: '#27727B'
         },
         // 网格
-        grid: { borderWidth: 0 },
+        grid: { borderWidth: 0,containLabel: true },
         // 类目轴
         categoryAxis: {
             axisLine: {
@@ -1697,7 +1738,7 @@ angular.module('angular-echarts.theme').factory('macarons', function () {
             handleColor: '#008acd'    // 手柄颜色
         },
         // 网格
-        grid: { borderColor: '#eee' },
+        grid: { borderColor: '#eee',containLabel: true },
         // 类目轴
         categoryAxis: {
             axisLine: {
@@ -1991,7 +2032,7 @@ angular.module('angular-echarts.theme').factory('red', function () {
           show:true,
             handleColor: '#d8361b'    // 手柄颜色
         },
-        grid: { borderWidth: 0 },
+        grid: { borderWidth: 0 ,containLabel: true},
         // 类目轴
         categoryAxis: {
             axisLine: {
@@ -2198,7 +2239,7 @@ angular.module('angular-echarts.theme').factory('shine', function () {
           show:true,
             handleColor: '#005eaa'    // 手柄颜色
         },
-        grid: { borderWidth: 0 },
+        grid: { borderWidth: 0 ,containLabel: true},
         // 类目轴
         categoryAxis: {
             axisLine: {

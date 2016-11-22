@@ -13,7 +13,9 @@
     });
 
   /**@ngInject*/
-  function inspectionQdetailController(){
+  function inspectionQdetailController($stateParams){
+
     var vm = this;
+    alert($stateParams.id);
   }
 })();

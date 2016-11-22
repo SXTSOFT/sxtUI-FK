@@ -46,7 +46,7 @@
     utils.onCmd($scope,['cjwt','csb','prev'],function(cmd,e){
       switch (cmd){
         case 'csb':
-              //$state.go('app.inspection.csb')
+              $state.go('app.meterreading.page')
               break;
         case 'cjwt':
           $state.go('app.inspection.cjwt');

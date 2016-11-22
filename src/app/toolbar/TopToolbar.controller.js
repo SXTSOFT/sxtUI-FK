@@ -51,12 +51,14 @@
               $window.history.go(-1);
               break;
             case 'swap':
+
               $rootScope.shell.swap.forEach(function(item){
                 item.active = false;
               });
               e.arg.active = true;
               break;
           }
+
         }
       }
       $scope.goBack = function() {

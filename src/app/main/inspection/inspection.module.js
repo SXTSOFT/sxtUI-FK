@@ -5,7 +5,7 @@
   'use strict';
 
   angular
-    .module('app.inspection',['app.core','angular-echarts','angularFileUpload'])
+    .module('app.inspection',['app.core','angularFileUpload','gridshore.c3js.chart','angular-chartist'])
     .config(config);
 
   /**@ngInject*/
@@ -33,6 +33,54 @@
         noBack:true,
         template:'<inspection-desktop layout="column" flex></inspection-desktop>'
       })
+      .state('app.statistics', {
+        abstract:true,
+        views:{
+          'content@app':{
+            template : '<ui-view layout="column" flex></ui-view>'
+          }
+        }
+      })
+      .state('app.statistics.problem', {
+        url:'/statistics',
+        title:'',
+        shell:{
+          yfbar:true,
+          title:false,
+          swap:[
+            {active:false,label:'任务',type:true},
+            {active:true,label:'问题',type:false}
+          ]
+        },
+        noBack:true,
+        template:'<statistics-problem layout="column" flex></statistics-problem>'
+      })
+      .state('app.statistics.problempage', {
+        url:'/problempage',
+        title:'问题统计',
+        noBack:false,
+        template:'<statistics-problempage layout="column" flex></statistics-problempage>'
+      })
+      .state('app.statistics.taskpage', {
+        url:'/taskage',
+        title:'任务统计',
+        noBack:false,
+        template:'<statistics-taskpage layout="column" flex></statistics-taskpage>'
+      })
+      .state('app.meterreading', {
+        abstract:true,
+        views:{
+          'content@app':{
+            template : '<ui-view layout="column" flex></ui-view>'
+          }
+        }
+      })
+      .state('app.meterreading.page', {
+        url:'/meterreading',
+        title:'抄水电表',
+        noBack:false,
+        template:'<meterreading-page layout="column" flex></meterreading-page>'
+      })
       .state('app.inspection.check', {
         url:'/check',
         title:'',
@@ -44,7 +92,7 @@
           csb:true,
           cjwt:true
         },
-        noBack:true,
+        noBack:false,
         template:'<inspection-check layout="column" flex></inspection-check>'
       })
       .state('app.inspection.cjwt', {
@@ -56,7 +104,7 @@
           prevIcon:true,
           title:false
         },
-        noBack:true,
+        noBack:false,
         template:'<inspection-cjwt layout="column" flex></inspection-cjwt>'
       })
       //.state('app.inspection.csb', {
@@ -73,7 +121,7 @@
       //  template:'<inspection-csb layout="column" flex></inspection-csb>'
       //})
       .state('app.inspection.detail', {
-        url:'/detail',
+        url:'/detail/{id}',
         title:'问题详情',
         hideFootbar:true,
         shell:{
@@ -81,7 +129,7 @@
           prevIcon:true,
           title:false
         },
-        noBack:true,
+        noBack:false,
         template:'<inspection-qdetail layout="column" flex></inspection-qdetail>'
       })
   }
