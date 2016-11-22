@@ -314,14 +314,20 @@
             focusOnOpen: true,
             attachTo:angular.element('#content')
           });
-          api.plan.BuildPlan.post(b).then(function(r){
+          f();
+        var data;
+        vm.formWizard.Id?data=angular.extend({
+          BuildingPlanId:vm.formWizard.Id
+        },b):data=b;
+        vm.currentRoles = null;
+        (vm.formWizard.Id?api.plan.BuildPlan.update(vm.formWizard.Id,data):api.plan.BuildPlan.post(data)).then(function(r){
             if(!vm.formWizard.Id)
               vm.formWizard.Id = r.data.Id;
             api.plan.BuildPlan.getBuildingPlanRoles(r.data.Id).then(function (r) {
               vm.currentRoles = r.data.Items;
-              parent.closePanel1();
-              f();
             });
+            parent.closePanel1();
+           // f();
           },function(err){
             parent.closePanel1();
             utils.alert(err.data||'提交失败');
@@ -386,50 +392,43 @@
     vm.sendForm = function(fn){
       var resets = [];
       var p = vm;
-      $mdDialog.show({
-        controller:['$scope',function($scope){
-          p.hide = function(){
-            $mdDialog.cancel();
-          }
-        }],
-        template: '<md-dialog style="background-color: transparent;box-shadow: none;"><md-dialog-content ><div layout="row" layout-align="center center"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div><div layout="row" layout-align="center center">正在生成，请稍后...</div></md-dialog-content></md-dialog>',
-        parent: angular.element('#content'),
-        clickOutsideToClose:false,
-        hasBackdrop:true,
-        escapeToClose: true,
-        focusOnOpen: true
-      })
+      if(!vm.currentRoles.length){
+        utils.alert('未配置角色');
+        return;
+      }
+        $mdDialog.show({
+          controller:['$scope',function($scope){
+            p.hide = function(){
+              $mdDialog.cancel();
+            }
+          }],
+          template: '<md-dialog style="background-color: transparent;box-shadow: none;"><md-dialog-content ><div layout="row" layout-align="center center"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div><div layout="row" layout-align="center center">正在生成，请稍后...</div></md-dialog-content></md-dialog>',
+          parent: angular.element('#content'),
+          clickOutsideToClose:false,
+          hasBackdrop:true,
+          escapeToClose: true,
+          focusOnOpen: true
+        })
+
+
       vm.currentRoles&&vm.currentRoles.forEach(function (r) {
         resets.push(api.plan.BuildPlan.buildingRolesReset(vm.formWizard.Id,{
           RoleId:r.RoleId,
           UserIds:r.Users
         }));
       });
-
-      $q.all(resets).then(function (rs) {
-        //生成计划
+        $q.all(resets).then(function (rs) {
+          //生成计划
           utils.alert('生成计划完成').then(function(){
             $state.go('app.plan.gantts');
             //fn();
             //p.hide();
           })
+        },function(err){
+          console.log(err)
+        });
 
-        //api.plan.BuildPlan.generate(vm.formWizard.Id).then(function (r) {
-        //  //成生完成
-        //  if(r.status==200|| r.data){
-        //    utils.alert('创建计划成功').then(function(){
-        //      fn();
-        //      p.hide();
-        //    })
-        //  }
-        //},function(err){
-        //  utils.alert(err.data||'创建计划成功').then(function(){
-        //    p.hide();
-        //  })
-        //})
-      },function(err){
-        console.log(err)
-      });
+
     }
     vm.change = function(){
       vm.inputChange = true;

@@ -111,6 +111,10 @@
         url:'/personplan',
         template:'<plan-personplan layout="column" flex></plan-personplan>'
       })
+      .state('app.plan.report',{
+        url:'/report',
+        template:'<plan-report layout="column" flex></plan-report>'
+      })
     msNavigationServiceProvider.saveItem('plan', {
       title: '计划管理',
       group: true,
@@ -139,11 +143,12 @@
       state:'app.plan.personplan',
       weight: 1
     });
-    //msNavigationServiceProvider.saveItem('plan.table', {
-    //  title: '报表管理',
-    //  icon: 'icon-table',
-    //  weight: 1
-    //});
+    msNavigationServiceProvider.saveItem('plan.report', {
+      title: '报表管理',
+      icon: 'icon-table',
+      state: 'app.plan.report',
+      weight: 1
+    });
     msNavigationServiceProvider.saveItem('plan.template.template', {
       title: '模板',
       state: 'app.plan.template.list',

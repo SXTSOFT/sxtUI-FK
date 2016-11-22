@@ -9,43 +9,54 @@
     </div>
   </md-toolbar>
 <md-content layout="column" flex ms-scroll>
-  <div layout="row">
-    <div flex="80">
-      <table class="simple">
-        <thead>
-        <tr><th style="width: 25px;min-width: 25px"></th>
-          <th>流程</th>
-          <th>计划</th>
-          <th>实际</th>
-          <th>状态</th>
-          <th>操作</th>
-        </tr></thead>
-        <tbody>
-        <tr ng-repeat="flow in vm.flows">
-          <td style="height: 44px;">
-            {{$index+1}}、
-          </td>
-          <td >
-            {{flow.Name}}
-          </td>
-          <td>{{flow.ScheduledStartTime|date:'yyyy-MM-dd'}}~{{flow.ScheduledEndTime|date:'yyyy-MM-dd'}}</td>
-          <td style="color:#1f6db4">{{flow.ActualStartTime|date:'yyyy-MM-dd'}}~{{flow.ActualEndTime|date:'yyyy-MM-dd'}}</td>
-          <td>{{flow.switch==0?'关闭':'开启'}}</td>
-          <td>
-            <md-switch class="m-0" ng-disabled="flow.State==2||!flow.switch&&flow.openFlag" ng-model="flow.switch" ng-change="vm.changeState(flow,flow.switch)">{{flow.switch==0?'关闭':'开启'}}</md-switch>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="5" ng-if="!vm.flows.length">无流程信息</td>
-        </tr>
-        </tbody>
-      </table>
+  <div ng-switch="vm.currentIndex">
+    <div layout="row" ng-switch-default>
+      <div flex="80">
+        <table class="simple">
+          <thead>
+          <tr><th style="width: 25px;min-width: 25px"></th>
+            <th>流程</th>
+            <th>计划</th>
+            <th>实际</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr></thead>
+          <tbody>
+          <tr ng-repeat="flow in vm.flows">
+            <td style="height: 44px;">
+              {{$index+1}}、
+            </td>
+            <td >
+              {{flow.Name}}
+            </td>
+            <td>{{flow.ScheduledStartTime|date:'yyyy-MM-dd'}}~{{flow.ScheduledEndTime|date:'yyyy-MM-dd'}}</td>
+            <td style="color:#1f6db4">{{flow.ActualStartTime|date:'yyyy-MM-dd'}}~{{flow.ActualEndTime|date:'yyyy-MM-dd'}}</td>
+            <td>{{flow._State}}</td>
+            <td style="color:#f00">
+              <md-button ng-click="vm.openTask(flow)" ng-if="flow.State==1">开启</md-button>
+              <md-button ng-click="vm.closeTask(flow)" ng-if="flow.State!=1" ng-disabled="flow.State==2||flow.closeF ==true" >关闭</md-button>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="5" ng-if="!vm.flows.length">无流程信息</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div flex="20">
+        <div style="height: 60px"></div>
+        <canvas id="gitGraph" ng-show="vm.hasFlow"></canvas>
+      </div>
     </div>
-    <div flex="20">
-      <div style="height: 60px"></div>
-      <canvas id="gitGraph" ng-show="vm.hasFlow"></canvas>
+    <div ng-switch-when="end">
+      <md-input-container class="md-block">
+        <label>关闭原因</label>
+        <input type="text">
+      </md-input-container>
+      <div layout="row" layout-align="end center">
+        <md-button ng-click="vm.endTask()">确定</md-button>
+      </div>
     </div>
-  </div>
   <div ng-show="!vm.hasFlow">
     <md-list style="font-size:14px;">
       <md-list-item>
@@ -69,7 +80,7 @@
       <md-button ng-click="vm.toStopTask()" class="md-primary md-raised md-mini">手工关闭</md-button>
     </div>
   </div>
-
+  </div>
   <!--<md-sidenav layout="column" class="md-sidenav-right md-whiteframe-4dp white-bg" style="max-width: 550px;width:600px" md-component-id="right">-->
     <!--<md-tabs md-border-bottom flex >-->
       <!--<md-tab label="流程信息" ng-disabled="!vm.current">-->
