@@ -1,4 +1,3 @@
-#toptoolbar{
 .topbar{
   //padding:0 10px;
   //height: 50px;
@@ -65,7 +64,7 @@
   }
 }
 
-}
+
 .is-tabs{
   font-size: 14px;
   >div{
@@ -1743,4 +1742,41 @@ a.leaflet-draw-draw-color:hover div{
 }
 .leaflet-container{
   background-color:#ffffff;
+}
+
+#meter {
+  md-datepicker{
+  padding-right: 0px;
+  margin-right: 0px;
+ input{
+   text-align: right;
+ }
+}little-btnr{
+    border-bottom-width: 0 !important;
+  }
+  .md-button.md-icon-button{
+    display: none;
+  }
+}
+
+
+#statistic{
+  md-tab-content{
+    top: -40px;
+    left: -20px;
+  }
+  md-tabs{
+    min-height: 400px;
+  }
+  md-datepicker{
+    padding-right: 0px;
+    margin-right: 0px;
+    input{
+      text-align: left;
+    }
+  }
+  .md-datepicker-input-container{
+    border-bottom-width: 0 !important;
+  }
+
 }

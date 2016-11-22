@@ -6,9 +6,8 @@
     </h2>
   </div>
   <md-button flex="none" class="md-icon-button" ng-show="!$root.noBack" ng-click="goBack();" >
-    <md-icon md-font-icon="icon-chevron-left" style="color:white;"></md-icon>
+    <md-icon md-font-icon="icon-chevron-left" style="color:white;">{{$root.icontitle}}</md-icon>
   </md-button>
-  <md-button flex="none" class="leftbar" ng-click="vm.cmd('prev')" ng-if="$root.shell.prevIcon"><md-icon ng-if="$root.shell.prevIcon" flex="none" md-font-icon="icon-chevron-left"></md-icon></md-button>
   <span class="toptitle" flex="none" ng-if="!vm.networking&&$root.shell.title">{{$root.shell.title}}</span>
   <div class="swap-btn" ng-if="!vm.networking&&$root.shell.swap">
     <div layout="row" layout-align="space-between center" style="text-align: center;line-height: 44px;font-size:16px;overflow: hidden;">
@@ -16,9 +15,9 @@
     </div>
   </div>
   <span flex></span>
-  <md-button flex="none" class="little-btn" ng-if="$root.shell.swap" ng-click="vm.cmd('tj')">统计</md-button>
-  <md-button flex="none" class="little-btn" ng-if="$root.shell.csb&&!vm.networking" ng-click="vm.cmd('csb')">抄水电表</md-button>
-  <md-button flex="none" class="little-btn" ng-if="$root.shell.cjwt" ng-click="vm.cmd('cjwt')">问题库</md-button>
+  <md-button flex="none" class="little-btn"  ng-if="$root.shell.swap" ng-click="vm.cmd('tj')">统计</md-button>
+  <md-button flex="none" class="little-btn"  ng-if="$root.shell.csb&&!vm.networking" ng-click="vm.cmd('csb')">抄水电表</md-button>
+  <md-button flex="none"class="little-btn" ng-if="$root.shell.cjwt" ng-click="vm.cmd('cjwt')">问题库</md-button>
   <md-button flex="none" class="little-btn" ng-if="$root.shell.next" ng-click="vm.cmd('next')">{{$root.shell.next}}</md-button>
   <md-button flex="none" style="margin:0;width:32px;" class="md-icon-button" aria-label="net work" ng-click="vm.setNetwork()">
     <md-icon md-svg-icon="assets/images/online.svg" ng-if="vm.networkState==0" ></md-icon>

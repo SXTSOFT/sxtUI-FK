@@ -1,0 +1,15 @@
+<md-content layout="column" id="meter">
+  <div class="p-10" layout="row" style="height: 40px;" layout-align="space-between center"><div style="white-space: nowrap;" flex="5" class="mr-10">水表</div>
+  <div flex="95" style="text-align: right;"><input type="number"  value="" style="text-align: right;width: 95%;border: red 0px solid;"/>方</div></div>
+  <md-divider></md-divider>
+  <div class="p-10" layout="row"  style="height: 40px;" layout-align="space-between center"><div style="white-space: nowrap;" flex="5" class="mr-10">电表</div>
+    <div flex="95" style="text-align: right;"><input type="number" value="请输入数字"  style="text-align: right;width: 95%;border: red 0px solid;"/>度</div></div>
+  <md-divider></md-divider>
+  <div class="p-10" layout="row" style="height: 40px;" layout-align="space-between center"><div style="white-space: nowrap;" class="mr-10">抄表人</div>
+    <div  style="color: #888888;">严小康</div></div>
+  <md-divider></md-divider>
+  <div class="p-10" layout="row" style="height: 40px;" layout-align="space-between center"><div style="white-space: nowrap;" flex="none" class="mr-10">抄表时间</div>
+    <div flex style="text-align: right;"> <md-datepicker ng-model="vm.myDate" md-placeholder="Enter date"
+                                  md-open-on-focus style="text-align: right;"></md-datepicker></div></div>
+  <md-divider></md-divider>
+</md-content>

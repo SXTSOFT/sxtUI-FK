@@ -1,0 +1,31 @@
+
+
+    <md-content layout="column" flex>
+      <div class="card md-whiteframe-4dp" >
+        <chartist class="ct-chart ct-golden-section" chartist-data="vm.pieChart.data" chartist-chart-type="Pie" chartist-chart-options="vm.pieChart.options" chartist-responsive-options="vm.pieChart.responsiveOptions"></chartist>
+      </div>
+      <div >
+        <md-tabs  md-border-bottom >
+          <md-tab ng-click="vm.tab('notclose')"  label="未开始({{vm.notclose}})">
+            <md-content flex ng-repeat="item in vm.data | filter:vm.data.type">
+            <div class="p-10" layout="row" layout-align="space-between center"><div style="white-space: nowrap" class="mr-10">{{item.title}}</div><div>{{item.state}}</div></div>
+            <md-divider></md-divider>
+              </md-content>
+          </md-tab>
+          <md-tab ng-click="vm.tab('alreadyclosed')" label="进行中({{vm.alreadyclosed}})">
+            <md-content flex ng-repeat="item in vm.data | filter:vm.data.type">
+              <div class="p-10" layout="row" layout-align="space-between center"><div style="white-space: nowrap" class="mr-10">{{item.title}}</div><div>{{item.state}}</div></div>
+              <md-divider></md-divider>
+            </md-content>
+            </md-tab>
+          <md-tab ng-click="vm.tab('complete')" label="已完成({{vm.complete}})">
+            <md-content flex ng-repeat="item in vm.data | filter:vm.data.type">
+              <div class="p-10" layout="row" layout-align="space-between center"><div style="white-space: nowrap" class="mr-10">{{item.title}}</div><div>{{item.state}}</div></div>
+              <md-divider></md-divider>
+            </md-content>
+        </md-tabs>
+        </md-tabs>
+
+      </div>
+
+</md-content>
