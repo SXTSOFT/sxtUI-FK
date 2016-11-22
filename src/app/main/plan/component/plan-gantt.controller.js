@@ -503,6 +503,17 @@
           task.ActualStartTime = time;
           task._State='开启';
           task.State =4;
+          //console.log(r)
+          r.data.forEach(function(_r){
+            var f=vm.flows.find(function(t){
+              return t.TaskFlowId == _r.Id;
+            })
+            if(f){
+              f.ActualStartTime = _r.ActualStartTime;
+              f._State=setSatus(_r.State);
+              f.State = _r.State;
+            }
+          })
         });
       }
       vm.closeTask = function(task){

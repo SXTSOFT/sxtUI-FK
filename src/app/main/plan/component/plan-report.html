@@ -14,58 +14,58 @@
         <th>2016-12-12</th>
       </tr>
       <tr>
-        <th style="width: 100px">
+        <th style="width: 10%">
           公司
         </th>
-        <th style="width: 100px">
+        <th style="width: 10%">
           项目
         </th>
-        <th style="width: 100px">
+        <th style="width: 10%">
           标段
         </th>
-        <th>
+        <th style="width:10%">
           节点
         </th>
-        <th>
+        <th style="width:10%">
           计划完成时间
         </th>
-        <th>
+        <th style="width:10%">
           实际完成时间
         </th>
-        <th>
+        <th style="width:10%">
           状态
         </th>
-        <th>
+        <th style="width:10%">
           延期天数
         </th>
-        <th>
+        <th style="width:10%">
           下一节点
         </th>
-        <th>
+        <th style="width:10%">
           下一节点工期
         </th>
       </tr>
     </thead>
     <tbody ng-repeat="d in vm.data.CompanyStatisticss">
-      <tr ng-repeat="p in d.ProjectStatisticss" style="width: 100px">
+      <tr ng-repeat="p in d.ProjectStatisticss" style="width:10%">
         <td rowspan="{{d.ProjectStatisticss.length}}" ng-if="$index==0">
           {{d.CompanyName}}
         </td>
-        <td colspan="9">
+        <td colspan="9" style="width: 90%">
           <table style="width: 100%" class="inner">
             <tr ng-repeat="s in p.SectionStatisticss">
-              <td rowspan="{{p.SectionStatisticss.length}}" ng-if="$index==0" style="width: 100px">{{p.ProjectName}}</td>
-              <td colspan="8">
+              <td rowspan="{{p.SectionStatisticss.length}}" ng-if="$index==0" style="width: 11.1%">{{p.ProjectName}}</td>
+              <td colspan="8" style="width: 88.9%">
                 <table width="100%" class="inner">
                   <tr ng-repeat="t in s.TaskStatisticss">
-                    <td rowspan="{{s.TaskStatisticss.length}}" ng-if="$index==0" style="width: 100px">{{s.SectionName}}</td>
-                    <td>{{t.TaskName}}</td>
-                    <td>{{t.ScheduledEndTime|date:'yyyy-MM-dd'}}</td>
-                    <td>{{t.ActualEndTime|date:'yyyy-MM-dd'}}</td>
-                    <td>{{t.CompleteStatus}}</td>
-                    <td>{{t.DelayDays}}</td>
-                    <td>{{t.NextTaskName}}</td>
-                    <td>{{t.NextTaskDuration}}</td>
+                    <td rowspan="{{s.TaskStatisticss.length}}" ng-if="$index==0" style="width: 10%">{{s.SectionName}}</td>
+                    <td style="width: 10%">{{t.TaskName}}</td>
+                    <td style="width: 10%">{{t.ScheduledEndTime|date:'yyyy-MM-dd'}}</td>
+                    <td style="width: 10%">{{t.ActualEndTime|date:'yyyy-MM-dd'}}</td>
+                    <td style="width: 10%">{{t.CompleteStatus}}</td>
+                    <td style="width: 10%">{{t.DelayDays}}</td>
+                    <td style="width: 10%">{{t.NextTaskName}}</td>
+                    <td style="width: 10%">{{t.NextTaskDuration}}</td>
                   </tr>
                 </table>
               </td>
