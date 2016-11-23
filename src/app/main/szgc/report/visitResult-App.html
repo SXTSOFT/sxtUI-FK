@@ -14,27 +14,24 @@
       <md-button type="submit" flex ng-click="vm.seach()"  class="md-raised md-primary"> 确定  </md-button>
     </div>
   </div>
-  <div class="simple-table-container md-whiteframe-4dp" ng-if="vm.searchResult">
-    <table class="simple" ms-responsive-table>
+  <div layout="row"  ng-if="vm.searchResult">
+  <div flex ng-repeat="r in vm.results" >
+    <table style="width: 100%; border-collapse: collapse;">
       <thead>
       <tr>
-        <th>项目</th>
-        <th>负责人</th>
-        <th style="text-align: center;">访问次数</th>
+        <th style="padding:6px 4px">项目</th>
+        <th style="padding:6px 4px">负责人</th>
+        <th style="padding:6px 4px">次数</th>
       </tr>
       </thead>
-      <tfoot>
-      <tr>
-        <td></td>
-      </tr>
-      </tfoot>
       <tbody>
-      <tr ng-repeat="item in vm.data">
-        <td>{{item.project}}</td>
-        <td>{{item.user}}</td>
-        <td style="text-align: center;">{{item.times}}</td>
+      <tr ng-repeat="item in r">
+        <td style="padding:6px 4px">{{item.project}}</td>
+        <td style="padding:6px 4px">{{item.user}}</td>
+        <td style="padding:6px 4px;text-align: center;">{{item.times}}</td>
       </tr>
       </tbody>
     </table>
+  </div>
   </div>
 </md-content>

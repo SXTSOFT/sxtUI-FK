@@ -45,6 +45,12 @@
       { project: '壹海城', user: '沈爱民', times: 0 },
       { project: '公园里', user: '宋细多', times: 0 }
     ];
+    var r2 = [];
+    initData.forEach(function (t,i) {
+      var i1 = i%2,r = r2[i1] = r2[i1]||[];
+      r.push(t);
+    });
+    vm.results = r2;
 
 
     api.szgc.projectMasterListService.getVisitResult('?fromDate=' + dateFilter(vm.sDate, 'yyyy-MM-dd') + '&toDate=' + dateFilter(vm.eDate, 'yyyy-MM-dd'))

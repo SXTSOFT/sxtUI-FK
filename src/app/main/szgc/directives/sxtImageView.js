@@ -106,7 +106,10 @@
               def =false;
             },
             viewed:function () {
-              viewer.view(defaultIndex);
+              if(defaultIndex) {
+                viewer.view(defaultIndex);
+                defaultIndex = 0;
+              }
             },
             build:function(){
 
