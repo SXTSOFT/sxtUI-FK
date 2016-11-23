@@ -24,7 +24,9 @@
     //所有全局任务
     var globalTask = [
       function () {
-        return remote.Procedure.queryProcedure().then(function (r) {
+        return remote.safe.getSecurityItem.cfgSet({
+          offline:true
+        })().then(function (r) {
           if (r.data && r.data.length) {
             r.data.forEach(function (k) {
               if (k.SpecialtyChildren.length) {
@@ -37,7 +39,7 @@
             });
           }
           return r;
-        })
+      });
       }
     ];
     //项目包
@@ -120,117 +122,6 @@
       ]
     }
 
-
-    function InspectionZjTask(t, AcceptanceItemID, AreaID, InspectionId) {
-      t.push(function () {
-        return remote.Procedure.InspectionPoint.query(InspectionId, AcceptanceItemID, AreaID, "InspectionPoint_zj")
-      })
-      t.push(function (tasks, down) {
-        return remote.Procedure.InspectionCheckpoint.query(AcceptanceItemID, AreaID, InspectionId, "InspectionCheckpoint_zj").then(function (result) {
-          result.data.forEach(function (p) {
-            tasks.push(function () {
-              return remote.Procedure.InspectionProblemRecord.query(p.CheckpointID, "InspectionProblemRecord_zj").then(function (result) {
-                result.data.forEach(function (r) {
-                  tasks.push(function () {
-                    return remote.Procedure.InspectionProblemRecordFile.query(r.ProblemRecordID, "", "InspectionProblemRecordFile_zj").then(function (result) {
-                    })
-                  })
-                })
-              })
-            });
-          });
-        })
-      });
-    }
-
-    vm.downloadzj = function (item, evt) {
-      if (evt) {
-        evt.stopPropagation();
-      }
-      return api.setNetwork(0).then(function () {
-        return $q(function (resolve, reject) {
-          $mdDialog.show({
-            controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
-              $scope.item = item;
-              var tasks = [].concat(globalTask)
-                .concat(item.isOffline ? [] : projectTask(item.RegionID))
-                .concat(function () {
-                  return remote.Project.queryAllBulidings(item.RegionID.substr(0,5));
-                })
-                .concat([
-                  function (tasks) {
-                    var group = [];
-                    var inspections = [];
-                    return remote.Procedure.getRegionStatusEx(item.ProjectID, "8", null, "project_status_zj").then(function (result) {
-                      result.data.forEach(function (item) {
-                        if (item.AcceptanceItemID && item.AreaId && item.InspectionId && !group.find(function (k) {
-                            return k.AcceptanceItemID == item.AcceptanceItemID && k.AreaId == item.AreaId && k.InspectionId == item.InspectionId
-                          })) {
-                          group.push([item.AcceptanceItemID, item.AreaId, item.InspectionId]);
-                        }
-                        if (item.AcceptanceItemID && item.AreaId && item.InspectionId && !inspections.find(function (k) {
-                            return k.InspectionId == item.InspectionId;
-                          })) {
-                          inspections.push(item.InspectionId);
-                        }
-                      })
-                      inspections.forEach(function (id) {
-                        tasks.push(function () {
-                          return remote.Project.getInspectionList(id, "Inspection_zj");
-                        });
-                      });
-                      group.forEach(function (data) {
-                        InspectionZjTask(tasks, data[0], data[1], data[2]);
-                      })
-                    })
-                  }
-                ])
-              api.task(tasks, {
-                event: 'downloadzj',
-                target: item
-              })(null, function () {
-                item.percent = item.current = item.total = null;
-                item.isOffline = true;
-                $mdDialog.hide();
-                utils.alert('下载完成');
-                item.isComplete = true;
-                return remote.offline.create({Id: 'zj' + item.RegionID});
-                resolve();
-              }, function () {
-                item.percent = item.current = item.total = null;
-                $mdDialog.cancel();
-                utils.alert('下载失败,请检查网络');
-                reject()
-              })
-            }],
-            template: '<md-dialog aria-label="正在下载基础数据"  ng-cloak><md-dialog-content> <md-progress-circular md-diameter="28" md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
-            parent: angular.element(document.body),
-            clickOutsideToClose: false,
-            fullscreen: false
-          });
-        })
-      })
-    };
-
-    api.event('downloadzj', function (s, e) {
-      var project = vm.zj_project && vm.zj_project.find(function (item) {
-          return e.target.RegionID.indexOf(item.RegionID) > -1;
-        });
-      var current = project && project.Children && project.Children.find(function (item) {
-          return e.target.RegionID == item.RegionID;
-        })
-      if (current) {
-        switch (e.event) {
-          case 'progress':
-            current.percent = parseInt(e.percent * 100) + ' %';
-            current.current = e.current;
-            current.total = e.total;
-            break;
-          case 'success':
-        }
-      }
-    }, $scope);
-
     vm.downloadys = function (item) {
       return api.setNetwork(0).then(function () {
         return $q(function (resolve, reject) {
@@ -248,12 +139,9 @@
               }
               var tasks = [].concat(globalTask)
                 .concat(t)
-                .concat(function () {
-                  return remote.Project.queryAllBulidings(projectId);
-                })
                 .concat(InspectionTask(item))
                 .concat(function () {
-                  return remote.offline.create({Id: 'ys' + item.InspectionId});
+                  return remote.offline.create({Id: 'sefeYs' + item.InspectionId});
                 })
               api.task(tasks, {
                 event: 'downloadys',
@@ -321,7 +209,7 @@
                 .concat(InspectionTask(item))
                 .concat(rectificationTask(item))
                 .concat(function () {
-                  return remote.offline.create({Id: 'zg' + item.RectificationID});
+                  return remote.offline.create({Id: 'sefeZg' + item.RectificationID});
                 });
               api.task(tasks, {
                 event: 'downloadzg',
@@ -329,8 +217,6 @@
               })(null, function () {
                 item.percent = item.current = item.total = null;
                 item.isOffline = true;
-                remote.offline.create({Id: 'zg' + item.RectificationID});
-                //RectificationID
                 $mdDialog.hide();
                 utils.alert('下载完成');
                 resolve();
@@ -388,7 +274,7 @@
             if (angular.isArray(r.data)) {
               zg.forEach(function (k) {
                 if (r.data.find(function (m) {
-                    return m.Id == "zg" + k.RectificationID;
+                    return m.Id == "sefeZg" + k.RectificationID;
                   })) {
                   k.isOffline = true;
                 }
@@ -429,7 +315,7 @@
             if (angular.isArray(r.data)) {
               ys.forEach(function (k) {
                 if (r.data.find(function (m) {
-                    return m.Id == "ys" + k.InspectionId;
+                    return m.Id == "sefeYs" + k.InspectionId;
                   })) {
                   k.isOffline = true;
                 }
@@ -443,31 +329,14 @@
           });
         }
       });
-      remote.Project.getAllRegionWithRight_no_db("", 3).then(function (n) {
+      remote.Project.getAllRegionWithRight("", 3).then(function (n) {
         if (vm.yw == 2 || vm.yw == 0) {
           vm.z_isOver = true;
           if (!n || n.data.length == 0) {
             vm.isShowbg = true;
             return;
           }
-          remote.offline.query().then(function (r) {
-            vm.by_project = xhscService.buildMutilRegionTree(n.data, 1);
-            vm.zj_project = $.extend([], vm.by_project, true);
-
-
-            vm.zj_project.forEach(function (k) {
-              if (k.Children) {
-                k.Children.forEach(function (n) {
-                  if (r.data.find(function (m) {
-                      return m.Id == 'zj' + n.RegionID;
-                    })) {
-                    n.isComplete = true;
-                  }
-                })
-              }
-            });
-
-          })
+          vm.by_project = xhscService.buildMutilRegionTree(n.data, 1);
         }
       }).catch(function () {
         vm.z_isOver = true;

@@ -56,13 +56,29 @@
           })
         });
       },
-      getRegionTree: function (rootId, regionSize, rootType) {
+      getRegionTreesOnline: function (rootId, regionSize, rootType) {
         var self = this;
         return $q(function (resove, reject) {
           return remote.Project.getAllRegionWithRight_no_db(rootId, regionSize).then(function (r) {
             if (r && r.data.length > 0) {
               rootType = rootType ? rootType : 1;
               var data = self.buildMutilRegionTree(r.data, 1);
+              resove(data);
+              return;
+            }
+            resove(null);
+          }).catch(function (r) {
+            reject(null);
+          });
+        });
+      },
+      getRegionTreeOffline:function (rootId, regionSize, rootType) {
+        var self = this;
+        return $q(function (resove, reject) {
+          return remote.Project.getAllRegionWithRight(rootId, regionSize).then(function (r) {
+            if (r && r.data.length > 0) {
+              rootType = rootType ? rootType : 1;
+              var data = self.buildRegionTree(r.data, 1);
               resove(data);
               return;
             }

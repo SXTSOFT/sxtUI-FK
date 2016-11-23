@@ -14,67 +14,52 @@
   /**@ngInject*/
   function safe_civiliz_mainController(remote,xhUtils,$rootScope,utils,api,$q,$state,$scope,$mdDialog,db,$mdBottomSheet,xhscService){
     var vm = this;
-    var  dbpics=db('pics')
     vm.procedure=[];
     //所有全局任务
     var globalTask = [
       function () {
-        return remote.Procedure.queryProcedure().then(function(r){
-          if (r.data&& r.data.length){
-            r.data.forEach(function(k){
-              if (k.SpecialtyChildren.length){
-                k.SpecialtyChildren.forEach(function(m){
-                  if (m.WPAcceptanceList.length){
-                    vm.procedure=vm.procedure.concat(m.WPAcceptanceList);
+        return remote.safe.getSecurityItem.cfgSet({
+          offline:true
+        })().then(function (r) {
+          if (r.data && r.data.length) {
+            r.data.forEach(function (k) {
+              if (k.SpecialtyChildren.length) {
+                k.SpecialtyChildren.forEach(function (m) {
+                  if (m.WPAcceptanceList.length) {
+                    vm.procedure = vm.procedure.concat(m.WPAcceptanceList);
                   }
                 })
               }
             });
           }
           return r;
-        })
+        });
       }
     ];
     //项目包
-    function projectTask(projectId,areas,acceptanceItemID) {
+    //项目包
+    function projectTask(regionID, areas, acceptanceItemID) {
+      var projectId = regionID.substr(0, 5);
+      function  filter(item) {
+        return (!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
+          (!areas || areas.find(function (a) {
+            return a.AreaID == item.RegionId;
+          })) && vm.procedure.find(function (k) {
+            return k.AcceptanceItemID == item.AcceptanceItemID;
+          })
+      }
       return [
         function (tasks) {
-          return $q(function(resolve) {
-            var arr=[
-              remote.Project.getDrawingRelations(projectId),
-              dbpics.findAll()
-            ];
-            $q.all(arr).then(function(res){
-              var result=res[0],offPics=res[1].rows;
-              var pics = [];
-              result.data.forEach(function (item) {
-                if ((!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
-                  (!areas || areas.find(function (a) {
-                    return a.AreaID==item.RegionId;
-                  }))&&
-                  pics.indexOf(item.DrawingID) == -1&&!offPics.find(function(r){
-                    return r._id==item.DrawingID;
-                  })&&vm.procedure.find(function(k){
-                    return k.AcceptanceItemID==item.AcceptanceItemID;
-                  })) {
-                  pics.push(item.DrawingID);
-                }
-              });
-              pics.forEach(function (drawingID) {
-                tasks.push(function () {
-                  return remote.Project.getDrawing(drawingID).then(function(){
-                    dbpics.addOrUpdate({
-                      _id:drawingID
-                    })
-                  });
-                })
-              });
-              resolve(result);
+          return $q(function (resolve, reject) {
+            return xhscService.downloadPics(regionID,null,filter).then(function (t) {
+              t.forEach(function (m) {
+                tasks.push(m);
+              })
+              resolve();
+            }).catch(function () {
+              reject();
             });
           })
-        },
-        function () {
-          return remote.Project.queryAllBulidings(projectId);
         }
       ]
     }
@@ -131,28 +116,6 @@
       ]
     }
 
-
-    function InspectionZjTask(t,AcceptanceItemID,AreaID,InspectionId) {
-      t.push(function () {
-        return remote.Procedure.InspectionPoint.query(InspectionId,AcceptanceItemID,AreaID)
-      })
-      t.push(function (tasks,down) {
-        return remote.Procedure.InspectionCheckpoint.query(AcceptanceItemID,AreaID,InspectionId).then(function (result) {
-          result.data.forEach(function (p) {
-            tasks.push(function () {
-              return remote.Procedure.InspectionProblemRecord.query(p.CheckpointID).then(function (result) {
-                result.data.forEach(function (r) {
-                  tasks.push(function () {
-                    return remote.Procedure.InspectionProblemRecordFile.query(r.ProblemRecordID).then(function (result) {
-                    })
-                  })
-                })
-              })
-            });
-          });
-        })
-      });
-    }
     vm.downloadys = function (item) {
       return api.setNetwork(0).then(function(){
         return $q(function(resolve,reject){
@@ -163,7 +126,7 @@
                 .concat(projectTask(item.ProjectID,item.Children,item.AcceptanceItemID))
                 .concat(InspectionTask(item))
                 .concat(function(){
-                  return remote.offline.create({Id:'ys'+item.InspectionId});
+                  return remote.offline.create({Id:'safeYs'+item.InspectionId});
                 })
               api.task(tasks,{
                 event:'downloadys',
@@ -219,7 +182,7 @@
                 .concat(InspectionTask(item))
                 .concat(rectificationTask(item))
                 .concat(function(){
-                  return remote.offline.create({Id:'zg'+item.RectificationID});
+                  return remote.offline.create({Id:'safeZg'+item.RectificationID});
                 });
               api.task(tasks, {
                 event: 'downloadzg',
@@ -227,8 +190,6 @@
               })(null, function () {
                 item.percent = item.current = item.total = null;
                 item.isOffline = true;
-                remote.offline.create({Id:'zg'+item.RectificationID});
-                //RectificationID
                 $mdDialog.hide();
                 utils.alert('下载完成');
                 resolve();
@@ -347,7 +308,7 @@
                 if (angular.isArray(r.data)){
                   zg.forEach(function(k){
                     if (r.data.find(function(m){
-                        return m.Id=="zg"+k.RectificationID;
+                        return m.Id=="safeZg"+k.RectificationID;
                       })){
                       k.isOffline=true;
                     }
@@ -378,7 +339,7 @@
                 if (angular.isArray(r.data)){
                   ys.forEach(function(k){
                     if (r.data.find(function(m){
-                        return m.Id=="ys"+k.InspectionId;
+                        return m.Id=="safeYs"+k.InspectionId;
                       })){
                       k.isOffline=true;
                     }

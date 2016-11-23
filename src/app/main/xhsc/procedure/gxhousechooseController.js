@@ -144,7 +144,7 @@
         return style;
       }
       return $q.all([
-        xhscService.getRegionTree(projectId,31,1),
+        xhscService.getRegionTreesOnline(projectId,31,1),
         remote.Procedure.getRegionStatus(projectId)
       ]).then(function(res){
         vm.loading = true;

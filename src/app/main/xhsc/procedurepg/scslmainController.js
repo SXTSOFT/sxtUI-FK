@@ -18,7 +18,7 @@
       });
     function queryOnline() {
       vm.offlines = [];
-      xhscService.getRegionTree("", 3,1,"scRigthRegions").then(function (result) {
+      xhscService.getRegionTreesOnline("", 3,1,"scRigthRegions").then(function (result) {
         if (!result){
           vm.isOver = true;
           return;

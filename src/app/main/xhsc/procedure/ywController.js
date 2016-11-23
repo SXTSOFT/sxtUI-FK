@@ -439,7 +439,7 @@
           });
         }
       });
-      remote.Project.getAllRegionWithRight_no_db("", 3).then(function (n) {
+      remote.Project.getAllRegionWithRight("", 3).then(function (n) {
         if (vm.yw == 2 || vm.yw == 0) {
           vm.z_isOver = true;
           if (!n || n.data.length == 0) {

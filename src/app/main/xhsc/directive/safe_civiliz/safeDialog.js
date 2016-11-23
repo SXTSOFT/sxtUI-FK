@@ -82,7 +82,7 @@
               id:sxt.uuid()
             }
             api.setNetwork(0).then(function(){
-              remote.Procedure.postInspection(params).then(function(result){
+              remote.safe.createSafeBatch(params).then(function(result){
                 if (result.data.ErrorCode==0) {
                   scope.callBack();
                 }

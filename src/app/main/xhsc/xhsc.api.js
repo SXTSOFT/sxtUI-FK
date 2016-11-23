@@ -1380,16 +1380,15 @@
       },
       safe:{
         getSecurityItem:$http.wrap({
+          _id:"safeItems",
+          idField: 'SpecialtyID',
+          dataType: 1,
           fn: function () {
-            // return $http.get($http.url('/Api/WPAcceptanceApi/GetWPAcceptanceInfo'));
             return $http.get($http.url('/api/Acceptances/SecurityItem'));
           }
         }),
-        createSafeBatch:function (acceptanceItemID,areaList) {
-          return $http.post($http.url('/Acceptances/SecurityInfo/Insert'),{
-            AcceptanceItemID:acceptanceItemID,
-            AreaList:areaList
-          });
+        createSafeBatch:function (params) {
+          return $http.post($http.url('/api/Acceptances/SecurityInfo/Insert'),params);
         },
         getSafeStatus:$http.wrap({
           fn: function (RegionID) {

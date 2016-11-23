@@ -61,23 +61,17 @@
           }
         }
         if (vm.maxRegion==8){
-          if (region.RegionType==8&&region.hasShowRight){
+          if (region.RegionType==8){
             addNum(status);
           }
         }else {
-          if (region.RegionType>=8&&region.hasShowRight){
+          if (region.RegionType>=8){
             addNum(status);
           }
         }
       }
       //状态设置与用户区域权限
       function filterOrSetting(status,region){
-        var st=status.find(function(o){
-          return o.AreaId.indexOf(region.RegionID)!=-1;
-        });
-        if (st){
-          region.hasShowRight=true;
-        }
         if (region.RegionType>4){
           statusSetting(status,region);
         }
@@ -146,8 +140,9 @@
         return style;
       }
       return $q.all([
-        xhscService.getRegionTree(projectId,31,1),
+        xhscService.getRegionTreesOnline(projectId,31,1),
         remote.safe.getSafeStatus(projectId)
+        // remote.Procedure.getRegionStatus(projectId)
       ]).then(function(res){
         vm.loading = true;
         var result= res[0][0];
