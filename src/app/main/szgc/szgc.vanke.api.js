@@ -132,7 +132,7 @@
         },
           function (result,cfg,args) {
           var me = this,arg=args[0],root = me.root;
-          if(root.getNetwork()==1 && (!args || !args[0].all)){
+          if(root.getNetwork()==1 && (!args || !args[0] || !args[0].all)){
             return $q(function (resolve,reject) {
               var teamIds = getAuth().current().TeamId.split(',');
               var ps = [];
