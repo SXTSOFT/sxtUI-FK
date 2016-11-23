@@ -5,173 +5,146 @@
     </h2>
   </div>
 </md-toolbar>
-<div>
+<div style="min-width:744px;" class="p-10">
   <table width="100%" cellpadding="0" cellspacing="0" class="report">
     <thead>
-      <tr>
-        <th colspan="8">节点完成统计报表</th>
-        <th>统计日期</th>
-        <th>2016-12-12</th>
-      </tr>
-      <tr>
-        <th style="width: 10%">
-          公司
-        </th>
-        <th style="width: 10%">
-          项目
-        </th>
-        <th style="width: 10%">
-          标段
-        </th>
-        <th style="width:10%">
-          节点
-        </th>
-        <th style="width:10%">
-          计划完成时间
-        </th>
-        <th style="width:10%">
-          实际完成时间
-        </th>
-        <th style="width:10%">
-          状态
-        </th>
-        <th style="width:10%">
-          延期天数
-        </th>
-        <th style="width:10%">
-          下一节点
-        </th>
-        <th style="width:10%">
-          下一节点工期
-        </th>
-      </tr>
+    <tr>
+      <th colspan="8" style="text-align: center">节点完成统计报表</th>
+      <th  style="text-align: center"><span>统计日期</span></th>
+      <th  style="text-align: center"><span>{{vm.reportTime|date:'yyyy-MM-dd'}}</span></th>
+    </tr>
+    <tr>
+      <th style="width: 10%">
+        公司
+      </th>
+      <th style="width: 10%">
+        项目
+      </th>
+      <th style="width: 10%">
+        标段
+      </th>
+      <th style="width:10%">
+        节点
+      </th>
+      <th style="width:10%">
+        <span>计划完成时间</span>
+      </th>
+      <th style="width:10%">
+        <span>实际完成时间</span>
+      </th>
+      <th style="width:10%">
+        状态
+      </th>
+      <th style="width:10%">
+        <span>延期天数</span>
+      </th>
+      <th style="width:10%">
+        <span>下一节点</span>
+      </th>
+      <th style="width:10%">
+        <span>下一节点工期</span>
+      </th>
+    </tr>
     </thead>
     <tbody ng-repeat="d in vm.data.CompanyStatisticss">
-      <tr ng-repeat="p in d.ProjectStatisticss" style="width:10%">
-        <td rowspan="{{d.ProjectStatisticss.length}}" ng-if="$index==0">
-          {{d.CompanyName}}
-        </td>
-        <td colspan="9" style="width: 90%">
-          <table style="width: 100%" class="inner">
-            <tr ng-repeat="s in p.SectionStatisticss">
-              <td rowspan="{{p.SectionStatisticss.length}}" ng-if="$index==0" style="width: 11.1%">{{p.ProjectName}}</td>
-              <td colspan="8" style="width: 88.9%">
-                <table width="100%" class="inner">
+    <tr ng-repeat="p in d.ProjectStatisticss" style="width:10%">
+      <td rowspan="{{d.ProjectStatisticss.length}}" ng-if="$index==0">
+        <span>{{d.CompanyName}}</span>
+      </td>
+      <td colspan="9" style="width: 90%">
+        <table style="width: 100%" cellpadding="0" cellspacing="0">
+          <tr ng-repeat="s in p.SectionStatisticss">
+            <td rowspan="{{p.SectionStatisticss.length}}" ng-if="$index==0" style="width: 11%"><span>{{p.ProjectName}}</span></td>
+            <td colspan="8" style="width: 89%">
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tbody>
                   <tr ng-repeat="t in s.TaskStatisticss">
-                    <td rowspan="{{s.TaskStatisticss.length}}" ng-if="$index==0" style="width: 10%">{{s.SectionName}}</td>
-                    <td style="width: 10%">{{t.TaskName}}</td>
-                    <td style="width: 10%">{{t.ScheduledEndTime|date:'yyyy-MM-dd'}}</td>
-                    <td style="width: 10%">{{t.ActualEndTime|date:'yyyy-MM-dd'}}</td>
-                    <td style="width: 10%">{{t.CompleteStatus}}</td>
-                    <td style="width: 10%">{{t.DelayDays}}</td>
-                    <td style="width: 10%">{{t.NextTaskName}}</td>
-                    <td style="width: 10%">{{t.NextTaskDuration}}</td>
+                    <td rowspan="{{s.TaskStatisticss.length}}" ng-if="$index==0" style="width: 11%"><span>{{s.SectionName}}</span></td>
+                    <td style="width: 11.1%;" ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.TaskName}}</span></td>
+                    <td style="width: 11.1%" ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.ScheduledEndTime|date:'yyyy-MM-dd'}}</span></td>
+                    <td style="width: 11.1%" ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.ActualEndTime|date:'yyyy-MM-dd'}}</span></td>
+                    <td style="width: 11%" ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.CompleteStatus}}</span></td>
+                    <td style="width: 11%" ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.DelayDays}}</span></td>
+                    <td style="width: 11%" ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.NextTaskName}}</span></td>
+                    <td style="width: 11%" ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.NextTaskDuration}}</span></td>
                   </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td rowspan="3">统计结果</td>
-        <td>总节点</td>
-        <td>提前完成</td>
-        <td>正常完成</td>
-        <td>轻度延期</td>
-        <td>中度延期</td>
-        <td>重度延期</td>
-        <td>严重延期</td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td></td>
-        <td></td>
-      </tr>
-      <!--<tr>-->
-        <!--<td>-->
-          <!--公司-->
-        <!--</td>-->
-        <!--<td>-->
-          <!--公司-->
-        <!--</td>-->
-        <!--<td>-->
-          <!--公司-->
-        <!--</td>-->
-        <!--<td>-->
-          <!--公司-->
-        <!--</td>-->
-        <!--<td>-->
-          <!--公司-->
-        <!--</td>-->
-        <!--<td>-->
-          <!--公司-->
-        <!--</td>-->
-        <!--<td>-->
-          <!--公司-->
-        <!--</td>-->
-        <!--<td>-->
-          <!--公司-->
-        <!--</td>-->
-        <!--<td>-->
-          <!--公司-->
-        <!--</td>-->
-      <!--</tr>-->
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td rowspan="3"><span>统计结果</span></td>
+      <td><span>总节点</span></td>
+      <td><span>提前完成</span></td>
+      <td><span>正常完成</span></td>
+      <td><span>轻度延期</span></td>
+      <td><span>中度延期</span></td>
+      <td><span>重度延期</span></td>
+      <td><span>严重延期</span></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><span>{{d.StatisticsResult.TotalTaskNumber}}</span></td>
+      <td><span>{{d.StatisticsResult.AdvanceCompleteNumber}}</span></td>
+      <td><span>{{d.StatisticsResult.NormalCompleteNumber}}</span></td>
+      <td><span>{{d.StatisticsResult.LightDelayNumber}}</span></td>
+      <td><span>{{d.StatisticsResult.ModerateDelayNumber}}</span></td>
+      <td><span>{{d.StatisticsResult.HightDelayNumber}}</span></td>
+      <td><span>{{d.StatisticsResult.SeriousDelayNumber}}</span></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><span></span></td>
+      <td><span>{{d.StatisticsResult.AdvanceCompletePercent}}</span></td>
+      <td><span>{{d.StatisticsResult.NormalCompletePercent}}</span></td>
+      <td><span>{{d.StatisticsResult.LightDelayPercent}}</span></td>
+      <td><span>{{d.StatisticsResult.ModerateDelayPercent}}</span></td>
+      <td><span>{{d.StatisticsResult.HightDelayPercent}}</span></td>
+      <td><span>{{d.StatisticsResult.SeriousDelayPercent}}</span></td>
+      <td></td>
+      <td></td>
+    </tr>
     </tbody>
     <tbody>
-      <tr>
-        <td rowspan="3">地产集团统计结果</td>
-        <td>总节点</td>
-        <td>提前完成</td>
-        <td>正常完成</td>
-        <td>轻度延期</td>
-        <td>中度延期</td>
-        <td>重度延期</td>
-        <td>严重延期</td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-      </tr>
+    <tr>
+      <td rowspan="3"><span>地产集团统计结果</span></td>
+      <td><span>总节点</span></td>
+      <td><span>提前完成</span></td>
+      <td><span>正常完成</span></td>
+      <td><span>轻度延期</span></td>
+      <td><span>中度延期</span></td>
+      <td><span>重度延期</span></td>
+      <td><span>严重延期</span></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><span>{{vm.data.StatisticsResult.TotalTaskNumber}}</span></td>
+      <td><span>{{vm.data.StatisticsResult.AdvanceCompleteNumber}}</span></td>
+      <td><span>{{vm.data.StatisticsResult.NormalCompleteNumber}}</span></td>
+      <td><span>{{vm.data.StatisticsResult.LightDelayNumber}}</span></td>
+      <td><span>{{vm.data.StatisticsResult.ModerateDelayNumber}}</span></td>
+      <td><span>{{vm.data.StatisticsResult.HightDelayNumber}}</span></td>
+      <td><span>{{vm.data.StatisticsResult.SeriousDelayNumber}}</span></td>
+      <td><span></span></td>
+      <td><span></span></td>
+    </tr>
+    <tr>
+      <td><span></span></td>
+      <td><span>{{vm.data.StatisticsResult.AdvanceCompletePercent}}</span></td>
+      <td><span>{{vm.data.StatisticsResult.NormalCompletePercent}}</span></td>
+      <td><span>{{vm.data.StatisticsResult.LightDelayPercent}}</span></td>
+      <td><span>{{vm.data.StatisticsResult.ModerateDelayPercent}}</span></td>
+      <td><span>{{vm.data.StatisticsResult.HightDelayPercent}}</span></td>
+      <td><span>{{vm.data.StatisticsResult.SeriousDelayPercent}}</span></td>
+      <td><span></span></td>
+      <td><span></span></td>
+    </tr>
     </tbody>
   </table>
 </div>

@@ -120,6 +120,9 @@
         },
         statisticsReport:function(){
           return $http.get('/api/BuildingPlans/GroupStatisticsReport');
+        },
+        personPlans:function(){
+          return $http.get('/api/BuildingPlans/PersonalTasks/')
         }
       },
       MileStone:{
@@ -234,11 +237,12 @@
             "Force": force || false
           });
         },
-        end:function (taskId,force,actualEndTime) {
+        end:function (taskId,force,actualEndTime,EndDescription) {
           return $http.post('/api/Task/'+taskId+'/End', {
             "TaskId": taskId,
             "ActualEndTime":actualEndTime,
-            "Force": force || false
+            "Force": force || false,
+            "EndDescription":EndDescription
           });
         },
         Categories:{

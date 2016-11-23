@@ -27,7 +27,7 @@
           <td>{{m.MilestoneTime|date:'yyyy-MM-dd'}}</td>
           <td>{{m.Status}}</td>
         </tr>
-        <tr ng-if="vm.data.length">
+        <tr ng-if="!vm.data.length">
           <td colspan="3">无里程碑</td>
         </tr>
       </tbody>
