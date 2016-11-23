@@ -120,29 +120,31 @@ table{
 .md-calendar-scroll-container{
   width: 100%;
 }
-table{
-  width: 100%;
+md-calendar{
+  table{
+    width: 100%;
+  }
 }
-.md-vanke-theme.md-hue-1 .md-calendar-date .md-calendar-date-selection-indicator{
+.md-calendar-date-selection-indicator{
   position: relative;
 }
-.md-calendar-date .md-calendar-date-selection-indicator:before,
-.md-pink-theme.md-hue-2  .md-calendar-date.md-calendar-date-event .md-calendar-date-selection-indicator:before{
+.md-calendar-month .md-calendar-date .md-calendar-date-selection-indicator:before,
+.md-pink-theme.md-hue-2 .md-calendar-month .md-calendar-date.md-calendar-date-event .md-calendar-date-selection-indicator:before{
   content:"";
   width:4px;
   height:4px;
   border-radius: 50%;
   background: #f00;
   position: absolute;
-  top:3px;
+  top:5px;
   left:50%;
   margin-left:-2px;
 }
-.md-vanke-theme.md-hue-1 .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator:before, .md-vanke-theme.md-hue-1 .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator:before,
-.md-pink-theme.md-hue-2 .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator:before, .md-pink-theme.md-hue-2 .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator:before{
+.md-vanke-theme.md-hue-1 .md-calendar-month .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator:before, .md-vanke-theme.md-hue-1 .md-calendar-month .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator:before,
+.md-pink-theme.md-hue-2  .md-calendar-month .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator:before, .md-pink-theme.md-hue-2 .md-calendar-month .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator:before{
   background: #fff;
 }
-.md-vanke-theme.md-hue-1 .md-calendar-date-disabled .md-calendar-date-selection-indicator:before,.md-vanke-theme.md-hue-1 .md-calendar-date.md-calendar-date-today.md-calendar-date-disabled .md-calendar-date-selection-indicator:before{
+.md-vanke-theme.md-hue-1 .md-calendar-month .md-calendar-date-disabled .md-calendar-date-selection-indicator:before,.md-vanke-theme.md-hue-1 .md-calendar-month .md-calendar-date.md-calendar-date-today.md-calendar-date-disabled .md-calendar-date-selection-indicator:before{
   width: 0;
 }
 
@@ -156,16 +158,40 @@ table{
 .report{
   border-collapse: collapse;
   tr{
+    th{
+      padding: 5px;
+    }
     td,th{
       border:1px solid #dedede;
+      span{
+        word-break: break-all;
+        padding: 5px;
+        display: block;
+      }
     }
   }
   table{
-    &.inner{
-      tr{
-        //td{
-        //  border:none;
-        //}
+    tr{
+      &:first-child{
+        td{
+          border-top:none;
+          &:first-child{
+            border-bottom: none;
+          }
+        }
+      }
+      &:last-child{
+        td{
+          border-bottom: none;
+        }
+      }
+      td{
+        &:first-child{
+          border-left:none;
+        }
+        &:last-child{
+          border-right:none;
+        }
       }
     }
   }

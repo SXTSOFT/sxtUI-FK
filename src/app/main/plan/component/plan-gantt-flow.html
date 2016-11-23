@@ -1,16 +1,16 @@
 <div layout="column" style="min-width: 900px;">
-  <md-toolbar class="md-hue-2 h-50">
+  <md-toolbar class="md-hue-2 h-50 sub-toolbar">
     <div class="md-toolbar-tools">
       <h2>
         <span>{{vm.dialogData.formData.name}}</span>
       </h2>
       <span flex></span>
+      <!--<md-button ng-click="vm.currentIndex='default'" ng-if="vm.currentIndex&&vm.currentIndex !='default'"><md-icon md-font-icon="icon-keyboard-return"></md-icon></md-button>-->
       <md-button class="md-icon-button" ng-click="vm.close()"><md-icon md-font-icon="icon-close"></md-icon></md-button>
     </div>
   </md-toolbar>
 <md-content layout="column" flex ms-scroll>
-  <div ng-switch="vm.currentIndex">
-    <div layout="row" ng-switch-default>
+    <div layout="row">
       <div flex="80">
         <table class="simple">
           <thead>
@@ -33,8 +33,8 @@
             <td style="color:#1f6db4">{{flow.ActualStartTime|date:'yyyy-MM-dd'}}~{{flow.ActualEndTime|date:'yyyy-MM-dd'}}</td>
             <td>{{flow._State}}</td>
             <td style="color:#f00">
-              <md-button style="min-height:24px;line-height: 24px;" ng-click="vm.openTask(flow)" ng-if="flow.State==1">开启</md-button>
-              <md-button style="min-height:24px;line-height: 24px;" ng-click="vm.closeTask(flow)" ng-if="flow.State!=1" ng-disabled="flow.State==2||flow.closeF ==true" >关闭</md-button>
+              <md-button class="md-icon-button" style="min-height:24px;line-height: 24px;" ng-click="vm.openTask(flow)" ng-if="flow.State==1">开启</md-button>
+              <md-button class="md-icon-button"  style="min-height:24px;line-height: 24px;" ng-click="vm.closeTask(flow)" ng-if="flow.State!=1" ng-disabled="flow.State==2||flow.closeF ==true" >关闭</md-button>
             </td>
           </tr>
           <tr>
@@ -46,15 +46,6 @@
       <div flex="20">
         <div style="height: 60px"></div>
         <canvas id="gitGraph" ng-show="vm.hasFlow"></canvas>
-      </div>
-    </div>
-    <div ng-switch-when="end">
-      <md-input-container class="md-block">
-        <label>关闭原因</label>
-        <input type="text">
-      </md-input-container>
-      <div layout="row" layout-align="end center">
-        <md-button ng-click="vm.endTask()">确定</md-button>
       </div>
     </div>
   <div ng-show="!vm.hasFlow">
@@ -79,7 +70,6 @@
       <span flex></span>
       <md-button ng-click="vm.toStopTask()" class="md-primary md-raised md-mini">手工关闭</md-button>
     </div>
-  </div>
   </div>
   <!--<md-sidenav layout="column" class="md-sidenav-right md-whiteframe-4dp white-bg" style="max-width: 550px;width:600px" md-component-id="right">-->
     <!--<md-tabs md-border-bottom flex >-->
