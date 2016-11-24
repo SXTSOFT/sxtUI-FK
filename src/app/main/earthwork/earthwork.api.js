@@ -13,8 +13,11 @@
       $q = apiProvider.$q;
     apiProvider.register('earthwork', {
       earthwork: {
-        create: function (data) {
-          return $http.post('/api/Eartwork/', data);
+        save: function (data) {
+          return $http.post('/api/Eartwork/SaveAsync', data);
+        },
+        getEarthworkByRegionTreeId:function (args) {
+          return $http.get($http.url('/api/Eartwork/GetEarthworkByRegionTreeId',{regionTreeId:args.regionTreeId}));
         },
         getEarthworkList:function (args) {
           return $http.get($http.url('/api/Eartwork/GetEarthworkList',{regionTreeId:args.regionTreeId,status:args.status}));
