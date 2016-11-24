@@ -37,7 +37,6 @@
       }
     ];
     //项目包
-    //项目包
     function projectTask(regionID, areas, acceptanceItemID) {
       var projectId = regionID.substr(0, 5);
       function  filter(item) {
@@ -122,9 +121,19 @@
           $mdDialog.show({
             controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
               $scope.item=item;
+              var t=[];
+              if (!item.Children){
+                t=t.concat(projectTask(item.ProjectID, item.Children, item.AcceptanceItemID)) ;
+              }else {
+                item.Children.forEach(function (o) {
+                  t=t.concat(projectTask(o.AreaID, [o], o.AcceptanceItemID));
+                });
+              }
               var tasks = [].concat(globalTask)
-                .concat(projectTask(item.ProjectID,item.Children,item.AcceptanceItemID))
-                .concat(InspectionTask(item))
+                .concat(t)
+                .concat([function () {
+                  return remote.safe.getSafeInspectionSingle(item.InspectionId);
+                }])
                 .concat(function(){
                   return remote.offline.create({Id:'safeYs'+item.InspectionId});
                 })
@@ -296,38 +305,7 @@
 
     function load(){
       $q.all([
-        remote.Procedure.getZGlist(23).then(function (r) {
-          return  $q(function(resolve,reject){
-            vm.zglist = [];
-            if (angular.isArray(r.data)){
-              var zg=[];
-              r.data.forEach(function(o){
-                zg.push(o);
-              });
-              remote.offline.query().then(function(r){
-                if (angular.isArray(r.data)){
-                  zg.forEach(function(k){
-                    if (r.data.find(function(m){
-                        return m.Id=="safeZg"+k.RectificationID;
-                      })){
-                      k.isOffline=true;
-                    }
-                  })
-                }
-                vm.zglist=zg;
-                // 值不存在提示
-                resolve();
-              }).catch(function(){
-                resolve();
-              });
-            }
-            else {
-              resolve();
-            }
-          })
-
-        }),
-        remote.Procedure.getInspections(1).then(function(r){
+        remote.safe.getSafeInspections().then(function(r){
           $q(function(resolve,reject){
             vm.Inspections=[];
             if (angular.isArray(r.data)){

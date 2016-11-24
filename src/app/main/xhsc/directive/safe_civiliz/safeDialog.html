@@ -7,18 +7,14 @@
           <label>描述</label>
           <input   md-no-asterisk name="description" ng-model="description">
         </md-input-container>
-        <md-slider-container layout="row" layout-align="start center" ng-show="!logOut">
-          <span flex="none" style="display:inline-block;padding-right: 10px">百分比</span>
-          <md-slider flex min="0" max="100" ng-model="percentage" aria-label="red" id="red-slider">
-          </md-slider>
-          <md-input-container style="width:40px;">
-            <input type="number" ng-model="percentage" aria-label="red" aria-controls="red-slider">
-          </md-input-container>
-        </md-slider-container>
-        <!--<md-input-container>-->
-        <!--<label>百分比</label>-->
-        <!--<input  type="number"  md-no-asterisk name="description" ng-model="percentage">-->
-        <!--</md-input-container>-->
+        <!--<md-slider-container layout="row" layout-align="start center" ng-show="!logOut">-->
+          <!--<span flex="none" style="display:inline-block;padding-right: 10px">百分比</span>-->
+          <!--<md-slider flex min="0" max="100" ng-model="percentage" aria-label="red" id="red-slider">-->
+          <!--</md-slider>-->
+          <!--<md-input-container style="width:40px;">-->
+            <!--<input type="number" ng-model="percentage" aria-label="red" aria-controls="red-slider">-->
+          <!--</md-input-container>-->
+        <!--</md-slider-container>-->
       </div>
       <md-button  flex style="width:100%;" ng-click="submit($event)">{{dialogSure}}</md-button>
     </div>

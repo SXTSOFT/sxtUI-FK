@@ -13,7 +13,6 @@
     return {
       scope:{
         item:'=sxtMapAccept',
-        items:'=',
         procedure:'=',
         regionId:'=',
         inspectionId:'=',
@@ -50,7 +49,11 @@
               cb();
             },
             onLoad: function (cb) {
-              remote.Procedure.InspectionCheckpoint.query(scope.procedure,scope.regionId,scope.inspectionId).then(function (r) {
+              remote.safe.ckPointQuery.cfgSet({
+                filter:function (item,AcceptanceItemID,AreaID){
+                  return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID;
+                }
+              })(scope.procedure,scope.regionId,scope.inspectionId).then(function (r) {
                 remote.Procedure.InspectionPoint.query(scope.inspectionId,scope.procedure, scope.regionId).then(function (r1) {
                   fg.data = r.data,fs=[];
                   r.data.forEach(function (c) {
@@ -77,7 +80,7 @@
                   cb();
                   scope.ct && (scope.ct.loading = false);
                 })
-              });
+              })
             },
             onUpdate: function (layer, isNew, group,cb) {
               if(isNew){
@@ -111,13 +114,13 @@
                 }
                 fg.data.push(v);
                 scope.ct && scope.ct.cancelMode && scope.ct.cancelMode();
-                remote.Procedure.InspectionCheckpoint.create(v);
+                remote.safe.ckPointCreate(v);
               }
               cb(layer);
             },
             onPopupClose: function (cb) {
               var self = this;
-              var edit = mapPopupSerivce.get('mapCheckMapPopup'),
+              var edit = mapPopupSerivce.get('mapAcceptPopup'),
                 scope = edit.scope;
               if(scope.data && scope.isSaveData!==false){
                 scope.isSaveData = false;
@@ -127,7 +130,7 @@
             },
             onUpdateData: function (context, data, editScope) {
               if(data.v.ProblemSortName == 'T'){
-                remote.Procedure.InspectionCheckpoint.create(data.v);
+                remote.safe.ckPointCreate(data.v);
               }
             },
             onDelete: function (layer,cb) {
@@ -137,12 +140,12 @@
                   return d.PositionID == id;
                 }),ix = fg.data.indexOf(v);
                 fg.data.splice(ix,1);
-                remote.Procedure.InspectionCheckpoint.delete(v.CheckpointID);
+                remote.safe.ckPointDelete({CheckpointID:v.CheckpointID});
               });
               cb(layer);
             },
             onPopup: function (layer,cb) {
-              var edit = mapPopupSerivce.get('mapCheckMapPopup');
+              var edit = mapPopupSerivce.get('mapAcceptPopup');
               if(edit) {
                 edit.scope.context = {
                   fg:fg,

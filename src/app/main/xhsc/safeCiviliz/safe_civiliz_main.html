@@ -19,8 +19,8 @@
     <md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
                           md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
     </md-progress-circular>
-    <md-list ng-show="vm.isOver">
-      <md-list-item ng-click="vm.zbzgAction(item)" layout="row" ng-repeat="item in vm.zglist|filter:{Status:4}">
+    <md-list ng-show="vm.isOver" style="background-color: #FFFFFF">
+      <md-list-item style="background-color: #FFFFFF" ng-click="vm.zbzgAction(item)" layout="row" ng-repeat="item in vm.zglist|filter:{Status:4}">
         <div  layout="column" style="padding-bottom: 16px">
           <p style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
             {{item.AcceptanceItemName}}<span style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">总包整改</span>
@@ -49,14 +49,6 @@
         <img src="app/main/xhsc/images/jlfy.png">
         <p>监理复验</p>
       </li>
-      <li>
-        <img src="app/main/xhsc/images/week.png">
-        <p>周安全检查</p>
-      </li>
-      <li>
-        <img src="app/main/xhsc/images/dynmic.png">
-        <p>动态危险源</p>
-      </li>
       <li ng-click="vm.upload()">
         <img src="app/main/xhsc/images/upload.png">
         <p>离线上传</p>
@@ -67,8 +59,8 @@
     <md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
                           md-mode="indeterminate" md-diameter="32" style="margin-left: 8px;margin-top: 8px">
     </md-progress-circular>
-    <md-list ng-show="vm.isOver">
-      <md-list-item layout="row" ng-click="vm.jlysAction(item)" ng-repeat="item in vm.Inspections">
+    <md-list ng-show="vm.isOver" style="background-color: #FFFFFF">
+      <md-list-item style="background-color: #FFFFFF" layout="row" ng-click="vm.jlysAction(item)" ng-repeat="item in vm.Inspections">
         <div layout="column"  style="padding-bottom: 16px">
           <p  style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
             {{item.AcceptanceItemName}}
@@ -85,7 +77,7 @@
         </md-button>
         <span class="border1px bottom1px"></span>
       </md-list-item>
-      <md-list-item ng-click="vm.jlfyAction(item)" ng-repeat="item in vm.zglist|filter:{Status:16}">
+      <md-list-item style="background-color: #FFFFFF" ng-click="vm.jlfyAction(item)" ng-repeat="item in vm.zglist|filter:{Status:16}">
         <div style="padding-bottom: 16px" layout="column">
           <p  style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
             {{item.AcceptanceItemName}} <span
@@ -103,4 +95,3 @@
     </md-list>
   </div>
 </div>
-

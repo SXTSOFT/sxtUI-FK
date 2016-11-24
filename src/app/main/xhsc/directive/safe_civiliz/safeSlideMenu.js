@@ -26,7 +26,7 @@
         role:'=',
         assessmentId:'='
       },
-      templateUrl:'app/main/xhsc/directive/slideMenu.html',
+      templateUrl:'app/main/xhsc/directive/safe_civiliz/safeSlideMenu.html',
       link:link
     }
 
@@ -43,11 +43,9 @@
         })
         item.checked = true;
         scope.gxlevels = item.WPAcceptanceList;
-        console.log('scope.gxlevels',scope.gxlevels)
       }
       scope.$watch('slideData',function(){
         if(!scope.slideData) return;
-        console.log('data',scope.slideData)
         if(!scope.slideData.length) return;
         if(scope.slideData[0].SpecialtyChildren.length)
           scope.selectProcedure(scope.slideData[0].SpecialtyChildren[0]);
@@ -70,7 +68,6 @@
       });
       scope.$watch('current',function () {
         scope.info.current = scope.current;
-        // console.log('current',scope.current)
       });
       scope.goToLink = function (item) {
         if(!scope.showCheck){

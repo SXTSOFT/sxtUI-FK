@@ -1379,6 +1379,93 @@
         })
       },
       safe:{
+        ckPointCreate:$http.wrap({ //创建点
+          offline:true,
+          dataType:1,
+          _id:"ckPoints",
+          idField:'CheckpointID',
+          upload:true
+        }),
+        ckPointQuery:$http.wrap({ //查询点
+          offline:true,
+          dataType:1,
+          _id:"ckPoints",
+          idField:'CheckpointID'
+        }),
+        ckPointDelete:$http.wrap({ //删除点
+          offline:true,
+          dataType:1,
+          delete:true,
+          _id:"ckPoints",
+          idField:'CheckpointID'
+        }),
+        problemRecordCreate:$http.wrap({ //创建记录
+          offline:true,
+          dataType:1,
+          upload:true,
+          _id:"problemRecord",
+          idField:'ProblemRecordID'
+        }),
+        problemRecordQuery:$http.wrap({ //查询记录
+          offline:true,
+          dataType:1,
+          filter:function (item,CheckpointID) {
+            return item.CheckpointID==CheckpointID;
+          },
+          _id:"problemRecord",
+          idField:'ProblemRecordID'
+        }),
+        problemRecordDelete:$http.wrap({// 删除记录
+          offline:true,
+          dataType:1,
+          delete:true,
+          _id:"problemRecord",
+          idField:'ProblemRecordID'
+        }),
+        ProblemRecordFileCreate:$http.wrap({ //创建文件
+          offline:true,
+          dataType:1,
+          _id:'InspectionProblemRecordFile',
+          idField:'ProblemRecordFileID',
+          upload:true
+        }),
+        ProblemRecordFileQuery:$http.wrap({ //查询文件
+          offline:true,
+          _id:'InspectionProblemRecordFile',
+          idField:function(d) {
+            return d.Id|| d.ProblemRecordFileID
+          },
+          dataType:1,
+          filter:function (item,ProblemRecordID) {
+            return item.ProblemRecordID==ProblemRecordID;
+          }
+        }),
+        ProblemRecordFileDelete:$http.wrap({ //删除文件
+          offline:true,
+          dataType:1,
+          _id:'InspectionProblemRecordFile',
+          idField:'ProblemRecordFileID',
+          delete:true
+        }),
+
+        getSafeInspections:$http.wrap({
+          _id:"safeInspections",
+          idField: 'InspectionId',
+          dataType: 1,
+          offline:true,
+          fn: function () {
+            return $http.get($http.url('/api/Acceptances/SecurityInfo/GetSecurityInfo/1/Status'));
+          }
+        }),
+        getSafeInspectionSingle:$http.wrap({
+          _id:"safeInspectionSingle",
+          idField: 'InspectionId',
+          dataType: 1,
+          offline:true,
+          fn: function (id) {
+            return $http.get($http.url('/api/Acceptances/SecurityInfo/GetSecurityInfo/'+id+'/Id'));
+          }
+        }),
         getSecurityItem:$http.wrap({
           _id:"safeItems",
           idField: 'SpecialtyID',
@@ -1392,9 +1479,9 @@
         },
         getSafeStatus:$http.wrap({
           fn: function (RegionID) {
-            return $http.get($http.url('/api/Acceptances/SecurityInfo/GetUserSecurityInfo'),{
+            return $http.get($http.url('/api/Acceptances/SecurityInfo/GetUserSecurityInfo',{
               RegionID:RegionID
-            });
+            }));
           }
         })
       }

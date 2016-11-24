@@ -92,9 +92,6 @@
           })
         });
         t.push(function () {
-          return remote.Procedure.InspectionIndexJoinApi.query(item.InspectionId)
-        })
-        t.push(function () {
           return remote.Procedure.InspectionPoint.query(item.InspectionId, item.AcceptanceItemID, area.AreaID)
         })
 
@@ -257,54 +254,13 @@
 
     vm.by = function (r) {
       api.setNetwork(0).then(function () {
-        $state.go('app.xhsc.sf.sfitem', {role:'zb',projectId:r.ProjectID});
+        $state.go('app.xhsc.sf.sfitem', {role:'zb',projectId:r.RegionID});
       });
     }
 
 
     function load() {
-      remote.Procedure.getZGlist(23).then(function (r) {
-        vm.zglist = [];
-        if (angular.isArray(r.data)) {
-          var zg = [];
-          r.data.forEach(function (o) {
-            zg.push(o);
-          });
-          remote.offline.query().then(function (r) {
-            if (angular.isArray(r.data)) {
-              zg.forEach(function (k) {
-                if (r.data.find(function (m) {
-                    return m.Id == "sefeZg" + k.RectificationID;
-                  })) {
-                  k.isOffline = true;
-                }
-              })
-            }
-            vm.zglist = zg;
-            var alert = false;
-            switch (vm.yw) {
-              case "4":
-                var t = vm.zglist.find(function (k) {
-                  return k.Status == 4;
-                });
-                alert = t ? false : true;
-                break;
-              case "32":
-                var t = vm.zglist.find(function (k) {
-                  return k.Status == 16;
-                });
-                alert = t ? false : true;
-                break;
-            }
-            if (alert) {
-              vm.isShowbg = true;
-            }
-            vm.f_isOver = true;
-
-          });
-        }
-      });
-      remote.Procedure.getInspections(1).then(function (r) {
+      remote.safe.getSafeInspections().then(function (r) {
         vm.Inspections = [];
         if (angular.isArray(r.data)) {
           var ys = [];

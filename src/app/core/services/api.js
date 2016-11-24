@@ -51,6 +51,7 @@
       pouchdb = db;
       resolveApi(api,$resource,$http);
       api.setting = setting;
+      api.getUploadData=getUploadData
       api.task = task;
       api.upload = upload;
       api.uploadTask = uploadTask;
@@ -321,9 +322,42 @@
             group.total = group.end - group.start;
           });
           resolve(tasks);
+        }).catch(function () {
+          reject();
         })
       });
     }
+    function getUploadData(filter) {
+      return $q(function (resove,reject) {
+        var p=[];
+        var keys=[];
+        cfgs.forEach(function (cfg) {
+          if (cfg.upload && (!filter||filter(cfg))) {
+            if (filter && filter(cfg) === false)return;
+            var db = initDb(cfg)
+            keys.push(db.name);
+            p.push(db.findAll());
+          }
+        });
+        provider.$q.$q.all(p).then(function (rs) {
+          var arr=[];
+          var i=0;
+          rs.forEach(function (result) {
+            if ( result.rows&& result.rows.length){
+              arr.push({
+                key:keys[i],
+                vals:result.rows
+              })
+            }
+            i++;
+          });
+          resolve(arr);
+        }).catch(function () {
+          reject();
+        });
+      })
+    }
+
     function download(tasks) {
       var oNetworkState = networkState;
       networkState = 0;
@@ -458,10 +492,10 @@
       function f() {
         var args = toArray(arguments);
         if (!_cfg.offline){
-           return _cfg.fn(arguments);
+           return _cfg.fn.apply(_cfg,args);
         }
         var excute=_cfg.bind(_cfg.fn,_cfg.callback);
-        return excute(arguments);
+        return excute.apply(_cfg,args);
       }
       f.cfgSet=cfgSet;
       return f;
@@ -522,6 +556,8 @@
         };
         return cfg;
       }
+
+
 
       function id(d, db, args, cfg, cb) {
         return provider.$q.$q(function (resolve,reject) {
@@ -596,7 +632,7 @@
             var tasks=[];
             args.forEach(function (d) {
               tasks.push(function (arr,index) {
-                return lodb.delete(id(d, null, args, cfg) || d)
+                return lodb.delete((angular.isFunction(cfg.idField) ? cfg.idField(d,args) : (d[cfg.idField]?d[cfg.idField]:cfg.idField)) || d)
               })
             });
             _task(tasks).then(function () {

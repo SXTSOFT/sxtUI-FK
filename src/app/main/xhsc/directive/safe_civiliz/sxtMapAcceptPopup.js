@@ -31,7 +31,7 @@
       scope.apply = function() {
         scope.isSaveData = null;
         scope.$apply();
-        remote.Procedure.InspectionProblemRecord.query(scope.data.v.CheckpointID).then(function (r) {
+        remote.safe.problemRecordQuery(scope.data.v.CheckpointID).then(function (r) {
           var p = null;
           if (r.data.length) {
             p = r.data[0];
@@ -43,10 +43,10 @@
               Describe: scope.data.v.ProblemDescription,
               DescRole: 'jl'
             };
-            remote.Procedure.InspectionProblemRecord.create(p);
+            remote.safe.problemRecordCreate(p);
           }
           scope.data.p = p;
-          remote.Procedure.InspectionProblemRecordFile.query(p.ProblemRecordID, scope.data.v.PositionID).then(function (r) {
+          remote.safe.ProblemRecordFileQuery(p.ProblemRecordID, scope.data.v.PositionID).then(function (r) {
             scope.data.images = r.data;
             if (scope.data.v.isNew  && scope.data.images.length == 0) {
               scope.addPhoto(scope.warter);
@@ -86,17 +86,17 @@
               CheckpointID:scope.data.v.CheckpointID,
               FileContent:image
             };
-            remote.Procedure.InspectionProblemRecordFile.create(img);
+            remote.safe.ProblemRecordFileCreate(img);
             scope.data.images.push(img);
           }
         });
       }
-      mapPopupSerivce.set('mapCheckMapPopup',{
+      mapPopupSerivce.set('mapAcceptPopup',{
         el:element,
         scope:scope
       });
       scope.$on('$destroy',function(){
-        mapPopupSerivce.remove('mapCheckMapPopup');
+        mapPopupSerivce.remove('mapAcceptPopup');
         $(element).remove();
       });
     }

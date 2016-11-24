@@ -14,11 +14,10 @@
   /** @ngInject */
   function safe_civiliz_houseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils,api,xhscService){
     var vm=this,
-      projectId = $stateParams.projectId,
+      projectId = $stateParams.projectId.substr(0,5),
       acceptanceItemID=$stateParams.acceptanceItemID,
       acceptanceItemName = $stateParams.acceptanceItemName,
-      role=$stateParams.role,
-      areaId = $stateParams.areaId;
+      role=$stateParams.role;
     vm.maxRegion = $stateParams.maxRegion;
 
     $rootScope.title = $stateParams.acceptanceItemName;
@@ -104,7 +103,7 @@
         var st1 = [];
         region.inspectionRows=[];
         status.forEach(function(t){
-          if(t.AcceptanceItemID==acceptanceItemID && t.AreaId == region.RegionID){
+          if(t.AcceptanceItemId==acceptanceItemID && t.AreaId == region.RegionID){
             region.inspectionRows.push(t);
           }else{
             region.status=0;
@@ -237,7 +236,7 @@
 
     vm.callBack=function(){
       utils.alert('报验成功',null,function(){
-        $state.go("app.xhsc.gx.gxmain");
+        $state.go("app.xhsc.sf.sfmain");
       })
     };
     vm.selected = function(r){

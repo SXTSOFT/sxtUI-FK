@@ -58,7 +58,7 @@
         $mdDialog.show({
           parent: parentEl,
           targetEvent: evt,
-          template:'<md-dialog   ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular> 正在提交数据，请稍候……</md-dialog-content></md-dialog>',
+          template:'<md-dialog   ng-cloak><md-dialog-content> <md-progress-circular md-diameter="32" md-mode="indeterminate"></md-progress-circular> 正在提交数据，请稍候……</md-dialog-content></md-dialog>',
           controller: DialogController
         });
         function DialogController($scope) {
@@ -78,12 +78,12 @@
               AcceptanceItemID:scope.dialogData.acceptanceItemID,
               AreaList:scope.areaIds,
               Describe:scope.description,
-              Percentage:percentage,
+              Percentage:100,
               id:sxt.uuid()
             }
             api.setNetwork(0).then(function(){
               remote.safe.createSafeBatch(params).then(function(result){
-                if (result.data.ErrorCode==0) {
+                if (result.data) {
                   scope.callBack();
                 }
               }).catch(function(){
