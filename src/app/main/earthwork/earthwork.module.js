@@ -32,7 +32,7 @@
     });
 
     msNavigationServiceProvider.saveItem('earthwork.earthwork', {
-      title: '土方列表',
+      title: '土方管理',
       icon: 'icon-sort-variant',
       state: 'app.earthwork.list',
       weight: 1
