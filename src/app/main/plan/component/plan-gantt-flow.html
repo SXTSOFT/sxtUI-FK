@@ -33,8 +33,8 @@
             <td style="color:#1f6db4">{{flow.ActualStartTime|date:'yyyy-MM-dd'}}~{{flow.ActualEndTime|date:'yyyy-MM-dd'}}</td>
             <td>{{flow._State}}</td>
             <td style="color:#f00">
-              <md-button class="md-icon-button" style="min-height:24px;line-height: 24px;" ng-click="vm.openTask(flow)" ng-if="flow.State==1">开启</md-button>
-              <md-button class="md-icon-button"  style="min-height:24px;line-height: 24px;" ng-click="vm.closeTask(flow)" ng-if="flow.State!=1" ng-disabled="flow.State==2||flow.closeF ==true" >关闭</md-button>
+              <md-button class="md-icon-button" style="min-height:24px;line-height: 24px;height:24px;padding:0;" ng-click="vm.openTask(flow)" ng-if="flow.State==1">开启</md-button>
+              <md-button class="md-icon-button" style="min-height:24px;line-height: 24px;height:24px;padding:0;" ng-click="vm.closeTask(flow)" ng-if="flow.State!=1" ng-disabled="flow.State==2||flow.closeF ==true" >关闭</md-button>
             </td>
           </tr>
           <tr>
@@ -48,56 +48,70 @@
         <canvas id="gitGraph" ng-show="vm.hasFlow"></canvas>
       </div>
     </div>
-  <div ng-show="!vm.hasFlow">
-    <md-list style="font-size:14px;">
-      <md-list-item>
-        <label flex>名称：</label>
-        <span>{{vm.dialogData.formData.name}}</span>
-        <md-divider></md-divider>
-      </md-list-item>
-      <md-list-item>
-        <label flex>开始时间：</label>
-        <span>{{vm.dialogData.formView.from.format('YYYY-MM-DD')}}</span>
-        <md-divider></md-divider>
-      </md-list-item>
-      <md-list-item>
-        <label flex>结束时间：</label>
-        <span>{{vm.dialogData.formView.to.format('YYYY-MM-DD')}}</span>
-        <md-divider></md-divider>
-      </md-list-item>
-    </md-list>
-    <div layout="row" flex>
-      <span flex></span>
-      <md-button ng-click="vm.toStopTask()" class="md-primary md-raised md-mini">手工关闭</md-button>
-    </div>
-  </div>
+  <!--<div ng-show="!vm.hasFlow">-->
+    <!--<md-list style="font-size:14px;">-->
+      <!--<md-list-item>-->
+        <!--<label flex>名称：</label>-->
+        <!--<span>{{vm.dialogData.formData.name}}</span>-->
+        <!--<md-divider></md-divider>-->
+      <!--</md-list-item>-->
+      <!--<md-list-item>-->
+        <!--<label flex>开始时间：</label>-->
+        <!--<span>{{vm.dialogData.formView.from.format('YYYY-MM-DD')}}</span>-->
+        <!--<md-divider></md-divider>-->
+      <!--</md-list-item>-->
+      <!--<md-list-item>-->
+        <!--<label flex>结束时间：</label>-->
+        <!--<span>{{vm.dialogData.formView.to.format('YYYY-MM-DD')}}</span>-->
+        <!--<md-divider></md-divider>-->
+      <!--</md-list-item>-->
+    <!--</md-list>-->
+    <!--<div layout="row" flex>-->
+      <!--<span flex></span>-->
+      <!--<md-button ng-click="vm.toStopTask()" class="md-primary md-raised md-mini">手工关闭</md-button>-->
+    <!--</div>-->
+  <!--</div>-->
   <!--<md-sidenav layout="column" class="md-sidenav-right md-whiteframe-4dp white-bg" style="max-width: 550px;width:600px" md-component-id="right">-->
-    <!--<md-tabs md-border-bottom flex >-->
-      <!--<md-tab label="流程信息" ng-disabled="!vm.current">-->
-        <!--<md-tab-content layout-padding >-->
-          <!--<md-list style="font-size:14px;">-->
-            <!--<md-list-item>-->
-              <!--<label flex>名称：</label>-->
-              <!--<span>{{vm.dialogData.formView.name}}</span>-->
-              <!--<md-divider></md-divider>-->
-            <!--</md-list-item>-->
-            <!--<md-list-item>-->
-              <!--<label flex>开始时间：</label>-->
-              <!--<span>{{vm.dialogData.formView.from.format('YYYY-MM-DD')}}</span>-->
-              <!--<md-divider></md-divider>-->
-            <!--</md-list-item>-->
-            <!--<md-list-item>-->
-              <!--<label flex>结束时间：</label>-->
-              <!--<span>{{vm.dialogData.formView.to.format('YYYY-MM-DD')}}</span>-->
-              <!--<md-divider></md-divider>-->
-            <!--</md-list-item>-->
-          <!--</md-list>-->
-          <!--<div layout="row" flex>-->
-            <!--<md-button ng-click="vm.toStopTask()" class="md-primary md-raised md-mini">手工关闭</md-button>-->
-          <!--</div>-->
-        <!--</md-tab-content>-->
-      <!--</md-tab>-->
-    <!--</md-tabs>-->
+    <!--<md-content>-->
+      <!--<div layout="row">-->
+        <!--<div flex="80">-->
+          <!--<table class="simple">-->
+            <!--<thead>-->
+            <!--<tr><th style="width: 25px;min-width: 25px"></th>-->
+              <!--<th>流程</th>-->
+              <!--<th>计划</th>-->
+              <!--<th>实际</th>-->
+              <!--<th>状态</th>-->
+              <!--<th>操作</th>-->
+            <!--</tr></thead>-->
+            <!--<tbody>-->
+            <!--<tr ng-repeat="flow in vm.flows">-->
+              <!--<td style="height: 44px;">-->
+                <!--{{$index+1}}、-->
+              <!--</td>-->
+              <!--<td >-->
+                <!--{{flow.Name}}-->
+              <!--</td>-->
+              <!--<td>{{flow.ScheduledStartTime|date:'yyyy-MM-dd'}}~{{flow.ScheduledEndTime|date:'yyyy-MM-dd'}}</td>-->
+              <!--<td style="color:#1f6db4">{{flow.ActualStartTime|date:'yyyy-MM-dd'}}~{{flow.ActualEndTime|date:'yyyy-MM-dd'}}</td>-->
+              <!--<td>{{flow._State}}</td>-->
+              <!--<td style="color:#f00">-->
+                <!--<md-button class="md-icon-button" style="min-height:24px;line-height: 24px;height:24px;padding:0;" ng-click="vm.openTask(flow)" ng-if="flow.State==1">开启</md-button>-->
+                <!--<md-button class="md-icon-button" style="min-height:24px;line-height: 24px;height:24px;padding:0;" ng-click="vm.closeTask(flow)" ng-if="flow.State!=1" ng-disabled="flow.State==2||flow.closeF ==true" >关闭</md-button>-->
+              <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td colspan="5" ng-if="!vm.flows.length">无流程信息</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+          <!--</table>-->
+        <!--</div>-->
+        <!--<div flex="20">-->
+          <!--<div style="height: 60px"></div>-->
+          <!--<canvas id="gitGraph" ng-show="vm.hasFlow"></canvas>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</md-content>-->
   <!--</md-sidenav>-->
 </md-content>
 

@@ -71,7 +71,7 @@
         <!--<md-button class="md-icon-button" ng-click="vm.start()">操作</md-button>-->
       <!--</div>-->
     <!--</div>-->
-    <div layout="row" layout-align="space-between center" ng-repeat="t in task.tasks">
+    <div layout="row" layout-align="space-between center" ng-repeat="t in task.tasks" class="pb-8">
       <div flex="55" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{t.ParentFloorName}}{{t.Name}}</div>
       <div flex="25">{{t.ScheduledStartTime|date:'yy/MM/dd'}}</div>
       <div flex="20" style="text-align: right;">
