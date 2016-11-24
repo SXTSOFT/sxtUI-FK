@@ -1,10 +1,7 @@
 ﻿/**
  * Created by zhangzhaoyong on 16/2/1.
  */
-/**
- * Created by zhangzhaoyong on 16/2/1.
- */
-(function(){
+(function(angular,undefined){
   'use strict';
 
   angular
@@ -171,12 +168,13 @@
       }],
       onQueryed: function(data) {
         $scope.project.data = data;
-        //$scope.project.filter();
+        $scope.project.filter();
       },
       //filterBatch: function (sources) {
       //    console.log('sources', sources);
       //},
-      filter: function(reload) {
+      filter2: function(reload) {
+        console.log('filter2')
         vm.loading = true;
         if (!$scope.project.procedureId || !$scope.project.data || !$scope.project.data.items) return;
         if (reload === true || ($scope.project.data && !$scope.project.data.fd)) {
@@ -337,6 +335,15 @@
           $scope.project.rows = rows;
           vm.loading = false;
         }
+      },
+      filter:function (reload) {
+        if(vm.filterTime) {
+          $timeout.cancel(vm.filterTime);
+        }
+        vm.filterTime = $timeout(function () {
+          $scope.project.filter2(reload);
+          vm.filterTime = undefined;
+        },500);
       }
     };
     $scope.$watch('project.pid',function () {
@@ -800,4 +807,4 @@
       }
     })
   }
-})();
+})(angular,undefined);

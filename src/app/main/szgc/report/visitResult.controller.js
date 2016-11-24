@@ -55,6 +55,7 @@
 
 
     vm.seach = function () {
+      vm.results = [];
       vm.searchResult=true;
       api.szgc.projectMasterListService.getVisitResult('?fromDate=' + dateFilter(vm.sDate, 'yyyy-MM-dd') + '&toDate=' + dateFilter(vm.eDate, 'yyyy-MM-dd'))
         .then(function (result) {
@@ -65,6 +66,7 @@
               }
             });
           });
+          vm.results = r2;
         });
     }
   }
