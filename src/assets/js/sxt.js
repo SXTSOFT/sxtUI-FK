@@ -17,7 +17,7 @@ window.sxt = (function(win,angular)
 
   sxt = {
     js:js,
-    requireSSL:false,
+    requireSSL:true,
     version: '1.1.12',
     app: {
       appDir: appDir,

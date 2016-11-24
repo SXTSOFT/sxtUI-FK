@@ -11,7 +11,7 @@
 
   function versionUpdate($mdDialog, $window,$http ,sxt) {
 
-    var version = '1.9.14.8';
+    var version = '1.9.14.8',versionOld = version;
     this.version = version;
     var self = this;
     function versionToNumber(version) {
@@ -36,7 +36,7 @@
           if (versionToNumber2(version) < versionToNumber2(serverAppVersion)) {
             var confirm = $mdDialog.confirm()
               .title('发现新版本' + serverAppVersion)
-              .htmlContent((data.data.vankeLog || '') + '<br/><b>是否更新新版本？</b>')
+              .htmlContent(data.data.vankeLog || '')
               .ok('更新!')
               .cancel('暂不更新');
             $mdDialog.show(confirm).then(function () {
@@ -53,10 +53,11 @@
           }
           else if (versionToNumber(version) < versionToNumber(serverAppVersion)) {
             version = serverAppVersion;
+            self.version = versionOld + '(' + serverAppVersion + '正在更新)';
             sxt.download(function () {
-              self.version = self.version + '(' + serverAppVersion + '重启生效)';
+              self.version = versionOld + '(' + serverAppVersion + '重启生效)';
             },function () {
-              version = self.version;
+              version = versionOld;
             });
           }
         });
