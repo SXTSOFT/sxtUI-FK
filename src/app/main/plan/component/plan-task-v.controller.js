@@ -601,6 +601,7 @@
       })
     }
     vm.ClickSaveleft = function(data){
+      data._taskFlowId=data._taskFlowId||data.TaskLibraryId;
       data.Type = data.Type || data.oType;
       if(id=='add'){
         api.plan.TaskLibrary.create(data).then(function (r) {

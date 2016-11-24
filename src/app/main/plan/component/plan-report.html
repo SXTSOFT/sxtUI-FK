@@ -60,12 +60,12 @@
                 <tbody>
                   <tr ng-repeat="t in s.TaskStatisticss">
                     <td rowspan="{{s.TaskStatisticss.length}}" ng-if="$index==0" style="width: 11%"><span>{{s.SectionName}}</span></td>
-                    <td style="width: 11.1%;" ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.TaskName}}</span></td>
+                    <td style="width: 11.1%;" ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.BuildName}}{{t.TaskName}}</span></td>
                     <td style="width: 11.1%" ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.ScheduledEndTime|date:'yyyy-MM-dd'}}</span></td>
                     <td style="width: 11.1%" ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.ActualEndTime|date:'yyyy-MM-dd'}}</span></td>
                     <td style="width: 11%" ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.CompleteStatus}}</span></td>
                     <td style="width: 11%" ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.DelayDays}}</span></td>
-                    <td style="width: 11%" ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.NextTaskName}}</span></td>
+                    <td style="width: 11%" ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.BuildName}}{{t.NextTaskName}}</span></td>
                     <td style="width: 11%" ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.NextTaskDuration}}</span></td>
                   </tr>
                 </tbody>

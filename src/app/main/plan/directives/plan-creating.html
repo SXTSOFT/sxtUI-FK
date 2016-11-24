@@ -40,7 +40,7 @@
       </md-menu>
     </td>
     <td ng-if="!flow.type">
-      <input type="text" required placeholder="工期" ng-click="setVars(flow)" ng-blur="buildDate(flow)" ng-model="flow.currentTask.eDuration">
+      <input type="text" placeholder="工期" ng-click="setVars(flow)" ng-blur="buildDate(flow)" ng-model="flow.currentTask.eDuration">
     </td>
     <td ng-if="!flow.type">
       {{flow.days}}

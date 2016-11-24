@@ -54,7 +54,7 @@
   <!--</table>-->
 <!--</md-content>-->
 
-<md-calendar ng-if="vm.loading" ng-model="vm.myDate"  md-date-filter="onlyWeekendsPredicate"></md-calendar>
+<md-calendar class="pcalendar" ng-if="vm.loading" ng-model="vm.myDate"  md-date-filter="onlyWeekendsPredicate"></md-calendar>
 <md-content style="border-top:1px solid #dedede;" class="p-10">
   <div layout="row" layout-align="center center" ng-if="!vm.loading" class="m-10">
     <md-progress-circular md-diameter="20px"></md-progress-circular>任务加载中
@@ -75,8 +75,8 @@
       <div flex="55" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{t.ParentFloorName}}{{t.Name}}</div>
       <div flex="25">{{t.ScheduledStartTime|date:'yy/MM/dd'}}</div>
       <div flex="20" style="text-align: right;">
-        <md-button class="md-raised md-minbtn" ng-click="vm.start(t)" ng-if="(t.State==1)&&t.showBtn">启动</md-button>
-        <md-button class="md-raised md-minbtn" ng-click="vm.end(t)" ng-if="(t.State!=1)&&t.showBtn" ng-disabled="t.State==2">完成</md-button>
+        <md-button class="md-raised md-minbtn" ng-click="vm.start(t)" ng-if="(t.State==1)">启动</md-button>
+        <md-button class="md-raised md-minbtn" ng-click="vm.end(t)" ng-if="(t.State!=1)" ng-disabled="t.State==2">完成</md-button>
       </div>
     </div>
   </div>

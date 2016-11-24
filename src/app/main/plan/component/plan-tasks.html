@@ -17,6 +17,9 @@
     </md-select>
     <task-categories ng-model="vm.selectedCategory" style="font-size:13px;"></task-categories>
     <span flex></span>
+    <!--<md-input-container md-no-float>-->
+      <!--<input ng-model="vm.search" type="text" placeholder="搜索">-->
+    <!--</md-input-container>-->
     <md-button class="md-icon-button" aria-label="More">
       <md-icon md-font-icon="icon-plus" ui-sref="app.plan.task.detail({id:'add'})"></md-icon>
     </md-button>
@@ -37,7 +40,7 @@
   </thead>
 
   <tbody>
-  <tr ng-repeat="item in vm.items|filter:{Type:vm.selectedCategory}">
+  <tr ng-repeat="item in vm.items|filter:{Type:vm.selectedCategory}:vm.search">
     <td class="name">{{item.Name}}</td>
     <td class="time" ng-if="vm.selectedFilter!=0">{{item.Variable}}</td>
     <td class="time" ng-if="vm.selectedFilter != 0">{{item.Duration}}</td>

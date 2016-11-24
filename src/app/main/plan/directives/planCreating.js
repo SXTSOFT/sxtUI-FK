@@ -191,7 +191,7 @@
                     Id: 0,
                     RelatedFlowId: tid,
                     type: 'm',
-                    Name: '开盘'
+                    Name: '达到预售楼层'
                   });
                 }
               })
@@ -216,6 +216,11 @@
           flows.forEach(function (f) {
             if (f.OptionalTasks) {
               if (f.IsFloor) {
+                if(f.Name.indexOf('负') != -1){
+                  //scope.underhidden=false;
+                }else{
+                  scope.underhidden=true;
+                }
                 if (f.Name.indexOf('负') != -1) {
                   f.currentTask = f.OptionalTasks.find(function (t) {
                     return t.Name.indexOf('负') != -1 || t.Name.indexOf('地') != -1
@@ -249,6 +254,11 @@
             }
           });
           rootTask.Branch.forEach(function (bs) {
+            if(scope.underhidden){
+              if(bs[0].Name.indexOf('地下室')!=-1||bs[0].Name.indexOf('人货梯')!=-1){
+                return;
+              }
+            }
             bs.forEach(function (b) {
               if (!b.currentTask) {
                 b.currentTask = b.OptionalTasks[0];
