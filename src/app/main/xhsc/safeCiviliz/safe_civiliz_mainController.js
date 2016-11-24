@@ -98,19 +98,42 @@
     function rectificationTask(item) {
       return [
         function (tasks) {
-          return remote.Procedure.getZGById(item.RectificationID).then(function (r) {
-            r.data[0].Children.forEach(function (area) {
-              tasks.push(function () {
-                return remote.Procedure.getZGReginQues(area.AreaID,item.RectificationID);
-              });
-              tasks.push(function () {
-                return remote.Procedure.getZGReginQuesPoint(area.AreaID,item.RectificationID);
-              })
-            })
-          });
-        },
-        function () {
-          return remote.Procedure.getRectification(item.RectificationID);
+          return remote.safe.getRecPackage(item.RectificationID).then(function (r) {
+              if(r&&r.data){
+                var Checkpoints=r.dataCheckpoint; //插入点
+                if (angular.isArray(Checkpoints)){
+                  Checkpoints.forEach(function (t) {
+                    tasks.push(function () {
+                      return remote.safe.ckPointCreate(t)
+                    });
+                  });
+                }
+                var JoinCheckpoints=r.JoinCheckpoint; //插入点与整改单关系
+                if (angular.isArray(JoinCheckpoints)){
+                  JoinCheckpoints.forEach(function (t) {
+                    tasks.push(function () {
+                      return remote.safe.CreateCkpointRelateWithRec(t)
+                    });
+                  });
+                }
+                var ProblemRecords =r.ProblemRecord; //插入记录
+                if (angular.isArray(ProblemRecords)){
+                  ProblemRecords.forEach(function (t) {
+                    tasks.push(function () {
+                      return remote.safe.problemRecordCreate(t)
+                    });
+                  });
+                }
+                var ProblemRecordFiles =r.ProblemRecordFile; //插入文件
+                if (angular.isArray(ProblemRecordFiles)){
+                  ProblemRecordFiles.forEach(function (t) {
+                    tasks.push(function () {
+                      return remote.safe.ProblemRecordFileQuery(t)
+                    });
+                  });
+                }
+              }
+          })
         }
       ]
     }
@@ -186,9 +209,16 @@
           $mdDialog.show({
             controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
               $scope.item=item;
+              var t=[];
+              if (!item.Children){
+                t=t.concat(projectTask(item.ProjectID, item.Children, item.AcceptanceItemID)) ;
+              }else {
+                item.Children.forEach(function (o) {
+                  t=t.concat(projectTask(o.AreaID, [o], o.AcceptanceItemID));
+                });
+              }
               var tasks = [].concat(globalTask)
-                .concat(projectTask(item.Children[0].AreaID.substring(0, 5), item.Children, item.AcceptanceItemID))
-                .concat(InspectionTask(item))
+                .concat(t)
                 .concat(rectificationTask(item))
                 .concat(function(){
                   return remote.offline.create({Id:'safeZg'+item.RectificationID});
@@ -231,7 +261,6 @@
             current.total = e.total;
             break;
           case 'success':
-
             break;
         }
       }
@@ -246,47 +275,88 @@
         $mdDialog.show({
           controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
             $scope.uploadInfo=vm.uploadInfo;
-
-            api.upload(function (cfg,item) {
-              if(cfg._id=='s_files' && item && item.Url.indexOf('base64')==-1){
-                return false;
-              }
-              if (cfg._id=="s_offline"){
-                return false;
-              }
-              return true;
-            },function (percent,current,total) {
-              vm.uploadInfo.percent = parseInt(percent *100) +' %';
-              vm.uploadInfo.current = current;
-              vm.uploadInfo.total = total;
-            },function (tasks) {
-              vm.uploadInfo.uploaded = 1;
-              api.uploadTask(function () {
-                return true
-              },null);
-              $mdDialog.hide();
-              //db("s_offline").destroy();
-              utils.alert('上传成功');
-              load();
-              vm.uploadInfo.tasks = [];
-              vm.uploadInfo.uploading= false;
-            },function (timeout) {
-              $mdDialog.hide();
-              var msg='上传失败,请检查网络!'
-              if(timeout){
-                msg='请求超时,请检查网络!';
-              }
-              utils.alert(msg);
-              vm.uploadInfo.uploaded = 0;
-              vm.uploadInfo.uploading =false;
-            },{
-              uploaded:function (cfg,row,result) {
-                if (cfg.db&&cfg.db.delete)
-                  cfg.db.delete(row._id);
-                else
-                  cfg._db.delete(row._id);
-              }
-            });
+            function buildTask() {
+              var tasks=[];
+              return $q(function (resolve,reject) {
+                api.getUploadData(function (cfg){
+                  return cfg.mark=="up";
+                }).then(function (val) {
+                  if(val&&val.length){
+                    var points=val.find(function (o) {
+                      return o.key=="InspectionPoint";
+                    });
+                    var ckpoints=val.find(function (o) {
+                      return o.key=="ckPoints";
+                    });
+                    var problemRecords=val.find(function (o) {
+                      return o.key=="problemRecord";
+                    });
+                    var InspectionProblemRecordFiles=val.find(function (o) {
+                      return o.key=="InspectionProblemRecordFile";
+                    });
+                    if(points&&points.vals){
+                      points.vals.forEach(function (t) {
+                        if(t.geometry){
+                          t.Geometry = t.geometry;
+                        }
+                        if(typeof t.Geometry==='string'){
+                          t.Geometry = JSON.parse(t.Geometry);
+                        }
+                        tasks.push(function () {
+                          return remote.Procedure.InspectionPoint.create(t).then(function () {
+                            points.db.delete(t._id);
+                          });
+                        })
+                      });
+                    }
+                    tasks.push(function () {
+                      return remote.safe.safeUp(  {
+                        "CheckpointInput": ckpoints&&ckpoints.vals?ckpoints.vals:[],
+                        "ProblemRecordInput":problemRecords&&problemRecords.vals?problemRecords.vals:[] ,
+                        "ProblemRecordFileInput":InspectionProblemRecordFiles&&InspectionProblemRecordFiles.vals?InspectionProblemRecordFiles.vals:[]
+                      }).then(function () {
+                        if (ckpoints&&ckpoints.vals){
+                          ckpoints.vals.forEach(function (m) {
+                            ckpoints.db.delete(m._id);
+                          });
+                        }
+                        if (problemRecords&&problemRecords.vals){
+                          problemRecords.vals.forEach(function (m) {
+                            problemRecords.db.delete(m._id);
+                          });
+                        }
+                       if (InspectionProblemRecordFiles&&InspectionProblemRecordFiles.vals){
+                         InspectionProblemRecordFiles.vals.forEach(function (m) {
+                           InspectionProblemRecordFiles.db.delete(m._id);
+                         });
+                       }
+                      });
+                    })
+                  }
+                  resolve(tasks);
+                })
+              }).catch(function () {
+                reject(tasks);
+              })
+            }
+            buildTask().then(function (tasks) {
+              api.task(tasks)(function (percent,current,total) {
+                vm.uploadInfo.percent = parseInt(percent *100) +' %';
+                vm.uploadInfo.current = current;
+                vm.uploadInfo.total = total;
+              }, function () {
+                utils.alert("上传成功!");
+                $mdDialog.hide();
+                load();
+                vm.uploadInfo.uploading= false;
+              }, function (timeout) {
+                var msg = timeout ? '超时,任务上次失败!' : '上传失败,请检查网络';
+                $mdDialog.cancel();
+                utils.alert(msg);
+                vm.uploadInfo.uploaded = 0;
+                vm.uploadInfo.uploading =false;
+              });
+            })
           }],
           template: '<md-dialog aria-label="正在上传"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在上传：{{uploadInfo.percent}}({{uploadInfo.current}}/{{uploadInfo.total}})</p></md-dialog-content></md-dialog>',
           parent: angular.element(document.body),
@@ -295,8 +365,6 @@
         });
       });
     }
-
-
 
     xhscService.getProfile().then(function (profile) {
       vm.role=profile.role;
@@ -335,6 +403,36 @@
               resolve();
             }
           });
+        }),
+        remote.safe.getRectifications().then(function (r) {
+          return $q(function (resolve, reject) {
+            vm.zglist = [];
+            if (angular.isArray(r.data)) {
+              var zg = [];
+              r.data.forEach(function (o) {
+                zg.push(o);
+              });
+              remote.offline.query().then(function (r) {
+                if (angular.isArray(r.data)) {
+                  zg.forEach(function (k) {
+                    if (r.data.find(function (m) {
+                        return m.Id == "safeZg" + k.RectificationID;
+                      })) {
+                      k.isOffline = true;
+                    }
+                  })
+                }
+                vm.zglist = zg;
+                resolve();
+              }).catch(function () {
+                resolve();
+              });
+            }
+            else {
+              resolve();
+            }
+          })
+
         })
       ]).then(function(){
         vm.isOver=true;

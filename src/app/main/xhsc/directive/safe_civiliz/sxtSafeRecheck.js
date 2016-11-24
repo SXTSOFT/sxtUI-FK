@@ -1,24 +1,23 @@
 /**
- * Created by lss on 2016/10/24.
- */
-/**
  * Created by jiuyuong on 2016/6/22.
  */
 (function () {
   angular
     .module('app.xhsc')
-    .directive('sxtMapAccept',sxtMapAccept);
+    .directive('sxtSafeRecheck',sxtSafeRecheck);
   /** @ngInject */
-  function sxtMapAccept($timeout,remote,mapPopupSerivce,sxt,utils,$window,xhUtils) {
+  function sxtSafeRecheck($timeout,remote,mapPopupSerivce,sxt,utils,$q,$window,xhUtils) {
     return {
       scope:{
-        item:'=sxtMapAccept',
+        item:'=sxtSafeRecheck',
+        sxtMapShow:'=',
+        items:'=',
         procedure:'=',
         regionId:'=',
         inspectionId:'=',
-        ct:'=',
-        disableInspect:'@',
-        disableDrag:'@'
+        disableInspect:'=',
+        disableDrag:'=',
+        ct:'='
       },
       link:link
     };
@@ -49,38 +48,32 @@
               cb();
             },
             onLoad: function (cb) {
-              remote.safe.ckPointQuery.cfgSet({
-                filter:function (item,AcceptanceItemID,AreaID,inspectionId){
-                  return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID&&item.InspectionID==inspectionId;
-                }
-              })(scope.procedure,scope.regionId,scope.inspectionId).then(function (r) {
-                remote.Procedure.InspectionPoint.query(scope.inspectionId,scope.procedure, scope.regionId).then(function (r1) {
-                  fg.data = r.data,fs=[];
-                  r.data.forEach(function (c) {
-                    var p = r1.data.find(function (p1) {
-                      return p1.MeasurePointID == c.PositionID;
+              $("#inspect").css("display","none");
+              $q.all([remote.Procedure.getZGReginQues(scope.regionId,scope.item),
+                remote.Procedure.getZGReginQuesPoint(scope.regionId,scope.item)])
+                .then(function(res) {
+                  var fs = [];
+                  fg.data = res[0].data;
+                  res[0].data.forEach(function (item) {
+                    var p = res[1].data.find(function (pt) {
+                      return pt.MeasurePointID == item.PositionID;
                     });
-                    if (p && p) {
-                      if(p.Geometry){
-                        p.geometry = $window.JSON.parse(p.Geometry);
-                      }else{
-                        p.geometry = p.geometry;
-                      }
-                      if(p.geometry && p.geometry.properties) {
-                        p.geometry.properties.seq = c.ProblemSortName;
-                        if (p.geometry.geometry.type == 'Stamp')
-                          p.geometry.geometry.type = 'Point';
-                        p.geometry.properties.Status = c.Status;
-                        fs.push(p.geometry);
+                    if (p && p.Geometry) {
+                      var geo = $window.JSON.parse(p.Geometry);
+                      if(geo && geo.geometry) {
+                        if (geo.geometry.type == 'Stamp')
+                          geo.geometry.type = 'Point';
+                        geo.properties.Status = item.Status;
+                        geo.properties.v = item;
+                        geo.properties.seq = item.ProblemSortName;
+                        fs.push(geo);
                       }
                     }
-                  });
-                  scope.item = null;
-                  fg.addData(fs,false);
+                  })
+                  fg.addData(fs, false);
                   cb();
                   scope.ct && (scope.ct.loading = false);
                 })
-              })
             },
             onUpdate: function (layer, isNew, group,cb) {
               if(isNew){
@@ -114,76 +107,20 @@
                 }
                 fg.data.push(v);
                 scope.ct && scope.ct.cancelMode && scope.ct.cancelMode();
-                remote.safe.ckPointCreate(v);
-
+                remote.Procedure.InspectionCheckpoint.create(v);
               }
-              cb(layer);
-            },
-            onPopupClose: function (cb) {
-              var self = this;
-              var edit = mapPopupSerivce.get('mapAcceptPopup'),
-                scope = edit.scope;
-              if(scope.data && scope.isSaveData!==false){
-                scope.isSaveData = false;
-                self.options.onUpdateData(scope.context,scope.data,scope);
-              }
-              cb();
-            },
-            onUpdateData: function (context, data, editScope) {
-              if(data.v.ProblemSortName == 'T'){
-                remote.safe.ckPointCreate(data.v);
-              }
-            },
-            onDelete: function (layer,cb) {
-              var id = layer.properties.$id;
-              //删除几何点
-              remote.Procedure.InspectionPoint.delete({MeasurePointID:id}).then(function (r) {
-                var v = fg.data.find(function (d) {
-                  return d.PositionID == id;
-                }),ix = fg.data.indexOf(v);
-                fg.data.splice(ix,1);
-                //删除检查点
-                remote.safe.ckPointDelete({CheckpointID:v.CheckpointID}).then(function () {
-                  //删除记录
-                  remote.safe.problemRecordQuery(v.CheckpointID).then(function (k) {
-                      if (angular.isArray(k.data)){
-                        k.data.forEach(function (w) {
-                          //删除照片
-                          remote.safe.problemRecordDelete(w).then(function () {
-                            remote.safe.ProblemRecordFileQuery(w.ProblemRecordID).then(function (m) {
-                                if (angular.isArray(m.data)){
-                                    m.data.forEach(function (q) {
-                                      remote.safe.ProblemRecordFileDelete(q);
-                                    })
-                                }
-                            })
-                          })
-                        });
-
-                      }
-                  })
-                });
-              });
               cb(layer);
             },
             onPopup: function (layer,cb) {
-              var edit = mapPopupSerivce.get('mapAcceptPopup');
-              if(edit) {
-                edit.scope.context = {
-                  fg:fg,
-                  layer:layer
-                };
+              var edit = mapPopupSerivce.get('sxtSafeRecheckPopup');
+              if (edit) {
+                scope.sxtMapShow = true;
+                edit.scope.context = fg;
                 edit.scope.data = {
-                  item:scope.item,
-                  procedure:scope.procedure,
-                  regionId:scope.regionId,
-                  v:fg.data.find(function (d) {
-                    return d.PositionID == layer.properties.$id;
-                  })
-                };
-                edit.scope.readonly = scope.readonly;
+                  item: scope.item,
+                  value: layer.properties.v
+                }
                 edit.scope.apply && edit.scope.apply();
-                cb(edit.el[0]);
               }
             }
           });
@@ -220,10 +157,10 @@
                     xhUtils.openLinks(mapList);
                   });
                   element.find('.mapboxgl-ctrl-bottom-left').append(btn);
-
+                  //scope.ct && (scope.ct.loading = false);
                 })
               }
-              else{
+              else {
                 scope.ct && (scope.ct.loading = false);
                 utils.alert('未找到图纸,请与管理员联系!(1)')
                 return;

@@ -60,6 +60,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
+        title: '区域选择',
         url: '/sfhouse/{InspectionId}/{role}/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{areaId}/{maxRegion}',
         templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_house.html',
         controller: 'safe_civiliz_houseController as vm'
@@ -67,50 +68,50 @@
       .state('app.xhsc.sf.sfaccept', {
         noBack: true,
         sendBt: true,
+        title: '监理验收',
         rightArrow: false,
         leftArrow: false,
         url: '/sfaccept/{InspectionId}/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}/{areaId}',
         templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_accept.html',
         controller: 'safe_civiliz_acceptController as vm'
       })
-      .state('app.xhsc.sf.sfproblem', {
-        noBack: true,
-        sendBt: true,
-        rightArrow: false,
-        leftArrow: false,
-        url: '/sfproblem/{acceptanceItemName}/{acceptanceItemID}/{name}/{areaId}/{projectId}/{InspectionId}',
-        templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_problem.html',
-        controller: 'safe_civiliz_problemController as vm'
-      })
-      .state('app.xhsc.sf.sfinfo', {
-        noBack: true,
-        sendBt: false,
-        rightArrow: false,
-        leftArrow: false,
-        title: '',
-        url: '/sfinfo/{acceptanceItemName}/{acceptanceItemID}/{name}/{areaId}/{projectId}/{InspectionId}',
-        templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_info.html',
-        controller: 'safe_civiliz_infoController as vm'
-      })
+      // .state('app.xhsc.sf.sfproblem', {
+      //   noBack: true,
+      //   sendBt: true,
+      //   rightArrow: false,
+      //   leftArrow: false,
+      //   url: '/sfproblem/{acceptanceItemName}/{acceptanceItemID}/{name}/{areaId}/{projectId}/{InspectionId}',
+      //   templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_problem.html',
+      //   controller: 'safe_civiliz_problemController as vm'
+      // })
+      // .state('app.xhsc.sf.sfinfo', {
+      //   noBack: true,
+      //   sendBt: false,
+      //   rightArrow: false,
+      //   leftArrow: false,
+      //   title: '',
+      //   url: '/sfinfo/{acceptanceItemName}/{acceptanceItemID}/{name}/{areaId}/{projectId}/{InspectionId}',
+      //   templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_info.html',
+      //   controller: 'safe_civiliz_infoController as vm'
+      // })
       .state('app.xhsc.sf.rectify',{
         noBack: true,
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
-        title: '整改',
         url: '/rectify/{Role}/{InspectionID}/{AcceptanceItemID}/{RectificationID}/{AcceptanceItemName}',
         templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_rectify.html',
         controller: 'safe_civiliz_rectifyController as vm'
       })
-      .state('app.xhsc.sf.jc',{
-        noBack: true,
-        sendBt: true,
-        rightArrow: false,
-        leftArrow: false,
-        title: '安全验收',
-        url: '/jc/{id}',
-        templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_yw.html',
-        controller: 'safe_civiliz_ywController as vm'
-      })
+      // .state('app.xhsc.sf.jc',{
+      //   noBack: true,
+      //   sendBt: true,
+      //   rightArrow: false,
+      //   leftArrow: false,
+      //   title: '安全验收',
+      //   url: '/jc/{id}',
+      //   templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_yw.html',
+      //   controller: 'safe_civiliz_ywController as vm'
+      // })
   }
 })();

@@ -51,7 +51,8 @@
       pouchdb = db;
       resolveApi(api,$resource,$http);
       api.setting = setting;
-      api.getUploadData=getUploadData
+      api.getUploadData=getUploadData;
+      api.getDBs=getDBs;
       api.task = task;
       api.upload = upload;
       api.uploadTask = uploadTask;
@@ -328,14 +329,14 @@
       });
     }
     function getUploadData(filter) {
-      return $q(function (resove,reject) {
+      return provider.$q.$q(function (resolve,reject) {
         var p=[];
         var keys=[];
         cfgs.forEach(function (cfg) {
           if (cfg.upload && (!filter||filter(cfg))) {
             if (filter && filter(cfg) === false)return;
             var db = initDb(cfg)
-            keys.push(db.name);
+            keys.push(db);
             p.push(db.findAll());
           }
         });
@@ -345,8 +346,9 @@
           rs.forEach(function (result) {
             if ( result.rows&& result.rows.length){
               arr.push({
-                key:keys[i],
-                vals:result.rows
+                key:keys[i].name,
+                vals:result.rows,
+                db:keys[i]
               })
             }
             i++;
@@ -357,7 +359,19 @@
         });
       })
     }
-
+    function getDBs(filter) {
+      return provider.$q.$q(function (resolve,reject) {
+        var p=[];
+        cfgs.forEach(function (cfg) {
+          if (!filter||filter(cfg)) {
+            if (filter && filter(cfg) === false)return;
+            var db = initDb(cfg)
+            p.push(db);
+          }
+        });
+        resolve(p)
+      })
+    }
     function download(tasks) {
       var oNetworkState = networkState;
       networkState = 0;

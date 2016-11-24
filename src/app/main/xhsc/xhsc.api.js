@@ -226,6 +226,7 @@
             if (db=="nodb"){return null}
             return db?db:"InspectionPoint";
           },
+          mark:"up",
           idField:'MeasurePointID',
           methods:{
             query:{
@@ -1382,6 +1383,7 @@
         ckPointCreate:$http.wrap({ //创建点
           offline:true,
           dataType:1,
+          mark:"up",
           _id:"ckPoints",
           idField:'CheckpointID',
           upload:true
@@ -1403,6 +1405,7 @@
           offline:true,
           dataType:1,
           upload:true,
+          mark:"up",
           _id:"problemRecord",
           idField:'ProblemRecordID'
         }),
@@ -1425,6 +1428,7 @@
         ProblemRecordFileCreate:$http.wrap({ //创建文件
           offline:true,
           dataType:1,
+          mark:"up",
           _id:'InspectionProblemRecordFile',
           idField:'ProblemRecordFileID',
           upload:true
@@ -1434,6 +1438,9 @@
           _id:'InspectionProblemRecordFile',
           idField:function(d) {
             return d.Id|| d.ProblemRecordFileID
+          },
+          fn:function (ProblemRecordFileID) {
+            return $http.get($http.url('/api/Acceptances/SecurityCheckpoint/ProblemRecordFile/'+ProblemRecordFileID));
           },
           dataType:1,
           filter:function (item,ProblemRecordID) {
@@ -1447,7 +1454,7 @@
           idField:'ProblemRecordFileID',
           delete:true
         }),
-
+        //获取验收批列表
         getSafeInspections:$http.wrap({
           _id:"safeInspections",
           idField: 'InspectionId',
@@ -1457,6 +1464,7 @@
             return $http.get($http.url('/api/Acceptances/SecurityInfo/GetSecurityInfo/1/Status'));
           }
         }),
+        //获取单个验收批
         getSafeInspectionSingle:$http.wrap({
           _id:"safeInspectionSingle",
           idField: 'InspectionId',
@@ -1466,6 +1474,51 @@
             return $http.get($http.url('/api/Acceptances/SecurityInfo/GetSecurityInfo/'+id+'/Id'));
           }
         }),
+
+        //获取整改单列表
+        getRectifications:$http.wrap({
+          offline:true,
+          _id:'safeRectification',
+          idField:'RectificationID',
+          dataType:1,
+          fn:function(){
+            return $http.get($http.url('/api/Acceptances/SecurityRectification/GetList'));
+          }
+        }),
+        getRectificationSingle:$http.wrap({
+          offline:true,
+          _id:'safeRectification',
+          idField:'RectificationID',
+          dataType:1,
+          filter:function (item,RectificationID) {
+            return item.RectificationID==RectificationID;
+          },
+        }),
+        //获取整个单相关的所有信息
+        getRecPackage:$http.wrap({
+          fn:function (rectificationId) {
+            return $http.get($http.url('/api/Acceptances/SecurityRectification/'+rectificationId));
+          }
+        }),
+        //获取检查点与整改单的关系
+        getCkpointRelateWithRec:$http.wrap({
+          offline:true,
+          _id:"safeCkpointRelateWithRec",
+          idField: 'ID',
+          filter:function (item,RectificationID) {
+            return item.RectificationID==RectificationID;
+          },
+          dataType: 1
+        }),
+        //创建检查点与整改单的关系
+        CreateCkpointRelateWithRec:$http.wrap({
+          offline:true,
+          _id:"safeCkpointRelateWithRec",
+          idField: 'ID',
+          upload:true,
+          dataType: 1
+        }),
+        //获取安全验收项
         getSecurityItem:$http.wrap({
           _id:"safeItems",
           idField: 'SpecialtyID',
@@ -1474,9 +1527,15 @@
             return $http.get($http.url('/api/Acceptances/SecurityItem'));
           }
         }),
+        //安全验收上传
+        safeUp:function (params) {
+          return $http.post($http.url('/api/Acceptances/SecurityCheckpoint/Insert'),params);
+        },
+        //创建安全验收批
         createSafeBatch:function (params) {
           return $http.post($http.url('/api/Acceptances/SecurityInfo/Insert'),params);
         },
+        //获取验收区域状态
         getSafeStatus:$http.wrap({
           fn: function (RegionID) {
             return $http.get($http.url('/api/Acceptances/SecurityInfo/GetUserSecurityInfo',{
