@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function earthworkList($scope,api, utils, $stateParams, $state,$compile,sxt) {
+  function earthworkList($scope,api, utils, $stateParams, $state,$compile,tokenInjector) {
     var vm = this;
     vm.data = {};
     vm.lst_html = [];
@@ -30,6 +30,7 @@
       vm.StagesList = [];
         api.xhsc.Project.GetAreaChildenbyID(vm.project).then(function (r) {
         vm.StagesList = r.data||[];
+        vm.lst_html = [];
       });
     });
 
@@ -41,6 +42,7 @@
     });
 
     function load (regionTreeId) {
+      vm.lst_html = [];
       api.earthwork.earthwork.getEarthworkByRegionTreeId({regionTreeId:vm.RegionTreeId}).then(function (r) {
         if(r.data && r.data.length>0){
           vm.lst_html = r.data;
@@ -83,6 +85,8 @@
         load(vm.RegionTreeId);
       });
     }
+
+
 
   }
 })(angular, undefined);

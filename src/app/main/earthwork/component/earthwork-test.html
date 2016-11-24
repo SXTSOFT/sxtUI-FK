@@ -1,0 +1,17 @@
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools">
+    <h2>
+      <span>画图控件</span>
+    </h2>
+    <span flex></span>
+  </div>
+</md-toolbar>
+<md-content flex layout="column" ms-scroll>
+  <div style="height:500px" is-show="true" popup="tfPopup" sxt-area-tf data="vm.tf"></div>
+  <div ng-hide="true">
+    <div id="tfPopup" class="form-group">
+        <input type="text" style="width: 150px;">
+    </div>
+  </div>
+</md-content>
+
