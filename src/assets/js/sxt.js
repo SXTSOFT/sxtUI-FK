@@ -53,12 +53,14 @@ window.sxt = (function(win,angular)
 
 
   //下载远程至本地缓存
-  function download(win, fail) {
+  function download(win, fail, progress) {
     if(typeof FileTransfer === 'undefined') return;
     $('#loading').html('首次进入初始化中');
     var versionTransFer = new FileTransfer ();
     versionTransFer.onprogress = function (progressEvent) {
-      $('#loading').html(parseInt(progressEvent.loaded * 100 / progressEvent.total)+'%');
+      var ps = (progressEvent.loaded * 100 / progressEvent.total)+'%';
+      $('#loading').html('首次进入初始化中('+ps+')');
+      progress && progress(ps);
     };
     versionTransFer.download (sxt.app.version+'/'+js, appDir(true)+'bak_'+js, function () {
       try {
