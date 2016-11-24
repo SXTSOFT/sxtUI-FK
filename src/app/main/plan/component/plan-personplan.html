@@ -54,38 +54,43 @@
   <!--</table>-->
 <!--</md-content>-->
 
-<md-calendar ng-if="vm.loading" ng-model="myDate" md-placeholder="Enter date" md-date-filter="onlyWeekendsPredicate"></md-calendar>
+<md-calendar ng-if="vm.loading" ng-model="vm.myDate"  md-date-filter="onlyWeekendsPredicate"></md-calendar>
 <md-content style="border-top:1px solid #dedede;" class="p-10">
-  <div>任务列表</div>
   <div layout="row" layout-align="center center" ng-if="!vm.loading" class="m-10">
     <md-progress-circular md-diameter="20px"></md-progress-circular>任务加载中
   </div>
-  <div layout="row" layout-align="space-between center" ng-if="vm.tasksList.length">
-    <div flex="40">任务名</div>
-    <div flex="15">开始时间</div>
-    <div flex="10">
-      <md-button class="md-icon-button" ng-click="vm.start()">操作</md-button>
+
+  <div  ng-repeat="task in vm.tasksList"  style="border-bottom: 1px solid #dedede;">
+    <div layout="row" style="color:#f00;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="pt-8 pb-8">
+      {{task.Name}}
     </div>
-  </div>
-  <div  ng-repeat="task in vm.tasksList">
-    <div>{{task.Name}}</div>
+    <!--<div layout="row" layout-align="space-between center">-->
+      <!--<div flex="30">任务</div>-->
+      <!--<div flex="15">开始</div>-->
+      <!--<div flex="10">-->
+        <!--<md-button class="md-icon-button" ng-click="vm.start()">操作</md-button>-->
+      <!--</div>-->
+    <!--</div>-->
     <div layout="row" layout-align="space-between center" ng-repeat="t in task.tasks">
-      <div flex="40">{{t.Name}}</div>
-      <div flex="15">{{t.ScheduledStartTime|date:'yyyy-MM-dd'}}</div>
-      <div flex="10">
-        <md-button class="md-icon-button" ng-click="vm.start(t)" ng-if="t.State==1">开启</md-button>
-        <md-button class="md-icon-button" ng-click="vm.end(t)" ng-if="t.State!=1" ng-disabled="t.State==2">关闭</md-button>
+      <div flex="55" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{t.ParentFloorName}}{{t.Name}}</div>
+      <div flex="25">{{t.ScheduledStartTime|date:'yy/MM/dd'}}</div>
+      <div flex="20" style="text-align: right;">
+        <md-button class="md-raised md-minbtn" ng-click="vm.start(t)" ng-if="(t.State==1)&&t.showBtn">启动</md-button>
+        <md-button class="md-raised md-minbtn" ng-click="vm.end(t)" ng-if="(t.State!=1)&&t.showBtn" ng-disabled="t.State==2">完成</md-button>
       </div>
     </div>
   </div>
-  <div ng-repeat="noplan in vm.data">
+  <div layout="row" style="border-bottom: 1px solid #dedede;" class="pv-10">
+    未启动计划
+  </div>
+  <div ng-repeat="noplan in vm.data" ng-if="noplan.showNoPlan">
     <div>{{noplan.Name}}</div>
     <div layout="row" layout-align="space-between center" ng-repeat="t in noplan.NoPlanTasks">
-      <div flex="40">{{t.Name}}</div>
-      <div flex="15">{{t.ScheduledStartTime|date:'yyyy-MM-dd'}}</div>
-      <div flex="10">
-        <md-button class="md-icon-button" ng-click="vm.start(t)" ng-if="t.State==1">开启</md-button>
-        <md-button class="md-icon-button" ng-click="vm.end(t)" ng-if="t.State!=1" ng-disabled="t.State==2">关闭</md-button>
+      <div flex="55">{{t.ParentFloorName}}{{t.Name}}</div>
+      <div flex="25"></div>
+      <div flex="20" style="text-align: right;">
+        <md-button class="md-raised md-minbtn" ng-click="vm.start(t)" ng-if="t.State==1">启动</md-button>
+        <md-button  class="md-raised md-minbtn" ng-click="vm.end(t)" ng-if="t.State!=1" ng-disabled="t.State==2">完成</md-button>
       </div>
     </div>
   </div>

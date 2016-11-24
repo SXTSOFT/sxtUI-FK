@@ -196,3 +196,8 @@ md-calendar{
     }
   }
 }
+.md-button{
+  &.md-minbtn{
+    min-width: 50px;
+  }
+}
