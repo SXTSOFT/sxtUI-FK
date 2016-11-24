@@ -33,28 +33,28 @@
 
       vm.info = {}
 
-      function setChina(r) {
-        switch (r) {
-          case 0:
-            return '合格';
-            break;
-          case 1:
-            return '待验';
-            break;
-          case 2:
-            return '合格';
-            break;
-          case 4:
-            return '不合格';
-            break;
-          case 8:
-            return '未整改';
-            break;
-          case 16:
-            return '已整改';
-            break;
-        }
-      }
+      // function setChina(r) {
+      //   switch (r) {
+      //     case 0:
+      //       return '合格';
+      //       break;
+      //     case 1:
+      //       return '待验';
+      //       break;
+      //     case 2:
+      //       return '合格';
+      //       break;
+      //     case 4:
+      //       return '不合格';
+      //       break;
+      //     case 8:
+      //       return '未整改';
+      //       break;
+      //     case 16:
+      //       return '已整改';
+      //       break;
+      //   }
+      // }
 
       // remote.Procedure.getRectification(vm.RectificationID).then(function(r){
       //   vm.baseInfor = r.data;
@@ -142,7 +142,7 @@
             $scope.submit = function () {
               utils.alert('提交成功', null, function () {
                 $mdDialog.hide();
-                $state.go("app.xhsc.sf.sfmain");
+                $state.go("app.xhsc.gx.gxmain");
               });
 
 

@@ -30,9 +30,9 @@
       $(element).appendTo('body');
       scope.apply = function(){
         //console.log('scope',scope)
-        remote.Procedure.InspectionProblemRecord.query(scope.data.value.CheckpointID).then(function(r){
+        remote.safe.problemRecordQuery(scope.data.value.CheckpointID).then(function(r){
           r.data.forEach(function (p) {
-            remote.Procedure.InspectionProblemRecordFile.query(p.ProblemRecordID).then(function (r2) {
+            remote.safe.ProblemRecordFileQuery(p.ProblemRecordID).then(function (r2) {
               p.images = r2.data;
             });
           });
@@ -54,11 +54,7 @@
               Remark:''
             };
           }
-          //remote.Procedure.
         })
-        //$timeout(function(){
-        //  scope.slideShowbg = true;
-        //},200)
         scope.value =scope.data.value.Status;
       }
 
@@ -73,7 +69,7 @@
         return $q(function (resolve) {
           if(!scope.Record.zb.ProblemRecordID||update===true){
             scope.Record.zb.ProblemRecordID = scope.Record.zb.ProblemRecordID || sxt.uuid();
-            remote.Procedure.InspectionProblemRecord.create(scope.Record.zb).then(function () {
+            remote.safe.problemRecordCreate(scope.Record.zb).then(function () {
               resolve();
             })
           }
@@ -93,7 +89,7 @@
                 FileID:sxt.uuid()+'.jpg',
                 FileContent:image
               }
-              remote.Procedure.InspectionProblemRecordFile.create(img).then(function () {
+              remote.safe.ProblemRecordFileCreate(img).then(function () {
                 var imgs = scope.Record.zb.images = (scope.Record.zb.images || []);
                 imgs.push(img);
               })
@@ -115,7 +111,7 @@
             return;
           }
           createZb(true).then(function () {
-            remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
+            remote.safe.ckPointCreate(scope.data.value).then(function () {
               scope.slideShow = false;
               scope.context.updateStatus(scope.data.value.PositionID,scope.data.value.Status);
             });
@@ -123,7 +119,7 @@
         }
         else if(scope.role=='jl'){
           scope.data.value.Status = scope.data.value.Status==2?2:4;
-          remote.Procedure.InspectionCheckpoint.create(scope.data.value).then(function () {
+          remote.safe.ckPointCreate.create(scope.data.value).then(function () {
             scope.slideShow = false;
             scope.context.updateStatus(scope.data.value.PositionID,scope.data.value.Status);
           });

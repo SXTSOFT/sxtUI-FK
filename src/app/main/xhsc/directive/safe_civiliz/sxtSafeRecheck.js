@@ -49,67 +49,99 @@
             },
             onLoad: function (cb) {
               $("#inspect").css("display","none");
-              $q.all([remote.Procedure.getZGReginQues(scope.regionId,scope.item),
-                remote.Procedure.getZGReginQuesPoint(scope.regionId,scope.item)])
-                .then(function(res) {
-                  var fs = [];
-                  fg.data = res[0].data;
-                  res[0].data.forEach(function (item) {
-                    var p = res[1].data.find(function (pt) {
-                      return pt.MeasurePointID == item.PositionID;
-                    });
-                    if (p && p.Geometry) {
-                      var geo = $window.JSON.parse(p.Geometry);
-                      if(geo && geo.geometry) {
-                        if (geo.geometry.type == 'Stamp')
-                          geo.geometry.type = 'Point';
-                        geo.properties.Status = item.Status;
-                        geo.properties.v = item;
-                        geo.properties.seq = item.ProblemSortName;
-                        fs.push(geo);
-                      }
+              $q.all([
+                remote.safe.ckPointQuery.cfgSet({
+                  filter:function (item,InspectionID) {
+                    return item.InspectionID==InspectionID;
+                  }
+                })(scope.InspectionId),
+                remote.Procedure.InspectionPoint.query(scope.InspectionId, scope.procedure, scope.regionId)
+              ]).then(function (res) {
+                var fs = [];
+                fg.data = res[0].data;
+                res[0].data.forEach(function (item) {
+                  var p = res[1].data.find(function (pt) {
+                    return pt.MeasurePointID == item.PositionID;
+                  });
+                  if (p && p.Geometry) {
+                    var geo = $window.JSON.parse(p.Geometry);
+                    if(geo && geo.geometry) {
+                      if (geo.geometry.type == 'Stamp')
+                        geo.geometry.type = 'Point';
+                      geo.properties.Status = item.Status;
+                      geo.properties.v = item;
+                      geo.properties.seq = item.ProblemSortName;
+                      fs.push(geo);
                     }
-                  })
-                  fg.addData(fs, false);
-                  cb();
-                  scope.ct && (scope.ct.loading = false);
+                  }
                 })
+                fg.addData(fs, false);
+                cb();
+                scope.ct && (scope.ct.loading = false);
+              })
+
+
+              // $q.all([remote.Procedure.getZGReginQues(scope.regionId,scope.item),
+              //   remote.Procedure.getZGReginQuesPoint(scope.regionId,scope.item)])
+              //   .then(function(res) {
+              //     var fs = [];
+              //     fg.data = res[0].data;
+              //     res[0].data.forEach(function (item) {
+              //       var p = res[1].data.find(function (pt) {
+              //         return pt.MeasurePointID == item.PositionID;
+              //       });
+              //       if (p && p.Geometry) {
+              //         var geo = $window.JSON.parse(p.Geometry);
+              //         if(geo && geo.geometry) {
+              //           if (geo.geometry.type == 'Stamp')
+              //             geo.geometry.type = 'Point';
+              //           geo.properties.Status = item.Status;
+              //           geo.properties.v = item;
+              //           geo.properties.seq = item.ProblemSortName;
+              //           fs.push(geo);
+              //         }
+              //       }
+              //     })
+              //     fg.addData(fs, false);
+              //     cb();
+              //     scope.ct && (scope.ct.loading = false);
+              //   })
             },
             onUpdate: function (layer, isNew, group,cb) {
-              if(isNew){
-                layer.properties.seq = scope.item.ProblemSortName;
-                layer.properties.Status = scope.item.ProblemID?1:2;
-              }
-              var point = {
-                MeasurePointID:layer.properties.$id,
-                geometry:layer
-              };
-              remote.Procedure.InspectionPoint.create(point);
-              if(isNew || !fg.data.find(function (d) {
-                  return d.PositionID == point.MeasurePointID;
-                })) {
-                var v = {
-                  InspectionID:scope.inspectionId,
-                  CheckpointID:sxt.uuid(),
-                  IndexPointID:scope.item.ProblemID,
-                  AreaID:scope.regionId,
-                  AcceptanceItemID:scope.procedure,
-                  PositionID:point.MeasurePointID,
-                  MeasureValue:0,
-                  Status:1,
-                  ProblemSortName:scope.item.ProblemSortName,
-                  ProblemDescription:scope.item.ProblemDescription,
-                  isNew:true
-                }
-                if(!v.IndexPointID){
-                  v.Status = 2;
-                  point.geometry.properties.Status = 2;
-                }
-                fg.data.push(v);
-                scope.ct && scope.ct.cancelMode && scope.ct.cancelMode();
-                remote.Procedure.InspectionCheckpoint.create(v);
-              }
-              cb(layer);
+              // if(isNew){
+              //   layer.properties.seq = scope.item.ProblemSortName;
+              //   layer.properties.Status = scope.item.ProblemID?1:2;
+              // }
+              // var point = {
+              //   MeasurePointID:layer.properties.$id,
+              //   geometry:layer
+              // };
+              // remote.Procedure.InspectionPoint.create(point);
+              // if(isNew || !fg.data.find(function (d) {
+              //     return d.PositionID == point.MeasurePointID;
+              //   })) {
+              //   var v = {
+              //     InspectionID:scope.inspectionId,
+              //     CheckpointID:sxt.uuid(),
+              //     IndexPointID:scope.item.ProblemID,
+              //     AreaID:scope.regionId,
+              //     AcceptanceItemID:scope.procedure,
+              //     PositionID:point.MeasurePointID,
+              //     MeasureValue:0,
+              //     Status:1,
+              //     ProblemSortName:scope.item.ProblemSortName,
+              //     ProblemDescription:scope.item.ProblemDescription,
+              //     isNew:true
+              //   }
+              //   if(!v.IndexPointID){
+              //     v.Status = 2;
+              //     point.geometry.properties.Status = 2;
+              //   }
+              //   fg.data.push(v);
+              //   scope.ct && scope.ct.cancelMode && scope.ct.cancelMode();
+              //   remote.Procedure.InspectionCheckpoint.create(v);
+              // }
+              // cb(layer);
             },
             onPopup: function (layer,cb) {
               var edit = mapPopupSerivce.get('sxtSafeRecheckPopup');
