@@ -20,8 +20,8 @@
     vm.checkedImgs = [];
     api.xhsc.materialPlan.getMaterialPlanBatchById($stateParams.id).then(function (r) {
       vm.data = r.data;
-      vm.intoFactoryImgs = $filter('filter')(vm.data.Images,{OptionType:1});
-      vm.checkedImgs = $filter('filter')(vm.data.Images,{OptionType:2});
+      vm.intoFactoryImgs = $filter('filter')(vm.data.Images,{ApproachStage:1});
+      vm.checkedImgs = $filter('filter')(vm.data.Images,{ApproachStage:2});
       vm.data.PlanTime = new Date(vm.data.PlanTime).Format('yyyy年MM月dd日');
       vm.data.ApproachTime = new Date(vm.data.ApproachTime).Format('yyyy年MM月dd日');
       vm.data.AcceptanceTime = new Date(vm.data.AcceptanceTime).Format('yyyy年MM月dd日');

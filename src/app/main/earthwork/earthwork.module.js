@@ -7,6 +7,7 @@
   angular
     .module('app.earthwork', ['app.core','app.xhsc'])
     .config(config);
+
   /** @ngInject */
   function config($stateProvider, msNavigationServiceProvider) {
     $stateProvider
@@ -19,5 +20,23 @@
         },
         abstract: true
       })
+      .state('app.earthwork.list', {
+        url:'/list',
+        template:'<earthwork-list flex layout="column"></earthwork-list>'
+      });
+
+    msNavigationServiceProvider.saveItem('earthwork', {
+      title: '土方',
+      group: true,
+      weight: 2
+    });
+
+    msNavigationServiceProvider.saveItem('earthwork.earthwork', {
+      title: '土方管理',
+      icon: 'icon-sort-variant',
+      state: 'app.earthwork.list',
+      weight: 1
+    });
+
   }
 })(angular, undefined);

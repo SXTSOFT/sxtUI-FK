@@ -83,7 +83,7 @@
         Id: sxt.uuid(),
         BatchId: $stateParams.id,
         OptionType:type,
-        ApproachStage:64,
+        ApproachStage:32,
         ImageName:_id+".jpeg",
         ImageUrl:_id+".jpeg",
         ImageByte: image

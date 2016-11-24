@@ -47,7 +47,7 @@
           attributionControl: false
         });
         //layer = L.tileLayer(sxt.app.api + '/api/file/load?x={x}&y={y}&z={z}', {
-        var layer = L.tileLayer(sxt.api + '/api/picMap/load/{z}_{x}_{y}.png?path=' + url.replace('/s_', '/'), {
+        var layer = L.tileLayer(sxt.api + '/api/PicMap/load/{z}_{x}_{y}.png?path=' + url.replace('/s_', '/'), {
           noWrap: true,
           continuousWorld: false,
           tileSize: 512

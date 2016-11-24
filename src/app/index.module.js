@@ -14,6 +14,7 @@
             'app.pcReport',
             'app.xhsc',
             'app.plan',
-            'app.material'
+            'app.material',
+            'app.earthwork'
         ]);
 })();
