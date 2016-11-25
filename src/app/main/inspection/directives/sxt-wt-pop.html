@@ -1,4 +1,4 @@
-<div layout="column" flex style="border-top:1px solid #dedede;">
+  <div layout="column" flex style="border-top:1px solid #dedede;">
   <div layout="row" layout-align="space-between center" class="ph-16 pv-10">
     <div ng-click="cancel()">取消</div>
     <div ng-click="submit()">确定</div>
@@ -6,7 +6,7 @@
   <md-divider></md-divider>
   <div layout="row" layout-align="space-between center" class="ph-16 pv-10" ng-click="chooseQues()">
     <div class="pr-10" flex="none">问题</div>
-    <div flex>问题描述</div>
+    <div flex>{{vm.data}}</div>
   </div>
   <md-divider></md-divider>
   <div layout="row" class="ph-16 pv-10">

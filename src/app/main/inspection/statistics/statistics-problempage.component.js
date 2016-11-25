@@ -22,6 +22,7 @@
         showXAxis: false,
         showYAxis: true,
         showLegend: false,
+        number:10,
         xyExchange:true,
         debug: true,
         stack: false,
@@ -50,6 +51,8 @@
         },
       }
     };
+
+
 
     vm.data.data = [{"datapoints":[
       {"x":"达达装饰","y":"7","color":"red"},

@@ -67,7 +67,8 @@
             swap:null,
             csb:false,
             cjwt:false,
-            title:false
+            title:false,
+            save:false
           },toState.shell);
         }
         //console.log('toState',toState)

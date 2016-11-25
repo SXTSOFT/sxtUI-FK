@@ -13,7 +13,7 @@
     });
 
   /**@ngInject*/
-  function inspectionDesktopController($state,utils,$scope,api){
+  function inspectionDesktopController($state,utils,$scope,api,$mdDialog,$window){
 
     var vm = this;
     vm.currenttab = 0;
@@ -31,6 +31,21 @@
           break;
       }
     };
+    vm.done=function () {
+      var num=0;
+      if(num==0){
+        var confirm = $mdDialog.confirm()
+          .title('提示')
+          .htmlContent('<br/><b>请先完成水电表抄读，才可以完成验房</b>')
+          .ok('抄水电表')
+          .cancel('取消');
+        $mdDialog.show(confirm).then(function () {
+          $state.go("app.meterreading.page")
+        });
+      }else {
+
+      }
+    }
     // api.inspection.deliverys.getLists().then(function(r){
     //   console.log(r)
     // })

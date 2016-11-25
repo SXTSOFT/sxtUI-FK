@@ -22,7 +22,8 @@
                 sheet:'/assets/images/jpg.jpg',
                 zoomControl:false,
                 fullscreenControl:false,
-                drawControlTooltips:false
+                drawControlTooltips:false,
+                toolBar:false
               },
               draw:{
                 draw:{

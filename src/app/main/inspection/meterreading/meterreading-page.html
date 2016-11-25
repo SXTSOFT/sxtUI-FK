@@ -1,9 +1,17 @@
 <md-content layout="column" id="meter">
   <div class="p-10" layout="row" style="height: 40px;" layout-align="space-between center"><div style="white-space: nowrap;" flex="5" class="mr-10">水表</div>
-  <div flex="95" style="text-align: right;"><input type="number"  value="" style="text-align: right;width: 95%;border: red 0px solid;"/>方</div></div>
+  <div flex="95" style="text-align: right;">
+    <!--<input type="number" active=""  value="" style="text-align: right;width: 95%;border: red 0px solid;"/>方-->
+    <md-input-container md-no-float class="md-block p-0 m-0" style="height: 40px;right: -10px;top:-5px;width: 95%;">
+      <input type="number" ng-model="user.address2" placeholder="请输入数字" style="text-align: right;float: left;">
+    </md-input-container>
+  </div> <span>方</span></div>
   <md-divider></md-divider>
   <div class="p-10" layout="row"  style="height: 40px;" layout-align="space-between center"><div style="white-space: nowrap;" flex="5" class="mr-10">电表</div>
-    <div flex="95" style="text-align: right;"><input type="number" value="请输入数字"  style="text-align: right;width: 95%;border: red 0px solid;"/>度</div></div>
+    <div flex="95" style="text-align: right;"><md-input-container md-no-float class="md-block p-0 m-0" style="height: 40px;right: -10px;top:-5px;width: 95%;">
+      <input type="number" ng-model="user.address2" placeholder="请输入数字" style="text-align: right;float: left;">
+    </md-input-container>
+    </div> <span>度</span></div>
   <md-divider></md-divider>
   <div class="p-10" layout="row" style="height: 40px;" layout-align="space-between center"><div style="white-space: nowrap;" class="mr-10">抄表人</div>
     <div  style="color: #888888;">严小康</div></div>

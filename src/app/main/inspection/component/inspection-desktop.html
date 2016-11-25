@@ -1,13 +1,17 @@
-<div layout="row" layout-align="space-between center"  class="ph-8 is-tabs">
-  <div  ng-class="{'active':vm.currenttab==0}" ng-click="vm.inspection(0)">
-    <md-button>未开始</md-button>
-  </div>
-  <div ng-class="{'active':vm.currenttab==1}" ng-click="vm.inspection(1)">
-    <md-button>进行中</md-button></div>
-  <div  ng-class="{'active':vm.currenttab==2}" ng-click="vm.inspection(2)">
-    <md-button>已完成</md-button>
-  </div>
-</div>
+
+
+
+
+<md-tabs md-dynamic-height md-border-bottom>
+  <md-tab ng-click="vm.inspection(0)" flex label="未开始">
+  </md-tab>
+  <md-tab ng-click="vm.inspection(1)"  flex label="进行中">
+  </md-tab>
+  <md-tab ng-click="vm.inspection(2)" flex label="已完成">
+  </md-tab>
+</md-tabs>
+
+
 <md-content layout="column" flex style="background: #f0f0f0" class="pt-10 is-list">
   <md-list class="white-bg p-0">
     <md-list-item>
