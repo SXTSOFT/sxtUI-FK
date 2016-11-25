@@ -17,6 +17,17 @@
       templateUrl:'app/main/inspection/directives/sxt-wt-pop.html',
       link:link
     }
+
+    vm.data={
+      imgs:[
+        {
+          url:'app/main/szgc/images/1.jpg'
+        },{
+
+          url:'app/main/szgc/images/bg_home.png'
+        }
+      ]
+    }
     function link(scope,element,attr,ctrl){
       //$(element).appendTo('#content');
       scope.addPhoto = function(){

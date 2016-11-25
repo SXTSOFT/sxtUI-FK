@@ -18,6 +18,7 @@
   <md-button flex="none" class="little-btn"  ng-if="$root.shell.swap" ng-click="vm.cmd('tj')">统计</md-button>
   <md-button flex="none" class="little-btn"  ng-if="$root.shell.csb&&!vm.networking" ng-click="vm.cmd('csb')">抄水电表</md-button>
   <md-button flex="none"class="little-btn" ng-if="$root.shell.cjwt" ng-click="vm.cmd('cjwt')">问题库</md-button>
+  <md-button flex="none" class="little-btn"  ng-if="$root.shell.save" ng-click="vm.cmd('save')">保存</md-button>
   <md-button flex="none" class="little-btn" ng-if="$root.shell.next" ng-click="vm.cmd('next')">{{$root.shell.next}}</md-button>
   <md-button flex="none" style="margin:0;width:32px;" class="md-icon-button" aria-label="net work" ng-click="vm.setNetwork()">
     <md-icon md-svg-icon="assets/images/online.svg" ng-if="vm.networkState==0" ></md-icon>

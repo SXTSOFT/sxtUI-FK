@@ -79,6 +79,9 @@
         url:'/meterreading',
         title:'抄水电表',
         noBack:false,
+        shell:{
+          save:true
+        },
         template:'<meterreading-page layout="column" flex></meterreading-page>'
       })
       .state('app.inspection.check', {

@@ -53,7 +53,6 @@
           def = false;
           var defaultIndex = 0;
           var imagedata = null;
-
           if(results) {
             if(results.images){
               imagedata = results.images;
@@ -116,6 +115,8 @@
 
 
         });
+
+
         scope.$on('$destroy', function () {
           if (viewer)
             viewer.destroy();

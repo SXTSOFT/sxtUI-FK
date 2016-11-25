@@ -26,7 +26,9 @@
       {datatime:'今天 12:00',title:'深圳留仙洞八期B#1201餐厅',content:'墙面-墙面开裂',responsibilityunit:'达达装饰',type:'meestablish'}
     ]
     vm.qdetail=(function (item) {
-      $state.go('app.inspection.detail',{id:item.title});
+      if(item.type!="alreadyclosed") {
+        $state.go('app.inspection.detail', {id: item.title});
+      }
     })
     utils.onCmd($scope,['swap'],function(cmd,e){
       if(e.arg.type){

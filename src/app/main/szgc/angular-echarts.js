@@ -62,7 +62,8 @@ function getLinkFunction($http, theme, util, type) {
               ],
               series: util.getSeries(data, config, type)
             };
-          }else {
+          }
+          else {
             var xAxis = angular.extend({
                     orient: 'top',
                     axisLine: { show: false }

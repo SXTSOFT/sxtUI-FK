@@ -13,10 +13,15 @@
     });
 
   /**@ngInject*/
-  function meterreadingPageController(){
+  function meterreadingPageController($scope,utils,$state){
     var vm = this;
     vm.myDate=new Date();
 
+
+    utils.onCmd($scope,['save'],function(cmd,e){
+      //保存
+      $state.go("app.inspection.desktop")
+    })
   }
 
 })();

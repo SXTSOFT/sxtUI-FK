@@ -1757,10 +1757,17 @@ a.leaflet-draw-draw-color:hover div{
   .md-button.md-icon-button{
     display: none;
   }
+  .md-datepicker-input-container{
+    border-bottom-width: 0 !important;
+  }
+  md-input-container .md-input {
+    border-width: 0 0 0 0 !important;
+  }
 }
 
 
 #statistic{
+
   md-tab-content{
     top: -40px;
     left: -20px;
@@ -1768,6 +1775,7 @@ a.leaflet-draw-draw-color:hover div{
   md-tabs{
     min-height: 400px;
   }
+
   md-datepicker{
     padding-right: 0px;
     margin-right: 0px;
@@ -1779,4 +1787,15 @@ a.leaflet-draw-draw-color:hover div{
     border-bottom-width: 0 !important;
   }
 
+}
+
+#alreadyclosed{
+  color: #888888
+}
+
+
+#img{
+  .leaflet-right{
+    display: none;
+  }
 }

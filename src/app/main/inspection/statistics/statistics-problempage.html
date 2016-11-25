@@ -12,13 +12,13 @@
   <div flex="80">
         <md-tabs  md-border-bottom >
           <md-tab ng-click="vm.tab(0)"  label="问题分类排行">
-            <md-content layout="column" flex>
-              <bar-chart config="vm.data.config" data="vm.data.data" ></bar-chart>
+            <md-content layout="column" flex id="problem">
+              <bar-chart  config="vm.data.config" data="vm.data.data" ></bar-chart>
             </md-content>
           </md-tab>
-          <md-tab ng-click="vm.tab(2)" label="责任单位排行">
+          <md-tab ng-click="vm.tab(2)" label="责任单位排行" id="responsibility"  >
             <md-content>
-              <bar-chart  config="vm.data.config" data="vm.data.data1"></bar-chart>
+              <bar-chart config="vm.data.config" data="vm.data.data1"></bar-chart>
             </md-content>
         </md-tabs>
   </div>
