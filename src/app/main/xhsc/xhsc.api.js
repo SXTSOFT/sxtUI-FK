@@ -1743,7 +1743,7 @@
         }),
         //安全验收上传
         safeUp: function (params) {
-          return $http.post($http.url('/api/Acceptances/SecurityCheckpoint/Insert'), params);
+          return $http.post($http.url('/api/Acceptances/SecurityCheckpoint/CheckPointAdapter'), params);
         },
         //创建安全验收批
         createSafeBatch: function (params) {

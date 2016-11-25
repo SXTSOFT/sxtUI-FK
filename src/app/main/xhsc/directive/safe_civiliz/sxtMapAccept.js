@@ -114,6 +114,7 @@
                   v.Status = 2;
                   point.geometry.properties.Status = 2;
                 }
+                v.action="Insert";
                 fg.data.push(v);
                 scope.ct && scope.ct.cancelMode && scope.ct.cancelMode();
                 remote.safe.ckPointCreate(v);
@@ -133,6 +134,7 @@
             },
             onUpdateData: function (context, data, editScope) {
               if(data.v.ProblemSortName == 'T'){
+                data.v.action="Insert";
                 remote.safe.ckPointCreate(data.v);
               }
             },

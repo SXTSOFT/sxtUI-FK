@@ -43,6 +43,7 @@
               Describe: scope.data.v.ProblemDescription,
               DescRole: 'jl'
             };
+            p.action="Insert";
             remote.safe.problemRecordCreate(p);
           }
           scope.data.p = p;
@@ -86,6 +87,7 @@
               CheckpointID:scope.data.v.CheckpointID,
               FileContent:image
             };
+            img.action="Insert";
             remote.safe.ProblemRecordFileCreate(img);
             scope.data.images.push(img);
           }

@@ -71,9 +71,11 @@
       function createZb(update) {
         return $q(function (resolve) {
           if(!scope.Record.zb.ProblemRecordID||update===true){
-            scope.Record.zb.ProblemRecordID = scope.Record.zb.ProblemRecordID || sxt.uuid();
+            scope.Record.zb.ProblemRecordID = sxt.uuid();
+            // scope.Record.zb.ProblemRecordID ||
             var rec=angular.extend({ },scope.Record.zb);
             delete rec.images;
+            delete rec.isUpload;
             remote.safe.problemRecordCreate(rec).then(function () {
               resolve();
             })
@@ -134,9 +136,16 @@
         }
         else if(scope.role=='jl'){
           scope.data.value.Status = scope.data.value.Status==2?2:4;
-          remote.safe.ckPointCreate.create(scope.data.value).then(function () {
+          remote.safe.ckPointCreate(scope.data.value).then(function () {
             scope.slideShow = false;
             scope.context.updateStatus(scope.data.value.PositionID,convert(scope.data.value.Status));
+          }).then(function () {
+              scope.Record.jl.ProblemRecordID =sxt.uuid();
+            // scope.Record.jl.ProblemRecordID ||
+            var rec=angular.extend({ },scope.Record.jl);
+              delete rec.images;
+              delete rec.isUpload;
+              remote.safe.problemRecordCreate(rec);
           });
         }else{
           scope.slideShow = false;
