@@ -22,9 +22,11 @@
       .state('app.earthwork.test',{
         url:'/test',
         template:'<earthwork-test flex layout="column"></earthwork-test>'
-      });
-
-
+      })
+    .state('app.earthwork.list', {
+      url:'/list',
+      template:'<earthwork-list flex layout="column"></earthwork-list>'
+    });
     msNavigationServiceProvider.saveItem('earthwork', {
       title: '土方管理',
       group: true,
@@ -37,5 +39,14 @@
       state: 'app.earthwork.test',
       weight: 1
     });
+
+
+    msNavigationServiceProvider.saveItem('earthwork.earthwork', {
+      title: '土方管理',
+      icon: 'icon-sort-variant',
+      state: 'app.earthwork.list',
+      weight: 1
+    });
+
   }
 })(angular, undefined);
