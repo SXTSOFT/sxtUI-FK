@@ -340,6 +340,8 @@
         }).map(function (item) {
           var sdate = moment(item.ScheduledStartTime).startOf('day');
           var edate = moment(item.ScheduledEndTime).endOf('day');
+          if(item.Description)
+            angular.extend(item,angular.fromJson(item.Description));
           var result = {
             id:item.Id+'-group',
             name:item.Name,
@@ -354,6 +356,7 @@
                 to:item.ActualEndTime || item.ScheduledEndTime,
                 movable:true,
                 duration:edate.diff(sdate,'d'),
+                isType:item.Type,
                 dependencies:item.Dependencies.map(function (d) {
                   return {
                     from:d.DependencyTaskID
@@ -382,17 +385,18 @@
      */
     function editDialog(ev, formView, formData)
     {
+      //if(formData.isType !=0) return;
       $mdDialog.show({
         controller         : GanttChartAddEditDialogController,
         controllerAs       : 'vm',
         templateUrl        : 'app/main/plan/component/plan-gantt-flow.html',
         parent             : angular.element($document.body),
-        targetEvent        : ev,
+        //targetEvent        : ev,
         clickOutsideToClose: true,
         locals             : {
           dialogData: {
-            chartData : vm.data,
-            formView  : formView,
+            //chartData : vm.data,
+            //formView  : formView,
             formData  : formData
           },
           originData:vm.originData
@@ -468,7 +472,7 @@
                 switch:item.State!=4?false:true,
                 Flags:item.Flags,
                 TaskFlowId:item.Id,
-                ParentId:item.Dependencies[0].DependencyTaskID,
+                ParentId:item.Dependencies[0]&&item.Dependencies[0].DependencyTaskID||null,
                 Name:item.Name,
                 Type:0
               }
@@ -496,7 +500,7 @@
                       switch:t.State!=4?false:true,
                       Flags:t.Flags,
                       TaskFlowId:t.Id,
-                      ParentId:t.Dependencies[0].DependencyTaskID,
+                      ParentId:t.Dependencies[0]&&t.Dependencies[0].DependencyTaskID||null,
                       Name:t.Name,
                       Type:desc.Type
                     });
@@ -513,10 +517,10 @@
           vm.onLoadTemplate();
         })
       }
-      var taskId = dialogData.formView.id;
-      vm.hasFlow = !!originData.Items.find(function (it) {
-        return it.ExtendedParameters == taskId;
-      });
+      //var taskId = dialogData.formView.id;
+      //vm.hasFlow = !!originData.Items.find(function (it) {
+      //  return it.ExtendedParameters == taskId;
+      //});
       vm.openTask = function(task){
         var time = new Date();
         api.plan.Task.start(task.TaskFlowId,true,time).then(function (r) {
@@ -739,12 +743,27 @@
           onClick:function (e) {
             vm.current = e.data;
             console.log(e);
-            //vm.toggleRight();
+            vm.openDialog(e.data,e.data.TaskFlowId);
+           // vm.toggleRight();
           }
         });
         vm.flows = temp.load(vm.data);
       }
 
+      vm.openDialog = function(data,Id){
+        api.plan.Task.query({
+          ParentTaskId:Id,
+          Type:'BuildingPlan',
+          Source:$stateParams.id
+        }).then(function(r){
+          if(!r.data.Items.length) return;
+          var newdata = angular.extend({
+            id:Id
+          },data)
+          editDialog('','',newdata);
+        })
+
+      }
 
     }
 

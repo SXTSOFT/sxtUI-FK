@@ -58,6 +58,7 @@
           }
         }
         vm.loading = true;
+        //vm.myDate = new Date();
       }
     },true);
     $scope.$watch('vm.myDate',function(){

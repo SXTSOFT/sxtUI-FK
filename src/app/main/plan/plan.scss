@@ -199,5 +199,7 @@ md-calendar{
 .md-button{
   &.md-minbtn{
     min-width: 50px;
+    min-height: 24px;
+    line-height: 24px;
   }
 }
