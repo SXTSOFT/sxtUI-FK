@@ -45,6 +45,7 @@
               return p.DescRole=='zb'
             })
           };
+
           if(!scope.Record.zb){
             scope.Record.zb = {
               CheckpointID:scope.data.value.CheckpointID,
@@ -55,6 +56,7 @@
             };
           }
         })
+
         scope.value =scope.data.value.Status;
       }
 
@@ -65,11 +67,14 @@
         })
         xhUtils.playPhoto(imgs);
       }
+
       function createZb(update) {
         return $q(function (resolve) {
           if(!scope.Record.zb.ProblemRecordID||update===true){
             scope.Record.zb.ProblemRecordID = scope.Record.zb.ProblemRecordID || sxt.uuid();
-            remote.safe.problemRecordCreate(scope.Record.zb).then(function () {
+            var rec=angular.extend({ },scope.Record.zb);
+            delete rec.images;
+            remote.safe.problemRecordCreate(rec).then(function () {
               resolve();
             })
           }
@@ -104,8 +109,18 @@
         scope.data.value.Status = scope.value;
       }
       scope.submit = function(){
+        function convert(status) {
+          switch (status){
+            case 8:
+                  return 1;
+            case 16:
+            case 4:
+                  return 8;
+          }
+          return status;
+        }
         if(scope.role=='zb'){
-          scope.data.value.Status = scope.data.value.Status==8?8:1;
+          scope.data.value.Status = scope.data.value.Status==16?16:8;
           if(scope.data.value.Status==8 &&(!scope.Record.zb.images || scope.Record.zb.images.length==0)){
             utils.alert('请上传整改后照片');
             return;
@@ -113,7 +128,7 @@
           createZb(true).then(function () {
             remote.safe.ckPointCreate(scope.data.value).then(function () {
               scope.slideShow = false;
-              scope.context.updateStatus(scope.data.value.PositionID,scope.data.value.Status);
+              scope.context.updateStatus(scope.data.value.PositionID,convert(scope.data.value.Status));
             });
           });
         }
@@ -121,7 +136,7 @@
           scope.data.value.Status = scope.data.value.Status==2?2:4;
           remote.safe.ckPointCreate.create(scope.data.value).then(function () {
             scope.slideShow = false;
-            scope.context.updateStatus(scope.data.value.PositionID,scope.data.value.Status);
+            scope.context.updateStatus(scope.data.value.PositionID,convert(scope.data.value.Status));
           });
         }else{
           scope.slideShow = false;

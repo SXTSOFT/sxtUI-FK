@@ -16,6 +16,7 @@
         procedure:'=',
         regionId:'=',
         inspectionId:'=',
+        inspectionAreaId:"=",
         ct:'=',
         disableInspect:'@',
         disableDrag:'@'
@@ -97,6 +98,7 @@
                 })) {
                 var v = {
                   InspectionID:scope.inspectionId,
+                  InspectionAreaID:scope.inspectionAreaId,
                   CheckpointID:sxt.uuid(),
                   IndexPointID:scope.item.ProblemID,
                   AreaID:scope.regionId,

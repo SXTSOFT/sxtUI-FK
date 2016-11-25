@@ -25,6 +25,18 @@
     function link(scope,element,attr,ctrl) {
       scope.ct && (scope.ct.loading = true);
       var map,fg;
+
+      function convert(status) {
+        switch (status){
+          case 8:
+            return 1;
+          case 16:
+          case 4:
+            return 8;
+        }
+        return status;
+      }
+
       var install =function () {
         scope.ct && (scope.ct.loading = true);
         if (!map) {
@@ -51,11 +63,11 @@
               $("#inspect").css("display","none");
               $q.all([
                 remote.safe.ckPointQuery.cfgSet({
-                  filter:function (item,InspectionID) {
-                    return item.InspectionID==InspectionID;
+                  filter:function (item,inspectionId) {
+                    return item.InspectionID==inspectionId;
                   }
-                })(scope.InspectionId),
-                remote.Procedure.InspectionPoint.query(scope.InspectionId, scope.procedure, scope.regionId)
+                })(scope.inspectionId),
+                remote.safe.getSafePointGeo()
               ]).then(function (res) {
                 var fs = [];
                 fg.data = res[0].data;
@@ -77,6 +89,9 @@
                 })
                 fg.addData(fs, false);
                 cb();
+                fs.forEach(function (t) {
+                  fg.updateStatus(t.properties.v.PositionID,convert(t.properties.Status))
+                })
                 scope.ct && (scope.ct.loading = false);
               })
 
