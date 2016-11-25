@@ -82,7 +82,7 @@
             }
           }
           vm.data.InspectionTime = new Date();
-      //   }
+      // }
       // });
     }
 
