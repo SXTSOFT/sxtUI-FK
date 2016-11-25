@@ -19,5 +19,23 @@
         },
         abstract: true
       })
+      .state('app.earthwork.test',{
+        url:'/test',
+        template:'<earthwork-test flex layout="column"></earthwork-test>'
+      });
+
+
+    msNavigationServiceProvider.saveItem('earthwork', {
+      title: '土方管理',
+      group: true,
+      weight: 2
+    });
+
+    msNavigationServiceProvider.saveItem('earthwork.test', {
+      title: '画图测试',
+      icon: 'icon-calendar-text',
+      state: 'app.earthwork.test',
+      weight: 1
+    });
   }
 })(angular, undefined);
