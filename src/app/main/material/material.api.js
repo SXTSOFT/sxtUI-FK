@@ -50,6 +50,9 @@
         },
         getMaterialList:function () {
           return $http.get($http.url('/api/MaterialScience/GetMaterialListAsync'))
+        },
+        GetMaterialByTypeId:function (typeId) {
+          return $http.get($http.url('/api/MaterialScience/GetMaterialByTypeId/' + typeId))
         }
       },
       materialPlan:{

@@ -37,6 +37,7 @@
     if (vm.data.Id) {
       api.material.materialScience.getMaterial(vm.data.Id).then(function (r) {
         vm.data = r.data;
+        console.log(vm.data);
       })
     }
 

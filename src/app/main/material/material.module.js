@@ -28,14 +28,14 @@
         url: '/add/{id}',
         template: '<material-add flex layout="column"></material-add>'
       })
-      // .state('app.material.contracts', {
-      //   url:'/contracts',
-      //   template:'<material-contracts flex layout="column"></material-contracts>'
-      // })
-      // .state('app.material.contract', {
-      //   url:'/contract/{id}',
-      //   template:'<material-contract flex layout="column"></material-contract>'
-      // })
+      .state('app.material.contracts', {
+        url:'/contracts',
+        template:'<material-contracts flex layout="column"></material-contracts>'
+      })
+      .state('app.material.contract', {
+        url:'/contract/{id}',
+        template:'<material-contract flex layout="column"></material-contract>'
+      })
       .state('app.material.type', {
         url:'/type',
         template:'<material-type flex layout="column"></material-type>'
@@ -76,12 +76,12 @@
       weight: 1
     });
 
-    // msNavigationServiceProvider.saveItem('material.contracts', {
-    //   title: '合同管理',
-    //   icon: 'icon-account',
-    //   state: 'app.material.contracts',
-    //   weight: 1
-    // });
+    msNavigationServiceProvider.saveItem('material.contracts', {
+      title: '合同管理',
+      icon: 'icon-account',
+      state: 'app.material.contracts',
+      weight: 1
+    });
 
     msNavigationServiceProvider.saveItem('material.plans', {
       title: '材料进场计划',

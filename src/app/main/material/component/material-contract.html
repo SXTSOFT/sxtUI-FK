@@ -6,115 +6,58 @@
     <span flex></span>
   </div>
 </md-toolbar>
-
-<ms-form-wizard flex class="create-plan" id="formWizard">
-  <div scroll-top="msWizard.selectedIndex">
-    <md-tabs md-dynamic-height md-selected="msWizard.selectedIndex" md-center-tabs="true">
-      <md-tab>
-        <md-tab-label>
-          <span class="ms-form-wizard-step-label">
-            <span class="ms-form-wizard-step-number md-accent-bg" ng-if="wizardStep1.$invalid">1</span>
-            <span class="ms-form-wizard-step-number md-accent-bg" ng-if="wizardStep1.$valid">
-              <i class="icon-check s16"></i>
-            </span>
-            <span class="ms-form-wizard-step-text">基本信息</span>
-          </span>
-        </md-tab-label>
-        <md-tab-body>
-          <form name="wizardStep1" flex ms-form-wizard-form novalidate>
-            <div layout="row">
-              <md-input-container class="md-block" flex="40">
-                <label>项目</label>
-                <md-select name="projectId" required md-on-open="vm.getMaps()" ng-model="vm.data.ProjectId">
-                  <md-option ng-value="p.ProjectID" ng-click="vm.upNext()" ng-repeat="p in vm.projects">
-                    {{p.ProjectName}}
-                  </md-option>
-                </md-select>
-                <div ng-messages="wizardStep1.projectId.$error" ng-show="wizardStep1.projectId.$touched" role="alert">
-                  <div ng-message="required">
-                    <span>请选择项目.</span>
-                  </div>
-                </div>
-              </md-input-container>
-              <md-input-container class="md-block" flex="30">
-                <label>分期</label>
-                <md-select name="sectionId" required md-on-open="vm.getAreas(vm.data.ProjectId)"
-                           ng-model="vm.data.AreaId">
-                  <md-option ng-value="p.RegionID" ng-click="vm.upSection()" ng-selected="p.selected"
-                             ng-repeat="p in vm.areas">{{p.RegionName}}
-                  </md-option>
-                </md-select>
-                <div ng-messages="wizardStep1.projectId.$error" ng-show="wizardStep1.projectId.$touched" role="alert">
-                  <div ng-message="required">
-                    <span>请选择分期.</span>
-                  </div>
-                </div>
-              </md-input-container>
-              <md-input-container class="md-block" flex="30">
-                <label>标段</label>
-                <md-select name="sectionId" required ng-model="vm.data.SectionId"
-                           md-on-open="vm.getSections(vm.data.AreaId)">
-                  <md-option ng-value="p.RegionID" ng-selected="p.selected" ng-repeat="p in vm.sections">
-                    {{p.RegionName}}
-                  </md-option>
-                </md-select>
-                <div ng-messages="wizardStep1.projectId.$error" ng-show="wizardStep1.projectId.$touched" role="alert">
-                  <div ng-message="required">
-                    <span>请选择标段.</span>
-                  </div>
-                </div>
-              </md-input-container>
-            </div>
-            <div layout="row">
-              <md-input-container class="md-block" style="height: 58px;" flex="40">
-                <label>乙方（总包）</label>
-                <md-select name="MaterialId" ng-model="vm.data.PartnerId">
-                  <md-option ng-value="item.Id" ng-repeat="item in vm.Partners">{{item.OUName}}</md-option>
-                </md-select>
-              </md-input-container>
-            </div>
-            <div layout="row">
-              <md-input-container flex="100" class="md-block">
-                <label>合同名称</label>
-                <input type="text" ng-model="vm.data.Name">
-              </md-input-container>
-            </div>
-            <div layout="row">
-              <md-input-container flex="100" class="md-block">
-                <label>合同编号</label>
-                <input type="text" ng-model="vm.data.Number">
-              </md-input-container>
-            </div>
-          </form>
-        </md-tab-body>
-      </md-tab>
-      <md-tab ng-disabled="wizardStep1.$invalid">
-        <md-tab-label>
-          <span class="ms-form-wizard-step-label">
-            <span class="ms-form-wizard-step-number md-accent-bg" ng-if="wizardStep2.$invalid">2</span>
-            <span class="ms-form-wizard-step-number md-accent-bg" ng-if="wizardStep2.$valid">
-              <i class="icon-check s16"></i>
-            </span>
-            <span class="ms-form-wizard-step-text">设置材料</span>
-          </span>
-        </md-tab-label>
-        <md-tab-body>
-          <md-list>
-            <md-subheader class="md-no-sticky">Single Action Checkboxes</md-subheader>
-            <md-list-item ng-repeat="topping in toppings">
-              <p> {{ topping.name }} </p>
-              <md-checkbox class="md-secondary" ng-model="topping.wanted"></md-checkbox>
-            </md-list-item>
-            <md-divider></md-divider>
-          </md-list>
-        </md-tab-body>
-      </md-tab>
-    </md-tabs>
-    <div class="navigation" flex="none" layout="row" layout-align="center center">
-      <md-button ng-click="vm.save()" class="md-primary md-raised">
-        保存
-      </md-button>
+<md-content flex layout-fill class="white-bg" layout-padding>
+  <form name="myForm" flex ng-submit="vm.save()">
+    <div layout="row">
+      <md-input-container class="md-block" style="height: 58px;" flex="100">
+        <label>乙方（总包）</label>
+        <md-select name="PartnerId" required ng-model="vm.data.PartnerId" md-on-close="vm.clearSearchTerm()"
+                   data-md-container-class="selectdemoSelectHeader">
+          <md-select-header class="demo-select-header">
+            <input ng-model="vm.searchTerm"
+                   type="search"
+                   placeholder="搜索.."
+                   class="demo-header-searchbox md-text">
+          </md-select-header>
+          <md-option ng-value="item.Id" ng-repeat="item in vm.Partners | filter:vm.searchTerm">{{item.OUName}}</md-option>
+        </md-select>
+      </md-input-container>
     </div>
-  </div>
-</ms-form-wizard>
-
+    <div layout="row">
+      <md-input-container flex="100" class="md-block">
+        <label>合同名称</label>
+        <input type="text" name="Name" required ng-model="vm.data.Name">
+        <div ng-messages="myForm.Name.$error" ng-show="myForm.Name.$touched" role="alert">
+          <div ng-message="required">
+            <span>请输入合同名称.</span>
+          </div>
+        </div>
+      </md-input-container>
+    </div>
+    <div layout="row">
+      <md-input-container flex="100" class="md-block">
+        <label>合同编号</label>
+        <input type="text" name="Number" required ng-model="vm.data.Number">
+        <div ng-messages="myForm.Number.$error" ng-show="myForm.Number.$touched" role="alert">
+          <div ng-message="required">
+            <span>请输入合同编号.</span>
+          </div>
+        </div>
+      </md-input-container>
+    </div>
+    <div layout="row">
+      <md-input-container class="md-block" style="height: 58px;" flex="100">
+        <label>材料库</label>
+        <md-select name="MaterialTypeId" required ng-model="vm.data.MaterialTypeId">
+          <md-option ng-value="item.Id" ng-repeat="item in vm.materialClass">{{item.CategoryName}}</md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+    <md-button type="submit" class="md-primary md-raised">
+      保存
+    </md-button>
+    <md-button ui-sref="app.material.contracts" class="md-primary md-raised">
+      返回
+    </md-button>
+  </form>
+</md-content>

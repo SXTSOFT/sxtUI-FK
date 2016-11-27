@@ -94,7 +94,6 @@
         //   }
         // });
       });
-      Load();
     },true);
 
     $scope.$watch('vm.RegionId',function () {
@@ -111,7 +110,6 @@
         //   }
         // });
       });
-      Load();
     },true);
 
     $scope.$watch('vm.SectionId',function () {
@@ -119,6 +117,7 @@
     },true);
 
     function Load() {
+      if(!vm.SectionId) return;
       var ProjectId = vm.ProjectId || '';
       var RegionId = vm.RegionId || '';
       var SectionId = vm.SectionId || '';
