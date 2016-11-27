@@ -30,7 +30,13 @@
         },
         delete:function (id) {
           return $http.delete('/api/Eartwork/' + id);
-        }
+        },
+        upLoadImage:function (file) {
+          return $http.post('/api/Eartwork/UpLoadImage/' + file.RelationId, file);
+        },
+        DeleteFile:function (id) {
+          return $http.delete('/api/Eartwork/DeleteFile/' + id);
+        },
       }
     })
   }

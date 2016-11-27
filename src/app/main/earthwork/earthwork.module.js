@@ -5,7 +5,7 @@
   'use strict';
 
   angular
-    .module('app.earthwork', ['app.core','app.xhsc'])
+    .module('app.earthwork', ['app.core','app.xhsc','angularFileUpload'])
     .config(config);
   /** @ngInject */
   function config($stateProvider, msNavigationServiceProvider) {

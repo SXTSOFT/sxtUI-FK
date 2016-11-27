@@ -17,7 +17,7 @@
     <div style="border: 2px solid darkgray;border-radius: 5px; margin: 0px 5px 10px 5px;min-width: 203px; float: left;" ng-repeat="item in vm.lst_html">
       <input type="text" style="min-width: 110px; width: 114px; height: 35px;padding: 0 10px;" ng-value="item.RegionName" ng-model="item.RegionName" required />
       <md-button class="md-raised" style="min-width:41px;height:35px;padding: 0;margin:0;border-left: 2px solid darkgray;border-right: 0; margin-right: -2px;" ng-click="vm.save(item)">保存</md-button>
-      <md-button  class="md-raised" style="min-width:41px;height:35px; margin:0;padding: 0;border-left: 2px solid darkgray;border-right: 0;">管理</md-button>
+      <md-button  class="md-raised" ng-click="vm.showImg(item.Id)" style="min-width:41px;height:35px; margin:0;padding: 0;border-left: 2px solid darkgray;border-right: 0;">管理</md-button>
     </div>
     <div style="border: 2px solid darkgray;border-radius: 5px; margin: 0px 5px 10px 5px;min-width: 206px;width: 206px;float: left;">
       <input type="text" ng-model="vm.RegionName" style="min-width: 118px; width: 118px; height: 35px;padding: 0 10px;" required />
@@ -27,6 +27,6 @@
   <div layout="row" style="clear: both;width:100%; height: 300px; background-color: #DDDDDD;">
   </div>
   <div layout="row">
-    <sxt-images ng-model="mp.zj.obj.Id" single="true" files="mp.zj.files" edit="true"></sxt-images>
+    <sxt-images-tf ng-model="vm.rid" single="true" files="vm.files" edit="true"></sxt-images-tf>
   </div>
 </md-content>

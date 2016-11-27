@@ -20,6 +20,8 @@
     vm.RegionName = '';
     vm.RegionTreeId = '';
     vm.RegionTreeName = '';
+    vm.rid = 'ed8f02b3cdd94f90b8343ae69d0c94b7';
+    vm.files = [];
 
     api.xhsc.Project.getMap().then(function (r) {
       vm.ProjectList = r.data||[];
@@ -86,7 +88,8 @@
       });
     }
 
-
-
+    vm.showImg = function (rid) {
+      vm.rid = rid;
+    }
   }
 })(angular, undefined);

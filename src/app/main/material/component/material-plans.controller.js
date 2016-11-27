@@ -34,18 +34,19 @@
 
 
     api.xhsc.Project.getMap().then(function (r) {
-      if(user.Role.MemberType !== ''){
-        role.forEach(function (o) {
-          var pj = r.data.find(function (p) {
-            return p.ProjectID == o.ProjectId;
-          });
-          if(pj){
-            vm.projects.push(pj);
-          }
-        })
-      }else{
-        vm.projects = r.data;
-      }
+      // if(user.Role.MemberType !== ''){
+      //   role.forEach(function (o) {
+      //     var pj = r.data.find(function (p) {
+      //       return p.ProjectID == o.ProjectId;
+      //     });
+      //     if(pj){
+      //       vm.projects.push(pj);
+      //     }
+      //   })
+      // }else{
+      //   vm.projects = r.data;
+      // }
+      vm.projects = r.data;
 
       if(vm.projects.length != 0)
         vm.projects[0].selected = true;
@@ -70,18 +71,19 @@
       vm.RegionId = '';
       vm.SectionId = '';
       api.xhsc.Project.GetAreaChildenbyID(vm.ProjectId).then(function (r) {
-        if(user.Role.MemberType !== ''){
-          role.forEach(function (o) {
-            var pj = r.data.find(function (p) {
-              return p.RegionID == o.AreaId;
-            });
-            if(pj){
-              vm.regions.push(pj);
-            }
-          });
-        }else{
-          vm.regions = r.data;
-        }
+        // if(user.Role.MemberType !== ''){
+        //   role.forEach(function (o) {
+        //     var pj = r.data.find(function (p) {
+        //       return p.RegionID == o.AreaId;
+        //     });
+        //     if(pj){
+        //       vm.regions.push(pj);
+        //     }
+        //   });
+        // }else{
+        //   vm.regions = r.data;
+        // }
+        vm.regions = r.data;
         if(vm.regions.length != 0)
           vm.regions[0].selected = true;
 
