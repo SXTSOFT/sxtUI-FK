@@ -497,19 +497,28 @@
     }
 
     function wrap(cfg) {
-      var _cfg=$.extend(true,{},cfg);
+
       function cfgSet(config) {
-        _cfg=$.extend(_cfg,config);
+        var _cfg=$.extend(true,{},cfg,config);
+        _cfg=bindDb(_cfg)
+        function f() {
+          var args = toArray(arguments);
+          if (!_cfg.offline){
+            return _cfg.fn.apply(_cfg,args);
+          }
+          var excute=_cfg.bind(_cfg.fn,_cfg.callback);
+          return excute.apply(_cfg,args);
+        }
         return f;
       }
-      var  _cfg=bindDb(_cfg);
+      var  cfg=bindDb(cfg);
       function f() {
         var args = toArray(arguments);
-        if (!_cfg.offline){
-           return _cfg.fn.apply(_cfg,args);
+        if (!cfg.offline){
+           return cfg.fn.apply(cfg,args);
         }
-        var excute=_cfg.bind(_cfg.fn,_cfg.callback);
-        return excute.apply(_cfg,args);
+        var excute=cfg.bind(cfg.fn,cfg.callback);
+        return excute.apply(cfg,args);
       }
       f.cfgSet=cfgSet;
       return f;

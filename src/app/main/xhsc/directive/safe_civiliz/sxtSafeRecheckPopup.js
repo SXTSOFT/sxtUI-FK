@@ -31,9 +31,18 @@
       scope.apply = function(){
         //console.log('scope',scope)
         remote.safe.problemRecordQuery(scope.data.value.CheckpointID).then(function(r){
+           scope.images={
+            zb:[],
+            jl:[]
+          }
+
           r.data.forEach(function (p) {
             remote.safe.ProblemRecordFileQuery(p.ProblemRecordID).then(function (r2) {
-              p.images = r2.data;
+              if (p.DescRole=="jl"){
+                scope.images.jl=scope.images.jl.concat(r2.data)
+              }else{
+                scope.images.zb=scope.images.zb.concat(r2.data);
+              }
             });
           });
 
@@ -46,12 +55,21 @@
             })
           };
 
+          if(!scope.Record.jl){
+            scope.Record.jl = {
+              CheckpointID:scope.data.value.CheckpointID,
+              RectificationID:scope.data.item,
+              Describe:'',
+              DescRole:"jl",
+              Remark:''
+            };
+          }
           if(!scope.Record.zb){
             scope.Record.zb = {
               CheckpointID:scope.data.value.CheckpointID,
               RectificationID:scope.data.item,
               Describe:'',
-              DescRole:scope.role,
+              DescRole:"zb",
               Remark:''
             };
           }
@@ -69,36 +87,80 @@
       }
 
       function createZb(update) {
-        return $q(function (resolve) {
-          if(!scope.Record.zb.ProblemRecordID||update===true){
-            scope.Record.zb.ProblemRecordID = sxt.uuid();
-            // scope.Record.zb.ProblemRecordID ||
-            var rec=angular.extend({ },scope.Record.zb);
-            delete rec.images;
-            delete rec.isUpload;
-            remote.safe.problemRecordCreate(rec).then(function () {
-              resolve();
-            })
-          }
-          else{
-            resolve()
-          }
+        return $q(function (resolve,reject) {
+          remote.safe.problemRecordQuery.cfgSet({
+            filter: function (item, CheckpointID) {
+              return item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="zb";
+            },
+          })(scope.data.value.CheckpointID).then(function (r) {
+            if (!r||!r.data||!r.data.length){
+              // scope.Record.zb.ProblemRecordID = sxt.uuid()
+              var rec={
+                CheckpointID:scope.data.value.CheckpointID,
+                RectificationID:scope.data.item,
+                Describe:'',
+                DescRole:"zb",
+                Remark:''
+              };
+              rec.ProblemRecordID = sxt.uuid();
+              rec._id=rec.ProblemRecordID;
+              remote.safe.problemRecordCreate(rec).then(function () {
+                resolve(rec);
+              })
+            }else {
+              resolve(r.data[0]);
+            }
+
+          });
         })
+
+
+
+        // return $q(function (resolve) {
+        //   if(!scope.Record.zb.ProblemRecordID||update===true){
+        //     remote.safe.problemRecordQuery.cfgSet({
+        //       filter: function (item, CheckpointID) {
+        //         return item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="zb";
+        //       },
+        //     })(scope.data.value.CheckpointID).then(function (r) {
+        //       if (!r||!r.data||!r.data.length){
+        //         // scope.Record.zb.ProblemRecordID = sxt.uuid()
+        //         var rec={
+        //           CheckpointID:scope.data.value.CheckpointID,
+        //           RectificationID:scope.data.item,
+        //           Describe:'',
+        //           DescRole:"zb",
+        //           Remark:''
+        //         };
+        //         rec.ProblemRecordID = sxt.uuid();
+        //         rec._id=rec.ProblemRecordID;
+        //         remote.safe.problemRecordCreate(rec).then(function () {
+        //           resolve(rec);
+        //         })
+        //
+        //       }
+        //       resolve(r.data[0]);
+        //     });
+        //   }
+        //   else{
+        //     resolve()
+        //   }
+        // })
       }
       scope.addPhoto = function (warter) {
         xhUtils.photo(null,warter).then(function (image) {
           if(image){
-            createZb().then(function () {
+            createZb().then(function (res) {
               var img = {
                 ProblemRecordFileID:sxt.uuid(),
-                ProblemRecordID:scope.Record.zb.ProblemRecordID,
+                ProblemRecordID:res.ProblemRecordID,
                 CheckpointID:scope.Record.zb.CheckpointID,
                 FileID:sxt.uuid()+'.jpg',
                 FileContent:image
               }
               remote.safe.ProblemRecordFileCreate(img).then(function () {
-                var imgs = scope.Record.zb.images = (scope.Record.zb.images || []);
-                imgs.push(img);
+                // var imgs = scope.Record.zb.images = (scope.Record.zb.images || []);
+                scope.images.zb=scope.images.zb.concat([img]);
               })
 
             })
@@ -140,12 +202,24 @@
             scope.slideShow = false;
             scope.context.updateStatus(scope.data.value.PositionID,convert(scope.data.value.Status));
           }).then(function () {
-              scope.Record.jl.ProblemRecordID =sxt.uuid();
-            // scope.Record.jl.ProblemRecordID ||
-            var rec=angular.extend({ },scope.Record.jl);
-              delete rec.images;
-              delete rec.isUpload;
-              remote.safe.problemRecordCreate(rec);
+            remote.safe.problemRecordQuery.cfgSet({
+              filter: function (item, CheckpointID) {
+                return item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="jl";
+              },
+            })(scope.data.value.CheckpointID).then(function (r) {
+              if (!r||!r.data||!r.data.length){
+                var rec={
+                  CheckpointID:scope.data.value.CheckpointID,
+                  RectificationID:scope.data.item,
+                  Describe:'',
+                  DescRole:"jl",
+                  Remark:''
+                };
+                rec.ProblemRecordID = sxt.uuid();
+                rec._id=rec.ProblemRecordID;
+                remote.safe.problemRecordCreate(rec)
+              }
+            });
           });
         }else{
           scope.slideShow = false;

@@ -8,16 +8,16 @@
     <md-list-item ng-if="role == 'zb'">
       <label>首验照片</label>
       <p>
-          <span class="photo" ng-click="playImage(Record.jl.images)">
-            <i>照片</i><i>{{Record.jl.images.length}}</i>
+          <span class="photo" ng-click="playImage(images.jl)">
+            <i>照片</i><i>{{images.jl.length}}</i>
           </span>
       </p>
     </md-list-item>
     <md-list-item ng-if="role == 'zb'">
       <label>整改照片</label>
       <p>
-          <span ng-if="Record.zb && Record.zb.images.length" class="photo" ng-click="playImage(Record.zb.images)">
-            <i>照片</i><i>{{Record.zb.images.length}}</i>
+          <span ng-if="Record.zb && images.zb.length" class="photo" ng-click="playImage(images.zb)">
+            <i>照片</i><i>{{images.zb.length}}</i>
           </span>
         <md-button style="min-width: 40px;" class="addphoto" ng-click="addPhoto(warter)"><img src="app/main/xhsc/images/plus-gx.png" width="40"></md-button>
       </p>
@@ -37,8 +37,8 @@
     <md-list-item ng-if="role == 'jl'||role==''">
       <label>整改前照片</label>
       <p>
-          <span class="photo" ng-click="playImage(Record.jl.images)">
-            <i>照片</i><i>{{Record.jl.images.length}}</i>
+          <span class="photo" ng-click="playImage(images.jl)">
+            <i>照片</i><i>{{images.jl.length}}</i>
           </span>
         <!--<span class="photo">-->
         <!--<i>照片</i><i>2</i>-->
@@ -48,8 +48,8 @@
     <md-list-item ng-if="role == 'jl'||role==''">
       <label>整改后照片</label>
       <p>
-          <span class="photo" ng-click="playImage(Record.zb.images)">
-            <i>照片</i><i>{{Record.zb.images.length||0}}</i>
+          <span class="photo" ng-click="playImage(images.zb)">
+            <i>照片</i><i>{{images.zb.length||0}}</i>
           </span>
       </p>
     </md-list-item>
