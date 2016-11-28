@@ -66,6 +66,7 @@
           $scope.source.rooms=[{
              RegionID:"no",
              RegionName:"不到户",
+             parent:area,
              active:true
           }].concat(area.Children);
         }
@@ -77,7 +78,7 @@
             $scope.toggle('region');
           }
           $scope.current=$scope.current?$scope.current:{};
-          $scope.current.region=item;
+          $scope.current.region=item.RegionID=="no"?item.parent:item;
         }
         $scope.selectedProcedure=function (item,siblings) {
           $scope.setActive(item,siblings);
