@@ -1,0 +1,25 @@
+<md-dialog aria-label="新建"  style="min-height: 250px;width: 80%;max-width: 450px" ng-cloak>
+  <md-dialog-content layout="column"  style="margin:15px 8px 8px 0px ">
+    <md-input-container style="margin-bottom: -10px">
+      <label>主题</label>
+      <input ng-model="subject">
+    </md-input-container>
+    <md-input-container>
+      <label>项目</label>
+      <md-select ng-model="currentProject" ng-model-options="{trackBy: '$value.RegionID'}">
+        <md-option  ng-value="item" ng-repeat="item in projects">{{item.RegionName}}</md-option>
+      </md-select>
+    </md-input-container>
+    <md-input-container>
+      <label>分期</label>
+      <md-select ng-model="currentArea" required  ng-model-options="{trackBy: '$value.RegionID'}">
+        <md-option  ng-value="item" ng-repeat="item in currentProject.Children">{{item.RegionName}}</md-option>
+      </md-select>
+    </md-input-container>
+    <div layout="row">
+      <md-button flex ng-click="cancel()">取消</md-button>
+      <md-button flex ng-click="ok()">确定</md-button>
+    </div>
+
+  </md-dialog-content>
+</md-dialog>,

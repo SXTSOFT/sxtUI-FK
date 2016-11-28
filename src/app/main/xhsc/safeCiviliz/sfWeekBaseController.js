@@ -1,7 +1,4 @@
 /**
- * Created by lss on 2016/10/18.
- */
-/**
  * Created by emma on 2016/6/21.
  */
 (function () {
@@ -9,12 +6,14 @@
 
   angular
     .module('app.xhsc')
-    .controller('safe_civiliz_mainController', safe_civiliz_mainController);
+    .controller('sfWeekBaseController', sfWeekBaseController);
 
-  /**@ngInject*/
-  function safe_civiliz_mainController(remote, xhUtils, $rootScope, utils, api, $q, $state, $scope, $mdDialog, db, $mdBottomSheet, xhscService) {
+  function sfWeekBaseController(remote, xhUtils, $rootScope, utils, api, $q, $state, $scope, $mdDialog,
+                                       db, $mdBottomSheet, $stateParams, xhscService) {
     var vm = this;
     vm.procedure = [];
+    vm.yw = $stateParams.yw;
+    vm.isShowbg = false;
     //所有全局任务
     var globalTask = [
       function () {
@@ -65,38 +64,6 @@
       ]
     }
 
-    // function InspectionTask(item) {
-    //   var t = [function () {
-    //     return remote.Project.getInspectionList(item.InspectionId);
-    //   }];
-    //   item.Children.forEach(function (area) {
-    //     t.push(function (tasks, down) {
-    //       return remote.Procedure.InspectionCheckpoint.query(item.AcceptanceItemID, area.AreaID, item.InspectionId).then(function (result) {
-    //         result.data.forEach(function (p) {
-    //           tasks.push(function () {
-    //             return remote.Procedure.InspectionProblemRecord.query(p.CheckpointID).then(function (result) {
-    //               result.data.forEach(function (r) {
-    //                 tasks.push(function () {
-    //                   return remote.Procedure.InspectionProblemRecordFile.query(r.ProblemRecordID).then(function (result) {
-    //                   })
-    //                 })
-    //               })
-    //             })
-    //           });
-    //         });
-    //       })
-    //     });
-    //     t.push(function () {
-    //       return remote.Procedure.InspectionIndexJoinApi.query(item.InspectionId)
-    //     })
-    //     t.push(function () {
-    //       return remote.Procedure.InspectionPoint.query(item.InspectionId, item.AcceptanceItemID, area.AreaID)
-    //     })
-    //
-    //   });
-    //   return t;
-    // }
-
     function rectificationTask(item) {
       return [
         function (tasks) {
@@ -113,7 +80,7 @@
               var ProblemRecords = r.data.ProblemRecord; //插入记录
               if (angular.isArray(ProblemRecords)) {
                 ProblemRecords.forEach(function (t) {
-                  t.isUpload=true;
+                  t.isUpload = true;
                   tasks.push(function () {
                     return remote.safe.problemRecordCreate(t)
                   });
@@ -268,125 +235,17 @@
             current.total = e.total;
             break;
           case 'success':
+
             break;
         }
       }
     }, $scope);
 
-    vm.uploadInfo = {}
-    vm.uploadInfo.uploading = false;
-    vm.upload = function () {
+    vm.by = function (r) {
       api.setNetwork(0).then(function () {
-        vm.uploadInfo.uploading = true;
-        vm.uploadInfo.percent = '0%'
-        $mdDialog.show({
-          controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
-            $scope.uploadInfo = vm.uploadInfo;
-            function buildTask() {
-              function filterUpload(arr) {
-                if (angular.isArray(arr)){
-                  return arr.filter(function (t) {
-                      return !t.isUpload;
-                  })
-                }
-                return arr;
-              }
-
-              var tasks = [];
-              return $q(function (resolve, reject) {
-                api.getUploadData(function (cfg) {
-                  return cfg.mark == "up";
-                }).then(function (val) {
-                  if (val && val.length) {
-                    var points = val.find(function (o) {
-                      return o.key == "InspectionPoint";
-                    });
-                    var ckpoints = val.find(function (o) {
-                      return o.key == "ckPoints";
-                    });
-                    var problemRecords = val.find(function (o) {
-                      return o.key == "problemRecord";
-                    });
-                    var InspectionProblemRecordFiles = val.find(function (o) {
-                      return o.key == "InspectionProblemRecordFile";
-                    });
-                    if (points && points.vals) {
-                      points.vals.forEach(function (t) {
-                        if (t.geometry) {
-                          t.Geometry = t.geometry;
-                        }
-                        if (typeof t.Geometry === 'string') {
-                          t.Geometry = JSON.parse(t.Geometry);
-                        }
-                        tasks.push(function () {
-                          return remote.Procedure.InspectionPoint.create(t).then(function () {
-                            points.db.delete(t._id);
-                          });
-                        })
-                      });
-                    }
-                    tasks.push(function () {
-                      return remote.safe.safeUp({
-                        "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
-                        "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
-                        "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
-                      }).then(function () {
-                        if (ckpoints && ckpoints.vals) {
-                          ckpoints.vals.forEach(function (m) {
-                            ckpoints.db.delete(m._id);
-                          });
-                        }
-                        if (problemRecords && problemRecords.vals) {
-                          problemRecords.vals.forEach(function (m) {
-                            problemRecords.db.delete(m._id);
-                          });
-                        }
-                        if (InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals) {
-                          InspectionProblemRecordFiles.vals.forEach(function (m) {
-                            InspectionProblemRecordFiles.db.delete(m._id);
-                          });
-                        }
-                      });
-                    })
-                  }
-                  resolve(tasks);
-                })
-              }).catch(function () {
-                reject(tasks);
-              })
-            }
-
-            buildTask().then(function (tasks) {
-              api.task(tasks)(function (percent, current, total) {
-                vm.uploadInfo.percent = parseInt(percent * 100) + ' %';
-                vm.uploadInfo.current = current;
-                vm.uploadInfo.total = total;
-              }, function () {
-                utils.alert("上传成功!");
-                $mdDialog.hide();
-                load();
-                vm.uploadInfo.uploading = false;
-              }, function (timeout) {
-                var msg = timeout ? '超时,任务上次失败!' : '上传失败,请检查网络';
-                $mdDialog.cancel();
-                utils.alert(msg);
-                vm.uploadInfo.uploaded = 0;
-                vm.uploadInfo.uploading = false;
-              });
-            })
-          }],
-          template: '<md-dialog aria-label="正在上传"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular><p style="padding-left: 6px;">正在上传：{{uploadInfo.percent}}({{uploadInfo.current}}/{{uploadInfo.total}})</p></md-dialog-content></md-dialog>',
-          parent: angular.element(document.body),
-          clickOutsideToClose: false,
-          fullscreen: false
-        });
+        $state.go('app.xhsc.sf.sfitem', {role: 'zb', projectId: r.RegionID});
       });
     }
-
-    xhscService.getProfile().then(function (profile) {
-      vm.role = profile.role;
-      vm.OUType = profile.ouType;
-    });
 
     function load() {
       $q.all([
@@ -408,7 +267,9 @@
                     }
                   })
                 }
+
                 vm.Inspections = ys;
+                vm.y_isOver;
                 if (vm.yw == 16 && !vm.Inspections.length) {
                   utils.alert("暂时没有找到数据");
                 }
@@ -440,6 +301,7 @@
                   })
                 }
                 vm.zglist = zg;
+                vm.f_isOver = true;
                 resolve();
               }).catch(function () {
                 resolve();
@@ -450,6 +312,31 @@
             }
           })
 
+        }),
+        remote.Project.getAllRegionWithRight_no_db("", 3).then(function (n) {
+          if (vm.yw == 2 || vm.yw == 0) {
+            vm.z_isOver = true;
+            if (!n || n.data.length == 0) {
+              vm.isShowbg = true;
+              return;
+            }
+            remote.offline.query().then(function (r) {
+              vm.by_project = xhscService.buildMutilRegionTree(n.data, 1);
+              vm.zj_project = $.extend([], vm.by_project, true);
+              vm.zj_project.forEach(function (k) {
+                if (k.Children) {
+                  k.Children.forEach(function (n) {
+                    if (r.data.find(function (m) {
+                        return m.Id == 'zj' + n.RegionID;
+                      })) {
+                      n.isComplete = true;
+                    }
+                  })
+                }
+              });
+
+            })
+          }
         })
       ]).then(function () {
         vm.isOver = true;
@@ -459,10 +346,6 @@
     api.setNetwork(0).then(function () {
       load();
     })
-
-    vm.setModule = function (val) {
-      $state.go('app.xhsc.sf.sfbase', {yw: val})
-    }
     vm.zbzgbtnAction = function (item, evt) {
       $mdBottomSheet.show({
         templateUrl: 'app/main/xhsc/procedure/action.html',
@@ -616,5 +499,17 @@
       });
       evt.stopPropagation();
     }
+    vm.click = function (item, evt) {
+      if (item.isComplete) {
+        api.setNetwork(1).then(function () {
+          $state.go('app.xhsc.gx.gxlist', {role: '', projectId: item.RegionID});
+        });
+      }
+      evt.stopPropagation();
+    }
+    vm.stretch = function (item) {
+      item.stretch = !item.stretch;
+    }
+
   }
 })();

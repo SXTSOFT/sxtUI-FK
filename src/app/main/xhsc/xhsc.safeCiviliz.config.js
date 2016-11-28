@@ -32,6 +32,38 @@
         templateUrl: 'app/main/xhsc/safeCiviliz/sfWeekMain.html',
         controller: 'sfWeekMainController as vm'
       })
+      .state('app.xhsc.sf.sfWeekBase', {
+        noBack:true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '周安全检查',
+        url: '/sfWeekBase',
+        templateUrl: 'app/main/xhsc/safeCiviliz/sfWeekBase.html',
+        controller: 'sfWeekBaseController as vm'
+      })
+      .state('app.xhsc.sf. sfWeekAccept', {
+        noBack:true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '周安全检查',
+        url: '/ sfWeekAccept',
+        templateUrl: 'app/main/xhsc/safeCiviliz/ sfWeekAccept.html',
+        controller: 'sfWeekAcceptController as vm'
+      })
+      .state('app.xhsc.sf. sfWeekRectify', {
+        noBack:true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '周安全检查',
+        url: '/ sfWeekRectify',
+        templateUrl: 'app/main/xhsc/safeCiviliz/ sfWeekRectify.html',
+        controller: 'sfWeekRectifyController as vm'
+      })
+
+
 
 
       .state('app.xhsc.sf.sfmain', {
