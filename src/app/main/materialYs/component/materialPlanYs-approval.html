@@ -72,8 +72,8 @@
       <p flex="30">进场照片</p>
     </md-list-item>
     <md-list-item>
-      <div flex ng-repeat="img in vm.intoFactoryImgs" sxt-images="vm.intoFactoryImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageUrl}}" style="width: 450px;display: block;" flex="95" />
+      <div flex ng-repeat="img in vm.data.Images | filter:{ApproachStage:1}:true" sxt-images="vm.data.Images" style="text-align: center;margin:5px 0;">
+        <img ng-src="{{img.ImageByte}}" style="width: 450px;display: block;" flex="95" />
       </div>
     </md-list-item>
     <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">监理验收信息</div>
@@ -97,8 +97,8 @@
       <p flex="30">验收照片</p>
     </md-list-item>
     <md-list-item>
-      <div flex ng-repeat="img in vm.checkedImgs" sxt-images="vm.checkedImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageUrl}}" style="width: 450px; display: block;" flex="95"/>
+      <div flex ng-repeat="img in vm.data.Images | filter:{ApproachStage:2}:true" sxt-images="vm.data.Images" style="text-align: center;margin:5px 0;">
+        <img ng-src="{{img.ImageByte}}" style="width: 450px; display: block;" flex="95"/>
       </div>
     </md-list-item>
   </md-list>

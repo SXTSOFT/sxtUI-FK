@@ -2,28 +2,28 @@
 <div class="imageEdit">
     <div class="edititem" ng-repeat="item in uploader.queue">
         <img style="height:150px;margin:0 5px; width: 200px;" ng-click="editPic(item.file)" osrc="{{item.file.Url.substring(1).replace('/s_','/')}}" ng-src="{{item.file.Url.replace('/s_','/')}}" class="img-thumbnail" />
-        <div class="imgleft">
+        <div class="imgleft" ng-if="isPartions=='true'">
             <div class="dropdown">
                 <button class="btn btn-white btn-xs dropdown-toggle" type="button" data-toggle="dropdown" my-Select
                         style="font-size: smaller;font-weight:400">
                     {{item.showPartion?item.showPartion:'部位'}}
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu" ng-show="true">
                     <li ng-repeat="_item in partions" ng-click="modify(_item.Id,item)"><a href="javascript:void(0)">{{_item.desc}}</a></li>
                 </ul>
             </div>
         </div>
-        <div class="text" style="padding: 5px; text-align: right;">
+        <div ng-if="edit" class="text" style="padding: 5px; text-align: right;">
             <div style="position: relative; ">
-                <a style="position: absolute; right: 30px;width: 50px; color: #428bca;">替换</a>
+                <a ng-if="edit" style="position: absolute; right: 30px;width: 50px; color: #428bca;">替换</a>
                 <input type="file" style="position: absolute; right: 30px; width: 50px; opacity: 0;cursor: pointer; font-size: 0; height: 20px;" nv-file-select uploader="uploader" multiple ng-click="inputChange()" ; />
             </div>
 
             <a ng-click="remove($event,item)" style="cursor: pointer; color: #428bca;">删除</a>
         </div>
     </div>
-    <div style="float:left;padding:10px;" ng-show="uploader.queue.length == 0">
+    <div style="float:left;padding:10px;" ng-if="edit" ng-show="uploader.queue.length == 0">
         <div class="file-drop-zone" style="height:140px;margin:0 5px;line-height:140px; padding:5px;" nv-file-drop uploader="uploader">
             <input type="file" nv-file-select uploader="uploader" multiple ng-click="inputChange()" ; />
         </div>

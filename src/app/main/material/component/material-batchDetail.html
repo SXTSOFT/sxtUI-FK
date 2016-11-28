@@ -80,25 +80,25 @@
                 <md-list-item style="padding-left:0;">
                   <label flex="15">车辆：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:256}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageByte}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
                 <md-list-item style="padding-left:0;">
                   <label flex="15">货物：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:512}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageByte}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
                 <md-list-item style="padding-left:0;">
                   <label flex="15">检查人：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:1024}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageByte}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
                 <md-list-item style="padding-left:0;">
                   <label flex="15">检查人：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:2048}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageByte}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
               </md-list>
@@ -128,25 +128,25 @@
                 <md-list-item style="padding-left:0;">
                   <label flex="15">车辆：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:1}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageByte}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
                 <md-list-item style="padding-left:0;">
                   <label flex="15">货物：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:2}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageByte}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
                 <md-list-item style="padding-left:0;">
                   <label flex="15">验收人：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:4}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageByte}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
                 <md-list-item style="padding-left:0;">
                   <label flex="15">合格证：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:8}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageByte}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
               </md-list>
@@ -172,13 +172,13 @@
                 <md-list-item style="padding-left:0;">
                   <label flex="15">抽样过程：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:16}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageByte}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
                 <md-list-item style="padding-left:0;">
                   <label flex="15">检查单：</label>
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:32}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageByte}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
               </md-list>
@@ -203,7 +203,7 @@
               <md-list flex="85" ng-cloak>
                 <md-list-item style="padding-left:0;">
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:64}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageByte}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
               </md-list>
@@ -232,7 +232,7 @@
               <md-list flex="85" ng-cloak>
                 <md-list-item style="padding-left:0;">
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:128}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageByte}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
                 </md-list>
@@ -284,7 +284,7 @@
               <md-list flex="85" ng-cloak>
                 <md-list-item style="padding-left:0;">
                   <div flex ng-repeat="img in item.Images | filter:{OptionType:128}:true" sxt-images="item.Images" style="text-align: center;margin:5px 0;">
-                    <img ng-src="{{img.ImageUrl}}" style="width: 150px;" flex="95" style="display: block;"/>
+                    <img ng-src="{{img.ImageByte}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
               </md-list>

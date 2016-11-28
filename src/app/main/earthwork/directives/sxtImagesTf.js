@@ -131,9 +131,9 @@
                     $scope.imgOK = true;
 
                     item.file.Id = r.data.Id;
-                    item.file.Url = r.data.ImageUrl;
+                    item.file.Url = sxt.app.api + r.data.ImageUrl;
                     if (angular.isArray($scope.files))
-                      $scope.files.push(r.data.ImageUrl);
+                      $scope.files.push(sxt.app.api + r.data.ImageUrl);
                     item.remove = function () {
                       var me = this;
 
@@ -233,7 +233,7 @@
           if (rid != '') {
             uploader.url = 'http://localhost:5000/api/Eartwork/UpLoadImage/' + rid;
             angular.forEach(uploader.queue, function (item) {
-              item.url = uploader.url
+              item.url = sxt.app.api + uploader.url
             });
           }
           scope.inputChange = function () {
@@ -241,41 +241,40 @@
             scope.imgFail = false;
           }
 
-          api.earthwork.earthwork.upLoadImage({RelationId:scope.rid}).success(function (data) {
+          api.earthwork.earthwork.getFileByRid(scope.rid).success(function (data) {
             if (rid != data.RelationId) {
               rid = scope.rid = data.RelationId;
               uploader.url = 'http://localhost:5000/api/Eartwork/UpLoadImage/' + rid;
               angular.forEach(uploader.queue, function (item) {
-                item.url = uploader.url
+                item.url = sxt.app.api + uploader.url
               });
             }
-            if (data.Files) {
+            if (data) {
               if (angular.isArray(scope.files)) {
                 scope.files = [];
               }
-              data.Files.forEach(function (att) {
                 if (angular.isArray(scope.files))
-                  scope.files.push(att.Url);
+                  scope.files.push(sxt.app.api + data.ImageUrl);
                 var item = {
                   file: {
-                    Id: att.Id,
-                    name: att.FileName,
-                    size: att.FileSize,
-                    Url: att.Url,
-                    UserID: att.UserID,
-                    Remark: att.Remark,
-                    CreateDate: att.CreateDate,
-                    PartionID: att.PartionID
+                    Id: data.Id,
+                    name: data.ImageName,
+                    //size: att.FileSize,
+                    Url: sxt.app.api + data.ImageUrl,
+                    //UserID: att.UserID,
+                    //Remark: att.Remark,
+                    CreateDate: data.CreateTime
+                    //PartionID: att.PartionID
                   },
                   remove: function () {
                     var me = this;
-                    FilesService.delete(me.file.Id).then(function (r) {
+                    api.earthwork.earthwork.DeleteFile(me.file.Id).then(function (r) {
                       uploader.queue.splice(uploader.queue.indexOf(me), 1);
                     });
                   },
                   save: function () {
                     var me = this;
-                    FilesService.update(me.file).then(function () {
+                    api.earthwork.earthwork.upLoadImage(data).then(function () {
                       me.isEditing = false;
                     })
                   },
@@ -291,7 +290,6 @@
                 };
                 scope.setParDes && scope.setParDes(att.PartionID, item);
                 uploader.queue.push(item);
-              });
             }
           })
         });

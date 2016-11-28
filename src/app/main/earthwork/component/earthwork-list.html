@@ -1,3 +1,12 @@
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools">
+    <h2>
+      <span>土方管理</span>
+    </h2>
+    <span flex></span>
+  </div>
+</md-toolbar>
+
 <md-content flex  layout-padding>
   <div layout="row">
     <md-input-container flex="45" style="padding:0px 15px;">
@@ -26,7 +35,7 @@
   </div>
   <div layout="row" style="clear: both;width:100%; height: 300px; background-color: #DDDDDD;">
   </div>
-  <div layout="row">
+  <div layout="row" ng-show="vm.rid">
     <sxt-images-tf ng-model="vm.rid" single="true" files="vm.files" edit="true"></sxt-images-tf>
   </div>
 </md-content>

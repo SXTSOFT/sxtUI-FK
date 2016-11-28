@@ -37,6 +37,9 @@
         DeleteFile:function (id) {
           return $http.delete('/api/Eartwork/DeleteFile/' + id);
         },
+        getFileByRid:function (rid) {
+          return $http.get($http.url('/api/Eartwork/GetFileByRid/' + rid));
+        }
       }
     })
   }
