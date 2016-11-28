@@ -1,15 +1,17 @@
 
 
     <md-content layout="column" flex id="statistic">
-      <div flex="10" style="text-align: center;" >
-        <md-datepicker ng-model="vm.myDate" md-placeholder="Enter date"
-                       md-open-on-focus style="text-align: right;"></md-datepicker>
+      <!--<div flex="10" style="text-align: center;" >-->
+        <!--<md-datepicker ng-model="vm.myDate" md-placeholder="Enter date"-->
+                       <!--md-open-on-focus style="text-align: right;width: 50px;"></md-datepicker>-->
 
-      </div>
+      <!--</div>-->
 
-      <div flex="10" style="text-align:center;"><span style="font-size: 18px;" class="p-5">{{vm.problem.number}}个问题</span><span style="font-size: 12px;" class="p-5">{{vm.problem.number1}}个未关闭</span><span style="font-size: 12px;" class="p-5">{{vm.problem.number2}}个已关闭</span></div>
+      <div flex style="text-align:center;max-height: 40px;min-height: 30px;" class="p-5">
+        <span style="" class="p-5">全部({{vm.problem.number}})</span><span class="p-5">未关闭({{vm.problem.number1}})
+      </span><span class="p-5">已关闭({{vm.problem.number2}})</span></div>
       <md-divider></md-divider>
-  <div flex="80">
+  <div flex>
         <md-tabs  md-border-bottom >
           <md-tab ng-click="vm.tab(0)"  label="问题分类排行">
             <md-content layout="column" flex id="problem">
@@ -18,9 +20,11 @@
           </md-tab>
           <md-tab ng-click="vm.tab(2)" label="责任单位排行" id="responsibility"  >
             <md-content>
-              <bar-chart config="vm.data.config" data="vm.data.data1"></bar-chart>
+              <bar-chart config="vm.data1.config" data="vm.data1.data1"></bar-chart>
             </md-content>
         </md-tabs>
   </div>
 
 </md-content>
+
+    <sxt-wt-pop flex-auto ng-show="false" show="vm.showPopup"></sxt-wt-pop>

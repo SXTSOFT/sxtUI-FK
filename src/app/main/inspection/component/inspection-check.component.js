@@ -13,9 +13,9 @@
     });
 
   /**@ngInject*/
-  function inspectionCheckController($scope,$rootScope,utils,$state,$mdPanel){
+  function inspectionCheckController($scope,$rootScope,utils,$state,$mdPanel,$stateParams){
     var vm = this;
-    //$rootScope.shell.title='A201';
+    $rootScope.shell.title='A201';;
     vm.showPopup = false;
     //vm.add = function(){
     //  vm.showPopup = true;

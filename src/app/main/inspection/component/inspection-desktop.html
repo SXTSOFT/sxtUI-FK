@@ -12,25 +12,16 @@
 </md-tabs>
 
 
-<md-content layout="column" flex style="background: #f0f0f0" class="pt-10 is-list">
-  <md-list class="white-bg p-0">
-    <md-list-item>
+<md-content layout="column" flex style="background: #f0f0f0" class="is-list">
+  <md-list class=" p-0">
+    <md-list-item class="white-bg mv-10" style="border-bottom: solid 1px silver;border-top: solid 1px silver;">
       <div class="md-list-item-text" flex>深圳市的解放拉萨的叫法楼上的房间啊速度</div>
-      <md-button class="md-secondary md-raised" ng-click="vm.check()" ng-if="vm.currenttab == 0&&!vm.loading">开始验房</md-button>
-      <md-button class="md-secondary md-raised" ng-click="vm.done()" ng-if="vm.currenttab == 1">验房完成</md-button>
+      <md-button class="md-secondary " ng-click="vm.check()" ng-if="vm.currenttab == 0&&!vm.loading" style="font-size: 12px;background-color: #00acee;color: white;">开始验房</md-button>
+      <md-button class="md-secondary" ng-click="vm.done()" ng-if="vm.currenttab == 1" style="font-size: 12px;background-color: #00acee;color: white;">验房完成</md-button>
       <div ng-if="vm.loading">
         <span class="md-secondary" ng-if="vm.loading">下载数据</span><span class="circle md-secondary" ng-if="vm.loading">50%</span>
       </div>
-      <md-divider></md-divider>
     </md-list-item>
-    <md-list-item>
-      <div class="md-list-item-text" flex>深圳市的解放拉萨的叫法楼上的房间啊速度</div>
-      <md-button class="md-secondary md-raised" ng-click="vm.check()" ng-if="vm.currenttab == 0&&!vm.loading">开始验房</md-button>
-      <md-button class="md-secondary md-raised" ng-click="vm.done()" ng-if="vm.currenttab == 1">验房完成</md-button>
-      <div ng-if="vm.loading">
-        <span class="md-secondary" ng-if="vm.loading">下载数据</span><span class="circle md-secondary" ng-if="vm.loading">50%</span>
-      </div>
-      <md-divider></md-divider>
-    </md-list-item>
+
   </md-list>
 </md-content>

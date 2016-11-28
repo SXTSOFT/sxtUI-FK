@@ -27,7 +27,7 @@
     ]
     vm.qdetail=(function (item) {
       if(item.type!="alreadyclosed") {
-        $state.go('app.inspection.detail', {id: item.title});
+        $state.go('app.statistics.problemdetail', {id: item.title});
       }
     })
     utils.onCmd($scope,['swap'],function(cmd,e){

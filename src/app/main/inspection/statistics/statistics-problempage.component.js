@@ -22,7 +22,7 @@
         showXAxis: false,
         showYAxis: true,
         showLegend: false,
-        number:10,
+        number:50,
         xyExchange:true,
         debug: true,
         stack: false,
@@ -55,23 +55,103 @@
 
 
     vm.data.data = [{"datapoints":[
-      {"x":"达达装饰","y":"7","color":"red"},
-      {"x":"丽华装饰","y":"8","color":"red"},
-      {"x":"龙泰利装饰","y":"9","color":"red"},
-      {"x":"美装","y":"10","color":"red"},
-      {"x":"美装","y":"20","color":"red"},
-      {"x":"美装","y":"30","color":"red"},
-      {"x":"美装","y":"40","color":"red"},
-      {"x":"美装","y":"50","color":"red"},
-      {"x":"美装","y":"60","color":"red"},
-      {"x":"龙泰利装饰","y":"70","color":"red"}
+      {"x":"美装","y":"40","color":"#ff6b50"},
+      {"x":"美装","y":"50","color":"#ff6b50"},
+      {"x":"美装","y":"60","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"美装","y":"40","color":"#ff6b50"},
+      {"x":"美装","y":"50","color":"#ff6b50"},
+      {"x":"美装","y":"60","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"美装","y":"40","color":"#ff6b50"},
+      {"x":"美装","y":"50","color":"#ff6b50"},
+      {"x":"美装","y":"60","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"美装","y":"40","color":"#ff6b50"},
+      {"x":"美装","y":"50","color":"#ff6b50"},
+      {"x":"美装","y":"60","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"美装","y":"40","color":"#ff6b50"},
+      {"x":"美装","y":"50","color":"#ff6b50"},
+      {"x":"美装","y":"60","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"},
+      {"x":"龙泰利装饰","y":"70","color":"#ff6b50"}
     ]}];
-    vm.data.data1 = [{"datapoints":[
-      {"x":"顺丰","y":"7","color":"red"},
-      {"x":"圆通","y":"8","color":"red"},
-      {"x":"中通","y":"9","color":"red"},
-      {"x":"申通","y":"10","color":"red"},
-      {"x":"天天","y":"20","color":"red"}
+
+
+    vm.data1= {
+      config: {
+        showXAxis: false,
+        showYAxis: true,
+        showLegend: false,
+        number:9,
+        xyExchange:true,
+        debug: true,
+        stack: false,
+        xAxis: {
+          type: 'value',
+        },
+        yAxis:{
+          type:'category'
+        },
+        dataZoom:[
+
+          {
+            type: 'slider',
+            show: false,
+            yAxisIndex: 0,
+            filterMode: 'empty',
+            width: 1200,
+            height: '100%',
+            handleSize: 108,
+            showDataShadow: false,
+            left: '93%'
+          }
+        ],
+        series:{
+
+        },
+      }
+    };
+    vm.data1.data1 = [{"datapoints":[
+      {"x":"顺丰","y":"7","color":"#ff6b50"},
+      {"x":"圆通","y":"8","color":"#ff6b50"},
+      {"x":"中通","y":"9","color":"#ff6b50"},
+      {"x":"申通","y":"10","color":"#ff6b50"},
+      {"x":"天天","y":"20","color":"#ff6b50"},
+      {"x":"申通","y":"10","color":"#ff6b50"},
+      {"x":"天天","y":"20","color":"#ff6b50"},
+      {"x":"申通","y":"10","color":"#ff6b50"},
+      {"x":"天天","y":"20","color":"#ff6b50"}
     ]}];
     vm.tab=(function (type) {
 

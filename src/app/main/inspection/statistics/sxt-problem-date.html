@@ -1,0 +1,15 @@
+  <div layout="column" flex style="border-top:1px solid #dedede;">
+  <div layout="row" layout-align="space-between center" class="ph-16 pv-10">
+    <div ng-click="cancel()">取消</div>
+  </div>
+    <md-divider></md-divider>
+    <div class="" id="chart">
+      <c3chart bindto-id="donut-plot1-chart"  style="">
+        {{item.title}}
+        <chart-column column-id="{{item.title}}"
+                      column-values="{{item.value}}"
+                      column-type="donut" ng-repeat="item in count"/>
+        <chart-donut title="" width="80"/>
+      </c3chart>
+    </div>
+</div>

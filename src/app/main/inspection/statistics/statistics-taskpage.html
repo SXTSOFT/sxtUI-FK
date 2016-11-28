@@ -1,11 +1,11 @@
 
 
     <md-content layout="column" flex>
-      <div class="card md-whiteframe-4dp" >
-        <chartist class="ct-chart ct-golden-section" chartist-data="vm.pieChart.data" chartist-chart-type="Pie" chartist-chart-options="vm.pieChart.options" chartist-responsive-options="vm.pieChart.responsiveOptions"></chartist>
-      </div>
+      <!--<div class="card md-whiteframe-4dp" >-->
+        <!--<chartist class="ct-chart ct-golden-section" chartist-data="vm.pieChart.data" chartist-chart-type="Pie" chartist-chart-options="vm.pieChart.options" chartist-responsive-options="vm.pieChart.responsiveOptions"></chartist>-->
+      <!--</div>-->
       <div >
-        <md-tabs  md-border-bottom >
+        <md-tabs  md-border-bottom  >
           <md-tab ng-click="vm.tab('notclose')"  label="未开始({{vm.notclose}})">
             <md-content flex ng-repeat="item in vm.data | filter:vm.data.type">
             <div class="p-10" layout="row" layout-align="space-between center"><div style="white-space: nowrap" class="mr-10">{{item.title}}</div><div>{{item.state}}</div></div>
@@ -29,3 +29,4 @@
       </div>
 
 </md-content>
+    <sxt-problem-date flex-auto ng-show="vm.showPopup" show="vm.showPopup"></sxt-problem-date>
