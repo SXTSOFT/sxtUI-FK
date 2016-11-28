@@ -396,6 +396,16 @@
         vm.ys();
       });
     };
+/*    $scope.$watch('vm.isLeftOpen',function () {
+      if(vm.isLeftOpen===false){
+        vm.ys();
+      }
+    });
+    $scope.$watch('vm.isRightOpen',function () {
+      if(vm.isRightOpen===false){
+        vm.ys();
+      }
+    })*/
     vm.ys = function () {
       if (!$scope.project.pid || !$scope.project.procedureId) {
         if(!$scope.project.pid){

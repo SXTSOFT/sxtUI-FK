@@ -3,7 +3,7 @@
     <md-tab-content flex layout-fill layout="column">
       <md-sidenav
         class="md-sidenav-left"
-        md-component-id="nav_region",
+        md-component-id="nav_region" md-is-open="vm.isLeftOpen"
         md-whiteframe="4" layout="column">
         <md-content flex layout="column" style="background: white">
           <md-content flex  style="background: white">
@@ -17,7 +17,7 @@
               <md-button ng-show="vm.yjButton(128)" type="submit" flex ng-click="vm.setYJ(128)"  class="md-raised md-primary">园建</md-button>
               <md-button ng-show="vm.yjButton(256)" type="submit" flex ng-click="vm.setYJ(256)"  class="md-raised md-primary">桩基</md-button>
               <md-button ng-show="vm.yjButton(512)" type="submit" flex ng-click="vm.setYJ(512)"  class="md-raised md-primary">地下室</md-button>
-              <!--<md-button type="submit" flex ng-click="vm.closeNav('nav_region')"  class="md-raised md-primary">{{vm.yjButton(256) || vm.yjButton(128)?'楼栋':'确定'}}</md-button>-->
+              <md-button ng-hide="vm.yjButton(256) || vm.yjButton(128) || vm.yjButton(512)" type="submit" flex ng-click="vm.closeNav('nav_region')"  class="md-raised md-primary">确定</md-button>
             </div>
         </md-content>
       </md-sidenav>
@@ -31,7 +31,7 @@
           <md-divider></md-divider>
         </md-list>
 
-          <md-progress-circular md-mode="indeterminate" ng-show="vm.loading"></md-progress-circular>
+          <md-progress-circular md-mode="indeterminate" ng-show="vm.loading" md-diameter="20"></md-progress-circular>
           <div ng-if="project.type===64"><md-button type="submit" flex ng-click="vm.closeNav('nav_region')" ui-sref="app.szgc.ys.upload({projectid:project.pid,name:project.typeName,type:project.item.type.type_id||project.item.type,idTree:project.idTree,nameTree:project.nameTree})" class="md-raised md-primary"> 隐蔽工程照片  </md-button></div>
           <div flex ng-if="!vm.loading && project.type!==128 && project.type!==256 && project.type!==64 && project.type!==256 && project.type!==512">
             <div layout="row" class="div-table">
@@ -138,7 +138,7 @@
       <ui-view layout="column" flex ng-show="is('app.szgc.ys.addnew')||is('app.szgc.ys.upload')"></ui-view>
       <md-sidenav
         class="md-sidenav-right"
-        md-component-id="nav_procedure",
+        md-component-id="nav_procedure"  md-is-open="vm.isRightOpen"
         md-whiteframe="4" layout="column">
         <md-content flex layout="column" style="background: white">
 
