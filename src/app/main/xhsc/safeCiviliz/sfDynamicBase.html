@@ -1,0 +1,107 @@
+<div ng-if="vm.yw==2" flex="none" style="background-color: white;">
+  <md-progress-circular id="toolbar-progress" ng-if="!vm.z_isOver" class="md-accent"
+                        md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+  </md-progress-circular>
+  <div ng-repeat="item in vm.by_project"  ng-click="vm.stretch(item)"  layout="column" style="position: relative;margin:0px 3%">
+    <div layout="row" style="position: relative">
+      <p style="font-size:14px;">
+        {{item.RegionName}}
+      </p>
+      <span flex></span>
+      <md-icon ng-class="{'transform_90':item.stretch}"  md-svg-icon="app/main/xhsc/images/come_in.svg" ></md-icon>
+      <span ng-if="item.stretch" class="border1px bottom1px"></span>
+    </div>
+    <md-list ng-if="item.stretch&&item.Children&&item.Children.length" style="padding:0px;margin: 0px;" >
+      <md-list-item ng-click="vm.by(k)" ng-repeat="k in item.Children"  layout="row">
+        <p style="font-size:12px;padding-left:1%">
+          {{k.RegionName}}
+        </p>
+        <span flex></span>
+        <md-button ng-click="vm.by(k)" style="margin: 6px -28px"   aria-label="More">
+          <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+        </md-button>
+      </md-list-item>
+    </md-list>
+    <span class="border1px bottom1px"></span>
+  </div>
+</div>
+<div ng-if="vm.yw==4" flex="none" style="background-color: white;">
+  <md-progress-circular id="toolbar-progress" ng-if="!vm.f_isOver" class="md-accent"
+                        md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+  </md-progress-circular>
+  <md-list>
+    <md-list-item ng-click="vm.zbzgAction(item)" layout="row" ng-repeat="item in vm.zglist|zgFilter:[1,8]">
+      <div  layout="column" style="padding-bottom: 16px">
+        <p style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
+          {{item.AcceptanceItemName}}<span style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">总包整改</span>
+        </p>
+        <p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px"><span
+          ng-repeat="area in item.Children" style="display: block;height: 24px"> {{area.RegionName}} </span></p>
+      </div>
+      <span flex></span>
+      <md-button ng-click="vm.zbzgbtnAction(item,$event)" class="md-icon-button" aria-label="More">
+        <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+      </md-button>
+      <span class="border1px bottom1px"></span>
+    </md-list-item>
+  </md-list>
+</div>
+<div ng-if="vm.yw==16" flex="none" style="background-color: white;">
+  <md-progress-circular id="toolbar-progress" ng-if="!vm.y_isOver" class="md-accent"
+                        md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+  </md-progress-circular>
+  <md-list>
+    <md-list-item layout="row" ng-click="vm.jlysAction(item)" ng-repeat="item in vm.Inspections">
+      <div layout="column" style="padding-bottom: 16px">
+        <p style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
+          {{item.AcceptanceItemName}}
+          <span
+            style="margin-left:2%;color:white;background-color: #359df5;font-size:12px;border-radius: 3px">监理验收</span>
+        </p>
+        <p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px">
+          <span ng-repeat="area in item.Children" style="display: block;height: 24px"> {{area.RegionName}} </span>
+        </p>
+      </div>
+      <span flex></span>
+      <md-button ng-click="vm.jlysbtnAction(item,$event)" class="md-icon-button" aria-label="More">
+        <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+      </md-button>
+      <span class="border1px bottom1px"></span>
+    </md-list-item>
+  </md-list>
+</div>
+
+<div ng-if="vm.yw==32" flex="none" style="background-color: white;">
+  <md-progress-circular id="toolbar-progress" ng-if="!vm.f_isOver" class="md-accent"
+                        md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+  </md-progress-circular>
+  <md-list>
+    <md-list-item ng-click="vm.jlfyAction(item)" ng-repeat="item in vm.zglist|zgFilter:[64]">
+      <div  style="padding-bottom: 16px" layout="column">
+        <p style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
+          {{item.AcceptanceItemName}} <span
+          style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">监理复验</span>
+        </p>
+        <p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px"><span
+          ng-repeat="area in item.Children" style="display: block;height: 24px"> {{area.RegionName}} </span></p>
+      </div>
+      <span flex></span>
+      <md-button ng-click="vm.jlfybtnAction(item,$event)" class="md-icon-button" aria-label="More">
+        <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+      </md-button>
+      <span class="border1px bottom1px"></span>
+    </md-list-item>
+    </md-list-item>
+  </md-list>
+</div>
+
+<div ng-if=" vm.isShowbg" layout="column" flex layout-align="center center">
+  <div layout="row" layout-align="center center">
+    <img class="nullImg" src="app/main/xhsc/images/null.png"/>
+  </div>
+  <div layout="row">
+    <p style=" font-size: 16px; color: #808080;">暂无数据</p>
+  </div>
+</div>
+
+

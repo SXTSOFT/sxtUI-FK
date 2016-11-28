@@ -63,7 +63,46 @@
         controller: 'sfWeekRectifyController as vm'
       })
 
-
+      .state('app.xhsc.sf.sfDynamicMain', {
+        noBack:true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '动态安全源',
+        url: '/sfDynamicMain',
+        templateUrl: 'app/main/xhsc/safeCiviliz/sfDynamicMain.html',
+        controller: 'sfDynamicMainController as vm'
+      })
+      .state('app.xhsc.sf.sfDynamicBase', {
+        noBack:true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '动态安全源',
+        url: '/sfDynamicBase',
+        templateUrl: 'app/main/xhsc/safeCiviliz/sfDynamicBase.html',
+        controller: 'sfDynamicBaseController as vm'
+      })
+      .state('app.xhsc.sf.sfDynamicRectify', {
+        noBack:true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '动态安全源',
+        url: '/sfDynamicRectify',
+        templateUrl: 'app/main/xhsc/safeCiviliz/sfDynamicRectify.html',
+        controller: 'sfDynamicRectifyController as vm'
+      })
+      .state('app.xhsc.sf.sfDynamicAccept', {
+        noBack:true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '动态安全源',
+        url: '/sfDynamicAccept',
+        templateUrl: 'app/main/xhsc/safeCiviliz/sfDynamicBase.html',
+        controller: 'sfDynamicAcceptController as vm'
+      })
 
 
       .state('app.xhsc.sf.sfmain', {
