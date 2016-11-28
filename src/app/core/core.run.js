@@ -68,7 +68,9 @@
             csb:false,
             cjwt:false,
             title:false,
-            save:false
+            save:false,
+            date:false,
+            statistics:false
           },toState.shell);
         }
         //console.log('toState',toState)

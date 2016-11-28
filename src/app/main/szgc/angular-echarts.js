@@ -13,7 +13,11 @@ function getLinkFunction($http, theme, util, type) {
         function getSizes(config) {
             width = config.width || parseInt(attrs.width) || $(window).width() || 320;
           if(config.xyExchange){
-            height = config.height || parseInt(attrs.height) || $(window).height()+40|| 240;
+            if(config.number>=10){
+            height = config.height || parseInt(attrs.height) || config.number*55|| 240;}
+            else {
+              height = config.height || parseInt(attrs.height) || config.number*70|| 240;
+            }
           }else{
             height = config.height || parseInt(attrs.height) || $(window).height()|| 240;
           }

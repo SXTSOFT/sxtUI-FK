@@ -55,15 +55,35 @@
         noBack:true,
         template:'<statistics-problem layout="column" flex></statistics-problem>'
       })
+      .state('app.statistics.problemdetail', {
+        url:'/problemdetail/{id}',
+        title:'问题详情',
+        hideFootbar:true,
+        shell:{
+          prev:true,
+          prevIcon:true,
+          title:false
+        },
+        noBack:false,
+        template:'<statistics-problemdetail layout="column" flex></statistics-problemdetail>'
+      })
       .state('app.statistics.problempage', {
         url:'/problempage',
         title:'问题统计',
         noBack:false,
+        hideFootbar:true,
+        shell:{
+          date:true
+        },
         template:'<statistics-problempage layout="column" flex></statistics-problempage>'
       })
       .state('app.statistics.taskpage', {
         url:'/taskage',
         title:'任务统计',
+        hideFootbar:true,
+        shell:{
+          statistics:true
+        },
         noBack:false,
         template:'<statistics-taskpage layout="column" flex></statistics-taskpage>'
       })
@@ -84,8 +104,9 @@
         },
         template:'<meterreading-page layout="column" flex></meterreading-page>'
       })
+
       .state('app.inspection.check', {
-        url:'/check',
+        url:'/check/{id}',
         title:'',
         hideFootbar:true,
         shell:{
