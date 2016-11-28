@@ -1,13 +1,13 @@
 /**
- * Created by lukehua on 2016/11/22.
+ * Created by HuangQingFeng on 2016/11/28.
  */
 
 (function (angular, undefined) {
   'use strict';
 
   angular
-    .module('app.earthwork')
-    .directive('sxtAreaTf', sxtAreaTf);
+    .module('app.pileFoundation')
+    .directive('sxtAreaZj', sxtAreaTf);
 
   /**@ngInject*/
   function sxtAreaTf($timeout, sxt, utils,api) {
@@ -150,7 +150,7 @@
           map.addLayer(drawnItems);
           scope.$watch('data',function () {
             if(scope.data){
-              api.earthwork.earthwork.getEarthworkList({regionTreeId:scope.data.obj.RegionTreeId + '>' + scope.data.obj.Id,status: 4}).then(function (r) {
+              api.pileFoundation.pileFoundation.getPileFoundationList({regionTreeId:scope.data.obj.RegionTreeId + '>' + scope.data.obj.Id,status: 4}).then(function (r) {
                 r.data.forEach(function (ly) {
                   var geojson = JSON.parse(ly.GeoJSON),
                     options = geojson.options;
@@ -226,13 +226,13 @@
               geojson.options = layer.options;
               geojson.options.radius = layer._mRadius;
               layer.data.GeoJSON = JSON.stringify(geojson);
-              api.earthwork.earthwork.updateEarthworkArea(layer.data.Id, layer.data);
+              api.pileFoundation.pileFoundation.updatePileFoundationArea(layer.data.Id, layer.data);
             });
           });
           map.on('draw:deleted', function (e) {
             var layers = e.layers;
             layers.eachLayer(function (layer) {
-              api.earthwork.earthwork.delete(layer.data.Id).then(function () {
+              api.pileFoundation.pileFoundation.delete(layer.data.Id).then(function () {
                 var ly = null;
                 labels.eachLayer(function (lb) {
                   if (lb.id == layer.options.id)
@@ -275,7 +275,7 @@
                 GeoJSON: JSON.stringify(json)
               }
 
-              api.earthwork.earthwork.createEarthworkArea(layer.data).then(function () {
+              api.pileFoundation.pileFoundation.createPileFoundationArea(layer.data).then(function () {
                 $('input', el).val('');
                 updateText(layer);
               });
