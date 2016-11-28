@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function earthworkList($scope,api, utils, $stateParams, $state,$compile,tokenInjector) {
+  function earthworkList($scope,api, utils, $stateParams, $state,$compile,sxt) {
     var vm = this;
     vm.data = {};
     vm.lst_html = [];
@@ -22,6 +22,33 @@
     vm.RegionTreeName = '';
     //vm.rid = 'ed8f02b3cdd94f90b8343ae69d0c94b7';
     //vm.files = [];
+
+    vm.tf = {};
+    vm.tf.files = ['test.png'];
+    vm.tf.obj = {
+      CreateDate: null,
+      GeoJSON: null,
+      Id: null,
+      RegionName: null,
+      RegionTreeId: null,
+      RegionTreeName: null,
+      RegionType: 0,
+      Status: 0,
+      UserId: null
+    };
+    vm.tf.data = [
+      {
+        Id: null,
+        RegionType: 0,
+        RegionName: null,
+        RegionTreeId: null,
+        RegionTreeName: null,
+        GeoJSON: null,
+        Status: 0,
+        CreateDate: null,
+        UserId: null
+      }
+    ];
 
     api.xhsc.Project.getMap().then(function (r) {
       vm.ProjectList = r.data||[];
@@ -88,8 +115,9 @@
       });
     }
 
-    vm.showImg = function (rid) {
-      vm.rid = rid;
+    vm.showImg = function (data) {
+      vm.rid = data.Id;
+      vm.tf.obj = data ? data : [];
     }
   }
 })(angular, undefined);

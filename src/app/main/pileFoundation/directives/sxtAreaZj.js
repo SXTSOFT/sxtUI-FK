@@ -7,10 +7,10 @@
 
   angular
     .module('app.pileFoundation')
-    .directive('sxtAreaZj', sxtAreaTf);
+    .directive('sxtAreaZj', sxtAreaZj);
 
   /**@ngInject*/
-  function sxtAreaTf($timeout, sxt, utils,api) {
+  function sxtAreaZj($timeout, sxt, utils,api) {
 
     return {
       scope: {

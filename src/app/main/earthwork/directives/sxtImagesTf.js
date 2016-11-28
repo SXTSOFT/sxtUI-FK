@@ -6,6 +6,9 @@
   'use strict';
   angular.module('app.earthwork')
     .directive('sxtImagesTf',sxtImagesTf);
+  angular.module('app.pileFoundation')
+    .directive('sxtImagesZj',sxtImagesTf)
+
 
   /**@ngInject*/
   function sxtImagesTf($rootScope,FileUploader,tokenInjector,api,sxt,$q,utils) {
@@ -242,17 +245,19 @@
           }
 
           api.earthwork.earthwork.getFileByRid(scope.rid).success(function (data) {
-            if (rid != data.RelationId) {
-              rid = scope.rid = data.RelationId;
-              uploader.url = 'http://localhost:5000/api/Eartwork/UpLoadImage/' + rid;
-              angular.forEach(uploader.queue, function (item) {
-                item.url = sxt.app.api + uploader.url
-              });
-            }
-            if (data) {
-              if (angular.isArray(scope.files)) {
-                scope.files = [];
-              }
+            scope.$watch('rid',function () {
+              if (scope.rid && data) {
+                if (rid != data.RelationId) {
+                  rid = scope.rid = data.RelationId;
+                  uploader.url = 'http://localhost:5000/api/Eartwork/UpLoadImage/' + rid;
+                  angular.forEach(uploader.queue, function (item) {
+                    item.url = sxt.app.api + uploader.url
+                  });
+                }
+
+                if (angular.isArray(scope.files)) {
+                  scope.files = [];
+                }
                 if (angular.isArray(scope.files))
                   scope.files.push(sxt.app.api + data.ImageUrl);
                 var item = {
@@ -290,7 +295,8 @@
                 };
                 scope.setParDes && scope.setParDes(att.PartionID, item);
                 uploader.queue.push(item);
-            }
+              }
+            })
           })
         });
       }
