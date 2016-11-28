@@ -3779,3 +3779,65 @@ table {
   }
 
 }
+
+.gen{
+  height: 48px;
+  position: relative;
+  .top{
+    padding: 0px 3%;
+    height: 100%;
+    background-color: rgba(248,248,248,1);
+  }
+  .spare{
+    margin: 0px 12px;
+  }
+  .caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    vertical-align: top;
+    border-top: 4px solid #000000;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    content: "";
+  }
+  .content{
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    background-color:#ffffff;
+    z-index: 1000;
+    .region,.part,.procedure{
+      .active{
+        color: red;
+      }
+      .clickbg{
+       background-color: rgb(241,241,243);
+      }
+      md-list{
+        margin: 0px;
+        padding: 0px;
+        md-list-item{
+          margin: 0px;
+          padding: 0px;
+          border-right:1px solid #d8d8d8 ;
+          border-bottom:1px solid #d8d8d8 ;
+          span{
+            text-align: center;
+            line-height: 22px;
+          }
+        }
+      }
+    }
+    .part{
+
+    }
+    .procedure{
+      md-list-item{
+        span{
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}

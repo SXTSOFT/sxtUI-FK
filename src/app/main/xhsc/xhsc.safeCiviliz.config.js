@@ -22,13 +22,25 @@
           }
         }
       })
+      .state('app.xhsc.sf.sfWeekMain', {
+        noBack:true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '周安全检查',
+        url: '/sfWeekMain',
+        templateUrl: 'app/main/xhsc/safeCiviliz/sfWeekMain.html',
+        controller: 'sfWeekMainController as vm'
+      })
+
+
       .state('app.xhsc.sf.sfmain', {
         noBack:true,
         sendBt: false,
         rightArrow: false,
         showgrzx:false,
         leftArrow: false,
-        title: '安全文明',
+        title: '安全验收',
         url: '',
         templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_main.html',
         controller: 'safe_civiliz_mainController as vm'
@@ -39,7 +51,7 @@
         rightArrow: false,
         //showgrzx:true,
         leftArrow: false,
-        title: '安全文明',
+        title: '安全验收',
         url: '/{yw}',
         templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_base.html',
         controller: 'safe_civiliz_baseController as vm'
@@ -75,25 +87,6 @@
         templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_accept.html',
         controller: 'safe_civiliz_acceptController as vm'
       })
-      // .state('app.xhsc.sf.sfproblem', {
-      //   noBack: true,
-      //   sendBt: true,
-      //   rightArrow: false,
-      //   leftArrow: false,
-      //   url: '/sfproblem/{acceptanceItemName}/{acceptanceItemID}/{name}/{areaId}/{projectId}/{InspectionId}',
-      //   templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_problem.html',
-      //   controller: 'safe_civiliz_problemController as vm'
-      // })
-      // .state('app.xhsc.sf.sfinfo', {
-      //   noBack: true,
-      //   sendBt: false,
-      //   rightArrow: false,
-      //   leftArrow: false,
-      //   title: '',
-      //   url: '/sfinfo/{acceptanceItemName}/{acceptanceItemID}/{name}/{areaId}/{projectId}/{InspectionId}',
-      //   templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_info.html',
-      //   controller: 'safe_civiliz_infoController as vm'
-      // })
       .state('app.xhsc.sf.rectify',{
         noBack: true,
         sendBt: true,
@@ -103,15 +96,5 @@
         templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_rectify.html',
         controller: 'safe_civiliz_rectifyController as vm'
       })
-      // .state('app.xhsc.sf.jc',{
-      //   noBack: true,
-      //   sendBt: true,
-      //   rightArrow: false,
-      //   leftArrow: false,
-      //   title: '安全验收',
-      //   url: '/jc/{id}',
-      //   templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_yw.html',
-      //   controller: 'safe_civiliz_ywController as vm'
-      // })
   }
 })();

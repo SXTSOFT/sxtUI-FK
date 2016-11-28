@@ -75,11 +75,12 @@
       getRegionTreeOffline:function (rootId, regionSize, rootType) {
         var self = this;
         return $q(function (resove, reject) {
-          return remote.Project.getAllRegionWithRight(rootId, regionSize).then(function (r) {
-            if (r && r.data.length > 0) {
+          return remote.Project.getRegionWithRight_wrap(rootId, regionSize).then(function (r) {
+            var data=r&&r.data&&r.data.data?r.data.data:[]
+            if (data.length > 0) {
               rootType = rootType ? rootType : 1;
-              var data = self.buildRegionTree(r.data, 1);
-              resove(data);
+              var res = self.buildMutilRegionTree(data, rootType);
+              resove(res);
               return;
             }
             resove(null);

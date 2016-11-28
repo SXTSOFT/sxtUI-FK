@@ -1,0 +1,83 @@
+<div class="gen">
+  <div layout="row" class="top">
+    <div flex="33" ng-click="toggle('region')" layout="row"  layout-align="center center">
+      <span title="区域" class="md-select-icon">{{current.selectedArea?current.selectedArea.RegionName:"区域"}}</span>
+      <span class="caret spare"></span>
+    </div>
+    <div flex="33" ng-click="toggle('part')" layout="row"  layout-align="center center">
+      <span>{{current.region?current.region.RegionName:'部 位'}}</span>
+      <span class="caret spare"></span>
+    </div>
+    <div flex="33" ng-click="toggle('procedure')" layout="row"  layout-align="center center">
+      <span>{{current.procedure?current.procedure.AcceptanceItemName:'工 序'}}</span>
+      <span class="caret spare"></span>
+    </div>
+  </div>
+  <md-divider></md-divider>
+ <div class="content" layout="column">
+    <div class="region" flex ng-if="status.region" layout="row">
+      <div flex>
+          <md-list>
+            <md-list-item ng-repeat="item in source.areasData" ng-click="setRegion(item)" ng-class="{'active':item.active}" layout="row">
+              <span flex>{{item.RegionName}}</span>
+            </md-list-item>
+          </md-list>
+      </div>
+      <div flex>
+        <md-list>
+          <md-list-item class="clickbg" ng-repeat="item in source.fq" ng-click="setBuilding(item,source.fq)" ng-class="{'active':item.active}" layout="row">
+            <span flex>{{item.RegionName}}</span>
+          </md-list-item>
+        </md-list>
+      </div>
+    </div>
+    <div class="part"  flex ng-if="status.part" layout="row">
+      <div flex="{{source.rooms&&source.rooms.length>0?33:50}}">
+        <md-list>
+          <md-list-item ng-repeat="item in source.parts" ng-click="setFloor(item,source.parts)" ng-class="{'active':item.active}" layout="row">
+            <span flex>{{item.RegionName}}</span>
+          </md-list-item>
+        </md-list>
+      </div>
+      <div flex="{{source.rooms&&source.rooms.length>0?33:50}}">
+        <md-list>
+          <md-list-item class="clickbg" ng-repeat="item in source.floors" ng-click="setRoom(item,source.floors)" ng-class="{'active':item.active}" layout="row">
+            <span flex>{{item.RegionName}}</span>
+          </md-list-item>
+        </md-list>
+      </div>
+      <div flex="{{source.rooms&&source.rooms.length>0?33:50}}" ng-if="source.rooms&&source.rooms.length>0">
+        <md-list>
+          <md-list-item class="clickbg" ng-repeat="item in source.rooms" ng-click="selectedRegion(item,source.rooms)" ng-class="{'active':item.active}" layout="row">
+            <span flex>{{item.RegionName}}</span>
+          </md-list-item>
+        </md-list>
+      </div>
+    </div>
+    <div class="procedure" flex  ng-show="status.procedure" layout="row">
+      <div flex="{{source.wpAcceptanceList&&source.wpAcceptanceList.length>0?33:50}}">
+        <md-list>
+          <md-list-item ng-repeat="item in source.procedureData" ng-click="setProcedure(item,source.procedureData)" ng-class="{'active':item.active}" layout="row">
+            <span flex>{{item.SpecialtyName}}</span>
+          </md-list-item>
+        </md-list>
+      </div>
+      <div flex="{{source.wpAcceptanceList&&source.wpAcceptanceList.length>0?33:50}}">
+        <md-list>
+          <md-list-item class="clickbg" ng-repeat="item in source.specialtyChildren" ng-click="setSpecialty(item,source.specialtyChildren)" ng-class="{'active':item.active}" layout="row">
+            <span flex>{{item.SpecialtyName}}</span>
+          </md-list-item>
+        </md-list>
+      </div>
+      <div flex="{{source.wpAcceptanceList&&source.wpAcceptanceList.length>0?33:50}}" ng-if="source.wpAcceptanceList&&source.wpAcceptanceList.length>0">
+        <md-list>
+          <md-list-item class="clickbg" ng-repeat="item in source.wpAcceptanceList" ng-click="selectedProcedure(item,source.wpAcceptanceList)" ng-class="{'active':item.active}" layout="row">
+            <span flex style="text-overflow:ellipsis;text-align: left;white-space:nowrap">{{item.AcceptanceItemName}}</span>
+          </md-list-item>
+        </md-list>
+      </div>
+    </div>
+   <md-divider></md-divider>
+ </div>
+</div>
+

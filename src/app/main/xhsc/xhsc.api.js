@@ -110,6 +110,24 @@
             regionType: regionType
           }));
         }),
+        getRegionWithRight_wrap: $http.wrap({
+          _id: "msAreaRegions",
+          offline: true,
+          idField: "regions",
+          dataType: 3,
+          fn: function (regionID, regionType) {
+            return $http.get($http.url('/api/ProjectInfoApi/GetProjectRelationRole', {
+              areaId: regionID,
+              regionType: regionType
+            })).then(function (r) {
+              return {
+                data: {
+                  data: r.data
+                }
+              }
+            });
+          }
+        }),
         getAllRegionWithRight_no_db: function (regionID, regionType) {
           return $http.get($http.url('/api/ProjectInfoApi/GetProjectRelationRole', {
             areaId: regionID,
@@ -1641,7 +1659,7 @@
               if (r && !angular.isArray(r.data)) {
                 r.data = [r.data];
                 r.data.forEach(function (t) {
-                  t.isUpload=true;
+                  t.isUpload = true;
                 })
               }
               return r;
@@ -1723,13 +1741,13 @@
           upload: true,
           dataType: 1
         }),
-        getSafePointGeo:$http.wrap({
-          _id:'InspectionPoint',
+        getSafePointGeo: $http.wrap({
+          _id: 'InspectionPoint',
           offline: true,
           idField: 'MeasurePointID',
-          dataType:1,
+          dataType: 1,
           fn: function (inspectionId, acceptanceItemId, areaId) {
-            return $http.get($http.url('/api/Acceptances/SecurityCheckpoint/GetSecurityPoint/'+inspectionId+'/'+areaId+'/'+acceptanceItemId));
+            return $http.get($http.url('/api/Acceptances/SecurityCheckpoint/GetSecurityPoint/' + inspectionId + '/' + areaId + '/' + acceptanceItemId));
           }
         }),
         //获取安全验收项

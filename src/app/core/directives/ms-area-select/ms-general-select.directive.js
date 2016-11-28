@@ -1,0 +1,177 @@
+/**
+ * Created by shaoshun on 2016/11/28.
+ */
+/**
+ * Created by Corning on 16/11/15.
+ */
+(function () {
+  'use strict';
+
+  angular
+    .module('app.core')
+    .controller('msGenSelectController', msGenSelectController)
+    .directive('msGenSelect', msGenSelect);
+
+  /** @ngInject */
+  function msGenSelect() {
+    return {
+      restrict: 'E',
+      scope: {
+        areas: '=',
+        procedure: "="
+      },
+      templateUrl: 'app/core/directives/ms-area-select/ms-general-select.html',
+      controller: 'msGenSelectController',
+      link: function ($scope, element, attr, ctrl) {
+        $scope.toggle=function (status) {
+           var  _status=['region','part','procedure'];
+           if (!$scope.status){
+             $scope.status={};
+           }
+          _status.forEach(function (r) {
+            if (r!==status){
+              $scope.status[r]=false;
+            }
+          })
+          $scope.status[status]=! $scope.status[status];
+        }
+        $scope.setBuilding=function (area,siblings) {
+          $scope.setActive(area,siblings);
+          $scope.source.parts=[];
+          $scope.source.floors=[];
+          $scope.source.rooms=[];
+          $scope.source.parts=area.Children;
+          if ( $scope.source.parts.length){
+            $scope.setFloor($scope.source.parts[0],$scope.source.parts);
+          }
+          $scope.current=$scope.current?$scope.current:{};
+          $scope.current.region=null;
+          $scope.current.selectedArea=area;
+          $scope.toggle('part');
+        }
+        $scope.setFloor=function (area,siblings) {
+          $scope.setActive(area,siblings);
+          $scope.source.floors=[];
+          $scope.source.rooms=[];
+          if ($scope.current){
+            $scope.current.region=null;
+          }
+          $scope.source.floors=area.Children;
+        }
+        $scope.setRoom=function (area,siblings) {
+          $scope.setActive(area,siblings);
+          if ($scope.current){
+            $scope.current.region=null;
+          }
+          $scope.source.rooms=[{
+             RegionID:"no",
+             RegionName:"不到户",
+             active:true
+          }].concat(area.Children);
+        }
+        $scope.selectedRegion=function (item,siblings) {
+          $scope.setActive(item,siblings);
+          if (item.RegionID=="no"||item.RegionID.length>10){
+            $scope.toggle('part');
+          }else {
+            $scope.toggle('region');
+          }
+          $scope.current=$scope.current?$scope.current:{};
+          $scope.current.region=item;
+        }
+        $scope.selectedProcedure=function (item,siblings) {
+          $scope.setActive(item,siblings);
+          $scope.toggle('procedure');
+          $scope.current=$scope.current?$scope.current:{};
+          $scope.current.procedure=item;
+        }
+
+        $scope.setSpecialty=function (item,siblings) {
+          $scope.setActive(item,siblings);
+          $scope.source.wpAcceptanceList=[];
+          if ($scope.current){
+            $scope.current.procedure=null;
+          }
+          $scope.source.wpAcceptanceList=item.WPAcceptanceList
+        }
+      }
+    };
+  }
+
+  function msGenSelectController($scope, remote, xhscService, $q, $rootScope) {
+    var areasPro = $scope.areas ? $scope.areas : xhscService.getRegionTreeOffline("", 31, 1);
+    var procedurePro = $scope.procedure ? $scope.procedure : remote.safe.getSecurityItem();
+    $q.all([areasPro, procedurePro]).then(function (res) {
+      $scope.loaded = true;
+      $rootScope.$emit("msGenSelect_loaded");
+      $scope.source = {
+        areasData: res[0],
+        procedureData: res[1].data
+      }
+      $scope.setRegion($scope.source.areasData[0]);
+      if ($scope.source.procedureData.length){
+        $scope.setProcedure($scope.source.procedureData[0],$scope.source.procedureData);
+      }
+      $scope.status={
+        region:true,
+        part:false,
+        procedure:false
+      };
+    }).catch(function () {
+      $scope.loaded = true;
+    });
+    $scope.setActive=function (area,siblings) {
+      function setChild(t) {
+        if (t.Children){
+          t.Children.forEach(function (m) {
+            m.active=false;
+            setChild(m);
+          })
+        }
+        if (t.SpecialtyChildren){
+          t.SpecialtyChildren.forEach(function (m) {
+            m.active=false;
+            setChild(m);
+          })
+        }
+        if (t.WPAcceptanceList){
+          t.WPAcceptanceList.forEach(function (m) {
+            m.active=false;
+            setChild(m);
+          })
+        }
+      }
+      siblings.forEach(function (o) {
+        o.active=false; //选中背景设置
+        setChild(o);
+      });
+      setChild(area);
+      area.active=true;
+    }
+    //初始化部位
+    $scope.setRegion=function (area) {
+      $scope.setActive(area,$scope.source.areasData);
+      $scope.source.fq=[];
+      $scope.source.parts=[];
+      $scope.source.floors=[];
+      $scope.source.rooms=[];
+      if ($scope.current){
+        $scope.current.selectedArea=null;
+        $scope.current.region=null;
+      }
+      $scope.source.fq=area.Children;
+    }
+    $scope.setProcedure=function (procedure,procedureLst) {
+      $scope.setActive(procedure,procedureLst);
+      $scope.source.specialtyChildren=procedure.SpecialtyChildren;
+      if ($scope.current){
+        $scope.current.procedure=null;
+      }
+      if ($scope.source.specialtyChildren){
+        $scope.source.specialtyChildren.sort(function (a,b) {
+          return a.SpecialtyName.localeCompare(b.SpecialtyName);
+        });
+      }
+    }
+  }
+})();
