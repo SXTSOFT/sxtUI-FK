@@ -20,7 +20,7 @@
         readonly:'=',
         warter:"="
       },
-      templateUrl:'app/main/xhsc/directive/sxtMapCheckPopup.html',
+      templateUrl:'app/main/xhsc/directive/safe_civiliz/sxtDynamicAcceptPopup.html',
       link:link
     }
 

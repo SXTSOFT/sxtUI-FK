@@ -23,7 +23,7 @@
         readonly:'=',
         warter:"="
       },
-      templateUrl:'app/main/xhsc/directive/sxtWeekRecheckPopup.html',
+      templateUrl:'app/main/xhsc/directive/safe_civiliz/sxtDynamicRecheckPopup.html',
       link:link
     }
 

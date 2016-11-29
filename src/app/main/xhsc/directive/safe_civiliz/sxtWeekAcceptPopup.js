@@ -17,7 +17,7 @@
         readonly:'=',
         warter:"="
       },
-      templateUrl:'app/main/xhsc/directive/sxtWeekAcceptPopup.html',
+      templateUrl:'app/main/xhsc/directive/safe_civiliz/sxtWeekAcceptPopup.html',
       link:link
     }
 
