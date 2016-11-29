@@ -71,7 +71,7 @@
         url:'/problempage',
         title:'问题统计',
         noBack:false,
-        hideFootbar:true,
+        hideFootbar:false,
         shell:{
           date:true
         },
@@ -80,12 +80,18 @@
       .state('app.statistics.taskpage', {
         url:'/taskage',
         title:'任务统计',
-        hideFootbar:true,
+        hideFootbar:false,
         shell:{
           statistics:true
         },
         noBack:false,
         template:'<statistics-taskpage layout="column" flex></statistics-taskpage>'
+      })
+      .state('app.statistics.task', {
+        url:'/task',
+        title:'任务统计',
+        noBack:false,
+        template:'<statistics-task layout="column" flex></statistics-task>'
       })
       .state('app.meterreading', {
         abstract:true,
