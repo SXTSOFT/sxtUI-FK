@@ -41,7 +41,7 @@
         rightArrow: false,
         leftArrow: false,
         title: '巡检',
-        url: '/xjBase',
+        url: '/{yw}',
         templateUrl: 'app/main/xhsc/cycleLook/cycleLookBase.html',
         controller: 'cycleLookBaseController as vm'
       })
@@ -51,7 +51,7 @@
         rightArrow: false,
         leftArrow: false,
         title: '巡检',
-        url: '/xjAccept',
+        url: '/xjAccept/{InspectionId}/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}/{areaId}',
         templateUrl: 'app/main/xhsc/cycleLook/cycleLookAccept.html',
         controller: 'cycleLookAcceptController as vm'
       })
@@ -61,7 +61,7 @@
         rightArrow: false,
         leftArrow: false,
         title: '巡检',
-        url: '/xjRectify',
+        url: '/xjRectify/{Role}/{InspectionID}/{AcceptanceItemID}/{RectificationID}/{AcceptanceItemName}',
         templateUrl: 'app/main/xhsc/cycleLook/cycleLookRectify.html',
         controller: 'cycleLookRectifyController as vm'
       })

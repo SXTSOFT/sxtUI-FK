@@ -38,27 +38,27 @@
         rightArrow: false,
         leftArrow: false,
         title: '周安全检查',
-        url: '/sfWeekBase',
+        url: '/{yw}',
         templateUrl: 'app/main/xhsc/safeCiviliz/sfWeekBase.html',
         controller: 'sfWeekBaseController as vm'
       })
-      .state('app.xhsc.sf. sfWeekAccept', {
+      .state('app.xhsc.sf.sfWeekAccept', {
         noBack:true,
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
         title: '周安全检查',
-        url: '/ sfWeekAccept',
+        url: '/ sfWeekAccept/{InspectionId}/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}/{areaId}',
         templateUrl: 'app/main/xhsc/safeCiviliz/ sfWeekAccept.html',
         controller: 'sfWeekAcceptController as vm'
       })
-      .state('app.xhsc.sf. sfWeekRectify', {
+      .state('app.xhsc.sf.sfWeekRectify', {
         noBack:true,
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
         title: '周安全检查',
-        url: '/ sfWeekRectify',
+        url: '/sfWeekRectify/{Role}/{InspectionID}/{AcceptanceItemID}/{RectificationID}/{AcceptanceItemName}',
         templateUrl: 'app/main/xhsc/safeCiviliz/ sfWeekRectify.html',
         controller: 'sfWeekRectifyController as vm'
       })
@@ -79,7 +79,7 @@
         rightArrow: false,
         leftArrow: false,
         title: '动态安全源',
-        url: '/sfDynamicBase',
+        url: '/{yw}',
         templateUrl: 'app/main/xhsc/safeCiviliz/sfDynamicBase.html',
         controller: 'sfDynamicBaseController as vm'
       })
@@ -89,7 +89,7 @@
         rightArrow: false,
         leftArrow: false,
         title: '动态安全源',
-        url: '/sfDynamicRectify',
+        url: '/sfDynamicRectify/{Role}/{InspectionID}/{AcceptanceItemID}/{RectificationID}/{AcceptanceItemName}',
         templateUrl: 'app/main/xhsc/safeCiviliz/sfDynamicRectify.html',
         controller: 'sfDynamicRectifyController as vm'
       })
@@ -99,11 +99,10 @@
         rightArrow: false,
         leftArrow: false,
         title: '动态安全源',
-        url: '/sfDynamicAccept',
+        url: '/sfDynamicAccept/{InspectionId}/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}/{areaId}',
         templateUrl: 'app/main/xhsc/safeCiviliz/sfDynamicBase.html',
         controller: 'sfDynamicAcceptController as vm'
       })
-
 
       .state('app.xhsc.sf.sfmain', {
         noBack:true,

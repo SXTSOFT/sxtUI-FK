@@ -65,38 +65,6 @@
       ]
     }
 
-    // function InspectionTask(item) {
-    //   var t = [function () {
-    //     return remote.Project.getInspectionList(item.InspectionId);
-    //   }];
-    //   item.Children.forEach(function (area) {
-    //     t.push(function (tasks, down) {
-    //       return remote.Procedure.InspectionCheckpoint.query(item.AcceptanceItemID, area.AreaID, item.InspectionId).then(function (result) {
-    //         result.data.forEach(function (p) {
-    //           tasks.push(function () {
-    //             return remote.Procedure.InspectionProblemRecord.query(p.CheckpointID).then(function (result) {
-    //               result.data.forEach(function (r) {
-    //                 tasks.push(function () {
-    //                   return remote.Procedure.InspectionProblemRecordFile.query(r.ProblemRecordID).then(function (result) {
-    //                   })
-    //                 })
-    //               })
-    //             })
-    //           });
-    //         });
-    //       })
-    //     });
-    //     t.push(function () {
-    //       return remote.Procedure.InspectionIndexJoinApi.query(item.InspectionId)
-    //     })
-    //     t.push(function () {
-    //       return remote.Procedure.InspectionPoint.query(item.InspectionId, item.AcceptanceItemID, area.AreaID)
-    //     })
-    //
-    //   });
-    //   return t;
-    // }
-
     function rectificationTask(item) {
       return [
         function (tasks) {
@@ -132,7 +100,6 @@
         }
       ]
     }
-
     vm.downloadys = function (item) {
       return api.setNetwork(0).then(function () {
         return $q(function (resolve, reject) {

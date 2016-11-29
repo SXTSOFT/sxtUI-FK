@@ -8,8 +8,7 @@
     .module('app.xhsc')
     .controller('sfWeekBaseController', sfWeekBaseController);
 
-  function sfWeekBaseController(remote, xhUtils, $rootScope, utils, api, $q, $state, $scope, $mdDialog,
-                                       db, $mdBottomSheet, $stateParams, xhscService) {
+  function sfWeekBaseController(remote, xhUtils, $rootScope, utils, api, $q, $state, $scope, $mdDialog,db, $mdBottomSheet, $stateParams, xhscService) {
     var vm = this;
     vm.procedure = [];
     vm.yw = $stateParams.yw;
@@ -241,11 +240,6 @@
       }
     }, $scope);
 
-    vm.by = function (r) {
-      api.setNetwork(0).then(function () {
-        $state.go('app.xhsc.sf.sfitem', {role: 'zb', projectId: r.RegionID});
-      });
-    }
 
     function load() {
       $q.all([
@@ -312,31 +306,6 @@
             }
           })
 
-        }),
-        remote.Project.getAllRegionWithRight_no_db("", 3).then(function (n) {
-          if (vm.yw == 2 || vm.yw == 0) {
-            vm.z_isOver = true;
-            if (!n || n.data.length == 0) {
-              vm.isShowbg = true;
-              return;
-            }
-            remote.offline.query().then(function (r) {
-              vm.by_project = xhscService.buildMutilRegionTree(n.data, 1);
-              vm.zj_project = $.extend([], vm.by_project, true);
-              vm.zj_project.forEach(function (k) {
-                if (k.Children) {
-                  k.Children.forEach(function (n) {
-                    if (r.data.find(function (m) {
-                        return m.Id == 'zj' + n.RegionID;
-                      })) {
-                      n.isComplete = true;
-                    }
-                  })
-                }
-              });
-
-            })
-          }
         })
       ]).then(function () {
         vm.isOver = true;
