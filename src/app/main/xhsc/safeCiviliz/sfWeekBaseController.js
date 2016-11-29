@@ -468,17 +468,5 @@
       });
       evt.stopPropagation();
     }
-    vm.click = function (item, evt) {
-      if (item.isComplete) {
-        api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.gx.gxlist', {role: '', projectId: item.RegionID});
-        });
-      }
-      evt.stopPropagation();
-    }
-    vm.stretch = function (item) {
-      item.stretch = !item.stretch;
-    }
-
   }
 })();
