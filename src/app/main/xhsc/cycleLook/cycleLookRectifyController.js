@@ -59,7 +59,7 @@
         };
 
         utils.alert('提交成功，请离线上传数据',null,function () {
-          $state.go("app.xhsc.sf.sfmain");
+          $state.go("app.xhsc.xj.main");
         });
       });
 

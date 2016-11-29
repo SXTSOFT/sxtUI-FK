@@ -241,12 +241,6 @@
       }
     }, $scope);
 
-    vm.by = function (r) {
-      api.setNetwork(0).then(function () {
-        $state.go('app.xhsc.sf.sfitem', {role: 'zb', projectId: r.RegionID});
-      });
-    }
-
     function load() {
       $q.all([
         remote.safe.getSafeInspections().then(function (r) {
@@ -376,7 +370,7 @@
       if (!item.isOffline) {
         vm.downloadzg(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go('app.xhsc.sf.rectify', {
+            $state.go('app.xhsc.xj.rectify', {
               Role: 'zb',
               InspectionID: item.InspectionID,
               AcceptanceItemID: item.AcceptanceItemID,
@@ -387,7 +381,7 @@
         })
       } else {
         api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.sf.rectify', {
+          $state.go('app.xhsc.xj.rectify', {
             Role: 'zb',
             InspectionID: item.InspectionID,
             AcceptanceItemID: item.AcceptanceItemID,
@@ -401,7 +395,7 @@
       if (!item.isOffline) {
         vm.downloadzg(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go('app.xhsc.sf.rectify', {
+            $state.go('app.xhsc.xj.rectify', {
               Role: 'jl',
               InspectionID: item.InspectionID,
               AcceptanceItemID: item.AcceptanceItemID,
@@ -411,7 +405,7 @@
         })
       } else {
         api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.sf.rectify', {
+          $state.go('app.xhsc.xj.rectify', {
             Role: 'jl',
             InspectionID: item.InspectionID,
             AcceptanceItemID: item.AcceptanceItemID,
@@ -450,7 +444,7 @@
       if (!item.isOffline) {
         vm.downloadys(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go('app.xhsc.sf.sfaccept', {
+            $state.go('app.xhsc.xj.accept', {
               acceptanceItemID: item.AcceptanceItemID,
               acceptanceItemName: item.AcceptanceItemName,
               name: item.Children[0].newName,
@@ -462,7 +456,7 @@
         })
       } else {
         api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.sf.sfaccept', {
+          $state.go('app.xhsc.xj.accept', {
             acceptanceItemID: item.AcceptanceItemID,
             acceptanceItemName: item.AcceptanceItemName,
             name: item.Children[0].newName,
@@ -498,17 +492,6 @@
         }
       });
       evt.stopPropagation();
-    }
-    vm.click = function (item, evt) {
-      if (item.isComplete) {
-        api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.gx.gxlist', {role: '', projectId: item.RegionID});
-        });
-      }
-      evt.stopPropagation();
-    }
-    vm.stretch = function (item) {
-      item.stretch = !item.stretch;
     }
   }
 })();
