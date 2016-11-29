@@ -63,16 +63,7 @@
       //xhUtils.photo().then(function (image) {
       // if(image){
         var image;
-          switch (type) {
-            case 16:{
-              photo(type,vm.samplingProcessImgs,image);
-              break;
-            }
-            case 32:{
-              photo(type,vm.checkListImgs,image);
-              break;
-            }
-          }
+        photo(type,vm.data.MaterialFiles,image);
           vm.data.ExitOperatorTime = new Date();
       //}
       //});
