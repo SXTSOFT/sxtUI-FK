@@ -20,7 +20,6 @@
 
     api.xhsc.materialPlan.GetMaterialPlanBatchByPlanId(vm.data.PlanId).then(function (r) {
       vm.data.BatchList = r.data||[];
-      console.log(vm.data.BatchList);
       vm.data.BatchList.forEach(function (b) {
         b.Images.forEach(function (i) {
           i.ImageByte = sxt.app.api + i.ImageByte;

@@ -43,7 +43,7 @@
           utils.alert('暂无项目！');
         }
         else {
-          if(user.Role.MemberType === ""){
+          if(user.Role.MemberType === "" || user.Role.MemberType == 4){
             vm.offlines = result.data;
           }else{
             remote.offline.query().then(function (r2) {
