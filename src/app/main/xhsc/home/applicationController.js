@@ -46,7 +46,7 @@
           right: isJlorzb,
           title: "周安全检查",
           img: "app/main/xhsc/images/zbzj.png",
-          state: "app.xhsc.sf.sfWeekMain",
+          state: "app.xhsc.week.sfWeekMain",
           stateParams: null
         },{
           right: isJlorzb,

@@ -41,7 +41,7 @@
         rightArrow: false,
         leftArrow: false,
         title: '巡检',
-        url: '/{yw}',
+        url: '/xj/{yw}',
         templateUrl: 'app/main/xhsc/cycleLook/cycleLookBase.html',
         controller: 'cycleLookBaseController as vm'
       })

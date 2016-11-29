@@ -399,7 +399,7 @@
       load();
     })
     vm.setModule = function (val) {
-      $state.go('app.xhsc.sf.sfWeekBase', {yw: val})
+      $state.go('app.xhsc.week.sfWeekBase', {yw: val})
     }
     vm.zbzgbtnAction = function (item, evt) {
       $mdBottomSheet.show({
@@ -431,7 +431,7 @@
       if (!item.isOffline) {
         vm.downloadzg(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go('app.xhsc.sf.sfWeekRectify', {
+            $state.go('app.xhsc.week.sfWeekRectify', {
               Role: 'zb',
               InspectionID: item.InspectionID,
               AcceptanceItemID: item.AcceptanceItemID,
@@ -442,7 +442,7 @@
         })
       } else {
         api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.sf.sfWeekRectify', {
+          $state.go('app.xhsc.week.sfWeekRectify', {
             Role: 'zb',
             InspectionID: item.InspectionID,
             AcceptanceItemID: item.AcceptanceItemID,
@@ -456,7 +456,7 @@
       if (!item.isOffline) {
         vm.downloadzg(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go('app.xhsc.sf.sfWeekRectify', {
+            $state.go('app.xhsc.week.sfWeekRectify', {
               Role: 'jl',
               InspectionID: item.InspectionID,
               AcceptanceItemID: item.AcceptanceItemID,
@@ -466,7 +466,7 @@
         })
       } else {
         api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.sf.sfWeekRectify', {
+          $state.go('app.xhsc.week.sfWeekRectify', {
             Role: 'jl',
             InspectionID: item.InspectionID,
             AcceptanceItemID: item.AcceptanceItemID,
@@ -505,7 +505,7 @@
       if (!item.isOffline) {
         vm.downloadys(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go('app.xhsc.sf.sfWeekAccept', {
+            $state.go('app.xhsc.week.sfWeekAccept', {
               acceptanceItemID: item.AcceptanceItemID,
               acceptanceItemName: item.AcceptanceItemName,
               name: item.Children[0].newName,
@@ -517,7 +517,7 @@
         })
       } else {
         api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.sf.sfWeekAccept', {
+          $state.go('app.xhsc.week.sfWeekAccept', {
             acceptanceItemID: item.AcceptanceItemID,
             acceptanceItemName: item.AcceptanceItemName,
             name: item.Children[0].newName,

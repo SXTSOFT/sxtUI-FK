@@ -10,7 +10,7 @@
     .controller('cycleLookMainController', cycleLookMainController);
 
   /** @ngInject */
-  function cycleLookMainController(xhscService,$mdDialog) {
+  function cycleLookMainController(xhscService,$mdDialog,api,$scope,$q,remote,$state) {
     var vm = this;
     vm.procedure = [];
     vm.create=function () {

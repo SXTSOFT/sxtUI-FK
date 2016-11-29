@@ -52,7 +52,7 @@
         return;
       };
       utils.alert("提交成功，请离线上传数据！",null,function () {
-        $state.go('app.xhsc.sf.sfWeekMain')
+        $state.go('app.xhsc.week.sfWeekMain')
       });
       // $state.go('app.xhsc.sf.sfproblem',{acceptanceItemName:acceptanceItemName,acceptanceItemID:acceptanceItemID,name:vm.RegionFullName,areaId:areaId,projectId:projectId,InspectionId:vm.InspectionId})
     })
