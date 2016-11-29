@@ -40,7 +40,7 @@
           right: isJlorzb,
           title: "动态危险源",
           img: "app/main/xhsc/images/zbzj.png",
-          state: "app.xhsc.sf.sfmain",
+          state: "app.xhsc.sf.sfDynamicMain",
           stateParams: null
         },{
           right: isJlorzb,
@@ -52,7 +52,7 @@
           right: isJlorzb,
           title: "日常巡检",
           img: "app/main/xhsc/images/zbzj.png",
-          state: "",
+          state: "app.xhsc.xj.main",
           stateParams: null
         }, {
           right: vm.OUType == 1 || vm.OUType == "1",
