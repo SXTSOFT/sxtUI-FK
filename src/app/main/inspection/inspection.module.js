@@ -117,7 +117,8 @@
           cjwt:true
         },
         noBack:false,
-        template:'<inspection-check layout="column" flex></inspection-check>'
+        template:'<inspection-check layout="column" flex></inspection-check>',
+        params:{question:'',showPopup:''}
       })
       .state('app.inspection.cjwt', {
         url:'/cjwt',

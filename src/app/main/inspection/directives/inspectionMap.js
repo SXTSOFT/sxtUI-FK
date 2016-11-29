@@ -67,6 +67,9 @@
               //scope.$apply()
             })
             m.on('click',function (e) {
+              if(!scope.$parent.vm.showPopup){
+                el.find('.leaflet-pane').css({top:'-60px'})
+              }
               scope.$parent.vm.showPopup = true;
               scope.$apply()
             })

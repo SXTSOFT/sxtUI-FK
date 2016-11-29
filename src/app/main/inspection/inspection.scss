@@ -1793,10 +1793,18 @@ a.leaflet-draw-draw-color:hover div{
   color: #888888
 }
 
-
-#img{
+#none{
   .leaflet-right{
     display: none;
   }
 }
 
+.photos{
+  position: relative;
+}
+
+.remove{
+  position: absolute;
+  top: -7px;
+  right: -10px;
+}

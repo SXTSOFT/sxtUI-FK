@@ -13,10 +13,14 @@
     });
 
   /**@ngInject*/
-  function inspectionCheckController($scope,$rootScope,utils,$state,$mdPanel,$stateParams){
+  function inspectionCheckController($scope,$rootScope,utils,$state,$stateParams,$mdPanel){
+
     var vm = this;
-    $rootScope.shell.title='A201';;
-    vm.showPopup = false;
+    $rootScope.shell.title='A201';
+
+    vm.showPopup = $stateParams.showPopup || false;
+    vm.question = $stateParams.question
+
     //vm.add = function(){
     //  vm.showPopup = true;
     //}
