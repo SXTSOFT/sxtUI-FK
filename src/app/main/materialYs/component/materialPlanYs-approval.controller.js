@@ -18,13 +18,15 @@
     vm.data = {};
     vm.intoFactoryImgs = [];
     vm.checkedImgs = [];
+
+
+
     api.xhsc.materialPlan.getMaterialPlanBatchById($stateParams.id).then(function (r) {
       vm.data = r.data;
       vm.data.Images.forEach(function (i) {
         i.ImageByte = sxt.app.api + i.ImageByte;
       });
 
-      console.log(vm.intoFactoryImgs);
       vm.data.PlanTime = new Date(vm.data.PlanTime).Format('yyyy年MM月dd日');
       vm.data.ApproachTime = new Date(vm.data.ApproachTime).Format('yyyy年MM月dd日');
       vm.data.AcceptanceTime = new Date(vm.data.AcceptanceTime).Format('yyyy年MM月dd日');

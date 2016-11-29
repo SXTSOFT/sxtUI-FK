@@ -28,9 +28,10 @@
       db("materialPlanReportInfo").destroy();
       db("materialPlanApprovalInfo").destroy();
       db("materialExitInfo").destroy();
-      db("materialBatchInitFactory").destroy();
+      db("materialBatchIntoFactory").destroy();
       db("materialBatchInspection").destroy();
       db("materialUnqualifiedExit").destroy();
+      db("materialBatchProgress").destroy();
     }
 
     loadSection();

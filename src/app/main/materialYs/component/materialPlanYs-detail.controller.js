@@ -17,9 +17,25 @@
     var vm = this;
     vm.data = {};
     vm.data.Id = $stateParams.batchId;
+    vm.confirm = true;
+    vm._confirm = false;
+
+    $scope.$watch('vm.confirm',function () {
+      if (vm._confirm){
+        vm.btnEnable = true;
+        return;
+      }
+      vm.btnEnable = !vm.confirm;
+    });
 
     api.xhsc.materialPlan.getMaterialPlanDetail(vm.data.Id).then(function (q) {
       vm.data = q.data;
+      var _str = JSON.stringify(q.data.FirstBatchTime).replace(/-/g,'/').replace('T',' ');
+      var dt = new Date(_str);
+      var currDt = new Date();
+      vm._confirm = parseInt(Math.abs(currDt- dt)/1000/60/60/24) > 7 ? true : false;
+      console.log(vm._confirm)
+      vm.btnEnable = vm._confirm ? true : false;
     });
 
   }

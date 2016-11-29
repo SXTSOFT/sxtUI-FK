@@ -19,7 +19,6 @@
 
     api.xhsc.materialPlan.getBatchProgressById(batchId).then(function (r) {
       vm.data = r.data;
-      console.log(vm.data);
     });
 
   }
