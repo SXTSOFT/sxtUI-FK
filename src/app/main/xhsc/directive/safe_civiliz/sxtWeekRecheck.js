@@ -102,7 +102,7 @@
             onUpdate: function (layer, isNew, group,cb) {
             },
             onPopup: function (layer,cb) {
-              var edit = mapPopupSerivce.get('sxtSafeRecheckPopup');
+              var edit = mapPopupSerivce.get('weekRecheckPopup');
               if (edit) {
                 scope.sxtMapShow = true;
                 edit.scope.context = fg;

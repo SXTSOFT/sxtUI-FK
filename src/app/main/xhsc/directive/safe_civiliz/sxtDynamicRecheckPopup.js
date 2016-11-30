@@ -20,7 +20,8 @@
     return {
       restrict:'E',
       scope:{
-        readonly:'=',
+        slideShow:'=',
+        slideRole:'=',
         warter:"="
       },
       templateUrl:'app/main/xhsc/directive/safe_civiliz/sxtDynamicRecheckPopup.html',
@@ -28,77 +29,186 @@
     }
 
     function link(scope,element,attr,ctrl){
-      scope.updateValue = function() {
-        scope.cancelEdit (true);
-      };
-      scope.moveLayer = function () {
-        scope.context.fg.changeMode('move',{ctx:true});
-      };
-      scope.apply = function() {
-        scope.isSaveData = null;
-        scope.$apply();
-        remote.safe.problemRecordQuery(scope.data.v.CheckpointID).then(function (r) {
-          var p = null;
-          if (r.data.length) {
-            p = r.data[0];
+      scope.$watch('slideRole',function(){
+        scope.role = scope.slideRole;
+        // console.log('role',scope.role)
+      })
+      $(element).appendTo('body');
+      scope.apply = function(){
+        //console.log('scope',scope)
+        remote.safe.problemRecordQuery(scope.data.value.CheckpointID).then(function(r){
+          scope.images={
+            zb:[],
+            jl:[]
           }
-          else {
-            p = {
-              ProblemRecordID: sxt.uuid(),
-              CheckpointID: scope.data.v.CheckpointID,
-              Describe: scope.data.v.ProblemDescription,
-              DescRole: 'jl'
-            };
-            p.action="Insert";
-            remote.safe.problemRecordCreate(p);
-          }
-          scope.data.p = p;
-          remote.safe.ProblemRecordFileQuery(p.ProblemRecordID, scope.data.v.PositionID).then(function (r) {
-            scope.data.images = r.data;
-            if (scope.data.v.isNew  && scope.data.images.length == 0) {
-              scope.addPhoto(scope.warter);
-            }
-          });
-        })
-      };
 
-      scope.removeLayer = function(){
-        scope.isSaveData = false;
-        var c = scope.context;
-        c.fg.delete(c.layer);
-      };
-      scope.cancelEdit = function(saveData){
-        scope.isSaveData = saveData||false;
-        var layer = scope.context.layer;
-        layer.editing && layer.editing.disable();
-      };
-      scope.playImage = function () {
-        var imgs = [];
-        scope.data.images.forEach(function (img) {
-          imgs.push({
-            url:img.FileContent||img.FileUrl,
-            alt:''
+          r.data.forEach(function (p) {
+            remote.safe.ProblemRecordFileQuery(p.ProblemRecordID).then(function (r2) {
+              if (p.DescRole=="jl"){
+                scope.images.jl=scope.images.jl.concat(r2.data)
+              }else{
+                scope.images.zb=scope.images.zb.concat(r2.data);
+              }
+            });
           });
+
+          scope.Record = {
+            jl:r.data.find(function (p) {
+              return p.DescRole=='jl'
+            }),
+            zb:r.data.find(function (p) {
+              return p.DescRole=='zb'
+            })
+          };
+
+          if(!scope.Record.jl){
+            scope.Record.jl = {
+              CheckpointID:scope.data.value.CheckpointID,
+              RectificationID:scope.data.item,
+              Describe:'',
+              DescRole:"jl",
+              Remark:''
+            };
+          }
+          if(!scope.Record.zb){
+            scope.Record.zb = {
+              CheckpointID:scope.data.value.CheckpointID,
+              RectificationID:scope.data.item,
+              Describe:'',
+              DescRole:"zb",
+              Remark:''
+            };
+          }
+        })
+
+        scope.value =scope.data.value.Status;
+      }
+
+      scope.playImage = function (imgs) {
+        imgs.forEach(function (img) {
+          img.url = img.FileContent||img.FileUrl;
+          img.alt = ' ';
         })
         xhUtils.playPhoto(imgs);
       }
-      scope.addPhoto = function (waterText) {
-        scope.data.v.isNew = false;
-        xhUtils.photo(null,waterText).then(function (image) {
+
+      function createZb(update) {
+        return $q(function (resolve,reject) {
+          remote.safe.problemRecordQuery.cfgSet({
+            filter: function (item, CheckpointID) {
+              return item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="zb";
+            },
+          })(scope.data.value.CheckpointID).then(function (r) {
+            if (!r||!r.data||!r.data.length){
+              // scope.Record.zb.ProblemRecordID = sxt.uuid()
+              var rec={
+                CheckpointID:scope.data.value.CheckpointID,
+                RectificationID:scope.data.item,
+                Describe:'',
+                DescRole:"zb",
+                Remark:''
+              };
+              rec.ProblemRecordID = sxt.uuid();
+              rec._id=rec.ProblemRecordID;
+              remote.safe.problemRecordCreate(rec).then(function () {
+                resolve(rec);
+              })
+            }else {
+              resolve(r.data[0]);
+            }
+
+          });
+        })
+      }
+      scope.addPhoto = function (warter) {
+        xhUtils.photo(null,warter).then(function (image) {
           if(image){
-            var img = {
-              ProblemRecordFileID:sxt.uuid(),
-              FileID:sxt.uuid()+".jpg",
-              ProblemRecordID:scope.data.p.ProblemRecordID,
-              CheckpointID:scope.data.v.CheckpointID,
-              FileContent:image
-            };
-            img.action="Insert";
-            remote.safe.ProblemRecordFileCreate(img);
-            scope.data.images.push(img);
+            createZb().then(function (res) {
+              var img = {
+                ProblemRecordFileID:sxt.uuid(),
+                ProblemRecordID:res.ProblemRecordID,
+                CheckpointID:scope.Record.zb.CheckpointID,
+                FileID:sxt.uuid()+'.jpg',
+                FileContent:image
+              }
+              remote.safe.ProblemRecordFileCreate(img).then(function () {
+                // var imgs = scope.Record.zb.images = (scope.Record.zb.images || []);
+                scope.images.zb=scope.images.zb.concat([img]);
+              })
+
+            })
+            scope.data.value.Status = 8;
           }
         });
       }
+      scope.cancel = function(){
+        scope.slideShow = false;
+        scope.data.value.Status = scope.value;
+      }
+      scope.submit = function(){
+        function convert(status) {
+          switch (status){
+            case 8:
+              return 1;
+            case 16:
+            case 4:
+              return 8;
+          }
+          return status;
+        }
+        if(scope.role=='zb'){
+          scope.data.value.Status = scope.data.value.Status==16?16:8;
+          if(scope.data.value.Status==8 &&(!scope.Record.zb.images || scope.Record.zb.images.length==0)){
+            utils.alert('请上传整改后照片');
+            return;
+          }
+          createZb(true).then(function () {
+            remote.safe.ckPointCreate(scope.data.value).then(function () {
+              scope.slideShow = false;
+              scope.context.updateStatus(scope.data.value.PositionID,convert(scope.data.value.Status));
+            });
+          });
+        }
+        else if(scope.role=='jl'){
+          scope.data.value.Status = scope.data.value.Status==2?2:4;
+          remote.safe.ckPointCreate(scope.data.value).then(function () {
+            scope.slideShow = false;
+            scope.context.updateStatus(scope.data.value.PositionID,convert(scope.data.value.Status));
+          }).then(function () {
+            remote.safe.problemRecordQuery.cfgSet({
+              filter: function (item, CheckpointID) {
+                return item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="jl";
+              },
+            })(scope.data.value.CheckpointID).then(function (r) {
+              if (!r||!r.data||!r.data.length){
+                var rec={
+                  CheckpointID:scope.data.value.CheckpointID,
+                  RectificationID:scope.data.item,
+                  Describe:'',
+                  DescRole:"jl",
+                  Remark:''
+                };
+                rec.ProblemRecordID = sxt.uuid();
+                rec._id=rec.ProblemRecordID;
+                remote.safe.problemRecordCreate(rec)
+              }
+            });
+          });
+        }else{
+          scope.slideShow = false;
+        }
+      }
+      $('body').on('click',function(e){
+        var evt = window.event ? window.event: e,
+          target = evt.srcElement || evt.target;
+        if($('.slideTop').hasClass('slidedown')){
+          if(target.id == 'recheck'){
+            scope.slideShow = false;
+            scope.$apply()
+          }
+        }
+
+      })
       mapPopupSerivce.set('dynamicRecheck',{
         el:element,
         scope:scope

@@ -10,9 +10,9 @@
 (function () {
   angular
     .module('app.xhsc')
-    .directive('sxtWeekAccept',sxtWeekAccept);
+    .directive('xjAccept',xjAccept);
   /** @ngInject */
-  function sxtWeekAccept($timeout,remote,mapPopupSerivce,sxt,utils,$window,xhUtils) {
+  function xjAccept($timeout,remote,mapPopupSerivce,sxt,utils,$window,xhUtils) {
     return {
       scope:{
         item:'=sxtMapAccept',
@@ -127,7 +127,7 @@
             },
             onPopupClose: function (cb) {
               var self = this;
-              var edit = mapPopupSerivce.get('mapAcceptPopup'),
+              var edit = mapPopupSerivce.get('xjAcceptPopup'),
                 scope = edit.scope;
               if(scope.data && scope.isSaveData!==false){
                 scope.isSaveData = false;
@@ -174,7 +174,7 @@
               cb(layer);
             },
             onPopup: function (layer,cb) {
-              var edit = mapPopupSerivce.get('weekAcceptPopup');
+              var edit = mapPopupSerivce.get('xjAcceptPopup');
               if(edit) {
                 edit.scope.context = {
                   fg:fg,

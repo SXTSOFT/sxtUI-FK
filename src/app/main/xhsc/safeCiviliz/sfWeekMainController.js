@@ -33,23 +33,58 @@
             var week= Math.ceil(date/7);
             return week;
           }
-          function getTheme() {
-              var date=new Date();
-              var year=date.getFullYear();
-              var month=date.getMonth()+1;
-              var week=getYearWeek(date);
-              return  year+"年"+month+"月"+"第"+week+"周安全验收";
+
+          function initTheme() {
+            var projectName=$scope.currentProject?$scope.currentProject.RegionName:"";
+            var area=$scope.currentArea?$scope.currentArea.RegionName:"";
+            var date=new Date();
+            var year=date.getFullYear();
+            var month=date.getMonth()+1;
+            var week=getYearWeek(date);
+            if (!area||!projectName){
+              $scope.subject="";
+            }else {
+              $scope.subject= projectName+area+ year+"年"+month+"月第"+week+"周"+"安全检查";
+            }
           }
-          $scope.subject=getTheme();
           xhscService.getRegionTreeOffline("",3,1).then(function (r) {
-             $scope.projects=r;
-             if(angular.isArray($scope.projects)&&$scope.projects.length){
-               $scope.currentProject=$scope.projects[0];
-               if ($scope.currentProject.Children.length){
-                 $scope.currentArea=$scope.currentProject.Children[0];
-               }
-             }
+            $scope.projects=r;
+            if(angular.isArray($scope.projects)&&$scope.projects.length){
+              $scope.currentProject=$scope.projects[0];
+              if ($scope.currentProject.Children.length){
+                $scope.currentArea=$scope.currentProject.Children[0];
+              }
+            }
+            // initTheme();
           })
+
+          $scope.$watch("currentProject",function () {
+            initTheme();
+          })
+          $scope.$watch("currentArea",function () {
+            initTheme();
+          })
+
+
+
+
+          // function getTheme() {
+          //     var date=new Date();
+          //     var year=date.getFullYear();
+          //     var month=date.getMonth()+1;
+          //     var week=getYearWeek(date);
+          //     return  year+"年"+month+"月"+"第"+week+"周安全验收";
+          // }
+          // $scope.subject=getTheme();
+          // xhscService.getRegionTreeOffline("",3,1).then(function (r) {
+          //    $scope.projects=r;
+          //    if(angular.isArray($scope.projects)&&$scope.projects.length){
+          //      $scope.currentProject=$scope.projects[0];
+          //      if ($scope.currentProject.Children.length){
+          //        $scope.currentArea=$scope.currentProject.Children[0];
+          //      }
+          //    }
+          // })
         }],
         templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_createTemplate.html',
         parent: angular.element(document.body),

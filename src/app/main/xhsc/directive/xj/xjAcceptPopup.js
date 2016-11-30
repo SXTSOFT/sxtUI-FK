@@ -1,7 +1,4 @@
 /**
- * Created by shaoshun on 2016/11/29.
- */
-/**
  * Created by lss on 2016/10/24.
  */
 /**
@@ -11,16 +8,16 @@
   'use strict';
   angular
     .module('app.xhsc')
-    .directive('sxtWeekRecheckPopup',sxtWeekRecheckPopup);
+    .directive('xjAcceptPopup',xjAcceptPopup);
   /** @ngInject */
-  function sxtWeekRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote){
+  function xjAcceptPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote){
     return {
       restrict:'E',
       scope:{
         readonly:'=',
         warter:"="
       },
-      templateUrl:'app/main/xhsc/directive/sxtWeekRecheckPopup.html',
+      templateUrl:'app/main/xhsc/directive/xj/xjAcceptPopup.html',
       link:link
     }
 
@@ -96,12 +93,12 @@
           }
         });
       }
-      mapPopupSerivce.set('weekRecheckPopup',{
+      mapPopupSerivce.set('xjAcceptPopup',{
         el:element,
         scope:scope
       });
       scope.$on('$destroy',function(){
-        mapPopupSerivce.remove('weekRecheckPopup');
+        mapPopupSerivce.remove('xjAcceptPopup');
         $(element).remove();
       });
     }

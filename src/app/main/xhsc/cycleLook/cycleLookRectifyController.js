@@ -9,10 +9,10 @@
 
   angular
     .module('app.xhsc')
-    .controller('cycleLookRectify', cycleLookRectify);
+    .controller('cycleLookRectifyController', cycleLookRectifyController);
 
   /** @ngInject */
-  function cycleLookRectify($state, $rootScope, $scope, $mdDialog, remote, $timeout, $q, utils, xhUtils, api) {
+  function cycleLookRectifyController($state, $rootScope, $scope, $mdDialog, remote, $timeout, $q, utils, xhUtils, api) {
     var vm = this;
     $rootScope.title = $state.params.Role == 'zb' ? '整改' : '复验';
     vm.ProjectID = $state.params.ProjectID;

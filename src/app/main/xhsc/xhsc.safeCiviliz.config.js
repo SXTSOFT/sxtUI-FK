@@ -163,7 +163,7 @@
         leftArrow: false,
         title: '周安全检查',
         url: '/ sfWeekAccept/{InspectionId}/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}/{areaId}',
-        templateUrl: 'app/main/xhsc/safeCiviliz/ sfWeekAccept.html',
+        templateUrl: 'app/main/xhsc/safeCiviliz/sfWeekAccept.html',
         controller: 'sfWeekAcceptController as vm'
       })
       .state('app.xhsc.week.sfWeekRectify', {
@@ -173,7 +173,7 @@
         leftArrow: false,
         title: '周安全检查',
         url: '/sfWeekRectify/{Role}/{InspectionID}/{AcceptanceItemID}/{RectificationID}/{AcceptanceItemName}',
-        templateUrl: 'app/main/xhsc/safeCiviliz/ sfWeekRectify.html',
+        templateUrl: 'app/main/xhsc/safeCiviliz/sfWeekRectify.html',
         controller: 'sfWeekRectifyController as vm'
       })
   }
