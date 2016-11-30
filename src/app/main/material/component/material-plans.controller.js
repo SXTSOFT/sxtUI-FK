@@ -47,7 +47,6 @@
       //   vm.projects = r.data;
       // }
       vm.projects = r.data;
-
       if(vm.projects.length != 0)
         vm.projects[0].selected = true;
     });
