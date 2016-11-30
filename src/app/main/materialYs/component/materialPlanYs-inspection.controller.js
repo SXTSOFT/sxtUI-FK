@@ -13,13 +13,13 @@
     });
 
   /** @ngInject */
-  function materialPlanInspection($rootScope,$scope,api,utils,$stateParams,$state,sxt,xhUtils,auth){
+  function materialPlanInspection($rootScope,$scope,api,utils,$stateParams,$state,sxt,xhUtils,auth,$filter){
     var vm = this;
     var user = auth.current();
     vm.data = {};
     vm.data.Id = $stateParams.id;
-    vm.outPutDate = new Date().Format('yyyy年MM月dd日');
-    vm.data.InspectionTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
+    vm.outPutDate = new Date();
+    vm.data.InspectionTime = $filter('date')(new Date(),'yyyy-MM-dd hh:mm:ss');
     vm.samplingProcessImgs = [];
     vm.checkListImgs = [];
     vm.data.MaterialPlanFiles = [];

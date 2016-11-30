@@ -13,12 +13,12 @@
     });
 
   /** @ngInject */
-  function inspectionReport($rootScope,$scope,api,utils,$stateParams,sxt,$state,xhUtils){
+  function inspectionReport($rootScope,$scope,api,utils,$stateParams,sxt,$state,xhUtils,$filter){
     var vm = this;
     vm.data = {};
     vm.data.Id = $stateParams.id;
-    vm.outPutDate = new Date().Format('yyyy年MM月dd日');
-    vm.data.ReportTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
+    vm.outPutDate = new Date();
+    vm.data.ReportTime = $filter('date')(new Date(),'yyyy-MM-dd hh:mm:ss');
     vm.data.LabCheck = true;
     vm.reportImgs = [];
 

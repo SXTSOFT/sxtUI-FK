@@ -13,13 +13,13 @@
     });
 
   /** @ngInject */
-  function materialIntoFactory($rootScope, $scope, api, utils, $state, $stateParams, sxt, xhUtils, auth) {
+  function materialIntoFactory($rootScope, $scope, api, utils, $state, $stateParams, sxt, xhUtils, auth,$filter) {
     var vm = this;
     var user = auth.current();
     vm.data = {};
     vm.data.ApproachType = $stateParams.status == 1 ? 1 : 0;
-    vm.outPutDate = new Date().Format('yyyy年MM月dd日');
-    vm.data.ApproachTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
+    vm.outPutDate = new Date();
+    vm.data.ApproachTime = $filter('date')(new Date(),'yyyy-MM-dd hh:mm:ss');
     vm.data.MaterialPlanFiles = [];
     vm.vehicleImgs = [];
     vm.goodsImgs = [];

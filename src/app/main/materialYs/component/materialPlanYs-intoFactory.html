@@ -2,9 +2,7 @@
   <md-list ng-cloak>
     <md-list-item>
       <label flex="50">进场时间</label>
-      <md-input-container flex="50" style="margin:0;padding: 0;">
-        <input type="text" ng-model="vm.outPutDate"style="top: 10px;position: relative; text-align: right;" required ng-disabled="true" />
-      </md-input-container>
+      <p flex="50" style="text-align: right;">{{vm.outPutDate | date:'yyyy年MM月dd日'}}</p>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>

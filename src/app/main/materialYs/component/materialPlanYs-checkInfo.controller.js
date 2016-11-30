@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function materialPlanYsCheckInfo($rootScope,$scope,api,utils,$stateParams,xhUtils,sxt,$state,auth){
+  function materialPlanYsCheckInfo($rootScope,$scope,api,utils,$stateParams,xhUtils,sxt,$state,auth,$filter){
 
     var vm = this;
     vm.data = {};
@@ -83,8 +83,8 @@
 
 
     vm.data.Id = $stateParams.id;
-    vm.outPutDate = new Date().Format('yyyy年MM月dd日');
-    vm.data.AcceptanceTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
+    vm.outPutDate = new Date();
+    vm.data.AcceptanceTime = $filter('date')(new Date(),'yyyy-MM-dd hh:mm:ss');
 
     vm.data.WgCheck = true;
     vm.data.IsInspection = true;

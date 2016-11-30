@@ -12,12 +12,12 @@
     });
 
   /** @ngInject */
-  function exit($rootScope,$scope,$stateParams,api,utils,sxt,xhUtils,$state,auth){
+  function exit($rootScope,$scope,$stateParams,api,utils,sxt,xhUtils,$state,auth,$filter){
     var vm = this;
     var user = auth.current();
     vm.data = {ExitId:sxt.uuid(),PlanId:$stateParams.id};
     vm.data.ExitReason = '材料多余';
-    vm.data.ExitOperatorTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
+    vm.data.ExitOperatorTime = $filter('date')(new Date(),'yyyy-MM-dd hh:mm:ss');
     vm.data.ExitWitness = user.Name;
 
     $scope.$on("$destroy",function(){
