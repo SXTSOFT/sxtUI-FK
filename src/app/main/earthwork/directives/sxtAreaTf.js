@@ -10,7 +10,7 @@
     .directive('sxtAreaTf', sxtAreaTf);
 
   /**@ngInject*/
-  function sxtAreaTf($timeout, sxt, utils,api) {
+  function sxtAreaTf($timeout, sxt, utils, api) {
 
     return {
       scope: {
@@ -24,7 +24,7 @@
           if (!scope.isShow || !scope.data || scope.data.files.length === 0) return;
           if (map) map.remove();
 
-          var url = scope.data.files[0];
+          var url = scope.data.obj.FileId;
           var layer;
           map = L.map(element[0], {
             crs: L.extend({}, L.CRS, {
@@ -44,7 +44,7 @@
             attributionControl: false
           }),
             //layer = L.tileLayer(sxt.app.api + '/api/file/load?x={x}&y={y}&z={z}', {
-            layer = L.tileLayer('http://localhost:5000/api/PicMap/load/{z}_{x}_{y}.png?path=' + url.replace('/s_', '/'), {
+            layer = L.tileLayer(sxt.app.api + '/api/PicMap/load/{z}_{x}_{y}.png?fid=' + url.replace('/s_', '/'), {
               noWrap: true,
               continuousWorld: false,
               tileSize: 512
@@ -148,47 +148,48 @@
 
           map.addLayer(labels);
           map.addLayer(drawnItems);
-          scope.$watch('data',function () {
-            if(scope.data){
-              api.earthwork.earthwork.getEarthworkList({regionTreeId:scope.data.obj.RegionTreeId + '>' + scope.data.obj.Id,status: 4}).then(function (r) {
-                r.data.forEach(function (ly) {
-                  var geojson = JSON.parse(ly.GeoJSON),
-                    options = geojson.options;
-                  if (scope.data.zy && options.zy != scope.data.zy) return;
-                  switch (geojson.geometry.type) {
-                    case 'Circle':
-                      layer = L.circle(L.GeoJSON.coordsToLatLng(geojson.geometry.coordinates), options.radius, options);
-                      break;
-                    default:
-                      var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer, options.coordsToLatLng, options);
-                      layer.feature = L.GeoJSON.asFeature(geojson);
 
-                      break;
-                  }
-                  layer.data = ly;
-                  drawnItems.addLayer(layer);
-                  updateText(layer);
-                  layer.on('mouseover', function () {
-                    console.log('mouseover');
-                  })
-                  layer.on('mouseout', function () {
-                    console.log('mouseout');
-                  })
-                  layer.on('click', function (e) {
-                    openPopup(layer);
-                  })
-                })
-              });
-            }
-          },true);
+          api.earthwork.earthwork.getEarthworkList({
+            regionTreeId: scope.data.obj.RegionTreeId + '>' + scope.data.obj.Id,
+            status: 4
+          }).then(function (r) {
+            r.data.forEach(function (ly) {
+              var geojson = JSON.parse(ly.GeoJSON),
+                options = geojson.options;
+              if (scope.data.zy && options.zy != scope.data.zy) return;
+              switch (geojson.geometry.type) {
+                case 'Circle':
+                  layer = L.circle(L.GeoJSON.coordsToLatLng(geojson.geometry.coordinates), options.radius, options);
+                  break;
+                default:
+                  var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer, options.coordsToLatLng, options);
+                  layer.feature = L.GeoJSON.asFeature(geojson);
 
-          var editing, isPopup,drawLine;
+                  break;
+              }
+              layer.data = ly;
+              drawnItems.addLayer(layer);
+              updateText(layer);
+              layer.on('mouseover', function () {
+                console.log('mouseover');
+              })
+              layer.on('mouseout', function () {
+                console.log('mouseout');
+              })
+              layer.on('click', function (e) {
+                openPopup(layer);
+              })
+            })
+          });
+
+
+          var editing, isPopup, drawLine;
           map.on('draw:drawstart', function (e) {
             var type = e.layerType;
             if (type == 'polyline') {
               drawLine = true;
             }
-            console.log('start',type);
+            console.log('start', type);
           });
           map.on('draw:drawstop', function (e) {
             drawLine = false;
@@ -222,7 +223,7 @@
             var layers = e.layers;
             layers.eachLayer(function (layer) {
               var geojson = layer.toGeoJSON();
-              geojson.geometry.type = geojson.geometry.type!='Polygon'?'Circle':'Polygon';
+              geojson.geometry.type = geojson.geometry.type != 'Polygon' ? 'Circle' : 'Polygon';
               geojson.options = layer.options;
               geojson.options.radius = layer._mRadius;
               layer.data.GeoJSON = JSON.stringify(geojson);
@@ -244,43 +245,43 @@
               })
             });
           });
-          map.on('popupclose', function (e) {
-
-            var text = $('input', el).val();
-            var type = $('#zjtypeB', el).length ? $('#zjtypeB', el).prop('checked') ? 'B' : 'A' : null;
-            if (text == '') {
-              setTimeout(function () {
-                //alert('请输入名称');
-                e.popup.openOn(map);
-              }, 10);
-            }
-            else {
-              isPopup = false;
-              var layer = e.popup.layer;
-              layer.options.text = text;
-              layer.options.type = type;
-              var json = layer.toGeoJSON();
-              json.geometry.type = json.geometry.type!='Polygon'?'Circle':'Polygon';
-              json.options = layer.options;
-              json.options.radius = layer._mRadius;
-              json.options.zy = scope.data.zy;
-              json.options.id = json.options.id || sxt.uuid();
-              layer.data = {
-                Id: json.options.id,
-                RegionName: text,
-                RegionType: scope.data.obj.RegionType,
-                RegionTreeId: scope.data.obj.RegionTreeId + '>' + scope.data.obj.Id,
-                RegionTreeName: scope.data.obj.RegionTreeName + '>' + scope.data.obj.RegionName,
-                UserId: json.options.type,
-                GeoJSON: JSON.stringify(json)
-              }
-
-              api.earthwork.earthwork.createEarthworkArea(layer.data).then(function () {
-                $('input', el).val('');
-                updateText(layer);
-              });
-            }
-          });
+          // map.on('popupclose', function (e) {
+          //
+          //   var text = $('input', el).val();
+          //   var type = $('#zjtypeB', el).length ? $('#zjtypeB', el).prop('checked') ? 'B' : 'A' : null;
+          //   if (text == '') {
+          //     setTimeout(function () {
+          //       //alert('请输入名称');
+          //       e.popup.openOn(map);
+          //     }, 10);
+          //   }
+          //   else {
+          //     isPopup = false;
+          //     var layer = e.popup.layer;
+          //     layer.options.text = text;
+          //     layer.options.type = type;
+          //     var json = layer.toGeoJSON();
+          //     json.geometry.type = json.geometry.type != 'Polygon' ? 'Circle' : 'Polygon';
+          //     json.options = layer.options;
+          //     json.options.radius = layer._mRadius;
+          //     json.options.zy = scope.data.zy;
+          //     json.options.id = json.options.id || sxt.uuid();
+          //     layer.data = {
+          //       Id: json.options.id,
+          //       RegionName: text,
+          //       RegionType: scope.data.obj.RegionType,
+          //       RegionTreeId: scope.data.obj.RegionTreeId + '>' + scope.data.obj.Id,
+          //       RegionTreeName: scope.data.obj.RegionTreeName + '>' + scope.data.obj.RegionName,
+          //       UserId: json.options.type,
+          //       GeoJSON: JSON.stringify(json)
+          //     }
+          //
+          //     api.earthwork.earthwork.createEarthworkArea(layer.data).then(function () {
+          //       $('input', el).val('');
+          //       updateText(layer);
+          //     });
+          //   }
+          // });
 
           function updateText(layer) {
             if (!layer.options.text) return;
@@ -307,11 +308,12 @@
             labels.addLayer(ly);
 
           }
+
           function openPopup(layer) {
-            if (editing || isPopup) {
-              map.closePopup();
-              return;
-            };
+            // if (editing || isPopup) {
+            //   map.closePopup();
+            //   return;
+            // };
 
             el = el || document.getElementById(scope.popup);
             $('input', el).val(layer.options.text);
@@ -330,6 +332,7 @@
             isPopup = true;
             popup.layer = layer;
           }
+
           var drawControl = new L.Control.Draw({
             draw: {
               select: false,
@@ -353,7 +356,7 @@
               polyline: false,
               circleMarker: {
                 shapeOptions: {
-                  weight:2
+                  weight: 2
                 }
               },
               video: false,
@@ -368,9 +371,11 @@
           map.addControl(drawControl);
 
         }
+
         function ran1() {
           $timeout(ran, 300);
         }
+
         scope.$watch('data', ran1);
         scope.$watch('data.zy', ran1);
         scope.$watch('isShow', ran1);

@@ -6,9 +6,6 @@
   'use strict';
   angular.module('app.earthwork')
     .directive('sxtImagesTf',sxtImagesTf);
-  angular.module('app.pileFoundation')
-    .directive('sxtImagesZj',sxtImagesTf)
-
 
   /**@ngInject*/
   function sxtImagesTf($rootScope,FileUploader,tokenInjector,api,sxt,$q,utils) {
@@ -245,58 +242,55 @@
           }
 
           api.earthwork.earthwork.getFileByRid(scope.rid).success(function (data) {
-            scope.$watch('rid',function () {
-              if (scope.rid && data) {
-                if (rid != data.RelationId) {
-                  rid = scope.rid = data.RelationId;
-                  uploader.url = 'http://localhost:5000/api/Eartwork/UpLoadImage/' + rid;
-                  angular.forEach(uploader.queue, function (item) {
-                    item.url = sxt.app.api + uploader.url
-                  });
-                }
-
-                if (angular.isArray(scope.files)) {
-                  scope.files = [];
-                }
-                if (angular.isArray(scope.files))
-                  scope.files.push(sxt.app.api + data.ImageUrl);
-                var item = {
-                  file: {
-                    Id: data.Id,
-                    name: data.ImageName,
-                    //size: att.FileSize,
-                    Url: sxt.app.api + data.ImageUrl,
-                    //UserID: att.UserID,
-                    //Remark: att.Remark,
-                    CreateDate: data.CreateTime
-                    //PartionID: att.PartionID
-                  },
-                  remove: function () {
-                    var me = this;
-                    api.earthwork.earthwork.DeleteFile(me.file.Id).then(function (r) {
-                      uploader.queue.splice(uploader.queue.indexOf(me), 1);
-                    });
-                  },
-                  save: function () {
-                    var me = this;
-                    api.earthwork.earthwork.upLoadImage(data).then(function () {
-                      me.isEditing = false;
-                    })
-                  },
-                  progress: 100,
-                  isServer: true,
-                  isSuccess: true,
-                  isCancel: false,
-                  isError: false,
-                  isReady: false,
-                  isUploading: true,
-                  isUploaded: true,
-                  index: null
-                };
-                scope.setParDes && scope.setParDes(att.PartionID, item);
-                uploader.queue.push(item);
+            if (rid != data.RelationId) {
+              rid = scope.rid = data.RelationId;
+              uploader.url = sxt.app.api + '/api/Eartwork/UpLoadImage/' + rid;
+              angular.forEach(uploader.queue, function (item) {
+                item.url = sxt.app.api + uploader.url
+              });
+            }
+            if (data) {
+              if (angular.isArray(scope.files)) {
+                scope.files = [];
               }
-            })
+              if (angular.isArray(scope.files))
+                scope.files.push(sxt.app.api + data.ImageUrl);
+              var item = {
+                file: {
+                  Id: data.Id,
+                  name: data.ImageName,
+                  //size: att.FileSize,
+                  Url: sxt.app.api + data.ImageUrl,
+                  //UserID: att.UserID,
+                  //Remark: att.Remark,
+                  CreateDate: data.CreateTime
+                  //PartionID: att.PartionID
+                },
+                remove: function () {
+                  var me = this;
+                  api.earthwork.earthwork.DeleteFile(me.file.Id).then(function (r) {
+                    uploader.queue.splice(uploader.queue.indexOf(me), 1);
+                  });
+                },
+                save: function () {
+                  var me = this;
+                  api.earthwork.earthwork.upLoadImage(data).then(function () {
+                    me.isEditing = false;
+                  })
+                },
+                progress: 100,
+                isServer: true,
+                isSuccess: true,
+                isCancel: false,
+                isError: false,
+                isReady: false,
+                isUploading: true,
+                isUploaded: true,
+                index: null
+              };
+              scope.setParDes && scope.setParDes(att.PartionID, item);
+              uploader.queue.push(item);
+            }
           })
         });
       }

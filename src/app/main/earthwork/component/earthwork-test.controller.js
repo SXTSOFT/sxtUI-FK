@@ -16,7 +16,7 @@
   function earthworkTest($scope) {
     var vm = this;
     vm.tf = {};
-    vm.tf.files = ['test.png'];
+    vm.tf.files = ['7d177bcf402e479f925e01704c76f74c'];
     vm.tf.obj = {
 
       CreateDate: "2016-11-21",
@@ -27,7 +27,8 @@
       RegionTreeName: "金鹏测试项目>一期",
       RegionType: 128,
       Status: 4,
-      UserId: null
+      UserId: null,
+      FileId:'7d177bcf402e479f925e01704c76f74c'
     };
     vm.tf.data = [
       {

@@ -7,43 +7,56 @@
   </div>
 </md-toolbar>
 
-<md-content flex  layout-padding>
+<md-content flex layout-padding>
   <div layout="row">
     <md-input-container flex="45" style="padding:0px 15px;">
       <label>项目</label>
       <md-select name="ProjectID" ng-model="vm.project">
-        <md-option ng-repeat="item in vm.ProjectList" ng-value="item.ProjectID" ng-click="vm.makeRegionTreeName(item.ProjectName,null)">{{item.ProjectName}}</md-option>
+        <md-option ng-repeat="item in vm.ProjectList" ng-value="item.ProjectID"
+                   ng-click="vm.makeRegionTreeName(item.ProjectName,null)">{{item.ProjectName}}
+        </md-option>
       </md-select>
     </md-input-container>
     <md-input-container flex="45" style="padding:0px 15px">
       <label>分期</label>
       <md-select name="RegionID" ng-model="vm.Stages">
-        <md-option ng-repeat="item in vm.StagesList" ng-value="item.RegionID" ng-click="vm.makeRegionTreeName(null,item.RegionName)">{{item.RegionName}}</md-option>
+        <md-option ng-repeat="item in vm.StagesList" ng-value="item.RegionID"
+                   ng-click="vm.makeRegionTreeName(null,item.RegionName)">{{item.RegionName}}
+        </md-option>
       </md-select>
     </md-input-container>
   </div>
-  <div style="margin: 0 5px;">
-    <div style="border: 2px solid darkgray;border-radius: 5px; margin: 0px 5px 10px 5px;min-width: 203px; float: left;" ng-repeat="item in vm.lst_html">
-      <input type="text" style="min-width: 110px; width: 114px; height: 35px;padding: 0 10px;" ng-value="item.RegionName" ng-model="item.RegionName" required />
-      <md-button class="md-raised" style="min-width:41px;height:35px;padding: 0;margin:0;border-left: 2px solid darkgray;border-right: 0; margin-right: -2px;" ng-click="vm.save(item)">保存</md-button>
-      <md-button  class="md-raised" style="min-width:41px;height:35px; margin:0;padding: 0;border-left: 2px solid darkgray;border-right: 0;" ng-click="vm.showImg(item)">管理</md-button>
+  <div layout="row" style="margin: 0 5px;">
+    <div style="border: 2px solid darkgray;border-radius: 5px; margin: 0px 5px 10px 5px;min-width: 203px; float: left;"
+         ng-repeat="item in vm.lst_html">
+      <input type="text" style="min-width: 110px; width: 114px; height: 35px;padding: 0 10px;"
+             ng-value="item.RegionName" ng-model="item.RegionName" required/>
+      <md-button class="md-raised"
+                 style="min-width:41px;height:35px;padding: 0;margin:0;border-left: 2px solid darkgray;border-right: 0; margin-right: -2px;"
+                 ng-click="vm.save(item)">保存
+      </md-button>
+      <md-button class="md-raised"
+                 style="min-width:41px;height:35px; margin:0;padding: 0;border-left: 2px solid darkgray;border-right: 0;"
+                 ng-click="vm.zj.obj = item;vm.zj.files = []">管理
+      </md-button>
     </div>
-    <div style="border: 2px solid darkgray;border-radius: 5px; margin: 0px 5px 10px 5px;min-width: 206px;width: 206px;float: left;">
-      <input type="text" ng-model="vm.RegionName" style="min-width: 118px; width: 118px; height: 35px;padding: 0 10px;" required />
-      <md-button class="md-raised" style="min-width: 82px;height:35px;padding: 0;margin:0;border-left: 2px solid darkgray;border-right: 0;;float: right;" ng-click="vm.addRegion()" ng-disabled="vm.project==null || vm.Stages==null">添加</md-button>
+    <div
+      style="border: 2px solid darkgray;border-radius: 5px; margin: 0px 5px 10px 5px;min-width: 206px;width: 206px;float: left;">
+      <input type="text" ng-model="vm.RegionName" style="min-width: 118px; width: 118px; height: 35px;padding: 0 10px;"
+             required/>
+      <md-button class="md-raised"
+                 style="min-width: 82px;height:35px;padding: 0;margin:0;border-left: 2px solid darkgray;border-right: 0;;float: right;"
+                 ng-click="vm.addRegion()" ng-disabled="vm.project==null || vm.Stages==null">添加
+      </md-button>
     </div>
   </div>
-  <div layout="row" style="clear: both;width:100%; height: 500px;"><!--background-color: #DDDDDD;-->
-    <md-content flex layout="column" ms-scroll>
-      <div style="height:500px" is-show="true" popup="tfPopup" sxt-area-zj data="vm.tf"></div>
-      <div ng-hide="true">
-        <div id="tfPopup" class="form-group">
-          <input type="text" style="width: 150px;">
-        </div>
+  <div ng-show="vm.zj.obj.Id">
+    <div style="height:500px;background: #ddd;" is-show="true" popup="zjPopup" sxt-area-zj data="vm.zj"></div>
+    <div ng-hide="true">
+      <div id="zjPopup" class="form-group">
+        <input type="text" style="width: 150px;">
       </div>
-    </md-content>
-  </div>
-  <div layout="row" ng-show="vm.rid">
-    <sxt-images-zj ng-model="vm.rid" single="true" files="vm.files" edit="true"></sxt-images-zj>
+    </div>
+    <sxt-images-tf ng-model="vm.zj.obj.Id" single="true" files="vm.zj.files" edit="true"></sxt-images-tf>
   </div>
 </md-content>

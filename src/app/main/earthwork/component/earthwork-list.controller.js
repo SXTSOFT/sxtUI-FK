@@ -24,31 +24,30 @@
     //vm.files = [];
 
     vm.tf = {};
-    vm.tf.files = ['test.png'];
-    vm.tf.obj = {
-      CreateDate: null,
-      GeoJSON: null,
-      Id: null,
-      RegionName: null,
-      RegionTreeId: null,
-      RegionTreeName: null,
-      RegionType: 0,
-      Status: 0,
-      UserId: null
-    };
-    vm.tf.data = [
-      {
-        Id: null,
-        RegionType: 0,
-        RegionName: null,
-        RegionTreeId: null,
-        RegionTreeName: null,
-        GeoJSON: null,
-        Status: 0,
-        CreateDate: null,
-        UserId: null
-      }
-    ];
+    // vm.tf.obj = {
+    //   CreateDate: null,
+    //   GeoJSON: null,
+    //   Id: null,
+    //   RegionName: null,
+    //   RegionTreeId: null,
+    //   RegionTreeName: null,
+    //   RegionType: 0,
+    //   Status: 0,
+    //   UserId: null
+    // };
+    // vm.tf.data = [
+    //   {
+    //     Id: null,
+    //     RegionType: 0,
+    //     RegionName: null,
+    //     RegionTreeId: null,
+    //     RegionTreeName: null,
+    //     GeoJSON: null,
+    //     Status: 0,
+    //     CreateDate: null,
+    //     UserId: null
+    //   }
+    // ];
 
     api.xhsc.Project.getMap().then(function (r) {
       vm.ProjectList = r.data||[];
@@ -75,6 +74,7 @@
       api.earthwork.earthwork.getEarthworkByRegionTreeId({regionTreeId:vm.RegionTreeId}).then(function (r) {
         if(r.data && r.data.length>0){
           vm.lst_html = r.data;
+          console.log(vm.lst_html)
         }
       });
     }
@@ -115,9 +115,10 @@
       });
     }
 
-    vm.showImg = function (data) {
-      vm.rid = data.Id;
-      vm.tf.obj = data ? data : [];
-    }
+    // vm.showImg = function (data) {
+    //   vm.rid = data.Id;
+    //   vm.tf.obj = data ? data : [];
+    //   vm.tf.files.push(data.FileId);
+    // }
   }
 })(angular, undefined);
