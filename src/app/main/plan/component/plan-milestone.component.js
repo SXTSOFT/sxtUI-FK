@@ -20,4 +20,4 @@
       vm.data = r.data;
     })
   }
-})(angular,undefined)
+})(angular,undefined);
