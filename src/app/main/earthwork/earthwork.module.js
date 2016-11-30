@@ -19,10 +19,10 @@
         },
         abstract: true
       })
-      .state('app.earthwork.test',{
-        url:'/test',
-        template:'<earthwork-test flex layout="column"></earthwork-test>'
-      })
+      // .state('app.earthwork.test',{
+      //   url:'/test',
+      //   template:'<earthwork-test flex layout="column"></earthwork-test>'
+      // })
     .state('app.earthwork.list', {
       url:'/list',
       template:'<earthwork-list flex layout="column"></earthwork-list>'
@@ -33,12 +33,12 @@
       weight: 2
     });
 
-    msNavigationServiceProvider.saveItem('earthwork.test', {
-      title: '画图测试',
-      icon: 'icon-calendar-text',
-      state: 'app.earthwork.test',
-      weight: 1
-    });
+    // msNavigationServiceProvider.saveItem('earthwork.test', {
+    //   title: '画图测试',
+    //   icon: 'icon-calendar-text',
+    //   state: 'app.earthwork.test',
+    //   weight: 1
+    // });
 
 
     msNavigationServiceProvider.saveItem('earthwork.earthwork', {
