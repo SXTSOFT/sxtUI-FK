@@ -9,10 +9,10 @@
 
   angular
     .module('app.xhsc')
-    .controller('sfDynamicRectifyController', sfDynamicRectifyController);
+    .controller('cycleLookRectifyController', cycleLookRectifyController);
 
   /** @ngInject */
-  function sfDynamicRectifyController($state, $rootScope, $scope, $mdDialog, remote, $timeout, $q, utils, xhUtils, api) {
+  function cycleLookRectifyController($state, $rootScope, $scope, $mdDialog, remote, $timeout, $q, utils, xhUtils, api) {
     var vm = this;
     $rootScope.title = $state.params.Role == 'zb' ? '整改' : '复验';
     vm.ProjectID = $state.params.ProjectID;
@@ -59,7 +59,7 @@
         };
 
         utils.alert('提交成功，请离线上传数据',null,function () {
-          $state.go("app.xhsc.sf.sfDynamicMain");
+          $state.go("app.xhsc.xj.main");
         });
       });
 

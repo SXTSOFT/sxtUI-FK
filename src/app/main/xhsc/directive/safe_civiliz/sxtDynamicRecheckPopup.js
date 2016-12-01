@@ -1,5 +1,11 @@
 /**
- * Created by shaoshun on 2016/11/24.
+ * Created by shaoshun on 2016/11/29.
+ */
+/**
+ * Created by shaoshun on 2016/11/29.
+ */
+/**
+ * Created by lss on 2016/10/24.
  */
 /**
  * Created by jiuyuong on 2016/4/13.
@@ -8,9 +14,9 @@
   'use strict';
   angular
     .module('app.xhsc')
-    .directive('sxtSafeRecheckPopup',sxtSafeRecheckPopup);
+    .directive('sxtDynamicRecheckPopup',sxtDynamicRecheckPopup);
   /** @ngInject */
-  function sxtSafeRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote,$q,utils){
+  function sxtDynamicRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote){
     return {
       restrict:'E',
       scope:{
@@ -18,7 +24,7 @@
         slideRole:'=',
         warter:"="
       },
-      templateUrl:'app/main/xhsc/directive/safe_civiliz/sxtSafeRecheckPopup.html',
+      templateUrl:'app/main/xhsc/directive/safe_civiliz/sxtDynamicRecheckPopup.html',
       link:link
     }
 
@@ -31,7 +37,7 @@
       scope.apply = function(){
         //console.log('scope',scope)
         remote.safe.problemRecordQuery(scope.data.value.CheckpointID).then(function(r){
-           scope.images={
+          scope.images={
             zb:[],
             jl:[]
           }
@@ -143,10 +149,10 @@
         function convert(status) {
           switch (status){
             case 8:
-                  return 1;
+              return 1;
             case 16:
             case 4:
-                  return 8;
+              return 8;
           }
           return status;
         }
@@ -203,12 +209,12 @@
         }
 
       })
-      mapPopupSerivce.set('sxtSafeRecheckPopup',{
+      mapPopupSerivce.set('dynamicRecheck',{
         el:element,
         scope:scope
       });
       scope.$on('$destroy',function(){
-        mapPopupSerivce.remove('sxtSafeRecheckPopup');
+        mapPopupSerivce.remove('dynamicRecheck');
         $(element).remove();
       });
     }

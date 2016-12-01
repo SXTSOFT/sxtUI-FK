@@ -8,16 +8,16 @@
   'use strict';
   angular
     .module('app.xhsc')
-    .directive('sxtWeekAcceptPopup',sxtWeekAcceptPopup);
+    .directive('xjAcceptPopup',xjAcceptPopup);
   /** @ngInject */
-  function sxtWeekAcceptPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote){
+  function xjAcceptPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote){
     return {
       restrict:'E',
       scope:{
         readonly:'=',
         warter:"="
       },
-      templateUrl:'app/main/xhsc/directive/safe_civiliz/sxtWeekAcceptPopup.html',
+      templateUrl:'app/main/xhsc/directive/xj/xjAcceptPopup.html',
       link:link
     }
 
@@ -93,12 +93,12 @@
           }
         });
       }
-      mapPopupSerivce.set('weekAcceptPopup',{
+      mapPopupSerivce.set('xjAcceptPopup',{
         el:element,
         scope:scope
       });
       scope.$on('$destroy',function(){
-        mapPopupSerivce.remove('weekAcceptPopup');
+        mapPopupSerivce.remove('xjAcceptPopup');
         $(element).remove();
       });
     }

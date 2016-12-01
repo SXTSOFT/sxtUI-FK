@@ -12,10 +12,10 @@
 
   angular
     .module('app.xhsc')
-    .controller('sfDynamicAcceptController',sfDynamicAcceptController);
+    .controller('cycleLookAcceptController',cycleLookAcceptController);
 
   /**@ngInject*/
-  function sfDynamicAcceptController($scope,$stateParams,remote,xhUtils,$rootScope,$state,$q,utils,api){
+  function cycleLookAcceptController($scope,$stateParams,remote,xhUtils,$rootScope,$state,$q,utils,api){
     var vm = this;
     var acceptanceItemID = $stateParams.acceptanceItemID,
       acceptanceItemName =  $stateParams.acceptanceItemName,
@@ -55,7 +55,7 @@
         return;
       };
       utils.alert("提交成功，请离线上传数据！",null,function () {
-        $state.go('app.xhsc.sf.sfDynamicMain')
+        $state.go('app.xhsc.xj.main')
       });
       // $state.go('app.xhsc.sf.sfproblem',{acceptanceItemName:acceptanceItemName,acceptanceItemID:acceptanceItemID,name:vm.RegionFullName,areaId:areaId,projectId:projectId,InspectionId:vm.InspectionId})
     })

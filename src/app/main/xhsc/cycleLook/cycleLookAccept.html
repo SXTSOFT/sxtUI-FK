@@ -1,0 +1,24 @@
+<div flex="none" style="position: relative;" class="downcaret">
+  <div layout="row" flex style="height:48px;border-bottom: 1px solid #d8d8d8;position: relative;z-index: 10;background: rgb(245,245,245);">
+    <p ng-click="vm.qyslide()" style="font-size:14px;padding:0 10px;text-align: center;margin: 0;height:48px;line-height:48px;width:100%;margin-left:auto;margin-right:auto;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+      {{vm.info.selected.RegionName}} <span class="caret"></span>
+    </p>
+  </div>
+  <div flex layout="row" class="gxtest qyslide" ng-class="{'qydown':vm.qyslideShow}">
+    <md-list layout="column" flex class="gxplist">
+      <md-list-item flex ng-repeat="p in vm.btBatch">
+        <p ng-click="vm.selectQy(p)">{{p.RegionName}}</p>
+      </md-list-item>
+    </md-list>
+  </div>
+</div>
+<div class="mapcheck" layout="column" flex xj-accept="vm.info.current" inspection-id="vm.InspectionId" inspection-area-id="vm.info.selected.InspectionAreaID"
+     procedure="vm.info.acceptanceItemID" ct="vm.info" region-id="vm.info.selected.AreaID">
+  <div flex layout="row" layout-align="center center" ng-if="vm.info.loading"><md-progress-circular md-mode="indeterminate"  md-diameter="28"></md-progress-circular></div>
+  <div style="position: absolute;z-index: 79;bottom: 0px;right: 0px" ng-show="vm.info.current"><md-button class="md-fab md-mini md-green" fast-click="vm.cancelCurrent($event)"><md-icon md-font-icon="icon-undo-variant"></md-icon></md-button></div>
+</div>
+<md-divider></md-divider>
+<safe-slide-menu flex="none" style="height: 195px" layout="column" slide-data="vm.procedureData" current="vm.info.current" show-check="true"  level="2"></safe-slide-menu>
+<div style="display: none">
+  <xj-accept-popup warter="vm.water"></xj-accept-popup>
+</div>

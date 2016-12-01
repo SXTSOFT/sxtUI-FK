@@ -7,9 +7,9 @@
 (function () {
   angular
     .module('app.xhsc')
-    .directive('sxtWeekRecheck',sxtWeekRecheck);
+    .directive('xjRecheck',xjRecheck);
   /** @ngInject */
-  function sxtWeekRecheck($timeout,remote,mapPopupSerivce,sxt,utils,$q,$window,xhUtils) {
+  function xjRecheck($timeout,remote,mapPopupSerivce,sxt,utils,$q,$window,xhUtils) {
     return {
       scope:{
         item:'=sxtSafeRecheck',
@@ -102,7 +102,7 @@
             onUpdate: function (layer, isNew, group,cb) {
             },
             onPopup: function (layer,cb) {
-              var edit = mapPopupSerivce.get('weekRecheckPopup');
+              var edit = mapPopupSerivce.get('xjRecheckPopup');
               if (edit) {
                 scope.sxtMapShow = true;
                 edit.scope.context = fg;
