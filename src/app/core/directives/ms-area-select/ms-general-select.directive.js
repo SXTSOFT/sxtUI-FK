@@ -13,12 +13,13 @@
     .directive('msGenSelect', msGenSelect);
 
   /** @ngInject */
-  function msGenSelect() {
+  function msGenSelect($rootScope) {
     return {
       restrict: 'E',
       scope: {
         areas: '=',
-        procedure: "="
+        procedure: "=",
+        current:"="
       },
       templateUrl: 'app/core/directives/ms-area-select/ms-general-select.html',
       controller: 'msGenSelectController',
@@ -73,7 +74,11 @@
         $scope.selectedRegion=function (item,siblings) {
           $scope.setActive(item,siblings);
           if (item.RegionID=="no"||item.RegionID.length>10){
-            $scope.toggle('part');
+            if (!$scope.current||!$scope.current.procedure){
+              $scope.toggle('procedure');
+            }else {
+              $scope.toggle('part');
+            }
           }else {
             $scope.toggle('region');
           }
@@ -82,7 +87,11 @@
         }
         $scope.selectedProcedure=function (item,siblings) {
           $scope.setActive(item,siblings);
-          $scope.toggle('procedure');
+          if (!$scope.current||!$scope.current.region){
+            $scope.toggle('part');
+          }else {
+            $scope.toggle('procedure');
+          }
           $scope.current=$scope.current?$scope.current:{};
           $scope.current.procedure=item;
         }
@@ -95,32 +104,43 @@
           }
           $scope.source.wpAcceptanceList=item.WPAcceptanceList
         }
+
+        $scope.$watch("areas",function (v,o) {
+            if (!v){
+               return;
+            }
+            v.then(function (r) {
+              $scope.source.areasData=r
+              $scope.loaded = true;
+              $rootScope.$emit("msGenSelect_loaded");
+              $scope.setRegion($scope.source.areasData[0]);
+              $scope.status={
+                region:true,
+                part:false,
+                procedure:false
+              };
+            }).catch(function () {
+              $scope.loaded = true;
+            });
+
+        })
+        $scope.$watch("procedure",function (v,o) {
+          if (!v){
+            return;
+          }
+          v.then(function (r) {
+            $scope.source.procedureData=r.data;
+            if ($scope.source.procedureData.length){
+              $scope.setProcedure($scope.source.procedureData[0],$scope.source.procedureData);
+            }
+          })
+        })
       }
     };
   }
 
-  function msGenSelectController($scope, remote, xhscService, $q, $rootScope) {
-    var areasPro = $scope.areas ? $scope.areas : xhscService.getRegionTreeOffline("", 31, 1);
-    var procedurePro = $scope.procedure ? $scope.procedure : remote.safe.getSecurityItem();
-    $q.all([areasPro, procedurePro]).then(function (res) {
-      $scope.loaded = true;
-      $rootScope.$emit("msGenSelect_loaded");
-      $scope.source = {
-        areasData: res[0],
-        procedureData: res[1].data
-      }
-      $scope.setRegion($scope.source.areasData[0]);
-      if ($scope.source.procedureData.length){
-        $scope.setProcedure($scope.source.procedureData[0],$scope.source.procedureData);
-      }
-      $scope.status={
-        region:true,
-        part:false,
-        procedure:false
-      };
-    }).catch(function () {
-      $scope.loaded = true;
-    });
+  function msGenSelectController($scope, remote, xhscService, $q) {
+    $scope.source={};
     $scope.setActive=function (area,siblings) {
       function setChild(t) {
         if (t.Children){

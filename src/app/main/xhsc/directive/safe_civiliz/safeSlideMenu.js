@@ -17,14 +17,7 @@
       scope:{
         slideData:'=',
         showCheck:'=',
-        halfHeight:'=',
-        level:'=',
-        projectId:'=',
-        areaId:'=',
-        current:'=',
-        isSC:'=', //是否为实测项
-        role:'=',
-        assessmentId:'='
+        current:'='
       },
       templateUrl:'app/main/xhsc/directive/safe_civiliz/safeSlideMenu.html',
       link:link
@@ -51,37 +44,12 @@
           scope.selectProcedure(scope.slideData[0].SpecialtyChildren[0]);
       })
 
-      scope.changeOrclick = function(item){
-        if(item.checked){
-          scope.current = null;
-        }
-        else{
-          scope.gxlevels.forEach(function (it) {
-            if(item!==it)
-              it.checked = false;
-          });
-          scope.current = item;
-        }
-      }
       scope.$watch('info.current',function () {
         scope.current = scope.info.current;
       });
       scope.$watch('current',function () {
         scope.info.current = scope.current;
       });
-      scope.goToLink = function (item) {
-        if(!scope.showCheck){
-          if (scope.isSC){
-            var tmp= {assessmentID:scope.assessmentId,role:scope.role,acceptanceItemID:item.AcceptanceItemID , projectId: scope.projectId, acceptanceItemName:item.AcceptanceItemName, maxRegion: item.maxRegion}
-            $state.go('app.xhsc.scsl.scRegion',tmp);
-          }else if (scope.role){
-            $state.go('app.xhsc.gx.gxhousechoose',{role:scope.role,acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId,maxRegion:item.maxRegion})
-          }else {
-            $state.go('app.xhsc.gx.zjhouseChoose',{acceptanceItemID:item.AcceptanceItemID,projectId:scope.projectId,acceptanceItemName:item.AcceptanceItemName,areaId:scope.areaId,maxRegion:item.maxRegion})
-          }
-        }else{
-        }
-      }
     }
   }
 })();

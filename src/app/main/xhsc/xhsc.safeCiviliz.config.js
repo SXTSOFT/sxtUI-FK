@@ -162,7 +162,7 @@
         rightArrow: false,
         leftArrow: false,
         title: '周安全检查',
-        url: '/ sfWeekAccept/{InspectionId}/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}/{areaId}',
+        url: '/ sfWeekAccept/{InspectionId}/{projectId}/{areaId}',
         templateUrl: 'app/main/xhsc/safeCiviliz/sfWeekAccept.html',
         controller: 'sfWeekAcceptController as vm'
       })

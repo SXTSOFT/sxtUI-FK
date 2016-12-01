@@ -15,11 +15,11 @@
   function sxtWeekAccept($timeout,remote,mapPopupSerivce,sxt,utils,$window,xhUtils) {
     return {
       scope:{
-        item:'=sxtMapAccept',
+        item:'=sxtWeekAccept',
         procedure:'=',
         regionId:'=',
         inspectionId:'=',
-        inspectionAreaId:"=",
+        // inspectionAreaId:"=",
         ct:'=',
         disableInspect:'@',
         disableDrag:'@'
@@ -127,7 +127,7 @@
             },
             onPopupClose: function (cb) {
               var self = this;
-              var edit = mapPopupSerivce.get('mapAcceptPopup'),
+              var edit = mapPopupSerivce.get('weekAcceptPopup'),
                 scope = edit.scope;
               if(scope.data && scope.isSaveData!==false){
                 scope.isSaveData = false;
@@ -195,7 +195,14 @@
             }
           });
           $timeout(function () {
-            remote.Project.getDrawingRelations(scope.regionId).then(function (result) {
+            if(scope.asyn){
+              return;
+            }
+            scope.asyn=true;
+            var areaID=scope.regionId.substr(0,10);
+            remote.safe.getDrawingRelate.cfgSet({
+              offline: true
+            })("WeekInspects",areaID).then(function (result) {
               var imgId = result.data.find(function (item) {
                 return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
               });
@@ -206,6 +213,7 @@
               }
               if (imgId) {
                 remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
+                  scope.asyn=false;
                   if(!result2.data.DrawingContent){
                     scope.ct && (scope.ct.loading = false);
                     utils.alert('未找到图纸,请与管理员联系!(2)');
@@ -213,34 +221,47 @@
                   }
                   map.loadSvgXml(result2.data.DrawingContent);
                   map.map.addControl(fg);
-                  var btn = $('<div class="mapboxgl-ctrl-group mapboxgl-ctrl"><button class="mapboxgl-ctrl-icon links"  title="其它图纸"></button></div>');
-                  btn.click(function () {
-                    var mapList = [];
-                    result.data.forEach(function (item) {
-                      if(item.RegionId == scope.regionId && item.DrawingID!=imgId.DrawingID && !mapList.find(function (f) {
-                          return f.DrawingID==item.DrawingID
-                        })){
-                        mapList.push(item);
-                      }
-                    });
-
-                    xhUtils.openLinks(mapList);
-                  });
-                  element.find('.mapboxgl-ctrl-bottom-left').append(btn);
-
+                  // var btn = $('<div class="mapboxgl-ctrl-group mapboxgl-ctrl"><button class="mapboxgl-ctrl-icon links"  title="其它图纸"></button></div>');
+                  // btn.click(function () {
+                  //   var mapList = [];
+                  //   result.data.forEach(function (item) {
+                  //     if(item.RegionId == scope.regionId && item.DrawingID!=imgId.DrawingID && !mapList.find(function (f) {
+                  //         return f.DrawingID==item.DrawingID
+                  //       })){
+                  //       mapList.push(item);
+                  //     }
+                  //   });
+                  //
+                  //   xhUtils.openLinks(mapList);
+                  // });
+                  // element.find('.mapboxgl-ctrl-bottom-left').append(btn);
+                }).catch(function () {
+                  scope.asyn=false;
                 })
               }
               else{
+                scope.asyn=false;
                 scope.ct && (scope.ct.loading = false);
                 utils.alert('未找到图纸,请与管理员联系!(1)')
                 return;
               }
+            }).catch(function () {
+              scope.asyn=false;
             });
           }, 0);
         }
       };
       $timeout(function () {
         scope.$watch('regionId', function () {
+          if(scope.regionId && scope.procedure) {
+            if(map){
+              map.remove();
+              map = null;
+            }
+            install();
+          }
+        });
+        scope.$watch('procedure', function () {
           if(scope.regionId && scope.procedure) {
             if(map){
               map.remove();

@@ -1752,11 +1752,20 @@
         }),
         //获取安全验收项
         getSecurityItem: $http.wrap({
-          _id: "safeItems",
+          db: function (identity) {
+            if (identity){
+              return "securityItem"+identity;
+            }
+            return "safeItems";
+          },
           idField: 'SpecialtyID',
           dataType: 1,
-          fn: function () {
-            return $http.get($http.url('/api/Acceptances/SecurityItem'));
+          fn: function (identity) {
+            var url="/api/Acceptances/SecurityItem";
+            if (identity){
+              url="/api/"+identity+"/SecurityItem";
+            }
+            return $http.get($http.url(url));
           }
         }),
         //安全验收上传
@@ -1773,6 +1782,46 @@
             return $http.get($http.url('/api/Acceptances/SecurityInfo/GetUserSecurityInfo', {
               RegionID: RegionID
             }));
+          }
+        }),
+        //插入动态安全源，周安全检查，巡检批次
+        //WeekInspects:周安全检查
+        insertBatchWrap:$http.wrap({
+          fn: function (receipt,identity) {
+            return $http.post($http.url('/api/'+identity+'/SecurityInfoExtend/insert'), receipt);
+          }
+        }),
+        getBatchWrap:$http.wrap({
+          offline: true,
+          db:function (identity) {
+            return "securityInfo"+ identity;
+          },
+          idField:"InspectionID",
+          dataType: 1,
+          fn: function (identity,receipt) {
+            return $http.get($http.url('/api/'+identity+'/SecurityInfoExtend/GetList'));
+          }
+        }),
+        getDrawingRelate:$http.wrap({
+          db:function (identity) {
+            return "relate"+ identity;
+          },
+          callback:function (result) {
+            return {
+              data: result.data.Relations
+            }
+          },
+          idField:"ProjectID",
+          dataType:3,
+          fn:function (identity,areaId){
+            return $http.get($http.url('/api/'+identity+'/SecurityItem/DrawingRelation/'+areaId+'/areaId')).then(function (result) {
+              return {
+                data: {
+                  ProjectID: areaId,
+                  Relations: result.data
+                }
+              }
+            });
           }
         })
       }

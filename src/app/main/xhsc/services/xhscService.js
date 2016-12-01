@@ -89,7 +89,7 @@
           });
         });
       },
-      downloadPics: function (regionID, db, filter) {
+      downloadPics: function (regionID, db, filter,relates) {
         return $q(function (resolve, reject) {
           var tasks = [];
           if (!filter) {
@@ -97,7 +97,10 @@
               return true;
             }
           }
-          remote.Project.getDrawingRelations(regionID, db).then(function (result) {
+          if (!relates){
+            relates=remote.Project.getDrawingRelations(regionID, db);
+          }
+          relates.then(function (result) {
             var pics = [];
 
             function isDownload(drawingID) { //图片是否已经下载

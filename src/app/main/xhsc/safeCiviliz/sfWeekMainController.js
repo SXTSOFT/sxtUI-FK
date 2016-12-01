@@ -15,25 +15,31 @@
     .controller('sfWeekMainController', sfWeekMainController);
 
   /** @ngInject */
-  function sfWeekMainController(xhscService,$mdDialog,api,$scope,$q,remote,$state) {
+  function sfWeekMainController(xhscService,$mdDialog,api,$scope,$q,remote,$state,sxt,utils,$mdBottomSheet) {
     var vm = this;
     vm.procedure = [];
     vm.create=function () {
       $mdDialog.show({
         controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
           $scope.ok=function () {
-            $mdDialog.hide();
+            remote.safe.insertBatchWrap({
+              InspectionID: sxt.uuid(),
+              AreaID: $scope.currentArea.RegionID,
+              Title: $scope.subject,
+            },"WeekInspects").then(function (r) {
+              $mdDialog.hide(r);
+            }).catch(function () {
+              $mdDialog.hide();
+            })
           }
           $scope.cancel=function () {
             $mdDialog.cancel();
           }
-
           function getYearWeek(date){
             var date=date.getDate();
             var week= Math.ceil(date/7);
             return week;
           }
-
           function initTheme() {
             var projectName=$scope.currentProject?$scope.currentProject.RegionName:"";
             var area=$scope.currentArea?$scope.currentArea.RegionName:"";
@@ -55,7 +61,6 @@
                 $scope.currentArea=$scope.currentProject.Children[0];
               }
             }
-            // initTheme();
           })
 
           $scope.$watch("currentProject",function () {
@@ -64,33 +69,17 @@
           $scope.$watch("currentArea",function () {
             initTheme();
           })
-
-
-
-
-          // function getTheme() {
-          //     var date=new Date();
-          //     var year=date.getFullYear();
-          //     var month=date.getMonth()+1;
-          //     var week=getYearWeek(date);
-          //     return  year+"年"+month+"月"+"第"+week+"周安全验收";
-          // }
-          // $scope.subject=getTheme();
-          // xhscService.getRegionTreeOffline("",3,1).then(function (r) {
-          //    $scope.projects=r;
-          //    if(angular.isArray($scope.projects)&&$scope.projects.length){
-          //      $scope.currentProject=$scope.projects[0];
-          //      if ($scope.currentProject.Children.length){
-          //        $scope.currentArea=$scope.currentProject.Children[0];
-          //      }
-          //    }
-          // })
         }],
         templateUrl: 'app/main/xhsc/safeCiviliz/safe_civiliz_createTemplate.html',
         parent: angular.element(document.body),
         clickOutsideToClose: true,
         fullscreen: false
-      }).then(function () {
+      }).then(function (r) {
+        if (r&&r.Status==200){
+          loadInspection();
+        }else{
+          utils("服务端发成错误，插入失败!");
+        }
       });
     }
     xhscService.getProfile().then(function (profile) {
@@ -101,7 +90,7 @@
       function () {
         return remote.safe.getSecurityItem.cfgSet({
           offline: true
-        })().then(function (r) {
+        })("WeekInspects").then(function (r) {
           if (r.data && r.data.length) {
             r.data.forEach(function (k) {
               if (k.SpecialtyChildren.length) {
@@ -117,22 +106,26 @@
         });
       }
     ];
-    function projectTask(regionID, areas, acceptanceItemID) {
+    function projectTask(regionID, areas, acceptanceItemID,_filter) {
       var projectId = regionID.substr(0, 5);
-
-      function filter(item) {
-        return (!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
-          (!areas || areas.find(function (a) {
-            return a.AreaID == item.RegionId;
-          })) && vm.procedure.find(function (k) {
-            return k.AcceptanceItemID == item.AcceptanceItemID;
-          })
+      var filter=_filter;
+      if (!filter){
+        filter=  function filter(item) {
+          return (!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
+            (!areas || areas.find(function (a) {
+              return a.AreaID == item.RegionId;
+            })) && vm.procedure.find(function (k) {
+              return k.AcceptanceItemID == item.AcceptanceItemID;
+            })
+        }
       }
-
+      var relates=remote.safe.getDrawingRelate.cfgSet({
+        offline: true
+      })("WeekInspects",regionID)
       return [
         function (tasks) {
           return $q(function (resolve, reject) {
-            return xhscService.downloadPics(regionID, null, filter).then(function (t) {
+            return xhscService.downloadPics(regionID, null, filter,relates).then(function (t) {
               t.forEach(function (m) {
                 tasks.push(m);
               })
@@ -179,6 +172,67 @@
         }
       ]
     }
+
+    vm.downloadys = function (item) {
+      return api.setNetwork(0).then(function () {
+        return $q(function (resolve, reject) {
+          $mdDialog.show({
+            controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
+              $scope.item = item;
+              var tasks = [].concat(globalTask)
+                .concat(projectTask(item.AreaID,null,null,function (item) {
+                  return vm.procedure.find(function (k) {
+                    return k.AcceptanceItemID == item.AcceptanceItemID;
+                  })
+                }))
+                .concat([function () {
+                  return xhscService.getRegionTreeOffline("", 31, 1);
+                }])
+                .concat(function () {
+                  return remote.offline.create({Id: 'safeWeek' + item.InspectionID});
+                })
+
+              api.task(tasks, {
+                event: 'downloadweek',
+                target: item.InspectionID
+              })(null, function () {
+                item.percent = item.current = item.total = null;
+                item.isOffline = true;
+                $mdDialog.hide();
+                utils.alert('下载完成');
+                resolve();
+              }, function () {
+                $mdDialog.cancel();
+                utils.alert('下载失败,请检查网络');
+                item.percent = item.current = item.total = null;
+                reject();
+              }, {timeout: 300000})
+            }],
+            template: '<md-dialog aria-label="正在下载"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular><p style="padding-left: 6px;">正在下载： {{item.AcceptanceItemName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+            parent: angular.element(document.body),
+            clickOutsideToClose: false,
+            fullscreen: false
+          });
+        })
+      });
+    }
+    api.event('downloadweek', function (s, e) {
+      var current = vm.Inspections && vm.Inspections.find(function (item) {
+          return item.InspectionID == e.target;
+        });
+      if (current) {
+        switch (e.event) {
+          case 'progress':
+            current.percent = parseInt(e.percent * 100) + ' %';
+            current.current = e.current;
+            current.total = e.total;
+            break;
+          case 'success':
+            current.isOffline = true;
+            break;
+        }
+      }
+    }, $scope);
 
     vm.downloadzg = function (item) {
       return $q(function (resolve, reject) {
@@ -362,69 +416,59 @@
         });
       });
     }
+
+
+
+    function loadInspection() {
+     return remote.safe.getBatchWrap("WeekInspects").then(function (r) {
+        vm.Inspections = [];
+        if (angular.isArray(r.data)) {
+          var ys = [];
+          r.data.forEach(function (o) {
+            ys.push(o);
+          });
+          return remote.offline.query().then(function (r) {
+            if (angular.isArray(r.data)) {
+              ys.forEach(function (k) {
+                if (r.data.find(function (m) {
+                    return m.Id == "safeWeek" + k.InspectionID;
+                  })) {
+                  k.isOffline = true;
+                }
+              })
+            }
+            vm.Inspections = ys;
+          })
+        }
+      });
+    }
+    function loadZgLst() {
+      return remote.safe.getRectifications().then(function (r) {
+          vm.zglist = [];
+          if (angular.isArray(r.data)) {
+            var zg = [];
+            r.data.forEach(function (o) {
+              zg.push(o);
+            });
+            return remote.offline.query().then(function (r) {
+              if (angular.isArray(r.data)) {
+                zg.forEach(function (k) {
+                  if (r.data.find(function (m) {
+                      return m.Id == "safeZg" + k.RectificationID;
+                    })) {
+                    k.isOffline = true;
+                  }
+                })
+              }
+              vm.zglist = zg;
+            })
+          }
+      })
+    }
     function load() {
       $q.all([
-        remote.safe.getSafeInspections().then(function (r) {
-          $q(function (resolve, reject) {
-            vm.Inspections = [];
-            if (angular.isArray(r.data)) {
-              var ys = [];
-              r.data.forEach(function (o) {
-                ys.push(o);
-              });
-              remote.offline.query().then(function (r) {
-                if (angular.isArray(r.data)) {
-                  ys.forEach(function (k) {
-                    if (r.data.find(function (m) {
-                        return m.Id == "safeYs" + k.InspectionId;
-                      })) {
-                      k.isOffline = true;
-                    }
-                  })
-                }
-                vm.Inspections = ys;
-                if (vm.yw == 16 && !vm.Inspections.length) {
-                  utils.alert("暂时没有找到数据");
-                }
-                resolve();
-              }).catch(function () {
-                resolve();
-              });
-            } else {
-              resolve();
-            }
-          });
-        }),
-        remote.safe.getRectifications().then(function (r) {
-          return $q(function (resolve, reject) {
-            vm.zglist = [];
-            if (angular.isArray(r.data)) {
-              var zg = [];
-              r.data.forEach(function (o) {
-                zg.push(o);
-              });
-              remote.offline.query().then(function (r) {
-                if (angular.isArray(r.data)) {
-                  zg.forEach(function (k) {
-                    if (r.data.find(function (m) {
-                        return m.Id == "safeZg" + k.RectificationID;
-                      })) {
-                      k.isOffline = true;
-                    }
-                  })
-                }
-                vm.zglist = zg;
-                resolve();
-              }).catch(function () {
-                resolve();
-              });
-            }
-            else {
-              resolve();
-            }
-          })
-
-        })
+        loadInspection(),
+        loadZgLst()
       ]).then(function () {
         vm.isOver = true;
       });
@@ -541,24 +585,18 @@
         vm.downloadys(item).then(function () {
           api.setNetwork(1).then(function () {
             $state.go('app.xhsc.week.sfWeekAccept', {
-              acceptanceItemID: item.AcceptanceItemID,
-              acceptanceItemName: item.AcceptanceItemName,
-              name: item.Children[0].newName,
               projectId: item.ProjectID,
-              areaId: item.Children[0].AreaID,
-              InspectionId: item.InspectionId
+              areaId: item.AreaID,
+              InspectionId: item.InspectionID
             })
           });
         })
       } else {
         api.setNetwork(1).then(function () {
           $state.go('app.xhsc.week.sfWeekAccept', {
-            acceptanceItemID: item.AcceptanceItemID,
-            acceptanceItemName: item.AcceptanceItemName,
-            name: item.Children[0].newName,
             projectId: item.ProjectID,
-            areaId: item.Children[0].AreaID,
-            InspectionId: item.InspectionId
+            areaId: item.AreaID,
+            InspectionId: item.InspectionID
           })
         });
       }
