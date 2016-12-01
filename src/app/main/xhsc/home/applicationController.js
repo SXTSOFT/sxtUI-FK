@@ -60,6 +60,11 @@
           img: "app/main/xhsc/images/zbzj.png",
           state: "app.xhsc.download",
           stateParams: null
+        }, {
+          title: "安全验房",
+          img: "app/main/xhsc/images/zbzj.png",
+          state: "app.xhsc.yf.Main",
+          stateParams: null
         }
       ];
 
