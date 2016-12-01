@@ -134,7 +134,7 @@
         id: -1,
         color: '',
         title: '全部',
-        selected: true,
+        selected: true
       }, {
         id: 0,
         color: 'slategrey',

@@ -363,7 +363,12 @@
                         }, function (err) {
                           err = err || {};
                           err.errcode = err.errcode || '080005';
-                          reject(err)
+                          if (confirm('网络发生错误,如果确认网络正常,请继续尝试(080005)？')) {
+                            resolve(row);
+                          }
+                          else {
+                            reject(err);
+                          }
                         });
                       },
                       function (err) {

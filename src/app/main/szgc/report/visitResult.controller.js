@@ -43,7 +43,9 @@
       { project: '九龙山', user: '陶晋', times: 0 },
       { project: '水径', user: '程含涛', times: 0 },
       { project: '壹海城', user: '沈爱民', times: 0 },
-      { project: '公园里', user: '宋细多', times: 0 }
+      { project: '公园里', user: '宋细多', times: 0 },
+      { project: '南科大-崇文花园', user: '朱思波', times: 0 },
+      { project: '南科大-智园D区', user: '殷小华', times: 0 }
     ];
     var r2 = [];
     initData.forEach(function (t,i) {
