@@ -19,7 +19,6 @@
         procedure:'=',
         regionId:'=',
         inspectionId:'=',
-        // inspectionAreaId:"=",
         ct:'=',
         disableInspect:'@',
         disableDrag:'@'
@@ -55,7 +54,7 @@
             onLoad: function (cb) {
               remote.safe.ckPointQuery.cfgSet({
                 filter:function (item,AcceptanceItemID,AreaID,inspectionId){
-                  return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID&&item.InspectionID==inspectionId;
+                  return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID&&item.InspectionExtendID==inspectionId;
                 }
               })(scope.procedure,scope.regionId,scope.inspectionId).then(function (r) {
                 remote.Procedure.InspectionPoint.query(scope.inspectionId,scope.procedure, scope.regionId).then(function (r1) {
@@ -100,8 +99,9 @@
                   return d.PositionID == point.MeasurePointID;
                 })) {
                 var v = {
-                  InspectionID:scope.inspectionId,
-                  InspectionAreaID:scope.inspectionAreaId,
+                  // InspectionID:scope.inspectionId,
+                  // InspectionAreaID:scope.inspectionAreaId,
+                  InspectionExtendID:scope.inspectionId,
                   CheckpointID:sxt.uuid(),
                   IndexPointID:scope.item.ProblemID,
                   AreaID:scope.regionId,

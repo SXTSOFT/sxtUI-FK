@@ -22,7 +22,7 @@
     vm.InspectionID = $state.params.InspectionID;
     vm.RectificationID = $state.params.RectificationID;
     api.setNetwork(1).then(function () {
-      remote.safe.getRectificationSingle(vm.RectificationID).then(function (r) {
+      remote.safe.getRectificationSingle(vm.RectificationID,"WeekInspects").then(function (r) {
         vm.Rectification = r.data[0];
         vm.pareaList = vm.Rectification.Children;
         vm.regionSelect = vm.pareaList[0];

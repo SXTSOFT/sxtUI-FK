@@ -39,6 +39,7 @@
     //项目包
     function projectTask(regionID, areas, acceptanceItemID) {
       var projectId = regionID.substr(0, 5);
+
       function filter(item) {
         return (!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
           (!areas || areas.find(function (a) {
@@ -50,10 +51,11 @@
       var  relates= remote.safe.getDrawingRelate.cfgSet({
         offline: true
       })("Acceptances",regionID)
+
       return [
         function (tasks) {
           return $q(function (resolve, reject) {
-            return xhscService.downloadPics(regionID, null,filter, relates).then(function (t) {
+            return xhscService.downloadPics(regionID, null, relates).then(function (t) {
               t.forEach(function (m) {
                 tasks.push(m);
               })
@@ -278,6 +280,58 @@
                     var InspectionProblemRecordFiles = val.find(function (o) {
                       return o.key == "InspectionProblemRecordFile";
                     });
+                    tasks.push(function () {
+                      function clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points,tasks) {
+                        if (ckpoints && ckpoints.vals) {
+                          ckpoints.vals.forEach(function (m) {
+                            tasks.push(function () {
+                              return  ckpoints.db.delete(m._id);
+                            })
+                          });
+                        }
+                        if (problemRecords && problemRecords.vals) {
+                          problemRecords.vals.forEach(function (m) {
+                            tasks.push(function () {
+                              return  problemRecords.db.delete(m._id);
+                            })
+                          });
+                        }
+                        if (InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals) {
+                          InspectionProblemRecordFiles.vals.forEach(function (m) {
+                            tasks.push(function () {
+                              return  InspectionProblemRecordFiles.db.delete(m._id);
+                            })
+                          });
+                        }
+                        if (points && points.vals){
+                          points.vals.forEach(function (t) {
+                            tasks.push(function () {
+                              return  points.db.delete(t._id)
+                            })
+                          })
+                        }
+                      }
+                      if (points && points.vals) {
+                        points.vals.forEach(function (t) {
+                          if (t.geometry) {
+                            t.Geometry = t.geometry;
+                          }
+                          if (typeof t.Geometry === 'string') {
+                            t.Geometry = JSON.parse(t.Geometry);
+                          }
+                          tasks.push(function () {
+                            return remote.Procedure.InspectionPoint.create(t)
+                          })
+                        });
+                      }
+                      return remote.safe.safeUp({
+                        "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
+                        "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
+                        "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
+                      }).then(function () {
+                        clear(ckpoints,problemRecords,InspectionProblemRecordFiles,tasks);
+                      });
+                    });
                     if (points && points.vals) {
                       points.vals.forEach(function (t) {
                         if (t.geometry) {
@@ -287,35 +341,14 @@
                           t.Geometry = JSON.parse(t.Geometry);
                         }
                         tasks.push(function () {
-                          return remote.Procedure.InspectionPoint.create(t).then(function () {
-                            points.db.delete(t._id);
-                          });
+                          return remote.Procedure.InspectionPoint.create(t)
+                        })
+                        tasks.push(function () {
+                            return  points.db.delete(t._id)
                         })
                       });
                     }
-                    tasks.push(function () {
-                      return remote.safe.safeUp({
-                        "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
-                        "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
-                        "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
-                      }).then(function () {
-                        if (ckpoints && ckpoints.vals) {
-                          ckpoints.vals.forEach(function (m) {
-                            ckpoints.db.delete(m._id);
-                          });
-                        }
-                        if (problemRecords && problemRecords.vals) {
-                          problemRecords.vals.forEach(function (m) {
-                            problemRecords.db.delete(m._id);
-                          });
-                        }
-                        if (InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals) {
-                          InspectionProblemRecordFiles.vals.forEach(function (m) {
-                            InspectionProblemRecordFiles.db.delete(m._id);
-                          });
-                        }
-                      });
-                    })
+
                   }
                   resolve(tasks);
                 })

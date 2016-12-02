@@ -1595,6 +1595,90 @@
         })
       },
       safe: {
+
+        weekPointCreate: $http.wrap({ //创建点
+          offline: true,
+          dataType: 1,
+          mark: "weekUp",
+          _id: "weekPoints",
+          idField: 'CheckpointID',
+          upload: true
+        }),
+        weekPointQuery: $http.wrap({ //查询点
+          offline: true,
+          dataType: 1,
+          _id: "weekPoints",
+          idField: 'CheckpointID'
+        }),
+        weekPointDelete: $http.wrap({ //删除点
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "weekPoints",
+          idField: 'CheckpointID'
+        }),
+        weekproblemRecordCreate: $http.wrap({ //创建记录
+          offline: true,
+          dataType: 1,
+          upload: true,
+          mark: "weekUp",
+          _id: "weekProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        weekproblemRecordQuery: $http.wrap({ //查询记录
+          offline: true,
+          dataType: 1,
+          filter: function (item, CheckpointID) {
+            return item.CheckpointID == CheckpointID;
+          },
+          _id: "weekProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        weekproblemRecordDelete: $http.wrap({// 删除记录
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "weekProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        weekProblemRecordFileCreate: $http.wrap({ //创建文件
+          offline: true,
+          dataType: 1,
+          mark: "weekUp",
+          _id: 'weekInspectionProblemRecordFile',
+          idField: 'ProblemRecordFileID',
+          upload: true
+        }),
+        weekProblemRecordFileQuery: $http.wrap({ //查询文件
+          offline: true,
+          _id: 'weekInspectionProblemRecordFile',
+          idField: function (d) {
+            return d.Id || d.ProblemRecordFileID
+          },
+          fn: function (ProblemRecordFileID) {
+            return $http.get($http.url('/api/Acceptances/SecurityCheckpoint/GetProblemRecordFile/' + ProblemRecordFileID)).then(function (r) {
+              if (r && !angular.isArray(r.data)) {
+                r.data = [r.data];
+                r.data.forEach(function (t) {
+                  t.isUpload = true;
+                })
+              }
+              return r;
+            });
+          },
+          dataType: 1,
+          filter: function (item, ProblemRecordID) {
+            return item.ProblemRecordID == ProblemRecordID;
+          }
+        }),
+        weekProblemRecordFileDelete: $http.wrap({ //删除文件
+          offline: true,
+          dataType: 1,
+          _id: 'weekInspectionProblemRecordFile',
+          idField: 'ProblemRecordFileID',
+          delete: true
+        }),
+
         ckPointCreate: $http.wrap({ //创建点
           offline: true,
           dataType: 1,
@@ -1677,6 +1761,7 @@
           idField: 'ProblemRecordFileID',
           delete: true
         }),
+
         //获取验收批列表
         getSafeInspections: $http.wrap({
           _id: "safeInspections",
@@ -1697,15 +1782,20 @@
             return $http.get($http.url('/api/Acceptances/SecurityInfo/GetSecurityInfo/' + id + '/Id'));
           }
         }),
-
         //获取整改单列表
         getRectifications: $http.wrap({
           offline: true,
-          _id: 'safeRectification',
+          db:function (identity) {
+            return 'safeRectification'+identity?identity:"";
+          },
           idField: 'RectificationID',
           dataType: 1,
-          fn: function () {
-            return $http.get($http.url('/api/Acceptances/SecurityRectification/GetList')).then(function (r) {
+          fn: function (identity) {
+            var url='/api/Acceptances/SecurityRectification/GetList';
+            if (identity){
+              url='/api/'+identity+'/SecurityRectification/GetList';
+            }
+            return $http.get($http.url(url)).then(function (r) {
               var  status=[1,8,64]
               r.data=r.data.filter(function (k) {
                   return status.some(function (z) {
@@ -1718,7 +1808,10 @@
         }),
         getRectificationSingle: $http.wrap({
           offline: true,
-          _id: 'safeRectification',
+          db:function (RectificationID,identity) {
+            return 'safeRectification'+identity?identity:"";
+          },
+          // _id: 'safeRectification',
           idField: 'RectificationID',
           dataType: 1,
           filter: function (item, RectificationID) {
@@ -1727,8 +1820,12 @@
         }),
         //获取整个单相关的所有信息
         getRecPackage: $http.wrap({
-          fn: function (rectificationId) {
-            return $http.get($http.url('/api/Acceptances/SecurityRectification/GetList/' + rectificationId));
+          fn: function (rectificationId,identity) {
+            var url='/api/Acceptances/SecurityRectification/GetList/'+rectificationId;
+            if (identity){
+              url='/api/'+identity+'/SecurityRectification/GetList/'+rectificationId;
+            }
+            return $http.get($http.url(url));
           }
         }),
         //获取检查点与整改单的关系
@@ -1761,10 +1858,7 @@
         //获取安全验收项
         getSecurityItem: $http.wrap({
           db: function (identity) {
-            if (identity){
-              return "securityItem"+identity;
-            }
-            return "safeItems";
+            return "safeItems"+identity?identity:"";
           },
           idField: 'SpecialtyID',
           dataType: 1,
@@ -1777,8 +1871,12 @@
           }
         }),
         //安全验收上传
-        safeUp: function (params) {
-          return $http.post($http.url('/api/Acceptances/SecurityCheckpoint/CheckPointAdapter'), params);
+        safeUp: function (params,identity) {
+          var url='/api/Acceptances/SecurityCheckpoint/CheckPointAdapter';
+          if (identity){
+            url='/api/'+identity+'/SecurityCheckpoint/CheckPointAdapter';
+          }
+          return $http.post($http.url(url), params);
         },
         //创建安全验收批
         createSafeBatch: function (params) {
@@ -1802,7 +1900,7 @@
         getBatchWrap:$http.wrap({
           offline: true,
           db:function (identity) {
-            return "securityInfo"+ identity;
+            return "securityInfo"+ identity?identity:"";
           },
           idField:"InspectionID",
           dataType: 1,
@@ -1812,7 +1910,7 @@
         }),
         getDrawingRelate:$http.wrap({
           db:function (identity) {
-            return "relate"+ identity;
+            return "relate"+ identity?identity:"";
           },
           callback:function (result) {
             return {

@@ -140,7 +140,7 @@
     function rectificationTask(item) {
       return [
         function (tasks) {
-          return remote.safe.getRecPackage(item.RectificationID).then(function (r) {
+          return remote.safe.getRecPackage(item.RectificationID,"WeekInspects").then(function (r) {
             if (r && r.data) {
               var Checkpoints = r.data.Checkpoint; //插入点
               if (angular.isArray(Checkpoints)) {
@@ -199,8 +199,11 @@
                 item.percent = item.current = item.total = null;
                 item.isOffline = true;
                 $mdDialog.hide();
-                utils.alert('下载完成');
-                resolve();
+                utils.alert('下载完成',null,function () {
+                  resolve();
+                }).catch(function () {
+                  reject();
+                });
               }, function () {
                 $mdDialog.cancel();
                 utils.alert('下载失败,请检查网络');
@@ -264,7 +267,7 @@
                   })
                 })
                 .concat(function () {
-                  return remote.offline.create({Id: 'safeZg' + item.RectificationID});
+                  return remote.offline.create({Id: 'weekZg' + item.RectificationID});
                 });
               api.task(tasks, {
                 event: 'downloadzg',
@@ -344,6 +347,58 @@
                     var InspectionProblemRecordFiles = val.find(function (o) {
                       return o.key == "InspectionProblemRecordFile";
                     });
+                    tasks.push(function () {
+                      function clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points,tasks) {
+                        if (ckpoints && ckpoints.vals) {
+                          ckpoints.vals.forEach(function (m) {
+                            tasks.push(function () {
+                              return  ckpoints.db.delete(m._id);
+                            })
+                          });
+                        }
+                        if (problemRecords && problemRecords.vals) {
+                          problemRecords.vals.forEach(function (m) {
+                            tasks.push(function () {
+                              return  problemRecords.db.delete(m._id);
+                            })
+                          });
+                        }
+                        if (InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals) {
+                          InspectionProblemRecordFiles.vals.forEach(function (m) {
+                            tasks.push(function () {
+                              return  InspectionProblemRecordFiles.db.delete(m._id);
+                            })
+                          });
+                        }
+                        if (points && points.vals){
+                          points.vals.forEach(function (t) {
+                            tasks.push(function () {
+                              return  points.db.delete(t._id)
+                            })
+                          })
+                        }
+                      }
+                      if (points && points.vals) {
+                        points.vals.forEach(function (t) {
+                          if (t.geometry) {
+                            t.Geometry = t.geometry;
+                          }
+                          if (typeof t.Geometry === 'string') {
+                            t.Geometry = JSON.parse(t.Geometry);
+                          }
+                          tasks.push(function () {
+                            return remote.Procedure.InspectionPoint.create(t)
+                          })
+                        });
+                      }
+                      return remote.safe.safeUp({
+                        "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
+                        "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
+                        "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
+                      }).then(function () {
+                        clear(ckpoints,problemRecords,InspectionProblemRecordFiles,tasks);
+                      });
+                    });
                     if (points && points.vals) {
                       points.vals.forEach(function (t) {
                         if (t.geometry) {
@@ -353,35 +408,14 @@
                           t.Geometry = JSON.parse(t.Geometry);
                         }
                         tasks.push(function () {
-                          return remote.Procedure.InspectionPoint.create(t).then(function () {
-                            points.db.delete(t._id);
-                          });
+                          return remote.Procedure.InspectionPoint.create(t)
+                        })
+                        tasks.push(function () {
+                          return  points.db.delete(t._id)
                         })
                       });
                     }
-                    tasks.push(function () {
-                      return remote.safe.safeUp({
-                        "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
-                        "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
-                        "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
-                      }).then(function () {
-                        if (ckpoints && ckpoints.vals) {
-                          ckpoints.vals.forEach(function (m) {
-                            ckpoints.db.delete(m._id);
-                          });
-                        }
-                        if (problemRecords && problemRecords.vals) {
-                          problemRecords.vals.forEach(function (m) {
-                            problemRecords.db.delete(m._id);
-                          });
-                        }
-                        if (InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals) {
-                          InspectionProblemRecordFiles.vals.forEach(function (m) {
-                            InspectionProblemRecordFiles.db.delete(m._id);
-                          });
-                        }
-                      });
-                    })
+
                   }
                   resolve(tasks);
                 })
@@ -389,7 +423,6 @@
                 reject(tasks);
               })
             }
-
             buildTask().then(function (tasks) {
               api.task(tasks)(function (percent, current, total) {
                 vm.uploadInfo.percent = parseInt(percent * 100) + ' %';
@@ -417,8 +450,6 @@
       });
     }
 
-
-
     function loadInspection() {
      return remote.safe.getBatchWrap("WeekInspects").then(function (r) {
         vm.Inspections = [];
@@ -443,7 +474,7 @@
       });
     }
     function loadZgLst() {
-      return remote.safe.getRectifications().then(function (r) {
+      return remote.safe.getRectifications("WeekInspects").then(function (r) {
           vm.zglist = [];
           if (angular.isArray(r.data)) {
             var zg = [];
@@ -454,7 +485,7 @@
               if (angular.isArray(r.data)) {
                 zg.forEach(function (k) {
                   if (r.data.find(function (m) {
-                      return m.Id == "safeZg" + k.RectificationID;
+                      return m.Id == "weekZg" + k.RectificationID;
                     })) {
                     k.isOffline = true;
                   }
