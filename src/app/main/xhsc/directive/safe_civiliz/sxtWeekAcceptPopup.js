@@ -31,7 +31,7 @@
       scope.apply = function() {
         scope.isSaveData = null;
         scope.$apply();
-        remote.safe.problemRecordQuery(scope.data.v.CheckpointID).then(function (r) {
+        remote.safe.weekproblemRecordQuery(scope.data.v.CheckpointID).then(function (r) {
           var p = null;
           if (r.data.length) {
             p = r.data[0];
@@ -44,10 +44,10 @@
               DescRole: 'jl'
             };
             p.action="Insert";
-            remote.safe.problemRecordCreate(p);
+            remote.safe.weekproblemRecordCreate(p);
           }
           scope.data.p = p;
-          remote.safe.ProblemRecordFileQuery(p.ProblemRecordID, scope.data.v.PositionID).then(function (r) {
+          remote.safe.weekProblemRecordFileQuery(p.ProblemRecordID, scope.data.v.PositionID).then(function (r) {
             scope.data.images = r.data;
             if (scope.data.v.isNew  && scope.data.images.length == 0) {
               scope.addPhoto(scope.warter);
@@ -88,7 +88,7 @@
               FileContent:image
             };
             img.action="Insert";
-            remote.safe.ProblemRecordFileCreate(img);
+            remote.safe.weekProblemRecordFileCreate(img);
             scope.data.images.push(img);
           }
         });

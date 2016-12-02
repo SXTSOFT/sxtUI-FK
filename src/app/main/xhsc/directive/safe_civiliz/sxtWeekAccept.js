@@ -52,7 +52,7 @@
               cb();
             },
             onLoad: function (cb) {
-              remote.safe.ckPointQuery.cfgSet({
+              remote.safe.weekPointQuery.cfgSet({
                 filter:function (item,AcceptanceItemID,AreaID,inspectionId){
                   return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID&&item.InspectionExtendID==inspectionId;
                 }
@@ -120,7 +120,7 @@
                 v.action="Insert";
                 fg.data.push(v);
                 scope.ct && scope.ct.cancelMode && scope.ct.cancelMode();
-                remote.safe.ckPointCreate(v);
+                remote.safe.weekPointCreate(v);
 
               }
               cb(layer);
@@ -138,7 +138,7 @@
             onUpdateData: function (context, data, editScope) {
               if(data.v.ProblemSortName == 'T'){
                 data.v.action="Insert";
-                remote.safe.ckPointCreate(data.v);
+                remote.safe.weekPointCreate(data.v);
               }
             },
             onDelete: function (layer,cb) {
@@ -150,17 +150,17 @@
                 }),ix = fg.data.indexOf(v);
                 fg.data.splice(ix,1);
                 //删除检查点
-                remote.safe.ckPointDelete({CheckpointID:v.CheckpointID}).then(function () {
+                remote.safe.weekPointDelete({CheckpointID:v.CheckpointID}).then(function () {
                   //删除记录
-                  remote.safe.problemRecordQuery(v.CheckpointID).then(function (k) {
+                  remote.safe.weekproblemRecordQuery(v.CheckpointID).then(function (k) {
                     if (angular.isArray(k.data)){
                       k.data.forEach(function (w) {
                         //删除照片
-                        remote.safe.problemRecordDelete(w).then(function () {
-                          remote.safe.ProblemRecordFileQuery(w.ProblemRecordID).then(function (m) {
+                        remote.safe.weekproblemRecordDelete(w).then(function () {
+                          remote.safe.weekProblemRecordFileQuery(w.ProblemRecordID).then(function (m) {
                             if (angular.isArray(m.data)){
                               m.data.forEach(function (q) {
-                                remote.safe.ProblemRecordFileDelete(q);
+                                remote.safe.weekProblemRecordFileDelete(q);
                               })
                             }
                           })

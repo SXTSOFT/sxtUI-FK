@@ -75,10 +75,10 @@
         clickOutsideToClose: true,
         fullscreen: false
       }).then(function (r) {
-        if (r&&r.Status==200){
+        if (r&&r.status==200){
           loadInspection();
         }else{
-          utils("服务端发成错误，插入失败!");
+          utils.alert("本周已经做过安全检查!");
         }
       });
     }
@@ -146,7 +146,7 @@
               if (angular.isArray(Checkpoints)) {
                 Checkpoints.forEach(function (t) {
                   tasks.push(function () {
-                    return remote.safe.ckPointCreate(t)
+                    return remote.safe.weekPointCreate(t)
                   });
                 });
               }
@@ -155,7 +155,7 @@
                 ProblemRecords.forEach(function (t) {
                   t.isUpload=true;
                   tasks.push(function () {
-                    return remote.safe.problemRecordCreate(t)
+                    return remote.safe.weekproblemRecordCreate(t)
                   });
                 });
               }
@@ -163,7 +163,7 @@
               if (angular.isArray(ProblemRecordFiles)) {
                 ProblemRecordFiles.forEach(function (t) {
                   tasks.push(function () {
-                    return remote.safe.ProblemRecordFileQuery(t.ProblemRecordFileID);
+                    return remote.safe.weekProblemRecordFileQuery(t.ProblemRecordFileID);
                   });
                 });
               }
@@ -332,7 +332,7 @@
               var tasks = [];
               return $q(function (resolve, reject) {
                 api.getUploadData(function (cfg) {
-                  return cfg.mark == "up";
+                  return cfg.mark == "weekUp";
                 }).then(function (val) {
                   if (val && val.length) {
                     var points = val.find(function (o) {
@@ -347,8 +347,22 @@
                     var InspectionProblemRecordFiles = val.find(function (o) {
                       return o.key == "InspectionProblemRecordFile";
                     });
+                    if (points && points.vals) {
+                      points.vals.forEach(function (t) {
+                        if (t.geometry) {
+                          t.Geometry = t.geometry;
+                        }
+                        if (typeof t.Geometry === 'string') {
+                          t.Geometry = JSON.parse(t.Geometry);
+                        }
+                        tasks.push(function () {
+                          return remote.Procedure.InspectionPoint.create(t)
+                        });
+                      });
+                    }
+
                     tasks.push(function () {
-                      function clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points,tasks) {
+                      function clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points) {
                         if (ckpoints && ckpoints.vals) {
                           ckpoints.vals.forEach(function (m) {
                             tasks.push(function () {
@@ -395,27 +409,10 @@
                         "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
                         "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
                         "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
-                      }).then(function () {
-                        clear(ckpoints,problemRecords,InspectionProblemRecordFiles,tasks);
+                      },"WeekInspects").then(function () {
+                        clear(ckpoints,problemRecords,InspectionProblemRecordFiles);
                       });
                     });
-                    if (points && points.vals) {
-                      points.vals.forEach(function (t) {
-                        if (t.geometry) {
-                          t.Geometry = t.geometry;
-                        }
-                        if (typeof t.Geometry === 'string') {
-                          t.Geometry = JSON.parse(t.Geometry);
-                        }
-                        tasks.push(function () {
-                          return remote.Procedure.InspectionPoint.create(t)
-                        })
-                        tasks.push(function () {
-                          return  points.db.delete(t._id)
-                        })
-                      });
-                    }
-
                   }
                   resolve(tasks);
                 })

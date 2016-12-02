@@ -13,7 +13,7 @@
     .module('app.xhsc')
     .directive('sxtWeekRecheckPopup',sxtWeekRecheckPopup);
   /** @ngInject */
-  function sxtWeekRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote){
+  function sxtWeekRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote,$q){
     return {
       restrict:'E',
       scope:{

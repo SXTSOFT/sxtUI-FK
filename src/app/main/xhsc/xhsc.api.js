@@ -1656,7 +1656,7 @@
             return d.Id || d.ProblemRecordFileID
           },
           fn: function (ProblemRecordFileID) {
-            return $http.get($http.url('/api/Acceptances/SecurityCheckpoint/GetProblemRecordFile/' + ProblemRecordFileID)).then(function (r) {
+            return $http.get($http.url('/api/WeekInspects/SecurityCheckpoint/GetProblemRecordFile/' + ProblemRecordFileID)).then(function (r) {
               if (r && !angular.isArray(r.data)) {
                 r.data = [r.data];
                 r.data.forEach(function (t) {
@@ -1786,7 +1786,7 @@
         getRectifications: $http.wrap({
           offline: true,
           db:function (identity) {
-            return 'safeRectification'+identity?identity:"";
+            return 'safeRectification'+(identity?identity:"");
           },
           idField: 'RectificationID',
           dataType: 1,
@@ -1809,7 +1809,7 @@
         getRectificationSingle: $http.wrap({
           offline: true,
           db:function (RectificationID,identity) {
-            return 'safeRectification'+identity?identity:"";
+            return 'safeRectification'+(identity?identity:"");
           },
           // _id: 'safeRectification',
           idField: 'RectificationID',
@@ -1858,7 +1858,7 @@
         //获取安全验收项
         getSecurityItem: $http.wrap({
           db: function (identity) {
-            return "safeItems"+identity?identity:"";
+            return "safeItems"+(identity?identity:"");
           },
           idField: 'SpecialtyID',
           dataType: 1,
@@ -1900,7 +1900,7 @@
         getBatchWrap:$http.wrap({
           offline: true,
           db:function (identity) {
-            return "securityInfo"+ identity?identity:"";
+            return "securityInfo"+ (identity?identity:"");
           },
           idField:"InspectionID",
           dataType: 1,
@@ -1910,7 +1910,7 @@
         }),
         getDrawingRelate:$http.wrap({
           db:function (identity) {
-            return "relate"+ identity?identity:"";
+            return "relate"+ (identity?identity:"");
           },
           callback:function (result) {
             return {

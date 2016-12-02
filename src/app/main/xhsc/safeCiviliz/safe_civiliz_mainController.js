@@ -281,7 +281,7 @@
                       return o.key == "InspectionProblemRecordFile";
                     });
                     tasks.push(function () {
-                      function clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points,tasks) {
+                      function clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points) {
                         if (ckpoints && ckpoints.vals) {
                           ckpoints.vals.forEach(function (m) {
                             tasks.push(function () {
@@ -329,7 +329,7 @@
                         "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
                         "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
                       }).then(function () {
-                        clear(ckpoints,problemRecords,InspectionProblemRecordFiles,tasks);
+                        clear(ckpoints,problemRecords,InspectionProblemRecordFiles);
                       });
                     });
                     if (points && points.vals) {

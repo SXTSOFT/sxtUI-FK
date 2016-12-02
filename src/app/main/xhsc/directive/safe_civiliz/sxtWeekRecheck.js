@@ -65,7 +65,7 @@
             onLoad: function (cb) {
               $("#inspect").css("display","none");
               $q.all([
-                remote.safe.ckPointQuery.cfgSet({
+                remote.safe.weekPointCreate.cfgSet({
                   filter:function (item,inspectionId) {
                     return item.InspectionID==inspectionId;
                   }
