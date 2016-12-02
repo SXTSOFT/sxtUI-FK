@@ -11,7 +11,7 @@
 
   function versionUpdate($mdDialog, $window,$http ,sxt) {
 
-    var version = '1.9.16.9',versionOld = version;
+    var version = '1.9.16.10',versionOld = version;
     this.version = version;
     var self = this;
     function versionToNumber(version) {

@@ -372,7 +372,16 @@
                   type: r.RegionType
                 });
               });
-              return r1;
+              return me._filter(4).then(function (r3) {
+                if(r3.data.Rows) {
+                  r1.data.data = r1.data.data.filter(function (it) {
+                    return !r3.data.Rows.find(function (it1) {
+                      return !it1.IsEnable && it1.RegionId == it.building_id;
+                    });
+                  });
+                }
+                return r1;
+              });
             });
           });
         },function (result) {
