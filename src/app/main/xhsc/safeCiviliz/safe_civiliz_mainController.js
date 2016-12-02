@@ -53,7 +53,7 @@
       return [
         function (tasks) {
           return $q(function (resolve, reject) {
-            return xhscService.downloadPics(regionID, null, relates).then(function (t) {
+            return xhscService.downloadPics(regionID, null,filter, relates).then(function (t) {
               t.forEach(function (m) {
                 tasks.push(m);
               })

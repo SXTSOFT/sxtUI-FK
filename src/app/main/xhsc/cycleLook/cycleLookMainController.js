@@ -17,7 +17,15 @@
       $mdDialog.show({
         controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
           $scope.ok=function () {
-            $mdDialog.hide();
+            remote.safe.insertBatchWrap({
+              InspectionID: sxt.uuid(),
+              AreaID: $scope.currentArea.RegionID,
+              Title: $scope.subject,
+            },"WeekInspects").then(function (r) {
+              $mdDialog.hide(r);
+            }).catch(function () {
+              $mdDialog.hide();
+            })
           }
 
           $scope.cancel=function () {
@@ -51,7 +59,6 @@
                 $scope.currentArea=$scope.currentProject.Children[0];
               }
             }
-            // initTheme();
           })
 
           $scope.$watch("currentProject",function () {
@@ -65,8 +72,12 @@
         parent: angular.element(document.body),
         clickOutsideToClose: true,
         fullscreen: false
-      }).then(function () {
-
+      }).then(function (r) {
+        if (r&&r.Status==200){
+          loadInspection();
+        }else{
+          utils("服务端发成错误，插入失败!");
+        }
       });
     }
     xhscService.getProfile().then(function (profile) {
@@ -338,69 +349,57 @@
         });
       });
     }
+
+    function loadInspection() {
+      return remote.safe.getBatchWrap("WeekInspects").then(function (r) {
+        vm.Inspections = [];
+        if (angular.isArray(r.data)) {
+          var ys = [];
+          r.data.forEach(function (o) {
+            ys.push(o);
+          });
+          return remote.offline.query().then(function (r) {
+            if (angular.isArray(r.data)) {
+              ys.forEach(function (k) {
+                if (r.data.find(function (m) {
+                    return m.Id == "safeWeek" + k.InspectionID;
+                  })) {
+                  k.isOffline = true;
+                }
+              })
+            }
+            vm.Inspections = ys;
+          })
+        }
+      });
+    }
+    function loadZgLst() {
+      return remote.safe.getRectifications().then(function (r) {
+        vm.zglist = [];
+        if (angular.isArray(r.data)) {
+          var zg = [];
+          r.data.forEach(function (o) {
+            zg.push(o);
+          });
+          return remote.offline.query().then(function (r) {
+            if (angular.isArray(r.data)) {
+              zg.forEach(function (k) {
+                if (r.data.find(function (m) {
+                    return m.Id == "safeZg" + k.RectificationID;
+                  })) {
+                  k.isOffline = true;
+                }
+              })
+            }
+            vm.zglist = zg;
+          })
+        }
+      })
+    }
     function load() {
       $q.all([
-        remote.safe.getSafeInspections().then(function (r) {
-          $q(function (resolve, reject) {
-            vm.Inspections = [];
-            if (angular.isArray(r.data)) {
-              var ys = [];
-              r.data.forEach(function (o) {
-                ys.push(o);
-              });
-              remote.offline.query().then(function (r) {
-                if (angular.isArray(r.data)) {
-                  ys.forEach(function (k) {
-                    if (r.data.find(function (m) {
-                        return m.Id == "safeYs" + k.InspectionId;
-                      })) {
-                      k.isOffline = true;
-                    }
-                  })
-                }
-                vm.Inspections = ys;
-                if (vm.yw == 16 && !vm.Inspections.length) {
-                  utils.alert("暂时没有找到数据");
-                }
-                resolve();
-              }).catch(function () {
-                resolve();
-              });
-            } else {
-              resolve();
-            }
-          });
-        }),
-        remote.safe.getRectifications().then(function (r) {
-          return $q(function (resolve, reject) {
-            vm.zglist = [];
-            if (angular.isArray(r.data)) {
-              var zg = [];
-              r.data.forEach(function (o) {
-                zg.push(o);
-              });
-              remote.offline.query().then(function (r) {
-                if (angular.isArray(r.data)) {
-                  zg.forEach(function (k) {
-                    if (r.data.find(function (m) {
-                        return m.Id == "safeZg" + k.RectificationID;
-                      })) {
-                      k.isOffline = true;
-                    }
-                  })
-                }
-                vm.zglist = zg;
-                resolve();
-              }).catch(function () {
-                resolve();
-              });
-            }
-            else {
-              resolve();
-            }
-          })
-
-        })
+        loadInspection(),
+        loadZgLst()
       ]).then(function () {
         vm.isOver = true;
       });
