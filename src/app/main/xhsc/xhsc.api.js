@@ -1705,7 +1705,15 @@
           idField: 'RectificationID',
           dataType: 1,
           fn: function () {
-            return $http.get($http.url('/api/Acceptances/SecurityRectification/GetList'));
+            return $http.get($http.url('/api/Acceptances/SecurityRectification/GetList')).then(function (r) {
+              var  status=[1,8,64]
+              r.data=r.data.filter(function (k) {
+                  return status.some(function (z) {
+                    return z==k.Status;
+                  });
+              });
+              return r;
+            });
           }
         }),
         getRectificationSingle: $http.wrap({

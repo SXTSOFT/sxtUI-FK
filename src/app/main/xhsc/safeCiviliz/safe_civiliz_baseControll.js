@@ -47,11 +47,13 @@
             return k.AcceptanceItemID == item.AcceptanceItemID;
           })
       }
-
+      var  relates= remote.safe.getDrawingRelate.cfgSet({
+        offline: true
+      })("Acceptances",regionID)
       return [
         function (tasks) {
           return $q(function (resolve, reject) {
-            return xhscService.downloadPics(regionID, null, filter).then(function (t) {
+            return xhscService.downloadPics(regionID, null, filter,relates).then(function (t) {
               t.forEach(function (m) {
                 tasks.push(m);
               })

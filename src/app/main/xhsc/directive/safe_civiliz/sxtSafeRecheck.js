@@ -172,7 +172,9 @@
             }
           });
           $timeout(function () {
-            remote.Project.getDrawingRelations(scope.regionId).then(function (result) {
+            remote.safe.getDrawingRelate.cfgSet({
+              offline: true
+            })("Acceptances",scope.regionId).then(function (result) {
               var imgId = result.data.find(function (item) {
                 return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
               });

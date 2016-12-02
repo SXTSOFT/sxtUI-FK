@@ -39,7 +39,6 @@
     //项目包
     function projectTask(regionID, areas, acceptanceItemID) {
       var projectId = regionID.substr(0, 5);
-
       function filter(item) {
         return (!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
           (!areas || areas.find(function (a) {
@@ -48,11 +47,13 @@
             return k.AcceptanceItemID == item.AcceptanceItemID;
           })
       }
-
+      var  relates= remote.safe.getDrawingRelate.cfgSet({
+        offline: true
+      })("Acceptances",regionID)
       return [
         function (tasks) {
           return $q(function (resolve, reject) {
-            return xhscService.downloadPics(regionID, null, filter).then(function (t) {
+            return xhscService.downloadPics(regionID, null, relates).then(function (t) {
               t.forEach(function (m) {
                 tasks.push(m);
               })
