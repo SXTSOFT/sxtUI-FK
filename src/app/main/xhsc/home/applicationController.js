@@ -45,7 +45,7 @@
           right: isJlorzb,
           title: "动态危险源",
           img: "app/main/xhsc/images/zbzj.png",
-          state: "app.xhsc.sf.sfDynamicMain",
+          state: "app.xhsc.dyn.sfDynamicMain",
           stateParams: null
         },{
           right: isJlorzb,

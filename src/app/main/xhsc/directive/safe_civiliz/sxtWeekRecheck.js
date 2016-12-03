@@ -65,9 +65,9 @@
             onLoad: function (cb) {
               $("#inspect").css("display","none");
               $q.all([
-                remote.safe.weekPointCreate.cfgSet({
+                remote.safe.weekPointQuery.cfgSet({
                   filter:function (item,inspectionId) {
-                    return item.InspectionID==inspectionId;
+                    return item.InspectionID==inspectionId&&item.AcceptanceItemID==scope.procedure&&item.AreaID==scope.regionId;
                   }
                 })(scope.inspectionId),
                 remote.safe.getSafePointGeo()

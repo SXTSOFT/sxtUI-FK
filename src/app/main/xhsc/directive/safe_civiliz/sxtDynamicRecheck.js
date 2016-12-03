@@ -65,9 +65,9 @@
             onLoad: function (cb) {
               $("#inspect").css("display","none");
               $q.all([
-                remote.safe.ckPointQuery.cfgSet({
+                remote.safe.dynPointCreate.cfgSet({
                   filter:function (item,inspectionId) {
-                    return item.InspectionID==inspectionId;
+                    return item.InspectionID==inspectionId&&item.AcceptanceItemID==scope.procedure&&item.AreaID==scope.regionId;
                   }
                 })(scope.inspectionId),
                 remote.safe.getSafePointGeo()
@@ -115,7 +115,9 @@
             }
           });
           $timeout(function () {
-            remote.Project.getDrawingRelations(scope.regionId).then(function (result) {
+            remote.safe.getDrawingRelate.cfgSet({
+              offline: true
+            })("DayInspects",scope.regionId).then(function (result) {
               var imgId = result.data.find(function (item) {
                 return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
               });

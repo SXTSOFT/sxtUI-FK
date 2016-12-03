@@ -332,20 +332,20 @@
               var tasks = [];
               return $q(function (resolve, reject) {
                 api.getUploadData(function (cfg) {
-                  return cfg.mark == "weekUp";
+                  return cfg.mark == "weekUp"||cfg.mark =="allUp";
                 }).then(function (val) {
                   if (val && val.length) {
                     var points = val.find(function (o) {
                       return o.key == "InspectionPoint";
                     });
                     var ckpoints = val.find(function (o) {
-                      return o.key == "ckPoints";
+                      return o.key == "weekPoints";
                     });
                     var problemRecords = val.find(function (o) {
-                      return o.key == "problemRecord";
+                      return o.key == "weekProblemRecord";
                     });
                     var InspectionProblemRecordFiles = val.find(function (o) {
-                      return o.key == "InspectionProblemRecordFile";
+                      return o.key == "weekInspectionProblemRecordFile";
                     });
                     if (points && points.vals) {
                       points.vals.forEach(function (t) {

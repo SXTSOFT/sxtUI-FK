@@ -22,46 +22,6 @@
           }
         }
       })
-      .state('app.xhsc.sf.sfDynamicMain', {
-        noBack:true,
-        sendBt: false,
-        rightArrow: false,
-        leftArrow: false,
-        title: '动态安全源',
-        url: '/sfDynamicMain',
-        templateUrl: 'app/main/xhsc/safeCiviliz/sfDynamicMain.html',
-        controller: 'sfDynamicMainController as vm'
-      })
-      .state('app.xhsc.sf.sfDynamicBase', {
-        noBack:true,
-        sendBt: false,
-        rightArrow: false,
-        leftArrow: false,
-        title: '动态安全源',
-        url: '/dynamic/{yw}',
-        templateUrl: 'app/main/xhsc/safeCiviliz/sfDynamicBase.html',
-        controller: 'sfDynamicBaseController as vm'
-      })
-      .state('app.xhsc.sf.sfDynamicRectify', {
-        noBack:true,
-        sendBt: false,
-        rightArrow: false,
-        leftArrow: false,
-        title: '动态安全源',
-        url: '/sfDynamicRectify/{Role}/{InspectionID}/{AcceptanceItemID}/{RectificationID}/{AcceptanceItemName}',
-        templateUrl: 'app/main/xhsc/safeCiviliz/sfDynamicRectify.html',
-        controller: 'sfDynamicRectifyController as vm'
-      })
-      .state('app.xhsc.sf.sfDynamicAccept', {
-        noBack:true,
-        sendBt: false,
-        rightArrow: false,
-        leftArrow: false,
-        title: '动态安全源',
-        url: '/sfDynamicAccept/{InspectionId}/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}/{areaId}',
-        templateUrl: 'app/main/xhsc/safeCiviliz/sfDynamicBase.html',
-        controller: 'sfDynamicAcceptController as vm'
-      })
       .state('app.xhsc.sf.sfmain', {
         noBack:true,
         sendBt: false,
@@ -125,6 +85,57 @@
         controller: 'safe_civiliz_rectifyController as vm'
       })
 
+    $stateProvider
+      .state('app.xhsc.dyn',{
+        url:'/dyn',
+        abstract:true,
+        views:{
+          'content@app':{
+            template:'<ui-view flex layout="column"></ui-view>'
+          }
+        }
+      })
+      .state('app.xhsc.dyn.sfDynamicMain', {
+        noBack:true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '动态安全源',
+        url: '/sfDynamicMain',
+        templateUrl: 'app/main/xhsc/safeCiviliz/sfDynamicMain.html',
+        controller: 'sfDynamicMainController as vm'
+      })
+      .state('app.xhsc.dyn.sfDynamicBase', {
+        noBack:true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '动态安全源',
+        url: '/dynamic/{yw}',
+        templateUrl: 'app/main/xhsc/safeCiviliz/sfDynamicBase.html',
+        controller: 'sfDynamicBaseController as vm'
+      })
+      .state('app.xhsc.dyn.sfDynamicRectify', {
+        noBack:true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '动态安全源',
+        url: '/sfDynamicRectify/{Role}/{InspectionID}/{AcceptanceItemID}/{RectificationID}/{AcceptanceItemName}',
+        templateUrl: 'app/main/xhsc/safeCiviliz/sfDynamicRectify.html',
+        controller: 'sfDynamicRectifyController as vm'
+      })
+      .state('app.xhsc.dyn.sfDynamicAccept', {
+        noBack:true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '动态安全源',
+        url: '/sfDynamicAccept/{InspectionId}/{projectId}/{areaId}',
+        templateUrl: 'app/main/xhsc/safeCiviliz/sfDynamicAccept.html',
+        controller: 'sfDynamicAcceptController as vm'
+      })
+
 
     $stateProvider
       .state('app.xhsc.week',{
@@ -177,4 +188,7 @@
         controller: 'sfWeekRectifyController as vm'
       })
   }
+
+
+
 })();

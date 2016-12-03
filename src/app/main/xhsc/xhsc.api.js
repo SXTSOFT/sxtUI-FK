@@ -252,7 +252,7 @@
             }
             return db ? db : "InspectionPoint";
           },
-          mark: "up",
+          mark: "allUp",
           idField: 'MeasurePointID',
           methods: {
             query: {
@@ -1595,6 +1595,89 @@
         })
       },
       safe: {
+        dynPointCreate: $http.wrap({ //创建点
+          offline: true,
+          dataType: 1,
+          mark: "dynUp",
+          _id: "dynPoints",
+          idField: 'CheckpointID',
+          upload: true
+        }),
+        dynPointQuery: $http.wrap({ //查询点
+          offline: true,
+          dataType: 1,
+          _id: "dynPoints",
+          idField: 'CheckpointID'
+        }),
+        dynPointDelete: $http.wrap({ //删除点
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "dynPoints",
+          idField: 'CheckpointID'
+        }),
+        dynProblemRecordCreate: $http.wrap({ //创建记录
+          offline: true,
+          dataType: 1,
+          upload: true,
+          mark: "dynUp",
+          _id: "dynProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        dynProblemRecordQuery: $http.wrap({ //查询记录
+          offline: true,
+          dataType: 1,
+          filter: function (item, CheckpointID) {
+            return item.CheckpointID == CheckpointID;
+          },
+          _id: "dynProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        dynProblemRecordDelete: $http.wrap({// 删除记录
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "dynProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        dynProblemRecordFileCreate: $http.wrap({ //创建文件
+          offline: true,
+          dataType: 1,
+          mark: "dynUp",
+          _id: 'dynInspectionProblemRecordFile',
+          idField: 'ProblemRecordFileID',
+          upload: true
+        }),
+        dynProblemRecordFileQuery: $http.wrap({ //查询文件
+          offline: true,
+          _id: 'dynInspectionProblemRecordFile',
+          idField: function (d) {
+            return d.Id || d.ProblemRecordFileID
+          },
+          fn: function (ProblemRecordFileID) {
+            return $http.get($http.url('/api/WeekInspects/SecurityCheckpoint/GetProblemRecordFile/' + ProblemRecordFileID)).then(function (r) {
+              if (r && !angular.isArray(r.data)) {
+                r.data = [r.data];
+                r.data.forEach(function (t) {
+                  t.isUpload = true;
+                })
+              }
+              return r;
+            });
+          },
+          dataType: 1,
+          filter: function (item, ProblemRecordID) {
+            return item.ProblemRecordID == ProblemRecordID;
+          }
+        }),
+        dynProblemRecordFileDelete: $http.wrap({ //删除文件
+          offline: true,
+          dataType: 1,
+          _id: 'dynInspectionProblemRecordFile',
+          idField: 'ProblemRecordFileID',
+          delete: true
+        }),
+
 
         weekPointCreate: $http.wrap({ //创建点
           offline: true,
@@ -1852,7 +1935,7 @@
           idField: 'MeasurePointID',
           dataType: 1,
           fn: function (inspectionId, acceptanceItemId, areaId) {
-            return $http.get($http.url('/api/Acceptances/SecurityCheckpoint/GetSecurityPoint/' + inspectionId + '/' + areaId + '/' + acceptanceItemId));
+            return $http.get($http.url('/api/WeekInspects/SecurityCheckpoint/GetSecurityPoint/' + inspectionId + '/' + areaId + '/' + acceptanceItemId));
           }
         }),
         //获取安全验收项

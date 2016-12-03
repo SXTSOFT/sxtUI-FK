@@ -55,7 +55,7 @@
             onLoad: function (cb) {
               remote.safe.ckPointQuery.cfgSet({
                 filter:function (item,AcceptanceItemID,AreaID,inspectionId){
-                  return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID&&item.InspectionID==inspectionId;
+                  return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID&&item.InspectionExtendID==inspectionId;
                 }
               })(scope.procedure,scope.regionId,scope.inspectionId).then(function (r) {
                 remote.Procedure.InspectionPoint.query(scope.inspectionId,scope.procedure, scope.regionId).then(function (r1) {
@@ -100,8 +100,9 @@
                   return d.PositionID == point.MeasurePointID;
                 })) {
                 var v = {
-                  InspectionID:scope.inspectionId,
-                  InspectionAreaID:scope.inspectionAreaId,
+                  // InspectionID:scope.inspectionId,
+                  // InspectionAreaID:scope.inspectionAreaId,
+                  InspectionExtendID:scope.inspectionId,
                   CheckpointID:sxt.uuid(),
                   IndexPointID:scope.item.ProblemID,
                   AreaID:scope.regionId,
@@ -120,7 +121,7 @@
                 v.action="Insert";
                 fg.data.push(v);
                 scope.ct && scope.ct.cancelMode && scope.ct.cancelMode();
-                remote.safe.ckPointCreate(v);
+                remote.safe.dynPointCreate(v);
 
               }
               cb(layer);
@@ -138,7 +139,7 @@
             onUpdateData: function (context, data, editScope) {
               if(data.v.ProblemSortName == 'T'){
                 data.v.action="Insert";
-                remote.safe.ckPointCreate(data.v);
+                remote.safe.dynPointCreate(data.v);
               }
             },
             onDelete: function (layer,cb) {
@@ -150,17 +151,17 @@
                 }),ix = fg.data.indexOf(v);
                 fg.data.splice(ix,1);
                 //删除检查点
-                remote.safe.ckPointDelete({CheckpointID:v.CheckpointID}).then(function () {
+                remote.safe.dynPointDelete({CheckpointID:v.CheckpointID}).then(function () {
                   //删除记录
-                  remote.safe.problemRecordQuery(v.CheckpointID).then(function (k) {
+                  remote.safe.dynProblemRecordQuery(v.CheckpointID).then(function (k) {
                     if (angular.isArray(k.data)){
                       k.data.forEach(function (w) {
                         //删除照片
-                        remote.safe.problemRecordDelete(w).then(function () {
-                          remote.safe.ProblemRecordFileQuery(w.ProblemRecordID).then(function (m) {
+                        remote.safe.dynProblemRecordDelete(w).then(function () {
+                          remote.safe.dynProblemRecordFileQuery(w.ProblemRecordID).then(function (m) {
                             if (angular.isArray(m.data)){
                               m.data.forEach(function (q) {
-                                remote.safe.ProblemRecordFileDelete(q);
+                                remote.safe.dynProblemRecordFileDelete(q);
                               })
                             }
                           })
@@ -195,7 +196,11 @@
             }
           });
           $timeout(function () {
-            remote.Project.getDrawingRelations(scope.regionId).then(function (result) {
+            //DayInspects
+            var areaID=scope.regionId.substr(0,10);
+            remote.safe.getDrawingRelate.cfgSet({
+              offline: true
+            })("DayInspects",areaID).then(function (result) {
               var imgId = result.data.find(function (item) {
                 return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
               });
