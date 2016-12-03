@@ -21,23 +21,20 @@
               InspectionID: sxt.uuid(),
               AreaID: $scope.currentArea.RegionID,
               Title: $scope.subject,
-            },"WeekInspects").then(function (r) {
+            },"DayInspects").then(function (r) {
               $mdDialog.hide(r);
             }).catch(function () {
               $mdDialog.hide();
             })
           }
-
           $scope.cancel=function () {
             $mdDialog.cancel();
           }
-
           function getYearWeek(date){
             var date=date.getDate();
             var week= Math.ceil(date/7);
             return week;
           }
-
           function initTheme() {
             var projectName=$scope.currentProject?$scope.currentProject.RegionName:"";
             var area=$scope.currentArea?$scope.currentArea.RegionName:"";
@@ -48,7 +45,7 @@
             if (!area||!projectName){
               $scope.subject="";
             }else {
-              $scope.subject= projectName+area+ year+"年"+month+"月"+day+"日"+"巡检";
+              $scope.subject= projectName+area+ year+"年"+month+"月"+day+"日动态安全检查";
             }
           }
           xhscService.getRegionTreeOffline("",3,1).then(function (r) {
@@ -73,10 +70,10 @@
         clickOutsideToClose: true,
         fullscreen: false
       }).then(function (r) {
-        if (r&&r.Status==200){
+        if (r&&r.status==200){
           loadInspection();
         }else{
-          utils("服务端发成错误，插入失败!");
+          utils.alert("本日已经做过动态安全检查!");
         }
       });
     }
@@ -84,11 +81,12 @@
       vm.role = profile.role;
       vm.OUType = profile.ouType;
     });
+
     var globalTask = [
       function () {
         return remote.safe.getSecurityItem.cfgSet({
           offline: true
-        })().then(function (r) {
+        })("DayInspects").then(function (r) {
           if (r.data && r.data.length) {
             r.data.forEach(function (k) {
               if (k.SpecialtyChildren.length) {
@@ -104,22 +102,26 @@
         });
       }
     ];
-    function projectTask(regionID, areas, acceptanceItemID) {
+    function projectTask(regionID, areas, acceptanceItemID,_filter) {
       var projectId = regionID.substr(0, 5);
-
-      function filter(item) {
-        return (!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
-          (!areas || areas.find(function (a) {
-            return a.AreaID == item.RegionId;
-          })) && vm.procedure.find(function (k) {
-            return k.AcceptanceItemID == item.AcceptanceItemID;
-          })
+      var filter=_filter;
+      if (!filter){
+        filter=  function filter(item) {
+          return (!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
+            (!areas || areas.find(function (a) {
+              return a.AreaID == item.RegionId;
+            })) && vm.procedure.find(function (k) {
+              return k.AcceptanceItemID == item.AcceptanceItemID;
+            })
+        }
       }
-
+      var relates=remote.safe.getDrawingRelate.cfgSet({
+        offline: true
+      })("DayInspects",regionID)
       return [
         function (tasks) {
           return $q(function (resolve, reject) {
-            return xhscService.downloadPics(regionID, null, filter).then(function (t) {
+            return xhscService.downloadPics(regionID, null, filter,relates).then(function (t) {
               t.forEach(function (m) {
                 tasks.push(m);
               })
@@ -134,13 +136,13 @@
     function rectificationTask(item) {
       return [
         function (tasks) {
-          return remote.safe.getRecPackage(item.RectificationID).then(function (r) {
+          return remote.safe.getRecPackage(item.RectificationID,"DayInspects").then(function (r) {
             if (r && r.data) {
               var Checkpoints = r.data.Checkpoint; //插入点
               if (angular.isArray(Checkpoints)) {
                 Checkpoints.forEach(function (t) {
                   tasks.push(function () {
-                    return remote.safe.ckPointCreate(t)
+                    return remote.safe.dynPointCreate(t)
                   });
                 });
               }
@@ -149,7 +151,7 @@
                 ProblemRecords.forEach(function (t) {
                   t.isUpload=true;
                   tasks.push(function () {
-                    return remote.safe.problemRecordCreate(t)
+                    return remote.safe.dynProblemRecordCreate(t)
                   });
                 });
               }
@@ -157,7 +159,7 @@
               if (angular.isArray(ProblemRecordFiles)) {
                 ProblemRecordFiles.forEach(function (t) {
                   tasks.push(function () {
-                    return remote.safe.ProblemRecordFileQuery(t.ProblemRecordFileID);
+                    return remote.safe.dynProblemRecordFileQuery(t.ProblemRecordFileID);
                   });
                 });
               }
@@ -166,6 +168,70 @@
         }
       ]
     }
+
+    vm.downloadys = function (item) {
+      return api.setNetwork(0).then(function () {
+        return $q(function (resolve, reject) {
+          $mdDialog.show({
+            controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
+              $scope.item = item;
+              var tasks = [].concat(globalTask)
+                .concat(projectTask(item.AreaID,null,null,function (item) {
+                  return vm.procedure.find(function (k) {
+                    return k.AcceptanceItemID == item.AcceptanceItemID;
+                  })
+                }))
+                .concat([function () {
+                  return xhscService.getRegionTreeOffline("", 31, 1);
+                }])
+                .concat(function () {
+                  return remote.offline.create({Id: 'safedyn' + item.InspectionID});
+                })
+
+              api.task(tasks, {
+                event: 'downloaddyn',
+                target: item.InspectionID
+              })(null, function () {
+                item.percent = item.current = item.total = null;
+                item.isOffline = true;
+                $mdDialog.hide();
+                utils.alert('下载完成',null,function () {
+                  resolve();
+                }).catch(function () {
+                  reject();
+                });
+              }, function () {
+                $mdDialog.cancel();
+                utils.alert('下载失败,请检查网络');
+                item.percent = item.current = item.total = null;
+                reject();
+              }, {timeout: 300000})
+            }],
+            template: '<md-dialog aria-label="正在下载"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular><p style="padding-left: 6px;">正在下载： {{item.AcceptanceItemName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+            parent: angular.element(document.body),
+            clickOutsideToClose: false,
+            fullscreen: false
+          });
+        })
+      });
+    }
+    api.event('downloaddyn', function (s, e) {
+      var current = vm.Inspections && vm.Inspections.find(function (item) {
+          return item.InspectionID == e.target;
+        });
+      if (current) {
+        switch (e.event) {
+          case 'progress':
+            current.percent = parseInt(e.percent * 100) + ' %';
+            current.current = e.current;
+            current.total = e.total;
+            break;
+          case 'success':
+            current.isOffline = true;
+            break;
+        }
+      }
+    }, $scope);
 
     vm.downloadzg = function (item) {
       return $q(function (resolve, reject) {
@@ -197,7 +263,7 @@
                   })
                 })
                 .concat(function () {
-                  return remote.offline.create({Id: 'safeZg' + item.RectificationID});
+                  return remote.offline.create({Id: 'zgdyn' + item.RectificationID});
                 });
               api.task(tasks, {
                 event: 'downloadzg',
@@ -262,20 +328,20 @@
               var tasks = [];
               return $q(function (resolve, reject) {
                 api.getUploadData(function (cfg) {
-                  return cfg.mark == "up";
+                  return cfg.mark == "dynUp"||cfg.mark =="allUp";
                 }).then(function (val) {
                   if (val && val.length) {
                     var points = val.find(function (o) {
                       return o.key == "InspectionPoint";
                     });
                     var ckpoints = val.find(function (o) {
-                      return o.key == "ckPoints";
+                      return o.key == "dynPoints";
                     });
                     var problemRecords = val.find(function (o) {
-                      return o.key == "problemRecord";
+                      return o.key == "dynProblemRecord";
                     });
                     var InspectionProblemRecordFiles = val.find(function (o) {
-                      return o.key == "InspectionProblemRecordFile";
+                      return o.key == "dynInspectionProblemRecordFile";
                     });
                     if (points && points.vals) {
                       points.vals.forEach(function (t) {
@@ -286,35 +352,63 @@
                           t.Geometry = JSON.parse(t.Geometry);
                         }
                         tasks.push(function () {
-                          return remote.Procedure.InspectionPoint.create(t).then(function () {
-                            points.db.delete(t._id);
-                          });
-                        })
+                          return remote.Procedure.InspectionPoint.create(t)
+                        });
                       });
                     }
+
                     tasks.push(function () {
-                      return remote.safe.safeUp({
-                        "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
-                        "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
-                        "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
-                      }).then(function () {
+                      function clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points) {
                         if (ckpoints && ckpoints.vals) {
                           ckpoints.vals.forEach(function (m) {
-                            ckpoints.db.delete(m._id);
+                            tasks.push(function () {
+                              return  ckpoints.db.delete(m._id);
+                            })
                           });
                         }
                         if (problemRecords && problemRecords.vals) {
                           problemRecords.vals.forEach(function (m) {
-                            problemRecords.db.delete(m._id);
+                            tasks.push(function () {
+                              return  problemRecords.db.delete(m._id);
+                            })
                           });
                         }
                         if (InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals) {
                           InspectionProblemRecordFiles.vals.forEach(function (m) {
-                            InspectionProblemRecordFiles.db.delete(m._id);
+                            tasks.push(function () {
+                              return  InspectionProblemRecordFiles.db.delete(m._id);
+                            })
                           });
                         }
+                        if (points && points.vals){
+                          points.vals.forEach(function (t) {
+                            tasks.push(function () {
+                              return  points.db.delete(t._id)
+                            })
+                          })
+                        }
+                      }
+                      if (points && points.vals) {
+                        points.vals.forEach(function (t) {
+                          if (t.geometry) {
+                            t.Geometry = t.geometry;
+                          }
+                          if (typeof t.Geometry === 'string') {
+                            t.Geometry = JSON.parse(t.Geometry);
+                          }
+                          tasks.push(function () {
+                            return remote.Procedure.InspectionPoint.create(t)
+                          })
+                        });
+                      }
+                      return remote.safe.safeUp({
+                        "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
+                        "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
+                        "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
+                      },"DayInspects").then(function () {
+                        clear(ckpoints,problemRecords,InspectionProblemRecordFiles);
                       });
-                    })
+                    });
                   }
                   resolve(tasks);
                 })
@@ -322,7 +416,6 @@
                 reject(tasks);
               })
             }
-
             buildTask().then(function (tasks) {
               api.task(tasks)(function (percent, current, total) {
                 vm.uploadInfo.percent = parseInt(percent * 100) + ' %';
@@ -351,7 +444,7 @@
     }
 
     function loadInspection() {
-      return remote.safe.getBatchWrap("WeekInspects").then(function (r) {
+      return remote.safe.getBatchWrap("DayInspects").then(function (r) {
         vm.Inspections = [];
         if (angular.isArray(r.data)) {
           var ys = [];
@@ -362,7 +455,7 @@
             if (angular.isArray(r.data)) {
               ys.forEach(function (k) {
                 if (r.data.find(function (m) {
-                    return m.Id == "safeWeek" + k.InspectionID;
+                    return m.Id == "safedyn" + k.InspectionID;
                   })) {
                   k.isOffline = true;
                 }
@@ -374,7 +467,7 @@
       });
     }
     function loadZgLst() {
-      return remote.safe.getRectifications().then(function (r) {
+      return remote.safe.getRectifications("DayInspects").then(function (r) {
         vm.zglist = [];
         if (angular.isArray(r.data)) {
           var zg = [];
@@ -385,7 +478,7 @@
             if (angular.isArray(r.data)) {
               zg.forEach(function (k) {
                 if (r.data.find(function (m) {
-                    return m.Id == "safeZg" + k.RectificationID;
+                    return m.Id == "zgdyn" + k.RectificationID;
                   })) {
                   k.isOffline = true;
                 }
@@ -409,7 +502,7 @@
       load();
     })
     vm.setModule = function (val) {
-      $state.go('app.xhsc.xj.base', {yw: val})
+      $state.go('app.xhsc.dyn.sfDynamicBase', {yw: val})
     }
     vm.zbzgbtnAction = function (item, evt) {
       $mdBottomSheet.show({
@@ -441,7 +534,7 @@
       if (!item.isOffline) {
         vm.downloadzg(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go('app.xhsc.xj.rectify', {
+            $state.go('app.xhsc.dyn.sfDynamicRectify', {
               Role: 'zb',
               InspectionID: item.InspectionID,
               AcceptanceItemID: item.AcceptanceItemID,
@@ -452,7 +545,7 @@
         })
       } else {
         api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.xj.rectify', {
+          $state.go('app.xhsc.dyn.sfDynamicRectify', {
             Role: 'zb',
             InspectionID: item.InspectionID,
             AcceptanceItemID: item.AcceptanceItemID,
@@ -466,7 +559,7 @@
       if (!item.isOffline) {
         vm.downloadzg(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go('app.xhsc.xj.rectify', {
+            $state.go('app.xhsc.dyn.sfDynamicRectify', {
               Role: 'jl',
               InspectionID: item.InspectionID,
               AcceptanceItemID: item.AcceptanceItemID,
@@ -476,7 +569,7 @@
         })
       } else {
         api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.xj.rectify', {
+          $state.go('app.xhsc.dyn.sfDynamicRectify', {
             Role: 'jl',
             InspectionID: item.InspectionID,
             AcceptanceItemID: item.AcceptanceItemID,
@@ -515,25 +608,19 @@
       if (!item.isOffline) {
         vm.downloadys(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go('app.xhsc.xj.accept', {
-              acceptanceItemID: item.AcceptanceItemID,
-              acceptanceItemName: item.AcceptanceItemName,
-              name: item.Children[0].newName,
+            $state.go('app.xhsc.dyn.sfDynamicAccept', {
               projectId: item.ProjectID,
-              areaId: item.Children[0].AreaID,
-              InspectionId: item.InspectionId
+              areaId: item.AreaID,
+              InspectionId: item.InspectionID
             })
           });
         })
       } else {
         api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.xj.accept', {
-            acceptanceItemID: item.AcceptanceItemID,
-            acceptanceItemName: item.AcceptanceItemName,
-            name: item.Children[0].newName,
+          $state.go('app.xhsc.dyn.sfDynamicAccept', {
             projectId: item.ProjectID,
-            areaId: item.Children[0].AreaID,
-            InspectionId: item.InspectionId
+            areaId: item.AreaID,
+            InspectionId: item.InspectionID
           })
         });
       }
