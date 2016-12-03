@@ -51,7 +51,7 @@
         utils.alert(msg.join(",")+'尚未验收查看!');
         return;
       };
-      utils.alert("提交成功，请离线上传数据！",null,function () {
+      utils.alert("提交成功，请稍后离线上传数据！",null,function () {
         $state.go('app.xhsc.sf.sfmain')
       });
       // $state.go('app.xhsc.sf.sfproblem',{acceptanceItemName:acceptanceItemName,acceptanceItemID:acceptanceItemID,name:vm.RegionFullName,areaId:areaId,projectId:projectId,InspectionId:vm.InspectionId})

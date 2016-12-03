@@ -40,6 +40,15 @@
       })("DayInspects");
       $scope.current={};
 
+      var sendResult = $rootScope.$on('sendGxResult',function(){
+        utils.alert("提交成功，请稍后离线上传数据！",null,function () {
+          $state.go('app.xhsc.dyn.sfDynamicMain')
+        });
+      })
+      $scope.$on("$destroy",function(){
+        sendResult();
+        sendResult = null;
+      });
 
       $scope.$watch("current.region",function (v,o) {
         if (v&&$scope.current.procedure){

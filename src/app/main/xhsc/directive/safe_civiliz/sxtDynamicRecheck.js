@@ -65,7 +65,7 @@
             onLoad: function (cb) {
               $("#inspect").css("display","none");
               $q.all([
-                remote.safe.dynPointCreate.cfgSet({
+                remote.safe.dynPointQuery.cfgSet({
                   filter:function (item,inspectionId) {
                     return item.InspectionID==inspectionId&&item.AcceptanceItemID==scope.procedure&&item.AreaID==scope.regionId;
                   }

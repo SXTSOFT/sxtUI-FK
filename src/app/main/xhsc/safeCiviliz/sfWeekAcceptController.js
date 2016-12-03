@@ -27,6 +27,15 @@
         }
       };
 
+    var sendResult = $rootScope.$on('sendGxResult',function(){
+      utils.alert("提交成功，请稍后离线上传数据！",null,function () {
+        $state.go('app.xhsc.week.sfWeekMain')
+      });
+    })
+    $scope.$on("$destroy",function(){
+      sendResult();
+      sendResult = null;
+    });
       api.setNetwork(1).then(function(){
         vm.cancelCurrent = function ($event) {
           vm.info.current = null;

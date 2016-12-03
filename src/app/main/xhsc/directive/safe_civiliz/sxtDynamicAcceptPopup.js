@@ -50,7 +50,7 @@
             remote.safe.dynProblemRecordCreate(p);
           }
           scope.data.p = p;
-          remote.safe.dynProblemRecordFileCreate(p.ProblemRecordID, scope.data.v.PositionID).then(function (r) {
+          remote.safe.dynProblemRecordFileQuery(p.ProblemRecordID, scope.data.v.PositionID).then(function (r) {
             scope.data.images = r.data;
             if (scope.data.v.isNew  && scope.data.images.length == 0) {
               scope.addPhoto(scope.warter);

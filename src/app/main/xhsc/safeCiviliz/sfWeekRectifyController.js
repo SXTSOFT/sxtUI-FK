@@ -57,8 +57,7 @@
           utils.alert(msg.join(",") + '尚未查看!');
           return;
         };
-
-        utils.alert('提交成功，请离线上传数据',null,function () {
+        utils.alert('提交成功，请稍后离线上传数据',null,function () {
           $state.go("app.xhsc.week.sfWeekMain");
         });
       });

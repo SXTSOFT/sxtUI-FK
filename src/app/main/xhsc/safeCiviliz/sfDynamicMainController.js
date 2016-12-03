@@ -405,7 +405,7 @@
                         "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
                         "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
                         "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
-                      },"WeekInspects").then(function () {
+                      },"DayInspects").then(function () {
                         clear(ckpoints,problemRecords,InspectionProblemRecordFiles);
                       });
                     });

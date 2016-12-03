@@ -117,7 +117,7 @@
       })
       .state('app.xhsc.dyn.sfDynamicRectify', {
         noBack:true,
-        sendBt: false,
+        sendBt: true,
         rightArrow: false,
         leftArrow: false,
         title: '动态安全源',
@@ -127,7 +127,7 @@
       })
       .state('app.xhsc.dyn.sfDynamicAccept', {
         noBack:true,
-        sendBt: false,
+        sendBt: true,
         rightArrow: false,
         leftArrow: false,
         title: '动态安全源',
@@ -169,7 +169,7 @@
       })
       .state('app.xhsc.week.sfWeekAccept', {
         noBack:true,
-        sendBt: false,
+        sendBt: true,
         rightArrow: false,
         leftArrow: false,
         title: '周安全检查',
@@ -179,7 +179,7 @@
       })
       .state('app.xhsc.week.sfWeekRectify', {
         noBack:true,
-        sendBt: false,
+        sendBt: true,
         rightArrow: false,
         leftArrow: false,
         title: '周安全检查',
@@ -188,7 +188,5 @@
         controller: 'sfWeekRectifyController as vm'
       })
   }
-
-
 
 })();
