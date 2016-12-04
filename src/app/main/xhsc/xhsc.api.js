@@ -2013,6 +2013,90 @@
             });
           }
         })
+      },
+      cycleLook:{
+        cyclePointCreate: $http.wrap({ //创建点
+          offline: true,
+          dataType: 1,
+          mark: "cycleUp",
+          _id: "cyclePoints",
+          idField: 'CheckpointID',
+          upload: true
+        }),
+        cyclePointQuery: $http.wrap({ //查询点
+          offline: true,
+          dataType: 1,
+          _id: "cyclePoints",
+          idField: 'CheckpointID'
+        }),
+        cyclePointDelete: $http.wrap({ //删除点
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "cyclePoints",
+          idField: 'CheckpointID'
+        }),
+        cycleProblemRecordCreate: $http.wrap({ //创建记录
+          offline: true,
+          dataType: 1,
+          upload: true,
+          mark: "cycleUp",
+          _id: "cycleProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        cycleProblemRecordQuery: $http.wrap({ //查询记录
+          offline: true,
+          dataType: 1,
+          filter: function (item, CheckpointID) {
+            return item.CheckpointID == CheckpointID;
+          },
+          _id: "cycleProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        cycleProblemRecordDelete: $http.wrap({// 删除记录
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "cycleProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        cycleProblemRecordFileCreate: $http.wrap({ //创建文件
+          offline: true,
+          dataType: 1,
+          mark: "cycleUp",
+          _id: 'cycleInspectionProblemRecordFile',
+          idField: 'ProblemRecordFileID',
+          upload: true
+        }),
+        cycleProblemRecordFileQuery: $http.wrap({ //查询文件
+          offline: true,
+          _id: 'cycleInspectionProblemRecordFile',
+          idField: function (d) {
+            return d.Id || d.ProblemRecordFileID
+          },
+          fn: function (ProblemRecordFileID) {
+            return $http.get($http.url('/api/WeekInspects/SecurityCheckpoint/GetProblemRecordFile/' + ProblemRecordFileID)).then(function (r) {
+              if (r && !angular.isArray(r.data)) {
+                r.data = [r.data];
+                r.data.forEach(function (t) {
+                  t.isUpload = true;
+                })
+              }
+              return r;
+            });
+          },
+          dataType: 1,
+          filter: function (item, ProblemRecordID) {
+            return item.ProblemRecordID == ProblemRecordID;
+          }
+        }),
+        cycleProblemRecordFileDelete: $http.wrap({ //删除文件
+          offline: true,
+          dataType: 1,
+          _id: 'cycleInspectionProblemRecordFile',
+          idField: 'ProblemRecordFileID',
+          delete: true
+        }),
       }
     });
   }

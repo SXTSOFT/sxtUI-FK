@@ -388,19 +388,6 @@
                           })
                         }
                       }
-                      if (points && points.vals) {
-                        points.vals.forEach(function (t) {
-                          if (t.geometry) {
-                            t.Geometry = t.geometry;
-                          }
-                          if (typeof t.Geometry === 'string') {
-                            t.Geometry = JSON.parse(t.Geometry);
-                          }
-                          tasks.push(function () {
-                            return remote.Procedure.InspectionPoint.create(t)
-                          })
-                        });
-                      }
                       return remote.safe.safeUp({
                         "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
                         "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],

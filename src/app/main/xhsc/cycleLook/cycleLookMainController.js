@@ -21,7 +21,7 @@
               InspectionID: sxt.uuid(),
               AreaID: $scope.currentArea.RegionID,
               Title: $scope.subject,
-            },"DayInspects").then(function (r) {
+            },"cycle").then(function (r) {
               $mdDialog.hide(r);
             }).catch(function () {
               $mdDialog.hide();
@@ -30,11 +30,7 @@
           $scope.cancel=function () {
             $mdDialog.cancel();
           }
-          function getYearWeek(date){
-            var date=date.getDate();
-            var week= Math.ceil(date/7);
-            return week;
-          }
+
           function initTheme() {
             var projectName=$scope.currentProject?$scope.currentProject.RegionName:"";
             var area=$scope.currentArea?$scope.currentArea.RegionName:"";
@@ -45,7 +41,7 @@
             if (!area||!projectName){
               $scope.subject="";
             }else {
-              $scope.subject= projectName+area+ year+"年"+month+"月"+day+"日动态安全检查";
+              $scope.subject= projectName+area+ year+"年"+month+"月"+day+"日巡检";
             }
           }
           xhscService.getRegionTreeOffline("",3,1).then(function (r) {
@@ -73,7 +69,7 @@
         if (r&&r.status==200){
           loadInspection();
         }else{
-          utils.alert("本日已经做过动态安全检查!");
+          utils.alert("本日已经创建过日常巡检!");
         }
       });
     }
@@ -86,7 +82,7 @@
       function () {
         return remote.safe.getSecurityItem.cfgSet({
           offline: true
-        })("DayInspects").then(function (r) {
+        })("cycle").then(function (r) {
           if (r.data && r.data.length) {
             r.data.forEach(function (k) {
               if (k.SpecialtyChildren.length) {
@@ -117,7 +113,7 @@
       }
       var relates=remote.safe.getDrawingRelate.cfgSet({
         offline: true
-      })("DayInspects",regionID)
+      })("cycle",regionID)
       return [
         function (tasks) {
           return $q(function (resolve, reject) {
@@ -136,13 +132,13 @@
     function rectificationTask(item) {
       return [
         function (tasks) {
-          return remote.safe.getRecPackage(item.RectificationID,"DayInspects").then(function (r) {
+          return remote.safe.getRecPackage(item.RectificationID,"cycle").then(function (r) {
             if (r && r.data) {
               var Checkpoints = r.data.Checkpoint; //插入点
               if (angular.isArray(Checkpoints)) {
                 Checkpoints.forEach(function (t) {
                   tasks.push(function () {
-                    return remote.safe.dynPointCreate(t)
+                    return remote.cycleLook.cyclePointCreate(t)
                   });
                 });
               }
@@ -151,7 +147,7 @@
                 ProblemRecords.forEach(function (t) {
                   t.isUpload=true;
                   tasks.push(function () {
-                    return remote.safe.dynProblemRecordCreate(t)
+                    return remote.cycleLook.cycleProblemRecordCreate(t)
                   });
                 });
               }
@@ -159,7 +155,7 @@
               if (angular.isArray(ProblemRecordFiles)) {
                 ProblemRecordFiles.forEach(function (t) {
                   tasks.push(function () {
-                    return remote.safe.dynProblemRecordFileQuery(t.ProblemRecordFileID);
+                    return remote.cycleLook.cycleProblemRecordFileCreate(t.ProblemRecordFileID);
                   });
                 });
               }
@@ -185,7 +181,7 @@
                   return xhscService.getRegionTreeOffline("", 31, 1);
                 }])
                 .concat(function () {
-                  return remote.offline.create({Id: 'safedyn' + item.InspectionID});
+                  return remote.offline.create({Id: 'cycleYs' + item.InspectionID});
                 })
 
               api.task(tasks, {
@@ -263,7 +259,7 @@
                   })
                 })
                 .concat(function () {
-                  return remote.offline.create({Id: 'zgdyn' + item.RectificationID});
+                  return remote.offline.create({Id: 'cycleZg' + item.RectificationID});
                 });
               api.task(tasks, {
                 event: 'downloadzg',
@@ -324,24 +320,23 @@
                 }
                 return arr;
               }
-
               var tasks = [];
               return $q(function (resolve, reject) {
                 api.getUploadData(function (cfg) {
-                  return cfg.mark == "dynUp"||cfg.mark =="allUp";
+                  return cfg.mark == "cycleUp"||cfg.mark =="allUp";
                 }).then(function (val) {
                   if (val && val.length) {
                     var points = val.find(function (o) {
                       return o.key == "InspectionPoint";
                     });
                     var ckpoints = val.find(function (o) {
-                      return o.key == "dynPoints";
+                      return o.key == "cyclePoints";
                     });
                     var problemRecords = val.find(function (o) {
-                      return o.key == "dynProblemRecord";
+                      return o.key == "cycleProblemRecord";
                     });
                     var InspectionProblemRecordFiles = val.find(function (o) {
-                      return o.key == "dynInspectionProblemRecordFile";
+                      return o.key == "cycleInspectionProblemRecordFile";
                     });
                     if (points && points.vals) {
                       points.vals.forEach(function (t) {
@@ -388,19 +383,6 @@
                           })
                         }
                       }
-                      if (points && points.vals) {
-                        points.vals.forEach(function (t) {
-                          if (t.geometry) {
-                            t.Geometry = t.geometry;
-                          }
-                          if (typeof t.Geometry === 'string') {
-                            t.Geometry = JSON.parse(t.Geometry);
-                          }
-                          tasks.push(function () {
-                            return remote.Procedure.InspectionPoint.create(t)
-                          })
-                        });
-                      }
                       return remote.safe.safeUp({
                         "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
                         "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
@@ -444,7 +426,7 @@
     }
 
     function loadInspection() {
-      return remote.safe.getBatchWrap("DayInspects").then(function (r) {
+      return remote.safe.getBatchWrap("cycle").then(function (r) {
         vm.Inspections = [];
         if (angular.isArray(r.data)) {
           var ys = [];
@@ -455,7 +437,7 @@
             if (angular.isArray(r.data)) {
               ys.forEach(function (k) {
                 if (r.data.find(function (m) {
-                    return m.Id == "safedyn" + k.InspectionID;
+                    return m.Id == "cycleYs" + k.InspectionID;
                   })) {
                   k.isOffline = true;
                 }
@@ -467,7 +449,7 @@
       });
     }
     function loadZgLst() {
-      return remote.safe.getRectifications("DayInspects").then(function (r) {
+      return remote.safe.getRectifications("cycle").then(function (r) {
         vm.zglist = [];
         if (angular.isArray(r.data)) {
           var zg = [];
@@ -478,7 +460,7 @@
             if (angular.isArray(r.data)) {
               zg.forEach(function (k) {
                 if (r.data.find(function (m) {
-                    return m.Id == "zgdyn" + k.RectificationID;
+                    return m.Id == "cycleZg" + k.RectificationID;
                   })) {
                   k.isOffline = true;
                 }
@@ -502,7 +484,7 @@
       load();
     })
     vm.setModule = function (val) {
-      $state.go('app.xhsc.dyn.sfDynamicBase', {yw: val})
+      $state.go('app.xhsc.xj.base', {yw: val})
     }
     vm.zbzgbtnAction = function (item, evt) {
       $mdBottomSheet.show({
@@ -534,7 +516,7 @@
       if (!item.isOffline) {
         vm.downloadzg(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go('app.xhsc.dyn.sfDynamicRectify', {
+            $state.go('app.xhsc.xj.rectify', {
               Role: 'zb',
               InspectionID: item.InspectionID,
               AcceptanceItemID: item.AcceptanceItemID,
@@ -545,7 +527,7 @@
         })
       } else {
         api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.dyn.sfDynamicRectify', {
+          $state.go('app.xhsc.xj.rectify', {
             Role: 'zb',
             InspectionID: item.InspectionID,
             AcceptanceItemID: item.AcceptanceItemID,
@@ -559,7 +541,7 @@
       if (!item.isOffline) {
         vm.downloadzg(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go('app.xhsc.dyn.sfDynamicRectify', {
+            $state.go('app.xhsc.xj.rectify', {
               Role: 'jl',
               InspectionID: item.InspectionID,
               AcceptanceItemID: item.AcceptanceItemID,
@@ -569,7 +551,7 @@
         })
       } else {
         api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.dyn.sfDynamicRectify', {
+          $state.go('app.xhsc.xj.rectify', {
             Role: 'jl',
             InspectionID: item.InspectionID,
             AcceptanceItemID: item.AcceptanceItemID,
@@ -608,7 +590,7 @@
       if (!item.isOffline) {
         vm.downloadys(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go('app.xhsc.dyn.sfDynamicAccept', {
+            $state.go('app.xhsc.xj.accept', {
               projectId: item.ProjectID,
               areaId: item.AreaID,
               InspectionId: item.InspectionID
@@ -617,7 +599,7 @@
         })
       } else {
         api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.dyn.sfDynamicAccept', {
+          $state.go('app.xhsc.xj.accept', {
             projectId: item.ProjectID,
             areaId: item.AreaID,
             InspectionId: item.InspectionID
