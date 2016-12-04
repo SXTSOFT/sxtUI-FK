@@ -21,7 +21,7 @@
         slideRole:'=',
         warter:"="
       },
-      templateUrl:'app/main/xhsc/directive/safe_civiliz/sxtSafeRecheckPopup.html',
+      templateUrl:'app/main/xhsc/directive/xj/xjRecheckPopup.html',
       link:link
     }
 
@@ -33,14 +33,14 @@
       $(element).appendTo('body');
       scope.apply = function(){
         //console.log('scope',scope)
-        remote.safe.problemRecordQuery(scope.data.value.CheckpointID).then(function(r){
+        remote.cycleLook.cycleProblemRecordQuery(scope.data.value.CheckpointID).then(function(r){
           scope.images={
             zb:[],
             jl:[]
           }
 
           r.data.forEach(function (p) {
-            remote.safe.ProblemRecordFileQuery(p.ProblemRecordID).then(function (r2) {
+            remote.cycleLook.cycleProblemRecordFileQuery(p.ProblemRecordID).then(function (r2) {
               if (p.DescRole=="jl"){
                 scope.images.jl=scope.images.jl.concat(r2.data)
               }else{
@@ -91,7 +91,7 @@
 
       function createZb(update) {
         return $q(function (resolve,reject) {
-          remote.safe.problemRecordQuery.cfgSet({
+          remote.cycleLook.cycleProblemRecordQuery.cfgSet({
             filter: function (item, CheckpointID) {
               return item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="zb";
             },
@@ -107,7 +107,7 @@
               };
               rec.ProblemRecordID = sxt.uuid();
               rec._id=rec.ProblemRecordID;
-              remote.safe.problemRecordCreate(rec).then(function () {
+              remote.cycleLook.cycleProblemRecordCreate(rec).then(function () {
                 resolve(rec);
               })
             }else {
@@ -128,7 +128,7 @@
                 FileID:sxt.uuid()+'.jpg',
                 FileContent:image
               }
-              remote.safe.ProblemRecordFileCreate(img).then(function () {
+              remote.cycleLook.cycleProblemRecordFileCreate(img).then(function () {
                 // var imgs = scope.Record.zb.images = (scope.Record.zb.images || []);
                 scope.images.zb=scope.images.zb.concat([img]);
               })
@@ -160,7 +160,7 @@
             return;
           }
           createZb(true).then(function () {
-            remote.safe.ckPointCreate(scope.data.value).then(function () {
+            remote.cycleLook.ckPointCreate(scope.data.value).then(function () {
               scope.slideShow = false;
               scope.context.updateStatus(scope.data.value.PositionID,convert(scope.data.value.Status));
             });
@@ -168,11 +168,11 @@
         }
         else if(scope.role=='jl'){
           scope.data.value.Status = scope.data.value.Status==2?2:4;
-          remote.safe.ckPointCreate(scope.data.value).then(function () {
+          remote.cycleLook.ckPointCreate(scope.data.value).then(function () {
             scope.slideShow = false;
             scope.context.updateStatus(scope.data.value.PositionID,convert(scope.data.value.Status));
           }).then(function () {
-            remote.safe.problemRecordQuery.cfgSet({
+            remote.cycleLook.cycleProblemRecordQuery.cfgSet({
               filter: function (item, CheckpointID) {
                 return item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="jl";
               },
@@ -187,7 +187,7 @@
                 };
                 rec.ProblemRecordID = sxt.uuid();
                 rec._id=rec.ProblemRecordID;
-                remote.safe.problemRecordCreate(rec)
+                remote.cycleLook.cycleProblemRecordCreate(rec)
               }
             });
           });

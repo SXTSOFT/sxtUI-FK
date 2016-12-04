@@ -22,7 +22,7 @@
     vm.InspectionID = $state.params.InspectionID;
     vm.RectificationID = $state.params.RectificationID;
     api.setNetwork(1).then(function () {
-      remote.safe.getRectificationSingle(vm.RectificationID,"DayInspects").then(function (r) {
+      remote.safe.getRectificationSingle(vm.RectificationID,"cycle").then(function (r) {
         vm.Rectification = r.data[0];
         vm.pareaList = vm.Rectification.Children;
         vm.regionSelect = vm.pareaList[0];
@@ -59,7 +59,7 @@
         };
 
         utils.alert('提交成功，请稍后离线上传数据',null,function () {
-          $state.go("app.xhsc.dyn.sfDynamicMain");
+          $state.go("app.xhsc.xj.main");
         });
       });
 

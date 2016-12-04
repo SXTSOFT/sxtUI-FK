@@ -15,7 +15,7 @@
   function xjAccept($timeout,remote,mapPopupSerivce,sxt,utils,$window,xhUtils) {
     return {
       scope:{
-        item:'=sxtMapAccept',
+        item:'=xjAccept',
         procedure:'=',
         regionId:'=',
         inspectionId:'=',
@@ -53,9 +53,13 @@
               cb();
             },
             onLoad: function (cb) {
-              remote.safe.ckPointQuery.cfgSet({
+              if (scope.asyload){
+                return;
+              }
+              scope.asyload=true;
+              remote.cycleLook.cyclePointQuery.cfgSet({
                 filter:function (item,AcceptanceItemID,AreaID,inspectionId){
-                  return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID&&item.InspectionID==inspectionId;
+                  return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID&&item.InspectionExtendID==inspectionId;
                 }
               })(scope.procedure,scope.regionId,scope.inspectionId).then(function (r) {
                 remote.Procedure.InspectionPoint.query(scope.inspectionId,scope.procedure, scope.regionId).then(function (r1) {
@@ -82,6 +86,7 @@
                   scope.item = null;
                   fg.addData(fs,false);
                   cb();
+                  scope.asyload=false;
                   scope.ct && (scope.ct.loading = false);
                 })
               })
@@ -100,8 +105,9 @@
                   return d.PositionID == point.MeasurePointID;
                 })) {
                 var v = {
-                  InspectionID:scope.inspectionId,
-                  InspectionAreaID:scope.inspectionAreaId,
+                  // InspectionID:scope.inspectionId,
+                  // InspectionAreaID:scope.inspectionAreaId,
+                  InspectionExtendID:scope.inspectionId,
                   CheckpointID:sxt.uuid(),
                   IndexPointID:scope.item.ProblemID,
                   AreaID:scope.regionId,
@@ -120,7 +126,7 @@
                 v.action="Insert";
                 fg.data.push(v);
                 scope.ct && scope.ct.cancelMode && scope.ct.cancelMode();
-                remote.safe.ckPointCreate(v);
+                remote.cycleLook.cyclePointCreate(v);
 
               }
               cb(layer);
@@ -138,7 +144,7 @@
             onUpdateData: function (context, data, editScope) {
               if(data.v.ProblemSortName == 'T'){
                 data.v.action="Insert";
-                remote.safe.ckPointCreate(data.v);
+                remote.cycleLook.cyclePointCreate(data.v);
               }
             },
             onDelete: function (layer,cb) {
@@ -150,17 +156,17 @@
                 }),ix = fg.data.indexOf(v);
                 fg.data.splice(ix,1);
                 //删除检查点
-                remote.safe.ckPointDelete({CheckpointID:v.CheckpointID}).then(function () {
+                remote.cycleLook.cyclePointDelete({CheckpointID:v.CheckpointID}).then(function () {
                   //删除记录
-                  remote.safe.problemRecordQuery(v.CheckpointID).then(function (k) {
+                  remote.cycleLook.cycleProblemRecordQuery(v.CheckpointID).then(function (k) {
                     if (angular.isArray(k.data)){
                       k.data.forEach(function (w) {
                         //删除照片
-                        remote.safe.problemRecordDelete(w).then(function () {
-                          remote.safe.ProblemRecordFileQuery(w.ProblemRecordID).then(function (m) {
+                        remote.cycleLook.cycleProblemRecordDelete(w).then(function () {
+                          remote.cycleLook.cycleProblemRecordFileQuery(w.ProblemRecordID).then(function (m) {
                             if (angular.isArray(m.data)){
                               m.data.forEach(function (q) {
-                                remote.safe.ProblemRecordFileDelete(q);
+                                remote.cycleLook.cycleProblemRecordFileDelete(q);
                               })
                             }
                           })
@@ -195,7 +201,11 @@
             }
           });
           $timeout(function () {
-            remote.Project.getDrawingRelations(scope.regionId).then(function (result) {
+            scope.asyn=true;
+            var areaID=scope.regionId.substr(0,10);
+            remote.safe.getDrawingRelate.cfgSet({
+              offline: true
+            })("cycle",areaID).then(function (result) {
               var imgId = result.data.find(function (item) {
                 return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
               });
@@ -206,6 +216,7 @@
               }
               if (imgId) {
                 remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
+                  scope.asyn=false;
                   if(!result2.data.DrawingContent){
                     scope.ct && (scope.ct.loading = false);
                     utils.alert('未找到图纸,请与管理员联系!(2)');
@@ -213,34 +224,47 @@
                   }
                   map.loadSvgXml(result2.data.DrawingContent);
                   map.map.addControl(fg);
-                  var btn = $('<div class="mapboxgl-ctrl-group mapboxgl-ctrl"><button class="mapboxgl-ctrl-icon links"  title="其它图纸"></button></div>');
-                  btn.click(function () {
-                    var mapList = [];
-                    result.data.forEach(function (item) {
-                      if(item.RegionId == scope.regionId && item.DrawingID!=imgId.DrawingID && !mapList.find(function (f) {
-                          return f.DrawingID==item.DrawingID
-                        })){
-                        mapList.push(item);
-                      }
-                    });
-
-                    xhUtils.openLinks(mapList);
-                  });
-                  element.find('.mapboxgl-ctrl-bottom-left').append(btn);
-
+                  // var btn = $('<div class="mapboxgl-ctrl-group mapboxgl-ctrl"><button class="mapboxgl-ctrl-icon links"  title="其它图纸"></button></div>');
+                  // btn.click(function () {
+                  //   var mapList = [];
+                  //   result.data.forEach(function (item) {
+                  //     if(item.RegionId == scope.regionId && item.DrawingID!=imgId.DrawingID && !mapList.find(function (f) {
+                  //         return f.DrawingID==item.DrawingID
+                  //       })){
+                  //       mapList.push(item);
+                  //     }
+                  //   });
+                  //
+                  //   xhUtils.openLinks(mapList);
+                  // });
+                  // element.find('.mapboxgl-ctrl-bottom-left').append(btn);
+                }).catch(function () {
+                  scope.asyn=false;
                 })
               }
               else{
+                scope.asyn=false;
                 scope.ct && (scope.ct.loading = false);
                 utils.alert('未找到图纸,请与管理员联系!(1)')
                 return;
               }
+            }).catch(function () {
+              scope.asyn=false;
             });
           }, 0);
         }
       };
       $timeout(function () {
         scope.$watch('regionId', function () {
+          if(scope.regionId && scope.procedure) {
+            if(map){
+              map.remove();
+              map = null;
+            }
+            install();
+          }
+        });
+        scope.$watch('procedure', function () {
           if(scope.regionId && scope.procedure) {
             if(map){
               map.remove();

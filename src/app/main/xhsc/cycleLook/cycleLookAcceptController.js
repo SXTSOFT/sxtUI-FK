@@ -37,7 +37,7 @@
       $scope.areas= xhscService.getRegionTreeOffline("", 31, 1);
       $scope.procedure=remote.safe.getSecurityItem.cfgSet({
         offline: true
-      })("DayInspects");
+      })("cycle");
       $scope.current={};
 
       var sendResult = $rootScope.$on('sendGxResult',function(){

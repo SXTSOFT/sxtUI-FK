@@ -12,7 +12,7 @@
   function xjRecheck($timeout,remote,mapPopupSerivce,sxt,utils,$q,$window,xhUtils) {
     return {
       scope:{
-        item:'=sxtSafeRecheck',
+        item:'=xjRecheck',
         sxtMapShow:'=',
         items:'=',
         procedure:'=',
@@ -65,12 +65,12 @@
             onLoad: function (cb) {
               $("#inspect").css("display","none");
               $q.all([
-                remote.safe.ckPointQuery.cfgSet({
+                remote.cycleLook.cyclePointQuery.cfgSet({
                   filter:function (item,inspectionId) {
-                    return item.InspectionID==inspectionId;
+                    return item.InspectionID==inspectionId&&item.AcceptanceItemID==scope.procedure&&item.AreaID==scope.regionId;
                   }
                 })(scope.inspectionId),
-                remote.safe.getSafePointGeo()
+                remote.cycleLook.getSafePointGeo()
               ]).then(function (res) {
                 var fs = [];
                 fg.data = res[0].data;
@@ -115,7 +115,9 @@
             }
           });
           $timeout(function () {
-            remote.Project.getDrawingRelations(scope.regionId).then(function (result) {
+            remote.safe.getDrawingRelate.cfgSet({
+              offline: true
+            })("cycle",scope.regionId).then(function (result) {
               var imgId = result.data.find(function (item) {
                 return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
               });

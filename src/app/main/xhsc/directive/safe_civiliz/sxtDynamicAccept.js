@@ -57,7 +57,7 @@
                 return;
               }
               scope.asyload=true;
-              remote.safe.ckPointQuery.cfgSet({
+              remote.safe.dynPointQuery.cfgSet({
                 filter:function (item,AcceptanceItemID,AreaID,inspectionId){
                   return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID&&item.InspectionExtendID==inspectionId;
                 }

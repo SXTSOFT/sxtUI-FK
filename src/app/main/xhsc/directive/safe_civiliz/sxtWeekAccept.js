@@ -52,7 +52,7 @@
               cb();
             },
             onLoad: function (cb) {
-              remote.safe.dynPointQuery.cfgSet({
+              remote.safe.weekPointQuery.cfgSet({
                 filter:function (item,AcceptanceItemID,AreaID,inspectionId){
                   return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID&&item.InspectionExtendID==inspectionId;
                 }
