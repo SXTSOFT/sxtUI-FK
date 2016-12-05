@@ -17,7 +17,7 @@
     $rootScope.title = $stateParams.title;
     var user = auth.current();
     var status;
-    if(user.Role.MemberType===''){
+    if(user.Role.MemberType==='' || user.Role.MemberType == 4){
       api.setNetwork(0);
       status = 16;
     }else{
@@ -28,7 +28,6 @@
 
     api.xhsc.materialPlan.getMaterialPlanBatch($stateParams.id,status).then(function (r) {
       vm.planList = r.data;
-      console.log(vm.planList)
     });
 
   }

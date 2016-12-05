@@ -15,6 +15,7 @@
             'app.xhsc',
             'app.plan',
             'app.material',
-            'app.earthwork'
+            'app.earthwork',
+            'app.pileFoundation'
         ]);
 })();

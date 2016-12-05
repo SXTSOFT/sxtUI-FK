@@ -26,7 +26,7 @@
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item style="padding-right: 0;">
       <div flex="60" ng-repeat="img in vm.exitImgs" sxt-images="vm.exitImgs" style="text-align: center;margin: 5px 0;">
-        <img ng-src="{{img.ImageByte}}" style="width: 450px;" flex="95" style="display: block;"/>
+        <img ng-src="{{img.ImageByte}}" class="uploadPhoto" flex="95" style="display: block;"/>
       </div>
       <md-button class="md-secondary" ng-click="vm.addPhoto(128)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>

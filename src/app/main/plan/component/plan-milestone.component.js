@@ -23,4 +23,4 @@
       vm.mainProcess = r.data;
     });
   }
-})(angular,undefined)
+})(angular,undefined);

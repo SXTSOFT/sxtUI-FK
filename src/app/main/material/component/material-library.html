@@ -1,0 +1,44 @@
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools">
+    <h2>
+      <span>材料管理</span>
+    </h2>
+  </div>
+</md-toolbar>
+<div class="row" style="padding:0px 15px;">
+  <md-content flex layout-fill class="white-bg" layout-padding id="treeCls">
+    <script type="text/ng-template" id="nodes_renderer.html">
+      <div ui-tree-handle class="tree-node tree-node-content ng-scope angular-ui-tree-handle">
+        <span class="pull-right treespan">
+          <a data-nodrag ng-if="node.level==1" ng-click="vm.batchAdd(node,$event)"><span class="glyphicon">批量管理</span></a>
+          <a data-nodrag ng-if="node.level==1"><span class="glyphicon" ng-click="vm.addMaterial(node)">新增</span></a>
+          <a data-nodrag ng-click="vm.btnEdit(node,true,$event)"><span class="glyphicon">编辑</span></a>
+        <a data-nodrag ng-click=" vm.btnRemove(node)"><span class="glyphicon">删除</span></a>
+        </span>
+        <a ng-if="node.nodes && node.nodes.length > 0" ng-click="vm.toggleClick(node,this)">
+          <span class="glyphicon" ng-class="{'glyphicon-plus': !collapsed,'glyphicon-minus': collapsed}"></span>
+        </a>
+        <span class="nodetitle ng-binding">{{node.title}}<i class="fa fa-refresh fa-spin"></i></span>
+      </div>
+      <ol ui-tree-nodes ng-model="node.nodes" ng-class="{hidden: !collapsed}">
+        <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
+        </li>
+      </ol>
+    </script>
+
+    <div>
+      <a class="angular-ui-tree-handle" data-nodrag style="padding-top: 3px;padding-bottom: 3px;">
+        <span class="glyphicon glyphicon-plus" ng-click="vm.showPrompt(null,false,$event)">&nbsp;新增材料库</span>
+      </a>
+    </div>
+
+    <div style="margin-top: -10px;">
+      <div ui-tree data-drag-enabled="false" id="tree-root">
+        <ol ui-tree-nodes ng-model="data">
+          <li ng-repeat="node in data.nodeList" ui-tree-node ng-include="'nodes_renderer.html'" class="ng-scope angular-ui-tree-node"></li>
+        </ol>
+      </div>
+    </div>
+</md-content>
+</div>
+

@@ -12,16 +12,21 @@
     });
 
   /** @ngInject */
-  function approval($rootScope,$scope,api,$mdBottomSheet,$stateParams,utils,$filter,$state,$mdDialog){
+  function approval($rootScope,$scope,api,$mdBottomSheet,$stateParams,utils,$filter,$state,$mdDialog,sxt){
     $rootScope.sendBtName = '批示';
     var vm = this;
     vm.data = {};
     vm.intoFactoryImgs = [];
     vm.checkedImgs = [];
+
+
+
     api.xhsc.materialPlan.getMaterialPlanBatchById($stateParams.id).then(function (r) {
       vm.data = r.data;
-      vm.intoFactoryImgs = $filter('filter')(vm.data.Images,{ApproachStage:1});
-      vm.checkedImgs = $filter('filter')(vm.data.Images,{ApproachStage:2});
+      vm.data.Images.forEach(function (i) {
+        i.ImageByte = sxt.app.api + i.ImageByte;
+      });
+
       vm.data.PlanTime = new Date(vm.data.PlanTime).Format('yyyy年MM月dd日');
       vm.data.ApproachTime = new Date(vm.data.ApproachTime).Format('yyyy年MM月dd日');
       vm.data.AcceptanceTime = new Date(vm.data.AcceptanceTime).Format('yyyy年MM月dd日');

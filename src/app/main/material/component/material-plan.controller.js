@@ -33,9 +33,12 @@
     }
 
     $scope.searchTerm;
-
+    $scope.searchC;
     $scope.clearSearchTerm = function() {
       $scope.searchTerm = '';
+    };
+    $scope.clearSearchC = function() {
+      $scope.searchC = '';
     };
 
     $element.find('input').on('keydown', function(ev) {
@@ -49,6 +52,10 @@
       })
     };
 
+    api.material.contract.getList({Skip:0,Limit:999}).then(function (q) {
+      vm.contracts = q.data.Items||[];
+    });
+
     vm.getAreas = function (pId) {
       return api.xhsc.Project.GetAreaChildenbyID(pId).then(function (r) {
         vm.regions = r.data;
@@ -61,6 +68,14 @@
         vm.sections = e.data;
       });
     };
+
+    vm.typeId;
+    vm.getMaterial = function () {
+      api.material.materialScience.GetMaterialByTypeId(vm.typeId).then(function (r) {
+        vm.materials = r.data;
+      })
+    };
+
     vm.upNext = function () {
       vm.regions = null;
       vm.sections = null;
@@ -73,13 +88,13 @@
       vm.SectionId = null;
     };
 
-    api.material.materialScience.getMaterialList().then(function (r) {
-      vm.materials = r.data||[];
-    });
+    // api.material.materialScience.getMaterialList().then(function (r) {
+    //   vm.materials = r.data||[];
+    // });
 
     vm.init = function (m) {
-      vm.Specifications = m.Specifications.split('，') || [];
-      vm.Models = m.Model.split('，') || [];
+      vm.Specifications = m.Specifications?m.Specifications.split('，'):[];
+      vm.Models = m.Model?m.Model.split('，'):[];
     };
 
     if(vm.data.Id){
@@ -96,15 +111,13 @@
         vm.RegionId = r.data.RegionId;
         vm.getSections(vm.data.RegionId);
         vm.SectionId = r.data.SectionId;
-        api.material.materialScience.getMaterialList().then(function (r) {
+        api.material.materialScience.GetMaterialByTypeId(vm.data.TypeId).then(function (r) {
           vm.materials = r.data||[];
           vm.materials.forEach(function (q) {
-            q.childrens.forEach(function (c) {
-              if(c.Id == vm.data.MaterialId){
-                c.selected = true;
-                vm.init(c);
-              }
-            })
+            if(q.Id == vm.data.MaterialId){
+              q.selected = true;
+              vm.init(q);
+            }
           });
         });
 

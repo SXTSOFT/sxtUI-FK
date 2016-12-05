@@ -49,9 +49,26 @@
       </md-input-container>
     </div>
     <div layout="row">
+      <md-input-container style="height: 58px;" flex="100">
+        <label>合同</label>
+        <md-select name="ContractId" required ng-model="vm.data.ContractId" md-on-close="clearSearchC()"
+                   data-md-container-class="selectdemoSelectHeader">
+          <md-select-header class="demo-select-header">
+            <input ng-model="searchC"
+                   type="search"
+                   placeholder="搜索.."
+                   class="demo-header-searchbox md-text">
+          </md-select-header>
+          <md-option ng-value="item.Id" ng-click="vm.data.Contract = item.Number;vm.typeId=item.MaterialTypeId" ng-repeat="item in vm.contracts | filter:searchC">
+            {{item.Name + '/' + item.Number}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+    <div layout="row">
       <md-input-container style="height: 58px;" flex="40">
         <label>材料/设备名称</label>
-        <md-select name="material" required ng-model="vm.data.Material" md-on-close="clearSearchTerm()"
+        <md-select name="material" required ng-model="vm.data.Material" md-on-open="vm.getMaterial()" md-on-close="clearSearchTerm()"
                    data-md-container-class="selectdemoSelectHeader">
           <md-select-header class="demo-select-header">
             <input ng-model="searchTerm"
@@ -59,11 +76,9 @@
                    placeholder="搜索.."
                    class="demo-header-searchbox md-text">
           </md-select-header>
-          <md-optgroup label="{{item.CategoryName}}" ng-repeat="item in vm.materials">
-            <md-option ng-value="m" ng-selected="m.selected" ng-repeat="m in item.childrens | filter:searchTerm"
-                       ng-click="vm.init(m)">{{m.MaterialName}}
-            </md-option>
-          </md-optgroup>
+          <md-option ng-value="m" ng-selected="m.selected" ng-repeat="m in vm.materials | filter:searchTerm"
+                     ng-click="vm.init(m)">{{m.MaterialName}}
+          </md-option>
         </md-select>
         <div ng-messages="myForm.material.$error" ng-show="myForm.material.$touched" role="alert">
           <div ng-message="required">
@@ -128,15 +143,6 @@
       <div ng-messages="myForm.SupplyType.$error" ng-show="myForm.SupplyType.$touched" role="alert">
         <div ng-message="required">
           <span>请选择供货方式.</span>
-        </div>
-      </div>
-    </md-input-container>
-    <md-input-container class="md-block">
-      <label>合同编号</label>
-      <input name="Contract" type="text" required ng-model="vm.data.Contract">
-      <div ng-messages="myForm.Contract.$error" ng-show="myForm.Contract.$touched" role="alert">
-        <div ng-message="required">
-          <span>请输入合同编号.</span>
         </div>
       </div>
     </md-input-container>

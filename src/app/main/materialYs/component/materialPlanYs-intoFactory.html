@@ -1,26 +1,19 @@
 <md-content>
   <md-list ng-cloak>
-    <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
       <label flex="50">进场时间</label>
-      <!--<md-datepicker flex="50" ng-model="vm.data.ApproachTime" ng-disabled="true"></md-datepicker>-->
-      <md-input-container flex="50" style="margin:0;padding: 0;">
-        <input type="text" ng-model="vm.outPutDate"style="top: 10px;position: relative; text-align: right;" required ng-disabled="true" />
-      </md-input-container>
+      <p flex="50" style="text-align: right;">{{vm.outPutDate | date:'yyyy年MM月dd日'}}</p>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
       <label flex="50">进场数量</label>
       <md-input-container flex="50"  style="margin:0;padding: 0;">
-        <input type="number" ng-model="vm.data.ApproachCount" style="top: 10px;position: relative; text-align: right;" min="0" required ng-disabled="vm.data.ApproachType==0" />
+        <input type="number" ng-model="vm.data.ApproachCount" style="top: 10px;position: relative; text-align: right;" min="0" required ng-disabled="vm.CountDisabled" />
       </md-input-container>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item style="height: 54px;">
       <label flex="50">厂家/品牌</label>
-      <!--<md-input-container flex="50" style="margin:0;padding: 0;">-->
-        <!--<input type="text" ng-model="vm.data.Brand"style="top: 10px;position: relative; text-align: right;" required ng-disabled="vm.data.ApproachType==0" />-->
-      <!--</md-input-container>-->
       <md-select name="type" ng-model="vm.data.Brand" flex="50" style="top: 10px;text-align: right;">
         <md-option ng-value="brand" ng-repeat="brand in vm.Brands">{{brand}}</md-option>
       </md-select>
@@ -53,7 +46,7 @@
     <md-list-item style="padding-right: 0;">
       <label flex="30" style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">车辆</label>
       <div flex="60" ng-repeat="img in vm.vehicleImgs" sxt-images="vm.vehicleImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
+        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
       </div>
       <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(256)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>
@@ -61,7 +54,7 @@
     <md-list-item  style="padding-right: 0;">
       <label flex="30" style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">货物</label>
       <div flex="60" ng-repeat="img in vm.goodsImgs" sxt-images="vm.goodsImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
+        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
       </div>
       <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(512)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>
@@ -69,7 +62,7 @@
     <md-list-item  style="padding-right: 0;">
       <label flex="30" style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">配合检查人</label>
       <div flex="60" ng-repeat="img in vm.rummagerImgs" sxt-images="vm.rummagerImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
+        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
       </div>
       <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(1024)" ><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>
@@ -77,7 +70,7 @@
     <md-list-item  style="padding-right: 0;">
       <label flex="30" style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">合格证</label>
       <div flex="60" ng-repeat="img in vm.CertificateImgs" sxt-images="vm.CertificateImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
+        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
       </div>
       <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(2048)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>

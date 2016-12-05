@@ -37,6 +37,7 @@
     if (vm.data.Id) {
       api.material.materialScience.getMaterial(vm.data.Id).then(function (r) {
         vm.data = r.data;
+        console.log(vm.data);
       })
     }
 
@@ -45,13 +46,13 @@
         if (vm.data.Id) {
           api.material.materialScience.putMaterial(vm.data).then(function () {
             utils.alert("提交成功", null, function () {
-              $state.go("app.material.list");
+              $state.go("app.material.materialLibrary");
             });
           })
         } else {
           api.material.materialScience.Create(vm.data).then(function () {
             utils.alert("提交成功", null, function () {
-              $state.go("app.material.list");
+              $state.go("app.material.materialLibrary");
             });
           })
         }

@@ -1,1 +1,64 @@
 .paddingLR15{padding:0px 15px !important;}
+
+.imageEdit .edititem{
+  min-width:100px;
+  float:left;
+  padding:5px 0;
+  position:relative;
+}
+.imageEdit .edititem .action{
+  position:absolute;
+  top:5px;
+  right:5px;
+}
+
+.imageEdit .file-drop-zone{
+  width:140px;
+  cursor:hand;
+  border-style:solid;
+  background:url(main/earthwork/images/plug.png) no-repeat center center;
+}
+
+.imageEdit .edititem .proc{
+  position:absolute;
+  top:45%;
+  left:45%;
+}
+
+.imageEdit .edititem .imgleft {
+  position: absolute;
+  top:  5px;
+  left: 5px;
+}
+
+.file-drop-zone {
+  position: relative;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+  background: #f6f6f6;
+  border: rgba(0, 0, 0, 0.2) 2px dashed;
+  margin-bottom: 10px;
+}
+
+.file-drop-zone input {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.img-thumbnail {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+  padding: 4px;
+  line-height: 1.42857143;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}

@@ -4,9 +4,7 @@
     <md-list-item>
       <label flex="40">送检时间</label>
       <!--<md-datepicker flex="60" ng-model="vm.data.InspectionTime" ng-disabled="true" required></md-datepicker>-->
-      <md-input-container flex="60" style="margin:0;padding: 0;">
-        <input type="text" ng-model="vm.outPutDate"style="top: 10px;position: relative; text-align: right;" required ng-disabled="true" />
-      </md-input-container>
+      <p flex="60" style="text-align: right;">{{vm.outPutDate | date:'yyyy年MM月dd日'}}</p>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
@@ -28,7 +26,7 @@
     <md-list-item style="padding-right: 0;">
       <label flex="30" style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">抽样过程</label>
       <div flex="60" ng-repeat="img in vm.samplingProcessImgs" sxt-images="vm.samplingProcessImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
+        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
       </div>
       <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(16)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>
@@ -36,7 +34,7 @@
     <md-list-item style="padding-right: 0;">
       <label flex="30"style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">检查单</label>
       <div flex="60" ng-repeat="img in vm.checkListImgs" sxt-images="vm.checkListImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
+        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
       </div>
       <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(32)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>

@@ -28,9 +28,10 @@
       db("materialPlanReportInfo").destroy();
       db("materialPlanApprovalInfo").destroy();
       db("materialExitInfo").destroy();
-      db("materialBatchInitFactory").destroy();
+      db("materialBatchIntoFactory").destroy();
       db("materialBatchInspection").destroy();
       db("materialUnqualifiedExit").destroy();
+      db("materialBatchProgress").destroy();
     }
 
     loadSection();
@@ -43,7 +44,7 @@
           utils.alert('暂无项目！');
         }
         else {
-          if(user.Role.MemberType === ""){
+          if(user.Role.MemberType === "" || user.Role.MemberType == 4){
             vm.offlines = result.data;
           }else{
             remote.offline.query().then(function (r2) {

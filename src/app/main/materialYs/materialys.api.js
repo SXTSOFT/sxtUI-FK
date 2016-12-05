@@ -28,18 +28,17 @@
           delete:true,
           local:true
         }).bind(),
-        addMaterialPlanBatch:$http.db({
-          _id:'materialPlan',
-          idField:'Id',
-          upload:true,
-          local:true
-        }).bind(),
-        getMaterialBatchInitFactory:$http.db({
-          _id:'materialBatchInitFactory',
+        getMaterialBatchIntoFactory:$http.db({
+          _id:'materialBatchIntoFactory',
           idField:'Id',
           dataType:1
         }).bind(),
-
+        updateMaterialBatchIntoFactory:$http.db({
+          _id:'materialBatchIntoFactory',
+          idField:'Id',
+          update:true,
+          local:true
+        }).bind(),
         getMaterialPlanDetailList:$http.db({
           _id:'materialPlanDetailList',
           idField:'Id',
@@ -92,7 +91,7 @@
           return $http.post('/api/MaterialPlan/InsertExitInfo', data);
         }),
         IntoFactoryMaterialBatch:$http.db({
-          _id:'materialBatchInitFactory',
+          _id:'materialBatchIntoFactory',
           idField:'Id',
           upload:true
         }).bind(function (data) {

@@ -6,11 +6,11 @@
   'use strict';
 
   angular
-    .module('app.earthwork')
-    .directive('sxtAreaTf', sxtAreaTf);
+    .module('app.pileFoundation')
+    .directive('sxtAreaZj', sxtAreaZj);
 
   /**@ngInject*/
-  function sxtAreaTf($timeout, sxt, utils, api) {
+  function sxtAreaZj($timeout, sxt, utils, api) {
 
     return {
       scope: {
@@ -51,105 +51,14 @@
             });
           map.projectId = scope.projectId;
           layer.addTo(map);
-          L.drawLocal = {
-            draw: {
-              toolbar: {
-                actions: {
-                  title: '取消',
-                  text: '取消'
-                },
-                undo: {
-                  title: '撤消最后一个点',
-                  text: '撤消'
-                },
-                buttons: {
-                  polyline: '',
-                  polygon: '切画区域',
-                  rectangle: 'Draw a rectangle',
-                  circle: 'Draw a circle',
-                  marker: '摄像头位置'
-                }
-              },
-              handlers: {
-                circle: {
-                  tooltip: {
-                    start: 'Click and drag to draw circle.'
-                  },
-                  radius: 'Radius'
-                },
-                marker: {
-                  tooltip: {
-                    start: '点击这里放置摄像头'
-                  }
-                },
-                polygon: {
-                  tooltip: {
-                    start: '点击开始',
-                    cont: '点击继续',
-                    end: '点击第一点结束.'
-                  }
-                },
-                polyline: {
-                  error: '<strong>Error:</strong> shape edges cannot cross!',
-                  tooltip: {
-                    start: 'Click to start drawing line.',
-                    cont: 'Click to continue drawing line.',
-                    end: 'Click last point to finish line.'
-                  }
-                },
-                rectangle: {
-                  tooltip: {
-                    start: 'Click and drag to draw rectangle.'
-                  }
-                },
-                simpleshape: {
-                  tooltip: {
-                    end: 'Release mouse to finish drawing.'
-                  }
-                }
-              }
-            },
-            edit: {
-              toolbar: {
-                actions: {
-                  save: {
-                    title: '保存编辑.',
-                    text: '保存'
-                  },
-                  cancel: {
-                    title: '取消编辑，所有改动将取消',
-                    text: '取消'
-                  }
-                },
-                buttons: {
-                  edit: 'Edit layers.',
-                  editDisabled: 'No layers to edit.',
-                  remove: 'Delete layers.',
-                  removeDisabled: 'No layers to delete.'
-                }
-              },
-              handlers: {
-                edit: {
-                  tooltip: {
-                    text: '点击方块改变区域.',
-                    subtext: '点击取消退出编辑'
-                  }
-                },
-                remove: {
-                  tooltip: {
-                    text: '点击物件删除'
-                  }
-                }
-              }
-            }
-          };
+
           var drawnItems = L.featureGroup(),
             labels = L.featureGroup();
 
           map.addLayer(labels);
           map.addLayer(drawnItems);
 
-          api.earthwork.earthwork.getEarthworkList({
+          api.pileFoundation.pileFoundation.getPileFoundationList({
             regionTreeId: scope.data.obj.RegionTreeId + '>' + scope.data.obj.Id,
             status: 4
           }).then(function (r) {
@@ -178,12 +87,13 @@
               })
               layer.on('click', function (e) {
                 openPopup(layer);
+                console.log('click')
               })
             })
           });
 
 
-          var editing, isPopup, drawLine;
+          var editing, isPopup, drawLine,isclose;
           map.on('draw:drawstart', function (e) {
             var type = e.layerType;
             if (type == 'polyline') {
@@ -214,8 +124,10 @@
             var type = e.layerType,
               layer = e.layer;
             drawnItems.addLayer(layer);
+            isclose = false;
             layer.on('click', function (e) {
               openPopup(layer);
+
             })
             openPopup(layer);
           });
@@ -227,13 +139,13 @@
               geojson.options = layer.options;
               geojson.options.radius = layer._mRadius;
               layer.data.GeoJSON = JSON.stringify(geojson);
-              api.earthwork.earthwork.updateEarthworkArea(layer.data.Id, layer.data);
+              api.pileFoundation.pileFoundation.updatePileFoundationArea(layer.data.Id, layer.data);
             });
           });
           map.on('draw:deleted', function (e) {
             var layers = e.layers;
             layers.eachLayer(function (layer) {
-              api.earthwork.earthwork.delete(layer.data.Id).then(function () {
+              api.pileFoundation.pileFoundation.delete(layer.data.Id).then(function () {
                 var ly = null;
                 labels.eachLayer(function (lb) {
                   if (lb.id == layer.options.id)
@@ -245,43 +157,43 @@
               })
             });
           });
-          // map.on('popupclose', function (e) {
-          //
-          //   var text = $('input', el).val();
-          //   var type = $('#zjtypeB', el).length ? $('#zjtypeB', el).prop('checked') ? 'B' : 'A' : null;
-          //   if (text == '') {
-          //     setTimeout(function () {
-          //       //alert('请输入名称');
-          //       e.popup.openOn(map);
-          //     }, 10);
-          //   }
-          //   else {
-          //     isPopup = false;
-          //     var layer = e.popup.layer;
-          //     layer.options.text = text;
-          //     layer.options.type = type;
-          //     var json = layer.toGeoJSON();
-          //     json.geometry.type = json.geometry.type != 'Polygon' ? 'Circle' : 'Polygon';
-          //     json.options = layer.options;
-          //     json.options.radius = layer._mRadius;
-          //     json.options.zy = scope.data.zy;
-          //     json.options.id = json.options.id || sxt.uuid();
-          //     layer.data = {
-          //       Id: json.options.id,
-          //       RegionName: text,
-          //       RegionType: scope.data.obj.RegionType,
-          //       RegionTreeId: scope.data.obj.RegionTreeId + '>' + scope.data.obj.Id,
-          //       RegionTreeName: scope.data.obj.RegionTreeName + '>' + scope.data.obj.RegionName,
-          //       UserId: json.options.type,
-          //       GeoJSON: JSON.stringify(json)
-          //     }
-          //
-          //     api.earthwork.earthwork.createEarthworkArea(layer.data).then(function () {
-          //       $('input', el).val('');
-          //       updateText(layer);
-          //     });
-          //   }
-          // });
+          map.on('popupclose', function (e) {
+            isclose = true;
+            var text = $('input', el).val();
+            var type = $('#zjtypeB', el).length ? $('#zjtypeB', el).prop('checked') ? 'B' : 'A' : null;
+            if (text == '') {
+              setTimeout(function () {
+                //alert('请输入名称');
+                e.popup.openOn(map);
+              }, 10);
+            }
+            else {
+              isPopup = false;
+              var layer = e.popup.layer;
+              layer.options.text = text;
+              layer.options.type = type;
+              var json = layer.toGeoJSON();
+              json.geometry.type = json.geometry.type != 'Polygon' ? 'Circle' : 'Polygon';
+              json.options = layer.options;
+              json.options.radius = layer._mRadius;
+              json.options.zy = scope.data.zy;
+              json.options.id = json.options.id || sxt.uuid();
+              layer.data = {
+                Id: json.options.id,
+                RegionName: text,
+                RegionType: scope.data.obj.RegionType,
+                RegionTreeId: scope.data.obj.RegionTreeId + '>' + scope.data.obj.Id,
+                RegionTreeName: scope.data.obj.RegionTreeName + '>' + scope.data.obj.RegionName,
+                UserId: json.options.type,
+                GeoJSON: JSON.stringify(json)
+              }
+
+              api.pileFoundation.pileFoundation.createPileFoundationArea(layer.data).then(function () {
+                $('input', el).val('');
+                updateText(layer);
+              });
+            }
+          });
 
           function updateText(layer) {
             if (!layer.options.text) return;
@@ -294,26 +206,30 @@
               labels.removeLayer(ly);
             }
 
-            ly = L.marker(layer.getBounds().getCenter(), {
-              icon: new ST.L.LabelIcon({
-                html: layer.options.text,
-                color: layer.options.color,
-                iconAnchor: [(layer.options.text.length * 6), 12]
-              }),
-              saved: false,
-              draggable: false,       // Allow label dragging...?
-              zIndexOffset: 1000     // Make appear above other map features
-            });
-            ly.id = layer.options.id;
-            labels.addLayer(ly);
+            // ly = L.marker(layer.getBounds().getCenter(), {
+            //   icon: new ST.L.LabelIcon({
+            //     html: layer.options.text,
+            //     color: layer.options.color,
+            //     iconAnchor: [(layer.options.text.length * 6), 12]
+            //   }),
+            //   saved: false,
+            //   draggable: false,       // Allow label dragging...?
+            //   zIndexOffset: 1000     // Make appear above other map features
+            // });
+            //ly.id = layer.options.id;
+            //labels.addLayer(ly);
 
           }
 
           function openPopup(layer) {
-            // if (editing || isPopup) {
-            //   map.closePopup();
-            //   return;
-            // };
+            if(isclose == true) {
+              isclose = false;
+              return;
+            }
+            if (editing || isPopup) {
+              map.closePopup();
+              return;
+            };
 
             el = el || document.getElementById(scope.popup);
             $('input', el).val(layer.options.text);
@@ -335,12 +251,6 @@
 
           var drawControl = new L.Control.Draw({
             draw: {
-              select: false,
-              yun: false,
-              arrow: false,
-              pen: false,
-              zi: false,
-              hand: false,
               polygon: {
                 allowIntersection: false,
                 drawError: {
@@ -352,15 +262,11 @@
                 },
                 showArea: false
               },
-              rectangle: false,
-              polyline: false,
               circleMarker: {
                 shapeOptions: {
                   weight: 2
                 }
-              },
-              video: false,
-              marker: false
+              }
             },
             edit: {
               edit: true,

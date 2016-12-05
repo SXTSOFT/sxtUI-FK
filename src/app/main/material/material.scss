@@ -32,3 +32,9 @@
   transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
   /* Set our own color */
   color: green; }
+
+#treeCls a {color: #428bca;paddding-left:8px; padding-right:8px;text-decoration: none;}
+
+.angular-ui-tree-handle{height: 35px !important; line-height: 35px !important;
+  margin:10px 0px; padding:0px 10px; border:2px solid #EAEDEF; background-color: #F6FAFF;}
+

@@ -248,7 +248,7 @@
           //})
           tasks.push({
             "Id": sxt.uuid(),
-            "DependentTaskFlowId": current.ParentId||null,
+            "DependentTaskFlowId": null,
             "TaskFlowId": current.TaskFlowId,
             "FloorId": current.FloorId,
             "FloorName": current.FloorName,
