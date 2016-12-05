@@ -13,11 +13,63 @@
   {
     $stateProvider
       .state('app.pcReport_hz',{
+        title:"评估汇总",
         url:'/pcReport_hz',
+        noBack:true,
+        sendBt:false,
         views:{
           'content@app':{
             templateUrl: 'app/main/pcReport/hzReport.html',
             controller : 'hzReportController as vm',
+          }
+        }
+      })
+      .state('app.pcReport_main',{
+        title:"报表中心",
+        noBack:false,
+        sendBt:false,
+        showgrzx:true,
+        url:'/pcReport_main',
+        views:{
+          'content@app':{
+            templateUrl: 'app/main/pcReport/pcReportMain.html',
+            controller : 'pcReportMainController as vm',
+          }
+        }
+      })
+      .state('app.pcReport_bd',{
+        title:"区域",
+        noBack:true,
+        sendBt:false,
+        url:'/pcReport_bd/{projectId}/{projectName}',
+        views:{
+          'content@app':{
+            templateUrl: 'app/main/pcReport/build.html',
+            controller : 'buildController as vm',
+          }
+        }
+      })
+      .state('app.pcReport_bdd',{
+        title:"验收状态",
+        noBack:true,
+        sendBt:false,
+        url:'/pcReport_bdd/{regionID}',
+        views:{
+          'content@app':{
+            templateUrl: 'app/main/pcReport/buildDetail.html',
+            controller : 'buildDetailController as vm',
+          }
+        }
+      })
+      .state('app.pcReport_scbdd',{
+        title:"实测状态",
+        noBack:true,
+        sendBt:false,
+        url:'/pcReport_scbdd/{regionID}',
+        views:{
+          'content@app':{
+            templateUrl: 'app/main/pcReport/scBuildDetail.html',
+            controller : 'scBuildDetailController as vm',
           }
         }
       })

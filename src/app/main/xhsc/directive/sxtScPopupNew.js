@@ -16,13 +16,14 @@
       scope:{
         readonly:'='
       },
-      templateUrl:'app/main/xhsc/directive/sxtScPopup.html',
+      templateUrl:'app/main/xhsc/directive/sxtScPopupNew.html',
       link:link
     }
 
     function link(scope,element,attr,ctrl){
       scope.ct ={
       };
+      // console.log(scope.readonly);
       scope.updateValue = function() {
         scope.cancelEdit (true);
       };
@@ -55,6 +56,7 @@
                 && o.AcceptanceIndexID == m.AcceptanceIndexID;
             })
           };
+          o.v=o.v? o.v:{};
           scope.data.updates.push(o);
           if (m.IndexType == 'SelectMaterial') {
 
@@ -87,6 +89,7 @@
           singleEdit = mutiEdit;
           mutiEdit = [];
         }
+        console.log("singleEdit",singleEdit);
         scope.edit ={
           plasterDepth:sjzEdit.find(function (item) {
             return !!item.m.plasterDepth

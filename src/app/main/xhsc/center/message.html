@@ -1,0 +1,38 @@
+<div flex layout="column">
+  <md-virtual-repeat-container ng-show="!vm.sysMsg" id="vertical-container" class="slide-del" flex>
+    <div md-virtual-repeat="item in vm.dynamicItems" class="repeat" style="padding: 0px" md-on-demand flex>
+      <md-list-item layout="row" class="slideli" ng-click="vm.action(item,$event)" style="border-bottom: 0px solid">
+        <md-checkbox style="margin-right:0;" ng-show="vm.showCheck" ng-model="item.checked"></md-checkbox>
+        <div class="slidelist" layout="row">
+          <div class="circle" flex="none"><span style="background: #6ab1f3">{{item.name}}</span></div>
+          <div class="my-md-hide" flex>
+            <h3>{{item.title}}<p style="margin: 0px">{{item.time|date:'MM-dd HH:mm'}}</p></span></h3>
+            <p style="word-break: break-all;margin-top: 0px">{{item.description}}</p>
+          </div>
+          <div flex class="my-xs-hide">
+            <h3 style="padding-right: 105px;">{{item.title}}<span>{{item.time|date:'MM-dd HH:mm'}}</span></h3>
+            <p style="word-break: break-all;">{{item.description}}</p>
+          </div>
+        </div>
+      </md-list-item>
+    </div>
+  </md-virtual-repeat-container>
+  <md-virtual-repeat-container ng-show="vm.sysMsg"  id="vertical-container_" class="slide-del" flex>
+    <div md-virtual-repeat="item in vm.sys_dynamicItems" class="repeat" style="padding: 0px" md-on-demand flex>
+      <md-list-item layout="row" class="slideli" ng-click="vm.action(item,$event)" style="border-bottom: 0px solid">
+        <md-checkbox style="margin-right:0;" ng-show="vm.showCheck" ng-model="item.checked"></md-checkbox>
+        <div class="slidelist" layout="row">
+          <div class="circle" flex="none"><span style="background: #6ab1f3">{{item.name}}</span></div>
+          <div class="my-md-hide" flex>
+            <h3>{{item.title}}<p style="margin: 0px">{{item.time|date:'MM-dd HH:mm'}}</p></span></h3>
+            <p style="word-break: break-all;margin-top: 0px">{{item.description}}</p>
+          </div>
+          <div flex class="my-xs-hide">
+            <h3 style="padding-right: 105px;">{{item.title}}<span>{{item.time|date:'MM-dd HH:mm'}}</span></h3>
+            <p style="word-break: break-all;">{{item.description}}</p>
+          </div>
+        </div>
+      </md-list-item>
+    </div>
+  </md-virtual-repeat-container>
+</div>

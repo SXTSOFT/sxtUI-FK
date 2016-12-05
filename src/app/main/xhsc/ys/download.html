@@ -58,13 +58,27 @@
     </md-tab-content>
   </md-tab>
   <md-tab label="项目汇总列表">
-    <md-tab-content  style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
+    <md-tab-content  style="padding: 0px;" flex layout-fill layout="column" layout-padding class="zb">
         <md-content class="download" style="padding: 0px">
         <div layout="column">
-          <md-subheader ng-if="vm.offlines.length">项目汇总列表</md-subheader>
-          <span class="border1px"></span>
+          <!--<md-subheader id="xcpg_head">-->
+             <!--项目列表-->
+          <!--</md-subheader>-->
+          <md-input-container id="auto"  md-no-float class="md-block" style="margin-bottom: 0;margin-top: 6px;max-height: 36px">
+            <input ng-model="vm.searchText" type="text" placeholder="关键字查找">
+          </md-input-container>
+
+          <!--<md-autocomplete  id="auto"  md-no-cache="true" flex="none" md-selected-item-change="vm.changeItem(r)" md-item-text="r.ProjectName" placeholder="搜索" md-min-length="0"-->
+                            <!--md-items="r in vm.querySearch(vm.searchText)" md-search-text="vm.searchText">-->
+            <!--<md-item-template>-->
+              <!--{{r.fullName}}-->
+            <!--</md-item-template>-->
+            <!--<md-not-found>-->
+              <!--未找到匹配项-->
+            <!--</md-not-found>-->
+          <!--</md-autocomplete>-->
           <md-list>
-            <md-list-item style="margin: 0px -32px" ng-repeat="item in vm.projects">
+            <md-list-item style="margin: 0px -32px" ng-repeat="item in vm.projects|cnFilter:{fullName:vm.searchText}"">
               <img src="app/main/xhsc/images/icon-downed.png" style="margin-left: 32px;" class="md-avatar" />
               <p layout="column" style="padding-right: 230px;font-size:18px;">
                 {{item.fullName}}

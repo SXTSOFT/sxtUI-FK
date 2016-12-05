@@ -1,0 +1,106 @@
+<div flex="none" layout="column" style="max-height:50px;height:50px;width:100%;z-index: 10;" class="gxxz">
+  <md-list flex layout="row" class="gxfilter">
+    <md-list-item flex ng-class="{'active':vm.filterNum == -1}">
+      <md-button ng-click="vm.filter(-1)" style="margin:6px auto;"><span>全部</span><span>{{vm.nums.qb}}</span>
+      </md-button>
+    </md-list-item>
+    <md-list-item ng-if="vm.statusRight(0)" flex ng-class="{'active':vm.filterNum == 0}">
+      <md-button ng-click="vm.filter(0)" style="margin:6px auto;"><span><i class="wait"></i>未报验</span><span>{{vm.nums.wtj}}</span>
+      </md-button>
+    </md-list-item>
+    <md-list-item ng-if="vm.statusRight(1)" flex ng-class="{'active':vm.filterNum == 1}">
+      <md-button ng-click="vm.filter(1)" style="margin:6px auto;"><span><i
+        class="dy"></i>待验</span><span>{{vm.nums.dy}}</span></md-button>
+    </md-list-item>
+    <md-list-item ng-if="vm.statusRight(2)" flex ng-class="{'active':vm.filterNum == 2}">
+      <md-button ng-click="vm.filter(2)" style="margin:6px auto;"><span><i class="pass"></i>合格</span><span>{{vm.nums.hg}}</span>
+      </md-button>
+    </md-list-item>
+    <md-list-item ng-if="vm.statusRight(4)" flex ng-if="false" ng-class="{'active':vm.filterNum == 4}">
+      <md-button ng-click="vm.filter(4)" style="margin:6px auto;"><span><i class="ng"></i>不合格</span><span>{{vm.nums.bhg}}</span>
+      </md-button>
+    </md-list-item>
+    <md-list-item ng-if="vm.statusRight(8)" flex ng-class="{'active':vm.filterNum == 8}">
+      <md-button ng-click="vm.filter(8)" style="margin:6px auto;"><span><i class="ng"></i>未整改</span><span>{{vm.nums.wzg}}</span>
+      </md-button>
+    </md-list-item>
+    <md-list-item ng-if="vm.statusRight(16)" flex ng-class="{'active':vm.filterNum == 16}">
+      <md-button ng-click="vm.filter(16)" style="margin:6px auto;"><span><i class="yzg"></i>已整改</span><span>{{vm.nums.yzg}}</span>
+      </md-button>
+    </md-list-item>
+  </md-list>
+</div>
+<md-content flex ng-cloak style="background:#f4f4f4;" layout="column">
+  <div layout="row" layout-sm="column" layout-align="space-around" ng-show="!vm.loading">
+    <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular>
+  </div>
+  <div  flex ng-repeat="h in vm.houses" layout="column">
+    <p style="font-size:12px;background: #f4f4f6;padding:10px;margin:0;" ng-show="vm.loading">{{h.projectTitle }}</p>
+    <div class="floor-list gxroomlist" ng-show="vm.loading" layout="column" flex>
+      <md-virtual-repeat-container flex>
+        <md-list-item  md-virtual-repeat="d in vm.dynamicItems" class="repeat"  md-on-demand
+                       style="padding:0;background: #fff;margin-bottom:10px;border-top:1px solid #dedede;">
+          <div flex>
+            <div flex class="gxrooms" style="padding-left:10px;padding-right:10px;"><span class="roomname">{{d.RegionName}}</span>
+              <md-button ng-click="vm.zk(d)" style="color:#49affe;min-width: 50px;"><span
+                ng-show="d.show">展开</span><span ng-show="!d.show">收起</span></md-button>
+            </div>
+            <md-list ng-if="!d.show&&vm.maxRegion>8" style="padding-left:10px;padding-right:10px;">
+              <md-list-item ng-if="c.Children.length&&vm.regionfilterByStatus(c)"
+                            ng-repeat="c in d.Children|filter:{}">
+                <div flex layout="column">
+                  <div flex class="gxrooms" style="overflow: hidden;">
+                    <div style=" width:20%;float:left;padding:2px 5px;">
+                      <div ng-click="vm.selected(c)" class="room-st {{c.style}}" ng-class="{'checked':c.checked}">
+                        <div style="height:100%;width:{{c.Percentage}}%"></div>
+                        <span>{{c.RegionName}}</span>
+                      </div>
+                    </div>
+                    <md-button ng-click="vm.zk(c)" style="color:#49affe;min-width: 50px;"><span
+                      ng-show="c.show">展开</span><span ng-show="!c.show">收起</span></md-button>
+                  </div>
+                  <md-list class="roomllist" ng-if="!c.show"
+                           style="border-bottom: 1px solid #dedede;margin-top:10px;">
+                    <md-list-item ng-if="vm.regionfilterByStatus(r)" ng-repeat="r in c.Children">
+                      <div class="room-st {{r.style}}" ng-click="vm.selected(r)" ng-class="{'checked':r.checked}">
+                        <div style="height:100%;width:{{r.Percentage}}%;"></div>
+                        <span>{{r.RegionName}}</span>
+                      </div>
+                    </md-list-item>
+                  </md-list>
+                </div>
+              </md-list-item>
+              <section>
+                <div class="roomllist">
+                  <md-list-item ng-show="vm.regionfilterByStatus(r)" ng-repeat="r in d.floors">
+                    <div class="room-st {{r.style}}" ng-click="vm.selected(r)" ng-class="{'checked':r.checked}">
+                      <div style="height:100%;width:{{r.Percentage}}%;"></div>
+                      <span>{{r.RegionName}}</span>
+                    </div>
+                  </md-list-item>
+                </div>
+              </section>
+            </md-list>
+            <div layout="column" ng-if="!d.show&&vm.maxRegion ==8">
+              <md-list class="roomllist" style="border-bottom: 1px solid #dedede;padding:10px 5px 0;">
+                <md-list-item ng-if="vm.regionfilterByStatus(r)" ng-repeat="r in d.Children">
+                  <div class="room-st {{r.style}}" ng-click="vm.selected(r)" ng-class="{'checked':r.checked}">
+                    <div style="height:100%;width:{{r.Percentage}}%;"></div>
+                    <span>{{r.RegionName}}</span>
+                  </div>
+                </md-list-item>
+              </md-list>
+            </div>
+          </div>
+        </md-list-item>
+      </md-virtual-repeat-container>
+    </div>
+  </div>
+</md-content>
+
+<safe-dialog dialog-show="vm.showmyDialog" call-back="vm.callBack()" dialog-data="vm.data" dialog-sure="报验"
+           dialog-msg=""></safe-dialog>
+
+
+
+

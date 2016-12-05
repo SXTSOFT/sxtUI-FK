@@ -1,0 +1,38 @@
+<md-progress-circular id="toolbar-progress" ng-if="!vm.show" class="md-accent"
+                      md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+</md-progress-circular>
+<md-tabs md-border-bottom flex ng-if="vm.show">
+  <md-tab  ng-repeat="item in  vm.scItems" label="{{item.MeasureItemName}}">
+    <md-tab-content flex layout-fill layout="column">
+      <md-input-container id="auto"  md-no-float class="md-block" style="margin-bottom: 0;margin-top: 6px;max-height: 36px">
+        <input ng-model="vm.searchKey" type="text" placeholder="关键字查找">
+      </md-input-container>
+      <md-virtual-repeat-container flex layout="column">
+        <div  md-virtual-repeat="d in item.pics |cnFilter:{DrawingName:vm.searchKey}" class="repeat"  ng-click="vm.stretch(d)"  layout="column" style="position: relative;margin:0px 3%">
+          <div layout="row" style="line-height: 40px;">
+            <span style="font-size:14px;">
+              {{d.DrawingName}}
+            </span>
+            <span flex></span>
+            <md-icon ng-class="{'transform_90':item.stretch}"  md-svg-icon="app/main/xhsc/images/come_in.svg" ></md-icon>
+            <span ng-if="item.stretch" class="border1px bottom1px"></span>
+          </div>
+          <md-list ng-if="d.stretch" style="padding:0px;margin: 0px;" >
+            <md-list-item  ng-repeat="k in d.indexs"  layout="row">
+              <p ng-click="vm.click(k,$event)" flex style="font-size:12px;padding-left:1%" layout="row">
+                {{k.IndexName}}
+                <span ng-if="k.standar=='completed'" style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">已完成</span>
+                <span ng-if="k.standar=='no'" style="margin-left:2%;color:white;background-color: #00b6de;font-size:12px;border-radius: 3px">进行中</span>
+              </p>
+              <!--<span flex></span>-->
+              <md-button ng-click="vm.action(k,$event)"  style="margin: 6px -28px"   aria-label="More">
+                <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+              </md-button>
+            </md-list-item>
+          </md-list>
+          <span class="border1px bottom1px"></span>
+        </div>
+      </md-virtual-repeat-container>
+    </md-tab-content>
+  </md-tab>
+</md-tabs>

@@ -347,7 +347,7 @@
       region.DeductScoreItems.forEach(function(item){
         item.Images.forEach(function (img) {
           images.push({
-            url:sxt.app.api+img.ImageUrl,
+            url:sxt.app.fs+img.ImageUrl,
             alt:item.ProblemDescription + (item.PartDescriptioin?'(部位:'+ item.PartDescriptioin+')':'')
           });
         })

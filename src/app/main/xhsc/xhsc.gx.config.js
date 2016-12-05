@@ -26,8 +26,9 @@
         }
       })
       .state('app.xhsc.gx.gxmain', {
-        noBack:false,
+        noBack:true,
         sendBt: false,
+        showgrzx:false,
         rightArrow: false,
         leftArrow: false,
         //title: '工序验收',
@@ -38,6 +39,16 @@
         ],
         templateUrl: 'app/main/xhsc/procedure/gxmain.html',
         controller: 'gxmainController as vm'
+      })
+      .state('app.xhsc.gx.yw', {
+        noBack:true,
+        sendBt: false,
+        rightArrow: false,
+        leftArrow: false,
+        title: '工序验收',
+        url: '/{yw}',
+        templateUrl: 'app/main/xhsc/procedure/yw.html',
+        controller: 'ywController as vm'
       })
       .state('app.xhsc.gx.gxlist', {
         noBack: true,
@@ -68,7 +79,7 @@
         controller: 'zjhouseChooseController as vm'
       })
       .state('app.xhsc.gx.gxtest', {
-        noBack: false,
+        noBack: true,
         sendBt: true,
         rightArrow: false,
         leftArrow: false,

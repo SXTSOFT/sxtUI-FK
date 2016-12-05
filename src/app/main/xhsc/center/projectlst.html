@@ -1,0 +1,14 @@
+<md-dialog aria-label="正在下载" flex="80%" ng-cloak>
+  <md-dialog-content>
+    <md-list>
+      <md-list-item ng-repeat="item in projects">
+        <div layout="row" ng-click="go(item)" flex class="wrap">
+          <span>{{item.RegionName}}</span>
+          <span flex></span>
+          <md-icon md-svg-icon="app/main/xhsc/images/come_in.svg"></md-icon>
+          <span class="border1px bottom1px"></span>
+        </div>
+      </md-list-item>
+    </md-list>
+  </md-dialog-content>
+</md-dialog>,

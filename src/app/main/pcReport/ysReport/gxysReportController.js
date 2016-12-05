@@ -15,7 +15,7 @@
     .controller('gxysReportController',gxysReportController);
 
   /**@ngInject*/
-  function gxysReportController($scope,remote,$mdDialog,$state,$rootScope ){
+  function gxysReportController($scope,remote,$mdDialog,$state,$rootScope,$window ){
     var vm = this;
     var params=$rootScope.gxParams;
     vm.gxSelected=params&&params.gxSelected? params.gxSelected:[];
@@ -75,11 +75,11 @@
         $scope.pageing.total= r.data.TotalCount;
         r.data.Data.forEach(function(o){
           //非自检单并根据工序过滤
-          if (o.InspectionTime){
-            var d=new Date(o.InspectionTime).Format("yyyy-MM-dd hh:mm:ss");
-            o.InspectionTime=d;
+          if (!o.InspectionTime){
+            o.InspectionTime="";
           }
-          o.statusName=convertStatus(o.Status)
+          o.statusName=convertStatus(o.Status);
+
           vm.source.push(o);
         });
         vm.show=true;

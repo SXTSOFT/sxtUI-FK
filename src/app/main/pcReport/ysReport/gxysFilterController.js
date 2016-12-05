@@ -12,12 +12,13 @@
     .controller('gxysFilterController',gxysFilterController);
 
   /**@ngInject*/
-  function gxysFilterController($scope,remote,$mdSidenav,$state,$rootScope,$timeout){
+  function gxysFilterController($scope,remote,$mdSidenav,$state,$rootScope,$timeout,$window){
     var vm = this;
-    $scope.gxSelected=[];
-    $scope.project=null;
     vm.regions=[];
-    remote.Project.getMap().then(function (result) {
+    var mobileDetect = new MobileDetect(window.navigator.userAgent);
+    vm.isMobile=mobileDetect.mobile();
+    vm.isiPad=mobileDetect.mobile()=="iPad";
+    remote.Project.getMap("nodb").then(function (result) {
       vm.regions.push({
         RegionID: "",
         RegionName:"全部"
@@ -29,7 +30,9 @@
         })
       });
     });
-
+    vm.ck=function(item){
+      $scope.project=item.RegionID;
+    }
     $scope.click=function(){
       $mdSidenav("right").toggle()
     }
@@ -101,23 +104,38 @@
       return zt;
     }
 
+
+
+    if ($rootScope.gxysFilter_load){
+      $scope.gxSelected=$rootScope.gxysFilter_load.gxSelected;
+      $scope.project=$rootScope.gxysFilter_load.project;;
+      $scope.gxNames=$rootScope.gxysFilter_load.gxNames
+    }else {
+      $scope.gxSelected=[];
+      $scope.project="-";
+    }
     $scope.pageing={
       page:1,
       pageSize:10,
       total:0
     }
-
     $scope.$watch("pageing.pageSize",function(){
       if ($scope.pageing.pageSize){
         load();
       }
     },true);
     $scope.$watch("project",function(){
-      if ($scope.project||$scope.project===""){
+      if (vm.isMobile&&!vm.isiPad){
+        return;
+      }
+      if ($scope.project&&$scope.project!="-"||$scope.project===""){
         load();
       }
     });
     $scope.$watchCollection("gxSelected",function(){
+      if (vm.isMobile&&!vm.isiPad){
+        return;
+      }
       if ($scope.gxSelected.length||$scope.gxSelected.isGo){
         load();
       }else {
@@ -136,19 +154,19 @@
         PageSize:$scope.pageing.pageSize,
         CurPage:$scope.pageing.page-1,
         status:31,
-        ProjectId:$scope.project?$scope.project:"",
+        ProjectId:$scope.project&&$scope.project!="-"?$scope.project:"",
         AcceptanceItemIDs:t
       }).then(function(r){
         $scope.pageing.total= r.data.TotalCount;
         r.data.Data.forEach(function(o){
-          //非自检单并根据工序过滤
-          if (o.InspectionTime){
-            var d=new Date(o.InspectionTime).Format("yyyy-MM-dd hh:mm:ss");
-            o.InspectionTime=d;
-          }
-          o.statusName=convertStatus(o.Status)
+          o.statusName=convertStatus(o.Status);
           vm.source.push(o);
         });
+        $rootScope.gxysFilter_load={
+          gxSelected:$scope.gxSelected,
+          project:$scope.project,
+          gxNames:$scope.gxNames
+        }
       }).catch(function(){
       });
     }
@@ -157,10 +175,18 @@
       $scope.pageing.page=page;
       load();
     }
+    vm.filter=function(){
+      var p= vm.regions.find(function(k){
+          return k.RegionID==$scope.project;
+      })
 
-    vm.goBack=function(){
-      window.history.go(-1);
+      $rootScope.gxParams={
+        gxSelected:$scope.gxSelected,
+        secSelected:p&&p.RegionID?[p]:[]
+      }
+      $state.go("app.pcReport_ys_rp");
     }
+
     vm.Lookintoys = function(item){
       $state.go('app.xhsc.gx.gxzgreport',{InspectionId:item.InspectionId, acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,projectId:item.ProjectID});
     }

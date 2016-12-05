@@ -1,4 +1,5 @@
 /**
+/**
  * Created by jiuyuong on 2016/3/30.
  */
 (function(){
@@ -9,192 +10,176 @@
     .controller('zjhouseChooseController',zjhouseChooseController);
 
   /** @ngInject */
-  function zjhouseChooseController($scope,$stateParams,sxt,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils,api){
+  function zjhouseChooseController($scope,$stateParams,sxt,remote,$timeout,$q,$state,$mdDialog,utils,api,xhscService,$rootScope){
     var vm=this,
-      projectId = $stateParams.projectId,
+      areaId= $stateParams.projectId,
+      projectId = areaId.substr(0,5),
       acceptanceItemID=$stateParams.acceptanceItemID,
-      acceptanceItemName = $stateParams.acceptanceItemName,
-      role=$stateParams.role,
-      areaId = $stateParams.areaId;
+      acceptanceItemName = $stateParams.acceptanceItemName
     vm.maxRegion = $stateParams.maxRegion;
     $rootScope.title = $stateParams.acceptanceItemName;
     $rootScope.sendBt = false;
     vm.maxRegion = $stateParams.maxRegion;
+
+    vm.building=[];
     function  load(){
       vm.nums={
         qb:0, //全部
         wtj:0,//未提交
-        dy:0,//待验收
-        hg:0, //合格
-        bhg:0,//不合格
-        yzg:0,//已整改
-        wzg:0,//未整改
         ytj:0//已检查
       }
       function  setNum(status,region){
-        if(vm.maxRegion >8){
+        if ((vm.maxRegion==8&&region.RegionType==8)||vm.maxRegion>8&&region.RegionType>=8){
           vm.nums.qb++;
-          switch (status){
+          switch (region.status){
             case  0:
               vm.nums.wtj++;
               break;
             case  1:
               vm.nums.ytj++;
               break;
-            case  2:
-              vm.nums.hg++;
-              break;
-            case  4:
-            case  8:
-            case  16:
-              vm.nums.bhg++;
-              break;
-          }
-        }else{
-          if(region.RegionType == 8){
-            vm.nums.qb++;
-            switch (status){
-              case  0:
-                vm.nums.wtj++;
-                break;
-              case  1:
-                vm.nums.ytj++;
-                break;
-              case  2:
-                vm.nums.hg++;
-                break;
-              case  4:
-              case  8:
-              case  16:
-                vm.nums.bhg++;
-                break;
-            }
           }
         }
-
-
       }
       //状态设置与用户区域权限
       function filterOrSetting(status,region){
-        if (region.RegionType>4){
-          statusSetting(status,region);
+        if (region.RegionType<=4){
+          return;
         }
-        var st=status.find(function(o){
-          return o.AreaId.indexOf(region.RegionID)!=-1;
-        });
-        if (st){
-          region.hasShowRight=true;
-        }
-      }
-      var st2 =[];
-      function setInspection(region){
-        var percentage= 0,status=0;
-        if(region.inspectionRows.length){
-          region.inspectionRows && region.inspectionRows.forEach(function(t){
-            percentage += t.Percentage;
-            status = t.Status;
-          })
-        }else{
-          percentage = region.percentage;
-          status = 0;
-        }
-        if(percentage > 100){
-          percentage = 100;
-        }
-        region.Percentage = percentage;
-        region.status = status;
-        region.style=ConvertClass(status);
-        setNum(status,region);
-      }
-      //状态设置
-      function statusSetting(status,region){
         if(!angular.isArray(status)){
           status=[status];
         }
-        var st1 = [];
-        region.inspectionRows=[];
-        status.forEach(function(t){
-          if(t.AcceptanceItemID==acceptanceItemID && t.AreaId == region.RegionID){
-            region.inspectionRows.push(t);
-          }else{
-            region.status=0;
-            region.Percentage=0;
-          }
-        })
-        setInspection(region);
+        var st= status.find(function(t){
+          return t.AcceptanceItemID==acceptanceItemID && t.AreaId == region.RegionID
+        });
+        if (st){
+          region.status=st.Status;
+        }else {
+          region.status=0;
+        }
+        region.style=ConvertClass(region.status);
+        setNum(status,region);
       }
+
       function ConvertClass(status){
         var style;
         switch (status){
           case 0:
-
             style="wait";
             break;
-          case 2:
-            style="pass";break;
           case 1:
-            style="dy";
-            break;
-          case 4:
-          case 8:
-          case 16:
-            style="ng";
-            break;
-          default:
+            style="pass";
             break;
         }
         return style;
       }
+      vm.floors=[];
       $q.all([
         remote.Project.queryAllBulidings(projectId),
-        remote.Procedure.getRegionStatus(projectId,8)
-        //remote.Procedure.authorityByUserId()
+        remote.Procedure.getRegionStatusEx(projectId,8,null,"project_status_zj")
       ]).then(function(res){
         vm.loading = true;
         var result=res[0];
         var status=res[1]&&res[1].data?res[1].data:[];
-        //var find = res[2].data.forEach(function(p){
-        //  return p.ProjectID == projectId;
-        //})
-
         result.data[0].RegionRelations.forEach(function(d){
-          filterOrSetting(status,d);
-          d.projectTree =  d.RegionName;
-          d.projectTitle = result.data[0].ProjectName + d.RegionName;
-          d.Children && d.Children.forEach(function(c){
-            filterOrSetting(status,c)
-            c.projectTree = d.projectTree + c.RegionName;
-            c.checked = false;
-            c.Children && c.Children.forEach(function(r){
-              r.projectTree = c.projectTree + r.RegionName;
-              r.checked = false;
-              filterOrSetting(status,r);
-              vm.floors=vm.floors?vm.floors:[];
-              vm.floors.push(r);
-              r.Children && r.Children.forEach(function(_r){
-                _r.projectTree = r.projectTree + _r.RegionName;
-                _r.checked = false;
-                filterOrSetting(status,_r);
+          if (d.RegionID==areaId){
+            d.selected=true;
+            filterOrSetting(status,d);
+            d.projectTree =  d.RegionName;
+            d.projectTitle = result.data[0].ProjectName + d.RegionName;
+            d.Children && d.Children.forEach(function(c){
+              c.floors=[];
+              filterOrSetting(status,c)
+              c.projectTree = d.projectTree + c.RegionName;
+              c.checked = false;
+              vm.building.push(c);
+              c.Children && c.Children.forEach(function(r){
+                r.projectTree = c.projectTree + r.RegionName;
+                r.checked = false;
+
+                filterOrSetting(status,r);
+                if (! r.Children||!r.Children.length){
+                  c.floors.push(r);
+                }else {
+                  r.Children.forEach(function(_r){
+                    _r.projectTree = r.projectTree + _r.RegionName;
+                    _r.checked = false;
+                    filterOrSetting(status,_r);
+                  })
+                }
               })
             })
-          })
+          }
         })
         vm.houses =  result.data[0].RegionRelations;
+
+        var DynamicItems = function() {
+          /**
+           * @type {!Object<?Array>} Data pages, keyed by page number (0-index).
+           */
+          this.loadedPages = {};
+
+          /** @type {number} Total number of items. */
+          this.numItems = 0;
+
+          /** @const {number} Number of items to fetch per request. */
+          this.PAGE_SIZE = 1;
+
+          this.fetchNumItems_();
+        };
+
+        // Required.
+        DynamicItems.prototype.getItemAtIndex = function(index) {
+          var pageNumber = Math.floor(index / this.PAGE_SIZE);
+          var page = this.loadedPages[pageNumber];
+
+          if (page) {
+            return page[index % this.PAGE_SIZE];
+          } else if (page !== null) {
+            this.fetchPage_(pageNumber);
+          }
+        };
+
+        // Required.
+        DynamicItems.prototype.getLength = function() {
+          return this.numItems.length;
+        };
+
+        DynamicItems.prototype.fetchPage_ = function(pageNumber) {
+          // Set the page to null so we know it is already being fetched.
+          this.loadedPages[pageNumber] = null;
+
+          // For demo purposes, we simulate loading more items with a timed
+          // promise. In real code, this function would likely contain an
+          // $http request.
+          $timeout(angular.noop).then(angular.bind(this, function() {
+            this.loadedPages[pageNumber] = [];
+            var pageOffset = pageNumber * this.PAGE_SIZE;
+            for (var i = pageOffset; i < pageOffset + this.PAGE_SIZE; i++) {
+              this.loadedPages[pageNumber].push(vm.building[i]);
+            }
+          }));
+        };
+
+        DynamicItems.prototype.fetchNumItems_ = function() {
+          // For demo purposes, we simulate loading the item count with a timed
+          // promise. In real code, this function would likely contain an
+          // $http request.
+          $timeout(angular.noop).then(angular.bind(this, function() {
+            this.numItems = vm.building;
+          }));
+        };
+
+        vm.dynamicItems = new DynamicItems();
+        return vm.houses;
       });
     }
-
     load();
-    var inspectionInfoDef = remote.Procedure.getRegionStatus(projectId,"8");
-    vm.callBack=function(){
-      load();
-    };
+
     vm.selected = function(r){
-      inspectionInfoDef.then(function (r1) {
+      remote.Procedure.getRegionStatusEx(projectId,"8",null,"project_status_zj").then(function (r1) {
         var fd = r1.data.find(function (item) {
           return item.AreaId==r.RegionID&&item.AcceptanceItemID==acceptanceItemID;
-          //return item.Children.find(function (area) {
-          //  return area.AreaID == r.RegionID;
-          //})!=null;
         });
         if(fd!=null){
           $state.go('app.xhsc.gx.gxzjcheck',
@@ -210,35 +195,8 @@
           $rootScope.$emit('sendGxResult');
         }
       });
-      //zbSelected(r);
     }
     //总包点击事件
-    function zbSelected(r){
-      function validateChecked(r){
-        if (r.status!=0&& r.status!=1){
-          r.checked=false;
-        }
-        switch(r.RegionType){
-          case 8:
-            r.Children.forEach(function(m){
-              if (m.checked){
-                r.checked=false;
-              }
-            });
-            break;
-          case 16:
-            var parent=vm.floors.find(function(m){
-              return r.RegionID.indexOf(m.RegionID)>-1;
-            });
-            if (parent&&parent.checked){
-              r.checked=false;
-            }
-            break;
-        }
-      }
-      r.checked = !r.checked;
-      validateChecked(r);
-    }
 
     vm.zk = function(item){
       item.show = !item.show;
@@ -248,45 +206,14 @@
       vm.filterNum = num;
     }
 
-    function compare(region,operator){
-      if (region.Children){
-        for (var  i=0;i<region.Children.length;i++){
-          if (vm.regionfilterByStatus(region.Children[i])){
-            return true;
-          }
-        }
-        return  operator(region.status);
-      }else {
-        return  operator(region.status);
-      }
-    }
-
     vm.regionfilterByStatus=function(region){
       if (vm.filterNum==-1){
          return true;
       }
-      return compare(region,function(status){
-        return vm.statusRight(status);
-      });
-    }
-
-    vm.statusRight=function(status){
-      var show=[0,1,2,4,8,16];
-      switch (vm.filterNum){
-        case 0:
-        case 1:
-          show=[0,1];
-          break;
-        case 2:
-          show=[2];
-          break;
-        case 4:
-        case 8:
-        case 16:
-          show=[4,8,16];
-          break;
+      if (region.Children&&!region.Children.length||vm.maxRegion>8){
+        return true;
       }
-      return show.indexOf(status)>-1;
+      return region.status==vm.filterNum;
     }
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){

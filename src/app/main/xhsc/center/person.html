@@ -1,0 +1,28 @@
+<div flex class="person_center" layout="column">
+  <md-list>
+    <md-list-item>
+      <div layout="row"  ng-click="vm.goPerson()" ui-sref="app.xhsc.person" flex class="wrap">
+      <span style="color: #333;letter-spacing: 16px">姓名</span>
+      <span flex></span>
+      <span style="color: #888;font-size: 14px">{{vm.user.name}}</span>
+      <span class="border1px bottom1px"></span>
+    </div>
+</md-list-item>
+    <md-list-item>
+      <div layout="row" ng-click="vm.logout()" flex class="wrap">
+        <span style="color: #333;letter-spacing: 16px">角色</span>
+        <span flex></span>
+        <span style="color: #888;font-size: 14px">{{vm.user.role}}</span>
+        <span class="border1px bottom1px"></span>
+      </div>
+    </md-list-item>
+    <md-list-item>
+      <div layout="row"  flex class="wrap">
+        <span style="color: #333;letter-spacing: 16px">手机</span>
+        <span flex></span>
+        <span style="color: #888;font-size: 14px">{{vm.user.userName}}</span>
+        <span class="border1px bottom1px"></span>
+      </div>
+    </md-list-item>
+</md-list>
+</div>

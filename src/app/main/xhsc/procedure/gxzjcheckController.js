@@ -53,24 +53,30 @@
 
       vm.btBatch=[];
       api.setNetwork(1).then(function(){
-        remote.Project.getInspectionList(vm.InspectionId).then(function(rtv){
-          var  r=rtv.data.find(function(o){
-            return o.InspectionId==vm.InspectionId;
-          });
-          if (!r.Children){
-            r.Children= r.AreaList;
-          }
-          if (r.Children&&angular.isArray(r.Children)){
-            r.Children.forEach(function(tt){
-              vm.btBatch.push(angular.extend({
-                RegionID:tt.AreaID,
-                RegionType:getRegionType( tt.AreaID)
-              },tt));
+        $q.all([
+          remote.Project.getInspectionList(vm.InspectionId),
+          remote.Project.getInspectionList(vm.InspectionId,"Inspection_zj"),
+        ]).then(function(res){
+
+            var rtv=res[0].data.concat(res[1].data);
+            var  r=rtv.find(function(o){
+              return o.InspectionId==vm.InspectionId;
             });
-          }
-          vm.info.selected = vm.btBatch[0];
-          return vm.btBatch;
+            if (!r.Children){
+              r.Children= r.AreaList;
+            }
+            if (r.Children&&angular.isArray(r.Children)){
+              r.Children.forEach(function(tt){
+                vm.btBatch.push(angular.extend({
+                  RegionID:tt.AreaID,
+                  RegionType:getRegionType( tt.AreaID)
+                },tt));
+              });
+            }
+            vm.info.selected = vm.btBatch[0];
+            return vm.btBatch;
         })
+
         remote.Procedure.queryProcedure().then(function(result){
           vm.procedureData = [];
           result.data.forEach(function(it){

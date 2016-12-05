@@ -48,6 +48,7 @@
               cb();
             },
             onLoad: function (cb) {
+              $("#inspect").css("display","none");
               $q.all([remote.Procedure.getZGReginQues(scope.regionId,scope.item),
                   remote.Procedure.getZGReginQuesPoint(scope.regionId,scope.item)])
                 .then(function(res) {
@@ -124,7 +125,7 @@
             }
           });
           $timeout(function () {
-            remote.Project.getDrawingRelations(scope.regionId.substring(0,5)).then(function (result) {
+            remote.Project.getDrawingRelations(scope.regionId).then(function (result) {
               var imgId = result.data.find(function (item) {
                 return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
               });

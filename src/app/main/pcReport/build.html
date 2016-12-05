@@ -1,0 +1,14 @@
+<md-tabs flex md-border-bottom>
+  <md-tab ng-repeat="area in vm.areas" label="{{area.RegionName}}">
+    <md-tab-content flex layout-fill layout="column"  >
+      <div hm-dir style="width:100%;">
+        <div id="pinch" hm-drag="dragEvent($event)" hm-dragend="dragend($event)" hm-pinch="pinch($event)" hm-pinchmove="pinchmove($event)" hm-pinchend="pinchend($event)" style="position: relative;">
+          <div id="floorlayer" style="margin:10px 0;position:relative;">
+            <floor-layer style="float:left;" build-len="area.builds.length" ng-repeat="sxtfloor in area.builds" sxtfloor="sxtfloor" floor-num="vm.maxLen" sell-line="vm.sellLine" ng-click="vm.showECs($event,sxtfloor)" ></floor-layer>
+            <div style="clear:both;display:table;"></div>
+          </div>
+        </div>
+      </div>
+    </md-tab-content>
+  </md-tab>
+</md-tabs>

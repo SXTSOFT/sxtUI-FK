@@ -148,8 +148,8 @@
                   Status:16
                 }
                 remote.Procedure.InspectionRectificationUpdateStatus(data).then(function (r) {
+                  $mdDialog.hide();
                   utils.alert('提交成功',null,function(){
-                    $mdDialog.hide();
                     $state.go("app.xhsc.gx.gxmain");
                   });
                 })

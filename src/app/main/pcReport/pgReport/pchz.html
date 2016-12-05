@@ -1,4 +1,4 @@
-<md-tabs md-align-tabs="bottom" flex  md-selected="vm.selectedIndex" class="zlpkwrap">
+<md-tabs md-align-tabs="bottom" style="min-width: 625px" flex  md-selected="vm.selectedIndex" class="zlpkwrap">
   <md-tab label="{{b.AssessmentClassificationName}}" ng-repeat="b in vm.items.AssessmentClassifys">
     <md-tab-content flex layout-fill layout="column"  >
       <div flex="none" layout="row" style="border-right:0" class="zlpkheader">
@@ -342,6 +342,6 @@
   </md-tab>
 </md-tabs>
 <div flex="none" style="position: absolute;top:45%;left:45%;">
-  <md-progress-circular  class="md-accent md-hue-1" md-diameter="30"  md-mode="indeterminate" ng-show="vm.loading"></md-progress-circular>
+  <md-progress-circular  class="md-accent md-hue-1" md-diameter="28"  md-mode="indeterminate" ng-show="vm.loading"></md-progress-circular>
 </div>
 
