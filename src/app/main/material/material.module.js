@@ -6,7 +6,7 @@
   'use strict';
 
   angular
-    .module('app.material', ['app.core','app.xhsc'])
+    .module('app.material', ['app.core','app.xhsc','ui.tree'])
     .config(config);
   /** @ngInject */
   function config($stateProvider, msNavigationServiceProvider) {
@@ -47,13 +47,18 @@
       .state('app.material.plans',{
         url:'/plans',
         template:'<material-plans flex layout="column"></material-plans>'
-      }).state('app.material.plan',{
+      })
+      .state('app.material.plan',{
         url:'/plan/{id}',
         template:'<material-plan flex layout="column"></material-plan>'
       })
       .state('app.material.batchDetail',{
         url:'/batchDetail/{planId}',
         template:'<material-batch-detail flex layout="column"></material-batch-detail>'
+      })
+      .state('app.material.materialLibrary',{
+        url:'/library',
+        template:'<material-library flex layout="column"></material-library>'
       });
 
     msNavigationServiceProvider.saveItem('material', {
@@ -62,17 +67,24 @@
       weight: 2
     });
 
-    msNavigationServiceProvider.saveItem('material.type', {
-      title: '材料分类',
-      icon: 'icon-sort-variant',
-      state: 'app.material.type',
-      weight: 1
-    });
+    // msNavigationServiceProvider.saveItem('material.type', {
+    //   title: '材料分类',
+    //   icon: 'icon-sort-variant',
+    //   state: 'app.material.type',
+    //   weight: 1
+    // });
 
-    msNavigationServiceProvider.saveItem('material.list', {
+    // msNavigationServiceProvider.saveItem('material.list', {
+    //   title: '材料管理',
+    //   icon: 'icon-view-list',
+    //   state: 'app.material.list',
+    //   weight: 1
+    // });
+
+    msNavigationServiceProvider.saveItem('material.materialLibrary', {
       title: '材料管理',
       icon: 'icon-view-list',
-      state: 'app.material.list',
+      state: 'app.material.materialLibrary',
       weight: 1
     });
 
@@ -89,5 +101,6 @@
       state: 'app.material.plans',
       weight: 1
     });
+
   }
 })(angular, undefined);

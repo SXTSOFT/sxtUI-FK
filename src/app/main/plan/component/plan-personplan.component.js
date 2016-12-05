@@ -24,6 +24,7 @@
         vm.tdata.forEach(function (_r) {
           _r.showNoPlan = _r.NoPlanTasks.length ? true : false;
           _r.PlaningTasks.forEach(function (r) {
+            r.parentId=_r.Id;
             r.sdate = r.ActualStartTime && moment(r.ActualStartTime.substring(0, 10)).toDate() || r.ScheduledStartTime && moment(r.ScheduledStartTime.substring(0, 10)).toDate();
             r.edate = r.ActualEndTime && moment(r.ActualEndTime.substring(0, 10)).toDate() || r.ScheduledEndTime && moment(r.ScheduledEndTime.substring(0, 10)).toDate();
           })
@@ -71,7 +72,6 @@
     })
     $rootScope.$on('md-calendar-change', function(event,data) {
       vm.tasksList = [];
-      console.log(data)
       vm.data && vm.data.forEach(function (_r) {
         var temp ={
           Name:_r.Name
@@ -83,6 +83,34 @@
       });
       console.log(vm.tasksList)
     })
+    vm.startTask = function(t){
+      var time = new Date();
+      api.plan.BuildPlan.startInsert(t.parentId, t.Id,time).then(function(r){
+        t.IsAbleStart = false;
+        vm.data.forEach(function(tt){
+          tt.PlaningTasks.forEach(function(_t){
+            var f = r.data.find(function(_r){
+              return _r.Id == _t.Id;
+            })
+            if(f){
+              t.IsAbleStart = f.IsAbleStart;
+              t.IsInterlude = f.IsInterlude;
+              t.ManuallyClose = f.ManuallyClose;
+            }
+          })
+          tt.NoPlanTasks.forEach(function(_t){
+            var f = r.data.find(function(_r){
+              return _r.Id == _t.Id;
+            })
+            if(f){
+              t.IsAbleStart = f.IsAbleStart;
+              t.IsInterlude = f.IsInterlude;
+              t.ManuallyClose = f.ManuallyClose;
+            }
+          })
+        })
+      })
+    }
     vm.start = function(t){
       var time = new Date();
       api.plan.Task.start(t.Id,true,time).then(function(r){
@@ -117,6 +145,7 @@
           .ok('确定')
           .cancel('取消')
       ).then(function(res){
+        t.IsInterlude = false;
         api.plan.Task.end(t.Id,true,time,res).then(function(r){
           vm.loading = false;
           load();

@@ -53,6 +53,9 @@
         },
         GetMaterialByTypeId:function (typeId) {
           return $http.get($http.url('/api/MaterialScience/GetMaterialByTypeId/' + typeId))
+        },
+        GetMaterialTreeList:function () {
+          return $http.get($http.url('/api/MaterialScience/GetMaterialTreeListAsync'))
         }
       },
       materialPlan:{

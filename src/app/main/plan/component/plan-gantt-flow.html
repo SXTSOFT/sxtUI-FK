@@ -16,8 +16,9 @@
           <thead>
           <tr><th style="width: 25px;min-width: 25px"></th>
             <th>流程</th>
-            <th>计划</th>
-            <th>实际</th>
+            <th>计划时间</th>
+            <th>实时时间</th>
+            <th>实际时间</th>
             <th>状态</th>
             <th>操作</th>
           </tr></thead>
@@ -30,11 +31,13 @@
               {{flow.Name}}
             </td>
             <td>{{flow.ScheduledStartTime|date:'yyyy-MM-dd'}}~{{flow.ScheduledEndTime|date:'yyyy-MM-dd'}}</td>
+            <td>{{flow.RealScheduledStartTime|date:'yyyy-MM-dd'}}~{{flow.RealScheduledEndTime|date:'yyyy-MM-dd'}}</td>
             <td style="color:#1f6db4">{{flow.ActualStartTime|date:'yyyy-MM-dd'}}~{{flow.ActualEndTime|date:'yyyy-MM-dd'}}</td>
             <td>{{flow._State}}</td>
             <td style="color:#f00">
-              <md-button class="md-icon-button" style="min-height:24px;line-height: 24px;height:24px;padding:0;" ng-click="vm.openTask(flow)" ng-if="flow.State==1">开启</md-button>
-              <md-button class="md-icon-button" style="min-height:24px;line-height: 24px;height:24px;padding:0;" ng-click="vm.closeTask(flow)" ng-if="flow.State!=1" ng-disabled="flow.State==2||flow.closeF ==true" >关闭</md-button>
+              <!--<md-button class="md-icon-button" style="min-height:24px;line-height: 24px;height:24px;padding:0;" ng-click="vm.openTask(flow)" ng-if="flow.State==1">开启</md-button>-->
+              <md-button class="md-icon-button" style="min-height:24px;line-height: 24px;height:24px;padding:0;" ng-click="vm.startTask(flow)" ng-if="flow.IsAbleStart&&(flow.IsInterlude)">开启穿插</md-button>
+              <md-button class="md-icon-button" style="min-height:24px;line-height: 24px;height:24px;padding:0;" ng-click="vm.closeTask(flow)" ng-if="flow.IsAbleStart&&!flow.IsInterlude&&flow.ManuallyClose">完成</md-button>
             </td>
           </tr>
           <tr>

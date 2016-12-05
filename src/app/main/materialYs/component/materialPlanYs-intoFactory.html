@@ -46,7 +46,7 @@
     <md-list-item style="padding-right: 0;">
       <label flex="30" style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">车辆</label>
       <div flex="60" ng-repeat="img in vm.vehicleImgs" sxt-images="vm.vehicleImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
+        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
       </div>
       <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(256)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>
@@ -54,7 +54,7 @@
     <md-list-item  style="padding-right: 0;">
       <label flex="30" style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">货物</label>
       <div flex="60" ng-repeat="img in vm.goodsImgs" sxt-images="vm.goodsImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
+        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
       </div>
       <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(512)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>
@@ -62,7 +62,7 @@
     <md-list-item  style="padding-right: 0;">
       <label flex="30" style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">配合检查人</label>
       <div flex="60" ng-repeat="img in vm.rummagerImgs" sxt-images="vm.rummagerImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
+        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
       </div>
       <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(1024)" ><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>
@@ -70,7 +70,7 @@
     <md-list-item  style="padding-right: 0;">
       <label flex="30" style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">合格证</label>
       <div flex="60" ng-repeat="img in vm.CertificateImgs" sxt-images="vm.CertificateImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
+        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
       </div>
       <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(2048)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>

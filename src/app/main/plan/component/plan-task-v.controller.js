@@ -53,6 +53,7 @@
           flow.oExpression = flow.Expression;
           flow.oisChuancha = flow.isChuancha;
           flow.oMeasureId = flow.MeasureId;
+          flow.oManuallyClose=flow.ManuallyClose;
         });
         task.Branch.forEach(function (b) {
           b.forEach(function (flow) {
@@ -77,6 +78,7 @@
             flow.oExpression = flow.Expression;
             flow.oisChuancha = flow.isChuancha;
             flow.oMeasureId = flow.MeasureId;
+            flow.oManuallyClose=flow.ManuallyClose;
           })
         });
         vm.onLoadTemplate();
@@ -283,7 +285,8 @@
           Notice8: flow.Notice8,
           MeasureInfo:flow.MeasureInfo,
           isChuancha:flow.isChuancha,
-          MeasureId : flow.MeasureId
+          MeasureId : flow.MeasureId,
+          ManuallyClose:flow.ManuallyClose,
         })
       }).then(function () {
 
@@ -292,12 +295,23 @@
     vm.updateMust = function(flow){
       return vm.updateFlow(flow);
     }
+    vm.updateManuallyClose = function(flow){
+      return api.plan.TaskFlow.getSubTasks(flow.TaskFlowId).then(function (r) {
+        var taskLib = r.data.Items[0];
+        taskLib.Id = taskLib.TaskLibraryId;
+        taskLib._taskFlowId = taskLib.TaskLibraryId;
+        return api.plan.TaskLibrary.update(taskLib).then(function () {
+          return vm.updateFlow(flow);
+        })
+      });
+    }
     vm.updateDuration = function (flow) {
       if(flow.oDuration != flow.Duration){
         flow.oDuration = flow.Duration;
         return api.plan.TaskFlow.getSubTasks(flow.TaskFlowId).then(function (r) {
           var taskLib = r.data.Items[0];
           taskLib.Id = taskLib.TaskLibraryId;
+          taskLib._taskFlowId = taskLib.TaskLibraryId;
           taskLib.Duration = flow.Duration;
           return api.plan.TaskLibrary.update(taskLib).then(function () {
             return vm.updateFlow(flow);

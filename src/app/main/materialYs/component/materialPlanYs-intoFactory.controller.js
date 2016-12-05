@@ -114,9 +114,9 @@
     });
 
     vm.addPhoto = function (type) {
-      // xhUtils.photo().then(function (image) {
-      //   if (image) {
-          var image;
+      xhUtils.photo().then(function (image) {
+        if (image) {
+          // var image;
           switch (type) {
             case 256: {
               photo(type, vm.vehicleImgs, image);
@@ -136,8 +136,8 @@
             }
           }
           vm.data.ApproachTime = new Date();
-      //   }
-      // });
+        }
+      });
     };
 
     function photo(type, arr, image) {
@@ -149,7 +149,7 @@
         ApproachStage: 1,
         ImageName: _id + ".jpeg",
         ImageUrl: _id + ".jpeg",
-        ImageByte: url
+        ImageByte: image
       });
     }
 

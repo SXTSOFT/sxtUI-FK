@@ -330,7 +330,7 @@
     // Reload data action
     function load()
     {
-       return api.plan.Task.query({
+       return api.plan.BuildPlan.getGantt({
         Type:'BuildingPlan',
         Source:$stateParams.id
       }).then(function (rs) {
@@ -446,7 +446,7 @@
       }
       loadSubTask();
       function loadSubTask(){
-        api.plan.Task.query({
+        api.plan.BuildPlan.getGantt({
           ParentTaskId:dialogData.formData.id,
           Type:'BuildingPlan',
           Source:$stateParams.id
@@ -466,6 +466,11 @@
                 ScheduledEndTime:item.ScheduledEndTime,
                 ActualStartTime:item.ActualStartTime,
                 ActualEndTime:item.ActualEndTime,
+                RealScheduledStartTime:item.RealScheduledStartTime,
+                RealScheduledEndTime:item.RealScheduledEndTime,
+                IsAbleStart: item.IsAbleStart,
+                IsInterlude: item.IsInterlude,
+                ManuallyClose: item.ManuallyClose,
                 State:item.State,
                 Color:setColor(item.State),
                 _State:setSatus(item.State),
@@ -494,6 +499,11 @@
                       ScheduledEndTime:t.ScheduledEndTime,
                       ActualStartTime:t.ActualStartTime,
                       ActualEndTime:t.ActualEndTime,
+                      RealScheduledStartTime:t.RealScheduledStartTime,
+                      RealScheduledEndTime:t.RealScheduledEndTime,
+                      IsAbleStart: t.IsAbleStart,
+                      IsInterlude: t.IsInterlude,
+                      ManuallyClose: t.ManuallyClose,
                       State: t.State,
                       Color:setColor(t.State),
                       _State:setSatus(t.State),
@@ -521,6 +531,12 @@
       //vm.hasFlow = !!originData.Items.find(function (it) {
       //  return it.ExtendedParameters == taskId;
       //});
+      vm.startTask = function(task){
+        var time = new Date();
+        api.plan.BuildPlan.startInsert($stateParams.id,task.TaskFlowId,time).then(function(r){
+          loadSubTask();
+        })
+      }
       vm.openTask = function(task){
         var time = new Date();
         api.plan.Task.start(task.TaskFlowId,true,time).then(function (r) {
@@ -550,19 +566,27 @@
               var time = new Date();
               vm.closePanel1();
               api.plan.Task.end(task.TaskFlowId,true,time,vm.EndDescription).then(function (r) {
-                loadSubTask();
-                //r.data.forEach(function(_r){
-                //  var f=parent.flows.find(function(t){
-                //    return t.TaskFlowId == _r.Id;
-                //  })
-                //  if(f){
-                //    f.ActualStartTime = _r.ActualStartTime;
-                //    f.ActualEndTime = _r.ActualEndTime;
-                //    f._State=setSatus(_r.State);
-                //    f.Color=setColor(_r.State);
-                //    f.State = _r.State;
-                //  }
-                //})
+                //task.IsAbleStart = r.IsAbleStart;
+                //task.IsInterlude = r.IsInterlude;
+                //task.ManuallyClose = r.ManuallyClose;
+                //loadSubTask();
+                r.data.forEach(function(_r){
+                  var f=parent.flows.find(function(t){
+                    return t.TaskFlowId == _r.Id;
+                  })
+                  if(f){
+                    f.ActualStartTime = _r.ActualStartTime;
+                    f.ActualEndTime = _r.ActualEndTime;
+                    f._State=setSatus(_r.State);
+                    f.Color=setColor(_r.State);
+                    f.State = _r.State;
+                    f.IsAbleStart = _r.IsAbleStart;
+                    f.IsInterlude = _r.IsInterlude;
+                    f.ManuallyClose = _r.ManuallyClose;
+                    f.RealScheduledStartTime = _r.RealScheduledStartTime;
+                    f.RealScheduledEndTime = _r.RealScheduledEndTime;
+                  }
+                })
               });
             }
             vm.closePanel1 = function() {
@@ -751,7 +775,7 @@
       }
 
       vm.openDialog = function(data,Id){
-        api.plan.Task.query({
+        api.plan.BuildPlan.getGantt({
           ParentTaskId:Id,
           Type:'BuildingPlan',
           Source:$stateParams.id

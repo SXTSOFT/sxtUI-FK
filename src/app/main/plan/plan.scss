@@ -226,3 +226,9 @@ md-calendar{
     line-height: 24px;
   }
 }
+
+.white-placeholder{
+  ::-webkit-input-placeholder { /* WebKit browsers */
+    color:rgb(245,245,245);
+  }
+}
