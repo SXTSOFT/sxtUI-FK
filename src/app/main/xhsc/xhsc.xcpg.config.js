@@ -327,7 +327,7 @@
         rightArrow:false,
         leftArrow:false,
         title :'实测详情',
-        url   :'/sctbdetail/{recordId}/{itemId}/{MeasureRecordID}',
+        url   :'/sctbdetail/{recordId}/{itemId}/{MeasureRecordID}/{AcceptanceItemID}',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/ys/sctbdetail.html',
