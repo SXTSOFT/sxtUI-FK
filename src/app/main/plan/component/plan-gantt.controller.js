@@ -330,7 +330,7 @@
     // Reload data action
     function load()
     {
-       return api.plan.Task.query({
+       return api.plan.BuildPlan.getGantt({
         Type:'BuildingPlan',
         Source:$stateParams.id
       }).then(function (rs) {
@@ -446,7 +446,7 @@
       }
       loadSubTask();
       function loadSubTask(){
-        api.plan.Task.query({
+        api.plan.BuildPlan.getGantt({
           ParentTaskId:dialogData.formData.id,
           Type:'BuildingPlan',
           Source:$stateParams.id
@@ -566,19 +566,27 @@
               var time = new Date();
               vm.closePanel1();
               api.plan.Task.end(task.TaskFlowId,true,time,vm.EndDescription).then(function (r) {
-                loadSubTask();
-                //r.data.forEach(function(_r){
-                //  var f=parent.flows.find(function(t){
-                //    return t.TaskFlowId == _r.Id;
-                //  })
-                //  if(f){
-                //    f.ActualStartTime = _r.ActualStartTime;
-                //    f.ActualEndTime = _r.ActualEndTime;
-                //    f._State=setSatus(_r.State);
-                //    f.Color=setColor(_r.State);
-                //    f.State = _r.State;
-                //  }
-                //})
+                //task.IsAbleStart = r.IsAbleStart;
+                //task.IsInterlude = r.IsInterlude;
+                //task.ManuallyClose = r.ManuallyClose;
+                //loadSubTask();
+                r.data.forEach(function(_r){
+                  var f=parent.flows.find(function(t){
+                    return t.TaskFlowId == _r.Id;
+                  })
+                  if(f){
+                    f.ActualStartTime = _r.ActualStartTime;
+                    f.ActualEndTime = _r.ActualEndTime;
+                    f._State=setSatus(_r.State);
+                    f.Color=setColor(_r.State);
+                    f.State = _r.State;
+                    f.IsAbleStart = _r.IsAbleStart;
+                    f.IsInterlude = _r.IsInterlude;
+                    f.ManuallyClose = _r.ManuallyClose;
+                    f.RealScheduledStartTime = _r.RealScheduledStartTime;
+                    f.RealScheduledEndTime = _r.RealScheduledEndTime;
+                  }
+                })
               });
             }
             vm.closePanel1 = function() {
@@ -767,7 +775,7 @@
       }
 
       vm.openDialog = function(data,Id){
-        api.plan.Task.query({
+        api.plan.BuildPlan.getGantt({
           ParentTaskId:Id,
           Type:'BuildingPlan',
           Source:$stateParams.id

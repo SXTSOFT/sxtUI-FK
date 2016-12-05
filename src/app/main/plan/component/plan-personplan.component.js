@@ -87,6 +87,28 @@
       var time = new Date();
       api.plan.BuildPlan.startInsert(t.parentId, t.Id,time).then(function(r){
         t.IsAbleStart = false;
+        vm.data.forEach(function(tt){
+          tt.PlaningTasks.forEach(function(_t){
+            var f = r.data.find(function(_r){
+              return _r.Id == _t.Id;
+            })
+            if(f){
+              t.IsAbleStart = f.IsAbleStart;
+              t.IsInterlude = f.IsInterlude;
+              t.ManuallyClose = f.ManuallyClose;
+            }
+          })
+          tt.NoPlanTasks.forEach(function(_t){
+            var f = r.data.find(function(_r){
+              return _r.Id == _t.Id;
+            })
+            if(f){
+              t.IsAbleStart = f.IsAbleStart;
+              t.IsInterlude = f.IsInterlude;
+              t.ManuallyClose = f.ManuallyClose;
+            }
+          })
+        })
       })
     }
     vm.start = function(t){
@@ -123,6 +145,7 @@
           .ok('确定')
           .cancel('取消')
       ).then(function(res){
+        t.IsInterlude = false;
         api.plan.Task.end(t.Id,true,time,res).then(function(r){
           vm.loading = false;
           load();
