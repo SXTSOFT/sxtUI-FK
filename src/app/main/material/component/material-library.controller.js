@@ -14,14 +14,12 @@
 
   function materialLibrary($scope, api, utils, $state, $stateParams,$mdDialog) {
     var vm = this;
-    vm.data = {};
-    vm.data.Id = $stateParams.id;
-    vm.data.nodeList = [];
+    $scope.data = {};
 
     function load() {
       api.material.materialScience.GetMaterialTreeList().then(function (q) {
         if (q.data) {
-          vm.data.nodeList = q.data;
+          $scope.data.nodeList = q.data;
         }
       });
     }

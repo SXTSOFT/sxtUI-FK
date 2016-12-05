@@ -73,7 +73,7 @@
     </md-list-item>
     <md-list-item>
       <div flex ng-repeat="img in vm.data.Images | filter:{ApproachStage:1}:true" sxt-images="vm.data.Images" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" style="width: 450px;display: block;" flex="95" />
+        <img ng-src="{{img.ImageByte}}" class="uploadPhoto" flex="95" />
       </div>
     </md-list-item>
     <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">监理验收信息</div>
@@ -98,7 +98,7 @@
     </md-list-item>
     <md-list-item>
       <div flex ng-repeat="img in vm.data.Images | filter:{ApproachStage:2}:true" sxt-images="vm.data.Images" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" style="width: 450px; display: block;" flex="95"/>
+        <img ng-src="{{img.ImageByte}}" class="uploadPhoto" flex="95"/>
       </div>
     </md-list-item>
   </md-list>

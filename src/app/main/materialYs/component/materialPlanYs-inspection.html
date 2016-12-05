@@ -26,7 +26,7 @@
     <md-list-item style="padding-right: 0;">
       <label flex="30" style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">抽样过程</label>
       <div flex="60" ng-repeat="img in vm.samplingProcessImgs" sxt-images="vm.samplingProcessImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
+        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
       </div>
       <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(16)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>
@@ -34,7 +34,7 @@
     <md-list-item style="padding-right: 0;">
       <label flex="30"style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">检查单</label>
       <div flex="60" ng-repeat="img in vm.checkListImgs" sxt-images="vm.checkListImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" flex="95" style="width: 450px;display: block;"/>
+        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
       </div>
       <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(32)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
     </md-list-item>
