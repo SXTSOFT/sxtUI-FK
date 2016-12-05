@@ -16,7 +16,7 @@ window.sxt = (function(win)
   var db,sxt;
 
   sxt = {
-    requireSSL:false,
+    requireSSL:true,
     version: '1.1.12',
     app: {
       appDir: appDir,
@@ -27,6 +27,7 @@ window.sxt = (function(win)
       //api:'http://192.168.31.146:8090',
       //api:'http://vkde.sxtsoft.com',
       //api:'http://localhost:46844',
+     // api:'http://szapi2.vanke.com:8088',
       getUrl: getUrl,
       download: download
     },

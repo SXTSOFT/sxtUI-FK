@@ -9,7 +9,7 @@
     .directive('sxtWtPop',sxtWtPop);
 
   /**@ngInject*/
-  function sxtWtPop(xhUtils,$mdPanel,$state){
+  function sxtWtPop(xhUtils,$mdPanel,$state,api){
     return {
       scope:{
         show:'=',
@@ -18,7 +18,7 @@
       templateUrl:'app/main/inspection/directives/sxt-wt-pop.html',
       link:link
     }
-    function link(scope,element,attr,ctrl){
+    function link(scope,element,attr,ctrl,api){
       //$(element).appendTo('#content');
       scope.photos = [{url:'app/main/szgc/images/1.jpg'},
         {url:'app/main/szgc/images/1.jpg'},
@@ -43,7 +43,6 @@
       })
       scope.cancel = function(){
         scope.show = false;
-        //$(element).css('display','none')
       }
 
       scope.submit = function () {
@@ -52,6 +51,9 @@
         scope.$emit('submit',{
           question:question,
           description: description
+        })
+        api.inspection.repair_tasks.insert().then(function (r) {
+          debugger;
         })
         scope.show = false
       }

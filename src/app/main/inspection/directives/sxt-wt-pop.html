@@ -7,7 +7,7 @@
   <md-divider></md-divider>
   <div layout="row" layout-align="space-between center" class="ph-16 pv-10" ng-click="chooseQues()">
     <div class="pr-10" flex="none">问题</div>
-    <div flex class="question">{{question}}</div>
+    <div flex class="question" ng-model="">{{question}}</div>
   </div>
   <md-divider></md-divider>
   <div layout="row" class="ph-16 pv-10">
@@ -29,6 +29,6 @@
   <md-divider></md-divider>
   <label flex class="ph-16 pt-10">补充描述</label>
   <div layout="row" class="ph-16 pv-10">
-    <input style="width: 100%;padding:5px;border:1px solid #dedede;" placeholder="补充描述" ng-model="description"></input>
+    <textarea  style="width: 100%;padding:5px;border:1px solid #dedede;height: 100px;" placeholder="请输入补充描述" ng-model="description"></textarea>
   </div>
 </div>

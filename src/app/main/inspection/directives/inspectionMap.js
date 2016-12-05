@@ -12,7 +12,8 @@
       scope:{
         mapShow:'='
       },
-      link:function (scope,el) {
+      link:function (scope,el,api) {
+
         //var L = $window.L;
         require('/assets/res.pbf',function () {
           $timeout(function () {

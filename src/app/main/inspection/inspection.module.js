@@ -20,7 +20,7 @@
         }
       })
       .state('app.inspection.desktop', {
-        url:'/inspection',
+        url:'/inspection/{status}',
         title:'',
         shell:{
           yfbar:true,
@@ -102,7 +102,7 @@
         }
       })
       .state('app.meterreading.page', {
-        url:'/meterreading',
+        url:'/meterreading/{delivery_id}',
         title:'抄水电表',
         noBack:false,
         shell:{
@@ -112,7 +112,7 @@
       })
 
       .state('app.inspection.check', {
-        url:'/check/{id}',
+        url:'/check/{delivery_id}',
         title:'',
         hideFootbar:true,
         shell:{

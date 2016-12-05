@@ -13,9 +13,19 @@
     });
 
   /**@ngInject*/
-  function inspectionCjwtController($scope,utils,$state,$rootScope){
-
+  function inspectionCjwtController($scope,utils,$state,$rootScope,api){
     var vm = this;
+    vm.parm={
+      type:'delivery',
+      parent_id:'',
+      enabled:true,
+      page_size:10,
+      page_number:1
+    }
+    api.inspection.estate.issues_tree(vm.parm).then(function (r) {
+      debugger;
+
+    });
     vm.currentQ = 0
     vm.options = [
       {name:'三表',question:[
