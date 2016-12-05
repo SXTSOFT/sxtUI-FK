@@ -1,12 +1,12 @@
 <div layout="row" flex class="sxt-select">
   <div ng-show="selectors.length && selectors[0].selected">
-      <md-button style="min-height: 24px;height: 24px;padding: 0px;margin: 0px 0px 0px 5px;"  ng-repeat="st in selectors" ng-click="item_clear(st.index)" ng-if="st.selected" title="{{st.selected.$name}}">
-        <b style="color: #428bca;font-weight: 400;position: relative;bottom: 5px" class="ng-binding">{{st.label}}：</b><em style="font-style: normal;font-weight: 400;color: #e4393c;position: relative;bottom: 5px">{{st.selected.$name}}</em>
-        <md-icon md-font-icon="icon-close s16" style="position:relative;bottom: 3px"></md-icon>
+      <md-button style="min-height: 24px;height: 24px;line-height:24px;padding: 0px 3px;margin: 0;"  ng-repeat="st in selectors" ng-click="item_clear(st.index)" ng-if="st.selected" title="{{st.selected.$name}}">
+        <b style="color: #428bca;font-weight: 400;" class="ng-binding">{{st.label}}：</b><em style="font-style: normal;font-weight: 400;color: #e4393c;">{{st.selected.$name}}</em>
+        <md-icon md-font-icon="icon-close s16"></md-icon>
       </md-button>
       <span style="display: inline-block;width: 12px"></span>
-    <md-button class=" md-raised" ng-click="item_clear(0)" style="min-height: 24px;height: 24px;min-width: 86px;padding: 0px;margin: 0px;" ><em style="font-style: normal;font-weight: 400;color:grey;position: relative;bottom: 5px">全部撤消</em></md-button>
-    <md-button class=" md-raised" ng-click="item_back(1)"  style="min-height: 24px;height: 24px;min-width: 86px;padding: 0px;margin: 0px;" ><em style="font-style: normal;font-weight: 400;color:grey;position: relative;bottom: 5px">返回上一步</em></md-button>
+    <md-button class=" md-raised" ng-click="item_clear(0)" style="min-height: 24px;height: 24px;line-height:24px;min-width: 86px;padding: 0px;margin: 0px;" ><em style="font-style: normal;font-weight: 400;color:grey">全部撤消</em></md-button>
+    <md-button class=" md-raised" ng-click="item_back(1)"  style="min-height: 24px;height: 24px;line-height:24px;min-width: 86px;padding: 0px;margin: 0px;" ><em style="font-style: normal;font-weight: 400;color:grey">返回上一步</em></md-button>
   </div>
 </div>
 
@@ -28,7 +28,7 @@
               <div class="J-valueList v-fixed" style="overflow: hidden">
                 <md-list style="padding:0;">
                 <md-list-item ng-repeat="item in st.filters | orderBy:'RegionID'" data-initial="t" style="float: left;height: 32px;min-height: 32px;width: 160px;text-align: left">
-                <md-button style="height: 24px;min-height: 24px;padding: 0px;text-align: left" ng-click="item_selected(item, st.index)" title="{{item.$name}}"><i></i><span style="font-size: 10px;color: #005aa0;position: relative;bottom: 5px">{{item.$name}}</span></md-button>
+                <md-button style="height: 24px;min-height: 24px;padding: 0px 3px;" ng-click="item_selected(item, st.index)" title="{{item.$name}}"><i></i><span style="font-size: 10px;color: #005aa0;position: relative;bottom: 5px">{{item.$name}}</span></md-button>
                 </md-list-item>
                 </md-list>
               </div>

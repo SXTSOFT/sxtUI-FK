@@ -9,21 +9,21 @@
     .controller('gxhousechooseController',gxhousechooseController);
 
   /** @ngInject */
-  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils,api){
+  function gxhousechooseController($scope,$stateParams,db,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils,api,xhscService){
     var vm=this,
-      id = $stateParams.assessmentID,
-      AssessmentTypeID = $stateParams.AssessmentTypeID,
-      projectId = $stateParams.projectId,
+      areaId = $stateParams.projectId,
+      projectId = areaId.substr(0,5),
       acceptanceItemID=$stateParams.acceptanceItemID,
       acceptanceItemName = $stateParams.acceptanceItemName,
-      role=$stateParams.role,
-      areaId = $stateParams.areaId;
+      role=$stateParams.role;
+      ;
       vm.maxRegion = $stateParams.maxRegion;
 
     $rootScope.title = $stateParams.acceptanceItemName;
     if(role == "zb"){
       $rootScope.sendBt = true;
     }
+    vm.building=[];
     function  load(){
       vm.nums={
         qb:0, //全部
@@ -144,35 +144,43 @@
         return style;
       }
       return $q.all([
-        remote.Project.queryAllBulidings(projectId),
+        xhscService.getRegionTreesOnline(projectId,31,1),
         remote.Procedure.getRegionStatus(projectId)
       ]).then(function(res){
         vm.loading = true;
-        var result=res[0];
+        var result= res[0][0];
         var status=res[1]&&res[1].data?res[1].data:[];
-        result.data[0].RegionRelations.forEach(function(d){
-          filterOrSetting(status,d);
-          d.projectTree =  d.RegionName;
-          d.projectTitle = result.data[0].ProjectName + d.RegionName;
-          d.Children && d.Children.forEach(function(c){
-            filterOrSetting(status,c)
-            c.projectTree = d.projectTree + c.RegionName;
-            c.checked = false;
-            c.Children && c.Children.forEach(function(r){
-              r.projectTree = c.projectTree + r.RegionName;
-              r.checked = false;
-              filterOrSetting(status,r);
-              vm.floors=vm.floors?vm.floors:[];
-              vm.floors.push(r);
-              r.Children && r.Children.forEach(function(_r){
-                _r.projectTree = r.projectTree + _r.RegionName;
-                _r.checked = false;
-                filterOrSetting(status,_r);
+        result.Children.forEach(function(d){
+          if (d.RegionID==areaId){
+            d.selected=true;
+            filterOrSetting(status,d);
+            d.projectTree =  result.RegionName;
+            d.projectTitle = result.RegionName + d.RegionName;
+            d.Children && d.Children.forEach(function(c){
+              c.floors=[];
+              filterOrSetting(status,c)
+              c.projectTree = d.projectTree + c.RegionName;
+              c.checked = false;
+              vm.building.push(c);
+              c.Children && c.Children.forEach(function(r){
+                r.projectTree = c.projectTree + r.RegionName;
+                r.checked = false;
+                filterOrSetting(status,r);
+                vm.floors=vm.floors?vm.floors:[];
+                vm.floors.push(r);
+                if (! r.Children||!r.Children.length){
+                  c.floors.push(r);
+                }
+                r.Children && r.Children.forEach(function(_r){
+                  _r.projectTree = r.projectTree + _r.RegionName;
+                  _r.checked = false;
+                  filterOrSetting(status,_r);
+                })
               })
             })
-          })
+          }
         })
-        vm.houses =  result.data[0].RegionRelations;
+        vm.houses =  result.Children;
         return vm.houses;
       });
     }
@@ -180,92 +188,21 @@
     load();
 
     vm.callBack=function(){
-      load().then(function(){
-        $mdDialog.hide();
-        utils.alert('报验成功')
-      });
+      utils.alert('报验成功',null,function(){
+        $state.go("app.xhsc.gx.gxmain");
+      })
     };
     vm.selected = function(r){
-      switch (role){
-        case "zb":
-          zbSelected(r);
+      switch (r.status){
+        case 0:
+          r.checked = !r.checked;
           break;
-        case "jl":
-          jlSelected(r);
-          break;
-        default:
-          jfSelect();
+        case 1:
+          r.checked = r.Percentage==100?false:(!r.checked);
           break;
       }
     }
-    //总包点击事件
-    function zbSelected(r){
-        function validateChecked(r){
-           switch(r.RegionType){
-             case 8:
-               r.Children&&r.Children.forEach(function(m){
-                  if (m.checked){
-                    r.checked=false;
-                  }
-               });
-              break;
-             case 16:
-               var parent=vm.floors.find(function(m){
-                 return r.RegionID.indexOf(m.RegionID)>-1;
-               });
-               if (parent&&parent.checked){
-                 r.checked=false;
-               }
-               break;
-           }
-        }
 
-        switch (r.status){
-          case 0:
-            r.checked = !r.checked;
-          break;
-          case 1:
-            r.checked = r.Percentage==100?false:(!r.checked);
-            break;
-        }
-        validateChecked(r);
-    }
-    //监理点击事件
-    function jlSelected(r){
-      console.log('r',r)
-      if(r.inspectionRows.length>1){
-        $mdDialog.show({
-          controller:['$scope','$state','$timeout',function($scope,$state,$timeout){
-            $scope.lists = r;
-            $scope.goTo = function(item){
-              $mdDialog.hide();
-              $timeout(function(){
-                $state.go('app.xhsc.gx.gxtest',{InspectionId: item.InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:$scope.lists.projectTree,
-                  regionId:$scope.lists.RegionID,projectId:projectId,areaId:item.AreaId})
-              })
-            }
-          }],
-          template: '<md-dialog><md-dialog-content style="padding:10px;"><p style="padding-left:10px;margin:10px 0 0;font-size:14px;">验收批列表</p><md-list>' +
-          '<md-list-item ng-repeat="item in lists.inspectionRows" ng-click="goTo(item)">{{$index+1}}、{{lists.projectTree}}{{item.Describe}}</md-list-item></md-list></md-dialog-content></md-dialog>',
-          parent: angular.element(document.body),
-          focusOnOpen:false,
-          clickOutsideToClose:true
-        })
-      }else{
-        //console.log('area',areaId)
-        switch (r.status){
-          case 1:
-            $state.go('app.xhsc.gx.gxtest',{InspectionId: r.inspectionRows[0].InspectionId,acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,name:r.projectTree,
-              regionId:r.RegionID,projectId:projectId,areaId:areaId});
-            break;
-        }
-      }
-
-    }
-    //甲方点击事件
-    function  jfSelect(){
-
-    }
 
     vm.zk = function(item){
       item.show = !item.show;

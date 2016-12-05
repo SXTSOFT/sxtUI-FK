@@ -34,7 +34,7 @@
         <td rowspan="{{item.rows.length}}" ng-if="$index == 0" style="padding: 0;">
           <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">
             <tr>
-              <td style="white-space: nowrap;"><a ui-sref="app.xhsc.scsl.schztbdetail({regionId:vm.regionId,itemId:item.AcceptanceIndexID,acceptanceItemID:vm.AcceptanceItemID})">{{item.IndexName}}</a></td>
+              <td style="white-space: nowrap;"><a ui-sref="app.xhsc.scsl.schztbdetail({regionId:vm.regionId,itemId:item.AcceptanceIndexID,acceptanceItemID:vm.AcceptanceItemID,MeasureRecordID:item.MeasureRecordID})">{{item.IndexName}}</a></td>
             </tr>
           </table>
         </td>
@@ -48,12 +48,30 @@
           <span ng-repeat="v in point.MeasureValue|orderBy:'Role'" ng-class="{'yellow':v.Status == 2,'red':v.Status == 3,'jlfont':v.Role == 2,'xmfont':v.Role == 4}">{{v.Value}}</span>
         </td>
       </tr>
+      <!--<tr ng-repeat="row in item.pointArr" ng-if="!item.Children">-->
+        <!--<td rowspan="{{item.rows.length}}" ng-if="$index == 0" style="padding: 0;">-->
+          <!--<table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2">-->
+            <!--<tr>-->
+              <!--<td style="white-space: nowrap;"><a ui-sref="app.xhsc.scsl.schztbdetail({regionId:vm.regionId,itemId:item.AcceptanceIndexID,acceptanceItemID:vm.AcceptanceItemID})">{{item.IndexName}}</a></td>-->
+            <!--</tr>-->
+          <!--</table>-->
+        <!--</td>-->
+        <!--<td rowspan="{{item.rows.length}}" ng-if="$index == 0" align="center">-->
+          <!--<span ng-repeat="n in item.numbers" ng-class="{'jlfont':n.Role == 2,'xmfont':n.Role == 4}">{{n.allDot}}</span>-->
+        <!--</td>-->
+        <!--<td rowspan="{{item.rows.length}}" ng-if="$index == 0">-->
+          <!--<span ng-repeat="n in item.QualifiedRate" ng-class="{'jlfont':n.Role == 2,'xmfont':n.Role == 4}">{{n.Value|number:2}}%</span>-->
+        <!--</td>-->
+        <!--<td ng-repeat="point in row" style="padding:0 6px;">-->
+          <!--<span ng-repeat="v in point.MeasureValue|orderBy:'Role'" ng-class="{'yellow':v.Status == 2,'red':v.Status == 3,'jlfont':v.Role == 2,'xmfont':v.Role == 4}">{{v.Value}}</span>-->
+        <!--</td>-->
+      <!--</tr>-->
       <tr ng-repeat="row in item.Children" ng-if="item.Children">
         <td rowspan="{{item.Children.length}}" ng-if="$index == 0" style="padding: 0;">
           <table width="100%" cellpadding="0" cellspacing="0" class="levelTable leveltable2" table-auto-height>
             <tr ng-repeat="row in item.Children">
               <td rowspan="{{item.Children.length}}" ng-if="$index == 0">{{item.IndexName}}</td>
-              <td><a ui-sref="app.xhsc.scsl.schztbdetail({regionId:vm.regionId,itemId:row.AcceptanceIndexID,acceptanceItemID:vm.AcceptanceItemID})">{{row.IndexName}}</a></td>
+              <td><a ui-sref="app.xhsc.scsl.schztbdetail({regionId:vm.regionId,itemId:row.AcceptanceIndexID,acceptanceItemID:vm.AcceptanceItemID,MeasureRecordID:item.MeasureRecordID})">{{row.IndexName}}</a></td>
             </tr>
           </table>
         </td>

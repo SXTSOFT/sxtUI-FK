@@ -1,0 +1,23 @@
+<div flex="none" style="position: relative;" class="downcaret">
+  <div layout="row" flex style="height:48px;border-bottom: 1px solid #d8d8d8;position: relative;z-index: 10;background: rgb(245,245,245);">
+    <p ng-click="vm.qyslide()" style="font-size:14px;padding:0 10px;text-align: center;margin: 0;height:48px;line-height:48px;width:70%;margin-left:auto;margin-right:auto;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+      {{vm.regionSelect.RegionName||'区域'}} <span class="caret"></span>
+    </p>
+  </div>
+  <div flex layout="row" class="gxtest qyslide" ng-class="{'qydown':vm.qyslideShow}">
+    <md-list layout="column" flex class="gxplist">
+      <md-list-item flex ng-repeat="p in vm.pareaList">
+        <p ng-click="vm.selectQy(p)">{{p.RegionName}}</p>
+      </md-list-item>
+    </md-list>
+  </div>
+</div>
+<div class="mapcheck" layout="column" flex sxt-week-recheck="vm.Rectification.RectificationID" ct="vm.info" sxt-map-show="vm.slideShow"
+     inspection-id="vm.InspectionID" procedure="vm.Rectification.AcceptanceItemID" disable-inspect="vm.role=='zb'" disable-drag region-id="vm.regionSelect.AreaID">
+  <div flex layout="row" layout-align="center center" ng-if="vm.info.loading"><md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular></div>
+</div>
+
+<sxt-week-recheck-popup slide-show="vm.slideShow" warter="vm.warter" slide-role="vm.role"></sxt-week-recheck-popup>
+<sxt-ques-detail-up up-show="vm.showUp" selected-area="vm.regionSelect.AreaID" current-rectificationid="vm.RectificationID"></sxt-ques-detail-up>
+
+

@@ -18,7 +18,10 @@
   {
     $stateProvider
       .state('app.pcReport_sl_sc',{
+        title:"实测实量报表",
         url:'/pcReport_sl_sc',
+        noBack:true,
+        sendBt:false,
         views:{
           'content@app':{
             templateUrl: 'app/main/pcReport/scReport/scslFilter.html',
@@ -27,6 +30,8 @@
         }
       })
       .state('app.pcReport_sl_rp',{
+        noBack:true,
+        sendBt:false,
         url:'/pcReport_sl_rp/{scSelected}/{secSelected}',
         views:{
           'content@app':{

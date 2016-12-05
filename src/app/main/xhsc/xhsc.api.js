@@ -9,76 +9,134 @@
     .config(config);
 
   /** @ngInject */
-  function config(apiProvider){
+  function config(apiProvider) {
     var $http = apiProvider.$http,
       $q = apiProvider.$q;
-    var r = function(data) {
+    var r = function (data) {
       return $q(function (resolve) {
         resolve({
           data: data
         })
       });
     }
-    apiProvider.register('xhsc',{
-      profile:$http.db({
-        _id:'s_userinfo',
-        idField:'UserId',
-        mode:2,
-        filter:function () {
+    apiProvider.register('xhsc', {
+      profile: $http.db({
+        _id: 's_userinfo',
+        idField: 'UserId',
+        mode: 2,
+        filter: function () {
           return true;
         },
-        dataType:3
+        dataType: 3
       }).bind(function () {
-        //return $http.get(sxt.app.api + '/api/Security/profile', {t: new Date().getTime()});
         return $http.get(sxt.app.api + '/api/UserInfo/profile');
       }),
-      offline:$http.db({
-        _id:'s_offline',
-        idField:'Id',
-        methods:{
-          query:{
-            dataType:1,
-            filter:function (item,prjectId) {
-              return !prjectId || prjectId==item.Id;
+      offline: $http.db({
+        _id: 's_offline',
+        idField: 'Id',
+        methods: {
+          query: {
+            dataType: 1,
+            filter: function (item, prjectId) {
+              return !prjectId || prjectId == item.Id;
             }
           },
-          create:{
-            upload:true
+          create: {
+            upload: true
           },
-          delete:{
-            delete:true
+          delete: {
+            delete: true
           }
         }
       }),
       Project: {
         getMap: $http.db({
-          _id: 'mapPoroject',
+          db: function (db) {
+            if (db == "nodb") {
+              return null;
+            }
+            return db ? db : "mapPoroject";
+          },
           idField: 'ProjectID',
+          mode: 2,
           dataType: 1
-        }).bind(function () {
+        }).bind(function (db) {
           return $http.get($http.url('/api/ProjectInfoApi/GetMapProjectList'))
         }),
         getDrawingRelations: $http.db({
-          _id: 'DrawingRelation',
+          db: function (projectId, db) {
+            if (db == "nodb") {
+              return null;
+            }
+            return db ? db : 'DrawingRelation';
+          },
+          filter: function (item, projectId) {
+            return item.ProjectId == projectId;
+          },
           idField: 'ProjectId',
-          //fileFiled:['FileContent'],
           dataType: 3
-        }).bind(function (projectId) {
-          return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation', {projectId: projectId})).then(function(result){
+        }).bind(function (projectId, db) {
+          return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingRelation', {projectId: projectId})).then(function (result) {
             return {
-              data:{
-                ProjectId:projectId,
-                Relations:result.data
+              data: {
+                ProjectId: projectId,
+                Relations: result.data
               }
             }
           });
-        },function(result){
+        }, function (result) {
           return {
-            data:result.data.Relations
+            data: result.data.Relations
           }
         }),
-        GetAreaChildenbyID:function(regionID){
-          return  $http.get($http.url('/api/ProjectInfoApi/GetAreaChildenById', {areaId: regionID}))
+        GetAreaChildenbyID: function (regionID, regionType) {
+          return $http.get($http.url('/api/ProjectInfoApi/GetAreaChildenById', {areaId: regionID}))
+        },
+        getAllRegionWithRight: $http.db({
+          db: function (regionID, regionType, db) {
+            if (db) {
+              return db;
+            }
+            return "sxtRigthRetions"
+          },
+          idField: function (d) {
+            return d.RegionID;
+          },
+          mode: 2,
+          dataType: 1,
+        }).bind(function (regionID, regionType) {
+          return $http.get($http.url('/api/ProjectInfoApi/GetProjectRelationRole', {
+            areaId: regionID,
+            regionType: regionType
+          }));
+        }),
+        getRegionWithRight_wrap: $http.wrap({
+          _id: "msAreaRegions",
+          offline: true,
+          idField: "regions",
+          dataType: 3,
+          fn: function (regionID, regionType) {
+            return $http.get($http.url('/api/ProjectInfoApi/GetProjectRelationRole', {
+              areaId: regionID,
+              regionType: regionType
+            })).then(function (r) {
+              return {
+                data: {
+                  data: r.data
+                }
+              }
+            });
+          }
+        }),
+        getAllRegionWithRight_no_db: function (regionID, regionType) {
+          return $http.get($http.url('/api/ProjectInfoApi/GetProjectRelationRole', {
+            areaId: regionID,
+            regionType: regionType
+          }));
+        },
+
+        getZTjd: function (areaId) {
+          return $http.get($http.url('/api/ProjectInfoApi/GetSubjectSchedule', {areaId: areaId}))
         },
         getUserProjectSection:function(){
           return  $http.get($http.url('/api/ProjectInfoApi/GetUserSection'))
@@ -87,8 +145,8 @@
           _id: 'Drawing',
           idField: 'DrawingID',
           dataType: 1,
-          filter:function (item,projectId) {
-            return item.ProjectID==projectId;
+          filter: function (item, projectId) {
+            return item.ProjectID == projectId;
           }
         }).bind(function (projectId) {
           return $http.get($http.url('/Api/WPAcceptanceApi/GetGxDrawingList', {projectId: projectId}));
@@ -97,8 +155,10 @@
           _id: 'Drawing',
           idField: 'DrawingID',
           dataType: 3,
-          mode:1,
-          filter:function (item,drawingId) {
+          mode: 1,
+          firstIsId: true,
+          fileField: ['DrawingContent'],
+          filter: function (item, drawingId) {
             return item.DrawingID == drawingId;
           }
         }).bind(function (drawingId) {
@@ -111,233 +171,326 @@
           _id: 'Projects',
           idField: 'ProjectID',
           dataType: 1,
-          filter: function (item,projectId) {
+          filter: function (item, projectId) {
             return item.ProjectID == projectId;
           }
         }).bind(function (projectId) {
           return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByid', {projectId: projectId}));
         }),
-        getInspectionList:$http.db({
-          _id:'Inspection',
-          idField:'InspectionId',
-          dataType:1,
-          filter:function (item,inspectionId) {
-            return item.InspectionId==inspectionId;
+        getRegionAndChildren: $http.db({
+          _id: 'regions',
+          idField: 'RegionID',
+          dataType: 1,
+          filter: function (item, regionId) {
+            return item.RegionID == regionId;
           }
-        }).bind(function(inspectionId){
-          return $http.get($http.url('/api/InspectionApi/GetInspectionInfoByInspection',{inspectionId:inspectionId}));
+        }).bind(function (regionId) {
+          return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByIdEx', {areaId: regionId}));
         }),
-        getZjInspectionList:$http.db({
-          _id:'InspectionApi',
-          idField:'InspectionID',
-          dataType:1,
-          filter:function (item,inspectionId) {
-            return item.InspectionID==inspectionId;
+        getRegionWithRight: $http.db({
+          db: function (regionId, db) {
+            return db ? db : null;
+          },
+          idField: function () {
+            return "regionId";
+          },
+          dataType: 3,
+        }).bind(function (regionId) {
+          return $http.get($http.url('/api/ProjectInfoApi/GetProjectListByIdExAuthority', {areaId: regionId})).then(function (result) {
+            return {
+              data: result.data
+            }
+          });
+        }),
+        getInspectionList: $http.db({
+          db: function (inspectionId, db) {
+            if (db) {
+              return db
+            }
+            return "Inspection"
+          },
+          idField: 'InspectionId',
+          dataType: 1,
+          filter: function (item, inspectionId) {
+            return item.InspectionId == inspectionId;
+          }
+        }).bind(function (inspectionId) {
+          return $http.get($http.url('/api/InspectionApi/GetInspectionInfoByInspection', {inspectionId: inspectionId}));
+        }),
+        getZjInspectionList: $http.db({
+          _id: 'InspectionApi',
+          idField: 'InspectionID',
+          dataType: 1,
+          filter: function (item, inspectionId) {
+            return item.InspectionID == inspectionId;
           }
         }).bind(),
-        insertInspectionList:$http.db({
-          _id:'Inspection',
-          idField:'InspectionId',
-          upload:true
+        insertInspectionList: $http.db({
+          _id: 'Inspection',
+          idField: 'InspectionId',
+          upload: true
         }).bind(),
-        GetRegionTreeInfo:function(ProjectID){
-          return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo',{areaID:ProjectID}))
+        GetRegionTreeInfo: function (ProjectID) {
+          return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo', {areaID: ProjectID}))
         },
-        GetMeasureItemInfoByAreaID:function(ProjectID){
-          return $http.get($http.url('/Api/MeasureInfo/GetMeasureItemInfo',{areaID:ProjectID}))
+        GetMeasureItemInfoByAreaID: function (ProjectID) {
+          return $http.get($http.url('/Api/MeasureInfo/GetMeasureItemInfo', {areaID: ProjectID}))
         },
-        GetMeasureItemInfoFilter:function(ProjectID){
-          return $http.get($http.url('/Api/MeasureInfo/GetMeasureItemInfoFilter',{areaID:ProjectID}))
+        GetMeasureItemInfoFilter: function (ProjectID) {
+          return $http.get($http.url('/Api/MeasureInfo/GetMeasureItemInfoFilter', {areaID: ProjectID}))
         }
       },
-      Procedure:{
-        queryProcedure:$http.db({
+      Procedure: {
+        queryProcedure: $http.db({
           _id: 'AcceptanceInfo',
           idField: 'SpecialtyID',
           dataType: 1
-        }).bind(function(){
+        }).bind(function () {
           return $http.get($http.url('/Api/WPAcceptanceApi/GetWPAcceptanceInfo'));
         }),
-        InspectionPoint:$http.db({
-          _id:'InspectionPoint',
-          idField:'MeasurePointID',
-          methods:{
-            query:{
-              dataType:1,
-              filter:function (item,inspectionId,acceptanceItemId,areaId) {
+        InspectionPoint: $http.db({
+          db: function (inspectionId, acceptanceItemId, areaId, db) {
+            if (db == "nodb") {
+              return null
+            }
+            return db ? db : "InspectionPoint";
+          },
+          mark: "allUp",
+          idField: 'MeasurePointID',
+          methods: {
+            query: {
+              dataType: 1,
+              filter: function (item, inspectionId, acceptanceItemId, areaId) {
                 return true;
               },
-              fn:function (inspectionId,acceptanceItemId,areaId) {
-                return $http.get($http.url('/api/InspectionCheckpointApi/GetMeasurePoint',{inspectionId:inspectionId,areaId:areaId,acceptanceItemId:acceptanceItemId}));
+              fn: function (inspectionId, acceptanceItemId, areaId, db) {
+                return $http.get($http.url('/api/InspectionCheckpointApi/GetMeasurePoint', {
+                  inspectionId: inspectionId,
+                  areaId: areaId,
+                  acceptanceItemId: acceptanceItemId
+                }));
               }
             },
-            create:{
-              upload:true,
-              fn:function (point) {
-                if(point.geometry){
+            create: {
+              upload: true,
+              fn: function (point) {
+                if (point.geometry) {
                   point.Geometry = point.geometry;
                 }
-                if(typeof point.Geometry==='string'){
+                if (typeof point.Geometry === 'string') {
                   point.Geometry = JSON.parse(point.Geometry);
                 }
-                return $http.post('/Api/MeasurePointApi/CreatePoint',[point]);
+                return $http.post('/Api/MeasurePointApi/CreatePoint', [point]);
               }
             },
-            delete:{
-              delete:true,
-              fn:function(measurePointID) {
+            delete: {
+              delete: true,
+              fn: function (measurePointID) {
                 return $http.post($http.url('/Api/MeasurePointApi/DeletePoint', measurePointID))
               }
             }
           }
         }),
-        InspectionIndex:{
-          query:$http.db({
-            _id:'EMBDInspectionIndex',
-            idField:'InspectionIndexID',
-            dataType:1,
-            filter:function (item,areaID,acceptanceItemID,userID,count) {
-              return item.AreaID==areaID
-                && item.AcceptanceItemID==acceptanceItemID
-                && item.UserID==userID
-                && item.Count==count
+        InspectionIndex: {
+          query: $http.db({
+            _id: 'EMBDInspectionIndex',
+            idField: 'InspectionIndexID',
+            dataType: 1,
+            filter: function (item, areaID, acceptanceItemID, userID, count) {
+              return item.AreaID == areaID
+                && item.AcceptanceItemID == acceptanceItemID
+                && item.UserID == userID
+                && item.Count == count
             }
-          }).bind(function (areaID,acceptanceItemID,userID,count) {
-            return $http.get($http.url('/Api/InspectionApi/GetInspectionIndex', {AreaID: areaID,AcceptanceItemID:acceptanceItemID,UserID:userID,Count:count}));
+          }).bind(function (areaID, acceptanceItemID, userID, count) {
+            return $http.get($http.url('/Api/InspectionApi/GetInspectionIndex', {
+              AreaID: areaID,
+              AcceptanceItemID: acceptanceItemID,
+              UserID: userID,
+              Count: count
+            }));
           }),
-          create:$http.db({
-            name:'检查点',
-            _id:'EMBDInspectionIndex',
-            idField:'InspectionIndexID',
-            upload:true,
-            local:true
+          create: $http.db({
+            name: '检查点',
+            _id: 'EMBDInspectionIndex',
+            idField: 'InspectionIndexID',
+            upload: true,
+            local: true
           }).bind(function (inspectionIndex) {
             return $http.post($http.url('/Api/InspectionApi/CreateInspectionIndex', inspectionIndex));
           }),
-          delete:$http.db({
-            _id:'EMBDInspectionIndex',
-            idField:'InspectionIndexID',
-            delete:true,
-            local:true
+          delete: $http.db({
+            _id: 'EMBDInspectionIndex',
+            idField: 'InspectionIndexID',
+            delete: true,
+            local: true
           }).bind()
         },
-        InspectionCheckpoint:$http.db({
-          _id:'InspectionCheckpoint',
-          idField:'CheckpointID',
-          methods:{
-            query:{
-              dataType:1,
-              filter:function (item,AcceptanceItemID,AreaID) {
-                return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID;
+        InspectionCheckpoint: $http.db({
+          db: function (acceptanceItemId, areaId, inspectionId, db) {
+            if (db) {
+              return db;
+            }
+            return "InspectionCheckpoint";
+          },
+          idField: 'CheckpointID',
+          methods: {
+            query: {
+              dataType: 1,
+              filter: function (item, AcceptanceItemID, AreaID) {
+                return item.AcceptanceItemID == AcceptanceItemID && item.AreaID == AreaID;
               },
-              fn:function (acceptanceItemId,areaId,inspectionId) {
-                return $http.get($http.url('/Api/InspectionCheckpointApi/ByAreaIdAndAcceptanceItemId',{areaId:areaId,acceptanceItemId:acceptanceItemId,inspectionId:inspectionId}));
+              fn: function (acceptanceItemId, areaId, inspectionId) {
+                return $http.get($http.url('/Api/InspectionCheckpointApi/ByAreaIdAndAcceptanceItemId', {
+                  areaId: areaId,
+                  acceptanceItemId: acceptanceItemId,
+                  inspectionId: inspectionId
+                }));
               }
             },
-            create:{
-              name:'检查记录',
-              upload:true,
-              dataType:3,
-              fn:function (InspectionCheckpoint) {
-                return $http.post('/Api/InspectionCheckpointApi/Insert',InspectionCheckpoint);
+            create: {
+              name: '检查记录',
+              upload: true,
+              dataType: 3,
+              fn: function (InspectionCheckpoint) {
+                return $http.post('/Api/InspectionCheckpointApi/Insert', InspectionCheckpoint);
               }
             },
-            delete:{
-              delete:true,
-              fn:function (CheckpointID) {
-                $http.post('/Api/InspectionCheckpointApi/Delete',{CheckpointID:CheckpointID});
+            delete: {
+              delete: true,
+              fn: function (CheckpointID) {
+                $http.post('/Api/InspectionCheckpointApi/Delete', {CheckpointID: CheckpointID});
               }
             }
           }
         }),
-        InspectionProblemRecord:{
-          query:$http.db({
-            _id:'InspectionProblemRecord',
-            idField:'ProblemRecordID',
-            dataType:1,
-            filter:function (item,CheckpointID) {
-              return item.CheckpointID==CheckpointID;
+        InspectionProblemRecord: {
+          query: $http.db({
+            db: function (checkpointId, db) {
+              if (db) return db;
+              return "InspectionProblemRecord";
+            },
+            idField: 'ProblemRecordID',
+            dataType: 1,
+            filter: function (item, CheckpointID) {
+              return item.CheckpointID == CheckpointID;
             }
           }).bind(function (checkpointId) {
-            return $http.get($http.url('/api/InspectionProblemRecordApi/ByCheckpointId',{checkpointId:checkpointId}))
+            return $http.get($http.url('/api/InspectionProblemRecordApi/ByCheckpointId', {checkpointId: checkpointId}))
           }),
-          create:$http.db({
-            name:'问题记录',
-            _id:'InspectionProblemRecord',
-            idField:'ProblemRecordID',
-            upload:true
+          create: $http.db({
+            name: '问题记录',
+            _id: 'InspectionProblemRecord',
+            idField: 'ProblemRecordID',
+            upload: true
           }).bind(function (InspectionProblemRecord) {
-            return $http.post('/Api/InspectionProblemRecordApi/Insert',InspectionProblemRecord);
+            return $http.post('/Api/InspectionProblemRecordApi/Insert', InspectionProblemRecord);
           }),
-          delete:$http.db({
-            _id:'InspectionProblemRecord',
-            idField:'ProblemRecordID',
-            local:true,
-            delete:true
+          delete: $http.db({
+            _id: 'InspectionProblemRecord',
+            idField: 'ProblemRecordID',
+            local: true,
+            delete: true
           }).bind()
         },
-        InspectionProblemRecordFile:{
-          query:$http.db({
-            _id:'InspectionProblemRecordFile',
-            idField:function(d) {
-              return d.Id|| d.ProblemRecordFileID
-            }, dataType:1,
-            filter:function (item,ProblemRecordID) {
-              return item.ProblemRecordID==ProblemRecordID;
+        InspectionProblemRecordFile: {
+          query: $http.db({
+            db: function (problemRecordId, arg, db) {
+              if (db) {
+                return db;
+              }
+              return "InspectionProblemRecordFile";
+            },
+            idField: function (d) {
+              return d.Id || d.ProblemRecordFileID
+            }, dataType: 1,
+            filter: function (item, ProblemRecordID) {
+              return item.ProblemRecordID == ProblemRecordID;
             }
           }).bind(function (problemRecordId) {
             return $http.get($http.url('/Api/InspectionProblemRecordFileApi/GetProblemRecordFile',{problemRecordId:problemRecordId}))
           }),
-          create:$http.db({
-            name:'照片',
-            _id:'InspectionProblemRecordFile',
-            idField:'ProblemRecordFileID',
-            upload:true
+          create: $http.db({
+            name: '照片',
+            _id: 'InspectionProblemRecordFile',
+            idField: 'ProblemRecordFileID',
+            upload: true
           }).bind(function (InspectionProblemRecordFile) {
-            return $http.post('/Api/InspectionProblemRecordFileApi/Insert',InspectionProblemRecordFile);
+            return $http.post('/Api/InspectionProblemRecordFileApi/Insert', InspectionProblemRecordFile);
           }),
-          delete:$http.db({
-            _id:'InspectionProblemRecordFile',
-            idField:'ProblemRecordFileID',
-            delete:true
+          delete: $http.db({
+            _id: 'InspectionProblemRecordFile',
+            idField: 'ProblemRecordFileID',
+            delete: true
           }).bind()
         },
-        InspectionIndexJoinApi:{
-          create:$http.db({
-            _id:'InspectionIndexJoinApi',
-            idField:'ProblemID',
-            upload:true,
+        InspectionIndexJoinApi: {
+          create: $http.db({
+            _id: 'InspectionIndexJoinApi',
+            idField: 'ProblemID',
+            upload: true,
             //filter:function(item,InspectionID,ProblemID,AreaID){
             //  return item.InspectionID == InspectionID && item.ProblemID == ProblemID && item.AreaID ==AreaID
             //}
-          }).bind(function(params){
-            return $http.post('/api/InspectionIndexJoinApi/Insert',params);
+          }).bind(function (params) {
+            return $http.post('/api/InspectionIndexJoinApi/Insert', params);
           }),
-          query:$http.db({
-            _id:'InspectionIndexJoinApi',
-            idField:'ProblemID',
-            dataType:1,
-            filter:function(item,InspectionID){
+          query: $http.db({
+            _id: 'InspectionIndexJoinApi',
+            idField: 'ProblemID',
+            dataType: 1,
+            filter: function (item, InspectionID) {
               return item.InspectionID == InspectionID
             }
-          }).bind(function(InspectionID){
-            return $http.get($http.url('/api/InspectionIndexJoinApi/GetList',{inspectionID:InspectionID}));
+          }).bind(function (InspectionID) {
+            return $http.get($http.url('/api/InspectionIndexJoinApi/GetList', {inspectionID: InspectionID}));
           })
         },
-        getRegionStatus:$http.db({
-          _id:'project_status',
-          idField:function (item) {
-            return item.Sign + item.AcceptanceItemID+item.AreaId;
+        getRegionStatus: $http.db({
+          db: function (projectId, Sign, db) {
+            return db ? db : null;
           },
-          dataType:1,
-          filter:function (item,projectId,Sign) {
-            return item.projectId==projectId && item.Sign==Sign
-          }
-        }).bind(function(projectId,Sign) {
+          idField: function (item) {
+            return "items";
+          },
+          dataType: 3,
+        }).bind(function (projectId, Sign) {
           return $http.get($http.url('/Api/InspectionApi/GetUserInspectionInfo', {
             projectId: projectId,
-            Sign:!Sign? "":Sign
+            Sign: !Sign ? 5 : Sign
           })).then(function (r) {
+            r.data.forEach(function (row) {
+              row.projectId = projectId;
+              row.Sign = Sign;
+            });
+            return {
+              data: r.data
+            };
+          });
+        }),
+        getRegionStatusEx: $http.db({
+          db: function (projectId, Sign, AcceptanceItemID, db) {
+            if (db) {
+              return db;
+            }
+            return "project_status_right"
+          },
+          idField: function (item) {
+            return item.Sign + item.AcceptanceItemID + item.AreaId;
+          },
+          dataType: 1,
+          filter: function (item, projectId, Sign) {
+            return item.AreaId.indexOf(projectId) > -1 && item.Sign == Sign
+          }
+        }).bind(function (projectId, Sign, AcceptanceItemID) {
+          var param = {
+            projectId: projectId,
+            sign: Sign ? Sign : 5
+          }
+          if (AcceptanceItemID) {
+            param.AcceptanceItemID = AcceptanceItemID;
+          }
+          return $http.get($http.url('/api/InspectionApi/GetUserInspectionInfoEx', param)).then(function (r) {
             r.data.forEach(function (row) {
               row.projectId = projectId;
               row.Sign = Sign;
@@ -345,304 +498,421 @@
             return r;
           });
         }),
-        postInspection:$http.db({
-          _id:'Inspection',
-          upload:true,
-          idField:'InspectionId'
-        }).bind(function(params){
-          return $http.post($http.url('/Api/InspectionApi/insert'),params)
-        },function (r,cfg,args) {
-          if(!r.data){
+        getRegionStatusEx_v2: $http.db({
+          db: function (projectId, Sign, AcceptanceItemID, db) {
+            if (db) {
+              return db;
+            }
+            return "project_status_right"
+          },
+          idField: function (item) {
+            return item.indentiy;
+          },
+          dataType: 3
+        }).bind(function (projectId, Sign, AcceptanceItemID) {
+          var param = {
+            projectId: projectId,
+            sign: Sign ? Sign : 5
+          }
+          if (AcceptanceItemID) {
+            param.AcceptanceItemID = AcceptanceItemID;
+          }
+          return $http.get($http.url('/api/InspectionApi/GetUserInspectionInfoEx', param)).then(function (r) {
+            r.data.forEach(function (row) {
+              row.projectId = projectId;
+              row.Sign = Sign;
+            });
+            return {
+              data: {
+                indentiy: "status",
+                data: r.data
+              }
+            }
+          });
+        }),
+
+        getMeasureMosaic: $http.db({
+          db: function (projectId, acceptanceItemId, db) {
+            if (db) {
+              return db;
+            }
+            return "scStutas";
+          },
+          idField: function () {
+            return "sc";
+          },
+          dataType: 3
+        }).bind(function (projectId, acceptanceItemId, db) {
+          var param = {
+            projectId: projectId,
+          }
+          if (acceptanceItemId) {
+            param.acceptanceItemId = acceptanceItemId;
+          }
+          return $http.get($http.url('/api/MeasureInfo/GetMeasureMosaic', param))
+        }),
+        postInspection: $http.db({
+          _id: 'Inspection',
+          upload: true,
+          idField: 'InspectionId'
+        }).bind(function (params) {
+          return $http.post($http.url('/Api/InspectionApi/insert'), params)
+        }, function (r, cfg, args) {
+          if (!r.data) {
             r = r[0];
             return this.root.xhsc.Project.insertInspectionList({
-              "InspectionId":r.InspectionId,
-              "ProjectID":r.AreaList[0].AreaID.substring(0,5),
-              "Percentage":100.0,
-              "Describe":"",
-              "AcceptanceItemID":r.AcceptanceItemID,
-              "Status":1,
-              "Sign":r.Sign,
-              "Children":r.AreaList
+              "InspectionId": r.InspectionId,
+              "ProjectID": r.AreaList[0].AreaID.substring(0, 5),
+              "Percentage": 100.0,
+              "Describe": "",
+              "AcceptanceItemID": r.AcceptanceItemID,
+              "Status": 1,
+              "Sign": r.Sign,
+              "Children": r.AreaList
             }).then(function () {
               return {
-                data:{
-                  ErrorCode:0,
-                  Data:r
+                data: {
+                  ErrorCode: 0,
+                  Data: r
                 }
               }
             });
           }
           return r;
         }),
-        getInspections:$http.db({
-          _id:'InspectionInfoList',
-          idField:'InspectionId',
-          dataType:1,
-          filter:function (item,status) {
-            return item.status|status==status;
+        getInspections: $http.db({
+          _id: 'InspectionInfoList',
+          idField: 'InspectionId',
+          dataType: 1,
+          mode: 2,
+          filter: function (item, status) {
+            return item.status | status == status;
           }
-        }).bind(function(status){
-          return $http.get($http.url('/api/InspectionApi/GetInspectionInfoList',{status:status}))
+        }).bind(function (status) {
+          return $http.get($http.url('/api/InspectionApi/GetInspectionInfoList', {status: status}))
         }),
         getZGlistbyProjectId: function (projectID) {
-          return $http.get($http.url('/api/InspectionRectificationApi/List',{projectId:projectID}))
+          return $http.get($http.url('/api/InspectionRectificationApi/List', {projectId: projectID}))
         },
-        GetInspectionInfoListEx:function(params){
-          return $http.post($http.url('/api/InspectionApi/GetInspectionInfoListEx'),params)
+        GetInspectionInfoListEx: function (params) {
+          return $http.post($http.url('/api/InspectionApi/GetInspectionInfoListEx'), params)
         },
-        getZGById:$http.db({
-          _id:'zgById',
-          idField:'RectificationID',
-          dataType:1,
-          filter:function(item,rectificationID){
+        getZGById: $http.db({
+          _id: 'zgById',
+          idField: 'RectificationID',
+          dataType: 1,
+          filter: function (item, rectificationID) {
             return item.RectificationID == rectificationID;
           }
-        }).bind(function(rectificationID){
-          return $http.get($http.url('/api/InspectionRectificationApi/GetById',{rectificationID:rectificationID})).then(function(result){
+        }).bind(function (rectificationID) {
+          return $http.get($http.url('/api/InspectionRectificationApi/GetById', {rectificationID: rectificationID})).then(function (result) {
             result.data = [result.data];
             return result;
           });
         }),
-        getZGReginQues:$http.db({
-          _id:'InspectionCheckpoint',
-          idField:'CheckpointID',
-          dataType:1,
-          filter:function(item,areaId,rectificationID){
-            if(areaId){
-              return item.AreaID==areaId && item.RectificationID==rectificationID;
-            }else{
-              return item.RectificationID==rectificationID;
+        getZGReginQues: $http.db({
+          _id: 'InspectionCheckpoint',
+          idField: 'CheckpointID',
+          dataType: 1,
+          filter: function (item, areaId, rectificationID) {
+            if (areaId) {
+              return item.AreaID == areaId && item.RectificationID == rectificationID;
+            } else {
+              return item.RectificationID == rectificationID;
             }
 
           }
-        }).bind(function(areaId,rectificationID){
-          return $http.get($http.url('/api/InspectionRectificationApi/ByAreaIdAndAcceptanceItemId',{areaId:areaId,rectificationID:rectificationID}))
+        }).bind(function (areaId, rectificationID) {
+          return $http.get($http.url('/api/InspectionRectificationApi/ByAreaIdAndAcceptanceItemId', {
+            areaId: areaId,
+            rectificationID: rectificationID
+          }))
         }),
-        getZGReginQuesPoint:$http.db({
-          _id:'InspectionPoint',
-          idField:'MeasurePointID',
-          dataType:1,
-          filter:function () {
+        getZGReginQuesPoint: $http.db({
+          _id: 'InspectionPoint',
+          idField: 'MeasurePointID',
+          dataType: 1,
+          filter: function () {
             return true;
           }
-        }).bind(function(areaId,rectificationID){
-          return $http.get($http.url('/api/InspectionRectificationApi/GetPointByAreaIdAndAcceptanceItemId',{areaId:areaId,rectificationID:rectificationID}))
+        }).bind(function (areaId, rectificationID) {
+          return $http.get($http.url('/api/InspectionRectificationApi/GetPointByAreaIdAndAcceptanceItemId', {
+            areaId: areaId,
+            rectificationID: rectificationID
+          }))
         }),
-        getZGlist:$http.db({
-          _id:'tblEMBDInspectionRectification',
-          idField:'RectificationID',
-          dataType:1
-        }).bind(function(status){
-          return $http.get($http.url('/api/InspectionRectificationApi/GetByStatus',{status:status}));
+        getZGlist: $http.db({
+          _id: 'tblEMBDInspectionRectification',
+          idField: 'RectificationID',
+          dataType: 1,
+          mode: 2
+        }).bind(function (status) {
+          return $http.get($http.url('/api/InspectionRectificationApi/GetByStatus', {status: status}));
         }),
-        getRectification:$http.db({
-          _id:'ByRectificationId',
-          idField:'rectificationId',
-          dataType:1,
-          filter:function (item,rectificationId) {
-            return item.rectificationId==rectificationId;
+        getRectification: $http.db({
+          _id: 'ByRectificationId',
+          idField: 'rectificationId',
+          dataType: 1,
+          filter: function (item, rectificationId) {
+            return item.rectificationId == rectificationId;
           }
-        }).bind(function(rectificationId){
-          return $http.get($http.url('/api/InspectionApi/ByRectificationId',{rectificationId:rectificationId})).then(function(r){
-            if (r.data){
-              r.data.rectificationId=rectificationId;
+        }).bind(function (rectificationId) {
+          return $http.get($http.url('/api/InspectionApi/ByRectificationId', {rectificationId: rectificationId})).then(function (r) {
+            if (r.data) {
+              r.data.rectificationId = rectificationId;
             }
             return {
-              data:[r.data]
+              data: [r.data]
             };
           })
-        },function (r) {
+        }, function (r) {
           return {data: r.data[0]};
         }),
-        createZGReceipt:$http.db({
-          _id:'createZGReceipt',
-          idField:'InspectionID',
-          prioirty:10,
-          upload:true
-        }).bind(function(data){
-          return $http.post($http.url('/api/InspectionRectificationApi/Insert'),data);
+        createZGReceipt: $http.db({
+          _id: 'createZGReceipt',
+          idField: 'InspectionID',
+          prioirty: 10,
+          upload: true
+        }).bind(function (data) {
+          return $http.post($http.url('/api/InspectionRectificationApi/Insert'), data);
         }),
-        InspectionRectificationUpdateStatus:$http.db({
-          _id:'IRUpdateStatus',
-          idField:'RectificationId',
-          upload:true
-        }).bind(function(data){
-          return $http.post($http.url('/api/InspectionRectificationApi/UpdateStatus'),data);
+        InspectionRectificationUpdateStatus: $http.db({
+          _id: 'IRUpdateStatus',
+          idField: 'RectificationId',
+          upload: true
+        }).bind(function (data) {
+          return $http.post($http.url('/api/InspectionRectificationApi/UpdateStatus'), data);
         }),
-        updataZjPoint:$http.db({
-          _id:'updataZjPoint',
-          idField:'CheckpointID',
-          upload:true
-        }).bind(function(data){
-          return $http.post($http.url('/api/InspectionCheckpointApi/UpdateStatus'),data)
+        updataZjPoint: $http.db({
+          _id: 'updataZjPoint',
+          idField: 'CheckpointID',
+          upload: true
+        }).bind(function (data) {
+          return $http.post($http.url('/api/InspectionCheckpointApi/UpdateStatus'), data)
         }),
-        getInspectionInfoBySign:$http.db({
-          _id:'Inspection_8',
-          idField:'InspectionId',
-          dataType:1,
-          fitler:function () {
+        getInspectionInfoBySign: $http.db({
+          _id: 'Inspection_8',
+          idField: 'InspectionId',
+          dataType: 1,
+          fitler: function () {
             return true;
           }
-        }).bind(function(sign){
-          return $http.get($http.url('/Api/InspectionApi/BySign',{sign:sign}))
+        }).bind(function (sign) {
+          return $http.get($http.url('/Api/InspectionApi/BySign', {sign: sign}))
         }),
-        insertJlfy:$http.db({
-          _id:'ReviewInsert',
-          prioirty:10,
-          idField:'RectificationID',
-          upload:true
-        }).bind(function(data){
-          return $http.post($http.url('/api/InspectionRectificationApi/ReviewInsert'),data)
+        insertJlfy: $http.db({
+          _id: 'ReviewInsert',
+          prioirty: 10,
+          idField: 'RectificationID',
+          upload: true
+        }).bind(function (data) {
+          return $http.post($http.url('/api/InspectionRectificationApi/ReviewInsert'), data)
         }),
         //根据当前登陆人获取权限
-        authorityByUserId:$http.db({
-          _id:'ProjectPermissions',
-          idField:'ProjectID',
-          dataType:1,
-        }).bind(function(){
+        authorityByUserId: $http.db({
+          mode: 1,
+          _id: 'ProjectPermissions',
+          idField: 'ProjectID',
+          dataType: 1,
+        }).bind(function () {
           return $http.get($http.url('/Api/ProjectInfoApi/GetProjectPermissions'));
         }),
         //根据项目ID获取项目人员权限
-        GetPermissionsByProjectId:function(ProjectId){
-          return $http.get($http.url('/Api/ProjectInfoApi/GetPermissionsByProjectId',{projectId:ProjectId}));
+        GetPermissionsByProjectId: function (ProjectId) {
+          return $http.get($http.url('/Api/ProjectInfoApi/GetPermissionsByProjectId', {projectId: ProjectId}));
         },
-        getZgReport:function(InspetionID){
-          return $http.get($http.url('/api/InspectionApi/GetInspectionReport',{inspectionID:InspetionID}));
+        getZgReport: function (InspetionID) {
+          return $http.get($http.url('/api/InspectionApi/GetInspectionReport', {inspectionID: InspetionID}));
         }
       },
-      Assessment:{
-        GetMeasureList:function(params){
-          return $http.post($http.url('/api/ReportApi/GetMeasureList'),{
-            ProjectId:params.ProjectId,
-            AcceptanceItemIDs:params.AcceptanceItemIDs,
+      Assessment: {
+        GetMeasureList: function (params) {
+          return $http.post($http.url('/api/ReportApi/GetMeasureList'), {
+            ProjectId: params.ProjectId,
+            AcceptanceItemIDs: params.AcceptanceItemIDs,
             PageSize: params.PageSize,
             CurPage: params.CurPage
 
           })
         },
-        getCheckArea:function(assessmentID){
-          return $http.get($http.url('/api/AssessmentApi/PQAssessmentMeasurItemExtractLoadData',{assessmentID:assessmentID}))
+        getCheckArea: function (assessmentID) {
+          return $http.get($http.url('/api/AssessmentApi/PQAssessmentMeasurItemExtractLoadData', {assessmentID: assessmentID}))
 
         },
-        GetAsssmentReportLst:function(param){
-          return $http.post($http.url('/Api/PQAssessment/GetAsssmentReportLst'),{
-            Curpage:param.Curpage,
-            PageSize:param.PageSize,
-            Year:param.Year,
-            Quarter:param.Quarter
+        GetAsssmentReportLst: function (param) {
+          return $http.post($http.url('/Api/PQAssessment/GetAsssmentReportLst'), {
+            Curpage: param.Curpage,
+            PageSize: param.PageSize,
+            Year: param.Year,
+            Quarter: param.Quarter
           });
         },
-        GetMeasureItemInfoByAreaID:$http.db({
-          db:function (AreaID,db) {
+        GetMeasureItemInfoByAreaID: $http.db({
+          db: function (AreaID, db) {
             return db;
           },
-          idField:function(){
+          idField: function () {
             return 'GetMeasureItemInfoByAreaID';
           },
-          filter:function(item){
-            return item._id=='GetMeasureItemInfoByAreaID'
+          filter: function (item) {
+            return item._id == 'GetMeasureItemInfoByAreaID'
           },
-          dataType:3
-        }).bind(function (AreaID,db) {
-          return $http.get($http.url('/Api/MeasureInfo/GetMeasureItemInfo',{areaID:AreaID})).then(function(result){
-            result.data=result.data?result.data:[];
+          dataType: 3
+        }).bind(function (AreaID, db) {
+          return $http.get($http.url('/Api/MeasureInfo/GetMeasureItemInfo', {areaID: AreaID})).then(function (result) {
+            result.data = result.data ? result.data : [];
             return {
-              data:{
-                data:result.data
+              data: {
+                data: result.data
               }
             }
           });
         }),
-        GetRegionTreeInfoNotUser:$http.db({
-          db:function (AreaID,db) {
+        GetRegionTreeInfoNotUser: $http.db({
+          db: function (AreaID, db) {
             return db;
           },
-          idField:function(){
-            return   'GetRegionTreeInfo';
+          idField: function () {
+            return 'GetRegionTreeInfo';
           },
-          dataType:3,
-          filter:function(item){
-            return item._id=='GetRegionTreeInfo'
+          dataType: 3,
+          filter: function (item) {
+            return item._id == 'GetRegionTreeInfo'
           },
-        }).bind(function (AreaID,db) {
-          return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfoNotUser',{AreaID:AreaID})).then(function(result){
-            result.data=result.data?result.data:[];
+        }).bind(function (AreaID, db) {
+          return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfoNotUser', {AreaID: AreaID})).then(function (result) {
+            result.data = result.data ? result.data : [];
             return {
-              data:{
-                data:result.data
+              data: {
+                data: result.data
               }
             }
           });
         }),
-        GetRegionTreeInfo:$http.db({
-          db:function (AreaID,db) {
+        GetRegionTreeInfo: $http.db({
+          db: function (AreaID, db) {
             return db;
           },
-          idField:function(){
-            return  'GetRegionTreeInfo';
+          idField: function () {
+            return 'GetRegionTreeInfo';
           },
-          dataType:3,
-          filter:function(item){
-            return item._id=='GetRegionTreeInfo'
+          dataType: 3,
+          filter: function (item) {
+            return item._id == 'GetRegionTreeInfo'
           },
-        }).bind(function (AreaID,db) {
-          return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo',{AreaID:AreaID})).then(function(result){
-            result.data=result.data?result.data:[];
+        }).bind(function (AreaID, db) {
+          return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo', {AreaID: AreaID})).then(function (result) {
+            result.data = result.data ? result.data : [];
             return {
-              data:{
-                data:result.data
+              data: {
+                data: result.data
               }
             }
           });
         }),
-        GetBaseMeasure:$http.db({
-          db:function (db) {
+        GetBaseMeasure: $http.db({
+          db: function (db) {
             return db;
           },
-          idField:function(){
+          idField: function () {
             return 'GetBaseMeasure';
           },
-          dataType:3,
-          filter:function(item){
-            return item._id=='GetBaseMeasure'
+          dataType: 3,
+          filter: function (item) {
+            return item._id == 'GetBaseMeasure'
           },
         }).bind(function (db) {
-          return $http.get($http.url('/api/MeasureInfo/GetBaseMeasure')).then(function(result){
-            result.data=result.data?result.data:[];
+          return $http.get($http.url('/api/MeasureInfo/GetBaseMeasure')).then(function (result) {
+            result.data = result.data ? result.data : [];
             return {
-              data:{
-                data:result.data
+              data: {
+                data: result.data
               }
             }
           });
         }),
 
-        getUserMeasureValue:$http.db({
-          db:function (projectId,recordType,relationId,db) {
+        getUserMeasureValue: $http.db({
+          db: function (projectId, recordType, relationId, db) {
             return db;
           },
-          idField:function (item) {
-            return item.AcceptanceIndexID+item.MeasurePointID
+          idField: function (item) {
+            return item.AcceptanceIndexID + item.MeasurePointID
           },
-          dataType:1
-        }).bind(function (projectId,recordType,relationId,db,sxt) {
-          return $http.get($http.url('/api/MeasureInfo/GetUserMeasureValue',{projectId:projectId,recordType:recordType,relationId:relationId})).then(function (r) {
+          dataType: 1
+        }).bind(function (projectId, recordType, relationId, db, sxt) {
+          return $http.get($http.url('/api/MeasureInfo/GetUserMeasureValue', {
+            projectId: projectId,
+            recordType: recordType,
+            relationId: relationId
+          })).then(function (r) {
             r.data.forEach(function (item) {
-              if(!item.MeasureValueId) {
+              if (!item.MeasureValueId) {
                 item.MeasureValueId = sxt.uuid();
               }
             });
             return r;
           });
         }),
-        getUserMeasurePoint:$http.db({
-          db:function (projectId,recordType,db) {
+        GetMeasurePointAll: $http.db({
+          _id: 'prePoint',
+          idField: "projectID",
+          dataType: 3
+        }).bind(function (projectID, drawingID) {
+          return $http.get($http.url('/api/MeasurePointApi/GetMeasurePointAll', {
+            projectID: projectID,
+            drawingID: drawingID
+          })).then(function (result) {
+            return {
+              data: {
+                projectID: projectID,
+                data: result.data
+              }
+            }
+          });
+        }),
+        GetMeasurePointByRole: $http.db({
+          _id: 'pointRelate',
+          idField: "projectID",
+          dataType: 3
+        }).bind(function (projectID, role) {
+          return $http.get($http.url('/api/MeasurePointApi/GetMeasurePointByRole', {
+            projectID: projectID,
+            role: role
+          })).then(function (result) {
+            return {
+              data: {
+                projectID: projectID,
+                data: result.data
+              }
+            }
+          });
+        }),
+        GetMeasurePointGeometry: $http.db({
+          _id: 'geometrys',
+          idField: 'projectID',
+          dataType: 3
+        }).bind(function (projectID) {
+          return $http.get($http.url('/api/MeasurePointApi/GetMeasurePointGeometry', {projectID: projectID})).then(function (result) {
+            return {
+              data: {
+                projectID: projectID,
+                data: result.data
+              }
+            };
+          })
+        }),
+        getUserMeasurePoint: $http.db({
+          db: function (projectId, recordType, db) {
             return db;
           },
-          idField:'$id',
-          dataType:1
-        }).bind(function (projectId,recordType,db) {
-          return $http.get($http.url('/api/MeasureInfo/GetUserMeasurePoint',{projectId:projectId,recordType:recordType})).then(function (r) {
+          idField: '$id',
+          dataType: 1
+        }).bind(function (projectId, recordType, db) {
+          return $http.get($http.url('/api/MeasureInfo/GetUserMeasurePoint', {
+            projectId: projectId,
+            recordType: recordType
+          })).then(function (r) {
             r.data.forEach(function (item) {
               item.$id = item.MeasurePointID;
               item.geometry = JSON.parse(item.Geometry);
@@ -650,119 +920,264 @@
             return r;
           });
         }),
-        queryRegions:function (arg) {
-          return $http.get($http.url('/Api/AssessmentApi/GetAssessmentSectionExtractRegion',arg))
+        queryRegions: function (arg) {
+          return $http.get($http.url('/Api/AssessmentApi/GetAssessmentSectionExtractRegion', arg))
         },
-        queryRegions_9090:function (arg) {
-          return $http.get($http.url('http://xhszgc.sxtsoft.com:9090/Api/AssessmentApi/GetAssessmentSectionExtractRegion',arg))
+        queryRegions_9090: function (arg) {
+          return $http.get($http.url('http://xhszgc.sxtsoft.com:9090/Api/AssessmentApi/GetAssessmentSectionExtractRegion', arg))
         },
-        GetMeasureIndexMeasureInfo:function (regionId,itemId) {
-          return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfoNew',{RegionID:regionId,acceptanceIndexID:itemId}));
+        GetMeasureIndexMeasureInfo: function (regionId, itemId) {
+          return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfoNew', {
+            RegionID: regionId,
+            acceptanceIndexID: itemId
+          }));
         },
-        query:$http.db({
-          _id:'projects',
-          idField:'AssessmentID',
-          dataType:1
+        GetMeasureIndexMeasureInfo_new: function (regionId, itemId, measureRecordID) {
+          return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfoNew2', {
+            RegionID: regionId,
+            acceptanceIndexID: itemId,
+            measureRecordID: measureRecordID
+          }));
+        },
+        query: $http.db({
+          _id: 'projects',
+          idField: 'AssessmentID',
+          dataType: 1
         }).bind(function () {
           return $http.get($http.url('/Api/AssessmentApi/GetAssessmentProject'));
         }),
-        queryById:function (assessmentID) {
-          return $http.get($http.url('/Api/AssessmentApi/GetAssessmentProjectSingle',{assessmentID:assessmentID}))
+        queryById: function (assessmentID) {
+          return $http.get($http.url('/Api/AssessmentApi/GetAssessmentProjectSingle', {assessmentID: assessmentID}))
         },
-        GetAssessmentStatus:function (assessmentID) {
-          return $http.get($http.url('/Api/AssessmentApi/GetAssessmentStatus',{assessmentID:assessmentID}))
+        GetAssessmentStatus: function (assessmentID) {
+          return $http.get($http.url('/Api/AssessmentApi/GetAssessmentStatus', {assessmentID: assessmentID}))
         },
-        queryRegion:function (areaID) {
-          return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo',{AreaID:areaID}));
+        queryRegion: function (areaID) {
+          return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfo', {AreaID: areaID}));
         },
-        getMeasure:$http.db({
-          _id:'getAllMeasureReportData',
-          idField:function(item){
+        getMeasure: $http.db({
+          db: function (param, db) {
+            return db == "nodb" ? null : 'getAllMeasureReportData';
+          },
+          idField: function (item) {
             return item.RegionID + item.AcceptanceItemID;
           },
-          filter:function(item,param){
+          filter: function (item, param) {
             return item.CheckRegionID == param.RegionID && item.AcceptanceItemID == param.AcceptanceItemID;
           },
-          dataType:1
-        }).bind(function(param){
-          return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResult',param)).then(function(result){
+          dataType: 1
+        }).bind(function (param) {
+          return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResult', param)).then(function (result) {
             var data = result.data;
             result.data = [{
-              CheckRegionID:param.RegionID,
-              AcceptanceItemID:param.AcceptanceItemID,
-              data:data
+              CheckRegionID: param.RegionID,
+              AcceptanceItemID: param.AcceptanceItemID,
+              data: data
             }]
             return result;
           });
         }),
-        getMeasureNew:$http.db({
-          _id:'getAllMeasureReportDataNew',
-          idField:function(item){
+        getMeasureNew: $http.db({
+          db: function (param, db) {
+            if (db == "nodb") {
+              return null;
+            }
+            return db ? db : "getAllMeasureReportDataNew";
+          },
+          idField: function (item) {
             return item.RegionID + item.AcceptanceItemID;
           },
-          filter:function(item,param){
+          filter: function (item, param) {
             return item.CheckRegionID == param.RegionID && item.AcceptanceItemID == param.AcceptanceItemID;
           },
-          dataType:1
-        }).bind(function(param){
-          return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResultNew',param));
+          dataType: 1
+        }).bind(function (param, db) {
+          return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResultNew', param));
         }),
-        getAllMeasureReportData:$http.db({
-          _id:'getAllMeasureReportData',
-          idField:function(item){
+        getAllMeasureReportData: $http.db({
+          _id: 'getAllMeasureReportData',
+          idField: function (item) {
             return item.CheckRegionID + item.AcceptanceItemID;
           },
-          dataType:1
-        }).bind(function(param){
-          return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResultByProjectId',param));
+          dataType: 1
+        }).bind(function (param) {
+          return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResultByProjectId', param));
         }),
-        queryResult:function (assessmentID) {
-          return $http.get($http.url('/Api/AssessmentApi/GetAssessmentItemResult',{AssessmentID:assessmentID}))
+        queryResult: function (assessmentID) {
+          return $http.get($http.url('/Api/AssessmentApi/GetAssessmentItemResult', {AssessmentID: assessmentID}))
         },
-        modifyScore:function (data) {
-          return $http.post($http.url('/Api/AssessmentApi/SubmitAssessmentItemModifyScore'),data);
+        modifyScore: function (data) {
+          return $http.post($http.url('/Api/AssessmentApi/SubmitAssessmentItemModifyScore'), data);
         },
-        deleteScoreItem:function (deducScoretItemID) {
-          return $http.delete('/Api/AssessmentApi/DeleteDeducScoretItem/'+deducScoretItemID);
+        deleteScoreItem: function (deducScoretItemID) {
+          return $http.delete('/Api/AssessmentApi/DeleteDeducScoretItem/' + deducScoretItemID);
         },
-        queryResutTotal:function (assessmentID) {
-          return $http.get($http.url('/Api/AssessmentApi/GetAssessmentTotalReport',{AssessmentID:assessmentID}));
+        queryResutTotal: function (assessmentID) {
+          return $http.get($http.url('/Api/AssessmentApi/GetAssessmentTotalReport', {AssessmentID: assessmentID}));
         },
-        queryItemResults:function () {
+        queryItemResults: function () {
           return $http.get($http.url('/Api/AssessmentApi/GetAllAssessmentProject'));
         },
-        queryReport:function (year,quarter,projectID,assessmentStage) {
-          return $http.get($http.url('/Api/AssessmentApi/GetAssessmentItemStatisticsResult',{year:year,projectID:projectID,quarter:quarter,assessmentStage:assessmentStage}));
+        queryReport: function (year, quarter, projectID, assessmentStage) {
+          return $http.get($http.url('/Api/AssessmentApi/GetAssessmentItemStatisticsResult', {
+            year: year,
+            projectID: projectID,
+            quarter: quarter,
+            assessmentStage: assessmentStage
+          }));
         },
-        queryReport_9090:function(year,quarter,projectID,assessmentStage){
-          return $http.get($http.url('http://xhszgc.sxtsoft.com:9090/Api/AssessmentApi/GetAssessmentItemStatisticsResult',{year:year,projectID:projectID,quarter:quarter,assessmentStage:assessmentStage}));
+        queryReport_9090: function (year, quarter, projectID, assessmentStage) {
+          return $http.get($http.url(sxt.app.fs + '/Api/AssessmentApi/GetAssessmentItemStatisticsResult', {
+            year: year,
+            projectID: projectID,
+            quarter: quarter,
+            assessmentStage: assessmentStage
+          }));
         },
-        queryTotalReport:function(year,quarter,projectID,assessmentStage){
-          return $http.get($http.url('/Api/AssessmentApi/GetAssessmentTotalReport',{year:year,projectID:projectID,quarter:quarter,assessmentStage:assessmentStage}));
+        queryTotalReport: function (year, quarter, projectID, assessmentStage) {
+          return $http.get($http.url('/Api/AssessmentApi/GetAssessmentTotalReport', {
+            year: year,
+            projectID: projectID,
+            quarter: quarter,
+            assessmentStage: assessmentStage
+          }));
         },
-        queryTotalReport_9090:function(year,quarter,projectID,assessmentStage){
-          return $http.get($http.url('http://xhszgc.sxtsoft.com:9090/Api/AssessmentApi/GetAssessmentTotalReport',{year:year,projectID:projectID,quarter:quarter,assessmentStage:assessmentStage}));
+        queryTotalReport_9090: function (year, quarter, projectID, assessmentStage) {
+          return $http.get($http.url(sxt.app.fs + '/Api/AssessmentApi/GetAssessmentTotalReport', {
+            year: year,
+            projectID: projectID,
+            quarter: quarter,
+            assessmentStage: assessmentStage
+          }));
         },
-        queryProjectRegionInfo:function(projectID){
-          return $http.get($http.url('/Api/ProjectInfoApi/GetProjectRegionRelationByProjectID',{projectID:projectID}));
+        queryProjectRegionInfo: function (projectID) {
+          return $http.get($http.url('/Api/ProjectInfoApi/GetProjectRegionRelationByProjectID', {projectID: projectID}));
         },
-        queryProjectRegionInfo_9090:function(projectID){
-          return $http.get($http.url('http://xhszgc.sxtsoft.com:9090/Api/ProjectInfoApi/GetProjectRegionRelationByProjectID',{projectID:projectID}));
+        queryProjectRegionInfo_9090: function (projectID) {
+          return $http.get($http.url(sxt.app.fs + '/Api/ProjectInfoApi/GetProjectRegionRelationByProjectID', {projectID: projectID}));
         },
-        sumReportTotal:function(assessmentID){
-          return $http.post($http.url('/Api/AssessmentApi/SumReportTotal'),{assessmentID:assessmentID});
+        sumReportTotal: function (assessmentID) {
+          return $http.post($http.url('/Api/AssessmentApi/SumReportTotal'), {assessmentID: assessmentID});
         },
-        queryProcessBuildings:function(regionId){
-          return $http.get($http.url('/api/ImageSignApi/GetBuildingList?stageId='+regionId))
+        queryProcessBuildings: function (regionId) {
+          return $http.get($http.url('/api/ImageSignApi/GetBuildingList?stageId=' + regionId))
         },
-        EngineeringProcess:{
-          getWorkingMap:function(projectId){
-            return $q(function(resolve){
+        EngineeringProcess: {
+          getWorkingMap: function (projectId) {
+            return $q(function (resolve) {
               resolve({
-                data:{
+                data: {
                   Application: null,
                   AreaImage: "a13d7f27-f320-40ed-aa43-242075e6c4cf",
-                  AreaRemark: {"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[0.5732421875,0.4951171875]},"options":{"icon":{"options":{"className":"","shadowUrl":null,"iconAnchor":[15,15],"iconSize":[30,30],"iconUrl":"/dp/libs/leaflet/images/photo.png","color":"#ff0000"},"_initHooksCalled":true},"title":"","alt":"","clickable":true,"draggable":false,"keyboard":true,"zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250,"gid":"e5bf57b4-7d71-4161-9b4f-c460766e7398"}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[0.21875,0.49609375]},"options":{"icon":{"options":{"className":"","shadowUrl":null,"iconAnchor":[15,15],"iconSize":[30,30],"iconUrl":"/dp/libs/leaflet/images/photo.png","color":"#ff0000"},"_initHooksCalled":true},"title":"","alt":"","clickable":true,"draggable":false,"keyboard":true,"zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250,"gid":"0f8696fa-f1e7-4f08-be50-5228eaddf32f"}},{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[0.3975830078125,0.3734130859375]},"options":{"icon":{"options":{"className":"leaflet-div-label","html":"万科时代广场一期","color":"#ff0000"},"_initHooksCalled":true,"_div":{"_leaflet_pos":{"x":568,"y":193}}},"title":"","alt":"","clickable":true,"draggable":true,"keyboard":true,"zIndexOffset":1000,"opacity":1,"riseOnHover":false,"riseOffset":250,"saved":false}},{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[0.15966796875,0.338623046875],[0.2236328125,0.338134765625],[0.223388671875,0.347412109375],[0.22314453125,0.353759765625],[0.2236328125,0.357666015625],[0.22607421875,0.364501953125],[0.231201171875,0.3740234375],[0.2392578125,0.380126953125],[0.24462890625,0.382568359375],[0.249755859375,0.384033203125],[0.255615234375,0.384521484375],[0.264404296875,0.3837890625],[0.2705078125,0.381591796875],[0.27978515625,0.375],[0.28466796875,0.3662109375],[0.2880859375,0.35693359375],[0.2890625,0.35107421875],[0.28759765625,0.3447265625],[0.2880859375,0.3388671875],[0.35107421875,0.3388671875],[0.35205078125,0.370361328125],[0.365966796875,0.37060546875],[0.375244140625,0.361328125],[0.41552734375,0.36083984375],[0.439697265625,0.3505859375],[0.56591796875,0.21533203125],[0.56591796875,0.2001953125],[0.61474609375,0.199951171875],[0.635498046875,0.218994140625],[0.330078125,0.541015625],[0.2822265625,0.546875],[0.16015625,0.5234375],[0.15966796875,0.338623046875]]]},"options":{"stroke":true,"color":"#ff0000","dashArray":null,"lineCap":null,"lineJoin":null,"weight":4,"opacity":0.5,"fill":true,"fillColor":null,"fillOpacity":0.2,"clickable":true,"smoothFactor":1,"noClip":false,"itemId":"5514f7a571fe65ac066cb091","itemName":"万科时代广场一期","areaLabel":{"text":"万科时代广场一期","id":"5514f7a571fe65ac066cb091","lat":0.3734130859375,"lng":0.3975830078125}}}]},
+                  AreaRemark: {
+                    "type": "FeatureCollection",
+                    "features": [{
+                      "type": "Feature",
+                      "properties": {},
+                      "geometry": {"type": "Point", "coordinates": [0.5732421875, 0.4951171875]},
+                      "options": {
+                        "icon": {
+                          "options": {
+                            "className": "",
+                            "shadowUrl": null,
+                            "iconAnchor": [15, 15],
+                            "iconSize": [30, 30],
+                            "iconUrl": "/dp/libs/leaflet/images/photo.png",
+                            "color": "#ff0000"
+                          }, "_initHooksCalled": true
+                        },
+                        "title": "",
+                        "alt": "",
+                        "clickable": true,
+                        "draggable": false,
+                        "keyboard": true,
+                        "zIndexOffset": 0,
+                        "opacity": 1,
+                        "riseOnHover": false,
+                        "riseOffset": 250,
+                        "gid": "e5bf57b4-7d71-4161-9b4f-c460766e7398"
+                      }
+                    }, {
+                      "type": "Feature",
+                      "properties": {},
+                      "geometry": {"type": "Point", "coordinates": [0.21875, 0.49609375]},
+                      "options": {
+                        "icon": {
+                          "options": {
+                            "className": "",
+                            "shadowUrl": null,
+                            "iconAnchor": [15, 15],
+                            "iconSize": [30, 30],
+                            "iconUrl": "/dp/libs/leaflet/images/photo.png",
+                            "color": "#ff0000"
+                          }, "_initHooksCalled": true
+                        },
+                        "title": "",
+                        "alt": "",
+                        "clickable": true,
+                        "draggable": false,
+                        "keyboard": true,
+                        "zIndexOffset": 0,
+                        "opacity": 1,
+                        "riseOnHover": false,
+                        "riseOffset": 250,
+                        "gid": "0f8696fa-f1e7-4f08-be50-5228eaddf32f"
+                      }
+                    }, {
+                      "type": "Feature",
+                      "properties": {},
+                      "geometry": {"type": "Point", "coordinates": [0.3975830078125, 0.3734130859375]},
+                      "options": {
+                        "icon": {
+                          "options": {
+                            "className": "leaflet-div-label",
+                            "html": "万科时代广场一期",
+                            "color": "#ff0000"
+                          }, "_initHooksCalled": true, "_div": {"_leaflet_pos": {"x": 568, "y": 193}}
+                        },
+                        "title": "",
+                        "alt": "",
+                        "clickable": true,
+                        "draggable": true,
+                        "keyboard": true,
+                        "zIndexOffset": 1000,
+                        "opacity": 1,
+                        "riseOnHover": false,
+                        "riseOffset": 250,
+                        "saved": false
+                      }
+                    }, {
+                      "type": "Feature",
+                      "properties": {},
+                      "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [[[0.15966796875, 0.338623046875], [0.2236328125, 0.338134765625], [0.223388671875, 0.347412109375], [0.22314453125, 0.353759765625], [0.2236328125, 0.357666015625], [0.22607421875, 0.364501953125], [0.231201171875, 0.3740234375], [0.2392578125, 0.380126953125], [0.24462890625, 0.382568359375], [0.249755859375, 0.384033203125], [0.255615234375, 0.384521484375], [0.264404296875, 0.3837890625], [0.2705078125, 0.381591796875], [0.27978515625, 0.375], [0.28466796875, 0.3662109375], [0.2880859375, 0.35693359375], [0.2890625, 0.35107421875], [0.28759765625, 0.3447265625], [0.2880859375, 0.3388671875], [0.35107421875, 0.3388671875], [0.35205078125, 0.370361328125], [0.365966796875, 0.37060546875], [0.375244140625, 0.361328125], [0.41552734375, 0.36083984375], [0.439697265625, 0.3505859375], [0.56591796875, 0.21533203125], [0.56591796875, 0.2001953125], [0.61474609375, 0.199951171875], [0.635498046875, 0.218994140625], [0.330078125, 0.541015625], [0.2822265625, 0.546875], [0.16015625, 0.5234375], [0.15966796875, 0.338623046875]]]
+                      },
+                      "options": {
+                        "stroke": true,
+                        "color": "#ff0000",
+                        "dashArray": null,
+                        "lineCap": null,
+                        "lineJoin": null,
+                        "weight": 4,
+                        "opacity": 0.5,
+                        "fill": true,
+                        "fillColor": null,
+                        "fillOpacity": 0.2,
+                        "clickable": true,
+                        "smoothFactor": 1,
+                        "noClip": false,
+                        "itemId": "5514f7a571fe65ac066cb091",
+                        "itemName": "万科时代广场一期",
+                        "areaLabel": {
+                          "text": "万科时代广场一期",
+                          "id": "5514f7a571fe65ac066cb091",
+                          "lat": 0.3734130859375,
+                          "lng": 0.3975830078125
+                        }
+                      }
+                    }]
+                  },
                   BuildArea: 0,
                   CreatedId: "e2f0e8396443beab00eaa1f7cb6c2cf7ad8a346a",
                   CreatedTime: "2016-03-02",
@@ -782,11 +1197,11 @@
             })
 
           },
-          getWorkingMapDetail:function(imageId){
-            return $q(function(resolve){
+          getWorkingMapDetail: function (imageId) {
+            return $q(function (resolve) {
               resolve({
-                data:{
-                  Files:[
+                data: {
+                  Files: [
                     {
                       CreateDate: "2016-05-03",
                       CreatedId: "13f93de383e643f7b586493c2b9045bb37888a34",
@@ -808,13 +1223,13 @@
               })
             })
           },
-          getWorkingProcess:function(regionId){
-            return $http.get($http.url('api/ImageSignApi/GetBuildingDetailed?buildingId='+regionId));
+          getWorkingProcess: function (regionId) {
+            return $http.get($http.url('api/ImageSignApi/GetBuildingDetailed?buildingId=' + regionId));
           }
         },
 
-        region:{
-          query:function(areaID) {
+        region: {
+          query: function (areaID) {
             return $http.get($http.url('http://ggroupem.sxtsoft.com:9191/Api/ProjectInfoApi/GetRegionTreeInfo',
               {AreaID: areaID}));
           }
@@ -823,26 +1238,26 @@
         /**
          * 项目
          * */
-        Project:{
-          query:function(){
+        Project: {
+          query: function () {
             return $http.get($http.url('/Api/ProjectInfoApi/GetProjectList'));
           },
           /**
            * 分期
            * */
-          Area:{
+          Area: {
             /**
              * 获取本人所有相关分期
              * */
-            query:function(){
+            query: function () {
               return $http.get($http.url('/Api/ProjectInfoApi/GetProjectAreaList'));
             },
             /**
              * 获取分期所楼栋、层、房间数据
              * @param    {string}  areaID     分期ID
              * */
-            queryRegion:function(areaID){
-              return $http.get($http.url('/api/ProjectInfoApi/GetRegionTreeByRegionID',{AreaID:areaID}));
+            queryRegion: function (areaID) {
+              return $http.get($http.url('/api/ProjectInfoApi/GetRegionTreeByRegionID', {AreaID: areaID}));
             }
           },
 
@@ -851,16 +1266,16 @@
            * @param {string} regionID the区域ID
            * @returns {object}
            * */
-          getHouseDrawing:function(regionID){
-            return $http.get($http.url('/Api/MeasurePointApi/GetHouseDrawing',{regionID:regionID}));
+          getHouseDrawing: function (regionID) {
+            return $http.get($http.url('/Api/MeasurePointApi/GetHouseDrawing', {regionID: regionID}));
           },
           /**
            * 获取楼层图
            * @param {string} regionID　区域ID
            * @returns {object}
            * */
-          getFloorDrawing:function(regionID){
-            return $http.get($http.url('/Api/MeasurePointApi/getFloorDrawing',{regionID:regionID}));
+          getFloorDrawing: function (regionID) {
+            return $http.get($http.url('/Api/MeasurePointApi/getFloorDrawing', {regionID: regionID}));
           },
           /**
            * 更新户型图
@@ -872,12 +1287,12 @@
            *        }
            * @returns {*}
            * **/
-          updateHouseDrawing:function(regionID,draw){
+          updateHouseDrawing: function (regionID, draw) {
             return $http.db({
-              _id:'updateHouseDrawing',
-              data:1,
-              idField:'regionID'
-            }).post('/Api/MeasureInfo/ModifyHouseType',{regionID:regionID,draw:draw});
+              _id: 'updateHouseDrawing',
+              data: 1,
+              idField: 'regionID'
+            }).post('/Api/MeasureInfo/ModifyHouseType', {regionID: regionID, draw: draw});
             /**return post(regionID,draw);**/
           },
 
@@ -887,7 +1302,7 @@
         /**
          * 验收状态
          * */
-        MeasureCheckBatch:{
+        MeasureCheckBatch: {
           /**
            * @param    {string}  acceptanceItemID     实测项ID/工序ID
            * @param    {string}  areaID  分期ID
@@ -896,7 +1311,7 @@
            *           2   --工序
            *           3   --整改
            * */
-          getStatus:function(acceptanceItemID, areaID, acceptanceItemIDType) {
+          getStatus: function (acceptanceItemID, areaID, acceptanceItemIDType) {
             return $http.get($http.url('/Api/MeasureInfo/getStatus', {
               acceptanceItemID: acceptanceItemID,
               areaID: areaID,
@@ -921,12 +1336,12 @@
         /**
          * 质量管理
          */
-        ProjectQuality:{
+        ProjectQuality: {
           /**
            * 检查点
            *
            */
-          MeasurePoint:{
+          MeasurePoint: {
             /**
              * 更新或添加测量标注点
              * @param {Array} points
@@ -945,7 +1360,7 @@
              *        }
              *      }]
              * **/
-            create:function(points){
+            create: function (points) {
               return $http.post('/Api/MeasurePointApi/CreatePoint', points)
               /**return post(points);**/
             },
@@ -954,7 +1369,7 @@
              *
              * @param {string} measurePointID 唯一ID
              * */
-            delete:function(measurePointID) {
+            delete: function (measurePointID) {
               return $http.delete($http.url('/Api/MeasurePointApi/DeletePoint', {measurePointID: measurePointID}))
             },
 
@@ -984,13 +1399,18 @@
              *          }
              *
              * */
-            query:function(acceptanceItemID,checkRegionID,regionType,flags){
-              return $http.get($http.url('/Api/MeasurePointApi/GetMeasurePoint', {acceptanceItemID: acceptanceItemID,checkRegionID:checkRegionID,regionType:regionType,flags:flags}))
+            query: function (acceptanceItemID, checkRegionID, regionType, flags) {
+              return $http.get($http.url('/Api/MeasurePointApi/GetMeasurePoint', {
+                acceptanceItemID: acceptanceItemID,
+                checkRegionID: checkRegionID,
+                regionType: regionType,
+                flags: flags
+              }))
 
             },
 
-            submit:function(values){
-              return $http.post('/Api/MeasurePointApi/MeasureSubmit',values)
+            submit: function (values) {
+              return $http.post('/Api/MeasurePointApi/MeasureSubmit', values)
             }
           },
           /***
@@ -1036,19 +1456,22 @@
              *
              * @param {string} measureValueId 唯一ID
              * */
-            delete:function(measureValueId) {
+            delete: function (measureValueId) {
               return $http.delete($http.url('/Api/MeasureValueApi/DeleteMeasureValue', {measureValueId: measureValueId}))
             }
           },
 
-          getNumber:function(acceptanceItemID,checkRegionID){
-            return $http.get($http.url('/Api/MeasureValueApi/GetMeasureRecordNum',{acceptanceItemID:acceptanceItemID,checkRegionID:checkRegionID}));
+          getNumber: function (acceptanceItemID, checkRegionID) {
+            return $http.get($http.url('/Api/MeasureValueApi/GetMeasureRecordNum', {
+              acceptanceItemID: acceptanceItemID,
+              checkRegionID: checkRegionID
+            }));
           },
-          getMeasureCheckResult:function(measureRecordID){
-            return $http.get($http.url('/Api/MeasureValueApi/GetMeasureCheckResult',{measureRecordID:measureRecordID}))
+          getMeasureCheckResult: function (measureRecordID) {
+            return $http.get($http.url('/Api/MeasureValueApi/GetMeasureCheckResult', {measureRecordID: measureRecordID}))
           }
         },
-        sxtHouseService:{
+        sxtHouseService: {
           getZ: function (totalW, totalH, m, w, h) {
             var x;
             var y;
@@ -1074,14 +1497,612 @@
         //}).bind(function ( startIndex,maximunRows,checked) {
         //  return $http.get($http.url('/api/Message',{maximunRows:maximunRows,startIndex:startIndex,checked:checked}))
         //})
-        messageList: function ( startIndex,maximunRows,checked) {
-          return $http.get($http.url('/api/Message',{maximunRows:maximunRows,startIndex:startIndex,checked:checked}))
+        messageList: function (startIndex, maximunRows, checked) {
+          return $http.get($http.url('/api/Message', {
+            maximunRows: maximunRows,
+            startIndex: startIndex,
+            checked: checked
+          }))
+        },
+        deleteAllMessage: function () {
+          return $http.post($http.url('/api/Message/Clear'));
+        },
+        deleteMessage: function (id) {
+          return $http.delete($http.url('/api/Message/' + id));
         }
       },
-      Report:{
-        Summary:function(){
+      Report: {
+        Summary: function () {
           return $http.get(sxt.app.api + '/api/ReportApi/Summary');
         }
+      },
+      PQMeasureStandard: {
+        messageList: function (DrawingID, AcceptanceItemID, AcceptanceIndexID) {
+          return $http.get($http.url('/api/MeasureStandardApi/GetListByDrawingOrIndex', {
+            DrawingID: DrawingID,
+            AcceptanceIndexID: AcceptanceIndexID,
+            AcceptanceItemID: AcceptanceItemID
+          }))
+        },
+        updateScStandar: function (id) {
+          return $http.put($http.url('/api/MeasureStandardApi/' + id))
+        },
+        delectScStandar: function (AcceptanceIndexID, DrawingID, MeasurePointID) {
+          return $http.post($http.url('/api/MeasureStandardApi'), {
+            AcceptanceIndexID: AcceptanceIndexID,
+            DrawingID: DrawingID,
+            MeasurePointID: MeasurePointID
+          })
+        },
+        getAllScStandar: function () {
+          return $http.get($http.url('/api/MeasureStandardApi'))
+        },
+        GetProjectDrawing: function (projectID) {
+          return $http.get($http.url('/api/MeasureStandardApi/GetProjectDrawing/' + projectID))
+        },
+        DeletePoin: function (MeasurePointID) {
+          return $http.post($http.url('/api/MeasureStandardApi/DeletePoint'), {MeasurePointID: MeasurePointID})
+        },
+        UpdatePoint: function (MeasurePointID, Geometry) {
+          return $http.put($http.url('/api/MeasureStandardApi/UpdatePoint'), {
+            MeasurePointID: MeasurePointID,
+            Geometry: Geometry
+          })
+        },
+        UpdatePoint_tran: function (Point, ListStandards) {
+          return $http.put($http.url('/api/MeasureStandardApi/UpdatePointTransaction'), {
+            Point: Point,
+            ListStandards: ListStandards
+          })
+        },
+        insertStandar: function (arr) {
+          return $http.post($http.url('/api/MeasureStandardApi/Insert'), arr)
+        },
+        standarSubmit: function (AcceptanceIndexID, AcceptanceItemID, DrawingID) {
+          return $http.post($http.url('/api/MeasureStandardApi/Submit'), {
+            AcceptanceIndexID: AcceptanceIndexID,
+            AcceptanceItemID: AcceptanceItemID,
+            DrawingID: DrawingID
+          })
+        },
+        GetListByWhere: function (drawingId, acceptanceIndexId) {
+          var params = {
+            drawingId: drawingId
+          };
+          if (acceptanceIndexId) {
+            params.acceptanceIndexId = acceptanceIndexId
+          }
+          return $http.get($http.url('/api/MeasureStandardApi/GetListByWhere', params))
+        },
+
+        GetListByExtend: $http.db({
+          db: function (extend, db) {
+            if (db) {
+              return db;
+            }
+            return "";
+          },
+          idField: function () {
+            return "points";
+          },
+          dataType: 3
+        }).bind(function (extend, db) {
+          return $http.get($http.url('/api/MeasureStandardApi/GetListByExtend', {extend: extend})).then(function (result) {
+            result.data = result.data ? result.data : [];
+            return {
+              data: {
+                data: result.data
+              }
+            }
+          });
+        })
+      },
+      safe: {
+        dynPointCreate: $http.wrap({ //创建点
+          offline: true,
+          dataType: 1,
+          mark: "dynUp",
+          _id: "dynPoints",
+          idField: 'CheckpointID',
+          upload: true
+        }),
+        dynPointQuery: $http.wrap({ //查询点
+          offline: true,
+          dataType: 1,
+          _id: "dynPoints",
+          idField: 'CheckpointID'
+        }),
+        dynPointDelete: $http.wrap({ //删除点
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "dynPoints",
+          idField: 'CheckpointID'
+        }),
+        dynProblemRecordCreate: $http.wrap({ //创建记录
+          offline: true,
+          dataType: 1,
+          upload: true,
+          mark: "dynUp",
+          _id: "dynProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        dynProblemRecordQuery: $http.wrap({ //查询记录
+          offline: true,
+          dataType: 1,
+          filter: function (item, CheckpointID) {
+            return item.CheckpointID == CheckpointID;
+          },
+          _id: "dynProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        dynProblemRecordDelete: $http.wrap({// 删除记录
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "dynProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        dynProblemRecordFileCreate: $http.wrap({ //创建文件
+          offline: true,
+          dataType: 1,
+          mark: "dynUp",
+          _id: 'dynInspectionProblemRecordFile',
+          idField: 'ProblemRecordFileID',
+          upload: true
+        }),
+        dynProblemRecordFileQuery: $http.wrap({ //查询文件
+          offline: true,
+          _id: 'dynInspectionProblemRecordFile',
+          idField: function (d) {
+            return d.Id || d.ProblemRecordFileID
+          },
+          fn: function (ProblemRecordFileID) {
+            return $http.get($http.url('/api/WeekInspects/SecurityCheckpoint/GetProblemRecordFile/' + ProblemRecordFileID)).then(function (r) {
+              if (r && !angular.isArray(r.data)) {
+                r.data = [r.data];
+                r.data.forEach(function (t) {
+                  t.isUpload = true;
+                })
+              }
+              return r;
+            });
+          },
+          dataType: 1,
+          filter: function (item, ProblemRecordID) {
+            return item.ProblemRecordID == ProblemRecordID;
+          }
+        }),
+        dynProblemRecordFileDelete: $http.wrap({ //删除文件
+          offline: true,
+          dataType: 1,
+          _id: 'dynInspectionProblemRecordFile',
+          idField: 'ProblemRecordFileID',
+          delete: true
+        }),
+
+
+        weekPointCreate: $http.wrap({ //创建点
+          offline: true,
+          dataType: 1,
+          mark: "weekUp",
+          _id: "weekPoints",
+          idField: 'CheckpointID',
+          upload: true
+        }),
+        weekPointQuery: $http.wrap({ //查询点
+          offline: true,
+          dataType: 1,
+          _id: "weekPoints",
+          idField: 'CheckpointID'
+        }),
+        weekPointDelete: $http.wrap({ //删除点
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "weekPoints",
+          idField: 'CheckpointID'
+        }),
+        weekproblemRecordCreate: $http.wrap({ //创建记录
+          offline: true,
+          dataType: 1,
+          upload: true,
+          mark: "weekUp",
+          _id: "weekProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        weekproblemRecordQuery: $http.wrap({ //查询记录
+          offline: true,
+          dataType: 1,
+          filter: function (item, CheckpointID) {
+            return item.CheckpointID == CheckpointID;
+          },
+          _id: "weekProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        weekproblemRecordDelete: $http.wrap({// 删除记录
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "weekProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        weekProblemRecordFileCreate: $http.wrap({ //创建文件
+          offline: true,
+          dataType: 1,
+          mark: "weekUp",
+          _id: 'weekInspectionProblemRecordFile',
+          idField: 'ProblemRecordFileID',
+          upload: true
+        }),
+        weekProblemRecordFileQuery: $http.wrap({ //查询文件
+          offline: true,
+          _id: 'weekInspectionProblemRecordFile',
+          idField: function (d) {
+            return d.Id || d.ProblemRecordFileID
+          },
+          fn: function (ProblemRecordFileID) {
+            return $http.get($http.url('/api/WeekInspects/SecurityCheckpoint/GetProblemRecordFile/' + ProblemRecordFileID)).then(function (r) {
+              if (r && !angular.isArray(r.data)) {
+                r.data = [r.data];
+                r.data.forEach(function (t) {
+                  t.isUpload = true;
+                })
+              }
+              return r;
+            });
+          },
+          dataType: 1,
+          filter: function (item, ProblemRecordID) {
+            return item.ProblemRecordID == ProblemRecordID;
+          }
+        }),
+        weekProblemRecordFileDelete: $http.wrap({ //删除文件
+          offline: true,
+          dataType: 1,
+          _id: 'weekInspectionProblemRecordFile',
+          idField: 'ProblemRecordFileID',
+          delete: true
+        }),
+
+        ckPointCreate: $http.wrap({ //创建点
+          offline: true,
+          dataType: 1,
+          mark: "up",
+          _id: "ckPoints",
+          idField: 'CheckpointID',
+          upload: true
+        }),
+        ckPointQuery: $http.wrap({ //查询点
+          offline: true,
+          dataType: 1,
+          _id: "ckPoints",
+          idField: 'CheckpointID'
+        }),
+        ckPointDelete: $http.wrap({ //删除点
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "ckPoints",
+          idField: 'CheckpointID'
+        }),
+        problemRecordCreate: $http.wrap({ //创建记录
+          offline: true,
+          dataType: 1,
+          upload: true,
+          mark: "up",
+          _id: "problemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        problemRecordQuery: $http.wrap({ //查询记录
+          offline: true,
+          dataType: 1,
+          filter: function (item, CheckpointID) {
+            return item.CheckpointID == CheckpointID;
+          },
+          _id: "problemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        problemRecordDelete: $http.wrap({// 删除记录
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "problemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        ProblemRecordFileCreate: $http.wrap({ //创建文件
+          offline: true,
+          dataType: 1,
+          mark: "up",
+          _id: 'InspectionProblemRecordFile',
+          idField: 'ProblemRecordFileID',
+          upload: true
+        }),
+        ProblemRecordFileQuery: $http.wrap({ //查询文件
+          offline: true,
+          _id: 'InspectionProblemRecordFile',
+          idField: function (d) {
+            return d.Id || d.ProblemRecordFileID
+          },
+          fn: function (ProblemRecordFileID) {
+            return $http.get($http.url('/api/Acceptances/SecurityCheckpoint/GetProblemRecordFile/' + ProblemRecordFileID)).then(function (r) {
+              if (r && !angular.isArray(r.data)) {
+                r.data = [r.data];
+                r.data.forEach(function (t) {
+                  t.isUpload = true;
+                })
+              }
+              return r;
+            });
+          },
+          dataType: 1,
+          filter: function (item, ProblemRecordID) {
+            return item.ProblemRecordID == ProblemRecordID;
+          }
+        }),
+        ProblemRecordFileDelete: $http.wrap({ //删除文件
+          offline: true,
+          dataType: 1,
+          _id: 'InspectionProblemRecordFile',
+          idField: 'ProblemRecordFileID',
+          delete: true
+        }),
+
+        //获取验收批列表
+        getSafeInspections: $http.wrap({
+          _id: "safeInspections",
+          idField: 'InspectionId',
+          dataType: 1,
+          offline: true,
+          fn: function () {
+            return $http.get($http.url('/api/Acceptances/SecurityInfo/GetSecurityInfo/1/Status'));
+          }
+        }),
+        //获取单个验收批
+        getSafeInspectionSingle: $http.wrap({
+          _id: "safeInspectionSingle",
+          idField: 'InspectionId',
+          dataType: 1,
+          offline: true,
+          fn: function (id) {
+            return $http.get($http.url('/api/Acceptances/SecurityInfo/GetSecurityInfo/' + id + '/Id'));
+          }
+        }),
+        //获取整改单列表
+        getRectifications: $http.wrap({
+          offline: true,
+          db:function (identity) {
+            return 'safeRectification'+(identity?identity:"");
+          },
+          idField: 'RectificationID',
+          dataType: 1,
+          fn: function (identity) {
+            var url='/api/Acceptances/SecurityRectification/GetList';
+            if (identity){
+              url='/api/'+identity+'/SecurityRectification/GetList';
+            }
+            return $http.get($http.url(url)).then(function (r) {
+              var  status=[1,8,64]
+              r.data=r.data.filter(function (k) {
+                  return status.some(function (z) {
+                    return z==k.Status;
+                  });
+              });
+              return r;
+            });
+          }
+        }),
+        getRectificationSingle: $http.wrap({
+          offline: true,
+          db:function (RectificationID,identity) {
+            return 'safeRectification'+(identity?identity:"");
+          },
+          // _id: 'safeRectification',
+          idField: 'RectificationID',
+          dataType: 1,
+          filter: function (item, RectificationID) {
+            return item.RectificationID == RectificationID;
+          },
+        }),
+        //获取整个单相关的所有信息
+        getRecPackage: $http.wrap({
+          fn: function (rectificationId,identity) {
+            var url='/api/Acceptances/SecurityRectification/GetList/'+rectificationId;
+            if (identity){
+              url='/api/'+identity+'/SecurityRectification/GetList/'+rectificationId;
+            }
+            return $http.get($http.url(url));
+          }
+        }),
+        //获取检查点与整改单的关系
+        getCkpointRelateWithRec: $http.wrap({
+          offline: true,
+          _id: "safeCkpointRelateWithRec",
+          idField: 'ID',
+          filter: function (item, RectificationID) {
+            return item.RectificationID == RectificationID;
+          },
+          dataType: 1
+        }),
+        //创建检查点与整改单的关系
+        CreateCkpointRelateWithRec: $http.wrap({
+          offline: true,
+          _id: "safeCkpointRelateWithRec",
+          idField: 'ID',
+          upload: true,
+          dataType: 1
+        }),
+        getSafePointGeo: $http.wrap({
+          _id: 'InspectionPoint',
+          offline: true,
+          idField: 'MeasurePointID',
+          dataType: 1,
+          fn: function (inspectionId, acceptanceItemId, areaId) {
+            return $http.get($http.url('/api/WeekInspects/SecurityCheckpoint/GetSecurityPoint/' + inspectionId + '/' + areaId + '/' + acceptanceItemId));
+          }
+        }),
+        //获取安全验收项
+        getSecurityItem: $http.wrap({
+          db: function (identity) {
+            return "safeItems"+(identity?identity:"");
+          },
+          idField: 'SpecialtyID',
+          dataType: 1,
+          fn: function (identity) {
+            var url="/api/Acceptances/SecurityItem";
+            if (identity){
+              url="/api/"+identity+"/SecurityItem";
+            }
+            return $http.get($http.url(url));
+          }
+        }),
+        //安全验收上传
+        safeUp: function (params,identity) {
+          var url='/api/Acceptances/SecurityCheckpoint/CheckPointAdapter';
+          if (identity){
+            url='/api/'+identity+'/SecurityCheckpoint/CheckPointAdapter';
+          }
+          return $http.post($http.url(url), params);
+        },
+        //创建安全验收批
+        createSafeBatch: function (params) {
+          return $http.post($http.url('/api/Acceptances/SecurityInfo/Insert'), params);
+        },
+        //获取验收区域状态
+        getSafeStatus: $http.wrap({
+          fn: function (RegionID) {
+            return $http.get($http.url('/api/Acceptances/SecurityInfo/GetUserSecurityInfo', {
+              RegionID: RegionID
+            }));
+          }
+        }),
+        //插入动态安全源，周安全检查，巡检批次
+        //WeekInspects:周安全检查
+        insertBatchWrap:$http.wrap({
+          fn: function (receipt,identity) {
+            return $http.post($http.url('/api/'+identity+'/SecurityInfoExtend/insert'), receipt);
+          }
+        }),
+        getBatchWrap:$http.wrap({
+          offline: true,
+          db:function (identity) {
+            return "securityInfo"+ (identity?identity:"");
+          },
+          idField:"InspectionID",
+          dataType: 1,
+          fn: function (identity,receipt) {
+            return $http.get($http.url('/api/'+identity+'/SecurityInfoExtend/GetList'));
+          }
+        }),
+        getDrawingRelate:$http.wrap({
+          db:function (identity) {
+            return "relate"+ (identity?identity:"");
+          },
+          callback:function (result) {
+            return {
+              data: result.data.Relations
+            }
+          },
+          filter:function (item,identity,areaId) {
+              return item.ProjectID==areaId;
+          },
+          idField:"ProjectID",
+          dataType:3,
+          fn:function (identity,areaId){
+            return $http.get($http.url('/api/'+identity+'/SecurityItem/DrawingRelation/'+areaId+'/areaId')).then(function (result) {
+              return {
+                data: {
+                  ProjectID: areaId,
+                  Relations: result.data
+                }
+              }
+            });
+          }
+        })
+      },
+      cycleLook:{
+        cyclePointCreate: $http.wrap({ //创建点
+          offline: true,
+          dataType: 1,
+          mark: "cycleUp",
+          _id: "cyclePoints",
+          idField: 'CheckpointID',
+          upload: true
+        }),
+        cyclePointQuery: $http.wrap({ //查询点
+          offline: true,
+          dataType: 1,
+          _id: "cyclePoints",
+          idField: 'CheckpointID'
+        }),
+        cyclePointDelete: $http.wrap({ //删除点
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "cyclePoints",
+          idField: 'CheckpointID'
+        }),
+        cycleProblemRecordCreate: $http.wrap({ //创建记录
+          offline: true,
+          dataType: 1,
+          upload: true,
+          mark: "cycleUp",
+          _id: "cycleProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        cycleProblemRecordQuery: $http.wrap({ //查询记录
+          offline: true,
+          dataType: 1,
+          filter: function (item, CheckpointID) {
+            return item.CheckpointID == CheckpointID;
+          },
+          _id: "cycleProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        cycleProblemRecordDelete: $http.wrap({// 删除记录
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "cycleProblemRecord",
+          idField: 'ProblemRecordID'
+        }),
+        cycleProblemRecordFileCreate: $http.wrap({ //创建文件
+          offline: true,
+          dataType: 1,
+          mark: "cycleUp",
+          _id: 'cycleInspectionProblemRecordFile',
+          idField: 'ProblemRecordFileID',
+          upload: true
+        }),
+        cycleProblemRecordFileQuery: $http.wrap({ //查询文件
+          offline: true,
+          _id: 'cycleInspectionProblemRecordFile',
+          idField: function (d) {
+            return d.Id || d.ProblemRecordFileID
+          },
+          fn: function (ProblemRecordFileID) {
+            return $http.get($http.url('/api/cycle/SecurityCheckpoint/GetProblemRecordFile/' + ProblemRecordFileID)).then(function (r) {
+              if (r && !angular.isArray(r.data)) {
+                r.data = [r.data];
+                r.data.forEach(function (t) {
+                  t.isUpload = true;
+                })
+              }
+              return r;
+            });
+          },
+          dataType: 1,
+          filter: function (item, ProblemRecordID) {
+            return item.ProblemRecordID == ProblemRecordID;
+          }
+        }),
+        cycleProblemRecordFileDelete: $http.wrap({ //删除文件
+          offline: true,
+          dataType: 1,
+          _id: 'cycleInspectionProblemRecordFile',
+          idField: 'ProblemRecordFileID',
+          delete: true
+        }),
       }
     });
   }

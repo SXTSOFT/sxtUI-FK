@@ -21,7 +21,8 @@
     //provider.setNetwork = function (state) { networkState = state;};
     provider.$http = bindHttp({
       url:url,
-      db:bindDb
+      db:bindDb,
+      wrap:wrap
     });
     provider.$q = function(){
       return provider.$q.$q.apply(provider,toArray(arguments));
@@ -50,6 +51,8 @@
       pouchdb = db;
       resolveApi(api,$resource,$http);
       api.setting = setting;
+      api.getUploadData=getUploadData;
+      api.getDBs=getDBs;
       api.task = task;
       api.upload = upload;
       api.uploadTask = uploadTask;
@@ -88,7 +91,7 @@
         }
         api.setNetwork(networkState);
       };
-
+      api.wrap=wrap;
       api.useNetwork = function (state) {
         var cState,type = $window.navigator && $window.navigator.connection && $cordovaNetwork.getNetwork();
         switch (type) {
@@ -117,18 +120,6 @@
       api.resolveNetwork = function () {
         api.networkState(api.oNetwork);
       };
-
-      //$rootScope.$on('$cordovaNetwork:online', function(event, state){
-      //  api.resetNetwork();
-      //});
-      //$rootScope.$on('$cordovaNetwork:offline', function(event, state){
-      //  api.resetNetwork();
-      //});
-      //$timeout(function () {
-      //  $rootScope.$emit('$cordovaNetwork:online');
-      //},100);
-
-
       api.db = provider.$http.db;
       api.clearDb = clearDb;
       api.download = download;
@@ -236,7 +227,8 @@
         options:cfg('options'),
         head:cfg('head'),
         resource:cfg('resource'),
-        custom:cfg('custom')
+        custom:cfg('custom'),
+        put:cfg('put')
       });
     }
 
@@ -299,6 +291,8 @@
         cfgs.forEach(function (cfg) {
           if (cfg.upload && cfg.fn) {
             if (filter && filter(cfg) === false)return;
+            //if (cfg.)
+
             var group = {
               name: cfg.name || '其它-' + cfg._id,
               start: tasks.length,
@@ -330,8 +324,54 @@
             group.total = group.end - group.start;
           });
           resolve(tasks);
+        }).catch(function () {
+          reject();
         })
       });
+    }
+    function getUploadData(filter) {
+      return provider.$q.$q(function (resolve,reject) {
+        var p=[];
+        var keys=[];
+        cfgs.forEach(function (cfg) {
+          if (cfg.upload && (!filter||filter(cfg))) {
+            if (filter && filter(cfg) === false)return;
+            var db = initDb(cfg)
+            keys.push(db);
+            p.push(db.findAll());
+          }
+        });
+        provider.$q.$q.all(p).then(function (rs) {
+          var arr=[];
+          var i=0;
+          rs.forEach(function (result) {
+            if ( result.rows&& result.rows.length){
+              arr.push({
+                key:keys[i].name,
+                vals:result.rows,
+                db:keys[i]
+              })
+            }
+            i++;
+          });
+          resolve(arr);
+        }).catch(function () {
+          reject();
+        });
+      })
+    }
+    function getDBs(filter) {
+      return provider.$q.$q(function (resolve,reject) {
+        var p=[];
+        cfgs.forEach(function (cfg) {
+          if (!filter||filter(cfg)) {
+            if (filter && filter(cfg) === false)return;
+            var db = initDb(cfg)
+            p.push(db);
+          }
+        });
+        resolve(p)
+      })
     }
     function download(tasks) {
       var oNetworkState = networkState;
@@ -403,7 +443,7 @@
                   });
                 fail && fail(true);
               }
-            },30000);
+            },50000);
             fn(tasks,donwfile).then(function (k) {
               if (!isTimeout){
                 isTimeout=true;
@@ -457,6 +497,34 @@
       })
     }
 
+    function wrap(cfg) {
+
+      function cfgSet(config) {
+        var _cfg=$.extend(true,{},cfg,config);
+        _cfg=bindDb(_cfg)
+        function f() {
+          var args = toArray(arguments);
+          if (!_cfg.offline){
+            return _cfg.fn.apply(_cfg,args);
+          }
+          var excute=_cfg.bind(_cfg.fn,_cfg.callback);
+          return excute.apply(_cfg,args);
+        }
+        return f;
+      }
+      var  cfg=bindDb(cfg);
+      function f() {
+        var args = toArray(arguments);
+        if (!cfg.offline){
+           return cfg.fn.apply(cfg,args);
+        }
+        var excute=cfg.bind(cfg.fn,cfg.callback);
+        return excute.apply(cfg,args);
+      }
+      f.cfgSet=cfgSet;
+      return f;
+    }
+
     /**
      * 绑定配置
      * @param cfg
@@ -480,9 +548,6 @@
             var args = toArray(arguments),
               lodb = initDb(cfg,args),
               caller = this;
-            //if (cfg.upload){ //上传的数据只能加载到本地，走离线
-            //  return userOffline(caller, lodb, args, cb, fn);
-            //}
             if (cfg.mode == 1) { //1 离线优先，无离线数据尝试网络；
               var oRaiseError = cfg.raiseError;
               cfg.raiseError = true;
@@ -516,13 +581,23 @@
         return cfg;
       }
 
+
+
       function id(d, db, args, cfg, cb) {
-        var _id = angular.isFunction(cfg.idField) ? cfg.idField(d,args) : d[cfg.idField];
-        if (_id && db) {
-          var defer = db.addOrUpdate(cfg.data ? cfg.data.apply(cfg, [angular.extend({_id: _id}, d)].concat(args)) : angular.extend({_id: _id}, d));
-          if (cb && cb(defer));
-        }
-        return _id;
+        return provider.$q.$q(function (resolve,reject) {
+          var _id = angular.isFunction(cfg.idField) ? cfg.idField(d,args) : (d[cfg.idField]?d[cfg.idField]:cfg.idField);
+          if (_id && db){
+            return db.addOrUpdate(cfg.data ? cfg.data.apply(cfg, [angular.extend({_id: _id}, d)].concat(args))
+              : angular.extend({_id: _id}, d)).then(function (defer) {
+              if (cb && cb(defer));
+              resolve(_id);
+            }).catch(function (r) {
+              reject(_id);
+            })
+          }else {
+            resolve(_id);
+          }
+        })
       }
 
       function bindData(result, rows, cfg) {
@@ -550,27 +625,61 @@
         return result;
       }
 
+      function _task(task) {
+        return provider.$q.$q(function (resolve,reject) {
+          if (!angular.isArray(task)||!task.length){
+            resolve();
+            return;
+          }
+          var len=task.length;
+          function  execute(fn,index) {
+            fn(task,index).then(function () {
+              if (index>0){
+                execute(task[index-1],index-1);
+              }else {
+                resolve();
+              }
+            }).catch(function () {
+               reject();
+            });
+          }
+          execute(task[task.length-1],task.length-1);
+        });
+      }
+
       function userOffline(caller, lodb, args, cb, fn) {
         var p2 = provider.$q.$q(function (resolve, reject) {
           if (!cfg._id&&!lodb) {
             resolve(bindData({}, [], cfg));
           }
           else if (cfg.delete) {
+            var tasks=[];
             args.forEach(function (d) {
-              lodb.delete(id(d, null, args, cfg) || d);
+              tasks.push(function (arr,index) {
+                return lodb.delete((angular.isFunction(cfg.idField) ? cfg.idField(d,args) : (d[cfg.idField]?d[cfg.idField]:cfg.idField)) || d)
+              })
             });
-            resolve(args);
+            _task(tasks).then(function () {
+              resolve(args);
+            }).catch(function () {
+              reject(args);
+            });
           }
           else if (cfg.upload) {
             var updates = [];
             args.forEach(function (d) {
-              id(d, lodb, args, cfg, function (defer) {
-                updates.push(defer);
+              updates.push(function (arr,index) {
+                return id(d, lodb, args, cfg)
               });
             });
-            provider.$q.$q.all(updates).then(function () {
+            _task(updates).then(function () {
               resolve({data:{ErrorCode:0,args:args}});
+            }).catch(function () {
+              reject();
             });
+            // provider.$q.$q.all(updates).then(function () {
+            //   resolve({data:{ErrorCode:0,args:args}});
+            // });
           }
           else {
             var result = {};
@@ -633,32 +742,69 @@
               if(result && ((result.status>=200 && result.status<=299) || result.data)) {
                 if (result.data) {
                   var data = result.data;
+                  data.data=data.data?data.data:data.Data;
                   if (cfg.dataType == 1) {
+                    var arr=[];
                     data.forEach(function (d) {
-                      id(d, lodb, args, cfg);
+                      arr.push(function (arr,index) {
+                        return id(d, lodb, args, cfg);
+                      })
                     })
+                    _task(arr).then(function () {
+                      resolve(result);
+                    }).catch(function () {
+                      reject(result);
+                    });
                   }
                   else {
                     if (cfg.dataType == 3) {
-                      id(data, lodb, args, cfg);
+                      id(data, lodb, args, cfg).then(function () {
+                        resolve(result);
+                      }).catch(function () {
+                        reject(result);
+                      });
                     }
                     else if (data.rows && angular.isArray(data.rows)) {
+                      var  arr=[];
                       data.rows.forEach(function (d) {
-                        id(d, lodb, args, cfg);
+                        arr.push(function () {
+                          return id(d, lodb, args, cfg);
+                        })
+                      })
+                      arr.then(function () {
+                        resolve(result);
+                      }).catch(function () {
+                        reject(result);
                       })
                     }
                     else if (data.data && angular.isArray(data.data)) {
                       data.data.forEach(function (d) {
-                        id(d, lodb, args, cfg);
+                        arr.push(function () {
+                          return id(d, lodb, args, cfg);
+                        })
+                      })
+                      arr.then(function () {
+                        resolve(result);
+                      }).catch(function () {
+                        reject(result);
                       })
                     }
                     else if (data.Rows && angular.isArray(data.Rows)) {
                       data.Rows.forEach(function (d) {
-                        id(d, lodb, args, cfg);
+                        arr.push(function () {
+                          return id(d, lodb, args, cfg);
+                        })
                       })
+                      arr.then(function () {
+                        resolve(result);
+                      }).catch(function () {
+                        reject(result);
+                      })
+                    }else {
+                      resolve(result);
                     }
                   }
-                  resolve(result);
+
                 }
                 else {
                   resolve(result);
@@ -684,24 +830,13 @@
       if(cfg._id && cfg.db)
         localBD= cfg.db;
       if(cfg._id)
-        localBD= cfg.db = pouchdb(cfg._id);
+        localBD= cfg.db = pouchdb(cfg._id,cfg);
       else if(cfg.db){
         var id = cfg.db.apply(cfg,args);
         if(id)
-          localBD= cfg._db=pouchdb(id);
+          localBD= cfg._db=pouchdb(id,cfg);
       }
       return localBD;
-    //.then(function(result){
-    //    return  provider.$q.$q(function(resolver){
-    //      pouchdb("localBD").addOrUpdate({
-    //        _id:lodb._db_name
-    //      }).then(function(){
-    //        resolver(result);
-    //      })
-    //    })
-    //  }).catch(function (r) {
-    //    reject(r);
-    //  });
     }
 
 
@@ -714,27 +849,26 @@
 
     function clearDb(progress,complete,fail,options) {
       var tasks = [];
-      var _db=pouchdb("localBD");
-      _db.findAll().then(function(r){
-        var  rows= r.rows,tmp;
-        if (rows&&rows.length>0){
-            rows.forEach(function(t){
-            if(!(options.exclude && options.exclude.indexOf(t._id)!=-1)){
-              tasks.push(function(){
-                return pouchdb(t._id).destroy().catch(function(err){
-                  console.log(err);
+      task([function (tasks) {
+        return provider.$q.$q(function (resove,reject) {
+          var dbs= window.localStorage.getItem("dbs");
+          if (dbs){
+            dbs=dbs.split(",");
+            dbs= dbs.filter(function (o) {
+              return o.toString()!="undefined"&&o.toString()!="NaN";
+            })
+            dbs.forEach(function (t) {
+              if(!(options.exclude && options.exclude.indexOf(t)!=-1)){
+                tasks.push(function(){
+                  return pouchdb(t).destroy().catch(function(err){
+                  });
                 });
-              });
-            }
-          });
-        }
-        tasks.push(function(){
-          return _db.destroy().catch(function(err){
-            console.log(err);
-          });
-        });
-        return task(tasks,options)(progress,complete,fail,options);
-      })
+              }
+            });
+          }
+          resove();
+        })
+      }],options)(progress,complete,fail,options);
     }
   }
 

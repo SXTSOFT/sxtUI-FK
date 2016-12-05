@@ -1,36 +1,36 @@
+<h2 style="width: 100%;position: absolute;top: -5px">
+  <md-icon class="arrows icon s32" ng-show="$root.leftArrow===true" md-font-icon="icon-chevron-left" style="color:#fff;" ng-click="toLeft()"></md-icon>
+  <span style="width:70%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" ng-class="{'subtitle':$root.leftArrow===true}">{{$root.subtitle||$root.title || '星河大数据工程管理平台'}}</span>
+  <md-icon class="arrows icon s32" ng-show="$root.rightArrow===true" md-font-icon="icon-chevron-right" style="color:#fff;" ng-click="toRight()"></md-icon>
+</h2>
 <div class="md-toolbar-tools grzx" style="padding: 0" layout="row">
-    <!--<md-icon md-font-icon="icon-chevron-left" style="color:white;" ng-click="goBack();" class="icon s32"></md-icon>-->
   <md-button flex="none" ng-show="$root.noBack" ng-click="goBack();" >返回</md-button>
-<md-button flex="none" ng-show="$root.showgrzx" ui-sref="app.xhsc.pcenter"><md-icon><img src="app/main/xhsc/images/grzx.png" width="21"></md-icon></md-button>
-
-  <h2 flex ng-if="$root.title && !$root.swap">
-    <md-icon class="arrows icon s32" ng-show="$root.leftArrow===true" md-font-icon="icon-chevron-left" style="color:#fff;" ng-click="toLeft()"></md-icon>
-    <span style="width:70%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" ng-class="{'subtitle':$root.leftArrow===true}">{{$root.subtitle||$root.title || '星河大数据工程管理平台'}}</span>
-    <md-icon class="arrows icon s32" ng-show="$root.rightArrow===true" md-font-icon="icon-chevron-right" style="color:#fff;" ng-click="toRight()"></md-icon>
-  </h2>
-  <div ng-if="$root.swap" class="mbtn2">
-    <div layout="row" layout-align="space-between center" style="text-align: center;line-height: 50px;font-size:16px;overflow: hidden;">
-      <div ng-class="{'active':item.active}" ng-repeat="item in $root.swap" flex layout="column" layout-align="center center" ng-click="vm.cmd('swap',item)">
-        {{item.label}}
-      </div>
-    </div>
-  </div>
-  <md-button flex="none" class="md-icon-button" aria-label="net work" >
-    <md-icon md-svg-icon="assets/images/online.svg" ng-if="vm.networkState==0" style="color:#e0e0e0"></md-icon>
-    <md-icon md-svg-icon="assets/images/offline.svg" ng-if="vm.networkState==1" style="color:#e0e0e0"></md-icon>
-  </md-button>
+  <md-button flex="none" ng-show="$root.showgrzx" ui-sref="app.xhsc.pcmain"><md-icon><img src="app/main/xhsc/images/grzx.png" width="21"></md-icon></md-button>
+  <span flex></span>
+  <!--<md-button flex="none" class="md-icon-button" aria-label="net work" >-->
+    <!--<md-icon md-svg-icon="assets/images/online.svg" ng-if="vm.networkState==0" style="color:#e0e0e0"></md-icon>-->
+    <!--<md-icon md-svg-icon="assets/images/offline.svg" ng-if="vm.networkState==1" style="color:#e0e0e0"></md-icon>-->
+  <!--</md-button>-->
     <md-button  flex="none" style="font-size:14px;" ng-show="$root.sendBt" ng-click="vm.sendGxResult()">
-      {{$root.sendBtName || '提交'}}
+      提交
     </md-button>
-<md-button  flex="none" style="font-size:14px;" ng-show="$root.opBtn" ng-click="vm.operateMsg($event)">
+   <md-button  flex="none" style="font-size:14px;" ng-show="$root.opBtn" ng-click="vm.operateMsg($event)">
       清除
     </md-button>
- <md-button flex="none" style="font-size:14px;" ng-show="$root.refreshBtn===true" class="md-link md-mini">
+   <md-button flex="none" style="font-size:14px;" ng-show="$root.refreshBtn===true" class="md-link md-mini">
       <md-icon><img src="app/main/xhsc/images/refresh.png"></md-icon>
     </md-button>
-  <md-button flex="none" style="font-size:14px;" ng-show="$root.showgrzx" ui-sref="app.xhsc.mcenter"><md-icon><img src="app/main/xhsc/images/msg.png" width="21"></md-icon></md-button>
-  <div  flex="none" style="font-size:14px;">
-  <md-progress-circular id="toolbar-progress" ng-if="$root.loadingProgress"
-                        md-mode="indeterminate" md-diameter="40">
-  </md-progress-circular></div>
+  <!--<md-button flex="none" style="font-size:14px;" ng-show="$root.showgrzx" ui-sref="app.xhsc.mcenter"><md-icon><img src="app/main/xhsc/images/msg.png" width="21"></md-icon></md-button>-->
+  <!--<div  flex="none" style="font-size:14px;">-->
+  <!--<md-progress-circular id="toolbar-progress" ng-if="$root.loadingProgress"-->
+                     <!--md-mode="indeterminate" md-diameter="40">-->
+<!--</md-progress-circular></div>-->
 </div>
+<div ng-if="$root.msg" style="margin: auto;position: absolute; top: 0; left: 0; bottom: 0; right: 0; height: 34px;width: 200px" layout="row" layout-align="center stretch">
+     <!--<div layout="row"  flex style="height: 32px;border-radius:8px;border:1px solid #ffffff" layout-align="center stretch">-->
+       <span style="font-size: 14px;line-height: 32px;padding: 0px 20px;border-radius:8px;border:1px solid #ffffff;border-top-right-radius: 0px;border-bottom-right-radius:0px"
+             ng-click="setMsg(msgFlag)" ng-class="{'messager_active':msgFlag,'no_messager_active':!msgFlag}">待办通知</span>
+       <span style="font-size: 14px;line-height: 32px ;padding: 0px 20px;border-radius:8px;border:1px solid #ffffff;border-top-left-radius: 0px;border-bottom-left-radius:0px" ng-click="setMsg(msgFlag)" ng-class="{'messager_active':!msgFlag,'no_messager_active':msgFlag}" >系统消息</span>
+     <!--</div>-->
+</div>
+

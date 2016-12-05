@@ -1,3 +1,7 @@
+<md-progress-circular id="toolbar-progress" ng-if="!vm.show" class="md-accent"
+                      md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+</md-progress-circular>
+
 <div ng-show="vm.show"  style="position: absolute;right: 8px">
   <md-button class="md-fab md-mini" ng-click="vm.goBack()">
     <md-icon md-svg-src="app/main/xhsc/images/icon-comeback.svg"></md-icon>
@@ -10,9 +14,9 @@
         <thead>
         <tr>
           <th>序号</th>
-          <th style="width:20%">公司</th>
-          <th style="width:20%">项目</th>
-          <th style="width: 20%;">实测项</th>
+          <th style="width:20%">时间</th>
+          <!--<th style="width:20%">项目</th>-->
+          <th style="min-width: 50px">实测项</th>
           <th>区域</th>
           <th style="min-width: 50px">操作</th>
         </tr>
@@ -20,10 +24,10 @@
         <tbody>
         <tr data-ng-repeat="item in vm.source">
           <td>{{$index+1}}</td>
-          <td style="text-align: left;padding-left: 15px;min-width: 120px">{{item.CompanyName}}</td>
-          <td style="text-align: left;padding-left: 15px;min-width: 120px">
-            {{item.ProjectName}}
-          </td>
+          <td style="text-align: left;padding-left: 15px;min-width: 120px">{{item.MeasureTime}}</td>
+          <!--<td style="text-align: left;padding-left: 15px;min-width: 120px">-->
+            <!--{{item.ProjectName}}-->
+          <!--</td>-->
           <td style="text-align: left;min-width: 120px;padding-left: 15px">
             {{item.MeasureItemName}}
           </td>

@@ -1,36 +1,38 @@
 <md-tabs md-align-tabs="bottom" flex md-swipe-content>
-  <md-tab label="实测实量">
+  <md-tab  label="实测实量">
     <md-tab-content  style="padding: 0px" flex layout-fill layout="column" layout-padding class="zb">
       <md-content class="download" style="padding: 0px">
-        <div layout="column">
-          <md-subheader ng-if="vm.offlines.length"><span style="margin-left: -18px">已下载列表</span></md-subheader>
+        <md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
+                              md-mode="indeterminate" md-diameter="32" style="margin-left: 8px;margin-top: 8px">
+        </md-progress-circular>
+        <div ng-show="vm.isOver" layout="column">
+          <md-subheader ng-if="vm.onlines.length"><span style="margin-left: -18px">实测列表</span></md-subheader>
           <span class="border1px"></span>
-          <md-list style="padding:0px">
-            <md-list-item layout="row"ng-click="vm.go(item)"  ng-repeat="item in vm.offlines" layout="row">
-              <p style="font-size:14px;padding-left:3%">
-                {{item.ProjectName}}
+          <div ng-repeat="item in vm.offlines"  ng-click="vm.stretch(item)"  layout="column" style="position: relative;margin:0px 3%">
+            <div layout="row" style="position: relative">
+              <p style="font-size:14px;">
+                {{item.RegionName}}
               </p>
               <span flex></span>
-              <md-button ng-click="vm.action(item,$event)"  style="margin: 6px 0px"   aria-label="More">
-                <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
-              </md-button>
-              <span class="border1px bottom1px"></span>
-            </md-list-item>
-          </md-list>
-          <md-subheader ng-if="vm.onlines.length"><span style="margin-left: -18px">未下载列表</span></md-subheader>
-          <span class="border1px"></span>
-          <md-list style="padding:0px">
-            <md-list-item ng-repeat="item in vm.onlines"  layout="row">
-              <p style="font-size:14px;padding-left:3%">
-                {{item.ProjectName}}
-              </p>
-              <span flex></span>
-              <md-button ng-click="vm.download(item)" style="margin: 6px 0px" >
-                <i class="icon icon-download s30"></i>
-              </md-button>
-              <span class="border1px bottom1px"></span>
-            </md-list-item>
-          </md-list>
+              <md-icon ng-class="{'transform_90':item.stretch}"  md-svg-icon="app/main/xhsc/images/come_in.svg" ></md-icon>
+              <span ng-if="item.stretch" class="border1px bottom1px"></span>
+            </div>
+            <md-list ng-if="item.stretch&&item.Children&&item.Children.length" style="padding:0px;margin: 0px;" >
+              <md-list-item ng-click="vm.click(k,$event)" ng-repeat="k in item.Children"  layout="row">
+                <p style="font-size:12px;padding-left:1%">
+                  {{k.RegionName}}
+                </p>
+                <span flex></span>
+                <md-button ng-click="vm.download(k,null,$event)" ng-if="!k.isComplete" style="margin: 6px -28px" >
+                  <i class="icon icon-download s30"></i>
+                </md-button>
+                <md-button ng-click="vm.action(k,$event)"  ng-if="k.isComplete" style="margin: 6px -28px"   aria-label="More">
+                  <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+                </md-button>
+              </md-list-item>
+            </md-list>
+            <span class="border1px bottom1px"></span>
+          </div>
         </div>
       </md-content>
     </md-tab-content>

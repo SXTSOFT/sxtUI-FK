@@ -14,62 +14,49 @@
     vm.projectId = $stateParams.projectId;
     vm.role=$stateParams.role;
 
-    vm.selectSpecialty=function(item){
-        //if (item.SpecialtyChildren&&item.SpecialtyChildren.length){
-          vm.gxClassType=item.SpecialtyChildren;
-          vm.acceptanceItem=[];
-        //}
-    }
-    vm.acceptanceItem=[];
-    vm.selectSpecialtyLow=function(item){
-      vm.acceptanceItem=item.WPAcceptanceList?item.WPAcceptanceList:[];
+    remote.Procedure.queryProcedure().then(function(result){
+      vm.data=result.data;
+      vm.data.sort(function(a,b){
+         return a.SpecialtyName.localeCompare(b.SpecialtyName);
+      });
+      vm.show=true;
+    })
+    vm.showTab=function(item){
+      if (!item.SpecialtyChildren||!item.SpecialtyChildren.length){
+        return false;
+      }
+      var gx= item.SpecialtyChildren;
+      for (var  i=0;i<gx.length;i++){
+        if (gx[i].WPAcceptanceList&&gx[i].WPAcceptanceList.length){
+          return true;
+        }
+      }
+      return false;
     }
 
-    vm.comeBack=function(){
-      vm.acceptanceItem=[];
-    }
-    remote.Procedure.queryProcedure().then(function(result){
-     vm.data=result.data;
-      console.log(vm.data);
-//      vm.procedureData = [];
-//      vm.list=[];
-//      result.data.forEach(function(it){
-//        var name = it.SpecialtyName;
-//        var plist=[];
-//        it.SpecialtyChildren.forEach(function(t){
-//          if(t.WPAcceptanceList.length) {
-//
-//            t.WPAcceptanceList.forEach(function (_t) {
-//              var max = 0, arr = [];
-//              var idx = _t.ApplicableArea.indexOf(',');
-//              if (idx == -1) {
-//                _t.maxRegion = _t.ApplicableArea;
-//              } else {
-//                arr = _t.ApplicableArea.split(',');
-//                for (var i = 0; i < arr.length; i++) {
-//                  if (parseInt(arr[i]) > max) {
-//                    max = arr[i];
-//                  }
-//                }
-//                _t.maxRegion = max;
-//              }
-//              plist.push(_t);
-//            })
-//          }
-//        })
-//        vm.procedureData.push({name:name,rows:plist});
-//        //vm.procedureData.push({name:it.SpecialtyName,rows:vm.wpalist});
-//      })
-    })
+
     vm.choosego = function(i){
+      var applicableArea= i.ApplicableArea;
+      var area=-1;
+      if (applicableArea){
+         var arr=applicableArea.split(",");
+          var t;
+          arr.forEach(function(k){
+              t=parseInt(k);
+              if (area<t){
+                area=t;
+              }
+          })
+
+      }
       if(!vm.role){
-        $state.go('app.xhsc.gx.zjhouseChoose',{role:vm.role,acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,areaId:vm.areaId,maxRegion:i.maxRegion})
+        $state.go('app.xhsc.gx.zjhouseChoose',{role:vm.role,acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,maxRegion:area})
       }else{
         if (vm.role=='regionState'){
-          $state.go('app.xhsc.gx.regionStates',{acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,maxRegion:i.maxRegion});
+          $state.go('app.xhsc.gx.regionStates',{acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,maxRegion:area});
           return;
         }
-        $state.go('app.xhsc.gx.gxhousechoose',{role:vm.role,acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,areaId:vm.areaId,maxRegion:i.maxRegion})
+        $state.go('app.xhsc.gx.gxhousechoose',{role:vm.role,acceptanceItemID:i.AcceptanceItemID,projectId:vm.projectId,acceptanceItemName:i.AcceptanceItemName,maxRegion:area})
       }
     }
   }

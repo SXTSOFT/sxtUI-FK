@@ -18,6 +18,7 @@
     }
 
     function link(scope,element,attr,ctrl){
+
       scope.ct ={
       };
       scope.updateValue = function() {

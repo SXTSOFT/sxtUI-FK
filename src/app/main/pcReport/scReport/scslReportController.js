@@ -5,10 +5,13 @@
     .controller('scslReportController',scslReportController);
 
   /**@ngInject*/
-  function scslReportController($scope,remote,$mdDialog,$stateParams,$state,$rootScope ,$q){
+  function scslReportController($scope,remote,$mdDialog,$stateParams,$state,$rootScope ,$q,$window){
     var vm = this;
+
     vm.scSelected=$stateParams.scSelected?$stateParams.scSelected:"";
     vm.secSeleced=$stateParams.secSelected;
+
+
     vm.show=false;
     remote.Procedure.authorityByUserId().then(function(res){
       if (res&&res.data&&res.data.length){
@@ -53,7 +56,11 @@
       }).then(function(r){
         $scope.pageing.total= r.data.TotalCount;
         vm.source= r.data.Data;
+        vm.source.forEach(function (o) {
+          o.MeasureTime=o.MeasureTime?o.MeasureTime:"";
+        })
         vm.show=true;
+
       }).catch(function(){
         vm.show=true;
       });

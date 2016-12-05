@@ -1,0 +1,22 @@
+<md-progress-circular id="toolbar-progress" ng-if="!vm.show" class="md-accent"
+                      md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+</md-progress-circular>
+<md-tabs  flex ng-if="vm.show">
+  <md-tab ng-if="vm.showTab(gx1)" ng-repeat="gx1 in vm.data" label="{{gx1.SpecialtyName}}">
+    <md-tab-content flex layout-fill layout="column">
+      <md-list>
+        <section  ng-if="item.WPAcceptanceList.length" ng-repeat="item in  gx1.SpecialtyChildren">
+          <md-subheader class="md-no-sticky"  style="background:#f0f0f0 ">{{item.SpecialtyName}}</md-subheader>
+          <md-list-item ng-click="vm.choosego(k)" style="background: white;" ng-repeat="k in  item.WPAcceptanceList">
+
+            <p flex>{{k.AcceptanceItemName}}</p>
+            <!--<md-divider  ng-if="!$last"></md-divider>-->
+
+            <md-divider  style="margin-left: 16px"  ng-if="!$last"></md-divider>
+          </md-list-item>
+        </section>
+      </md-list>
+    </md-tab-content>
+  </md-tab>
+</md-tabs>
+

@@ -1,36 +1,36 @@
 /**
  * Created by jiuyuong on 2016/3/30.
  */
-(function(){
+(function () {
   'use strict';
 
   angular
     .module('app.xhsc')
-    .controller('scRegionController',scRegionController);
+    .controller('scRegionController', scRegionController);
 
   /** @ngInject */
-  function scRegionController($scope,$stateParams,sxt,$rootScope,xhUtils,remote,$timeout,$q,$state,$mdDialog,utils,db){
-    var vm=this,
-    projectId = $stateParams.projectId,
-    acceptanceItemID=$stateParams.acceptanceItemID,
-    acceptanceItemName = $stateParams.acceptanceItemName,
-    area=$stateParams.area,
-    assessmentID = $stateParams.assessmentID,
-    isReport= vm.isReport=$stateParams.isReport;
+  function scRegionController($scope, $stateParams, sxt, $rootScope, xhUtils, remote, $timeout, $q, $state, $mdDialog, utils, db) {
+    var vm = this,
+      area = $stateParams.projectId,
+      projectId = area.substr(0, 5),
+      acceptanceItemID = $stateParams.acceptanceItemID,
+      acceptanceItemName = $stateParams.acceptanceItemName,
+      assessmentID = $stateParams.assessmentID,
+      isReport = vm.isReport = $stateParams.isReport;
     vm.maxRegion = $stateParams.maxRegion;
     $rootScope.title = $stateParams.acceptanceItemName;
     $rootScope.sendBt = false;
     vm.maxRegion = $stateParams.maxRegion;
-    //var _db=db('pack'+ assessmentID);
-    vm.nums={
-      qb:0,
-      wtj:0,//未提交
-      ytj:0//已检查
+    vm.building = [];
+    vm.nums = {
+      qb: 0,
+      wtj: 0,//未提交
+      ytj: 0//已检查
     }
-    function  setNum(status,region){
-      if((vm.maxRegion==8&&region.RegionType==8)||vm.maxRegion==16&&region.RegionType>=8){
+    function setNum(status, region) {
+      if ((vm.maxRegion == 8 && region.RegionType == 8) || vm.maxRegion == 16 && region.RegionType >= 8) {
         vm.nums.qb++;
-        switch (status){
+        switch (status) {
           case  0:
             vm.nums.wtj++;
             break;
@@ -41,99 +41,121 @@
       }
     }
 
-    function  load(){
-      vm.nums={
-        qb:0,
-        wtj:0,//未提交
-        ytj:0//已检查
+    function load() {
+
+      vm.nums = {
+        qb: 0,
+        wtj: 0,//未提交
+        ytj: 0//已检查
       }
 
-      function initRegion(region){
-        function ConvertClass(status){
+      function initRegion(region, sc_status) {
+        function ConvertClass(status) {
           var style;
-          switch (status){
+          switch (status) {
             case 0:
-              style="wait";
+              style = "wait";
               break;
             case 1:
-              style="dy";
+              style = "pass";
               break;
             default:
               break;
           }
           return style;
         }
-        function _init(region){
-          if (region&&region.RegionType==8||region&&region.RegionType==16){
-            //if (isReport=='0'||isReport==0){
-              region.style= ConvertClass(region.Status);
-            //}
-            setNum(region.Status,region);
+
+        function _init(region) {
+          function setStatus(status,statusArr) {
+            if (angular.isArray(statusArr) && statusArr.find(function (k) {
+                return k == acceptanceItemID;
+              })) {
+              return 1;
+            }
+            return 0;
           }
-          if (region&&region.Children.length){
-            region.Children.forEach(function(r){
+
+          region.Status = setStatus(sc_status,region.StatusList);
+          if (region.RegionType == 2 && region.RegionID == area) {
+            region.selected = true;
+          }
+          if (region.RegionType == 4&&region.ParentID==area) {
+            vm.building.push(region);
+          }
+          if (region && region.RegionType == 8 || region && region.RegionType == 16) {
+            region.style = ConvertClass(region.Status);
+            setNum(region.Status, region);
+          }
+          if (region && region.Children.length) {
+            region.Children.forEach(function (r) {
               _init(r);
             });
           }
+          if (region.RegionType == 4) {
+            region.floors = [];
+            region.Children.forEach(function (k) {
+              if (!k.Children.length) {
+                region.floors.push(k)
+              }
+            })
+          }
         }
+
         _init(region);
       }
 
-      vm.isRegionShow=function(region){
-        if(vm.maxRegion>8){
-          if (region.Children&&region.Children.length){
-            var f= region.Children.find(function(o){
-              return o.Status==vm.filterNum||vm.filterNum==-1;
+      vm.isRegionShow = function (region) {
+        if (vm.maxRegion > 8) {
+          if (region.Children && region.Children.length) {
+            var f = region.Children.find(function (o) {
+              return o.Status == vm.filterNum || vm.filterNum == -1;
             });
-            if (f){
+            if (f) {
               return true;
             }
           }
         }
-        return region.Status==vm.filterNum||vm.filterNum==-1;
+        return region.Status == vm.filterNum || vm.filterNum == -1;
       }
 
-      function  callBack(r){
+      function callBack(res) {
         vm.loading = true;
-        var project= r.data.data,_area;
-        if (angular.isArray(project.Children)){
-          _area=project.Children.find(function(k){
-            return k.RegionID==area;
+        var r = res, status = [];
+        var project = r.data.data, _area;
+        if (angular.isArray(project.Children)) {
+          project.Children.forEach(function (k) {
+            if ( k.RegionID == area){
+              initRegion(k, status.data);
+            }
           });
-          initRegion(_area);
-          vm.houses =  [_area];
         }
+        vm.houses = project.Children;
       }
-      remote.Assessment.GetRegionTreeInfo(projectId,'pack'+assessmentID).then(callBack);
+      remote.Assessment.GetRegionTreeInfo(projectId, 'pack' + assessmentID).then(callBack)
     }
 
     load();
 
-    vm.selected = function(r){
-      var routeData={
+    vm.selected = function (r) {
+      var routeData = {
         areaId: r.RegionID,
         regionId: r.RegionID,
         RegionName: r.RegionName,
         name: r.FullRegionName,
         regionType: r.RegionType,
-        db:assessmentID,
-        measureItemID:acceptanceItemID,
-        pname:acceptanceItemName
+        db: assessmentID,
+        measureItemID: acceptanceItemID,
+        pname: acceptanceItemName
       }
-      $state.go('app.xhsc.scsl._sc',routeData);
-      //if (isReport=='0'||isReport==0){
-      //  $state.go('app.xhsc.scsl._sc',routeData);
-      //}else {
-      //  $state.go('app.xhsc.scsl.schztb',routeData);
-      //}
+      $state.go('app.xhsc.scsl._sc', routeData);
     }
     //总包点击事件
 
-    vm.zk = function(item){
+    vm.zk = function (item) {
       item.show = !item.show;
     }
-    vm.filterNum = isReport=='1'? 1:-1;
-    vm.filter = function(num){
+    vm.filterNum = isReport == '1' ? 1 : -1;
+    vm.filter = function (num) {
       vm.filterNum = num;
     }
   }

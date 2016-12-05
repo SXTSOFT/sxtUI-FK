@@ -124,7 +124,7 @@
           data.push(item.data);
         });
         $http.post(url,data).then(function (r) {
-          if (r&& r.data&&! r.data.ErrorCode){
+          if (r.status==200){
             tasks.forEach(function (task) {
               task.completed = true;
             });
@@ -170,7 +170,7 @@
     var o = {
       packages:{},
       pack:function (config) {
-        var pack = o.packages[config._id] = o.packages[config._id]||new Pack(config);
+        var pack = o.packages[config._id] = new Pack(config);
         return pack;
       },
       unPack:function (id) {

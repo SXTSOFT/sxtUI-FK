@@ -1,3 +1,6 @@
+<md-progress-circular id="toolbar-progress" ng-if="!vm.rendered" class="md-accent"
+                      md-mode="indeterminate" md-diameter="28">
+</md-progress-circular>
 <md-tabs ng-show="vm.rendered" flex layout="column">
   <md-tab flex layout="column" label="汇总清单">
     <md-tab-content ms-scroll class="download" style="padding: 0px">
@@ -25,11 +28,19 @@
                 <td>{{item.Inspection.Count}}</td>
               </tr>
               <tr>
-                <td>本月</td>
+                <td>本月已提交</td>
+                <td>{{item.Inspection.SubmitMonth}}</td>
+              </tr>
+              <tr>
+                <td>本月已验收</td>
                 <td>{{item.Inspection.Month}}</td>
               </tr>
               <tr>
-                <td>本日</td>
+                <td>本日已提交</td>
+                <td>{{item.Inspection.SubmitDay}}</td>
+              </tr>
+              <tr>
+                <td>本日已验收</td>
                 <td>{{item.Inspection.Day}}</td>
               </tr>
             </table>
@@ -41,12 +52,20 @@
                 <td>{{item.PQMeasureRecord.Count}}</td>
               </tr>
               <tr>
-                <td>本月</td>
+                <td>本月总包</td>
                 <td>{{item.PQMeasureRecord.Month}}</td>
               </tr>
               <tr>
-                <td>本日</td>
+                <td>本月监理</td>
+                <td>{{item.PQMeasureRecord.SupervisionMonth}}</td>
+              </tr>
+              <tr>
+                <td>本日总包</td>
                 <td>{{item.PQMeasureRecord.Day}}</td>
+              </tr>
+              <tr>
+                <td>本日监理</td>
+                <td>{{item.PQMeasureRecord.SupervisionDay}}</td>
               </tr>
             </table>
           </td>

@@ -107,6 +107,7 @@
       });
 
       amMoment.changeLocale('zh-cn');
+    function runBlock($rootScope, $timeout, $state,msNavigationService,remote) {
       // Activate loading indicator
       var stateChangeStartEvent = $rootScope.$on('$stateChangeStart', function () {
         $rootScope.loadingProgress = true;

@@ -9,6 +9,15 @@
   /** @ngInject */
   function config($stateProvider, $translatePartialLoaderProvider, msNavigationServiceProvider)
   {
+
+
+    msNavigationServiceProvider.saveItem('xh.pcmain', {
+      title: '设置',
+      state: 'app.xhsc.pcmain',
+      icon:'icon-account',
+      weight:1
+    });
+
     // State
     $stateProvider
       .state('app.xhsc.scsl',{
@@ -21,10 +30,11 @@
         }
       })
       .state('app.xhsc.scsl.scslmain', {
-        noBack:false,
+        noBack:true,
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
+        showgrzx:false,
         title: '实测实量',
         url: '',
         templateUrl: 'app/main/xhsc/procedurepg/scslmain.html',
@@ -63,7 +73,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url: '/schztbdetail/{regionId}/{itemId}/{acceptanceItemID}',
+        url: '/schztbdetail/{regionId}/{itemId}/{acceptanceItemID}/{MeasureRecordID}',
         templateUrl: 'app/main/xhsc/procedurepg/schztbdetail.html',
         controller: 'schztbdetailController as vm'
       })

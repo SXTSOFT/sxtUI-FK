@@ -49,8 +49,8 @@
               cb();
             },
             onLoad: function (cb) {
-              remote.Procedure.InspectionCheckpoint.query(scope.procedure,scope.regionId,scope.inspectionId).then(function (r) {
-                  remote.Procedure.InspectionPoint.query(scope.inspectionId,scope.procedure, scope.regionId).then(function (r1) {
+              remote.Procedure.InspectionCheckpoint.query(scope.procedure,scope.regionId,scope.inspectionId,"nodb").then(function (r) {
+                  remote.Procedure.InspectionPoint.query(scope.inspectionId,scope.procedure, scope.regionId,"nodb").then(function (r1) {
                   fg.data = r.data;
                   var fs=[];
                   r.data.forEach(function (c) {
@@ -99,7 +99,7 @@
             }
           });
           $timeout(function () {
-            remote.Project.getDrawingRelations(scope.regionId.substring(0,5)).then(function (result) {
+            remote.Project.getDrawingRelations(scope.regionId,"nodb").then(function (result) {
               var imgId = result.data.find(function (item) {
                 return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
               });

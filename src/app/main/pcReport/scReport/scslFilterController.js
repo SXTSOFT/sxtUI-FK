@@ -15,10 +15,12 @@
     .controller('scslFilterController',scslFilterController);
 
   /**@ngInject*/
-  function scslFilterController($scope,remote,$mdDialog,$state,$rootScope,$timeout){
+  function scslFilterController($scope,remote,$mdDialog,$state,$rootScope,$timeout,$window){
     var vm = this;
     $scope.currentSC;
-
+    var mobileDetect = new MobileDetect(window.navigator.userAgent);
+    vm.isMobile=mobileDetect.mobile();
+    vm.isiPad=mobileDetect.mobile()=="iPad";
     $scope.$watch('project.pid',function(){
       $scope.currentSC = null;
       remote.Project.GetMeasureItemInfoByAreaID($scope.project.pid).then(function(r){
@@ -58,16 +60,19 @@
           pname: item.MeasureItemName
         });
       }
-
       //业务数据包
     }).catch(function(r){});
 
+    if ($rootScope.scslFilter){
+      $scope.currentSC=$rootScope.scslFilter.currentSC;
+      $scope.project=$rootScope.scslFilter.project;
+
+    }
     $scope.pageing={
       page:1,
       pageSize:10,
       total:0
     }
-
     $scope.$watch("pageing.pageSize",function(){
       if ($scope.pageing.pageSize){
         load();
@@ -83,6 +88,14 @@
       }).then(function(r){
         $scope.pageing.total= r.data.TotalCount;
         vm.source= r.data.Data;
+        vm.source.forEach(function (o) {
+          o.MeasureTime=o.MeasureTime?o.MeasureTime:"";
+        })
+        $rootScope.scslFilter={
+          currentSC:$scope.currentSC,
+          project:$scope.project
+        }
+
       }).catch(function(){
       });
     }
@@ -102,5 +115,9 @@
     };
 
 
+    //--------------------------------------------以下为移动适配---------------------------------------
+    vm.source=remote.Project.getMap();
+    vm.gxSelected=[];
+    vm.secSelected=[];
   }
 })();

@@ -7,7 +7,7 @@
     .module('app.xhsc')
     .directive('sxtMapSelfCheckPopup',sxtMapSelfCheckPopup);
   /** @ngInject */
-  function sxtMapSelfCheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote){
+  function sxtMapSelfCheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote,$q){
     return {
       restrict:'E',
       scope:{
@@ -27,7 +27,12 @@
       scope.apply = function() {
         scope.isSaveData = null;
         scope.$apply();
-        remote.Procedure.InspectionProblemRecord.query(scope.data.v.CheckpointID).then(function (r) {
+        $q.all([
+          remote.Procedure.InspectionProblemRecord.query(scope.data.v.CheckpointID,"InspectionProblemRecord_zj"),
+          remote.Procedure.InspectionProblemRecord.query(scope.data.v.CheckpointID)
+        ]).then(function(res){
+          var r={};
+          r.data=res[0].data.concat(res[1].data)
           var p = null;
           if (r.data.length) {
             p = r.data[0];
@@ -42,13 +47,19 @@
             remote.Procedure.InspectionProblemRecord.create(p);
           }
           scope.data.p = p;
-          remote.Procedure.InspectionProblemRecordFile.query(p.ProblemRecordID, scope.data.v.PositionID).then(function (r) {
+
+          $q.all([
+            remote.Procedure.InspectionProblemRecordFile.query(p.ProblemRecordID, scope.data.v.PositionID,"InspectionProblemRecordFile_zj"),
+            remote.Procedure.InspectionProblemRecordFile.query(p.ProblemRecordID, scope.data.v.PositionID)
+          ]).then(function(res){
+            var r={};
+            r.data=res[0].data.concat(res[1].data);
             scope.data.images = r.data;
             if (scope.data.v.isNew) {
               scope.addPhoto();
             }
-          });
-        })
+          })
+        });
       };
       scope.viewDetail = function(){
         scope.$parent.vm.slideShow = true;
