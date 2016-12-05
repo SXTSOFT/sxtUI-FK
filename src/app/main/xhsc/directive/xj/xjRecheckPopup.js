@@ -13,7 +13,7 @@
     .module('app.xhsc')
     .directive('xjRecheckPopup',xjRecheckPopup);
   /** @ngInject */
-  function xjRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote){
+  function xjRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote,$q){
     return {
       restrict:'E',
       scope:{
@@ -160,7 +160,7 @@
             return;
           }
           createZb(true).then(function () {
-            remote.cycleLook.ckPointCreate(scope.data.value).then(function () {
+            remote.cycleLook.cyclePointCreate(scope.data.value).then(function () {
               scope.slideShow = false;
               scope.context.updateStatus(scope.data.value.PositionID,convert(scope.data.value.Status));
             });
@@ -168,7 +168,7 @@
         }
         else if(scope.role=='jl'){
           scope.data.value.Status = scope.data.value.Status==2?2:4;
-          remote.cycleLook.ckPointCreate(scope.data.value).then(function () {
+          remote.cycleLook.cyclePointCreate(scope.data.value).then(function () {
             scope.slideShow = false;
             scope.context.updateStatus(scope.data.value.PositionID,convert(scope.data.value.Status));
           }).then(function () {

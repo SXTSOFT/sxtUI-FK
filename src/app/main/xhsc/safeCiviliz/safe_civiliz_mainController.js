@@ -55,7 +55,7 @@
       return [
         function (tasks) {
           return $q(function (resolve, reject) {
-            return xhscService.downloadPics(regionID, null, relates).then(function (t) {
+            return xhscService.downloadPics(regionID, null,filter ,relates).then(function (t) {
               t.forEach(function (m) {
                 tasks.push(m);
               })
@@ -265,7 +265,7 @@
               var tasks = [];
               return $q(function (resolve, reject) {
                 api.getUploadData(function (cfg) {
-                  return cfg.mark == "up";
+                  return cfg.mark == "up"||cfg.mark=="allUp";
                 }).then(function (val) {
                   if (val && val.length) {
                     var points = val.find(function (o) {

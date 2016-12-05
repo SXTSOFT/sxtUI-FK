@@ -53,10 +53,6 @@
               cb();
             },
             onLoad: function (cb) {
-              if (scope.asyload){
-                return;
-              }
-              scope.asyload=true;
               remote.cycleLook.cyclePointQuery.cfgSet({
                 filter:function (item,AcceptanceItemID,AreaID,inspectionId){
                   return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID&&item.InspectionExtendID==inspectionId;
@@ -86,8 +82,8 @@
                   scope.item = null;
                   fg.addData(fs,false);
                   cb();
-                  scope.asyload=false;
                   scope.ct && (scope.ct.loading = false);
+                  scope.excuted=false;
                 })
               })
             },
@@ -256,20 +252,28 @@
       };
       $timeout(function () {
         scope.$watch('regionId', function () {
-          if(scope.regionId && scope.procedure) {
-            if(map){
-              map.remove();
-              map = null;
+            if(!scope.excuted&&scope.regionId && scope.procedure) {
+              if(map){
+                map.remove();
+                map = null;
+              }
+              scope.excuted=true;
+              $timeout(function () {
+                scope.excuted=false;
+              },5000)
+              install();
             }
-            install();
-          }
         });
         scope.$watch('procedure', function () {
-          if(scope.regionId && scope.procedure) {
+          if(!scope.excuted&&scope.regionId && scope.procedure) {
             if(map){
               map.remove();
               map = null;
             }
+            $timeout(function () {
+              scope.excuted=false;
+            },5000)
+            scope.excuted=true;
             install();
           }
         });

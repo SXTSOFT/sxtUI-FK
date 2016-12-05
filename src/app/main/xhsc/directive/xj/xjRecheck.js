@@ -9,7 +9,7 @@
     .module('app.xhsc')
     .directive('xjRecheck',xjRecheck);
   /** @ngInject */
-  function xjRecheck($timeout,remote,mapPopupSerivce,sxt,utils,$q,$window,xhUtils) {
+  function xjRecheck($timeout,remote,mapPopupSerivce,sxt,utils,$q,$window,xhUtils,$q) {
     return {
       scope:{
         item:'=xjRecheck',
@@ -70,7 +70,7 @@
                     return item.InspectionID==inspectionId&&item.AcceptanceItemID==scope.procedure&&item.AreaID==scope.regionId;
                   }
                 })(scope.inspectionId),
-                remote.cycleLook.getSafePointGeo()
+                remote.safe.getSafePointGeo()
               ]).then(function (res) {
                 var fs = [];
                 fg.data = res[0].data;

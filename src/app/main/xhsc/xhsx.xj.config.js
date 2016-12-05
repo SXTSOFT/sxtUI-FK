@@ -51,7 +51,7 @@
         rightArrow: false,
         leftArrow: false,
         title: '巡检',
-        url: '/xjAccept/{InspectionId}/{acceptanceItemID}/{acceptanceItemName}/{name}/{regionId}/{projectId}/{areaId}',
+        url: '/xjAccept/{InspectionId}/{projectId}/{areaId}',
         templateUrl: 'app/main/xhsc/cycleLook/cycleLookAccept.html',
         controller: 'cycleLookAcceptController as vm'
       })

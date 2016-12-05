@@ -15,7 +15,7 @@
     .controller('cycleLookAcceptController',cycleLookAcceptController);
 
   /**@ngInject*/
-  function cycleLookAcceptController($scope,$stateParams,remote,xhUtils,$rootScope,$state,$q,utils,api){
+  function cycleLookAcceptController($scope,$stateParams,remote,xhUtils,$rootScope,$state,$q,utils,api,xhscService){
     var vm = this;
     var projectId = $stateParams.projectId,
       areaId = $stateParams.areaId?$stateParams.areaId:$stateParams.regionId;

@@ -10,7 +10,7 @@
     .controller('cycleLookMainController', cycleLookMainController);
 
   /** @ngInject */
-  function cycleLookMainController(xhscService,$mdDialog,api,$scope,$q,remote,$state) {
+  function cycleLookMainController(xhscService,$mdDialog,api,$scope,$q,remote,$state,$mdBottomSheet) {
     var vm = this;
     vm.procedure = [];
     vm.create=function () {
@@ -155,7 +155,7 @@
               if (angular.isArray(ProblemRecordFiles)) {
                 ProblemRecordFiles.forEach(function (t) {
                   tasks.push(function () {
-                    return remote.cycleLook.cycleProblemRecordFileCreate(t.ProblemRecordFileID);
+                    return remote.cycleLook.cycleProblemRecordFileQuery(t.ProblemRecordFileID);
                   });
                 });
               }
@@ -387,7 +387,7 @@
                         "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
                         "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
                         "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
-                      },"DayInspects").then(function () {
+                      },"cycle").then(function () {
                         clear(ckpoints,problemRecords,InspectionProblemRecordFiles);
                       });
                     });

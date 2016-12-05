@@ -2075,7 +2075,7 @@
             return d.Id || d.ProblemRecordFileID
           },
           fn: function (ProblemRecordFileID) {
-            return $http.get($http.url('/api/WeekInspects/SecurityCheckpoint/GetProblemRecordFile/' + ProblemRecordFileID)).then(function (r) {
+            return $http.get($http.url('/api/cycle/SecurityCheckpoint/GetProblemRecordFile/' + ProblemRecordFileID)).then(function (r) {
               if (r && !angular.isArray(r.data)) {
                 r.data = [r.data];
                 r.data.forEach(function (t) {
