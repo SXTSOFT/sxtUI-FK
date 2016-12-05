@@ -47,7 +47,7 @@
       })
       .state('app.xhsc.xj.accept', {
         noBack:true,
-        sendBt: false,
+        sendBt: true,
         rightArrow: false,
         leftArrow: false,
         title: '巡检',
@@ -57,7 +57,7 @@
       })
       .state('app.xhsc.xj.rectify', {
         noBack:true,
-        sendBt: false,
+        sendBt: true,
         rightArrow: false,
         leftArrow: false,
         title: '巡检',

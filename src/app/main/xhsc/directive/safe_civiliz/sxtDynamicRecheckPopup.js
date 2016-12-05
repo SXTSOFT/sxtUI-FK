@@ -16,7 +16,7 @@
     .module('app.xhsc')
     .directive('sxtDynamicRecheckPopup',sxtDynamicRecheckPopup);
   /** @ngInject */
-  function sxtDynamicRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote,$q){
+  function sxtDynamicRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote,$q,utils){
     return {
       restrict:'E',
       scope:{
