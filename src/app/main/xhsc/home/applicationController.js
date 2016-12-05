@@ -71,12 +71,12 @@
         }, {
           title: "材料验收",
           img: "app/main/xhsc/images/application/material.svg",
-          state: "app.xhsc.yf.Main",
+          state: "app.xhsc.materialys.materialdownload",
           stateParams: null
         },{
           title: "计划管理",
           img: "app/main/xhsc/images/application/plan.svg",
-          state: "app.xhsc.yf.Main",
+          state: "app.plan.personplan",
           stateParams: null
         }
       ];

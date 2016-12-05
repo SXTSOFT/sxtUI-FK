@@ -548,61 +548,61 @@
     })
 
     function load(){
-      remote.Project.getMap().then(function(result){
-        remote.offline.query().then(function (r) {
-          if (r&& r.data&& r.data.length){
-            result.data.forEach(function (item) {
-              item.isOffline =true;
-            });
-          }
-          vm.projects = result.data;
-        }).catch(function(){
-          vm.projects = result.data;
-        });
-      });
-
-      remote.Procedure.getZGlist(23).then(function (r) {
-        vm.zglist = [];
-        if (angular.isArray(r.data)){
-          var zg=[];
-          r.data.forEach(function(o){
-            zg.push(o);
-          });
-          remote.offline.query().then(function(r){
-            if (angular.isArray(r.data)){
-              zg.forEach(function(k){
-                if (r.data.find(function(m){
-                    return m.Id=="zg"+k.RectificationID;
-                  })){
-                  k.isOffline=true;
-                }
-              })
-            }
-            vm.zglist=zg;
-          });
-        }
-      });
-      remote.Procedure.getInspections(1).then(function(r){
-        vm.Inspections=[];
-        if (angular.isArray(r.data)){
-          var ys=[];
-          r.data.forEach(function(o){
-            ys.push(o);
-          });
-          remote.offline.query().then(function(r){
-            if (angular.isArray(r.data)){
-              ys.forEach(function(k){
-                if (r.data.find(function(m){
-                    return m.Id=="ys"+k.InspectionId;
-                  })){
-                  k.isOffline=true;
-                }
-              })
-            }
-            vm.Inspections=ys;
-          });
-        }
-      });
+      // remote.Project.getMap().then(function(result){
+      //   remote.offline.query().then(function (r) {
+      //     if (r&& r.data&& r.data.length){
+      //       result.data.forEach(function (item) {
+      //         item.isOffline =true;
+      //       });
+      //     }
+      //     vm.projects = result.data;
+      //   }).catch(function(){
+      //     vm.projects = result.data;
+      //   });
+      // });
+      //
+      // remote.Procedure.getZGlist(23).then(function (r) {
+      //   vm.zglist = [];
+      //   if (angular.isArray(r.data)){
+      //     var zg=[];
+      //     r.data.forEach(function(o){
+      //       zg.push(o);
+      //     });
+      //     remote.offline.query().then(function(r){
+      //       if (angular.isArray(r.data)){
+      //         zg.forEach(function(k){
+      //           if (r.data.find(function(m){
+      //               return m.Id=="zg"+k.RectificationID;
+      //             })){
+      //             k.isOffline=true;
+      //           }
+      //         })
+      //       }
+      //       vm.zglist=zg;
+      //     });
+      //   }
+      // });
+      // remote.Procedure.getInspections(1).then(function(r){
+      //   vm.Inspections=[];
+      //   if (angular.isArray(r.data)){
+      //     var ys=[];
+      //     r.data.forEach(function(o){
+      //       ys.push(o);
+      //     });
+      //     remote.offline.query().then(function(r){
+      //       if (angular.isArray(r.data)){
+      //         ys.forEach(function(k){
+      //           if (r.data.find(function(m){
+      //               return m.Id=="ys"+k.InspectionId;
+      //             })){
+      //             k.isOffline=true;
+      //           }
+      //         })
+      //       }
+      //       vm.Inspections=ys;
+      //     });
+      //   }
+      // });
     }
     api.setNetwork(0).then(function(){
       load();
