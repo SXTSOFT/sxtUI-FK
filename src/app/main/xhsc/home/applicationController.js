@@ -66,7 +66,7 @@
           state: "app.xhsc.download",
           stateParams: null
         }, {
-          title: "安全验房",
+          title: "移动验房",
           img: "app/main/xhsc/images/application/yf.svg",
           state: "app.xhsc.yf.Main",
           stateParams: null
