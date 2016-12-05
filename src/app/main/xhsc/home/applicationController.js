@@ -15,8 +15,6 @@
     xhscService.getRegionTreeOffline("", 31, 1).then(function (r) {
       vm.regions=r;
     })
-
-
     xhscService.getProfile().then(function (profile) {
       vm.role = profile.role;
       vm.OUType = profile.ouType;
