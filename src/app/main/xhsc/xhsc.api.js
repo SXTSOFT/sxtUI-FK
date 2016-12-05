@@ -2000,6 +2000,9 @@
               data: result.data.Relations
             }
           },
+          filter:function (item,identity,areaId) {
+              return item.ProjectID==areaId;
+          },
           idField:"ProjectID",
           dataType:3,
           fn:function (identity,areaId){
