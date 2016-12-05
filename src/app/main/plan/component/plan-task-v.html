@@ -25,6 +25,7 @@
               </md-menu>
             </th>
             <th style="width: 24px;min-width: 24px" ng-if="vm.data.Level !=0">必须完成</th>
+            <th style="width: 24px;min-width: 24px" ng-if="vm.data.Level !=0">手工关闭</th>
             <th ng-if="vm.data.Level==1" style="width: 30px;min-width: 24px">工期</th>
             <!--<th ng-if="vm.data.Level==1" style="width: 30px;min-width: 24px">龄期</th>-->
             <th ng-if="vm.data.Level==1" style="width: 124px;min-width: 124px">关联项</th>
@@ -84,6 +85,9 @@
             </td>
             <td ng-if="vm.data.Level !=0">
               <input type="checkbox" ng-if="!flow.isChuancha" ng-model="flow.IsMustComplete" ng-click="vm.updateMust(flow)">
+            </td>
+            <td ng-if="vm.data.Level !=0">
+              <input type="checkbox" ng-model="flow.ManuallyClose" ng-click="vm.updateManuallyClose(flow)">
             </td>
             <td ng-if="vm.data.Level==1"><input type="text" ng-if="!flow.isChuancha" style="width:20px" placeholder="无" ng-model="flow.Duration" ng-blur="vm.updateDuration(flow)"></td>
             <!--<td ng-if="vm.data.Level==1"><input type="text" style="width:20px" placeholder="无" ng-model="flow.ReservedEndDays" ng-blur="vm.updateReservedEndDays(flow)"></td>-->

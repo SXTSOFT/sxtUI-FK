@@ -17,8 +17,12 @@
     </md-select>
     <task-categories ng-model="vm.selectedCategory" style="font-size:13px;"></task-categories>
     <span flex></span>
-    <!--<md-input-container md-no-float>-->
-      <!--<input ng-model="vm.search" type="text" placeholder="搜索">-->
+    <div class="white-placeholder" style="border:1px solid rgb(245,245,245);border-radius:14px;padding:0 5px;">
+      <md-icon md-font-icon="icon-magnify"></md-icon>
+      <input placeholder="搜索" ng-model="vm.search" style="color:rgb(245,245,245);padding:4px;font-size:13px;background: transparent;outline: 0;border:none;">
+    </div>
+    <!--<md-input-container md-no-float class="white-placeholder">-->
+      <!--<input style="color:rgb(245,245,245);font-size:13px;" ng-model="vm.search" type="text" placeholder="搜索">-->
     <!--</md-input-container>-->
     <md-button class="md-icon-button" aria-label="More">
       <md-icon md-font-icon="icon-plus" ui-sref="app.plan.task.detail({id:'add'})"></md-icon>
@@ -40,7 +44,7 @@
   </thead>
 
   <tbody>
-  <tr ng-repeat="item in vm.items|filter:{Type:vm.selectedCategory}:vm.search">
+  <tr ng-repeat="item in vm.items|filter:{Type:vm.selectedCategory}|filter:vm.search">
     <td class="name">{{item.Name}}</td>
     <td class="time" ng-if="vm.selectedFilter!=0">{{item.Variable}}</td>
     <td class="time" ng-if="vm.selectedFilter != 0">{{item.Duration}}</td>

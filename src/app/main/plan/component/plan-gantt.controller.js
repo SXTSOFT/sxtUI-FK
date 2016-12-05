@@ -466,6 +466,11 @@
                 ScheduledEndTime:item.ScheduledEndTime,
                 ActualStartTime:item.ActualStartTime,
                 ActualEndTime:item.ActualEndTime,
+                RealScheduledStartTime:item.RealScheduledStartTime,
+                RealScheduledEndTime:item.RealScheduledEndTime,
+                IsAbleStart: item.IsAbleStart,
+                IsInterlude: item.IsInterlude,
+                ManuallyClose: item.ManuallyClose,
                 State:item.State,
                 Color:setColor(item.State),
                 _State:setSatus(item.State),
@@ -494,6 +499,11 @@
                       ScheduledEndTime:t.ScheduledEndTime,
                       ActualStartTime:t.ActualStartTime,
                       ActualEndTime:t.ActualEndTime,
+                      RealScheduledStartTime:t.RealScheduledStartTime,
+                      RealScheduledEndTime:t.RealScheduledEndTime,
+                      IsAbleStart: t.IsAbleStart,
+                      IsInterlude: t.IsInterlude,
+                      ManuallyClose: t.ManuallyClose,
                       State: t.State,
                       Color:setColor(t.State),
                       _State:setSatus(t.State),
@@ -521,6 +531,12 @@
       //vm.hasFlow = !!originData.Items.find(function (it) {
       //  return it.ExtendedParameters == taskId;
       //});
+      vm.startTask = function(task){
+        var time = new Date();
+        api.plan.BuildPlan.startInsert($stateParams.id,task.TaskFlowId,time).then(function(r){
+          loadSubTask();
+        })
+      }
       vm.openTask = function(task){
         var time = new Date();
         api.plan.Task.start(task.TaskFlowId,true,time).then(function (r) {

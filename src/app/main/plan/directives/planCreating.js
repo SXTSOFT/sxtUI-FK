@@ -246,19 +246,19 @@
               }
               if (!f.currentTask) {
                 f.currentTask = f.OptionalTasks[0];
-                f.currentTask.eDuration = f.currentTask.Duration;
+                //f.currentTask.eDuration = f.currentTask.Duration;
               }else{
-                f.currentTask.eDuration = f.currentTask.Duration;
+                //f.currentTask.eDuration = f.currentTask.Duration;
               }
               f.selected = true;
             }
           });
           rootTask.Branch.forEach(function (bs) {
-            if(scope.underhidden){
-              if(bs[0].Name.indexOf('地下室')!=-1||bs[0].Name.indexOf('人货梯')!=-1){
-                return;
-              }
-            }
+            //if(scope.underhidden){
+            //  if(bs[0].Name.indexOf('地下室')!=-1||bs[0].Name.indexOf('人货梯')!=-1){
+            //    return;
+            //  }
+            //}
             bs.forEach(function (b) {
               if (!b.currentTask) {
                 b.currentTask = b.OptionalTasks[0];
@@ -293,14 +293,16 @@
               });
             if (f) {
               scope.flows[i].currentTask = f;
-              scope.flows[i].currentTask.eDuration = f.Duration;
+              gs.setValue(scope.flows[i].Expression + 'B', undefined);
+              gs.setValue(scope.flows[i].Expression + 'D', undefined);
+             // scope.flows[i].currentTask.eDuration = f.Duration;
             }
           }
         }
       }
       scope.setCurrent = function (flow, task) {
         flow.currentTask = task;
-        flow.currentTask.eDuration = flow.currentTask.Duration;
+        //flow.currentTask.eDuration = flow.currentTask.Duration;
         setTask(flow);
         scope.buildDate(flow);
       }
@@ -316,12 +318,12 @@
       }
       scope.buildDate = function (item) {
         if (!scope.flows) return;
-        if(item&&item.currentTask&&item.currentTask.eDuration < item.currentTask.Duration*0.8){
-          item&&(item.show = true);
-          return;
-        }else{
-          item&&(item.show = false);
-        };
+        //if(item&&item.currentTask&&item.currentTask.eDuration < item.currentTask.Duration*0.8){
+        //  item&&(item.show = true);
+        //  return;
+        //}else{
+        //  item&&(item.show = false);
+        //};
         scope.flows.reduce(function (prev, current) {
           if(current.show) return current;
           if (!current.selected) return prev;
@@ -340,10 +342,10 @@
             }
             else {
               try {
-                //var days = gs.setVars(current.currentTask.Duration);
-                //if (days === current.currentTask.Duration)
-                var days = gs.setVars(current.currentTask.eDuration);
-                if (days === current.currentTask.eDuration)
+                //var days = gs.setVars(current.currentTask.eDuration);
+                //if (days === current.currentTask.eDuration)
+                var days = gs.setVars(current.currentTask.Duration);
+                if (days === current.currentTask.Duration)
                   days = undefined;
                 current.days = days;
               } catch (ex) {

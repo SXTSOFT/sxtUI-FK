@@ -18,6 +18,9 @@
     vm.id= $stateParams.id;
     api.plan.BuildPlan.getMileStone(vm.id).then(function(r){
       vm.data = r.data;
-    })
+    });
+    api.plan.BuildPlan.mainProcess(vm.id).then(function(r){
+      vm.mainProcess = r.data;
+    });
   }
 })(angular,undefined)

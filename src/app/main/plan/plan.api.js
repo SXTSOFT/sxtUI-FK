@@ -123,6 +123,12 @@
         },
         personPlans:function(){
           return $http.get('/api/BuildingPlans/PersonalTasks/')
+        },
+        mainProcess:function(id){
+          return $http.get('/api/BuildingPlans/'+id+'/MainProgress')
+        },
+        startInsert:function(id,taskId,startTime){
+          return $http.post('/api/BuildingPlans/'+id+'/Tasks/'+taskId+'/StartPlan',{StartTime:startTime})
         }
       },
       MileStone:{
