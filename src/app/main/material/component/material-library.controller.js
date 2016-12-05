@@ -29,10 +29,10 @@
     vm.batchAdd = function(node,ev) {
       var data = {};
       var confirm = $mdDialog.prompt()
-        .title('批量添加材料库')
+        .title('批量添加材料')
         // .textContent('Bowser is a common name.')
-        .placeholder('材料库名称')
-        .ariaLabel('材料库名称')
+        .placeholder('材料名称')
+        .ariaLabel('材料名称')
         // .initialValue('Buddy')
         .targetEvent(ev)
         .ok('提交')

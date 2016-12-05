@@ -31,19 +31,6 @@
     });
 
     vm.addPhoto = function (type) {
-      // switch (type){
-      //   case 1:
-      //     photo(type,vm.vehicleImgs,null);
-      //     break;
-      //   case 2:
-      //     photo(type,vm.goodsImgs,null);
-      //     break;
-      //   case 4:
-      //     photo(type,vm.checkerImgs,null);
-      //     break;
-      //   default:
-      //     photo(type,vm.certificateImgs,null);
-      // }
       //拍照事件
       xhUtils.photo().then(function (image) {
         if(image){
