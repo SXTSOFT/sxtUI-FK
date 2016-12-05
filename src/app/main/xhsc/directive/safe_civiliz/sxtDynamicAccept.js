@@ -201,7 +201,6 @@
             }
           });
           $timeout(function () {
-            scope.asyn=true;
             var areaID=scope.regionId.substr(0,10);
             remote.safe.getDrawingRelate.cfgSet({
               offline: true
@@ -216,7 +215,6 @@
               }
               if (imgId) {
                 remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
-                  scope.asyn=false;
                   if(!result2.data.DrawingContent){
                     scope.ct && (scope.ct.loading = false);
                     utils.alert('未找到图纸,请与管理员联系!(2)');
@@ -239,37 +237,42 @@
                   // });
                   // element.find('.mapboxgl-ctrl-bottom-left').append(btn);
                 }).catch(function () {
-                  scope.asyn=false;
                 })
               }
               else{
-                scope.asyn=false;
                 scope.ct && (scope.ct.loading = false);
                 utils.alert('未找到图纸,请与管理员联系!(1)')
                 return;
               }
             }).catch(function () {
-              scope.asyn=false;
             });
           }, 0);
         }
       };
       $timeout(function () {
         scope.$watch('regionId', function () {
-          if(scope.regionId && scope.procedure) {
+          if(!scope.excuted&&scope.regionId && scope.procedure) {
             if(map){
               map.remove();
               map = null;
             }
+            scope.excuted=true;
+            $timeout(function () {
+              scope.excuted=false;
+            },5000)
             install();
           }
         });
         scope.$watch('procedure', function () {
-          if(scope.regionId && scope.procedure) {
+          if(!scope.excuted&&scope.regionId && scope.procedure) {
             if(map){
               map.remove();
               map = null;
             }
+            scope.excuted=true;
+            $timeout(function () {
+              scope.excuted=false;
+            },5000)
             install();
           }
         });
