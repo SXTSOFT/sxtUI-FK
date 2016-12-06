@@ -34,7 +34,7 @@
       //拍照事件
       xhUtils.photo().then(function (image) {
         if(image){
-      //var image;
+      // var image;
           switch (type){
             case 1:
               photo(type,vm.vehicleImgs,image);
