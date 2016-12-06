@@ -25,7 +25,9 @@
         var k=[];
         if(vm.markers){
           vm.markers.forEach(function(item){
-            if(!text || text=='' || item.title.indexOf(text)!=-1 || item.pinyin.indexOf(text)!=-1){
+            var py=window.Pinyin.getPinyinArrayFirst(item.title)
+            py=py.join("");
+            if(!text || text=='' || item.title.indexOf(text)!=-1||py.toLowerCase().indexOf(text.toLowerCase())>-1){
               k.push(item);
             }
           })
@@ -34,12 +36,13 @@
       }
       vm.changeItem = function(item){
         $timeout(function(){
-          $state.go('app.xhsc.choose',{pid:item.projectId, pname: item.title});
+          $state.go('app.pcReport_bd',{projectId:item.projectId, projectName: item.title});
         },200)
 
       }
       function markerClick($current){
-        $state.go('app.xhsc.xxjd.xxjdmain',{projectId:$current.projectId, projectName:$current.title});
+        //$state.go('app.xhsc.xxjd.xxjdmain',{projectId:$current.projectId, projectName:$current.title});
+        $state.go('app.pcReport_bd',{projectId:$current.projectId, projectName:$current.title});
       }
     })
   }

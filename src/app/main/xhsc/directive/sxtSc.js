@@ -43,15 +43,27 @@
         }
         if(!tile || tile!=scope.regionId) {
           $timeout(function () {
-            remote.Project.getDrawingRelations(scope.regionId.substring(0,5)).then(function (result) {
+            remote.Project.getDrawingRelations(scope.regionId.substr(0,10)).then(function (result) {
               var imgId = result.data.find(function (item) {
                 return item.AcceptanceItemID == scope.acceptanceItem && item.RegionId == scope.regionId;
               });
-              if(!imgId){
-                imgId = result.data.find(function (item) {
+
+              if (!imgId&&scope.regionId.length>20){
+                var imgId = result.data.find(function (item) {
                   return item.RegionId == scope.regionId;
                 });
               }
+              if (!imgId){
+                imgId={
+                  DrawingID:scope.imageUrl
+                }
+              }
+              if (!imgId) {
+                imgId = result.data.find(function (item) {
+                  return item.AcceptanceItemID == scope.acceptanceItem&&scope.regionId.indexOf(item.RegionId)>-1;
+                });
+              }
+
               if (imgId) {
                 remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
                   if(!result2.data||!result2.data.DrawingContent){
@@ -66,10 +78,10 @@
                       //line.options.color = 'black';
 
                       line.attrs['stroke-width'] = line.attrs['stroke-width']*6;
-                    },
-                    filterText: function (text) {
-                      return false;
                     }
+                    //filterText: function (text) {
+                    //  return false;
+                    //}
                   });
                   map.center();
                   scope.tooltip = '';
@@ -84,32 +96,6 @@
               }
             });
           }, 0);
-          //db('pack'+scope.db).get('GetDrawingByAreaID').then(function (data) {
-          //  var fd = data.data.find(function (d) {
-          //    return d.DrawingID == scope.imageUrl;
-          //  });
-          //  if(fd) {
-          //    if(fd.DrawingContent) {
-          //      scope.tooltip = '正在加载图形....';
-          //      $timeout(function () {
-          //        map.loadSvgXml(fd.DrawingContent, {
-          //          filterLine: function (line) {
-          //            line.attrs.stroke = 'black';
-          //            line.options = line.options||{};
-          //            //line.options.color = 'black';
-          //
-          //            line.attrs['stroke-width'] = line.attrs['stroke-width']*6;
-          //          },
-          //          filterText: function (text) {
-          //            //return false;
-          //          }
-          //        });
-          //        map.center();
-          //        scope.tooltip = '';
-          //      },0)
-          //    }
-          //  }
-          //});
           tile = scope.regionId;
         }
 

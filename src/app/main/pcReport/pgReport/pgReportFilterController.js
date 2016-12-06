@@ -25,6 +25,9 @@
     vm.yearSource=[
       2015,2016,2017,2018,2019,2020
     ];
+    var mobileDetect = new MobileDetect(window.navigator.userAgent);
+    vm.isMobile=mobileDetect.mobile();
+    vm.isiPad=mobileDetect.mobile()=="iPad";
     vm.yearQuart=[{
       "id": 1,
       "text": "第一季度"
@@ -38,17 +41,27 @@
       "id": 4,
       "text": "第四季度"
     }];
+    if ($rootScope.pgReportFilter_load){
+      $scope.year=$rootScope.pgReportFilter_load.year;
+      $scope.quart=$rootScope.pgReportFilter_load.quart;
+    }
     $scope.pageing={
       page:1,
       pageSize:10,
       total:0
     }
     $scope.$watch("year",function(){
+      if (vm.isMobile&&!vm.isiPad){
+        return;
+      }
       if ($scope.year){
         load();
       }
     });
     $scope.$watch("quart",function(){
+      if (vm.isMobile&&!vm.isiPad){
+        return;
+      }
       if ($scope.quart){
         load();
       }
@@ -58,7 +71,12 @@
         load();
       }
     },true);
-
+    vm.ck=function(item){
+      $scope.year=item;
+    }
+    vm.ck_quart=function(item){
+      $scope.quart=item.id;
+    }
     function load(){
       remote.Assessment.GetAsssmentReportLst({
         Curpage:$scope.pageing.page-1,
@@ -70,10 +88,20 @@
         if (r&& r.data){
           vm.source= r.data.Data;
         }
+        $rootScope.pgReportFilter_load={
+          year:$scope.year,
+          quart:$scope.quart
+        }
       }).catch(function(){
       });
     }
 
+    vm.filter=function(){
+      $state.go("app.pcReport_pg_default",{
+        year:$scope.year,
+        quart:$scope.quart
+      });
+    }
     vm.pageAction=function(title, page, pageSize, total){
       $scope.pageing.page=page;
       load();

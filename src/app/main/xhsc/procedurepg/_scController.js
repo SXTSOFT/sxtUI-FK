@@ -11,7 +11,7 @@
     .module('app.xhsc')
     .controller('_scController',_scController)
   /** @ngInject */
-  function _scController($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,scPack,sxt,$timeout,$state,remote,api) {
+  function _scController($scope,$rootScope,xhUtils,$stateParams,utils,$mdDialog,db,scPack,sxt,$timeout,$state,remote,api,$q) {
     var vm = this;
     var  pack=scPack;
     vm.info = {
@@ -30,7 +30,14 @@
     api.setNetwork(1).then(function(){
       $rootScope.title =vm.info.name;
       var packdb = db('pack'+vm.info.db);
-      packdb.get('GetMeasureItemInfoByAreaID').then (function (r) {
+      var arr=[
+        packdb.get('GetMeasureItemInfoByAreaID')
+      ]
+
+      $q.all(arr).then(function(res){
+        var  r=res[0];
+        //var  n=res[1];
+
         var find = r.data.find(function (it) {
           return it.AcceptanceItemID == vm.info.acceptanceItemID;
         });
@@ -51,10 +58,10 @@
         $timeout(function () {
           vm.scChoose();
         },500);
-
-      },function(err){
-
+      }).catch(function(err){
+          console.log(err);
       });
+
       vm.scChoose = function($event){
         $mdDialog.show({
             controller: ['$scope','$mdDialog',function($scope, $mdDialog) {

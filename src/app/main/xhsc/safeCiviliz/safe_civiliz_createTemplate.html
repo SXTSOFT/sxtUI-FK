@@ -1,0 +1,35 @@
+<md-dialog aria-label="新建"  style="min-height: 250px;width: 80%;max-width: 450px" ng-cloak>
+  <md-dialog-content layout="column"  style="margin:15px 8px 8px 0px ">
+    <form name="myForm" flex layout="column">
+      <md-input-container >
+        <label>主题</label>
+        <input ng-model="subject" required  name="subject">
+        <div ng-messages="myForm.subject.$error">
+          <div  ng-message-exp="['required']">主题不能为空</div>
+        </div>
+      </md-input-container>
+      <md-input-container>
+        <label>项目</label>
+        <md-select ng-model="currentProject" required name="currentProject"  ng-model-options="{trackBy: '$value.RegionID'}">
+          <md-option  ng-value="item" ng-repeat="item in projects">{{item.RegionName}}</md-option>
+        </md-select>
+        <div ng-messages="myForm.currentProject.$error">
+          <div ng-message="required">项目不能为空</div>
+        </div>
+      </md-input-container>
+      <md-input-container>
+        <label>分期</label>
+        <md-select ng-model="currentArea" required name="currentArea"  ng-model-options="{trackBy: '$value.RegionID'}">
+          <md-option  ng-value="item" ng-repeat="item in currentProject.Children">{{item.RegionName}}</md-option>
+        </md-select>
+        <div ng-messages="myForm.currentArea.$error">
+          <div ng-message="required">分期不能为空</div>
+        </div>
+      </md-input-container>
+      <div layout="row">
+        <md-button flex ng-click="cancel()">取消</md-button>
+        <md-button type="submit" flex ng-disabled="myForm.$invalid"  ng-click="ok(myForm)">确定</md-button>
+      </div>
+    </form>
+  </md-dialog-content>
+</md-dialog>,

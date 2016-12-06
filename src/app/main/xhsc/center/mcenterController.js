@@ -18,18 +18,6 @@
       remote.message.messageList(0, 0).then(function (result) {
 
         vm.messages = [];
-
-        //for (var item = 0; item < result.data.count; item++) {
-        //  vm.messages.push({
-        //    id:sxt.uuid(),
-        //    name:'系统',
-        //    time:item.SendTime,
-        //    title:item.Title,
-        //    description:item.Content
-        //  });
-        //}
-
-
         result.data.Items.forEach(function (item) {
           vm.messages.push({
             id: sxt.uuid(),
@@ -40,16 +28,8 @@
           });
 
         })
-
-        //for (var i = 0; i < vm.messages.count; i++) {
-        //  vm.messages.push(i);
-        //}
-
-
-
       })
     }
-
     reloadMessage();
     var onMessage = $rootScope.$on('receiveMessage',function(){
       reloadMessage();
@@ -59,9 +39,6 @@
       onMessage();
     })
 
-
-
-    console.log(vm.messages)
 
     vm.messages&&vm.messages.forEach(function(t){
       t.checked = false;
@@ -84,19 +61,16 @@
     function operateMsg(ev){
 
       utils.confirm('确认全部删除?',ev,'','').then(function(){
-        remote.message.deleteAllMessage().then(function () {
-
-          utils.alert('删除成功!');
-          reloadMessage();
-
+       remote.message.deleteAllMessage().then(function () {
+          vm.messages = [];
         })
-
       })
-
-
-      }
-    $rootScope.$on('operateMsg',operateMsg);
-
-
+    }
+    var event=   $rootScope.$on('operateMsg',operateMsg);
+    $scope.$on("$destroy",function(){
+      //$mdDialog
+      event();
+      event=null;
+    });
   }
 })();

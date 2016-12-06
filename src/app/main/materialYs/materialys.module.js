@@ -104,5 +104,11 @@
         url:'/materialPlanProgress/{id}',
         template: '<material-plan-progress flex layout="column"></material-plan-progress>'
       })
+      .state('app.xhsc.materialys.materialdownload',{
+        noBack:true,
+        title:'材料验收',
+        url:'/materialYsDownload',
+        template: '<material-ys-download flex layout="column"></material-ys-download>'
+      })
   }
 })(angular,undefined);

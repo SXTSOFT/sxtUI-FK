@@ -26,7 +26,12 @@ li{
 .selector {
   border-top: 1px solid #dedede;
   background: #FFF;
-  margin-bottom: 10px
+  margin-bottom: 10px;
+  .md-button{
+    font-size:13px;
+    padding:0;
+    margin:5px;
+  }
 }
 
 .selector .s-brand, .selector .s-line {
@@ -446,8 +451,8 @@ li{
 
 .selector .sl-b-letter li {
   float: left;
-  height: 32px;
-  line-height: 32px;
+  height: 24px;
+  line-height: 24px;
   border: 1px solid #FFF;
   padding: 0 6px;
   cursor: default;

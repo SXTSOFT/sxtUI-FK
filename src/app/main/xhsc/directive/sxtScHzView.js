@@ -9,7 +9,7 @@
     .directive('sxtScHzView', sxtScHzView);
 
   /** @Inject */
-  function sxtScHzView($timeout,$window,remote){
+  function sxtScHzView($timeout,$window,remote,utils ){
     return {
       scope:{
         data:'=',
@@ -27,7 +27,7 @@
           map = new L.SXT.Project(element[0]);
         }
         $timeout(function(){
-        remote.Project.getDrawingRelations(scope.regionId.substring(0,5)).then(function (result) {
+        remote.Project.getDrawingRelations(scope.regionId,"nodb").then(function (result) {
           var imgId = result.data.find(function (item) {
             return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
           });
@@ -70,25 +70,6 @@
       }, 0);
 
 
-        if(scope.data.Region.DrawingContent) {
-          $timeout(function () {
-            map.loadSvgXml(scope.data.Region.DrawingContent, {
-              filterLine: function (line) {
-                line.attrs.stroke = 'black';
-                line.options = line.options || {};
-                //line.options.color = 'black';
-
-                line.attrs['stroke-width'] = line.attrs['stroke-width'] * 6;
-              },
-              filterText: function (text) {
-                //return false;
-              }
-            });
-            map.center();
-          }, 0)
-        }
-
-
         fg = new L.SvFeatureGroup({
           onLoad:function(){
             var layer = this;
@@ -103,10 +84,10 @@
                 if(!v.ExtendedField1 && v.DesignValue){
                   v.ExtendedField1 = v.MeasureValue+','+v.DesignValue;
                 }
-
+                v.MeasureValue=!v.MeasureValue?"0":v.MeasureValue;
                 geo.options.MeasureValue = v.MeasureValue;
                 geo.options.ExtendedField1 = v.ExtendedField1;
-                geo.options.seq = v.MeasureValue;
+                geo.options.seq =geo.properties.seq;
                 geo.options.customSeq = true;
                 geo.options.PointChilden=point.PointChilden;
                 switch(v.MeasureStatus) {
@@ -117,15 +98,15 @@
                     geo.options.color = '#eb7400';
                     break;
                 }
-                layer.addData(geo);
               }
+              layer.addData(geo);
             });
 
             layer.eachLayer(function (layer) {
               if(layer.options.MeasureValue || layer.options.MeasureValue===0) {
                 //layer.updateValue({seq: ''+layer.options.MeasureValue});
                 layer.on('mouseover',function (e) {
-                  var  PointChilden=layer.options.PointChilden;
+                  var  PointChilden=e.target.options.PointChilden;
                   var zb='',jl="",xmb='',t;
                   if (angular.isArray(PointChilden)){
                     t=PointChilden.find(function(o){
@@ -136,10 +117,16 @@
                     }
 
                     t=PointChilden.find(function(o){
-                      return o.MemberType==1;
+                      return o.MemberType==2;
                     });
                     if (t){
                       jl= t.Value;
+                    }
+                    t=PointChilden.find(function(o){
+                      return o.MemberType==4;
+                    });
+                    if (t){
+                      xmb= t.Value;
                     }
 
                   }
@@ -152,7 +139,9 @@
                     if (jl){
                       popArr.push( '<div class="row" style="margin-bottom: 10px;"><label style="display: block;width:50px;float: left;">监理：</label><p style="margin:0;margin-left: 50px;">'+(jl)+'</p></div>')
                     }
-
+                    if (xmb){
+                      popArr.push( '<div class="row" style="margin-bottom: 10px;"><label style="display: block;width:50px;float: left;">项目部：</label><p style="margin:0;margin-left: 50px;">'+(xmb)+'</p></div>')
+                    }
 
                     popArr.push('</div>')
                     layer.popup = L.popup({

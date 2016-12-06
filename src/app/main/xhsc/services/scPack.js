@@ -44,6 +44,7 @@
         up:function (id) {
           return remotePack.pack({
             _id:id,
+            max:200,
             db:{
               sc: {
                 url:sxt.app.api+'/Api/MeasureValueApi/CreateMeasureValue',
@@ -53,6 +54,10 @@
                 url:sxt.app.api+'/Api/MeasurePointApi/CreatePoint',
                 type: 'data'
               },
+              // scStandar:{
+              //   url:sxt.app.api+'/api/MeasureStandardApi/Insert',
+              //   type: 'data'
+              // },
               indexs:{
                 url:sxt.app.api+'/Api/MeasureValueApi/MeasureIndexSubmit',
                 type:'data'
@@ -99,6 +104,7 @@
                           p.destroyDb('Pack'+id+'stzl_images', function () {
                             fn(9);
                             cb();
+
                           });
                         });
                       })
@@ -108,6 +114,44 @@
               })
             })
           })
+        },
+        removeSc:function (id,cb,progress){
+          localPack.unPack(id);
+          remotePack.unPack(id);
+          var totalStep = 9,
+            fn = function (step) {
+              progress && progress(parseInt(step/totalStep*100));
+            };
+          fn(0);
+          p.destroyDb('Pack'+id+'sc',function () {
+            fn(1);
+            p.destroyDb('Pack'+id+'point',function () {
+              fn(2);
+              p.destroyDb('Pack'+id+'indexs',function () {
+                fn(3);
+                p.destroyDb('Pack'+id+'pics',function () {
+                  fn(4);
+                  p.destroyDir(id, function () {
+                    fn(5);
+                    p.destroyDb('Pack'+id+'stzl_item',function () {
+                      fn(6);
+                      p.destroyDb('Pack'+id+'stzl_question',function () {
+                        fn(7);
+                        p.destroyDb('Pack'+id+'stzl_images', function () {
+                          fn(8)
+                          p.destroyDb("Pack"+id+"scStandar",function(){
+                            fn(9)
+                            cb();
+                          })
+                        });
+                      });
+                    })
+                  });
+                });
+              })
+            })
+          })
+
         }
 
       },

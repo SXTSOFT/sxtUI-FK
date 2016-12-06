@@ -2,7 +2,8 @@
   "name": "sxtUI-FK",
   "version": "1.2.1",
   "dependencies": {
-    "bower": "^1.7.2"
+    "bower": "^1.7.2",
+    "gulp": "^3.9.1"
   },
   "scripts": {
     "test": "gulp test"

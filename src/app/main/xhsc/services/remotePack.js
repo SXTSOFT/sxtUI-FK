@@ -129,7 +129,7 @@
     var o = {
       packages:{},
       pack:function (config) {
-        var pack = o.packages[config._id] = o.packages[config._id]||new Pack(config);
+        var pack = o.packages[config._id] = new Pack(config);
         return pack;
       },
       unPack:function (id) {

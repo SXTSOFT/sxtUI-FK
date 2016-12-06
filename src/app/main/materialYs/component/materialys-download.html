@@ -1,10 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-  test
-</body>
-</html>
+<div flex ng-if="vm.material" layout="column" class="download">
+  <div style="background-color: #F5F5F5;" layout="row" ng-if="vm.offlines.length">
+    <span style="display: inline-block; font-size: 12px; color: #757575; padding: 16px 32px;" flex="80">已下载列表</span>
+    <md-button ng-click="vm.upload()" style="color: black;margin-right: 0;font-size: 14px;" flex="20">上传</md-button>
+  </div>
+  <span class="border1px"></span>
+  <md-list style="overflow-x: hidden; padding: 0;">
+    <md-list-item layout="row" ng-repeat="item in vm.offlines" ui-sref="app.xhsc.materialys.planList({id:item.SectionID,title:item.FullName})">
+      <p style="font-size:14px; padding-left: 3%">
+        <span>{{item.FullName}}</span>
+      </p>
+      <span flex></span>
+      <span class="border1px bottom1px"></span>
+    </md-list-item>
+  </md-list>
+  <md-subheader ng-if="vm.section.length">未下载列表</md-subheader>
+  <span class="border1px"></span>
+  <md-list style="overflow-x: hidden; padding: 0;">
+    <md-list-item layout="row" ng-repeat="item in vm.section">
+      <p style="font-size:14px; padding-left: 5%">
+        <span>{{item.FullName}}</span>
+      </p>
+      <span flex></span>
+      <md-button ng-click="vm.downloadPlan(item,$event)" style="margin: 6px 0px" >
+        <i class="icon icon-download s30"></i>
+      </md-button>
+      <span class="border1px bottom1px"></span>
+    </md-list-item>
+  </md-list>
+</div>
+
+
+
+

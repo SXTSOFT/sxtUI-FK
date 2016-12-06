@@ -220,11 +220,11 @@
       return show.indexOf(status)>-1;
     }
 
-    vm.go=function(item){
-      if (item.InspectionId){
-        $state.go('app.xhsc.gx.gxzgreport',{InspectionId:item.InspectionId,
-          acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,projectId:projectId});
-      }
-    }
+    //vm.go=function(item){
+    //  if (item.InspectionId){
+    //    $state.go('app.xhsc.gx.gxzgreport',{InspectionId:item.InspectionId,
+    //      acceptanceItemID:acceptanceItemID,acceptanceItemName:acceptanceItemName,projectId:projectId});
+    //  }
+    //}
   }
 })();

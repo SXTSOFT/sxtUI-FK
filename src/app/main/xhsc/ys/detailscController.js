@@ -9,7 +9,7 @@
     .controller('detailscController',detailscController);
 
   /** @ngInject*/
-  function detailscController($stateParams,remote,$rootScope){
+  function detailscController($stateParams,remote,$rootScope,$state){
     var vm = this;
     var iMax = 20;
     vm.info={
@@ -18,14 +18,14 @@
     };
     $rootScope.title = vm.info.name+'('+vm.info.pname+')';
     vm.back = function () {
-      history.back();
+      history.go(-1);
     }
     remote.Assessment.getMeasureNew({
       RegionID:$stateParams.regionId,
       AcceptanceItemID:$stateParams.measureItemID,
       RecordType:4,
       RelationID:$stateParams.db
-    }).then(function (result){
+    },"nodb").then(function (result){
       var newD = [];
       result.data.forEach(function (item) {
         if(!item.MeasureValueList.length){
@@ -148,8 +148,13 @@
 
       });
 
+      vm.stateParams=$stateParams;
+      vm.go=function(row,item){
+        $state.go("app.pc.sctbdetail",{recordId:$stateParams.regionId,itemId:item.AcceptanceIndexID,
+          AcceptanceItemID:$stateParams.measureItemID,MeasureRecordID:item.MeasureRecordID});
+        //ui-sref="()"
+      }
       vm.scData = newD;
-      console.log(vm.scData)
     });
   }
 })();

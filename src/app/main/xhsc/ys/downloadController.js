@@ -24,12 +24,13 @@
         queryOnline();
       });
 
-      function projectTask(projectId,assessmentID) {
+      function projectTask(region,assessmentID) {
+        var projectId=region.substr(0,5);
         return [
           function (tasks) {
             return $q(function(resolve,reject) {
               var arr=[
-                remote.Project.getDrawingRelations(projectId),
+                remote.Project.getDrawingRelations(region),
                 dbpics.findAll(),
                 remote.Assessment.getCheckArea(assessmentID)
               ];
@@ -46,6 +47,14 @@
                       pics.push(item.DrawingID);
                     }
                   });
+                  chooseArea.forEach(function (k) {
+                    if (k.DrawingID&&pics.indexOf(k.DrawingID) == -1&&!offPics.find(function(r){
+                        return r._id==k.DrawingID;
+                      })){
+                      pics.push(k.DrawingID);
+                    }
+                  });
+
                   pics.forEach(function (drawingID) {
                     tasks.push(function () {
                       return remote.Project.getDrawing(drawingID).then(function(){
@@ -111,7 +120,7 @@
             tasks.push(function () {
               return remote.Assessment.GetRegionTreeInfo(item.ProjectID,"pack"+item.AssessmentID);
             });
-            tasks = tasks.concat(projectTask(item.ProjectID,item.AssessmentID));
+            tasks = tasks.concat(projectTask(item.AreaID,item.AssessmentID));
             item.percent = item.current =0; item.total = tasks.length;
             api.task(tasks,{
               event:'downloadxc',
@@ -231,11 +240,30 @@
 
         });
       }
+      vm.searchText="";
+      vm.querySearch=function(text){
+        return vm.cache.filter(function (o) {
+          var py=window.Pinyin.getPinyinArrayFirst(o.fullName)
+          py=py.join("");
+          return o.fullName.indexOf(text)>-1||py.toLowerCase().indexOf(text.toLowerCase())>-1;
+        })
+      }
+      vm.changeItem=function (r) {
+        if (!r){
+          vm.projects=vm.cache;
+        }else {
+          vm.projects=vm.cache.filter(function (o) {
+            return o.ProjectID==r.ProjectID;
+          });
+        }
+      }
+
+
       remote.Assessment.queryItemResults().then(function(result){
         result.data.forEach(function(t){
           t.fullName = ((t.Year+'年')||'') +'第'+t.Quarter +'季度'+ (t.ProjectName||'')+'项目得分汇总';
         })
-        vm.projects = result.data;
+        vm.projects=vm.cache = result.data;
       })
       vm.showECs = function(ev,item) {
         $mdDialog.show({

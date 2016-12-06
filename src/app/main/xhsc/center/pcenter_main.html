@@ -1,0 +1,66 @@
+<!--<md-progress-circular id="toolbar-progress" ng-if="!vm.show" class="md-accent"-->
+                      <!--md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">-->
+<!--</md-progress-circular>-->
+<div  class="person_center">
+  <md-list>
+    <md-list-item>
+      <div layout="row" ui-sref="app.xhsc.person" flex class="wrap">
+        <md-icon md-svg-icon="app/main/xhsc/images/personal_data.svg"></md-icon>
+        <span>个人资料</span>
+        <span flex></span>
+        <md-icon md-svg-icon="app/main/xhsc/images/come_in.svg"></md-icon>
+        <span class="border1px bottom1px"></span>
+      </div>
+    </md-list-item>
+    <md-list-item>
+      <div layout="row" ui-sref="app.xhsc.message" flex class="wrap">
+        <md-icon md-svg-icon="app/main/xhsc/images/message_center.svg"></md-icon>
+        <span>消息中心</span>
+        <span flex></span>
+        <md-icon md-svg-icon="app/main/xhsc/images/come_in.svg"></md-icon>
+        <span class="border1px bottom1px"></span>
+      </div>
+    </md-list-item>
+
+    <!--<md-list-item ng-if="vm.role==4||vm.OUType==1">-->
+    <!--<div layout="row"  ng-click="vm.scStandar()"  flex class="wrap">-->
+    <!--<md-icon md-svg-icon="app/main/xhsc/images/current_vision.svg"></md-icon>-->
+    <!--<span>实测标准化</span>-->
+    <!--<span flex></span>-->
+    <!--<md-icon md-svg-icon="app/main/xhsc/images/come_in.svg"></md-icon>-->
+    <!--<span class="border1px bottom1px"></span>-->
+    <!--</div>-->
+    <!--</md-list-item>-->
+
+    <md-list-item>
+      <div layout="row" ng-click="vm.scStandar()" flex class="wrap">
+        <md-icon md-svg-icon="app/main/xhsc/images/current_vision.svg"></md-icon>
+        <span>实测标准化</span>
+        <span flex></span>
+        <md-icon md-svg-icon="app/main/xhsc/images/come_in.svg"></md-icon>
+        <span class="border1px bottom1px"></span>
+      </div>
+    </md-list-item>
+
+    <md-list-item>
+      <div layout="row" flex class="wrap">
+        <md-icon md-svg-icon="app/main/xhsc/images/current_vision.svg"></md-icon>
+        <span>当前版本</span>
+        <span flex></span>
+        <span style="color: #888">{{ vm.serverAppVersion}}</span>
+        <span class="border1px bottom1px"></span>
+      </div>
+    </md-list-item>
+    <md-list-item>
+      <div layout="row" flex ng-click="vm.logout()" class="wrap">
+        <md-icon md-svg-icon="app/main/xhsc/images/clear_cache.svg"></md-icon>
+        <span>清除缓存</span>
+        <span flex></span>
+        <md-icon md-svg-icon="app/main/xhsc/images/come_in.svg"></md-icon>
+      </div>
+    </md-list-item>
+  </md-list>
+  <div class="logout" layout="row" class="logout" ng-click="vm.logout()">
+    <md-button flex>退出登录</md-button>
+  </div>
+</div>

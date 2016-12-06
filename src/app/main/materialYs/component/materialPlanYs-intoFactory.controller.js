@@ -50,7 +50,7 @@
 
           _subCount = q.data.PlanCount - _subCount;
           vm.data.ApproachCount = _subCount > 0 ? _subCount : 0;
-        }else {
+        } else {
           vm.data.ApproachCount = parseFloat(q.data.PlanCount);
           vm.CountDisabled = vm.data.ApproachType == 0 ? true : false;
         }

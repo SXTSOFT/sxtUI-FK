@@ -7,25 +7,30 @@
         .controller('ToolbarController', ToolbarController);
 
     /** @ngInject */
-    function ToolbarController($rootScope, $mdSidenav, $translate, $mdToast, auth, $state,remote)
+    function ToolbarController($rootScope, xhscService,$mdSidenav, $translate, $mdToast, auth, $state)
     {
         var vm = this;
         vm.is = isRoute;
       $rootScope.toggle = false;
       vm.role='';
       vm.OUType='';
-      remote.profile().then(function(r){
-           if (r.data&& r.data.Role){
-             vm.user=r.data;
-             vm.role= r.data.Role.MemberType===0||r.data.Role.MemberType?r.data.Role.MemberType:-100;
-             vm.OUType=r.data.Role.OUType===0||r.data.Role.OUType?r.data.Role.OUType:-100;
-           }
-        });
+      xhscService.getProfile().then(function(profile){
+        vm.role=profile.role;
+        vm.OUType=profile.ouType;
+        vm.user=profile.user;
+      });
 
-        auth.getUser().then(function(user){
-          console.log('user',user)
-          vm.user = user;
-        });
+      // remote.profile().then(function(r){
+      //      if (r.data&& r.data.Role){
+      //        vm.user=r.data;
+      //        vm.role= r.data.Role.MemberType===0||r.data.Role.MemberType?r.data.Role.MemberType:-100;
+      //        vm.OUType=r.data.Role.OUType===0||r.data.Role.OUType?r.data.Role.OUType:-100;
+      //      }
+      //   });
+
+        // auth.getUser().then(function(user){
+        //   vm.user = user;
+        // });
         $rootScope.$on('user:logout',function(user){
           vm.user = null;
         });
@@ -111,6 +116,15 @@
         function isRoute(route){
            return $state.includes(route);
         }
+
+        vm.active_selected=function(route){
+          vm.current_active=route;
+        }
+        vm.current_active="app.xhsc.home";
+
+
+
+
 
         /**
          * Toggle sidenav

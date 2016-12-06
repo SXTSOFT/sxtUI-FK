@@ -8,7 +8,7 @@
         <h2 class="md-title" style="color:#e93030;font-size:16px;margin:16px;">抽检区域</h2>
       </div>
       <md-list>
-        <md-list-item ng-repeat="b in vm.ms">
+        <md-list-item style="width: 50%" ng-repeat="b in vm.ms">
           <md-button ui-sref="app.xhsc.evaluatelist({AssessmentID:b.AssessmentID,RegionID:b.RegionID,RegionName:b.RegionName,AssessmentTypeID:b.AssessmentTypeID})">
             <p>{{b.fullName}}</p>
           </md-button>
