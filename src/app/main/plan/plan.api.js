@@ -132,6 +132,9 @@
         },
         getGantt:function(query){
           return $http.get($http.url('/api/BuildingPlans/'+query.Source+'/Tasks',query))
+        },
+        endTask:function(id,query){
+          return $http.post($http.url('/api/BuildingPlans/'+id+'/Tasks/'+query.TaskId+'/End'),query)
         }
       },
       MileStone:{

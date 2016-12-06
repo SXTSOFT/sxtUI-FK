@@ -17,7 +17,7 @@
     var vm = this;
     vm.data = {};
     vm.data.Id = $stateParams.id;
-    vm.outPutDate = new Date().Format('yyyy-MM-dd hh:mm:ss');
+    vm.outPutDate = new Date();
     vm.data.ReportTime = $filter('date')(new Date(),'yyyy-MM-dd hh:mm:ss');
     vm.data.LabCheck = true;
     vm.reportImgs = [];

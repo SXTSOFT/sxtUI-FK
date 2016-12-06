@@ -18,7 +18,7 @@
     var user = auth.current();
     vm.data = {};
     vm.data.Id = $stateParams.id;
-    vm.outPutDate = new Date().Format('yyyy-MM-dd hh:mm:ss');
+    vm.outPutDate = new Date();
     vm.data.InspectionTime = $filter('date')(new Date(),'yyyy-MM-dd hh:mm:ss');
     vm.samplingProcessImgs = [];
     vm.checkListImgs = [];
@@ -51,7 +51,7 @@
       api.xhsc.materialPlan.MaterialInspection(vm.data).then(function (q) {
         utils.alert("提交成功", null, function () {
           api.xhsc.materialPlan.deleteMaterialPlanBatch(vm.data.Id);
-          $state.go("app.xhsc.gx.gxmain");
+          $state.go("app.xhsc.materialys.materialdownload");
         });
       });
     });

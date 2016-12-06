@@ -491,6 +491,14 @@
                     })
                   });
                 }
+                r.data.Items.forEach(function(r){
+                  var newItem = !vm.nextUserGroups.find(function(_r){
+                    return _r.GroupID == r.GroupID;
+                  })
+                  if(newItem){
+                    r.selected = true;
+                  }
+                })
                 vm.nextUserGroups = r.data.Items;
               });
             })

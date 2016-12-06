@@ -34,7 +34,7 @@
       //拍照事件
       xhUtils.photo().then(function (image) {
         if(image){
-      //var image;
+      // var image;
           switch (type){
             case 1:
               photo(type,vm.vehicleImgs,image);
@@ -69,7 +69,7 @@
 
 
     vm.data.Id = $stateParams.id;
-    vm.outPutDate = new Date().Format('yyyy-MM-dd hh:mm:ss');
+    vm.outPutDate = new Date();
     vm.data.AcceptanceTime = $filter('date')(new Date(),'yyyy-MM-dd hh:mm:ss');
 
     vm.data.WgCheck = true;

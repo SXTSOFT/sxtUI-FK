@@ -17,22 +17,22 @@
     var vm = this;
     var objectModel;
     vm.isStarted = true;
-    vm.startPlan = function () {
-      var s = vm.data[1].tasks[0];
-      api.plan.Task.start(s.id,true).then(function () {
-        s.from = new Date();
-        vm.isStarted = true;
-        utils.alert('计划已经开启');
-      });
-    }
-    vm.timespans = [
-      {
-        from: new Date(2013, 9, 21, 8, 0, 0),
-        to: new Date(2013, 9, 25, 15, 0, 0),
-        name: 'Sprint 1 Timespan'
-      }
-    ];
-
+    //vm.startPlan = function () {
+    //  var s = vm.data[1].tasks[0];
+    //  api.plan.Task.start(s.id,true).then(function () {
+    //    s.from = new Date();
+    //    vm.isStarted = true;
+    //    utils.alert('计划已经开启');
+    //  });
+    //}
+    //vm.timespans = [
+    //  {
+    //    from: new Date(2013, 9, 21, 8, 0, 0),
+    //    to: new Date(2013, 9, 25, 15, 0, 0),
+    //    name: 'Sprint 1 Timespan'
+    //  }
+    //];
+    /*loading界面*/
     $mdDialog.show({
       controller:['$scope',function($scope){
         $scope.hide = function(){
@@ -47,11 +47,12 @@
       focusOnOpen: true
     })
 
-    $scope.$watch('vm.gantt',function(){
-      $mdDialog.hide();
-    })
+    //$scope.$watch('vm.gantt',function(){
+    //  $mdDialog.hide();
+    //})
     // Data
     vm.live = {};
+    /*gantt配置*/
     vm.options = {
       mode                    : 'custom',
       scale                   : 'year',
@@ -178,10 +179,12 @@
         vm.api.core.on.ready($scope, function ()
         {
           vm.load().then(function(){
-            vm.gantt = true;
+            $timeout(function(){
+              $mdDialog.hide();
+            })
           });
           objectModel = new GanttObjectModel(vm.api);
-          vm.api.side.setWidth(400);
+          vm.api.side.setWidth(450);
         });
         ganttApi.tasks.on.change($scope,function(task){
 
@@ -266,7 +269,7 @@
     function calculateHeight()
     {
       //vm.options.maxHeight = $document.find('#chart-container')[0].offsetHeight;
-      var h = $(window).height()-130;
+      var h = $(window).height()-115;
       vm.options.maxHeight = h;
 
     }
@@ -531,6 +534,7 @@
       //vm.hasFlow = !!originData.Items.find(function (it) {
       //  return it.ExtendedParameters == taskId;
       //});
+      /*开启穿插*/
       vm.startTask = function(task){
         var time = new Date();
         api.plan.BuildPlan.startInsert($stateParams.id,task.TaskFlowId,time).then(function(r){
@@ -553,6 +557,7 @@
           loadSubTask();
         });
       }
+      /*关闭任务*/
       vm.closeTask = function(task){
         var parent = vm;
         var position = $mdPanel.newPanelPosition()
@@ -563,30 +568,41 @@
           controller: function (mdPanelRef,$scope,utils) {
             var vm = this;
             vm.endTask = function(){
-              var time = new Date();
+              var time = new Date(),
+                params ={
+                "TaskId": task.TaskFlowId,
+                "ActualEndTime": new Date(),
+                "EndDescription": vm.EndDescription,
+                "Force": true
+              };
               vm.closePanel1();
-              api.plan.Task.end(task.TaskFlowId,true,time,vm.EndDescription).then(function (r) {
+              api.plan.BuildPlan.endTask($stateParams.id,params).then(function (r) {
                 //task.IsAbleStart = r.IsAbleStart;
                 //task.IsInterlude = r.IsInterlude;
                 //task.ManuallyClose = r.ManuallyClose;
-                //loadSubTask();
-                r.data.forEach(function(_r){
-                  var f=parent.flows.find(function(t){
-                    return t.TaskFlowId == _r.Id;
+                if(r.data.length){
+                  r.data.forEach(function(_r){
+                    var f=parent.flows.find(function(t){
+                      return t.TaskFlowId == _r.Id;
+                    })
+                    if(f){
+                      f.ActualStartTime = _r.ActualStartTime;
+                      f.ActualEndTime = _r.ActualEndTime;
+                      f._State=setSatus(_r.State);
+                      f.Color=setColor(_r.State);
+                      f.State = _r.State;
+                      f.IsAbleStart = _r.IsAbleStart;
+                      f.IsInterlude = _r.IsInterlude;
+                      f.ManuallyClose = _r.ManuallyClose;
+                      f.RealScheduledStartTime = _r.RealScheduledStartTime;
+                      f.RealScheduledEndTime = _r.RealScheduledEndTime;
+                    }
                   })
-                  if(f){
-                    f.ActualStartTime = _r.ActualStartTime;
-                    f.ActualEndTime = _r.ActualEndTime;
-                    f._State=setSatus(_r.State);
-                    f.Color=setColor(_r.State);
-                    f.State = _r.State;
-                    f.IsAbleStart = _r.IsAbleStart;
-                    f.IsInterlude = _r.IsInterlude;
-                    f.ManuallyClose = _r.ManuallyClose;
-                    f.RealScheduledStartTime = _r.RealScheduledStartTime;
-                    f.RealScheduledEndTime = _r.RealScheduledEndTime;
-                  }
-                })
+                }else{
+                  loadSubTask();
+                }
+
+
               });
             }
             vm.closePanel1 = function() {
@@ -613,29 +629,12 @@
           attachTo:angular.element('body')
         });
       }
-      vm.endTask = function(){
-        var time = new Date();
-        api.plan.Task.end(vm.currentTask.TaskFlowId,true,time,vm.EndDescription).then(function (r) {
-          //vm.currentTask.ActualEndTime = time;
-          //vm.currentTask.openFlag = true;
-          //vm.currentTask.closeF = true;
-          //vm.currentTask._State='完成';
-          //loadSubTask();
-          //r.data.forEach(function(_r){
-          //  var f=vm.flows.find(function(t){
-          //    return t.TaskFlowId == _r.Id;
-          //  })
-          //  if(f){
-          //    f.ActualStartTime = _r.ActualStartTime;
-          //    f.ActualEndTime = _r.ActualEndTime;
-          //    f._State=setSatus(_r.State);
-          //    f.Color=setColor(_r.State);
-          //    f.State = _r.State;
-          //  }
-          //})
-          loadSubTask();
-        });
-      }
+      //vm.endTask = function(){
+      //  var time = new Date();
+      //  api.plan.Task.end(vm.currentTask.TaskFlowId,true,time,vm.EndDescription).then(function (r) {
+      //    loadSubTask();
+      //  });
+      //}
       function stopTask(task,changeds) {
         changeds.push({task:task,stop:true});
         //找到依赖他执行的任务

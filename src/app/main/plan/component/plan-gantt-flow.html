@@ -12,7 +12,7 @@
 <md-content layout="column" flex ms-scroll>
     <div layout="row">
       <div flex="80">
-        <table class="simple">
+        <table class="simple p6">
           <thead>
           <tr><th style="width: 25px;min-width: 25px"></th>
             <th>流程</th>
@@ -35,9 +35,8 @@
             <td style="color:#1f6db4">{{flow.ActualStartTime|date:'yyyy-MM-dd'}}~<br/>{{flow.ActualEndTime|date:'yyyy-MM-dd'}}</td>
             <td>{{flow._State}}</td>
             <td style="color:#f00">
-              <!--<md-button class="md-icon-button" style="min-height:24px;line-height: 24px;height:24px;padding:0;" ng-click="vm.openTask(flow)" ng-if="flow.State==1">开启</md-button>-->
-              <md-button class="md-icon-button" style="min-height:24px;line-height: 24px;height:24px;padding:0;" ng-click="vm.startTask(flow)" ng-if="flow.IsAbleStart&&(flow.IsInterlude)">开启穿插</md-button>
-              <md-button class="md-icon-button" style="min-height:24px;line-height: 24px;height:24px;padding:0;" ng-click="vm.closeTask(flow)" ng-if="flow.IsAbleStart&&!flow.IsInterlude&&flow.ManuallyClose"  ng-disabled="flow.ManuallyClose&&!flow.IsAbleStart">完成</md-button>
+              <md-button style="min-height:24px;line-height: 24px;height:24px;padding:0;min-width: 40px;" ng-click="vm.startTask(flow)" ng-if="flow.IsAbleStart&&(flow.IsInterlude)">开启穿插</md-button>
+              <md-button style="min-height:24px;line-height: 24px;height:24px;padding:0;;min-width: 40px;" ng-click="vm.closeTask(flow)" ng-if="flow.IsAbleStart&&!flow.IsInterlude&&flow.ManuallyClose"  ng-disabled="flow.ManuallyClose&&!flow.IsAbleStart">完成</md-button>
             </td>
           </tr>
           <tr>
