@@ -122,7 +122,7 @@
           return $http.get('/api/BuildingPlans/GroupStatisticsReport');
         },
         personPlans:function(){
-          return $http.get('/api/BuildingPlans/PersonalTasks/')
+          return $http.get('/api/BuildingPlans/PersonalTasks')
         },
         mainProcess:function(id){
           return $http.get('/api/BuildingPlans/'+id+'/MainProgress')
