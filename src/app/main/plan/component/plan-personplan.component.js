@@ -9,7 +9,8 @@
     .component('planPersonplan',{
       templateUrl:'app/main/plan/component/plan-personplan.html',
       controller:personPlanController,
-      controllerAs:'vm'
+      controllerAs:'vm',
+      sendBt: true,
     });
 
   /**@ngInject*/

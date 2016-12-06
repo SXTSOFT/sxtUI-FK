@@ -27,11 +27,11 @@
       url:'/list',
       template:'<earthwork-list flex layout="column"></earthwork-list>'
     });
-    msNavigationServiceProvider.saveItem('earthwork', {
-      title: '土方管理',
-      group: true,
-      weight: 2
-    });
+    // msNavigationServiceProvider.saveItem('earthwork', {
+    //   title: '土方管理',
+    //   group: true,
+    //   weight: 2
+    // });
 
     // msNavigationServiceProvider.saveItem('earthwork.test', {
     //   title: '画图测试',
@@ -41,12 +41,12 @@
     // });
 
 
-    msNavigationServiceProvider.saveItem('earthwork.earthwork', {
-      title: '土方管理',
-      icon: 'icon-sort-variant',
-      state: 'app.earthwork.list',
-      weight: 1
-    });
+    // msNavigationServiceProvider.saveItem('earthwork.earthwork', {
+    //   title: '土方管理',
+    //   icon: 'icon-sort-variant',
+    //   state: 'app.earthwork.list',
+    //   weight: 1
+    // });
 
   }
 })(angular, undefined);

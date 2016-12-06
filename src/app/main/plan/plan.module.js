@@ -109,7 +109,9 @@
       })
       .state('app.plan.personplan',{
         url:'/personplan',
-        template:'<plan-personplan layout="column" flex></plan-personplan>'
+        template:'<plan-personplan layout="column" flex></plan-personplan>',
+        sendBt: false,
+        noBack:true
       })
       .state('app.plan.report',{
         url:'/report',

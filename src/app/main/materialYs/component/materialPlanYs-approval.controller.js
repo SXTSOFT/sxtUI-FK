@@ -105,7 +105,7 @@
         utils.alert('提交成功!',null,function () {
           api.xhsc.materialPlan.deleteMaterialPlanBatch(batch.Id);
           $rootScope.sendBtName = '';
-          $state.go("app.xhsc.gx.gxmain");
+          $state.go("app.xhsc.materialys.materialdownload");
         });
       });
     }
@@ -125,7 +125,7 @@
             utils.alert('提交成功!',null,function () {
               api.xhsc.materialPlan.deleteMaterialPlanBatch(vm.batch.Id);
               $rootScope.sendBtName = '';
-              $state.go("app.xhsc.gx.gxmain");
+              $state.go("app.xhsc.materialys.materialdownload");
             });
           });
         }else{
