@@ -23,18 +23,18 @@
         url:'/list',
         template:'<pile-foundation-list flex layout="column"></pile-foundation-list>'
       });
-    msNavigationServiceProvider.saveItem('pileFoundation', {
-      title: '桩基管理',
-      group: true,
-      weight: 2
-    });
-
-    msNavigationServiceProvider.saveItem('pileFoundation.pileFoundation', {
-      title: '桩基管理',
-      icon: 'icon-sort-variant',
-      state: 'app.pileFoundation.list',
-      weight: 1
-    });
+    // msNavigationServiceProvider.saveItem('pileFoundation', {
+    //   title: '桩基管理',
+    //   group: true,
+    //   weight: 2
+    // });
+    //
+    // msNavigationServiceProvider.saveItem('pileFoundation.pileFoundation', {
+    //   title: '桩基管理',
+    //   icon: 'icon-sort-variant',
+    //   state: 'app.pileFoundation.list',
+    //   weight: 1
+    // });
 
   }
 })(angular, undefined);

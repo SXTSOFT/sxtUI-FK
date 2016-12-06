@@ -673,8 +673,9 @@
             });
             _task(updates).then(function () {
               resolve({data:{ErrorCode:0,args:args}});
-            }).catch(function () {
-              reject();
+            }).catch(function (r) {
+              console.log(r);
+              reject(r);
             });
             // provider.$q.$q.all(updates).then(function () {
             //   resolve({data:{ErrorCode:0,args:args}});
