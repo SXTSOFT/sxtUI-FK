@@ -296,14 +296,18 @@
       return vm.updateFlow(flow);
     }
     vm.updateManuallyClose = function(flow){
-      return api.plan.TaskFlow.getSubTasks(flow.TaskFlowId).then(function (r) {
-        var taskLib = r.data.Items[0];
-        taskLib.Id = taskLib.TaskLibraryId;
-        taskLib._taskFlowId = taskLib.TaskLibraryId;
-        return api.plan.TaskLibrary.update(taskLib).then(function () {
-          return vm.updateFlow(flow);
-        })
-      });
+      //if(flow.oManuallyClose != flow.ManuallyClose){
+        return api.plan.TaskFlow.getSubTasks(flow.TaskFlowId).then(function (r) {
+          var taskLib = r.data.Items[0];
+          taskLib.Id = taskLib.TaskLibraryId;
+          taskLib.ManuallyClose = flow.ManuallyClose;
+          taskLib._taskFlowId = taskLib.TaskLibraryId;
+          return api.plan.TaskLibrary.update(taskLib).then(function () {
+            return vm.updateFlow(flow);
+          })
+        });
+      //}
+
     }
     vm.updateDuration = function (flow) {
       if(flow.oDuration != flow.Duration){
