@@ -64,5 +64,19 @@
       }
       });
     };
+
+    function photo(type, arr, image) {
+      var _id = sxt.uuid();
+      arr.push({
+        Id: sxt.uuid(),
+        BatchId: $stateParams.id,
+        OptionType: type,
+        ApproachStage: 32,
+        ImageName: _id + ".jpeg",
+        ImageUrl: _id + ".jpeg",
+        ImageByte: image
+      });
+    }
+
   }
 })(angular,undefined);
