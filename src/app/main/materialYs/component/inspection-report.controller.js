@@ -17,7 +17,7 @@
     var vm = this;
     vm.data = {};
     vm.data.Id = $stateParams.id;
-    vm.outPutDate = new Date();
+    vm.outPutDate = new Date().Format('yyyy-MM-dd hh:mm:ss');
     vm.data.ReportTime = $filter('date')(new Date(),'yyyy-MM-dd hh:mm:ss');
     vm.data.LabCheck = true;
     vm.reportImgs = [];
@@ -57,7 +57,7 @@
       if(image){
         // var image;
           photo(type,vm.reportImgs,image);
-          vm.data.ReportTime = new Date();
+          vm.data.ReportTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
         }
       });
     };

@@ -60,7 +60,7 @@
       if(image){
         // var image;
           photo(type,vm.exitImgs,image);
-          vm.data.ExitOperatorTime = new Date();
+          vm.data.ExitOperatorTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
       }
       });
     };

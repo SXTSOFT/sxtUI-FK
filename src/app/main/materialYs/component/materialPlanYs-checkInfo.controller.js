@@ -69,7 +69,7 @@
 
 
     vm.data.Id = $stateParams.id;
-    vm.outPutDate = new Date();
+    vm.outPutDate = new Date().Format('yyyy-MM-dd hh:mm:ss');
     vm.data.AcceptanceTime = $filter('date')(new Date(),'yyyy-MM-dd hh:mm:ss');
 
     vm.data.WgCheck = true;
