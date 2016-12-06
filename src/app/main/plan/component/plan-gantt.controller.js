@@ -17,22 +17,22 @@
     var vm = this;
     var objectModel;
     vm.isStarted = true;
-    vm.startPlan = function () {
-      var s = vm.data[1].tasks[0];
-      api.plan.Task.start(s.id,true).then(function () {
-        s.from = new Date();
-        vm.isStarted = true;
-        utils.alert('计划已经开启');
-      });
-    }
-    vm.timespans = [
-      {
-        from: new Date(2013, 9, 21, 8, 0, 0),
-        to: new Date(2013, 9, 25, 15, 0, 0),
-        name: 'Sprint 1 Timespan'
-      }
-    ];
-
+    //vm.startPlan = function () {
+    //  var s = vm.data[1].tasks[0];
+    //  api.plan.Task.start(s.id,true).then(function () {
+    //    s.from = new Date();
+    //    vm.isStarted = true;
+    //    utils.alert('计划已经开启');
+    //  });
+    //}
+    //vm.timespans = [
+    //  {
+    //    from: new Date(2013, 9, 21, 8, 0, 0),
+    //    to: new Date(2013, 9, 25, 15, 0, 0),
+    //    name: 'Sprint 1 Timespan'
+    //  }
+    //];
+    /*loading界面*/
     $mdDialog.show({
       controller:['$scope',function($scope){
         $scope.hide = function(){
@@ -52,6 +52,7 @@
     //})
     // Data
     vm.live = {};
+    /*gantt配置*/
     vm.options = {
       mode                    : 'custom',
       scale                   : 'year',
@@ -178,10 +179,9 @@
         vm.api.core.on.ready($scope, function ()
         {
           vm.load().then(function(){
-           // vm.gantt = true;
             $timeout(function(){
               $mdDialog.hide();
-            },400)
+            })
           });
           objectModel = new GanttObjectModel(vm.api);
           vm.api.side.setWidth(450);
@@ -269,7 +269,7 @@
     function calculateHeight()
     {
       //vm.options.maxHeight = $document.find('#chart-container')[0].offsetHeight;
-      var h = $(window).height()-130;
+      var h = $(window).height()-115;
       vm.options.maxHeight = h;
 
     }
