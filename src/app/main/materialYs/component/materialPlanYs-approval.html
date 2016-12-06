@@ -23,7 +23,7 @@
     </md-list-item>
     <md-list-item>
       <p flex="30">计划进场时间</p>
-      <p>{{vm.data.PlanTime}}</p>
+      <p>{{vm.data.PlanTime | date:'yyyy-MM-dd'}}</p>
     </md-list-item>
     <md-list-item>
       <p flex="30">计划进场数量</p>
@@ -46,7 +46,7 @@
     <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">材料进场信息</div>
     <md-list-item>
       <p flex="30">进场时间</p>
-      <p>{{vm.data.ApproachTime}}</p>
+      <p>{{vm.data.ApproachTime | date:'yyyy-MM-dd hh:mm'}}</p>
     </md-list-item>
     <md-list-item>
       <p flex="30">进场数量</p>
@@ -79,7 +79,7 @@
     <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">监理验收信息</div>
     <md-list-item>
       <p flex="30">验收时间</p>
-      <p>{{vm.data.AcceptanceTime}}</p>
+      <p>{{vm.data.AcceptanceTime | date:'yyyy-MM-dd hh:mm'}}</p>
     </md-list-item>
     <md-list-item>
       <p flex="30">现场检查</p>
