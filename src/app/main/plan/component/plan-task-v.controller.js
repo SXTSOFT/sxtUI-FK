@@ -149,10 +149,12 @@
           var vm = this;
           if(items){
             vm.subTasks = items;
+          }else{
+            api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1}).then(function (r) {
+              vm.subTasks = r.data.Items||[];
+            });
           }
-            //api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1}).then(function (r) {
-            //  vm.subTasks = r.data.Items||[];
-            //});
+
           vm.select = function(){
             $mdDialog.hide(vm.relatedTask)
           }

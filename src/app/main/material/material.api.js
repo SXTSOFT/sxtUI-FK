@@ -56,6 +56,9 @@
         },
         GetMaterialTreeList:function () {
           return $http.get($http.url('/api/MaterialScience/GetMaterialTreeListAsync'))
+        },
+        batchCreate:function (data) {
+          return $http.put('/api/MaterialScience/BatchCreateMaterial',data);
         }
       },
       materialPlan:{

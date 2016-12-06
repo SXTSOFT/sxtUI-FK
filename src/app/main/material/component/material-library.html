@@ -10,7 +10,7 @@
     <script type="text/ng-template" id="nodes_renderer.html">
       <div ui-tree-handle class="tree-node tree-node-content ng-scope angular-ui-tree-handle">
         <span class="pull-right treespan">
-          <a data-nodrag ng-if="node.level==1" ng-click="vm.batchAdd(node,$event)"><span class="glyphicon">批量管理</span></a>
+          <a data-nodrag ng-if="node.level==1" ng-click="vm.alertPromat(node,$event)"><span class="glyphicon">批量管理</span></a>
           <a data-nodrag ng-if="node.level==1"><span class="glyphicon" ng-click="vm.addMaterial(node)">新增</span></a>
           <a data-nodrag ng-click="vm.btnEdit(node,true,$event)"><span class="glyphicon">编辑</span></a>
         <a data-nodrag ng-click=" vm.btnRemove(node)"><span class="glyphicon">删除</span></a>
@@ -41,4 +41,3 @@
     </div>
 </md-content>
 </div>
-

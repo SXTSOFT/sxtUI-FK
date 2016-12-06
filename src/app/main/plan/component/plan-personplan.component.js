@@ -60,17 +60,20 @@
           }
         }
         vm.loading = true;
-        //vm.myDate = new Date();
-      }
-    },true);
-    $scope.$watch('vm.myDate',function(){
-      if(!vm.myDate){
-        vm.myDate = new Date();
         $timeout(function(){
           vm.myDate = new Date();
         },500)
+        //vm.myDate = new Date();
       }
-    })
+    },true);
+    //$scope.$watch('vm.myDate',function(){
+    //  if(!vm.myDate){
+    //    vm.myDate = new Date();
+    //    $timeout(function(){
+    //      vm.myDate = new Date();
+    //    },800)
+    //  }
+    //})
     $rootScope.$on('md-calendar-change', function(event,data) {
       vm.tasksList = [];
       vm.data && vm.data.forEach(function (_r) {
