@@ -149,7 +149,7 @@
         ApproachStage: 1,
         ImageName: _id + ".jpeg",
         ImageUrl: _id + ".jpeg",
-        ImageByte: url
+        ImageByte: image
       });
     }
   }
