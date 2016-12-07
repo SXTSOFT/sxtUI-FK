@@ -14,7 +14,7 @@
     });
 
   /**@ngInject*/
-  function personPlanController($scope,$rootScope,moment,api,$mdDialog,$timeout){
+  function personPlanController($scope,$rootScope,moment,api,$mdDialog,$timeout,utils){
     var vm = this;
     load();
     function load() {
@@ -113,6 +113,8 @@
             }
           })
         })
+      },function(err){
+        utils.alert(err.data||'错误');
       })
     }
     vm.start = function(t){
@@ -171,6 +173,8 @@
           //    }
           //  })
           //})
+        },function(err){
+          utils.alert(err.data||'错误');
         })
       })
 

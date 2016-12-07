@@ -299,6 +299,7 @@
     }
     vm.updateManuallyClose = function(flow){
       //if(flow.oManuallyClose != flow.ManuallyClose){
+        flow.oManuallyClose = flow.ManuallyClose;
         return api.plan.TaskFlow.getSubTasks(flow.TaskFlowId).then(function (r) {
           var taskLib = r.data.Items[0];
           taskLib.Id = taskLib.TaskLibraryId;
@@ -306,7 +307,11 @@
           taskLib._taskFlowId = taskLib.TaskLibraryId;
           return api.plan.TaskLibrary.update(taskLib).then(function () {
             return vm.updateFlow(flow);
+          },function(err){
+            utils.alert(err.data||'更新手工关闭数据失败!')
           })
+        },function(err){
+          utils.alert(err.data||'更新手工关闭数据失败!')
         });
       //}
 
@@ -321,7 +326,11 @@
           taskLib.Duration = flow.Duration;
           return api.plan.TaskLibrary.update(taskLib).then(function () {
             return vm.updateFlow(flow);
+          },function(err){
+            utils.alert(err.data||'更新工期数据失败!')
           })
+        },function(err){
+          utils.alert(err.data||'更新工期数据失败!')
         });
       }
     }
