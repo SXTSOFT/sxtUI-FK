@@ -348,6 +348,9 @@
           var result = {
             id:item.Id+'-group',
             name:item.Name,
+            classes: [
+              item.IsInterlude?"md-light-blue-100-bg":""
+            ],
             //parent:'__',
             tasks:[
               {
@@ -358,6 +361,9 @@
                 from:item.ActualStartTime || item.ScheduledStartTime,
                 to:item.ActualEndTime || item.ScheduledEndTime,
                 movable:true,
+                classes: [
+                  item.IsInterlude?"md-light-blue-100-bg":""
+                ],
                 duration:edate.diff(sdate,'d'),
                 isType:item.Type,
                 dependencies:item.Dependencies.map(function (d) {
@@ -539,6 +545,8 @@
         var time = new Date();
         api.plan.BuildPlan.startInsert($stateParams.id,task.TaskFlowId,time).then(function(r){
           loadSubTask();
+        },function(err){
+          utils.alert(err.data||'错误');
         })
       }
       vm.openTask = function(task){
@@ -603,6 +611,8 @@
                 }
 
 
+              },function(err){
+                utils.alert(err.data||'错误');
               });
             }
             vm.closePanel1 = function() {

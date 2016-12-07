@@ -89,7 +89,7 @@
             <td ng-if="vm.data.Level !=0">
               <input type="checkbox" ng-model="flow.ManuallyClose" ng-click="vm.updateManuallyClose(flow)">
             </td>
-            <td ng-if="vm.data.Level==1"><input type="text" ng-if="!flow.isChuancha" style="width:20px" placeholder="无" ng-model="flow.Duration" ng-blur="vm.updateDuration(flow)"></td>
+            <td ng-if="vm.data.Level==1"><input type="text" ng-if="!flow.isChuancha" style="width:25px" placeholder="无" ng-model="flow.Duration" ng-blur="vm.updateDuration(flow)"></td>
             <!--<td ng-if="vm.data.Level==1"><input type="text" style="width:20px" placeholder="无" ng-model="flow.ReservedEndDays" ng-blur="vm.updateReservedEndDays(flow)"></td>-->
             <td ng-if="vm.data.Level==1">
               <div ng-if="!flow.isChuancha" style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.setMeasureInfo(flow)">
