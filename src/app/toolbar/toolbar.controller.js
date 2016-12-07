@@ -7,7 +7,7 @@
         .controller('ToolbarController', ToolbarController);
 
     /** @ngInject */
-    function ToolbarController($rootScope, xhscService,$mdSidenav, $translate, $mdToast, auth, $state)
+    function ToolbarController($rootScope, xhscService,$mdSidenav, $translate, $mdToast, auth, $state,sxtlocaStorage)
     {
         var vm = this;
         vm.is = isRoute;
@@ -33,6 +33,7 @@
         // });
         $rootScope.$on('user:logout',function(user){
           vm.user = null;
+          sxtlocaStorage.setObj("profile", null)
         });
         // Data
         $rootScope.global = {
