@@ -40,7 +40,20 @@
         vm.cancelCurrent = function ($event) {
           vm.info.current = null;
         }
-        $scope.areas= xhscService.getRegionTreeOffline("", 31, 1);
+        $scope.areas= xhscService.getRegionTreeOffline("", 31, 1).then(function (r) {
+            if (!angular.isArray(r)){
+              return r;
+            }
+            var area=r.filter(function (k) {
+              if (angular.isArray(k.Children)){
+                k.Children=k.Children.filter(function (m) {
+                  return m.RegionID==areaId;
+                })
+              }
+              return k.RegionID==projectId;
+            });
+            return area;
+        });
         $scope.procedure=remote.safe.getSecurityItem.cfgSet({
          offline: true
        })("WeekInspects");

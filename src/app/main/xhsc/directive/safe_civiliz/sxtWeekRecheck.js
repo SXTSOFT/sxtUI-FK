@@ -67,7 +67,7 @@
               $q.all([
                 remote.safe.weekPointQuery.cfgSet({
                   filter:function (item,inspectionId) {
-                    return item.InspectionID==inspectionId&&item.AcceptanceItemID==scope.procedure&&item.AreaID==scope.regionId;
+                    return  item.AreaID==AreaID&&item.InspectionExtendID==inspectionId;
                   }
                 })(scope.inspectionId),
                 remote.safe.getSafePointGeo()
@@ -119,11 +119,11 @@
               offline: true
             })("WeekInspects",scope.regionId).then(function (result) {
               var imgId = result.data.find(function (item) {
-                return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
+                return item.Type==7&& item.RegionId == scope.regionId;
               });
               if(!imgId){
                 imgId = result.data.find(function (item) {
-                  return item.RegionId == scope.regionId;
+                  return item.Type==13&&item.RegionId == scope.regionId;
                 });
               }
               if (imgId) {

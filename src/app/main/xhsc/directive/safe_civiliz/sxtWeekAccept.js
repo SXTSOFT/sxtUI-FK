@@ -27,6 +27,7 @@
     };
 
     function link(scope,element,attr,ctrl) {
+      scope.identity=0;
       scope.ct && (scope.ct.loading = true);
       var map,fg;
       var install =function () {
@@ -54,7 +55,7 @@
             onLoad: function (cb) {
               remote.safe.weekPointQuery.cfgSet({
                 filter:function (item,AcceptanceItemID,AreaID,inspectionId){
-                  return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID&&item.InspectionExtendID==inspectionId;
+                  return item.AreaID==AreaID&&item.InspectionExtendID==inspectionId;
                 }
               })(scope.procedure,scope.regionId,scope.inspectionId).then(function (r) {
                 remote.Procedure.InspectionPoint.query(scope.inspectionId,scope.procedure, scope.regionId).then(function (r1) {
@@ -70,6 +71,10 @@
                         p.geometry = p.geometry;
                       }
                       if(p.geometry && p.geometry.properties) {
+                        if ($.isNumeric(c.ProblemSortName)){
+                          var  t=parseInt(c.ProblemSortName);
+                          scope.identity=scope.identity<t?t:scope.identity;
+                        }
                         p.geometry.properties.seq = c.ProblemSortName;
                         if (p.geometry.geometry.type == 'Stamp')
                           p.geometry.geometry.type = 'Point';
@@ -87,7 +92,7 @@
             },
             onUpdate: function (layer, isNew, group,cb) {
               if(isNew){
-                layer.properties.seq = scope.item.ProblemSortName;
+                layer.properties.seq =++scope.identity;
                 layer.properties.Status = scope.item.ProblemID?1:2;
               }
               var point = {
@@ -109,7 +114,7 @@
                   PositionID:point.MeasurePointID,
                   MeasureValue:0,
                   Status:1,
-                  ProblemSortName:scope.item.ProblemSortName,
+                  ProblemSortName:layer.properties.seq,
                   ProblemDescription:scope.item.ProblemDescription,
                   isNew:true
                 }
@@ -200,11 +205,11 @@
               offline: true
             })("WeekInspects",areaID).then(function (result) {
               var imgId = result.data.find(function (item) {
-                return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
+                return item.Type==7&& item.RegionId == scope.regionId;
               });
               if(!imgId){
                 imgId = result.data.find(function (item) {
-                  return item.RegionId == scope.regionId;
+                  return item.Type==13&&item.RegionId == scope.regionId;
                 });
               }
               if (imgId) {
@@ -245,28 +250,11 @@
       };
       $timeout(function () {
         scope.$watch('regionId', function () {
-          if(!scope.excuted&&scope.regionId && scope.procedure) {
+          if(scope.regionId && scope.procedure) {
             if(map){
               map.remove();
               map = null;
             }
-            scope.excuted=true;
-            $timeout(function () {
-              scope.excuted=false;
-            },5000)
-            install();
-          }
-        });
-        scope.$watch('procedure', function () {
-          if(!scope.excuted&&scope.regionId && scope.procedure) {
-            if(map){
-              map.remove();
-              map = null;
-            }
-            scope.excuted=true;
-            $timeout(function () {
-              scope.excuted=false;
-            },5000)
             install();
           }
         });

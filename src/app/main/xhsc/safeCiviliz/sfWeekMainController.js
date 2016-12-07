@@ -111,12 +111,9 @@
       var filter=_filter;
       if (!filter){
         filter=  function filter(item) {
-          return (!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
-            (!areas || areas.find(function (a) {
+          return(!areas || areas.find(function (a) {
               return a.AreaID == item.RegionId;
-            })) && vm.procedure.find(function (k) {
-              return k.AcceptanceItemID == item.AcceptanceItemID;
-            })
+            })) && (item.Type==7|| item.Type==13)
         }
       }
       var relates=remote.safe.getDrawingRelate.cfgSet({
