@@ -480,6 +480,7 @@
                 IsAbleStart: item.IsAbleStart,
                 IsInterlude: item.IsInterlude,
                 ManuallyClose: item.ManuallyClose,
+                IsRelatedObject:item.IsRelatedObject,
                 State:item.State,
                 Color:setColor(item.State),
                 _State:setSatus(item.State),
@@ -513,6 +514,7 @@
                       IsAbleStart: t.IsAbleStart,
                       IsInterlude: t.IsInterlude,
                       ManuallyClose: t.ManuallyClose,
+                      IsRelatedObject: t.IsRelatedObject,
                       State: t.State,
                       Color:setColor(t.State),
                       _State:setSatus(t.State),
@@ -602,6 +604,7 @@
                       f.IsAbleStart = _r.IsAbleStart;
                       f.IsInterlude = _r.IsInterlude;
                       f.ManuallyClose = _r.ManuallyClose;
+                      f.IsRelatedObject = _r.IsRelatedObject;
                       f.RealScheduledStartTime = _r.RealScheduledStartTime;
                       f.RealScheduledEndTime = _r.RealScheduledEndTime;
                     }

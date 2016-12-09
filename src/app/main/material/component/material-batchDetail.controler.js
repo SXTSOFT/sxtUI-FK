@@ -18,19 +18,31 @@
     vm.data = {};
     vm.data.PlanId = $stateParams.planId;
 
-    api.xhsc.materialPlan.GetMaterialPlanBatchByPlanId(vm.data.PlanId).then(function (r) {
-      vm.data.BatchList = r.data||[];
-      vm.data.BatchList.forEach(function (b) {
-        b.Images.forEach(function (i) {
-          i.ImageByte = sxt.app.api + i.ImageByte;
-
-        })
-      })
+    api.xhsc.materialPlan.GetMaterialPlanInfolById(vm.data.PlanId).then(function (r) {
+      if(r.data){
+        vm.data.PlanModel =  r.data;
+        if(r.data.PlanBatchDetail){
+          r.data.PlanBatchDetail.forEach(function (q) {
+            q.Images.forEach(function (i) {
+              i.ImageByte = sxt.app.api + i.ImageByte;
+            });
+          });
+        }
+      }
     });
 
-    api.xhsc.materialPlan.GetExcessMaterialExitByPlanId(vm.data.PlanId).then(function (r) {
-        vm.data.BatchExitList = r.data||[];
-    });
+    // api.xhsc.materialPlan.GetMaterialPlanBatchByPlanId(vm.data.PlanId).then(function (r) {
+    //   vm.data.BatchList = r.data||[];
+    //   vm.data.BatchList.forEach(function (b) {
+    //     b.Images.forEach(function (i) {
+    //       i.ImageByte = sxt.app.api + i.ImageByte;
+    //     })
+    //   })
+    // });
+    //
+    // api.xhsc.materialPlan.GetExcessMaterialExitByPlanId(vm.data.PlanId).then(function (r) {
+    //     vm.data.BatchExitList = r.data||[];
+    // });
 
   }
 })(angular,undefined);

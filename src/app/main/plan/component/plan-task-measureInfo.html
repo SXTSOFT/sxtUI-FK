@@ -50,10 +50,20 @@
             <md-input-container md-no-float>
               <input type="text" ng-model="vm.searchT" placeholder="搜索工序">
             </md-input-container>
-            <md-input-container ng-if="vm.gxName">
-              <label>已选工序</label>
-              <input type="text" ng-model="vm.gxName" disabled>
-            </md-input-container>
+            <div layout="row" class="mb-10">
+              <span>已选工序</span><span flex></span><md-icon md-font-icon="icon-close" ng-click="vm.clrChoose()" ng-if="vm.gxName"></md-icon>
+            </div>
+            <div layout="row">
+              {{vm.gxName}}
+            </div>
+            <!--<md-input-container ng-if="vm.gxName" class="mb-0">-->
+              <!--<label>已选工序</label>-->
+              <!--<input type="text" ng-model="vm.gxName" disabled>-->
+            <!--</md-input-container>-->
+            <!--<div layout="row" ng-if="vm.gxName">-->
+              <!--<span flex></span>-->
+              <!--<md-button class="md-raised" ng-click="vm.clrChoose()">清除工序</md-button>-->
+            <!--</div>-->
             <!--<md-subheader>工序列表</md-subheader>-->
             <div ng-repeat="p in vm.proceduresData|filter:vm.searchT">
               <label style="display: block;height:49px;line-height: 49px;padding:0 10px;margin-bottom: 0;border-bottom: 1px solid #dedede;white-space: nowrap;overflow: hidden;">{{p.SpecialtyName}}</label>
