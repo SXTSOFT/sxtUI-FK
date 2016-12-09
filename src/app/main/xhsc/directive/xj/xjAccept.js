@@ -20,6 +20,7 @@
         regionId:'=',
         inspectionId:'=',
         inspectionAreaId:"=",
+        imgId:"=",
         ct:'=',
         disableInspect:'@',
         disableDrag:'@'
@@ -31,6 +32,7 @@
       scope.ct && (scope.ct.loading = true);
       var map,fg;
       var install =function () {
+        scope.identity=0;
         scope.ct && (scope.ct.loading = true);
         if (!map) {
           map = new $window.L.glProject(element[0], {
@@ -54,11 +56,11 @@
             },
             onLoad: function (cb) {
               remote.cycleLook.cyclePointQuery.cfgSet({
-                filter:function (item,AcceptanceItemID,AreaID,inspectionId){
-                  return item.AcceptanceItemID==AcceptanceItemID && item.AreaID==AreaID&&item.InspectionExtendID==inspectionId;
+                filter:function (item){
+                  return item.AreaID==scope.regionId&&item.InspectionExtendID==scope.inspectionId;
                 }
-              })(scope.procedure,scope.regionId,scope.inspectionId).then(function (r) {
-                remote.Procedure.InspectionPoint.query(scope.inspectionId,scope.procedure, scope.regionId).then(function (r1) {
+              })().then(function (r) {
+                remote.Procedure.InspectionPoint.query().then(function (r1) {
                   fg.data = r.data,fs=[];
                   r.data.forEach(function (c) {
                     var p = r1.data.find(function (p1) {
@@ -71,6 +73,10 @@
                         p.geometry = p.geometry;
                       }
                       if(p.geometry && p.geometry.properties) {
+                        if ($.isNumeric(c.ProblemSortName)){
+                          var  t=parseInt(c.ProblemSortName);
+                          scope.identity=scope.identity<t?t:scope.identity;
+                        }
                         p.geometry.properties.seq = c.ProblemSortName;
                         if (p.geometry.geometry.type == 'Stamp')
                           p.geometry.geometry.type = 'Point';
@@ -90,6 +96,7 @@
             onUpdate: function (layer, isNew, group,cb) {
               if(isNew){
                 layer.properties.seq = scope.item.ProblemSortName;
+                layer.properties.seq =++scope.identity;
                 layer.properties.Status = scope.item.ProblemID?1:2;
               }
               var point = {
@@ -103,6 +110,7 @@
                 var v = {
                   // InspectionID:scope.inspectionId,
                   // InspectionAreaID:scope.inspectionAreaId,
+                  DrawingID:scope.imgId,
                   InspectionExtendID:scope.inspectionId,
                   CheckpointID:sxt.uuid(),
                   IndexPointID:scope.item.ProblemID,
@@ -111,7 +119,7 @@
                   PositionID:point.MeasurePointID,
                   MeasureValue:0,
                   Status:1,
-                  ProblemSortName:scope.item.ProblemSortName,
+                  ProblemSortName:layer.properties.seq,
                   ProblemDescription:scope.item.ProblemDescription,
                   isNew:true
                 }
@@ -197,83 +205,43 @@
             }
           });
           $timeout(function () {
-            scope.asyn=true;
-            var areaID=scope.regionId.substr(0,10);
-            remote.safe.getDrawingRelate.cfgSet({
-              offline: true
-            })("cycle",areaID).then(function (result) {
-              var imgId = result.data.find(function (item) {
-                return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
-              });
-              if(!imgId){
-                imgId = result.data.find(function (item) {
-                  return item.RegionId == scope.regionId;
-                });
-              }
-              if (imgId) {
-                remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
-                  scope.asyn=false;
-                  if(!result2.data.DrawingContent){
-                    scope.ct && (scope.ct.loading = false);
-                    utils.alert('未找到图纸,请与管理员联系!(2)');
-                    return;
-                  }
-                  map.loadSvgXml(result2.data.DrawingContent);
-                  map.map.addControl(fg);
-                  // var btn = $('<div class="mapboxgl-ctrl-group mapboxgl-ctrl"><button class="mapboxgl-ctrl-icon links"  title="其它图纸"></button></div>');
-                  // btn.click(function () {
-                  //   var mapList = [];
-                  //   result.data.forEach(function (item) {
-                  //     if(item.RegionId == scope.regionId && item.DrawingID!=imgId.DrawingID && !mapList.find(function (f) {
-                  //         return f.DrawingID==item.DrawingID
-                  //       })){
-                  //       mapList.push(item);
-                  //     }
-                  //   });
-                  //
-                  //   xhUtils.openLinks(mapList);
-                  // });
-                  // element.find('.mapboxgl-ctrl-bottom-left').append(btn);
-                }).catch(function () {
-                  scope.asyn=false;
-                })
-              }
-              else{
+            if (scope.imgId){
+              remote.Project.getDrawing(scope.imgId).then(function (result2) {
                 scope.asyn=false;
-                scope.ct && (scope.ct.loading = false);
-                utils.alert('未找到图纸,请与管理员联系!(1)')
-                return;
-              }
-            }).catch(function () {
-              scope.asyn=false;
-            });
+                if(!result2.data.DrawingContent){
+                  scope.ct && (scope.ct.loading = false);
+                  utils.alert('未找到图纸,请与管理员联系!(2)');
+                  return;
+                }
+                map.loadSvgXml(result2.data.DrawingContent);
+                map.map.addControl(fg);
+                // var btn = $('<div class="mapboxgl-ctrl-group mapboxgl-ctrl"><button class="mapboxgl-ctrl-icon links"  title="其它图纸"></button></div>');
+                // btn.click(function () {
+                //   var mapList = [];
+                //   result.data.forEach(function (item) {
+                //     if(item.RegionId == scope.regionId && item.DrawingID!=imgId.DrawingID && !mapList.find(function (f) {
+                //         return f.DrawingID==item.DrawingID
+                //       })){
+                //       mapList.push(item);
+                //     }
+                //   });
+                //
+                //   xhUtils.openLinks(mapList);
+                // });
+                // element.find('.mapboxgl-ctrl-bottom-left').append(btn);
+              }).catch(function () {
+              })
+            }
           }, 0);
         }
       };
       $timeout(function () {
-        scope.$watch('regionId', function () {
-            if(!scope.excuted&&scope.regionId && scope.procedure) {
-              if(map){
-                map.remove();
-                map = null;
-              }
-              scope.excuted=true;
-              $timeout(function () {
-                scope.excuted=false;
-              },5000)
-              install();
-            }
-        });
-        scope.$watch('procedure', function () {
-          if(!scope.excuted&&scope.regionId && scope.procedure) {
+        scope.$watch('imgId', function () {
+          if(scope.imgId) {
             if(map){
               map.remove();
               map = null;
             }
-            $timeout(function () {
-              scope.excuted=false;
-            },5000)
-            scope.excuted=true;
             install();
           }
         });

@@ -1877,6 +1877,37 @@
           idField: 'InspectionExtendID',
           dataType: 1,
           fn: function (identity,role) {
+            var url='/api/Acceptances/SecurityRectification/GetList';
+            if (identity){
+              url='/api/'+identity+'/SecurityRectification/GetList';
+            }
+            return $http.get($http.url(url)).then(function (r) {
+              if (r&&angular.isArray(r.data)){
+                var batchs=r.data;
+                batchs.forEach(function (k) {
+                  if ((!role||role=="zb")&&Array.isArray(k.Rectifications)){
+                    k.Rectifications= k.Rectifications.filter(function (o) {
+                      return o.Status==1||o.Status==8;
+                    });
+                  }else if(role=="jl"&&Array.isArray(k.Rectifications)){
+                    k.Rectifications= k.Rectifications.filter(function (o) {
+                      return o.Status==64;
+                    });
+                  }
+                });
+              }
+              return r;
+            });
+          }
+        }),
+        getRectificationsWrap: $http.wrap({
+          offline: true,
+          db:function (identity) {
+            return 'safeRectification'+(identity?identity:"");
+          },
+          idField: 'InspectionExtendID',
+          dataType: 1,
+          fn: function (identity,role) {
             var url='/api/Acceptances/SecurityRectification/GetList/GetListByInspectionExtend';
             if (identity){
               url='/api/'+identity+'/SecurityRectification/GetList/GetListByInspectionExtend';
@@ -1885,17 +1916,21 @@
               if (r&&angular.isArray(r.data)){
                 var batchs=r.data;
                 batchs.forEach(function (k) {
-                    if (!role&&role=="zb"&&Array.isArray(k.Rectifications)){
-                      k.Rectifications= k.Rectifications.filter(function (o) {
-                        return o.Status==1||o.Status==8;
-                      });
+                  if ((!role||role=="zb")&&Array.isArray(k.Rectifications)){
+                    k.Rectifications= k.Rectifications.filter(function (o) {
+                      return o.Status==1||o.Status==8;
+                    });
+                    if (k.Rectifications.length){
                       k.Status=1;
-                    }else if(role=="jl"&&Array.isArray(k.Rectifications)){
-                      k.Rectifications= k.Rectifications.filter(function (o) {
-                        return o.Status==64;
-                      });
+                    }
+                  }else if(role=="jl"&&Array.isArray(k.Rectifications)){
+                    k.Rectifications= k.Rectifications.filter(function (o) {
+                      return o.Status==64;
+                    });
+                    if (k.Rectifications.length){
                       k.Status=64;
                     }
+                  }
                 });
               }
               return r;

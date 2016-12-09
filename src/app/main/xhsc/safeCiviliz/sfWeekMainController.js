@@ -177,16 +177,12 @@
             controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
               $scope.item = item;
               var tasks = [].concat(globalTask)
-                .concat(projectTask(item.AreaID,null,null,function (item) {
-                  return vm.procedure.find(function (k) {
-                    return k.AcceptanceItemID == item.AcceptanceItemID;
-                  })
-                }))
+                .concat(projectTask(item.AreaID,null,null))
                 .concat([function () {
                   return xhscService.getRegionTreeOffline("", 31, 1);
                 }])
                 .concat(function () {
-                  return remote.offline.create({Id: 'safeWeek' + item.InspectionID});
+                  return remote.offline.create({Id: 'safeWeek' + item.InspectionExtendID});
                 })
 
               api.task(tasks, {
@@ -272,7 +268,7 @@
                 .concat(t)
                 .concat(getRectificationTask())
                 .concat(function () {
-                  return remote.offline.create({Id: 'weekZg' + item.RectificationID});
+                  return remote.offline.create({Id: 'weekZg' + item.InspectionExtendID});
                 });
               api.task(tasks, {
                 event: 'downloadzg',
@@ -451,7 +447,7 @@
             if (angular.isArray(r.data)) {
               ys.forEach(function (k) {
                 if (r.data.find(function (m) {
-                    return m.Id == "safeWeek" + k.InspectionID;
+                    return m.Id == "safeWeek" + k.InspectionExtendID;
                   })) {
                   k.isOffline = true;
                 }
@@ -463,7 +459,7 @@
       });
     }
     function loadZgLst() {
-      $q(function (resolve,reject) {
+     return $q(function (resolve,reject) {
         if (vm.role||vm.role===0){
           ret(vm.role).then(function (r) {
             resolve(r);
@@ -484,7 +480,7 @@
         }else {
           params="zb";
         }
-        return remote.safe.getRectifications("WeekInspects",params).then(function (r) {
+        return remote.safe.getRectificationsWrap("WeekInspects",params).then(function (r) {
           vm.zglist = [];
           if (angular.isArray(r.data)) {
             var zg = [];
@@ -495,7 +491,7 @@
               if (angular.isArray(r.data)) {
                 zg.forEach(function (k) {
                   if (r.data.find(function (m) {
-                      return m.Id == "weekZg" + k.RectificationID;
+                      return m.Id == "weekZg" + k.InspectionExtendID;
                     })) {
                     k.isOffline = true;
                   }

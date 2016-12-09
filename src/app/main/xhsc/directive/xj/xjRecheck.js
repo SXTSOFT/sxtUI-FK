@@ -14,8 +14,6 @@
       scope:{
         item:'=xjRecheck',
         sxtMapShow:'=',
-        items:'=',
-        procedure:'=',
         regionId:'=',
         inspectionId:'=',
         disableInspect:'=',
@@ -67,7 +65,7 @@
               $q.all([
                 remote.cycleLook.cyclePointQuery.cfgSet({
                   filter:function (item,inspectionId) {
-                    return item.InspectionID==inspectionId&&item.AcceptanceItemID==scope.procedure&&item.AreaID==scope.regionId;
+                    return  item.AreaID==scope.regionId&&item.InspectionExtendID==inspectionId;
                   }
                 })(scope.inspectionId),
                 remote.safe.getSafePointGeo()
@@ -119,13 +117,8 @@
               offline: true
             })("cycle",scope.regionId).then(function (result) {
               var imgId = result.data.find(function (item) {
-                return item.AcceptanceItemID == scope.procedure && item.RegionId == scope.regionId;
+                return item.Type==7&& item.RegionId == scope.regionId;
               });
-              if(!imgId){
-                imgId = result.data.find(function (item) {
-                  return item.RegionId == scope.regionId;
-                });
-              }
               if (imgId) {
                 remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
                   if(!result2.data.DrawingContent){
@@ -163,7 +156,7 @@
       };
       $timeout(function () {
         scope.$watch('regionId', function () {
-          if(scope.regionId && scope.procedure) {
+          if(scope.regionId) {
             if(map){
               map.remove();
               map = null;

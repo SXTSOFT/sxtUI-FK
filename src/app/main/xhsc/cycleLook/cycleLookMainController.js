@@ -103,12 +103,9 @@
       var filter=_filter;
       if (!filter){
         filter=  function filter(item) {
-          return (!acceptanceItemID || item.AcceptanceItemID == acceptanceItemID) &&
-            (!areas || areas.find(function (a) {
+          return(!areas || areas.find(function (a) {
               return a.AreaID == item.RegionId;
-            })) && vm.procedure.find(function (k) {
-              return k.AcceptanceItemID == item.AcceptanceItemID;
-            })
+            })) && (item.Type==7)
         }
       }
       var relates=remote.safe.getDrawingRelate.cfgSet({
@@ -172,16 +169,12 @@
             controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
               $scope.item = item;
               var tasks = [].concat(globalTask)
-                .concat(projectTask(item.AreaID,null,null,function (item) {
-                  return vm.procedure.find(function (k) {
-                    return k.AcceptanceItemID == item.AcceptanceItemID;
-                  })
-                }))
+                .concat(projectTask(item.AreaID,null,null))
                 .concat([function () {
                   return xhscService.getRegionTreeOffline("", 31, 1);
                 }])
                 .concat(function () {
-                  return remote.offline.create({Id: 'cycleYs' + item.InspectionID});
+                  return remote.offline.create({Id: 'cycleYs' + item.InspectionExtendID});
                 })
 
               api.task(tasks, {
@@ -236,30 +229,38 @@
             controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
               $scope.item = item;
               var t = [];
-              if (!item.Children) {
-                t = t.concat(projectTask(item.ProjectID, item.Children, item.AcceptanceItemID));
-              } else {
-                item.Children.forEach(function (o) {
+              item.Rectifications.forEach(function (k) {
+                k.Children.forEach(function (o) {
                   t = t.concat(projectTask(o.AreaID, [o], o.AcceptanceItemID));
                 });
+              });
+              function getRectificationTask() {
+                var  task=[];
+                var rectification=item.Rectifications;
+                rectification.forEach(function (item) {
+                  task=task.concat(rectificationTask(item)).concat([
+                    function (tasks) {
+                      return $q(function (v, m) {
+                        item.Children.forEach(function (area) {
+                          tasks.push(
+                            function () {
+                              return remote.safe.getSafePointGeo(item.InspectionID, item.AcceptanceItemID, area.AreaID)
+                            }
+                          );
+                        })
+                        v();
+                      })
+                    }
+                  ]);
+                })
+                return task;
               }
+
               var tasks = [].concat(globalTask)
                 .concat(t)
-                .concat(rectificationTask(item))
-                .concat(function (tasks) {
-                  return $q(function (v, m) {
-                    item.Children.forEach(function (area) {
-                      tasks.push(
-                        function () {
-                          return remote.safe.getSafePointGeo(item.InspectionID, item.AcceptanceItemID, area.AreaID)
-                        }
-                      );
-                    })
-                    v();
-                  })
-                })
+                .concat(getRectificationTask())
                 .concat(function () {
-                  return remote.offline.create({Id: 'cycleZg' + item.RectificationID});
+                  return remote.offline.create({Id: 'cycleZg' + item.InspectionExtendID});
                 });
               api.task(tasks, {
                 event: 'downloadzg',
@@ -437,7 +438,7 @@
             if (angular.isArray(r.data)) {
               ys.forEach(function (k) {
                 if (r.data.find(function (m) {
-                    return m.Id == "cycleYs" + k.InspectionID;
+                    return m.Id == "cycleYs" + k.InspectionExtendID;
                   })) {
                   k.isOffline = true;
                 }
@@ -449,27 +450,50 @@
       });
     }
     function loadZgLst() {
-      return remote.safe.getRectifications("cycle").then(function (r) {
-        vm.zglist = [];
-        if (angular.isArray(r.data)) {
-          var zg = [];
-          r.data.forEach(function (o) {
-            zg.push(o);
+       return $q(function (resolve,reject) {
+        if (vm.role||vm.role===0){
+          ret(vm.role).then(function (r) {
+            resolve(r);
           });
-          return remote.offline.query().then(function (r) {
-            if (angular.isArray(r.data)) {
-              zg.forEach(function (k) {
-                if (r.data.find(function (m) {
-                    return m.Id == "cycleZg" + k.RectificationID;
-                  })) {
-                  k.isOffline = true;
-                }
-              })
-            }
-            vm.zglist = zg;
+        }else {
+          xhscService.getProfile().then(function (profile) {
+            vm.role = profile.role;
+          }).then(function () {
+            ret(vm.role).then(function (r) {
+              resolve(r);
+            });
           })
         }
       })
+      function ret(role) {
+        var params="";
+        if (vm.role==2||vm.role=="2"){
+          params="jl";
+        }else {
+          params="zb";
+        }
+        return remote.safe.getRectificationsWrap("cycle",params).then(function (r) {
+          vm.zglist = [];
+          if (angular.isArray(r.data)) {
+            var zg = [];
+            r.data.forEach(function (o) {
+              zg.push(o);
+            });
+            return remote.offline.query().then(function (r) {
+              if (angular.isArray(r.data)) {
+                zg.forEach(function (k) {
+                  if (r.data.find(function (m) {
+                      return m.Id == "cycleZg" + k.InspectionExtendID;
+                    })) {
+                    k.isOffline = true;
+                  }
+                })
+              }
+              vm.zglist = zg;
+            })
+          }
+        })
+      }
     }
     function load() {
       $q.all([
@@ -518,10 +542,7 @@
           api.setNetwork(1).then(function () {
             $state.go('app.xhsc.xj.rectify', {
               Role: 'zb',
-              InspectionID: item.InspectionID,
-              AcceptanceItemID: item.AcceptanceItemID,
-              RectificationID: item.RectificationID,
-              AcceptanceItemName: item.AcceptanceItemName
+              InspectionID: item.InspectionExtendID
             });
           });
         })
@@ -529,10 +550,7 @@
         api.setNetwork(1).then(function () {
           $state.go('app.xhsc.xj.rectify', {
             Role: 'zb',
-            InspectionID: item.InspectionID,
-            AcceptanceItemID: item.AcceptanceItemID,
-            RectificationID: item.RectificationID,
-            AcceptanceItemName: item.AcceptanceItemName
+            InspectionID: item.InspectionExtendID
           });
         });
       }
@@ -543,9 +561,7 @@
           api.setNetwork(1).then(function () {
             $state.go('app.xhsc.xj.rectify', {
               Role: 'jl',
-              InspectionID: item.InspectionID,
-              AcceptanceItemID: item.AcceptanceItemID,
-              RectificationID: item.RectificationID
+              InspectionID: item.InspectionExtendID
             })
           });
         })
@@ -553,9 +569,7 @@
         api.setNetwork(1).then(function () {
           $state.go('app.xhsc.xj.rectify', {
             Role: 'jl',
-            InspectionID: item.InspectionID,
-            AcceptanceItemID: item.AcceptanceItemID,
-            RectificationID: item.RectificationID
+            InspectionID: item.InspectionExtendID
           })
         });
       }

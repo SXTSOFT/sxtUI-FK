@@ -34,7 +34,20 @@
       vm.cancelCurrent = function ($event) {
         vm.info.current = null;
       }
-      $scope.areas= xhscService.getRegionTreeOffline("", 31, 1);
+      $scope.areas= xhscService.getRegionTreeOffline("", 31, 1).then(function (r) {
+        if (!angular.isArray(r)){
+          return r;
+        }
+        var area=r.filter(function (k) {
+          if (angular.isArray(k.Children)){
+            k.Children=k.Children.filter(function (m) {
+              return m.RegionID==areaId;
+            })
+          }
+          return k.RegionID==projectId;
+        });
+        return area;
+      });
       $scope.procedure=remote.safe.getSecurityItem.cfgSet({
         offline: true
       })("cycle");
@@ -50,8 +63,31 @@
         sendResult = null;
       });
 
+      function initImgId(regionId) {
+        var imgId="";
+        if(regionId){
+          var areaID=regionId.substr(0,10);
+          remote.safe.getDrawingRelate.cfgSet({
+            offline: true
+          })("cycle",areaID).then(function (result) {
+            imgId = result.data.find(function (item) {
+              return item.Type==7 && item.RegionId ==regionId;
+            });
+            if(!imgId){
+              imgId = result.data.find(function (item) {
+                return item.RegionId == regionId;
+              });
+            }
+            if (imgId){
+              vm.imgId=imgId.DrawingID;
+            }
+          })
+        }
+      }
+
       $scope.$watch("current.region",function (v,o) {
         if (v&&$scope.current.procedure){
+          initImgId(v.RegionID);
           vm.info.show=true;
         }else {
           vm.info.show=false;
@@ -60,6 +96,7 @@
       $scope.$watch("current.procedure",function (v,o) {
         if (v){
           if ($scope.current.region){
+            initImgId($scope.current.region.RegionID);
             vm.info.show=true;
           }else {
             vm.info.show=false;
