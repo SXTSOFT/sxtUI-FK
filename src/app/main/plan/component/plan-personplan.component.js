@@ -100,6 +100,7 @@
               t.IsAbleStart = f.IsAbleStart;
               t.IsInterlude = f.IsInterlude;
               t.ManuallyClose = f.ManuallyClose;
+              t.IsRelatedObject = f.IsRelatedObject;
             }
           })
           tt.NoPlanTasks.forEach(function(_t){
@@ -110,6 +111,7 @@
               t.IsAbleStart = f.IsAbleStart;
               t.IsInterlude = f.IsInterlude;
               t.ManuallyClose = f.ManuallyClose;
+              t.IsRelatedObject = f.IsRelatedObject;
             }
           })
         })
