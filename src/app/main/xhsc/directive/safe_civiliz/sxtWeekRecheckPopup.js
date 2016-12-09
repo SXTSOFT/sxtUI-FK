@@ -61,7 +61,6 @@
           if(!scope.Record.jl){
             scope.Record.jl = {
               CheckpointID:scope.data.value.CheckpointID,
-              RectificationID:scope.data.item,
               Describe:'',
               DescRole:"jl",
               Remark:''
@@ -70,7 +69,6 @@
           if(!scope.Record.zb){
             scope.Record.zb = {
               CheckpointID:scope.data.value.CheckpointID,
-              RectificationID:scope.data.item,
               Describe:'',
               DescRole:"zb",
               Remark:''
@@ -91,16 +89,21 @@
 
       function createZb(update) {
         return $q(function (resolve,reject) {
+          var rec="";
           remote.safe.weekproblemRecordQuery.cfgSet({
             filter: function (item, CheckpointID) {
-              return item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="zb";
+              var t=item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="zb";
+              if (t){
+                rec=rec?rec:item.RectificationID;
+              }
+              return t;
             },
           })(scope.data.value.CheckpointID).then(function (r) {
             if (!r||!r.data||!r.data.length){
               // scope.Record.zb.ProblemRecordID = sxt.uuid()
               var rec={
                 CheckpointID:scope.data.value.CheckpointID,
-                RectificationID:scope.data.item,
+                RectificationID:rec,
                 Describe:'',
                 DescRole:"zb",
                 Remark:''
@@ -172,15 +175,20 @@
             scope.slideShow = false;
             scope.context.updateStatus(scope.data.value.PositionID,convert(scope.data.value.Status));
           }).then(function () {
+            var rec="";
             remote.safe.weekproblemRecordQuery.cfgSet({
               filter: function (item, CheckpointID) {
-                return item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="jl";
+                var t=item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="jl";
+                if (t){
+                  rec=rec?rec:item.RectificationID;
+                }
+                return t;
               },
             })(scope.data.value.CheckpointID).then(function (r) {
               if (!r||!r.data||!r.data.length){
                 var rec={
                   CheckpointID:scope.data.value.CheckpointID,
-                  RectificationID:scope.data.item,
+                  RectificationID:rec,
                   Describe:'',
                   DescRole:"jl",
                   Remark:''

@@ -9,10 +9,10 @@
 
   angular
     .module('app.xhsc')
-    .controller('sfWeekAcceptController',sfWeekAcceptController);
+    .controller('yfAcceptController',yfAcceptController);
 
   /**@ngInject*/
-  function sfWeekAcceptController($scope,$stateParams,remote,xhUtils,$rootScope,$state,$q,utils,api,xhscService){
+  function yfAcceptController($scope,$stateParams,remote,xhUtils,$rootScope,$state,$q,utils,api,xhscService){
     var vm = this;
     var projectId = $stateParams.projectId,
       areaId = $stateParams.areaId?$stateParams.areaId:$stateParams.regionId;

@@ -26,10 +26,44 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        title: '安全验房',
+        title: '移动验房',
         url: '/Mian',
         templateUrl: 'app/main/xhsc/yf/yfMain.html',
         controller: 'yfMainController as vm'
       })
+
+    //   .state('app.xhsc.yf.yfBase', {
+    //   noBack:true,
+    //   sendBt: false,
+    //   rightArrow: false,
+    //   leftArrow: false,
+    //   title: '移动验房',
+    //   url: '/yf/{yw}',
+    //   templateUrl: 'app/main/xhsc/yf/yfBase.html',
+    //   controller: 'yfBaseController as vm'
+    // })
+    //   .state('app.xhsc.yf.yfAccept', {
+    //     noBack:true,
+    //     sendBt: true,
+    //     rightArrow: false,
+    //     leftArrow: false,
+    //     title: '移动验房',
+    //     url: '/yfAccept/{InspectionId}/{projectId}/{areaId}',
+    //     templateUrl: 'app/main/xhsc/safeCiviliz/sfWeekAccept.html',
+    //     controller: 'sfWeekAcceptController as vm'
+    //   })
+    //   .state('app.xhsc.week.sfWeekRectify', {
+    //     noBack:true,
+    //     sendBt: true,
+    //     rightArrow: false,
+    //     leftArrow: false,
+    //     title: '移动验房',
+    //     url: '/yfRectify/{Role}/{InspectionID}/{AcceptanceItemID}/{RectificationID}/{AcceptanceItemName}',
+    //     templateUrl: 'app/main/xhsc/safeCiviliz/sfWeekRectify.html',
+    //     controller: 'sfWeekRectifyController as vm'
+    //   })
+
+
+
   }
 })();
