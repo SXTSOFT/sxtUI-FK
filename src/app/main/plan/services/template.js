@@ -91,7 +91,7 @@
       },
       commit: {
 
-        spacingY: -46,
+        spacingY: -44,
         dot: {
           size: 8,
           strokeColor: "white",

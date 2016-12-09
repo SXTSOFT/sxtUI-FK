@@ -606,6 +606,19 @@
                   }
                 })
               })
+            if(!vm.current){
+                vm.data.CloseRelatedObjectId = null;
+                flow.MeasureInfo = null;
+                flow.MeasureId = null;
+
+            }
+          }
+          vm.clrChoose = function(){
+            vm.current = null;
+            vm.gxName = '';
+            vm.data.CloseRelatedObjectId = null;
+            flow.MeasureInfo = null;
+            flow.MeasureId = null;
           }
           vm.stop = function(ev){
             ev.stopPropagation();
