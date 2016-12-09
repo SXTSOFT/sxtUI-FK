@@ -195,8 +195,21 @@
           $scope.submit = function (content) {
             if (content) {
               var arrs = [];
+              var _words = [];
+              var json = {};
               var words = content.replace(new RegExp('\n','g'),'|').split('|');
-              words.forEach(function (r) {
+              //清除换行空值
+              words = words.filter(t => t != undefined && t != null && t.replace(/(^\s*)|(\s*$)/g, "") != '');
+              //清除重复数据
+              for(var i = 0; i < words.length; i++){
+                var val = words[i].replace(/(^\s*)|(\s*$)/g, '')
+                if(!json[val]){
+                  _words.push(val);
+                  json[val] = 1;
+                }
+              }
+
+              _words.forEach(function (r) {
                 if(r){
                   arrs.push({
                     'MaterialClassId':node.id,
