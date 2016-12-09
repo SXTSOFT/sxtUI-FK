@@ -15,31 +15,46 @@
   function sfWeekRectifyController($state, $rootScope, $scope, $mdDialog, remote, $timeout, $q, utils, xhUtils, api) {
     var vm = this;
     $rootScope.title = $state.params.Role == 'zb' ? '整改' : '复验';
-    vm.ProjectID = $state.params.ProjectID;
-    vm.AcceptanceItemID = $state.params.AcceptanceItemID;
-    vm.AcceptanceItemName = $state.params.AcceptanceItemName ? $state.params.AcceptanceItemName : "";
     vm.role = $state.params.Role;
     vm.InspectionID = $state.params.InspectionID;
-    vm.RectificationID = $state.params.RectificationID;
-    api.setNetwork(1).then(function () {
-      remote.safe.getRectificationSingle(vm.RectificationID,"WeekInspects").then(function (r) {
-        vm.Rectification = r.data[0];
-        vm.pareaList = vm.Rectification.Children;
-        vm.regionSelect = vm.pareaList[0];
-        vm.warter = vm.regionSelect.RegionName + (vm.AcceptanceItemName ? '(' + vm.AcceptanceItemName + ')' : "");
-        vm.regionSelect.hasCheck = true;
-      });
 
-      vm.info = {}
-      function load() {
-        if (!vm.regionSelect) {
-          return;
+    remote.safe.getRectifications.cfgSet({
+      offline:true,
+      filter:function (item) {
+        return item.InspectionExtendID==vm.InspectionID;
+      }
+    })("WeekInspects").then(function (r) {
+      var bacth=angular.isArray(r.data)?r.data[0]:null;
+      vm.pareaList=[];
+      if (bacth){
+        bacth.Rectifications.forEach(function (k) {
+            if (k.Children){
+              k.Children.forEach(function (m) {
+                if (!vm.pareaList.some(function (z) {
+                    return z.AreaID==m.AreaID;
+                  }))
+                vm.pareaList.push(m);
+              })
+            }
+        });
+        if (vm.pareaList.length>0){
+          vm.regionSelect = vm.pareaList[0];
+          vm.regionSelect.hasCheck = true;
+          vm.AcceptanceItemName=vm.regionSelect.AcceptanceItemName;
+          vm.warter = vm.regionSelect.RegionName + bacth.Describe;;
         }
       }
+    });
+
+    api.setNetwork(1).then(function () {
+
+      vm.info = {}
+
       vm.selectQy = function (item) {
         vm.regionSelect = item;
         vm.regionSelect.hasCheck = true;
-        vm.warter = vm.regionSelect.RegionName + (vm.AcceptanceItemName ? '(' + vm.AcceptanceItemName + ')' : "");
+        vm.AcceptanceItemID=item.AcceptanceItemID;
+        vm.AcceptanceItemName=item.AcceptanceItemName;
         vm.qyslideShow = false;
       }
       vm.qyslide = function () {

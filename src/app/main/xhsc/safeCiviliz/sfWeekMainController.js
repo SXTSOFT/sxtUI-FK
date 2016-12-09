@@ -241,28 +241,49 @@
             controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
               $scope.item = item;
               var t = [];
-              if (!item.Children) {
-                t = t.concat(projectTask(item.ProjectID, item.Children, item.AcceptanceItemID));
-              } else {
-                item.Children.forEach(function (o) {
+              item.Rectifications.forEach(function (k) {
+                k.Children.forEach(function (o) {
                   t = t.concat(projectTask(o.AreaID, [o], o.AcceptanceItemID));
                 });
+              });
+              function getRectificationTask() {
+                var  task=[];
+                var rectification=item.Rectifications;
+                rectification.forEach(function (item) {
+                  task=task.concat(rectificationTask(item)).concat([
+                    function (tasks) {
+                      return $q(function (v, m) {
+                        item.Children.forEach(function (area) {
+                          tasks.push(
+                            function () {
+                              return remote.safe.getSafePointGeo(item.InspectionID, item.AcceptanceItemID, area.AreaID)
+                            }
+                          );
+                        })
+                        v();
+                      })
+                    }
+                  ]);
+                })
+                return task;
               }
+
               var tasks = [].concat(globalTask)
                 .concat(t)
-                .concat(rectificationTask(item))
-                .concat(function (tasks) {
-                  return $q(function (v, m) {
-                    item.Children.forEach(function (area) {
-                      tasks.push(
-                        function () {
-                          return remote.safe.getSafePointGeo(item.InspectionID, item.AcceptanceItemID, area.AreaID)
-                        }
-                      );
-                    })
-                    v();
-                  })
-                })
+                // .concat(rectificationTask(item))
+                // .concat(function (tasks) {
+                //   return $q(function (v, m) {
+                //     item.Children.forEach(function (area) {
+                //       tasks.push(
+                //         function () {
+                //           return remote.safe.getSafePointGeo(item.InspectionID, item.AcceptanceItemID, area.AreaID)
+                //         }
+                //       );
+                //     })
+                //     v();
+                //   })
+                // })
+                .concat(getRectificationTask())
                 .concat(function () {
                   return remote.offline.create({Id: 'weekZg' + item.RectificationID});
                 });
@@ -524,10 +545,7 @@
           api.setNetwork(1).then(function () {
             $state.go('app.xhsc.week.sfWeekRectify', {
               Role: 'zb',
-              InspectionID: item.InspectionID,
-              AcceptanceItemID: item.AcceptanceItemID,
-              RectificationID: item.RectificationID,
-              AcceptanceItemName: item.AcceptanceItemName
+              InspectionID: item.InspectionExtendID
             });
           });
         })
@@ -535,10 +553,7 @@
         api.setNetwork(1).then(function () {
           $state.go('app.xhsc.week.sfWeekRectify', {
             Role: 'zb',
-            InspectionID: item.InspectionID,
-            AcceptanceItemID: item.AcceptanceItemID,
-            RectificationID: item.RectificationID,
-            AcceptanceItemName: item.AcceptanceItemName
+            InspectionID: item.InspectionExtendID
           });
         });
       }

@@ -14,8 +14,6 @@
       scope:{
         item:'=sxtSafeRecheck',
         sxtMapShow:'=',
-        items:'=',
-        procedure:'=',
         regionId:'=',
         inspectionId:'=',
         disableInspect:'=',
@@ -67,7 +65,7 @@
               $q.all([
                 remote.safe.weekPointQuery.cfgSet({
                   filter:function (item,inspectionId) {
-                    return  item.AreaID==AreaID&&item.InspectionExtendID==inspectionId;
+                    return  item.AreaID==scope.regionId&&item.InspectionExtendID==inspectionId;
                   }
                 })(scope.inspectionId),
                 remote.safe.getSafePointGeo()
@@ -107,7 +105,6 @@
                 scope.sxtMapShow = true;
                 edit.scope.context = fg;
                 edit.scope.data = {
-                  item: scope.item,
                   value: layer.properties.v
                 }
                 edit.scope.apply && edit.scope.apply();
@@ -163,7 +160,7 @@
       };
       $timeout(function () {
         scope.$watch('regionId', function () {
-          if(scope.regionId && scope.procedure) {
+          if(scope.regionId) {
             if(map){
               map.remove();
               map = null;
