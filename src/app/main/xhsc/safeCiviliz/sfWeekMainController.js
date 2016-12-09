@@ -270,19 +270,6 @@
 
               var tasks = [].concat(globalTask)
                 .concat(t)
-                // .concat(rectificationTask(item))
-                // .concat(function (tasks) {
-                //   return $q(function (v, m) {
-                //     item.Children.forEach(function (area) {
-                //       tasks.push(
-                //         function () {
-                //           return remote.safe.getSafePointGeo(item.InspectionID, item.AcceptanceItemID, area.AreaID)
-                //         }
-                //       );
-                //     })
-                //     v();
-                //   })
-                // })
                 .concat(getRectificationTask())
                 .concat(function () {
                   return remote.offline.create({Id: 'weekZg' + item.RectificationID});
@@ -476,7 +463,28 @@
       });
     }
     function loadZgLst() {
-      return remote.safe.getRectifications("WeekInspects").then(function (r) {
+      $q(function (resolve,reject) {
+        if (vm.role||vm.role===0){
+          ret(vm.role).then(function (r) {
+            resolve(r);
+          });
+        }else {
+          xhscService.getProfile().then(function (profile) {
+            vm.role = profile.role;
+            return ret(vm.role);
+          }).then(function (r) {
+            resolve(r)
+          })
+        }
+      })
+      function ret(role) {
+        var params="";
+        if (vm.role==2||vm.role=="2"){
+           params="jl";
+        }else {
+          params="zb";
+        }
+        return remote.safe.getRectifications("WeekInspects",params).then(function (r) {
           vm.zglist = [];
           if (angular.isArray(r.data)) {
             var zg = [];
@@ -496,7 +504,9 @@
               vm.zglist = zg;
             })
           }
-      })
+        })
+      }
+
     }
     function load() {
       $q.all([
@@ -564,9 +574,7 @@
           api.setNetwork(1).then(function () {
             $state.go('app.xhsc.week.sfWeekRectify', {
               Role: 'jl',
-              InspectionID: item.InspectionID,
-              AcceptanceItemID: item.AcceptanceItemID,
-              RectificationID: item.RectificationID
+              InspectionID: item.InspectionExtendID
             })
           });
         })
@@ -574,9 +582,7 @@
         api.setNetwork(1).then(function () {
           $state.go('app.xhsc.week.sfWeekRectify', {
             Role: 'jl',
-            InspectionID: item.InspectionID,
-            AcceptanceItemID: item.AcceptanceItemID,
-            RectificationID: item.RectificationID
+            InspectionID: item.InspectionExtendID
           })
         });
       }

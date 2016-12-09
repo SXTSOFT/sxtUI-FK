@@ -92,8 +92,11 @@
           var rec="";
           remote.safe.weekproblemRecordQuery.cfgSet({
             filter: function (item, CheckpointID) {
-              rec=rec?rec:item.RectificationID
-              return item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="zb";
+              var t=item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="zb";
+              if (t){
+                rec=rec?rec:item.RectificationID;
+              }
+              return t;
             },
           })(scope.data.value.CheckpointID).then(function (r) {
             if (!r||!r.data||!r.data.length){
@@ -175,8 +178,11 @@
             var rec="";
             remote.safe.weekproblemRecordQuery.cfgSet({
               filter: function (item, CheckpointID) {
-                rec=rec?rec:item.RectificationID;
-                return item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="jl";
+                var t=item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="jl";
+                if (t){
+                  rec=rec?rec:item.RectificationID;
+                }
+                return t;
               },
             })(scope.data.value.CheckpointID).then(function (r) {
               if (!r||!r.data||!r.data.length){

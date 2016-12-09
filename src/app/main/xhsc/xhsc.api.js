@@ -1885,7 +1885,7 @@
               if (r&&angular.isArray(r.data)){
                 var batchs=r.data;
                 batchs.forEach(function (k) {
-                    if (!role&&Array.isArray(k.Rectifications)){
+                    if (!role&&role=="zb"&&Array.isArray(k.Rectifications)){
                       k.Rectifications= k.Rectifications.filter(function (o) {
                         return o.Status==1||o.Status==8;
                       });
