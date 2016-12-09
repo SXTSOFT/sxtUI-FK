@@ -30,7 +30,15 @@
         vm.data._DurationType = vm.data.DurationType;
         vm.data.DurationType == 0?vm.data.DurationType ='FixedDuration':vm.data.DurationType= 'VariableDuration';
         vm.loading= false;
+        task.Master = [{
+          root:true,
+          TaskFlowId:id,
+          Name:task.Name
+        }].concat(task.Master);
+
         task.Master.forEach(function (flow) {
+          if(flow.ParentId===0)
+            flow.ParentId=id;
           if(flow.Description)
             angular.extend(flow,angular.fromJson(flow.Description));
           //单项任务名改变时取值
@@ -57,6 +65,8 @@
         });
         task.Branch.forEach(function (b) {
           b.forEach(function (flow) {
+            if(flow.ParentId===0)
+              flow.ParentId=id;
             if(flow.Description)
               angular.extend(flow,angular.fromJson(flow.Description));
             if(flow.OptionalTask){
@@ -110,13 +120,15 @@
         .targetEvent(ev)
         .ok('确定')
         .cancel('取消');
+      if(temp.task.Master.length===1)
+        isBranch =false;
 
       return $mdDialog.show(confirm).then(function(result) {
         var next = {
           TaskLibraryId: id,
           IsFloor: false,
           Type: isBranch ? temp.task.Branch.length+1 : flow ? flow.line : 0,
-          ParentId: flow ? flow.TaskFlowId : 0,
+          ParentId: flow && flow.TaskFlowId!=id ? flow.TaskFlowId : 0,
           Name: result
         };
         return api.plan.TaskFlow.post(
@@ -610,15 +622,12 @@
                 vm.data.CloseRelatedObjectId = null;
                 flow.MeasureInfo = null;
                 flow.MeasureId = null;
-
             }
           }
           vm.clrChoose = function(){
             vm.current = null;
             vm.gxName = '';
             vm.data.CloseRelatedObjectId = null;
-            flow.MeasureInfo = null;
-            flow.MeasureId = null;
           }
           vm.stop = function(ev){
             ev.stopPropagation();
@@ -627,11 +636,16 @@
             vm.current = item;
             vm.data.CloseRelatedObjectId = item.AcceptanceItemID;
             vm.gxName = item.AcceptanceItemName;
-            flow.MeasureInfo = item.AcceptanceItemName;
-            flow.MeasureId = item.AcceptanceItemID;
           }
           vm.select = function(){
             vm.data.CloseRelatedObjectType = 'Inspection';
+            if(vm.current){
+              flow.MeasureInfo = vm.current.AcceptanceItemName;
+              flow.MeasureId = vm.current.AcceptanceItemID;
+            }else{
+              flow.MeasureInfo = null;
+              flow.MeasureId = null;
+            }
             $mdDialog.hide(vm.data);
           }
         }],

@@ -152,9 +152,9 @@
       var groups = [],lines = [],times=[];
       this.line = fillTask(groups,lines,0,task);
       groups.forEach(function (g) {
-        if(!g.ParentId){
+        //if(!g.ParentId){
           appendRoot(times,groups,lines,g);
-        }
+        //}
       });
       this.times = times;
       this.render();
