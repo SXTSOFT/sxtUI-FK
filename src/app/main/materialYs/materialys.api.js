@@ -59,11 +59,14 @@
         getMaterialPlanBatchById:function (id) {
           return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanBatchById?id='+id));
         },
-        GetMaterialPlanBatchByPlanId:function (planId) {
-          return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanBatchByPlanId?planId='+planId));
-        },
-        GetExcessMaterialExitByPlanId:function (planId) {
-            return $http.get($http.url('/api/MaterialPlan/GetExcessMaterialExitAsync?planId='+planId));
+        // GetMaterialPlanBatchByPlanId:function (planId) {
+        //   return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanBatchByPlanId?planId='+planId));
+        // },
+        // GetExcessMaterialExitByPlanId:function (planId) {
+        //     return $http.get($http.url('/api/MaterialPlan/GetExcessMaterialExitAsync?planId='+planId));
+        // },
+        GetMaterialPlanInfolById:function (id) {
+          return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanInfolById/'+id));
         },
         PostCheckInfo: $http.db({
           _id: 'materialPlanCheckInfo',

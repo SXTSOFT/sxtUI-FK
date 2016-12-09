@@ -1,53 +1,63 @@
 <div ng-cloak>
   <md-content style="font-size: 1.1em;">
     <md-tabs md-dynamic-height md-border-bottom>
-      <md-tab label="批次 {{$index+1}}" ng-repeat="item in vm.data.BatchList">
+      <md-tab label="材料计划信息">
         <md-content class="md-padding">
           <md-list flex style="padding-top: 0;">
             <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">材料计划信息</div>
             <md-list-item>
               <p flex="15">计划名称：</p>
-              <p>{{item.PlanName}}</p>
+              <p>{{vm.data.PlanModel.PlanDetail.PlanName}}</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">材料/设备名称：</p>
-              <p>{{item.MaterialName}}</p>
+              <p>{{vm.data.PlanModel.PlanDetail.MaterialName}}</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">规格：</p>
-              <p>{{item.Specifications}}</p>
+              <p>{{vm.data.PlanModel.PlanDetail.Specifications}}</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">型号：</p>
-              <p>{{item.Model}}</p>
+              <p>{{vm.data.PlanModel.PlanDetail.Model}}</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">厂家/品牌：</p>
-              <p>{{item.Brand}}</p>
+              <p>{{vm.data.PlanModel.PlanDetail.Brands}}</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">计划进场时间：</p>
-              <p>{{item.PlanTime | date:'yyyy-MM-dd'}}</p>
+              <p>{{vm.data.PlanModel.PlanDetail.PlanTime | date:'yyyy-MM-dd'}}</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">计划进场数量：</p>
-              <p>{{item.PlanCount + item.Unit}}</p>
+              <p>{{vm.data.PlanModel.PlanDetail.PlanCount + vm.data.PlanDetail.Unit}}</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">使用部位：</p>
-              <p>{{item.Position}}</p>
+              <p>{{vm.data.PlanModel.PlanDetail.Position}}</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">合同编号：</p>
-              <p>{{item.Contract}}</p>
+              <p>{{vm.data.PlanModel.PlanDetail.Contract}}</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">供货方式：</p>
-              <p ng-if="item.SupplyType == 1">甲供</p>
-              <p ng-if="item.SupplyType == 2">认质认价</p>
-              <p ng-if="item.SupplyType == 4">甲指乙供</p>
+              <p ng-if="vm.data.PlanModel.PlanDetail.SupplyType == 1">甲供</p>
+              <p ng-if="vm.data.PlanModel.PlanDetail.SupplyType == 2">认质认价</p>
+              <p ng-if="vm.data.PlanModel.PlanDetail.SupplyType == 4">甲指乙供</p>
+            </md-list-item>
+            <md-list-item>
+              <p flex="15">计划状态：</p>
+              <p ng-if="vm.data.PlanModel.PlanDetail.Status == 1">未进场</p>
+              <p ng-if="vm.data.PlanModel.PlanDetail.Status == 2">未验收</p>
+              <p ng-if="vm.data.PlanModel.PlanDetail.Status == 4">已关闭</p>
             </md-list-item>
           </md-list>
+        </md-content>
+      </md-tab>
+      <md-tab label="批次 {{$index+1}}" ng-repeat="item in vm.data.PlanModel.PlanBatchDetail">
+        <md-content class="md-padding">
           <md-list ng-hide="item.ApproachTime == null">
             <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">材料进场信息</div>
             <md-list-item>
@@ -263,9 +273,9 @@
           </md-list>
         </md-content>
       </md-tab>
-      <md-tab label="多余材料退场" ng-if="vm.data.BatchExitList.length>0">
+      <md-tab label="多余材料退场" ng-if="vm.data.PlanModel.PlanBatchExit.length>0">
         <md-content class="md-padding">
-          <md-list  ng-repeat="item in vm.data.BatchExitList">
+          <md-list  ng-repeat="item in vm.data.PlanModel.PlanBatchExit">
             <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">多余材料退场批次 {{$index+1}}</div>
             <md-list-item>
               <p flex="15">退场数量：</p>
