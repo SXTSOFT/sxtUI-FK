@@ -3,7 +3,7 @@
       md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
 </md-progress-circular>
  <md-list class="applicationPage"  layout="row" ng-if="vm.loaded" layout-wrap>
-    <md-list-item  flex-xs="33" flex-gt-xs="25" layout="row" layout-align="center center" ng-repeat="item in vm.yw">
+    <md-list-item  flex-xs="33" flex-gt-xs="25" layout="row" ng-if="item.right" layout-align="center center" ng-repeat="item in vm.yw">
       <span flex></span>
       <a  ng-click="vm.click(item)" style="text-decoration: none;color: black;margin-bottom: 12px" layout="column" layout-align="start center">
         <img ng-src="{{item.img}}"/>
