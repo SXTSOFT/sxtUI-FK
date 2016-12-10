@@ -232,6 +232,19 @@ md-calendar{
     color:rgb(245,245,245);
   }
 }
-table.simple.p6 tbody tr td{
-  padding:4px;
+table{
+  &.simple{
+    &.td-p4{
+      tbody{
+        tr{
+          td{
+            padding:4px;
+          }
+        }
+      }
+    }
+  }
 }
+//table.simple.p4 tbody tr td{
+//  padding:4px;
+//}
