@@ -181,6 +181,7 @@
           vm.load().then(function(){
             $timeout(function(){
               $mdDialog.hide();
+              vm.api.tree.collapseAll()
             })
           });
           objectModel = new GanttObjectModel(vm.api);
@@ -329,7 +330,51 @@
 
       return 40 * zoom;
     }
-
+    //合并
+    function mergeFloor(data){
+      var array =[];
+      data.forEach(function(r){
+        if(!r.FloorType) return;
+        var f = array.find(function(_r){
+          return _r.FloorType == r.FloorType;
+        })
+        if(!f){
+          var name = setName(r);
+          array.push({
+            name: name,
+            Dependencies:r.Dependencies,
+            id:r.Id,
+            FloorType: r.FloorType,
+            children:[r.Name]
+          })
+        }else{
+          //var name = setName(r);
+          f.children.push(r.Name)
+        }
+      })
+      return array;
+    }
+    function setName(r){
+      var str = '';
+      switch (r.FloorType){
+        case "1":
+          str='预售前标准楼层';
+          break;
+        case "2":
+          str='地下室';
+              break;
+        case "4":
+          str='裙楼';
+          break;
+        case "8":
+          str='转换层';
+          break;
+        case "9":
+          str='预售后楼层';
+          break;
+      }
+      return str;
+    }
     // Reload data action
     function load()
     {
@@ -338,11 +383,27 @@
         Source:$stateParams.id
       }).then(function (rs) {
         vm.originData = rs.data;
+         //rs.data.Items.forEach(function(r){
+         //  if(r.floorType){
+         //    switch (i){
+         //      case 0:
+         //        r.children= rs.data.Items.filter(function(_r){
+         //          return _r.floorType == 0;
+         //        })
+         //    }
+         //  }
+         //})
+         var mergedata = mergeFloor(rs.data.Items);
+          console.log(mergedata)
+         //mergedata&&mergedata.forEach(function(r){
+         //  rs.data.Items.push(r)
+         //});
+
         vm.data = rs.data.Items.filter(function (item) {
           return !item.ExtendedParameters;
         }).map(function (item) {
-          var sdate = moment(item.ScheduledStartTime).startOf('day');
-          var edate = moment(item.ScheduledEndTime).endOf('day');
+          var sdate = moment(item.ScheduledStartTime&&item.ScheduledStartTime).startOf('day');
+          var edate = moment(item.ScheduledEndTime&&item.ScheduledEndTime).endOf('day');
           if(item.Description)
             angular.extend(item,angular.fromJson(item.Description));
           var result = {
@@ -352,6 +413,7 @@
               item.IsInterlude?"md-light-blue-100-bg":""
             ],
             //parent:'__',
+            // children:item.children&&item.children.length?item.children:[],
             tasks:[
               {
                 id:item.Id,
@@ -378,9 +440,24 @@
           {
            return angular.extend(result,{parent:item.ExtendedParameters+'-group'})
           }*/
+
+          //result = mergedata.concat(result)
           return result;
         });
-        vm.isStarted = vm.data[0].tasks[0].isStarted;
+         mergedata.forEach(function(r){
+           var f = vm.data.find(function(_r){
+             return _r.id == r.id+'-group'
+           })
+           if(f){
+             var idx = vm.data.indexOf(f);
+             if(idx>-1){
+               vm.data.splice(idx,0,r);
+             }
+           }
+         })
+        // vm.data = mergedata.concat(vm.data)
+         console.log(vm.data)
+       // vm.isStarted = vm.data[0].tasks[0].isStarted;
       })
       // Fix for Angular-gantt-chart issue
       $animate.enabled(true);
