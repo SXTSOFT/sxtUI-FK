@@ -383,21 +383,8 @@
         Source:$stateParams.id
       }).then(function (rs) {
         vm.originData = rs.data;
-         //rs.data.Items.forEach(function(r){
-         //  if(r.floorType){
-         //    switch (i){
-         //      case 0:
-         //        r.children= rs.data.Items.filter(function(_r){
-         //          return _r.floorType == 0;
-         //        })
-         //    }
-         //  }
-         //})
+
          var mergedata = mergeFloor(rs.data.Items);
-          console.log(mergedata)
-         //mergedata&&mergedata.forEach(function(r){
-         //  rs.data.Items.push(r)
-         //});
 
         vm.data = rs.data.Items.filter(function (item) {
           return !item.ExtendedParameters;
