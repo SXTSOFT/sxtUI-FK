@@ -173,7 +173,7 @@
                             if(layer.options.yj){
                               el.find('.yj').prop('disabled',false);
                             }
-                            if(layer.options.dx){
+                            if(layer.options.zj){
                               el.find('.zj').prop('disabled',false);
                             }
                             if(layer.options.dx){

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Created by leshuangshuang on 16/4/15.
  */
 (function() {
@@ -11,7 +11,7 @@
 
   function versionUpdate($mdDialog, $window,$http ,sxt) {
 
-    var version = '1.9.16.10',versionOld = version;
+    var version = '1.9.16.12',versionOld = version;
     this.version = version;
     var self = this;
     function versionToNumber(version) {
@@ -41,8 +41,8 @@
               .cancel('暂不更新');
             $mdDialog.show(confirm).then(function () {
               var u = $window.navigator.userAgent;
-              var isAndroid = u.indexOf('Android') > -1 //|| u.indexOf('Linux') > -1; //android终端或者uc浏览器
-              var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+              var isAndroid = u.indexOf('Android') > -1;
+              var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
               if (isAndroid) {
                 window.location.replace("https://m.vanke.com/pcStore/detailsPhone/vkappcan10102_1");
               }

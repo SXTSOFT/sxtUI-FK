@@ -133,8 +133,8 @@
               });
             }
           });
-        }
-        //scope.$watch('value', ran);
+        };
+        scope.$watch('value', ran);
         scope.$watch('value.zy',ran);
       }
     }
