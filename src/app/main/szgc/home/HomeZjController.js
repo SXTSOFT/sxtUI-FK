@@ -6,41 +6,34 @@
     .controller('HomeZjController', HomeYjController);
 
   /** @ngInject */
-  function HomeYjController(zj,$q,api,$scope)
+  function HomeYjController(zj,$q,api,$scope,$mdDialog)
   {
     var vm = this;
     vm.isE = function (b) {
-      return !vm.areas ||( b?vm.yj==vm.areas[0]:vm.yj==vm.areas[vm.areas.length-1]);
-    };
-    vm.next = function (b) {
-      var n= vm.areas.indexOf(vm.yj);
-      if(n!=-1){
-        if(b)
-          vm.setYj(vm.areas[n+1]);
-        else
-          vm.setYj(vm.areas[n-1]);
-      }
+      return !vm.areas ||(b?vm.yj==vm.areas[0]:vm.yj==vm.areas[vm.areas.length-1]);
     };
     vm.setP = function (p) {
       vm.currentP = p;
       vm.currentD = null;
       vm.filter();
       vm.context.render(vm.yj.items);
-      $scope.$apply();
     };
     vm.context = {
       onLayerClick:function (layer) {
-        vm.currentD = layer.data;
+        if(vm.currentD == layer.data){
+          vm.currentD = null;
+        }
+        else {
+          vm.currentD = layer.data;
+        }
         vm.filter();
-        vm.context.render(vm.yj.items.filter(function (item) {
-          return item.Id == layer.data.Id;
-        }));
+        vm.context.render(vm.yj.items);
         $scope.$apply();
       },
       onOptions:function (options) {
         var c1 = 'rgba(225,225,225)';
-        var rs = vm.rows.filter(function (item) {
-          return item.RegionId==options.id;
+        var rs = vm.results.filter(function (item) {
+          return item.RegionId==options.id && (!vm.currentP || vm.currentP.id==item.ProcedureId);
         });
         if(rs.find(function (item) {
             return !!item.ZbDate && !!item.JLDate;
@@ -57,12 +50,14 @@
           })){
           c1 = 'rgb(44, 157, 251)'
         }
-
         options = options||{};
         options.color = c1;
+        if(vm.currentD && options.id == vm.currentD.Id){
+          options.fillOpacity = 0.8;
+        }
         options.textColor = rs.find(function (item) {
           return item.JLDate && ((item.JLLast!=0 && item.JLLast>=80) ||(item.JLFirst!=0 &&item.JLFirst>=80))
-        })?'red':undefined;
+        })?'red':'black';
         return options;
       }
     };
@@ -131,6 +126,24 @@
         return (!vm.currentP || vm.currentP.id==item.ProcedureId)
           &&(!vm.currentD || vm.currentD.Id==item.RegionId)
       })
+    }
+
+    vm.openView = function (batch) {
+      $mdDialog.show({
+        locals: {
+          $stateParams: batch
+        },
+        controller: 'viewBathDetailController as vm',
+        templateUrl: 'app/main/szgc/report/viewBathDetail-app-dlg.html',
+        parent: angular.element(document.body),
+        clickOutsideToClose: true,
+        fullscreen: true
+      })
+        .then(function (answer) {
+
+        }, function () {
+
+        });
     }
   }
 
