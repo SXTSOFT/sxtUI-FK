@@ -1,15 +1,22 @@
-.applicationPage1{
+.applicationPage{
   img{
     height: 70px;
     width: 70px;
   }
   a{
     text-decoration: none;
-    color: black;
+    color: black !important;
     margin-bottom: 12px;
     width: 100%;
   }
-  .wrap{
+  .subtitle{
+    background-color: whitesmoke;
+    margin: 0px 0px;
+    padding: 0px 2%;
+    height: 46px;
+    line-height: 46px;
+  }
+  .clear{
     clear: both;
   }
   .fl{
@@ -18,14 +25,18 @@
 
 }
 @media screen and (max-width: 600px){
-  .applicationPage1{
+  .applicationPage{
     .fl{
       width: 33%;
+    }
+    .subtitle{
+      height: 28px;
+      line-height: 28px;
     }
   }
 }
 @media screen and (min-width: 600px) {
-  .applicationPage1{
+  .applicationPage{
     .fl{
       width: 25%;
     }
