@@ -18,7 +18,7 @@
     vm.role = $state.params.Role;
     vm.InspectionID = $state.params.InspectionID;
 
-    remote.safe.getRectifications.cfgSet({
+    remote.safe.getRectificationsWrap.cfgSet({
       offline:true,
       filter:function (item) {
         return item.InspectionExtendID==vm.InspectionID;

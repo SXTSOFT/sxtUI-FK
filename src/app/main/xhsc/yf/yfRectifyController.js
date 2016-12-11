@@ -18,24 +18,24 @@
     vm.role = $state.params.Role;
     vm.InspectionID = $state.params.InspectionID;
 
-    remote.safe.getRectifications.cfgSet({
+    remote.safe.getRectificationsWrap.cfgSet({
       offline:true,
       filter:function (item) {
         return item.InspectionExtendID==vm.InspectionID;
       }
-    })("WeekInspects").then(function (r) {
+    })("house").then(function (r) {
       var bacth=angular.isArray(r.data)?r.data[0]:null;
       vm.pareaList=[];
       if (bacth){
         bacth.Rectifications.forEach(function (k) {
-            if (k.Children){
-              k.Children.forEach(function (m) {
-                if (!vm.pareaList.some(function (z) {
-                    return z.AreaID==m.AreaID;
-                  }))
+          if (k.Children){
+            k.Children.forEach(function (m) {
+              if (!vm.pareaList.some(function (z) {
+                  return z.AreaID==m.AreaID;
+                }))
                 vm.pareaList.push(m);
-              })
-            }
+            })
+          }
         });
         if (vm.pareaList.length>0){
           vm.regionSelect = vm.pareaList[0];
@@ -73,7 +73,7 @@
           return;
         };
         utils.alert('提交成功，请稍后离线上传数据',null,function () {
-          $state.go("app.xhsc.week.sfWeekMain");
+          $state.go("app.xhsc.yf.Main");
         });
       });
 
