@@ -28,39 +28,25 @@
     <tr>
       <th style="min-width: 60px;padding-left: 12px;">序号</th>
       <th>计划名称</th>
-      <th>材料/设备名称</th>
-      <th>型号</th>
-      <th>规格</th>
+      <!--<th>材料/设备名称</th>-->
+      <!--<th>型号</th>-->
+      <!--<th>规格</th>-->
       <th>进场计划时间</th>
       <th style="text-align: center;">进场计划数量</th>
       <th>使用部位</th>
       <th>合同编号</th>
       <th style="min-width: 80px;">供货方式</th>
       <th style="min-width: 70px;">状态</th>
-      <!--<th>进场时间</th>-->
-      <!--<th>进场数量</th>-->
-      <!--<th>厂家/品牌</th>-->
-      <!--<th>供货方</th>-->
-      <!--<th>有无封样</th>-->
-      <!--<th>检查人</th>-->
-      <!--<th>进场照片</th>-->
-      <!--<th>验收时间</th>-->
-      <!--<th>验收照片</th>-->
-      <!--<th>现场检查</th>-->
-      <!--<th>验收人</th>-->
-      <!--<th>是否送检</th>-->
-      <!--<th></th>-->
-      <!--<th></th>-->
-      <th style="width: 200px;"><span class="pl-16">管理</span></th>
+      <th style="width: 150px; text-align: center;"><span class="pl-16">管理</span></th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="item in vm.data">
       <td ng-bind="$index+1" style="min-width: 60px;">1</td>
       <td>{{item.PlanName}}</td>
-      <td>{{item.MaterialName}}</td>
-      <td>{{item.Model}}</td>
-      <td>{{item.Specifications}}</td>
+      <!--<td>{{item.MaterialName}}</td>-->
+      <!--<td>{{item.Model}}</td>-->
+      <!--<td>{{item.Specifications}}</td>-->
       <td>{{item.PlanTime | date:'yyyy-MM-dd'}}</td>
       <td style="text-align: center;">{{item.PlanCount + item.Unit}}</td>
       <td>{{item.Position}}</td>
@@ -78,14 +64,13 @@
         <label ng-if="item.Status == 4">已关闭</label>
       </td>
       <td class="actions">
-        <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.plan({id:item.Id})"
-                   ng-hide="item.Status!=1">
+        <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.plan({id:item.Id})" ng-hide="item.Status!=1" style="margin: 0;">
           <md-icon md-font-icon="icon-pencil" class="icon s24"></md-icon>
         </md-button>
-        <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.delete(item.Id)" ng-hide="item.Status!=1">
+        <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.delete(item.Id)" ng-hide="item.Status!=1" style="margin: 0;">
           <md-icon md-font-icon="icon-delete" class="icon s24"></md-icon>
         </md-button>
-        <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.batchDetail({planId:item.Id})">
+        <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.batchDetail({planId:item.Id})" style="margin: 0;">
           <md-icon md-font-icon="icon-document" class="icon s24"></md-icon>
         </md-button>
       </td>
