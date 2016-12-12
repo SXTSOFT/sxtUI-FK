@@ -91,6 +91,16 @@ table{
         }
       }
     }
+    //&.gantable{
+    //  tbody{
+    //    tr{
+    //      height: 44px;
+    //      td{
+    //        padding:4px;
+    //      }
+    //    }
+    //  }
+    //}
   }
 }
 #gantt-chart .centera .content-card .content .gantt .gantt-row-label .gantt-valign-content span.gantt-label-text{
@@ -232,19 +242,4 @@ md-calendar{
     color:rgb(245,245,245);
   }
 }
-table{
-  &.simple{
-    &.td-p4{
-      tbody{
-        tr{
-          td{
-            padding:4px;
-          }
-        }
-      }
-    }
-  }
-}
-//table.simple.p4 tbody tr td{
-//  padding:4px;
-//}
+

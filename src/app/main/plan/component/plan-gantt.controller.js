@@ -389,8 +389,8 @@
         vm.data = rs.data.Items.filter(function (item) {
           return !item.ExtendedParameters;
         }).map(function (item) {
-          var sdate = moment(item.ScheduledStartTime&&item.ScheduledStartTime).startOf('day');
-          var edate = moment(item.ScheduledEndTime&&item.ScheduledEndTime).endOf('day');
+          //var sdate = moment(item.ScheduledStartTime&&item.ScheduledStartTime).startOf('day');
+          //var edate = moment(item.ScheduledEndTime&&item.ScheduledEndTime).endOf('day');
           if(item.Description)
             angular.extend(item,angular.fromJson(item.Description));
           var result = {
@@ -413,7 +413,7 @@
                 classes: [
                   item.IsInterlude?"md-light-blue-100-bg":""
                 ],
-                duration:edate.diff(sdate,'d'),
+                //duration:edate.diff(sdate,'d'),
                 isType:item.Type,
                 dependencies:item.Dependencies.map(function (d) {
                   return {

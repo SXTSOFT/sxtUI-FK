@@ -37,8 +37,11 @@
     vm.Delete = function(item){
       utils.confirm('确定删除',null).then(function(){
         api.plan.BuildPlan.deleteBuildPlan(item.Id).then(function(r){
-          load();
-
+          utils.alert('删除成功').then(function(){
+            load();
+          })
+        },function(err){
+          utils.alert(err.data||'删除失败')
         })
       })
 
