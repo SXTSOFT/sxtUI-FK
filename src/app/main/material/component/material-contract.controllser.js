@@ -10,14 +10,16 @@
       templateUrl:'app/main/material/component/material-contract.html',
       controller:materialContract,
       controllerAs:'vm'
-    });
+    })
 
   /** @ngInject */
-  function materialContract($scope,api,utils,$q,$stateParams,$state,$element){
+  function materialContract($scope,api,utils,$q,$stateParams,$state,$element,sxt){
     var vm = this;
     vm.projects = [];
     vm.data = {};
     vm.data.Id = $stateParams.id;
+    // vm.data.ContractRelations = [];
+    vm.MaterialIds = [];
 
     $q.all([
       api.material.contract.getSysOrgOU(),
@@ -31,8 +33,14 @@
     if(vm.data.Id){
       api.material.contract.getById(vm.data.Id).then(function (r) {
         vm.data = r.data;
-      })
+        vm.MaterialIds = vm.data.MaterialTypeId.split(',');
+        // vm.data.ContractRelations.forEach(function (r) {
+        //   vm.MaterialIds.push(r.MaterialId);
+        // });
+      });
     }
+
+    vm.fruitNames =[ 'aaa','bb'];
 
     vm.searchTerm;
     vm.clearSearchTerm = function() {
@@ -45,13 +53,40 @@
 
     vm.save = function () {
       if ($scope.myForm.$valid) {
-        if(vm.data.Id){
+        vm.data.MaterialTypeId =JSON.stringify(vm.MaterialIds).replace('[','').replace(']','');
+        // if(vm.MaterialIds && vm.MaterialIds.length>0){
+        //   if (vm.data.ContractRelations.length > 0) {
+        //     var arrs = [];
+        //     vm.MaterialIds.forEach(function (r) {
+        //       var flag = false;
+        //       vm.data.ContractRelations.forEach(function (q){
+        //         if (r == q.MaterialId) {
+        //           arrs.push(q);
+        //           flag=true;
+        //           return;
+        //         }
+        //       });
+        //       if (!flag){
+        //         arrs.push({'Id':0,'MaterialId':r});
+        //       }
+        //     });
+        //     vm.data.ContractRelations = arrs;
+        //   } else {
+        //     vm.data.ContractRelations = [];
+        //     vm.MaterialIds.forEach(function (r) {
+        //       vm.data.ContractRelations.push({'MaterialId':r});
+        //     });
+        //     console.log(vm.data.ContractRelations)
+        //   }
+        // }
+
+        if (vm.data.Id) {
           api.material.contract.update(vm.data).then(function () {
             utils.alert("提交成功", null, function () {
               $state.go("app.material.contracts");
             });
           });
-        }else{
+        } else {
           api.material.contract.create(vm.data).then(function () {
             utils.alert("提交成功",null,function(){
               $state.go("app.material.contracts");
@@ -60,6 +95,6 @@
         }
       }
     }
-  }
 
+  }
 })(angular,undefined);
