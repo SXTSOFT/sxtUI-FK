@@ -34,7 +34,7 @@
             </tr>
             </thead>
             <tr ng-repeat="flow in vm.flows track by flow.TaskFlowId" style="height:44px;">
-              <td ng-style="{'padding-left':(10+(flow.line===0?0:1)*12)+'px'}">
+              <td ng-style="{'padding-left':(10+(flow.line===0?0:1)*12)+'px'}" style="white-space: nowrap;">
                 {{$index+1}}、<input type="text" ng-blur="vm.updateFlowName(flow)"  ng-model="flow.Name">
               </td>
               <td>

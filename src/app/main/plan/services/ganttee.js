@@ -11,7 +11,8 @@
 
       this.from = undefined;
       this.to = undefined;
-      this.duration = model.tasks&&model.tasks[0].duration;
+      this.duration = undefined;
+      //this.duration = model.tasks&&model.tasks[0].duration;
 
       this.tasksMap = {};
       this.tasks = [];
@@ -175,6 +176,7 @@
     Row.prototype.removeAllTasks = function() {
       this.from = undefined;
       this.to = undefined;
+      this.duration = undefined;
 
       this.tasksMap = {};
       this.tasks = [];
@@ -186,6 +188,8 @@
     Row.prototype.setFromTo = function() {
       this.from = undefined;
       this.to = undefined;
+      this.duration = undefined;
+
       for (var j = 0, k = this.tasks.length; j < k; j++) {
         this.setFromToByTask(this.tasks[j]);
       }
@@ -211,6 +215,10 @@
           this.to = moment(to);
         }
       }
+      if(from !==undefined && to !== undefined){
+        this.duration = this.to.diff(this.from, 'day');
+      }
+
 
     };
 
@@ -384,7 +392,7 @@
 
       this.from = from;
       this.to = to;
-
+      this.duration = this.to.diff(this.from, 'day');
       this.columns = ColumnGenerator.generate(this.columnBuilder, from, to, this.gantt.options.value('viewScale'), this.getColumnsWidth());
       this.headers = HeadersGenerator.generate(this);
       this.previousColumns = [];
