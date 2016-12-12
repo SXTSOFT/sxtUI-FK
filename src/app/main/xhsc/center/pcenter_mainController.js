@@ -34,7 +34,13 @@
         vm.show=true;
         utils.alert("当前网络异常！");
       });
+
+
       vm.serverAppVersion = versionUpdate.version;
+      versionUpdate.check().then(function () {
+        vm.serverAppVersion = versionUpdate.version;
+      });
+
       vm.clearCache=function(){
         utils.confirm('确定清除所有缓存数据吗?').then(function (result) {
           vm.trueClear = function (exclude) {

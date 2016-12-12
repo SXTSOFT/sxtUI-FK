@@ -95,7 +95,7 @@
                 }
               }
             });
-          }, 0);
+          }, 300);
           tile = scope.regionId;
         }
 
