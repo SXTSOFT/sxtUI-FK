@@ -1,6 +1,6 @@
 <ms-gen-select flex="none" areas="areas" procedure="procedure" current="current"></ms-gen-select>
 
-<div class="mapcheck" layout="column" style="position: relative" flex sxt-week-accept="vm.info.current" inspection-id="vm.InspectionId"
+<div class="mapcheck" layout="column" style="position: relative" flex  cycle-accept="vm.info.current"  inspection-id="vm.InspectionId"
      procedure="current.procedure.AcceptanceItemID" ct="vm.info" region-id="current.region.RegionID" ng-if="vm.info.show">
   <div flex layout="row" layout-align="center center" ng-if="vm.info.loading">
     <md-progress-circular md-mode="indeterminate" md-diameter="28">
@@ -16,7 +16,7 @@
 <safe-slide-menu flex="none" style="height: 195px" ng-if="vm.info.show" layout="column" slide-data="vm.procedureData"
      current="vm.info.current" show-check="true" level="2"></safe-slide-menu>
 <div style="display: none">
-  <sxt-Week-accept-popup warter="vm.water"></sxt-Week-accept-popup>
+  <cycle-accept-popup warter="vm.water"></cycle-accept-popup>
 </div>
 
 

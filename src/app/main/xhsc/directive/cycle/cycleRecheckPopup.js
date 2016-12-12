@@ -11,9 +11,9 @@
   'use strict';
   angular
     .module('app.xhsc')
-    .directive('xjRecheckPopup',xjRecheckPopup);
+    .directive('cycleRecheckPopup',cycleRecheckPopup);
   /** @ngInject */
-  function xjRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote,$q){
+  function cycleRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote,$q,utils){
     return {
       restrict:'E',
       scope:{
@@ -21,7 +21,7 @@
         slideRole:'=',
         warter:"="
       },
-      templateUrl:'app/main/xhsc/directive/xj/xjRecheckPopup.html',
+      templateUrl:'app/main/xhsc/directive/cycle/cycleRecheckPopup.html',
       link:link
     }
 
@@ -33,14 +33,14 @@
       $(element).appendTo('body');
       scope.apply = function(){
         //console.log('scope',scope)
-        remote.cycleLook.cycleProblemRecordQuery(scope.data.value.CheckpointID).then(function(r){
+        remote.yf.yfProblemRecordQuery(scope.data.value.CheckpointID).then(function(r){
           scope.images={
             zb:[],
             jl:[]
           }
 
           r.data.forEach(function (p) {
-            remote.cycleLook.cycleProblemRecordFileQuery(p.ProblemRecordID).then(function (r2) {
+            remote.yf.yfProblemRecordFileQuery(p.ProblemRecordID).then(function (r2) {
               if (p.DescRole=="jl"){
                 scope.images.jl=scope.images.jl.concat(r2.data)
               }else{
@@ -61,7 +61,6 @@
           if(!scope.Record.jl){
             scope.Record.jl = {
               CheckpointID:scope.data.value.CheckpointID,
-              RectificationID:scope.data.item,
               Describe:'',
               DescRole:"jl",
               Remark:''
@@ -70,7 +69,6 @@
           if(!scope.Record.zb){
             scope.Record.zb = {
               CheckpointID:scope.data.value.CheckpointID,
-              RectificationID:scope.data.item,
               Describe:'',
               DescRole:"zb",
               Remark:''
@@ -91,23 +89,28 @@
 
       function createZb(update) {
         return $q(function (resolve,reject) {
-          remote.cycleLook.cycleProblemRecordQuery.cfgSet({
+          var rec="";
+          remote.yf.yfProblemRecordQuery.cfgSet({
             filter: function (item, CheckpointID) {
-              return item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="zb";
+              var t=item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="zb";
+              if (t){
+                rec=rec?rec:item.RectificationID;
+              }
+              return t;
             },
           })(scope.data.value.CheckpointID).then(function (r) {
             if (!r||!r.data||!r.data.length){
               // scope.Record.zb.ProblemRecordID = sxt.uuid()
               var rec={
                 CheckpointID:scope.data.value.CheckpointID,
-                RectificationID:scope.data.item,
+                RectificationID:rec,
                 Describe:'',
                 DescRole:"zb",
                 Remark:''
               };
               rec.ProblemRecordID = sxt.uuid();
               rec._id=rec.ProblemRecordID;
-              remote.cycleLook.cycleProblemRecordCreate(rec).then(function () {
+              remote.yf.yfProblemRecordCreate(rec).then(function () {
                 resolve(rec);
               })
             }else {
@@ -128,7 +131,7 @@
                 FileID:sxt.uuid()+'.jpg',
                 FileContent:image
               }
-              remote.cycleLook.cycleProblemRecordFileCreate(img).then(function () {
+              remote.yf.yfProblemRecordFileCreate(img).then(function () {
                 // var imgs = scope.Record.zb.images = (scope.Record.zb.images || []);
                 scope.images.zb=scope.images.zb.concat([img]);
               })
@@ -160,7 +163,7 @@
             return;
           }
           createZb(true).then(function () {
-            remote.cycleLook.cyclePointCreate(scope.data.value).then(function () {
+            remote.yf.yfPointCreate(scope.data.value).then(function () {
               scope.slideShow = false;
               scope.context.updateStatus(scope.data.value.PositionID,convert(scope.data.value.Status));
             });
@@ -168,26 +171,31 @@
         }
         else if(scope.role=='jl'){
           scope.data.value.Status = scope.data.value.Status==2?2:4;
-          remote.cycleLook.cyclePointCreate(scope.data.value).then(function () {
+          remote.yf.yfPointCreate(scope.data.value).then(function () {
             scope.slideShow = false;
             scope.context.updateStatus(scope.data.value.PositionID,convert(scope.data.value.Status));
           }).then(function () {
-            remote.cycleLook.cycleProblemRecordQuery.cfgSet({
+            var rec="";
+            remote.yf.yfProblemRecordQuery.cfgSet({
               filter: function (item, CheckpointID) {
-                return item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="jl";
+                var t=item.CheckpointID == CheckpointID&&!item.isUpload&&item.DescRole=="jl";
+                if (t){
+                  rec=rec?rec:item.RectificationID;
+                }
+                return t;
               },
             })(scope.data.value.CheckpointID).then(function (r) {
               if (!r||!r.data||!r.data.length){
                 var rec={
                   CheckpointID:scope.data.value.CheckpointID,
-                  RectificationID:scope.data.item,
+                  RectificationID:rec,
                   Describe:'',
                   DescRole:"jl",
                   Remark:''
                 };
                 rec.ProblemRecordID = sxt.uuid();
                 rec._id=rec.ProblemRecordID;
-                remote.cycleLook.cycleProblemRecordCreate(rec)
+                remote.yf.yfProblemRecordCreate(rec)
               }
             });
           });
@@ -206,12 +214,12 @@
         }
 
       })
-      mapPopupSerivce.set('xjRecheckPopup',{
+      mapPopupSerivce.set('cycleRecheckPopup',{
         el:element,
         scope:scope
       });
       scope.$on('$destroy',function(){
-        mapPopupSerivce.remove('xjRecheckPopup');
+        mapPopupSerivce.remove('cycleRecheckPopup');
         $(element).remove();
       });
     }

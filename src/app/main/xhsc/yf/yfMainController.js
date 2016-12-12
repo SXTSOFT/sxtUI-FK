@@ -26,7 +26,7 @@
               InspectionID: sxt.uuid(),
               AreaID: $scope.currentArea.RegionID,
               Title: $scope.subject,
-            },"WeekInspects").then(function (r) {
+            },"house").then(function (r) {
               $mdDialog.hide(r);
             }).catch(function () {
               $mdDialog.hide();
@@ -35,22 +35,18 @@
           $scope.cancel=function () {
             $mdDialog.cancel();
           }
-          function getYearWeek(date){
-            var date=date.getDate();
-            var week= Math.ceil(date/7);
-            return week;
-          }
+
           function initTheme() {
             var projectName=$scope.currentProject?$scope.currentProject.RegionName:"";
             var area=$scope.currentArea?$scope.currentArea.RegionName:"";
             var date=new Date();
             var year=date.getFullYear();
             var month=date.getMonth()+1;
-            var week=getYearWeek(date);
+            var day=date.getDate();
             if (!area||!projectName){
               $scope.subject="";
             }else {
-              $scope.subject= projectName+area+ year+"年"+month+"月第"+week+"周"+"安全检查";
+              $scope.subject= projectName+area+ year+"年"+month+"月第"+day+"日移动验房";
             }
           }
           xhscService.getRegionTreeOffline("",3,1).then(function (r) {
@@ -77,8 +73,6 @@
       }).then(function (r) {
         if (r&&r.status==200){
           loadInspection();
-        }else{
-          utils.alert("本周已经做过安全检查!");
         }
       });
     }
@@ -90,7 +84,7 @@
       function () {
         return remote.safe.getSecurityItem.cfgSet({
           offline: true
-        })("WeekInspects").then(function (r) {
+        })("house").then(function (r) {
           if (r.data && r.data.length) {
             r.data.forEach(function (k) {
               if (k.SpecialtyChildren.length) {
@@ -113,12 +107,12 @@
         filter=  function filter(item) {
           return(!areas || areas.find(function (a) {
               return a.AreaID == item.RegionId;
-            })) && (item.Type==7|| item.Type==13)
+            })) && (item.Type==7|| item.Type==-3)
         }
       }
       var relates=remote.safe.getDrawingRelate.cfgSet({
         offline: true
-      })("WeekInspects",regionID)
+      })("house",regionID)
       return [
         function (tasks) {
           return $q(function (resolve, reject) {
@@ -137,13 +131,13 @@
     function rectificationTask(item) {
       return [
         function (tasks) {
-          return remote.safe.getRecPackage(item.RectificationID,"WeekInspects").then(function (r) {
+          return remote.safe.getRecPackage(item.RectificationID,"house").then(function (r) {
             if (r && r.data) {
               var Checkpoints = r.data.Checkpoint; //插入点
               if (angular.isArray(Checkpoints)) {
                 Checkpoints.forEach(function (t) {
                   tasks.push(function () {
-                    return remote.safe.weekPointCreate(t)
+                    return remote.yf.yfPointCreate(t)
                   });
                 });
               }
@@ -152,7 +146,7 @@
                 ProblemRecords.forEach(function (t) {
                   t.isUpload=true;
                   tasks.push(function () {
-                    return remote.safe.weekproblemRecordCreate(t)
+                    return remote.yf.yfProblemRecordCreate(t)
                   });
                 });
               }
@@ -160,7 +154,7 @@
               if (angular.isArray(ProblemRecordFiles)) {
                 ProblemRecordFiles.forEach(function (t) {
                   tasks.push(function () {
-                    return remote.safe.weekProblemRecordFileQuery(t.ProblemRecordFileID);
+                    return remote.yf.yfProblemRecordFileQuery(t.ProblemRecordFileID);
                   });
                 });
               }
@@ -177,16 +171,12 @@
             controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
               $scope.item = item;
               var tasks = [].concat(globalTask)
-                .concat(projectTask(item.AreaID,null,null,function (item) {
-                  return vm.procedure.find(function (k) {
-                    return k.AcceptanceItemID == item.AcceptanceItemID;
-                  })
-                }))
+                .concat(projectTask(item.AreaID,null,null))
                 .concat([function () {
                   return xhscService.getRegionTreeOffline("", 31, 1);
                 }])
                 .concat(function () {
-                  return remote.offline.create({Id: 'safeWeek' + item.InspectionID});
+                  return remote.offline.create({Id: 'yfYS' + item.InspectionExtendID});
                 })
 
               api.task(tasks, {
@@ -269,23 +259,9 @@
               }
 
               var tasks = [].concat(globalTask)
-                .concat(t)
-                // .concat(rectificationTask(item))
-                // .concat(function (tasks) {
-                //   return $q(function (v, m) {
-                //     item.Children.forEach(function (area) {
-                //       tasks.push(
-                //         function () {
-                //           return remote.safe.getSafePointGeo(item.InspectionID, item.AcceptanceItemID, area.AreaID)
-                //         }
-                //       );
-                //     })
-                //     v();
-                //   })
-                // })
                 .concat(getRectificationTask())
                 .concat(function () {
-                  return remote.offline.create({Id: 'weekZg' + item.RectificationID});
+                  return remote.offline.create({Id: 'yfZg' + item.InspectionExtendID});
                 });
               api.task(tasks, {
                 event: 'downloadzg',
@@ -350,20 +326,20 @@
               var tasks = [];
               return $q(function (resolve, reject) {
                 api.getUploadData(function (cfg) {
-                  return cfg.mark == "weekUp"||cfg.mark =="allUp";
+                  return cfg.mark == "yfUp"||cfg.mark =="allUp";
                 }).then(function (val) {
                   if (val && val.length) {
                     var points = val.find(function (o) {
                       return o.key == "InspectionPoint";
                     });
                     var ckpoints = val.find(function (o) {
-                      return o.key == "weekPoints";
+                      return o.key == "yfPoints";
                     });
                     var problemRecords = val.find(function (o) {
-                      return o.key == "weekProblemRecord";
+                      return o.key == "yfProblemRecord";
                     });
                     var InspectionProblemRecordFiles = val.find(function (o) {
-                      return o.key == "weekInspectionProblemRecordFile";
+                      return o.key == "yfInspectionProblemRecordFile";
                     });
                     if (points && points.vals) {
                       points.vals.forEach(function (t) {
@@ -414,7 +390,7 @@
                         "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
                         "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
                         "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
-                      },"WeekInspects").then(function () {
+                      },"house").then(function () {
                         clear(ckpoints,problemRecords,InspectionProblemRecordFiles);
                       });
                     });
@@ -453,7 +429,7 @@
     }
 
     function loadInspection() {
-     return remote.safe.getBatchWrap("WeekInspects").then(function (r) {
+     return remote.safe.getBatchWrap("house").then(function (r) {
         vm.Inspections = [];
         if (angular.isArray(r.data)) {
           var ys = [];
@@ -464,7 +440,7 @@
             if (angular.isArray(r.data)) {
               ys.forEach(function (k) {
                 if (r.data.find(function (m) {
-                    return m.Id == "safeWeek" + k.InspectionID;
+                    return m.Id == "yfYS" + k.InspectionExtendID;
                   })) {
                   k.isOffline = true;
                 }
@@ -476,7 +452,29 @@
       });
     }
     function loadZgLst() {
-      return remote.safe.getRectifications("WeekInspects").then(function (r) {
+      return $q(function (resolve,reject) {
+        if (vm.role||vm.role===0){
+          ret(vm.role).then(function (r) {
+            resolve(r);
+          });
+        }else {
+          xhscService.getProfile().then(function (profile) {
+            vm.role = profile.role;
+          }).then(function () {
+            ret(vm.role).then(function (r) {
+              resolve(r);
+            });
+          })
+        }
+      })
+      function ret(role) {
+        var params="";
+        if (vm.role==2||vm.role=="2"){
+          params="jl";
+        }else {
+          params="zb";
+        }
+        return remote.safe.getRectificationsWrap("house",params).then(function (r) {
           vm.zglist = [];
           if (angular.isArray(r.data)) {
             var zg = [];
@@ -487,7 +485,7 @@
               if (angular.isArray(r.data)) {
                 zg.forEach(function (k) {
                   if (r.data.find(function (m) {
-                      return m.Id == "weekZg" + k.RectificationID;
+                      return m.Id == "yfZg" + k.InspectionExtendID;
                     })) {
                     k.isOffline = true;
                   }
@@ -496,7 +494,8 @@
               vm.zglist = zg;
             })
           }
-      })
+        })
+      }
     }
     function load() {
       $q.all([
@@ -511,7 +510,7 @@
       load();
     })
     vm.setModule = function (val) {
-      $state.go('app.xhsc.week.sfWeekBase', {yw: val})
+      $state.go('app.xhsc.yf.yfBase', {yw: val})
     }
     vm.zbzgbtnAction = function (item, evt) {
       $mdBottomSheet.show({
@@ -543,7 +542,7 @@
       if (!item.isOffline) {
         vm.downloadzg(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go('app.xhsc.week.sfWeekRectify', {
+            $state.go('app.xhsc.yf.yfRectify', {
               Role: 'zb',
               InspectionID: item.InspectionExtendID
             });
@@ -551,7 +550,7 @@
         })
       } else {
         api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.week.sfWeekRectify', {
+          $state.go('app.xhsc.yf.yfRectify', {
             Role: 'zb',
             InspectionID: item.InspectionExtendID
           });
@@ -562,21 +561,17 @@
       if (!item.isOffline) {
         vm.downloadzg(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go('app.xhsc.week.sfWeekRectify', {
+            $state.go('app.xhsc.yf.yfRectify', {
               Role: 'jl',
-              InspectionID: item.InspectionID,
-              AcceptanceItemID: item.AcceptanceItemID,
-              RectificationID: item.RectificationID
+              InspectionID: item.InspectionExtendID
             })
           });
         })
       } else {
         api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.week.sfWeekRectify', {
+          $state.go('app.xhsc.yf.yfRectify', {
             Role: 'jl',
-            InspectionID: item.InspectionID,
-            AcceptanceItemID: item.AcceptanceItemID,
-            RectificationID: item.RectificationID
+            InspectionID: item.InspectionExtendID
           })
         });
       }
@@ -611,7 +606,7 @@
       if (!item.isOffline) {
         vm.downloadys(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go('app.xhsc.week.sfWeekAccept', {
+            $state.go('app.xhsc.yf.yfAccept', {
               projectId: item.ProjectID,
               areaId: item.AreaID,
               InspectionId: item.InspectionID
@@ -620,7 +615,7 @@
         })
       } else {
         api.setNetwork(1).then(function () {
-          $state.go('app.xhsc.week.sfWeekAccept', {
+          $state.go('app.xhsc.yf.yfAccept', {
             projectId: item.ProjectID,
             areaId: item.AreaID,
             InspectionId: item.InspectionID

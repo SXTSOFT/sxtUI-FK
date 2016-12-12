@@ -3313,33 +3313,6 @@ a:hover{
   }
 }
 
-.applicationPage{
-    a{
-      text-decoration: none;
-      color: black;
-    }
-
-}
-@media screen and (max-width: 600px){
-  .applicationPage{
-      margin-top: 24px;
-      img{
-        height: 70px;
-        width: 70px;
-      }
-  }
-}
-@media screen and (min-width: 600px) {
-  .applicationPage{
-    margin-top: 32px;
-    img{
-      height: 70px;
-      width: 70px;
-    }
-  }
-}
-
-
 .gxbody{
   background-color: white;
 }

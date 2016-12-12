@@ -18,7 +18,7 @@
     vm.role = $state.params.Role;
     vm.InspectionID = $state.params.InspectionID;
 
-    remote.safe.getRectifications.cfgSet({
+    remote.safe.getRectificationsWrap.cfgSet({
       offline:true,
       filter:function (item) {
         return item.InspectionExtendID==vm.InspectionID;
@@ -76,7 +76,7 @@
           return;
         };
         utils.alert('提交成功，请稍后离线上传数据',null,function () {
-          $state.go("app.xhsc.week.sfWeekMain");
+          $state.go("app.xhsc.xj.main");
         });
       });
 

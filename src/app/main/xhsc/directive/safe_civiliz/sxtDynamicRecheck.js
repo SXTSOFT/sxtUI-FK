@@ -32,9 +32,9 @@
       function convert(status) {
         switch (status){
           case 8:
+          case 4:
             return 1;
           case 16:
-          case 4:
             return 8;
         }
         return status;

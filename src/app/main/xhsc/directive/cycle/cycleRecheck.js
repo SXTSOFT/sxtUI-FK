@@ -7,12 +7,12 @@
 (function () {
   angular
     .module('app.xhsc')
-    .directive('xjRecheck',xjRecheck);
+    .directive('cycleRecheck',cycleRecheck);
   /** @ngInject */
-  function xjRecheck($timeout,remote,mapPopupSerivce,sxt,utils,$q,$window,xhUtils,$q) {
+  function cycleRecheck($timeout,remote,mapPopupSerivce,sxt,utils,$q,$window,xhUtils) {
     return {
       scope:{
-        item:'=xjRecheck',
+        item:'=cycleRecheck',
         sxtMapShow:'=',
         regionId:'=',
         inspectionId:'=',
@@ -63,7 +63,7 @@
             onLoad: function (cb) {
               $("#inspect").css("display","none");
               $q.all([
-                remote.cycleLook.cyclePointQuery.cfgSet({
+                remote.yf.yfPointQuery.cfgSet({
                   filter:function (item,inspectionId) {
                     return  item.AreaID==scope.regionId&&item.InspectionExtendID==inspectionId;
                   }
@@ -100,12 +100,11 @@
             onUpdate: function (layer, isNew, group,cb) {
             },
             onPopup: function (layer,cb) {
-              var edit = mapPopupSerivce.get('xjRecheckPopup');
+              var edit = mapPopupSerivce.get('cycleRecheckPopup');
               if (edit) {
                 scope.sxtMapShow = true;
                 edit.scope.context = fg;
                 edit.scope.data = {
-                  item: scope.item,
                   value: layer.properties.v
                 }
                 edit.scope.apply && edit.scope.apply();
@@ -115,10 +114,15 @@
           $timeout(function () {
             remote.safe.getDrawingRelate.cfgSet({
               offline: true
-            })("cycle",scope.regionId).then(function (result) {
+            })("house",scope.regionId).then(function (result) {
               var imgId = result.data.find(function (item) {
                 return item.Type==7&& item.RegionId == scope.regionId;
               });
+              if(!imgId){
+                imgId = result.data.find(function (item) {
+                  return item.Type==-3&&item.RegionId == scope.regionId;
+                });
+              }
               if (imgId) {
                 remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
                   if(!result2.data.DrawingContent){
