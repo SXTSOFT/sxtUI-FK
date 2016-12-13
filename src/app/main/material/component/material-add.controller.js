@@ -28,12 +28,12 @@
     if (vm.data.Id) {
       api.material.materialScience.getMaterial(vm.data.Id).then(function (r) {
         vm.data = r.data;
-        if (vm.cid){
+        if (vm.cid != 0){
           api.material.contract.GetContractDetailById(vm.cid,vm.data.Id).then(function (r) {
             if(r.data){
-              vm.Brands = r.data.Brands.split(',');
+              vm.Brands = r.data.Brands.split('、');
             }else {
-              vm.Brands =vm.data.Brands.split('，');
+              vm.Brands =vm.data.Brands.split('、');
             }
           });
         }
@@ -42,7 +42,7 @@
 
     vm.save = function () {
       if ($scope.myForm.$valid) {
-        if (vm.cid){
+        if (vm.cid != 0){
           var _str = JSON.stringify(vm.Brands).replace('[','').replace(']','').replace(/"/g,'');
           var _data = {'ContractId':vm.cid,'MaterialId':vm.data.Id,'Brands':_str};
           api.material.contract.UpdateContract(_data).then(function () {
