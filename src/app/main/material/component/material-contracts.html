@@ -13,21 +13,24 @@
   <table class="simple">
     <thead>
     <tr>
+      <th style="width: 45px;">序号</th>
       <th>乙方（总包）</th>
       <th>合同名称</th>
       <th>合同编号</th>
-      <th>材料库</th>
+      <!--<th>材料库</th>-->
       <th style="width: 200px;"><span class="pl-16">管理</span></th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="item in vm.data">
+      <td>{{$index+1}}</td>
       <td>{{item.PartnerName}}</td>
       <td>{{item.Name}}</td>
       <td>{{item.Number}}</td>
-      <td>{{item.MaterialTypeName}}</td>
+      <!--<td>{{item.MaterialTypeName}}</td>-->
       <td class="actions">
         <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.contract({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
+        <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.contract({id:item.Id})"><md-icon  md-font-icon="icon-checkerboard" class="icon s24"></md-icon></md-button>
         <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.delete(item.Id)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
       </td>
     </tr>

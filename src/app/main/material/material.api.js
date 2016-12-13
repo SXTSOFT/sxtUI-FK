@@ -54,8 +54,8 @@
         GetMaterialByTypeId:function (typeId) {
           return $http.get($http.url('/api/MaterialScience/GetMaterialByTypeId/' + typeId))
         },
-        GetMaterialTreeList:function () {
-          return $http.get($http.url('/api/MaterialScience/GetMaterialTreeListAsync'))
+        GetMaterialTreeList:function (cid) {
+          return $http.get($http.url('/api/MaterialScience/GetMaterialTreeListAsync/'+cid))
         },
         batchCreate:function (data) {
           return $http.put('/api/MaterialScience/BatchCreateMaterial',data);

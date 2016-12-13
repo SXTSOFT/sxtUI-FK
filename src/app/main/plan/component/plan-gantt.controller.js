@@ -63,18 +63,22 @@
       width                   : true,
       zoom                    : 1,
       rowSortable             : false,
-      columns                 : ['model.name', 'from', 'to','duration'],
-      treeTableColumns        : ['from', 'to','duration'],
+      columns                 : ['model.name', 'from', 'to','realFrom','realTo','duration'],
+      treeTableColumns        : ['from', 'to','realFrom','realTo','duration'],
       columnsHeaders          : {
         'model.name': 'Name',
-        'from'      : '开始时间',
-        'to'        : '结束时间',
+        'from'      : '计划开始',
+        'to'        : '计划结束',
+        'realFrom':'实时开始',
+        'realTo':'实时结束',
         'duration'  :'工期'
       },
       columnsClasses          : {
         'model.name': 'gantt-column-name',
         'from'      : 'gantt-column-from',
         'to'        : 'gantt-column-to',
+        'realFrom'      : 'gantt-column-from',
+        'realTo'        : 'gantt-column-to',
         'duration'  : 'gantt-column-duration'
       },
       columnsFormatters       : {
@@ -86,6 +90,14 @@
         {
           return angular.isDefined(to) ? to.format('YY-MM-DD') : undefined;
         },
+        'realFrom': function (realFrom)
+        {
+          return angular.isDefined(realFrom) ? realFrom.format('YY-MM-DD') : undefined;
+        },
+        'realTo'  : function (realTo)
+        {
+          return angular.isDefined(realTo) ? realTo.format('YY-MM-DD') : undefined;
+        },
         'duration':function(duration){
           return duration;
         }
@@ -96,6 +108,8 @@
         'model.name': '{{getHeader()}}',
         'from'      : '{{getHeader()}}',
         'to'        : '{{getHeader()}}',
+        'realFrom':'{{getHeader()}}',
+        'realTo':'{{getHeader()}}',
         'duration'        : '{{getHeader()}}'
       },
       autoExpand              : 'none',
@@ -185,7 +199,77 @@
             })
           });
           objectModel = new GanttObjectModel(vm.api);
-          vm.api.side.setWidth(450);
+          vm.api.side.setWidth(640);//450
+
+          vm.api.directives.on.new($scope, function (directiveName, directiveScope, element)
+          {
+            /**
+             * Gantt Task
+             */
+            if ( directiveName === 'ganttTask' )
+            {
+              //element.on('mousedown touchstart', function (event)
+              //{
+              //  event.preventDefault();
+              //  event.stopPropagation();
+              //  vm.live.row = directiveScope.task.row.model;
+              //  if ( angular.isDefined(directiveScope.task.originalModel) )
+              //  {
+              //    vm.live.task = directiveScope.task.originalModel;
+              //  }
+              //  else
+              //  {
+              //    vm.live.task = directiveScope.task.model;
+              //  }
+              //  $scope.$digest();
+              //});
+
+            }
+
+            /**
+             * Gantt Row
+             */
+            else if ( directiveName === 'ganttRow' )
+            {
+
+              //element.on('click', function (event)
+              //{
+              //  event.stopPropagation();
+              //});
+              //
+              //element.on('mousedown touchstart', function (event)
+              //{
+              //  event.stopPropagation();
+              //  vm.live.row = directiveScope.row.model;
+              //  $scope.$digest();
+              //});
+
+            }
+
+            /**
+             * Gantt Row Label
+             */
+            else if ( directiveName === 'ganttRowLabel' )
+            {
+              // Fix for double trigger due to gantt-sortable plugin
+              element.off('click');
+
+              element.on('click', function (event)
+              {
+                event.preventDefault();
+                if(directiveScope.row.model.tasks){
+                  editDialog(event, 'row', directiveScope.row.model.tasks[0]);
+                }
+              });
+
+              element.on('mousedown touchstart', function ()
+              {
+                vm.live.row = directiveScope.row.model;
+                $scope.$digest();
+              });
+
+            }
+          });
         });
         ganttApi.tasks.on.change($scope,function(task){
 
@@ -407,8 +491,10 @@
                 name:item.Name,
                 isStarted:!!item.ActualStartTime,
                 isEnded:!!item.ActualEndTime,
-                from:item.ActualStartTime || item.ScheduledStartTime,
-                to:item.ActualEndTime || item.ScheduledEndTime,
+                from:item.ScheduledStartTime,
+                to:item.ScheduledEndTime,
+                realFrom:item.RealScheduledStartTime&&item.RealScheduledStartTime,
+                realTo:item.RealScheduledEndTime&&item.RealScheduledEndTime,
                 movable:true,
                 classes: [
                   item.IsInterlude?"md-light-blue-100-bg":""
