@@ -26,7 +26,8 @@
   <md-progress-circular id="toolbar-progress" ng-if="!vm.f_isOver" class="md-accent"
                         md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
   </md-progress-circular>
-  <md-list-item style="background-color: #FFFFFF" ng-click="vm.jlfyAction(item)" ng-repeat="item in vm.zglist|zgFilter:[64]">
+  <md-list ng-show="vm.isOver" style="background-color: #FFFFFF">
+    <md-list-item style="background-color: #FFFFFF" ng-click="vm.jlfyAction(item)" ng-repeat="item in vm.zglist|zgFilter:[64]">
     <div style="padding-bottom: 16px" layout="column">
       <p style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 12px">
         <span style="margin-left:1%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">验房复验</span>
@@ -40,6 +41,7 @@
     </md-button>
     <span class="border1px bottom1px"></span>
   </md-list-item>
+  </md-list>/
 </div>
 
 <div ng-if=" vm.isShowbg" layout="column" flex layout-align="center center">

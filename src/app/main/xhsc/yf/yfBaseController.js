@@ -186,29 +186,6 @@
       }
     }, $scope);
 
-    function loadInspection() {
-      return remote.safe.getBatchWrap("house").then(function (r) {
-        vm.Inspections = [];
-        if (angular.isArray(r.data)) {
-          var ys = [];
-          r.data.forEach(function (o) {
-            ys.push(o);
-          });
-          return remote.offline.query().then(function (r) {
-            if (angular.isArray(r.data)) {
-              ys.forEach(function (k) {
-                if (r.data.find(function (m) {
-                    return m.Id == "yfYS" + k.InspectionExtendID;
-                  })) {
-                  k.isOffline = true;
-                }
-              })
-            }
-            vm.Inspections = ys;
-          })
-        }
-      });
-    }
     function loadZgLst() {
       return $q(function (resolve,reject) {
         if (vm.role||vm.role===0){
@@ -257,11 +234,10 @@
     }
     function load() {
       $q.all([
-        loadInspection(),
         loadZgLst()
       ]).then(function () {
         vm.isOver = true;
-        if (!vm.zglist.length&&!vm.Inspections.length){
+        if (!vm.zglist.length){
           vm.isShowbg=true;
         }
 

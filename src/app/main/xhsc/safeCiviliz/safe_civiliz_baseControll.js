@@ -50,10 +50,11 @@
       var  relates= remote.safe.getDrawingRelate.cfgSet({
         offline: true
       })("Acceptances",regionID)
+
       return [
         function (tasks) {
           return $q(function (resolve, reject) {
-            return xhscService.downloadPics(regionID, null, filter,relates).then(function (t) {
+            return xhscService.downloadPics(regionID, null,filter ,relates).then(function (t) {
               t.forEach(function (m) {
                 tasks.push(m);
               })
@@ -82,7 +83,7 @@
               var ProblemRecords = r.data.ProblemRecord; //插入记录
               if (angular.isArray(ProblemRecords)) {
                 ProblemRecords.forEach(function (t) {
-                  t.isUpload = true;
+                  t.isUpload=true;
                   tasks.push(function () {
                     return remote.safe.problemRecordCreate(t)
                   });
@@ -101,7 +102,6 @@
         }
       ]
     }
-
     vm.downloadys = function (item) {
       return api.setNetwork(0).then(function () {
         return $q(function (resolve, reject) {
@@ -148,7 +148,6 @@
         })
       });
     }
-
     api.event('downloadys', function (s, e) {
       var current = vm.Inspections && vm.Inspections.find(function (item) {
           return item.InspectionId == e.target;
@@ -166,7 +165,6 @@
         }
       }
     }, $scope);
-
     vm.downloadzg = function (item) {
       return $q(function (resolve, reject) {
         api.setNetwork(0).then(function () {
@@ -224,7 +222,6 @@
       })
 
     }
-
     api.event('downloadzg', function (s, e) {
       var current = vm.zglist && vm.zglist.find(function (item) {
           return item.RectificationID == e.target;
@@ -237,11 +234,16 @@
             current.total = e.total;
             break;
           case 'success':
-
             break;
         }
       }
     }, $scope);
+
+    xhscService.getProfile().then(function (profile) {
+      vm.role = profile.role;
+      vm.OUType = profile.ouType;
+    });
+
 
     vm.by = function (r) {
       api.setNetwork(0).then(function () {
@@ -273,7 +275,7 @@
                 vm.Inspections = ys;
                 vm.y_isOver;
                 if (vm.yw == 16 && !vm.Inspections.length) {
-                  utils.alert("暂时没有找到数据");
+                  vm.isShowbg=true;
                 }
                 resolve();
               }).catch(function () {
@@ -303,6 +305,9 @@
                   })
                 }
                 vm.zglist = zg;
+                if ((vm.yw==4||vm.yw==32)&&!vm.zglist.length){
+                  vm.isShowbg=true;
+                }
                 vm.f_isOver = true;
                 resolve();
               }).catch(function () {
@@ -501,6 +506,8 @@
       });
       evt.stopPropagation();
     }
+
+
     vm.click = function (item, evt) {
       if (item.isComplete) {
         api.setNetwork(1).then(function () {
