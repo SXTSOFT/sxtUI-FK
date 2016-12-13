@@ -91,7 +91,10 @@
       },
       addzj:function (item) {
         $scope.project.zjs.push(item);
-        $scope.project.searchTerm='';
+        $scope.project.searchTerm = '';
+        if (item.tp == 'A') {
+          $scope.project.ok();
+        }
       },
       searchTerm:'',
       addSearchTerm:function (k) {
@@ -174,7 +177,6 @@
       //    console.log('sources', sources);
       //},
       filter2: function(reload) {
-        console.log('filter2')
         vm.loading = true;
         if (!$scope.project.procedureId || !$scope.project.data || !$scope.project.data.items) return;
         if (reload === true || ($scope.project.data && !$scope.project.data.fd)) {
@@ -197,7 +199,7 @@
                     item.stateName = state.title + ((item.ECCheckResult == 1 || item.ECCheckResult == 3) && item.MinPassRatio && item.MinPassRatio >= 80 ? '(偏差)' : '');
                   }
                   item.hasTask = $scope.hasTasks(item);
-                })
+                });
                 $scope.project.data.items.forEach(function (item) {
                   item.batchs = result.data.Rows.filter(function (it) {
                     return it.RegionId == item.$id;
@@ -220,12 +222,17 @@
                 });
               });
               if($scope.project.data.items) {
-                $scope.project.data.items = $scope.project.data.items.filter(function (t) {
+                $scope.project.data.items2 = $scope.project.data.items.filter(function (t) {
+                  console.log(t, $scope.project.procedureId);
+                  if((t.tp!='A' && $scope.project.procedureId=='0c8b2dac-3e55-4c19-b6d3-bf2cafd39c5b')||
+                    (t.tp !='B' && $scope.project.procedureId=='8fd3941a-af0b-4267-9a1f-14a749770b6f')){
+                    return false;
+                  }
                   return t.hasV === false;
                 });
                 $scope.project.data.switch = $scope.project.data.items.length>0?'new':'batchs';
               }
-              $scope.project.data.results = result.data.Rows;
+
               $rootScope.hideFootbar = true;
               vm.loading = false;
             }
