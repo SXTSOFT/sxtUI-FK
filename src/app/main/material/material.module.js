@@ -25,7 +25,7 @@
         template:'<material-list flex layout="column"></material-list>'
       })
       .state('app.material.add', {
-        url: '/add/{id}',
+        url: '/add/{id}/{pageState}',
         template: '<material-add flex layout="column"></material-add>'
       })
       .state('app.material.contracts', {
@@ -33,7 +33,7 @@
         template:'<material-contracts flex layout="column"></material-contracts>'
       })
       .state('app.material.contract', {
-        url:'/contract/{id}',
+        url:'/contract/{id}/{pageState}',
         template:'<material-contract flex layout="column"></material-contract>'
       })
       .state('app.material.type', {

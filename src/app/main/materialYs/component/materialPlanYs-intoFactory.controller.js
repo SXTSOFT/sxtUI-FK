@@ -37,7 +37,7 @@
       if (vm.data.ApproachType == 1) {
         vm.data.Id = sxt.uuid();
       }
-
+      
       api.xhsc.materialPlan.getMaterialBatchIntoFactory().then(function (r) {
         if(r.data && r.data.length > 0){
           vm.CountDisabled = false;

@@ -111,7 +111,7 @@
         vm.RegionId = r.data.RegionId;
         vm.getSections(vm.data.RegionId);
         vm.SectionId = r.data.SectionId;
-        api.material.materialScience.GetMaterialByTypeId(vm.data.TypeId).then(function (r) {
+        api.material.materialScience.GetMaterialByTypeId(vm.data.ContractId).then(function (r) {//vm.data.TypeId
           vm.materials = r.data||[];
           vm.materials.forEach(function (q) {
             if(q.Id == vm.data.MaterialId){
@@ -120,7 +120,6 @@
             }
           });
         });
-
       });
     }
 

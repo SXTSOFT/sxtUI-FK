@@ -17,44 +17,50 @@
     var vm = this;
     vm.data = {};
     vm.data.Id = $stateParams.id;
-
-
-    // vm.type = [
-    //   {type1:'type1',children:[{type2:'type1_1',children:[{type3:'type1_1_1'},{type3:'type1_1_2'}]},{type2:'type1_2'},{type2:'type1_3'}]},
-    //   {type1:'type2',children:[{type2:'type2_1'},{type2:'type2_2',children:[{type3:'type2_2_1'},{type3:'type2_2_2'}]},{type2:'type2_3'}]},
-    //   {type1:'type3',children:[{type2:'type3_1'},{type2:'type3_2'},{type2:'type3_3',children:[{type3:'type3_3_1'},{type3:'type3_3_2'}]}]}
-    // ];
-
-    // vm.materialType = [
-    //   {val:1,name:'土建'},
-    //   {val:2,name:'基建'}
-    // ];
+    vm.cid = $stateParams.cid;
+    vm.pageState = vm.cid!=0 ? true : false;
+    vm.readonly = false;
 
     api.material.type.getList({Skip: 0, Limit: 999}).then(function (g) {
       vm.materialType = g.data.Items || [];
     });
 
     if (vm.data.Id) {
-      api.material.materialScience.getMaterial(vm.data.Id).then(function (r) {
+      api.material.materialScience.getMaterial(vm.data.Id,cid).then(function (r) {
         vm.data = r.data;
-        console.log(vm.data);
       })
+    }
+
+    if (vm.cid){
+      api.material.contract.GetContractDetailById(vm.cid,vm.data.Id).then(function (r) {
+        if(r.data){
+          vm.Brands = angular.copy(r.data.split(','));
+        }
+      });
     }
 
     vm.save = function () {
       if ($scope.myForm.$valid) {
-        if (vm.data.Id) {
-          api.material.materialScience.putMaterial(vm.data).then(function () {
+        if (vm.cid){
+          api.material.contract.UpdateContract(vm.cid,vm.data).then(function () {
             utils.alert("提交成功", null, function () {
-              $state.go("app.material.materialLibrary");
+              $state.go("app.material.materialLibrary",{cid:vm.cid});
             });
           })
         } else {
-          api.material.materialScience.Create(vm.data).then(function () {
-            utils.alert("提交成功", null, function () {
-              $state.go("app.material.materialLibrary");
-            });
-          })
+          if (vm.data.Id) {
+            api.material.materialScience.putMaterial(vm.data).then(function () {
+              utils.alert("提交成功", null, function () {
+                $state.go("app.material.materialLibrary");
+              });
+            })
+          } else {
+            api.material.materialScience.Create(vm.data).then(function () {
+              utils.alert("提交成功", null, function () {
+                $state.go("app.material.materialLibrary");
+              });
+            })
+          }
         }
       }
     }
