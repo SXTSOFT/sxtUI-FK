@@ -393,9 +393,6 @@
                   })
                 }
                 vm.Inspections = ys;
-                if (vm.yw == 16 && !vm.Inspections.length) {
-                  utils.alert("暂时没有找到数据");
-                }
                 resolve();
               }).catch(function () {
                 resolve();

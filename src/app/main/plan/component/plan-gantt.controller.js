@@ -46,7 +46,9 @@
       escapeToClose: true,
       focusOnOpen: true
     })
-
+    //$scope.$on('$destroy',function(){
+    //  $scope.hide();
+    //})
     //$scope.$watch('vm.gantt',function(){
     //  $mdDialog.hide();
     //})
@@ -231,7 +233,6 @@
              */
             else if ( directiveName === 'ganttRow' )
             {
-
               //element.on('click', function (event)
               //{
               //  event.stopPropagation();
@@ -271,51 +272,51 @@
             }
           });
         });
-        ganttApi.tasks.on.change($scope,function(task){
-
-          task.row.duration = moment(task.model.to).endOf('day').diff(moment(task.model.from).startOf('day'),'d');//moment.duration(task.model.to.diff(task.model.from)).asDays();
-          var changeData = [
-            {
-              "TaskId": task.model.id,
-              "ScheduledStartTime": task.model.from,
-              "ScheduledEndTime": task.model.to
-            }
-          ]
-          api.plan.BuildPlan.adjustPlan($stateParams.id,changeData);
-          vm.data.forEach(function(group){
-            var next = group.tasks.find(function(t){
-              return t.dependencies.find(function(d){
-                  return d.from == task.model.id;
-                })!=null;
-            });
-            next  && (next.from = task.model.to);
-            if(next){
-              var id = task.rowsManager.rows.find(function(r){
-                return r.model.id == next.id+'-group'
-              })
-              if(id){
-                id.from = task.model.to;
-                id.duration =  moment(next.to).endOf('day').diff(moment(next.from).startOf('day'),'d');
-              }
-            }
-            var prev = group.tasks.find(function(t){
-              return task.model.dependencies.find(function(d){
-                  return t.id == d.from;
-                })!=null;
-            });
-            prev && (prev.to = task.model.from);
-            if(prev){
-              var id = task.rowsManager.rows.find(function(r){
-                return r.model.id == prev.id+'-group'
-              })
-              if(id){
-                id.to = task.model.from;
-                id.duration = moment(prev.to).endOf('day').diff(moment(prev.from).startOf('day'),'d');
-              }
-            }
-          })
-
-        })
+        //ganttApi.tasks.on.change($scope,function(task){
+        //
+        //  task.row.duration = moment(task.model.to).endOf('day').diff(moment(task.model.from).startOf('day'),'d');//moment.duration(task.model.to.diff(task.model.from)).asDays();
+        //  var changeData = [
+        //    {
+        //      "TaskId": task.model.id,
+        //      "ScheduledStartTime": task.model.from,
+        //      "ScheduledEndTime": task.model.to
+        //    }
+        //  ]
+        //  api.plan.BuildPlan.adjustPlan($stateParams.id,changeData);
+        //  vm.data.forEach(function(group){
+        //    var next = group.tasks.find(function(t){
+        //      return t.dependencies.find(function(d){
+        //          return d.from == task.model.id;
+        //        })!=null;
+        //    });
+        //    next  && (next.from = task.model.to);
+        //    if(next){
+        //      var id = task.rowsManager.rows.find(function(r){
+        //        return r.model.id == next.id+'-group'
+        //      })
+        //      if(id){
+        //        id.from = task.model.to;
+        //        id.duration =  moment(next.to).endOf('day').diff(moment(next.from).startOf('day'),'d');
+        //      }
+        //    }
+        //    var prev = group.tasks.find(function(t){
+        //      return task.model.dependencies.find(function(d){
+        //          return t.id == d.from;
+        //        })!=null;
+        //    });
+        //    prev && (prev.to = task.model.from);
+        //    if(prev){
+        //      var id = task.rowsManager.rows.find(function(r){
+        //        return r.model.id == prev.id+'-group'
+        //      })
+        //      if(id){
+        //        id.to = task.model.from;
+        //        id.duration = moment(prev.to).endOf('day').diff(moment(prev.from).startOf('day'),'d');
+        //      }
+        //    }
+        //  })
+        //
+        //})
 
       }
     };
@@ -473,8 +474,6 @@
         vm.data = rs.data.Items.filter(function (item) {
           return !item.ExtendedParameters;
         }).map(function (item) {
-          //var sdate = moment(item.ScheduledStartTime&&item.ScheduledStartTime).startOf('day');
-          //var edate = moment(item.ScheduledEndTime&&item.ScheduledEndTime).endOf('day');
           if(item.Description)
             angular.extend(item,angular.fromJson(item.Description));
           var result = {
@@ -499,7 +498,6 @@
                 classes: [
                   item.IsInterlude?"md-light-blue-100-bg":""
                 ],
-                //duration:edate.diff(sdate,'d'),
                 isType:item.Type,
                 dependencies:item.Dependencies.map(function (d) {
                   return {
@@ -535,8 +533,6 @@
       // Fix for Angular-gantt-chart issue
       $animate.enabled(true);
       $animate.enabled($document.find('#gantt'), false);
-
-
     }
 
     /**
@@ -554,19 +550,36 @@
         clickOutsideToClose: true,
         locals             : {
           dialogData: {
-            //chartData : vm.data,
-            //formView  : formView,
             formData  : formData
           },
           originData:vm.originData
         }
+      }).then(function(load){
+        console.log('close',load)
+        if(load){
+          vm.load().then(function(){
+            $timeout(function(){
+              $mdDialog.hide();
+              vm.api.tree.collapseAll()
+            })
+          });
+        }
+        vm.data = null;
+        vm.load().then(function(){
+          $timeout(function(){
+           // $mdDialog.hide();
+            //vm.api.tree.collapseAll()
+          })
+        });
+      },function(){
+        console.log('a')
       });
     }
 
     /** @ngInject */
     function GanttChartAddEditDialogController(dialogData,originData,template,$timeout,$mdPanel) {
-      //console.log('dialogData',dialogData);
       var vm = this;
+      vm.needLoad = false;
       function setSatus(i){
         var str='';
         switch (i){
@@ -740,6 +753,7 @@
                 //task.IsAbleStart = r.IsAbleStart;
                 //task.IsInterlude = r.IsInterlude;
                 //task.ManuallyClose = r.ManuallyClose;
+                parent.needLoad = true;
                 if(r.data.length){
                   r.data.forEach(function(_r){
                     var f=parent.flows.find(function(t){
@@ -762,8 +776,6 @@
                 }else{
                   loadSubTask();
                 }
-
-
               },function(err){
                 utils.alert(err.data||'错误');
               });
@@ -905,7 +917,7 @@
       //toStopTask();
       vm.dialogData = dialogData;
       vm.close =function(){
-        $mdDialog.hide();
+        $mdDialog.hide(vm.needLoad);
       }
       vm.toggleRight = function () {
         return $mdSidenav('right')

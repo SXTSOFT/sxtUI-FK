@@ -743,7 +743,7 @@ angular.module('gantt.tree.templates', []).run(['$templateCache', function($temp
     '     ng-style="{\'height\': row.model.height}">\n' +
     '    <div class="gantt-valign-container">\n' +
     '        <div class="gantt-valign-content">\n' +
-    '            <a ng-disabled="isCollapseDisabled()" data-nodrag\n' +
+    '            <a style="display: inline-block;width:20px;text-align: center;line-height:48px;" ng-disabled="isCollapseDisabled()" data-nodrag\n' +
     '               class="gantt-tree-handle-button btn btn-xs"\n' +
     '               ng-class="{\'gantt-tree-collapsed\': collapsed, \'gantt-tree-expanded\': !collapsed}"\n' +
     '               ng-click="!isCollapseDisabled() && toggle()"><span\n' +
