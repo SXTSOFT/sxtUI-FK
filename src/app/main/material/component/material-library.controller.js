@@ -168,7 +168,9 @@
               var json = {};
               var words = content.replace(new RegExp('\n','g'),'|').split('|');
               //清除换行空值
-              words = words.filter(t => t != undefined && t != null && t.replace(/(^\s*)|(\s*$)/g, "") != '');
+              words = words.filter(function (t) {
+                return  t != undefined && t != null && t.replace(/(^\s*)|(\s*$)/g, "") != ''
+              });
               //清除重复数据
               for(var i = 0; i < words.length; i++){
                 var val = words[i].replace(/(^\s*)|(\s*$)/g, '')
