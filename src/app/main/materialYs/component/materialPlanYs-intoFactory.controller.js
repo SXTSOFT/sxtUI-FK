@@ -33,11 +33,11 @@
     api.xhsc.materialPlan.getMaterialPlanDetail($stateParams.BatchId).then(function (q) {
       vm.data.Id = q.data.Id;
       vm.data.PlanId = q.data.PlanId;
-      vm.Brands = q.data.Brands.split('，') || [];
+      vm.Brands = q.data.Brands.split('、') || [];
       if (vm.data.ApproachType == 1) {
         vm.data.Id = sxt.uuid();
       }
-      
+
       api.xhsc.materialPlan.getMaterialBatchIntoFactory().then(function (r) {
         if(r.data && r.data.length > 0){
           vm.CountDisabled = false;
