@@ -17,5 +17,4 @@
     });
     $scope.theme= $cookies.get("selectedTheme");
   }
-
 })();
