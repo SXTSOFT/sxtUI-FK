@@ -103,8 +103,8 @@
         GetContractDetailById:function (cid,mid) {
           return $http.get($http.url('/api/MaterialContract/GetContractDetailById/'+cid+'/'+mid));
         },
-        UpdateContract:function (id,data) {
-          return $http.push($http.url('/api/MaterialContract/UpdateContract/'+id),data);
+        UpdateContract:function (data) {
+          return $http.put('/api/MaterialContract/UpdateContract',data);
         },
       }
     })

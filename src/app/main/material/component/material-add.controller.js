@@ -19,7 +19,7 @@
     vm.data.Id = $stateParams.id;
     vm.cid = $stateParams.cid;
     vm.pageState = vm.cid!=0 ? true : false;
-
+    vm.readonly = false;
 
     api.material.type.getList({Skip: 0, Limit: 999}).then(function (g) {
       vm.materialType = g.data.Items || [];
@@ -31,7 +31,7 @@
         if (vm.cid){
           api.material.contract.GetContractDetailById(vm.cid,vm.data.Id).then(function (r) {
             if(r.data){
-              vm.Brands = r.data.split(',');
+              vm.Brands = r.data.Brands.split(',');
             }else {
               vm.Brands =vm.data.Brands.split('，');
             }
@@ -40,12 +40,12 @@
       })
     }
 
-
-
     vm.save = function () {
       if ($scope.myForm.$valid) {
         if (vm.cid){
-          api.material.contract.UpdateContract(vm.cid,vm.data).then(function () {
+          var _str = JSON.stringify(vm.Brands).replace('[','').replace(']','').replace(/"/g,'');
+          var _data = {'ContractId':vm.cid,'MaterialId':vm.data.Id,'Brands':_str};
+          api.material.contract.UpdateContract(_data).then(function () {
             utils.alert("提交成功", null, function () {
               $state.go("app.material.materialLibrary",{cid:vm.cid});
             });
