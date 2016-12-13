@@ -35,22 +35,19 @@
       <input type="text" ng-model="vm.data.Specifications" ng-disabled="vm.pageState">
       <div class="hint">多个规格请用中文逗号"，"分隔</div>
     </md-input-container>
-    <md-input-container class="md-block">
+    <md-input-container class="md-block" ng-if="!vm.pageState">
       <label>厂家/品牌</label>
       <input type="text" ng-model="vm.data.Brands">
       <div class="hint">多个厂家/品牌请用中文逗号"，"分隔</div>
-
-      <!--<md-chips class="custom-chips" ng-model="vm.Brands" readonly="true" md-removable="true">-->
-        <!--<md-chip-template>-->
-        <!--<span>-->
-          <!--<strong>{{$chip}}</strong>-->
-        <!--</span>-->
-        <!--</md-chip-template>-->
-        <!--<button md-chip-remove class="md-primary vegetablechip">-->
-          <!--<md-icon md-svg-icon="md-close"></md-icon>-->
-        <!--</button>-->
-      <!--</md-chips>-->
     </md-input-container>
+
+    <md-chips ng-if="vm.pageState" ng-model="vm.Brands" name="fruitName" readonly="true"
+              md-removable="true" md-max-chips="5">
+      <md-chip-template>
+        <strong>{{$chip}}</strong>
+      </md-chip-template>
+    </md-chips>
+
     <div layout="row" flex>
       <md-button type="submit" class="md-primary md-raised">
         保存

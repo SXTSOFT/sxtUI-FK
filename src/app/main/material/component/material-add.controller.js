@@ -19,7 +19,7 @@
     vm.data.Id = $stateParams.id;
     vm.cid = $stateParams.cid;
     vm.pageState = vm.cid!=0 ? true : false;
-    vm.readonly = false;
+
 
     api.material.type.getList({Skip: 0, Limit: 999}).then(function (g) {
       vm.materialType = g.data.Items || [];
@@ -28,17 +28,19 @@
     if (vm.data.Id) {
       api.material.materialScience.getMaterial(vm.data.Id).then(function (r) {
         vm.data = r.data;
+        if (vm.cid){
+          api.material.contract.GetContractDetailById(vm.cid,vm.data.Id).then(function (r) {
+            if(r.data){
+              vm.Brands = r.data.split(',');
+            }else {
+              vm.Brands =vm.data.Brands.split('，');
+            }
+          });
+        }
       })
     }
 
-    if (vm.cid){
-      console.log()
-      api.material.contract.GetContractDetailById(vm.cid,vm.data.Id).then(function (r) {
-        if(r.data){
-          vm.Brands = angular.copy(r.data.split(','));
-        }
-      });
-    }
+
 
     vm.save = function () {
       if ($scope.myForm.$valid) {
