@@ -245,7 +245,7 @@
               }
             }).catch(function () {
             });
-          }, 0);
+          }, 300);
         }
       };
       $timeout(function () {
