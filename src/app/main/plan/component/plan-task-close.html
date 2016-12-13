@@ -1,0 +1,20 @@
+<md-dialog>
+  <md-dialog-content>
+    <div layout="row">关闭原因</div>
+    <div layout="row" class="mt-10">
+      <div style="width: 50px;height:50px;">
+        <img src="{{img}}" width="100%">
+      </div>
+    </div>
+    <div layout="row">
+      <md-input-container class="md-block" md-no-float flex>
+        <!--<label>关闭原因</label>-->
+        <input type="text" ng-model="description">
+      </md-input-container>
+    </div>
+    <div layout="row">
+      <md-button class="md-raised" ng-click="cancel()">取消</md-button>
+      <md-button class="md-raised" ng-click="close(description)">确定</md-button>
+    </div>
+  </md-dialog-content>
+</md-dialog>
