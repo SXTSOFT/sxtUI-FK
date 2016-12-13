@@ -71,9 +71,11 @@
 
     vm.typeId;
     vm.getMaterial = function () {
-      api.material.materialScience.GetMaterialByTypeId(vm.typeId).then(function (r) {
-        vm.materials = r.data;
-      })
+      if(vm.typeId){
+        api.material.materialScience.GetMaterialByTypeId(vm.typeId).then(function (r) {
+          vm.materials = r.data;
+        })
+      }
     };
 
     vm.upNext = function () {
