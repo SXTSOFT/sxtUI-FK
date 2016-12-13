@@ -236,7 +236,7 @@
       $q.all([
         loadZgLst()
       ]).then(function () {
-        vm.isOver = true;
+        vm.f_isOver = true;
         if (!vm.zglist.length){
           vm.isShowbg=true;
         }
