@@ -42,7 +42,7 @@
 
     vm.save = function () {
       if ($scope.myForm.$valid) {
-        if (vm.cid){
+        if (vm.cid && vm.cid!=0){
           var _str = JSON.stringify(vm.Brands).replace('[','').replace(']','').replace(/"/g,'');
           var _data = {'ContractId':vm.cid,'MaterialId':vm.data.Id,'Brands':_str};
           api.material.contract.UpdateContract(_data).then(function () {
