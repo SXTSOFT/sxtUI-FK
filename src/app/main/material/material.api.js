@@ -39,8 +39,8 @@
         getList:function(args){
           return $http.get($http.url('/api/MaterialScience',{Skip:args.Skip,Limit:args.Limit}))
         },
-        getMaterial:function(id,cid){
-          return $http.get($http.url('/api/MaterialScience/'+id+'/'+cid));
+        getMaterial:function(id){
+          return $http.get($http.url('/api/MaterialScience/'+id));
         },
         putMaterial:function(data){
           return $http.put('/api/MaterialScience/' + data.Id,data);
@@ -101,10 +101,10 @@
           return $http.get($http.url('/api/MaterialContract/'+id));
         },
         GetContractDetailById:function (cid,mid) {
-          return $http.get($http.get('/api/MaterialContract/GetContractDetailById/'+cid+'/'+mid));
+          return $http.get($http.url('/api/MaterialContract/GetContractDetailById/'+cid+'/'+mid));
         },
         UpdateContract:function (id,data) {
-          return $http.get($http.get('/api/MaterialContract/UpdateContract/'+id,data));
+          return $http.push($http.url('/api/MaterialContract/UpdateContract/'+id),data);
         },
       }
     })
