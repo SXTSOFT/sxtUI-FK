@@ -11,6 +11,8 @@
 
       this.from = undefined;
       this.to = undefined;
+      this.realFrom = undefined;
+      this.realTo = undefined;
       this.duration = undefined;
       //this.duration = model.tasks&&model.tasks[0].duration;
 
@@ -176,6 +178,9 @@
     Row.prototype.removeAllTasks = function() {
       this.from = undefined;
       this.to = undefined;
+      this.realFrom = undefined;
+      this.realTo = undefined;
+
       this.duration = undefined;
 
       this.tasksMap = {};
@@ -188,6 +193,8 @@
     Row.prototype.setFromTo = function() {
       this.from = undefined;
       this.to = undefined;
+      this.realFrom = undefined;
+      this.realTo = undefined;
       this.duration = undefined;
 
       for (var j = 0, k = this.tasks.length; j < k; j++) {
@@ -196,10 +203,10 @@
     };
 
     Row.prototype.setFromToByTask = function(task) {
-      this.setFromToByValues(task.model.from, task.model.to);
+      this.setFromToByValues(task.model.from, task.model.to,task.model.realFrom,task.model.realTo);
     };
 
-    Row.prototype.setFromToByValues = function(from, to) {
+    Row.prototype.setFromToByValues = function(from, to,realFrom,realTo) {
       if (from !== undefined) {
         if (this.from === undefined) {
           this.from = moment(from);
@@ -218,7 +225,20 @@
       if(from !==undefined && to !== undefined){
         this.duration = this.to.diff(this.from, 'day');
       }
-
+      if(realFrom !==undefined){
+        if (this.realFrom === undefined) {
+          this.realFrom = moment(realFrom);
+        } else if (realFrom > this.realFrom) {
+          this.realFrom = moment(realFrom);
+        }
+      }
+      if(realTo !==undefined){
+        if (this.realTo === undefined) {
+          this.realTo = moment(realTo);
+        } else if (realTo > this.realTo) {
+          this.realTo = moment(realTo);
+        }
+      }
 
     };
 
