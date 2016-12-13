@@ -6,7 +6,7 @@
   'use strict';
 
   angular
-    .module('app.material', ['app.core','app.xhsc','ui.tree'])
+    .module('app.material', ['app.core','app.xhsc','ui.tree','ngMaterial', 'ngMessages'])
     .config(config);
   /** @ngInject */
   function config($stateProvider, msNavigationServiceProvider) {
@@ -57,7 +57,7 @@
         template:'<material-batch-detail flex layout="column"></material-batch-detail>'
       })
       .state('app.material.materialLibrary',{
-        url:'/library',
+        url:'/library/{cid}',
         template:'<material-library flex layout="column"></material-library>'
       });
 
@@ -82,14 +82,14 @@
     // });
 
     msNavigationServiceProvider.saveItem('material.materialLibrary', {
-      title: '材料管理',
+      title: '集团材料库',
       icon: 'icon-view-list',
       state: 'app.material.materialLibrary',
       weight: 1
     });
 
     msNavigationServiceProvider.saveItem('material.contracts', {
-      title: '合同管理',
+      title: '项目材料管理',
       icon: 'icon-account',
       state: 'app.material.contracts',
       weight: 1

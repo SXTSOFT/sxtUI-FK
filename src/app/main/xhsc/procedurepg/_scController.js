@@ -27,17 +27,19 @@
       },
       tooltip:''
     };
+    var areaId = vm.info.regionId.substr(0, 10);
     api.setNetwork(1).then(function(){
       $rootScope.title =vm.info.name;
       var packdb = db('pack'+vm.info.db);
       var arr=[
-        packdb.get('GetMeasureItemInfoByAreaID')
+        packdb.get('GetMeasureItemInfoByAreaID'),
+        remote.Project.getDrawingRelations(areaId, "scDrawingRelation"),
+        remote.PQMeasureStandard.GetListByExtend(areaId.substr(0, 5), "standard")
       ]
 
       $q.all(arr).then(function(res){
+        vm.info.loaded=true;
         var  r=res[0];
-        //var  n=res[1];
-
         var find = r.data.find(function (it) {
           return it.AcceptanceItemID == vm.info.acceptanceItemID;
         });
@@ -55,6 +57,9 @@
           t._id = sxt.uuid();//指标结构表
           t.checked = false;
         })
+        vm.picRelate=res[1];
+        vm.standar=res[2];
+
         $timeout(function () {
           vm.scChoose();
         },500);
@@ -122,26 +127,6 @@
           });
       }
 
-      vm.setRegionId = function(regionId,regionType){
-        packdb.get('GetRegionTreeInfo').then(function (result) {
-          vm.regionTree = result.data.Children;
-          result.data.Children.forEach(function(r){
-            if(r.selected == true){
-              var region = xhUtils.findRegion(r.Children,regionId),
-                ld = xhUtils.findRegion(r.Children,regionId.substring(0,15));
-              vm.plasterDepth = ld?ld.PlasterDepth:0;
-              vm.setRegion(region);
-            }
-          })
-
-        });
-      }
-      vm.setRegion = function(region){
-        vm.info.imageUrl = region.DrawingID;
-        vm.info.regionId = region.RegionID;
-        vm.info.regionType = region.RegionType;
-        vm.info.name = region.fullName;
-      }
       vm.submit = function (ev) {
         /*      $mdDialog.show($mdDialog.confirm()
          .title('提交？')
@@ -178,32 +163,6 @@
             });
           });
         })
-      }
-
-      vm.setRegionId($stateParams.regionId);
-      remote.Assessment.getMeasure({
-        RegionID:$stateParams.regionId,//'0001500000000010000000001',//,
-        AcceptanceItemID:$stateParams.measureItemID,//'c9ba481a76644c949d13fdb14b4b4adb',//,
-        RecordType:1,
-        RelationID:vm.info.db//'a55164d5c46f454ca8df799f520bbba8'//
-      }).then(function (result){
-        if(result.data[0] && result.data[0].data.checkUser.length){
-          vm.showState = true;
-        }
-      })
-      vm.stateGo = function(){
-        var routeData={
-          areaId: vm.info.areaId,
-          regionId: vm.info.regionId,
-          RegionName: vm.info.name,
-          name: vm.info.name,
-          regionType: vm.info.regionType,
-          db:vm.info.db,
-          measureItemID:$stateParams.measureItemID,
-          pname:$stateParams.pname
-        }
-
-        $state.go('app.xhsc.scsl.schztb',routeData);
       }
     });
   }

@@ -128,14 +128,6 @@
             $q.all(reqArr).then(function (req) {
               var t = req[0].data && req[0].data.data ? req[0].data.data : [];
               var points = [];
-              // t.forEach(function (o) {
-              //   if (!points.find(function (k) {
-              //       return k.MeasurePointID == o.MeasurePointID;
-              //     })) {
-              //     points.push(o)
-              //   }
-              // });
-
               var msg = [];
               scope.measureIndexes.forEach(function (o) {
                 if (!t.find(function (k) {
@@ -449,10 +441,8 @@
               }
             },
             onUpdateData: function (context, updates, editScope) {
-
               //如果有
               updates.forEach(function (m) {
-
                 if (!m.v)return;
                 var pid;
                 if(editScope.context.layer._value.$groupId) {
@@ -524,9 +514,7 @@
                   m.v.DesignValue = minV;
                   m.v.ExtendedField1 = vs.join(',');
                 }
-                console.log('data.addOrUpdate', m.v);
                 data.addOrUpdate(m.v);
-
               });
             },
             onDelete: function (layer) {

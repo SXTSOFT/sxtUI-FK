@@ -54,12 +54,9 @@
         <md-select name="ContractId" required ng-model="vm.data.ContractId" md-on-close="clearSearchC()"
                    data-md-container-class="selectdemoSelectHeader">
           <md-select-header class="demo-select-header">
-            <input ng-model="searchC"
-                   type="search"
-                   placeholder="搜索.."
-                   class="demo-header-searchbox md-text">
+             <input ng-model="searchC" type="search" placeholder="搜索.." class="demo-header-searchbox md-text">
           </md-select-header>
-          <md-option ng-value="item.Id" ng-click="vm.data.Contract = item.Number;vm.typeId=item.MaterialTypeId" ng-repeat="item in vm.contracts | filter:searchC">
+          <md-option ng-value="item.Id" ng-click="vm.data.Contract = item.Number;vm.typeId=item.Id" ng-repeat="item in vm.contracts | filter:searchC">
             {{item.Name + '/' + item.Number}}
           </md-option>
         </md-select>

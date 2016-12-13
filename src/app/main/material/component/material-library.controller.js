@@ -15,16 +15,21 @@
   function materialLibrary($scope, api, utils, $state, $stateParams,$mdDialog) {
     var vm = this;
     $scope.data = {};
+    vm.cid = $stateParams.cid;
 
     function load() {
-      api.material.materialScience.GetMaterialTreeList().then(function (q) {
+      api.material.materialScience.GetMaterialTreeList(0).then(function (q) {
         if (q.data) {
           $scope.data.nodeList = q.data;
         }
       });
     }
 
-    load();
+    if (vm.cid) {
+
+    } else {
+      load();
+    }
 
     vm.batchAdd = function(node,ev) {
       var data = {};

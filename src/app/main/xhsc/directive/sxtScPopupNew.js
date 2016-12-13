@@ -89,7 +89,7 @@
           singleEdit = mutiEdit;
           mutiEdit = [];
         }
-        console.log("singleEdit",singleEdit);
+
         scope.edit ={
           plasterDepth:sjzEdit.find(function (item) {
             return !!item.m.plasterDepth
