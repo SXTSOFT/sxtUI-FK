@@ -48,7 +48,7 @@
             default:
               photo(type,vm.certificateImgs,image);
           }
-          vm.data.AcceptanceTime = new Date().Format('yyyy年MM月dd日');
+          vm.data.AcceptanceTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
         }
       });
     };

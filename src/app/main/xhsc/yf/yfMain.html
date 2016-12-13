@@ -58,21 +58,6 @@
                           md-mode="indeterminate" md-diameter="32" style="margin-left: 8px;margin-top: 8px">
     </md-progress-circular>
     <md-list ng-show="vm.isOver" style="background-color: #FFFFFF">
-      <md-list-item style="background-color: #FFFFFF" layout="row" ng-click="vm.jlysAction(item)" ng-repeat="item in vm.Inspections">
-        <div layout="column">
-          <p  style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:12px;margin-bottom: 0px">
-            <span style="margin-left:1%;color:white;background-color: #359df5;font-size:12px;border-radius: 3px">移动验房</span>
-          </p>
-          <p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px;line-height: 22px">
-            <span style="display:inline-block;line-height:22px;padding-top: 8px" > {{item.Describe}} </span>
-          </p>
-        </div>
-        <span flex></span>
-        <md-button ng-click="vm.jlysbtnAction(item,$event)" class="md-icon-button" aria-label="More">
-          <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
-        </md-button>
-        <span class="border1px bottom1px"></span>
-      </md-list-item>
       <md-list-item style="background-color: #FFFFFF" ng-click="vm.jlfyAction(item)" ng-repeat="item in vm.zglist|zgFilter:[64]">
         <div style="padding-bottom: 16px" layout="column">
           <p style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 12px">

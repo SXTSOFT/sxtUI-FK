@@ -37,22 +37,35 @@
       getProfile: function () {
         return $q(function (resolve, reject) {
           api.setNetwork(0).then(function () {
-            var profile = sxtlocaStorage.getObj("profile");
-            if (profile) {
+            // var profile = sxtlocaStorage.getObj("profile");
+            // if (profile) {
+            //   resolve(profile);
+            // } else {
+            //   remote.profile().then(function (r) {
+            //     profile = {
+            //       role: r.data.Role.MemberType === 0 || r.data.Role.MemberType ? r.data.Role.MemberType : null,
+            //       ouType: r.data.Role.OUType === 0 || r.data.Role.OUType ? r.data.Role.OUType : null,
+            //       user: r.data,
+            //       duties:r.data.Role.Duties
+            //     }
+            //     sxtlocaStorage.setObj("profile", profile)
+            //     resolve(profile);
+            //   }).catch(function () {
+            //     reject(profile)
+            //   });
+            // }
+            remote.profile().then(function (r) {
+              var profile = {
+                role: r.data.Role.MemberType === 0 || r.data.Role.MemberType ? r.data.Role.MemberType : null,
+                ouType: r.data.Role.OUType === 0 || r.data.Role.OUType ? r.data.Role.OUType : null,
+                user: r.data,
+                duties:r.data.Role.Duties
+              }
               resolve(profile);
-            } else {
-              remote.profile().then(function (r) {
-                profile = {
-                  role: r.data.Role.MemberType === 0 || r.data.Role.MemberType ? r.data.Role.MemberType : null,
-                  ouType: r.data.Role.OUType === 0 || r.data.Role.OUType ? r.data.Role.OUType : null,
-                  user: r.data
-                }
-                sxtlocaStorage.setObj("profile", profile)
-                resolve(profile);
-              }).catch(function () {
-                reject(profile)
-              });
-            }
+            }).catch(function () {
+              reject(profile)
+            });
+
           })
         });
       },

@@ -77,7 +77,7 @@
                 utils.alert('未找到图纸,请与管理员联系!');
                 scope.ct && (scope.ct.loading = false);
               }
-            });
+            },300);
             var t = req.data ?req.data : [];
             var points = [];
             // t.forEach(function (o) {

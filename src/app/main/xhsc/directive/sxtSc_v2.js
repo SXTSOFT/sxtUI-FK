@@ -111,7 +111,7 @@
                     scope.ct && (scope.ct.loading = false);
                   }
                 }
-              });
+              },300);
             }
             tile = scope.regionId;
           }
