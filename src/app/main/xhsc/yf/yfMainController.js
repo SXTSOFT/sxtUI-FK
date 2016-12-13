@@ -76,10 +76,14 @@
         }
       });
     }
+
+
+
     xhscService.getProfile().then(function (profile) {
       vm.role = profile.role;
       vm.OUType = profile.ouType;
     });
+
     var globalTask = [
       function () {
         return remote.safe.getSecurityItem.cfgSet({
@@ -100,6 +104,7 @@
         });
       }
     ];
+
     function projectTask(regionID, areas, acceptanceItemID,_filter) {
       var projectId = regionID.substr(0, 5);
       var filter=_filter;
@@ -128,6 +133,7 @@
         }
       ]
     }
+
     function rectificationTask(item) {
       return [
         function (tasks) {
@@ -304,6 +310,8 @@
         }
       }
     }, $scope);
+
+
     vm.uploadInfo = {}
     vm.uploadInfo.uploading = false;
     vm.upload = function () {
@@ -602,6 +610,7 @@
       });
       evt.stopPropagation();
     }
+
     vm.jlysAction = function (item) {
       if (!item.isOffline) {
         vm.downloadys(item).then(function () {
