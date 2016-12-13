@@ -26,12 +26,13 @@
     });
 
     if (vm.data.Id) {
-      api.material.materialScience.getMaterial(vm.data.Id,cid).then(function (r) {
+      api.material.materialScience.getMaterial(vm.data.Id).then(function (r) {
         vm.data = r.data;
       })
     }
 
     if (vm.cid){
+      console.log()
       api.material.contract.GetContractDetailById(vm.cid,vm.data.Id).then(function (r) {
         if(r.data){
           vm.Brands = angular.copy(r.data.split(','));

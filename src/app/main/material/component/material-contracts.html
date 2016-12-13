@@ -29,7 +29,7 @@
       <td>{{item.Number}}</td>
       <!--<td>{{item.MaterialTypeName}}</td>-->
       <td class="actions">
-        <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.contract({id:item.Id,pageState:0})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
+        <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.contract({id:item.Id})"><md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
         <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.materialLibrary({cid:item.Id})"><md-icon  md-font-icon="icon-checkerboard" class="icon s24"></md-icon></md-button>
         <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.delete(item.Id)"><md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
       </td>

@@ -18,7 +18,6 @@
     vm.projects = [];
     vm.data = {};
     vm.data.Id = $stateParams.id;
-    vm.pageState = $stateParams.pageState;
     // vm.data.ContractRelations = [];
     vm.MaterialIds = [];
 
@@ -84,11 +83,7 @@
         if (vm.data.Id) {
           api.material.contract.update(vm.data).then(function () {
             utils.alert("提交成功", null, function () {
-              if (vm.pageState==1){
-                $state.go("app.material.materialLibrary",{'cid':vm.data.Id});
-              }else {
                 $state.go("app.material.contracts");
-              }
             });
           });
         } else {
