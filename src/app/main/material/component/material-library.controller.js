@@ -15,21 +15,17 @@
   function materialLibrary($scope, api, utils, $state, $stateParams,$mdDialog) {
     var vm = this;
     $scope.data = {};
-    vm.cid = $stateParams.cid;
+    vm.cid = $stateParams.cid || 0;
 
     function load() {
-      api.material.materialScience.GetMaterialTreeList(0).then(function (q) {
+      console.log(vm.cid)
+      api.material.materialScience.GetMaterialTreeList(vm.cid).then(function (q) {
         if (q.data) {
           $scope.data.nodeList = q.data;
         }
       });
     }
-
-    if (vm.cid) {
-
-    } else {
       load();
-    }
 
     vm.batchAdd = function(node,ev) {
       var data = {};
@@ -75,7 +71,7 @@
               break;
             }
             case 2: {
-              $state.go('app.material.add',{id:node.id});
+              $state.go('app.material.add',{id:node.id,cid:vm.cid});
               break;
             }
           }
@@ -160,38 +156,6 @@
         fullscreen: false,
         targetEvent:ev
       });
-
-      // var confirm = $mdDialog.prompt()
-      //   .title(title)
-      //   // .textContent('Bowser is a common name.')
-      //   .placeholder('材料库名称')
-      //   .ariaLabel('材料库')
-      //   .initialValue(flag ? node.title : '')
-      //   .targetEvent(ev)
-      //   .ok('提交')
-      //   .cancel('取消');
-
-     // $mdDialog.show(confirm).then(function(result) {
-     //    if(result){
-     //      data.CategoryName = result;
-     //      if(flag){
-     //        data.Id = node.id;
-     //        api.material.type.update(data).then(function () {
-     //          utils.alert("提交成功", null, function () {
-     //            load();
-     //          });
-     //        });
-     //      }else{
-     //        api.material.type.create(data).then(function () {
-     //          utils.alert("提交成功", null, function () {
-     //            load();
-     //          });
-     //        });
-     //      }
-     //    }
-     //  }, function() {
-     //    console.log('Cancel Add Material !')
-     //  });
     }
 
     vm.alertPromat = function (node,ev) {
@@ -204,7 +168,9 @@
               var json = {};
               var words = content.replace(new RegExp('\n','g'),'|').split('|');
               //清除换行空值
-              //words = words.filter(t => t != undefined && t != null && t.replace(/(^\s*)|(\s*$)/g, "") != '');
+              words = words.filter(function (t) {
+                return  t != undefined && t != null && t.replace(/(^\s*)|(\s*$)/g, "") != ''
+              });
               //清除重复数据
               for(var i = 0; i < words.length; i++){
                 var val = words[i].replace(/(^\s*)|(\s*$)/g, '')

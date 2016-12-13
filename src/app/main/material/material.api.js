@@ -99,7 +99,13 @@
         },
         getById:function(id){
           return $http.get($http.url('/api/MaterialContract/'+id));
-        }
+        },
+        GetContractDetailById:function (cid,mid) {
+          return $http.get($http.url('/api/MaterialContract/GetContractDetailById/'+cid+'/'+mid));
+        },
+        UpdateContract:function (data) {
+          return $http.put('/api/MaterialContract/UpdateContract',data);
+        },
       }
     })
   }

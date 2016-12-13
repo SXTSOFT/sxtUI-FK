@@ -67,7 +67,7 @@
             }
           }
         });
-      }, 0);
+      }, 300);
 
 
         fg = new L.SvFeatureGroup({

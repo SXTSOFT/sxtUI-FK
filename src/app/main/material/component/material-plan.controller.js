@@ -71,9 +71,11 @@
 
     vm.typeId;
     vm.getMaterial = function () {
-      api.material.materialScience.GetMaterialByTypeId(vm.typeId).then(function (r) {
-        vm.materials = r.data;
-      })
+      if(vm.typeId){
+        api.material.materialScience.GetMaterialByTypeId(vm.typeId).then(function (r) {
+          vm.materials = r.data;
+        })
+      }
     };
 
     vm.upNext = function () {
@@ -111,7 +113,7 @@
         vm.RegionId = r.data.RegionId;
         vm.getSections(vm.data.RegionId);
         vm.SectionId = r.data.SectionId;
-        api.material.materialScience.GetMaterialByTypeId(vm.data.TypeId).then(function (r) {
+        api.material.materialScience.GetMaterialByTypeId(vm.data.ContractId).then(function (r) {//vm.data.TypeId
           vm.materials = r.data||[];
           vm.materials.forEach(function (q) {
             if(q.Id == vm.data.MaterialId){
@@ -120,7 +122,6 @@
             }
           });
         });
-
       });
     }
 

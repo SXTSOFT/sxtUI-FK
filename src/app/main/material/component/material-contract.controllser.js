@@ -33,14 +33,13 @@
     if(vm.data.Id){
       api.material.contract.getById(vm.data.Id).then(function (r) {
         vm.data = r.data;
+        vm.data.PartnerId = vm.data.SectionId + '>' + vm.data.PartnerId;
         vm.MaterialIds = vm.data.MaterialTypeId.split(',');
         // vm.data.ContractRelations.forEach(function (r) {
         //   vm.MaterialIds.push(r.MaterialId);
         // });
       });
     }
-
-    vm.fruitNames =[ 'aaa','bb'];
 
     vm.searchTerm;
     vm.clearSearchTerm = function() {
@@ -79,11 +78,14 @@
         //     console.log(vm.data.ContractRelations)
         //   }
         // }
-
+        var arr = vm.data.PartnerId.split('>');
+        vm.data.SectionId = arr[0];
+        vm.data.PartnerId = arr[1];
         if (vm.data.Id) {
+
           api.material.contract.update(vm.data).then(function () {
             utils.alert("提交成功", null, function () {
-              $state.go("app.material.contracts");
+                $state.go("app.material.contracts");
             });
           });
         } else {

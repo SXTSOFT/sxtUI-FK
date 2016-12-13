@@ -311,6 +311,7 @@
         }
       }
     }, $scope);
+
     vm.uploadInfo = {}
     vm.uploadInfo.uploading = false;
     vm.upload = function () {
@@ -516,6 +517,7 @@
     api.setNetwork(0).then(function () {
       load();
     })
+
     vm.setModule = function (val) {
       $state.go('app.xhsc.week.sfWeekBase', {yw: val})
     }

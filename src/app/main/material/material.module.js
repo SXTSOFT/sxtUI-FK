@@ -25,7 +25,7 @@
         template:'<material-list flex layout="column"></material-list>'
       })
       .state('app.material.add', {
-        url: '/add/{id}',
+        url: '/add/{id}/{cid}',
         template: '<material-add flex layout="column"></material-add>'
       })
       .state('app.material.contracts', {

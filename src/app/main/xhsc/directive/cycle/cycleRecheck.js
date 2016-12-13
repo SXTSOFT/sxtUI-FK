@@ -155,7 +155,7 @@
                 return;
               }
             });
-          }, 0);
+          }, 300);
         }
       };
       $timeout(function () {
