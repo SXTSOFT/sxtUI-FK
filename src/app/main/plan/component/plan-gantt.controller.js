@@ -17,21 +17,6 @@
     var vm = this;
     var objectModel;
     vm.isStarted = true;
-    //vm.startPlan = function () {
-    //  var s = vm.data[1].tasks[0];
-    //  api.plan.Task.start(s.id,true).then(function () {
-    //    s.from = new Date();
-    //    vm.isStarted = true;
-    //    utils.alert('计划已经开启');
-    //  });
-    //}
-    //vm.timespans = [
-    //  {
-    //    from: new Date(2013, 9, 21, 8, 0, 0),
-    //    to: new Date(2013, 9, 25, 15, 0, 0),
-    //    name: 'Sprint 1 Timespan'
-    //  }
-    //];
     /*loading界面*/
     $mdDialog.show({
       controller:['$scope',function($scope){
@@ -348,7 +333,7 @@
             }
           }
         })
-         vm.api.side.setWidth(640);
+         vm.options.maxHeight -=3;
       })
       //$animate.enabled(true);
       //$animate.enabled($document.find('#gantt'), false);
@@ -544,23 +529,27 @@
           originData:vm.originData
         }
       }).then(function(load){
-        console.log('close',vm.needLoad)
-        if(load){
-          vm.data = null;
-          vm.api.side.setWidth(639);
+        console.log('close',vm.needLoad,load)
+        if(1){
+         // vm.data = null;
+          //vm.api.side.setWidth(639);
+          vm.options.maxHeight +=3 ;
           vm.reload();
-          vm.needLoad = false;
+          //vm.needLoad = false;
             //vm.load().then(function(){
             //
             //})
         }
       },function(){
-        console.log('a',vm.needLoad)
+       // vm.data = null;
+        //vm.api.side.setWidth(639);
+        vm.reload();
+       // console.log('a',vm.needLoad)
       });
     }
     vm.needLoad = false;
     /** @ngInject */
-    function GanttChartAddEditDialogController(dialogData,originData,template,$timeout,$mdPanel) {
+    function GanttChartAddEditDialogController(dialogData,originData,template,$timeout,$mdPanel,$scope) {
       var vm = this;
       function setSatus(i){
         var str='';
@@ -691,6 +680,7 @@
       vm.startTask = function(task){
         var time = new Date();
         api.plan.BuildPlan.startInsert($stateParams.id,task.TaskFlowId,time).then(function(r){
+          vm.needLoad = true;
           loadSubTask();
         },function(err){
           utils.alert(err.data||'错误');
@@ -714,6 +704,7 @@
       }
       /*关闭任务*/
       vm.closeTask = function(task){
+        console.log($scope)
         var parent = vm;
         var position = $mdPanel.newPanelPosition()
           .relativeTo('.sub-toolbar')
@@ -735,8 +726,8 @@
                 //task.IsAbleStart = r.IsAbleStart;
                 //task.IsInterlude = r.IsInterlude;
                 //task.ManuallyClose = r.ManuallyClose;
-                parent.needLoad = true;
-                console.log($scope)
+                //parent.needLoad = true;
+                //console.log(parent.$parent)
                 if(r.data.length){
                   r.data.forEach(function(_r){
                     var f=parent.flows.find(function(t){
