@@ -2,7 +2,7 @@
 <md-toolbar class="md-hue-2">
   <div class="md-toolbar-tools">
     <h2>
-      <span>材料管理</span>
+      <span>{{(vm.cid && vm.cid!=0)?"合同材料管理":"材料管理" }}</span>
     </h2>
     <span flex></span>
   </div>
@@ -38,7 +38,7 @@
     <md-input-container class="md-block" ng-if="!vm.pageState">
       <label>厂家/品牌</label>
       <input type="text" ng-model="vm.data.Brands">
-      <div class="hint">多个厂家/品牌请用中文逗号"，"分隔</div>
+      <div class="hint">多个厂家/品牌请用中文逗号"、"分隔</div>
     </md-input-container>
 
     <md-chips ng-if="vm.pageState" ng-model="vm.Brands" name="fruitName" readonly="true"

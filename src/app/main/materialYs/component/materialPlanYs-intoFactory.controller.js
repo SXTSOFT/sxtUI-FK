@@ -74,10 +74,10 @@
         utils.alert('检查人不能为空');
         return;
       }
-      if (vm.vehicleImgs.length == 0) {
-        utils.alert('请上传至少一张车辆检查照片');
-        return;
-      }
+      // if (vm.vehicleImgs.length == 0) {
+      //   utils.alert('请上传至少一张车辆检查照片');
+      //   return;
+      // }
       if (vm.goodsImgs.length == 0) {
         utils.alert('请上传至少一张货物检查照片');
         return;
