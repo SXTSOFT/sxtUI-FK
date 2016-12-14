@@ -10,7 +10,7 @@
 
 
     <!-- / CONTENT HEADER -->
-
+    <a ng-click="vm.reload()">a</a>
     <!-- CONTENT CARD -->
     <div class="content-card" layout="column" flex>
 
@@ -59,7 +59,6 @@
 
       <!-- CONTENT -->
       <md-content id="chart-container" class="content" flex layout="column">
-
         <div flex layout-fill
              id="gantt"
              gantt
@@ -115,7 +114,7 @@
             <!--move-threshold="2"-->
             <!--task-factory="vm.options.drawTaskFactory">-->
           <!--</gantt-draw-task>-->
-          <gantt-overlap></gantt-overlap>
+          <!--<gantt-overlap></gantt-overlap>-->
           <gantt-resize-sensor></gantt-resize-sensor>
           <gantt-dependencies read-only="true"></gantt-dependencies>
         </div>
