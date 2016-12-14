@@ -17,21 +17,6 @@
     var vm = this;
     var objectModel;
     vm.isStarted = true;
-    //vm.startPlan = function () {
-    //  var s = vm.data[1].tasks[0];
-    //  api.plan.Task.start(s.id,true).then(function () {
-    //    s.from = new Date();
-    //    vm.isStarted = true;
-    //    utils.alert('计划已经开启');
-    //  });
-    //}
-    //vm.timespans = [
-    //  {
-    //    from: new Date(2013, 9, 21, 8, 0, 0),
-    //    to: new Date(2013, 9, 25, 15, 0, 0),
-    //    name: 'Sprint 1 Timespan'
-    //  }
-    //];
     /*loading界面*/
     $mdDialog.show({
       controller:['$scope',function($scope){
@@ -46,7 +31,9 @@
       escapeToClose: true,
       focusOnOpen: true
     })
-
+    //$scope.$on('$destroy',function(){
+    //  $scope.hide();
+    //})
     //$scope.$watch('vm.gantt',function(){
     //  $mdDialog.hide();
     //})
@@ -188,7 +175,6 @@
       api                     : function (ganttApi)
       {
         vm.api = ganttApi;
-        //console.log(ganttApi)
 
         vm.api.core.on.ready($scope, function ()
         {
@@ -208,22 +194,6 @@
              */
             if ( directiveName === 'ganttTask' )
             {
-              //element.on('mousedown touchstart', function (event)
-              //{
-              //  event.preventDefault();
-              //  event.stopPropagation();
-              //  vm.live.row = directiveScope.task.row.model;
-              //  if ( angular.isDefined(directiveScope.task.originalModel) )
-              //  {
-              //    vm.live.task = directiveScope.task.originalModel;
-              //  }
-              //  else
-              //  {
-              //    vm.live.task = directiveScope.task.model;
-              //  }
-              //  $scope.$digest();
-              //});
-
             }
 
             /**
@@ -231,18 +201,6 @@
              */
             else if ( directiveName === 'ganttRow' )
             {
-
-              //element.on('click', function (event)
-              //{
-              //  event.stopPropagation();
-              //});
-              //
-              //element.on('mousedown touchstart', function (event)
-              //{
-              //  event.stopPropagation();
-              //  vm.live.row = directiveScope.row.model;
-              //  $scope.$digest();
-              //});
 
             }
 
@@ -271,58 +229,13 @@
             }
           });
         });
-        ganttApi.tasks.on.change($scope,function(task){
-
-          task.row.duration = moment(task.model.to).endOf('day').diff(moment(task.model.from).startOf('day'),'d');//moment.duration(task.model.to.diff(task.model.from)).asDays();
-          var changeData = [
-            {
-              "TaskId": task.model.id,
-              "ScheduledStartTime": task.model.from,
-              "ScheduledEndTime": task.model.to
-            }
-          ]
-          api.plan.BuildPlan.adjustPlan($stateParams.id,changeData);
-          vm.data.forEach(function(group){
-            var next = group.tasks.find(function(t){
-              return t.dependencies.find(function(d){
-                  return d.from == task.model.id;
-                })!=null;
-            });
-            next  && (next.from = task.model.to);
-            if(next){
-              var id = task.rowsManager.rows.find(function(r){
-                return r.model.id == next.id+'-group'
-              })
-              if(id){
-                id.from = task.model.to;
-                id.duration =  moment(next.to).endOf('day').diff(moment(next.from).startOf('day'),'d');
-              }
-            }
-            var prev = group.tasks.find(function(t){
-              return task.model.dependencies.find(function(d){
-                  return t.id == d.from;
-                })!=null;
-            });
-            prev && (prev.to = task.model.from);
-            if(prev){
-              var id = task.rowsManager.rows.find(function(r){
-                return r.model.id == prev.id+'-group'
-              })
-              if(id){
-                id.to = task.model.from;
-                id.duration = moment(prev.to).endOf('day').diff(moment(prev.from).startOf('day'),'d');
-              }
-            }
-          })
-
-        })
-
       }
     };
 
     vm.canAutoWidth = canAutoWidth;
     vm.getColumnWidth = getColumnWidth;
     vm.load = load;
+    vm.reload = reload;
     vm.editDialog = editDialog;
     //////////
 
@@ -358,7 +271,73 @@
       vm.options.maxHeight = h;
 
     }
+    function reload()
+    {
+       api.plan.BuildPlan.getGantt({
+        Type:'BuildingPlan',
+        Source:$stateParams.id
+      }).then(function (rs) {
+        vm.originData = rs.data;
+        var mergedata = mergeFloor(rs.data.Items);
+        vm.data = rs.data.Items.filter(function (item) {
+          return !item.ExtendedParameters;
+        }).map(function (item) {
+          if (item.Description)
+            angular.extend(item, angular.fromJson(item.Description));
+          var result = {
+            id: item.Id + '-group',
+            name: item.Name,
+            classes: [
+              item.IsInterlude ? "md-light-blue-100-bg" : ""
+            ],
+            //parent:'__',
+            tasks: [
+              {
+                id: item.Id,
+                name: item.Name,
+                isStarted: !!item.ActualStartTime,
+                isEnded: !!item.ActualEndTime,
+                from: item.ScheduledStartTime,
+                to: item.ScheduledEndTime,
+                realFrom: item.ActualStartTime || item.RealScheduledStartTime && item.RealScheduledStartTime,
+                realTo: item.ActualEndTime || item.RealScheduledEndTime && item.RealScheduledEndTime,
+                movable: true,
+                classes: [
+                  item.IsInterlude ? "md-light-blue-100-bg" : ""
+                ],
+                isType: item.Type,
+                dependencies: item.Dependencies.map(function (d) {
+                  return {
+                    from: d.DependencyTaskID
+                  }
+                })
+              }
+            ]
+          }
+          /*          if(item.ExtendedParameters)
+           {
+           return angular.extend(result,{parent:item.ExtendedParameters+'-group'})
+           }*/
 
+          //result = mergedata.concat(result)
+          return result;
+        });
+        mergedata.forEach(function (r) {
+          var f = vm.data.find(function (_r) {
+            return _r.id == r.id + '-group'
+          })
+          if (f) {
+            var idx = vm.data.indexOf(f);
+            if (idx > -1) {
+              vm.data.splice(idx, 0, r);
+            }
+          }
+        })
+         vm.options.maxHeight -=3;
+      })
+      //$animate.enabled(true);
+      //$animate.enabled($document.find('#gantt'), false);
+    }
     /**
      * Side Mode
      */
@@ -369,9 +348,9 @@
         vm.api.side.setWidth(undefined);
 
         $timeout(function ()
-        {
-          vm.api.columns.refresh();
-        });
+      {
+        vm.api.columns.refresh();
+      });
       }
     });
 
@@ -467,14 +446,10 @@
         Source:$stateParams.id
       }).then(function (rs) {
         vm.originData = rs.data;
-
-         var mergedata = mergeFloor(rs.data.Items);
-
+        var mergedata = mergeFloor(rs.data.Items);
         vm.data = rs.data.Items.filter(function (item) {
           return !item.ExtendedParameters;
         }).map(function (item) {
-          //var sdate = moment(item.ScheduledStartTime&&item.ScheduledStartTime).startOf('day');
-          //var edate = moment(item.ScheduledEndTime&&item.ScheduledEndTime).endOf('day');
           if(item.Description)
             angular.extend(item,angular.fromJson(item.Description));
           var result = {
@@ -484,7 +459,6 @@
               item.IsInterlude?"md-light-blue-100-bg":""
             ],
             //parent:'__',
-            // children:item.children&&item.children.length?item.children:[],
             tasks:[
               {
                 id:item.Id,
@@ -493,13 +467,12 @@
                 isEnded:!!item.ActualEndTime,
                 from:item.ScheduledStartTime,
                 to:item.ScheduledEndTime,
-                realFrom:item.RealScheduledStartTime&&item.RealScheduledStartTime,
-                realTo:item.RealScheduledEndTime&&item.RealScheduledEndTime,
+                realFrom:item.ActualStartTime||item.RealScheduledStartTime&&item.RealScheduledStartTime,
+                realTo:item.ActualEndTime||item.RealScheduledEndTime&&item.RealScheduledEndTime,
                 movable:true,
                 classes: [
                   item.IsInterlude?"md-light-blue-100-bg":""
                 ],
-                //duration:edate.diff(sdate,'d'),
                 isType:item.Type,
                 dependencies:item.Dependencies.map(function (d) {
                   return {
@@ -528,15 +501,12 @@
              }
            }
          })
-        // vm.data = mergedata.concat(vm.data)
          console.log(vm.data)
        // vm.isStarted = vm.data[0].tasks[0].isStarted;
       })
       // Fix for Angular-gantt-chart issue
       $animate.enabled(true);
       $animate.enabled($document.find('#gantt'), false);
-
-
     }
 
     /**
@@ -554,18 +524,32 @@
         clickOutsideToClose: true,
         locals             : {
           dialogData: {
-            //chartData : vm.data,
-            //formView  : formView,
             formData  : formData
           },
           originData:vm.originData
         }
+      }).then(function(load){
+        console.log('close',vm.needLoad,load)
+        if(1){
+         // vm.data = null;
+          //vm.api.side.setWidth(639);
+          vm.options.maxHeight +=3 ;
+          vm.reload();
+          //vm.needLoad = false;
+            //vm.load().then(function(){
+            //
+            //})
+        }
+      },function(){
+       // vm.data = null;
+        //vm.api.side.setWidth(639);
+        vm.reload();
+       // console.log('a',vm.needLoad)
       });
     }
-
+    vm.needLoad = false;
     /** @ngInject */
-    function GanttChartAddEditDialogController(dialogData,originData,template,$timeout,$mdPanel) {
-      //console.log('dialogData',dialogData);
+    function GanttChartAddEditDialogController(dialogData,originData,template,$timeout,$mdPanel,$scope) {
       var vm = this;
       function setSatus(i){
         var str='';
@@ -696,6 +680,7 @@
       vm.startTask = function(task){
         var time = new Date();
         api.plan.BuildPlan.startInsert($stateParams.id,task.TaskFlowId,time).then(function(r){
+          vm.needLoad = true;
           loadSubTask();
         },function(err){
           utils.alert(err.data||'错误');
@@ -719,6 +704,7 @@
       }
       /*关闭任务*/
       vm.closeTask = function(task){
+        console.log($scope)
         var parent = vm;
         var position = $mdPanel.newPanelPosition()
           .relativeTo('.sub-toolbar')
@@ -740,6 +726,8 @@
                 //task.IsAbleStart = r.IsAbleStart;
                 //task.IsInterlude = r.IsInterlude;
                 //task.ManuallyClose = r.ManuallyClose;
+                //parent.needLoad = true;
+                //console.log(parent.$parent)
                 if(r.data.length){
                   r.data.forEach(function(_r){
                     var f=parent.flows.find(function(t){
@@ -762,8 +750,6 @@
                 }else{
                   loadSubTask();
                 }
-
-
               },function(err){
                 utils.alert(err.data||'错误');
               });
@@ -905,7 +891,7 @@
       //toStopTask();
       vm.dialogData = dialogData;
       vm.close =function(){
-        $mdDialog.hide();
+        $mdDialog.hide(vm.needLoad);
       }
       vm.toggleRight = function () {
         return $mdSidenav('right')

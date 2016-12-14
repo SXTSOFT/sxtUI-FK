@@ -18,7 +18,6 @@
     vm.cid = $stateParams.cid || 0;
 
     function load() {
-      console.log(vm.cid)
       api.material.materialScience.GetMaterialTreeList(vm.cid).then(function (q) {
         if (q.data) {
           $scope.data.nodeList = q.data;

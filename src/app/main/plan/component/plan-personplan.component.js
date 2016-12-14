@@ -14,7 +14,7 @@
     });
 
   /**@ngInject*/
-  function personPlanController($scope,$rootScope,moment,api,$mdDialog,$timeout,utils){
+  function personPlanController($scope,$rootScope,moment,api,$mdDialog,$timeout,utils,xhUtils){
     var vm = this;
     load();
     function load() {
@@ -144,41 +144,71 @@
       })
     }
     vm.end = function(t){
-      var time = new Date();
-      $mdDialog.show(
-        $mdDialog.prompt()
-          .title('确认关闭')
-          .textContent('关闭原因')
-          .placeholder('输入')
-          .ok('确定')
-          .cancel('取消')
-      ).then(function(res){
-        t.IsInterlude = false;
-        api.plan.Task.end(t.Id,true,time,res).then(function(r){
-          vm.loading = false;
-          load();
-          //vm.data.forEach(function(tt){
-          //  tt.PlaningTasks.forEach(function(_t){
-          //    var f = r.data.find(function(_r){
-          //      return _r.Id == _t.Id;
-          //    })
-          //    if(f){
-          //      t.State = f.State;
-          //    }
-          //  })
-          //  tt.NoPlanTasks.forEach(function(_t){
-          //    var f = r.data.find(function(_r){
-          //      return _r.Id == _t.Id;
-          //    })
-          //    if(f){
-          //      t.State = f.State;
-          //    }
-          //  })
-          //})
-        },function(err){
-          utils.alert(err.data||'错误');
-        })
-      })
+      xhUtils.photo().then(function (image) {
+        if(image){
+          var time = new Date();
+          $mdDialog.show({
+            templateUrl:'app/main/plan/component/plan-task-close.html',
+            controller:['$scope',function($scope){
+              $scope.img=image;
+              $scope.close = function(description){
+                $mdDialog.hide(description)
+              }
+              $scope.cancel = function(){
+                $mdDialog.cancel()
+              }
+            }],
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+          }
+            //$mdDialog.prompt()
+            //  .title('确认关闭')
+            //  .textContent('关闭原因')
+            //  .placeholder('输入')
+            //  .ok('确定')
+            //  .cancel('取消')
+          ).then(function(res){
+            t.IsInterlude = false;
+            api.plan.Task.end(t.Id,true,time,res).then(function(r){
+              vm.loading = false;
+              load();
+              //vm.data.forEach(function(tt){
+              //  tt.PlaningTasks.forEach(function(_t){
+              //    var f = r.data.find(function(_r){
+              //      return _r.Id == _t.Id;
+              //    })
+              //    if(f){
+              //      t.State = f.State;
+              //    }
+              //  })
+              //  tt.NoPlanTasks.forEach(function(_t){
+              //    var f = r.data.find(function(_r){
+              //      return _r.Id == _t.Id;
+              //    })
+              //    if(f){
+              //      t.State = f.State;
+              //    }
+              //  })
+              //})
+            },function(err){
+              utils.alert(err.data||'错误');
+            })
+          },function(){
+            console.log('cancel')
+          })
+          //var img = {
+          //  ProblemRecordFileID:sxt.uuid(),
+          //  FileID:sxt.uuid()+".jpg",
+          //  ProblemRecordID:scope.data.p.ProblemRecordID,
+          //  CheckpointID:scope.data.v.CheckpointID,
+          //  FileContent:image
+          //};
+          //remote.Procedure.InspectionProblemRecordFile.create(img);
+          //scope.data.images.push(img);
+
+        }
+      });
+
 
     }
   }

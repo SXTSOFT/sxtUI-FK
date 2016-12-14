@@ -3,7 +3,7 @@
     <span style="display: inline-block; font-size: 12px; color: #757575; padding: 16px 32px;" flex="80">已下载列表</span>
     <md-button ng-click="vm.upload()" style="color: black;margin-right: 0;font-size: 14px;" flex="20">上传</md-button>
   </div>
-  <span class="border1px"></span>
+  <span class="border1px" ng-if="vm.offlines.length"></span>
   <md-list style="overflow-x: hidden; padding: 0;">
     <md-list-item layout="row" ng-repeat="item in vm.offlines" ui-sref="app.xhsc.materialys.planList({id:item.SectionID,title:item.FullName})">
       <p style="font-size:14px; padding-left: 3%">
@@ -14,7 +14,7 @@
     </md-list-item>
   </md-list>
   <md-subheader ng-if="vm.section.length">未下载列表</md-subheader>
-  <span class="border1px"></span>
+  <span class="border1px" ng-if="vm.section.length"></span>
   <md-list style="overflow-x: hidden; padding: 0;">
     <md-list-item layout="row" ng-repeat="item in vm.section">
       <p style="font-size:14px; padding-left: 5%">
