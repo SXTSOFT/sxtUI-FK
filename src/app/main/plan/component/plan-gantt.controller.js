@@ -190,7 +190,6 @@
       api                     : function (ganttApi)
       {
         vm.api = ganttApi;
-        //console.log(ganttApi)
 
         vm.api.core.on.ready($scope, function ()
         {
@@ -210,22 +209,6 @@
              */
             if ( directiveName === 'ganttTask' )
             {
-              //element.on('mousedown touchstart', function (event)
-              //{
-              //  event.preventDefault();
-              //  event.stopPropagation();
-              //  vm.live.row = directiveScope.task.row.model;
-              //  if ( angular.isDefined(directiveScope.task.originalModel) )
-              //  {
-              //    vm.live.task = directiveScope.task.originalModel;
-              //  }
-              //  else
-              //  {
-              //    vm.live.task = directiveScope.task.model;
-              //  }
-              //  $scope.$digest();
-              //});
-
             }
 
             /**
@@ -233,17 +216,6 @@
              */
             else if ( directiveName === 'ganttRow' )
             {
-              //element.on('click', function (event)
-              //{
-              //  event.stopPropagation();
-              //});
-              //
-              //element.on('mousedown touchstart', function (event)
-              //{
-              //  event.stopPropagation();
-              //  vm.live.row = directiveScope.row.model;
-              //  $scope.$digest();
-              //});
 
             }
 
@@ -272,58 +244,13 @@
             }
           });
         });
-        //ganttApi.tasks.on.change($scope,function(task){
-        //
-        //  task.row.duration = moment(task.model.to).endOf('day').diff(moment(task.model.from).startOf('day'),'d');//moment.duration(task.model.to.diff(task.model.from)).asDays();
-        //  var changeData = [
-        //    {
-        //      "TaskId": task.model.id,
-        //      "ScheduledStartTime": task.model.from,
-        //      "ScheduledEndTime": task.model.to
-        //    }
-        //  ]
-        //  api.plan.BuildPlan.adjustPlan($stateParams.id,changeData);
-        //  vm.data.forEach(function(group){
-        //    var next = group.tasks.find(function(t){
-        //      return t.dependencies.find(function(d){
-        //          return d.from == task.model.id;
-        //        })!=null;
-        //    });
-        //    next  && (next.from = task.model.to);
-        //    if(next){
-        //      var id = task.rowsManager.rows.find(function(r){
-        //        return r.model.id == next.id+'-group'
-        //      })
-        //      if(id){
-        //        id.from = task.model.to;
-        //        id.duration =  moment(next.to).endOf('day').diff(moment(next.from).startOf('day'),'d');
-        //      }
-        //    }
-        //    var prev = group.tasks.find(function(t){
-        //      return task.model.dependencies.find(function(d){
-        //          return t.id == d.from;
-        //        })!=null;
-        //    });
-        //    prev && (prev.to = task.model.from);
-        //    if(prev){
-        //      var id = task.rowsManager.rows.find(function(r){
-        //        return r.model.id == prev.id+'-group'
-        //      })
-        //      if(id){
-        //        id.to = task.model.from;
-        //        id.duration = moment(prev.to).endOf('day').diff(moment(prev.from).startOf('day'),'d');
-        //      }
-        //    }
-        //  })
-        //
-        //})
-
       }
     };
 
     vm.canAutoWidth = canAutoWidth;
     vm.getColumnWidth = getColumnWidth;
     vm.load = load;
+    vm.reload = reload;
     vm.editDialog = editDialog;
     //////////
 
@@ -359,7 +286,73 @@
       vm.options.maxHeight = h;
 
     }
+    function reload()
+    {
+       api.plan.BuildPlan.getGantt({
+        Type:'BuildingPlan',
+        Source:$stateParams.id
+      }).then(function (rs) {
+        vm.originData = rs.data;
+        var mergedata = mergeFloor(rs.data.Items);
+        vm.data = rs.data.Items.filter(function (item) {
+          return !item.ExtendedParameters;
+        }).map(function (item) {
+          if (item.Description)
+            angular.extend(item, angular.fromJson(item.Description));
+          var result = {
+            id: item.Id + '-group',
+            name: item.Name,
+            classes: [
+              item.IsInterlude ? "md-light-blue-100-bg" : ""
+            ],
+            //parent:'__',
+            tasks: [
+              {
+                id: item.Id,
+                name: item.Name,
+                isStarted: !!item.ActualStartTime,
+                isEnded: !!item.ActualEndTime,
+                from: item.ScheduledStartTime,
+                to: item.ScheduledEndTime,
+                realFrom: item.ActualStartTime || item.RealScheduledStartTime && item.RealScheduledStartTime,
+                realTo: item.ActualEndTime || item.RealScheduledEndTime && item.RealScheduledEndTime,
+                movable: true,
+                classes: [
+                  item.IsInterlude ? "md-light-blue-100-bg" : ""
+                ],
+                isType: item.Type,
+                dependencies: item.Dependencies.map(function (d) {
+                  return {
+                    from: d.DependencyTaskID
+                  }
+                })
+              }
+            ]
+          }
+          /*          if(item.ExtendedParameters)
+           {
+           return angular.extend(result,{parent:item.ExtendedParameters+'-group'})
+           }*/
 
+          //result = mergedata.concat(result)
+          return result;
+        });
+        mergedata.forEach(function (r) {
+          var f = vm.data.find(function (_r) {
+            return _r.id == r.id + '-group'
+          })
+          if (f) {
+            var idx = vm.data.indexOf(f);
+            if (idx > -1) {
+              vm.data.splice(idx, 0, r);
+            }
+          }
+        })
+         vm.api.side.setWidth(640);
+      })
+      //$animate.enabled(true);
+      //$animate.enabled($document.find('#gantt'), false);
+    }
     /**
      * Side Mode
      */
@@ -370,9 +363,9 @@
         vm.api.side.setWidth(undefined);
 
         $timeout(function ()
-        {
-          vm.api.columns.refresh();
-        });
+      {
+        vm.api.columns.refresh();
+      });
       }
     });
 
@@ -468,9 +461,7 @@
         Source:$stateParams.id
       }).then(function (rs) {
         vm.originData = rs.data;
-
-         var mergedata = mergeFloor(rs.data.Items);
-
+        var mergedata = mergeFloor(rs.data.Items);
         vm.data = rs.data.Items.filter(function (item) {
           return !item.ExtendedParameters;
         }).map(function (item) {
@@ -483,7 +474,6 @@
               item.IsInterlude?"md-light-blue-100-bg":""
             ],
             //parent:'__',
-            // children:item.children&&item.children.length?item.children:[],
             tasks:[
               {
                 id:item.Id,
@@ -492,8 +482,8 @@
                 isEnded:!!item.ActualEndTime,
                 from:item.ScheduledStartTime,
                 to:item.ScheduledEndTime,
-                realFrom:item.RealScheduledStartTime&&item.RealScheduledStartTime,
-                realTo:item.RealScheduledEndTime&&item.RealScheduledEndTime,
+                realFrom:item.ActualStartTime||item.RealScheduledStartTime&&item.RealScheduledStartTime,
+                realTo:item.ActualEndTime||item.RealScheduledEndTime&&item.RealScheduledEndTime,
                 movable:true,
                 classes: [
                   item.IsInterlude?"md-light-blue-100-bg":""
@@ -526,7 +516,6 @@
              }
            }
          })
-        // vm.data = mergedata.concat(vm.data)
          console.log(vm.data)
        // vm.isStarted = vm.data[0].tasks[0].isStarted;
       })
@@ -555,31 +544,24 @@
           originData:vm.originData
         }
       }).then(function(load){
-        console.log('close',load)
+        console.log('close',vm.needLoad)
         if(load){
-          vm.load().then(function(){
-            $timeout(function(){
-              $mdDialog.hide();
-              vm.api.tree.collapseAll()
-            })
-          });
+          vm.data = null;
+          vm.api.side.setWidth(639);
+          vm.reload();
+          vm.needLoad = false;
+            //vm.load().then(function(){
+            //
+            //})
         }
-        vm.data = null;
-        vm.load().then(function(){
-          $timeout(function(){
-           // $mdDialog.hide();
-            //vm.api.tree.collapseAll()
-          })
-        });
       },function(){
-        console.log('a')
+        console.log('a',vm.needLoad)
       });
     }
-
+    vm.needLoad = false;
     /** @ngInject */
     function GanttChartAddEditDialogController(dialogData,originData,template,$timeout,$mdPanel) {
       var vm = this;
-      vm.needLoad = false;
       function setSatus(i){
         var str='';
         switch (i){
@@ -754,6 +736,7 @@
                 //task.IsInterlude = r.IsInterlude;
                 //task.ManuallyClose = r.ManuallyClose;
                 parent.needLoad = true;
+                console.log($scope)
                 if(r.data.length){
                   r.data.forEach(function(_r){
                     var f=parent.flows.find(function(t){
