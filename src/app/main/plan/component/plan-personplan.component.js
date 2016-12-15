@@ -150,13 +150,26 @@
           $mdDialog.show({
             templateUrl:'app/main/plan/component/plan-task-close.html',
             controller:['$scope',function($scope){
-              $scope.img=image;
+              $scope.img=[{ImageByte:image}];
               $scope.close = function(description){
-                $mdDialog.hide(description)
+                $scope.data ={
+                  description:description,
+                  img:$scope.img[0].ImageByte
+                }
+                $mdDialog.hide($scope.data)
               }
               $scope.cancel = function(){
                 $mdDialog.cancel()
               }
+              var deleteFn = function(d,data){
+                //console.log(data)
+                $scope.img.splice(data,1);
+                if(!$scope.img.length){
+                  $mdDialog.cancel()
+                }
+                //$scope.$apply();
+              }
+              $rootScope.$on('delete',deleteFn);
             }],
             parent: angular.element(document.body),
             clickOutsideToClose:true,
@@ -169,7 +182,7 @@
             //  .cancel('取消')
           ).then(function(res){
             t.IsInterlude = false;
-            api.plan.Task.end(t.Id,true,time,res).then(function(r){
+            api.plan.Task.end(t.Id,true,time,res.description,res.img).then(function(r){
               vm.loading = false;
               load();
               //vm.data.forEach(function(tt){
