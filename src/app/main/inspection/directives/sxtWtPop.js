@@ -43,6 +43,7 @@
       })
       scope.cancel = function(){
         scope.show = false;
+        scope.question = ''
         //$(element).css('display','none')
       }
 
