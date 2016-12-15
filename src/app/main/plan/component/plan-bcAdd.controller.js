@@ -26,7 +26,7 @@
     if(vm.data.CompensateId){
       api.plan.compensate.getCompensate(vm.data.CompensateId).then(function (r) {
         vm.data = r.data;
-        vm.data.Time = new Date(vm.data.Time);
+        vm.data.Time = new Date(vm.data.Time.substring(0,10));
         vm.data.IsAllStopWork = ''+vm.data.IsAllStopWork;
         var areaIds = [];
         r.data.CompensateAreas.forEach(function (a) {
