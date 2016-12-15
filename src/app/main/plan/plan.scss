@@ -190,6 +190,8 @@ md-calendar{
 
 .report{
   border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 12px;
   tr{
     th{
       padding: 5px;
@@ -204,6 +206,7 @@ md-calendar{
     }
   }
   table{
+    table-layout: fixed;
     tr{
       &:first-child{
         td{

@@ -529,22 +529,13 @@
           originData:vm.originData
         }
       }).then(function(load){
-        console.log('close',vm.needLoad,load)
         if(1){
-         // vm.data = null;
-          //vm.api.side.setWidth(639);
           vm.options.maxHeight +=3 ;
           vm.reload();
-          //vm.needLoad = false;
-            //vm.load().then(function(){
-            //
-            //})
         }
       },function(){
-       // vm.data = null;
-        //vm.api.side.setWidth(639);
+        vm.options.maxHeight +=3 ;
         vm.reload();
-       // console.log('a',vm.needLoad)
       });
     }
     vm.needLoad = false;
@@ -702,6 +693,14 @@
           loadSubTask();
         });
       }
+      //详情
+      //vm.showTaskD = function(task){
+      //  api.plan.fileService.get(task.TaskFlowId).then(function(r){
+      //   task.images=[{
+      //     ImageByte:'app/main/xhsc/images/bg1.jpg'
+      //   }]
+      //  })
+      //}
       /*关闭任务*/
       vm.closeTask = function(task){
         console.log($scope)
