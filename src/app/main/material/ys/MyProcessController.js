@@ -38,6 +38,49 @@
     vm.change = function (item) {
       vm.fjType=item.value;
     }
+
+    //从一个给定的数组arr中,随机返回num个不重复项
+    function getArrayItems(arr, num) {
+      //新建一个数组,将传入的数组复制过来,用于运算,而不要直接操作传入的数组;
+      var temp_array = new Array();
+      for (var index in arr) {
+        temp_array.push(arr[index]);
+      }
+      //取出的数值项,保存在此数组
+      var return_array = new Array();
+      for (var i = 0; i<num; i++) {
+        //判断如果数组还有可以取出的元素,以防下标越界
+        if (temp_array.length>0) {
+          //在数组中产生一个随机索引
+          var arrIndex = Math.floor(Math.random()*temp_array.length);
+          //将此随机索引的对应的数组元素值复制出来
+          return_array[i] = temp_array[arrIndex];
+          //然后删掉此索引的数组元素,这时候temp_array变为新的数组
+          temp_array.splice(arrIndex, 1);
+        } else {
+          //数组中数据项取完后,退出循环,比如数组本来只有10项,但要求取出20项.
+          break;
+        }
+      }
+      return return_array;
+    }
+
+
+    $scope.math = function (count) {
+      var arr = $scope.Targets.filter(function (t) {
+        return !t.isOK && t.IsCheck != 2;
+      });
+      var arr2 = getArrayItems(arr,count);
+      arr2.forEach(function (a) {
+        $scope.Targets.find(function(t){
+          if(t.Id == a.Id){
+            //t.IsCheck = 1;
+            t.isOK = true;
+          }
+        })
+      })
+    };
+
     $scope.save = function(addForm) {
       if(!$scope.project.procedureId){
         utils.alert('请选择材料');
@@ -63,15 +106,15 @@
         utils.alert('请输入合同编号');
         return;
       }
-      // if ($scope.data.imgs1.length == 0 &&
-      //   $scope.data.imgs2.length == 0 &&
-      //   $scope.data.imgs3.length == 0 &&
-      //   $scope.data.imgs4.length == 0 &&
-      //   $scope.data.imgs5.length == 0
-      // ) {
-      //   utils.alert('请添加附件');
-      //   return;
-      // }
+      if ($scope.data.imgs1.length == 0 &&
+        $scope.data.imgs2.length == 0 &&
+        $scope.data.imgs3.length == 0 &&
+        $scope.data.imgs4.length == 0 &&
+        $scope.data.imgs5.length == 0
+      ) {
+        utils.alert('请添加附件');
+        return;
+      }
 
 
       vm.checkData.InspectionReport = vm.checkData.sjReport;
@@ -245,7 +288,7 @@
               api.material.TargetRelationService.getByProjectId({projectId:$scope.project.projectId,materialId:$scope.project.procedureId,isChecked:true})
                 .then(function (data) {
                   for (var i = 0; i < $scope.Targets.length; i++) {
-                    if ($scope.Targets[i].IsCheck) {
+                    if ($scope.Targets[i].IsCheck == 1) {
                       $scope.Targets[i].isOK = true;
                       $scope.Targets[i].need = true;
                       continue;

@@ -68,12 +68,17 @@
               <md-list-item ng-repeat="n in Targets" ng-click="n.isOK=!n.isOK" ng-disabled="n.need">
                 <div class="md-list-item-text" flex layout="column">
                   <h3 style="margin-top: 10px; margin-bottom: 5px;font-size: 1.6rem">{{$index+1}}、{{n.TargetName}}</h3>
-                  <p ng-if="n.Remark" style="margin: 0;line-height: 120%;font-size: 13px !important; ">
-                    {{n.Remark}}
-                  </p>
+                  <!--<p ng-if="n.Remark" style="margin: 0;line-height: 120%;font-size: 13px !important; ">-->
+                    <!--{{n.Remark}}-->
+                  <!--</p>-->
                 </div>
                 <md-switch ng-disabled="n.need" ng-click="$event.stopPropagation()" ng-model="n.isOK"></md-switch>
               </md-list-item>
+              <div layout="row">
+                <md-button flex="33" ng-click="math(1)" class="md-raised md-primary">随机1个</md-button>
+                <md-button flex="33" ng-click="math(2)" class="md-raised md-primary">随机2个</md-button>
+                <md-button flex="33" ng-click="math(3)" class="md-raised md-primary">随机3个</md-button>
+              </div>
             </md-list>
           </fieldset>
         </div>
