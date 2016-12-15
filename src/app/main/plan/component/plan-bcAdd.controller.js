@@ -29,7 +29,7 @@
         vm.data.Time = new Date(vm.data.Time.substring(0,10));
         vm.data.IsAllStopWork = ''+vm.data.IsAllStopWork;
         var areaIds = [];
-        //a
+        //aa
         r.data.CompensateAreas.forEach(function (a) {
           areaIds.push(a.AreaId);
         });
