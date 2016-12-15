@@ -238,6 +238,12 @@
           return $http.get($http.url('/api/MeasureInfo/GetMeasureItemInfo'))
         }
       },
+      //fileservice
+      fileService:{
+        get:function(id){
+          return $http.get($http.url('/api/FileServer/Query/'+id+'/Base64'))
+        }
+      },
       Task:{
         query:function (query) {
           return $http.get($http.url('/api/Task',query));
