@@ -83,21 +83,47 @@
           </div>
         </div>
       </md-input-container>
-      <md-input-container class="md-block" style="height: 58px;" flex="30">
-        <label>规格</label>
+      <!--<md-input-container class="md-block" style="height: 58px;" flex="30">-->
+        <!--<label>规格</label>-->
         <!--<input type="text" ng-disabled="true" ng-model="vm.Specifications">-->
-        <md-select name="Specifications" ng-model="vm.data.Specifications">
-          <md-option ng-value="item" ng-repeat="item in vm.Specifications">{{item}}
-          </md-option>
-        </md-select>
-      </md-input-container>
-      <md-input-container class="md-block" style="height: 58px;" flex="30">
-        <label>型号</label>
-        <!--<input type="text" ng-disabled="true" ng-model="vm.Model">-->
-        <md-select name="Specifications" ng-model="vm.data.Model">
-          <md-option ng-value="item" ng-repeat="item in vm.Models">{{item}}</md-option>
-        </md-select>
-      </md-input-container>
+        <!--<md-select name="Specifications" ng-model="vm.data.Specifications">-->
+          <!--<md-option ng-value="item" ng-repeat="item in vm.Specifications">{{item}}-->
+          <!--</md-option>-->
+        <!--</md-select>-->
+      <!--</md-input-container>-->
+      <!--<md-input-container class="md-block" style="height: 58px;" flex="30">-->
+        <!--<label>型号</label>-->
+        <!--&lt;!&ndash;<input type="text" ng-disabled="true" ng-model="vm.Model">&ndash;&gt;-->
+        <!--<md-select name="Specifications" ng-model="vm.data.Model">-->
+          <!--<md-option ng-value="item" ng-repeat="item in vm.Models">{{item}}</md-option>-->
+        <!--</md-select>-->
+      <!--</md-input-container>-->
+      <md-autocomplete flex="30" style="margin:10px 0px 10px 10px;"
+                       ng-disabled="false"
+                       md-no-cache="true"
+                       md-selected-item="vm.selectedItem"
+                       md-search-text="vm.searchText"
+                       md-items="item in vm.querySearch(vm.searchText,1)"
+                       md-item-text="item.display"
+                       md-min-length="0"
+                       placeholder="请输入或选择材料规格">
+        <md-item-template>
+          <span md-highlight-text="vm.searchText" md-highlight-flags="^i">{{item.display}}</span>
+        </md-item-template>
+      </md-autocomplete>
+      <md-autocomplete flex="30" style="margin:10px 0px 10px 10px;"
+                       ng-disabled="false"
+                       md-no-cache="true"
+                       md-selected-item="vm.selectedItem2"
+                       md-search-text="vm.searchText2"
+                       md-items="item2 in vm.querySearch(vm.searchText2,2)"
+                       md-item-text="item2.display"
+                       md-min-length="0"
+                       placeholder="请输入或选择材料型号">
+        <md-item-template>
+          <span md-highlight-text="vm.searchText2" md-highlight-flags="^i">{{item2.display}}</span>
+        </md-item-template>
+      </md-autocomplete>
     </div>
 
     <md-input-container class="md-block">
