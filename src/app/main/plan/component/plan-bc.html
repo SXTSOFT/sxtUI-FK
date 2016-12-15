@@ -13,6 +13,7 @@
   <table class="simple">
     <thead>
     <tr>
+      <th>名称</th>
       <th>日期</th>
       <th>日期类型</th>
       <th>前补偿天数</th>
@@ -23,6 +24,7 @@
     </thead>
     <tbody>
     <tr ng-repeat="item in vm.data">
+      <td>{{item.Sign}}</td>
       <td>{{item.Time | date:'yyyy-MM-dd'}}</td>
       <td>{{item.TimeType == 0?'公历':'农历'}}</td>
       <td>{{item.FrontDays}}</td>
