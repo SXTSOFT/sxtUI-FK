@@ -1868,6 +1868,16 @@
             return $http.get($http.url('/api/Acceptances/SecurityInfo/GetSecurityInfo/' + id + '/Id'));
           }
         }),
+        getAcceptancesRec:$http.wrap({
+          offline: true,
+          _id:'safeRectification',
+          idField: 'RectificationID',
+          dataType: 1,
+          fn: function (identity,role) {
+            var url='/api/Acceptances/SecurityRectification/GetList';
+            return $http.get($http.url(url));
+          }
+        }),
         //获取整改单列表
         getRectifications: $http.wrap({
           offline: true,

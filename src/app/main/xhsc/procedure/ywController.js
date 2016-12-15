@@ -453,6 +453,7 @@
 
             vm.zj_project.forEach(function (k) {
               if (k.Children) {
+                k.stretch=true;
                 k.Children.forEach(function (n) {
                   if (r.data.find(function (m) {
                       return m.Id == 'zj' + n.RegionID;

@@ -402,7 +402,7 @@
             }
           });
         }),
-        remote.safe.getRectifications().then(function (r) {
+        remote.safe.getAcceptancesRec().then(function (r) {
           return $q(function (resolve, reject) {
             vm.zglist = [];
             if (angular.isArray(r.data)) {
