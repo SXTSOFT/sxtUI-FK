@@ -6,7 +6,7 @@
 
   angular
     .module('app.core')
-    .provider('db',db);
+    .provider('db',pouchDB);
 /** @ngInject */
   function pouchDB() {
 
