@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function materialPlan($scope,api,utils,$stateParams,$state,moment,auth,$element){
+  function materialPlan($scope,api,utils,$stateParams,$state,moment,auth,$element,$timeout,$q,$log){
     var vm = this;
     var user = auth.current();
     vm.data = {};
@@ -25,6 +25,58 @@
       {type:4,name:'甲指乙供'}
     ];
     vm.data.PlanTime=new Date();
+
+    vm.states = loadAll();
+    vm.states2 = loadAll2();
+    vm.querySearch = querySearch;
+
+    function loadAll() {
+      var allStates = vm.Specifications && vm.Specifications != [] ? vm.Specifications.join(", ") : '';
+      return allStates.split(/, +/g).map( function (state) {
+        return {
+          value: state.toLowerCase(),
+          display: state || '暂无数据'
+        };
+      });
+    }
+
+    function loadAll2() {
+      var allStates = vm.Models  && vm.Models != []  ? vm.Models.join(", ") : '';
+      return allStates.split(/, +/g).map( function (state) {
+        return {
+          value: state.toLowerCase(),
+          display: state||'暂无数据'
+        };
+      });
+    }
+
+    function querySearch (query,dataType) {
+      var dataSource = null;
+      switch (dataType){
+        case 1:{
+          dataSource = vm.states;
+          break;
+        }
+        case 2:{
+          dataSource = vm.states2;
+          break;
+        }
+      }
+
+      if (!dataSource || dataSource==''){
+        return;
+      }
+
+      var results = query ? dataSource.filter(createFilterFor(query)) : dataSource,deferred;
+        return results;
+    }
+
+    function createFilterFor(query) {
+      var lowercaseQuery = angular.lowercase(query);
+      return function filterFn(state) {
+        return (state.value.indexOf(lowercaseQuery) === 0);
+      };
+    }
 
     if(user.Role.MemberType !== ''){
       api.material.materialPlan.getUserProjectSectionForPc().then(function (result) {
@@ -97,6 +149,9 @@
     vm.init = function (m) {
       vm.Specifications = m.Specifications?m.Specifications.split('，'):[];
       vm.Models = m.Model?m.Model.split('，'):[];
+
+      vm.states = loadAll()
+      vm.states2 = loadAll2();
     };
 
     if(vm.data.Id){
@@ -113,12 +168,14 @@
         vm.RegionId = r.data.RegionId;
         vm.getSections(vm.data.RegionId);
         vm.SectionId = r.data.SectionId;
-        api.material.materialScience.GetMaterialByTypeId(vm.data.ContractId).then(function (r) {//vm.data.TypeId
+        api.material.materialScience.GetMaterialByTypeId(vm.data.ContractId).then(function (r) {
           vm.materials = r.data||[];
           vm.materials.forEach(function (q) {
             if(q.Id == vm.data.MaterialId){
               q.selected = true;
               vm.init(q);
+              vm.searchText = vm.data.Specifications;
+              vm.searchText2 = vm.data.Model;
             }
           });
         });
@@ -126,6 +183,8 @@
     }
 
     vm.save = function () {
+      vm.data.Specifications = vm.searchText=='暂无数据' ? '' : vm.searchText;
+      vm.data.Model = vm.searchText2=='暂无数据' ? '' : vm.searchText2;
       if ($scope.myForm.$valid) {
         vm.data.RegionId = vm.RegionId;
         vm.data.SectionId = vm.SectionId;
