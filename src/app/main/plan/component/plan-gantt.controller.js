@@ -694,13 +694,18 @@
         });
       }
       //详情
-      //vm.showTaskD = function(task){
-      //  api.plan.fileService.get(task.TaskFlowId).then(function(r){
-      //   task.images=[{
-      //     ImageByte:'app/main/xhsc/images/bg1.jpg'
-      //   }]
-      //  })
-      //}
+      vm.showTaskD = function(task){
+        api.plan.fileService.get(task.TaskFlowId).then(function(r){
+          if(r.data.Base64){
+            task.images=[{
+              url:r.data.Base64
+            }]
+            xhUtils.playPhoto(task.images)
+          }else{
+            utils.alert('无图片')
+          }
+        })
+      }
       /*关闭任务*/
       vm.closeTask = function(task){
         console.log($scope)
@@ -761,9 +766,8 @@
             }
           },
           controllerAs: 'vm',
-          template: '<div class="mt-20" style="background:rgb(245,245,245);border-radius: 4px;padding:16px;box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);"><md-input-container class="md-block">\
-          <label>关闭原因</label>\
-          <input type="text" ng-model="vm.EndDescription">\
+          template: '<div class="mt-20" style="background:rgb(245,245,245);border-radius: 4px;padding:16px;box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);"><div>关闭原因</div><md-input-container class="md-block">\
+          <input type="text" ng-model="vm.EndDescription" placeholder="关闭原因">\
           </md-input-container>\
           <div layout="row" layout-align="end center">\
           <md-button class="md-raised" ng-click="vm.endTask()">确定</md-button></div></div>',

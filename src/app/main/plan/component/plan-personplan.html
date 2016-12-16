@@ -11,10 +11,11 @@
       <div flex="55" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{t.ParentFloorName}}{{t.Name}}</div>
       <div flex="25">{{t.ScheduledStartTime|date:'yy/MM/dd'}}</div>
       <div flex="20" style="text-align: right;">
-        <!--<md-button class="md-raised md-minbtn" ng-click="vm.start(t)" ng-if="(t.State==1)">启动</md-button>-->
-        <md-button style="min-height:24px;line-height: 24px;height:24px;padding:0;min-width: 60px;" ng-click="vm.startTask(t)" ng-if="t.IsAbleStart&&t.IsInterlude">开启穿插</md-button>
+        <md-button style="min-height:24px;line-height: 24px;height:24px;padding:0;min-width: 40px;margin:0;" ng-click="vm.showTaskD(t)" ng-if="(t.State==2)&&t.ManuallyClose&&(!t.IsAbleStart)">查看</md-button>
+        <!--<md-button style="min-height:24px;line-height: 24px;height:24px;padding:0;min-width: 60px;" ng-click="vm.start(t)" ng-if="(t.State==1)">启动</md-button>-->
+        <md-button style="min-height:24px;line-height: 24px;height:24px;padding:0;min-width: 60px;margin:0;" ng-click="vm.startTask(t)" ng-if="t.IsAbleStart&&t.IsInterlude">开启穿插</md-button>
         <!--<md-button class="md-icon-button" style="min-height:24px;line-height: 24px;height:24px;padding:0;" ng-click="vm.closeTask(flow)" ng-if="!flow.ManuallyClose"  ng-disabled="!flow.ManuallyClose">完成</md-button>-->
-        <md-button style="min-height:24px;line-height: 24px;height:24px;padding:0;min-width: 40px;" ng-click="vm.end(t)" ng-if="t.IsAbleStart&&(!t.IsInterlude)&&(t.ManuallyClose||t.IsRelatedObject)">完成</md-button>
+        <md-button style="min-height:24px;line-height: 24px;height:24px;padding:0;min-width: 40px;margin:0;" ng-click="vm.end(t)" ng-if="t.IsAbleStart&&(!t.IsInterlude)&&(t.ManuallyClose||t.IsRelatedObject)">完成</md-button>
       </div>
     </div>
   </div>
@@ -29,7 +30,7 @@
       <div flex="20" style="text-align: right;">
         <!--<md-button class="md-raised md-minbtn" ng-click="vm.start(t)" ng-if="t.State==1">启动</md-button>-->
         <!--<md-button  class="md-raised md-minbtn" ng-click="vm.end(t)" ng-if="(t.State!=1)&&t.showBtn" ng-disabled="t.State==2">完成</md-button>-->
-        <md-button style="min-height:24px;line-height: 24px;height:24px;padding:0;min-width: 60px;" ng-click="vm.startTask(t)" ng-if="t.IsAbleStart&&(t.IsInterlude)">开启穿插</md-button>
+        <md-button style="min-height:24px;line-height: 24px;height:24px;padding:0;min-width: 60px;margin:0;" ng-click="vm.startTask(t)" ng-if="t.IsAbleStart&&(t.IsInterlude)">开启穿插</md-button>
       </div>
     </div>
   </div>
