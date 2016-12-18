@@ -14,10 +14,6 @@
   <div class="edititem" ng-if="img">
     <img style="height:140px;margin:0 5px; width: 140px;" src="{{img}}" class="img-thumbnail" />
     <div class="text" style="padding: 5px; text-align: right;">
-      <!--<div style="position: relative; ">-->
-        <!--<a style="position: absolute; right: 30px;width: 50px;font-size:12px;color:#333;">替换</a>-->
-        <!--<input type="file" style="position: absolute; right: 30px; width: 50px; opacity: 0;cursor: pointer; font-size: 0; height: 20px;" nv-file-select uploader="uploader" multiple ng-click="inputChange()" ; />-->
-      <!--</div>-->
       <a style="cursor: pointer;font-size:12px;color:#333;" ng-click="remove($event,img)">删除</a>
     </div>
   </div>
@@ -26,6 +22,4 @@
             <input type="file" nv-file-select uploader="uploader" multiple ng-click="inputChange()" ; />
         </div>
     </div>
-  <!--<input type="file">-->
-  <!--<div style="height:140px;margin:0 5px;line-height:140px; padding:5px;border:1px solid #dedede;"></div>-->
 </div>

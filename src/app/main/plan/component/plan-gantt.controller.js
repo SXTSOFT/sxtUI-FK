@@ -665,10 +665,6 @@
           vm.onLoadTemplate();
         })
       }
-      //var taskId = dialogData.formView.id;
-      //vm.hasFlow = !!originData.Items.find(function (it) {
-      //  return it.ExtendedParameters == taskId;
-      //});
       /*开启穿插*/
       vm.startTask = function(task){
         var time = new Date();
@@ -704,7 +700,33 @@
             }]
             xhUtils.playPhoto(task.images)
           }else{
-            utils.alert('无图片')
+            //utils.alert('无图片')
+            //var position = $mdPanel.newPanelPosition()
+            //  .relativeTo('.sub-toolbar')
+            //  .addPanelPosition($mdPanel.xPosition.CENTER, $mdPanel.yPosition.BELOW)
+            //
+            //$mdPanel.open({
+            //  controller: function (mdPanelRef,$scope,utils) {
+            //    var vm = this;
+            //    //vm.closePanel1 = function() {
+            //    //  return mdPanelRef.close().then(function () {
+            //    //    mdPanelRef.destroy();
+            //    //    parent.closePanel1 = null;
+            //    //  });
+            //    //}
+            //  },
+            //  controllerAs: 'vm',
+            //  template: '<div class="mt-20" style="background:rgb(245,245,245);border-radius: 4px;padding:16px;box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);"><div>无图片</div>\
+            //  </div>',
+            //  hasBackdrop: true,
+            //  position: position,
+            //  trapFocus: true,
+            //  zIndex: 5000,
+            //  clickOutsideToClose: true,
+            //  escapeToClose: true,
+            //  focusOnOpen: true,
+            //  attachTo:angular.element('body')
+            //});
           }
         })
       }
@@ -770,7 +792,7 @@
             }
           },
           controllerAs: 'vm',
-          template: '<div class="mt-20" style="background:rgb(245,245,245);border-radius: 4px;padding:16px;box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);"><div>关闭原因</div><sxt-images2 ng-model="task.TaskFlowId" img="vm.img"></sxt-images2><md-input-container class="md-block">\
+          template: '<div class="mt-20" style="background:rgb(245,245,245);border-radius: 4px;padding:16px;box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);"><div style="margin-bottom: 10px;">关闭原因</div><sxt-images2 ng-model="task.TaskFlowId" img="vm.img"></sxt-images2><md-input-container class="md-block">\
           <input type="text" ng-model="vm.EndDescription" placeholder="关闭原因">\
           </md-input-container>\
           <div layout="row" layout-align="end center">\

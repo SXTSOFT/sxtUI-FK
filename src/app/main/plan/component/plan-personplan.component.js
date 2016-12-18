@@ -95,7 +95,7 @@
             }]
             xhUtils.playPhoto(t.images)
           }else{
-            //utils.alert('无图片')
+            utils.alert('无图片')
           }
 
         })

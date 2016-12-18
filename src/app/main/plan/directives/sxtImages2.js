@@ -126,12 +126,12 @@
                             item._file = blob_data;
                             $scope.ImageSize = blob_data.size / 1024 / 1024
                             console.log('$scope.ImageSize', $scope.ImageSize)
-                            item.upload();
+                           // item.upload();
                         })
                       console.log($scope)
                     }
                     else {
-                        item.upload();
+                       // item.upload();
                     }
 
                 },
