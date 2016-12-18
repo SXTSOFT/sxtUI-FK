@@ -3,7 +3,7 @@
   <div layout="row" layout-align="center center" ng-if="!vm.loading" class="m-10">
     <md-progress-circular md-diameter="20px"></md-progress-circular>任务加载中
   </div>
-  <div  ng-repeat="task in vm.tasksList"  style="border-bottom: 1px solid #dedede;">
+  <div  ng-repeat="task in vm.tasksList"  ng-if="task.tasks.length" style="border-bottom:1px solid #dedede;">
     <div layout="row" style="color:#f00;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="pt-8 pb-8" ng-if="task.tasks.length">
       {{task.Name}}
     </div>
