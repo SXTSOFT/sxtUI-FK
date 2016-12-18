@@ -255,12 +255,14 @@
             "Force": force || false
           });
         },
-        end:function (taskId,force,actualEndTime,EndDescription) {
+        end:function (taskId,force,actualEndTime,EndDescription,PhotoFile,PhotoFileName) {
           return $http.post('/api/Task/'+taskId+'/End', {
             "TaskId": taskId,
             "ActualEndTime":actualEndTime,
             "Force": force || false,
-            "EndDescription":EndDescription
+            "EndDescription":EndDescription,
+            "PhotoFileName":PhotoFileName,
+            "PhotoFile":PhotoFile
           });
         },
         Categories:{

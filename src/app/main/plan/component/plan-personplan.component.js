@@ -14,7 +14,7 @@
     });
 
   /**@ngInject*/
-  function personPlanController($scope,$rootScope,moment,api,$mdDialog,$timeout,utils,xhUtils){
+  function personPlanController($scope,$rootScope,moment,api,$mdDialog,$timeout,utils,xhUtils,sxt){
     var vm = this;
     load();
     function load() {
@@ -87,34 +87,49 @@
       });
       console.log(vm.tasksList)
     })
+    vm.showTaskD = function(t){
+        api.plan.fileService.get(t.Id).then(function(r){
+          if(r.data.Base64){
+            t.images=[{
+              url:r.data.Base64
+            }]
+            xhUtils.playPhoto(t.images)
+          }else{
+            utils.alert('无图片')
+          }
+
+        })
+    }
     vm.startTask = function(t){
       var time = new Date();
       api.plan.BuildPlan.startInsert(t.parentId, t.Id,time).then(function(r){
-        t.IsAbleStart = false;
-        vm.data.forEach(function(tt){
-          tt.PlaningTasks.forEach(function(_t){
-            var f = r.data.find(function(_r){
-              return _r.Id == _t.Id;
-            })
-            if(f){
-              t.IsAbleStart = f.IsAbleStart;
-              t.IsInterlude = f.IsInterlude;
-              t.ManuallyClose = f.ManuallyClose;
-              t.IsRelatedObject = f.IsRelatedObject;
-            }
-          })
-          tt.NoPlanTasks.forEach(function(_t){
-            var f = r.data.find(function(_r){
-              return _r.Id == _t.Id;
-            })
-            if(f){
-              t.IsAbleStart = f.IsAbleStart;
-              t.IsInterlude = f.IsInterlude;
-              t.ManuallyClose = f.ManuallyClose;
-              t.IsRelatedObject = f.IsRelatedObject;
-            }
-          })
-        })
+        //t.IsAbleStart = false;
+        vm.loading = false;
+        load();
+        //vm.data.forEach(function(tt){
+        //  tt.PlaningTasks.forEach(function(_t){
+        //    var f = r.data.find(function(_r){
+        //      return _r.Id == _t.Id;
+        //    })
+        //    if(f){
+        //      t.IsAbleStart = f.IsAbleStart;
+        //      t.IsInterlude = f.IsInterlude;
+        //      t.ManuallyClose = f.ManuallyClose;
+        //      t.IsRelatedObject = f.IsRelatedObject;
+        //    }
+        //  })
+        //  tt.NoPlanTasks.forEach(function(_t){
+        //    var f = r.data.find(function(_r){
+        //      return _r.Id == _t.Id;
+        //    })
+        //    if(f){
+        //      t.IsAbleStart = f.IsAbleStart;
+        //      t.IsInterlude = f.IsInterlude;
+        //      t.ManuallyClose = f.ManuallyClose;
+        //      t.IsRelatedObject = f.IsRelatedObject;
+        //    }
+        //  })
+        //})
       },function(err){
         utils.alert(err.data||'错误');
       })
@@ -154,7 +169,8 @@
               $scope.close = function(description){
                 $scope.data ={
                   description:description,
-                  img:$scope.img[0].ImageByte
+                  PhotoFileName:sxt.uuid()+'.jpg',
+                  PhotoFile:$scope.img[0].ImageByte
                 }
                 $mdDialog.hide($scope.data)
               }
@@ -182,30 +198,37 @@
             //  .cancel('取消')
           ).then(function(res){
             t.IsInterlude = false;
-            api.plan.Task.end(t.Id,true,time,res.description,res.img).then(function(r){
+            var data = angular.extend({
+              TaskId: t.Id
+            },res)
+            api.plan.BuildPlan.endTask(t.parentId,data).then(function (r){
               vm.loading = false;
-              load();
-              //vm.data.forEach(function(tt){
-              //  tt.PlaningTasks.forEach(function(_t){
-              //    var f = r.data.find(function(_r){
-              //      return _r.Id == _t.Id;
-              //    })
-              //    if(f){
-              //      t.State = f.State;
-              //    }
-              //  })
-              //  tt.NoPlanTasks.forEach(function(_t){
-              //    var f = r.data.find(function(_r){
-              //      return _r.Id == _t.Id;
-              //    })
-              //    if(f){
-              //      t.State = f.State;
-              //    }
-              //  })
-              //})
-            },function(err){
-              utils.alert(err.data||'错误');
-            })
+               load();
+             })
+            //api.plan.Task.end(t.Id,true,time,res.description,res.img,res.PhotoFileName).then(function(r){
+            //  vm.loading = false;
+            //  load();
+            //  //vm.data.forEach(function(tt){
+            //  //  tt.PlaningTasks.forEach(function(_t){
+            //  //    var f = r.data.find(function(_r){
+            //  //      return _r.Id == _t.Id;
+            //  //    })
+            //  //    if(f){
+            //  //      t.State = f.State;
+            //  //    }
+            //  //  })
+            //  //  tt.NoPlanTasks.forEach(function(_t){
+            //  //    var f = r.data.find(function(_r){
+            //  //      return _r.Id == _t.Id;
+            //  //    })
+            //  //    if(f){
+            //  //      t.State = f.State;
+            //  //    }
+            //  //  })
+            //  //})
+            //},function(err){
+            //  utils.alert(err.data||'错误');
+            //})
           },function(){
             console.log('cancel')
           })
