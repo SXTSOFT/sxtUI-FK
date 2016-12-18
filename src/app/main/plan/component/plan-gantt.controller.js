@@ -781,7 +781,7 @@
                   loadSubTask();
                 }
               },function(err){
-                utils.alert(err.data||'错误');
+                utils.alert(err.data||'传入图片失败');
               });
             }
             vm.closePanel1 = function() {
