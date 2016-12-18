@@ -19,7 +19,9 @@
       scope: {
         areas: '=',
         procedure: "=",
-        current:"="
+        current:"=",
+        level:"=",
+        layout:"="
       },
       templateUrl: 'app/core/directives/ms-area-select/ms-general-select.html',
       controller: 'msGenSelectController',
@@ -60,16 +62,20 @@
           $scope.source.floors=area.Children;
         }
         $scope.setRoom=function (area,siblings) {
-          $scope.setActive(area,siblings);
-          if ($scope.current){
-            $scope.current.region=null;
+          if($scope.level&&parseInt($scope.level)<5){
+            $scope.selectedRegion(area,siblings);
+          }else {
+            $scope.setActive(area,siblings);
+            if ($scope.current){
+              $scope.current.region=null;
+            }
+            $scope.source.rooms=[{
+              RegionID:"no",
+              RegionName:"不到户",
+              parent:area,
+              active:true
+            }].concat(area.Children);
           }
-          $scope.source.rooms=[{
-             RegionID:"no",
-             RegionName:"不到户",
-             parent:area,
-             active:true
-          }].concat(area.Children);
         }
         $scope.selectedRegion=function (item,siblings) {
           $scope.setActive(item,siblings);
