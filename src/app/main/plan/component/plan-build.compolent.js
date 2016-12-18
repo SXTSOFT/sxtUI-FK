@@ -374,8 +374,8 @@
     }
     vm.loadUser = function(){
       if(vm.roleUsers&&vm.roleUsers.length) return;
-        return api.plan.users.query().then(function(r){
-          vm.roleUsers = r.data.Items;
+        return api.plan.users.queryById({projectId:vm.formWizard.projectId}).then(function(r){
+          vm.roleUsers = r.data;
         })
     }
     vm.deleteTaskLib = function(){

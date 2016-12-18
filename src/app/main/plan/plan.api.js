@@ -314,6 +314,9 @@
       users:{
         query:function(){
           return $http.get($http.url('/api/User'));
+        },
+        queryById:function(params){
+          return $http.get($http.url('/api/User/ByProjectId',params))
         }
       },
       Project:{
