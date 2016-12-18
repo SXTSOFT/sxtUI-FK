@@ -200,6 +200,7 @@
     }
     vm.flows=null;
     vm.branches=null;
+    vm.vars = null;
     vm.nextStep = function(i,f){
       if(i==0){
         var find=vm.data.templates.find(function(r){
@@ -243,6 +244,7 @@
           return current;
         }, null);
         vm.branches.forEach(function (current) {
+          if(!current.selected) return;
           //var f=vm.flows.find(function(_t){
           //  return _t.TaskFlowId == current.ParentId;
           //})
@@ -262,6 +264,9 @@
           })
         });
         var b = {
+          "Vars":vm.vars.allVars().filter(function (v) {
+            return v.key.length === 1;
+          }),
           "BuildingPlanInput": {
             "BuildingId": vm.formWizard.BuildingId,
             "Name": vm.formWizard.Name,

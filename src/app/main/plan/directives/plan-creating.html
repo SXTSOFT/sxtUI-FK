@@ -55,7 +55,7 @@
   <tr class="mainbar">
     <td colspan="9">穿插</td>
   </tr>
-  <tr ng-repeat="flow in banchs track by flow.TaskFlowId">
+  <tr ng-class="{deleted:!flow.selected}"  ng-repeat="flow in banchs track by flow.TaskFlowId">
     <td colspan="3">
       {{$index+1}}、{{flow.Name}}
     </td>
