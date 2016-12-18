@@ -88,14 +88,14 @@
       console.log(vm.tasksList)
     })
     vm.showTaskD = function(t){
-        api.plan.fileService.get(t.Id).then(function(r){
+        api.plan.fileService.get(t.UploadPhotoFileId).then(function(r){
           if(r.data.Base64){
             t.images=[{
               url:r.data.Base64
             }]
             xhUtils.playPhoto(t.images)
           }else{
-            utils.alert('无图片')
+            //utils.alert('无图片')
           }
 
         })

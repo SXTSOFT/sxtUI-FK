@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function plangantt($mdDialog, $document,$rootScope, $animate, $scope, $timeout,utils, ganttUtils,$mdPanel, GanttObjectModel, ganttDebounce, moment, $window, $mdSidenav,api,$stateParams,$q){
+  function plangantt($mdDialog, $document,$rootScope, $animate, $scope, $timeout,utils, ganttUtils,$mdPanel, GanttObjectModel, ganttDebounce, moment, $window, $mdSidenav,api,$stateParams,$q,xhUtils){
     var vm = this;
     var objectModel;
     vm.isStarted = true;
@@ -610,6 +610,7 @@
                 Color:setColor(item.State),
                 _State:setSatus(item.State),
                 switch:item.State!=4?false:true,
+                UploadPhotoFileId:item.UploadPhotoFileId,
                 Flags:item.Flags,
                 TaskFlowId:item.Id,
                 ParentId:item.Dependencies[0]&&item.Dependencies[0].DependencyTaskID||null,
@@ -644,6 +645,7 @@
                       Color:setColor(t.State),
                       _State:setSatus(t.State),
                       switch:t.State!=4?false:true,
+                      UploadPhotoFileId:item.UploadPhotoFileId,
                       Flags:t.Flags,
                       TaskFlowId:t.Id,
                       ParentId:t.Dependencies[0]&&t.Dependencies[0].DependencyTaskID||null,
@@ -695,7 +697,7 @@
       }
       //详情
       vm.showTaskD = function(task){
-        api.plan.fileService.get(task.TaskFlowId).then(function(r){
+        api.plan.fileService.get(task.UploadPhotoFileId).then(function(r){
           if(r.data.Base64){
             task.images=[{
               url:r.data.Base64
@@ -723,7 +725,9 @@
                 "TaskId": task.TaskFlowId,
                 "ActualEndTime": new Date(),
                 "EndDescription": vm.EndDescription,
-                "Force": true
+                "Force": true,
+                 "PhotoFileName":sxt.uuid()+'.jpg',
+                  "PhotoFile":vm.img//$scope.img[0].ImageByte
               };
               vm.closePanel1();
               api.plan.BuildPlan.endTask($stateParams.id,params).then(function (r) {
@@ -766,7 +770,7 @@
             }
           },
           controllerAs: 'vm',
-          template: '<div class="mt-20" style="background:rgb(245,245,245);border-radius: 4px;padding:16px;box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);"><div>关闭原因</div><md-input-container class="md-block">\
+          template: '<div class="mt-20" style="background:rgb(245,245,245);border-radius: 4px;padding:16px;box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);"><div>关闭原因</div><sxt-images2 ng-model="task.TaskFlowId" img="vm.img"></sxt-images2><md-input-container class="md-block">\
           <input type="text" ng-model="vm.EndDescription" placeholder="关闭原因">\
           </md-input-container>\
           <div layout="row" layout-align="end center">\
