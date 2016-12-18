@@ -18,7 +18,8 @@
         inspectionId:'=',
         disableInspect:'=',
         disableDrag:'=',
-        ct:'='
+        ct:'=',
+        info:"="
       },
       link:link
     };
@@ -65,6 +66,9 @@
               $q.all([
                 remote.cycleLook.cyclePointQuery.cfgSet({
                   filter:function (item,inspectionId) {
+                    if (scope.info&&scope.info.isGj){
+                      return item.AreaID == scope.regionId&&item.AcceptanceItemID==scope.info.AcceptanceItemID&&item.InspectionExtendID==inspectionId;
+                    }
                     return  item.AreaID==scope.regionId&&item.InspectionExtendID==inspectionId;
                   }
                 })(scope.inspectionId),
@@ -117,6 +121,9 @@
               offline: true
             })("cycle",scope.regionId).then(function (result) {
               var imgId = result.data.find(function (item) {
+                if (scope.info&&scope.info.isGj){
+                    return item.RegionId == scope.regionId&&item.AcceptanceItemID==scope.info.AcceptanceItemID;
+                }
                 return item.Type==7&& item.RegionId == scope.regionId;
               });
               if (imgId) {
@@ -155,7 +162,7 @@
         }
       };
       $timeout(function () {
-        scope.$watch('regionId', function () {
+        scope.$watch('info', function () {
           if(scope.regionId) {
             if(map){
               map.remove();

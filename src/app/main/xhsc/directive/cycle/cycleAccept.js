@@ -204,11 +204,12 @@
               offline: true
             })("house",areaID).then(function (result) {
               var imgId = result.data.find(function (item) {
-                return item.Type==7&& item.RegionId == scope.regionId;
+                return item.Type==-3&&item.RegionId == scope.regionId;
               });
+
               if(!imgId){
                 imgId = result.data.find(function (item) {
-                  return item.Type==-3&&item.RegionId == scope.regionId;
+                  return item.Type==7&& item.RegionId == scope.regionId.substr(0,scope.regionId.length-5)
                 });
               }
               if (imgId) {
