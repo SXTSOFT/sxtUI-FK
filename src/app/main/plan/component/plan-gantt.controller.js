@@ -181,11 +181,20 @@
           vm.load().then(function(){
             $timeout(function(){
               $mdDialog.hide();
+              //vm.ganttHeight =$('.gantt').height()
+              //console.log($('.gantt').height())
               vm.api.tree.collapseAll()
             })
           });
+          vm.winWidth = $($window).width();
+          //console.log($($window).width())
           objectModel = new GanttObjectModel(vm.api);
-          vm.api.side.setWidth(640);//450
+          if(vm.winWidth < 610){
+            vm.api.side.setWidth(150);
+          }else{
+            vm.api.side.setWidth(640);//450
+          }
+
 
           vm.api.directives.on.new($scope, function (directiveName, directiveScope, element)
           {
@@ -781,7 +790,7 @@
                   loadSubTask();
                 }
               },function(err){
-                utils.alert(err.data||'传入图片失败');
+                utils.alert(err.data||'上传图片失败');
               });
             }
             vm.closePanel1 = function() {
