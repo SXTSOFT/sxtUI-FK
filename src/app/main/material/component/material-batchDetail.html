@@ -241,7 +241,7 @@
               <p flex="15">退场照片：</p>
               <md-list flex="85" ng-cloak>
                 <md-list-item style="padding-left:0;">
-                  <div flex ng-repeat="img in item.Images | filter:{OptionType:128}:true" sxt-images="item.Images" style="text-align: left;margin:5px 0;">
+                  <div flex ng-repeat="img in item.MaterialFiles | filter:{OptionType:128}:true" sxt-images="item.MaterialFiles" style="text-align: left;margin:5px 0;">
                     <img ng-src="{{img.ImageByte}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
