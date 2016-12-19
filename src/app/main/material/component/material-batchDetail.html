@@ -6,7 +6,7 @@
           <md-list flex style="padding-top: 0;">
             <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">材料计划信息</div>
             <md-list-item>
-              <p flex="15">计划名称：</p>
+              <p flex="15" style="display: block; word-break:keep-all;white-space:nowrap;">计划名称：</p>
               <p>{{vm.data.PlanModel.PlanDetail.PlanName}}</p>
             </md-list-item>
             <md-list-item>
@@ -22,7 +22,7 @@
               <p>{{vm.data.PlanModel.PlanDetail.Model}}</p>
             </md-list-item>
             <md-list-item>
-              <p flex="15">厂家/品牌：</p>
+              <p flex="15" style="display: block; word-break:keep-all;white-space:nowrap; ">厂家/品牌：</p>
               <p>{{vm.data.PlanModel.PlanDetail.Brands}}</p>
             </md-list-item>
             <md-list-item>
@@ -69,7 +69,7 @@
               <p>{{item.ApproachCount + item.Unit}}</p>
             </md-list-item>
             <md-list-item>
-              <p flex="15">厂家/品牌：</p>
+              <p flex="15" style="display: block; word-break:keep-all;white-space:nowrap;">厂家/品牌：</p>
               <p>{{item.Brand}}</p>
             </md-list-item>
             <md-list-item>
@@ -241,7 +241,7 @@
               <p flex="15">退场照片：</p>
               <md-list flex="85" ng-cloak>
                 <md-list-item style="padding-left:0;">
-                  <div flex ng-repeat="img in item.Images | filter:{OptionType:128}:true" sxt-images="item.Images" style="text-align: left;margin:5px 0;">
+                  <div flex ng-repeat="img in item.MaterialFiles | filter:{OptionType:128}:true" sxt-images="item.MaterialFiles" style="text-align: left;margin:5px 0;">
                     <img ng-src="{{img.ImageByte}}" style="width: 150px;" flex="95" style="display: block;"/>
                   </div>
                 </md-list-item>
