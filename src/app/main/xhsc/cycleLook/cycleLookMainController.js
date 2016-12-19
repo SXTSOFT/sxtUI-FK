@@ -438,7 +438,7 @@
             if (angular.isArray(r.data)) {
               ys.forEach(function (k) {
                 if (r.data.find(function (m) {
-                    return m.Id == "cycleYs" + k.InspectionExtendID;
+                    return m.Id == "cycleYs" + k.InspectionID;
                   })) {
                   k.isOffline = true;
                 }

@@ -448,7 +448,7 @@
             if (angular.isArray(r.data)) {
               ys.forEach(function (k) {
                 if (r.data.find(function (m) {
-                    return m.Id == "safeWeek" + k.InspectionExtendID;
+                    return m.Id == "safeWeek" + k.InspectionID;
                   })) {
                   k.isOffline = true;
                 }

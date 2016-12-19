@@ -268,6 +268,7 @@
               var tasks = [].concat(globalTask)
                 .concat(getRectificationTask())
                 .concat(function () {
+
                   return remote.offline.create({Id: 'yfZg' + item.InspectionExtendID});
                 });
               api.task(tasks, {
@@ -449,7 +450,7 @@
             if (angular.isArray(r.data)) {
               ys.forEach(function (k) {
                 if (r.data.find(function (m) {
-                    return m.Id == "yfYS" + k.InspectionExtendID;
+                    return m.Id == "yfYS" + k.InspectionID;
                   })) {
                   k.isOffline = true;
                 }
