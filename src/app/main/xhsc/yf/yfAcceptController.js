@@ -60,6 +60,9 @@
         var accAcceptances = [];
         if (angular.isArray(source)) {
           source.forEach(function (t) {
+            if (angular.isArray(t.WPAcceptanceList)){
+              accAcceptances= accAcceptances.concat(t.WPAcceptanceList);
+            }
             var k = t.SpecialtyChildren;
             if (angular.isArray(k)) {
               k.forEach(function (m) {

@@ -21,7 +21,7 @@
         procedure: "=",
         current:"=",
         level:"=",
-        layout:"="
+        lay:"="
       },
       templateUrl: 'app/core/directives/ms-area-select/ms-general-select.html',
       controller: 'msGenSelectController',
@@ -195,6 +195,7 @@
     }
     $scope.setProcedure=function (procedure,procedureLst) {
       $scope.setActive(procedure,procedureLst);
+      $scope.source.wpAcceptanceList=[];
       $scope.source.specialtyChildren=procedure.SpecialtyChildren;
       if ($scope.current){
         $scope.current.procedure=null;

@@ -5,7 +5,7 @@
       <span class="caret spare"></span>
     </div>
     <div flex="33" ng-click="toggle('part')" layout="row"  layout-align="center center">
-      <span>{{current.region?current.region.RegionName:'部 位'}}</span>
+      <span>{{current.region? current.region.fullName:'部 位'}}</span>
       <span class="caret spare"></span>
     </div>
     <div flex="33" ng-click="toggle('procedure')" layout="row"  layout-align="center center">
@@ -14,7 +14,7 @@
     </div>
   </div>
   <md-divider></md-divider>
- <div class="content" layout="column">
+ <div class="content" layout="column"  layout-align="stretch start">
     <div class="region" flex ng-if="status.region" layout="row">
       <div flex>
           <md-list>
@@ -39,7 +39,7 @@
           </md-list-item>
         </md-list>
       </div>
-      <div flex="{{source.rooms&&source.rooms.length>0?33:50}}">
+      <div  flex="{{source.rooms&&source.rooms.length>0?33:50}}">
         <md-list>
           <md-list-item class="clickbg" ng-repeat="item in source.floors" ng-click="setRoom(item,source.floors)" ng-class="{'active':item.active}" layout="row">
             <span flex>{{item.RegionName}}</span>
@@ -55,26 +55,44 @@
       </div>
     </div>
     <div class="procedure" flex  ng-show="status.procedure" layout="row">
-      <div flex="{{source.wpAcceptanceList&&source.wpAcceptanceList.length>0?33:50}}">
+      <div  flex="{{source.wpAcceptanceList&&source.wpAcceptanceList.length>0?(lay=='row'?15:33):50}}">
         <md-list>
-          <md-list-item ng-repeat="item in source.procedureData" ng-click="setProcedure(item,source.procedureData)" ng-class="{'active':item.active}" layout="row">
-            <span flex>{{item.SpecialtyName}}</span>
+          <md-list-item ng-repeat="item in source.procedureData" ng-click="setProcedure(item,source.procedureData)"
+                        ng-class="{'active':item.active}" layout="row" layout-align="center center">
+            <span  style="white-space:nowrap;" flex>{{item.SpecialtyName}}</span>
           </md-list-item>
         </md-list>
       </div>
-      <div flex="{{source.wpAcceptanceList&&source.wpAcceptanceList.length>0?33:50}}">
+      <div flex="{{source.wpAcceptanceList&&source.wpAcceptanceList.length>0?(lay=='row'?15:33):50}}">
         <md-list>
-          <md-list-item class="clickbg" ng-repeat="item in source.specialtyChildren" ng-click="setSpecialty(item,source.specialtyChildren)" ng-class="{'active':item.active}" layout="row">
-            <span flex>{{item.SpecialtyName}}</span>
+          <md-list-item class="clickbg" ng-repeat="item in source.specialtyChildren" ng-click="setSpecialty(item,source.specialtyChildren)" ng-class="{'active':item.active}"
+              layout="row" layout-align="center center" style="white-space:nowrap;">
+            <span flex  style="white-space:nowrap;text-overflow: ellipsis">{{item.SpecialtyName}}</span>
           </md-list-item>
         </md-list>
       </div>
-      <div flex="{{source.wpAcceptanceList&&source.wpAcceptanceList.length>0?33:50}}" ng-if="source.wpAcceptanceList&&source.wpAcceptanceList.length>0">
-        <md-list>
+      <div flex="{{source.wpAcceptanceList&&source.wpAcceptanceList.length>0?(lay=='row'?70:33):50}}" ng-if="source.wpAcceptanceList&&source.wpAcceptanceList.length>0">
+        <md-list ng-if="lay!='row'">
           <md-list-item class="clickbg" ng-repeat="item in source.wpAcceptanceList" ng-click="selectedProcedure(item,source.wpAcceptanceList)" ng-class="{'active':item.active}" layout="row">
             <span flex style="text-overflow:ellipsis;text-align: left;white-space:nowrap">{{item.AcceptanceItemName}}</span>
           </md-list-item>
         </md-list>
+        <div  style="padding-bottom: 5px;padding-right: 5px">
+          <md-list layout="row" ng-if="lay=='row'" layout-wrap="true">
+            <div flex="50" flex-gt-xs="33" layout="row" style="height: 40px;" ng-repeat="item in source.wpAcceptanceList" ng-click="selectedProcedure(item,source.wpAcceptanceList)"
+                ng-class="{'active':item.active}">
+                <div flex style="border: 1px solid #d8d8d8;border-radius:5px;margin: 5px 0px 0px 5px;" layout="row" layout-align="center center">
+                  <span style="white-space: nowrap;overflow-x:hidden;text-overflow: ellipsis">
+                     {{item.AcceptanceItemName}}
+                  </span>
+                </div>
+            </div>
+            <!--<md-list-item flex="50" ng-repeat="item in source.wpAcceptanceList" ng-click="selectedProcedure(item,source.wpAcceptanceList)" ng-class="{'active':item.active}"-->
+               <!--layout-align="center center"   layout="row">-->
+              <!--<span flex style="text-overflow:ellipsis;text-align: left;white-space:nowrap">{{item.AcceptanceItemName}}</span>-->
+            <!--</md-list-item>-->
+          </md-list>
+        </div>
       </div>
     </div>
    <md-divider></md-divider>

@@ -3812,13 +3812,18 @@ table {
         md-list-item{
           margin: 0px;
           padding: 0px;
-          border-right:1px solid #d8d8d8 ;
           border-bottom:1px solid #d8d8d8 ;
           span{
             text-align: center;
             line-height: 22px;
           }
         }
+      }
+      >div{
+        max-height:480px;
+        border-right: 1px solid #d8d8d8 ;
+        overflow-y: auto;
+        overflow-x: hidden;
       }
     }
     .part{
@@ -3831,6 +3836,10 @@ table {
         }
       }
     }
+  }
+
+  .marginlf{
+    margin-left: 10px !important;
   }
 }
 p{

@@ -180,7 +180,7 @@
 
 
     function buildRegionTree(regions, rootType) {
-      function buildRegion(region) {
+      function buildRegion(region,parenName) {
         if (region && region.RegionType < 16) {
           region.Children = [];
           regions.forEach(function (k) {
@@ -188,7 +188,18 @@
               if (!region.Children.find(function (o) {
                   return o.RegionID == k.RegionID
                 })) {
-                region.Children.push(buildRegion(k))
+                if (region.RegionType>2){
+                  if (parenName){
+                    region.fullName=parenName+region.RegionName;
+                  }else {
+                    region.fullName=region.RegionName;
+                  }
+                }
+                var re=buildRegion(k,region.fullName?region.fullName:null);
+                if (re){
+                  re.fullName=!re.fullName?(region.fullName+re.RegionName):re.fullName;
+                }
+                region.Children.push(re)
               }
             }
           });
@@ -202,7 +213,7 @@
       if (!root) {
         return null;
       }
-      return buildRegion(root);
+      return buildRegion(root,null);
 
     }
   }
