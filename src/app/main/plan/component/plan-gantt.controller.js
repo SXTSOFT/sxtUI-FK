@@ -187,6 +187,7 @@
             })
           });
           vm.winWidth = $($window).width();
+
           //console.log($($window).width())
           objectModel = new GanttObjectModel(vm.api);
           if(vm.winWidth < 610){

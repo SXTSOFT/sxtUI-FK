@@ -33,7 +33,7 @@
             <th style="width: 60px;min-width: 60px">执行</th>
           </tr>
           </thead>
-          <tr ng-repeat="flow in vm.flows track by flow.TaskFlowId" style="height:44px;">
+          <tr ng-repeat="flow in vm.flows" style="height:44px;">
             <td ng-style="{'padding-left':(10+(flow.line===0?0:1)*12)+'px'}">
               {{$index+1}}、<input type="text" ng-blur="vm.updateFlowName(flow)"  ng-model="flow.Name">
             </td>
