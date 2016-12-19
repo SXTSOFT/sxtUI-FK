@@ -2,30 +2,44 @@
   <md-tab label="报表中心" md-on-select="vm.onNavList()">
     <md-tab-content flex layout-fill layout="column">
       <md-content flex>
-        <md-list  ng-cloak>
+        <md-list ng-cloak>
           <md-subheader class="md-no-sticky">验收</md-subheader>
           <md-list-item ui-sref="app.pcReport_hz">
             <img src="app/main/xhsc/images/i_304g31.png" class="md-avatar">
             <p>汇总报表 </p>
           </md-list-item>
-          <md-list-item   ui-sref="app.pcReport_ys_gx">
+          <md-list-item ui-sref="app.pcReport_ys_gx">
             <img src="app/main/xhsc/images/i_3r631.png" class="md-avatar">
             <p>工序验收报表</p>
           </md-list-item>
-          <md-list-item   ui-sref= "app.pcReport_sl_sc">
+          <md-list-item ui-sref="app.pcReport_sl_sc">
             <img src="app/main/xhsc/images/i_321.png" class="md-avatar">
             <p>实测实量报表</p>
           </md-list-item>
           <md-divider></md-divider>
+          <md-subheader class="md-no-sticky">安全</md-subheader>
+
+          <md-list-item ui-sref="app.pcReport_hz">
+            <img src="app/main/xhsc/images/i_304g31.png" class="md-avatar">
+            <p>汇总报表 </p>
+          </md-list-item>
+          <md-list-item ui-sref="app.pcReport_ys_gx">
+            <img src="app/main/xhsc/images/i_3r631.png" class="md-avatar">
+            <p>工序验收报表</p>
+          </md-list-item>
+
+          <md-divider></md-divider>
           <md-subheader class="md-no-sticky">评估</md-subheader>
-          <md-list-item  ui-sref= "app.pcReport_pg">
+
+          <md-list-item ui-sref="app.pcReport_pg">
             <img src="app/main/xhsc/images/i_3d31.png" class="md-avatar">
             <p>现场评估</p>
           </md-list-item>
-        </md-list></md-content>
+        </md-list>
+      </md-content>
     </md-tab-content>
   </md-tab>
-  <md-tab ng-repeat="tab in vm.tabs" label="{{tab.name}}"  >
+  <md-tab ng-repeat="tab in vm.tabs" label="{{tab.name}}">
     <md-tab-content flex layout-fill layout="column">
       <ui-view flex layout="column">
       </ui-view>
