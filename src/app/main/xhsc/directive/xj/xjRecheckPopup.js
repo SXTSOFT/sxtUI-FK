@@ -13,7 +13,7 @@
     .module('app.xhsc')
     .directive('xjRecheckPopup',xjRecheckPopup);
   /** @ngInject */
-  function xjRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote,$q){
+  function xjRecheckPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote,$q,utils){
     return {
       restrict:'E',
       scope:{
@@ -134,7 +134,7 @@
               })
 
             })
-            scope.data.value.Status = 8;
+            scope.data.value.Status = 16;
           }
         });
       }
@@ -154,8 +154,7 @@
           return status;
         }
         if(scope.role=='zb'){
-          scope.data.value.Status = scope.data.value.Status==16?16:8;
-          if(scope.data.value.Status==8 &&(!scope.Record.zb.images || scope.Record.zb.images.length==0)){
+          if(convert(scope.data.value.Status)==8 &&(!scope.images.zb || scope.images.zb.length==0)){
             utils.alert('请上传整改后照片');
             return;
           }

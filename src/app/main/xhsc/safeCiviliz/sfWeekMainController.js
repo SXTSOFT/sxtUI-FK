@@ -272,7 +272,7 @@
                 });
               api.task(tasks, {
                 event: 'downloadzg',
-                target: item.RectificationID
+                target: item.InspectionExtendID
               })(null, function () {
                 item.percent = item.current = item.total = null;
                 item.isOffline = true;
@@ -297,7 +297,7 @@
     }
     api.event('downloadzg', function (s, e) {
       var current = vm.zglist && vm.zglist.find(function (item) {
-          return item.RectificationID == e.target;
+          return item.InspectionExtendID == e.target;
         });
       if (current) {
         switch (e.event) {

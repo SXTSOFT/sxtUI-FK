@@ -30,7 +30,7 @@
         }
       })
       .state('app.xhsc.scsl.scslmain', {
-        noBack:true,
+        // noBack:true,
         sendBt: false,
         rightArrow: false,
         leftArrow: false,

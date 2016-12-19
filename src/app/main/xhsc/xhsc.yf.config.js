@@ -22,7 +22,7 @@
         }
       })
       .state('app.xhsc.yf.Main', {
-        noBack:true,
+        // noBack:true,
         sendBt: false,
         rightArrow: false,
         leftArrow: false,

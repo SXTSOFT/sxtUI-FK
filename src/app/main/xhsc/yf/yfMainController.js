@@ -239,9 +239,10 @@
               var t = [];
               item.Rectifications.forEach(function (k) {
                 k.Children.forEach(function (o) {
-                  t = t.concat(projectTask(o.AreaID, [o], o.AcceptanceItemID));
+                  t = t.concat(projectTask(o.AreaID.substr(0,o.AreaID.length-5), [o], o.AcceptanceItemID));
                 });
               });
+
               function getRectificationTask() {
                 var  task=[];
                 var rectification=item.Rectifications;
@@ -271,7 +272,7 @@
                 });
               api.task(tasks, {
                 event: 'downloadzg',
-                target: item.RectificationID
+                target: item.InspectionExtendID
               })(null, function () {
                 item.percent = item.current = item.total = null;
                 item.isOffline = true;
@@ -296,7 +297,7 @@
     }
     api.event('downloadzg', function (s, e) {
       var current = vm.zglist && vm.zglist.find(function (item) {
-          return item.RectificationID == e.target;
+          return item.InspectionExtendID == e.target;
         });
       if (current) {
         switch (e.event) {

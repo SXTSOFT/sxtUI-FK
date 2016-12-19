@@ -26,7 +26,7 @@
         }
       })
       .state('app.xhsc.xj.main', {
-        noBack:true,
+        // noBack:true,
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
