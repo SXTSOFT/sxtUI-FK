@@ -655,7 +655,7 @@
                       Color:setColor(t.State),
                       _State:setSatus(t.State),
                       switch:t.State!=4?false:true,
-                      UploadPhotoFileId:item.UploadPhotoFileId,
+                      UploadPhotoFileId:t.UploadPhotoFileId,
                       Flags:t.Flags,
                       TaskFlowId:t.Id,
                       ParentId:t.Dependencies[0]&&t.Dependencies[0].DependencyTaskID||null,
