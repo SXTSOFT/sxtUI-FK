@@ -182,7 +182,7 @@
                   return xhscService.getRegionTreeOffline("", 31, 1);
                 }])
                 .concat(function () {
-                  return remote.offline.create({Id: 'safeWeek' + item.InspectionExtendID});
+                  return remote.offline.create({Id: 'safeWeek' + item.InspectionID});
                 })
 
               api.task(tasks, {

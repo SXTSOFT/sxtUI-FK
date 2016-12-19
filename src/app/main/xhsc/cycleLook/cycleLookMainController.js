@@ -174,7 +174,7 @@
                   return xhscService.getRegionTreeOffline("", 31, 1);
                 }])
                 .concat(function () {
-                  return remote.offline.create({Id: 'cycleYs' + item.InspectionExtendID});
+                  return remote.offline.create({Id: 'cycleYs' + item.InspectionID});
                 })
 
               api.task(tasks, {
