@@ -5,13 +5,20 @@
         <md-list style="padding:0;">
           <md-subheader class="md-no-sticky">材料</md-subheader>
           <md-list-item>
-            <sxt-material style="width:100%;margin:0;" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId" material-Unit="project.materialUnit" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-material>
+            <sxt-material style="width:100%;margin:0;" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId" material-Unit="project.materialUnit" material-models="project.materialModels" name-value="project.procedureName" region-type="project.type" class="md-block"></sxt-material>
           </md-list-item>
           </md-list>
 
       </sxt-projects-jd>
       <div class="md-padding">
-        <div style="padding: 0 6px;">
+        <div style="padding: 0 6px;"></div>
+        <md-input-container class="md-block" style="margin-bottom: 40px;">
+          <label>规格/型号</label>
+          <md-select ng-model="vm.checkData.Model">
+            <md-option ng-value="m" ng-repeat="m in project.materialModels">{{m}}</md-option>
+          </md-select>
+        </md-input-container>
+        <div style="padding: 0 6px;"></div>
         <md-input-container class="md-block" >
           <label>供货方</label>
           <md-select ng-model="vm.checkData.SupplierId">

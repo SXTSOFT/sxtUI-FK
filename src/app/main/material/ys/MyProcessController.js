@@ -281,6 +281,7 @@
 
     $scope.$watch('project.procedureId',
       function () {
+        vm.checkData.Model = '';
         if ($scope.project.procedureId) {
           api.material.TargetService.getAll($scope.project.procedureId)
             .then(function (data) {
