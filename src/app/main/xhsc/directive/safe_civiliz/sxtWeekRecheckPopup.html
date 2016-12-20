@@ -31,7 +31,7 @@
     <md-list-item ng-if="role == 'zb'">
       <label>整改状态</label>
       <p style="text-align: right;margin-right:70px;">
-        {{data.value.Status==16?'未整改':'已整改'}}<md-switch ng-model="data.value.Status" ng-true-value="16" ng-false-value="1" class="md-secondary"></md-switch>
+        {{data.value.Status==16?'已整改':'未整改'}}<md-switch ng-model="data.value.Status" ng-true-value="16" ng-false-value="1" class="md-secondary"></md-switch>
       </p>
     </md-list-item>
     <md-list-item ng-if="role == 'jl'||role==''">

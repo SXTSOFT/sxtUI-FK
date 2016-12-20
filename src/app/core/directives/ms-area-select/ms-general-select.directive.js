@@ -21,6 +21,7 @@
         procedure: "=",
         current:"=",
         level:"=",
+        name:"=",
         lay:"="
       },
       templateUrl: 'app/core/directives/ms-area-select/ms-general-select.html',
