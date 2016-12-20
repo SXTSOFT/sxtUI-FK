@@ -8,9 +8,11 @@
   function sxtMapShow(api,sxt,tileLayer,$state,$timeout){
     return {
       scope: {
-        value:'=sxtMapShow'
+        value:'=sxtMapShow',
+        showLabels:'='
       },
       link: function (scope, element, attrs, ctrl) {
+        element.css('background','white');
         var map,layer,drawnItems,labels;
         scope.$watch('value',function () {
           if(scope.value){
@@ -59,7 +61,9 @@
               }
               if(!labels) {
                 labels = L.featureGroup();
-                map.addLayer(labels);
+                if(scope.showLabels!==false) {
+                  map.addLayer(labels);
+                }
               }
             };
             scope.value.render = function (data) {
