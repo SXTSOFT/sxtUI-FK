@@ -813,7 +813,9 @@
               else {
                   reject(result);
                 }
-              })
+              }).catch(function () {
+              reject()
+            })
           }
           else {
             resolve();

@@ -20,10 +20,14 @@
   /**@ngInject*/
   function week_defaultController($state){
     var vm=this;
-    vm.source=[{},{},{},{},{},{},{}]
+
+    remote.report.getWrapList('WeekInspects').then(function (r) {
+      vm.source=r.data
+
+    })
 
     vm.go=function (item) {
-      $state.go("app.pcReport_week_detail");
+      $state.go("app.pcReport_week_detail",{regionId:item.AreaID,inspectionId:item.InspectionID});
     }
   }
 })();

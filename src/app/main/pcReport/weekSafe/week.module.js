@@ -29,7 +29,7 @@
           }
         }
       })
-      .state('app.pcReport_week_detail',{
+      .state('app.pcReport_week_detail/{regionId}/{inspectionId}',{
         noBack:true,
         sendBt:false,
         url:'/pcReport_week_detail',

@@ -15,8 +15,12 @@
     .controller('cycle_detailController',cycle_detailController);
 
   /**@ngInject*/
-  function cycle_detailController(){
-
+  function cycle_detailController($stateParams,remote){
+    var inspectionId=$stateParams.inspectionId;
+    var vm=this;
+    remote.report.getdetail('cycle',inspectionId).then(function (r) {
+      vm.source=r.data;
+    })
   }
 })();
 /**

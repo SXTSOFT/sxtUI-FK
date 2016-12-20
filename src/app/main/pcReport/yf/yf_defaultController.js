@@ -18,12 +18,16 @@
     .controller('yf_defaultController',yf_defaultController);
 
   /**@ngInject*/
-  function yf_defaultController($state){
+  function yf_defaultController($state,remote){
      var vm=this;
-      vm.source=[{},{},{},{},{},{},{}]
 
-      vm.go=function () {
-        $state.go("app.pcReport_yf_detail");
+      remote.report.getWrapList('house').then(function (r) {
+        vm.source=r.data
+
+      })
+
+      vm.go=function (item) {
+        $state.go("app.pcReport_yf_detail",{regionId:item.AreaID,inspectionId:item.InspectionID});
       }
   }
 })();

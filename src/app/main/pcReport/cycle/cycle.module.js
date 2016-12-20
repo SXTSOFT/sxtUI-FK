@@ -27,7 +27,7 @@
       .state('app.pcReport_cycle_detail',{
         noBack:true,
         sendBt:false,
-        url:'/pcReport_cycle_detail',
+        url:'/pcReport_cycle_detail/{regionId}/{inspectionId}',
         views:{
           'content@app':{
             templateUrl: 'app/main/pcReport/cycle/cycle_detail.html',

@@ -1,11 +1,11 @@
 <table class="table table-hover table-bordered">
-  <th colspan="6">2015深圳雅宝项目5号地块巡检</th>
+  <th colspan="6">{{vm.source.ExtendDescribe}}</th>
   <tr>
     <td>
       项目名称：
     </td>
-
     <td colspan="2">
+      {{vm.source.ProjectName}}
     </td>
 
     <td>
@@ -15,8 +15,16 @@
     <td colspan="2">
     </td>
   </tr>
+  <!--<tr>-->
+    <!--<td>单位：</td>-->
+    <!--<td>{{vm}}</td>-->
+    <!--<td>验收人</td>-->
+    <!--<td>{{}}</td>-->
+    <!--<td>验收时间</td>-->
+    <!--<td>{{}}</td>-->
+  <!--</tr>-->
   <tr>
-    <td>施工单位：</td>
+    <td>验收单位：</td>
     <td>惠州长江</td>
     <td>报验人</td>
     <td>江建卫</td>
@@ -24,32 +32,21 @@
     <td>2016-7-10</td>
   </tr>
   <tr>
-    <td>施工单位：</td>
-    <td>惠州长江</td>
-    <td>报验人</td>
-    <td>江建卫</td>
-    <td>报验时间</td>
-    <td>2016-7-10</td>
-  </tr>
-  <tr>
-    <td>验收意见</td>
+    <td>验收状态</td>
     <td colspan="5">
-      本次验收很不错
+      {{vm.source.StatusName}}
     </td>
   </tr>
-  <tr>
+  <tr ng-repeat="item in vm.source.AreaList">
     <td colspan="6">
       <table class="table table-hover table-bordered">
         <tr>
-          <td colspan="6">星河雅宝项目5号地块1栋2层101</td>
+          <td colspan="6">{{item.AreaFullName}}</td>
         </tr>
         <tr>
           <td colspan="6">
             <div class="imgWrap">
-              <img src="app/main/xhsc/images/bg1.jpg">
-              <img src="app/main/xhsc/images/bg1.jpg">
-              <img src="app/main/xhsc/images/bg1.jpg">
-              <img src="app/main/xhsc/images/bg1.jpg">
+              <img ng-repeat="k in  item.QualifiedPicList"  ng-src="{{k.Url}}">
             </div>
           </td>
         </tr>
@@ -58,15 +55,15 @@
         </tr>
         <tr>
           <td colspan="6">
-            <div class="ywWrap" sxt-report-view=""  region-id="'0003700000000060000600001'" type="'house'">
+            <div class="ywWrap" sxt-report-view="" ponits="item.PointList" region-id="item.AreaID" type="'house'">
             </div>
           </td>
         </tr>
-        <tr>
+        <tr ng-repeat="k in  item.RectificationPic">
           <td colspan="6">
             <table class="table table-hover table-bordered">
                 <tr>
-                  <td colspan="6">钢筋不合格</td>
+                  <td colspan="6">{{k.ProblemSortName+'.'+k.ProblemDescription}}</td>
                 </tr>
                 <tr>
                   <td>
@@ -79,23 +76,19 @@
                 <tr>
                   <td>
                     <div class="zgWrap">
-                      <img src="app/main/xhsc/images/bg1.jpg">
-                      <img src="app/main/xhsc/images/bg1.jpg">
-                      <img src="app/main/xhsc/images/bg1.jpg">
+                      <img ng-repeat="m in k.Front" ng-src="{{m.Url}}">
                     </div>
                   </td>
                   <td>
                     <div class="zgWrap">
-                      <img src="app/main/xhsc/images/bg1.jpg">
-                      <img src="app/main/xhsc/images/bg1.jpg">
-                      <img src="app/main/xhsc/images/bg1.jpg">
+                      <img ng-repeat="m in k.Back" ng-src="{{ m.Url}}">
+
                     </div>
                   </td>
                 </tr>
             </table>
           </td>
         </tr>
-
       </table>
     </td>
   </tr>

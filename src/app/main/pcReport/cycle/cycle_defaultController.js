@@ -17,10 +17,15 @@
   /**@ngInject*/
   function cycle_defaultController($state){
     var vm=this;
-    vm.source=[{},{},{},{},{},{},{}]
 
-    vm.go=function () {
-      $state.go("app.pcReport_cycle_detail");
+
+    remote.report.getWrapList('cycle').then(function (r) {
+      vm.source=r.data
+
+    })
+
+    vm.go=function (item) {
+      $state.go("app.pcReport_cycle_detail",{regionId:item.AreaID,inspectionId:item.InspectionID});
     }
   }
 })();

@@ -10,11 +10,11 @@
   </thead>
   <tbody>
     <tr data-ng-repeat="item in vm.source">
-      <td>1</td>
-      <td>星河雅宝</td>
-      <td>2016星河雅宝项目巡检</td>
+      <td>{{$index}}</td>
+      <td>{{item.AreaFullName}}</td>
+      <td>{{item.Describe}}</td>
       <td>
-        2016-11-02
+       {{item.CreateTime}}
       </td>
       <td>
         <md-button  class="md-primary"  ng-click="vm.go(item)" aria-label="Settings">

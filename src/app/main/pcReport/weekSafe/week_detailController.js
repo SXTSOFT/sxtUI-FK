@@ -16,7 +16,11 @@
 
   /**@ngInject*/
   function week_detailController(){
-
+    var inspectionId=$stateParams.inspectionId;
+    var vm=this;
+    remote.report.getdetail('WeekInspects',inspectionId).then(function (r) {
+      vm.source=r.data;
+    })
   }
 })();
 /**

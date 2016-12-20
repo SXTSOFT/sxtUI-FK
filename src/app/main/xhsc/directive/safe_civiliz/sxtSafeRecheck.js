@@ -64,7 +64,7 @@
               $q.all([
                 remote.safe.ckPointQuery.cfgSet({
                   filter:function (item,inspectionId) {
-                    return item.InspectionID==inspectionId;
+                    return item.InspectionID==inspectionId&&scope.regionId==item.AreaID;
                   }
                 })(scope.inspectionId),
                 remote.safe.getSafePointGeo()

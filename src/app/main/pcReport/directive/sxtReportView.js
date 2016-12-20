@@ -17,6 +17,7 @@
       scope: {
         regionId: '=',
         inspectionId: '=',
+        ponits: '=',
         type: "=",
         disableInspect: '=',
         disableDrag: '=',
@@ -49,6 +50,27 @@
               cb();
             },
             onLoad: function (cb) {
+              if (angular.isArray(scope.ponits)) {
+                var  fs=[];
+                scope.ponits.forEach(function (p) {
+                  if (p.Geometry) {
+                    p.geometry = $window.JSON.parse(p.Geometry);
+                  } else {
+                    p.geometry = p.geometry;
+                  }
+                  if (!p.geometry)return;
+                  // c.ProblemDescription = c.IndexPointID ? c.ProblemDescription : '合格';
+                  p.geometry.properties.seq = p.ProblemSortName;
+                  // p.geometry.properties.v = c;
+                  if (p.geometry.geometry.type == 'Stamp')
+                    p.geometry.geometry.type = 'Point';
+                  // p.geometry.properties.Status = c.Status;
+                  fs.push(p.geometry);
+                });
+              }
+              scope.item = null;
+              fg.addData(fs,false);
+              cb();
 
               // remote.Procedure.InspectionCheckpoint.query(scope.procedure,scope.regionId,scope.inspectionId,"nodb").then(function (r) {
               //   remote.Procedure.InspectionPoint.query(scope.inspectionId,scope.procedure, scope.regionId,"nodb").then(function (r1) {

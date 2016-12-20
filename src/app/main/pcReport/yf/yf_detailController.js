@@ -21,7 +21,11 @@
     .controller('yf_detailController',yf_detailController);
 
   /**@ngInject*/
-  function yf_detailController(){
-
+  function yf_detailController($stateParams,remote){
+    var inspectionId=$stateParams.inspectionId;
+    var vm=this;
+    remote.report.getdetail('house',inspectionId).then(function (r) {
+      vm.source=r.data;
+    })
   }
 })();

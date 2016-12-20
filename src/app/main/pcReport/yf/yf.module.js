@@ -32,7 +32,7 @@
       .state('app.pcReport_yf_detail',{
         noBack:true,
         sendBt:false,
-        url:'/pcReport_yf_detail',
+        url:'/pcReport_yf_detail/{regionId}/{inspectionId}',
         views:{
           'content@app':{
             templateUrl: 'app/main/pcReport/yf/yf_detail.html',
