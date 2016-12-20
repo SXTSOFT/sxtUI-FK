@@ -13,7 +13,7 @@
   {
     $stateProvider
       .state('app.pcReport_cycle_default',{
-        title:"移动验房",
+        title:"日常巡检",
         url:'/pcReport_cycle_default',
         noBack:true,
         sendBt:false,

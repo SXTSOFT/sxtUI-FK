@@ -209,7 +209,9 @@
         }else {
           params="zb";
         }
-        return remote.safe.getRectificationsWrap("house",params).then(function (r) {
+        return remote.safe.getRectificationsWrap.cfgSet({
+          mode:2
+        })("house",params).then(function (r) {
           vm.zglist = [];
           if (angular.isArray(r.data)) {
             var zg = [];

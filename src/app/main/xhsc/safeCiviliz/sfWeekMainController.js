@@ -437,7 +437,9 @@
     }
 
     function loadInspection() {
-     return remote.safe.getBatchWrap("WeekInspects").then(function (r) {
+     return remote.safe.getBatchWrap.cfgSet({
+       mode:2
+     })("WeekInspects").then(function (r) {
         vm.Inspections = [];
         if (angular.isArray(r.data)) {
           var ys = [];
@@ -481,7 +483,9 @@
         }else {
           params="zb";
         }
-        return remote.safe.getRectificationsWrap("WeekInspects",params).then(function (r) {
+        return remote.safe.getRectificationsWrap.cfgSet({
+          mode:2
+        })("WeekInspects",params).then(function (r) {
           vm.zglist = [];
           if (angular.isArray(r.data)) {
             var zg = [];

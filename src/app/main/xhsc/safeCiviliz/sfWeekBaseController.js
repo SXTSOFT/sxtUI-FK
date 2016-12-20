@@ -206,7 +206,9 @@
         }else {
           params="zb";
         }
-        return remote.safe.getRectificationsWrap("WeekInspects",params).then(function (r) {
+        return remote.safe.getRectificationsWrap.cfgSet({
+          mode:2
+        })("WeekInspects",params).then(function (r) {
           vm.zglist = [];
           if (angular.isArray(r.data)) {
             var zg = [];

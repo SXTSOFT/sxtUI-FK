@@ -1854,7 +1854,6 @@
           idField: 'InspectionId',
           dataType: 1,
           offline: true,
-          mode:2,
           fn: function () {
             return $http.get($http.url('/api/Acceptances/SecurityInfo/GetSecurityInfo/1/Status'));
           }
@@ -1874,7 +1873,6 @@
           _id:'safeRectification',
           idField: 'RectificationID',
           dataType: 1,
-          mode:2,
           fn: function (identity,role) {
             var url='/api/Acceptances/SecurityRectification/GetList';
             return $http.get($http.url(url));
@@ -1913,7 +1911,6 @@
           }
         }),
         getRectificationsWrap: $http.wrap({
-          mode:2,
           offline: true,
           db:function (identity) {
             return 'safeRectification'+(identity?identity:"");
@@ -2042,7 +2039,6 @@
           }
         }),
         getBatchWrap:$http.wrap({
-          mode:2,
           offline: true,
           db:function (identity) {
             return "securityInfo"+ (identity?identity:"");

@@ -18,7 +18,7 @@
   {
     $stateProvider
       .state('app.pcReport_week_default',{
-        title:"移动验房",
+        title:"周安全检查",
         url:'/pcReport_week_default',
         noBack:true,
         sendBt:false,
