@@ -19,7 +19,7 @@
       globalDb = {
         id: 'sxt_global_db',
         noCache:false
-      };
+      },poolss={};
 
     provider.register = register;
     //provider.getNetwork = getNetwork;
@@ -30,7 +30,7 @@
     });
     provider.$q = function () {
       return provider.$q.$q.apply(provider, toArray(arguments));
-    }
+    };
 
 
     provider.$get = getApi;
@@ -831,6 +831,12 @@
       };
     }
 
+    SingleDB.prototype.destroy = function(){
+      return get_globalDb().destroy(this.cfg._id);
+    }
+    SingleDB.prototype.clear = function(){
+      return get_globalDb().clear();
+    }
     SingleDB.prototype.findAll = function (filter) {
       return db_findAll(this.cfg, filter);
     }
@@ -840,7 +846,8 @@
 
       return db_save({
         _id: this.cfg._id,
-        delete: !0
+        delete: !0,
+        fileField:this.cfg.fileField,
       }, id, this.idFn);
     }
     SingleDB.prototype.addOrUpdate = function (items) {
@@ -850,8 +857,16 @@
 
       if (!angular.isArray(items))
         items = [items];
-      return db_save({_id: cfg._id, upload: !0,fileField:cfg.fileField}, items, this.idFn);
+      return db_save({_id: cfg._id, fileField:cfg.fileField, upload: !0}, items, this.idFn);
     }
+    SingleDB.prototype.bulkAddOrUpdate=function(arr){
+      return db_save(this.cfg,arr,this.idFn);
+    }
+    SingleDB.prototype.getOrAdd=function (obj) {
+      return this.addOrUpdate(obj).then(function () {
+        return obj;
+      });
+    };
     SingleDB.prototype.saveItems = function (result) {
       return db_save(this.cfg, result, this.idFn);
     }
@@ -867,7 +882,7 @@
       });
     }
     SingleDB.prototype.allDocs = function () {
-      return provider.$q.$q(function (resolve) {
+      return provider.$q(function (resolve) {
         resolve();
       })
     }
@@ -883,6 +898,14 @@
               return provider.$q(function (resolve) {
                 resolve();
               })
+            },
+            clear: function () {
+              return provider.$cordovaFile.removeRecursively(provider.$window.cordova.file.dataDirectory, "")
+                .then(function (success) {
+                  alert(success);
+                }, function (error) {
+                  console.log(error);
+                });
             },
             destroy: function (id) {
               delete cache[id];
@@ -935,11 +958,13 @@
                   var r = provider.$window.JSON.parse(result);
                   //if(!globalDb.noCache || (cfg && cfg.fileField))
                   //  cache[id] = r;
+                  cb();
                   resolve(r);
-                  cb();
+
                 }).catch(function (result) {
-                  reject(null);
                   cb();
+                  reject(null);
+
                 });
               })
               /*              if(cache[id]){
@@ -979,7 +1004,7 @@
 
     function db_findAll(cfg, filter) {
       var db = get_globalDb();
-      return provider.$q.$q(function (resolve, reject) {
+      return provider.$q(function (resolve, reject) {
         var result = {
           "rows": []
         };
@@ -1005,10 +1030,39 @@
       }
       return o;
     }
+
     function db_save(cfg, result, idFn) {
-      if(!result) return;
+      return provider.$q(function (resolve, reject) {
+        var pools = poolss[cfg._id];
+        if(!pools)
+          pools = poolss[cfg._id] = [];
+        pools.push(task(cfg,result,idFn));
+        if(pools.length===1){
+          run();
+        }
+        function run() {
+          var first = pools[0];
+          if(first) {
+            first().then(function (r) {
+              pools.shift();
+              return r;
+            },function (r) {
+              pools.shift();
+              provider.$q.reject(r);
+            }).then(run, run);
+          }
+        }
+        function task(cfg, result, idFn) {
+          return function () {
+            return db_save1(cfg, result, idFn).then(resolve,reject);
+          }
+        }
+      });
+    }
+    function db_save1(cfg, result, idFn) {
+      if(!result) return provider.$q(function (resolve, reject) {resolve()});
       var db = get_globalDb();
-      return provider.$q.$q(function (resolve, reject) {
+      return provider.$q(function (resolve, reject) {
         db.get(cfg._id,cfg).then(save_to).catch(save_to);
         function save_to(doc) {
           provider.$q(function (resolve, reject) {
@@ -1114,5 +1168,7 @@
         }
       }
     }
+
+
   }
 })();
