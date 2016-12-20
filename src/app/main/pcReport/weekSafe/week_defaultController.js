@@ -18,8 +18,13 @@
     .controller('week_defaultController',week_defaultController);
 
   /**@ngInject*/
-  function week_defaultController(){
+  function week_defaultController($state){
+    var vm=this;
+    vm.source=[{},{},{},{},{},{},{}]
 
+    vm.go=function (item) {
+      $state.go("app.pcReport_week_detail");
+    }
   }
 })();
 /**

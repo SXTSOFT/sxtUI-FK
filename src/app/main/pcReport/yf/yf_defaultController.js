@@ -18,7 +18,12 @@
     .controller('yf_defaultController',yf_defaultController);
 
   /**@ngInject*/
-  function yf_defaultController(){
+  function yf_defaultController($state){
+     var vm=this;
+      vm.source=[{},{},{},{},{},{},{}]
 
+      vm.go=function () {
+        $state.go("app.pcReport_yf_detail");
+      }
   }
 })();

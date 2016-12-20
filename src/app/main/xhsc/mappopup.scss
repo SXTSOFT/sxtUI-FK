@@ -3845,3 +3845,106 @@ table {
 p{
   margin: 15px 0px;
 }
+
+.sa{
+  th{
+    min-width: 50px;
+    text-align: center;
+  }
+  th:nth-of-type(n+2){
+    min-width: 100px;
+  }
+  tr{
+    > td:first-of-type {
+      padding-left: 8px;
+    }
+    td {
+      vertical-align: middle !important;
+    }
+  }
+
+  .imgWrap{
+    display: flex;
+    flex-flow: row wrap;
+    img{
+      flex: 1 1 33%;
+      max-width:33%;
+    }
+  }
+}
+
+.imgWrap{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: start;
+
+  img{
+    flex: 1 1 33%;
+    max-width: 33%;
+    height: 250px;
+    padding: 8px;
+  }
+}
+
+.ywWrap{ //原位
+    min-height: 520px;
+    background: #d6d6d6;
+}
+
+
+
+.zgWrap{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: start;
+  img{
+    flex: 1 1 auto;
+    height: 250px;
+    padding: 8px;
+  }
+}
+
+
+
+@media screen and (max-width: 600px){
+  .imgWrap{
+    img{
+      flex: 1 1 50%;
+      max-width: 50%;
+      height: 200px;
+    }
+  }
+
+  .ywWrap{
+    min-height: 350px;
+    background: #d6d6d6;
+  }
+  .zgWrap{
+    img{
+      height: 200px;
+    }
+  }
+
+
+
+}
+
+@media screen and (min-width: 1280px){
+  .imgWrap{
+    img{
+      flex: 1 1 25%;
+      max-width: 25%;
+      height: 280px;
+    }
+  }
+
+  .ywWrap{
+    min-height: 600px;
+    background: #d6d6d6;
+  }
+
+}
+
+
+
+

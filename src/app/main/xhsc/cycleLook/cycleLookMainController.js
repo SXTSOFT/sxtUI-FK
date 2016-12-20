@@ -389,7 +389,7 @@
                         "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
                         "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
                       },"cycle").then(function () {
-                        clear(ckpoints,problemRecords,InspectionProblemRecordFiles);
+                        clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points);
                       });
                     });
                   }

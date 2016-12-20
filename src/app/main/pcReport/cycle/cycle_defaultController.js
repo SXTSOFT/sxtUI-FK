@@ -15,8 +15,13 @@
     .controller('cycle_defaultController',cycle_defaultController);
 
   /**@ngInject*/
-  function cycle_defaultController(){
+  function cycle_defaultController($state){
+    var vm=this;
+    vm.source=[{},{},{},{},{},{},{}]
 
+    vm.go=function () {
+      $state.go("app.pcReport_cycle_detail");
+    }
   }
 })();
 /**
