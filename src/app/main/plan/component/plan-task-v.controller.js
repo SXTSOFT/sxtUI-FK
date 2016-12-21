@@ -607,17 +607,25 @@
           if(items){
             vm.loadMeasure = true;
             vm.proceduresData = items;
-              vm.proceduresData.forEach(function(_r){
-                _r.SpecialtyChildren.forEach(function(_rr){
-                  var g=_rr.WPAcceptanceList && _rr.WPAcceptanceList.find(function(t){
-                    return t.AcceptanceItemID ==  flow.MeasureId;
-                  })
-                  if(g){
-                    vm.current = g;
-                    vm.gxName = flow.MeasureInfo;
-                  }
-                })
-              })
+            var g = vm.proceduresData.find(function(_p){
+              return _p.AcceptanceItemID ==  flow.MeasureId;
+            })
+              if(g){
+                vm.current = g;
+                vm.gxName = flow.MeasureInfo;
+              }
+              //vm.proceduresData.forEach(function(_r){
+
+                //_r.SpecialtyChildren.forEach(function(_rr){
+                //  var g=_rr.WPAcceptanceList && _rr.WPAcceptanceList.find(function(t){
+                //    return t.AcceptanceItemID ==  flow.MeasureId;
+                //  })
+                //  if(g){
+                //    vm.current = g;
+                //    vm.gxName = flow.MeasureInfo;
+                //  }
+                //})
+              //})
             if(!vm.current){
                 vm.data.CloseRelatedObjectId = null;
                 flow.MeasureInfo = null;

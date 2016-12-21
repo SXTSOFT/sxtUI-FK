@@ -230,7 +230,8 @@
       },
       procedure:{
         query:function(){
-          return $http.get($http.url('/api/WPAcceptanceApi/GetWPAcceptanceInfo'));
+          //return $http.get($http.url('/api/WPAcceptanceApi/GetWPAcceptanceInfo'));
+          return $http.get($http.url('/api/WPAcceptanceApi/GetWPAcceptances'));
         }
       },
       MeasureInfo:{

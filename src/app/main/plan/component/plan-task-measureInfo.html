@@ -65,22 +65,27 @@
               <!--<md-button class="md-raised" ng-click="vm.clrChoose()">清除工序</md-button>-->
             <!--</div>-->
             <!--<md-subheader>工序列表</md-subheader>-->
-            <div ng-repeat="p in vm.proceduresData|filter:vm.searchT">
-              <label style="display: block;height:49px;line-height: 49px;padding:0 10px;margin-bottom: 0;border-bottom: 1px solid #dedede;white-space: nowrap;overflow: hidden;">{{p.SpecialtyName}}</label>
-                <md-list style="padding-top:0;padding-bottom: 0;">
-                  <md-list-item ng-class="{'active':gx1.checked}" ng-repeat="gx1 in p.SpecialtyChildren|filter:vm.searchT">
-                    <div flex layout="column">
-                      <div flex ng-click="selectProcedure(gx1)">
-                        <label style="display: block;height:49px;line-height: 49px;padding:0 10px;margin-bottom: 0;border-bottom: 1px solid #dedede;white-space: nowrap;overflow: hidden;">{{gx1.SpecialtyName}}</label>
-                      </div>
-                      <md-list flex ng-if="gx1.WPAcceptanceList.length" class="ph-16">
-                        <md-list-item ng-class="{'gxselected':vm.current ==ac}" layout="row" flex ng-repeat="ac in gx1.WPAcceptanceList|filter:vm.searchT" ng-click="vm.choose(ac)">
-                          <div flex style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ac.AcceptanceItemName}}</div>
-                        </md-list-item>
-                      </md-list>
-                    </div>
-                  </md-list-item>
-                </md-list>
+            <div>
+              <!--<label style="display: block;height:49px;line-height: 49px;padding:0 10px;margin-bottom: 0;border-bottom: 1px solid #dedede;white-space: nowrap;overflow: hidden;">{{p.SpecialtyName}}</label>-->
+                <!--<md-list style="padding-top:0;padding-bottom: 0;">-->
+                  <!--<md-list-item ng-class="{'active':gx1.checked}" ng-repeat="gx1 in p.SpecialtyChildren|filter:vm.searchT">-->
+                    <!--<div flex layout="column">-->
+                      <!--<div flex ng-click="selectProcedure(gx1)">-->
+                        <!--<label style="display: block;height:49px;line-height: 49px;padding:0 10px;margin-bottom: 0;border-bottom: 1px solid #dedede;white-space: nowrap;overflow: hidden;">{{gx1.SpecialtyName}}</label>-->
+                      <!--</div>-->
+                      <!--<md-list flex ng-if="gx1.WPAcceptanceList.length" class="ph-16">-->
+                        <!--<md-list-item ng-class="{'gxselected':vm.current ==ac}" layout="row" flex ng-repeat="ac in gx1.WPAcceptanceList|filter:vm.searchT" ng-click="vm.choose(ac)">-->
+                          <!--<div flex style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ac.AcceptanceItemName}}</div>-->
+                        <!--</md-list-item>-->
+                      <!--</md-list>-->
+                    <!--</div>-->
+                  <!--</md-list-item>-->
+                <!--</md-list>-->
+              <md-list flex ng-if="vm.proceduresData.length" class="ph-16">
+                <md-list-item ng-class="{'gxselected':vm.current ==ac}" layout="row" flex ng-repeat="ac in vm.proceduresData|filter:vm.searchT" ng-click="vm.choose(ac)">
+                  <div flex style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ac.AcceptanceItemName}}</div>
+                </md-list-item>
+              </md-list>
             </div>
           </md-content>
         </md-tab>
