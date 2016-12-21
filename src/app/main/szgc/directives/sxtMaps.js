@@ -19,7 +19,7 @@
     }
 
     function  link(scope,element,attr,ctrl){
-
+      element.css('background','white');
 
 
       $timeout(function () {

@@ -15,6 +15,7 @@
         projectId: '='
       },
       link: function (scope, element, attrs, ctrl) {
+        element.css('background','white');
         var p = element.position(), h = $(window).height();
         element.height(h - p.top - 150);
         var map,layer,dlg;
