@@ -70,10 +70,10 @@ window.sxt = (function(win,angular)
 
   angular.element(document).ready(function () {
     if (win.cordova) {
-      bootstrap();
-      // document.addEventListener('deviceready', function () {
-      //   load();
-      // }, false);
+      document.addEventListener('deviceready', function () {
+        // load();
+        bootstrap();
+      }, false);
     }
     else {
       bootstrap();
