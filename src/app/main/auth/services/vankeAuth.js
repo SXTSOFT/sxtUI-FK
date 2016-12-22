@@ -103,7 +103,7 @@
 
               // console.log('ss',d.data.UserId);
               //
-              // JPushPlugin.setAlias(d.data.UserId);
+              JPushPlugin.setAlias(d.data.UserId);
 
             }
             resolve(d && d.data);
