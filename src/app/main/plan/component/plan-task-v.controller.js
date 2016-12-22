@@ -602,7 +602,8 @@
           vm.current = null;
           vm.gxName = '';
           api.plan.TaskFlow.getSubTasks(flow.TaskFlowId).then(function(r){
-            vm.data._taskFlowId =r.data.Items[0].TaskLibraryId;
+            vm.sendData = r.data.Items[0];
+            vm.sendData._taskFlowId =r.data.Items[0].TaskLibraryId;
           })
           if(items){
             vm.loadMeasure = true;
@@ -627,7 +628,7 @@
                 //})
               //})
             if(!vm.current){
-                vm.data.CloseRelatedObjectId = null;
+                //vm.sendData.CloseRelatedObjectId = null;
                 flow.MeasureInfo = null;
                 flow.MeasureId = null;
             }
@@ -635,18 +636,18 @@
           vm.clrChoose = function(){
             vm.current = null;
             vm.gxName = '';
-            vm.data.CloseRelatedObjectId = null;
+            vm.sendData.CloseRelatedObjectId = null;
           }
           vm.stop = function(ev){
             ev.stopPropagation();
           }
           vm.choose = function(item){
             vm.current = item;
-            vm.data.CloseRelatedObjectId = item.AcceptanceItemID;
+            vm.sendData.CloseRelatedObjectId = item.AcceptanceItemID;
             vm.gxName = item.AcceptanceItemName;
           }
           vm.select = function(){
-            vm.data.CloseRelatedObjectType = 'Inspection';
+            vm.sendData.CloseRelatedObjectType = 'Inspection';
             if(vm.current){
               flow.MeasureInfo = vm.current.AcceptanceItemName;
               flow.MeasureId = vm.current.AcceptanceItemID;
@@ -654,7 +655,7 @@
               flow.MeasureInfo = null;
               flow.MeasureId = null;
             }
-            $mdDialog.hide(vm.data);
+            $mdDialog.hide(vm.sendData);
           }
         }],
         controllerAs:'vm',
