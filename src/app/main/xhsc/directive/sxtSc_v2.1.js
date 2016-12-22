@@ -63,19 +63,47 @@
             map._map.removeControl(toolbar);
           function findImg(source) {
             var result = source;
-            var img = result.data.find(function (item) {
-              return item.AcceptanceItemID == scope.acceptanceItem && item.RegionId == scope.regionId;
-            });
-            if (!img) {
-              img = result.data.find(function (item) {
-                return item.AcceptanceItemID == scope.acceptanceItem && scope.regionId.indexOf(item.RegionId) > -1;
+
+
+            if (scope.regionId.length>20){
+              imgId= result.data.find(function (item) {
+                return (item.Type == -3 && item.RegionId == scope.regionId);
+              });
+              if (!imgId){
+                imgId= result.data.find(function (item) {
+                  return (item.Type == 3 && item.RegionId == scope.regionId);
+                });
+              }
+
+              if (!imgId){
+                var imgId = result.data.find(function (item) {
+                  return item.RegionId == scope.regionId;
+                });
+              }
+
+              if (!imgId) {
+                imgId = result.data.find(function (item) {
+                  return item.AcceptanceItemID == scope.acceptanceItem&&scope.regionId.indexOf(item.RegionId)>-1;
+                });
+              }
+            }else {
+              imgId = result.data.find(function (item) {
+                return item.RegionId == scope.regionId&&item.AcceptanceItemID == scope.acceptanceItem;
               });
             }
-            if (!img) {
-              var img = result.data.find(function (item) {
-                return item.RegionId == scope.regionId;
-              });
-            }
+            // var img = result.data.find(function (item) {
+            //   return item.AcceptanceItemID == scope.acceptanceItem && item.RegionId == scope.regionId;
+            // });
+            // if (!img) {
+            //   img = result.data.find(function (item) {
+            //     return item.AcceptanceItemID == scope.acceptanceItem && scope.regionId.indexOf(item.RegionId) > -1;
+            //   });
+            // }
+            // if (!img) {
+            //   var img = result.data.find(function (item) {
+            //     return item.RegionId == scope.regionId;
+            //   });
+            // }
             return img;
           }
           var img = findImg(scope.picRelate);
@@ -96,6 +124,13 @@
                         //line.options.color = 'black';
 
                         line.attrs['stroke-width'] = line.attrs['stroke-width'] * 6;
+                      },
+                      filterText: function (text) {
+                        if (text.options){
+                          text.options.color="black";
+                        }
+
+                        return true;
                       }
                     });
                     map.center();
