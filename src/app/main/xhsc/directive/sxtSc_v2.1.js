@@ -64,7 +64,7 @@
           function findImg(source) {
             var result = source;
 
-
+            var imgId;
             if (scope.regionId.length>20){
               imgId= result.data.find(function (item) {
                 return (item.Type == -3 && item.RegionId == scope.regionId);
@@ -104,9 +104,9 @@
             //     return item.RegionId == scope.regionId;
             //   });
             // }
-            return img;
+            return imgId;
           }
-          var img = findImg(scope.picRelate);
+          var img_ck = findImg(scope.picRelate);
           (function (img) {
             if (!tile || tile != scope.regionId) {
               $timeout(function () {
@@ -138,18 +138,16 @@
                   })
                 }
                 else {
-                  if (!result.data.DrawingContent) {
                     utils.alert('未找到图纸,请与管理员联系!(1)');
                     scope.ct && (scope.ct.loading = false);
-                  }
                 }
               },300);
             }
             tile = scope.regionId;
-          })(img);
-          scope.img=img;
-          if(img){
-            resolve(img);
+          })(img_ck);
+          scope.img=img_ck;
+          if(img_ck){
+            resolve(img_ck);
           }else{
             reject();
           }
