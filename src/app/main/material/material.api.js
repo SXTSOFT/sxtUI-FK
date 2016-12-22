@@ -260,6 +260,9 @@
           _id:'Ms_MaterialTargetRelationList',
           idField:'Id',
           dataType:5,
+          filter:function (item,data) {
+            return item.ProjectId==data.projectId && item.MaterialId ==data.materialId;
+          }
         }).bind(function (args) {
           return $http.get($http.url('/api/MaterialTargetRelation/GetByProjectId',args));
         })
@@ -269,6 +272,9 @@
           _id:'Ms_MaterialTargetList',
           idField:'Id',
           dataType:5,
+          filter:function (item,args) {
+            return item.ProcedureId==args;
+          }
         }).bind(function (args) {
           return $http.get($http.url('/api/MLPProcedure/' + args + '/MLEngineeringTarget/null'));
         })
