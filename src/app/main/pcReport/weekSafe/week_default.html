@@ -30,7 +30,7 @@
   </table>
 
   <div  layout="row" layout-align="end start" style="min-width: 558px">
-    <md-select ng-model="pageing.pageSize" class="pageSZ">
+    <md-select ng-model="vm.selectSize" class="pageSZ">
       <md-option value="10">10</md-option>
       <md-option value="20">20</md-option>
       <md-option value="40">40</md-option>
@@ -38,9 +38,10 @@
       <md-option value="100">100</md-option>
     </md-select>
     <div style="text-align: right;margin-right: 15px"
-         paging page="pageIndex"
+         paging
+         page="pageIndex"
          page-size="PageSize"
-         total="total"
+         total="vm.total"
          paging-action="vm.pageAction('bar', page, pageSize, total)">
     </div>
   </div>
