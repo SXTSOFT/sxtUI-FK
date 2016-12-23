@@ -81,7 +81,7 @@
         ctx.closePath();
       }
       scope.cancel = function () {
-       // scope.onCancel && scope.onCancel();
+       scope.onCancel && scope.onCancel();
       }
       scope.erase = function () {
         if(image){

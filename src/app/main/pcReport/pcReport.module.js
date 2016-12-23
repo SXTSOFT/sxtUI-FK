@@ -6,7 +6,15 @@
   'use strict';
 
   angular
-    .module('app.pcReport', ['app.pcReport_sl','app.pcReport_ys','app.pcReport_pg','bw.paging'])
+    .module('app.pcReport', [
+      'app.pcReport_sl',
+      'app.pcReport_ys',
+      'app.pcReport_pg',
+      'bw.paging',
+      'app.pcReport_yf',
+      'app.pcReport_cycle',
+      'app.pcReport_week'
+    ])
     .config(config);
   /** @ngInject */
   function config(msNavigationServiceProvider,$stateProvider,$mdIconProvider)
@@ -73,6 +81,11 @@
           }
         }
       })
+
+
+
+
+
     // Navigation
     msNavigationServiceProvider.saveItem('xh', {
       title : '星河集团',

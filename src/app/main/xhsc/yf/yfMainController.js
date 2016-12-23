@@ -182,7 +182,7 @@
                   return xhscService.getRegionTreeOffline("", 31, 1);
                 }])
                 .concat(function () {
-                  return remote.offline.create({Id: 'yfYS' + item.InspectionExtendID});
+                  return remote.offline.create({Id: 'yfYS' + item.InspectionID});
                 })
 
               api.task(tasks, {
@@ -239,9 +239,10 @@
               var t = [];
               item.Rectifications.forEach(function (k) {
                 k.Children.forEach(function (o) {
-                  t = t.concat(projectTask(o.AreaID, [o], o.AcceptanceItemID));
+                  t = t.concat(projectTask(o.AreaID.substr(0,o.AreaID.length-5), [o], o.AcceptanceItemID));
                 });
               });
+
               function getRectificationTask() {
                 var  task=[];
                 var rectification=item.Rectifications;
@@ -267,11 +268,12 @@
               var tasks = [].concat(globalTask)
                 .concat(getRectificationTask())
                 .concat(function () {
+
                   return remote.offline.create({Id: 'yfZg' + item.InspectionExtendID});
                 });
               api.task(tasks, {
                 event: 'downloadzg',
-                target: item.RectificationID
+                target: item.InspectionExtendID
               })(null, function () {
                 item.percent = item.current = item.total = null;
                 item.isOffline = true;
@@ -296,7 +298,7 @@
     }
     api.event('downloadzg', function (s, e) {
       var current = vm.zglist && vm.zglist.find(function (item) {
-          return item.RectificationID == e.target;
+          return item.InspectionExtendID == e.target;
         });
       if (current) {
         switch (e.event) {
@@ -437,7 +439,9 @@
     }
 
     function loadInspection() {
-     return remote.safe.getBatchWrap("house").then(function (r) {
+     return remote.safe.getBatchWrap.cfgSet({
+       mode:2
+     })("house").then(function (r) {
         vm.Inspections = [];
         if (angular.isArray(r.data)) {
           var ys = [];
@@ -448,7 +452,7 @@
             if (angular.isArray(r.data)) {
               ys.forEach(function (k) {
                 if (r.data.find(function (m) {
-                    return m.Id == "yfYS" + k.InspectionExtendID;
+                    return m.Id == "yfYS" + k.InspectionID;
                   })) {
                   k.isOffline = true;
                 }
@@ -482,7 +486,9 @@
         }else {
           params="zb";
         }
-        return remote.safe.getRectificationsWrap("house",params).then(function (r) {
+        return remote.safe.getRectificationsWrap.cfgSet({
+          mode:2
+        })("house",params).then(function (r) {
           vm.zglist = [];
           if (angular.isArray(r.data)) {
             var zg = [];

@@ -1,7 +1,8 @@
-<ms-gen-select flex="none" areas="areas" procedure="procedure" current="current"></ms-gen-select>
+<ms-gen-select flex="none" areas="areas" procedure="procedure" current="current" level="4"></ms-gen-select>
 
 <div class="mapcheck" layout="column" style="position: relative" flex xj-accept="vm.info.current" inspection-id="vm.InspectionId"
-     procedure="current.procedure.AcceptanceItemID" ct="vm.info" region-id="current.region.RegionID" ng-if="vm.info.show"  img-id="vm.imgId">
+     procedure="current.procedure.AcceptanceItemID" ct="vm.info" region-id="current.region.RegionID"
+     ng-if="vm.info.show"  gx="current.procedure" img-id="vm.imgId">
   <div flex layout="row" layout-align="center center" ng-if="vm.info.loading">
     <md-progress-circular md-mode="indeterminate" md-diameter="28">
     </md-progress-circular>

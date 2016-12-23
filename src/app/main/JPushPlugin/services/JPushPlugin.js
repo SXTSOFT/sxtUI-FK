@@ -30,6 +30,8 @@
 
     },false)
 
+
+
     if(!JPushPlugin){
       JPushPlugin = {
         setTagsWithAlias:emptyFn,

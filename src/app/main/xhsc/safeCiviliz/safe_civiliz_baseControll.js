@@ -253,7 +253,9 @@
 
     function load() {
       $q.all([
-        remote.safe.getSafeInspections().then(function (r) {
+        remote.safe.getSafeInspections.cfgSet({
+          model:2
+        })().then(function (r) {
           $q(function (resolve, reject) {
             vm.Inspections = [];
             if (angular.isArray(r.data)) {
@@ -331,6 +333,7 @@
               vm.by_project = xhscService.buildMutilRegionTree(n.data, 1);
               vm.zj_project = $.extend([], vm.by_project, true);
               vm.zj_project.forEach(function (k) {
+                k.stretch=true;
                 if (k.Children) {
                   k.Children.forEach(function (n) {
                     if (r.data.find(function (m) {

@@ -23,7 +23,8 @@
         imgId:"=",
         ct:'=',
         disableInspect:'@',
-        disableDrag:'@'
+        disableDrag:'@',
+        gx:"="
       },
       link:link
     };
@@ -57,6 +58,9 @@
             onLoad: function (cb) {
               remote.cycleLook.cyclePointQuery.cfgSet({
                 filter:function (item){
+                  if (scope.gx&&scope.gx.isGj){
+                    return item.AreaID==scope.regionId&&item.InspectionExtendID==scope.inspectionId&&item.AcceptanceItemID==scope.gx.AcceptanceItemID;
+                  }
                   return item.AreaID==scope.regionId&&item.InspectionExtendID==scope.inspectionId;
                 }
               })().then(function (r) {
@@ -108,8 +112,6 @@
                   return d.PositionID == point.MeasurePointID;
                 })) {
                 var v = {
-                  // InspectionID:scope.inspectionId,
-                  // InspectionAreaID:scope.inspectionAreaId,
                   DrawingID:scope.imgId,
                   InspectionExtendID:scope.inspectionId,
                   CheckpointID:sxt.uuid(),
@@ -215,47 +217,53 @@
                 }
                 map.loadSvgXml(result2.data.DrawingContent);
                 map.map.addControl(fg);
-                // var btn = $('<div class="mapboxgl-ctrl-group mapboxgl-ctrl"><button class="mapboxgl-ctrl-icon links"  title="其它图纸"></button></div>');
-                // btn.click(function () {
-                //   var mapList = [];
-                //   result.data.forEach(function (item) {
-                //     if(item.RegionId == scope.regionId && item.DrawingID!=imgId.DrawingID && !mapList.find(function (f) {
-                //         return f.DrawingID==item.DrawingID
-                //       })){
-                //       mapList.push(item);
-                //     }
-                //   });
-                //
-                //   xhUtils.openLinks(mapList);
-                // });
-                // element.find('.mapboxgl-ctrl-bottom-left').append(btn);
               }).catch(function () {
               })
             }
           }, 300);
         }
       };
-      $timeout(function () {
-        scope.$watch('imgId', function () {
-          if(scope.imgId) {
-            if(map){
-              map.remove();
-              map = null;
-            }
-            install();
+      scope.$watch('regionId', function () {
+        if(!scope.loading&&scope.regionId&&scope.imgId) {
+          if(map){
+            map.remove();
+            map = null;
           }
-        });
-        scope.$watch('item',function () {
-          if(fg) {
-            if (scope.item) {
-              fg.changeMode('inspect',scope.item);
-            }
-            else {
-              fg.changeMode();
-            }
+          install();
+          scope.loading=true;
+          $timeout(function () {
+            scope.loading=false;
+          },300)
+        }
+      });
+      scope.$watch('imgId', function () {
+        if(!scope.loading&&scope.imgId) {
+          if(map){
+            map.remove();
+            map = null;
           }
-        })
-      }, 500);
+          install();
+          scope.loading=true;
+          $timeout(function () {
+            scope.loading=false;
+          },300)
+        }
+      });
+      scope.$watch('item',function () {
+        if(fg) {
+          if (scope.item) {
+            fg.changeMode('inspect',scope.item);
+          }
+          else {
+            fg.changeMode();
+          }
+        }
+      })
+
+
+      // $timeout(function () {
+      //
+      // }, 500);
       scope.$on('destroy',function () {
         if(map){
           map.remove();

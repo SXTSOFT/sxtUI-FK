@@ -23,7 +23,7 @@
         }
       })
       .state('app.xhsc.sf.sfmain', {
-        noBack:true,
+        // noBack:true,
         sendBt: false,
         rightArrow: false,
         showgrzx:false,
@@ -96,7 +96,7 @@
         }
       })
       .state('app.xhsc.dyn.sfDynamicMain', {
-        noBack:true,
+        // noBack:true,
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
@@ -148,7 +148,7 @@
         }
       })
       .state('app.xhsc.week.sfWeekMain', {
-        noBack:true,
+        // noBack:true,
         sendBt: false,
         rightArrow: false,
         leftArrow: false,

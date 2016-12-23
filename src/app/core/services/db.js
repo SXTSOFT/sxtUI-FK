@@ -6,7 +6,21 @@
 
   angular
     .module('app.core')
-    .provider('db',pouchDB);
+    .provider('db',adapter);
+
+  function adapter() {
+    var $get;
+    if (!window.cordova) {
+      $get = new pouchDB().$get;
+    }
+    else {
+      $get =new db().$get;
+    }
+    var self = this;
+    self.$get = $get;
+  }
+
+
 /** @ngInject */
   function pouchDB() {
 

@@ -63,7 +63,7 @@
         sendResult = null;
       });
 
-      function initImgId(regionId) {
+      function initImgId(regionId,gx) {
         var imgId="";
         if(regionId){
           var areaID=regionId.substr(0,10);
@@ -71,6 +71,9 @@
             offline: true
           })("cycle",areaID).then(function (result) {
             imgId = result.data.find(function (item) {
+              if (gx&&gx.isGj){
+                return item.AcceptanceItemID==gx.AcceptanceItemID && item.RegionId ==regionId;
+              }
               return item.Type==7 && item.RegionId ==regionId;
             });
             if(!imgId){
@@ -87,7 +90,10 @@
 
       $scope.$watch("current.region",function (v,o) {
         if (v&&$scope.current.procedure){
-          initImgId(v.RegionID);
+          if (v.SpecialtyID=="0000200008"){
+            v.isGj=true;
+          }
+          initImgId(v.RegionID,$scope.current.procedure);
           vm.info.show=true;
         }else {
           vm.info.show=false;
@@ -95,8 +101,11 @@
       })
       $scope.$watch("current.procedure",function (v,o) {
         if (v){
+          if (v.SpecialtyID=="0000200008"){
+            v.isGj=true;
+          }
           if ($scope.current.region){
-            initImgId($scope.current.region.RegionID);
+            initImgId($scope.current.region.RegionID,v);
             vm.info.show=true;
           }else {
             vm.info.show=false;

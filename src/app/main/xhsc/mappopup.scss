@@ -3812,13 +3812,18 @@ table {
         md-list-item{
           margin: 0px;
           padding: 0px;
-          border-right:1px solid #d8d8d8 ;
           border-bottom:1px solid #d8d8d8 ;
           span{
             text-align: center;
             line-height: 22px;
           }
         }
+      }
+      >div{
+        max-height:480px;
+        border-right: 1px solid #d8d8d8 ;
+        overflow-y: auto;
+        overflow-x: hidden;
       }
     }
     .part{
@@ -3832,7 +3837,119 @@ table {
       }
     }
   }
+
+  .marginlf{
+    margin-left: 10px !important;
+  }
 }
 p{
   margin: 15px 0px;
 }
+
+.sa{
+  th{
+    min-width: 50px;
+    text-align: center;
+  }
+  th:nth-of-type(n+2){
+    min-width: 100px;
+  }
+  tr{
+    > td:first-of-type {
+      //padding-left: 8px;
+      text-align: center;
+    }
+    td {
+      vertical-align: middle !important;
+    }
+  }
+
+  .imgWrap{
+    display: flex;
+    flex-flow: row wrap;
+    img{
+      flex: 1 1 33%;
+      max-width:33%;
+    }
+  }
+}
+
+.imgWrap{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: start;
+
+  img{
+    flex: 1 1 33%;
+    max-width: 33%;
+    height: 250px;
+    padding: 8px;
+  }
+}
+
+.ywWrap{ //原位
+    min-height: 520px;
+    background: #ffffff;
+}
+
+
+
+.zgWrap{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: start;
+  img{
+    flex: 1 1 auto;
+    height: 250px;
+    padding: 8px;
+  }
+}
+
+.tableWrap{
+  td{
+    vertical-align:middle;
+  }
+}
+
+@media screen and (max-width: 600px){
+  .imgWrap{
+    img{
+      flex: 1 1 50%;
+      max-width: 50%;
+      height: 200px;
+    }
+  }
+
+  .ywWrap{
+    min-height: 350px;
+    background: #ffffff;
+  }
+  .zgWrap{
+    img{
+      height: 200px;
+    }
+  }
+
+
+
+}
+
+@media screen and (min-width: 1280px){
+  .imgWrap{
+    img{
+      flex: 1 1 25%;
+      max-width: 25%;
+      height: 280px;
+    }
+  }
+
+  .ywWrap{
+    min-height: 600px;
+    background: #d6d6d6;
+  }
+
+}
+
+
+
+

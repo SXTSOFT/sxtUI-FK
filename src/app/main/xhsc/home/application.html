@@ -4,10 +4,10 @@
 </md-progress-circular>
 
 <div ng-if="vm.loaded"  class="applicationPage">
-  <div ng-repeat="item in vm.yw" ng-if="vm.show(item)">
+  <div ng-repeat="item in vm.yw">
     <p  class="subtitle">{{item.name}}<p/>
     <div class="fl" ng-repeat="k in item.items" ng-if="item.items.length">
-        <a ng-click="vm.click(k)"  layout="column" layout-align="center center" ng-if="k.right">
+        <a ng-click="vm.click(k)"  layout="column" layout-align="center center">
           <img ng-src="{{k.img}}"/>
           <p>{{k.title}}</p>
         </a>

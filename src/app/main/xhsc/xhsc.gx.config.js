@@ -26,7 +26,7 @@
         }
       })
       .state('app.xhsc.gx.gxmain', {
-        noBack:true,
+        // noBack:true,
         sendBt: false,
         showgrzx:false,
         rightArrow: false,

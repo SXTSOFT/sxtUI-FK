@@ -40,6 +40,7 @@
               data: m
             }).then(function () {
               vm.isOver = true;
+              m.stretch=true;
               vm.offlines.push(m);
             });
           });

@@ -44,24 +44,38 @@
         if(!tile || tile!=scope.regionId) {
           $timeout(function () {
             remote.Project.getDrawingRelations(scope.regionId.substr(0,10)).then(function (result) {
-              var imgId = result.data.find(function (item) {
-                return item.AcceptanceItemID == scope.acceptanceItem && item.RegionId == scope.regionId;
-              });
+              var imgId;
+              if (scope.regionId.length>20){
+                imgId= result.data.find(function (item) {
+                  return (item.Type == -3 && item.RegionId == scope.regionId);
+                });
+                if (!imgId){
+                  imgId= result.data.find(function (item) {
+                    return (item.Type == 3 && item.RegionId == scope.regionId);
+                  });
+                }
 
-              if (!imgId&&scope.regionId.length>20){
-                var imgId = result.data.find(function (item) {
-                  return item.RegionId == scope.regionId;
+                if (!imgId){
+                  var imgId = result.data.find(function (item) {
+                    return item.RegionId == scope.regionId;
+                  });
+                }
+
+                if (!imgId) {
+                  imgId = result.data.find(function (item) {
+                    return item.AcceptanceItemID == scope.acceptanceItem&&scope.regionId.indexOf(item.RegionId)>-1;
+                  });
+                }
+              }else {
+                imgId = result.data.find(function (item) {
+                  return item.RegionId == scope.regionId&&item.AcceptanceItemID == scope.acceptanceItem;
                 });
               }
+
               if (!imgId){
                 imgId={
                   DrawingID:scope.imageUrl
                 }
-              }
-              if (!imgId) {
-                imgId = result.data.find(function (item) {
-                  return item.AcceptanceItemID == scope.acceptanceItem&&scope.regionId.indexOf(item.RegionId)>-1;
-                });
               }
 
               if (imgId) {
@@ -78,10 +92,14 @@
                       //line.options.color = 'black';
 
                       line.attrs['stroke-width'] = line.attrs['stroke-width']*6;
+                    },
+                    filterText: function (text) {
+                      if (text.options){
+                        text.options.color="black";
+                      }
+
+                     return true;
                     }
-                    //filterText: function (text) {
-                    //  return false;
-                    //}
                   });
                   map.center();
                   scope.tooltip = '';

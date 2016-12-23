@@ -174,7 +174,7 @@
                   return xhscService.getRegionTreeOffline("", 31, 1);
                 }])
                 .concat(function () {
-                  return remote.offline.create({Id: 'cycleYs' + item.InspectionExtendID});
+                  return remote.offline.create({Id: 'cycleYs' + item.InspectionID});
                 })
 
               api.task(tasks, {
@@ -264,7 +264,7 @@
                 });
               api.task(tasks, {
                 event: 'downloadzg',
-                target: item.RectificationID
+                target: item.InspectionExtendID
               })(null, function () {
                 item.percent = item.current = item.total = null;
                 item.isOffline = true;
@@ -289,7 +289,7 @@
     }
     api.event('downloadzg', function (s, e) {
       var current = vm.zglist && vm.zglist.find(function (item) {
-          return item.RectificationID == e.target;
+          return item.InspectionExtendID == e.target;
         });
       if (current) {
         switch (e.event) {
@@ -389,7 +389,7 @@
                         "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
                         "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
                       },"cycle").then(function () {
-                        clear(ckpoints,problemRecords,InspectionProblemRecordFiles);
+                        clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points);
                       });
                     });
                   }
@@ -427,7 +427,9 @@
     }
 
     function loadInspection() {
-      return remote.safe.getBatchWrap("cycle").then(function (r) {
+      return remote.safe.getBatchWrap.cfgSet({
+        mode:2
+      })("cycle").then(function (r) {
         vm.Inspections = [];
         if (angular.isArray(r.data)) {
           var ys = [];
@@ -438,7 +440,7 @@
             if (angular.isArray(r.data)) {
               ys.forEach(function (k) {
                 if (r.data.find(function (m) {
-                    return m.Id == "cycleYs" + k.InspectionExtendID;
+                    return m.Id == "cycleYs" + k.InspectionID;
                   })) {
                   k.isOffline = true;
                 }
@@ -472,7 +474,9 @@
         }else {
           params="zb";
         }
-        return remote.safe.getRectificationsWrap("cycle",params).then(function (r) {
+        return remote.safe.getRectificationsWrap.cfgSet({
+          mode:2
+        })("cycle",params).then(function (r) {
           vm.zglist = [];
           if (angular.isArray(r.data)) {
             var zg = [];

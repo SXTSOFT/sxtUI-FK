@@ -30,12 +30,22 @@
         bacth.Rectifications.forEach(function (k) {
           if (k.Children){
             k.Children.forEach(function (m) {
-              if (!vm.pareaList.some(function (z) {
-                  return z.AreaID==m.AreaID;
+              if (k.AcceptanceItemName.indexOf("钢筋")>-1&&!vm.pareaList.some(function (z) {
+                  return z.AreaID==m.AreaID&&z.AcceptanceItemName.indexOf("钢筋")<-1;
                 })){
                 m.AcceptanceItemID=k.AcceptanceItemID;
                 m.AcceptanceItemName=k.AcceptanceItemName;
+                m.RegionName=m.RegionName+'('+ m.AcceptanceItemName+')';
+                m.isGj=true;
                 vm.pareaList.push(m);
+              }else {
+                if (!vm.pareaList.some(function (z) {
+                    return z.AreaID==m.AreaID;
+                  })){
+                  m.AcceptanceItemID=k.AcceptanceItemID;
+                  m.AcceptanceItemName=k.AcceptanceItemName;
+                  vm.pareaList.push(m);
+                }
               }
             })
           }

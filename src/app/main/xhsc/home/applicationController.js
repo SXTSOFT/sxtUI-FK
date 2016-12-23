@@ -42,28 +42,32 @@
               img: "app/main/xhsc/images/application/gxys.svg",
               state: "app.xhsc.gx.gxmain",
               stateParams: null
-            },{
+            },
+            {
               right: vm.duties.indexOf("2")>-1,
               title: "日常巡检",
               type:"zl",
               img: "app/main/xhsc/images/application/cycke.svg",
               state: "app.xhsc.xj.main",
               stateParams: null
-            }, {
+            },
+            {
               right: vm.OUType == 1 || vm.OUType == "1",
               title: "现场评估",
               type:"zl",
               img: "app/main/xhsc/images/application/xcpg.svg",
               state: "app.xhsc.download",
               stateParams: null
-            }, {
+            },
+            {
               right:vm.duties.indexOf("2")>-1,
               title: "移动验房",
               type:"zl",
               img: "app/main/xhsc/images/application/yf.svg",
               state: "app.xhsc.yf.Main",
               stateParams: null
-            }, {
+            },
+            {
               right:vm.duties.indexOf("4")>-1,
               title: "材料验收",
               type:"zl",
@@ -72,7 +76,8 @@
               stateParams: null
             }
           ]
-        },{
+        },
+        {
           type:"aq",
           name:"安全",
           items:[

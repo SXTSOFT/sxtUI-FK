@@ -374,7 +374,9 @@
 
     function load() {
       $q.all([
-        remote.safe.getSafeInspections().then(function (r) {
+        remote.safe.getSafeInspections.cfgSet({
+          mode:2
+        })().then(function (r) {
           $q(function (resolve, reject) {
             vm.Inspections = [];
             if (angular.isArray(r.data)) {
@@ -402,7 +404,9 @@
             }
           });
         }),
-        remote.safe.getRectifications().then(function (r) {
+        remote.safe.getAcceptancesRec.cfgSet({
+          mode:2
+        })().then(function (r) {
           return $q(function (resolve, reject) {
             vm.zglist = [];
             if (angular.isArray(r.data)) {

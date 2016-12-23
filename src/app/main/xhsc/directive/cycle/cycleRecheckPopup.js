@@ -137,7 +137,7 @@
               })
 
             })
-            scope.data.value.Status = 8;
+            scope.data.value.Status = 16;
           }
         });
       }
@@ -145,20 +145,24 @@
         scope.slideShow = false;
         scope.data.value.Status = scope.value;
       }
-      scope.submit = function(){
-        function convert(status) {
-          switch (status){
-            case 8:
-            case 4:
-              return 1;
-            case 16:
-              return 8;
-          }
-          return status;
+
+
+      scope.convert=function (status) {
+        switch (status){
+          case 8:
+          case 4:
+            return 1;
+          case 16:
+            return 8;
         }
+        return status;
+      }
+
+      scope.submit = function(){
+        var  convert=scope.convert;
+
         if(scope.role=='zb'){
-          scope.data.value.Status = scope.data.value.Status==16?16:8;
-          if(scope.data.value.Status==8 &&(!scope.Record.zb.images || scope.Record.zb.images.length==0)){
+          if(convert(scope.data.value.Status)==8 &&(!scope.images.zb || scope.images.zb.length==0)){
             utils.alert('请上传整改后照片');
             return;
           }

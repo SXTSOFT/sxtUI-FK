@@ -1,0 +1,26 @@
+<table class="table table-hover sa"  style="margin-top: 20px;">
+  <thead>
+  <tr>
+    <th>序号</th>
+    <th>项目</th>
+    <th>描述</th>
+    <th>时间</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr data-ng-repeat="item in vm.source">
+    <td>1</td>
+    <td>星河雅宝</td>
+    <td>2016星河雅宝项目巡检</td>
+    <td>
+      2016-11-02
+    </td>
+    <td>
+      <md-button  class="md-primary"  ng-click="vm.go(item)" aria-label="Settings">
+        <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>查看
+      </md-button>
+    </td>
+  </tr>
+  </tbody>
+</table>

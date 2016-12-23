@@ -346,7 +346,7 @@
           rs.forEach(function (result) {
             if ( result.rows&& result.rows.length){
               arr.push({
-                key:keys[i].name,
+                key:keys[i].name?keys[i].name:keys[i].cfg._id,
                 vals:result.rows,
                 db:keys[i]
               })
@@ -813,7 +813,9 @@
               else {
                   reject(result);
                 }
-              })
+              }).catch(function () {
+              reject()
+            })
           }
           else {
             resolve();

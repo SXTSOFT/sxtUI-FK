@@ -63,22 +63,50 @@
             map._map.removeControl(toolbar);
           function findImg(source) {
             var result = source;
-            var img = result.data.find(function (item) {
-              return item.AcceptanceItemID == scope.acceptanceItem && item.RegionId == scope.regionId;
-            });
-            if (!img) {
-              img = result.data.find(function (item) {
-                return item.AcceptanceItemID == scope.acceptanceItem && scope.regionId.indexOf(item.RegionId) > -1;
+
+            var imgId;
+            if (scope.regionId.length>20){
+              imgId= result.data.find(function (item) {
+                return (item.Type == -3 && item.RegionId == scope.regionId);
+              });
+              if (!imgId){
+                imgId= result.data.find(function (item) {
+                  return (item.Type == 3 && item.RegionId == scope.regionId);
+                });
+              }
+
+              if (!imgId){
+                var imgId = result.data.find(function (item) {
+                  return item.RegionId == scope.regionId;
+                });
+              }
+
+              if (!imgId) {
+                imgId = result.data.find(function (item) {
+                  return item.AcceptanceItemID == scope.acceptanceItem&&scope.regionId.indexOf(item.RegionId)>-1;
+                });
+              }
+            }else {
+              imgId = result.data.find(function (item) {
+                return item.RegionId == scope.regionId&&item.AcceptanceItemID == scope.acceptanceItem;
               });
             }
-            if (!img) {
-              var img = result.data.find(function (item) {
-                return item.RegionId == scope.regionId;
-              });
-            }
-            return img;
+            // var img = result.data.find(function (item) {
+            //   return item.AcceptanceItemID == scope.acceptanceItem && item.RegionId == scope.regionId;
+            // });
+            // if (!img) {
+            //   img = result.data.find(function (item) {
+            //     return item.AcceptanceItemID == scope.acceptanceItem && scope.regionId.indexOf(item.RegionId) > -1;
+            //   });
+            // }
+            // if (!img) {
+            //   var img = result.data.find(function (item) {
+            //     return item.RegionId == scope.regionId;
+            //   });
+            // }
+            return imgId;
           }
-          var img = findImg(scope.picRelate);
+          var img_ck = findImg(scope.picRelate);
           (function (img) {
             if (!tile || tile != scope.regionId) {
               $timeout(function () {
@@ -96,6 +124,13 @@
                         //line.options.color = 'black';
 
                         line.attrs['stroke-width'] = line.attrs['stroke-width'] * 6;
+                      },
+                      filterText: function (text) {
+                        if (text.options){
+                          text.options.color="black";
+                        }
+
+                        return true;
                       }
                     });
                     map.center();
@@ -103,18 +138,16 @@
                   })
                 }
                 else {
-                  if (!result.data.DrawingContent) {
                     utils.alert('未找到图纸,请与管理员联系!(1)');
                     scope.ct && (scope.ct.loading = false);
-                  }
                 }
               },300);
             }
             tile = scope.regionId;
-          })(img);
-          scope.img=img;
-          if(img){
-            resolve(img);
+          })(img_ck);
+          scope.img=img_ck;
+          if(img_ck){
+            resolve(img_ck);
           }else{
             reject();
           }
