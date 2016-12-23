@@ -3856,7 +3856,8 @@ p{
   }
   tr{
     > td:first-of-type {
-      padding-left: 8px;
+      //padding-left: 8px;
+      text-align: center;
     }
     td {
       vertical-align: middle !important;
@@ -3888,7 +3889,7 @@ p{
 
 .ywWrap{ //原位
     min-height: 520px;
-    //background: #d6d6d6;
+    background: #ffffff;
 }
 
 
@@ -3904,7 +3905,11 @@ p{
   }
 }
 
-
+.tableWrap{
+  td{
+    vertical-align:middle;
+  }
+}
 
 @media screen and (max-width: 600px){
   .imgWrap{
@@ -3917,7 +3922,7 @@ p{
 
   .ywWrap{
     min-height: 350px;
-    background: #d6d6d6;
+    background: #ffffff;
   }
   .zgWrap{
     img{

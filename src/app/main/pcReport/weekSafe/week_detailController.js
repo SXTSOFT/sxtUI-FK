@@ -15,7 +15,7 @@
     .controller('week_detailController',week_detailController);
 
   /**@ngInject*/
-  function week_detailController(){
+  function week_detailController($stateParams,remote){
     var inspectionId=$stateParams.inspectionId;
     var vm=this;
     remote.report.getdetail('WeekInspects',inspectionId).then(function (r) {

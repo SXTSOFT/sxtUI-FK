@@ -7,7 +7,7 @@
     .factory('vankeAuth', vankeAuth);
 
   /** @ngInject */
-  function vankeAuth($http,$q,$rootScope,api,utils,JPushPlugin)
+  function vankeAuth($http,$q,$rootScope,api,utils,JPushPlugin,$timeout)
   {
     var service = {
       token   : token,
@@ -99,12 +99,9 @@
               $rootScope.$emit('user:needlogin');
             }
             else{
-
-
-              // console.log('ss',d.data.UserId);
-              //
-              JPushPlugin.setAlias(d.data.UserId);
-
+              $timeout(function () {
+                JPushPlugin.setAlias(d.data.UserId);
+              },5000);
             }
             resolve(d && d.data);
             api.resetNetwork();

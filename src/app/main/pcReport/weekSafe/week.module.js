@@ -29,10 +29,10 @@
           }
         }
       })
-      .state('app.pcReport_week_detail/{regionId}/{inspectionId}',{
+      .state('app.pcReport_week_detail',{
         noBack:true,
         sendBt:false,
-        url:'/pcReport_week_detail',
+        url:'/pcReport_week_detail/{regionId}/{inspectionId}',
         views:{
           'content@app':{
             templateUrl: 'app/main/pcReport/weekSafe/week_detail.html',

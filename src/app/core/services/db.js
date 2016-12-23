@@ -669,7 +669,5 @@
         }
       }
     }
-
-    return getApi;
   }
 })(angular);

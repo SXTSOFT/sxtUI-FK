@@ -18,7 +18,7 @@
     .controller('week_defaultController',week_defaultController);
 
   /**@ngInject*/
-  function week_defaultController($state){
+  function week_defaultController($state,remote){
     var vm=this;
 
     remote.report.getWrapList('WeekInspects').then(function (r) {
