@@ -39,6 +39,11 @@
         $rootScope.global = {
             search: ''
         };
+
+        vm.back=function () {
+          $rootScope.$emit("back")
+        }
+
       $rootScope.toLeft = function(){
           $rootScope.$emit('leftEvent');
         }

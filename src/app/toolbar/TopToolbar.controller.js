@@ -23,6 +23,11 @@
       }
 
       $scope.goBack = function(){
+        if ($rootScope.$$listeners&&$rootScope.$$listeners.goBack&&$rootScope.$$listeners.goBack.length>0){
+          $rootScope.$emit("goBack");
+          return;
+        }
+
         history.go(-1);//返回
       }
 /*      remote.Project.Area.query().then(function(result){

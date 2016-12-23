@@ -4,32 +4,40 @@
     <td>
       项目名称：
     </td>
-    <td colspan="2">
+    <td colspan="5">
       {{vm.source.ProjectName}}
     </td>
 
-    <td>
-      验收部位
-    </td>
+    <!--<td>-->
+      <!--验收部位-->
+    <!--</td>-->
 
-    <td colspan="2">
-    </td>
+    <!--<td colspan="2">-->
+    <!--</td>-->
   </tr>
-  <!--<tr>-->
-  <!--<td>单位：</td>-->
-  <!--<td>{{vm}}</td>-->
-  <!--<td>验收人</td>-->
-  <!--<td>{{}}</td>-->
-  <!--<td>验收时间</td>-->
-  <!--<td>{{}}</td>-->
-  <!--</tr>-->
-  <tr>
-    <td>验收单位：</td>
-    <td>惠州长江</td>
+  <tr class="min80">
+    <td style="min-width: 98px">验收单位：</td>
+    <td>{{vm.source.first.CompanyName}}</td>
     <td>验收人</td>
-    <td>江建卫</td>
+    <td>{{vm.source.first.NickName}}</td>
     <td>验收时间</td>
-    <td>2016-7-10</td>
+    <td>{{vm.source.first.Time}}</td>
+  </tr>
+  <tr class="min80">
+    <td style="min-width: 98px">施工单位：</td>
+    <td>{{vm.source.second.CompanyName}}</td>
+    <td>验收人</td>
+    <td>{{vm.source.second.NickName}}</td>
+    <td>验收时间</td>
+    <td>{{vm.source.second.Time}}</td>
+  </tr>
+  <tr class="min80">
+    <td style="min-width: 98px">建设单位：</td>
+    <td>{{vm.source.third.CompanyName}}</td>
+    <td>验收人</td>
+    <td>{{vm.source.third.NickName}}</td>
+    <td>验收时间</td>
+    <td>{{vm.source.third.Time}}</td>
   </tr>
   <tr>
     <td>验收状态</td>
@@ -55,7 +63,10 @@
         </tr>
         <tr>
           <td colspan="6" style="padding: 0px">
-            <div class="ywWrap" sxt-report-view="" ponits="item.PointList" region-id="item.AreaID" type="'house'">
+            <div class="ywWrap" sxt-report-view="" loaded="vm.loaded" ponits="item.PointList" region-id="item.AreaID" type="'week'" layout="column">
+              <div flex layout="row" layout-align="center center" ng-if="!vm.loaded" >
+                <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular>
+              </div>
             </div>
           </td>
         </tr>

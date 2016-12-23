@@ -19,7 +19,7 @@
     $stateProvider
       .state('app.pcReport_week_default',{
         title:"周安全检查",
-        url:'/pcReport_week_default',
+        url:'/pcReport_week_default/{display}',
         noBack:true,
         sendBt:false,
         views:{
@@ -39,6 +39,13 @@
             controller : 'week_detailController as vm',
           }
         }
+      })
+      .state('app.pcReport_week_default.filter',{
+        noBack:true,
+        // sendBt:false,
+        url:'/pcReport_week_default/filter/{from}',
+        templateUrl: 'app/main/pcReport/weekSafe/week_filter.html',
+        controller: 'week_filterController as vm'
       })
   }
 })();

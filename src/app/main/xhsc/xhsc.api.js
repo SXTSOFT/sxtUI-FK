@@ -2244,8 +2244,8 @@
         })
       },
       report:{
-        getWrapList:function (identity) {
-          return $http.get($http.url('/api/'+identity+'/SecurityReport/GetReportInfoExtendList'))
+        getWrapList:function (identity,params) {
+          return $http.post($http.url('/api/'+identity+'/SecurityReport/GetReportInfoExtendList'),params)
         },
         getdetail:function (identity,inspectionExtendId	) {
           return $http.get($http.url('/api/'+identity+'/SecurityReport/GetReportInfoExtendDetailed/'+inspectionExtendId))

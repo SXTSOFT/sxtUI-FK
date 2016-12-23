@@ -3847,6 +3847,7 @@ p{
 }
 
 .sa{
+  margin-bottom: 0px !important;
   th{
     min-width: 50px;
     text-align: center;
@@ -3906,9 +3907,34 @@ p{
 }
 
 .tableWrap{
+  th{
+    text-align: center;
+  };
   td{
-    vertical-align:middle;
+    vertical-align:middle !important;
   }
+  .min80{
+    td{
+      min-width: 80px;
+    }
+  }
+
+
+}
+
+.picker{
+  .md-datepicker-input-container{
+    flex:1 1 auto;
+    margin-left: 0px;
+  }
+  .md-datepicker-input{
+    flex:1 1 auto;
+    max-width: 100%;
+  }
+  button{
+
+  }
+
 }
 
 @media screen and (max-width: 600px){

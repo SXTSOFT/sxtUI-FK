@@ -21,7 +21,8 @@
         type: "=",
         disableInspect: '=',
         disableDrag: '=',
-        ct: '='
+        ct: '=',
+        loaded:"="
       },
       link: link
     };
@@ -64,7 +65,7 @@
                   // p.geometry.properties.v = c;
                   if (p.geometry.geometry.type == 'Stamp')
                     p.geometry.geometry.type = 'Point';
-                  // p.geometry.properties.Status = c.Status;
+                  p.geometry.properties.Status = p.Status;
                   fs.push(p.geometry);
                 });
               }
@@ -134,7 +135,7 @@
                   callback(imgId);
                 });
 
-                begin;
+                break;
               case "cycle":
                 remote.safe.getDrawingRelate("house", scope.regionId).then(function (r) {
                   imgId = r.data.Relations.find(function (item) {
@@ -150,16 +151,16 @@
               if (imgId) {
                 remote.Project.getDrawing(imgId.DrawingID).then(function (result2) {
                   if (!result2.data.DrawingContent) {
-                    scope.ct && (scope.ct.loading = false);
                     return;
                   }
+                  scope.loaded = true;
                   map.loadSvgXml(result2.data.DrawingContent);
                   map.map.addControl(fg);
                 }).catch(function () {
                 })
               }
               else {
-                scope.ct && (scope.ct.loading = false);
+                scope.loaded = true;
                 return;
               }
             }
