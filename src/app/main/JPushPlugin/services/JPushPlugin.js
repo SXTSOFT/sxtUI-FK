@@ -20,13 +20,13 @@
         Id: e.extras.Id,
         Sender: e.Sender
       }
-      $rootScope.$emit('receiveMessage',msg);
-      $rootScope.showMessage = true;
-      xhUtils.showMessage(msg.Content,function(isCancel){
-        if(!isCancel){
-          $state.go('app.xhsc.mcenter');
-        }
-      })
+      // $rootScope.$emit('receiveMessage',msg);
+      // $rootScope.showMessage = true;
+      // xhUtils.showMessage(msg.Content,function(isCancel){
+      //   if(!isCancel){
+      //     $state.go('app.xhsc.mcenter');
+      //   }
+      // })
 
     },false)
 
