@@ -114,7 +114,13 @@
                 resolve(rec);
               })
             }else {
-              resolve(r.data[0]);
+              var rec=r.data[0];
+              rec.Describe=rec.Remark=scope.Record.zb.Remark;
+              rec.Remark=rec.Remark=scope.Record.zb.Remark;
+              rec.DescRole="zb";
+              remote.safe.weekproblemRecordCreate(rec).then(function () {
+                resolve(rec);
+              })
             }
 
           });
@@ -200,6 +206,11 @@
                 rec.ProblemRecordID = sxt.uuid();
                 rec._id=rec.ProblemRecordID;
                 remote.yf.yfProblemRecordCreate(rec)
+              }else {
+                var rec=r.data[0];
+                // rec.Describe=rec.Remark=scope.Record.zb.Remark;
+                rec.DescRole="jl";
+                remote.safe.weekproblemRecordCreate(rec);
               }
             });
           });

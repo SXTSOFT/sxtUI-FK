@@ -113,6 +113,7 @@
         getRegionWithRight_wrap: $http.wrap({
           _id: "msAreaRegions",
           offline: true,
+          mode:2,
           idField: "regions",
           dataType: 3,
           fn: function (regionID, regionType) {
@@ -941,6 +942,7 @@
         },
         query: $http.db({
           _id: 'projects',
+          mode:2,
           idField: 'AssessmentID',
           dataType: 1
         }).bind(function () {
