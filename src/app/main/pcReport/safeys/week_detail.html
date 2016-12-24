@@ -1,0 +1,106 @@
+<table class="table table-bordered tableWrap">
+  <th colspan="6">{{vm.source.ExtendDescribe}}</th>
+  <tr>
+    <td>
+      项目名称：
+    </td>
+    <td colspan="5">
+      {{vm.source.ProjectName}}
+    </td>
+
+    <!--<td>-->
+      <!--验收部位-->
+    <!--</td>-->
+
+    <!--<td colspan="2">-->
+    <!--</td>-->
+  </tr>
+  <tr class="min80">
+    <td style="min-width: 98px">验收单位：</td>
+    <td>{{vm.source.first.CompanyName}}</td>
+    <td>验收人</td>
+    <td>{{vm.source.first.NickName}}</td>
+    <td>验收时间</td>
+    <td>{{vm.source.first.Time}}</td>
+  </tr>
+  <tr class="min80">
+    <td style="min-width: 98px">施工单位：</td>
+    <td>{{vm.source.second.CompanyName}}</td>
+    <td>验收人</td>
+    <td>{{vm.source.second.NickName}}</td>
+    <td>验收时间</td>
+    <td>{{vm.source.second.Time}}</td>
+  </tr>
+  <tr class="min80">
+    <td style="min-width: 98px">建设单位：</td>
+    <td>{{vm.source.third.CompanyName}}</td>
+    <td>验收人</td>
+    <td>{{vm.source.third.NickName}}</td>
+    <td>验收时间</td>
+    <td>{{vm.source.third.Time}}</td>
+  </tr>
+  <tr>
+    <td>验收状态</td>
+    <td colspan="5">
+      {{vm.source.StatusName}}
+    </td>
+  </tr>
+  <tr ng-repeat="item in vm.source.AreaList">
+    <td colspan="6" style="padding: 8px 0px;border: 0px solid">
+      <table class="table  table-bordered">
+        <tr>
+          <td colspan="6">{{item.AreaFullName}}</td>
+        </tr>
+        <tr ng-if="item.QualifiedPicList.length">
+          <td colspan="6">
+            <div class="imgWrap">
+              <img ng-repeat="k in  item.QualifiedPicList"  ng-src="{{k.Url}}">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="6">原位标注</td>
+        </tr>
+        <tr>
+          <td colspan="6" style="padding: 0px">
+            <div class="ywWrap" sxt-report-view="" loaded="vm.loaded" ponits="item.PointList" region-id="item.AreaID" type="'week'" layout="column">
+              <div flex layout="row" layout-align="center center" ng-if="!vm.loaded" >
+                <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr ng-repeat="k in  item.RectificationPic">
+          <td colspan="6">
+            <table class="table table-hover table-bordered">
+              <tr>
+                <td colspan="6">{{k.ProblemSortName+'.'+k.ProblemDescription}}</td>
+              </tr>
+              <tr>
+                <td>
+                  验收照片
+                </td>
+                <td>
+                  整改照片
+                </td>
+              </tr>
+              <tr>
+                <td style="width:50%">
+                  <div class="zgWrap">
+                    <img ng-repeat="m in k.Front" ng-src="{{m.Url}}">
+                  </div>
+                </td>
+                <td style="width:50%">
+                  <div class="zgWrap">
+                    <img ng-repeat="m in k.Back" ng-src="{{ m.Url}}">
+
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
