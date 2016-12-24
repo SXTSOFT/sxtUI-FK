@@ -418,8 +418,8 @@
                 });
               if(r.Type)
                 r.Type = '其它';
-              var tags = r.Type.split('>');
-              tags.reduce(function (prev,current) {
+              var tags = r.Type&&r.Type.split('>');
+              tags&&tags.reduce(function (prev,current) {
                 var fd = prev.find(function (t) {
                   return t.name == current;
                 });
@@ -602,24 +602,33 @@
           vm.current = null;
           vm.gxName = '';
           api.plan.TaskFlow.getSubTasks(flow.TaskFlowId).then(function(r){
-            vm.data._taskFlowId =r.data.Items[0].TaskLibraryId;
+            vm.sendData = r.data.Items[0];
+            vm.sendData._taskFlowId =r.data.Items[0].TaskLibraryId;
           })
           if(items){
             vm.loadMeasure = true;
             vm.proceduresData = items;
-              vm.proceduresData.forEach(function(_r){
-                _r.SpecialtyChildren.forEach(function(_rr){
-                  var g=_rr.WPAcceptanceList && _rr.WPAcceptanceList.find(function(t){
-                    return t.AcceptanceItemID ==  flow.MeasureId;
-                  })
-                  if(g){
-                    vm.current = g;
-                    vm.gxName = flow.MeasureInfo;
-                  }
-                })
-              })
+            var g = vm.proceduresData.find(function(_p){
+              return _p.AcceptanceItemID ==  flow.MeasureId;
+            })
+              if(g){
+                vm.current = g;
+                vm.gxName = flow.MeasureInfo;
+              }
+              //vm.proceduresData.forEach(function(_r){
+
+                //_r.SpecialtyChildren.forEach(function(_rr){
+                //  var g=_rr.WPAcceptanceList && _rr.WPAcceptanceList.find(function(t){
+                //    return t.AcceptanceItemID ==  flow.MeasureId;
+                //  })
+                //  if(g){
+                //    vm.current = g;
+                //    vm.gxName = flow.MeasureInfo;
+                //  }
+                //})
+              //})
             if(!vm.current){
-                vm.data.CloseRelatedObjectId = null;
+                //vm.sendData.CloseRelatedObjectId = null;
                 flow.MeasureInfo = null;
                 flow.MeasureId = null;
             }
@@ -627,18 +636,18 @@
           vm.clrChoose = function(){
             vm.current = null;
             vm.gxName = '';
-            vm.data.CloseRelatedObjectId = null;
+            vm.sendData.CloseRelatedObjectId = null;
           }
           vm.stop = function(ev){
             ev.stopPropagation();
           }
           vm.choose = function(item){
             vm.current = item;
-            vm.data.CloseRelatedObjectId = item.AcceptanceItemID;
+            vm.sendData.CloseRelatedObjectId = item.AcceptanceItemID;
             vm.gxName = item.AcceptanceItemName;
           }
           vm.select = function(){
-            vm.data.CloseRelatedObjectType = 'Inspection';
+            vm.sendData.CloseRelatedObjectType = 'Inspection';
             if(vm.current){
               flow.MeasureInfo = vm.current.AcceptanceItemName;
               flow.MeasureId = vm.current.AcceptanceItemID;
@@ -646,7 +655,7 @@
               flow.MeasureInfo = null;
               flow.MeasureId = null;
             }
-            $mdDialog.hide(vm.data);
+            $mdDialog.hide(vm.sendData);
           }
         }],
         controllerAs:'vm',

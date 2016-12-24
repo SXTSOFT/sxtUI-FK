@@ -18,7 +18,7 @@
       'gantt.groups',
       'gantt.dependencies',
       'gantt.overlap',
-      'gantt.resizeSensor'])
+      'gantt.resizeSensor','angularFileUpload'])
     .config(config);
 
   /** @ngInject */

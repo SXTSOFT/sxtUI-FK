@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function plangantt($mdDialog, $document,$rootScope, $animate, $scope, $timeout,utils, ganttUtils,$mdPanel, GanttObjectModel, ganttDebounce, moment, $window, $mdSidenav,api,$stateParams,$q){
+  function plangantt($mdDialog, $document,$rootScope, $animate, $scope, $timeout,utils, ganttUtils,$mdPanel, GanttObjectModel, ganttDebounce, moment, $window, $mdSidenav,api,$stateParams,$q,xhUtils){
     var vm = this;
     var objectModel;
     vm.isStarted = true;
@@ -181,11 +181,21 @@
           vm.load().then(function(){
             $timeout(function(){
               $mdDialog.hide();
+              //vm.ganttHeight =$('.gantt').height()
+              //console.log($('.gantt').height())
               vm.api.tree.collapseAll()
             })
           });
+          vm.winWidth = $($window).width();
+
+          //console.log($($window).width())
           objectModel = new GanttObjectModel(vm.api);
-          vm.api.side.setWidth(640);//450
+          if(vm.winWidth < 610){
+            vm.api.side.setWidth(150);
+          }else{
+            vm.api.side.setWidth(640);//450
+          }
+
 
           vm.api.directives.on.new($scope, function (directiveName, directiveScope, element)
           {
@@ -610,6 +620,7 @@
                 Color:setColor(item.State),
                 _State:setSatus(item.State),
                 switch:item.State!=4?false:true,
+                UploadPhotoFileId:item.UploadPhotoFileId,
                 Flags:item.Flags,
                 TaskFlowId:item.Id,
                 ParentId:item.Dependencies[0]&&item.Dependencies[0].DependencyTaskID||null,
@@ -644,6 +655,7 @@
                       Color:setColor(t.State),
                       _State:setSatus(t.State),
                       switch:t.State!=4?false:true,
+                      UploadPhotoFileId:t.UploadPhotoFileId,
                       Flags:t.Flags,
                       TaskFlowId:t.Id,
                       ParentId:t.Dependencies[0]&&t.Dependencies[0].DependencyTaskID||null,
@@ -663,10 +675,6 @@
           vm.onLoadTemplate();
         })
       }
-      //var taskId = dialogData.formView.id;
-      //vm.hasFlow = !!originData.Items.find(function (it) {
-      //  return it.ExtendedParameters == taskId;
-      //});
       /*开启穿插*/
       vm.startTask = function(task){
         var time = new Date();
@@ -694,13 +702,44 @@
         });
       }
       //详情
-      //vm.showTaskD = function(task){
-      //  api.plan.fileService.get(task.TaskFlowId).then(function(r){
-      //   task.images=[{
-      //     ImageByte:'app/main/xhsc/images/bg1.jpg'
-      //   }]
-      //  })
-      //}
+      vm.showTaskD = function(task){
+        api.plan.fileService.get(task.UploadPhotoFileId).then(function(r){
+          if(r.data.Base64){
+            task.images=[{
+              url:r.data.Base64
+            }]
+            xhUtils.playPhoto(task.images)
+          }else{
+            //utils.alert('无图片')
+            //var position = $mdPanel.newPanelPosition()
+            //  .relativeTo('.sub-toolbar')
+            //  .addPanelPosition($mdPanel.xPosition.CENTER, $mdPanel.yPosition.BELOW)
+            //
+            //$mdPanel.open({
+            //  controller: function (mdPanelRef,$scope,utils) {
+            //    var vm = this;
+            //    //vm.closePanel1 = function() {
+            //    //  return mdPanelRef.close().then(function () {
+            //    //    mdPanelRef.destroy();
+            //    //    parent.closePanel1 = null;
+            //    //  });
+            //    //}
+            //  },
+            //  controllerAs: 'vm',
+            //  template: '<div class="mt-20" style="background:rgb(245,245,245);border-radius: 4px;padding:16px;box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);"><div>无图片</div>\
+            //  </div>',
+            //  hasBackdrop: true,
+            //  position: position,
+            //  trapFocus: true,
+            //  zIndex: 5000,
+            //  clickOutsideToClose: true,
+            //  escapeToClose: true,
+            //  focusOnOpen: true,
+            //  attachTo:angular.element('body')
+            //});
+          }
+        })
+      }
       /*关闭任务*/
       vm.closeTask = function(task){
         console.log($scope)
@@ -718,7 +757,9 @@
                 "TaskId": task.TaskFlowId,
                 "ActualEndTime": new Date(),
                 "EndDescription": vm.EndDescription,
-                "Force": true
+                "Force": true,
+                 "PhotoFileName":sxt.uuid()+'.jpg',
+                  "PhotoFile":vm.img//$scope.img[0].ImageByte
               };
               vm.closePanel1();
               api.plan.BuildPlan.endTask($stateParams.id,params).then(function (r) {
@@ -750,7 +791,7 @@
                   loadSubTask();
                 }
               },function(err){
-                utils.alert(err.data||'错误');
+                utils.alert(err.data||'上传图片失败');
               });
             }
             vm.closePanel1 = function() {
@@ -761,9 +802,8 @@
             }
           },
           controllerAs: 'vm',
-          template: '<div class="mt-20" style="background:rgb(245,245,245);border-radius: 4px;padding:16px;box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);"><md-input-container class="md-block">\
-          <label>关闭原因</label>\
-          <input type="text" ng-model="vm.EndDescription">\
+          template: '<div class="mt-20" style="background:rgb(245,245,245);border-radius: 4px;padding:16px;box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);"><div style="margin-bottom: 10px;">关闭原因</div><sxt-images2 ng-model="task.TaskFlowId" img="vm.img"></sxt-images2><md-input-container class="md-block">\
+          <input type="text" ng-model="vm.EndDescription" placeholder="关闭原因">\
           </md-input-container>\
           <div layout="row" layout-align="end center">\
           <md-button class="md-raised" ng-click="vm.endTask()">确定</md-button></div></div>',

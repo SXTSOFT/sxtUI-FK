@@ -13,7 +13,8 @@
         begin:'=',
         libraryId:'=',
         flow:'=',
-        branch:'='
+        branch:'=',
+        vars:'='
       },
       templateUrl:'app/main/plan/directives/plan-creating.html',
       link:link
@@ -158,9 +159,13 @@
               else
                 return g;
             }
+          },
+          allVars:function () {
+            return vars;
           }
         }
       })();
+      scope.vars = gs;
       function load() {
         $q.all([
           api.plan.TaskLibrary.getTaskFlow(scope.libraryId),
@@ -305,7 +310,7 @@
         //flow.currentTask.eDuration = flow.currentTask.Duration;
         setTask(flow);
         scope.buildDate(flow);
-      }
+      };
       scope.buildBranch = function () {
         scope.banchs.forEach(function (flow) {
           var d = gs.setVars(flow.Expression);
@@ -313,9 +318,13 @@
             flow.start = d.s;
             flow.days = d.days;
             flow.end = d.e;
+            flow.selected = !!(d.s && d.e);
+          }
+          else{
+            flow.selected = false;
           }
         });
-      }
+      };
       scope.buildDate = function (item) {
         if (!scope.flows) return;
         //if(item&&item.currentTask&&item.currentTask.eDuration < item.currentTask.Duration*0.8){

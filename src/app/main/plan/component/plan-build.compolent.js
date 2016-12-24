@@ -22,80 +22,80 @@
     //$scope.$watch('vm.formWizard',function(){
     //  console.log(vm.formWizard)
     //},true)
-    var gs = (function () {
-      var vars = [],r = /[a-z]/gi,
-        compare = function (s1,s2) {
-          return s1.key.localeCompare(s2.key);
-        };
-      return {
-        getVars:function (g) {
-          var vs = g.toUpperCase().match(r),
-            rs = [];
-          if(!vs || vs.length===0) return rs;
-          vs.forEach(function (v) {
-            var r = vars.find(function (n) {
-              return n.key == v;
-            });
-            if(!r){
-              r = {
-                key:v
-              };
-              vars.push(r);
+    //var gs = (function () {
+    //  var vars = [],r = /[a-z]/gi,
+    //    compare = function (s1,s2) {
+    //      return s1.key.localeCompare(s2.key);
+    //    };
+    //  return {
+    //    getVars:function (g) {
+    //      var vs = g.toUpperCase().match(r),
+    //        rs = [];
+    //      if(!vs || vs.length===0) return rs;
+    //      vs.forEach(function (v) {
+    //        var r = vars.find(function (n) {
+    //          return n.key == v;
+    //        });
+    //        if(!r){
+    //          r = {
+    //            key:v
+    //          };
+    //          vars.push(r);
+    //
+    //        }
+    //        rs.push(r);
+    //      });
+    //      vars.sort(compare);
+    //      rs.sort(compare);
+    //      return rs;
+    //    },
+    //    setVars:function (g) {
+    //      var vs = g.toUpperCase().match(r),f = true;
+    //      if(!vs ||vs.length===0){
+    //        try {
+    //          return eval(g);
+    //        }catch (e){
+    //          return g;
+    //        }
+    //      }
+    //      vs.forEach(function (v) {
+    //        var r = vars.find(function (n) {
+    //          return n.key == v;
+    //        });
+    //        if(r && (r.value || r.value===0)){
+    //          g = g.replace(new RegExp(v,'gi'),r.value);
+    //        }
+    //        else{
+    //          f = false;
+    //        }
+    //      });
+    //
+    //      if(f) {
+    //        try {
+    //          return eval(g);
+    //        }catch (e){
+    //          return g;
+    //        }
+    //      }
+    //      else
+    //        return g;
+    //    }
+    //  }
+    //})();
 
-            }
-            rs.push(r);
-          });
-          vars.sort(compare);
-          rs.sort(compare);
-          return rs;
-        },
-        setVars:function (g) {
-          var vs = g.toUpperCase().match(r),f = true;
-          if(!vs ||vs.length===0){
-            try {
-              return eval(g);
-            }catch (e){
-              return g;
-            }
-          }
-          vs.forEach(function (v) {
-            var r = vars.find(function (n) {
-              return n.key == v;
-            });
-            if(r && (r.value || r.value===0)){
-              g = g.replace(new RegExp(v,'gi'),r.value);
-            }
-            else{
-              f = false;
-            }
-          });
-
-          if(f) {
-            try {
-              return eval(g);
-            }catch (e){
-              return g;
-            }
-          }
-          else
-            return g;
-        }
-      }
-    })();
-
-    vm.getVars = function (task) {
-      if(!task) return;
-      if(task.eDuration !='' && !task.eDuration)
-        task.eDuration = task.Duration||'';
-
-      task.vars = vm.vars = gs.getVars(task.eDuration);
-      var r = gs.setVars(task.eDuration);
-      if(!task.vars.length){
-        task.minValue = task.Duration*0.8;
-      }
-      task.xDuration = r;
-      return r;
-    };
+    //vm.getVars = function (task) {
+    //  if(!task) return;
+    //  if(task.eDuration !='' && !task.eDuration)
+    //    task.eDuration = task.Duration||'';
+    //
+    //  task.vars = vm.vars = gs.getVars(task.eDuration);
+    //  var r = gs.setVars(task.eDuration);
+    //  if(!task.vars.length){
+    //    task.minValue = task.Duration*0.8;
+    //  }
+    //  task.xDuration = r;
+    //  return r;
+    //};
     //获取模板
     api.plan.TaskTemplates.GetList({Skip:0,Limit:100}).then(function (r) {
       vm.data.templates = r.data.Items||[];
@@ -173,23 +173,23 @@
       }
     }
 
-    vm.setDuration = function(item){
-      var next = vm.rootTask.Master.find(function (it) {
-        return it.ParentId===item.Id && it.OptionalTasks.find(function (task) {
-            return task.TaskLibraryId===item.selectedTask.TaskLibraryId;
-          })!=null;
-      });
-      if(next) {
-        next.selectedTask = next.OptionalTasks.find(function (task) {
-          return task.TaskLibraryId === item.selectedTask.TaskLibraryId;
-        });
-        if (next.selectedTask) {
-          next.selectedTask.eDuration = vm.current.selectedTask.eDuration;//Math.round(item.selectedTask.duration*10)*0.1;
-          next.selectedTask.xDuration = vm.current.selectedTask.xDuration;
-        }
-        vm.setDuration(next)
-      }
-    }
+    //vm.setDuration = function(item){
+    //  var next = vm.rootTask.Master.find(function (it) {
+    //    return it.ParentId===item.Id && it.OptionalTasks.find(function (task) {
+    //        return task.TaskLibraryId===item.selectedTask.TaskLibraryId;
+    //      })!=null;
+    //  });
+    //  if(next) {
+    //    next.selectedTask = next.OptionalTasks.find(function (task) {
+    //      return task.TaskLibraryId === item.selectedTask.TaskLibraryId;
+    //    });
+    //    if (next.selectedTask) {
+    //      next.selectedTask.eDuration = vm.current.selectedTask.eDuration;//Math.round(item.selectedTask.duration*10)*0.1;
+    //      next.selectedTask.xDuration = vm.current.selectedTask.xDuration;
+    //    }
+    //    vm.setDuration(next)
+    //  }
+    //}
     vm.reloadTask = function () {
       if(vm.current) {
         vm.resetName(vm.current);
@@ -200,6 +200,7 @@
     }
     vm.flows=null;
     vm.branches=null;
+    vm.vars = null;
     vm.nextStep = function(i,f){
       if(i==0){
         var find=vm.data.templates.find(function(r){
@@ -243,6 +244,7 @@
           return current;
         }, null);
         vm.branches.forEach(function (current) {
+          if(!current.selected) return;
           //var f=vm.flows.find(function(_t){
           //  return _t.TaskFlowId == current.ParentId;
           //})
@@ -262,6 +264,9 @@
           })
         });
         var b = {
+          "Vars":vm.vars.allVars().filter(function (v) {
+            return v.key.length === 1;
+          }),
           "BuildingPlanInput": {
             "BuildingId": vm.formWizard.BuildingId,
             "Name": vm.formWizard.Name,
@@ -369,8 +374,8 @@
     }
     vm.loadUser = function(){
       if(vm.roleUsers&&vm.roleUsers.length) return;
-        return api.plan.users.query().then(function(r){
-          vm.roleUsers = r.data.Items;
+        return api.plan.users.queryById({projectId:vm.formWizard.projectId}).then(function(r){
+          vm.roleUsers = r.data;
         })
     }
     vm.deleteTaskLib = function(){
@@ -476,24 +481,24 @@
         }
       }
     })
-    vm.setMin = function(){
-      if(vm.current.selectedTask.eDuration){
-        vm.min = Math.round(vm.current.selectedTask.eDuration * 0.8*10)*0.1;
-      }else{
-        vm.min = 0;
-      }
-    }
-    vm.changeDuration = function(){
-      //vm.setMin();
-      if(!vm.current.selectedTask.vars.length){
-        if(vm.current.selectedTask.eDuration<vm.current.selectedTask.minValue){
-          //console.log('min')
-          vm.minError = true;
-        }else{
-          vm.minError = false;
-        }
-      }
-      vm.setDuration(vm.current);
-    }
+    //vm.setMin = function(){
+    //  if(vm.current.selectedTask.eDuration){
+    //    vm.min = Math.round(vm.current.selectedTask.eDuration * 0.8*10)*0.1;
+    //  }else{
+    //    vm.min = 0;
+    //  }
+    //}
+    //vm.changeDuration = function(){
+    //  //vm.setMin();
+    //  if(!vm.current.selectedTask.vars.length){
+    //    if(vm.current.selectedTask.eDuration<vm.current.selectedTask.minValue){
+    //      //console.log('min')
+    //      vm.minError = true;
+    //    }else{
+    //      vm.minError = false;
+    //    }
+    //  }
+    //  vm.setDuration(vm.current);
+    //}
   }
 })(angular,undefined);

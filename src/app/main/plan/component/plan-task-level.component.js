@@ -317,8 +317,8 @@
                 });
               if(r.Type)
                 r.Type = '其它';
-              var tags = r.Type.split('>');
-              tags.reduce(function (prev,current) {
+              var tags = r.Type&&r.Type.split('>');
+              tags&&tags.reduce(function (prev,current) {
                 var fd = prev.find(function (t) {
                   return t.name == current;
                 });

@@ -230,7 +230,8 @@
       },
       procedure:{
         query:function(){
-          return $http.get($http.url('/api/WPAcceptanceApi/GetWPAcceptanceInfo'));
+          //return $http.get($http.url('/api/WPAcceptanceApi/GetWPAcceptanceInfo'));
+          return $http.get($http.url('/api/WPAcceptanceApi/GetWPAcceptances'));
         }
       },
       MeasureInfo:{
@@ -255,12 +256,14 @@
             "Force": force || false
           });
         },
-        end:function (taskId,force,actualEndTime,EndDescription) {
+        end:function (taskId,force,actualEndTime,EndDescription,PhotoFile,PhotoFileName) {
           return $http.post('/api/Task/'+taskId+'/End', {
             "TaskId": taskId,
             "ActualEndTime":actualEndTime,
             "Force": force || false,
-            "EndDescription":EndDescription
+            "EndDescription":EndDescription,
+            "PhotoFileName":PhotoFileName,
+            "PhotoFile":PhotoFile
           });
         },
         Categories:{
@@ -312,6 +315,9 @@
       users:{
         query:function(){
           return $http.get($http.url('/api/User'));
+        },
+        queryById:function(params){
+          return $http.get($http.url('/api/User/ByProjectId',params))
         }
       },
       Project:{

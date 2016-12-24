@@ -25,7 +25,7 @@
     <tbody>
     <tr ng-repeat="item in vm.data">
       <td>{{item.Sign}}</td>
-      <td>{{item.Time | date:'yyyy-MM-dd'}}</td>
+      <td>{{item.Time | date:'MM-dd'}}</td>
       <td>{{item.TimeType == 0?'公历':'农历'}}</td>
       <td>{{item.FrontDays}}</td>
       <td>{{item.BackDay}}</td>
