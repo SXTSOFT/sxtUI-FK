@@ -15,9 +15,12 @@
     .controller('cycle_detailController',cycle_detailController);
 
   /**@ngInject*/
-  function cycle_detailController($stateParams,remote){
+  function cycle_detailController($stateParams,remote,$rootScope,$scope,$state){
     var inspectionId=$stateParams.inspectionId;
     var vm=this;
+    vm.selectSize=10;
+
+
     remote.report.getdetail('cycle',inspectionId).then(function (r) {
       vm.source=r.data;
       vm.source.first={};
@@ -43,7 +46,14 @@
       if (vm.source.Companys.length>0){
         vm.source.third=vm.source.Companys[vm.source.Companys.length-1];
       }
+    })
 
+    $rootScope.$on("goBack",function () {
+      $state.go("app.pcReport_cycle_default.filter",{from:"app.pcReport_cycle_detail"});
+    })
+
+    $scope.$on("$destroy",function () {
+      $rootScope.$$listeners.goBack=[];
     })
   }
 })();

@@ -1,0 +1,86 @@
+<md-toolbar ng-if="!vm.isMobile" class="md-hue-1">
+  <div class="md-toolbar-tools">
+    <h4>
+      <span>日常巡检</span>
+    </h4>
+  </div>
+</md-toolbar>
+<div ng-if=" vm.isiPad||!vm.isMobile">
+  <md-card style="background-color: white" md-theme-watch>
+    <md-card-content>
+      <form name="myForm" flex layout="column">
+        <div layout="row">
+          <md-input-container flex>
+            <label>项目</label>
+            <md-select ng-model="core.currentProject"  name="currentProject"  ng-model-options="{trackBy: '$value.RegionID'}">
+              <md-option  ng-value="item" ng-repeat="item in projects">{{item.RegionName}}</md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+
+        <div layout="row">
+          <md-input-container flex>
+            <label>分期</label>
+            <md-select ng-model="core.currentArea" required name="currentArea"  ng-model-options="{trackBy: '$value.RegionID'}">
+              <md-option  ng-value="item" ng-repeat="item in core.currentProject.Children">{{item.RegionName}}</md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+
+        <div layout="row">
+          <md-input-container class="md-block" flex>
+            <label>起始时间</label>
+            <md-datepicker ng-model="core.minDate" class="picker" layout="row"></md-datepicker >
+          </md-input-container>
+
+          <md-input-container flex>
+            <label>结束时间</label>
+            <md-datepicker ng-model="core.maxDate" class="picker" layout="row"></md-datepicker>
+          </md-input-container>
+        </div>
+      </form>
+    </md-card-content>
+  </md-card>
+</div>
+
+
+
+<div ng-if="vm.isMobile&&!vm.isiPad&&vm.display" style="position: relative">
+  <section  style="padding: 18px 18px">
+      <div layout="row">
+        <md-input-container flex>
+          <label>项目</label>
+          <md-select ng-model="core.currentProject"  name="currentProject"  ng-model-options="{trackBy: '$value.RegionID'}">
+            <md-option  ng-value="item" ng-repeat="item in projects">{{item.RegionName}}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div  layout="row">
+        <md-input-container flex>
+          <label>分期</label>
+          <md-select ng-model="core.currentArea" required name="currentArea"  ng-model-options="{trackBy: '$value.RegionID'}">
+            <md-option  ng-value="item" ng-repeat="item in core.currentProject.Children">{{item.RegionName}}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+
+      <div layout="row">
+        <md-input-container class="md-block" flex>
+          <label>起始时间</label>
+          <md-datepicker ng-model="core.minDate" class="picker" layout="row"></md-datepicker>
+        </md-input-container>
+
+        <md-input-container flex>
+          <label>结束时间</label>
+          <md-datepicker ng-model="core.maxDate" class="picker" layout="row"></md-datepicker>
+        </md-input-container>
+      </div>
+
+      <div layout="row">
+        <md-button type="submit"  tyle="margin: 24px 0px"  class="md-raised md-primary" flex   ng-click="ok()">确定</md-button>
+      </div>
+  </section>
+</div>
+
+
+

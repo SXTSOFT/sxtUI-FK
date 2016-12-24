@@ -65,7 +65,7 @@
                   // p.geometry.properties.v = c;
                   if (p.geometry.geometry.type == 'Stamp')
                     p.geometry.geometry.type = 'Point';
-                  p.geometry.properties.Status = p.Status;
+                  p.geometry.properties.Status = 1;
                   fs.push(p.geometry);
                 });
               }

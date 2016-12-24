@@ -14,7 +14,7 @@
     $stateProvider
       .state('app.pcReport_cycle_default',{
         title:"日常巡检",
-        url:'/pcReport_cycle_default',
+        url:'/pcReport_cycle_default/{display}',
         noBack:true,
         sendBt:false,
         views:{
@@ -34,6 +34,13 @@
             controller : 'cycle_detailController as vm',
           }
         }
+      })
+      .state('app.pcReport_cycle_default.filter',{
+        noBack:true,
+        // sendBt:false,
+        url:'/pcReport_cycle_default/filter/{from}',
+        templateUrl: 'app/main/pcReport/cycle/cycle_filter.html',
+        controller: 'cycle_filterController as vm'
       })
   }
 })();

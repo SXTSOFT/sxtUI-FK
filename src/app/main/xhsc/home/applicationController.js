@@ -59,14 +59,14 @@
               state: "app.xhsc.download",
               stateParams: null
             },
-            {
-              right:vm.duties.indexOf("2")>-1,
-              title: "移动验房",
-              type:"zl",
-              img: "app/main/xhsc/images/application/yf.svg",
-              state: "app.xhsc.yf.Main",
-              stateParams: null
-            },
+            // {
+            //   right:vm.duties.indexOf("2")>-1,
+            //   title: "移动验房",
+            //   type:"zl",
+            //   img: "app/main/xhsc/images/application/yf.svg",
+            //   state: "app.xhsc.yf.Main",
+            //   stateParams: null
+            // },
             {
               right:vm.duties.indexOf("4")>-1,
               title: "材料验收",
@@ -88,14 +88,16 @@
               img: "app/main/xhsc/images/application/weekys.svg",
               state: "app.xhsc.sf.sfmain",
               stateParams: null
-            }, {
-              right: vm.duties.indexOf("5")>-1,
-              type:"aq",
-              title: "动态危险源",
-              img: "app/main/xhsc/images/application/dyn.svg",
-              state: "app.xhsc.dyn.sfDynamicMain",
-              stateParams: null
-            },{
+            },
+            // {
+            //   right: vm.duties.indexOf("5")>-1,
+            //   type:"aq",
+            //   title: "动态危险源",
+            //   img: "app/main/xhsc/images/application/dyn.svg",
+            //   state: "app.xhsc.dyn.sfDynamicMain",
+            //   stateParams: null
+            // },
+            {
               right: vm.duties.indexOf("5")>-1,
               title: "周安全检查",
               type:"aq",
