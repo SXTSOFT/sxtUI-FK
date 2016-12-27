@@ -63,6 +63,13 @@
         }).bind(function(){
           return get(baseUri +'profile').then(function (result) {
             result.data.Id = result.data.data.employee_id;
+            try{
+             result.data.data.company = result.data.data.partner?result.data.data.partner.name:
+                 result.data.data.corporation?result.data.data.corporation.name:
+                   '深圳万科';
+            }catch (ex){
+
+            }
             return result;
           });
         },function (result) {
