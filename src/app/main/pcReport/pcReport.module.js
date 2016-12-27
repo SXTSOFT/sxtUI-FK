@@ -13,7 +13,8 @@
       'bw.paging',
       'app.pcReport_yf',
       'app.pcReport_cycle',
-      'app.pcReport_week'
+      'app.pcReport_week',
+      'app.pcReport_safeys'
     ])
     .config(config);
   /** @ngInject */

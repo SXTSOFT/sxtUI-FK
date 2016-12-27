@@ -11,14 +11,14 @@
   'use strict';
 
   angular
-    .module('app.pcReport_week')
-    .controller('week_detailController',week_detailController);
+    .module('app.pcReport_safeys')
+    .controller('safeys_detailController',safeys_detailController);
 
   /**@ngInject*/
-  function week_detailController($stateParams,remote,$rootScope,$scope,$state){
+  function safeys_detailController($stateParams,remote,$rootScope,$scope,$state){
     var inspectionId=$stateParams.inspectionId;
     var vm=this;
-    remote.report.getdetail('WeekInspects',inspectionId).then(function (r) {
+    remote.report.getdetail('cycle',inspectionId).then(function (r) {
       vm.source=r.data;
       vm.source.first={};
       vm.source.Supervisions.sort(function (a,b) {
@@ -46,7 +46,7 @@
     })
 
     $rootScope.$on("goBack",function () {
-      $state.go("app.pcReport_week_default.filter",{from:"app.pcReport_week_detail"});
+      $state.go("app.pcReport_safeys_default.filter",{from:"app.pcReport_safeys_detail"});
     })
 
     $scope.$on("$destroy",function () {

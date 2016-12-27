@@ -7,18 +7,18 @@
   'use strict';
 
   angular
-    .module('app.pcReport_week')
-    .controller('week_filterController',week_filterController);
+    .module('app.pcReport_safeys')
+    .controller('safeys_filterController',safeys_filterController);
 
   /**@ngInject*/
-  function week_filterController($state,$stateParams,remote,$scope,$timeout,xhscService,$rootScope,sxtlocaStorage){
+  function safeys_filterController($state,$stateParams,remote,$scope,$timeout,xhscService,$rootScope,sxtlocaStorage){
     var vm=this;
     var mobileDetect = new MobileDetect(window.navigator.userAgent);
     vm.isMobile=mobileDetect.mobile();
     vm.isiPad=mobileDetect.mobile()=="iPad";
     vm.display=true;
 
-    var params= sxtlocaStorage.getObj("week_params")
+    var params= sxtlocaStorage.getObj("safeys_params")
     $scope.core=params?params:{};
     if ($scope.core.minDate){
       $scope.core.minDate=new Date($scope.core.minDate)
@@ -50,12 +50,12 @@
 
     $scope.$watch("core.minDate",function (v,o) {
       if (v){
-        var params= sxtlocaStorage.getObj("week_params");
+        var params= sxtlocaStorage.getObj("safeys_params");
         if (!params){
           params={};
         }
         params.minDate=v;
-        sxtlocaStorage.setObj("week_params",params);
+        sxtlocaStorage.setObj("safeys_params",params);
         if (!$scope.isbusy){
           $rootScope.$emit("filter");
         }
@@ -67,12 +67,12 @@
 
     $scope.$watch("core.maxDate",function (v,o) {
       if (v){
-        var params= sxtlocaStorage.getObj("week_params");
+        var params= sxtlocaStorage.getObj("safeys_params");
         if (!params){
           params={};
         }
         params.maxDate=v;
-        sxtlocaStorage.setObj("week_params",params);
+        sxtlocaStorage.setObj("safeys_params",params);
         if (!$scope.isbusy){
           $rootScope.$emit("filter");
         }
@@ -84,12 +84,12 @@
 
     $scope.$watch("core.currentArea",function (v,o) {
       if (v){
-        var params= sxtlocaStorage.getObj("week_params");
+        var params= sxtlocaStorage.getObj("safeys_params");
         if (!params){
           params={};
         }
         params.currentArea=v;
-        sxtlocaStorage.setObj("week_params",params);
+        sxtlocaStorage.setObj("safeys_params",params);
         if (!$scope.isbusy){
           $rootScope.$emit("filter");
         }
@@ -101,12 +101,12 @@
 
     $scope.$watch("core.currentProject",function (v,o) {
       if (v){
-        var params= sxtlocaStorage.getObj("week_params");
+        var params= sxtlocaStorage.getObj("safeys_params");
         if (!params){
           params={};
         }
         params.currentProject=v;
-        sxtlocaStorage.setObj("week_params",params);
+        sxtlocaStorage.setObj("safeys_params",params);
         if (!$scope.isbusy){
           $rootScope.$emit("filter");
         }
@@ -130,7 +130,7 @@
       $rootScope.$emit("filter");
     }
     //详细里面返回
-    if (from=="app.pcReport_week_detail"){
+    if (from=="app.pcReport_safeys_detail"){
       vm.display=false;
       //展示明细
       $rootScope.$emit("show");
@@ -139,45 +139,45 @@
 
       $scope.$watch("core.minDate",function (v,o) {
         if (v){
-          var params= sxtlocaStorage.getObj("week_params");
+          var params= sxtlocaStorage.getObj("safeys_params");
           if (!params){
             params={};
           }
           params.minDate=v;
-          sxtlocaStorage.setObj("week_params",params);
+          sxtlocaStorage.setObj("safeys_params",params);
         }
       },true)
 
       $scope.$watch("core.maxDate",function (v,o) {
         if (v){
-          var params= sxtlocaStorage.getObj("week_params");
+          var params= sxtlocaStorage.getObj("safeys_params");
           if (!params){
             params={};
           }
           params.maxDate=v;
-          sxtlocaStorage.setObj("week_params",params);
+          sxtlocaStorage.setObj("safeys_params",params);
         }
       },true)
 
       $scope.$watch("core.currentArea",function (v,o) {
         if (v){
-          var params= sxtlocaStorage.getObj("week_params");
+          var params= sxtlocaStorage.getObj("safeys_params");
           if (!params){
             params={};
           }
           params.currentArea=v;
-          sxtlocaStorage.setObj("week_params",params);
+          sxtlocaStorage.setObj("safeys_params",params);
         }
       },true)
 
       $scope.$watch("core.currentProject",function (v,o) {
         if (v){
-          var params= sxtlocaStorage.getObj("week_params");
+          var params= sxtlocaStorage.getObj("safeys_params");
           if (!params){
             params={};
           }
           params.currentProject=v;
-          sxtlocaStorage.setObj("week_params",params);
+          sxtlocaStorage.setObj("safeys_params",params);
         }
       },true)
     }
