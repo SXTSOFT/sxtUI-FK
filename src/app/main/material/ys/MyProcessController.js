@@ -87,12 +87,12 @@
         return;
       }
 
+      vm.checkData.SupplierId = $scope.project.materialSupply==0?vm.checkData.Manufactor:vm.checkData.SupplierId;
+
       if (!vm.checkData.SupplierId) {
         utils.alert('请选择供货方');
         return;
       }
-
-      vm.checkData.Manufactor = $scope.project.materialSupply==0?vm.checkData.SupplierId:vm.checkData.Manufactor;
 
       if (!vm.checkData.Manufactor) {
         utils.alert('请输入厂家/品牌');
@@ -108,15 +108,15 @@
         utils.alert('请输入合同编号');
         return;
       }
-      // if ($scope.data.imgs1.length == 0 &&
-      //   $scope.data.imgs2.length == 0 &&
-      //   $scope.data.imgs3.length == 0 &&
-      //   $scope.data.imgs4.length == 0 &&
-      //   $scope.data.imgs5.length == 0
-      // ) {
-      //   utils.alert('请添加附件');
-      //   return;
-      // }
+      if ($scope.data.imgs1.length == 0 &&
+        $scope.data.imgs2.length == 0 &&
+        $scope.data.imgs3.length == 0 &&
+        $scope.data.imgs4.length == 0 &&
+        $scope.data.imgs5.length == 0
+      ) {
+        utils.alert('请添加附件');
+        return;
+      }
 
       vm.checkData.InspectionReport = vm.checkData.sjReport;
       vm.checkData.ProjectId = $scope.project.projectId;
@@ -281,7 +281,9 @@
 
     $scope.$watch('project.procedureId',
       function () {
-        vm.checkData.Model = '';
+        vm.checkData.SupplierId = null;
+        vm.checkData.Manufactor = null;
+        vm.checkData.Model = null;
         if ($scope.project.procedureId) {
           api.material.TargetService.getAll($scope.project.procedureId)
             .then(function (data) {
@@ -383,23 +385,29 @@
       }
     };
 
-    var supplierArr = [];
-    var supplierArr2 = [];
-    $q.all([api.material.SupplierService.GetAll({ startrowIndex: 0, maximumRows: 100, Status: 4 }),
-    api.szgc.vanke.partners({page_size:10000,page_number:1,type:'construction'})]).then(function(r){
-      supplierArr = r[0].data.Rows;
-      supplierArr2 = r[1].data.data;
+    $q.all([api.material.SupplierService.GetAll({ startrowIndex: 0, maximumRows: 100, Status: 4 })]).then(function(r){
+      $scope.suppliers = r[0].data.Rows;
+    });
+
+    $scope.$watch('project.pid',function () {
+      vm.checkData.SupplierId = null;
+      vm.checkData.Manufactor = null;
+      vm.checkData.Model = null;
+      if($scope.project.type == 2){
+        api.material.MaterialService.getPartners($scope.project.idTree).then(function(r) {
+          $scope.suppliers2 = r.data.Rows;
+      });
+      }
     });
 
     //获取材料供应商
-    vm.selSupplier = function(){
-      if($scope.project.materialSupply == 0){
-        $scope.supplier = supplierArr;
-      }else{
-        $scope.supplier = supplierArr2;
-      }
-      console.log($scope.supplier);
-    };
+    // vm.selSupplier = function(){
+    //   if($scope.project.materialSupply == 0){
+    //     $scope.supplier = supplierArr;
+    //   }else{
+    //     $scope.supplier = supplierArr2;
+    //   }
+    // };
 
 
     $scope.is = function (route) {
