@@ -18,7 +18,7 @@
   {
     $stateProvider
       .state('app.pcReport_week_default',{
-        title:"周安全检查",
+        title:'周安全检查',
         url:'/pcReport_week_default/{display}',
         noBack:true,
         sendBt:false,
@@ -41,6 +41,7 @@
         }
       })
       .state('app.pcReport_week_default.filter',{
+        title:'周安全检查报表',
         noBack:true,
         // sendBt:false,
         url:'/pcReport_week_default/filter/{from}',

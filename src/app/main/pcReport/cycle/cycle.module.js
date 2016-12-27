@@ -36,6 +36,7 @@
         }
       })
       .state('app.pcReport_cycle_default.filter',{
+        title:"日常巡检报表",
         noBack:true,
         // sendBt:false,
         url:'/pcReport_cycle_default/filter/{from}',
