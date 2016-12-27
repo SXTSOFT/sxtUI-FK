@@ -393,10 +393,11 @@
       vm.checkData.SupplierId = null;
       vm.checkData.Manufactor = null;
       vm.checkData.Model = null;
-      console.log($scope.project.idTree);
-      api.material.MaterialService.getPartners($scope.project.idTree).then(function(r) {
+      if($scope.project.type == 2){
+        api.material.MaterialService.getPartners($scope.project.idTree).then(function(r) {
           $scope.suppliers2 = r.data.Rows;
       });
+      }
     });
 
     //获取材料供应商
