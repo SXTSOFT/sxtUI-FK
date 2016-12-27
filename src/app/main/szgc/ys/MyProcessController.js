@@ -625,6 +625,14 @@
           return api.material.MaterialService.GetInfoById();
         },
 
+        function () {
+          return api.material.MaterialService.GetAll();
+        },
+
+        function(){
+          return api.material.TargetRelationService.getByCheckDataId({projectId:project.project_id});
+        },
+
         //获取所有材料验收所选附件
         function () {
           return api.material.MaterialService.GetMLFilesById();
@@ -636,6 +644,10 @@
 
         function (){
           return api.material.TargetRelationService.getByProjectId({projectId:project.project_id,materialId:null,isChecked:true});
+        },
+
+        function(){
+          return api.material.MaterialService.getPartners(idTree);
         },
 
         //工序验收表

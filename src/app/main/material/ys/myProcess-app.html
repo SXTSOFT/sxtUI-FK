@@ -14,31 +14,28 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
 
 </sxt-projects-jd>
 <div class="md-padding">
-  <div style="padding: 0 6px;"></div>
-<md-input-container class="md-block" style="margin-bottom: 40px;">
+<md-input-container class="md-block">
 <label>规格/型号</label>
 <md-select ng-model="vm.checkData.Model">
   <md-option ng-value="m" ng-repeat="m in project.materialModels">{{m}}</md-option>
 </md-select>
 </md-input-container>
-<div style="padding: 0 6px;"></div>
-<md-input-container class="md-block" ng-if="project.materialSupply==0">
-  <label>供货方</label>
-  <md-select ng-model="vm.checkData.SupplierId" md-on-open="vm.selSupplier()">
-    <md-option ng-value="s.Name" ng-repeat="s in supplier">{{s.Name}}</md-option>
-  </md-select>
-</md-input-container>
+<div style="height: 6px" ng-if="project.materialSupply!=0"></div>
 <md-input-container class="md-block" ng-if="project.materialSupply!=0">
   <label>供货方</label>
-  <md-select ng-model="vm.checkData.SupplierId" md-on-open="vm.selSupplier()">
-    <md-option ng-value="s.name" ng-repeat="s in supplier">{{s.name}}</md-option>
+  <md-select ng-model="vm.checkData.SupplierId">
+    <md-option ng-value="s.UnitName" ng-repeat="s in suppliers2">{{s.UnitName}}</md-option>
   </md-select>
 </md-input-container>
 <div style="height: 6px"></div>
-<md-input-container class="md-block" ng-if="project.materialSupply!=0">
+<md-input-container class="md-block">
   <label>厂家/品牌</label>
-  <input style="width: 100%;" ng-model="vm.checkData.Manufactor">
+  <!--<input style="width: 100%;" ng-model="vm.checkData.Manufactor">-->
+  <md-select ng-model="vm.checkData.Manufactor">
+    <md-option ng-value="s.Name" ng-repeat="s in suppliers">{{s.Name}}</md-option>
+  </md-select>
 </md-input-container>
+<div style="height: 6px"></div>
 <md-input-container class="md-block">
   <label>合同编号</label>
   <input ng-model="vm.checkData.ContractNumber">
