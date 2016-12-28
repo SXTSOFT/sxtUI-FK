@@ -333,19 +333,20 @@
                     var ckpoints = val.find(function (o) {
                       return o.key == "cyclePoints";
                     });
-                    ckpoints=ckpoints && ckpoints.vals ? ckpoints.vals : [];
+
+                    var ckpointsVal=ckpoints && ckpoints.vals ? ckpoints.vals : [];
 
                     var problemRecords = val.find(function (o) {
                       return o.key == "cycleProblemRecord";
                     });
-                    problemRecords=problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [];
+                    var problemRecordsVal=problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [];
 
                     var InspectionProblemRecordFiles = val.find(function (o) {
                       return o.key == "cycleInspectionProblemRecordFile";
                     });
-                    InspectionProblemRecordFiles=InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?
+                    var InspectionProblemRecordFilesVal=InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?
                       filterUpload(InspectionProblemRecordFiles.vals): [];
-                    InspectionProblemRecordFiles.forEach(function (k) {
+                    InspectionProblemRecordFilesVal.forEach(function (k) {
                       tasks.push(function () {
                         return remote.safe.inserFile({
                           FileName:k.FileID,
@@ -373,9 +374,9 @@
 
                     //业务单独上传
                     var post={
-                      "CheckpointInput": ckpoints,
-                      "ProblemRecordInput": problemRecords,
-                      "ProblemRecordFileInput": InspectionProblemRecordFiles
+                      "CheckpointInput": ckpointsVal,
+                      "ProblemRecordInput": problemRecordsVal,
+                      "ProblemRecordFileInput": InspectionProblemRecordFilesVal
                     }
 
                     tasks.push(function () {
