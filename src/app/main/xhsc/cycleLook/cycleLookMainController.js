@@ -333,12 +333,29 @@
                     var ckpoints = val.find(function (o) {
                       return o.key == "cyclePoints";
                     });
+                    ckpoints=ckpoints && ckpoints.vals ? ckpoints.vals : [];
+
                     var problemRecords = val.find(function (o) {
                       return o.key == "cycleProblemRecord";
                     });
+                    problemRecords=problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [];
+
                     var InspectionProblemRecordFiles = val.find(function (o) {
                       return o.key == "cycleInspectionProblemRecordFile";
                     });
+                    InspectionProblemRecordFiles=InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?
+                      filterUpload(InspectionProblemRecordFiles.vals): [];
+                    InspectionProblemRecordFiles.forEach(function (k) {
+                      tasks.push(function () {
+                        return remote.safe.inserFile({
+                          FileName:k.FileID,
+                          Base64:k.FileContent
+                        }).then(function () {
+                          delete k.FileContent
+                        })
+                      });
+                    });
+
                     if (points && points.vals) {
                       points.vals.forEach(function (t) {
                         if (t.geometry) {
@@ -351,6 +368,14 @@
                           return remote.Procedure.InspectionPoint.create(t)
                         });
                       });
+                    }
+
+
+                    //业务单独上传
+                    var post={
+                      "CheckpointInput": ckpoints,
+                      "ProblemRecordInput": problemRecords,
+                      "ProblemRecordFileInput": InspectionProblemRecordFiles
                     }
 
                     tasks.push(function () {
@@ -384,11 +409,7 @@
                           })
                         }
                       }
-                      return remote.safe.safeUp({
-                        "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
-                        "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
-                        "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
-                      },"cycle").then(function () {
+                      return remote.safe.safeUp(post,"cycle").then(function () {
                         clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points);
                       });
                     });

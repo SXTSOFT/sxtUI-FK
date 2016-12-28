@@ -343,12 +343,30 @@
                     var ckpoints = val.find(function (o) {
                       return o.key == "weekPoints";
                     });
+                    ckpoints=ckpoints && ckpoints.vals ? ckpoints.vals : [];
+
                     var problemRecords = val.find(function (o) {
                       return o.key == "weekProblemRecord";
                     });
+                    problemRecords=problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [];
+
                     var InspectionProblemRecordFiles = val.find(function (o) {
                       return o.key == "weekInspectionProblemRecordFile";
                     });
+                    //文件单独上传
+                    InspectionProblemRecordFiles=InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?
+                      filterUpload(InspectionProblemRecordFiles.vals): [];
+                    InspectionProblemRecordFiles.forEach(function (k) {
+                      tasks.push(function () {
+                        return remote.safe.inserFile({
+                          FileName:k.FileID,
+                          Base64:k.FileContent
+                        }).then(function () {
+                          delete k.FileContent
+                        })
+                      });
+                    });
+                    //几何位置单独上传
                     if (points && points.vals) {
                       points.vals.forEach(function (t) {
                         if (t.geometry) {
@@ -361,6 +379,13 @@
                           return remote.Procedure.InspectionPoint.create(t)
                         });
                       });
+                    }
+
+                    //业务单独上传
+                    var post={
+                      "CheckpointInput": ckpoints,
+                      "ProblemRecordInput": problemRecords,
+                      "ProblemRecordFileInput": InspectionProblemRecordFiles
                     }
 
                     tasks.push(function () {
@@ -394,11 +419,7 @@
                           })
                         }
                       }
-                      return remote.safe.safeUp({
-                        "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
-                        "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
-                        "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
-                      },"WeekInspects").then(function () {
+                      return remote.safe.safeUp(post,"WeekInspects").then(function () {
                         clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points);
                       });
                     });

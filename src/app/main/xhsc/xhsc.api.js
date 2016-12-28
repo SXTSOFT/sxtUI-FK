@@ -1850,6 +1850,11 @@
           delete: true
         }),
 
+        inserFile:$http.wrap({ //删除文件
+          fn:function (params) {
+            return $http.post($http.url('/api/FileServer/Insert'),params);
+          }
+        }),
         //获取验收批列表
         getSafeInspections: $http.wrap({
           _id: "safeInspections",
