@@ -45,7 +45,7 @@
 
       }
 
-      remote.report.getWrapList('cycle',queryParams).then(function (r) {
+      remote.report.getYsReportList(queryParams).then(function (r) {
         vm.total=r.data.TotalCount;
         vm.source=r.data.Data
       })

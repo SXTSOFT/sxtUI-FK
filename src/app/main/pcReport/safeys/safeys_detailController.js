@@ -18,7 +18,7 @@
   function safeys_detailController($stateParams,remote,$rootScope,$scope,$state){
     var inspectionId=$stateParams.inspectionId;
     var vm=this;
-    remote.report.getdetail('cycle',inspectionId).then(function (r) {
+    remote.report.getdetail('Acceptances',inspectionId).then(function (r) {
       vm.source=r.data;
       vm.source.first={};
       vm.source.Supervisions.sort(function (a,b) {
@@ -33,7 +33,7 @@
         return a.Time.localeCompare(a,b);
       })
       if (vm.source.MainContractors.length>0){
-        vm.source.second=vm.source.MainContractors[vm.source.MainContractors.length-1];
+        vm.source.second=vm.source.MainContractors[0];
       }
 
       vm.source.third={};

@@ -7,7 +7,7 @@
     <tr>
       <th>序号</th>
       <th>项目</th>
-      <th style="min-width: 150px">描述</th>
+      <th style="min-width: 150px">验收项</th>
       <th>时间</th>
       <th>操作</th>
     </tr>
@@ -15,8 +15,8 @@
     <tbody>
     <tr data-ng-repeat="item in vm.source">
       <td>{{$index+1}}</td>
-      <td>{{item.AreaFullName}}</td>
-      <td>{{item.Describe}}</td>
+      <td>{{item.ProjectName}}</td>
+      <td>{{item.AcceptanceItemName}}</td>
       <td>
         {{item.CreateTime}}
       </td>

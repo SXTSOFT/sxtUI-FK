@@ -2252,8 +2252,8 @@
         getdetail:function (identity,inspectionExtendId	) {
           return $http.get($http.url('/api/'+identity+'/SecurityReport/GetReportInfoExtendDetailed/'+inspectionExtendId))
         },
-        getYsReportList:function () {
-          return $http.post($http.url('/api/{securityType}/SecurityReport/GetReportInfoExtendList/Acceptances'),params)
+        getYsReportList:function (params) {
+          return $http.post($http.url('/api/Acceptances/SecurityReport/GetReportInfoExtendList/Acceptances'),params)
         }
       }
     });
