@@ -25,6 +25,9 @@
       vm.source=r.data;
       vm.source.first={};
       vm.source.Supervisions.sort(function (a,b) {
+        if (!a.Time){
+          return true;
+        }
         return a.Time.localeCompare(a,b);
       })
       if (vm.source.Supervisions.length>0){
@@ -33,6 +36,9 @@
 
       vm.source.second={};
       vm.source.MainContractors.sort(function (a,b) {
+        if (!a.Time){
+          return true;
+        }
         return a.Time.localeCompare(a,b);
       })
       if (vm.source.MainContractors.length>0){
@@ -41,6 +47,9 @@
 
       vm.source.third={};
       vm.source.Companys.sort(function (a,b) {
+        if (!a.Time){
+          return true;
+        }
         return a.Time.localeCompare(a,b);
       })
       if (vm.source.Companys.length>0){

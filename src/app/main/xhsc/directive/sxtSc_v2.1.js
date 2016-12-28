@@ -160,7 +160,7 @@
           var t = scope.standar.data && scope.standar.data.data ? scope.standar.data.data : [];
           var msg = [];
           scope.measureIndexes.forEach(function (o) {
-            if (!t.find(function (k) {
+            if (t.find(function (k) {
                 return (o.AcceptanceIndexID == k.AcceptanceIndexID || o.Children.find(function (e) {
                     return e.AcceptanceIndexID == k.AcceptanceIndexID;
                   })) && k.DrawingID == img.DrawingID
@@ -170,13 +170,13 @@
             }
           });
           if (msg.length) {
-            utils.confirm("指标：" + msg.join(",") + "尚未标准化，是否采用自行打点模式!", null).then(function () {
-              resolve("tradition");
+            utils.confirm("指标：" + msg.join(",") + "已经标准化，是否采用标准化点位，选择取消则自行打点!", null).then(function () {
+              resolve("standar");
             }).catch(function () {
-              reject();
+              resolve("tradition");
             })
           } else {
-            resolve("standar");
+            resolve("tradition");
           }
         })
       };

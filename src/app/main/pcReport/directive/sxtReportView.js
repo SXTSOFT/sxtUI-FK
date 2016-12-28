@@ -38,7 +38,7 @@
             }
           });
           fg = $window.mapboxgl.Plan({
-            disableInspect: scope.disableInspect,
+            disableInspect:true,
             disableDrag: true,
             onChangeMode: function (mode, op, cb) {
               if (mode && !op) {
@@ -128,16 +128,19 @@
 
                 break;
               case "week":
-                remote.safe.getDrawingRelate("house", scope.regionId).then(function (r) {
+                remote.safe.getDrawingRelate("WeekInspects", scope.regionId).then(function (r) {
                   imgId = r.data.Relations.find(function (item) {
                     return item.Type == 7 && item.RegionId == scope.regionId;
+                  });
+                  imgId = r.data.Relations.find(function (item) {
+                    return item.Type == 13 && item.RegionId == scope.regionId;
                   });
                   callback(imgId);
                 });
 
                 break;
               case "cycle":
-                remote.safe.getDrawingRelate("house", scope.regionId).then(function (r) {
+                remote.safe.getDrawingRelate("cycle", scope.regionId).then(function (r) {
                   imgId = r.data.Relations.find(function (item) {
                     return item.Type == 7 && item.RegionId == scope.regionId;
                   });

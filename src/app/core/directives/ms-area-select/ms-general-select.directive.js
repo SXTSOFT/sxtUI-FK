@@ -21,8 +21,8 @@
         procedure: "=",
         current:"=",
         level:"=",
-        name:"=",
-        lay:"="
+        arearId:"=",
+        name:"="
       },
       templateUrl: 'app/core/directives/ms-area-select/ms-general-select.html',
       controller: 'msGenSelectController',
@@ -65,7 +65,7 @@
         $scope.setRoom=function (area,siblings) {
           if($scope.level&&parseInt($scope.level)<5){
             $scope.selectedRegion(area,siblings);
-          }else if($scope.level="5"){
+          }else if($scope.level=="5"){
             if ($scope.current){
               $scope.current.region=null;
             }
@@ -122,15 +122,38 @@
                return;
             }
             v.then(function (r) {
-              $scope.source.areasData=r
+              $scope.build=null;
+              if ($scope.arearId){
+                  var area;
+                  r.forEach(function (m) {
+                    area=m.Children.find(function (k) {
+                      return k.RegionID==$scope.arearId;
+                    })
+                    if (area){
+                      $scope.build=area.Children;
+                    }
+                  })
+              }
+              if ($scope.build&&$scope.build.length>0){
+                $scope.source.parts=$scope.build
+                $scope.setRegion($scope.source.parts[0],$scope.build);
+                $scope.status={
+                  region:false,
+                  part:true,
+                  procedure:false
+                };
+
+              }else {
+                $scope.source.areasData=r
+                $scope.setRegion($scope.source.areasData[0]);
+                $scope.status={
+                  region:true,
+                  part:false,
+                  procedure:false
+                };
+              }
               $scope.loaded = true;
               $rootScope.$emit("msGenSelect_loaded");
-              $scope.setRegion($scope.source.areasData[0]);
-              $scope.status={
-                region:true,
-                part:false,
-                procedure:false
-              };
             }).catch(function () {
               $scope.loaded = true;
             });
@@ -182,17 +205,24 @@
       area.active=true;
     }
     //初始化部位
-    $scope.setRegion=function (area) {
-      $scope.setActive(area,$scope.source.areasData);
-      $scope.source.fq=[];
-      $scope.source.parts=[];
-      $scope.source.floors=[];
-      $scope.source.rooms=[];
+    $scope.setRegion=function (area,build) {
       if ($scope.current){
         $scope.current.selectedArea=null;
         $scope.current.region=null;
       }
-      $scope.source.fq=area.Children;
+      if ($scope.build){
+        $scope.source.floors=[];
+        $scope.source.rooms=[];
+        $scope.setActive(area,$scope.source.parts);
+        $scope.source.floors=area.Children;
+      }else {
+        $scope.source.fq=[];
+        $scope.source.parts=[];
+        $scope.source.floors=[];
+        $scope.source.rooms=[];
+        $scope.setActive(area,$scope.source.areasData);
+        $scope.source.fq=area.Children;
+      }
     }
     $scope.setProcedure=function (procedure,procedureLst) {
       $scope.setActive(procedure,procedureLst);

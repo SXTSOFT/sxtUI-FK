@@ -1,14 +1,14 @@
 <div class="gen" ng-if="loaded">
   <div layout="row" class="top">
-    <div flex="33" ng-click="toggle('region')" layout="row"  layout-align="center center">
+    <div flex="33"  ng-if="!arearId" ng-click="toggle('region')" layout="row"  layout-align="center center">
       <span title="区域" class="md-select-icon">{{current.selectedArea?current.selectedArea.RegionName:"区域"}}</span>
       <span class="caret spare"></span>
     </div>
-    <div flex="33" ng-click="toggle('part')" layout="row"  layout-align="center center">
+    <div flex="{{!arearId?33:50}}" ng-click="toggle('part')" layout="row"  layout-align="center center">
       <span>{{current.region? current.region.fullName:'部 位'}}</span>
       <span class="caret spare"></span>
     </div>
-    <div flex="33" ng-click="toggle('procedure')" layout="row"  layout-align="center center">
+    <div flex="{{!arearId?33:50}}"  ng-click="toggle('procedure')" layout="row"  layout-align="center center">
       <span>{{current.procedure?current.procedure.AcceptanceItemName:(name?name:"工 序")}}</span>
       <span class="caret spare"></span>
     </div>

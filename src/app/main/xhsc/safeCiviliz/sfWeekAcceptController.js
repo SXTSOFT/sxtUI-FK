@@ -16,6 +16,7 @@
     var vm = this;
     var projectId = $stateParams.projectId,
       areaId = $stateParams.areaId?$stateParams.areaId:$stateParams.regionId;
+    vm.areaId=areaId;
       vm.InspectionId=$stateParams.InspectionId;
 
       vm.info = {
