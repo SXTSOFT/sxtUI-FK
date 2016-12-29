@@ -19,7 +19,7 @@
       vm.role = profile.role;
       vm.OUType = profile.ouType;
       vm.loaded = true;
-      vm.duties=profile.duties;
+      vm.duties=profile.duties||[];
 
 
       var isJlorzb = (vm.role == "0" || vm.role == 0) || (vm.role == "2" || vm.role == 2)
