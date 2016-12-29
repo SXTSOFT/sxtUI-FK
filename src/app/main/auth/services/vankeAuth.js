@@ -101,7 +101,7 @@
             else{
               $timeout(function () {
                 JPushPlugin.setAlias(d.data.UserId);
-              },5000);
+              },3000);
             }
             resolve(d && d.data);
             api.resetNetwork();

@@ -52,22 +52,22 @@
     function receiveMessage(){
 
 
-
-      var onReceiveMessage = function(event) {
-        try{
-          var message
-          if(device.platform == "Android") {
-            message =JPushPlugin.receiveMessage.message;
-          } else {
-            message = event.content;
-          }
-          $("#messageResult").html(message);
-        } catch(exception) {
-          console.log("JPushPlugin:onReceiveMessage-->" + exception);
-        }
-      }
-
-      document.addEventListener("jpush.receiveMessage", onReceiveMessage, false);
+      //
+      // var onReceiveMessage = function(event) {
+      //   try{
+      //     var message
+      //     if(device.platform == "Android") {
+      //       message =JPushPlugin.receiveMessage.message;
+      //     } else {
+      //       message = event.content;
+      //     }
+      //     $("#messageResult").html(message);
+      //   } catch(exception) {
+      //     console.log("JPushPlugin:onReceiveMessage-->" + exception);
+      //   }
+      // }
+      //
+      // document.addEventListener("jpush.receiveMessage", onReceiveMessage, false);
     }
 
   }
