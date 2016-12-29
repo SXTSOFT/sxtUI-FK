@@ -14,9 +14,9 @@ function getLinkFunction($http, theme, util, type) {
             width = config.width || parseInt(attrs.width) || $(window).width() || 320;
           if(config.xyExchange){
             if(config.number>=10){
-            height = config.height || parseInt(attrs.height) || config.number*55|| 240;}
+            height = config.height || parseInt(attrs.height) || config.number*50|| 240;}
             else {
-              height = config.height || parseInt(attrs.height) || config.number*70|| 240;
+              height = config.height || parseInt(attrs.height) || config.number*75|| 240;
             }
           }else{
             height = config.height || parseInt(attrs.height) || $(window).height()|| 240;

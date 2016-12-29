@@ -1773,7 +1773,29 @@ a.leaflet-draw-draw-color:hover div{
     left: -10px;
   }
   md-tabs{
-    min-height: 480px;
+    min-height: 430px;
+  }
+
+  md-datepicker{
+    padding-right: 0px;
+    margin-right: 0px;
+    input{
+      text-align: left;
+    }
+  }
+  .md-datepicker-input-container{
+    border-bottom-width: 0 !important;
+  }
+
+}
+#statistic1{
+
+  md-tab-content{
+    top: -40px;
+    left: -10px;
+  }
+  md-tabs{
+    min-height: 430px;
   }
 
   md-datepicker{

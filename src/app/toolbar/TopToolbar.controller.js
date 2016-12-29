@@ -7,7 +7,7 @@
         .controller('TopToolbarController', TopToolbarController);
 
     /** @ngInject */
-    function TopToolbarController($scope,$rootScope,api,$window) {
+    function TopToolbarController($scope,$rootScope,api,$window,$mdSidenav,$log) {
       var vm=this;
       vm.networking = false;
       $rootScope.$on('sxt:onNetworking', function (e, config) {
@@ -64,6 +64,7 @@
         if (!data.cancel)
           history.go (-1);
       }
+
     }
 
 })();

@@ -13,7 +13,7 @@
     });
 
   /**@ngInject*/
-  function statisticsTaskpageController(utils,$scope){
+  function statisticsTaskpageController(utils,$scope,$state){
     var vm = this;
     vm.showPopup=false;
     vm.notclose=30;
@@ -26,7 +26,20 @@
       {title:'已开始',value:20,percentage:'33%',color:'red'},
       {title:'已完成',value:10,percentage:'17%',color:'red'}
     ];
-
+    vm.currenttab = 0;
+    vm.inspection = function(num){
+      switch (num){
+        case 0:
+          vm.currenttab = 0;
+          break;
+        case 1:
+          vm.currenttab =1;
+          break;
+        case 2:
+          vm.currenttab = 2;
+          break;
+      }
+    };
     vm.count.forEach(
      function (data) {
        vm.labels.push(data.title  +data.percentage);
@@ -168,13 +181,14 @@
 
     ];
 
-    vm.tab=(function (type) {
+    vm.tab=(function (type,value) {
       vm.data.type=type;
+      vm.currenttab = value;
     })
     utils.onCmd($scope,['statistics'],function(cmd,e){
-      vm.showPopup=true;
+      $state.go('app.statistics.task')
     })
-    vm.tab('notclose');
+    vm.tab('notclose',0);
   }
 
 })();

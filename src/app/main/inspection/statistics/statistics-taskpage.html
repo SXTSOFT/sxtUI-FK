@@ -1,32 +1,29 @@
 
-
+<div layout="row" layout-align="space-between center"  class="ph-8 is-tabs" >
+  <div  ng-class="{'active':vm.currenttab==0}" ng-click="vm.tab('notclose',0)">
+    <md-button>未开始({{vm.notclose}})</md-button>
+  </div>
+  <div ng-class="{'active':vm.currenttab==1}" ng-click="vm.tab('alreadyclosed',1)">
+    <md-button>进行中({{vm.alreadyclosed}})</md-button></div>
+  <div  ng-class="{'active':vm.currenttab==2}" ng-click="vm.tab('complete',2)">
+    <md-button>已完成({{vm.complete}})</md-button>
+  </div>
+</div>
     <md-content layout="column" flex>
+
+
       <!--<div class="card md-whiteframe-4dp" >-->
         <!--<chartist class="ct-chart ct-golden-section" chartist-data="vm.pieChart.data" chartist-chart-type="Pie" chartist-chart-options="vm.pieChart.options" chartist-responsive-options="vm.pieChart.responsiveOptions"></chartist>-->
       <!--</div>-->
       <div >
-        <md-tabs  md-border-bottom  >
-          <md-tab ng-click="vm.tab('notclose')"  label="未开始({{vm.notclose}})">
-            <md-content flex ng-repeat="item in vm.data | filter:vm.data.type">
-            <div class="p-10" layout="row" layout-align="space-between center"><div style="white-space: nowrap" class="mr-10">{{item.title}}</div><div>{{item.state}}</div></div>
-            <md-divider></md-divider>
-              </md-content>
-          </md-tab>
-          <md-tab ng-click="vm.tab('alreadyclosed')" label="进行中({{vm.alreadyclosed}})">
-            <md-content flex ng-repeat="item in vm.data | filter:vm.data.type">
-              <div class="p-10" layout="row" layout-align="space-between center"><div style="white-space: nowrap" class="mr-10">{{item.title}}</div><div>{{item.state}}</div></div>
-              <md-divider></md-divider>
-            </md-content>
-            </md-tab>
-          <md-tab ng-click="vm.tab('complete')" label="已完成({{vm.complete}})">
-            <md-content flex ng-repeat="item in vm.data | filter:vm.data.type">
-              <div class="p-10" layout="row" layout-align="space-between center"><div style="white-space: nowrap" class="mr-10">{{item.title}}</div><div>{{item.state}}</div></div>
-              <md-divider></md-divider>
-            </md-content>
-        </md-tabs>
-        </md-tabs>
 
-      </div>
 
+        <div style="position: absolute;top:0px;width: 100%;">
+        <md-content flex ng-repeat="item in vm.data | filter:vm.data.type" >
+          <div class="p-10" layout="row" layout-align="space-between center"><div style="white-space: nowrap" class="mr-10">{{item.title}}</div><div>{{item.state}}</div></div>
+          <md-divider></md-divider>
+        </md-content>
+          </div>
+        </div>
 </md-content>
     <sxt-problem-date flex-auto ng-show="vm.showPopup" show="vm.showPopup"></sxt-problem-date>
