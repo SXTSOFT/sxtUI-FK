@@ -65,7 +65,12 @@
                   // p.geometry.properties.v = c;
                   if (p.geometry.geometry.type == 'Stamp')
                     p.geometry.geometry.type = 'Point';
-                  p.geometry.properties.Status = 1;
+                  if (!p.IndexPointID){
+                    p.geometry.properties.Status = 2;
+                  }else {
+                    p.geometry.properties.Status = 1;
+                  }
+
                   fs.push(p.geometry);
                 });
               }
