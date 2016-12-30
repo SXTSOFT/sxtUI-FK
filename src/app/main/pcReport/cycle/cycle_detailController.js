@@ -23,18 +23,9 @@
 
     remote.report.getdetail('cycle',inspectionId).then(function (r) {
       vm.source=r.data;
-      vm.source.first={};
-      vm.source.Supervisions.sort(function (a,b) {
-        if (!a.Time){
-          return true;
-        }
-        return a.Time.localeCompare(a,b);
-      })
-      if (vm.source.Supervisions.length>0){
-        vm.source.first=vm.source.Supervisions[vm.source.Supervisions.length-1];
-      }
 
-      vm.source.second={};
+      //报验信息
+      vm.source.mainContractorsItem={};
       vm.source.MainContractors.sort(function (a,b) {
         if (!a.Time){
           return true;
@@ -42,7 +33,31 @@
         return a.Time.localeCompare(a,b);
       })
       if (vm.source.MainContractors.length>0){
-        vm.source.second=vm.source.MainContractors[vm.source.MainContractors.length-1];
+        vm.source.mainContractorsItem=vm.source.MainContractors[vm.source.MainContractors.length-1];
+      }
+
+      //验收信息
+      vm.source.supervisionsItem={};
+      vm.source.Supervisions.sort(function (a,b) {
+        if (!a.Time){
+          return true;
+        }
+        return a.Time.localeCompare(a,b);
+      })
+      if (vm.source.Supervisions.length>0){
+        vm.source.supervisionsItem=vm.source.Supervisions[vm.source.Supervisions.length-1];
+      }
+
+      //整改信息
+      vm.source.rectifysItem={};
+      vm.source.Rectifys.sort(function (a,b) {
+        if (!a.Time){
+          return true;
+        }
+        return a.Time.localeCompare(a,b);
+      })
+      if (vm.source.Rectifys.length>0){
+        vm.source.rectifysItem=vm.source.Rectifys[vm.source.Rectifys.length-1];
       }
 
       vm.source.third={};

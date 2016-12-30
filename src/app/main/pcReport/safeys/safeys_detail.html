@@ -16,21 +16,28 @@
     <!--</td>-->
   </tr>
   <tr class="min80">
-    <td style="min-width: 98px">施工单位：</td>
-    <td>{{vm.source.second.CompanyName}}</td>
+    <td style="min-width: 98px">报验单位：</td>
+    <td>{{vm.source.supervisionsItem.CompanyName}}</td>
     <td>报验人</td>
-    <td>{{vm.source.second.NickName}}</td>
+    <td>{{vm.source.supervisionsItem.NickName}}</td>
     <td>报验时间</td>
-    <td>{{vm.source.second.Time}}</td>
+    <td>{{vm.source.supervisionsItem.Time}}</td>
   </tr>
-
   <tr class="min80">
     <td style="min-width: 98px">验收单位：</td>
-    <td>{{vm.source.first.CompanyName}}</td>
+    <td>{{vm.source.mainContractorsItem.CompanyName}}</td>
     <td>验收人</td>
-    <td>{{vm.source.first.NickName}}</td>
+    <td>{{vm.source.mainContractorsItem.NickName}}</td>
     <td>验收时间</td>
-    <td>{{vm.source.first.Time}}</td>
+    <td>{{vm.source.mainContractorsItem.Time}}</td>
+  </tr>
+  <tr class="min80">
+    <td style="min-width: 98px">整改单位：</td>
+    <td>{{vm.source.rectifysItem.CompanyName}}</td>
+    <td>整改人</td>
+    <td>{{vm.source.rectifysItem.NickName}}</td>
+    <td>整改时间</td>
+    <td>{{vm.source.rectifysItem.Time}}</td>
   </tr>
   <!--<tr class="min80">-->
     <!--<td style="min-width: 98px">整改单位：</td>-->
