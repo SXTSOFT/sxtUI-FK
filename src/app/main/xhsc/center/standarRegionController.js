@@ -21,7 +21,7 @@
 
     remote.Project.getRegionWithRight(projectID).then(function (res) {
       var result= xhscService.buildRegionTree(res.data,1);
-      vm.souce=result.Children;
+      vm.souce=result&&result.Children;
       vm.show=true;
     });
 
