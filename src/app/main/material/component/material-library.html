@@ -17,10 +17,10 @@
           <a data-nodrag ng-click="vm.btnEdit(node,true,$event)" ng-if="vm.cid && node.level==2"><span class="glyphicon">编辑</span></a>
         <a data-nodrag ng-click=" vm.btnRemove(node)" ng-if="!vm.cid"><span class="glyphicon">删除</span></a>
         </span>
-        <a ng-if="node.nodes && node.nodes.length > 0" ng-click="vm.toggleClick(node,this)">
-          <span class="glyphicon" ng-class="{'glyphicon-plus': !collapsed,'glyphicon-minus': collapsed}"></span>
+        <a ng-if="node.level != 2">
+          <span class="glyphicon" ng-class="{'glyphicon-plus': !collapsed,'glyphicon-minus': collapsed}" ng-click="vm.toggleClick(node,this)"></span>
         </a>
-        <span class="nodetitle ng-binding">{{node.title}}<i class="fa fa-refresh fa-spin"></i></span>
+        <span class="nodetitle">{{node.title}}<i class="fa fa-refresh fa-spin"></i></span>
       </div>
       <ol ui-tree-nodes ng-model="node.nodes" ng-class="{hidden: !collapsed}">
         <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">

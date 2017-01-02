@@ -60,6 +60,11 @@
 
     vm.toggleClick = function (node, scope,fn) {
       scope.toggle(scope);
+      if(!node.nodes){
+        api.material.materialScience.GetMaterialListByTypeId(node.id).then(function(r){
+          node.nodes = r.data;
+        });
+      }
     }
 
     vm.btnEdit = function (node,flag,ev) {

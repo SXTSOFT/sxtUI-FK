@@ -57,6 +57,9 @@
         GetMaterialTreeList:function (cid) {
           return $http.get($http.url('/api/MaterialScience/GetMaterialTreeListAsync/'+cid))
         },
+        GetMaterialListByTypeId:function (cid) {
+          return $http.get($http.url('/api/MaterialScience/GetMaterialListByTypeId/'+cid))
+        },
         batchCreate:function (data) {
           return $http.put('/api/MaterialScience/BatchCreateMaterial',data);
         }
