@@ -17,13 +17,15 @@
     <!--</div>-->
 
     <div class="img-list">
-      <span ng-repeat="item in photos" class="photos" sxt-image-view="photos" is-container = "true" >
-          <md-icon md-font-icon="icon-minus-circle"ng-click="remove($event,item)"
-                   style="font-size: 16px; color: #ff0000;" class="remove"></md-icon>
-        <img src="{{item.url}}"></span>
+    <span  ng-repeat="img in photos" sxt-images="vm.CertificateImgs" sxt-image-view="photos"  class="photos" is-container = "true" >
+      <md-icon md-font-icon="icon-minus-circle"ng-click="remove($event,item)"
+               style="font-size: 16px; color: #ff0000;" class="remove"></md-icon>
+      <img ng-src="{{img.url}}"/>
+    </span>
     </div>
+
     <div class="img-list">
-      <span ng-click="addPhoto()"><img class="camera" src="app/main/szgc/images/add-photo.png" width="40"></span>
+      <span ng-click="addPhoto()"><img class="camera" src="app/main/szgc/images/photo.svg" width="40"></span>
     </div>
   </div>
   <md-divider></md-divider>

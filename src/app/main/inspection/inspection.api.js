@@ -41,13 +41,17 @@
           return get(http.url(baseUri+'deliverys/'+delivery_id));
         },
         issues_tree:function(parm){
-          return get(http.url(baseUri+'issues/tree?enabled='+parm.enabled+'&page_size='+parm.page_size+'&page_number='+parm.page_number));
+          return get(http.url(baseUri+'issues/tree?type=delivery&enabled='+parm.enabled+'&page_size='+parm.page_size+'&page_number='+parm.page_number));
         },
-        repair_tasks:function(parm){
-          return post(http.url('/estate/v1/repair_tasks',{parm:parm}));
+        getrepair_tasks:function (parm) {
+          return get(http.url(baseUri+'repair_tasks?page_size='+parm.page_size+'&page_number='+parm.page_number));
+        },
+        insertrepair_tasks:function(parm){
+          debugger;
+          return post(http.url(baseUri+'repair_tasks'),parm);
         },
         deleterepair_tasks:function(task_id){
-          return del(http.url('/estate/v1/repair_tasks/'+task_id));
+          return del(http.url(baseUri+'repair_tasks/{task_id}'+task_id));
         },
         getdeliveryslist:function(parm){
           return get(http.url(baseUri+'team_link_batch/delivery',parm));

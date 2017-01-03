@@ -36,7 +36,7 @@
       vm.selected=num;
       vm.currenttab =num;
     };
-    vm.done=function (delivery_id) {
+    vm.done=function (room_id,delivery_id) {
       var _if=false;
       api.inspection.estate.getdeliverys(delivery_id).then(function (r) {
       if(r.data.data.water_degree.length==0&&r.data.data.electricity_degree.length==0){
@@ -73,8 +73,10 @@
       $state.go('app.statistics.taskpage');
     })
 
-    vm.check = function(delivery_id){
-      $state.go('app.inspection.check',{delivery_id:delivery_id})
+    vm.check = function(item){
+      if(item.status=='processing'||item.status=='unprocessed'){
+      $state.go('app.inspection.check',{delivery_id:item.delivery_id})
+        }
     }
 
 

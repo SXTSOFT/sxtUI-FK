@@ -13,14 +13,36 @@
     });
 
   /**@ngInject*/
-  function inspectionCheckController($scope,$rootScope,utils,$state,$stateParams,$mdPanel){
+  function inspectionCheckController($scope,$rootScope,utils,$state,$stateParams,$mdPanel,api,auth){
 
     var vm = this;
-    $rootScope.shell.title='A201';
+    vm.data={
+      roomid:'',
+      mapurl:'',
+      username:''
+    }
+
+
+    auth.getUser().then(function (r) {
+      vm.data.username=r.Username
+    });
 
     vm.showPopup = $stateParams.showPopup || false;
-    vm.question = $stateParams.question
 
+    //publicquestion 不变的问题指标 question 可变的问题指标
+    vm.publicquestion =$stateParams.publicquestion;
+    if (vm.publicquestion!=''){
+      vm.question = vm.publicquestion;
+    }else {
+      vm.question = $stateParams.question;
+    }
+    //获取任务详情数据
+    api.inspection.estate.getdeliverys($stateParams.delivery_id).then(function (r) {
+      vm.data.mapurl=r.data.data.room.layout.drawing_url;
+      vm.data.roomid=r.data.data.room.room_id;
+      //设置头部标题
+      $rootScope.shell.title=r.data.data.room.name;
+    })
     //vm.add = function(){
     //  vm.showPopup = true;
     //}
@@ -47,13 +69,14 @@
     //    attachTo:angular.element('#content')
     //  });
     //}
+    //拦截头部按钮事件
     utils.onCmd($scope,['cjwt','csb','prev'],function(cmd,e){
       switch (cmd){
         case 'csb':
               $state.go('app.meterreading.page',{delivery_id:$stateParams.delivery_id})
               break;
         case 'cjwt':
-          $state.go('app.inspection.cjwt');
+          $state.go('app.inspection.cjwt',{delivery_id:$stateParams.delivery_id});
               //vm.showCjwt();
               break;
       }

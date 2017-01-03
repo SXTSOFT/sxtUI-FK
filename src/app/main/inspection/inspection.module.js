@@ -124,10 +124,10 @@
         },
         noBack:false,
         template:'<inspection-check layout="column" flex></inspection-check>',
-        params:{question:'',showPopup:''}
+        params:{question:'',showPopup:'',publicquestion:'',issues:''}
       })
       .state('app.inspection.cjwt', {
-        url:'/cjwt',
+        url:'/cjwt/{delivery_id}',
         title:'常见问题',
         hideFootbar:true,
         shell:{

@@ -17,9 +17,9 @@
 <md-content layout="column" flex style="background: #f0f0f0" class="is-list">
   <md-list class=" p-0">
     <md-list-item class="white-bg mv-10" style="border-bottom: solid 1px silver;border-top: solid 1px silver;" ng-repeat="item in vm.data | filter:vm.data.status">
-      <div class="md-list-item-text" flex>{{item.room.full_name}}</div>
-      <md-button class="md-secondary " ng-click="vm.check(item.delivery_id)" ng-if="vm.currenttab == 0&&!vm.loading" style="font-size: 12px;background-color: #00acee;color: white;">开始验房</md-button>
-      <md-button class="md-secondary" ng-click="vm.done(item.delivery_id)" ng-if="vm.currenttab == 1" style="font-size: 12px;background-color: #00acee;color: white;">验房完成</md-button>
+      <div class="md-list-item-text" flex ng-click="vm.check(item.room.room_id,item.delivery_id,item.status)">{{item.room.full_name}}</div>
+      <md-button class="md-secondary " ng-click="vm.check(item)" ng-if="vm.currenttab == 0&&!vm.loading" style="font-size: 12px;background-color: #00acee;color: white;">开始验房</md-button>
+      <md-button class="md-secondary" ng-click="vm.done(item.room.room_id,item.delivery_id)" ng-if="vm.currenttab == 1" style="font-size: 12px;background-color: #00acee;color: white;">验房完成</md-button>
       <div ng-if="vm.loading">
         <span class="md-secondary" ng-if="vm.loading">下载数据</span><span class="circle md-secondary" ng-if="vm.loading">50%</span>
       </div>

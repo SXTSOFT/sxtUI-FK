@@ -5,7 +5,7 @@
       <md-list class="p-0">
         <md-list-item ng-click="vm.select($index)" ng-class="{'active':vm.currentQ==$index}"
                       ng-repeat="i in vm.options">
-          <p style="text-align: center">{{i.name}}</p>
+          <p style="text-align: center">{{i.title}}</p>
         </md-list-item>
       </md-list>
     </md-content>
@@ -13,10 +13,10 @@
   <div flex layout="column">
     <md-content layout="column" flex>
       <div style="border-bottom: 1px solid #dedede;" class="cjwt-list ph-8" layout="row" layout-align="start center"
-           ng-click="vm.check(q.name)" ng-repeat="q in vm.options[vm.currentQ].question">
-        <div layout="column" layout-align="start center" class="circle" flex="none">{{q.zimu}}</div>
+           ng-click="vm.check(q.title,q.issue_id)" ng-repeat="q in vm.options[vm.currentQ].children">
+        <div layout="column" layout-align="start center" class="circle" flex="none">{{q.abbrname.toUpperCase()}}</div>
         <div layout="column" layout-align="start center" flex style="white-space: nowrap;overflow: hidden;display: block;">
-          <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{q.name}}</div>
+          <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{q.title}}</div>
         </div>
         <!--<div layout="column" layout-align="end center" flex="none">-->
         <!--<div layout="row" layout-align="center center">-->
