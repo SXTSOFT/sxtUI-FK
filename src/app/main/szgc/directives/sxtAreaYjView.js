@@ -23,7 +23,7 @@
 
           var yjId = scope.value.itemId.split('>'),
             projectId = yjId[0];
-          yjId = yjId[yjId.length - 1];
+          yjId = yjId[yjId.length - 1] + '-' + scope.value.zy;
           api.szgc.FilesService.group(yjId).then(function (fs) {
             if (fs.data.Files.length == 0) return;
             map = L.map(element[0], {

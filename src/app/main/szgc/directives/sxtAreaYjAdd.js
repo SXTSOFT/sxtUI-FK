@@ -26,7 +26,10 @@
             case '565a6d15778e350743c2fb56':zy=2;break;
           }
           //console.log('scope.project.rootTypeId',scope.project.rootTypeId)
-          api.szgc.FilesService.group(scope.project.pid).then(function (fs) {
+          var groupId = scope.project.pid;
+          if(zy != 0)
+            groupId = groupId + (zy==0?'':'-'+zy)
+          api.szgc.FilesService.group(groupId).then(function (fs) {
             if (fs.data.Files.length == 0) return;
             map = L.map(element[0], {
               crs: L.extend({}, L.CRS, {
