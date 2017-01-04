@@ -81,6 +81,7 @@
       }
       vm.logout = function(){
         utils.confirm('确定清除所有缓存数据吗?').then(function (result) {
+
           vm.trueClear = function (exclude) {
             $mdDialog.show({
               controller: ['$scope','utils','$mdDialog',function ($scope,utils,$mdDialog) {
@@ -115,6 +116,7 @@
             return;
           }
           vm.trueClear(['v_profile']);
+          api.xhsc.logout();
         });
       }
       //消息中心

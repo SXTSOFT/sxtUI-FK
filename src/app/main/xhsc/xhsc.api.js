@@ -31,6 +31,9 @@
       }).bind(function () {
         return $http.get(sxt.app.api + '/api/UserInfo/profile');
       }),
+      logout:function(){
+       return  $http.get($http.url('/api/UserInfo/logout'))
+      },
       offline: $http.db({
         _id: 's_offline',
         idField: 'Id',
