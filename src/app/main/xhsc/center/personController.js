@@ -26,8 +26,9 @@
       vm.user={};
       vm.u={};
       if (role&&role.data&&role.data){
-        vm.user.name= role.data.Name,
-          vm.user.userName= role.data.UserName
+          vm.user.name= role.data.Name;
+          vm.user.userName= role.data.UserName;
+          vm.user.memberTypeName = role.data.Role.MemberTypeName;
         switch (role.data.Role.MemberType){
           case 0:
             vm.user.role='总包';
