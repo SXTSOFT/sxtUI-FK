@@ -615,18 +615,6 @@
                 vm.current = g;
                 vm.gxName = flow.MeasureInfo;
               }
-              //vm.proceduresData.forEach(function(_r){
-
-                //_r.SpecialtyChildren.forEach(function(_rr){
-                //  var g=_rr.WPAcceptanceList && _rr.WPAcceptanceList.find(function(t){
-                //    return t.AcceptanceItemID ==  flow.MeasureId;
-                //  })
-                //  if(g){
-                //    vm.current = g;
-                //    vm.gxName = flow.MeasureInfo;
-                //  }
-                //})
-              //})
             if(!vm.current){
                 //vm.sendData.CloseRelatedObjectId = null;
                 flow.MeasureInfo = null;
