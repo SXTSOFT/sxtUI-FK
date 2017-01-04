@@ -24,7 +24,6 @@
     }
     vm.currentQ = 0
       api.inspection.estate.issues_tree(vm.parm).then(function (r) {
-
         vm.options=r.data.data;
 
       });
@@ -36,8 +35,11 @@
 
 
     })
-    vm.select = function(num){
-      vm.currentQ = num
+    vm.firstSelect = function(num){
+      vm.firstCurrent = num
+    }
+    vm.secondSelect = function(num){
+      vm.secondCurrent = num
     }
 
     vm.check = function (q,id) {

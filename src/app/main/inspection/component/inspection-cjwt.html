@@ -1,34 +1,34 @@
 
 <div flex layout="row" class="cjwt">
-  <div flex="40" layout="column" style="background: #f0f0f0;" id="list">
-    <md-content style="background: #f0f0f0;">
+  <div flex="30" layout="column" style="background: #f5f5f5;" id="list">
+    <md-content style="background: #f5f5f5;">
       <md-list class="p-0">
-        <md-list-item ng-click="vm.select($index)" ng-class="{'active':vm.currentQ==$index}"
+        <md-list-item ng-click="vm.firstSelect($index)"
                       ng-repeat="i in vm.options">
           <p style="text-align: center">{{i.title}}</p>
         </md-list-item>
       </md-list>
     </md-content>
   </div>
+
+  <div flex="30" layout="column" style="background: #f9f9f9;">
+    <md-content style="background: #f9f9f9;">
+      <md-list class="p-0">
+        <md-list-item ng-click="vm.secondSelect($index)"
+                      ng-repeat="i in vm.options[vm.firstCurrent].children">
+          <p style="text-align: center">{{i.title}}</p>
+        </md-list-item>
+      </md-list>
+    </md-content>
+  </div>
+
   <div flex layout="column">
     <md-content layout="column" flex>
       <div style="border-bottom: 1px solid #dedede;" class="cjwt-list ph-8" layout="row" layout-align="start center"
-           ng-click="vm.check(q.title,q.issue_id)" ng-repeat="q in vm.options[vm.currentQ].children">
-        <div layout="column" layout-align="start center" class="circle" flex="none">{{q.abbrname.toUpperCase()}}</div>
+           ng-click="vm.check(q.title,q.issue_id)" ng-repeat="q in vm.options[vm.firstCurrent].children[vm.secondCurrent].children">
+        <div layout="column" layout-align="start center" class="circle" flex="none">{{q.abbrname.substring(0,2).toUpperCase()}}</div>
         <div layout="column" layout-align="start center" flex style="white-space: nowrap;overflow: hidden;display: block;">
           <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{q.title}}</div>
-        </div>
-        <!--<div layout="column" layout-align="end center" flex="none">-->
-        <!--<div layout="row" layout-align="center center">-->
-        <!--<md-checkbox ng-model="vm.checked" class="mb-0"></md-checkbox>-->
-        <!--</div>-->
-        <!--</div>-->
-      </div>
-      <div style="border-bottom: 1px solid #dedede;" class="cjwt-list ph-8" layout="row" layout-align="start center"
-           ng-click="vm.check('其他')">
-        <div layout="column" layout-align="start center" class="circle" flex="none">QT</div>
-        <div layout="column" layout-align="start center" flex style="white-space: nowrap;overflow: hidden;display: block;">
-          <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">其他</div>
         </div>
       </div>
     </md-content>

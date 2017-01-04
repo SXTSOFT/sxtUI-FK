@@ -35,7 +35,7 @@
         ]
 
       scope.remove = function ($event,item) {
-        scope.photos.splice(scope.photos.indexOf(item),1);
+        scope.photos.splice(item,1);
       }
 
       scope.addPhoto = function(){
@@ -95,6 +95,7 @@
       }
       scope.currentQ = 0;
       api.inspection.estate.issues_tree(scope.parm).then(function (r) {
+        
         scope.options=r.data.data;
       });
       scope.chooseQues = function(){
@@ -109,10 +110,13 @@
           $mdPanel.open({
             controller: ['$scope','mdPanelRef','api','$timeout',function ($scope,mdPanelRef,api,$timeout) {
               // scope.publicquestion='';
-              $scope.select = function(num){
-                $scope.currentQ = num
+              $scope.firstSelect = function(num){
+                $scope.firstCurrent = num
                 // mdPanelRef.close();
                 // mdPanelRef.destroy();
+              }
+              $scope.secondSelect = function(num){
+                $scope.secondCurrent = num
               }
               $scope.check = function(title,id){
                 scope.question=title;
@@ -130,7 +134,6 @@
             controllerAs:'vm',
             locals:{
               options:scope.options,
-              currentQ:scope.currentQ
             },
             clickOutsideToClose: true,
             escapeToClose: true,

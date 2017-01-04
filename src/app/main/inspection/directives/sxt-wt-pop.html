@@ -17,11 +17,12 @@
     <!--</div>-->
 
     <div class="img-list">
-    <span  ng-repeat="img in photos" sxt-images="vm.CertificateImgs" sxt-image-view="photos"  class="photos" is-container = "true" >
-      <md-icon md-font-icon="icon-minus-circle"ng-click="remove($event,item)"
-               style="font-size: 16px; color: #ff0000;" class="remove"></md-icon>
-      <img ng-src="{{img.url}}"/>
-    </span>
+      <div ng-repeat="img in photos" class="photos">
+        <md-icon md-font-icon="icon-minus-circle" ng-click="remove($event,$index)" style="font-size: 16px; color: #ff0000;" class="remove"></md-icon>
+        <span sxt-images="vm.CertificateImgs" sxt-image-view="photos" is-container = "true" >
+          <img ng-src="{{img.url}}"/>
+        </span>
+      </div>    
     </div>
 
     <div class="img-list">

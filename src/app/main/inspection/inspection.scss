@@ -121,6 +121,16 @@
   }
 }
 .img-list{
+  .photos{
+  position: relative;
+  display: inline-block;
+  }
+
+  .remove{
+  position: absolute;
+  top: -7px;
+  right: -5px;
+  }
   span{
     display: inline-block;
     width: 50px;
@@ -1819,14 +1829,4 @@ a.leaflet-draw-draw-color:hover div{
   .leaflet-right{
     display: none;
   }
-}
-
-.photos{
-  position: relative;
-}
-
-.remove{
-  position: absolute;
-  top: -7px;
-  right: -10px;
 }
