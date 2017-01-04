@@ -21,7 +21,7 @@
   {
     $stateProvider
       .state('app.pcReport_hz',{
-        title:"评估汇总",
+        title:"汇总报表",
         url:'/pcReport_hz',
         noBack:true,
         sendBt:false,

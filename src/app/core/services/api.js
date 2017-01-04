@@ -346,7 +346,7 @@
           rs.forEach(function (result) {
             if ( result.rows&& result.rows.length){
               arr.push({
-                key:keys[i].name?keys[i].name:keys[i].cfg._id,
+                key:keys[i]._db_name?keys[i]._db_name:keys[i].cfg._id,
                 vals:result.rows,
                 db:keys[i]
               })
