@@ -20,7 +20,7 @@
         }
       })
       .state('app.inspection.desktop', {
-        url:'/inspection',
+        url:'/inspection/{status}',
         title:'',
         shell:{
           yfbar:true,
@@ -102,7 +102,7 @@
         }
       })
       .state('app.meterreading.page', {
-        url:'/meterreading',
+        url:'/meterreading/{delivery_id}',
         title:'抄水电表',
         noBack:false,
         shell:{
@@ -112,7 +112,7 @@
       })
 
       .state('app.inspection.check', {
-        url:'/check/{id}',
+        url:'/check/{delivery_id}',
         title:'',
         hideFootbar:true,
         shell:{
@@ -124,10 +124,10 @@
         },
         noBack:false,
         template:'<inspection-check layout="column" flex></inspection-check>',
-        params:{question:'',showPopup:''}
+        params:{question:'',showPopup:'',publicquestion:'',issues:''}
       })
       .state('app.inspection.cjwt', {
-        url:'/cjwt',
+        url:'/cjwt/{delivery_id}',
         title:'常见问题',
         hideFootbar:true,
         shell:{

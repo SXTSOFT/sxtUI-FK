@@ -2,12 +2,12 @@
 
 
 
-<md-tabs md-dynamic-height md-border-bottom>
-  <md-tab ng-click="vm.inspection(0)" flex label="未开始">
+<md-tabs md-dynamic-height md-border-bottom md-selected="vm.selected" >
+  <md-tab ng-click="vm.inspection(0,'unprocessed')"  flex label="未开始">
   </md-tab>
-  <md-tab ng-click="vm.inspection(1)"  flex label="进行中">
+  <md-tab ng-click="vm.inspection(1,'processing')"  flex label="进行中">
   </md-tab>
-  <md-tab ng-click="vm.inspection(2)" flex label="已完成">
+  <md-tab ng-click="vm.inspection(2,'inspection_completed')" flex label="已完成">
   </md-tab>
 </md-tabs>
 
@@ -16,10 +16,10 @@
 
 <md-content layout="column" flex style="background: #f0f0f0" class="is-list">
   <md-list class=" p-0">
-    <md-list-item class="white-bg mv-10" style="border-bottom: solid 1px silver;border-top: solid 1px silver;">
-      <div class="md-list-item-text" flex>深圳市的解放拉萨的叫法楼上的房间啊速度</div>
-      <md-button class="md-secondary " ng-click="vm.check()" ng-if="vm.currenttab == 0&&!vm.loading" style="font-size: 12px;background-color: #00acee;color: white;">开始验房</md-button>
-      <md-button class="md-secondary" ng-click="vm.done()" ng-if="vm.currenttab == 1" style="font-size: 12px;background-color: #00acee;color: white;">验房完成</md-button>
+    <md-list-item class="white-bg mv-10" style="border-bottom: solid 1px silver;border-top: solid 1px silver;" ng-repeat="item in vm.data | filter:vm.data.status">
+      <div class="md-list-item-text" flex ng-click="vm.check(item.room.room_id,item.delivery_id,item.status)">{{item.room.full_name}}</div>
+      <md-button class="md-secondary " ng-click="vm.check(item)" ng-if="vm.currenttab == 0&&!vm.loading" style="font-size: 12px;background-color: #00acee;color: white;">开始验房</md-button>
+      <md-button class="md-secondary" ng-click="vm.done(item.room.room_id,item.delivery_id)" ng-if="vm.currenttab == 1" style="font-size: 12px;background-color: #00acee;color: white;">验房完成</md-button>
       <div ng-if="vm.loading">
         <span class="md-secondary" ng-if="vm.loading">下载数据</span><span class="circle md-secondary" ng-if="vm.loading">50%</span>
       </div>

@@ -10,16 +10,18 @@
   function inspectionMap(require,$window,$timeout,api) {
     return {
       scope:{
-        mapShow:'='
+        mapShow:'=',
+        mapUrl:'='
       },
-      link:function (scope,el) {
+      link:function (scope,el,api) {
+
         //var L = $window.L;
         require('/assets/res.pbf',function () {
           $timeout(function () {
             var m = window.L.matters({
               map:{
                 el:el[0],
-                sheet:'/assets/images/jpg.jpg',
+                sheet:scope.mapUrl,
                 zoomControl:false,
                 fullscreenControl:false,
                 drawControlTooltips:false,
