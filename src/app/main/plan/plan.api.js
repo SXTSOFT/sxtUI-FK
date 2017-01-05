@@ -112,6 +112,12 @@
         getMileStone:function(id){
           return $http.get($http.url('/api/BuildingPlans/'+id+'/Milestones'))
         },
+        setMileStoneTime:function(pid,id,time){
+          return $http.get($http.url('/api/BuildingPlans/'+pid+'/Milestones/'+id+'/UpdateCheck',{MilestoneTime:time}))
+        },
+        updateMileStone:function(pid,id,params){
+          return $http.put($http.url('/api/BuildingPlans/'+pid+'/Milestones/'+id),params)
+        },
         adjustPlan:function(id,params){
           return $http.post($http.url('/api/BuildingPlans/'+id+'/Adjust'),params)
         },
