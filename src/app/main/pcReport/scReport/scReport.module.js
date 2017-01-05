@@ -1,12 +1,7 @@
 /**
  * Created by lss on 2016/9/13.
  */
-/**
- * Created by lss on 2016/9/8.
- */
-/**
- * Created by lss on 2016/9/8.
- */
+
 (function ()
 {
   'use strict';
@@ -37,6 +32,39 @@
           'content@app':{
             templateUrl: 'app/main/pcReport/scReport/scslReport.html',
             controller : 'scslReportController as vm',
+          }
+        }
+      })
+      .state('app.pcReport_sl_jt',{
+        noBack:true,
+        sendBt:false,
+        url:'/pcReport_sl_jt',
+        views:{
+          'content@app':{
+            templateUrl: 'app/main/pcReport/scReport/jt/scJt.html',
+            controller : 'scJtController as vm',
+          }
+        }
+      })
+      .state('app.pcReport_sl_project',{
+        noBack:true,
+        sendBt:false,
+        url:'/pcReport_sl_project',
+        views:{
+          'content@app':{
+            templateUrl: 'app/main/pcReport/scReport/project/scProject.html',
+            controller : 'scProjectController as vm',
+          }
+        }
+      })
+      .state('app.pcReport_sl_building',{
+        noBack:true,
+        sendBt:false,
+        url:'/pcReport_sl_building',
+        views:{
+          'content@app':{
+            templateUrl: 'app/main/pcReport/scReport/building/scBuilding.html',
+            controller : 'scBuildingController as vm',
           }
         }
       })

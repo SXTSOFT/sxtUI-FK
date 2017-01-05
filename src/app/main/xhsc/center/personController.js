@@ -38,6 +38,13 @@
             break;
           case 4:
             vm.user.role="项目部";
+            break;
+          case 8:
+            vm.user.role="工程管理部";
+            break;
+          case 16:
+            vm.user.role="集团";
+            break;
         }
       }
     });
