@@ -13,23 +13,24 @@
     });
 
   /**@ngInject*/
-  function statisticsProblemController($state,utils,$scope,api){
+  function statisticsProblemController($state,utils,$scope,api,auth){
     var vm = this;
     vm.parm={
-      page_size:1 ,
+      page_size:10 ,
       page_number:1
     }
 
 
-
+    auth.getUser().then(function (r) {
+      vm.userid=r.Id;
+    });
     api.inspection.estate.getrepair_tasks(vm.parm).then(function (r) {
-      debugger;
       vm.data=r.data.data;
     })
 
     vm.qdetail=(function (item) {
       if(item.type!="alreadyclosed") {
-        $state.go('app.statistics.problemdetail', {id: item.title});
+        $state.go('app.statistics.problemdetail', {task_id: item.task_id});
       }
     })
     utils.onCmd($scope,['swap'],function(cmd,e){
@@ -44,8 +45,12 @@
       $state.go('app.statistics.problempage');
     })
     vm.tab=(function (type) {
-
-      vm.data.type=type;
+      vm.data.userid="";
+      vm.data.type="";
+      if(type=="my")
+        vm.data.userid=vm.userid;
+      else
+        vm.data.type=type;
     })
   }
 

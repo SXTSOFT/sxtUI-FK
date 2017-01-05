@@ -13,13 +13,22 @@
     });
 
   /**@ngInject*/
-  function statisticsProblemdetailController($stateParams,$scope,$rootScope){
+  function statisticsProblemdetailController($stateParams,$scope,$rootScope,api){
 
     var vm = this;
     vm.showorhienimg=false;
     // vm.showImg = function () {
     //   $rootScope.$emit('sxtImageViewAll',{data:true});
     // }
+
+    api.inspection.estate.getrepair_tasksData($stateParams.task_id).then(function (r) {
+      vm.data=r.data.data;
+
+      vm.data.status=vm.data.status=='closed'?true:false;
+    })
+
+
+
     vm.checkimg=(function(src,istrue){
       vm.checkimgsrc=src;
       vm.showorhienimg=istrue;
@@ -39,23 +48,6 @@
       }
     },true);
 
-    vm.data={
-      id:1,
-      problemnumber:'A10210',
-      problem:'问题描述测试',
-      position:'出现位置测试',
-      datatiem:'2016-11-23测试',
-      responsibilityunit:'责任单位测试',
-      status:true,
-      complementaryDescription:'问题补充描述测试',
-      imgs:[
-        {
-          url:'app/main/szgc/images/1.jpg'
-        },{
 
-          url:'app/main/szgc/images/bg_home.png'
-        }
-      ]
-    }
   }
 })();

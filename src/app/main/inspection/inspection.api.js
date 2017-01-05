@@ -44,17 +44,23 @@
           return get(http.url(baseUri+'issues/tree?type=delivery&enabled='+parm.enabled+'&page_size='+parm.page_size+'&page_number='+parm.page_number));
         },
         getrepair_tasks:function (parm) {
-          return get(http.url(baseUri+'repair_tasks?page_size='+parm.page_size+'&page_number='+parm.page_number));
+          return get(http.url('/tasks/v1/repair_tasks?page_size='+parm.page_size+'&page_number='+parm.page_number));
         },
         insertrepair_tasks:function(parm){
           debugger;
           return post(http.url(baseUri+'repair_tasks'),parm);
+        },
+        getrepair_tasksData:function(task_id){
+          return get(http.url(baseUri+'repair_tasks/'+task_id));
         },
         deleterepair_tasks:function(task_id){
           return del(http.url(baseUri+'repair_tasks/{task_id}'+task_id));
         },
         getdeliveryslist:function(parm){
           return get(http.url(baseUri+'team_link_batch/delivery',parm));
+        },
+        insertImg:function (parm) {
+          return post(http.url("/storage/v1/files/base64/picture/upload"),parm)
         }
       }
 

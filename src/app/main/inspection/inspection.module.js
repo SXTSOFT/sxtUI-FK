@@ -56,7 +56,7 @@
         template:'<statistics-problem layout="column" flex></statistics-problem>'
       })
       .state('app.statistics.problemdetail', {
-        url:'/problemdetail/{id}',
+        url:'/problemdetail/{task_id}',
         title:'问题详情',
         hideFootbar:true,
         shell:{

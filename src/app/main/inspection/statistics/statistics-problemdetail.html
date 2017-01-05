@@ -14,13 +14,13 @@
       <md-list class="p-0">
         <md-list-item style="color: #888888">
           <p flex="none" style="width: 80px;">问题编号</p>
-          <div class="md-list-item-text" flex style="text-align: right;">{{vm.data.problemnumber}}</div>
+          <div class="md-list-item-text" flex style="text-align: right;">{{vm.data.third_issue.title}}</div>
           <!--<div flex>手动阀手动阀手动阀手动阀</div>-->
           <md-divider></md-divider>
         </md-list-item>
         <md-list-item style="color: #888888">
           <p flex="none" style="width: 80px;">问题</p>
-          <div type="text" class="md-list-item-text" flex style="text-align: right;width: 90%;" >{{vm.data.problem}}</div>
+          <div type="text" class="md-list-item-text" flex style="text-align: right;width: 90%;" >{{vm.data.third_issue.title}}</div>
           <!--<div flex>手动阀手动阀手动阀手动阀</div>-->
           <md-divider></md-divider>
         </md-list-item>
@@ -31,12 +31,12 @@
         </md-list-item>
         <md-list-item style="color: #888888">
           <p flex="none" style="width: 80px;">创建时间</p>
-          <div class="md-list-item-text" flex style="text-align: right;">{{vm.data.datatiem}}</div>
+          <div class="md-list-item-text" flex style="text-align: right;">{{vm.data.created_at}}</div>
           <md-divider></md-divider>
         </md-list-item>
         <md-list-item style="color: #888888">
           <p flex="none" style="width: 80px;">责任单位</p>
-          <div class="md-list-item-text" flex style="text-align: right;">{{vm.data.responsibilityunit}}</div>
+          <div class="md-list-item-text" flex style="text-align: right;">{{vm.data.partner.title}}</div>
           <md-divider></md-divider>
         </md-list-item>
         <!--<md-list-item ui-sref="app.project.comment.cperson">-->
@@ -59,12 +59,12 @@
     </div>
     <div class="ml-20 mv-10">补充描述</div>
     <div style="border-top:1px solid #dedede;border-bottom: 1px solid #dedede;background: #fff;color: #888888"  >
-      <p>问题补充描述</p>
+      <p>{{vm.data.description}}</p>
       <!--<textarea style="height:60px;line-height: 20px;resize:none;width:100%;padding:10px;" ng-model="vm.data.complementaryDescription" >问题补充描述</textarea>-->
     </div>
     <div class="ml-20 mv-10">照片</div>
     <div class="img-list ph-5 pv-10 white-bg"   sxt-image-view="vm.data.imgs"  is-container = "true">
-      <img src="{{item.url}}" ng-repeat="item in vm.data.imgs" style="width: 60px;height: 70px;border: #DDDDDD 1px solid;" class="p-5 mh-10">
+      <img src="{{item.url}}" ng-repeat="item in vm.data.pictures" style="width: 60px;height: 70px;border: #DDDDDD 1px solid;" class="p-5 mh-10">
     </div>
 
     <!--<div style="background: #fff;border-top:1px solid #dedede;bor der-bottom: 1px solid #dedede;" class="pic-content">-->
