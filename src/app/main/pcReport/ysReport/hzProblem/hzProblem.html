@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<table class="table table-bordered">
+    <tr>
+      <th rowspan="2" style="min-width: 50px;width: 50px;">序号</th>
+      <th rowspan="2" style="min-width: 80px;">楼栋号</th>
+      <th ng-repeat="item in vm.source.head" colspan="3">{{item.name}}</th>
+    </tr>
+    <tr>
+      <th ng-repeat="item in vm.source.subTitle"  class="center w">
+        {{item.name}}
+      </th>
+    </tr>
+    <tr ng-repeat="item  in vm.source.body">
+      <td>
+        {{$index}}
+      </td>
+      <td>
+        {{item.id}}
+      </td>
+      <td ng-repeat="k  in item.val">
+        {{k.value}}
+      </td>
+    </tr>
+</table>

@@ -38,33 +38,11 @@
       .state('app.pcReport_sl_jt',{
         noBack:true,
         sendBt:false,
-        url:'/pcReport_sl_jt',
+        url:'/pcReport_sl_jt/{areaId}',
         views:{
           'content@app':{
             templateUrl: 'app/main/pcReport/scReport/jt/scJt.html',
             controller : 'scJtController as vm',
-          }
-        }
-      })
-      .state('app.pcReport_sl_project',{
-        noBack:true,
-        sendBt:false,
-        url:'/pcReport_sl_project',
-        views:{
-          'content@app':{
-            templateUrl: 'app/main/pcReport/scReport/project/scProject.html',
-            controller : 'scProjectController as vm',
-          }
-        }
-      })
-      .state('app.pcReport_sl_building',{
-        noBack:true,
-        sendBt:false,
-        url:'/pcReport_sl_building',
-        views:{
-          'content@app':{
-            templateUrl: 'app/main/pcReport/scReport/building/scBuilding.html',
-            controller : 'scBuildingController as vm',
           }
         }
       })

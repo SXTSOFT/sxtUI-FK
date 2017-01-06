@@ -12,9 +12,75 @@
     .controller('pcReportMainController',pcReportMainController);
 
   /** @ngInject */
-  function pcReportMainController(remote,$state,$q,utils,$mdDialog,$mdSidenav,$rootScope,api){
+  function pcReportMainController(remote,$state,$q,utils,$mdSidenav,$rootScope,$mdDialog,api,xhscService ){
     var vm=this;
     api.setNetwork(0).then(function(){
+      function show(ok,cancel,level) {
+        function empty() {
+          $mdDialog.hide();
+        }
+        function no() {
+          $mdDialog.cancel();
+        }
+        ok=ok?ok:empty;
+        cancel=cancel?cancel:empty;
+        $mdDialog.show({
+          controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
+            $scope.ok=function () {
+              if ($scope.level&&$scope.level>=7){
+                ok($scope.currentBuild);
+              }else {
+                ok($scope.currentArea);
+              }
+            };
+            $scope.currentBuild=null;
+            $scope.level=level;
+            $scope.cancel=cancel;
+            xhscService.getRegionTreeOffline("",7,1).then(function (r) {
+              $scope.projects=r;
+              if(angular.isArray($scope.projects)&&$scope.projects.length){
+                $scope.currentProject=$scope.projects[0];
+                if ($scope.currentProject.Children.length){
+                  $scope.currentArea=$scope.currentProject.Children[0];
+                }
+              }
+            })
+
+            $scope.$watch("currentArea",function (v) {
+              if (v&&v.Children){
+                $scope.builds=$.extend(true,[],v.Children);
+                 $scope.currentBuild= $scope.builds[0];
+              }
+            })
+
+          }],
+          templateUrl: 'app/main/pcReport/showTemplate.html',
+          parent: angular.element(document.body),
+          clickOutsideToClose: true,
+          fullscreen: false
+        })
+      }
+
+      vm.scBuild=function () {
+        show(function (area) {
+          $mdDialog.hide();
+          $state.go("app.pcReport_sl_jt",{areaId:area.RegionID});
+        },null,7);
+      }
+
+      vm.scProject=function () {
+        show(function (area) {
+          $mdDialog.hide();
+          $state.go("app.pcReport_sl_jt",{areaId:area.RegionID});
+        });
+      }
+
+      vm.ysProject=function () {
+        show(function (area) {
+          $mdDialog.hide();
+          $state.go("app.pcReport_ys_hz",{areaId:area.RegionID});
+        });
+      }
 
     })
   }

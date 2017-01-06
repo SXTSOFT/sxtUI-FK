@@ -12,89 +12,158 @@
     .controller('hzProblemController',hzProblemController);
 
   /**@ngInject*/
-  function hzProblemController($scope,remote,$mdDialog,$state,$rootScope,$window ){
+  function hzProblemController($scope,$stateParams ){
     var vm = this;
-    var params=$rootScope.gxParams;
-    vm.gxSelected=params&&params.gxSelected? params.gxSelected:[];
-    vm.secSelected=params&&params.secSelected? params.secSelected:[];
-    vm.show=false;
+    var areaId= $stateParams.areaId;
 
-    function convertStatus(status){
-      var zt=''
-      switch (status){
-        case 1:
-          zt="待验收";
-          break;
-        case 2:
-          zt="合格";
-          break;
-        case 4:
-          zt="不合格";
-          break;
-        case 8:
-          zt="未整改";
-          break;
-        case 16:
-          zt="已整改";
-          break;
-        default:
-          zt="未知";
-          break;
+    vm.source={
+        head:[{
+          name:"钢筋工程",
+          sub:[{
+            name:"检查验收次数",
+            id:"00001"
+          },{
+            name:"验收质量问题总数",
+            id:"00001"
+          },{
+            name:"及时整改完成率",
+            id:"00001"
+          }]
+        },{
+          name:"钢筋工程",
+          sub:[{
+            name:"检查验收次数",
+            id:"00001"
+          },{
+            name:"验收质量问题总数",
+            id:"00001"
+          },{
+            name:"及时整改完成率",
+            id:"00001"
+          }]
+        },{
+          name:"钢筋工程",
+          sub:[{
+            name:"检查验收次数",
+            id:"00001"
+          },{
+            name:"验收质量问题总数",
+            id:"00001"
+          },{
+            name:"及时整改完成率",
+            id:"00001"
+          }]
+        }],
+        body:[{
+          id:"00002",
+          val:[{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          }]
+        },{
+          id:"00002",
+          val:[{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          }]
+        },{
+          id:"00002",
+          val:[{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          },{
+            id:"00001",
+            value:12
+          }]
+        }]
+    }
+    wrap(vm.source);
+    function wrap(source) {
+      source.subTitle = [];
+      if (source.head) {
+        if (source.head){
+          source.head.forEach(function (k) {
+            k.sub.forEach(function (n) {
+              source.subTitle.push(n);
+            });
+          });
+        }
+        if (source.body){
+          var index=1;
+          source.body.forEach(function (k) {
+            k.num=index++;
+          });
+        }
       }
-      return zt;
-    }
-
-    $scope.pageing={
-      page:1,
-      pageSize:10,
-      total:0
-    }
-
-    $scope.$watch("pageing.pageSize",function(){
-      if ($scope.pageing.pageSize){
-        load();
-      }
-    },true);
-
-    function load(){
-      var tmp=[];
-      vm.gxSelected.forEach(function(k){
-        tmp.push(k.AcceptanceItemID);
-      });
-      vm.source=[];
-      remote.Procedure.GetInspectionInfoListEx({
-        PageSize:$scope.pageing.pageSize,
-        CurPage:$scope.pageing.page-1,
-        status:31,
-        ProjectId: vm.secSelected.length?vm.secSelected[0].RegionID:"",
-        AcceptanceItemIDs:tmp
-      }).then(function(r){
-        $scope.pageing.total= r.data.TotalCount;
-        r.data.Data.forEach(function(o){
-          //非自检单并根据工序过滤
-          if (!o.InspectionTime){
-            o.InspectionTime="";
-          }
-          o.statusName=convertStatus(o.Status);
-
-          vm.source.push(o);
-        });
-        vm.show=true;
-      }).catch(function(){
-        vm.show=true;
-      });
-    }
-
-    vm.pageAction=function(title, page, pageSize, total){
-      $scope.pageing.page=page;
-      load();
-    }
-
-    vm.goBack=function(){
-      window.history.go(-1);
-    }
-    vm.Lookintoys = function(item){
-      $state.go('app.xhsc.gx.gxzgreport',{InspectionId:item.InspectionId, acceptanceItemID:item.AcceptanceItemID,acceptanceItemName:item.AcceptanceItemName,projectId:item.ProjectID});
     }
   }
 })();

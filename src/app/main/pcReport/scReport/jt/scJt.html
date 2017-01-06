@@ -1,4 +1,10 @@
-<table class="table table-bordered" style="margin-bottom: 0px">
+<div  ng-if="!vm.loaded">
+  <md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
+                        md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+  </md-progress-circular>
+</div>
+
+<table ng-if="vm.loaded&&!vm.isShowbg" class="table table-bordered" style="margin-bottom: 0px">
   <thead>
     <th style="min-width: 50px;width: 50px;" class="center">
       序号
@@ -6,8 +12,8 @@
     <th  style="min-width: 120px;" class="center">
       实测项
     </th>
-    <th ng-repeat="head in vm.source.head" class="center w">
-          {{head.name}}
+    <th ng-repeat="head in vm.source.Heads" class="center w">
+          {{head.Value}}
     </th>
   </thead>
   <tbody>
@@ -19,16 +25,25 @@
         {{item.num}}
       </td>
 
-      <td ng-switch-when="true" colspan="{{vm.source.head.length+1}}" style="background: rgb(245,245,245)">
-        {{item.name}}
+      <td ng-switch-when="true" colspan="{{vm.source.Heads.length+1}}" style="background: rgb(245,245,245)">
+        {{item.Name}}
       </td>
       <td ng-switch-default>
-        {{item.name}}
+        {{item.Name}}
       </td>
-      <td ng-switch-default ng-repeat="val in item.value">
-        {{val.val}}
+      <td ng-switch-default ng-repeat="val in item.Value">
+        {{val.Value}}
       </td>
     </tr>
   </tbody>
 </table>
+
+<div ng-if="vm.isShowbg" layout="column" flex layout-align="center center">
+  <div layout="row" layout-align="center center">
+    <img class="nullImg" src="app/main/xhsc/images/null.png"/>
+  </div>
+  <div layout="row">
+    <p style=" font-size: 16px; color: #808080;">暂无数据</p>
+  </div>
+</div>
 

@@ -2262,6 +2262,9 @@
         },
         getYsReportList:function (params) {
           return $http.post($http.url('/api/Acceptances/SecurityReport/GetReportInfoExtendList/Acceptances'),params)
+        },
+        getReportFormMeasure:function (areaId) {
+          return $http.get($http.url('/api/ReportFormMeasure?areaId='+areaId))
         }
       }
     });
