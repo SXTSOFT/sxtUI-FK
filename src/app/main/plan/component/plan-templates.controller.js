@@ -30,7 +30,8 @@
     },true);
 
     vm.Query = function (item) {
-      $state.go("app.plan.template.detail",{id:item.Id});
+      console.log(item)
+      $state.go("app.plan.template.detail",{id:item.Id,taskLibraryId:item.RootTaskLibraryId});
 
     }
 

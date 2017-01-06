@@ -64,7 +64,7 @@
         template: '<plan-templates flex layout="column"></plan-templates>'
       })
       .state('app.plan.template.detail', {
-        url: '/{id}',
+        url: '/{id}/{taskLibraryId}',
         template: '<plan-template flex layout="column"></plan-template>'
       })
       .state('app.plan.bc', {
