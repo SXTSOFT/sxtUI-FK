@@ -2265,7 +2265,11 @@
         },
         getReportFormMeasure:function (areaId) {
           return $http.get($http.url('/api/ReportFormMeasure?areaId='+areaId))
+        },
+        getReportFormSummary:function () {
+          
         }
+        // /api/ReportFormSummary
       }
     });
   }
