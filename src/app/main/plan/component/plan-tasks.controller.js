@@ -19,6 +19,9 @@
     $scope.$watch("vm.selectedFilter",function(){
       Load();
     });
+    $scope.$watch("vm.selectedMoban",function(){
+      Load();
+    });
     vm.Query = function (item) {
       if(vm.selectedFilter == 0 ){
         $state.go("app.plan.task.detailLevel",{id:item.TaskLibraryId});
@@ -44,11 +47,14 @@
         });
       });
     }
-
+    api.plan.TaskTemplates.GetList({Skip:0,Limit:0}).then(function (r) {
+      vm.tempDatas=r.data.Items||[];
+    });
     function Load() {
-       api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:vm.selectedFilter}).then(function (r) {
+       api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:vm.selectedFilter,TemplateId:vm.selectedMoban}).then(function (r) {
          vm.items = r.data.Items||[];
        });
+
     }
 
   }
