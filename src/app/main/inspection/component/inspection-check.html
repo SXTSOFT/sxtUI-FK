@@ -1,4 +1,12 @@
-<md-content layout="column" flex id="none">
+<md-content layout="column" flex id="none" style="z-index: 0;">
+  <div ng-if="!vm.show" style="width: 100%;text-align: center;padding-top: 50%;height: 100%;">
+    <div layout="row" layout-sm="column" layout-align="space-around">
+      <md-progress-circular md-diameter="48"  class="md-accent" ></md-progress-circular>
+    </div>
+    <div  style="color: #808080;font-size: 14px;padding-top: 10px;">加载中</div>
+  </div>
+  <div ng-if="vm.show">
   <div inspection-map map-show="vm.showPopup" map-url="vm.data.mapurl" flex></div>
+  </div>
 </md-content>
 <sxt-wt-pop flex-auto ng-show="vm.showPopup" show="vm.showPopup"  question="{{vm.question}}" publicquestion="{{vm.publicquestion}}" roomid="{{vm.data.roomid}}" username="{{vm.data.username}}"></sxt-wt-pop>

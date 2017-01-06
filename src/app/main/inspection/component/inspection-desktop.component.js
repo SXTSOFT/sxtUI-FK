@@ -13,7 +13,7 @@
     });
 
   /**@ngInject*/
-  function inspectionDesktopController($state,utils,$scope,api,$mdDialog,$window,$stateParams){
+  function inspectionDesktopController($state,utils,$scope,api,$mdDialog,$window,$stateParams,$timeout){
 
     var vm = this;
     vm.currenttab = 0;
@@ -25,16 +25,17 @@
       page_size:10,
       page_number:1
     }
-      api.inspection.estate.getdeliveryslist(vm.parm).then(function (r) {
-        vm.data=r.data.data;
-        vm.data.status= $stateParams.status==''?'unprocessed':$stateParams.status;
-        if($stateParams.status!=''&&$stateParams.status!=undefined)
-          vm.inspection(1,$stateParams.status);
-      })
+
     vm.inspection = function(num,status){
+      vm.count=0;
       vm.data.status=status;
       vm.selected=num;
       vm.currenttab =num;
+      vm.data.forEach(function (r) {
+        if(r.status==status){
+          vm.count+=1;
+        }
+      })
     };
     vm.done=function (room_id,delivery_id) {
       var _if=false;
@@ -73,13 +74,42 @@
       $state.go('app.statistics.taskpage');
     })
 
+    //未开始状态 点击会修改状态为进行中
     vm.check = function(item){
-      if(item.status=='processing'||item.status=='unprocessed'){
-      $state.go('app.inspection.check',{delivery_id:item.delivery_id})
-        }
+      // if(item.status=='processing'||item.status=='unprocessed'){
+      //   vm.parmData={
+      //     status: ""
+      //   }
+      //   if(item.status=='processing'){
+      //     vm.parmData.status="inspection_completed";
+      //   }else if (item.status=='unprocessed'){
+      //     vm.parmData.status="processing";
+      //   }
+      //   api.inspection.estate.updatedeliverys(vm.parmData,item.delivery_id).then(function (r) {})
+        $state.go('app.inspection.check',{delivery_id:item.delivery_id})
+
+      //}
+    }
+
+    //进行中状态中点击进去补充验房数据
+    vm.repeatCheck = function(item){
+        $state.go('app.inspection.check',{delivery_id:item.delivery_id})
     }
 
 
+    vm.load=function() {
+    return  api.inspection.estate.getdeliveryslist(vm.parm).then(function (r) {
+      $timeout(function(){
+        vm.data=r.data.data;
+        vm.data.status= $stateParams.status==''?'unprocessed':$stateParams.status;
+        if($stateParams.status!=''&&$stateParams.status!=undefined){
+          vm.inspection(1,$stateParams.status);
+        }
+        vm.show=true;})
+      })
+    }
+
+    vm.load();
   }
 
 })();

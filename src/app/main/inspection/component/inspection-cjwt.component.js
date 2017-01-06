@@ -13,7 +13,7 @@
     });
 
   /**@ngInject*/
-  function inspectionCjwtController($scope,utils,$state,$rootScope,api,$stateParams){
+  function inspectionCjwtController($scope,utils,$state,$rootScope,api,$stateParams,$timeout){
     var vm = this;
     vm.parm={
       type:'delivery',
@@ -23,10 +23,13 @@
       page_number:1
     }
     vm.currentQ = 0
-      api.inspection.estate.issues_tree(vm.parm).then(function (r) {
-        vm.options=r.data.data;
+
+
+      return api.inspection.estate.issues_tree(vm.parm).then(function (r) {
+          vm.options = r.data.data;
 
       });
+
 
 
 
@@ -45,5 +48,7 @@
     vm.check = function (q,id) {
       $state.go('app.inspection.check',{issues:id,question:q,publicquestion:q,showPopup:false,delivery_id:$stateParams.delivery_id})
     }
+
+    $timeout(1000);
   }
 })();

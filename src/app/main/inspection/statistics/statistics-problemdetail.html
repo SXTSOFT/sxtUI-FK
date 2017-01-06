@@ -1,4 +1,12 @@
 <md-content layout="column" flex style="background: #f0f0f0">
+
+  <div ng-if="!vm.show" style="width: 100%;text-align: center;padding-top: 50%;height: 100%;">
+    <div layout="row" layout-sm="column" layout-align="space-around">
+      <md-progress-circular md-diameter="48"  class="md-accent" ></md-progress-circular>
+    </div>
+    <div  style="color: #808080;font-size: 14px;padding-top: 10px;">加载中</div>
+  </div>
+  <div ng-if="vm.show">
   <div class="comments">
     <!--<md-list class="precent">-->
     <!--<md-list-item ng-click="vm.addcomment()">-->
@@ -24,11 +32,11 @@
           <!--<div flex>手动阀手动阀手动阀手动阀</div>-->
           <md-divider></md-divider>
         </md-list-item>
-        <md-list-item  style="color: #888888">
-          <p flex="none" style="width: 80px;">出现位置</p>
-          <div type="text" class="md-list-item-text" flex style="text-align: right;" >{{vm.data.position}}</div>
-          <md-divider></md-divider>
-        </md-list-item>
+        <!--<md-list-item  style="color: #888888">-->
+          <!--<p flex="none" style="width: 80px;">出现位置</p>-->
+          <!--<div type="text" class="md-list-item-text" flex style="text-align: right;" >{{vm.data.position}}</div>-->
+          <!--<md-divider></md-divider>-->
+        <!--</md-list-item>-->
         <md-list-item style="color: #888888">
           <p flex="none" style="width: 80px;">创建时间</p>
           <div class="md-list-item-text" flex style="text-align: right;">{{vm.data.created_at}}</div>
@@ -46,11 +54,11 @@
         <!--</div>-->
         <!--<md-icon class="md-secondary" style="text-align: right;"><img src="app/main/images/arrow-right.png" width="13"></md-icon>-->
         <!--</md-list-item>-->
-        <md-list-item>
-          <p flex="none" style="width: 80px;">状态</p>
-          <md-switch class="md-secondary" ng-model="vm.data.status"></md-switch>
-          <md-divider></md-divider>
-        </md-list-item>
+        <!--<md-list-item>-->
+          <!--<p flex="none" style="width: 80px;">状态</p>-->
+          <!--<md-switch class="md-secondary" ng-model="vm.data.status"></md-switch>-->
+          <!--<md-divider></md-divider>-->
+        <!--</md-list-item>-->
         <!--<md-list-item ui-sref="app.project.history">-->
         <!--<p flex="none" style="width: 80px;">历史纪录</p>-->
         <!--<md-icon class="md-secondary" style="text-align: right;"><img src="app/main/images/arrow-right.png" width="13"></md-icon>-->
@@ -59,7 +67,7 @@
     </div>
     <div class="ml-20 mv-10">补充描述</div>
     <div style="border-top:1px solid #dedede;border-bottom: 1px solid #dedede;background: #fff;color: #888888"  >
-      <p>{{vm.data.description}}</p>
+      <p class="pl-10">{{vm.data.description}}</p>
       <!--<textarea style="height:60px;line-height: 20px;resize:none;width:100%;padding:10px;" ng-model="vm.data.complementaryDescription" >问题补充描述</textarea>-->
     </div>
     <div class="ml-20 mv-10">照片</div>
@@ -78,6 +86,6 @@
     <!--<div style="clear:both;"></div>-->
     <!--</div>-->
   </div>
-
+  </div>
 </md-content>
 

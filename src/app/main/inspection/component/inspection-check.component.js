@@ -13,7 +13,7 @@
     });
 
   /**@ngInject*/
-  function inspectionCheckController($scope,$rootScope,utils,$state,$stateParams,$mdPanel,api,auth){
+  function inspectionCheckController($scope,$rootScope,utils,$state,$stateParams,$mdPanel,api,auth,$timeout){
 
     var vm = this;
     vm.data={
@@ -36,13 +36,7 @@
     }else {
       vm.question = $stateParams.question;
     }
-    //获取任务详情数据
-    api.inspection.estate.getdeliverys($stateParams.delivery_id).then(function (r) {
-      //设置头部标题
-      $rootScope.shell.title=r.data.data.room.name;
-      vm.data.mapurl=r.data.data.room.layout.drawing_url;
-      vm.data.roomid=r.data.data.room.room_id;
-    })
+
     //vm.add = function(){
     //  vm.showPopup = true;
     //}
@@ -81,5 +75,18 @@
               break;
       }
     })
+    //获取任务详情数据
+    vm.load=function() {
+     return api.inspection.estate.getdeliverys($stateParams.delivery_id).then(function (r) {
+        //设置头部标题
+       $timeout(function(){
+         $rootScope.shell.title = r.data.data.room.name;
+        vm.data.mapurl = r.data.data.room.layout.drawing_url;
+        vm.data.roomid = r.data.data.room.room_id;
+        vm.show=true;
+       })
+      })
+    }
+    vm.load();
   }
 })();
