@@ -19,6 +19,9 @@
       id = $state.params["id"];
 
     vm.isNew = $stateParams.id=='add';
+    api.plan.TaskTemplates.GetList({Skip:0,Limit:0}).then(function (r) {
+      vm.tempDatas=r.data.Items||[];
+    });
     if(!vm.isNew){
       vm.loading= true;
       //loadData();
@@ -96,7 +99,8 @@
     }
     else{
       task = vm.data = {
-        Level:0
+        Level:1,
+        DurationType: 'FixedDuration'
       }
     }
     vm.setEndFlow = function (flow,endFlow) {
