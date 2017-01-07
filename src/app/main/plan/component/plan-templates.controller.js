@@ -43,7 +43,16 @@
       });
 
     }
-
+    vm.copyTemp = function(item){
+      console.log(item)
+      api.plan.TaskTemplates.copyTemplate(item.Id).then(function(r){
+        utils.alert('复制成功').then(function(){
+          Load();
+        })
+      },function(err){
+        utils.alert(err.data||'复制失败');
+      })
+    }
     function Load() {
       var page=utils.getPage($scope.pageing);
 

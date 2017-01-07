@@ -29,6 +29,9 @@
         },
         delete:function(id){
           return $http.delete('/api/TaskTemplates/'+id);
+        },
+        copyTemplate:function(id){
+          return $http.put($http.url('/api/TaskTemplates/'+id+'/Copy'))
         }
       },
       TaskFlow:{
@@ -178,6 +181,9 @@
         },
         getItem:function(id){
           return $http.get($http.url('/api/TaskLibrarys/'+id));
+        },
+        copyTaskLibrary:function(id){
+          return $http.put($http.url('/api/TaskLibrarys/'+id+'/Copy'));
         },
         /**
          *

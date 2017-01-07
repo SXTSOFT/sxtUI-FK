@@ -17,7 +17,7 @@
     <tr>
       <th>名称</th>
       <th>时间</th>
-      <th style="width: 160px;"><span class="pl-16">管理</span></th>
+      <th style="width: 200px;"><span class="pl-16">管理</span></th>
     </tr>
     </thead>
     <tbody>
@@ -38,8 +38,9 @@
             <!--</md-menu-item>-->
           <!--</md-menu-content>-->
         <!--</md-menu>-->
-        <md-button ng-click="vm.Query(item)" class="md-icon-button"  aria-label="Settings"> <md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
-        <md-button ng-click="vm.Delete(item)" class="md-icon-button"  aria-label="Settings"> <md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
+        <md-button ng-click="vm.Query(item)" class="md-icon-button"  aria-label="编辑"> <md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
+        <md-button ng-click="vm.copyTemp(item)" class="md-icon-button"  aria-label="复制" title="复制"> <md-icon  md-font-icon="icon-content-copy" class="icon s24"></md-icon></md-button>
+        <md-button ng-click="vm.Delete(item)" class="md-icon-button"  aria-label="删除"> <md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
       </td>
     </tr>
     </tbody>

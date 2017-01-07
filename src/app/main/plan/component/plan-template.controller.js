@@ -231,13 +231,15 @@
           else{
             if(m) {
               m.Name = flow.Milestone;
+              //m.TemplateId = id;
               return api.plan.MileStone.update(m.Id, m)
             }
             else{
               return api.plan.MileStone.create({
                 Name:flow.Milestone,
                 RelatedFlowId:flow.TaskFlowId,
-                Percentage:100
+                Percentage:100,
+                TemplateId:id
               });
             }
           }
@@ -390,6 +392,7 @@
           vm.submit = function () {
             vm.data.Type = vm.data.Type || flow.Name;
             vm.data.Level = task.Level+1;
+            vm.data.TemplateId=id;
             api.plan.TaskLibrary.create(vm.data).then(function(r){
               if(r.status == 200 || r.data){
                 vm.current = 'default';
@@ -443,7 +446,8 @@
             api.plan.UserGroup.create({
               "GroupName": vm.dataName,
               "SystemID": "plan",
-              "Description": vm.dataName
+              "Description": vm.dataName,
+              "TemplateId":id
             }).then(function(res){
               vm.current = 'default';
               api.plan.UserGroup.query().then(function(r){
