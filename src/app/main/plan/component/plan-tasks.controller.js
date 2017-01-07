@@ -58,6 +58,7 @@
     }
     api.plan.TaskTemplates.GetList({Skip:0,Limit:0}).then(function (r) {
       vm.tempDatas=r.data.Items||[];
+      vm.selectedMoban = vm.tempDatas[0].Id;
     });
     function Load() {
        api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:vm.selectedFilter,TemplateId:vm.selectedMoban}).then(function (r) {
