@@ -28,7 +28,7 @@
       })
     }
 
-    api.plan.TaskLibrary.GetList({Level:0}).then(function (r) {
+    api.plan.TaskLibrary.GetList({Level:0,TemplateId:id}).then(function (r) {
       vm.tasks = r.data.Items||[];
     });
     vm.AreaList = [];
@@ -349,7 +349,7 @@
             name:flow.Name
           }];
           var promises = [
-            api.plan.TaskLibrary.GetList({Skip: 0, Limit: 10000, Level: task.Level+1}),
+            api.plan.TaskLibrary.GetList({Skip: 0, Limit: 10000, Level: task.Level+1,TemplateId:id}),
             api.plan.TaskFlow.getSubTasks(flow.TaskFlowId)
           ];
           $q.all(promises).then(function(res){
@@ -396,7 +396,7 @@
             api.plan.TaskLibrary.create(vm.data).then(function(r){
               if(r.status == 200 || r.data){
                 vm.current = 'default';
-                api.plan.TaskLibrary.GetList({Skip: 0, Limit: 10000, Level: task.Level+1}).then(function(r1){
+                api.plan.TaskLibrary.GetList({Skip: 0, Limit: 10000, Level: task.Level+1,TemplateId:id}).then(function(r1){
 
                   if(vm.items){
                     r1.data.Items.forEach(function (item) {

@@ -16,9 +16,9 @@
   function planTask($scope,api,$state,utils,$interval,$mdDialog){
     var vm = this;
     vm.selectedFilter = 0;
-    //$scope.$watch("vm.selectedFilter",function(){
-    //  Load();
-    //});
+    $scope.$watch("vm.selectedFilter",function(){
+      Load();
+    });
     $scope.$watch("vm.selectedMoban",function(){
       Load();
     });
@@ -60,7 +60,7 @@
       vm.tempDatas=r.data.Items||[];
     });
     function Load() {
-       api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1,TemplateId:vm.selectedMoban}).then(function (r) {
+       api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:vm.selectedFilter,TemplateId:vm.selectedMoban}).then(function (r) {
          vm.items = r.data.Items||[];
        });
 
