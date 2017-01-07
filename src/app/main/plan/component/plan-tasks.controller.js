@@ -15,7 +15,7 @@
   /** @ngInject */
   function planTask($scope,api,$state,utils,$interval,$mdDialog){
     var vm = this;
-    vm.selectedFilter = 0;
+    vm.selectedFilter = 1;
     $scope.$watch("vm.selectedFilter",function(){
       Load();
     });
