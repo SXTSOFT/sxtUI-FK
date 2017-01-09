@@ -47,7 +47,7 @@
         template: '<plan-tasks flex layout="column"></plan-tasks>'
       })
       .state('app.plan.task.detail', {
-        url: '/levels/{id}',
+        url: '/levels/{id}/{templateId}',
         template: '<plan-task-v flex layout="column"></plan-task-v>'
       })
       .state('app.plan.task.detailLevel', {

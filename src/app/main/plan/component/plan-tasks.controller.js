@@ -26,7 +26,7 @@
       if(vm.selectedFilter == 0 ){
         $state.go("app.plan.task.detailLevel",{id:item.TaskLibraryId});
       }else{
-        $state.go("app.plan.task.detail",{id:item.TaskLibraryId});
+        $state.go("app.plan.task.detail",{id:item.TaskLibraryId,templateId:vm.selectedMoban});
       }
     }
     vm.copyTaskLib = function(item){

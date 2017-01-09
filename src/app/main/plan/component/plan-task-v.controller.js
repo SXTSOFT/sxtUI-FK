@@ -16,7 +16,8 @@
   function planTaskV($scope,template,$mdSidenav,$stateParams,api,$state,$mdDialog,$mdSelect,$q,utils,$timeout){
     var vm = this,
       temp,task,
-      id = $state.params["id"];
+      id = $state.params["id"],
+      templateId=$state.params['templateId'];
 
     vm.isNew = $stateParams.id=='add';
     api.plan.TaskTemplates.GetList({Skip:0,Limit:0}).then(function (r) {
@@ -166,7 +167,7 @@
           if(items){
             vm.subTasks = items;
           }else{
-            api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1}).then(function (r) {
+            api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1,TemplateId:templateId}).then(function (r) {
               vm.subTasks = r.data.Items||[];
             });
           }
