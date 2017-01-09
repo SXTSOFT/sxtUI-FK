@@ -31,12 +31,14 @@
     }
     vm.copyTaskLib = function(item){
       //console.log(item)
-      api.plan.TaskLibrary.copyTaskLibrary(item.TaskLibraryId).then(function(r){
-        utils.alert('复制成功').then(function(){
-          Load();
+      utils.confirm('复制模板？').then(function(){
+        api.plan.TaskLibrary.copyTaskLibrary(item.TaskLibraryId).then(function(r){
+          utils.alert('复制成功').then(function(){
+            Load();
+          })
+        },function(err){
+          utils.alert(err.data||'复制失败');
         })
-      },function(err){
-        utils.alert(err.data||'复制失败');
       })
     }
     vm.Delete = function(item){

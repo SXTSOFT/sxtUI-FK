@@ -156,7 +156,7 @@
         });
       });
     }
-    api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1}).then(function (r) {
+    api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1,TemplateId:templateId}).then(function (r) {
       vm.subTasks = r.data.Items||[];
     });
     vm.addBranch = function(ev,flow,isBranch){
@@ -171,7 +171,9 @@
               vm.subTasks = r.data.Items||[];
             });
           }
-
+          vm.stop = function(ev){
+            ev.stopPropagation();
+          }
           vm.select = function(){
             $mdDialog.hide(vm.relatedTask)
           }
