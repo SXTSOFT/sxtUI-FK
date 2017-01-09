@@ -12,154 +12,30 @@
     .controller('hzProblemController',hzProblemController);
 
   /**@ngInject*/
-  function hzProblemController($scope,$stateParams ){
+  function hzProblemController($scope,$stateParams,remote){
     var vm = this;
-    var areaId= $stateParams.areaId;
+    var areadId=$stateParams.areaId;
+    remote.report.getReportFormInspection(areadId).then(function (d) {
+      vm.source=d.data;
+      wrap(vm.source);
+      vm.loaded=true;
+      if (!vm.source.Heads.length){
+        vm.isShowbg=true;
+      }
+    });
 
-    vm.source={
-        head:[{
-          name:"钢筋工程",
-          sub:[{
-            name:"检查验收次数",
-            id:"00001"
-          },{
-            name:"验收质量问题总数",
-            id:"00001"
-          },{
-            name:"及时整改完成率",
-            id:"00001"
-          }]
-        },{
-          name:"钢筋工程",
-          sub:[{
-            name:"检查验收次数",
-            id:"00001"
-          },{
-            name:"验收质量问题总数",
-            id:"00001"
-          },{
-            name:"及时整改完成率",
-            id:"00001"
-          }]
-        },{
-          name:"钢筋工程",
-          sub:[{
-            name:"检查验收次数",
-            id:"00001"
-          },{
-            name:"验收质量问题总数",
-            id:"00001"
-          },{
-            name:"及时整改完成率",
-            id:"00001"
-          }]
-        }],
-        body:[{
-          id:"00002",
-          val:[{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          }]
-        },{
-          id:"00002",
-          val:[{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          }]
-        },{
-          id:"00002",
-          val:[{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          },{
-            id:"00001",
-            value:12
-          }]
-        }]
-    }
-    wrap(vm.source);
     function wrap(source) {
       source.subTitle = [];
-      if (source.head) {
-        if (source.head){
-          source.head.forEach(function (k) {
-            k.sub.forEach(function (n) {
+      if (source.Heads) {
+          source.Heads.forEach(function (k) {
+            k.Sub.forEach(function (n) {
               source.subTitle.push(n);
             });
           });
-        }
-        if (source.body){
+
+        if (source.Row){
           var index=1;
-          source.body.forEach(function (k) {
+          source.Row.forEach(function (k) {
             k.num=index++;
           });
         }

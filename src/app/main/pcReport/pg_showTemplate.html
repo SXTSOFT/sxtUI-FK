@@ -1,0 +1,17 @@
+<md-dialog aria-label="新建"  style="min-height: 250px;width: 80%;max-width: 450px" ng-cloak>
+  <md-dialog-content layout="column"  style="margin:15px 8px 8px 0px ">
+    <form name="myForm" flex layout="column">
+      <md-input-container>
+        <label>季度选择</label>
+        <md-select ng-model="year" required name="year">
+          <md-option  ng-value="item" ng-repeat="item in yearArray">{{item.value}}</md-option>
+        </md-select>
+      </md-input-container>
+
+      <div layout="row">
+        <md-button flex ng-click="cancel()">取消</md-button>
+        <md-button type="submit" flex ng-disabled="myForm.$invalid"  ng-click="ok(myForm)">确定</md-button>
+      </div>
+    </form>
+  </md-dialog-content>
+</md-dialog>,

@@ -65,5 +65,38 @@
           }
         }
       })
+      .state('app.pcReport_pg_xmb',{
+      noBack:true,
+      sendBt:false,
+      url:'/pcReport_pg_xmb/{quarter}',
+      views :{
+        'content@app':{
+          templateUrl : 'app/main/pcReport/pgReport/pg_xmb.html',
+          controller:'pgXmbController as vm'
+        }
+      }
+    })
+      .state('app.pcReport_pg_zb',{
+        noBack:true,
+        sendBt:false,
+        url:'/pcReport_pg_zb/{quarter}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/pcReport/pgReport/pg_zb.html',
+            controller:'pgZbController as vm'
+          }
+        }
+      })
+      .state('app.pcReport_pg_jl',{
+        noBack:true,
+        sendBt:false,
+        url:'/pcReport_pg_jl/{quarter}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/pcReport/pgReport/pg_jl.html',
+            controller:'pgJlController as vm'
+          }
+        }
+      })
   }
 })();

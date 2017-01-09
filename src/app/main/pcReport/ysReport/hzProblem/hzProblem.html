@@ -1,23 +1,29 @@
-<table class="table table-bordered">
+<div  ng-if="!vm.loaded">
+  <md-progress-circular id="toolbar-progress" class="md-accent"
+                        md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+  </md-progress-circular>
+</div>
+
+<table  ng-if="vm.loaded" class="table table-bordered">
     <tr>
       <th rowspan="2" style="min-width: 50px;width: 50px;">序号</th>
       <th rowspan="2" style="min-width: 80px;">楼栋号</th>
-      <th ng-repeat="item in vm.source.head" colspan="3">{{item.name}}</th>
+      <th ng-repeat="item in vm.source.Heads" colspan="3">{{item.Name}}</th>
     </tr>
     <tr>
       <th ng-repeat="item in vm.source.subTitle"  class="center w">
-        {{item.name}}
+        {{item.Value}}
       </th>
     </tr>
-    <tr ng-repeat="item  in vm.source.body">
+    <tr ng-repeat="item  in vm.source.Body">
       <td>
-        {{$index}}
+        {{$index+1}}
       </td>
       <td>
-        {{item.id}}
+        {{item.Name}}
       </td>
-      <td ng-repeat="k  in item.val">
-        {{k.value}}
+      <td ng-repeat="k  in item.Item">
+        {{k.Value}}
       </td>
     </tr>
 </table>

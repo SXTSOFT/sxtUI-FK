@@ -12,9 +12,9 @@
             <img src="app/main/xhsc/images/i_3r631.png" class="md-avatar">
             <p>工序验收报表</p>
           </md-list-item>
-          <md-list-item ui-sref="app.pcReport_ys_hz">
+          <md-list-item ng-click="vm.ysProject()">
             <img src="app/main/xhsc/images/i_3r631.png" class="md-avatar">
-            <p>工序验收(问题汇总)</p>
+            <p>工序验收(问题分类统计)</p>
           </md-list-item>
 
           <md-list-item ui-sref="app.pcReport_sl_sc">
@@ -64,6 +64,18 @@
           <md-list-item ui-sref="app.pcReport_pg">
             <img src="app/main/xhsc/images/i_3d31.png" class="md-avatar">
             <p>现场评估报表</p>
+          </md-list-item>
+          <md-list-item ng-click="vm.pg_xmb_zb_jl('app.pcReport_pg_xmb')">
+            <img src="app/main/xhsc/images/i_3d31.png" class="md-avatar">
+            <p>项目评估报表(项目部)</p>
+          </md-list-item>
+          <md-list-item ng-click="vm.pg_xmb_zb_jl('app.pcReport_pg_jl')">
+            <img src="app/main/xhsc/images/i_3d31.png" class="md-avatar">
+            <p>项目评估报表(监理)</p>
+          </md-list-item>
+          <md-list-item ng-click="vm.pg_xmb_zb_jl('app.pcReport_pg_zb')">
+            <img src="app/main/xhsc/images/i_3d31.png" class="md-avatar">
+            <p>项目评估报表(总包)</p>
           </md-list-item>
         </md-list>
       </md-content>

@@ -1,0 +1,28 @@
+<div  ng-if="!vm.loaded">
+  <md-progress-circular id="toolbar-progress" class="md-accent"
+                        md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+  </md-progress-circular>
+</div>
+
+<table  ng-if="vm.loaded" class="table table-bordered">
+  <tr>
+    <th rowspan="2" style="min-width: 50px;width: 50px;">序号</th>
+    <th rowspan="2" style="min-width: 80px;">公司名称</th>
+    <th rowspan="2" style="min-width: 80px;">项目名称</th>
+    <th rowspan="2" style="min-width: 80px;">项目负责人</th>
+    <th colspan="4" style="min-width: 80px;">监理综合评分</th>
+  </tr>
+  <tr>
+    <td>1季度</td>
+    <td>2季度</td>
+    <td>3季度</td>
+    <td>4季度</td>
+  </tr>
+<tr ng-repeat="item  in vm.source">
+  <td>{{$index+1}}</td>
+  <td>{{item.CompanyName}}</td>
+  <td>{{item.ProjectName}}</td>
+  <td>{{item.HeadUser}}</td>
+  <td ng-repeat="sub in item.Items">{{sub.Value}}</td>
+</tr>
+</table>

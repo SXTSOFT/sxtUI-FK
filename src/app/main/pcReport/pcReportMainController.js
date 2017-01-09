@@ -61,6 +61,35 @@
         })
       }
 
+      function pg_show(ok,cancel) {
+        function empty() {
+          $mdDialog.hide();
+        }
+
+        ok=ok?ok:empty;
+        cancel=cancel?cancel:empty;
+        $mdDialog.show({
+          controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
+            $scope.cancel=cancel;
+            $scope.yearArray = [];
+            for (var i = 0; i < 5; i++)
+            {
+              $scope.yearArray.push({id:(2015+i),value:(2015+i)});
+            }
+
+            $scope.ok=function () {
+              if ($scope.year){
+                ok($scope.year.value);
+              }
+            };
+          }],
+          templateUrl: 'app/main/pcReport/pg_showTemplate.html',
+          parent: angular.element(document.body),
+          clickOutsideToClose: true,
+          fullscreen: false
+        })
+      }
+
       vm.scBuild=function () {
         show(function (area) {
           $mdDialog.hide();
@@ -79,6 +108,13 @@
         show(function (area) {
           $mdDialog.hide();
           $state.go("app.pcReport_ys_hz",{areaId:area.RegionID});
+        });
+      }
+
+      vm.pg_xmb_zb_jl=function(stateCmd){
+        pg_show(function(quarter){
+          $mdDialog.hide();
+          $state.go(stateCmd,{quarter:quarter});
         });
       }
 

@@ -2266,8 +2266,17 @@
         getReportFormMeasure:function (areaId) {
           return $http.get($http.url('/api/ReportFormMeasure?areaId='+areaId))
         },
+        getReportFormInspection:function(areaId){
+          return $http.get($http.url('/api/ReportFormInspection?areaId='+areaId))
+        },getReportFormAssessmentXmb:function(quarter){
+            return $http.get($http.url('/api/ReportFormAssessment/xmb/'+quarter))
+        },getReportFormAssessmentZb:function(quarter){
+          return $http.get($http.url('/api/ReportFormAssessment/zb/'+quarter))
+        },getReportFormAssessmentJl:function(quarter){
+          return $http.get($http.url('/api/ReportFormAssessment/jl/'+quarter))
+        },
         getReportFormSummary:function () {
-          
+
         }
         // /api/ReportFormSummary
       }

@@ -40,7 +40,7 @@
       .state('app.pcReport_ys_hz',{
         noBack:true,
         sendBt:false,
-        url:'/pcReport_ys_hz',
+        url:'/pcReport_ys_hz/{areaId}',
         views:{
           'content@app':{
             templateUrl: 'app/main/pcReport/ysReport/hzProblem/hzProblem.html',
