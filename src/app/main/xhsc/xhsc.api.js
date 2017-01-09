@@ -2274,6 +2274,8 @@
           return $http.get($http.url('/api/ReportFormAssessment/zb/'+quarter))
         },getReportFormAssessmentJl:function(quarter){
           return $http.get($http.url('/api/ReportFormAssessment/jl/'+quarter))
+        },getReportFormAssessmentClass:function(quarter){
+          return $http.get($http.url('/api/ReportFormAssessmentClass/'+quarter))
         },
         getReportFormSummary:function () {
 
