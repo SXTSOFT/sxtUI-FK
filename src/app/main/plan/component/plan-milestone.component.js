@@ -16,11 +16,11 @@
   function planMilestoneController($stateParams,api,$rootScope,$mdDialog,utils){
     var vm = this;
     vm.current = null;
-    vm.id= $stateParams.id;
+    vm.tempid= $stateParams.id;
     vm.load = load;
     load();
     function load(){
-      api.plan.BuildPlan.getMileStone(vm.id).then(function(r){
+      api.plan.BuildPlan.getMileStone(vm.tempid).then(function(r){
         r.data.forEach(function(_r){
           _r.setTime = new Date(_r.MilestoneTime);
         })
@@ -28,7 +28,7 @@
       });
     }
 
-    api.plan.BuildPlan.mainProcess(vm.id).then(function(r){
+    api.plan.BuildPlan.mainProcess(vm.tempid).then(function(r){
       vm.mainProcess = r.data;
     });
     vm.select = function(item){
@@ -60,10 +60,12 @@
     //    console.log('res',res)
     //  })
     //}
+    vm.enter=false;
     $rootScope.$on('md-calendar-change', function(event,data) {
-      console.log(vm.current.Name)
-      event.preventDefault();
-      api.plan.BuildPlan.setMileStoneTime(vm.id,vm.current.Id,vm.current.setTime).then(function(r){
+      if(vm.enter) return;
+      vm.enter = true;
+      api.plan.BuildPlan.setMileStoneTime(vm.tempid,vm.current.Id,vm.current.setTime).then(function(r){
+        vm.enter = false;
         if(r.data.State == 1){
           utils.alert('没有未完成任务')
         }else if(r.data.State == 2){
@@ -79,7 +81,7 @@
           if(r.data.SurplusRatio == 100){
             api.plan.BuildPlan.updateMileStone(vm.id,vm.current.Id,data).then(function(r){
               load();
-              utils.alert('更改成功3');
+              utils.alert('更改成功');
             })
           }else if(r.data.SurplusRatio >=80 && r.data.SurplusRatio <100){
             var msg1 = '现今至'+vm.current.Name+'剩余工作量仅为标准工期的'+r.data.SurplusRatio+'%，可能会影响质量与进度';
@@ -87,7 +89,7 @@
               console.log('ok')
               api.plan.BuildPlan.updateMileStone(vm.id,vm.current.Id,data).then(function(r){
                 load();
-                utils.alert('更改成功2');
+                utils.alert('更改成功');
               })
             },function(){
               console.log('cancel')
@@ -99,7 +101,7 @@
               console.log('ok')
               api.plan.BuildPlan.updateMileStone(vm.id,vm.current.Id,data).then(function(r){
                 load();
-                utils.alert('更改成功1');
+                utils.alert('更改成功');
               })
             },function(){
               vm.current.setTime = new Date(vm.current.MilestoneTime);
