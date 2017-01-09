@@ -12,7 +12,12 @@
     opacity: 1;
   }
 }
-
+.glyphicon-plus:before {
+  content: "\002b";
+}
+.glyphicon-minus:before {
+  content: "\2212";
+}
 .nomargin{
   md-select{
     margin:0 0 26px 0;

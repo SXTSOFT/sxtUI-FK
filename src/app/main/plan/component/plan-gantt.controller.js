@@ -151,7 +151,7 @@
           {
             return date.month() === 10 && date.date() === 11;
           },
-          targets  : ['holiday']
+          //targets  : ['holiday']
         }
       },
       timeFramesWorkingMode   : 'hidden',
@@ -794,6 +794,9 @@
                 utils.alert(err.data||'上传图片失败');
               });
             }
+            vm.quxiao = function(){
+              vm.closePanel1();
+            }
             vm.closePanel1 = function() {
               return mdPanelRef.close().then(function () {
                 mdPanelRef.destroy();
@@ -802,11 +805,12 @@
             }
           },
           controllerAs: 'vm',
-          template: '<div class="mt-20" style="background:rgb(245,245,245);border-radius: 4px;padding:16px;box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);"><div style="margin-bottom: 10px;">关闭原因</div><sxt-images2 ng-model="task.TaskFlowId" img="vm.img"></sxt-images2><md-input-container class="md-block">\
-          <input type="text" ng-model="vm.EndDescription" placeholder="关闭原因">\
+          template: '<div style="margin-top:-50px;width:320px;background:#fff;border-radius: 10px;box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);overflow: hidden;"><div style="margin-bottom: 10px;background: #f9f9f9;border-bottom: 1px solid #dedede;height:50px;line-height: 50px;padding-left:30px;">反馈信息</div><div style="display: block;text-align: center;"><sxt-images2 ng-model="task.TaskFlowId" img="vm.img"></sxt-images2></div><md-input-container md-no-float class="md-block m-0" style="margin:0 20px;">\
+          <input type="text" ng-model="vm.EndDescription" placeholder="备注">\
           </md-input-container>\
-          <div layout="row" layout-align="end center">\
-          <md-button class="md-raised" ng-click="vm.endTask()">确定</md-button></div></div>',
+          <div layout="row" layout-align="space-around start" style="margin-bottom: 20px;">\
+          <md-button class="md-raised" ng-click="vm.quxiao()">取消</md-button>\
+          <md-button class="md-raised md-primary" ng-click="vm.endTask()">完成</md-button></div></div>',
           hasBackdrop: true,
           position: position,
           trapFocus: true,

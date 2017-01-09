@@ -25,14 +25,14 @@
       </md-select>
     </md-input-container>
     </div>
-    <div layout="row" flex>
-    <md-input-container class="md-block" flex>
-      <label>关联任务</label>
-      <md-select name="rootTaskLibraryId" ng-model="vm.data.RootTaskLibraryId"  >
-        <md-option ng-value="p.TaskLibraryId" ng-repeat="p in vm.tasks">{{p.Name}}</md-option>
-      </md-select>
-    </md-input-container>
-    </div>
+    <!--<div layout="row" flex>-->
+    <!--<md-input-container class="md-block" flex>-->
+      <!--<label>关联任务</label>-->
+      <!--<md-select name="rootTaskLibraryId" ng-model="vm.data.RootTaskLibraryId"  >-->
+        <!--<md-option ng-value="p.TaskLibraryId" ng-repeat="p in vm.tasks">{{p.Name}}</md-option>-->
+      <!--</md-select>-->
+    <!--</md-input-container>-->
+    <!--</div>-->
   </form>
   <div layout="row" flex>
     <md-button ng-click="vm.ClickSave(vm.data)" class="md-primary md-raised">

@@ -16,9 +16,13 @@
   function planTaskV($scope,template,$mdSidenav,$stateParams,api,$state,$mdDialog,$mdSelect,$q,utils,$timeout){
     var vm = this,
       temp,task,
-      id = $state.params["id"];
+      id = $state.params["id"],
+      templateId=$state.params['templateId'];
 
     vm.isNew = $stateParams.id=='add';
+    api.plan.TaskTemplates.GetList({Skip:0,Limit:0}).then(function (r) {
+      vm.tempDatas=r.data.Items||[];
+    });
     if(!vm.isNew){
       vm.loading= true;
       //loadData();
@@ -96,7 +100,8 @@
     }
     else{
       task = vm.data = {
-        Level:0
+        Level:1,
+        DurationType: 'FixedDuration'
       }
     }
     vm.setEndFlow = function (flow,endFlow) {
@@ -151,7 +156,7 @@
         });
       });
     }
-    api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1}).then(function (r) {
+    api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1,TemplateId:templateId}).then(function (r) {
       vm.subTasks = r.data.Items||[];
     });
     vm.addBranch = function(ev,flow,isBranch){
@@ -162,11 +167,13 @@
           if(items){
             vm.subTasks = items;
           }else{
-            api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1}).then(function (r) {
+            api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1,TemplateId:templateId}).then(function (r) {
               vm.subTasks = r.data.Items||[];
             });
           }
-
+          vm.stop = function(ev){
+            ev.stopPropagation();
+          }
           vm.select = function(){
             $mdDialog.hide(vm.relatedTask)
           }
@@ -615,18 +622,6 @@
                 vm.current = g;
                 vm.gxName = flow.MeasureInfo;
               }
-              //vm.proceduresData.forEach(function(_r){
-
-                //_r.SpecialtyChildren.forEach(function(_rr){
-                //  var g=_rr.WPAcceptanceList && _rr.WPAcceptanceList.find(function(t){
-                //    return t.AcceptanceItemID ==  flow.MeasureId;
-                //  })
-                //  if(g){
-                //    vm.current = g;
-                //    vm.gxName = flow.MeasureInfo;
-                //  }
-                //})
-              //})
             if(!vm.current){
                 //vm.sendData.CloseRelatedObjectId = null;
                 flow.MeasureInfo = null;

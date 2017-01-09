@@ -29,6 +29,9 @@
         },
         delete:function(id){
           return $http.delete('/api/TaskTemplates/'+id);
+        },
+        copyTemplate:function(id){
+          return $http.put($http.url('/api/TaskTemplates/'+id+'/Copy'))
         }
       },
       TaskFlow:{
@@ -112,6 +115,12 @@
         getMileStone:function(id){
           return $http.get($http.url('/api/BuildingPlans/'+id+'/Milestones'))
         },
+        setMileStoneTime:function(pid,id,time){
+          return $http.get($http.url('/api/BuildingPlans/'+pid+'/Milestones/'+id+'/UpdateCheck',{MilestoneTime:time}))
+        },
+        updateMileStone:function(pid,id,params){
+          return $http.put($http.url('/api/BuildingPlans/'+pid+'/Milestones/'+id),params)
+        },
         adjustPlan:function(id,params){
           return $http.post($http.url('/api/BuildingPlans/'+id+'/Adjust'),params)
         },
@@ -172,6 +181,9 @@
         },
         getItem:function(id){
           return $http.get($http.url('/api/TaskLibrarys/'+id));
+        },
+        copyTaskLibrary:function(id){
+          return $http.put($http.url('/api/TaskLibrarys/'+id+'/Copy'));
         },
         /**
          *
