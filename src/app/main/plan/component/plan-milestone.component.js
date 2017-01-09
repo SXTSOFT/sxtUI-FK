@@ -32,10 +32,14 @@
       vm.mainProcess = r.data;
     });
     vm.select = function(item){
-      console.log('sel',item)
+     // console.log('sel',item)
+      if(!item.edit) return;
       vm.current = item;
     }
     vm.edit = function(item){
+      vm.data.forEach(function(r){
+        r.edit = false;
+      })
       item.edit = true;
     }
     //vm.edit = function(item){
@@ -57,6 +61,8 @@
     //  })
     //}
     $rootScope.$on('md-calendar-change', function(event,data) {
+      console.log(vm.current.Name)
+      event.preventDefault();
       api.plan.BuildPlan.setMileStoneTime(vm.id,vm.current.Id,vm.current.setTime).then(function(r){
         if(r.data.State == 1){
           utils.alert('没有未完成任务')
@@ -73,24 +79,27 @@
           if(r.data.SurplusRatio == 100){
             api.plan.BuildPlan.updateMileStone(vm.id,vm.current.Id,data).then(function(r){
               load();
-              utils.alert('更改成功');
+              utils.alert('更改成功3');
             })
           }else if(r.data.SurplusRatio >=80 && r.data.SurplusRatio <100){
-            utils.confirm('现今至'+vm.current.Name+'剩余工作量仅为标准工期的'+r.data.SurplusRatio+'%，可能会影响质量与进度').then(function(rs){
-              console.log(rs)
+            var msg1 = '现今至'+vm.current.Name+'剩余工作量仅为标准工期的'+r.data.SurplusRatio+'%，可能会影响质量与进度';
+            utils.confirm(msg1,null).then(function(rs){
+              console.log('ok')
               api.plan.BuildPlan.updateMileStone(vm.id,vm.current.Id,data).then(function(r){
                 load();
-                utils.alert('更改成功');
+                utils.alert('更改成功2');
               })
             },function(){
+              console.log('cancel')
               vm.current.setTime = new Date(vm.current.MilestoneTime);
             })
           }else{
-            utils.confirm('现今至'+vm.current.Name+'剩余工作量仅为标准工期的'+r.data.SurplusRatio+'%，会严重影响质量与进度').then(function(rs){
-              console.log(rs)
+            var msg = '现今至'+vm.current.Name+'剩余工作量仅为标准工期的'+r.data.SurplusRatio+'%，会严重影响质量与进度'
+            utils.confirm(msg,null).then(function(rs){
+              console.log('ok')
               api.plan.BuildPlan.updateMileStone(vm.id,vm.current.Id,data).then(function(r){
                 load();
-                utils.alert('更改成功');
+                utils.alert('更改成功1');
               })
             },function(){
               vm.current.setTime = new Date(vm.current.MilestoneTime);
@@ -99,7 +108,7 @@
           }
         }
       })
-      console.log(event,data,vm.current)
+      //console.log(event,data,vm.current)
     })
   }
 })(angular,undefined);

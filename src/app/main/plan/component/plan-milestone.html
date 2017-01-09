@@ -26,7 +26,7 @@
         <tr ng-repeat="m in vm.data" ng-click="vm.select(m)">
           <td>{{m.Name}}</td>
           <td>
-            <span ng-if="m.edit">
+            <span ng-if="vm.current == m&&m.edit">
               <md-datepicker name="beginDate" ng-model="m.setTime" md-open-on-focus md-placeholder="日期" required></md-datepicker>
             </span>
             <span ng-if="!m.edit">
