@@ -61,11 +61,15 @@
     //  })
     //}
     vm.enter=false;
+    if($rootScope.$$listeners["md-calendar-change"]){
+      $rootScope.$$listeners["md-calendar-change"] = [];
+     }
     $rootScope.$on('md-calendar-change', function(event,data) {
-      if(vm.enter) return;
-      vm.enter = true;
-      api.plan.BuildPlan.setMileStoneTime(vm.tempid,vm.current.Id,vm.current.setTime).then(function(r){
-        vm.enter = false;
+      //if(vm.enter) return;
+      //vm.enter = true;
+      if(!data) return;
+      api.plan.BuildPlan.setMileStoneTime($stateParams.id,vm.current.Id,vm.current.setTime).then(function(r){
+        //
         if(r.data.State == 1){
           utils.alert('没有未完成任务')
         }else if(r.data.State == 2){
@@ -79,17 +83,20 @@
             "MilestoneTime": vm.current.setTime
           }
           if(r.data.SurplusRatio == 100){
-            api.plan.BuildPlan.updateMileStone(vm.id,vm.current.Id,data).then(function(r){
-              load();
-              utils.alert('更改成功');
+            api.plan.BuildPlan.updateMileStone($stateParams.id,vm.current.Id,data).then(function(r){
+              utils.alert('更改成功').then(function(){
+                load();
+              });
             })
           }else if(r.data.SurplusRatio >=80 && r.data.SurplusRatio <100){
             var msg1 = '现今至'+vm.current.Name+'剩余工作量仅为标准工期的'+r.data.SurplusRatio+'%，可能会影响质量与进度';
             utils.confirm(msg1,null).then(function(rs){
               console.log('ok')
-              api.plan.BuildPlan.updateMileStone(vm.id,vm.current.Id,data).then(function(r){
-                load();
-                utils.alert('更改成功');
+              api.plan.BuildPlan.updateMileStone($stateParams.id,vm.current.Id,data).then(function(r){
+
+                utils.alert('更改成功').then(function(){
+                  load();
+                });
               })
             },function(){
               console.log('cancel')
@@ -99,9 +106,10 @@
             var msg = '现今至'+vm.current.Name+'剩余工作量仅为标准工期的'+r.data.SurplusRatio+'%，会严重影响质量与进度'
             utils.confirm(msg,null).then(function(rs){
               console.log('ok')
-              api.plan.BuildPlan.updateMileStone(vm.id,vm.current.Id,data).then(function(r){
-                load();
-                utils.alert('更改成功');
+              api.plan.BuildPlan.updateMileStone($stateParams.id,vm.current.Id,data).then(function(r){
+                utils.alert('更改成功').then(function(){
+                  load();
+                });
               })
             },function(){
               vm.current.setTime = new Date(vm.current.MilestoneTime);
