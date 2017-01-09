@@ -75,19 +75,26 @@
               load();
               utils.alert('更改成功');
             })
-          }else if(r.data.SurplusRatio >=80 || r.data.SurplusRatio <100){
-            utils.confirm('现今至'+vm.current.Name+'剩余工作量仅为标准工期的'+r.data.SurplusRatio+'%，可能会影响质量与进度').then(function(){
+          }else if(r.data.SurplusRatio >=80 && r.data.SurplusRatio <100){
+            utils.confirm('现今至'+vm.current.Name+'剩余工作量仅为标准工期的'+r.data.SurplusRatio+'%，可能会影响质量与进度').then(function(rs){
+              console.log(rs)
               api.plan.BuildPlan.updateMileStone(vm.id,vm.current.Id,data).then(function(r){
                 load();
                 utils.alert('更改成功');
               })
+            },function(){
+              vm.current.setTime = new Date(vm.current.MilestoneTime);
             })
           }else{
-            utils.confirm('现今至'+vm.current.Name+'剩余工作量仅为标准工期的'+r.data.SurplusRatio+'%，会严重影响质量与进度').then(function(){
+            utils.confirm('现今至'+vm.current.Name+'剩余工作量仅为标准工期的'+r.data.SurplusRatio+'%，会严重影响质量与进度').then(function(rs){
+              console.log(rs)
               api.plan.BuildPlan.updateMileStone(vm.id,vm.current.Id,data).then(function(r){
                 load();
                 utils.alert('更改成功');
               })
+            },function(){
+              vm.current.setTime = new Date(vm.current.MilestoneTime);
+              console.log('cancel')
             })
           }
         }
