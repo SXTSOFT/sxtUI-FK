@@ -9,7 +9,7 @@
         </md-input-container>
         <md-slider-container layout="row" layout-align="start center" ng-show="!logOut">
           <span flex="none" style="display:inline-block;padding-right: 10px">百分比</span>
-          <md-slider flex min="0" max="100" ng-model="percentage" aria-label="red" id="red-slider">
+          <md-slider flex min="0" max="{{max}}"  ng-model="percentage" aria-label="red" id="red-slider">
           </md-slider>
           <md-input-container style="width:40px;">
             <input type="number" ng-model="percentage" aria-label="red" aria-controls="red-slider">

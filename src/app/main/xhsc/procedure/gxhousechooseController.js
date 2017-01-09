@@ -60,30 +60,12 @@
         }
         if (vm.maxRegion==8){
             if (region.RegionType==8&&region.hasShowRight){
-              if (region.inspectionRows&&region.inspectionRows.length){
-                region.inspectionRows.forEach(function (k) {
-                  if (!k.Status){
-                    k.Status=0;
-                  }
-                  addNum(k.Status);
-                })
-              }else {
-                addNum(status);
-              }
+              addNum(status);
             }
         }else {
-            if (region.RegionType>=8&&region.hasShowRight){
-              if (region.inspectionRows&&region.inspectionRows.length){
-                region.inspectionRows.forEach(function (k) {
-                  if (!k.Status){
-                    k.Status=0;
-                  }
-                  addNum(k.Status);
-                })
-              }else {
-                addNum(status);
-              }
-            }
+          if (region.RegionType>=8&&region.hasShowRight){
+            addNum(status);
+          }
         }
       }
       //状态设置与用户区域权限
@@ -101,24 +83,39 @@
 
       var st2 =[];
       function setInspection(region){
-        var percentage= 0,status=0;
         if(region.inspectionRows.length){
-          region.inspectionRows && region.inspectionRows.forEach(function(t){
-            percentage += t.Percentage;
-            status = t.Status;
-            t.style=ConvertClass(t.Status);
-          })
+          var _100=region.inspectionRows.find(function (k) {
+             return k.Percentage>=100;
+          });
+          if (_100){
+            region.single=true;
+            region.status =  [_100.Status];
+            region.Percentage=100;
+            region.style=ConvertClass(_100.Status);
+            setNum(_100.Status,region)
+          }else {
+            region.status = [];
+            var percentage=0;
+            region.style="dy";
+            region.inspectionRows.forEach(function(t){
+              percentage += t.Percentage;
+              t.style=ConvertClass(t.Status);
+              region.status.push(t.Status);
+              setNum(t.Status,region)
+            })
+
+            region.inspectionRows.forEach(function(t){
+              t.Percentage=percentage*(t.Percentage/percentage);
+            })
+          }
         }else{
-          percentage = region.percentage;
-          status = [0];
+          region.single=true;
+          region.status =  [0];
+          region.Percentage=0;
+          region.style=ConvertClass(0);
+          setNum(0,region)
         }
-        // if(percentage > 100){
-        //   percentage = 100;
-        // }
-        // region.Percentage = percentage;
-        region.status = status;
-        region.style=ConvertClass(status);
-        setNum(status,region);
+
       }
       //状态设置
       function statusSetting(status,region){
@@ -214,13 +211,18 @@
       })
     };
     vm.selected = function(r){
-      switch (r.status){
-        case 0:
+      if (r.inspectionRows&&r.inspectionRows.length){
+        var percentage=0;
+        r.inspectionRows.forEach(function(t){
+          percentage += t.Percentage;
+        })
+        if (percentage<100){
           r.checked = !r.checked;
-          break;
-        case 1:
-          r.checked = r.Percentage==100?false:(!r.checked);
-          break;
+        }
+      }else {
+        if (r.status.indexOf(0)>-1){
+          r.checked = !r.checked;
+        }
       }
     }
 
@@ -270,7 +272,16 @@
           show=[0,1,2,4];
           break;
       }
-      return show.indexOf(status)>-1;
+      if (angular.isArray(status)){
+          for (var i=0;i<status.length;i++){
+            if ( show.indexOf(status[i])>-1){
+                return true;
+            }
+          }
+          return false;
+      }else {
+        return show.indexOf(status)>-1;
+      }
     }
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){

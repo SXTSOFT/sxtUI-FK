@@ -22,7 +22,6 @@
       link:link,
       controller:function($scope){
         $scope.description="";
-        $scope. percentage="";
       }
     }
     function link(scope,element,attr,ctrl){
@@ -32,7 +31,6 @@
         if(scope.dialogShow){
           $('.my-dialog-mask',element).fadeIn();
           scope.description="";
-          scope. percentage=100;
         }
         if(scope.dialogSure != '报验'){
           scope.logOut= true;
@@ -41,8 +39,20 @@
       scope.$watch('dialogData',function(){
         if(!scope.dialogData) return;
         var msg='';
+        scope.max=0;
         scope.dialogData.Rows.forEach(function(t){
           msg += t.projectTree+'，';
+          var percent=0;
+          t.inspectionRows.forEach(function (s) {
+            percent+=s.Percentage;
+          })
+          percent=100-percent;
+          if (scope.max<percent){
+            scope.max=percent;
+          }
+          $timeout(function () {
+            scope.percentage=scope.max;
+          },300)
         })
         scope.dialogMsg = msg + scope.dialogData.acceptanceItemName+ '工序已自检完毕，请监理验收';
       })
@@ -81,7 +91,10 @@
             api.setNetwork(0).then(function(){
               remote.Procedure.postInspection(params).then(function(result){
                 if (result.data.ErrorCode==0) {
-                  scope.callBack();
+                  $timeout(function () {
+                    scope.callBack();
+                  },300);
+                  $mdDialog.hide();
                 }
               }).catch(function(){
                 $mdDialog.cancel();

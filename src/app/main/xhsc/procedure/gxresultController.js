@@ -9,7 +9,7 @@
     .controller('gxresultController',gxresultController);
 
   /** @ngInject*/
-  function gxresultController($mdDialog,$stateParams,$state,$scope,remote,utils,xhUtils,api){
+  function gxresultController($mdDialog,$stateParams,$state,$scope,remote,utils,xhUtils,api,$timeout){
     var vm = this;
     vm.params = $stateParams;
     vm.gxname = $stateParams.acceptanceItemName;
@@ -52,9 +52,11 @@
             remote.Procedure.createZGReceipt(vm.data).then(function(r){
               $mdDialog.hide();
               if (r){
-                utils.alert("提交成功",null,function(){
-                  $state.go("app.xhsc.gx.gxmain",{index:0});
-                });
+                $timeout(function () {
+                  utils.alert("提交成功",null,function(){
+                    $state.go("app.xhsc.gx.gxmain",{index:0});
+                  });
+                },300);
               }
             },function(){
               $mdDialog.cancel();
