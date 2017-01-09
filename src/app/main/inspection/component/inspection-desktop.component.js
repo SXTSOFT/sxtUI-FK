@@ -13,14 +13,19 @@
     });
 
   /**@ngInject*/
-  function inspectionDesktopController($state,utils,$scope,api,$mdDialog,$window,$stateParams,$timeout){
+  function inspectionDesktopController($state,utils,$scope,api,$mdDialog,$window,$stateParams,$timeout,auth){
 
     var vm = this;
     vm.currenttab = 0;
     vm.loading = false;
     vm.selected=0;
+
+    auth.getUser().then(function (r) {
+      vm.loginname=r.Username
+    });
+
     vm.parm={
-      loginname:'13510000103',
+      loginname:'11100000000',
       status:null,
       page_size:10,
       page_number:1
@@ -37,11 +42,10 @@
         }
       })
     };
-    vm.done=function (room_id,delivery_id) {
+    vm.done=function (item) {
       var _if=false;
-      api.inspection.estate.getdeliverys(delivery_id).then(function (r) {
+      api.inspection.estate.getdeliverys(item.delivery_id).then(function (r) {
       if(r.data.data.water_degree.length==0&&r.data.data.electricity_degree.length==0){
-
         _if=true;
       }
       })
@@ -55,6 +59,21 @@
           $state.go("app.meterreading.page")
         });
       }else {
+        if(item.status=='processing'||item.status=='unprocessed'){
+          vm.parmData={
+            status: ""
+          }
+          if(item.status=='processing'){
+            vm.parmData.status="inspection_completed";
+          }else if (item.status=='unprocessed'){
+            vm.parmData.status="processing";
+          }
+          api.inspection.estate.updatedeliverys(vm.parmData,item.delivery_id).then(function (r) {
+
+            vm.inspection(2,'inspection_completed');
+          })
+
+        }
 
       }
     }
@@ -76,19 +95,21 @@
 
     //未开始状态 点击会修改状态为进行中
     vm.check = function(item){
-      // if(item.status=='processing'||item.status=='unprocessed'){
-      //   vm.parmData={
-      //     status: ""
-      //   }
-      //   if(item.status=='processing'){
-      //     vm.parmData.status="inspection_completed";
-      //   }else if (item.status=='unprocessed'){
-      //     vm.parmData.status="processing";
-      //   }
-      //   api.inspection.estate.updatedeliverys(vm.parmData,item.delivery_id).then(function (r) {})
-        $state.go('app.inspection.check',{delivery_id:item.delivery_id})
+      if(item.status=='processing'||item.status=='unprocessed'){
+        vm.parmData={
+          status: ""
+        }
+        if(item.status=='processing'){
+          vm.parmData.status="inspection_completed";
+        }else if (item.status=='unprocessed'){
+          vm.parmData.status="processing";
+        }
+        api.inspection.estate.updatedeliverys(vm.parmData,item.delivery_id).then(function (r) {
+          $state.go('app.inspection.check',{delivery_id:item.delivery_id})
+        })
 
-      //}
+
+      }
     }
 
     //进行中状态中点击进去补充验房数据
@@ -109,7 +130,7 @@
       })
     }
 
-    vm.load();
+      vm.load();
   }
 
 })();
