@@ -137,9 +137,12 @@
                   imgId = r.data.Relations.find(function (item) {
                     return item.Type == 7 && item.RegionId == scope.regionId;
                   });
-                  imgId = r.data.Relations.find(function (item) {
-                    return item.Type == 13 && item.RegionId == scope.regionId;
-                  });
+                  if(!imgId)
+                  {
+                    imgId = r.data.Relations.find(function (item) {
+                      return item.Type == 13 && item.RegionId == scope.regionId;
+                    });
+                  }
                   callback(imgId);
                 });
 

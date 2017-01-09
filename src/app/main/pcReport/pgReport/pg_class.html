@@ -1,0 +1,41 @@
+<div  ng-if="!vm.loaded">
+  <md-progress-circular id="toolbar-progress" class="md-accent"
+                        md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+  </md-progress-circular>
+</div>
+
+<table  ng-if="vm.loaded" class="table table-bordered">
+  <tr>
+    <th rowspan="2" style="min-width: 50px;width: 50px;">序号</th>
+    <th rowspan="2" style="min-width: 80px;">公司名称</th>
+    <th rowspan="2" style="min-width: 80px;">项目名称</th>
+    <th rowspan="2" style="min-width: 80px;">施工单位</th>
+    <th rowspan="2" style="min-width: 80px;">标段名称</th>
+    <th ng-repeat="item in vm.source.Heads" colspan="4">{{item.Name}}</th>
+  </tr>
+  <tr>
+    <th ng-repeat="item in vm.source.subTitle"  class="center w">
+      {{item.Value}}
+    </th>
+  </tr>
+  <tr ng-repeat="item  in vm.source.Body">
+    <td>
+      {{$index+1}}
+    </td>
+    <td>
+      {{item.CompanyName}}
+    </td>
+    <td>
+      {{item.ProjectName}}
+    </td>
+    <td>
+      {{item.MainContractorName}}
+    </td>
+    <td>
+      {{item.SectionName}}
+    </td>
+    <td ng-repeat="k in item.Children">
+      {{k.Value}}
+    </td>
+  </tr>
+</table>

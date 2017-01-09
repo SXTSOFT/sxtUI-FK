@@ -117,6 +117,12 @@
           $state.go(stateCmd,{quarter:quarter});
         });
       }
+      vm.pg_xmb_zb_class=function(stateCmd){
+        pg_show(function(quarter){
+          $mdDialog.hide();
+          $state.go(stateCmd,{quarter:quarter});
+        });
+      }
 
     })
   }

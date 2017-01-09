@@ -98,5 +98,16 @@
           }
         }
       })
+      .state('app.pcReport_pg_class',{
+        noBack:true,
+        sendBt:false,
+        url:'/pcReport_pg_class/{quarter}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/pcReport/pgReport/pg_class.html',
+            controller:'pgClassController as vm'
+          }
+        }
+      })
   }
 })();
