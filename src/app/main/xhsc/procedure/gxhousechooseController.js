@@ -60,11 +60,29 @@
         }
         if (vm.maxRegion==8){
             if (region.RegionType==8&&region.hasShowRight){
-              addNum(status);
+              if (region.inspectionRows&&region.inspectionRows.length){
+                region.inspectionRows.forEach(function (k) {
+                  if (!k.Status){
+                    k.Status=0;
+                  }
+                  addNum(k.Status);
+                })
+              }else {
+                addNum(status);
+              }
             }
         }else {
             if (region.RegionType>=8&&region.hasShowRight){
-              addNum(status);
+              if (region.inspectionRows&&region.inspectionRows.length){
+                region.inspectionRows.forEach(function (k) {
+                  if (!k.Status){
+                    k.Status=0;
+                  }
+                  addNum(k.Status);
+                })
+              }else {
+                addNum(status);
+              }
             }
         }
       }
@@ -80,6 +98,7 @@
           statusSetting(status,region);
         }
       }
+
       var st2 =[];
       function setInspection(region){
         var percentage= 0,status=0;
@@ -87,15 +106,16 @@
           region.inspectionRows && region.inspectionRows.forEach(function(t){
             percentage += t.Percentage;
             status = t.Status;
+            t.style=ConvertClass(t.Status);
           })
         }else{
           percentage = region.percentage;
-          status = 0;
+          status = [0];
         }
-        if(percentage > 100){
-          percentage = 100;
-        }
-        region.Percentage = percentage;
+        // if(percentage > 100){
+        //   percentage = 100;
+        // }
+        // region.Percentage = percentage;
         region.status = status;
         region.style=ConvertClass(status);
         setNum(status,region);
@@ -109,10 +129,11 @@
         region.inspectionRows=[];
         status.forEach(function(t){
           if(t.AcceptanceItemID==acceptanceItemID && t.AreaId == region.RegionID){
-            region.inspectionRows.push(t);
-          }else{
-            region.status=0;
-            region.Percentage=0;
+            if (!region.inspectionRows.find(function (k) {
+                k.InspectionId==t.InspectionId;
+              })){
+              region.inspectionRows.push(t);
+            }
           }
         })
         setInspection(region);
