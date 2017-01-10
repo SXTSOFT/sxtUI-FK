@@ -97,9 +97,9 @@
     //  return r;
     //};
     //获取模板
-    api.plan.TaskTemplates.GetList({Skip:0,Limit:100}).then(function (r) {
-      vm.data.templates = r.data.Items||[];
-    })
+    //api.plan.TaskTemplates.GetList({Skip:0,Limit:100}).then(function (r) {
+    //  vm.data.templates = r.data.Items||[];
+    //})
 
     vm.getMaps = function () {
       return api.xhsc.Project.getMap().then(function (r) {
@@ -454,6 +454,9 @@
           regionName1 = f.ProjectName;
           vm.formWizard.Name = regionName1;
         }
+        api.plan.TaskTemplates.GetList({Skip:0,Limit:100,ProjectId:vm.formWizard.projectId}).then(function (r) {
+          vm.data.templates = r.data.Items||[];
+        })
       }
     });
     $scope.$watch('vm.formWizard.sectionId',function(){
