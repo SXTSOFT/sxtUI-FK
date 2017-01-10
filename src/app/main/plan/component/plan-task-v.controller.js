@@ -167,6 +167,7 @@
           if(items){
             vm.subTasks = items;
           }else{
+              console.log('t',templateId)
             api.plan.TaskLibrary.GetList({Skip:0,Limit:10000,Level:1,TemplateId:templateId}).then(function (r) {
               vm.subTasks = r.data.Items||[];
             });
