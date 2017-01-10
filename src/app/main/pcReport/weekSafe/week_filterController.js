@@ -106,6 +106,8 @@
           params={};
         }
         params.currentProject=v;
+        params.currentArea = {};
+        $scope.core.currentArea = null;
         sxtlocaStorage.setObj("week_params",params);
         if (!$scope.isbusy){
           $rootScope.$emit("filter");
