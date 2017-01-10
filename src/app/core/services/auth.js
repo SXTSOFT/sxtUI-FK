@@ -19,7 +19,7 @@
 
     appAuth.$injector = ['$q','$injector','authToken','$state','$rootScope','$location','sxt'];
 
-    function appAuth($q,$injector,authToken,$state,$rootScope,$location, sxt){
+    function appAuth($q,$injector,authToken,$state,$rootScope,$location, sxt,api){
 
       var s = {
         isLoggedIn : isLoggedIn,
@@ -146,7 +146,7 @@
       function logout() {
         $rootScope.$emit('user:logout', loginedUser);
         $state.go('app.auth.login');
-
+        api.xhsc.logout();
       }
 
       function currentUser(){

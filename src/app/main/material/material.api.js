@@ -84,7 +84,10 @@
           return $http.get($http.url('/api/ProjectInfoApi/GetProjectSection',{areaId:args}));
         },
         getUserProjectSectionForPc:function(){
-          return  $http.get($http.url('/api/ProjectInfoApi/GetUserSectionForPc'))
+          return $http.get($http.url('/api/ProjectInfoApi/GetUserSectionForPc'))
+        },
+        getMaterialReport:function(sid){
+          return $http.get($http.url('/api/MaterialPlan/GetMaterialReportBySectionId/' + sid))
         }
       },
       contract:{

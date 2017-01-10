@@ -3139,6 +3139,60 @@ table{
       }
     }
 }
+
+.materialReport{
+   font-family: "Roboto", "Helvetica Neue", "Arial", "sans-serif";
+    font-size: 13px;
+    width: 100%;
+    border-collapse: collapse;
+    border: 0px;
+    text-align: center;
+    th{
+      border: 1px solid #ddd;
+      text-align: center !important;
+      line-height: 44px;
+    }
+    th:nth-child(n+4){
+      min-width: 100px;
+    }
+    th:nth-child(1){
+      width: 50px;
+      min-width: 50px;
+    }
+    th:nth-child(2){
+      width:10%;
+      min-width: 120px;
+    }
+    th:nth-child(3){
+      width:10%;
+      min-width: 120px;
+    }
+    td{
+      border: 1px solid #ddd;
+      padding: 0px;
+    }
+    table{
+      width: 100%;
+      height: 100%;
+      border-collapse: collapse;
+      border: 0px solid;
+      td{
+        width: 50%;
+        border: 0px solid;
+        line-height: 22px;
+      }
+      td:first-child{
+        border-right: 1px solid #ddd;
+      }
+      tr{
+        border-bottom: 1px solid #ddd;
+      }
+      tr:last-child{
+        border: 0px solid;
+      }
+    }
+}
+
 #content .leaflet-control-zoom-in{
   color:white ;
 }
