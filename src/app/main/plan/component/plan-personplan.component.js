@@ -29,6 +29,11 @@
             r.sdate = r.ActualStartTime && moment(r.ActualStartTime.substring(0, 10)).toDate() || r.ScheduledStartTime && moment(r.ScheduledStartTime.substring(0, 10)).toDate();
             r.edate = r.ActualEndTime && moment(r.ActualEndTime.substring(0, 10)).toDate() || r.ScheduledEndTime && moment(r.ScheduledEndTime.substring(0, 10)).toDate();
           })
+          _r.NoPlanTasks.forEach(function (r) {
+            r.parentId=_r.Id;
+            r.sdate = r.ActualStartTime && moment(r.ActualStartTime.substring(0, 10)).toDate() || r.ScheduledStartTime && moment(r.ScheduledStartTime.substring(0, 10)).toDate();
+            r.edate = r.ActualEndTime && moment(r.ActualEndTime.substring(0, 10)).toDate() || r.ScheduledEndTime && moment(r.ScheduledEndTime.substring(0, 10)).toDate();
+          })
         })
         vm.data = vm.tdata;
         vm.data && vm.data.forEach(function (_r) {
