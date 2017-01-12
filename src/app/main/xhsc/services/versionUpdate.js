@@ -11,7 +11,7 @@
   function versionUpdate($mdDialog, $cordovaFileTransfer, $window,$http,sxt) {
 
     var self = this;
-    var version = '1.2.7.0',
+    var version = '1.2.9.0',
       versionOld = version;
     this.version = version;
 

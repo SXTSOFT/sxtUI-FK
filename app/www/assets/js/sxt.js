@@ -28,23 +28,7 @@
     return fmt;
   }
 })();
-// (function(win) {
-//   'use strict';
-//   win.sxt = {
-//     version: '1.1.12',
-//     app: {
-//       api:'http://emp.chngalaxy.com:9091',
-//       // api: 'http://10.0.9.79:7091',
-//
-//       fs:'http://emp.chngalaxy.com:9090'
-//       // fs:'http://10.0.9.79:7090'
-//     },
-//     angular:{
-//
-//     }
-//   };
-// })(window);
-//
+
 
 
 window.sxt = (function(win,angular)
@@ -71,8 +55,8 @@ window.sxt = (function(win,angular)
   angular.element(document).ready(function () {
     if (win.cordova) {
       document.addEventListener('deviceready', function () {
-        // load();
-        bootstrap();
+        load();
+        // bootstrap();
       }, false);
     }
     else {
