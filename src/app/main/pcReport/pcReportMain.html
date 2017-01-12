@@ -1,95 +1,101 @@
-<md-tabs md-border-bottom flex layout="column" md-selected=true>
-  <md-tab label="报表中心" md-on-select="vm.onNavList()">
-    <md-tab-content flex layout-fill layout="column">
-      <md-content flex>
-        <md-list ng-cloak>
-          <md-list-item ui-sref="app.pcReport_hz">
-            <img src="app/main/xhsc/images/i_304g31.png" class="md-avatar">
-            <p>汇总报表 </p>
-          </md-list-item>
-          <md-subheader class="md-no-sticky">质量</md-subheader>
-          <md-list-item ui-sref="app.pcReport_ys_gx">
-            <img src="app/main/xhsc/images/i_3r631.png" class="md-avatar">
-            <p>工序验收报表</p>
-          </md-list-item>
-          <md-list-item ng-click="vm.ysProject()">
-            <img src="app/main/xhsc/images/i_3r631.png" class="md-avatar">
-            <p>工序验收(问题分类统计)</p>
-          </md-list-item>
+<!--<md-tabs md-border-bottom flex layout="column" md-selected=true>-->
+  <!--<md-tab label="报表中心" md-on-select="vm.onNavList()">-->
+   <!---->
+  <!--</md-tab>-->
+  <!--<md-tab ng-repeat="tab in vm.tabs" label="{{tab.name}}">-->
+    <!--<md-tab-content flex layout-fill layout="column">-->
+      <!--<ui-view flex layout="column">-->
+      <!--</ui-view>-->
+    <!--</md-tab-content>-->
+  <!--</md-tab>-->
+<!--</md-tabs>-->
 
-          <md-list-item ui-sref="app.pcReport_sl_sc">
-            <img src="app/main/xhsc/images/i_321.png" class="md-avatar">
-            <p>实测实量报表</p>
-          </md-list-item>
-          <md-list-item ui-sref="app.pcReport_sl_jt">
-            <img src="app/main/xhsc/images/i_321.png" class="md-avatar">
-            <p>实测实量汇总(集团)</p>
-          </md-list-item>
-          <md-list-item ng-click="vm.scProject()">
-            <img src="app/main/xhsc/images/i_321.png" class="md-avatar">
-            <p>实测实量汇总(项目)</p>
-          </md-list-item>
-          <md-list-item ng-click="vm.scBuild()">
-            <img src="app/main/xhsc/images/i_321.png" class="md-avatar">
-            <p>实测实量汇总(楼栋)</p>
-          </md-list-item>
+<md-tab-content flex layout-fill layout="column">
+  <md-content flex>
+    <md-list ng-cloak>
+      <md-list-item ui-sref="app.pcReport_hz">
+        <img src="app/main/xhsc/images/bbhz.svg" class="md-avatar" style="width:28px;">
+        <p>汇总报表 </p>
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-subheader class="md-no-sticky">质量</md-subheader>
+      <md-list-item ui-sref="app.pcReport_ys_gx">
+        <img src="app/main/xhsc/images/bbzl.svg" class="md-avatar" style="width:28px;">
+        <p>工序验收报表</p>
+      </md-list-item>
+      <md-list-item ng-click="vm.ysProject()">
+        <img src="app/main/xhsc/images/bbzl.svg" class="md-avatar" style="width:28px;">
+        <p>工序验收(问题分类统计)</p>
+      </md-list-item>
 
-          <md-list-item ui-sref="app.pcReport_cycle_default.filter">
-            <img src="app/main/xhsc/images/i_3r631.png" class="md-avatar">
-            <p>日常巡检报表</p>
-          </md-list-item>
-          <!--<md-list-item ui-sref="app.pcReport_cycle_default.filter">-->
-            <!--<img src="app/main/xhsc/images/i_321.png" class="md-avatar">-->
-            <!--<p>验房报表</p>-->
-          <!--</md-list-item>-->
+      <md-list-item ui-sref="app.pcReport_sl_sc">
+        <img src="app/main/xhsc/images/bbzl.svg" class="md-avatar" style="width:28px;">
+        <p>实测实量报表</p>
+      </md-list-item>
+      <md-list-item ui-sref="app.pcReport_sl_jt">
+        <img src="app/main/xhsc/images/bbzl.svg" class="md-avatar" style="width:28px;">
+        <p>实测实量汇总(集团)</p>
+      </md-list-item>
+      <md-list-item ng-click="vm.scProject()">
+        <img src="app/main/xhsc/images/bbzl.svg" class="md-avatar" style="width:28px;">
+        <p>实测实量汇总(项目)</p>
+      </md-list-item>
+      <md-list-item ng-click="vm.scBuild()">
+        <img src="app/main/xhsc/images/bbzl.svg" class="md-avatar" style="width:28px;">
+        <p>实测实量汇总(楼栋)</p>
+      </md-list-item>
+
+      <md-list-item ui-sref="app.pcReport_cycle_default.filter">
+        <img src="app/main/xhsc/images/bbzl.svg" class="md-avatar" style="width:28px;">
+        <p>日常巡检报表</p>
+      </md-list-item>
+      <md-list-item ng-click="vm.pg_trial()">
+        <img src="app/main/xhsc/images/bbzlbs.svg" class="md-avatar" style="width:28px;">
+        <p>淋水闭水报表</p>
+      </md-list-item>
 
 
-          <md-divider></md-divider>
-          <md-subheader class="md-no-sticky">安全</md-subheader>
+      <md-divider></md-divider>
+      <md-subheader class="md-no-sticky">安全</md-subheader>
 
-          <md-list-item ui-sref="app.pcReport_safeys_default.filter">
-            <img src="app/main/xhsc/images/i_304g31.png" class="md-avatar">
-            <p>安全验收报表</p>
-          </md-list-item>
+      <md-list-item ui-sref="app.pcReport_safeys_default.filter">
+        <img src="app/main/xhsc/images/bbaq.svg" class="md-avatar" style="width:28px;">
+        <p>安全验收报表</p>
+      </md-list-item>
 
 
-          <md-list-item ui-sref="app.pcReport_week_default.filter">
-            <img src="app/main/xhsc/images/i_3r631.png" class="md-avatar">
-            <p>周安全检查报表</p>
-          </md-list-item>
+      <md-list-item ui-sref="app.pcReport_week_default.filter">
+        <img src="app/main/xhsc/images/bbaq.svg" class="md-avatar" style="width:28px;">
+        <p>周安全检查报表</p>
+      </md-list-item>
 
-          <md-divider></md-divider>
-          <md-subheader class="md-no-sticky">评估</md-subheader>
+      <md-divider></md-divider>
+      <md-subheader class="md-no-sticky">评估</md-subheader>
 
-          <md-list-item ui-sref="app.pcReport_pg">
-            <img src="app/main/xhsc/images/i_3d31.png" class="md-avatar">
-            <p>现场评估报表</p>
-          </md-list-item>
-          <md-list-item ng-click="vm.pg_xmb_zb_jl('app.pcReport_pg_xmb')">
-            <img src="app/main/xhsc/images/i_3d31.png" class="md-avatar">
-            <p>项目评估报表(项目部)</p>
-          </md-list-item>
-          <md-list-item ng-click="vm.pg_xmb_zb_jl('app.pcReport_pg_jl')">
-            <img src="app/main/xhsc/images/i_3d31.png" class="md-avatar">
-            <p>项目评估报表(监理)</p>
-          </md-list-item>
-          <md-list-item ng-click="vm.pg_xmb_zb_jl('app.pcReport_pg_zb')">
-            <img src="app/main/xhsc/images/i_3d31.png" class="md-avatar">
-            <p>项目评估报表(总包)</p>
-          </md-list-item>
-          <md-list-item ng-click="vm.pg_xmb_zb_class('app.pcReport_pg_class')">
-            <img src="app/main/xhsc/images/i_3d31.png" class="md-avatar">
-            <p>项目评估报表(各分项评分)</p>
-          </md-list-item>
-        </md-list>
-      </md-content>
-    </md-tab-content>
-  </md-tab>
-  <md-tab ng-repeat="tab in vm.tabs" label="{{tab.name}}">
-    <md-tab-content flex layout-fill layout="column">
-      <ui-view flex layout="column">
-      </ui-view>
-    </md-tab-content>
-  </md-tab>
-</md-tabs>
-
+      <md-list-item ui-sref="app.pcReport_pg">
+        <img src="app/main/xhsc/images/bbpg.svg" class="md-avatar" style="width:28px;">
+        <p>现场评估报表</p>
+      </md-list-item>
+      <md-list-item ng-click="vm.pg_xmb_zb_jl('app.pcReport_pg_xmb')">
+        <img src="app/main/xhsc/images/bbpg.svg" class="md-avatar" style="width:28px;">
+        <p>项目评估报表(项目部)</p>
+      </md-list-item>
+      <md-list-item ng-click="vm.pg_xmb_zb_jl('app.pcReport_pg_jl')">
+        <img src="app/main/xhsc/images/bbpg.svg" class="md-avatar" style="width:28px;">
+        <p>项目评估报表(监理)</p>
+      </md-list-item>
+      <md-list-item ng-click="vm.pg_xmb_zb_jl('app.pcReport_pg_zb')">
+        <img src="app/main/xhsc/images/bbpg.svg" class="md-avatar" style="width:28px;">
+        <p>项目评估报表(总包)</p>
+      </md-list-item>
+      <md-list-item ng-click="vm.pg_xmb_zb_class('app.pcReport_pg_class')">
+        <img src="app/main/xhsc/images/bbpgpf.svg" class="md-avatar" style="width:28px;">
+        <p>项目评估报表(各分项评分)</p>
+      </md-list-item>
+      <md-list-item ui-sref="app.pcReport_pg_rate">
+        <img src="app/main/xhsc/images/bbpghkl.svg" class="md-avatar" style="width:28px;">
+        <p>项目评估报表(实测合格率)</p>
+      </md-list-item>
+    </md-list>
+  </md-content>
+</md-tab-content>

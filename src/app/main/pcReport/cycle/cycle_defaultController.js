@@ -18,7 +18,6 @@
   function cycle_defaultController($state,remote,$scope,$rootScope,sxtlocaStorage){
     var vm=this;
     vm.selectSize=10;
-
     function load() {
       var params= sxtlocaStorage.getObj("cycle_params");
       params=params?params:{};
@@ -38,7 +37,10 @@
 
       if (params.currentArea&&params.currentArea.RegionID){
         queryParams.AreaId=params.currentArea.RegionID;
+      }
 
+      if (params.currentProject&&params.currentProject.RegionID){
+        queryParams.ProjectID=params.currentProject.RegionID;
       }
 
       remote.report.getWrapList('cycle',queryParams).then(function (r) {

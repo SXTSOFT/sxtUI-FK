@@ -2275,7 +2275,11 @@
         },getReportFormAssessmentJl:function(quarter){
           return $http.get($http.url('/api/ReportFormAssessment/jl/'+quarter))
         },getReportFormAssessmentClass:function(quarter){
-          return $http.get($http.url('/api/ReportFormAssessmentClass/'+quarter))
+          return $http.get($http.url('/api/ReportFormAssessment/AssessmentClass/'+quarter))
+        }, getReportFormAssessmentTrial:function(areaId){
+          return $http.get($http.url('/api/ReportFormAssessment/AssessmentTrial/'+areaId))
+        }, getReportFormAssessmentRate:function(){
+          return $http.get($http.url('/api/ReportFormAssessment/AssessmentRate'))
         },
         getReportFormSummary:function () {
 

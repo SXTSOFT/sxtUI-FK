@@ -109,5 +109,27 @@
           }
         }
       })
+      .state('app.pcReport_pg_trial',{
+      noBack:true,
+      sendBt:false,
+      url:'/pcReport_pg_trial/{areaId}',
+      views :{
+        'content@app':{
+          templateUrl : 'app/main/pcReport/pgReport/pg_trial.html',
+          controller:'pgTrialController as vm'
+        }
+      }
+    })
+      .state('app.pcReport_pg_rate',{
+        noBack:true,
+        sendBt:false,
+        url:'/pcReport_pg_rate',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/pcReport/pgReport/pg_rate.html',
+            controller:'pgRateController as vm'
+          }
+        }
+      })
   }
 })();

@@ -106,6 +106,8 @@
           params={};
         }
         params.currentProject=v;
+        params.currentArea = {};
+        $scope.core.currentArea = null;
         sxtlocaStorage.setObj("safeys_params",params);
         if (!$scope.isbusy){
           $rootScope.$emit("filter");

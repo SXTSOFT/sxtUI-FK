@@ -22,7 +22,6 @@
     var vm=this;
     vm.selectSize=10;
 
-
     function load() {
       var params= sxtlocaStorage.getObj("week_params");
       params=params?params:{};
@@ -42,8 +41,12 @@
 
       if (params.currentArea&&params.currentArea.RegionID){
         queryParams.AreaId=params.currentArea.RegionID;
-
       }
+
+      if (params.currentProject&&params.currentProject.RegionID){
+        queryParams.ProjectID=params.currentProject.RegionID;
+      }
+
 
       remote.report.getWrapList('WeekInspects',queryParams).then(function (r) {
         vm.total=r.data.TotalCount;

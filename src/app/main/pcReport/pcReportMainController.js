@@ -124,6 +124,12 @@
         });
       }
 
+      vm.pg_trial=function () {
+        show(function (area) {
+          $mdDialog.hide();
+          $state.go("app.pcReport_pg_trial",{areaId:area.RegionID});
+        },null,4);
+      }
     })
   }
 })();

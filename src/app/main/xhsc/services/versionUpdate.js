@@ -33,7 +33,7 @@
     }
 
     this.check = function () {
-      return $http.get(sxt.app.version+'/version.json')
+      return $http.get(sxt.app.version+'/version.json?r='+(new Date()).valueOf())
         .then(function (data) {
           var serverAppVersion = data.data.version || data.data.vankeVersion;
           if (versionToNumber2(version) < versionToNumber2(serverAppVersion)) {

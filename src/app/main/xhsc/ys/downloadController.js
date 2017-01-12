@@ -220,7 +220,7 @@
           vm.offlines.push(m);
         });
         remote.Assessment.query().then(function (result) {
-          if(result.data.length==0){
+          if(result.data==null||result.data.length==0){
             utils.alert('暂无待评估项目！');
           }
           else {
@@ -260,7 +260,7 @@
 
 
       remote.Assessment.queryItemResults().then(function(result){
-        result.data.forEach(function(t){
+        result.data&&result.data.forEach(function(t){
           t.fullName = ((t.Year+'年')||'') +'第'+t.Quarter +'季度'+ (t.ProjectName||'')+'项目得分汇总';
         })
         vm.projects=vm.cache = result.data;
