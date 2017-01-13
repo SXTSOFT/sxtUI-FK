@@ -96,7 +96,8 @@
         api.plan.fileService.get(t.UploadPhotoFileId).then(function(r){
           if(r.data.Base64){
             t.images=[{
-              url:r.data.Base64
+              url:r.data.Base64,
+              alt:task.EndDescription||''
             }]
             xhUtils.playPhoto(t.images)
           }else if(t.EndDescription){
