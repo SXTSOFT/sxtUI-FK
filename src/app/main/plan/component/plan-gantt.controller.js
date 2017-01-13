@@ -758,7 +758,7 @@
             //task.showTooltip = true;
             $mdToast.show(
               $mdToast.simple()
-                .textContent('未上传照片，未填写关闭原因')
+                .textContent('无上传照片，无反馈信息')
                 .position('top')
                 .hideDelay(3000)
                 .toastClass('abc')
