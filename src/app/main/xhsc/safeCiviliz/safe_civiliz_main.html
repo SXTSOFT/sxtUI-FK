@@ -3,11 +3,11 @@
     <ul>
       <li ng-click="vm.setModule(2)">
         <img src="app/main/xhsc/images/zbby.png">
-        <p>总包报验</p>
+        <p>安全报验</p>
       </li>
       <li ng-click="vm.setModule(4)">
         <img src="app/main/xhsc/images/zbzg.png">
-        <p>总包整改</p>
+        <p>安全整改</p>
       </li>
       <li ng-click="vm.upload()">
         <img src="app/main/xhsc/images/upload.png">
@@ -23,7 +23,7 @@
       <md-list-item style="background-color: #FFFFFF" ng-click="vm.zbzgAction(item)" layout="row" ng-repeat="item in vm.zglist|zgFilter:[1,8]">
         <div  layout="column" style="padding-bottom: 16px">
           <p style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
-            {{item.AcceptanceItemName}}<span style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">总包整改</span>
+            {{item.AcceptanceItemName}}<span style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">安全整改</span>
           </p>
           <p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px"><span
             ng-repeat="area in item.Children" style="display: block;height: 24px"> {{area.RegionName}} </span></p>
@@ -43,11 +43,11 @@
     <ul>
       <li ng-click="vm.setModule(16)">
         <img src="app/main/xhsc/images/jlys.png">
-        <p>监理验收</p>
+        <p>安全验收</p>
       </li>
       <li ng-click="vm.setModule(32)">
         <img src="app/main/xhsc/images/jlfy.png">
-        <p>监理复验</p>
+        <p>安全复验</p>
       </li>
       <li ng-click="vm.upload()">
         <img src="app/main/xhsc/images/upload.png">
@@ -65,7 +65,7 @@
           <p  style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
             {{item.AcceptanceItemName}}
             <span
-              style="margin-left:2%;color:white;background-color: #359df5;font-size:12px;border-radius: 3px">监理验收</span>
+              style="margin-left:2%;color:white;background-color: #359df5;font-size:12px;border-radius: 3px">安全验收</span>
           </p>
           <p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px;">
             <span ng-repeat="area in item.Children" style="display: block;height: 24px"> {{area.RegionName}} </span>
@@ -81,7 +81,7 @@
         <div style="padding-bottom: 16px" layout="column">
           <p  style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
             {{item.AcceptanceItemName}} <span
-            style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">监理复验</span>
+            style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">安全复验</span>
           </p>
           <p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px;"><span
             ng-repeat="area in item.Children" style="display: block;height: 24px"> {{area.RegionName}} </span></p>

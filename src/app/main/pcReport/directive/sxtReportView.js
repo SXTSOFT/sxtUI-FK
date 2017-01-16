@@ -22,7 +22,7 @@
         disableInspect: '=',
         disableDrag: '=',
         ct: '=',
-        loaded:"="
+        loaded: "="
       },
       link: link
     };
@@ -38,7 +38,7 @@
             }
           });
           fg = $window.mapboxgl.Plan({
-            disableInspect:true,
+            disableInspect: true,
             disableDrag: true,
             onChangeMode: function (mode, op, cb) {
               if (mode && !op) {
@@ -52,62 +52,41 @@
             },
             onLoad: function (cb) {
               if (angular.isArray(scope.ponits)) {
-                var  fs=[];
+                var fs = [];
                 scope.ponits.forEach(function (p) {
                   if (p.Geometry) {
                     p.geometry = $window.JSON.parse(p.Geometry);
                   } else {
                     p.geometry = p.geometry;
                   }
-                  if (!p.geometry)return;
+                  if (!p.geometry) return;
                   // c.ProblemDescription = c.IndexPointID ? c.ProblemDescription : '合格';
                   p.geometry.properties.seq = p.ProblemSortName;
-                  // p.geometry.properties.v = c;
                   if (p.geometry.geometry.type == 'Stamp')
                     p.geometry.geometry.type = 'Point';
-                  if (!p.IndexPointID){
-                    p.geometry.properties.Status = 2;
-                  }else {
-                    p.geometry.properties.Status = 1;
+                  function convert(status) {
+                    switch (status) {
+                      case 8:
+                      case 4:
+                        return 1;
+                      case 16:
+                        return 8;
+                    }
+                    return status;
                   }
+                  p.geometry.properties.Status = convert(p.Status);
+                  // if (!p.IndexPointID) {
+                  //   p.geometry.properties.Status = 2;
+                  // } else {
+                  //   p.geometry.properties.Status = 1;
+                  // }
 
                   fs.push(p.geometry);
                 });
               }
               scope.item = null;
-              fg.addData(fs,false);
+              fg.addData(fs, false);
               cb();
-
-              // remote.Procedure.InspectionCheckpoint.query(scope.procedure,scope.regionId,scope.inspectionId,"nodb").then(function (r) {
-              //   remote.Procedure.InspectionPoint.query(scope.inspectionId,scope.procedure, scope.regionId,"nodb").then(function (r1) {
-              //     fg.data = r.data;
-              //     var fs=[];
-              //     r.data.forEach(function (c) {
-              //       var p = r1.data.find(function (p1) {
-              //         return p1.MeasurePointID == c.PositionID;
-              //       });
-              //       if (p && p) {
-              //         if(p.Geometry){
-              //           p.geometry = $window.JSON.parse(p.Geometry);
-              //         }else{
-              //           p.geometry = p.geometry;
-              //         }
-              //         if(!p.geometry)return;
-              //         c.ProblemDescription= c.IndexPointID?c.ProblemDescription:'合格';
-              //         p.geometry.properties.seq = c.ProblemSortName;
-              //         p.geometry.properties.v = c;
-              //         if(p.geometry.geometry.type == 'Stamp')
-              //           p.geometry.geometry.type = 'Point';
-              //         p.geometry.properties.Status = c.Status;
-              //         fs.push(p.geometry);
-              //       }
-              //     });
-              //     scope.item = null;
-              //     fg.addData(fs,false);
-              //     cb();
-              //     scope.ct && (scope.ct.loading = false);
-              //   })
-              // });
             },
             onUpdate: function (layer, isNew, group, cb) {
 
@@ -137,8 +116,7 @@
                   imgId = r.data.Relations.find(function (item) {
                     return item.Type == 7 && item.RegionId == scope.regionId;
                   });
-                  if(!imgId)
-                  {
+                  if (!imgId) {
                     imgId = r.data.Relations.find(function (item) {
                       return item.Type == 13 && item.RegionId == scope.regionId;
                     });

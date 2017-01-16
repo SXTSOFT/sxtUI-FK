@@ -152,7 +152,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        title: '周安全检查',
+        title: '安全检查',
         url: '/sfWeekMain',
         templateUrl: 'app/main/xhsc/safeCiviliz/sfWeekMain.html',
         controller: 'sfWeekMainController as vm'
@@ -162,7 +162,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        title: '周安全检查',
+        title: '安全检查',
         url: '/week/{yw}',
         templateUrl: 'app/main/xhsc/safeCiviliz/sfWeekBase.html',
         controller: 'sfWeekBaseController as vm'
@@ -172,7 +172,7 @@
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
-        title: '周安全检查',
+        title: '安全检查',
         url: '/ sfWeekAccept/{InspectionId}/{projectId}/{areaId}',
         templateUrl: 'app/main/xhsc/safeCiviliz/sfWeekAccept.html',
         controller: 'sfWeekAcceptController as vm'
@@ -182,7 +182,7 @@
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
-        title: '周安全检查',
+        title: '安全检查',
         url: '/sfWeekRectify/{Role}/{InspectionID}/{AcceptanceItemID}/{RectificationID}/{AcceptanceItemName}',
         templateUrl: 'app/main/xhsc/safeCiviliz/sfWeekRectify.html',
         controller: 'sfWeekRectifyController as vm'

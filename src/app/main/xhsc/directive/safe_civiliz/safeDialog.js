@@ -47,7 +47,7 @@
         scope.dialogData.Rows.forEach(function(t){
           msg += t.projectTree+'，';
         })
-        scope.dialogMsg = msg + scope.dialogData.acceptanceItemName+ '工序已自检完毕，请监理验收';
+        scope.dialogMsg = msg + scope.dialogData.acceptanceItemName+ '安全已自检完毕，请监理验收';
       })
       scope.cancel= function(){
         scope.dialogShow = false;

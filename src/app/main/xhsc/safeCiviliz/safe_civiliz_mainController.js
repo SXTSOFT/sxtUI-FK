@@ -1,4 +1,4 @@
-/**
+/**db
  * Created by lss on 2016/10/18.
  */
 /**
@@ -350,6 +350,15 @@
                 $mdDialog.hide();
                 load();
                 vm.uploadInfo.uploading = false;
+                remote.offline.query().then(function(m){
+                    if(angular.isArray(m.data)){
+                      m.data.forEach(function(n){
+                        if(n.Id&&(n.Id.indexOf("safeYs")>-1||n.Id.indexOf("safeZg")>-1)){
+                          remote.offline.delete({Id:n.Id});
+                        }
+                      });
+                    }
+                });
               }, function (timeout) {
                 var msg = timeout ? '超时,任务上次失败!' : '上传失败,请检查网络';
                 $mdDialog.cancel();

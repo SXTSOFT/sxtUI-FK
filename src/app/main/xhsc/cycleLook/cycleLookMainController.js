@@ -430,6 +430,15 @@
                 utils.alert("上传成功!");
                 $mdDialog.hide();
                 load();
+                 remote.offline.query().then(function(m){
+                    if(angular.isArray(m.data)){
+                      m.data.forEach(function(n){
+                        if(n.Id&&(n.Id.indexOf("cycleYs")>-1||n.Id.indexOf("cycleZg")>-1)){
+                          remote.offline.delete({Id:n.Id});
+                        }
+                      });
+                    }
+                });
                 vm.uploadInfo.uploading = false;
               }, function (timeout) {
                 var msg = timeout ? '超时,任务上次失败!' : '上传失败,请检查网络';
