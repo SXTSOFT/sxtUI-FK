@@ -14,7 +14,7 @@
     });
 
   /**@ngInject*/
-  function personPlanController($scope,$rootScope,moment,api,$mdDialog,$timeout,utils,xhUtils,sxt){
+  function personPlanController($scope,$rootScope,$mdToast,moment,api,$mdDialog,$timeout,utils,xhUtils,sxt){
     var vm = this;
     load();
     function load() {
@@ -96,11 +96,21 @@
         api.plan.fileService.get(t.UploadPhotoFileId).then(function(r){
           if(r.data.Base64){
             t.images=[{
-              url:r.data.Base64
+              url:r.data.Base64,
+              alt:task.EndDescription||''
             }]
             xhUtils.playPhoto(t.images)
+          }else if(t.EndDescription){
+            var msg = '反馈信息:'+task.EndDescription+'，无图片';
+            utils.alert(msg)
           }else{
-            utils.alert('无图片')
+            utils.alert('无图片,无反馈信息')
+            //$mdToast.show(
+            //  $mdToast.simple()
+            //    .textContent(task.EndDescription)
+            //    .position('top')
+            //    .hideDelay(3000)
+            //);
           }
 
         })
