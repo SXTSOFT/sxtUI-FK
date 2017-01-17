@@ -14,6 +14,7 @@
   /** @ngInject */
   function safe_civiliz_rectifyController($state, $rootScope, $scope, $mdDialog, remote, $timeout, $q, utils, xhUtils, api) {
     var vm = this;
+    vm.points=[];
     $rootScope.title = $state.params.Role == 'zb' ? '整改' : '复验';
     vm.ProjectID = $state.params.ProjectID;
     vm.AcceptanceItemID = $state.params.AcceptanceItemID;
@@ -28,71 +29,16 @@
         vm.regionSelect = vm.pareaList[0];
         vm.warter = vm.regionSelect.RegionName + (vm.AcceptanceItemName ? '(' + vm.AcceptanceItemName + ')' : "");
         vm.regionSelect.hasCheck = true;
-        // load();
       });
 
       vm.info = {}
 
-      // function setChina(r) {
-      //   switch (r) {
-      //     case 0:
-      //       return '合格';
-      //       break;
-      //     case 1:
-      //       return '待验';
-      //       break;
-      //     case 2:
-      //       return '合格';
-      //       break;
-      //     case 4:
-      //       return '不合格';
-      //       break;
-      //     case 8:
-      //       return '未整改';
-      //       break;
-      //     case 16:
-      //       return '已整改';
-      //       break;
-      //   }
-      // }
-
-      // remote.Procedure.getRectification(vm.RectificationID).then(function(r){
-      //   vm.baseInfor = r.data;
-      //   vm.baseInfor.zwStatus = setChina(r.data.Status);
-      // })
       function load() {
         if (!vm.regionSelect) {
           return;
         }
-        // var promises=[
-        //   remote.Procedure.getZGReginQues(vm.regionSelect.AreaID,vm.RectificationID),
-        // ]
-        // vm.ques=[];
-        // $q.all(promises).then(function(res){
-        //   vm.items = res.data;
-        //   res[0].data.forEach(function (item) {
-        //     var fd = vm.ques.find(function (it) {
-        //       return it.IndexPointID==item.IndexPointID;
-        //     });
-        //     if(!fd){
-        //       fd = item;
-        //       vm.ques.push(fd);
-        //       fd.Points = 1;
-        //     }
-        //     else{
-        //       fd.Points++;
-        //     }
-        //   })
-        //
-        // })
       }
 
-      // vm.showTop = function(){
-      //   vm.slideShow = true;
-      // }
-      // vm.showQuesList = function(){
-      //   vm.showUp = true;
-      // }
       vm.selectQy = function (item) {
         vm.regionSelect = item;
         vm.regionSelect.hasCheck = true;
@@ -105,23 +51,131 @@
       }
       $scope.times = xhUtils.zgDays();
       var gxzgChanged = $rootScope.$on('sendGxResult', function () {
-        var msg = [],noChecked=[];
-        vm.pareaList.forEach(function (r) {
-          if (!r.hasCheck) {
-            msg.push(r.RegionName);
-            noChecked.push(r);
+        function valid() {
+          function next() {
+            return  $q(function (resolve,reject) {
+              var msg = [],noChecked=[];
+              vm.pareaList.forEach(function (r) {
+                if (!r.hasCheck) {
+                  msg.push(r.RegionName);
+                  noChecked.push(r);
+                }
+              });
+              if (msg.length) {
+                utils.confirm(msg.join(",") + '尚未查看,去看看?',null,"确定","取消").then(function () {
+                  vm.selectQy(noChecked[0]);
+                }).catch(function () {
+                });
+              }else {
+                resolve();
+              }
+            })
           }
-        });
-        if (msg.length) {
-          utils.confirm(msg.join(",") + '尚未查看,去看看?',null,function () {
-            vm.selectQy(noChecked[0]);
-          },function () {
-          });
-          return;
+          return  $q(function (resolve,reject) {
+            if (vm.points.length){
+              switch ($state.params.Role){
+                case "zb":
+                  if (vm.points.find(function (k) {
+                      return k.Status!=16;
+                    })){
+                    utils.confirm("点位尚未全部整改,是否继续提交",null,"继续","取消").then(function () {
+                      return next();
+                    }).then(function () {
+                      resolve();
+                    })
+                  }else {
+                    return next().then(function () {
+                      resolve();
+                    });
+                  }
+                  break;
+                default:
+                  if (vm.points.find(function (k) {
+                      return k.Status!=2;
+                    })){
+                    utils.confirm("点位尚未全部验收,是否继续提交",null,"继续","取消").then(function () {
+                      return next();
+                    }).then(function () {
+                      resolve();
+                    })
+                  }else {
+                    return next().then(function () {
+                      resolve();
+                    });
+                  }
+                  break;
+              }
+            }else {
+              return next().then(function () {
+                resolve();
+              });
+            }
+          }).then(function () {
+            $timeout(function () {
+              utils.alert('提交成功，请稍后离线上传数据',null,function () {
+                $state.go("app.xhsc.sf.sfmain");
+              });
+            })
+          })
         }
-        utils.alert('提交成功，请稍后离线上传数据',null,function () {
-          $state.go("app.xhsc.sf.sfmain");
-        });
+        valid();
+
+
+
+
+        // var msg = [],noChecked=[];
+        // vm.pareaList.forEach(function (r) {
+        //   if (!r.hasCheck) {
+        //     msg.push(r.RegionName);
+        //     noChecked.push(r);
+        //   }
+        // });
+        // if (msg.length) {
+        //   utils.confirm(msg.join(",") + '尚未查看,去看看?',null,function () {
+        //     vm.selectQy(noChecked[0]);
+        //   },function () {
+        //   });
+        //   return;
+        // }
+        // var go=true;
+        // if (vm.points.length){
+        //     switch ($state.params.Role){
+        //       case "zb":
+        //         if (vm.points.find(function (k) {
+        //                 return k.Status!=16;
+        //           })){
+        //           utils.confirm("点位尚未全部整改,是否继续提交",null,"继续","取消").then(function () {
+        //             $timeout(function () {
+        //               utils.alert('提交成功，请稍后离线上传数据',null,function () {
+        //                 $state.go("app.xhsc.sf.sfmain");
+        //               });
+        //             },300)
+        //           })
+        //           go=false;
+        //         }
+        //         break;
+        //       default:
+        //         if (vm.points.find(function (k) {
+        //             return k.Status!=2;
+        //           })){
+        //           utils.confirm("点位尚未全部验收,是否继续提交",null,"继续","取消").then(function () {
+        //             $timeout(function () {
+        //               utils.alert('提交成功，请稍后离线上传数据',null,function () {
+        //                 $state.go("app.xhsc.sf.sfmain");
+        //               });
+        //             },300)
+        //           })
+        //           go=false;
+        //         }
+        //         break;
+        //     }
+        // }
+        // if (go){
+        //   utils.alert('提交成功，请稍后离线上传数据',null,function () {
+        //     $state.go("app.xhsc.sf.sfmain");
+        //   });
+        // }
+
       });
 
       $scope.$on('$destroy', function () {
