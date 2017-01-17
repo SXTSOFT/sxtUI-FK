@@ -15,11 +15,15 @@
     .controller('cycle_detailController',cycle_detailController);
 
   /**@ngInject*/
-  function cycle_detailController($stateParams,remote,$rootScope,$scope,$state){
+  function cycle_detailController($stateParams,remote,$rootScope,$scope,$state,xhUtils){
     var inspectionId=$stateParams.inspectionId;
     var vm=this;
     vm.selectSize=10;
-
+    vm.showImg=function (img) {
+      img.url = img.FileContent||img.Url;
+      img.alt = ' ';
+      xhUtils.playPhoto([img]);
+    }
 
     remote.report.getdetail('cycle',inspectionId).then(function (r) {
       vm.source=r.data;

@@ -15,9 +15,16 @@
     .controller('week_detailController',week_detailController);
 
   /**@ngInject*/
-  function week_detailController($stateParams,remote,$rootScope,$scope,$state){
+  function week_detailController($stateParams,remote,$rootScope,$scope,$state,xhUtils){
     var inspectionId=$stateParams.inspectionId;
     var vm=this;
+
+    vm.showImg=function (img) {
+      img.url = img.FileContent||img.Url;
+      img.alt = ' ';
+      xhUtils.playPhoto([img]);
+    }
+
     remote.report.getdetail('WeekInspects',inspectionId).then(function (r) {
       vm.source=r.data;
 

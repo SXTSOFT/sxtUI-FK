@@ -18,6 +18,9 @@
   function cycle_defaultController($state, remote, $scope, $rootScope, sxtlocaStorage, $timeout) {
     var vm = this;
     vm.selectSize = 10;
+    var mobileDetect = new MobileDetect(window.navigator.userAgent);
+    vm.isMobile=mobileDetect.mobile();
+    vm.isiPad=mobileDetect.mobile()=="iPad";
     function load() {
       $timeout(function () {
         if (!vm.going) {
@@ -58,7 +61,9 @@
         }
       })
     }
-    load();
+    if (vm.isMobile&&vm.isiPad||!vm.isMobile){
+      load();
+    }
     //初始化
     var filter = $rootScope.$on("filter", function (event, data) {
       $scope.display = true;
