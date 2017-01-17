@@ -133,7 +133,7 @@
                         return true;
                       }
                     });
-                    map.center();
+                    // map.center();
                     scope.tooltip = '';
                   })
                 }

@@ -99,159 +99,29 @@
         vm.warter = vm.regionSelect.RegionName + (vm.AcceptanceItemName ? '(' + vm.AcceptanceItemName + ')' : "");
         vm.qyslideShow = false;
       }
-      // vm.showBaseInfor = function(){
-      //   $mdDialog.show({
-      //     controller:['$scope',function($scope){
-      //       $scope.baseInfo = vm.baseInfor;
-      //       $scope.area = vm.regionSelect;
-      //       $scope.submit = function(){
-      //         $mdDialog.hide();
-      //       }
-      //     }],
-      //     templateUrl:'app/main/xhsc/procedure/baseInforTemp.html',
-      //     clickOutsideToClose:true
-      //   })
-      // }
 
       vm.qyslide = function () {
         vm.qyslideShow = !vm.qyslideShow;
       }
       $scope.times = xhUtils.zgDays();
       var gxzgChanged = $rootScope.$on('sendGxResult', function () {
-        var msg = [];
+        var msg = [],noChecked=[];
         vm.pareaList.forEach(function (r) {
           if (!r.hasCheck) {
             msg.push(r.RegionName);
+            noChecked.push(r);
           }
         });
         if (msg.length) {
-          utils.alert(msg.join(",") + '尚未查看!');
+          utils.confirm(msg.join(",") + '尚未查看,去看看?',null,function () {
+            vm.selectQy(noChecked[0]);
+          },function () {
+          });
           return;
-        };
-
+        }
         utils.alert('提交成功，请稍后离线上传数据',null,function () {
           $state.go("app.xhsc.sf.sfmain");
         });
-
-        // $mdDialog.show({
-        //   controller: ['$scope', function ($scope) {
-        //     $scope.InspectionID = vm.InspectionID;
-        //     $scope.role = vm.role;
-        //     $scope.remark = '备注';
-        //     $scope.time = 24 * 7;
-        //     $scope.times = xhUtils.zgDays();
-        //     $scope.cancel = function () {
-        //       $mdDialog.hide();
-        //     }
-        //     $scope.submit = function () {
-        //       utils.alert('提交成功,请离线上传数据', null, function () {
-        //         $mdDialog.hide();
-        //         $state.go("app.xhsc.sf.sfmain");
-        //       });
-        //
-        //
-        //       // if (vm.role == 'zb') {
-        //       //   var data = {
-        //       //     RectificationId: vm.RectificationID,
-        //       //     Status: 16
-        //       //   }
-        //       //   remote.Procedure.InspectionRectificationUpdateStatus(data).then(function (r) {
-        //       //     utils.alert('提交成功', null, function () {
-        //       //       $mdDialog.hide();
-        //       //       $state.go("app.xhsc.gx.gxmain");
-        //       //     });
-        //       //   })
-        //       // }
-        //       // else {
-        //       //   remote.Procedure.insertJlfy({
-        //       //     RectificationID: vm.RectificationID,
-        //       //     Remarks: $scope.remark,
-        //       //     Day: $scope.time
-        //       //   }).then(function (r) {
-        //       //     if (r.data.ErrorCode == 0) {
-        //       //       utils.alert("提交成功", null, function () {
-        //       //         vm.Isfail = false;
-        //       //         $mdDialog.hide();
-        //       //         $state.go("app.xhsc.gx.gxmain");
-        //       //       });
-        //       //     }
-        //       //     else {
-        //       //       utils.alert("失败", null, function () {
-        //       //         vm.Isfail = true;
-        //       //       });
-        //       //     }
-        //       //   })
-        //       //   //TODO:可能要生成新的整改单,或完成整改
-        //       // }
-        //     }
-        //
-        //     remote.safe.ckPointQuery.cfgSet({
-        //       filter:function (item,InspectionID) {
-        //         return item.InspectionID==InspectionID;
-        //       }
-        //     })(vm.InspectionID ).then(function (r) {
-        //       $scope.status = [
-        //         {status: 1, name: '待验', num: 0, visible: 1},
-        //         {status: 2, name: '合格', num: 0, visible: vm.role == 'jl' ? 1 : 0},
-        //         {status: 4, name: '不合格', num: 0, visible: vm.role == 'jl' ? 1 : 0},
-        //         {status: 8, name: '未整改', num: 0, visible: vm.role == 'zb' ? 1 : 0},
-        //         {status: 16, name: '已整改', num: 0, visible: vm.role == 'zb' ? 1 : 0}];
-        //       if (r&&r.data){
-        //           r.data.forEach(function (item) {
-        //             var s = $scope.status.find(function (s1) {
-        //               return s1.status == item.Status;
-        //             });
-        //             if(s)s.num++;
-        //           });
-        //           if($scope.status[3].num>0 && vm.role=='jl') {
-        //             utils.alert('还有 (' + $scope.status[3].num + '处) 未检查 ，不能提交');
-        //           }
-        //
-        //         }
-        //     })
-        //
-        //
-        //
-        //     // remote.safe.getCkpointRelateWithRec(vm.RectificationID).then(function (r) {
-        //     //   $scope.status = [
-        //     //     {status: 1, name: '未整改', num: 0, visible: 1},
-        //     //     {status: 2, name: '合格', num: 0, visible: vm.role == 'jl' ? 1 : 0},
-        //     //     {status: 4, name: '不合格', num: 0, visible: vm.role == 'jl' ? 1 : 0},
-        //     //     {status: 8, name: '已整改', num: 0, visible: vm.role == 'zb' ? 1 : 0}];
-        //     //   var p = [];
-        //     //   if (r && angular.isArray(r.data)) {
-        //     //     r.data.forEach(function (m) {
-        //     //       p.push(remote.safe.ckPointQuery.cfgSet({
-        //     //         filter: function (item, CheckpointID) {
-        //     //           return item.CheckpointID == CheckpointID;
-        //     //         }
-        //     //       })(m.CheckpointID))
-        //     //     });
-        //     //   }
-        //     //   $q.all(p).then(function (res) {
-        //     //     if (angular.isArray(res) && res.length > 0) {
-        //     //       var points = [];
-        //     //       res.forEach(function (k) {
-        //     //         if (k && k.data) {
-        //     //           points.concat(k.data);
-        //     //         }
-        //     //       });
-        //     //       points.forEach(function (item) {
-        //     //         var s = $scope.status.find(function (s1) {
-        //     //           return s1.status == item.Status;
-        //     //         });
-        //     //         if(s)s.num++;
-        //     //       });
-        //     //       if($scope.status[3].num>0 && vm.role=='jl') {
-        //     //         utils.alert('还有 (' + $scope.status[3].num + '处) 未检查 ，不能提交');
-        //     //       }
-        //     //     }
-        //     //   })
-        //     // })
-        //   }],
-        //   templateUrl: 'app/main/xhsc/procedure/ngTemp.html',
-        //   clickOutsideToClose: true
-        // })
       });
 
       $scope.$on('$destroy', function () {

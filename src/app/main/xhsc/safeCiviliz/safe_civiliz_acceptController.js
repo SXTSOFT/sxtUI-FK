@@ -41,20 +41,23 @@
       vm.setRegion(item);
     }
     var sendResult = $rootScope.$on('sendGxResult',function(){
-      var  msg=[];
+      var  msg=[],noChecked=[];
       vm.btBatch.forEach(function(r){
         if (!r.hasCheck){
           msg.push(r.RegionName);
+          noChecked.push(r);
         }
       });
       if (msg.length){
-        utils.alert(msg.join(",")+'尚未验收查看!');
+        utils.confirm(msg.join(",") + '尚未查看,去看看?',null,"确定","取消").then(function () {
+          vm.selectQy(noChecked[0]);
+        }).catch(function () {
+        });
         return;
-      };
+      }
       utils.alert("提交成功，请稍后离线上传数据！",null,function () {
         $state.go('app.xhsc.sf.sfmain')
       });
-      // $state.go('app.xhsc.sf.sfproblem',{acceptanceItemName:acceptanceItemName,acceptanceItemID:acceptanceItemID,name:vm.RegionFullName,areaId:areaId,projectId:projectId,InspectionId:vm.InspectionId})
     })
     $scope.$on("$destroy",function(){
       sendResult();

@@ -75,16 +75,20 @@
       }
       $scope.times = xhUtils.zgDays();
       var gxzgChanged = $rootScope.$on('sendGxResult', function () {
-        var msg = [];
+        var msg = [],noChecked=[];
         vm.pareaList.forEach(function (r) {
           if (!r.hasCheck) {
             msg.push(r.RegionName);
+            noChecked.push(r);
           }
         });
         if (msg.length) {
-          utils.alert(msg.join(",") + '尚未查看!');
+          utils.confirm(msg.join(",") + '尚未查看,去看看?',"确定","取消").then(function () {
+            vm.selectQy(noChecked[0]);
+          }).catch(function () {
+          });
           return;
-        };
+        }
         utils.alert('提交成功，请稍后离线上传数据',null,function () {
           $state.go("app.xhsc.xj.main");
         });
