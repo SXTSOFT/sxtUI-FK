@@ -1,10 +1,10 @@
 <table class="table table-bordered tableWrap">
-  <th colspan="6">{{vm.source.ExtendDescribe}}</th>
+  <th colspan="8">{{vm.source.ExtendDescribe}}</th>
   <tr>
     <td>
       项目名称：
     </td>
-    <td colspan="5">
+    <td colspan="7">
       {{vm.source.ProjectName}}
     </td>
 
@@ -16,28 +16,36 @@
     <!--</td>-->
   </tr>
   <tr class="min80">
-    <td style="min-width: 98px">检查单位：</td>
-    <td>{{vm.source.supervisionsItem.CompanyName}}</td>
-    <td>检查人</td>
-    <td>{{vm.source.supervisionsItem.NickName}}</td>
-    <td>检查时间</td>
-    <td>{{vm.source.supervisionsItem.Time}}</td>
+    <td style="min-width: 98px" rowspan="2">施工单位：</td>
+    <td rowspan="2">{{vm.source.mainContractorsItem.CompanyName}}</td>
+    <td rowspan="2">项目经理</td>
+    <td rowspan="2">{{vm.source.mainContractorsItem.HeadName}}</td>
+    <td>报验人</td>
+    <td>{{vm.source.mainContractorsItem.NickName}}</td>
+    <td>报验时间</td>
+    <td>{{vm.source.mainContractorsItem.Time}}</td>
   </tr>
   <tr class="min80">
-    <td style="min-width: 98px">整改单位：</td>
-    <td>{{vm.source.rectifysItem.CompanyName}}</td>
     <td>整改人</td>
     <td>{{vm.source.rectifysItem.NickName}}</td>
     <td>整改时间</td>
     <td>{{vm.source.rectifysItem.Time}}</td>
   </tr>
   <tr class="min80">
-    <td style="min-width: 98px">复查单位：</td>
-    <td>{{vm.source.mainContractorsItem.CompanyName}}</td>
-    <td>复查人</td>
-    <td>{{vm.source.mainContractorsItem.NickName}}</td>
-    <td>复查时间</td>
-    <td>{{vm.source.mainContractorsItem.Time}}</td>
+    <td style="min-width: 98px" rowspan="2">监理单位：</td>
+    <td rowspan="2">{{vm.source.supervisionsItem.CompanyName}}</td>
+    <td rowspan="2">项目总监</td>
+    <td rowspan="2">{{vm.source.supervisionsItem.HeadName}}</td>
+    <td>验收人</td>
+    <td>{{vm.source.supervisionsItem.NickName}}</td>
+    <td>验收时间</td>
+    <td>{{vm.source.supervisionsItem.Time}}</td>
+  </tr>
+  <tr class="min80">
+    <td>复验人</td>
+    <td>{{vm.source.reviewsItem.NickName}}</td>
+    <td>复验时间</td>
+    <td>{{vm.source.reviewsItem.Time}}</td>
   </tr>
   <!--<tr class="min80">-->
     <!--<td style="min-width: 98px">整改单位：</td>-->
@@ -57,28 +65,28 @@
   <!--</tr>-->
   <tr>
     <td>验收状态</td>
-    <td colspan="5">
+    <td colspan="7">
       {{vm.source.StatusName}}
     </td>
   </tr>
   <tr ng-repeat="item in vm.source.AreaList">
-    <td colspan="6" style="padding: 8px 0px;border: 0px solid">
+    <td colspan="8" style="padding: 8px 0px;border: 0px solid">
       <table class="table  table-bordered">
         <tr>
-          <td colspan="6">{{item.AreaFullName}}</td>
+          <td colspan="8">{{item.AreaFullName}}</td>
         </tr>
         <tr ng-if="item.QualifiedPicList.length">
-          <td colspan="6">
+          <td colspan="8">
             <div class="imgWrap">
               <img ng-repeat="k in  item.QualifiedPicList"  ng-src="{{k.Url}}">
             </div>
           </td>
         </tr>
         <tr>
-          <td colspan="6">原位标注</td>
+          <td colspan="8">原位标注</td>
         </tr>
         <tr>
-          <td colspan="6" style="padding: 0px">
+          <td colspan="8" style="padding: 0px">
             <div class="ywWrap" sxt-report-view="" loaded="vm.loaded" ponits="item.PointList" region-id="item.AreaID" type="'week'" layout="column">
               <div flex layout="row" layout-align="center center" ng-if="!vm.loaded" >
                 <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular>
@@ -87,10 +95,10 @@
           </td>
         </tr>
         <tr ng-repeat="k in  item.RectificationPic">
-          <td colspan="6">
+          <td colspan="8">
             <table class="table table-hover table-bordered">
               <tr>
-                <td colspan="6">{{k.ProblemSortName+'.'+k.ProblemDescription}}</td>
+                <td colspan="8">{{k.ProblemSortName+'.'+k.ProblemDescription}}</td>
               </tr>
               <tr>
                 <td>

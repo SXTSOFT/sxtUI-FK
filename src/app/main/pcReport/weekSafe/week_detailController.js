@@ -21,16 +21,16 @@
     remote.report.getdetail('WeekInspects',inspectionId).then(function (r) {
       vm.source=r.data;
 
-      //报验信息
-      vm.source.mainContractorsItem={};
-      vm.source.MainContractors.sort(function (a,b) {
+      //复验信息
+      vm.source.reviewsItem={};
+      vm.source.Reviews.sort(function (a,b) {
         if (!a.Time){
           return true;
         }
         return a.Time.localeCompare(a,b);
       })
-      if (vm.source.MainContractors.length>0){
-        vm.source.mainContractorsItem=vm.source.MainContractors[vm.source.MainContractors.length-1];
+      if (vm.source.Reviews.length>0){
+        vm.source.reviewsItem=vm.source.Reviews[vm.source.Reviews.length-1];
       }
 
       //验收信息
