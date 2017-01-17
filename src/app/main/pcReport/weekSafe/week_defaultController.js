@@ -63,7 +63,7 @@
         }
       });
     }
-
+    load();
     //初始化
     var filter = $rootScope.$on("filter", function (event, data) {
       $scope.display = true;
