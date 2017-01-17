@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function plangantt($mdDialog, $document,$rootScope, $animate, $scope, $timeout,utils, ganttUtils,$mdPanel, GanttObjectModel, ganttDebounce, moment, $window, $mdSidenav,api,$stateParams,$q,xhUtils){
+  function plangantt($mdDialog, $document,$rootScope,$mdToast, $animate, $scope, $timeout,utils, ganttUtils,$mdPanel, GanttObjectModel, ganttDebounce, moment, $window, $mdSidenav,api,$stateParams,$q,xhUtils){
     var vm = this;
     var objectModel;
     vm.isStarted = true;
@@ -706,10 +706,26 @@
         api.plan.fileService.get(task.UploadPhotoFileId).then(function(r){
           if(r.data.Base64){
             task.images=[{
-              url:r.data.Base64
+              url:r.data.Base64,
+              alt:task.EndDescription||''
             }]
             xhUtils.playPhoto(task.images)
-          }else{
+          }else if(task.EndDescription){
+            //$mdDialog.show(
+            //  $mdDialog.alert()
+            //    .title('关闭原因')
+            //    .textContent(task.EndDescription)
+            //    .ok('确定')
+            //)
+            //var pinTo = $scope.getToastPosition();
+            //task.currentT = task.EndDescription;
+            //task.showTooltip = true;
+            $mdToast.show(
+              $mdToast.simple()
+                .textContent(task.EndDescription)
+                .position('top')
+                .hideDelay(3000)
+            );
             //utils.alert('无图片')
             //var position = $mdPanel.newPanelPosition()
             //  .relativeTo('.sub-toolbar')
@@ -737,6 +753,16 @@
             //  focusOnOpen: true,
             //  attachTo:angular.element('body')
             //});
+          }else{
+            //task.currentT = '未上传照片，未填写关闭原因';
+            //task.showTooltip = true;
+            $mdToast.show(
+              $mdToast.simple()
+                .textContent('无上传照片，无反馈信息')
+                .position('top')
+                .hideDelay(3000)
+                .toastClass('abc')
+            );
           }
         })
       }

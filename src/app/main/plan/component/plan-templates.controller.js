@@ -45,7 +45,7 @@
     }
     vm.copyTemp = function(item){
       console.log(item)
-      utils.confirm('赋值模板？').then(function(){
+      utils.confirm('复制模板？').then(function(){
         api.plan.TaskTemplates.copyTemplate(item.Id).then(function(r){
           utils.alert('复制成功').then(function(){
             Load();

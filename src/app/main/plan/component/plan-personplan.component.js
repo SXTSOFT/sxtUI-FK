@@ -14,7 +14,7 @@
     });
 
   /**@ngInject*/
-  function personPlanController($scope,$rootScope,moment,api,$mdDialog,$timeout,utils,xhUtils,sxt){
+  function personPlanController($scope,$rootScope,$mdToast,moment,api,$mdDialog,$timeout,utils,xhUtils,sxt){
     var vm = this;
     load();
     function load() {
@@ -25,6 +25,11 @@
         vm.tdata.forEach(function (_r) {
           _r.showNoPlan = _r.NoPlanTasks.length ? true : false;
           _r.PlaningTasks.forEach(function (r) {
+            r.parentId=_r.Id;
+            r.sdate = r.ActualStartTime && moment(r.ActualStartTime.substring(0, 10)).toDate() || r.ScheduledStartTime && moment(r.ScheduledStartTime.substring(0, 10)).toDate();
+            r.edate = r.ActualEndTime && moment(r.ActualEndTime.substring(0, 10)).toDate() || r.ScheduledEndTime && moment(r.ScheduledEndTime.substring(0, 10)).toDate();
+          })
+          _r.NoPlanTasks.forEach(function (r) {
             r.parentId=_r.Id;
             r.sdate = r.ActualStartTime && moment(r.ActualStartTime.substring(0, 10)).toDate() || r.ScheduledStartTime && moment(r.ScheduledStartTime.substring(0, 10)).toDate();
             r.edate = r.ActualEndTime && moment(r.ActualEndTime.substring(0, 10)).toDate() || r.ScheduledEndTime && moment(r.ScheduledEndTime.substring(0, 10)).toDate();
@@ -91,11 +96,21 @@
         api.plan.fileService.get(t.UploadPhotoFileId).then(function(r){
           if(r.data.Base64){
             t.images=[{
-              url:r.data.Base64
+              url:r.data.Base64,
+              alt:task.EndDescription||''
             }]
             xhUtils.playPhoto(t.images)
+          }else if(t.EndDescription){
+            var msg = '反馈信息:'+task.EndDescription+'，无图片';
+            utils.alert(msg)
           }else{
-            utils.alert('无图片')
+            utils.alert('无图片,无反馈信息')
+            //$mdToast.show(
+            //  $mdToast.simple()
+            //    .textContent(task.EndDescription)
+            //    .position('top')
+            //    .hideDelay(3000)
+            //);
           }
 
         })

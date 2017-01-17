@@ -3,6 +3,7 @@
   <div layout="row" layout-align="center center" ng-if="!vm.loading" class="m-10">
     <md-progress-circular md-diameter="20px"></md-progress-circular>任务加载中
   </div>
+  <div ng-if="vm.loading">
   <div  ng-repeat="task in vm.tasksList"  ng-if="task.tasks.length" style="border-bottom:1px solid #dedede;">
     <div layout="row" style="color:#f00;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="pt-8 pb-8" ng-if="task.tasks.length">
       {{task.Name}}
@@ -31,5 +32,6 @@
         <md-button style="min-height:24px;line-height: 24px;height:24px;padding:0;min-width: 60px;margin:0;" ng-click="vm.startTask(t)" ng-if="t.IsAbleStart&&(t.IsInterlude)">开启穿插</md-button>
       </div>
     </div>
+  </div>
   </div>
 </md-content>
