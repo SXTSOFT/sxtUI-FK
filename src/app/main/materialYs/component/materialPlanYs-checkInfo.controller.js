@@ -88,18 +88,18 @@
         utils.alert('验收人不能为空');
         return;
       }
-      if(vm.vehicleImgs.length == 0){
-        utils.alert('至少上传一张验收车辆照片');
-        return;
-      }
+      // if(vm.vehicleImgs.length == 0){
+      //   utils.alert('至少上传一张验收车辆照片');
+      //   return;
+      // }
       if(vm.goodsImgs.length == 0){
         utils.alert('至少上传一张验收货物照片');
         return;
       }
-      if(vm.checkerImgs.length == 0){
-        utils.alert('至少上传一张验收检查人照片');
-        return;
-      }
+      // if(vm.checkerImgs.length == 0){
+      //   utils.alert('至少上传一张验收检查人照片');
+      //   return;
+      // }
       if(vm.certificateImgs.length == 0){
         utils.alert('至少上传一张验收合格证照片');
         return;

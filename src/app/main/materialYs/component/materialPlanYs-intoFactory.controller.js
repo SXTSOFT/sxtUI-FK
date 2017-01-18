@@ -82,10 +82,10 @@
         utils.alert('请上传至少一张货物检查照片');
         return;
       }
-      if (vm.rummagerImgs.length == 0) {
-        utils.alert('请上传至少一张检查人照片');
-        return;
-      }
+      // if (vm.rummagerImgs.length == 0) {
+      //   utils.alert('请上传至少一张检查人照片');
+      //   return;
+      // }
       if (vm.CertificateImgs.length == 0) {
         utils.alert('请上传至少一张合格证照片');
         return;
