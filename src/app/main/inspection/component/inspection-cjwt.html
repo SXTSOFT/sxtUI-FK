@@ -1,36 +1,32 @@
 
 <div flex layout="row" class="cjwt">
-  <div flex="30" layout="column" style="background: #f5f5f5;" id="list">
-    <md-content style="background: #f5f5f5;">
+  <div flex layout="column" style="background: #f5f5f5;" id="list"  ng-switch="$index"  ng-repeat="item in source">
+    <md-content style="background: #f5f5f5;"  ng-switch-when="0">
       <md-list class="p-0">
-        <md-list-item ng-click="vm.firstSelect($index)"
-                      ng-repeat="i in vm.options">
-          <p style="text-align: center">{{i.title}}</p>
+        <md-list-item ng-click="select(i,0)"
+                      ng-repeat="i in item">
+          <p style="text-align: left" ng-class="{'colRed':i.check}">{{i.title}}</p>
+          <md-divider></md-divider>
         </md-list-item>
       </md-list>
     </md-content>
-  </div>
-
-  <div flex="30" layout="column" style="background: #f9f9f9;">
-    <md-content style="background: #f9f9f9;">
+    <md-content style="background: #f9f9f9;" ng-if="item.length>0"  ng-switch-when="1">
       <md-list class="p-0">
-        <md-list-item ng-click="vm.secondSelect($index)"
-                      ng-repeat="i in vm.options[vm.firstCurrent].children">
-          <p style="text-align: center">{{i.title}}</p>
+        <md-list-item ng-click="select(i,1)"
+                      ng-repeat="i in item">
+          <p style="text-align: center" ng-class="{'colRed':i.check}">{{i.title}}</p>
+          <md-divider></md-divider>
         </md-list-item>
       </md-list>
     </md-content>
-  </div>
-
-  <div flex layout="column">
-    <md-content layout="column" flex>
-      <div style="border-bottom: 1px solid #dedede;" class="cjwt-list ph-8" layout="row" layout-align="start center"
-           ng-click="vm.check(q.title,q.issue_id)" ng-repeat="q in vm.options[vm.firstCurrent].children[vm.secondCurrent].children">
-        <div layout="column" layout-align="start center" class="circle" flex="none">{{q.abbrname.substring(0,2).toUpperCase()}}</div>
-        <div layout="column" layout-align="start center" flex style="white-space: nowrap;overflow: hidden;display: block;">
-          <div style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{q.title}}</div>
-        </div>
-      </div>
+    <md-content  ng-switch-when="2" ng-if="item.length>0">
+      <md-list class="p-0">
+        <md-list-item ng-click="check(i)"
+                      ng-repeat="i in item">
+          <p style="text-align: center" ng-class="{'colRed':i.check}">{{i.title}}</p>
+          <md-divider></md-divider>
+        </md-list-item>
+      </md-list>
     </md-content>
   </div>
 </div>

@@ -22,33 +22,55 @@
       page_size:10,
       page_number:1
     }
-    vm.currentQ = 0
+    $scope.source=[];
+
+    function wrap(source) {
+      if (angular.isArray(source)){
+        return source.filter(function (k) {
+            var t=k.children.filter(function (n) {
+                return n.children.length>0;
+            })
+           k.children=t
+           return t.length>0;
+        })
+      }
+      return source;
+    }
 
 
-      return api.inspection.estate.issues_tree(vm.parm).then(function (r) {
-          vm.options = r.data.data;
 
-      });
-
-
-
-
+    api.inspection.estate.issues_tree(vm.parm).then(function (r) {
+      $scope.options =wrap( r.data.data);
+      $scope.source.push($scope.options)
+    });
     $rootScope.shell.prev = '返回';
     utils.onCmd($scope,['prev'],function(cmd,e){
 
-
     })
-    vm.firstSelect = function(num){
-      vm.firstCurrent = num
-    }
-    vm.secondSelect = function(num){
-      vm.secondCurrent = num
+
+
+
+    $scope.select = function(item,index){
+       var ind=0;
+      $scope.source.forEach(function (k) {
+          if(ind>=index){
+            k.forEach(function (n) {
+              n.check=false;
+            });
+          }
+         ind++;
+       });
+       for (var i=$scope.source.length-1;i>=0;i--){
+          if (i>index){
+            $scope.source.splice(i,1)
+          }
+       }
+       item.check=true;
+      $scope.source[index+1]=item.children;
     }
 
-    vm.check = function (q,id) {
-      $state.go('app.inspection.check',{issues:id,question:q,publicquestion:q,showPopup:false,delivery_id:$stateParams.delivery_id})
+    $scope.check = function (item) {
+      $state.go('app.inspection.check',{issues:item.issue_id})
     }
-
-    $timeout(1000);
   }
 })();
