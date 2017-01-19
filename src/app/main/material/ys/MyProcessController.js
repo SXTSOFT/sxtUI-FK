@@ -12,7 +12,7 @@
     .controller('MMyProcessController', MMyProcessController);
 
   /** @ngInject */
-  function MMyProcessController($scope, api, utils, $state, $q, sxt, xhUtils, $timeout, $mdDialog, $stateParams) {
+  function MMyProcessController($scope, api, utils, $state, $q, sxt, xhUtils, $timeout, $mdDialog, $stateParams,$mdSidenav) {
 
     var vm = this;
     vm.AttachmentSHow = false;
@@ -35,6 +35,19 @@
       imgs5: []
 
     };
+
+
+    vm.openNav = function (id) {
+      vm.isRightOpen = true;
+      $mdSidenav(id).open()
+    };
+    vm.closeNav = function (id) {
+      vm.isRightOpen = false;
+      $mdSidenav(id).close().then(function () {
+
+      });
+    };
+
     vm.change = function (item) {
       vm.fjType = item.value;
     }
@@ -548,10 +561,6 @@
                   }
                 }
               });
-
-              //item.
-
-
             });
 
             results.forEach(function (item) {
