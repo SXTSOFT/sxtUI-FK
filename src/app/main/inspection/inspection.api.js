@@ -90,11 +90,29 @@
               return k.data
           });
         }),
-        insertImg:function (parm) {
-          return post(http.url("/storage/v1/files/base64/picture/upload"),parm)
-        }
+        insertImg:http.db({
+          _id:'delivery_imgs',
+          idField:'recordId',
+          dataType:1,
+          upload:true
+        }).bind(function(parm){
+          return post(http.url("/storage/v1/files/base64/picture/upload"),parm);
+        }),
+        getImgs:http.db({
+          _id:'delivery_imgs',
+          idField:'recordId',
+          dataType:1,
+          filter:function (item,recordId) {
+            item.recordId==recordId;
+          }
+        }).bind(),
+        deleteImg:http.db({
+          _id:'delivery_imgs',
+          idField:'recordId',
+          dataType:1,
+          delete:true
+        }).bind()
       }
-
     })
 
 
