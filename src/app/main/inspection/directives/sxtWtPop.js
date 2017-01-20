@@ -84,12 +84,15 @@
 
      scope.photos=[];
      scope.issues={};
-    api.inspection.estate.getImgs(scope.record.recordId).then(function (r) {
-      if (r&&r.data){
-        scope.photos.push(r.data);
-      }
-    }).catch(function () {
-    })
+
+     if (scope.record&&scope.record.id){
+       api.inspection.estate.getImgs(scope.record.id).then(function (r) {
+         if (r&&r.data){
+           scope.photos.push(r.data);
+         }
+       }).catch(function () {
+       })
+     }
 
      getIssues().then(function (source) {
         scope.source=[source];
@@ -108,25 +111,27 @@
       // }
 
      scope.remove = function ($event,item) {
-       api.inspection.estate.deleteImg(item.issues_id).then(function () {
+       api.inspection.estate.deleteImg(item.recordId).then(function () {
          scope.photos.splice(item,1);
        })
 
       }
 
       scope.addPhoto = function(){
-        if (scope.issues.issue_id){
-
-        }
-
-
-        xhUtils.photo().then(function(img){
-          api.inspection.estate.insertImg().then(function () {
-            scope.photos.push({
-              url:img
-            });
+        if (scope.record&&scope.record.id){
+          xhUtils.photo().then(function(img){
+            var imgEntity={
+              recordId:scope.record.id,
+              business:{
+                app_id:"561ccdcad4c623de9bfd86a1"
+              },
+              author:scope.username
+            }
+            api.inspection.estate.insertImg(imgEntity).then(function () {
+              scope.photos.push(imgEntity);
+            })
           })
-        })
+        }
       }
 
       scope.cancel = function(){

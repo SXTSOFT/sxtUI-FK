@@ -13,7 +13,7 @@
     });
 
   /**@ngInject*/
-  function inspectionCheckController($scope,$rootScope,utils,$state,$stateParams,$mdPanel,api,auth,$timeout){
+  function inspectionCheckController($scope,$rootScope,utils,$state,$stateParams,$mdPanel,api,auth,$timeout,$q){
     //记录点类型数据
     // {
     //   "id":0
@@ -31,7 +31,19 @@
 
     var vm = this;
     //当前选择的点记录
-    $scope.record={};
+    $scope.record={
+        "id":0,
+        "room_id": 203,
+        "issues": 0,
+        "contact_name": "string",
+        "contact_phone": "string",
+        "caller_name": "string",
+        "caller_phone": "string",
+        "reservation_date_begin": "2017-01-19T15:13:43.445Z",
+        "reservation_date_end": "2017-01-19T15:13:43.445Z",
+        "description": "string",
+        "pictures": "string"
+    };
 
 
     vm.data={
@@ -41,6 +53,10 @@
     }
 
     //获取任务详情数据
+    // $q.all([
+    // return api.inspection.estate.getdeliverys($stateParams.delivery_id),
+    //   auth.getUser()
+    // ]).then();
     vm.load=function() {
       return api.inspection.estate.getdeliverys($stateParams.delivery_id).then(function (r) {
         //设置头部标题
@@ -53,22 +69,9 @@
     }
     vm.load();
 
-
-
-
     auth.getUser().then(function (r) {
-      vm.data.username=r.Username
+      vm.data.username=r.Username;
     });
-
-     vm.showPopup = $stateParams.showPopup || false;
-
-    //publicquestion 不变的问题指标 question 可变的问题指标
-    vm.publicquestion =$stateParams.publicquestion;
-    if (vm.publicquestion!=''){
-      vm.question = vm.publicquestion;
-    }else {
-      vm.question = $stateParams.question;
-    }
 
     //拦截头部按钮事件
     utils.onCmd($scope,['cjwt','csb','prev'],function(cmd,e){
