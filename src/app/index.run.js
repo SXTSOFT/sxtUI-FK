@@ -26,8 +26,9 @@
 
 
       $rootScope.$on('applicationError',function (s,error) {
+        //throw error;
         //error && error.exception && error.exception.stack()
-        console.log('err',error);
+        //console.log('err',error);
         var url = $window.location.href;
         if(url.indexOf('localhost:3000')!=-1)
           return;
