@@ -7,24 +7,20 @@
   <md-divider></md-divider>
   <div layout="row" layout-align="space-between center" class="ph-16 pv-10" ng-click="chooseQues()">
     <div class="pr-10" flex="none">问题</div>
-    <div flex class="question" ng-model="">{{question}}</div>
+    <div flex class="question" ng-model="">{{issues.title}}</div>
+    <md-icon md-font-icon="icon-chevron-left" class="transform90">{{$root.icontitle}}</md-icon>
   </div>
   <md-divider></md-divider>
   <div layout="row" class="ph-16 pv-10">
     <div layout="column" class="pr-10" flex="none">照片</div>
-    <!--<div class="img-list ph-5 pv-10 white-bg"   sxt-image-view="photos"  is-container = "true">-->
-      <!--<img src="{{item.url}}" ng-repeat="item in photos" style="width: 60px;height: 70px;border: #DDDDDD 1px solid;" class="p-5 mh-10">-->
-    <!--</div>-->
-
     <div class="img-list">
       <div ng-repeat="img in photos" class="photos">
         <md-icon md-font-icon="icon-minus-circle" ng-click="remove($event,$index)" style="font-size: 16px; color: #ff0000;" class="remove"></md-icon>
         <span sxt-images="vm.CertificateImgs" sxt-image-view="photos" is-container = "true" >
           <img ng-src="{{img.url}}"/>
         </span>
-      </div>    
+      </div>
     </div>
-
     <div class="img-list">
       <span ng-click="addPhoto()"><img class="camera" src="app/main/szgc/images/photo.svg" width="40"></span>
     </div>
