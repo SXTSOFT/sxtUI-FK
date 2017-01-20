@@ -14,7 +14,7 @@
   /** @ngInject */
   function sfDynamicRectifyController($state, $rootScope, $scope, $mdDialog, remote, $timeout, $q, utils, xhUtils, api) {
     var vm = this;
-    $rootScope.title = $state.params.Role == 'zb' ? '整改' : '复验';
+    $rootScope.title = $state.params.Role == 'zb' ? '整改' : '复查';
     vm.ProjectID = $state.params.ProjectID;
     vm.AcceptanceItemID = $state.params.AcceptanceItemID;
     vm.AcceptanceItemName = $state.params.AcceptanceItemName ? $state.params.AcceptanceItemName : "";

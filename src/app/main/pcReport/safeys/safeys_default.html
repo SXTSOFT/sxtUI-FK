@@ -6,8 +6,9 @@
     <thead>
     <tr>
       <th>序号</th>
-      <th>项目</th>
+      <!--<th>项目</th>-->
       <th style="min-width: 150px">安全</th>
+      <th>区域</th>
       <th>报验时间</th>
       <th>状态</th>
       <th>操作</th>
@@ -16,8 +17,9 @@
     <tbody>
     <tr data-ng-repeat="item in vm.source">
       <td>{{$index+1}}</td>
-      <td>{{item.ProjectName}}</td>
+      <!--<td>{{item.ProjectName}}</td>-->
       <td>{{item.AcceptanceItemName}}</td>
+      <td><span ng-repeat="children in item.AreaList">{{children.AreaFullName}}<br/></span></td>
       <td>
         {{item.CreateTime}}
       </td>

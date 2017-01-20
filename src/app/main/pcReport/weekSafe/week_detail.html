@@ -2,7 +2,7 @@
   <th colspan="8">{{vm.source.ExtendDescribe}}</th>
   <tr>
     <td>
-      项目名称：
+      项目名称
     </td>
     <td colspan="7">
       {{vm.source.ProjectName}}
@@ -16,7 +16,7 @@
     <!--</td>-->
   </tr>
   <tr class="min80">
-    <td style="min-width: 98px">施工单位：</td>
+    <td style="min-width: 98px">施工单位</td>
     <td>{{vm.source.rectifysItem.CompanyName}}</td>
     <td>项目经理</td>
     <td>{{vm.source.rectifysItem.HeadName}}</td>
@@ -26,7 +26,7 @@
     <td>{{vm.source.rectifysItem.Time}}</td>
   </tr>
   <tr class="min80">
-    <td style="min-width: 98px" rowspan="2">监理单位：</td>
+    <td style="min-width: 98px" rowspan="2">监理单位</td>
     <td rowspan="2">{{vm.source.supervisionsItem.CompanyName}}</td>
     <td rowspan="2">项目总监</td>
     <td rowspan="2">{{vm.source.supervisionsItem.HeadName}}</td>
@@ -41,7 +41,12 @@
     <td>复查时间</td>
     <td>{{vm.source.reviewsItem.Time}}</td>
   </tr>
-
+  <tr class="min80">
+    <td>建设单位</td>
+    <td>{{vm.source.companysItem.CompanyName}}</td>
+    <td>项目经理</td>
+    <td colspan="5">{{vm.source.companysItem.HeadName}}</td>
+  </tr>
   <!--<tr class="min80">-->
     <!--<td style="min-width: 98px">建设单位：</td>-->
     <!--<td>{{vm.source.third.CompanyName}}</td>-->

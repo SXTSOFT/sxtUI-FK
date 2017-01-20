@@ -68,8 +68,8 @@
         vm.source.rectifysItem=vm.source.Rectifys[vm.source.Rectifys.length-1];
       }
 
-
-      vm.source.third={};
+      //建设单位
+      vm.source.companysItem={};
       vm.source.Companys.sort(function (a,b) {
         if (!a.Time){
           return true;
@@ -77,7 +77,7 @@
         return a.Time.localeCompare(a,b);
       })
       if (vm.source.Companys.length>0){
-        vm.source.third=vm.source.Companys[vm.source.Companys.length-1];
+        vm.source.companysItem=vm.source.Companys[vm.source.Companys.length-1];
       }
     })
 

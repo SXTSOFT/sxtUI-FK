@@ -18,7 +18,7 @@
   {
     $stateProvider
       .state('app.pcReport_safeys_default',{
-        title:"安全验收",
+        title:"安全验收报表",
         url:'/pcReport_safeys_default/{display}',
         noBack:true,
         sendBt:false,
@@ -42,7 +42,7 @@
       })
       .state('app.pcReport_safeys_default.filter',{
         noBack:true,
-        title:"安全验收",
+        title:"安全验收报表",
         // sendBt:false,
         url:'/pcReport_safeys_default/filter/{from}',
         templateUrl: 'app/main/pcReport/safeys/safeys_filter.html',
