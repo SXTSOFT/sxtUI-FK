@@ -18,6 +18,7 @@
         inspectionId:'=',
         disableInspect:'=',
         disableDrag:'=',
+        points:"=",
         ct:'='
       },
       link:link
@@ -89,6 +90,7 @@
                   }
                 })
                 fg.addData(fs, false);
+                scope.points=fg.data;
                 cb();
                 fs.forEach(function (t) {
                   fg.updateStatus(t.properties.v.PositionID,convert(t.properties.Status))

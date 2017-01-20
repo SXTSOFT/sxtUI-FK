@@ -15,9 +15,14 @@
     .controller('safeys_detailController',safeys_detailController);
 
   /**@ngInject*/
-  function safeys_detailController($stateParams,remote,$rootScope,$scope,$state){
+  function safeys_detailController($stateParams,remote,$rootScope,$scope,$state,xhUtils){
     var inspectionId=$stateParams.inspectionId;
     var vm=this;
+    vm.showImg=function (img) {
+      img.url = img.FileContent||img.Url;
+      img.alt = ' ';
+      xhUtils.playPhoto([img]);
+    }
     remote.report.getdetail('Acceptances',inspectionId).then(function (r) {
       vm.source=r.data;
       //报验信息

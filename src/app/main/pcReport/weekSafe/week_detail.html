@@ -103,12 +103,12 @@
               <tr>
                 <td style="width:50%">
                   <div class="zgWrap">
-                    <img ng-repeat="m in k.Front" ng-src="{{m.Url}}">
+                    <img ng-repeat="m in k.Front" ng-src="{{m.Url}}" ng-click="vm.showImg(m)">
                   </div>
                 </td>
                 <td style="width:50%">
                   <div class="zgWrap">
-                    <img ng-repeat="m in k.Back" ng-src="{{ m.Url}}">
+                    <img ng-repeat="m in k.Back" ng-src="{{ m.Url}}" ng-click="vm.showImg(m)">
 
                   </div>
                 </td>
