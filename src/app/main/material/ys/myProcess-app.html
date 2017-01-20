@@ -83,7 +83,9 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
 <md-list>
   <md-list-item ng-repeat="n in Targets" ng-click="n.isOK=!n.isOK" ng-disabled="n.need">
     <div class="md-list-item-text" flex layout="column">
-      <h3 style="margin-top: 10px; margin-bottom: 5px;font-size: 1.6rem">{{$index+1}}、{{n.TargetName}}</h3>
+      <h3 style="margin-top: 10px; margin-bottom: 5px;font-size: 1.6rem;font-family: 'SJQY' !important;">
+        {{$index+1}}、{{n.TargetName}}
+      </h3>
 <!--<p ng-if="n.Remark" style="margin: 0;line-height: 120%;font-size: 13px !important; ">-->
 <!--{{n.Remark}}-->
 <!--</p>-->
@@ -200,7 +202,7 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
 
 <md-sidenav class="md-sidenav-right" md-component-id="nav_material"  md-is-open="vm.isRightOpen" md-whiteframe="4" layout="column">
   <md-content flex layout="column" style="background: white">
-    <sxt-material flex layout="column" on-select="vm.closeNav('nav_material')" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId"  material-Unit="project.materialUnit" 
+    <sxt-material flex layout="column" on-select="vm.closeNav('nav_material')" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId"  material-Unit="project.materialUnit"
     material-models="project.materialModels" name-value="project.procedureName" material-supply="project.materialSupply" region-type="project.type" class="md-block"></sxt-material>
     <div class="md-padding" layout="row">
       <md-button flex ng-click="vm.closeNav('nav_material')"  class="md-raised md-primary">确定</md-button>
