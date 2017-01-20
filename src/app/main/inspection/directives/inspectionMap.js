@@ -21,8 +21,11 @@
           switch (operate.cmd){
             case 'click':
               console.log('click',operate.marker,operate.marker.el)
+              scope.ctrl.markers.forEach(function (mk) {
+                $(mk.el).removeClass('current');
+              });
               if(operate.marker.el){
-                //
+                $(operate.marker.el).addClass('current');
               }
               else{
                 var dom = $('<div>'+(scope.ctrl.markers.length+1)+'</div>');
