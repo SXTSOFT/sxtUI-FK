@@ -1,12 +1,21 @@
 <md-content layout="column" flex id="none" style="z-index: 0;">
-  <div ng-if="!vm.show" style="width: 100%;text-align: center;padding-top: 50%;height: 100%;">
-    <div layout="row" layout-sm="column" layout-align="space-around">
-      <md-progress-circular md-diameter="48"  class="md-accent" ></md-progress-circular>
-    </div>
-    <div  style="color: #808080;font-size: 14px;padding-top: 10px;">加载中</div>
-  </div>
-  <div ng-if="vm.show">
-  <div inspection-map map-show="vm.showPopup" map-url="vm.data.mapurl" flex></div>
-  </div>
+<div flex inspection-map="" ctrl="vm" ></div>
 </md-content>
+<div style="display: none">
+  <div map-marker="marker_toolbar" class="m-toolbar">
+    <button ng-class="{current:toolbar!='task'}" block ion-button icon-only small  ng-click="setToolbar('task',$event)">
+      <ion-icon style="font-size:1.6em" name="rc-mark" ></ion-icon>
+    </button>
+  </div>
+
+
+  <span  class="map-toolpop" mapRef="popup">
+    <button ion-button icon-only (click)='moveMarker()'>
+        <ion-icon name="rc-move"></ion-icon>
+    </button>
+    <button  ion-button icon-only (click)='removeMarker()'>
+        <ion-icon name="rc-delete"></ion-icon>
+    </button>
+  </span>
+</div>
 <sxt-wt-pop flex-auto ng-show="true" record="record"></sxt-wt-pop>
