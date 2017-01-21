@@ -25,6 +25,10 @@
       xhUtils.playPhoto([img]);
     }
 
+    vm.up=function (item) {
+      item.up=!item.up;
+    }
+
     remote.report.getdetail('WeekInspects',inspectionId).then(function (r) {
       vm.source=r.data;
 

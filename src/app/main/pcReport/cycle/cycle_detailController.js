@@ -24,7 +24,9 @@
       img.alt = ' ';
       xhUtils.playPhoto([img]);
     }
-
+    vm.up=function (item) {
+      item.up=!item.up;
+    }
     remote.report.getdetail('cycle',inspectionId).then(function (r) {
       vm.source=r.data;
 

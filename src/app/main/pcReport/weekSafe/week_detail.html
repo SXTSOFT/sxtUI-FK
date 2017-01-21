@@ -75,10 +75,13 @@
           </td>
         </tr>
         <tr>
-          <td colspan="8">原位标注</td>
+          <td colspan="8">
+            原位标注
+            <span ng-if="item.up" ng-click="vm.up(item)" style="float: right;padding-right: 5px">展开</span>
+            <span ng-if="!item.up" ng-click="vm.up(item)" style="float: right;padding-right: 12px">关闭</span></td>
         </tr>
         <tr>
-          <td colspan="8" style="padding: 0px">
+          <td colspan="8" style="padding: 5px" ng-if="!item.up">
             <div class="ywWrap" sxt-report-view="" loaded="vm.loaded" ponits="item.PointList" region-id="item.AreaID" type="'week'" layout="column">
               <div flex layout="row" layout-align="center center" ng-if="!vm.loaded" >
                 <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular>

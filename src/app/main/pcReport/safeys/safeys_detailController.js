@@ -72,7 +72,9 @@
       if (vm.source.Rectifys.length>0){
         vm.source.rectifysItem=vm.source.Rectifys[vm.source.Rectifys.length-1];
       }
-
+      vm.up=function (item) {
+        item.up=!item.up;
+      }
       //建设单位
       vm.source.companysItem={};
       vm.source.Companys.sort(function (a,b) {

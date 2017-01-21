@@ -119,6 +119,9 @@
         });
       });
 
+      //清除缓存
+
+
       // Store state in the root scope for easy access
       $rootScope.state = $state;
 

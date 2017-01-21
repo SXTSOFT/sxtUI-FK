@@ -27,7 +27,7 @@
               <th width="12.5%">{{vm.result.MainContractorName}}</th>
               <th width="12.5%">项目经理</th>
               <th width="12.5%">{{vm.result.MainContractorHeadName}}</th>
-              <th width="12.5%">报验人员</th>
+              <th width="12.5%">报验人</th>
               <th width="12.5%">{{vm.result.InspectionUser}}</th>
               <th width="12.5%">报验时间</th>
               <th width="12.5%">{{vm.result.InspectionTime}}</th>
@@ -37,7 +37,7 @@
               <th>{{vm.result.SupervisionName}}</th>
               <th>项目总监</th>
               <th>{{vm.result.SupervisionHeadName}}</th>
-              <th>验收人员</th>
+              <th>验收人</th>
               <th>{{vm.result.SupervisionCollectName}}</th>
               <th>验收时间</th>
               <th>{{vm.result.SupervisionTime}}</th>
@@ -47,13 +47,13 @@
               <th>{{vm.result.CompanyName || '星河地产'}}</th>
               <th>项目经理</th>
               <th>{{vm.result.CompanyHeadName}}</th>
-              <th>验收人员</th>
+              <th>验收人</th>
               <th></th>
               <th>验收时间</th>
               <th>{{vm.result.CompanyTime}}</th>
             </tr>
             <tr>
-              <th>验收意见</th>
+              <th>验收状态</th>
               <th colspan="7">
                 {{vm.result.Status == 2 ? ' 同意':'不同意'}}验收
               </th>
