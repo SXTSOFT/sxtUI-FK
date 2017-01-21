@@ -62,16 +62,22 @@
                 options = geojson.options;
               switch (geojson.geometry.type) {
                 case 'Circle':
-                  layer = L.circle(L.GeoJSON.coordsToLatLng(geojson.geometry.coordinates), options.radius, options);
+                  //console.log(options.radius,geojson.geometry);
+                  layer = L.circle(L.GeoJSON.coordsToLatLng(geojson.geometry.coordinates), options.radius>1? options.radius/100000:options.radius, options);
                   break;
                 default:
                   var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer, options.coordsToLatLng, options);
+                  if (geojson.type =='Point' && options.icon && options.icon.options && options.icon.options.iconUrl) {
+                    var iconOpt = options.icon.options;
+                    layer.setIcon(this.options.icon? this.options.icon(iconOpt) : new L.Icon(iconOpt));
+                    layer.options = L.Util.extend(geojson.options, layer.options);
+                  }
                   layer.feature = L.GeoJSON.asFeature(geojson);
                   break;
               }
               layer.data = ly;
               drawnItems.addLayer(layer);
-              updateText(layer);
+              //updateText(layer);
               layer.on('click', function (e) {
                 openPopup(layer);
               })
@@ -89,7 +95,7 @@
               }
 
               ly = L.marker(layer.getBounds().getCenter(), {
-                icon: new ST.L.LabelIcon({
+                icon: new L.LabelIcon({
                   html: layer.options.text,
                   color: layer.options.color,
                   iconAnchor: [(layer.options.text.length * 6), 12]

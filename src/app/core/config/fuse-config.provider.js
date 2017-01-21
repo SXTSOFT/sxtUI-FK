@@ -64,9 +64,9 @@
 
     function extendExceptionHandler($delegate) {
       return function (exception, cause) {
-        //$delegate(exception, cause);
-        if(self.$rootScope)
-          self.$rootScope.$emit('applicationError', {exception: exception, cause: cause});
+        $delegate(exception, cause);
+        //if(self.$rootScope)
+        //  self.$rootScope.$emit('applicationError', {exception: exception, cause: cause});
       };
     }
   }

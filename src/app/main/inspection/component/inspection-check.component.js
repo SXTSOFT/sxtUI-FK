@@ -14,36 +14,9 @@
 
   /**@ngInject*/
   function inspectionCheckController($scope,$rootScope,utils,$state,$stateParams,$mdPanel,api,auth,$timeout,$q){
-    //记录点类型数据
-    // {
-    //   "id":0
-    //   "room_id": 0,
-    //   "issues": 0,
-    //   "contact_name": "string"Q
-    //   "contact_phone": "string",
-    //   "caller_name": "string",
-    //   "caller_phone": "string",
-    //   "reservation_date_begin": "2017-01-19T15:13:43.445Z",
-    //   "reservation_date_end": "2017-01-19T15:13:43.445Z",
-    //   "description": "string",
-    //   "pictures": "string"
-    // }
 
     var vm = this;
-    //当前选择的点记录
-    $scope.record={
-        "id":0,
-        "room_id": 203,
-        "issues": 0,
-        "contact_name": "string",
-        "contact_phone": "string",
-        "caller_name": "string",
-        "caller_phone": "string",
-        "reservation_date_begin": "2017-01-19T15:13:43.445Z",
-        "reservation_date_end": "2017-01-19T15:13:43.445Z",
-        "description": "string",
-        "pictures": "string"
-    };
+    vm.markers = [];
 
 
     vm.data={
