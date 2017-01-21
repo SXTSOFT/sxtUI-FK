@@ -128,7 +128,9 @@
               author:scope.username
             }
             api.inspection.estate.insertImg(imgEntity).then(function () {
-              scope.photos.push(imgEntity);
+              scope.photos.push({
+                url:img
+              });
             })
           })
         }
