@@ -18,7 +18,19 @@
     var vm = this;
     vm.markers = [];
 
-
+    $scope.record={
+      "id":0,
+      "room_id": 203,
+      "issues": 0,
+      "contact_name": "string",
+      "contact_phone": "string",
+      "caller_name": "string",
+      "caller_phone": "string",
+      "reservation_date_begin": "2017-01-19T15:13:43.445Z",
+      "reservation_date_end": "2017-01-19T15:13:43.445Z",
+      "description": "string",
+      "pictures": "string"
+    };
     vm.data={
       roomid:'',
       mapurl:'',
@@ -33,10 +45,13 @@
     vm.load=function() {
       return api.inspection.estate.getdeliverys($stateParams.delivery_id).then(function (r) {
         //设置头部标题
+        var data= r.data.data;
         $timeout(function(){
-          $rootScope.shell.title = r.data.data.room.name;
-          vm.data.mapurl = r.data.data.room.layout.drawing_url;
-          vm.data.roomid = r.data.data.room.room_id;
+          if(data.rooms&&data.rooms.layout&&data.rooms.rooms.drawing_url){
+            $rootScope.shell.title = r.data.data.room.name;
+            vm.data.mapurl = r.data.data.room.layout.drawing_url;
+            vm.data.roomid = r.data.data.room.room_id;
+          }
         })
       })
     }
