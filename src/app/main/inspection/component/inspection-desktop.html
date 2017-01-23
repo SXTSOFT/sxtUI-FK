@@ -1,45 +1,58 @@
 
+<md-tabs md-dynamic-height md-border-bottom  selected="vm.selected" flex ng-if="vm.show">
+  <md-tab  flex label="未开始">
+    <md-content layout="column" flex style="background: #f5f5f5;height: 100%;" class="is-list">
+      <div>
+        <md-list class="p-0 mt-10" style="border-bottom: solid 1px silver;border-top: solid 1px silver;background-color: white;" >
+          <md-list-item class="white-bg"  ng-repeat="item in vm.data.unprocessed">
+            <div class="md-list-item-text" flex>{{item.room.full_name}}</div>
+            <md-button class="md-secondary" ng-click="vm.fh(item)" ng-if="vm.currenttab == 1" style="font-size: 12px;background-color: #00acee;color: white;">反测试</md-button>
 
-
-
-<md-tabs md-dynamic-height md-border-bottom md-selected="vm.selected" >
-  <md-tab ng-click="vm.inspection(0,'unprocessed')"  flex label="未开始">
+            <md-button class="md-secondary " ng-click="vm.download(item)" style="font-size: 12px;background-color: #00acee;color: white;">开始验房</md-button>
+            <md-divider style="position: absolute; bottom: 0;left: 4%;width: 96%;" ng-if="$index!=vm.data.length-1"></md-divider>
+          </md-list-item>
+        </md-list>
+      </div>
+    </md-content>
   </md-tab>
-  <md-tab ng-click="vm.inspection(1,'processing')"  flex label="进行中">
+  <md-tab  flex label="进行中">
+    <md-content layout="column" flex style="background: #f5f5f5;height: 100%;" class="is-list">
+      <div>
+        <md-list class="p-0 mt-10" style="border-bottom: solid 1px silver;border-top: solid 1px silver;background-color: white;" >
+          <md-list-item class="white-bg" ng-click="vm.goChecked(item)" ng-repeat="item in vm.data.processing">
+            <div class="md-list-item-text" flex>{{item.room.full_name}}</div>
+            <md-button class="md-secondary" ng-click="vm.fh(item)" style="font-size: 12px;background-color: #00acee;color: white;">反测试</md-button>
+            <md-button class="md-secondary" ng-click="vm.done(item)"  style="font-size: 12px;background-color: #00acee;color: white;">验房完成</md-button>
+            <md-divider style="position: absolute; bottom: 0;left: 4%;width: 96%;" ng-if="$index!=vm.data.length-1"></md-divider>
+          </md-list-item>
+        </md-list>
+      </div>
+    </md-content>
   </md-tab>
-  <md-tab  ng-click="vm.inspection(2,'inspection_completed')" flex label="已完成">
+  <md-tab  flex label="已完成">
+    <md-content layout="column" flex style="background: #f5f5f5;height: 100%;" class="is-list">
+      <div>
+        <md-list class="p-0 mt-10" style="border-bottom: solid 1px silver;border-top: solid 1px silver;background-color: white;" >
+          <md-list-item class="white-bg" ng-click="vm.repeatCheck(item)" ng-repeat="item in vm.data.inspection_completed">
+            <div class="md-list-item-text" flex ng-click="vm.check(item.room.room_id,item.delivery_id,item.status)">{{item.room.full_name}}</div>
+            <md-divider style="position: absolute; bottom: 0;left: 4%;width: 96%;"></md-divider>
+          </md-list-item>
+        </md-list>
+      </div>
+    </md-content>
   </md-tab>
 </md-tabs>
 
-
-
-
-<md-content layout="column" flex style="background: #f5f5f5;height: 100%;" class="is-list">
-  <div ng-if="!vm.show" style="width: 100%;text-align: center;padding-top: 50%;height: 100%;">
-    <div layout="row" layout-sm="column" layout-align="space-around">
-      <md-progress-circular md-diameter="48"  class="md-accent" ></md-progress-circular>
-    </div>
-    <div  style="color: #808080;font-size: 14px;padding-top: 10px;">加载中</div>
-  </div>
-<div ng-if="vm.show">
-  <md-list class="p-0 mt-10" ng-if="vm.count!=0" style="border-bottom: solid 1px silver;border-top: solid 1px silver;background-color: white;" >
-    <md-list-item class="white-bg" ng-click="vm.repeatCheck(item)" ng-repeat="item in vm.data | taskFilter:vm.data.status">
-      <div class="md-list-item-text" flex ng-click="vm.check(item.room.room_id,item.delivery_id,item.status)">{{item.room.full_name}}</div>
-      <md-button class="md-secondary" ng-click="vm.fh(item)" ng-if="vm.currenttab == 1" style="font-size: 12px;background-color: #00acee;color: white;">反测试</md-button>
-
-
-      <md-button class="md-secondary " ng-click="vm.check(item)" ng-if="vm.currenttab == 0&&!vm.loading" style="font-size: 12px;background-color: #00acee;color: white;">开始验房</md-button>
-      <md-button class="md-secondary" ng-click="vm.done(item)" ng-if="vm.currenttab == 1" style="font-size: 12px;background-color: #00acee;color: white;">验房完成</md-button>
-      <!--<div ng-if="vm.loading">-->
-        <!--<span class="md-secondary" ng-if="vm.loading">下载数据</span><span class="circle md-secondary" ng-if="vm.loading">50%</span>-->
-      <!--</div>-->
-      <md-divider style="position: absolute; bottom: 0;left: 4%;width: 96%;" ng-if="$index!=vm.data.length-1"></md-divider>
-    </md-list-item>
-  </md-list>
-
-  <div class="img-list" ng-if="vm.count==0"  style="width: 100%;text-align: center;padding-top: 50%;height: 100%;">
-    <img  src="app/main/szgc/images/null.jpg" style="width: 120px;height: 120px;">
-    <div  style="color: #808080;font-size: 14px;padding-top: 10px;">暂无数据</div>
-  </div>
+<div class="img-list" ng-if="vm.isEmpty"  style="width: 100%;text-align: center;padding-top: 50%;height: 100%;">
+  <img  src="app/main/szgc/images/null.jpg" style="width: 120px;height: 120px;">
+  <div  style="color: #808080;font-size: 14px;padding-top: 10px;">暂无数据</div>
 </div>
-</md-content>
+
+<div ng-if="!vm.show" style="width: 100%;text-align: center;padding-top: 50%;height: 100%;">
+  <div layout="row" layout-sm="column" layout-align="space-around">
+    <md-progress-circular md-diameter="48"  class="md-accent" ></md-progress-circular>
+  </div>
+  <div  style="color: #808080;font-size: 14px;padding-top: 10px;">加载中</div>
+</div>
+
+

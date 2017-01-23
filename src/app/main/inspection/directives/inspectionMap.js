@@ -5,121 +5,123 @@
   'use strict';
   angular
     .module('app.inspection')
-    .directive('inspectionMap',inspectionMap);
+    .directive('inspectionMap', inspectionMap);
   /** @inject */
-  function inspectionMap(sxt,$window,$timeout,api,map) {
+  function inspectionMap(sxt, $window, $timeout, api, map, utils, mapCache) {
     var mymap = map;
     return {
-      scope:{
-        mapShow:'=',
-        mapUrl:'=',
-        ctrl:'=',
-        mapClick:'&'
+      scope: {
+        mapShow: '=',
+        mapUrl: '=',
+        ctrl: '=',
+        loaded: "="
       },
-      link:function (scope,el,api) {
+      link: function (scope, el, api) {
+
+        function click_event(operate) {
+          var marker = operate.marker;
+          switch (operate.source) {
+            case"map":
+              if (scope.edit){ //添加mark
+                marker.el = scope.ctrl.markerDom();
+                var mk = L.marker(marker.latlng, {
+                  icon: new L.HtmlIcon({
+                    className: 'rc-marker',
+                    iconSize: marker.iconSize || [30, 30],
+                    iconAnchor: marker.iconAnchor || [15, 15],
+                    el: marker.el
+                  })
+                }).on('click', function () {
+                  mapOperate({
+                    cmd: 'click',
+                    source: "marker",
+                    marker: marker
+                  });
+                });
+                scope.ctrl.markers.push(marker);
+                scope.ctrl.added(marker);
+                marker.layer.addLayer(mk);
+              }else{
+                scope.ctrl.cancelEdit(marker);
+              }
+              break;
+            case "marker":
+              scope.ctrl.edited(marker);
+              break;
+          }
+          scope.$apply();
+        }
+
+
         function mapOperate(operate) {
-          switch (operate.cmd){
+          var marker = operate.marker;
+          switch (operate.cmd) {
             case 'click':
-              console.log('click',operate.marker,operate.marker.el)
               scope.ctrl.markers.forEach(function (mk) {
                 $(mk.el).removeClass('current');
               });
-              if(operate.marker.el){
-                $(operate.marker.el).addClass('current');
-              }
-              else{
-                var dom = $('<div>'+(scope.ctrl.markers.length+1)+'</div>');
-                var geo={
-                  el:dom[0],
-                  id: sxt.uuid(),
-                  dataType:1,
-                  latlng: operate.marker.latlng,
-                  iconSize: [24, 24],
-                  iconAnchor: [12, 12],
-                  status: {
-                    selected: false,
-                    editing: false,
-                    current: false
-                  },
-                  tag: {
-                    type:'task',
-                    isNew:true
-                  }
-                };
-                scope.ctrl.markers.push(geo);
-                scope.ctrl.added(geo);
-                console.log('markers',scope.ctrl.markers);
-                scope.$apply();
-              }
+              $(marker.el).addClass('current');
+              click_event(operate);
               break;
           }
         }
-        scope.$watch('ctrl',function () {
-          if(!scope.ctrl) return;
-          mymap(function () {
-            var mv = scope.ctrl;
-            //if(scope.mapUrl)
-            var map = L.map(el[0], {
-              crs: L.RicentCRS,
-              center: [0, 0],
-              zoom: 0,
-              zoomControl: false,
-              attributionControl: false,
-              closePopupOnClick: false
-            });
-            var layer;
-            layer = L.sheetLayer('http://pic.focus.cn/ccimg.focus.cn/upload/photos/390279/t1718.jpg');
-            layer.addTo(map);
-            var regionLayer = L.layerGroup();
-            regionLayer.addTo(map);
-            map.on('click',function (e) {
-              mapOperate({
-                cmd:'click',
-                marker:{
-                  latlng:[e.latlng.lat,e.latlng.lng],
-                  status:{
-                  }
+
+        scope.$watch("loaded", function () {
+          if (scope.loaded) {
+            if (scope.mapUrl) {
+              $timeout(function () {
+                if (!scope.mapUrl) {
+                  utils.alert("未找到户型图纸!");
+                  return;
                 }
-              })
-            });
-            scope.ctrl.added = function (marker) {
-              var mk = L.marker(marker.latlng, {
-                icon: new L.HtmlIcon({
-                  className: 'rc-marker',
-                  iconSize: marker.iconSize || [30, 30],
-                  iconAnchor: marker.iconAnchor || [15, 15],
-                  el: marker.el
-                })
-              }).on('click', function () {
-                mapOperate({
-                  cmd:'click',
-                  marker:marker
+                mymap(function () {
+                  var mv = scope.ctrl;
+                  var map = L.map(el[0], {
+                    crs: L.RicentCRS,
+                    center: [0, 0],
+                    zoom: 0,
+                    zoomControl: false,
+                    attributionControl: false,
+                    closePopupOnClick: false
+                  });
+                  var layer;
+                  layer = L.sheetLayer(scope.mapUrl);
+                  layer.addTo(map);
+                  var regionLayer = L.layerGroup();
+                  regionLayer.addTo(map);
+                  map.on('click', function (e) {
+                    mapOperate({
+                      cmd: 'click',
+                      source: "map",
+                      marker: {
+                        latlng: [e.latlng.lat, e.latlng.lng],
+                        layer: regionLayer
+                      }
+                    })
+                  });
+                  map.on('sheet:load', function (f) {
+                    el = mapCache.get("mapControl");
+                    el.click(function (e) {
+                      if (e.stopPropagation) {
+                        e.stopPropagation();
+                      }
+                      scope.edit = !scope.edit;
+                    });
+                    var c = L.control.elControl({
+                      position: 'topright',
+                      el: el[0]
+                    })
+                    map.addControl(c);
+                  });
                 });
-                //点击marker做的事情，popup，选择中--
-              });
-              mk.id = marker.id;
-              regionLayer.addLayer(mk);
+              }, 300)
+            } else {
+              utils.alert("未找到户型图纸");
             }
-            scope.ctrl.removed = function (marker) {
-              console.log('remove',marker);
-              var group = regionLayer,
-                mk = null;
-              layer.eachLayer(function (layer) {
-                if (layer.id === marker.id) {
-                  mk = layer;
-                }
-              });
-              if (mk) {
-                group.removeLayer(mk);
-              }
-            }
-
-
-          });
+          }
         })
       }
     }
-
   }
 })();
 

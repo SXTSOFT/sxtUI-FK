@@ -13,54 +13,73 @@
     });
 
   /**@ngInject*/
-  function inspectionCheckController($scope,$rootScope,utils,$state,$stateParams,$mdPanel,api,auth,$timeout,$q){
+  function inspectionCheckController($scope,$rootScope,utils,$state,$stateParams,$mdPanel,api,auth,$timeout,$q,ys_file){
 
     var vm = this;
+    vm.userId=$stateParams.userId
     vm.markers = [];
+    vm.loaded=false; //数据是否加载完成
+    // $scope.record={
+    //   "id":0,
+    //   "room_id": 203,
+    //   "issues": 0,
+    //   "contact_name": "string",
+    //   "contact_phone": "string",
+    //   "caller_name": "string",
+    //   "caller_phone": "string",
+    //   "reservation_date_begin": "2017-01-19T15:13:43.445Z",
+    //   "reservation_date_end": "2017-01-19T15:13:43.445Z",
+    //   "description": "string",
+    //   "pictures": "string"
+    // };
 
-    $scope.record={
-      "id":0,
-      "room_id": 203,
-      "issues": 0,
-      "contact_name": "string",
-      "contact_phone": "string",
-      "caller_name": "string",
-      "caller_phone": "string",
-      "reservation_date_begin": "2017-01-19T15:13:43.445Z",
-      "reservation_date_end": "2017-01-19T15:13:43.445Z",
-      "description": "string",
-      "pictures": "string"
-    };
-    vm.data={
-      roomid:'',
-      mapurl:'',
-      username:''
-    }
 
     //获取任务详情数据
-    // $q.all([
-    // return api.inspection.estate.getdeliverys($stateParams.delivery_id),
-    //   auth.getUser()
-    // ]).then();
+
     vm.load=function() {
-      return api.inspection.estate.getdeliverys($stateParams.delivery_id).then(function (r) {
-        //设置头部标题
-        var data= r.data.data;
-        $timeout(function(){
-          if(data.rooms&&data.rooms.layout&&data.rooms.rooms.drawing_url){
-            $rootScope.shell.title = r.data.data.room.name;
-            vm.data.mapurl = r.data.data.room.layout.drawing_url;
-            vm.data.roomid = r.data.data.room.room_id;
+      return api.inspection.estate.getDelivery($stateParams.delivery_id).then(function (r) {
+        if (r&&r.data){
+          vm.delivery=r.data;
+          if (vm.delivery.room&&vm.delivery.room.layout){
+            var url= ys_file.getUrl(vm.delivery.room.room_id,vm.delivery.room.layout.drawing_url);
+            vm.mapUrl=url;
           }
-        })
-      })
+          vm.loaded=true;
+        }
+      }).catch(function () {
+        vm.loaded=false;
+      });
     }
     vm.load();
 
-    auth.getUser().then(function (r) {
-      vm.data.username=r.Username;
-    });
+    vm.markerDom=function() {
+      return $("<div style='background: green;height: 32px;width: 32px'>"+vm.markers.length+"</div>")[0];
+    }
 
+    vm.added = function (marker) {
+      vm.pop=true;
+    }
+
+    vm.edited=function (marker) {
+      vm.pop=true;
+    }
+
+    vm.cancelEdit=function () {
+      vm.pop=false;
+    }
+
+    vm.removed = function (marker) {
+      var group = regionLayer,
+        mk = null;
+      layer.eachLayer(function (layer) {
+        if (layer.id === marker.id) {
+          mk = layer;
+        }
+      });
+      if (mk) {
+        group.removeLayer(mk);
+      }
+    }
     //拦截头部按钮事件
     utils.onCmd($scope,['cjwt','csb','prev'],function(cmd,e){
       switch (cmd){

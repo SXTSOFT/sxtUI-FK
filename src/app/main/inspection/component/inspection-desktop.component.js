@@ -13,54 +13,24 @@
     });
 
   /**@ngInject*/
-  function inspectionDesktopController($state,utils,$scope,api,$q,$mdDialog,$window,$stateParams,ys_file,$timeout,auth){
+  function inspectionDesktopController($state,utils,$scope,api,$q,$mdDialog,$window,$stateParams,ys_file,$timeout,auth,inspectionServe){
     var vm = this;
-    vm.currenttab = 0;
-    vm.loading = false;
-    vm.selected=0;
-    vm.status=!$stateParams.status?"unprocessed":$stateParams.status;
-    switch (vm.status){
-      case "unprocessed":
-        vm.selected=0;
-        break;
-      case "processing":
-        vm.selected=1;
-        break;
-      case "inspection_completed":
-        vm.selected=2;
-        break;
-    }
+    vm.data={};//数据源
+    vm.selected=0;//tab 初始选项
+
+    auth.getUser().then(function () {
+    });
+
 
     auth.getUser().then(function (r) {
       vm.loginname=r.Username
-      vm.parm={
-        loginname:'11100000000',
-        status:null,
-        page_size:10,
-        page_number:1
-      }
-
-
-      vm._if=false;
-      vm.setData=function(item) {
-        return  api.inspection.estate.getdeliverys(item.delivery_id).then(function (r) {
-          $timeout(function () {
-            if (!r.data.data.water_degree && !r.data.data.electricity_degree) {
-              debugger;
-              vm._if = true;
-            }
-          })
-        })
-      }
-
-
       vm.upload=function () {
 
       }
 
       vm.done=function (item) {
         var _if=false;
-        api.inspection.estate.getdeliverys(item.delivery_id).then(function (r) {
+        api.inspection.estate.getDeliverysList(item.delivery_id).then(function (r) {
           if(!r.data.data.water_degree&&!r.data.data.electricity_degree){
             _if= true;
           }
@@ -87,7 +57,6 @@
               api.inspection.estate.updatedeliverys(vm.parmData).then(function (r) {
                 if(r.status==200){
                   vm.load();
-                  vm.selected=0;
                   vm.status="inspection_completed";
                   vm.data.status="inspection_completed";
                   vm.inspection(2,'inspection_completed');
@@ -95,14 +64,12 @@
               })
             }
           }
-
-
         })
-
       }
+
+
       utils.onCmd($scope,['swap'],function(cmd,e){
         if(e.arg.type){
-
         }else{
           $state.go('app.statistics.problem')
         }
@@ -111,105 +78,100 @@
       utils.onCmd($scope,['tj'],function(cmd,e){
         $state.go('app.statistics.taskpage');
       })
+
+
       vm.fh=function (item) {
-        api.inspection.estate.updatedeliverys({
-          status: "unprocessed",
-          delivery_id:item.delivery_id
+        api.inspection.estate.putDelivery(item.delivery_id,{
+          status: "unprocessed"
         })
       }
 
 
-      //未开始状态 点击会修改状态为进行中
-      vm.check = function(item){
-        if(item.status=='processing'||item.status=='unprocessed'){
-          vm.parmData={
-            status: "",
-            delivery_id:item.delivery_id
-          }
-          if(item.status=='processing'){
-            vm.parmData.status="inspection_completed";
-          }else if (item.status=='unprocessed'){
-            vm.download(item);
-            vm.parmData.status="processing";
-          }
-        }
+
+      vm.goChecked=function (item) {
+        $state.go('app.inspection.check',{delivery_id:item.delivery_id,userId:"11100000000"})
       }
 
-      vm.current;
-      vm.download=function (item) {
-        vm.current=item;
+
+      //未开始状态 点击会修改状态为进行中
+      // vm.check = function(item){
+      //   if(item.status=='processing'||item.status=='unprocessed'){
+      //     vm.parmData={
+      //       status: "",
+      //       delivery_id:item.delivery_id
+      //     }
+      //     if(item.status=='processing'){
+      //       vm.parmData.status="inspection_completed";
+      //     }else if (item.status=='unprocessed'){
+      //       vm.download(item);
+      //       vm.parmData.status="processing";
+      //     }
+      //   }
+      // }
+
+      function taskRun(tasks,sucess,fail,progressTitle) {
+        var progress={};
+        progressTitle=progressTitle?progressTitle:"正在下载离线数据";
         $mdDialog.show({
           controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
-            $scope.item = item;
-            item.percent = item.current = 0;
-            var tasks=[
-              function (task) {
-                return  api.inspection.estate.getdeliveryslist(vm.parm).then(function (k) {
-                  if (angular.isArray(k.data)){
-                    k.data.forEach(function (m) {
-                      task.push(function () {
-                        return  $q(function (resove,reject) {
-                          if (m.room&&m.room.layout&&m.room.layout.drawing_url){
-                            return ys_file.downUniqueFile(m.room.room_id,m.room.layout.drawing_url).then(function () {
-                              resove();
-                            });
-                          }else {
-                            resove();
-                          }
-                        })
-
-                      })
-                    })
-                  }
-                });
-              },function () {
-                return api.inspection.estate.issues_tree({
-                  type:'delivery',
-                  parent_id:'',
-                  enabled:true,
-                  page_size:10000,
-                  page_number:1
-                });
-              }
-            ]
-            item.total = tasks.length;
+            $scope.item = progress;
+            progress.percent = 0;
+            progress.total = tasks.length;
             api.task(tasks, {
-              event: 'download_yf',
-              target: item,
               timeout:30000
-            })(null, function () {
+            })(function (percent,current,total) {
+              progress.percent = parseInt(percent)*100 + ' %';
+              progress.current = current;
+              progress.total = total;
+            }, function () {
+              $mdDialog.hide();
               $timeout(function () {
-                utils.confirm("离线数据下载完成，是否继续验房?",null).then(function () {
-                  api.inspection.estate.updatedeliverys(vm.parmData,item.delivery_id).then(function (r) {
-                    $state.go('app.inspection.check',{delivery_id:item.delivery_id});
-                  })
-                })
+                sucess();
               })
             }, function (timeout) {
               $mdDialog.cancel();
-              utils.alert("网络异常,离线数据下载失败!");
+              fail();
             })
           }],
-          template: '<md-dialog aria-label="正在下载离线数据"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+          template: '<md-dialog aria-label='+progressTitle+ ' ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
           parent: angular.element(document.body),
           clickOutsideToClose: false,
           fullscreen: false
         });
       }
 
-      api.event('download_yf', function (s, e) {
-        switch (e.event) {
-          case 'progress':
-            vm.current.percent = parseInt(e.percent * 100) + ' %';
-            vm.current.current = e.current;
-            vm.current.total = e.total;
-            break;
-        }
-      }, $scope);
+      vm.download=function (item) {
+        var task=inspectionServe.downloadDeliveryTask(item);
+        task=task.concat(function () {
+          return api.inspection.estate.issues_tree({
+            type:'delivery',
+            parent_id:'',
+            enabled:true,
+            page_size:10000,
+            page_number:1
+          });
+        });
+        taskRun(task,function () {
+          $timeout(function () {
+            api.inspection.estate.putDelivery(item.delivery_id,{
+              status:"processing"
+            }).then(function (r) {
+              api.inspection.estate.addOrUpdateDelivery(item).then(function () {
+                utils.confirm("抢单成功,是否继续?").then(function () {
+                }).catch(function () {
+                  vm.selected=1;
+                });
+                vm.load();
+              }).catch(function () {
+                utils.alert("系统在抢单,刷新单据状态的时候发生错误");
+              });
+            })
 
-
-
-
+          })
+        },function () {
+          utils.alert("网络异常,离线数据下载失败!");
+        });
+      }
 
       //进行中状态中点击进去补充验房数据
       vm.repeatCheck = function(item){
@@ -217,32 +179,87 @@
           $state.go('app.inspection.check',{delivery_id:item.delivery_id})
       }
 
-      vm.load=function() {
-        return  api.inspection.estate.getdeliveryslist(vm.parm).then(function (r) {
-          $timeout(function(){
-            vm.data=r.data;
-            vm.data.status=$
-            vm.inspection(vm.selected,vm.status);
-            vm.show=true;
-          })
-        })
+
+      vm.load=function () {
+        return  api.inspection.estate.getDeliverysList({
+          loginname:'11100000000',
+          page_size:50,
+          page_number:1
+        }).then(function (r) {
+          vm.show=true;
+          vm.isEmpty=angular.isArray(r.data)&&r.data.length?false:true;
+          return r.data;
+        }).then(setSource).catch(setSource_offline)
       }
-      vm.inspection = function(num,status){
-        $timeout(function() {
-          vm.count = 0;
-          vm.data.status = status;
-          vm.selected = num;
-          vm.currenttab = num;
-          vm.data.forEach(function (r) {
-            if (r.status == status) {
-              vm.count += 1;
-            }
-          })
+
+
+      function setSource(souce) {
+        vm.data.unprocessed = [];
+        vm.data.inspection_completed = [];
+        vm.data.processing = [];
+        souce.forEach(function (k) {
+          switch (k.status) {
+            case "unprocessed":
+              vm.data.unprocessed.push(k)
+              break;
+            case "processing":
+              vm.data.processing.push(k);
+              break;
+            case "inspection_completed":
+              vm.data.inspection_completed.push(k)
+              break;
+          }
         });
-      };
+        var task = [
+          function () {
+           return  api.inspection.estate.issues_tree_off().then(function (r) {
+              if (!r || !r.data||!r.data.length) {
+                task.push(function () {
+                  return api.inspection.estate.issues_tree({
+                    type:'delivery',
+                    parent_id:'',
+                    enabled:true,
+                    page_size:10000,
+                    page_number:1
+                  });
+                })
+              }
+            })
+          }
+        ];
+        return api.inspection.estate.getDeliverysOff().then(function (r) {
+          var en;
+          vm.data.processing.forEach(function (n) {
+            if (r && r.data) {
+              en=r.data.find(function (k) {
+                return k.delivery_id==n.delivery_id;
+              })
+            }
+            if (!en){
+              task=task.concat(inspectionServe.downloadDeliveryTask(n))
+            }
+          });
+          if (task.length>1){
+            taskRun(task,function () {
+              $timeout(function () {
+                utils.alert("数据刷新完成,您可以开始验房了",null);
+              })
+            },function () {
+
+            },"正在刷新验房数据,请稍后...")
+
+          }
+        });
+      }
+      function setSource_offline() {
+        vm.data.unprocessed = vm.data.unprocessed ? vm.data.unprocessed : [];
+        vm.data.inspection_completed = vm.data.inspection_completed ? vm.data.inspection_completed : [];
+        vm.data.processing = vm.data.processing ? vm.data.processing : [];
+        api.inspection.estate.getDeliverysOff().then(function (r) {
+          vm.data.processing = vm.data.processing.concat(r);
+        });
+      }
       vm.load();
-
-
 
     });
   }

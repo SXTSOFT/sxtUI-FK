@@ -112,7 +112,7 @@
       })
 
       .state('app.inspection.check', {
-        url:'/check/{delivery_id}',
+        url:'/check/{delivery_id}/{userId}',
         title:'',
         hideFootbar:true,
         shell:{

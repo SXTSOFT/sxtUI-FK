@@ -34,26 +34,64 @@
         }
       },
       estate:{
-        updatedeliverys:http.db({
-          _id:'deliveryModify',
+        getDeliverysList:function (parm) {
+          return get(http.url(baseUri+'team_link_batch/delivery',parm)).then(function (k) {
+            return k.data
+          });
+        },
+        getDeliverysOff:http.db({ //获取本地所有单据
+          _id:'deliveryProcessing',
+          idField:'delivery_id',
+          dataType:1
+        }).bind(),
+
+        addOrUpdateDelivery:http.db({ //修改本地单据
+          _id:'deliveryProcessing',
           idField:'delivery_id',
           dataType:1,
           upload:true
-        }).bind(function(parm){
-          var delivery_id=parm.delivery_id;
-          delete parm.delivery_id;
-          return  put(http.url(baseUri+'deliverys/'+delivery_id),parm);
-        }),
-        getdeliverys:http.db({
-          _id:'deliveryModify',
+        }).bind(),
+        putDelivery:function (delivery_id,params) {
+          return  put(http.url(baseUri+'deliverys/'+delivery_id),params);
+        },
+
+        getDelivery:http.db({ //远程加载单据
+          _id:'deliveryProcessing',
           idField:'delivery_id',
           dataType:1,
           filter:function (item,delivery_id) {
             return item.delivery_id==delivery_id;
           }
-        }).bind(function(delivery_id){
-          return get(http.url(baseUri+'deliverys/'+delivery_id));
+        }).bind(function (delivery_id) {
+          return get(http.url(baseUri+'deliverys/'+delivery_id)).then(function (r) {
+            return {
+              data:r.data.data
+            }
+          });
         }),
+
+
+
+        // .bind(function(delivery_id){
+        //   return get(http.url(baseUri+'deliverys/'+delivery_id));
+        // }),
+
+        // .bind(function(parm){
+        //   var delivery_id=parm.delivery_id;
+        //   delete parm.delivery_id;
+        //   return  put(http.url(baseUri+'deliverys/'+delivery_id),parm);
+        // }),
+        // getdeliverys:http.db({
+        //   _id:'deliveryModify',
+        //   idField:'delivery_id',
+        //   dataType:1,
+        //   filter:function (item,delivery_id) {
+        //     return item.delivery_id==delivery_id;
+        //   }
+        // }).bind(function(delivery_id){
+        //   return get(http.url(baseUri+'deliverys/'+delivery_id));
+        // }),
+
         issues_tree:http.db({
           _id:'issues',
           idField:'type',
@@ -61,39 +99,80 @@
         }).bind(function(parm){
           return get(http.url(baseUri+'issues/tree?type=delivery&enabled='+parm.enabled+'&page_size='+parm.page_size+'&page_number='
             +parm.page_number)).then(function (r) {
-              return {
-                 data:{
-                   type:parm.type,
-                   data:r.data.data
-                 }
+            return {
+              data:{
+                type:parm.type,
+                data:r.data.data
               }
+            }
           });
         }),
+        issues_tree_off:http.db({
+          _id:'issues',
+          idField:'type',
+          dataType:3
+        }).bind(),
+
+        postRepair_tasks:http.db({
+          _id:'tasks',
+          idField:'id',
+          dataType:1,
+          upload:true
+        }),
+
+        deleteRepair_tasks:http.db({
+          _id:'tasks',
+          idField:'id',
+          dataType:1,
+          delete:true
+        }),
+
+        postImg:http.db({
+          _id:'imgs',
+          idField:'id',
+          dataType:1,
+          upload:true
+        }),
+        getImg:http.db({
+          _id:'imgs',
+          idField:'id',
+          dataType:1,
+          filter:function (item,taskid) {
+              return item.taskid==taskid
+          }
+        }),
+        removeImg:http.db({
+          _id:'imgs',
+          idField:'id',
+          dataType:1,
+          filter:function (item,taskid) {
+            return item.taskid==taskid
+          }
+        }),
+
+
+
         getrepair_tasks:function (parm) {
           return get(http.url('/tasks/v1/repair_tasks?page_size='+parm.page_size+'&page_number='+parm.page_number));
         },
+
         insertrepair_tasks:function(parm){
           return post(http.url(baseUri+'repair_tasks'),parm);
         },
+
         getrepair_tasksData:function(task_id){
           return get(http.url(baseUri+'repair_tasks/'+task_id));
         },
         deleterepair_tasks:function(task_id){
           return del(http.url(baseUri+'repair_tasks/{task_id}'+task_id));
         },
-        getdeliveryslist:http.db({
-          _id:'delivery',
-          idField:'delivery_id',
-          dataType:1
-        }).bind(function(parm){
-          return get(http.url(baseUri+'team_link_batch/delivery',parm)).then(function (k) {
-              return k.data
-          });
-        }),
+
+
         insertImg:http.db({
           _id:'delivery_imgs',
-          idField:'recordId',
+          idField:'id',
           dataType:1,
+          fileField: ['url'],
           upload:true
         }).bind(function(parm){
           return post(http.url("/storage/v1/files/base64/picture/upload"),parm);

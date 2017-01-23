@@ -736,7 +736,7 @@
                     }
                   }
                   else {
-                    lodb.saveItems(result.data);
+                     lodb.saveItems(result.data);
                     //db_save(cfg, result.data);
                   }
                   resolve(result);
@@ -968,8 +968,10 @@
             });
           }
         })();
+      }else {
+        globalDb.db = pouchdb(globalDb.id);
       }
-      return globalDb.db || (globalDb.db = pouchdb(globalDb.id));
+      return globalDb.db;
     }
 
     function db_findAll(cfg, filter) {
@@ -1074,7 +1076,9 @@
                 replace_db(result.Rows, doc.rows, idFn);
               }
             }
-            return db.put(doc, cfg).then(resolve, reject);
+            return db.put(doc, cfg).then(resolve, function (err) {
+                console.log(err);
+            });
 
           });
         }

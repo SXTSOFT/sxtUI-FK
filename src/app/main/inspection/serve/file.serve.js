@@ -8,13 +8,14 @@
   'use strict';
 
   angular
-    .module('app.szgc')
+    .module('app.inspection')
     .factory('ys_file', ys_file);
 
   function ys_file($mdDialog, $q,$window,$http) {
      var  file={
        downUniqueFile:downUniqueFile,
-       deleteFile:deleteFile
+       deleteFile:deleteFile,
+       getUrl:getUrl
      }
 
      function deleteFile() {
@@ -26,6 +27,15 @@
          }
        });
      }
+
+     function getUrl(uniqueId,src) {
+       if(window.cordova && window.cordova.file){
+         return window.cordova.file.dataDirectory+'/file/'+uniqueId+'.file'
+       }
+       else
+         return src;
+     }
+
 
      function downUniqueFile(uniqueId,src) {
         return $q(function (resolve,reject) {
