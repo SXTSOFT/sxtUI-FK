@@ -1,7 +1,7 @@
 <md-content layout="column" flex id="none" style="z-index: 0;">
   <div flex inspection-map map-url="vm.mapUrl" ctrl="vm" loaded="vm.loaded"></div>
-  <div style="height: 315px;background-color: rgb(248,248,248)">
-    <sxt-wt-pop flex ng-show="vm.pop" record="record"></sxt-wt-pop>
+  <div style="height: 280px;background-color: rgb(248,248,248)">
+    <sxt-wt-pop flex ng-show="vm.pop" user-id="vm.userId"  marker="vm.current_marker"></sxt-wt-pop>
   </div>
 </md-content>
 

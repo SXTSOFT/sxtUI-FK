@@ -1,257 +1,255 @@
 /**
  * Created by emma on 2016/11/15.
  */
-(function(){
+(function () {
   'use strict';
 
   angular
     .module('app.inspection')
-    .directive('sxtWtPop',sxtWtPop);
+    .directive('sxtWtPop', sxtWtPop);
 
   /**@ngInject*/
-  function sxtWtPop(xhUtils,$mdPanel,$state,api,auth,$q,$mdDialog,utils){
+  function sxtWtPop(xhUtils, $mdPanel, $state, api, auth, $q, $mdDialog, utils,sxt) {
     return {
-      scope:{
-        show:'=',
-        record:"="
+      scope: {
+        show: '=',
+        marker: "=",
+        userId:"="
       },
-      templateUrl:'app/main/inspection/directives/sxt-wt-pop.html',
-      link:link
+      templateUrl: 'app/main/inspection/directives/sxt-wt-pop.html',
+      link: link
     }
 
-    //记录点类型数据(record)
-    // {
-    //   "id":0
-    //   "room_id": 0,
-    //   "issues": 0,
-    //   "contact_name": "string"Q
-    //   "contact_phone": "string",
-    //   "caller_name": "string",
-    //   "caller_phone": "string",
-    //   "reservation_date_begin": "2017-01-19T15:13:43.445Z",
-    //   "reservation_date_end": "2017-01-19T15:13:43.445Z",
-    //   "description": "string",
-    //   "pictures": "string"
-    // }
+    function link(scope, element, attr, ctrl) {
+      scope.photos=[];
 
-
-
-    function link(scope,element,attr,ctrl){
-
-     function getIssues() {
+      //获取所有问题
+      function getIssues() {
         function wrap(source) {
-          if (angular.isArray(source)){
+          if (angular.isArray(source)) {
             return source.filter(function (k) {
-              var t=k.children.filter(function (n) {
-                return n.children.length>0;
+              var t = k.children.filter(function (n) {
+                return n.children.length > 0;
               })
-              k.children=t
-              return t.length>0;
+              k.children = t
+              return t.length > 0;
             })
           }
           return source;
         }
-        return $q(function (resolve,reject) {
+
+        return $q(function (resolve, reject) {
           api.inspection.estate.issues_tree({
-            type:'delivery',
-            parent_id:'',
-            enabled:true,
-            page_size:10000,
-            page_number:1
+            type: 'delivery',
+            parent_id: '',
+            enabled: true,
+            page_size: 10000,
+            page_number: 1
           }).then(function (r) {
-            var options =wrap( r.data.data);
-             resolve(options);
+            var options = wrap(r.data.data);
+            scope.issues = options;
+            resolve(options);
           });
         })
-     }
-
-     function findIssues(issue_id,source) {
-        //issue_id
-       var _issues=[];
-       source.forEach(function (k) {
-          k.children.forEach(function (n) {
-            if (n.children&&n.children.length){
-              n.children.forEach(function (m) {
-                _issues.push(m);
-              });
-            }
-          });
-       });
-       return _issues.find(function (k) {
-          return k.issue_id==issue_id
-       })
-     }
-
-     scope.photos=[];
-     scope.issues={};
-
-     if (scope.record&&scope.record.id){
-       api.inspection.estate.getImgs(scope.record.id).then(function (r) {
-         if (r&&r.data){
-           scope.photos.push(r.data);
-         }
-       }).catch(function () {
-       })
-     }
-
-     getIssues().then(function (source) {
-        scope.source=[source];
-        if (scope.record&&scope.record.issues){
-          scope.issues=findIssues(scope.record.issues,source);
-        }
-      });
-
-      // {
-      //   recordId:""
-      //   content:data.url+"",
-      //     author:scope.username,
-      //   business:{
-      //   app_id:"561ccdcad4c623de9bfd86a1"
-      // }
-      // }
-
-     scope.remove = function ($event,item) {
-       api.inspection.estate.deleteImg(item.recordId).then(function () {
-         scope.photos.splice(item,1);
-       })
-
       }
 
-      scope.addPhoto = function(){
-        if (scope.record&&scope.record.id){
-          xhUtils.photo().then(function(img){
-            var imgEntity={
-              recordId:scope.record.id,
-              business:{
-                app_id:"561ccdcad4c623de9bfd86a1"
-              },
-              author:scope.username
-            }
-            api.inspection.estate.insertImg(imgEntity).then(function () {
-              scope.photos.push({
-                url:img
-              });
+      //根据问题Id找到指定的问题
+      function findIssues(issue_id) {
+        function get(source) {
+          var _issues = [];
+
+          source.forEach(function (k) {
+            k.children.forEach(function (n) {
+              if (n.children && n.children.length) {
+                n.children.forEach(function (m) {
+                  _issues.push(m);
+                });
+              }
+            });
+          });
+          var res = _issues.find(function (k) {
+            return k.issue_id == issue_id
+          });
+          return res
+        }
+
+        return $q(function (resolve, reject) {
+          if (scope.issues) {
+            var res = get(scope.issues);
+            resolve(res);
+          } else {
+            getIssues().then(function (r) {
+              var res = get(r);
+              resolve(res);
+            }).catch(function () {
+              reject();
             })
-          })
-        }
+          }
+        })
       }
 
-      scope.cancel = function(){
-        scope.show = false;
-        scope.question=scope.publicquestion;
-        scope.issues='';
-      }
+      scope.$watch("marker", function () {
+        if (scope.marker && scope.marker.tag) {
+          scope.photos=[];
+          scope.current_iss=null;
 
-      scope.submit = function () {
-        if(scope.photos.length==0){
-          utils.alert('照片不能为空,请先拍照');
-          return;
-        }
-        var question = element.find('.question').text()
-        var description = scope.description
-        var  issues=scope.issues;
-        var  room_id=scope.roomid;
-        var usernamm =scope.username;
-        scope.$emit('submit',{
-          question:question,
-          description: description
-        })
-
-        scope.data= {
-          room_id:room_id,
-          issues:issues,
-          contact_name: usernamm,
-          contact_phone: "",
-          caller_name: usernamm,
-          caller_phone: "",
-          reservation_date_begin: new Date(),
-          reservation_date_end: new Date(),
-          description: description,
-          pictures:''
-        }
-        var arr=[]
-        scope.photos.forEach(function (data) {
-          scope.savaData={
-            content:data.url+"",
-            author:scope.username,
-            business:{
-              app_id:"561ccdcad4c623de9bfd86a1"
-            }
+          var record = scope.marker.tag;
+          if (record.pictures) {
+            var task=[]
+            var imgs = record.pictures.split(",");
+            imgs.forEach(function (m) {
+              task.push(api.inspection.estate.getImg(m));
+            })
+            $q.all(task).then(function (res) {
+              if (angular.isArray(res)){
+                res.forEach(function (n) {
+                    if (n&&n.data){
+                      scope.photos=scope.photos.concat(n.data);
+                    }
+                })
+              }
+            });
           }
-          arr.push(api.inspection.estate.insertImg(scope.savaData));
-        })
-        $q.all(arr).then(function (r) {
-          for(var i=0;i<r.length;i++){
-            scope.data.pictures+=r[i].data.data.url+",";
+          if (record.issues) {
+            findIssues(record.issues).then(function (r) {
+              scope.current_iss = r;
+            });
           }
-          if(scope.data.pictures!='')
-            scope.data.pictures=scope.data.pictures.substring(0,scope.data.pictures.length-1);
-
-          api.inspection.estate.insertrepair_tasks(scope.data).then(function (r) {
-
-          });
+        }
       })
 
-        scope.show = false
+      var markerImgOption={
+          all:function () {
+            var imgs=null;
+            if (scope.marker && scope.marker.tag) {
+              var record = scope.marker.tag;
+              if (record.pictures) {
+                imgs = record.pictures.split(",");
+              }else {
+                imgs=[];
+              }
+            }
+            return imgs;
+          },
+          clear:function () {
+            if (scope.marker && scope.marker.tag) {
+              var record = scope.marker.tag;
+              record.pictures="";
+              api.inspection.estate.postRepair_tasks_off(record.pictures)
+            }
+          },
+          add:function (id) {
+            var imgs=this.all();
+            if (imgs&&id){
+               imgs.push(id);
+              scope.marker.tag.pictures=imgs.join(",")
+              api.inspection.estate.postRepair_tasks_off(scope.marker.tag)
+            }
+          },
+          remove:function (id) {
+            var imgs=this.all();
+            if (imgs&&id){
+              var index=imgs.indexOf(id);
+              if (index>-1){
+                imgs.splice(index,1);
+              }
+              scope.marker.tag.pictures=imgs.join(",");
+              api.inspection.estate.postRepair_tasks_off(scope.marker.tag)
+            }
+          }
+      }
+
+      scope.remove = function ($event, item) {
+        api.inspection.estate.removeImg(item.id).then(function () {
+          var  index=scope.photos.indexOf(item);
+          scope.photos.splice(index, 1);
+          markerImgOption.remove(item.id);
+        })
+      }
+
+      scope.addPhoto = function () {
+        if (scope.marker&&scope.marker.tag){
+          var record = scope.marker.tag;
+          xhUtils.photo().then(function (base64) {
+            var img={
+              id:sxt.uuid(),
+              markid:scope.marker.tag.id,
+              business: {
+                app_id: "561ccdcad4c623de9bfd86a1"
+              },
+              author: scope.userId,
+              url:base64
+            }
+            api.inspection.estate.postImg(img).then(function () {
+              scope.photos.push(img);
+              markerImgOption.add(img.id);
+            })
+          });
+        }
       }
 
       //当前选择的问题
-      scope.chooseQues = function(){
-          var position = $mdPanel.newPanelPosition()
-            .relativeTo('md-toolbar')
-            .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.BELOW)
-            .bottom(0)
-            .right(0)
+      scope.chooseQues = function () {
+        var position = $mdPanel.newPanelPosition()
+          .relativeTo('md-toolbar')
+          .addPanelPosition($mdPanel.xPosition.ALIGN_START, $mdPanel.yPosition.BELOW)
+          .bottom(0)
+          .right(0)
 
-          $mdPanel.open({
-            controller: ['$scope','mdPanelRef','api','$timeout',function ($scope,mdPanelRef,api,$timeout) {
-              if (angular.isArray(scope.source)){
-                $scope.source=scope.source;
-              }else {
-                  getIssues().then(function (k) {
-                    $scope.source=scope.source=[k];
-                  })
-              }
-              $scope.select = function(item,index){
-                var ind=0;
-                $scope.source.forEach(function (k) {
-                  if(ind>=index){
-                    k.forEach(function (n) {
-                      n.check=false;
-                    });
-                  }
-                  ind++;
-                });
-                for (var i=$scope.source.length-1;i>=0;i--){
-                  if (i>index){
-                    $scope.source.splice(i,1)
-                  }
+        $mdPanel.open({
+          controller: ['$scope', 'mdPanelRef', 'api', '$timeout', function ($scope, mdPanelRef, api, $timeout) {
+            if (angular.isArray(scope.issues)) {
+              $scope.source = [scope.issues];
+            } else {
+              getIssues().then(function (k) {
+                scope.issues = k
+                $scope.source = [k];
+              })
+            }
+            $scope.select = function (item, index) {
+              var ind = 0;
+              $scope.source.forEach(function (k) {
+                if (ind >= index) {
+                  k.forEach(function (n) {
+                    n.check = false;
+                  });
                 }
-                item.check=true;
-                $scope.source[index+1]=item.children;
+                ind++;
+              });
+              for (var i = $scope.source.length - 1; i >= 0; i--) {
+                if (i > index) {
+                  $scope.source.splice(i, 1)
+                }
               }
-              $scope.check=function (item) {
-                item.check=true;
-                scope.issues=item;
-                mdPanelRef.close();
-                mdPanelRef.destroy();
+              item.check = true;
+              $scope.source[index + 1] = item.children;
+            }
+            $scope.check = function (item) {
+              item.check = true;
+              scope.current_iss = item;
+              if (scope.marker && scope.marker.tag) {
+                scope.marker.tag.issues = item.issue_id
+                api.inspection.estate.postRepair_tasks_off(scope.marker.tag);
               }
-            }],
-            templateUrl:'app/main/inspection/component/inspection-cjwt.html',
-            hasBackdrop: false,
-            position: position,
-            trapFocus: true,
-            panelClass: 'is-cjwt',
-            zIndex: 5000,
-            controllerAs:'vm',
-            locals:{
-              options:scope.options,
-            },
-            clickOutsideToClose: true,
-            escapeToClose: true,
-            focusOnOpen: true,
-            attachTo:angular.element('body')
-          });
+              mdPanelRef.close();
+              mdPanelRef.destroy();
+            }
+          }],
+          templateUrl: 'app/main/inspection/component/inspection-cjwt.html',
+          hasBackdrop: false,
+          position: position,
+          trapFocus: true,
+          panelClass: 'is-cjwt',
+          zIndex: 5000,
+          controllerAs: 'vm',
+          locals: {
+            options: scope.options,
+          },
+          clickOutsideToClose: true,
+          escapeToClose: true,
+          focusOnOpen: true,
+          attachTo: angular.element('body')
+        });
       }
     }
   }

@@ -16,7 +16,7 @@
   function inspectionDesktopController($state,utils,$scope,api,$q,$mdDialog,$window,$stateParams,ys_file,$timeout,auth,inspectionServe){
     var vm = this;
     vm.data={};//数据源
-    vm.selected=0;//tab 初始选项
+    vm.selected=$stateParams.index? $stateParams.index:0;//tab 初始选项
 
     auth.getUser().then(function () {
     });
@@ -186,7 +186,6 @@
           page_size:50,
           page_number:1
         }).then(function (r) {
-          vm.show=true;
           vm.isEmpty=angular.isArray(r.data)&&r.data.length?false:true;
           return r.data;
         }).then(setSource).catch(setSource_offline)
@@ -194,6 +193,7 @@
 
 
       function setSource(souce) {
+        vm.show=true;
         vm.data.unprocessed = [];
         vm.data.inspection_completed = [];
         vm.data.processing = [];
@@ -212,19 +212,13 @@
         });
         var task = [
           function () {
-           return  api.inspection.estate.issues_tree_off().then(function (r) {
-              if (!r || !r.data||!r.data.length) {
-                task.push(function () {
-                  return api.inspection.estate.issues_tree({
-                    type:'delivery',
-                    parent_id:'',
-                    enabled:true,
-                    page_size:10000,
-                    page_number:1
-                  });
-                })
-              }
-            })
+            return api.inspection.estate.issues_tree({
+              type:'delivery',
+              parent_id:'',
+              enabled:true,
+              page_size:10000,
+              page_number:1
+            });
           }
         ];
         return api.inspection.estate.getDeliverysOff().then(function (r) {
@@ -252,11 +246,12 @@
         });
       }
       function setSource_offline() {
+        vm.show=true;
         vm.data.unprocessed = vm.data.unprocessed ? vm.data.unprocessed : [];
         vm.data.inspection_completed = vm.data.inspection_completed ? vm.data.inspection_completed : [];
         vm.data.processing = vm.data.processing ? vm.data.processing : [];
         api.inspection.estate.getDeliverysOff().then(function (r) {
-          vm.data.processing = vm.data.processing.concat(r);
+          vm.data.processing = vm.data.processing.concat(r.data);
         });
       }
       vm.load();

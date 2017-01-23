@@ -20,7 +20,7 @@
         }
       })
       .state('app.inspection.desktop', {
-        url:'/inspection/{status}',
+        url:'/inspection/{status}/{index}',
         title:'',
         shell:{
           yfbar:true,

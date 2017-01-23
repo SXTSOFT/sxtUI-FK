@@ -95,7 +95,10 @@
         issues_tree:http.db({
           _id:'issues',
           idField:'type',
-          dataType:3
+          dataType:3,
+          filter:function (arg,item) {
+            return item.type==arg.type
+          }
         }).bind(function(parm){
           return get(http.url(baseUri+'issues/tree?type=delivery&enabled='+parm.enabled+'&page_size='+parm.page_size+'&page_number='
             +parm.page_number)).then(function (r) {
@@ -107,48 +110,54 @@
             }
           });
         }),
-        issues_tree_off:http.db({
-          _id:'issues',
-          idField:'type',
-          dataType:3
+        getRepair_tasks_off:http.db({
+          _id:'tasks',
+          idField:'id',
+          dataType:1
         }).bind(),
 
-        postRepair_tasks:http.db({
+        postRepair_tasks_off:http.db({
           _id:'tasks',
           idField:'id',
           dataType:1,
           upload:true
-        }),
+        }).bind(),
 
-        deleteRepair_tasks:http.db({
+        deleteRepair_tasks_off:http.db({
           _id:'tasks',
           idField:'id',
           dataType:1,
           delete:true
-        }),
+        }).bind(),
 
         postImg:http.db({
           _id:'imgs',
           idField:'id',
           dataType:1,
+          // fileField: ['url'],
           upload:true
-        }),
+        }).bind(),
+
         getImg:http.db({
           _id:'imgs',
           idField:'id',
+          // fileField: ['url'],
           dataType:1,
-          filter:function (item,taskid) {
-              return item.taskid==taskid
+          filter:function (item,id) {
+              return item.id==id
           }
-        }),
+        }).bind(),
+
         removeImg:http.db({
           _id:'imgs',
           idField:'id',
+          // fileField: ['url'],
           dataType:1,
-          filter:function (item,taskid) {
-            return item.taskid==taskid
+          delete:true,
+          filter:function (item,id) {
+            return item.id==id
           }
-        }),
+        }).bind(),
 
 
 

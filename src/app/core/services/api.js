@@ -555,7 +555,9 @@
                 return userOffline(caller, lodb, args, cb, fn);
               }
               else {
-                return userNetwork(caller, lodb, args, cb, fn);
+                return userNetwork(caller, lodb, args, cb, fn).catch(function () {
+                  return userOffline(caller, lodb, args, cb, fn);
+                });
               }
             }
           }
@@ -853,7 +855,7 @@
     SingleDB.prototype.get = function (id) {
       var self = this;
       return self.findAll(function (item) {
-        return  (id && self.idFn(item) == id) || (self.cfg.filter && self.cfg.filter(id)) ||self.cfg.single===true;
+        return  (id && self.idFn(item) == id) || (self.cfg.filter && self.cfg.filter(id,item)) ||self.cfg.single===true;
       }).then(function (r) {
         if(self.cfg.fileField && r.rows && r.rows[0]){
           return get_globalDb().get(r.rows[0]._id)
