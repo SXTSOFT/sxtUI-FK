@@ -22,7 +22,7 @@
     vm.current_marker;
     //获取任务详情数据
     vm.load = function () {
-      return api.inspection.estate.getDelivery($stateParams.delivery_id).then(function (r) {
+      return api.inspection.estate.getDelivery_off($stateParams.delivery_id).then(function (r) {
         if (r && r.data) {
           vm.delivery = angular.isArray(r.data)&&r.data.length?r.data[0]:r.data;
           if (vm.delivery.room && vm.delivery.room.layout) {
@@ -108,14 +108,28 @@
 
     $scope.$on('$destroy', $rootScope.$on('goBack', function (s, e) {
       e.cancel = true;
-      $state.go('app.inspection.desktop', {index: 1});
+      api.inspection.estate.getDelivery_off($stateParams.delivery_id).then(function (r) {
+        if (r && r.data) {
+          var delivery  = angular.isArray(r.data)&&r.data.length?r.data[0]:r.data;
+          if (delivery){
+            if ((delivery.water_degree!=0&&!delivery.water_degree)||
+              (delivery.electricity_degree!=0&&!delivery.electricity_degree)){
+              utils.confirm("您还没有完成水电表抄送,是否现在就去抄送?").then(function () {
+                $state.go('app.meterreading.page', {delivery_id: $stateParams.delivery_id,userId:vm.userId})
+              });
+              return;
+            }
+          }
+        }
+       $state.go('app.inspection.desktop', {index: 1});
+      })
     }));
 
     //拦截头部按钮事件
     utils.onCmd($scope, ['cjwt', 'csb', 'prev', "goBack"], function (cmd, e) {
       switch (cmd) {
         case 'csb':
-          $state.go('app.meterreading.page', {delivery_id: $stateParams.delivery_id})
+          $state.go('app.meterreading.page', {delivery_id: $stateParams.delivery_id,userId:vm.userId})
           break;
         case 'cjwt':
           $state.go('app.inspection.cjwt', {delivery_id: $stateParams.delivery_id});

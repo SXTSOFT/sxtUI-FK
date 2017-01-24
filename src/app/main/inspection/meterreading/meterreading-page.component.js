@@ -15,30 +15,41 @@
   /**@ngInject*/
   function meterreadingPageController($scope,utils,$state,auth,$stateParams,api){
     var vm = this;
-    vm.data= {
-      water_degree: '',
-      electricity_degree:'',
-      check_user:'',
-      check_table_at:new Date(),
-      delivery_id:$stateParams.delivery_id
-    }
+    api.inspection.estate.getDelivery_off($stateParams.delivery_id).then(function (r) {
+      if (r && r.data) {
+        vm.delivery  = angular.isArray(r.data)&&r.data.length?r.data[0]:r.data;
+        vm.delivery.check_table_at=new  Date();
+        vm.delivery.check_user=$stateParams.userId
+      }
+    })
 
-    auth.getUser().then(function (r) {
-      vm.data.check_user=r.Username;
-      vm.data.check_table_at=new Date();
-      api.inspection.estate.getdeliverys($stateParams.delivery_id).then(function (r) {
-        vm.data.water_degree=r.data.data.water_degree;
-        vm.data.electricity_degree=r.data.data.electricity_degree;
-      }).catch(function () {
-
-      })
-    });
+    // vm.data= {
+    //   water_degree: '',
+    //   electricity_degree:'',
+    //   check_user:'',
+    //   check_table_at:new Date(),
+    //   delivery_id:$stateParams.delivery_id
+    // }
+    //
+    // auth.getUser().then(function (r) {
+    //   vm.data.check_user=r.Username;
+    //   vm.data.check_table_at=new Date();
+    //   api.inspection.estate.getdeliverys($stateParams.delivery_id).then(function (r) {
+    //     vm.data.water_degree=r.data.data.water_degree;
+    //     vm.data.electricity_degree=r.data.data.electricity_degree;
+    //   }).catch(function () {
+    //
+    //   })
+    // });
 
     utils.onCmd($scope,['save'],function(cmd,e){
-      api.inspection.estate.updatedeliverys(vm.data).then(function (r) {
-        $state.go("app.inspection.desktop",{status:'processing'})
+      if (!vm.delivery.water_degree||!vm.delivery.electricity_degree){
+        utils.alert("水表与电表的值不能为空");
+        return
+      }
+      api.inspection.estate.addOrUpdateDelivery(vm.delivery).then(function (r) {
+        $state.go("app.inspection.desktop",{index:1})
       })
-
     })
   }
 

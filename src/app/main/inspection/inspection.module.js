@@ -102,7 +102,7 @@
         }
       })
       .state('app.meterreading.page', {
-        url:'/meterreading/{delivery_id}',
+        url:'/meterreading/{delivery_id}/{userId}',
         title:'抄水电表',
         noBack:false,
         shell:{

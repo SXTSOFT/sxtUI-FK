@@ -51,6 +51,7 @@
           dataType:1,
           upload:true
         }).bind(),
+
         putDelivery:function (delivery_id,params) {
           return  put(http.url(baseUri+'deliverys/'+delivery_id),params);
         },
@@ -69,8 +70,14 @@
             }
           });
         }),
-
-
+        getDelivery_off:http.db({ //远程加载单据
+          _id:'deliveryProcessing',
+          idField:'delivery_id',
+          dataType:1,
+          filter:function (item,delivery_id) {
+            return item.delivery_id==delivery_id;
+          }
+        }).bind(),
 
         // .bind(function(delivery_id){
         //   return get(http.url(baseUri+'deliverys/'+delivery_id));

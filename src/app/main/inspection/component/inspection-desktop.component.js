@@ -24,6 +24,7 @@
 
     auth.getUser().then(function (r) {
       vm.loginname=r.Username
+      console.log(r);
       vm.upload=function () {
 
       }
@@ -92,22 +93,6 @@
         $state.go('app.inspection.check',{delivery_id:item.delivery_id,userId:"11100000000"})
       }
 
-
-      //未开始状态 点击会修改状态为进行中
-      // vm.check = function(item){
-      //   if(item.status=='processing'||item.status=='unprocessed'){
-      //     vm.parmData={
-      //       status: "",
-      //       delivery_id:item.delivery_id
-      //     }
-      //     if(item.status=='processing'){
-      //       vm.parmData.status="inspection_completed";
-      //     }else if (item.status=='unprocessed'){
-      //       vm.download(item);
-      //       vm.parmData.status="processing";
-      //     }
-      //   }
-      // }
 
       function taskRun(tasks,sucess,fail,progressTitle) {
         var progress={};
