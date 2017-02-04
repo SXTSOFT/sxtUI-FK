@@ -342,3 +342,64 @@
 .nglast:last-of-type{
   display: none;
 }
+
+.color_red{
+  color: red !important;
+}
+
+.shine {
+  animation: opacity-change 1s ease-in-out infinite;
+  -webkit-animation: opacity-change 1s ease-in-out infinite;
+  -moz-animation: opacity-change 1s ease-in-out infinite;
+  -o-animation: opacity-change 1s ease-in-out infinite;
+}
+.shine2 {
+  animation: opacity-change 1s ease-in-out infinite;
+  -webkit-animation: opacity-change 1s ease-in-out infinite;
+  -moz-animation: opacity-change 1s ease-in-out infinite;
+  -o-animation: opacity-change 1s ease-in-out infinite;
+}
+@keyframes opacity-change {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes opacity-change {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-moz-keyframes opacity-change {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-o-keyframes opacity-change {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

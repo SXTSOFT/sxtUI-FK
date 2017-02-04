@@ -1,6 +1,7 @@
 <md-content layout="column" flex id="none" style="z-index: 0;">
   <div flex inspection-map map-url="vm.mapUrl" ctrl="vm" loaded="vm.loaded"></div>
   <div style="height: 280px;background-color: rgb(248,248,248)">
+    <md-divider></md-divider>
     <sxt-wt-pop flex ng-show="vm.pop" user-id="vm.userId"  marker="vm.current_marker"></sxt-wt-pop>
   </div>
 </md-content>
@@ -9,7 +10,7 @@
 <div style="display: none">
   <span class="map-toolpop" map-ref>
     <button style="height: 44px">
-        dom点击事件
+         <md-icon md-font-icon="icon-minus-circle" style="font-size: 32px;" class="remove"></md-icon>
     </button>
   </span>
 </div>

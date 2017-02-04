@@ -26,6 +26,11 @@
               e.stopPropagation();
             }
             scope.edit = !scope.edit;
+            if (scope.edit){
+              $("md-icon",el).addClass("color_red");
+            }else {
+              $("md-icon",el).removeClass("color_red");
+            }
           });
           var c = L.control.elControl({
             position: 'topright',
@@ -57,9 +62,13 @@
         function markerShape(shape) {
           switch (shape) {
             case "loaded":
-              return $("<div style='background: green;height: 24px;width:24px;border-radius: 50%;text-align: center;line-height: 24px'>" + scope.ctrl.markers.length + "</div>")[0];
+              return $("<div  style='background: green;height: 24px;width:24px;border-radius: 50%;text-align: center;line-height: 24px;position: relative'>"
+                + scope.ctrl.markers.length +
+              "</div>")[0];
             default:
-              return $("<div style='background: red;height: 24px;width: 24px;border-radius: 50%;text-align: center;line-height: 24px'>" + scope.ctrl.markers.length + "</div>")[0];
+              return $("<div style='background: red;height: 24px;width: 24px;border-radius: 50%;text-align: center;line-height: 24px'>"
+                + scope.ctrl.markers.length +
+                "</div>")[0];
           }
         }
 
@@ -109,6 +118,7 @@
                 if (scope.edit) { //添加mark
                   cancelEdit().then(function () {
                     addMarker(marker);
+                    $(marker.el).addClass('shine shine2');
                   });
                 } else {
                   cancelEdit();
@@ -127,9 +137,9 @@
           switch (operate.cmd) {
             case 'click':
               scope.ctrl.markers.forEach(function (mk) {
-                $(mk.el).removeClass('current');
+                $(mk.el).removeClass('shine shine2');
               });
-              $(marker.el).addClass('current');
+              $(marker.el).addClass('shine shine2');
               click_event(operate);
               break;
           }
