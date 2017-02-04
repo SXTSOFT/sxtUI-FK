@@ -57,9 +57,9 @@
         function markerShape(shape) {
           switch (shape) {
             case "loaded":
-              return $("<div style='background: green;height: 32px;width: 32px'>" + scope.ctrl.markers.length + "</div>")[0];
+              return $("<div style='background: green;height: 24px;width:24px;border-radius: 50%;text-align: center;line-height: 24px'>" + scope.ctrl.markers.length + "</div>")[0];
             default:
-              return $("<div style='background: red;height: 32px;width: 32px'>" + scope.ctrl.markers.length + "</div>")[0];
+              return $("<div style='background: red;height: 24px;width: 24px;border-radius: 50%;text-align: center;line-height: 24px'>" + scope.ctrl.markers.length + "</div>")[0];
           }
         }
 
@@ -69,7 +69,7 @@
           var mk = L.marker(marker.latlng, {
             icon: new L.HtmlIcon({
               className: 'rc-marker',
-              iconSize: marker.iconSize || [30, 30],
+              iconSize: marker.iconSize || [24, 24],
               iconAnchor: marker.iconAnchor || [15, 15],
               el: marker.el
             })
