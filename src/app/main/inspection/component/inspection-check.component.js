@@ -28,6 +28,10 @@
           if (vm.delivery.room && vm.delivery.room.layout) {
             var url = ys_file.getUrl(vm.delivery.room.room_id, vm.delivery.room.layout.drawing_url);
             vm.mapUrl = url;
+            $timeout(function () {
+              $rootScope.title=vm.delivery.room.full_name;
+            })
+
           }
           vm.loaded = true;
         }
@@ -111,7 +115,7 @@
       api.inspection.estate.getDelivery_off($stateParams.delivery_id).then(function (r) {
         if (r && r.data) {
           var delivery  = angular.isArray(r.data)&&r.data.length?r.data[0]:r.data;
-          if (delivery){
+          if (delivery&&vm.mapUrl){
             if ((delivery.water_degree!=0&&!delivery.water_degree)||
               (delivery.electricity_degree!=0&&!delivery.electricity_degree)){
               utils.confirm("您还没有完成水电表抄送,是否现在就去抄送,选择否将直接返回").then(function () {

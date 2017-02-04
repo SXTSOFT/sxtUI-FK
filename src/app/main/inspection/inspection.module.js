@@ -116,7 +116,7 @@
         title:'',
         hideFootbar:true,
         shell:{
-          yfbar:true,
+          yfbar:false,
           prev:true,
           prevIcon:true,
           csb:true,
