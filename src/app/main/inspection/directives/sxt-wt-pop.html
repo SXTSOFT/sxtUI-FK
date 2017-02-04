@@ -17,7 +17,7 @@
       <div ng-repeat="img in photos" class="photos">
         <md-icon md-font-icon="icon-minus-circle" ng-click="remove($event,img)" style="font-size: 16px; color: #ff0000;" class="remove"></md-icon>
         <span sxt-images="vm.CertificateImgs" sxt-image-view="photos" is-container = "true" >
-          <img ng-src="{{img.url}}"/>
+          <img ng-src="{{img.content}}"/>
         </span>
       </div>
     </div>
@@ -28,6 +28,6 @@
   <md-divider></md-divider>
   <label flex class="ph-16 pt-10">补充描述</label>
   <div layout="row" class="ph-16 pv-10">
-    <textarea  style="width: 100%;padding:5px;border:1px solid #dedede;height: 100px;" placeholder="请输入补充描述" ng-model="description"></textarea>
+    <textarea  style="width: 100%;padding:5px;border:1px solid #dedede;height: 100px;" placeholder="请输入补充描述" ng-model="marker.tag.description"></textarea>
   </div>
 </div>

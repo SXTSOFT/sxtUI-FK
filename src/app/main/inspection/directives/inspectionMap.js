@@ -35,7 +35,8 @@
         }
 
         function InitMarker(layer) {
-          api.inspection.estate.getRepair_tasks_off().then(function (r) {
+          var roomid=scope.ctrl.delivery.room.room_id;
+          api.inspection.estate.getRepair_tasks_off(roomid).then(function (r) {
             if (r && r.data) {
               var marker, shape;
               r.data.forEach(function (k) {

@@ -9,7 +9,7 @@
     .directive('sxtWtPop', sxtWtPop);
 
   /**@ngInject*/
-  function sxtWtPop(xhUtils, $mdPanel, $state, api, auth, $q, $mdDialog, utils,sxt) {
+  function sxtWtPop(xhUtils, $mdPanel, $state, api, auth, $q, $mdDialog, utils,sxt,inspectionServe) {
     return {
       scope: {
         show: '=',
@@ -92,8 +92,8 @@
         if (scope.marker && scope.marker.tag) {
           scope.photos=[];
           scope.current_iss=null;
-
           var record = scope.marker.tag;
+          scope.description=record.description;
           if (record.pictures) {
             var task=[]
             var imgs = record.pictures.split(",");
@@ -118,52 +118,13 @@
         }
       })
 
-      var markerImgOption={
-          all:function () {
-            var imgs=null;
-            if (scope.marker && scope.marker.tag) {
-              var record = scope.marker.tag;
-              if (record.pictures) {
-                imgs = record.pictures.split(",");
-              }else {
-                imgs=[];
-              }
-            }
-            return imgs;
-          },
-          clear:function () {
-            if (scope.marker && scope.marker.tag) {
-              var record = scope.marker.tag;
-              record.pictures="";
-              api.inspection.estate.postRepair_tasks_off(record.pictures)
-            }
-          },
-          add:function (id) {
-            var imgs=this.all();
-            if (imgs&&id){
-               imgs.push(id);
-              scope.marker.tag.pictures=imgs.join(",")
-              api.inspection.estate.postRepair_tasks_off(scope.marker.tag)
-            }
-          },
-          remove:function (id) {
-            var imgs=this.all();
-            if (imgs&&id){
-              var index=imgs.indexOf(id);
-              if (index>-1){
-                imgs.splice(index,1);
-              }
-              scope.marker.tag.pictures=imgs.join(",");
-              api.inspection.estate.postRepair_tasks_off(scope.marker.tag)
-            }
-          }
-      }
+      var markerImgOption= inspectionServe.markerImgOption
 
       scope.remove = function ($event, item) {
         api.inspection.estate.removeImg(item.id).then(function () {
           var  index=scope.photos.indexOf(item);
           scope.photos.splice(index, 1);
-          markerImgOption.remove(item.id);
+          markerImgOption.remove(item.id,scope.marker);
         })
       }
 
@@ -178,11 +139,11 @@
                 app_id: "561ccdcad4c623de9bfd86a1"
               },
               author: scope.userId,
-              url:base64
+              content:base64
             }
             api.inspection.estate.postImg(img).then(function () {
               scope.photos.push(img);
-              markerImgOption.add(img.id);
+              markerImgOption.add(img.id,scope.marker);
             })
           });
         }

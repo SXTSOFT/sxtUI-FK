@@ -78,27 +78,6 @@
             return item.delivery_id==delivery_id;
           }
         }).bind(),
-
-        // .bind(function(delivery_id){
-        //   return get(http.url(baseUri+'deliverys/'+delivery_id));
-        // }),
-
-        // .bind(function(parm){
-        //   var delivery_id=parm.delivery_id;
-        //   delete parm.delivery_id;
-        //   return  put(http.url(baseUri+'deliverys/'+delivery_id),parm);
-        // }),
-        // getdeliverys:http.db({
-        //   _id:'deliveryModify',
-        //   idField:'delivery_id',
-        //   dataType:1,
-        //   filter:function (item,delivery_id) {
-        //     return item.delivery_id==delivery_id;
-        //   }
-        // }).bind(function(delivery_id){
-        //   return get(http.url(baseUri+'deliverys/'+delivery_id));
-        // }),
-
         issues_tree:http.db({
           _id:'issues',
           idField:'type',
@@ -120,7 +99,10 @@
         getRepair_tasks_off:http.db({
           _id:'tasks',
           idField:'id',
-          dataType:1
+          dataType:1,
+          filter:function (item,roomid) {
+            return item.room_id==roomid;
+          }
         }).bind(),
 
         postRepair_tasks_off:http.db({
@@ -166,8 +148,6 @@
           }
         }).bind(),
 
-
-
         getrepair_tasks:function (parm) {
           return get(http.url('/tasks/v1/repair_tasks?page_size='+parm.page_size+'&page_number='+parm.page_number));
         },
@@ -175,7 +155,6 @@
         insertrepair_tasks:function(parm){
           return post(http.url(baseUri+'repair_tasks'),parm);
         },
-
         getrepair_tasksData:function(task_id){
           return get(http.url(baseUri+'repair_tasks/'+task_id));
         },
@@ -184,29 +163,9 @@
         },
 
 
-        insertImg:http.db({
-          _id:'delivery_imgs',
-          idField:'id',
-          dataType:1,
-          fileField: ['url'],
-          upload:true
-        }).bind(function(parm){
+        insertImg:function (parm) {
           return post(http.url("/storage/v1/files/base64/picture/upload"),parm);
-        }),
-        getImgs:http.db({
-          _id:'delivery_imgs',
-          idField:'recordId',
-          dataType:1,
-          filter:function (item,recordId) {
-            item.recordId==recordId;
-          }
-        }).bind(),
-        deleteImg:http.db({
-          _id:'delivery_imgs',
-          idField:'recordId',
-          dataType:1,
-          delete:true
-        }).bind()
+        }
       }
     })
 

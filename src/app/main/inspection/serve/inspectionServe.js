@@ -39,6 +39,52 @@
             })
           })
           return task;
+        },
+        markerImgOption:{
+          all:function (marker) {
+            var imgs=[];
+            if (marker && marker.tag) {
+              var record =marker.tag;
+              if (record.pictures) {
+                imgs = record.pictures.split(",");
+              }else {
+                imgs=[];
+              }
+            }
+            return imgs;
+          },
+          clear:function (marker,isUpload) {
+            if (marker && marker.tag) {
+              var record = scope.marker.tag;
+              record.pictures="";
+              if (!isUpload){
+                api.inspection.estate.postRepair_tasks_off(record.pictures)
+              }
+            }
+          },
+          add:function (id,marker,isUpload) {
+            var imgs=this.all(marker);
+            if (imgs&&id){
+              imgs.push(id);
+              marker.tag.pictures=imgs.join(",")
+              if (!isUpload){
+                api.inspection.estate.postRepair_tasks_off(marker.tag)
+              }
+            }
+          },
+          remove:function (id,marker,isUpload) {
+            var imgs=this.all(marker);
+            if (imgs&&id){
+              var index=imgs.indexOf(id);
+              if (index>-1){
+                imgs.splice(index,1);
+              }
+              marker.tag.pictures=imgs.join(",");
+              if (!isUpload){
+                api.inspection.estate.postRepair_tasks_off(marker.tag)
+              }
+            }
+          }
         }
     }
     return serve;
