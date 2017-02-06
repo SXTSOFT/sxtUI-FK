@@ -14,7 +14,7 @@
   /** @ngInject */
   function sfWeekRectifyController($state, $rootScope, $scope, $mdDialog, remote, $timeout, $q, utils, xhUtils, api) {
     var vm = this;
-    $rootScope.title = $state.params.Role == 'zb' ? '整改' : '复验';
+    $rootScope.title = $state.params.Role == 'zb' ? '整改' : '复查';
     vm.role = $state.params.Role;
     vm.InspectionID = $state.params.InspectionID;
 

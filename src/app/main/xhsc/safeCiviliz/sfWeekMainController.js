@@ -85,6 +85,7 @@
     xhscService.getProfile().then(function (profile) {
       vm.role = profile.role;
       vm.OUType = profile.ouType;
+      load();
     });
     var globalTask = [
       function () {
@@ -549,7 +550,7 @@
     }
 
     api.setNetwork(0).then(function () {
-      load();
+
     })
 
     vm.setModule = function (val) {
