@@ -23,6 +23,7 @@
           vm.isOver = true;
           return;
         }
+        var arr=[];
         result.forEach(function (m) {
           m.AssessmentID = 'scsl' + m.RegionID + '_' + vm.role;
           m.Children.forEach(function (n) {
@@ -35,15 +36,28 @@
             if (f) {
               n.isComplete = true;
             }
-            xcpk.addOrUpdate({
-              _id: m.RegionID,
-              data: m
-            }).then(function () {
-              vm.isOver = true;
-              m.stretch=true;
-              vm.offlines.push(m);
-            });
           });
+          arr.push(xcpk.addOrUpdate({
+            _id: m.RegionID,
+            data: m
+          }).then(function () {
+            vm.isOver = true;
+            m.stretch=true;
+            return m;
+          }));
+        });
+        $q.all(arr).then(function (res) {
+          res.forEach(function (m) {
+            vm.offlines.push(m);
+          })
+          // xcpk.addOrUpdate({
+          //   _id: m.RegionID,
+          //   data: m
+          // }).then(function () {
+          //   vm.isOver = true;
+          //   m.stretch=true;
+          //
+          // });
         });
       }).catch(function () { //在没有网络的时候
         xcpk.findAll().then(function (s) {

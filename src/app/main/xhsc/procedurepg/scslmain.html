@@ -8,7 +8,7 @@
         <div ng-show="vm.isOver" layout="column">
           <md-subheader ng-if="vm.onlines.length"><span style="margin-left: -18px">实测列表</span></md-subheader>
           <span class="border1px"></span>
-          <div ng-repeat="item in vm.offlines"  ng-click="vm.stretch(item)"  layout="column" style="position: relative;margin:0px 3%">
+          <div ng-repeat="item in vm.offlines track by item.RegionID"  ng-click="vm.stretch(item)"  layout="column" style="position: relative;margin:0px 3%">
             <div layout="row" style="position: relative">
               <p style="font-size:14px;">
                 {{item.RegionName}}
@@ -18,7 +18,7 @@
               <span ng-if="item.stretch" class="border1px bottom1px"></span>
             </div>
             <md-list ng-if="item.stretch&&item.Children&&item.Children.length" style="padding:0px;margin: 0px;" >
-              <md-list-item ng-click="vm.click(k,$event)" ng-repeat="k in item.Children"  layout="row">
+              <md-list-item ng-click="vm.click(k,$event)" ng-repeat="k in item.Children track by k.RegionID"  layout="row">
                 <p style="font-size:12px;padding-left:1%">
                   {{k.RegionName}}
                 </p>
