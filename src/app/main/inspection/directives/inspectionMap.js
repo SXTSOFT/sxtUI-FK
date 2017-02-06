@@ -27,9 +27,12 @@
             }
             scope.edit = !scope.edit;
             if (scope.edit){
-              $("md-icon",el).addClass("color_red");
+
+              $("#elR",el).css("display","block");
+              $("#elW",el).css("display","none");
             }else {
-              $("md-icon",el).removeClass("color_red");
+              $("#elR",el).css("display","none");
+              $("#elW",el).css("display","block");
             }
           });
           var c = L.control.elControl({
