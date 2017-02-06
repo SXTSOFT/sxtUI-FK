@@ -26,7 +26,9 @@
       if(img != null)
         return sxt.app.api + img.substring(1);
     };
-
+    vm.goyf=function () {
+      $state.go("app.inspection.desktop");
+    }
     $scope.getNetwork = function () {
       return api.getNetwork();
     };

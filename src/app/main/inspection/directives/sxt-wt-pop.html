@@ -16,7 +16,7 @@
       <div ng-repeat="img in photos" class="photos">
         <md-icon md-font-icon="icon-minus-circle" ng-click="remove($event,img)" style="font-size: 16px; color: #ff0000;" class="remove"></md-icon>
         <span sxt-images="vm.CertificateImgs" sxt-image-view="photos" is-container = "true" >
-          <img ng-src="{{img.content}}"/>
+          <img ng-src="{{img.content}}" style="height: 48px"/>
         </span>
       </div>
     </div>

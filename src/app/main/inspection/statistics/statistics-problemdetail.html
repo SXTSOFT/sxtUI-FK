@@ -65,16 +65,15 @@
         <!--</md-list-item>-->
       </md-list>
     </div>
-    <div class="ml-20 mv-10">补充描述</div>
-    <div style="border-top:1px solid #dedede;border-bottom: 1px solid #dedede;background: #fff;color: #888888"  >
-      <p class="pl-10">{{vm.data.description}}</p>
-      <!--<textarea style="height:60px;line-height: 20px;resize:none;width:100%;padding:10px;" ng-model="vm.data.complementaryDescription" >问题补充描述</textarea>-->
-    </div>
     <div class="ml-20 mv-10">照片</div>
     <div class="img-list ph-5 pv-10 white-bg"   sxt-image-view="vm.data.imgs"  is-container = "true">
       <img src="{{item.url}}" ng-repeat="item in vm.data.pictures" style="width: 60px;height: 70px;border: #DDDDDD 1px solid;" class="p-5 mh-10">
     </div>
-
+    <div class="ml-20 mv-10">补充描述</div>
+    <div style="border-top:1px solid #dedede;border-bottom: 1px solid #dedede;background: #fff;color: #888888;min-height: 120px"  >
+      <p class="pl-10">{{vm.data.description}}</p>
+      <!--<textarea style="height:60px;line-height: 20px;resize:none;width:100%;padding:10px;" ng-model="vm.data.complementaryDescription" >问题补充描述</textarea>-->
+    </div>
     <!--<div style="background: #fff;border-top:1px solid #dedede;bor der-bottom: 1px solid #dedede;" class="pic-content">-->
     <!--&lt;!&ndash;<pic-list images-data="vm.images" flex></pic-list>&ndash;&gt;-->
     <!--<p ng-repeat="img in vm.images" class="pic-list">-->

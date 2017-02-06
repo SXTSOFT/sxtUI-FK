@@ -13,7 +13,7 @@
     });
 
   /**@ngInject*/
-  function inspectionDesktopController($state, utils, $scope, api, $q, $mdDialog, $window, $stateParams, ys_file, $timeout, auth, inspectionServe) {
+  function inspectionDesktopController($state, utils, $scope, api, $rootScope, $q, $mdDialog, $window, $stateParams, ys_file, $timeout, auth, inspectionServe) {
     var vm = this;
     vm.data = {};//数据源
     vm.selected = $stateParams.index ? $stateParams.index : 0;//tab 初始选项
@@ -59,28 +59,35 @@
                       arr.push(api.inspection.estate.getImg(m))
                     });
                     $q.all(arr).then(function (res) {
-                        if (angular.isArray(res)){
-                          arr=[];
-                          res.forEach(function (n) {
-                            if (n && n.data && n.data.length) {
-                              delete n.data[0].id;
-                              delete n.data[0].markid;
-                              arr.push(api.inspection.estate.insertImg(n.data[0]));
-                              $q.all(arr).then(function (result) {
-                                 if (angular.isArray(result)){
-                                   result.forEach(function (s) {
-                                     if (s && s.data && s.data.data) {
-                                       k.pictures = setPic(k, s.data.data.url);
-                                     }
-                                   });
-                                 }
-                                 resolve();
-                              }).catch(function () {
-                                reject();
+                      if (angular.isArray(res)) {
+                        arr = [];
+                        var copy;
+                        res.forEach(function (n) {
+                          if (n && n.data && n.data.length) {
+                            copy = angular.extend({}, n.data[0]);
+                            delete copy.id;
+                            delete copy.markid;
+                            arr.push(api.inspection.estate.insertImg(copy).then(function (res) {
+                              task.push(function () {
+                                return api.inspection.estate.removeImg(n.data[0]);
                               })
-                            }
-                          })
-                        }
+                              return res;
+                            }))
+                          }
+                        })
+                        $q.all(arr).then(function (result) {
+                          if (angular.isArray(result)) {
+                            result.forEach(function (s) {
+                              if (s && s.data && s.data.data) {
+                                k.pictures = setPic(k, s.data.data.url);
+                              }
+                            });
+                          }
+                          resolve();
+                        }).catch(function () {
+                          reject();
+                        })
+                      }
                     }).catch(function () {
                       reject();
                     });
@@ -88,8 +95,11 @@
                 })
                 k.pictures = "";
                 task.push(function () {
-                  delete k.id;
-                  return api.inspection.estate.insertrepair_tasks(k);
+                  var copy = angular.extend({}, k)
+                  delete copy.id;
+                  return api.inspection.estate.insertrepair_tasks(copy).then(function () {
+                    return api.inspection.estate.deleteRepair_tasks_off(k);
+                  });
                 })
               });
             }
@@ -282,6 +292,10 @@
 
       vm.load();
 
+      $scope.$on('$destroy', $rootScope.$on('goBack', function (s, e) {
+        e.cancel = true;
+        $state.go("app.szgc.ys");
+      }))
     });
   }
 

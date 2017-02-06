@@ -23,6 +23,7 @@
         url:'/inspection/{status}/{index}',
         title:'',
         shell:{
+          // prev:true,
           yfbar:true,
           title:false,
           swap:[
@@ -30,7 +31,7 @@
             {active:false,label:'问题',type:false}
           ]
         },
-        noBack:true,
+        noBack:false,
         template:'<inspection-desktop layout="column" flex></inspection-desktop>'
       })
       .state('app.statistics', {

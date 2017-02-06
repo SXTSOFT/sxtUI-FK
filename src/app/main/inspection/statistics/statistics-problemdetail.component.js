@@ -20,10 +20,17 @@
     // vm.showImg = function () {
     //   $rootScope.$emit('sxtImageViewAll',{data:true});
     // }
+
+    var ssl = sxt.requireSSL,
+      host = ssl?'http://szapi2.vanke.com':'http://szmp.vanke.com';
+
     vm.load=function() {
       return api.inspection.estate.getrepair_tasksData($stateParams.task_id).then(function (r) {
         $timeout(function () {
           vm.data = r.data.data;
+          vm.data.pictures.forEach(function (n) {
+            n.url=host+n.url;
+          });
           vm.data.status = vm.data.status == 'closed' ? true : false;
           vm.show = true;
         })

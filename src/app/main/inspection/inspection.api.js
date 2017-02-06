@@ -142,10 +142,10 @@
           idField:'id',
           // fileField: ['url'],
           dataType:1,
-          delete:true,
-          filter:function (item,id) {
-            return item.id==id
-          }
+          delete:true
+          // filter:function (item,id) {
+          //   return item.id==id
+          // }
         }).bind(),
 
         getrepair_tasks:function (parm) {
