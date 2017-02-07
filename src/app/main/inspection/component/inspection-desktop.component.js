@@ -153,7 +153,7 @@
             api.task(tasks, {
               timeout: 30000
             })(function (percent, current, total) {
-              progress.percent = parseInt(percent) * 100 + ' %';
+              progress.percent = percent.toFixed(2)* 100 + ' %';
               progress.current = current;
               progress.total = total;
             }, function () {
@@ -174,7 +174,8 @@
       }
 
       vm.download = function (item) {
-        var task = inspectionServe.downloadDeliveryTask(item);
+        var task=[];
+        inspectionServe.downloadDeliveryTask(item,task);
         task = task.concat(function () {
           return api.inspection.estate.issues_tree({
             type: 'delivery',
@@ -263,7 +264,7 @@
               })
             }
             if (!en) {
-              task = task.concat(inspectionServe.downloadDeliveryTask(n))
+              inspectionServe.downloadDeliveryTask(n,task);
             }
           });
           if (task.length > 1) {
