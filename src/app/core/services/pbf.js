@@ -9,7 +9,7 @@
     .factory('pbf',pbf);
 
   /** @inject */
-  function pbf($http) {
+  function pbf($http,$q) {
     var Buffer = (function () {
       var ieee754 = (function () {
         return {
@@ -685,6 +685,22 @@
         return $http.get(url,{responseType: "arraybuffer"}).then(function (result) {
           return new Pbf(new Uint8Array(result.data));
         });
+      },
+      _load:function (url) {
+        return $q(function (resolve,reject) {
+          var xhr = new XMLHttpRequest();
+          xhr.open( "GET", url, true );
+          xhr.responseType = "arraybuffer";
+          xhr.onload = function(e) {
+            var result=e.currentTarget.response;
+            var data= new Pbf(new Uint8Array(result))
+            resolve(data);
+          };
+          xhr.onerror = function(){
+            reject();
+          };
+          xhr.send();
+        })
       }
     };
   }

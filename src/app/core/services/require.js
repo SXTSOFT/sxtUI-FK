@@ -26,7 +26,7 @@
       }
       else{
         ef[url] = url;
-        pbf.load(url).then(function (data) {
+        pbf._load(url).then(function (data) {
           var d = ef.read(data),
             js = pbf.buffer(gzip.unzip(d.js)).toString('UTF-8');
           $window.eval(js);
