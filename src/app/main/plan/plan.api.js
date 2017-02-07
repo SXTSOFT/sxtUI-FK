@@ -144,6 +144,10 @@
         },
         endTask:function(id,query){
           return $http.post($http.url('/api/BuildingPlans/'+id+'/Tasks/'+query.TaskId+'/End'),query)
+        },
+        //开启精装修
+        startRenovation:function(id){
+          return $http.put($http.url('/api/BuildingPlans/'+id+'/StartUpRenovation'))
         }
       },
       MileStone:{
