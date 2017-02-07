@@ -39,7 +39,7 @@
   /** @ngInject */
   function map(require,$window) {
     return function (fn) {
-      require('/assets/res.pbf',function () {
+      require('assets/res.pbf',function () {
         $window.L.Icon.Default.imagePath = 'assets/images/';
         var L = $window.L;
         L.LabelIcon = L.Icon.extend({
