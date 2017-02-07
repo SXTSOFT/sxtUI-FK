@@ -26,8 +26,6 @@
               e.stopPropagation();
             }
             scope.edit = !scope.edit;
-            // <md-icon  id="elW" md-svg-src="app/main/inspection/images/mark.svg"  ></md-icon>
-            //   <md-icon  id="elR" md-svg-src="app/main/inspection/images/mark_.svg" style="display: none"></md-icon>
             if (scope.edit){
               $("div",el).html('<img src="app/main/inspection/images/mark_.svg" style="height: 28px;width: 28px"></img>');
             }else {
@@ -71,13 +69,13 @@
         function markerShape(shape,cname) {
           switch (shape) {
             case "loaded":
-              return $("<span  style='background: green;height: 24px;width:24px;border-radius: 50%;text-align: center;line-height: 24px;position: relative'>" +
-              "<span style='line-height: 32px;display: inline-block;max-width: 30px;text-align: center;overflow: hidden'>"+
+              return $("<span  style='background: green;height: 32px;width:32px;border-radius: 50%;text-align: center;line-height: 32px;'>" +
+              "<span style='line-height: 32px;display: inline-block;max-width: 30px;color:white;text-align: center;overflow: hidden'>"+
                 cname +
               "</span></div>")[0];
             default:
-              return $("<div style='background: red;height: 24px;width: 24px;border-radius: 50%;text-align: center;line-height: 24px'>"+
-                "<span style='line-height: 32px;display: inline-block;max-width: 30px;text-align: center;overflow: hidden'>"+
+              return $("<div style='background: red;height: 32px;width: 32px;border-radius: 50%;text-align: center;line-height: 32px'>"+
+                "<span style='line-height: 32px;display: inline-block;max-width: 30px;color:white;text-align: center;overflow: hidden'>"+
                 "</span></div>")[0];
           }
         }
@@ -101,29 +99,87 @@
             });
           });
           scope.ctrl.markers.push(marker);
+          mk.id=marker.id;
           marker.layer.addLayer(mk);
           scope.ctrl.added(marker, isload);
 
         }
 
+        function findMark(marker) {
+          var group = marker.layer,
+            mk = null;
+          group.eachLayer(function (layer) {
+            if (layer.id === marker.id) {
+              mk = layer;
+            }
+          });
+          return mk;
+        }
+
+        function popup(marker) {
+          var el = mapCache.get("pop")[0];
+          scope.pop= L.popup({autoClose:true,closeButton:false})
+            .setLatLng(marker.latlng)
+            .setContent(el)
+            .openOn(scope.map);
+          $(".remove",el).off("click");
+          $(".remove",el).click(function () {
+            var mk=findMark(marker);
+            if (mk) {
+              marker.layer.removeLayer(mk);
+              scope.ctrl.removed(marker);
+            }
+            scope.map.closePopup(scope.pop);
+          })
+
+          $(".move",el).off("click");
+          $(".move",el).click(function () {
+             var mk=findMark(marker);
+             mk.editing.enable();
+             scope.map.closePopup(scope.pop);
+          })
+          return scope.pop;
+        }
+
         //map各类事件处理
         function mapOperate(operate) {
-          scope.ctrl.preClick().then(function (k) {
-            var marker = operate.marker;
-            switch (operate.cmd) {
-              case 'click':
+          var marker = operate.marker;
+          switch (operate.cmd) {
+            case 'click':
+              scope.ctrl.preClick().then(function () {
                 scope.ctrl.markers.forEach(function (mk) {
                   $(mk.el).removeClass('shine shine2');
                 });
                 $(marker.el).addClass('shine shine2');
                 click_event(operate);
-                break;
+              }).catch(function (ex) {
+                utils.alert("必须选择问题,并拍照,才能进行下一步操作!");
+              })
+              break;
+            case "moved":
+              moved_event(operate);
+              break;
+          }
+
+          function moved_event(operate) {
+            var marker =operate.marker;
+            var mk=findMark(marker)
+            if(mk){
+              mk.editing.disable();
+              scope.ctrl.moved(marker);
+              popup(marker);
             }
-          }).catch(function () {
-              utils.alert("必须选择问题,并拍照,才能进行下一步操作!");
-          });
+          }
+
           function cancelEdit(marker) { //取消上次编辑
             return scope.ctrl.cancelEdit(marker).then(function (m) {
+              if (scope.pop){ //关闭弹窗
+                scope.map.closePopup(scope.pop);
+              }
+              if (m){
+                var mk=findMark(m); //取消编辑状态
+                mk.editing.disable();
+              }
               if (m) {
                 var style = m.tag.pictures && m.tag.issues ? "loaded" : null
                 switch (style) {
@@ -144,6 +200,7 @@
                   cancelEdit().then(function () {
                     addMarker(marker);
                     $(marker.el).addClass('shine shine2');
+                    popup(marker);
                   });
                 } else {
                   cancelEdit();
@@ -152,6 +209,7 @@
               case "marker":
                 cancelEdit(marker).then(function () {
                   scope.ctrl.editing(marker);
+                  popup(marker);
                 });
                 break;
             }
@@ -168,7 +226,7 @@
                 }
                 mymap(function () {
                   var mv = scope.ctrl;
-                  var map = L.map(el[0], {
+                  var map=scope.map = L.map(el[0], {
                     crs: L.RicentCRS,
                     center: [0, 0],
                     zoom: 0,
@@ -195,6 +253,23 @@
                   map.on('sheet:load', function (f) {
                     addControl(map);
                     InitMarker(regionLayer);
+                  });
+                  map.on('draw:saving',function (e) {
+                    var latlng = e.layer.getLatLng();
+                    var marker=scope.ctrl.markers.find(function (m) {
+                       return e.layer.id==m.id;
+                    })
+                    marker=marker?marker:{
+                        id:e.layer.id,
+                        latlng:latlng,
+                        layer: regionLayer
+                      };
+                    marker.latlng=latlng;
+                    mapOperate({
+                      cmd: 'moved',
+                      source: "map",
+                      marker:marker
+                    })
                   });
                 });
               }, 300)

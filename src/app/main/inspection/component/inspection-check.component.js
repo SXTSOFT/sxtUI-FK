@@ -121,17 +121,36 @@
       })
     }
 
+
     vm.removed = function (marker) {
-      var group = regionLayer,
-        mk = null;
-      layer.eachLayer(function (layer) {
-        if (layer.id === marker.id) {
-          mk = layer;
-        }
-      });
-      if (mk) {
-        group.removeLayer(mk);
+      if(marker.tag){
+        api.inspection.estate.deleteRepair_tasks_off(marker.tag).then(function () {
+          vm.current_marker=null;
+          vm.pop=false;
+        }); //删除问题记录
+        var pic=marker.tag.pictures?marker.tag.pictures:"";
+        var picArr=pic.split(",");
+        picArr.forEach(function (m) {
+          api.inspection.estate.getImg(m).then(function (k) { //删除图片
+            api.inspection.estate.removeImg(k.data[0]);
+          });
+        })
       }
+    }
+
+    vm.moved=function (marker) {
+        var markerLocal=vm.markers.find(function (k) {
+          return k.id==marker.id;
+        })
+        if (markerLocal){
+          var record= markerLocal.tag;
+          if (record){
+            record.drawing_x=marker.latlng.lat;
+            record.drawing_y=marker.latlng.lng;
+            api.inspection.estate.postRepair_tasks_off(record);
+          }
+          markerLocal.latlng=marker.latlng;
+        }
     }
 
     $scope.$on('$destroy', $rootScope.$on('goBack', function (s, e) {

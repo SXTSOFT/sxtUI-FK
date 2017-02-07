@@ -13,9 +13,10 @@
   function mapRef(mapCache) {
     return {
       scope:{
+        key:"@"
       },
       link:function (scope,el,api) {
-        mapCache.set("mapControl",el);
+        mapCache.set(scope.key,el);
       }
     }
   }

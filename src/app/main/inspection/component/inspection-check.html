@@ -2,16 +2,28 @@
   <div flex inspection-map map-url="vm.mapUrl" ctrl="vm" loaded="vm.loaded"></div>
   <div style="height: 280px;background-color: rgb(248,248,248)">
     <md-divider></md-divider>
-    <sxt-wt-pop flex ng-show="vm.pop" user-id="vm.userId"  marker="vm.current_marker"></sxt-wt-pop>
+    <sxt-wt-pop flex ng-show="vm.pop" user-id="vm.userId" marker="vm.current_marker"></sxt-wt-pop>
   </div>
 </md-content>
 
 
 <div style="display: none">
-  <span class="map-toolpop" map-ref>
-     <div style="border-radius: 6px;background: rgba(0,0,0,0.80);height: 40px;width: 40px" layout="row" layout-align="center center">
-         <md-icon  id="elW" md-svg-src="app/main/inspection/images/mark.svg"  ></md-icon>
+  <span class="map-toolpop" map-ref key="mapControl">
+     <div style="border-radius: 6px;background: rgba(0,0,0,0.80);height: 40px;width: 40px" layout="row"
+          layout-align="center center">
+         <md-icon id="elW" md-svg-src="app/main/inspection/images/mark.svg"></md-icon>
      </div>
   </span>
 </div>
-
+<div style="display: none">
+  <span map-ref key="pop" layout="row">
+    <span class="remove">
+       <img src="app/main/inspection/images/delete.svg" style="min-height: 32px;min-width: 32px">
+    </span>
+    <span class="move">
+       <img src="app/main/inspection/images/move.svg"  style="min-height: 32px;min-width: 32px">
+    </span>
+    <!--<button class="remove" style="color: white">删除</button>-->
+    <!--<button class="move" style="color: white">移动</button>-->
+  </span>
+</div>
