@@ -69,7 +69,13 @@
             });
           }
         }
-      })
+      }).catch(function(){
+        remote.offline.query().then(function (r) {
+          r.data.forEach(function(list){
+              vm.offlines.push({SectionID:list.SectionID,FullName:list.FullName});
+          });
+        });
+      });
     }
     vm.downloadPlan=function(item,isReflsh){
       var status = user.Role.MemberType == 0?1:110;
@@ -99,7 +105,7 @@
               return api.xhsc.materialPlan.getMaterialBatchProgress(item.SectionID,status);
             })
             .concat(function(){
-              return remote.offline.create({Id:'msy'+item.SectionID});
+              return remote.offline.create({Id:'msy'+item.SectionID,SectionID:item.SectionID,FullName:item.FullName});
             });
           api.task(tasks,{
             event:'downloadPlan',
