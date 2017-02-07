@@ -79,6 +79,30 @@
       })
     }
 
+    vm.preClick=function () {
+        return $q(function (resolve,reject) {
+            if (!vm.current_marker){
+              resolve();
+            }else {
+              var record = vm.current_marker.tag;
+              if (record){
+                api.inspection.estate.getRepair_tasks_off(null,vm.current_marker.tag.id).then(function (r) {
+                   var task=r.data[0];
+                   if (task.pictures&&task.issues){
+                     resolve();
+                   }else {
+                     reject()
+                   }
+                }).catch(function () {
+                  reject();
+                });
+              }else {
+                resolve(true);
+              }
+            }
+        })
+    }
+
     vm.cancelEdit = function (marker) {
       return $q(function (resolve, reject) {
         vm.pop = false;

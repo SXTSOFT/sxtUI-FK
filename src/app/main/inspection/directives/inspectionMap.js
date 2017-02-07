@@ -7,7 +7,7 @@
     .module('app.inspection')
     .directive('inspectionMap', inspectionMap);
   /** @inject */
-  function inspectionMap(sxt, $window, $timeout, api, map, utils, mapCache) {
+  function inspectionMap(sxt, $window, $timeout, api, map,$q, utils, mapCache,inspectionServe) {
     var mymap = map;
     return {
       scope: {
@@ -26,13 +26,12 @@
               e.stopPropagation();
             }
             scope.edit = !scope.edit;
+            // <md-icon  id="elW" md-svg-src="app/main/inspection/images/mark.svg"  ></md-icon>
+            //   <md-icon  id="elR" md-svg-src="app/main/inspection/images/mark_.svg" style="display: none"></md-icon>
             if (scope.edit){
-
-              $("#elR",el).css("display","block");
-              $("#elW",el).css("display","none");
+              $("div",el).html('<img src="app/main/inspection/images/mark_.svg" style="height: 28px;width: 28px"></img>');
             }else {
-              $("#elR",el).css("display","none");
-              $("#elW",el).css("display","block");
+              $("div",el).html('<img src="app/main/inspection/images/mark.svg"  style="height: 28px;width: 28px"></img>');
             }
           });
           var c = L.control.elControl({
@@ -44,7 +43,11 @@
 
         function InitMarker(layer) {
           var roomid=scope.ctrl.delivery.room.room_id;
-          api.inspection.estate.getRepair_tasks_off(roomid).then(function (r) {
+          $q.all([
+            inspectionServe.getIssues(),
+            api.inspection.estate.getRepair_tasks_off(roomid)
+          ]) .then(function (res) {
+            var issues=res[0],r=res[1];
             if (r && r.data) {
               var marker, shape;
               r.data.forEach(function (k) {
@@ -55,33 +58,38 @@
                   tag: k
                 }
                 shape = k.pictures && k.issues ? "loaded" : null;
-                addMarker(marker, shape, true);
+                var iss=issues.find(function (o) {
+                  return o.issue_id==k.issues;
+                })
+                addMarker(marker, shape, true,iss?iss.abbrname:"");
               });
             }
           })
         }
 
         //marker形状
-        function markerShape(shape) {
+        function markerShape(shape,cname) {
           switch (shape) {
             case "loaded":
-              return $("<div  style='background: green;height: 24px;width:24px;border-radius: 50%;text-align: center;line-height: 24px;position: relative'>"
-                + scope.ctrl.markers.length +
-              "</div>")[0];
+              return $("<span  style='background: green;height: 24px;width:24px;border-radius: 50%;text-align: center;line-height: 24px;position: relative'>" +
+              "<span style='line-height: 32px;display: inline-block;max-width: 30px;text-align: center;overflow: hidden'>"+
+                cname +
+              "</span></div>")[0];
             default:
-              return $("<div style='background: red;height: 24px;width: 24px;border-radius: 50%;text-align: center;line-height: 24px'>"
-                + scope.ctrl.markers.length +
-                "</div>")[0];
+              return $("<div style='background: red;height: 24px;width: 24px;border-radius: 50%;text-align: center;line-height: 24px'>"+
+                "<span style='line-height: 32px;display: inline-block;max-width: 30px;text-align: center;overflow: hidden'>"+
+                "</span></div>")[0];
           }
         }
 
         //添加marker
-        function addMarker(marker, shape, isload) {
-          marker.el = markerShape(shape);
+        function addMarker(marker, shape, isload,cname) {
+          cname=cname?cname:"";
+          marker.el = markerShape(shape,cname);
           var mk = L.marker(marker.latlng, {
             icon: new L.HtmlIcon({
               className: 'rc-marker',
-              iconSize: marker.iconSize || [24, 24],
+              iconSize: marker.iconSize || [32, 32],
               iconAnchor: marker.iconAnchor || [15, 15],
               el: marker.el
             })
@@ -100,6 +108,20 @@
 
         //map各类事件处理
         function mapOperate(operate) {
+          scope.ctrl.preClick().then(function (k) {
+            var marker = operate.marker;
+            switch (operate.cmd) {
+              case 'click':
+                scope.ctrl.markers.forEach(function (mk) {
+                  $(mk.el).removeClass('shine shine2');
+                });
+                $(marker.el).addClass('shine shine2');
+                click_event(operate);
+                break;
+            }
+          }).catch(function () {
+              utils.alert("必须选择问题,并拍照,才能进行下一步操作!");
+          });
           function cancelEdit(marker) { //取消上次编辑
             return scope.ctrl.cancelEdit(marker).then(function (m) {
               if (m) {
@@ -133,18 +155,6 @@
                 });
                 break;
             }
-            scope.$apply();
-          }
-
-          var marker = operate.marker;
-          switch (operate.cmd) {
-            case 'click':
-              scope.ctrl.markers.forEach(function (mk) {
-                $(mk.el).removeClass('shine shine2');
-              });
-              $(marker.el).addClass('shine shine2');
-              click_event(operate);
-              break;
           }
         }
 

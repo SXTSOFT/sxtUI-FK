@@ -190,7 +190,9 @@
               scope.current_iss = item;
               if (scope.marker && scope.marker.tag) {
                 scope.marker.tag.issues = item.issue_id
-                api.inspection.estate.postRepair_tasks_off(scope.marker.tag);
+                api.inspection.estate.postRepair_tasks_off(scope.marker.tag).then(function () {
+                  $("span",scope.marker.el).html(item.abbrname)
+                });
               }
               mdPanelRef.close();
               mdPanelRef.destroy();

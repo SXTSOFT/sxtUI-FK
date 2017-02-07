@@ -85,6 +85,42 @@
               }
             }
           }
+        },
+        getIssues:function () {
+          function wrap(source) {
+            if (angular.isArray(source)) {
+              return source.filter(function (k) {
+                var t = k.children.filter(function (n) {
+                  return n.children.length > 0;
+                })
+                k.children = t
+                return t.length > 0;
+              })
+            }
+            return source;
+          }
+          return $q(function (resolve, reject) {
+            api.inspection.estate.issues_tree({
+              type: 'delivery',
+              parent_id: '',
+              enabled: true,
+              page_size: 10000,
+              page_number: 1
+            }).then(function (r) {
+              var options = wrap(r.data.data);
+              var _issues = [];
+              options.forEach(function (k) {
+                k.children.forEach(function (n) {
+                  if (n.children && n.children.length) {
+                    n.children.forEach(function (m) {
+                      _issues.push(m);
+                    });
+                  }
+                });
+              });
+              resolve(_issues);
+            });
+          })
         }
     }
     return serve;

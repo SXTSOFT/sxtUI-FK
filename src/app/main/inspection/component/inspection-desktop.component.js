@@ -17,9 +17,8 @@
     var vm = this;
     vm.data = {};//数据源
     vm.selected = $stateParams.index ? $stateParams.index : 0;//tab 初始选项
-    auth.getUser().then(function (r) {
-      vm.loginname = r.Username
-
+    api.szgc.vanke.profile().then(function (profile) {
+      vm.profile = profile.data.data;
       vm.upload = function (item) {
         var task = [];
         var roomId = item.room.room_id;
@@ -139,7 +138,7 @@
 
 
       vm.goChecked = function (item) {
-        $state.go('app.inspection.check', {delivery_id: item.delivery_id, userId: "11100000000"})
+        $state.go('app.inspection.check', {delivery_id: item.delivery_id, userId: vm.profile.loginname})
       }
 
 
@@ -216,7 +215,7 @@
 
       vm.load = function () {
         return api.inspection.estate.getDeliverysList({
-          loginname: '11100000000',
+          loginname: vm.profile.loginname,
           page_size: 50,
           page_number: 1
         }).then(function (r) {
@@ -297,6 +296,11 @@
         $state.go("app.szgc.ys");
       }))
     });
+    // auth.getUser().then(function (r) {
+    //   vm.loginname = r.Username
+    //
+    //
+    // });
   }
 
 })();

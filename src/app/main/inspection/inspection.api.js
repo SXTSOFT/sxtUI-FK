@@ -100,8 +100,14 @@
           _id:'tasks',
           idField:'id',
           dataType:1,
-          filter:function (item,roomid) {
-            return item.room_id==roomid;
+          filter:function (item,roomid,id) {
+            if (roomid){
+              return item.room_id==roomid;
+            }else if (id){
+              return item.id==id;
+            }else {
+              return true;
+            }
           }
         }).bind(),
 
