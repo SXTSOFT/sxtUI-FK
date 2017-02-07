@@ -50,7 +50,11 @@
 
   <tbody>
     <tr ng-if="!vm.loading">
-        <td colspan="6">数据加载中...</td>
+        <td colspan="6">
+          <div layout="row" layout-align="center center">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+          </div>
+        </td>
     </tr>
   <tr ng-if="vm.loading" ng-repeat="item in vm.items|filter:{Type:vm.selectedCategory}|filter:vm.search">
     <td class="name">{{item.Name}}</td>
