@@ -46,5 +46,16 @@
       })
 
     }
+    vm.openJzx = function(item){
+      utils.confirm('确定开启精装修',null).then(function(){
+        api.plan.BuildPlan.startRenovation(item.Id).then(function(r){
+          utils.alert('开启精装修成功').then(function(){
+            load();
+          },function(err){
+            utils.alert(err.data||'开启精装修失败')
+          })
+        })
+      })
+    }
   }
 })();
