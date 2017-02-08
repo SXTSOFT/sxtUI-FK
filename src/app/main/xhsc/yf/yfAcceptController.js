@@ -15,7 +15,7 @@
   function yfAcceptController($scope, $stateParams, remote, xhUtils, $rootScope, $state, $q, utils, api, xhscService) {
     var vm = this;
     var projectId = $stateParams.projectId,
-      areaId = $stateParams.areaId ? $stateParams.areaId : $stateParams.regionId;
+      areaId=vm.areaId = $stateParams.areaId ? $stateParams.areaId : $stateParams.regionId;
     vm.InspectionId = $stateParams.InspectionId;
 
     vm.info = {

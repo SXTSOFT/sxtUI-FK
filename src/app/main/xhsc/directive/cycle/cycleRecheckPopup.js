@@ -49,13 +49,28 @@
             });
           });
 
-          scope.Record = {
-            jl:r.data.find(function (p) {
-              return p.DescRole=='jl'
-            }),
-            zb:r.data.find(function (p) {
+          var zb=r.data.find(function (p) {
+            return p.DescRole=='zb'&&p.Remark
+          })
+          if (!zb){
+            zb=r.data.find(function (p) {
               return p.DescRole=='zb'
             })
+          }
+
+          var jl=r.data.find(function (p) {
+            return p.DescRole=='jl'&&p.Remark
+          })
+          if (!jl){
+            jl=r.data.find(function (p) {
+              return p.DescRole=='jl'
+            })
+          }
+
+
+          scope.Record = {
+            jl:jl,
+            zb:zb
           };
 
           if(!scope.Record.jl){
@@ -104,9 +119,9 @@
               var rec={
                 CheckpointID:scope.data.value.CheckpointID,
                 RectificationID:rec,
-                Describe:'',
+                Describe:scope.Record.zb.Remark,
                 DescRole:"zb",
-                Remark:''
+                Remark:scope.Record.zb.Remark
               };
               rec.ProblemRecordID = sxt.uuid();
               rec._id=rec.ProblemRecordID;
