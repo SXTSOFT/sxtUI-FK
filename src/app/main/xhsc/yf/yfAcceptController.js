@@ -27,6 +27,9 @@
       }
     };
 
+
+
+
     var sendResult = $rootScope.$on('sendGxResult', function () {
       utils.alert("提交成功，请稍后离线上传数据！", null, function () {
         $state.go('app.xhsc.yf.Main')
@@ -44,6 +47,23 @@
         if (!angular.isArray(r)) {
           return r;
         }
+
+        function hide(region) {
+
+          if (region.Children&&region.Children.length){
+            region.Children.forEach(function (o) {
+              hide(o);
+            });
+          }
+          if(region.RegionType<16){
+             if (region.Children.every(function (k) {
+                 return k.hide;
+               })){
+               region.hide=true;
+             }
+          }
+        }
+
         var area = r.filter(function (k) {
           if (angular.isArray(k.Children)) {
             k.Children = k.Children.filter(function (m) {
@@ -52,6 +72,38 @@
           }
           return k.RegionID == projectId;
         });
+        area.forEach(function (o) {
+          hide(o);
+        });
+
+        vm.setDraft=function (regionId,flag) {
+          function findRoom(root) {
+            if (root.RegionID==regionId){
+              return root;
+            }
+            if (root.Children&&root.Children.length){
+              var res;
+              for (var  i=0;i<root.Children.length;i++){
+                res=findRoom(root.Children[i]);
+                // if (res){
+                //   return res;
+                // }
+              }
+            }
+            return null;
+          }
+          var res;
+          for (var i=0;i< area.length;i++){
+            res=findRoom(area[i]);
+            if (res){
+              return res
+            }
+          }
+          if (res){
+            res.draft=flag;
+          }
+        }
+
         return area;
       });
 

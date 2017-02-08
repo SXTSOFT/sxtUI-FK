@@ -63,6 +63,7 @@
           $scope.source.floors=area.Children;
         }
         $scope.setRoom=function (area,siblings) {
+          $scope.setActive(area,siblings);
           if($scope.level&&parseInt($scope.level)<5){
             $scope.selectedRegion(area,siblings);
           }else if($scope.level=="5"){
@@ -71,7 +72,7 @@
             }
             $scope.source.rooms=area.Children;
           }else {
-            $scope.setActive(area,siblings);
+            // $scope.setActive(area,siblings);
             if ($scope.current){
               $scope.current.region=null;
             }
