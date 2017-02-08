@@ -1,16 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.vanke.sxt.iphone" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <preference name="AllowInlineMediaPlayback" value="false" />
-    <preference name="BackupWebStorage" value="cloud" />
-    <preference name="DisallowOverscroll" value="false" />
-    <preference name="EnableViewportScale" value="false" />
-    <preference name="KeyboardDisplayRequiresUserAction" value="true" />
-    <preference name="MediaPlaybackRequiresUserAction" value="false" />
-    <preference name="SuppressesIncrementalRendering" value="false" />
-    <preference name="GapBetweenPages" value="0" />
-    <preference name="PageLength" value="0" />
-    <preference name="PaginationBreakingMode" value="page" />
-    <preference name="PaginationMode" value="unpaginated" />
     <feature name="LocalStorage">
         <param name="ios-package" value="CDVLocalStorage" />
     </feature>
@@ -36,9 +25,6 @@
     <feature name="Camera">
         <param name="ios-package" value="CDVCamera" />
     </feature>
-    <preference name="CameraUsesGeolocation" value="false" />
-    <allow-intent href="itms:*" />
-    <allow-intent href="itms-apps:*" />
     <name>数字工程</name>
     <description>
         Hello World sample application that responds to the deviceready event.
@@ -47,21 +33,6 @@
         PhoneGap Team
     </author>
     <content src="index.html" />
-    <preference name="permissions" value="none" />
-    <preference name="orientation" value="default" />
-    <preference name="target-device" value="universal" />
-    <preference name="fullscreen" value="false" />
-    <preference name="webviewbounce" value="true" />
-    <preference name="prerendered-icon" value="true" />
-    <preference name="stay-in-webview" value="false" />
-    <preference name="ios-statusbarstyle" value="black-opaque" />
-    <preference name="detect-data-types" value="true" />
-    <preference name="exit-on-suspend" value="false" />
-    <preference name="show-splash-screen-spinner" value="true" />
-    <preference name="auto-hide-splash-screen" value="true" />
-    <preference name="disable-cursor" value="false" />
-    <preference name="android-minSdkVersion" value="14" />
-    <preference name="android-installLocation" value="auto" />
     <gap:plugin name="org.apache.cordova.battery-status" />
     <gap:plugin name="org.apache.cordova.camera" />
     <gap:plugin name="org.apache.cordova.media-capture" />
@@ -113,4 +84,33 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <allow-intent href="itms:*" />
+    <allow-intent href="itms-apps:*" />
+    <preference name="AllowInlineMediaPlayback" value="false" />
+    <preference name="BackupWebStorage" value="cloud" />
+    <preference name="DisallowOverscroll" value="false" />
+    <preference name="EnableViewportScale" value="false" />
+    <preference name="KeyboardDisplayRequiresUserAction" value="true" />
+    <preference name="MediaPlaybackRequiresUserAction" value="false" />
+    <preference name="SuppressesIncrementalRendering" value="false" />
+    <preference name="GapBetweenPages" value="0" />
+    <preference name="PageLength" value="0" />
+    <preference name="PaginationBreakingMode" value="page" />
+    <preference name="PaginationMode" value="unpaginated" />
+    <preference name="CameraUsesGeolocation" value="false" />
+    <preference name="permissions" value="none" />
+    <preference name="orientation" value="default" />
+    <preference name="target-device" value="universal" />
+    <preference name="fullscreen" value="false" />
+    <preference name="webviewbounce" value="true" />
+    <preference name="prerendered-icon" value="true" />
+    <preference name="stay-in-webview" value="false" />
+    <preference name="ios-statusbarstyle" value="black-opaque" />
+    <preference name="detect-data-types" value="true" />
+    <preference name="exit-on-suspend" value="false" />
+    <preference name="show-splash-screen-spinner" value="true" />
+    <preference name="auto-hide-splash-screen" value="true" />
+    <preference name="disable-cursor" value="false" />
+    <preference name="android-minSdkVersion" value="14" />
+    <preference name="android-installLocation" value="auto" />
 </widget>

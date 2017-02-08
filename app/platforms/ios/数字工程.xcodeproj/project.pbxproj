@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		062981E44BD64C2F9EC31B04 /* CDVKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = E2E8B3097F6D41F5B74013DE /* CDVKeyboard.m */; };
 		0C0A6B191CCFC836008E22FA /* icon-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C0A6B001CCFC836008E22FA /* icon-100.png */; };
@@ -391,7 +390,7 @@
 				LastUpgradeCheck = 510;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
-						DevelopmentTeam = 3X97WNYE73;
+						DevelopmentTeam = ALPGP4L7JY;
 					};
 				};
 			};
@@ -537,6 +536,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = ALPGP4L7JY;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -557,7 +557,7 @@
 					"-weak-lSystem",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.vanke.sxt.iphone;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sxt.vanke;
 				PRODUCT_NAME = "数字工程";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -570,6 +570,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = ALPGP4L7JY;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "数字工程/数字工程-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
@@ -588,7 +589,7 @@
 					"-weak-lSystem",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.vanke.sxt.iphone;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sxt.vanke;
 				PRODUCT_NAME = "数字工程";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -634,6 +635,7 @@
 				);
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
@@ -678,6 +680,7 @@
 				);
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
