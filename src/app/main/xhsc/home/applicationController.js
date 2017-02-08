@@ -11,10 +11,6 @@
   /** @ngInject */
   function applicationController($scope, remote, $timeout, $q, xhscService,$state) {
     var vm = this
-    // var apps = [];
-    // xhscService.getRegionTreeOffline("", 31, 1).then(function (r) {
-    //   vm.regions=r;
-    // })
     xhscService.getProfile().then(function (profile) {
       vm.role = profile.role;
       vm.OUType = profile.ouType;
@@ -59,14 +55,14 @@
               state: "app.xhsc.download",
               stateParams: null
             },
-            // {
-            //   right:vm.duties.indexOf("2")>-1,
-            //   title: "移动验房",
-            //   type:"zl",
-            //   img: "app/main/xhsc/images/application/yf.svg",
-            //   state: "app.xhsc.yf.Main",
-            //   stateParams: null
-            // },
+            {
+              right:vm.duties.indexOf("6")>-1,
+              title: "移动验房",
+              type:"zl",
+              img: "app/main/xhsc/images/application/yf.svg",
+              state: "app.xhsc.yf.Main",
+              stateParams: null
+            },
             {
               right:vm.duties.indexOf("4")>-1,
               title: "材料验收",
@@ -111,7 +107,7 @@
           name:"计划",
           items:[
             {
-              right:true,
+              right:vm.duties.indexOf("7")>-1,
               title: "计划管理",
               type:"jh",
               img: "app/main/xhsc/images/application/plan.svg",
