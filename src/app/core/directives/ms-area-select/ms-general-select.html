@@ -32,46 +32,46 @@
       </div>
     </div>
     <div class="part"  flex ng-if="status.part" layout="row">
-      <div flex="{{source.rooms&&source.rooms.length>0?33:50}}">
+      <div flex="{{source.rooms&&source.rooms.length>0?30:50}}">
         <md-list>
-          <md-list-item ng-repeat="item in source.parts" ng-click="setFloor(item,source.parts)" ng-class="{'active':item.active}" layout="row">
-            <span flex>{{item.RegionName}}</span>
+          <md-list-item ng-if="!item.hide" ng-repeat="item in source.parts" ng-click="setFloor(item,source.parts)" ng-class="{'active':item.active}" layout="row">
+            <span flex style="max-width: 80%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-align:left;padding-left: 5%">{{item.RegionName}}</span>
           </md-list-item>
         </md-list>
       </div>
-      <div  flex="{{source.rooms&&source.rooms.length>0?33:50}}">
+      <div  flex="{{source.rooms&&source.rooms.length>0?30:50}}">
         <md-list>
-          <md-list-item class="clickbg" ng-repeat="item in source.floors" ng-click="setRoom(item,source.floors)" ng-class="{'active':item.active}" layout="row">
-            <span flex>{{item.RegionName}}</span>
+          <md-list-item class="clickbg" ng-if="!item.hide" ng-repeat="item in source.floors" ng-click="setRoom(item,source.floors)" ng-class="{'active':item.active}" layout="row">
+            <span flex style="max-width: 80%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-align:left;padding-left: 5%">{{item.RegionName}}</span>
           </md-list-item>
         </md-list>
       </div>
-      <div flex="{{source.rooms&&source.rooms.length>0?33:50}}" ng-if="source.rooms&&source.rooms.length>0">
+      <div flex="{{source.rooms&&source.rooms.length>0?40:50}}" ng-if="source.rooms&&source.rooms.length>0">
         <md-list>
-          <md-list-item class="clickbg" ng-repeat="item in source.rooms" ng-click="selectedRegion(item,source.rooms)" ng-class="{'active':item.active}" layout="row">
-            <span flex>{{item.RegionName}}</span>
+          <md-list-item class="clickbg" ng-if="!item.hide" ng-repeat="item in source.rooms" ng-click="selectedRegion(item,source.rooms)" ng-class="{'active':item.active}" layout="row">
+            <span flex style="max-width: 80%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-align:left;padding-left: 5%">{{item.RegionName}}</span>
           </md-list-item>
         </md-list>
       </div>
     </div>
     <div class="procedure" flex  ng-show="status.procedure" layout="row">
-      <div  flex="{{source.wpAcceptanceList&&source.wpAcceptanceList.length>0?(lay=='row'?15:33):50}}">
+      <div  flex="{{source.wpAcceptanceList&&source.wpAcceptanceList.length>0?30:50}}">
         <md-list>
           <md-list-item ng-repeat="item in source.procedureData" ng-click="setProcedure(item,source.procedureData)"
                         ng-class="{'active':item.active}" layout="row" layout-align="center center">
-            <span  style="white-space:nowrap;" flex>{{item.SpecialtyName}}</span>
+            <span flex style="max-width: 80%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-align:left;padding-left: 5%">{{item.SpecialtyName}}</span>
           </md-list-item>
         </md-list>
       </div>
-      <div flex="{{source.wpAcceptanceList&&source.wpAcceptanceList.length>0?(lay=='row'?15:33):50}}">
+      <div flex="{{source.wpAcceptanceList&&source.wpAcceptanceList.length>0?30:50}}">
         <md-list>
           <md-list-item class="clickbg" ng-repeat="item in source.specialtyChildren" ng-click="setSpecialty(item,source.specialtyChildren)" ng-class="{'active':item.active}"
               layout="row" layout-align="center center" style="white-space:nowrap;">
-            <span flex  style="white-space:nowrap;text-overflow: ellipsis">{{item.SpecialtyName}}</span>
+            <span flex style="max-width: 80%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-align:left;padding-left: 5%">{{item.SpecialtyName}}</span>
           </md-list-item>
         </md-list>
       </div>
-      <div flex="{{source.wpAcceptanceList&&source.wpAcceptanceList.length>0?(lay=='row'?70:33):50}}" ng-if="source.wpAcceptanceList&&source.wpAcceptanceList.length>0">
+      <div flex="{{source.wpAcceptanceList&&source.wpAcceptanceList.length>0?40:50}}" ng-if="source.wpAcceptanceList&&source.wpAcceptanceList.length>0">
         <md-list ng-if="lay!='row'">
           <md-list-item class="clickbg" ng-repeat="item in source.wpAcceptanceList" ng-click="selectedProcedure(item,source.wpAcceptanceList)" ng-class="{'active':item.active}" layout="row">
             <span flex style="text-overflow:ellipsis;text-align: left;white-space:nowrap">{{item.AcceptanceItemName}}</span>
@@ -82,9 +82,10 @@
             <div flex="50" flex-gt-xs="33" layout="row" style="height: 40px;" ng-repeat="item in source.wpAcceptanceList" ng-click="selectedProcedure(item,source.wpAcceptanceList)"
                 ng-class="{'active':item.active}">
                 <div flex style="border: 1px solid #d8d8d8;border-radius:5px;margin: 5px 0px 0px 5px;" layout="row" layout-align="center center">
-                  <span style="white-space: nowrap;overflow-x:hidden;text-overflow: ellipsis">
-                     {{item.AcceptanceItemName}}
-                  </span>
+                  <span flex style="max-width: 80%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-align:left;padding-left: 5%">{{item.AcceptanceItemName}}</span>
+                  <!--<span style="white-space: nowrap;overflow-x:hidden;text-overflow: ellipsis">-->
+                     <!---->
+                  <!--</span>-->
                 </div>
             </div>
             <!--<md-list-item flex="50" ng-repeat="item in source.wpAcceptanceList" ng-click="selectedProcedure(item,source.wpAcceptanceList)" ng-class="{'active':item.active}"-->

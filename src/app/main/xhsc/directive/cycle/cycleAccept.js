@@ -15,11 +15,13 @@
   function cycleAccept($timeout,remote,mapPopupSerivce,sxt,utils,$window,xhUtils) {
     return {
       scope:{
+        ctr:"=",
         item:'=cycleAccept',
         procedure:'=',
         regionId:'=',
         inspectionId:'=',
         ct:'=',
+        set:"&",
         disableInspect:'@',
         disableDrag:'@'
       },
@@ -125,7 +127,7 @@
                 v.action="Insert";
                 fg.data.push(v);
                 scope.ct && scope.ct.cancelMode && scope.ct.cancelMode();
-                remote.yf.yfPointCreate(v);
+                remote.yf.yfPointCreate(v)
               }
               cb(layer);
             },

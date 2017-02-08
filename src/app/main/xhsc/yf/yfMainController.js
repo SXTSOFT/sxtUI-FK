@@ -76,12 +76,10 @@
         }
       });
     }
-
-
-
     xhscService.getProfile().then(function (profile) {
       vm.role = profile.role;
       vm.OUType = profile.ouType;
+      load();
     });
 
     var globalTask = [
@@ -242,7 +240,6 @@
                   t = t.concat(projectTask(o.AreaID.substr(0,o.AreaID.length-5), [o], o.AcceptanceItemID));
                 });
               });
-
               function getRectificationTask() {
                 var  task=[];
                 var rectification=item.Rectifications;
@@ -332,7 +329,6 @@
                 }
                 return arr;
               }
-
               var tasks = [];
               return $q(function (resolve, reject) {
                 api.getUploadData(function (cfg) {
@@ -345,12 +341,31 @@
                     var ckpoints = val.find(function (o) {
                       return o.key == "yfPoints";
                     });
+                    var ckpointsVal=ckpoints && ckpoints.vals ? ckpoints.vals : [];
+
                     var problemRecords = val.find(function (o) {
                       return o.key == "yfProblemRecord";
                     });
+                    var problemRecordsVal=problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [];
+
                     var InspectionProblemRecordFiles = val.find(function (o) {
                       return o.key == "yfInspectionProblemRecordFile";
                     });
+                    //文件上传
+                    var InspectionProblemRecordFilesVal=InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?
+                      filterUpload(InspectionProblemRecordFiles.vals): [];
+                    InspectionProblemRecordFilesVal.forEach(function (k) {
+                      tasks.push(function () {
+                        return remote.safe.inserFile({
+                          FileName:k.FileID,
+                          Base64:k.FileContent
+                        }).then(function () {
+                          delete k.FileContent
+                        })
+                      });
+                    });
+
+                    //几何位置单独上传
                     if (points && points.vals) {
                       points.vals.forEach(function (t) {
                         if (t.geometry) {
@@ -363,6 +378,12 @@
                           return remote.Procedure.InspectionPoint.create(t)
                         });
                       });
+                    }
+                    //业务单独上传
+                    var post={
+                      "CheckpointInput": ckpointsVal,
+                      "ProblemRecordInput": problemRecordsVal,
+                      "ProblemRecordFileInput": InspectionProblemRecordFilesVal
                     }
 
                     tasks.push(function () {
@@ -396,12 +417,8 @@
                           })
                         }
                       }
-                      return remote.safe.safeUp({
-                        "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
-                        "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
-                        "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
-                      },"house").then(function () {
-                        clear(ckpoints,problemRecords,InspectionProblemRecordFiles);
+                      return remote.safe.safeUp(post,"house").then(function () {
+                        clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points);
                       });
                     });
                   }
@@ -420,6 +437,15 @@
                 utils.alert("上传成功!");
                 $mdDialog.hide();
                 load();
+                remote.offline.query().then(function(m){
+                  if(angular.isArray(m.data)){
+                    m.data.forEach(function(n){
+                      if(n.Id&&(n.Id.indexOf("yfZg")>-1||n.Id.indexOf("yfYS")>-1)){
+                        remote.offline.delete({Id:n.Id});
+                      }
+                    });
+                  }
+                });
                 vm.uploadInfo.uploading = false;
               }, function (timeout) {
                 var msg = timeout ? '超时,任务上次失败!' : '上传失败,请检查网络';
@@ -437,6 +463,7 @@
         });
       });
     }
+
 
     function loadInspection() {
      return remote.safe.getBatchWrap.cfgSet({
@@ -472,10 +499,9 @@
         }else {
           xhscService.getProfile().then(function (profile) {
             vm.role = profile.role;
-          }).then(function () {
-            ret(vm.role).then(function (r) {
-              resolve(r);
-            });
+            return ret(vm.role);
+          }).then(function (r) {
+            resolve(r);
           })
         }
       })
@@ -520,9 +546,6 @@
       });
     }
 
-    api.setNetwork(0).then(function () {
-      load();
-    })
     vm.setModule = function (val) {
       $state.go('app.xhsc.yf.yfBase', {yw: val})
     }
@@ -616,7 +639,6 @@
       });
       evt.stopPropagation();
     }
-
     vm.jlysAction = function (item) {
       if (!item.isOffline) {
         vm.downloadys(item).then(function () {

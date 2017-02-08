@@ -187,7 +187,7 @@
                 })
 
               api.task(tasks, {
-                event: 'downloadweek',
+                event: 'downloadyf',
                 target: item.InspectionID
               })(null, function () {
                 item.percent = item.current = item.total = null;
@@ -213,7 +213,7 @@
         })
       });
     }
-    api.event('downloadweek', function (s, e) {
+    api.event('downloadyf', function (s, e) {
       var current = vm.Inspections && vm.Inspections.find(function (item) {
           return item.InspectionID == e.target;
         });
@@ -331,7 +331,6 @@
                 }
                 return arr;
               }
-
               var tasks = [];
               return $q(function (resolve, reject) {
                 api.getUploadData(function (cfg) {

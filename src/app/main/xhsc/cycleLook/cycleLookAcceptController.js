@@ -88,7 +88,6 @@
           })
         }
       }
-
       $scope.$watch("current.region",function (v,o) {
         if (v&&$scope.current.procedure){
           if (v.SpecialtyID=="0000200008"){
