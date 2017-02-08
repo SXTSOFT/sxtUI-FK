@@ -124,7 +124,7 @@
           }).then(function () {
             $timeout(function () {
               utils.alert('提交成功，请稍后离线上传数据',null,function () {
-                $state.go("app.xhsc.week.sfWeekMain");
+                $state.go("app.xhsc.yf.Main");
               });
             })
           })

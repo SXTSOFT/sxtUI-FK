@@ -133,7 +133,7 @@
               rec.Describe=rec.Remark=scope.Record.zb.Remark;
               rec.Remark=rec.Remark=scope.Record.zb.Remark;
               rec.DescRole="zb";
-              remote.safe.weekproblemRecordCreate(rec).then(function () {
+              remote.yf.yfProblemRecordCreate(rec).then(function () {
                 resolve(rec);
               })
             }
@@ -225,7 +225,7 @@
                 var rec=r.data[0];
                 // rec.Describe=rec.Remark=scope.Record.zb.Remark;
                 rec.DescRole="jl";
-                remote.safe.weekproblemRecordCreate(rec);
+                remote.yf.yfproblemRecordCreate(rec);
               }
             });
           });
