@@ -1,246 +1,253 @@
-<md-tabs  flex>
-  <md-tab flex layout="column" label="工序验收明细">
-    <md-tab-content ms-scroll class="download" style="padding: 0px">
-      <div flex layout="column">
-        <md-content class="subheader" style="position:relative;" flex layout-padding>
-          <table width="100%" cellpadding="0" cellspacing="0" class="gxzgtb" border="0">
-            <thead>
-            <tr>
-              <th colspan="8" style="text-align: center;" class="head">
-                {{vm.AcceptanceName}}验收记录表
-              </th>
-            </tr>
-            <tr>
-              <th width="12.5%">
-                项目名称：
-              </th>
-              <th colspan="3" width="37.5%">
-                {{vm.result.ProjectName}}
-              </th>
-              <th width="12.5%">验收部位</th>
-              <th colspan="3" width="37.5%">{{vm.result.CheckAreas}}</th>
-              <!--<th>钢筋工程验收记录表</th>-->
-              <!--<th colspan="2">验收时间</th>-->
-            </tr>
-            <tr>
-              <th width="12.5%">施工单位</th>
-              <th width="12.5%">{{vm.result.MainContractorName}}</th>
-              <th width="12.5%">项目经理</th>
-              <th width="12.5%">{{vm.result.MainContractorHeadName}}</th>
-              <th width="12.5%">报验人员</th>
-              <th width="12.5%">{{vm.result.InspectionUser}}</th>
-              <th width="12.5%">报验时间</th>
-              <th width="12.5%">{{vm.result.InspectionTime}}</th>
-            </tr>
-            <tr>
-              <th>监理单位</th>
-              <th>{{vm.result.SupervisionName}}</th>
-              <th>项目总监</th>
-              <th>{{vm.result.SupervisionHeadName}}</th>
-              <th>验收人员</th>
-              <th>{{vm.result.SupervisionCollectName}}</th>
-              <th>验收时间</th>
-              <th>{{vm.result.SupervisionTime}}</th>
-            </tr>
-            <tr>
-              <th>建设单位</th>
-              <th>{{vm.result.CompanyName || '星河地产'}}</th>
-              <th>项目经理</th>
-              <th>{{vm.result.CompanyHeadName}}</th>
-              <th>验收人员</th>
-              <th></th>
-              <th>验收时间</th>
-              <th>{{vm.result.CompanyTime}}</th>
-            </tr>
-            <tr>
-              <th>验收意见</th>
-              <th colspan="7">
-                {{vm.result.Status == 2 ? ' 同意':'不同意'}}验收
-              </th>
+<md-tabs flex>
+    <md-tab flex layout="column" label="工序验收明细">
+        <md-tab-content ms-scroll class="download" style="padding: 0px">
+            <form method="post" action="http://emp.chngalaxy.com:9091/api/MaterialPlan/GetMaterialReportXls" target="_blank">
+                <input id="export" type="hidden" name="table" />
+                <input id="tital" type="hidden" name="tital" value="工序验收报表" />
+                <md-button class="md-raised md-primary" type="submit" ng-click="vm.printBatchCount()">Excel导出</md-button>
+            </form>
+            <div flex layout="column" id="divReport">
+                <md-content class="subheader" style="position:relative;" flex layout-padding>
+                    <table width="100%" cellpadding="0" cellspacing="0" class="gxzgtb" border="0">
+                        <thead>
+                            <tr style="border: 1px solid #ddd;">
+                                <th colspan="8" style="text-align: center;" class="head">
+                                    {{vm.AcceptanceName}}验收记录表
+                                </th>
+                            </tr>
+                            <tr style="border: 1px solid #ddd;">
+                                <th width="12.5%">
+                                    项目名称：
+                                </th>
+                                <th colspan="3" width="37.5%">
+                                    {{vm.result.ProjectName}}
+                                </th>
+                                <th width="12.5%">验收部位</th>
+                                <th colspan="3" width="37.5%">{{vm.result.CheckAreas}}</th>
+                                <!--<th>钢筋工程验收记录表</th>-->
+                                <!--<th colspan="2">验收时间</th>-->
+                            </tr>
+                            <tr style="border: 1px solid #ddd;">
+                                <th width="12.5%">施工单位</th>
+                                <th width="12.5%">{{vm.result.MainContractorName}}</th>
+                                <th width="12.5%">项目经理</th>
+                                <th width="12.5%">{{vm.result.MainContractorHeadName}}</th>
+                                <th width="12.5%">报验人员</th>
+                                <th width="12.5%">{{vm.result.InspectionUser}}</th>
+                                <th width="12.5%">报验时间</th>
+                                <th width="12.5%">{{vm.result.InspectionTime}}</th>
+                            </tr>
+                            <tr style="border: 1px solid #ddd;">
+                                <th>监理单位</th>
+                                <th>{{vm.result.SupervisionName}}</th>
+                                <th>项目总监</th>
+                                <th>{{vm.result.SupervisionHeadName}}</th>
+                                <th>验收人员</th>
+                                <th>{{vm.result.SupervisionCollectName}}</th>
+                                <th>验收时间</th>
+                                <th>{{vm.result.SupervisionTime}}</th>
+                            </tr>
+                            <tr style="border: 1px solid #ddd;">
+                                <th>建设单位</th>
+                                <th>{{vm.result.CompanyName || '星河地产'}}</th>
+                                <th>项目经理</th>
+                                <th>{{vm.result.CompanyHeadName}}</th>
+                                <th>验收人员</th>
+                                <th></th>
+                                <th>验收时间</th>
+                                <th>{{vm.result.CompanyTime}}</th>
+                            </tr>
+                            <tr style="border: 1px solid #ddd;">
+                                <th>验收意见</th>
+                                <th colspan="7">
+                                    {{vm.result.Status == 2 ? ' 同意':'不同意'}}验收
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border: 1px solid #ddd;" ng-repeat="items in vm.result.Areas">
+                                <td colspan="8" style="padding:0;">
+                                    <table cellpadding="0" cellspacing="0" width="100%" class="gxtb2" border="0">
+                                        <tbody>
+                                            <tr style="border: 1px solid #ddd;">
+                                                <td colspan="8" style="border-top:none;border-right:none;">{{items.Area}}验收项及验收情况</td>
+                                            </tr>
+                                            <tr style="border: 1px solid #ddd;">
+                                                <td width="12.5%">
+                                                    序号
+                                                </td>
+                                                <td width="12.5%">
+                                                    分类
+                                                </td>
+                                                <td width="12.5%">
+                                                    管控要点
+                                                </td>
+                                                <td width="12.5%">
+                                                    质量标准
+                                                </td>
+                                                <td colspan="2" width="25%">
+                                                    问题描述
+                                                </td>
+                                                <td width="12.5%">
+                                                    验收情况
+                                                </td>
+                                                <td width="12.5%">
+                                                    复验情况
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody ng-repeat="item in items.Classification" ng-if="item.Children.length">
+                                            <tr ng-repeat="i in item.Children" ng-class="{'biaozhu':i.Inspection == '不符合'}" style="border: 1px solid #ddd;">
+                                                <td width="12.5%">{{i.ProblemSortName}}</td>
+                                                <td rowspan="{{item.rowspan}}" ng-if="$index == 0" width="12.5%">{{item.ClassificationName}}</td>
+                                                <td width="12.5%">{{i.ControlPoint}}</td>
+                                                <td width="12.5%">{{i.QualityStandard}}</td>
+                                                <td colspan="2" width="25%">{{i.Standard}}</td>
+                                                <td width="12.5%">
+                                                    {{i.Inspection}}
+                                                </td>
+                                                <td width="12.5%">
+                                                    {{i.ReInspection}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
 
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="items in vm.result.Areas">
-              <td colspan="8" style="padding:0;">
-                <table cellpadding="0" cellspacing="0" width="100%" class="gxtb2" border="0">
-                  <tbody>
-                  <tr>
-                    <td colspan="8" style="border-top:none;border-right:none;">{{items.Area}}验收项及验收情况</td>
-                  </tr>
-                  <tr>
-                    <td width="12.5%">
-                      序号
-                    </td>
-                    <td width="12.5%">
-                      分类
-                    </td>
-                    <td width="12.5%">
-                      管控要点
-                    </td>
-                    <td width="12.5%">
-                      质量标准
-                    </td>
-                    <td colspan="2" width="25%">
-                      问题描述
-                    </td>
-                    <td width="12.5%">
-                      验收情况
-                    </td>
-                    <td width="12.5%">
-                      复验情况
-                    </td>
-                  </tr>
-                  </tbody>
-                  <tbody  ng-repeat="item in items.Classification" ng-if="item.Children.length">
-                  <tr ng-repeat="i in item.Children" ng-class="{'biaozhu':i.Inspection == '不符合'}">
-                    <td  width="12.5%">{{i.ProblemSortName}}</td>
-                    <td rowspan="{{item.rowspan}}" ng-if="$index == 0"  width="12.5%">{{item.ClassificationName}}</td>
-                    <td  width="12.5%">{{i.ControlPoint}}</td>
-                    <td  width="12.5%">{{i.QualityStandard}}</td>
-                    <td colspan="2"  width="25%">{{i.Standard}}</td>
-                    <td  width="12.5%">
-                      {{i.Inspection}}
-                    </td>
-                    <td width="12.5%">
-                      {{i.ReInspection}}
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </td>
+                            </tr>
+                            <tr name="tRow" style="border: 1px solid #ddd;">
+                                <td colspan="8" style="padding: 0;border-top:none;">
+                                    <table width="100%" cellpadding="0" cellspacing="0" class="gxtb2">
+                                        <tbody>
+                                            <tr style="border: 1px solid #ddd;">
+                                                <td colspan="8" style="border-top:none;border-right:none;">验收现场照片</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody ng-repeat="pic in vm.pics">
+                                            <tr style="border: 1px solid #ddd;">
+                                                <td colspan="2" ng-repeat="p in pic">
+                                                    {{p.index}}
+                                                </td>
+                                            </tr>
+                                            <tr style="border: 1px solid #ddd;">
+                                                <!--<td colspan="2" width="25%"><p><img src="app/main/xhsc/images/bg.png" width="80%"></p></td>-->
+                                                <td colspan="2" width="25%" ng-repeat="p in pic">
+                                                    <p style="text-align:center;"><img ng-src="{{p.FilenName}}" width="80%"></p>
+                                                </td>
+                                                <!--<td colspan="2" width="25%"></td>-->
+                                                <!--<td colspan="2" width="25%"></td>-->
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr name="tRow">
+                                <td colspan="8" style="border-top: none;">验收问题及原位标注</td>
+                            </tr>
+                            <tr name="tRow" tRow ng-repeat="area in vm.Regions">
+                                <td colspan="4" width="50%">
+                                    <div style="height:500px;" class="mapcheck" layout="column" flex inspection-id="vm.Inspection" disable-inspect="true" sxt-report-map="vm.rectificationIDs" ct="vm.info" procedure="vm.acceptanceItemId" disable-drag region-id="area.AreaId">
+                                        <div flex layout="row" layout-align="center center" ng-if="vm.info.loading">
+                                            <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td colspan="4">
+                                    <p>问题描述：</p>
+                                    <p ng-repeat="problem in area.Problems" style="word-break: break-all;">{{problem.ProblemSortName}} {{problem.ProblemDescription}}</p>
+                                    <p ng-if="!area.Problems">合格</p>
+                                </td>
+                            </tr>
+                            <tr name="tRow">
+                                <td colspan="8" style="padding: 0;">
+                                    <table width="100%" cellpadding="0" cellspacing="0" class="gxtb2">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="8" style="border-top:none;border-right:none;">验收问题及整改情况</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="8" width="100%" style="padding:0;border-top:none;">
+                                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                                        <tbody ng-repeat="detail in vm.result.Detaileds">
+                                                            <tr>
+                                                                <td width="50%">
+                                                                    验收照片
+                                                                </td>
+                                                                <td width="50%">
+                                                                    整改照片
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td width="50%">
+                                                                    <p style="text-align:center;"><span ng-repeat="img in detail.Fronts"><img ng-src="{{img.FileUrl}}" width="90%"></span></p>
+                                                                </td>
+                                                                <td width="50%">
+                                                                    <p style="text-align:center;"><span ng-repeat="img in detail.Backs"><img ng-src="{{img.FileUrl}}" width="90%"></span></p>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    问题描述：{{detail.Describe}}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                                <!--<td colspan="2" width="25%"><p><img src="app/main/xhsc/images/bg.png" width="80%"></p></td>-->
+                                                <!--<td colspan="2" width="25%" ng-repeat="p in detail">{{p.Back}}</td>-->
+                                            </tr>
+                                            <!--<tr>-->
+                                            <!--<td colspan="4" ng-repeat="d in detail">{{d.Describe}}</td>-->
+                                            <!--&lt;!&ndash;<td colspan="4">问题描述</td>&ndash;&gt;-->
+                                            <!--</tr>-->
+                                        </tbody>
+                                    </table>
+                                </td>
 
-            </tr>
-            <tr>
-              <td colspan="8" style="padding: 0;border-top:none;">
-                <table width="100%" cellpadding="0" cellspacing="0" class="gxtb2">
-                  <tbody>
-                  <tr>
-                    <td colspan="8"  style="border-top:none;border-right:none;">验收现场照片</td>
-                  </tr>
-                  </tbody>
-                  <tbody ng-repeat="pic in vm.pics">
-                  <tr>
-                    <td colspan="2" ng-repeat="p in pic">
-                      {{p.index}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <!--<td colspan="2" width="25%"><p><img src="app/main/xhsc/images/bg.png" width="80%"></p></td>-->
-                    <td colspan="2" width="25%" ng-repeat="p in pic"><p style="text-align:center;"><img ng-src="{{p.FilenName}}" width="80%"></p></td>
-                    <!--<td colspan="2" width="25%"></td>-->
-                    <!--<td colspan="2" width="25%"></td>-->
-                  </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="8" style="border-top: none;">验收问题及原位标注</td>
-            </tr>
-            <tr ng-repeat="area in vm.Regions">
-              <td colspan="4" width="50%">
-                <div style="height:500px;" class="mapcheck" layout="column" flex inspection-id="vm.Inspection" disable-inspect="true" sxt-report-map="vm.rectificationIDs" ct="vm.info" procedure="vm.acceptanceItemId" disable-drag region-id="area.AreaId">
-                  <div flex layout="row" layout-align="center center" ng-if="vm.info.loading"><md-progress-circular md-mode="indeterminate" md-diameter="28" ></md-progress-circular></div>
-                </div>
-              </td>
-              <td colspan="4"><p>问题描述：</p>
-                <p ng-repeat="problem in area.Problems" style="word-break: break-all;">{{problem.ProblemSortName}} {{problem.ProblemDescription}}</p>
-                <p ng-if="!area.Problems">合格</p>
-              </td>
-            </tr>
-
-            <tr>
-              <td colspan="8" style="padding: 0;">
-                <table width="100%" cellpadding="0" cellspacing="0" class="gxtb2">
-                  <tbody>
-                  <tr>
-                    <td colspan="8"  style="border-top:none;border-right:none;">验收问题及整改情况</td>
-                  </tr>
-                  </tbody>
-                  <tbody>
-                  <tr>
-                    <td colspan="8" width="100%" style="padding:0;border-top:none;">
-                      <table width="100%" cellpadding="0" cellspacing="0">
-                        <tbody ng-repeat="detail in vm.result.Detaileds">
-                        <tr>
-                          <td width="50%">
-                            验收照片
-                          </td>
-                          <td width="50%">
-                            整改照片
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="50%">
-                            <p style="text-align:center;"><span ng-repeat="img in detail.Fronts"><img ng-src="{{img.FileUrl}}" width="90%"></span></p>
-                          </td>
-                          <td width="50%">
-                            <p style="text-align:center;"><span ng-repeat="img in detail.Backs"><img ng-src="{{img.FileUrl}}" width="90%"></span></p>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colspan="2">
-                            问题描述：{{detail.Describe}}
-                          </td>
-                        </tr>
+                            </tr>
                         </tbody>
-                      </table>
-                    </td>
-                    <!--<td colspan="2" width="25%"><p><img src="app/main/xhsc/images/bg.png" width="80%"></p></td>-->
-                    <!--<td colspan="2" width="25%" ng-repeat="p in detail">{{p.Back}}</td>-->
-                  </tr>
-                  <!--<tr>-->
-                  <!--<td colspan="4" ng-repeat="d in detail">{{d.Describe}}</td>-->
-                  <!--&lt;!&ndash;<td colspan="4">问题描述</td>&ndash;&gt;-->
-                  <!--</tr>-->
-                  </tbody>
-                </table>
-              </td>
-
-            </tr>
-            </tbody>
 
 
 
-            <!--<tr ng-repeat="detail in vm.details">-->
-            <!--<td style="padding:0;border-top:none;">-->
-            <!--<table width="100%" cellpadding="0" cellspacing="0">-->
-            <!--<tbody ng-repeat="imgs in detail">-->
-            <!--<tr>-->
-            <!--<td width="50%">-->
-            <!--验收照片-->
-            <!--</td>-->
-            <!--<td width="50%">-->
-            <!--整改照片-->
-            <!--</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-            <!--<td width="50%">-->
-            <!--<p><span ng-repeat="img in imgs.Front"><img ng-src="{{img.FileUrl}}" width="50%"></span></p>-->
-            <!--</td>-->
-            <!--<td width="50%">-->
-            <!--<p><span ng-repeat="img in imgs.Back"><img ng-src="{{img.FileUrl}}" width="50%"></span></p>-->
-            <!--</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-            <!--<td colspan="2" width="100%">-->
-            <!--{{imgs.Describe}}-->
-            <!--</td>-->
-            <!--</tr>-->
-            <!--</tbody>-->
-            <!--</table>-->
-            <!--</td>-->
-            <!--</tr>-->
-          </table>
-        </md-content>
-      </div>
-    </md-tab-content>
-  </md-tab>
+                        <!--<tr ng-repeat="detail in vm.details">-->
+                        <!--<td style="padding:0;border-top:none;">-->
+                        <!--<table width="100%" cellpadding="0" cellspacing="0">-->
+                        <!--<tbody ng-repeat="imgs in detail">-->
+                        <!--<tr>-->
+                        <!--<td width="50%">-->
+                        <!--验收照片-->
+                        <!--</td>-->
+                        <!--<td width="50%">-->
+                        <!--整改照片-->
+                        <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                        <!--<td width="50%">-->
+                        <!--<p><span ng-repeat="img in imgs.Front"><img ng-src="{{img.FileUrl}}" width="50%"></span></p>-->
+                        <!--</td>-->
+                        <!--<td width="50%">-->
+                        <!--<p><span ng-repeat="img in imgs.Back"><img ng-src="{{img.FileUrl}}" width="50%"></span></p>-->
+                        <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                        <!--<td colspan="2" width="100%">-->
+                        <!--{{imgs.Describe}}-->
+                        <!--</td>-->
+                        <!--</tr>-->
+                        <!--</tbody>-->
+                        <!--</table>-->
+                        <!--</td>-->
+                        <!--</tr>-->
+                    </table>
+                </md-content>
+            </div>
+        </md-tab-content>
+    </md-tab>
 </md-tabs>
 <div ng-click="vm.goback()" style="position: absolute;right: 8px">
-  <md-button class="md-fab md-mini" ng-click="vm.comeBack()">
-    <md-icon md-svg-src="app/main/xhsc/images/icon-comeback.svg"></md-icon>
-  </md-button>
+    <md-button class="md-fab md-mini" ng-click="vm.comeBack()">
+        <md-icon md-svg-src="app/main/xhsc/images/icon-comeback.svg"></md-icon>
+    </md-button>
 </div>
-

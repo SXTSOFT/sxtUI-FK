@@ -113,18 +113,6 @@
             }
         };
 
-
-        vm.printBatchCount = function() {
-            var $html = $("#divReport").clone(false);
-            $html.find('div[class="layout-row"]').remove();
-            $html.find('table tr').each(function(index, element) {
-                $(element).find('th:last').remove();
-                $(element).find('td:last').remove();
-            });
-            $('#export').val($html.html());
-        }
-
-
         //--------------------------------------------以下为移动适配---------------------------------------
         vm.source = remote.Project.getMap();
         vm.gxSelected = [];

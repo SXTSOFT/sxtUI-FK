@@ -30,12 +30,7 @@
             </div>
         </md-card-content>
     </md-card>
-    <form method="post" action="http://emp.chngalaxy.com:9091/api/MaterialPlan/GetMaterialReportXls" target="_blank">
-        <input id="export" type="hidden" name="table" />
-        <input id="tital" type="hidden" name="tital" value="工序验收报表" />
-        <md-button class="md-raised md-primary" type="submit" ng-click="vm.printBatchCount()">Excel导出</md-button>
-    </form>
-    <div flex style="margin: 24px 16px" id="divReport">
+    <div flex style="margin: 24px 16px">
         <table class="table table-hover ">
             <thead>
                 <tr>
