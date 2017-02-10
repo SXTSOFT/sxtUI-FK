@@ -787,6 +787,9 @@
                  "PhotoFileName":sxt.uuid()+'.jpg',
                   "PhotoFile":vm.img//$scope.img[0].ImageByte
               };
+              if(!vm.img){
+                return;
+              }
               vm.closePanel1();
               api.plan.BuildPlan.endTask($stateParams.id,params).then(function (r) {
                 //task.IsAbleStart = r.IsAbleStart;
@@ -834,9 +837,9 @@
           template: '<div style="margin-top:-50px;width:320px;background:#fff;border-radius: 10px;box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);overflow: hidden;"><div style="margin-bottom: 10px;background: #f9f9f9;border-bottom: 1px solid #dedede;height:50px;line-height: 50px;padding-left:30px;">反馈信息</div><div style="display: block;text-align: center;"><sxt-images2 ng-model="task.TaskFlowId" img="vm.img"></sxt-images2></div><md-input-container md-no-float class="md-block m-0" style="margin:0 20px;">\
           <input type="text" ng-model="vm.EndDescription" placeholder="备注">\
           </md-input-container>\
-          <div layout="row" layout-align="space-around start" style="margin-bottom: 20px;">\
+          <div layout="row" layout-align="space-around start" style="margin-bottom: 10px;">\
           <md-button class="md-raised" ng-click="vm.quxiao()">取消</md-button>\
-          <md-button class="md-raised md-primary" ng-click="vm.endTask()">完成</md-button></div></div>',
+            <md-button class="md-raised md-primary" ng-click="vm.endTask()" ng-disabled="!vm.img">完成</md-button></div><div layout="row" layout-align="center center" style="margin-bottom: 10px;">点完成按钮前必须上传图片</div></div>',
           hasBackdrop: true,
           position: position,
           trapFocus: true,

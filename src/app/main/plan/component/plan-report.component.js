@@ -16,9 +16,54 @@
   function planReportController(api){
     var vm = this;
     vm.reportTime=new Date();
+    function setChina(r){
+      var str='';
+      switch (r){
+        case 0:
+          str='提前完成';
+          break;
+        case 1:
+          str='正常完成';
+          break;
+        case 2:
+          str='轻度延期';
+          break;
+        case 3:
+          str='中度延期';
+          break;
+        case 4:
+          str='重度延期';
+          break;
+        case 5:
+          str='严重延期';
+          break;
+        case 6:
+          str='';
+          break;
+        default:
+          str='无状态';
+          break;
+      }
+      return str;
+    }
     api.plan.BuildPlan.statisticsReport().then(function(r){
+      r.data.CompanyStatisticss&&r.data.CompanyStatisticss.forEach(function(c){
+        c.ProjectStatisticss&&c.ProjectStatisticss.forEach(function(_c){
+          _c.SectionStatisticss&&_c.SectionStatisticss.forEach(function(_p){
+            _p.TaskStatisticss&&_p.TaskStatisticss.forEach(function(t){
+              t.statusName = setChina(t.CompleteStatus)
+            })
+          })
+        })
+      })
+      //r.data.forEach(function(re){
+      //  // re.statusName = setChina(re.CompleteStatus)
+      //})
       vm.data= r.data;
+      console.log(vm.data)
     })
+
+
     //vm.data = {
     //  "CompanyStatisticss": [
     //    {
