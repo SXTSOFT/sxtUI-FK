@@ -41,6 +41,7 @@
     }
 
     vm.save = function () {
+
       if (vm.cid != 0){
         var _str = vm.Brands.join("、");
         var _data = {'ContractId':vm.cid,'MaterialId':vm.data.Id,'Brands':_str};
