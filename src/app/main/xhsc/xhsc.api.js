@@ -142,8 +142,8 @@
         getZTjd: function (areaId) {
           return $http.get($http.url('/api/ProjectInfoApi/GetSubjectSchedule', {areaId: areaId}))
         },
-        getUserProjectSection:function(){
-          return  $http.get($http.url('/api/ProjectInfoApi/GetUserSection'))
+        getUserProjectSection:function(role){
+          return  $http.get($http.url('/api/ProjectInfoApi/GetUserSection/' + role))
         },
         getDrawings: $http.db({
           _id: 'Drawing',

@@ -43,12 +43,12 @@
       vm.offlines = [];
       vm.section = [];
 
-      remote.Project.getUserProjectSection().then(function (result) {
+      remote.Project.getUserProjectSection(user.Role.MemberType).then(function (result) {
         if(!result || result.data.length==0){
           utils.alert('暂无项目！');
         }
         else {
-          if(user.Role.MemberType === "" || user.Role.MemberType == 4){
+          if(user.Role.MemberType === 4){
             vm.offlines = result.data;
           }else{
             remote.offline.query().then(function (r2) {
