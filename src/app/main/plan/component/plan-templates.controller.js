@@ -30,7 +30,8 @@
     },true);
 
     vm.Query = function (item) {
-      $state.go("app.plan.template.detail",{id:item.Id});
+      console.log(item)
+      $state.go("app.plan.template.detail",{id:item.Id,taskLibraryId:item.RootTaskLibraryId});
 
     }
 
@@ -42,7 +43,18 @@
       });
 
     }
-
+    vm.copyTemp = function(item){
+      console.log(item)
+      utils.confirm('复制模板？').then(function(){
+        api.plan.TaskTemplates.copyTemplate(item.Id).then(function(r){
+          utils.alert('复制成功').then(function(){
+            Load();
+          })
+        },function(err){
+          utils.alert(err.data||'复制失败');
+        })
+      })
+    }
     function Load() {
       var page=utils.getPage($scope.pageing);
 

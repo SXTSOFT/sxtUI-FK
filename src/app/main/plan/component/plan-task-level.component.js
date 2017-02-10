@@ -490,9 +490,6 @@
       });
     }
 
-    //vm.selectSpecialtyLow=function(item,parent){
-    //  parent.WPAcceptanceList=item.WPAcceptanceList;
-    //}
     vm.setMeasureInfo = function(flow){
       return $mdDialog.show({
         controller:['$scope','pdata','mdata','data','subtasks',function($scope,pdata,mdata,data,subtasks){

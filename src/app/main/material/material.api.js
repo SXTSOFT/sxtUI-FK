@@ -57,6 +57,9 @@
         GetMaterialTreeList:function (cid) {
           return $http.get($http.url('/api/MaterialScience/GetMaterialTreeListAsync/'+cid))
         },
+        GetMaterialListByTypeId:function (cid) {
+          return $http.get($http.url('/api/MaterialScience/GetMaterialListByTypeId/'+cid))
+        },
         batchCreate:function (data) {
           return $http.put('/api/MaterialScience/BatchCreateMaterial',data);
         }
@@ -81,7 +84,10 @@
           return $http.get($http.url('/api/ProjectInfoApi/GetProjectSection',{areaId:args}));
         },
         getUserProjectSectionForPc:function(){
-          return  $http.get($http.url('/api/ProjectInfoApi/GetUserSectionForPc'))
+          return $http.get($http.url('/api/ProjectInfoApi/GetUserSectionForPc'))
+        },
+        getMaterialReport:function(sid){
+          return $http.get($http.url('/api/MaterialPlan/GetMaterialReportBySectionId/' + sid))
         }
       },
       contract:{

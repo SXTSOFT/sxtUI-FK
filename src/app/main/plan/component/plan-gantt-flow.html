@@ -1,4 +1,4 @@
-<md-dialog ng-style="{'min-width':'layout-xs'?'300px':'900px'}">
+<md-dialog>
   <md-toolbar class="md-hue-2 h-50 sub-toolbar">
     <div class="md-toolbar-tools">
       <h2>
@@ -35,7 +35,11 @@
             <td style="padding:4px">{{flow.ActualStartTime|date:'yyyy-MM-dd'}}~<br/>{{flow.ActualEndTime|date:'yyyy-MM-dd'}}</td>
             <td style="padding:4px">{{flow._State}}</td>
             <td style="color:#f00;padding:4px;">
-              <md-button style="min-height:24px;line-height: 24px;height:24px;padding:0;min-width: 40px;" ng-click="vm.showTaskD(flow)" ng-if="(flow.State==2)&&flow.ManuallyClose">查看</md-button>
+              <md-button style="min-height:24px;line-height: 24px;height:24px;padding:0;min-width: 40px;" ng-click="vm.showTaskD(flow)" ng-if="(flow.State==2)&&flow.ManuallyClose">查看
+                <md-tooltip md-delay="10">
+                  {{flow.EndDescription}}
+                </md-tooltip>
+              </md-button>
               <md-button style="min-height:24px;line-height: 24px;height:24px;padding:0;min-width: 40px;" ng-click="vm.startTask(flow)" ng-if="flow.IsAbleStart&&(flow.IsInterlude)">开启穿插</md-button>
               <md-button style="min-height:24px;line-height: 24px;height:24px;padding:0;;min-width: 40px;" ng-click="vm.closeTask(flow)" ng-if="flow.IsAbleStart&&!flow.IsInterlude&&(flow.ManuallyClose||flow.IsRelatedObject)"  ng-disabled="(flow.ManuallyClose||flow.IsRelatedObject)&&!flow.IsAbleStart">完成</md-button>
             </td>
@@ -46,7 +50,7 @@
           </tbody>
         </table>
       </div>
-      <div flex="20" ng-style="{'display':'layout-xs'?'none':'block'}">
+      <div flex="20">
         <div style="height: 65px"></div>
         <canvas id="gitGraph" ng-show="vm.hasFlow"></canvas>
       </div>

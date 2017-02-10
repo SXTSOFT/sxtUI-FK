@@ -4,17 +4,22 @@
       <span>任务管理</span>
     </h2>
     <span flex="5"></span>
-    <md-select style="font-size:13px;margin-right:20px;" ng-model="vm.selectedFilter" placeholder="级别">
-      <md-option ng-value="0" >
-        一/二级
-      </md-option>
-      <md-option ng-value="1" >
-        三级
-      </md-option>
-      <md-option ng-value="2" >
-        四级
+    <md-select style="font-size:13px;margin-right:20px;" ng-model="vm.selectedMoban" placeholder="请选择模板">
+      <md-option ng-value="temp.Id" ng-repeat="temp in vm.tempDatas">
+        {{temp.Name}}
       </md-option>
     </md-select>
+    <!--<md-select style="font-size:13px;margin-right:20px;" ng-model="vm.currentSelect.selectedFilter" placeholder="级别">-->
+      <!--<md-option ng-value="0" >-->
+        <!--一/二级-->
+      <!--</md-option>-->
+      <!--<md-option ng-value="1" >-->
+        <!--三级-->
+      <!--</md-option>-->
+      <!--<md-option ng-value="2" >-->
+        <!--四级-->
+      <!--</md-option>-->
+    <!--</md-select>-->
     <task-categories ng-model="vm.selectedCategory" style="font-size:13px;"></task-categories>
     <span flex></span>
     <div class="white-placeholder" style="border:1px solid rgb(245,245,245);border-radius:14px;padding:0 5px;">
@@ -39,12 +44,19 @@
     <th ng-if="vm.selectedFilter != 0">工期</th>
     <th>预留开始</th>
     <th>预留结束</th>
-    <th style="width: 160px"><span class="pl-16">管理</span></th>
+    <th style="width: 200px"><span class="pl-16">管理</span></th>
   </tr>
   </thead>
 
   <tbody>
-  <tr ng-repeat="item in vm.items|filter:{Type:vm.selectedCategory}|filter:vm.search">
+    <tr ng-if="!vm.loading">
+        <td colspan="6">
+          <div layout="row" layout-align="center center">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+          </div>
+        </td>
+    </tr>
+  <tr ng-if="vm.loading" ng-repeat="item in vm.items|filter:{Type:vm.selectedCategory}|filter:vm.search">
     <td class="name">{{item.Name}}</td>
     <td class="time" ng-if="vm.selectedFilter!=0">{{item.Variable}}</td>
     <td class="time" ng-if="vm.selectedFilter != 0">{{item.Duration}}</td>
@@ -52,6 +64,7 @@
     <td class="time">{{item.ReservedEndDays}}</td>
     <td class="actions">
       <md-button ng-click="vm.Query(item)" class="md-icon-button"  aria-label="编辑"> <md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
+      <md-button ng-click="vm.copyTaskLib(item)" class="md-icon-button"  aria-label="复制" title="复制"> <md-icon  md-font-icon="icon-content-copy" class="icon s24"></md-icon></md-button>
       <md-button ng-click="vm.Delete(item)" class="md-icon-button"  aria-label="删除"> <md-icon  md-font-icon="icon-delete" class="icon s24"></md-icon></md-button>
     </td>
   </tr>

@@ -16,19 +16,27 @@
           <th>
             日期
           </th>
-          <th>
-            状态
-          </th>
+          <!--<th>-->
+            <!--状态-->
+          <!--</th>-->
           <th>编辑</th>
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="m in vm.data">
+        <tr ng-repeat="m in vm.data" ng-click="vm.select(m)">
           <td>{{m.Name}}</td>
-          <td>{{m.MilestoneTime|date:'yyyy-MM-dd'}}</td>
-          <td>{{m.Status}}</td>
           <td>
-            编辑
+            <span ng-if="vm.current == m&&m.edit">
+              <md-datepicker name="beginDate" ng-model="m.setTime" md-open-on-focus md-placeholder="日期" required></md-datepicker>
+            </span>
+            <span ng-if="!m.edit">
+              {{m.MilestoneTime|date:'yyyy-MM-dd'}}
+            </span>
+          </td>
+          <!--<td>{{m.Status}}</td>-->
+          <td>
+            <!--<md-datepicker name="beginDate" ng-model="m.setTime" md-placeholder="日期" required></md-datepicker>-->
+            <md-button ng-if="!m.IsComplete" ng-click="vm.edit(m)" class="md-icon-button"  aria-label="编辑"> <md-icon  md-font-icon="icon-pencil" class="icon s24"></md-icon></md-button>
           </td>
         </tr>
         <tr ng-if="!vm.data.length">

@@ -12,99 +12,23 @@
   /** @ngInject */
   function planBuild($scope,api,template,$q,$mdSidenav,utils,$timeout,$mdDialog,$mdPanel,$state){
     var vm = this;
+    vm.initLoading = true;
     vm.data = {
-
+      projects:null
     }
     vm.formWizard={
 
     }
     vm.formWizard.StartTime ?vm.formWizard.StartTime:vm.formWizard.StartTime = new Date();
-    //$scope.$watch('vm.formWizard',function(){
-    //  console.log(vm.formWizard)
-    //},true)
-    //var gs = (function () {
-    //  var vars = [],r = /[a-z]/gi,
-    //    compare = function (s1,s2) {
-    //      return s1.key.localeCompare(s2.key);
-    //    };
-    //  return {
-    //    getVars:function (g) {
-    //      var vs = g.toUpperCase().match(r),
-    //        rs = [];
-    //      if(!vs || vs.length===0) return rs;
-    //      vs.forEach(function (v) {
-    //        var r = vars.find(function (n) {
-    //          return n.key == v;
-    //        });
-    //        if(!r){
-    //          r = {
-    //            key:v
-    //          };
-    //          vars.push(r);
-    //
-    //        }
-    //        rs.push(r);
-    //      });
-    //      vars.sort(compare);
-    //      rs.sort(compare);
-    //      return rs;
-    //    },
-    //    setVars:function (g) {
-    //      var vs = g.toUpperCase().match(r),f = true;
-    //      if(!vs ||vs.length===0){
-    //        try {
-    //          return eval(g);
-    //        }catch (e){
-    //          return g;
-    //        }
-    //      }
-    //      vs.forEach(function (v) {
-    //        var r = vars.find(function (n) {
-    //          return n.key == v;
-    //        });
-    //        if(r && (r.value || r.value===0)){
-    //          g = g.replace(new RegExp(v,'gi'),r.value);
-    //        }
-    //        else{
-    //          f = false;
-    //        }
-    //      });
-    //
-    //      if(f) {
-    //        try {
-    //          return eval(g);
-    //        }catch (e){
-    //          return g;
-    //        }
-    //      }
-    //      else
-    //        return g;
-    //    }
-    //  }
-    //})();
-
-    //vm.getVars = function (task) {
-    //  if(!task) return;
-    //  if(task.eDuration !='' && !task.eDuration)
-    //    task.eDuration = task.Duration||'';
-    //
-    //  task.vars = vm.vars = gs.getVars(task.eDuration);
-    //  var r = gs.setVars(task.eDuration);
-    //  if(!task.vars.length){
-    //    task.minValue = task.Duration*0.8;
-    //  }
-    //  task.xDuration = r;
-    //  return r;
-    //};
-    //获取模板
-    api.plan.TaskTemplates.GetList({Skip:0,Limit:100}).then(function (r) {
-      vm.data.templates = r.data.Items||[];
+    api.xhsc.Project.getMap().then(function (r) {
+      vm.data.projects = r.data;
+      vm.initLoading = false;
     })
-
     vm.getMaps = function () {
-      return api.xhsc.Project.getMap().then(function (r) {
-        vm.data.projects = r.data;
-      })
+      return vm.data.projects||api.xhsc.Project.getMap().then(function (r) {
+          vm.data.projects = r.data;
+         return vm.data.projects
+        });
     }
     vm.getSections = function () {
       return api.xhsc.Project.GetAreaChildenbyID(vm.formWizard.projectId).then(function (r) {
@@ -454,6 +378,9 @@
           regionName1 = f.ProjectName;
           vm.formWizard.Name = regionName1;
         }
+        api.plan.TaskTemplates.GetList({Skip:0,Limit:100,ProjectId:vm.formWizard.projectId}).then(function (r) {
+          vm.data.templates = r.data.Items||[];
+        })
       }
     });
     $scope.$watch('vm.formWizard.sectionId',function(){
@@ -481,24 +408,6 @@
         }
       }
     })
-    //vm.setMin = function(){
-    //  if(vm.current.selectedTask.eDuration){
-    //    vm.min = Math.round(vm.current.selectedTask.eDuration * 0.8*10)*0.1;
-    //  }else{
-    //    vm.min = 0;
-    //  }
-    //}
-    //vm.changeDuration = function(){
-    //  //vm.setMin();
-    //  if(!vm.current.selectedTask.vars.length){
-    //    if(vm.current.selectedTask.eDuration<vm.current.selectedTask.minValue){
-    //      //console.log('min')
-    //      vm.minError = true;
-    //    }else{
-    //      vm.minError = false;
-    //    }
-    //  }
-    //  vm.setDuration(vm.current);
-    //}
+
   }
 })(angular,undefined);

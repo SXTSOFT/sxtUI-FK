@@ -59,6 +59,10 @@
       .state('app.material.materialLibrary',{
         url:'/library/{cid}',
         template:'<material-library flex layout="column"></material-library>'
+      })
+      .state('app.material.materialReport',{
+        url:'/materialReport',
+        template:'<material-Report flex layout="column"></material-Report>'
       });
 
     msNavigationServiceProvider.saveItem('material', {
@@ -85,6 +89,13 @@
       title: '集团材料库',
       icon: 'icon-view-list',
       state: 'app.material.materialLibrary',
+      weight: 1
+    });
+
+    msNavigationServiceProvider.saveItem('material.materialReport', {
+      title: '材料验收报表',
+      icon: 'icon-calendar-blank',
+      state: 'app.material.materialReport',
       weight: 1
     });
 
