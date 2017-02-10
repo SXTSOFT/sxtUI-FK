@@ -62,9 +62,9 @@
                     <td rowspan="{{s.TaskStatisticss.length}}" ng-if="$index==0"><span>{{s.SectionName}}</span></td>
                     <td ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.BuildName}}{{t.TaskName}}</span></td>
                     <td ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.ScheduledEndTime|date:'yyyy-MM-dd'}}</span></td>
-                    <td ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.ActualEndTime|date:'yyyy-MM-dd'}}</span></td>
-                    <td ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.CompleteStatus}}</span></td>
-                    <td ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.DelayDays}}</span></td>
+                    <td ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}" ng-class="{'sblue':t.CompleteStatus==2,'syellow':t.CompleteStatus==3,'sred':t.CompleteStatus==4,'sblack':t.CompleteStatus==5}"><span>{{t.ActualEndTime|date:'yyyy-MM-dd'}}</span></td>
+                    <td ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.statusName}}</span></td>
+                    <td ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}" ng-class="{'sblue':t.CompleteStatus==2,'syellow':t.CompleteStatus==3,'sred':t.CompleteStatus==4,'sblack':t.CompleteStatus==5}"><span>{{t.DelayDays}}</span></td>
                     <td ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.BuildName}}{{t.NextTaskName}}</span></td>
                     <td ng-style="{'border-bottom':$last==true?'none':'1px solid #dedede'}"><span>{{t.NextTaskDuration}}</span></td>
                   </tr>
