@@ -30,7 +30,6 @@
 })();
 
 
-
 window.sxt = (function(win,angular)
 {
   'use strict';
