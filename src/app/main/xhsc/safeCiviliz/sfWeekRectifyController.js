@@ -47,15 +47,44 @@
     });
 
     api.setNetwork(1).then(function () {
-
       vm.info = {}
-
       vm.selectQy = function (item) {
-        vm.regionSelect = item;
-        vm.regionSelect.hasCheck = true;
-        vm.AcceptanceItemID=item.AcceptanceItemID;
-        vm.AcceptanceItemName=item.AcceptanceItemName;
-        vm.qyslideShow = false;
+        if (vm.regionSelect==item){
+          vm.qyslideShow = false;
+          return;
+        }
+        $q(function (resolve,reject) {
+          if (vm.points.length){
+            switch ($state.params.Role){
+              case "zb":
+                if (vm.points.find(function (k) {
+                    return k.Status!=16;
+                  })){
+                  utils.confirm("点位尚未全部整改,是否继续下一个区域",null,"继续","取消").then(function () {
+                    resolve();
+                  })
+                }
+                break;
+              default:
+                if (vm.points.find(function (k) {
+                    return k.Status!=2;
+                  })){
+                  utils.confirm("点位尚未全部合格,是否继续提交",null,"继续","取消").then(function () {
+                    resolve();
+                  })
+                }
+                break;
+            }
+          }else {
+           resolve();
+          }
+        }).then(function () {
+          vm.regionSelect = item;
+          vm.regionSelect.hasCheck = true;
+          vm.AcceptanceItemID=item.AcceptanceItemID;
+          vm.AcceptanceItemName=item.AcceptanceItemName;
+          vm.qyslideShow = false;
+        })
       }
       vm.qyslide = function () {
         vm.qyslideShow = !vm.qyslideShow;
@@ -104,7 +133,7 @@
                  if (vm.points.find(function (k) {
                      return k.Status!=2;
                    })){
-                   utils.confirm("点位尚未全部验收,是否继续提交",null,"继续","取消").then(function () {
+                   utils.confirm("点位尚未全部合格,是否继续提交",null,"继续","取消").then(function () {
                      return next();
                    }).then(function () {
                      resolve();

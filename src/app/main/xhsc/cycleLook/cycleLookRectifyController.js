@@ -64,11 +64,42 @@
       vm.info = {}
 
       vm.selectQy = function (item) {
-        vm.regionSelect = item;
-        vm.regionSelect.hasCheck = true;
-        vm.AcceptanceItemID=item.AcceptanceItemID;
-        vm.AcceptanceItemName=item.AcceptanceItemName;
-        vm.qyslideShow = false;
+        if (vm.regionSelect==item){
+          vm.qyslideShow = false;
+          return;
+        }
+        $q(function (resolve,reject) {
+          if (vm.points.length){
+            switch ($state.params.Role){
+              case "zb":
+                if (vm.points.find(function (k) {
+                    return k.Status!=16;
+                  })){
+                  utils.confirm("点位尚未全部整改,是否继续下一个区域",null,"继续","取消").then(function () {
+                    resolve();
+                  })
+                }
+                break;
+              default:
+                if (vm.points.find(function (k) {
+                    return k.Status!=2;
+                  })){
+                  utils.confirm("点位尚未全部合格,是否继续提交",null,"继续","取消").then(function () {
+                    resolve();
+                  })
+                }
+                break;
+            }
+          }else {
+            resolve();
+          }
+        }).then(function () {
+          vm.regionSelect = item;
+          vm.regionSelect.hasCheck = true;
+          vm.AcceptanceItemID=item.AcceptanceItemID;
+          vm.AcceptanceItemName=item.AcceptanceItemName;
+          vm.qyslideShow = false;
+        })
       }
       vm.qyslide = function () {
         vm.qyslideShow = !vm.qyslideShow;
@@ -118,7 +149,7 @@
                   if (vm.points.find(function (k) {
                       return k.Status!=2;
                     })){
-                    utils.confirm("点位尚未全部验收,是否继续提交",null,"继续","取消").then(function () {
+                    utils.confirm("点位尚未全部合格,是否继续提交",null,"继续","取消").then(function () {
                       return next();
                     }).then(function () {
                       resolve();
@@ -144,25 +175,6 @@
           })
         }
         valid();
-
-
-        // var msg = [],noChecked=[];
-        // vm.pareaList.forEach(function (r) {
-        //   if (!r.hasCheck) {
-        //     msg.push(r.RegionName);
-        //     noChecked.push(r);
-        //   }
-        // });
-        // if (msg.length) {
-        //   utils.confirm(msg.join(",") + '尚未查看,去看看?',"确定","取消").then(function () {
-        //     vm.selectQy(noChecked[0]);
-        //   }).catch(function () {
-        //   });
-        //   return;
-        // }
-        // utils.alert('提交成功，请稍后离线上传数据',null,function () {
-        //   $state.go("app.xhsc.xj.main");
-        // });
       });
 
       $scope.$on('$destroy', function () {
