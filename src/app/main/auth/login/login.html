@@ -9,15 +9,15 @@
         <!--<div class="title" translate="LOGIN.TITLE">万科数字工程</div>-->
         <form name="loginForm" novalidate ng-submit="vm.login(loginForm)" >
           <div class="login-name">
-            <md-input-container class="md-block" md-no-float>
-              <md-icon md-svg-src="app/main/auth/images/user.svg"></md-icon>
-              <input type="text" name="username" ng-model="vm.form.username" placeholder="请输入用户名"
+            <md-input-container class="md-block" md-no-float style="display: flex;">
+              <img ng-src="app/main/auth/images/user.svg" style="height: 24px;width: 24px"></img>
+              <input type="text" style="margin-left: 5%" name="username" ng-model="vm.form.username" placeholder="请输入用户名"
                      required>
             </md-input-container>
             <md-divider></md-divider>
-            <md-input-container class="md-block" md-no-float>
-              <md-icon md-svg-src="app/main/auth/images/password.svg"></md-icon>
-              <input type="password" name="password" ng-model="vm.form.password" placeholder="请输入密码"
+            <md-input-container class="md-block" md-no-float style="display: flex;">
+              <img ng-src="app/main/auth/images/password.svg" style="height: 24px;width: 24px"></img>
+              <input type="password" style="margin-left: 5%"  name="password" ng-model="vm.form.password" placeholder="请输入密码"
                      required>
             </md-input-container>
 

@@ -37,7 +37,7 @@
       sendResult();
       sendResult = null;
     });
-      api.setNetwork(1).then(function(){
+    api.setNetwork(1).then(function(){
         vm.cancelCurrent = function ($event) {
           vm.info.current = null;
         }

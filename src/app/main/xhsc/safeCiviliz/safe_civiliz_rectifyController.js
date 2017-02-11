@@ -54,6 +54,8 @@
                   utils.confirm("点位尚未全部整改,是否继续下一个区域",null,"继续","取消").then(function () {
                     resolve();
                   })
+                }else {
+                  resolve();
                 }
                 break;
               default:
@@ -63,6 +65,8 @@
                   utils.confirm("点位尚未全部合格,是否继续提交",null,"继续","取消").then(function () {
                     resolve();
                   })
+                }else {
+                  resolve();
                 }
                 break;
             }

@@ -36,7 +36,7 @@
       },
       getProfile: function () {
         return $q(function (resolve, reject) {
-          api.setNetwork(0).then(function () {
+
             // var profile = sxtlocaStorage.getObj("profile");
             // if (profile) {
             //   resolve(profile);
@@ -65,8 +65,6 @@
             }).catch(function () {
               reject(profile)
             });
-
-          })
         });
       },
       getRegionTreesOnline: function (rootId, regionSize, rootType) {

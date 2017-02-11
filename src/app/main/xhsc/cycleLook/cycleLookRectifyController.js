@@ -18,49 +18,48 @@
     vm.role = $state.params.Role;
     vm.InspectionID = $state.params.InspectionID;
 
-    remote.safe.getRectificationsWrap.cfgSet({
-      offline:true,
-      filter:function (item) {
-        return item.InspectionExtendID==vm.InspectionID;
-      }
-    })("cycle").then(function (r) {
-      var bacth=angular.isArray(r.data)?r.data[0]:null;
-      vm.pareaList=[];
-      if (bacth){
-        bacth.Rectifications.forEach(function (k) {
-          if (k.Children){
-            k.Children.forEach(function (m) {
-              if (k.AcceptanceItemName.indexOf("钢筋")>-1&&!vm.pareaList.some(function (z) {
-                  return z.AreaID==m.AreaID&&z.AcceptanceItemName.indexOf("钢筋")<-1;
-                })){
-                m.AcceptanceItemID=k.AcceptanceItemID;
-                m.AcceptanceItemName=k.AcceptanceItemName;
-                m.RegionName=m.RegionName+'('+ m.AcceptanceItemName+')';
-                m.isGj=true;
-                vm.pareaList.push(m);
-              }else {
-                if (!vm.pareaList.some(function (z) {
-                    return z.AreaID==m.AreaID;
+
+    api.setNetwork(1).then(function () {
+      remote.safe.getRectificationsWrap.cfgSet({
+        offline:true,
+        filter:function (item) {
+          return item.InspectionExtendID==vm.InspectionID;
+        }
+      })("cycle").then(function (r) {
+        var bacth=angular.isArray(r.data)?r.data[0]:null;
+        vm.pareaList=[];
+        if (bacth){
+          bacth.Rectifications.forEach(function (k) {
+            if (k.Children){
+              k.Children.forEach(function (m) {
+                if (k.AcceptanceItemName.indexOf("钢筋")>-1&&!vm.pareaList.some(function (z) {
+                    return z.AreaID==m.AreaID&&z.AcceptanceItemName.indexOf("钢筋")<-1;
                   })){
                   m.AcceptanceItemID=k.AcceptanceItemID;
                   m.AcceptanceItemName=k.AcceptanceItemName;
+                  m.RegionName=m.RegionName+'('+ m.AcceptanceItemName+')';
+                  m.isGj=true;
                   vm.pareaList.push(m);
+                }else {
+                  if (!vm.pareaList.some(function (z) {
+                      return z.AreaID==m.AreaID;
+                    })){
+                    m.AcceptanceItemID=k.AcceptanceItemID;
+                    m.AcceptanceItemName=k.AcceptanceItemName;
+                    vm.pareaList.push(m);
+                  }
                 }
-              }
-            })
+              })
+            }
+          });
+          if (vm.pareaList.length>0){
+            vm.regionSelect = vm.pareaList[0];
+            vm.regionSelect.hasCheck = true;
+            vm.AcceptanceItemName=vm.regionSelect.AcceptanceItemName;
+            vm.warter = vm.regionSelect.RegionName + bacth.Describe;;
           }
-        });
-        if (vm.pareaList.length>0){
-          vm.regionSelect = vm.pareaList[0];
-          vm.regionSelect.hasCheck = true;
-          vm.AcceptanceItemName=vm.regionSelect.AcceptanceItemName;
-          vm.warter = vm.regionSelect.RegionName + bacth.Describe;;
         }
-      }
-    });
-
-    api.setNetwork(1).then(function () {
-
+      });
       vm.info = {}
 
       vm.selectQy = function (item) {
@@ -78,6 +77,8 @@
                   utils.confirm("点位尚未全部整改,是否继续下一个区域",null,"继续","取消").then(function () {
                     resolve();
                   })
+                }else {
+                  resolve()
                 }
                 break;
               default:
@@ -87,6 +88,8 @@
                   utils.confirm("点位尚未全部合格,是否继续提交",null,"继续","取消").then(function () {
                     resolve();
                   })
+                }else {
+                  resolve()
                 }
                 break;
             }
