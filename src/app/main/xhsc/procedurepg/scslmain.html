@@ -14,7 +14,7 @@
                 {{item.RegionName}}
               </p>
               <span flex></span>
-              <md-icon ng-class="{'transform_90':item.stretch}"  md-svg-icon="app/main/xhsc/images/come_in.svg" ></md-icon>
+              <img ng-class="{'transform_90':item.stretch}"  ng-src="app/main/xhsc/images/come_in.svg" ></img>
               <span ng-if="item.stretch" class="border1px bottom1px"></span>
             </div>
             <md-list ng-if="item.stretch&&item.Children&&item.Children.length" style="padding:0px;margin: 0px;" >
@@ -27,7 +27,7 @@
                   <i class="icon icon-download s30"></i>
                 </md-button>
                 <md-button ng-click="vm.action(k,$event)"  ng-if="k.isComplete" style="margin: 6px -28px"   aria-label="More">
-                  <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+                  <img ng-src="app/main/xhsc/images/more_vert.svg" style="color: rgba(0,0,0,0.87)"></img>
                 </md-button>
               </md-list-item>
             </md-list>

@@ -333,13 +333,54 @@
     }
 
     SingleDB.prototype.destroy = function(){
-      return get_globalDb().destroy(this.cfg._id);
+      var self = this;
+      if (self.cfg.fileField){
+        return provider.$q(function (resolve,reject) {
+          db_findAll(self.cfg).then(function (r) {
+            if (r.rows && r.rows.length){
+              r.rows.forEach(function (m) {
+                get_globalDb().destroy(m._id)
+              })
+            }
+            get_globalDb().destroy(self.cfg._id).then(function () {
+              resolve();
+            })
+          }).catch(function () {
+            get_globalDb().destroy(self.cfg._id).then(function () {
+              resolve();
+            })
+
+          })
+        })
+      }else {
+        return get_globalDb().destroy(self.cfg._id);
+      }
+
     }
     SingleDB.prototype.clear = function(){
       return get_globalDb().clear();
     }
     SingleDB.prototype.findAll = function (filter) {
-      return db_findAll(this.cfg, filter);
+      var self = this;
+      return db_findAll(this.cfg, filter).then(function (r) {
+        if(self.cfg.fileField && r.rows && r.rows.length){
+          var task=[];
+          // return $q(function (resolve,reject) {
+          //
+          // })
+          r.rows.forEach(function (k) {
+            task.push(get_globalDb().get(k._id))
+          })
+          return provider.$q.all(task).then(function (res) {
+             r.rows=[];
+             res.forEach(function (m) {
+               r.rows.push(m)
+             })
+            return r;
+          })
+        }
+        return r;
+      });
     }
     SingleDB.prototype.delete = function (id) {
       if (!angular.isArray(id))

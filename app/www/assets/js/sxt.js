@@ -55,8 +55,8 @@ window.sxt = (function(win,angular)
   angular.element(document).ready(function () {
     if (win.cordova) {
       document.addEventListener('deviceready', function () {
-        load();
-        // bootstrap();
+        // load();
+        bootstrap();
       }, false);
     }
     else {

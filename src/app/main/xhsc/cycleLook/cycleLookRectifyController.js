@@ -62,8 +62,15 @@
       });
       vm.info = {}
 
-      vm.selectQy = function (item) {
+      vm.selectQy = function (item,noValid) {
         if (vm.regionSelect==item){
+          vm.qyslideShow = false;
+          return;
+        }
+        if (noValid){
+          vm.regionSelect.hasCheck = true;
+          vm.AcceptanceItemID=item.AcceptanceItemID;
+          vm.AcceptanceItemName=item.AcceptanceItemName;
           vm.qyslideShow = false;
           return;
         }
@@ -122,7 +129,7 @@
               });
               if (msg.length) {
                 utils.confirm(msg.join(",") + '尚未查看,去看看?',null,"确定","取消").then(function () {
-                  vm.selectQy(noChecked[0]);
+                  vm.selectQy(noChecked[0],true);
                 }).catch(function () {
                 });
               }else {

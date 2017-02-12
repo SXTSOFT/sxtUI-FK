@@ -9,7 +9,7 @@
           {{item.RegionName}}
         </p>
         <span flex></span>
-        <md-icon ng-class="{'transform_90':item.stretch}"  md-svg-icon="app/main/xhsc/images/come_in.svg" ></md-icon>
+        <img ng-class="{'transform_90':item.stretch}"  ng-src="app/main/xhsc/images/come_in.svg" ></img>
         <span ng-if="item.stretch" class="border1px bottom1px"></span>
       </div>
       <md-list ng-if="item.stretch&&item.Children&&item.Children.length" style="padding:0px;margin: 0px;" >
@@ -40,7 +40,7 @@
         {{item.RegionName}}
       </p>
       <span flex></span>
-      <md-icon ng-class="{'transform_90':item.stretch}"  md-svg-icon="app/main/xhsc/images/come_in.svg" ></md-icon>
+      <img ng-class="{'transform_90':item.stretch}"  ng-src="app/main/xhsc/images/come_in.svg" ></img>
       <span ng-if="item.stretch" class="border1px bottom1px"></span>
     </div>
     <md-list ng-if="item.stretch&&item.Children&&item.Children.length" style="padding:0px;margin: 0px;" >
@@ -72,7 +72,7 @@
       </div>
       <span flex></span>
       <md-button ng-click="vm.zbzgbtnAction(item,$event)" class="md-icon-button" aria-label="More">
-        <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+        <img ng-src="app/main/xhsc/images/more_vert.svg"></img>
       </md-button>
       <span class="border1px bottom1px"></span>
     </md-list-item>
@@ -96,7 +96,7 @@
       </div>
       <span flex></span>
       <md-button ng-click="vm.jlysbtnAction(item,$event)" class="md-icon-button" aria-label="More">
-        <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+        <img ng-src="app/main/xhsc/images/more_vert.svg"></img>
       </md-button>
       <span class="border1px bottom1px"></span>
     </md-list-item>
@@ -119,7 +119,7 @@
       </div>
       <span flex></span>
       <md-button ng-click="vm.jlfybtnAction(item,$event)" class="md-icon-button" aria-label="More">
-        <md-icon md-svg-icon="app/main/xhsc/images/more_vert.svg"></md-icon>
+        <img ng-src="app/main/xhsc/images/more_vert.svg"></>
       </md-button>
       <span class="border1px bottom1px"></span>
     </md-list-item>

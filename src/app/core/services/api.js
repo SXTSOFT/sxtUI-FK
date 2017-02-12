@@ -850,6 +850,7 @@
     }
 
     function clearDb(progress,complete,fail,options) {
+      var files=['weekInspectionProblemRecordFile','InspectionProblemRecordFile','cycleInspectionProblemRecordFile','yfInspectionProblemRecordFile'];
       var tasks = [];
       task([function (tasks) {
         return provider.$q.$q(function (resove,reject) {
@@ -860,9 +861,15 @@
               return o.toString()!="undefined"&&o.toString()!="NaN";
             })
             dbs.forEach(function (t) {
+
               if(!(options.exclude && options.exclude.indexOf(t)!=-1)){
                 tasks.push(function(){
-                  return pouchdb(t).destroy().catch(function(err){
+                  var option={}
+                  if(files.find(function (k) {
+                      return k==t;
+                    }))
+                    option.fileField=[];
+                  return pouchdb(t,option).destroy().catch(function(err){
                   });
                 });
               }

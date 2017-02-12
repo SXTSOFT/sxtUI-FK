@@ -282,34 +282,56 @@
                     });
                     tasks.push(function () {
                       function clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points) {
-                        if (ckpoints && ckpoints.vals) {
-                          ckpoints.vals.forEach(function (m) {
-                            tasks.push(function () {
-                              return  ckpoints.db.delete(m._id);
-                            })
-                          });
-                        }
-                        if (problemRecords && problemRecords.vals) {
-                          problemRecords.vals.forEach(function (m) {
-                            tasks.push(function () {
-                              return  problemRecords.db.delete(m._id);
-                            })
-                          });
-                        }
-                        if (InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals) {
-                          InspectionProblemRecordFiles.vals.forEach(function (m) {
-                            tasks.push(function () {
-                              return  InspectionProblemRecordFiles.db.delete(m._id);
-                            })
-                          });
-                        }
-                        if (points && points.vals){
-                          points.vals.forEach(function (t) {
-                            tasks.push(function () {
-                              return  points.db.delete(t._id)
-                            })
+                        if (ckpoints&&ckpoints.db){
+                          tasks.push(function () {
+                            return  ckpoints.db.destroy()
                           })
                         }
+
+                        if (problemRecords&&problemRecords.db){
+                          tasks.push(function () {
+                            return  problemRecords.db.destroy()
+                          })
+                        }
+                        if (InspectionProblemRecordFiles&&InspectionProblemRecordFiles.db){
+                          tasks.push(function () {
+                            return  InspectionProblemRecordFiles.db.destroy()
+                          })
+                        }
+                        if (points&&points.db){
+                          tasks.push(function () {
+                            return  points.db.destroy()
+                          })
+                        }
+
+                        // if (ckpoints && ckpoints.vals) {
+                        //   ckpoints.vals.forEach(function (m) {
+                        //     tasks.push(function () {
+                        //       return  ckpoints.db.delete(m._id);
+                        //     })
+                        //   });
+                        // }
+                        // if (problemRecords && problemRecords.vals) {
+                        //   problemRecords.vals.forEach(function (m) {
+                        //     tasks.push(function () {
+                        //       return  problemRecords.db.delete(m._id);
+                        //     })
+                        //   });
+                        // }
+                        // if (InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals) {
+                        //   InspectionProblemRecordFiles.vals.forEach(function (m) {
+                        //     tasks.push(function () {
+                        //       return  InspectionProblemRecordFiles.db.delete(m._id);
+                        //     })
+                        //   });
+                        // }
+                        // if (points && points.vals){
+                        //   points.vals.forEach(function (t) {
+                        //     tasks.push(function () {
+                        //       return  points.db.delete(t._id)
+                        //     })
+                        //   })
+                        // }
                       }
                       if (points && points.vals) {
                         points.vals.forEach(function (t) {
@@ -329,7 +351,7 @@
                         "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
                         "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
                       }).then(function () {
-                        clear(ckpoints,problemRecords,InspectionProblemRecordFiles);
+                        clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points);
                       });
                     });
                   }
