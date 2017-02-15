@@ -97,97 +97,96 @@
 
 
     vm.download = function (item, isReflsh, evt) {
-      if (api.getNetwork() == 1) {
-        utils.alert('请打开网络!');
-        return;
-      }
-      vm.current = item;
-      //下载成功回掉
-      function callBack() {
-        var project = item.RegionID.substr(0, 5);
-        item.isComplete = true;
-        xcpk.get(project).then(function (k) {
-          var data = k.data;
-          var loaded=[];
-          data.Children.forEach(function (m) {
-            if (m.RegionID == item.RegionID) {
-              m.isComplete = item.isComplete;
-              loaded.push({
-                _id: m.RegionID,
-                data: m
-              });
-            }
-          });
-          sxtlocaStorage.setArr2("itemDownLoad",loaded,function (_old,_new) {
-            return _new.filter(function (k) {
+      api.setNetwork(0).then(function () {
+        vm.current = item;
+        //下载成功回掉
+        function callBack() {
+          var project = item.RegionID.substr(0, 5);
+          item.isComplete = true;
+          xcpk.get(project).then(function (k) {
+            var data = k.data;
+            var loaded=[];
+            data.Children.forEach(function (m) {
+              if (m.RegionID == item.RegionID) {
+                m.isComplete = item.isComplete;
+                loaded.push({
+                  _id: m.RegionID,
+                  data: m
+                });
+              }
+            });
+            sxtlocaStorage.setArr2("itemDownLoad",loaded,function (_old,_new) {
+              return _new.filter(function (k) {
                 return !_old.some(function (t) {
                   return t._id==k._id;
                 })
+              });
             });
-          });
-        }).then(function () {
-          utils.alert('下载完成');
-        })
-      }
+          }).then(function () {
+            utils.alert('下载完成');
+          })
+        }
 
-      vm.sc = [];
-      $mdDialog.show({
-        controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
-          $scope.item = item;
-          var tasks = [];
-          var projectId = item.RegionID.substr(0, 5);
-          tasks.push(function () {
-            return remote.PQMeasureStandard.GetListByExtend(projectId,"standard");
-          });
-          tasks.push(function () {
-            return remote.Assessment.GetMeasureItemInfoByAreaID(projectId, "pack" + item.AssessmentID);
-          });
-          tasks.push(function () {
-            return remote.Assessment.GetRegionTreeInfo(projectId, "pack" + item.AssessmentID);
-          });
-          tasks.push(function () {
-            return remote.Assessment.GetBaseMeasure("pack" + item.AssessmentID).then(function (r) {
-              var d = r.data && r.data.data ? r.data.data : [];
-              d.forEach(function (k) {
-                if (k.WPAcceptanceList.length) {
-                  vm.sc = vm.sc.concat(k.WPAcceptanceList);
-                }
-                if (k.SpecialtyChildren && k.SpecialtyChildren.length) {
-                  k.SpecialtyChildren.forEach(function (n) {
-                    if (n.WPAcceptanceList && n.WPAcceptanceList.length) {
-                      vm.sc = vm.sc.concat(n.WPAcceptanceList);
-                    }
-                  });
-                }
+        vm.sc = [];
+        $mdDialog.show({
+          controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
+            $scope.item = item;
+            var tasks = [];
+            var projectId = item.RegionID.substr(0, 5);
+            tasks.push(function () {
+              return remote.PQMeasureStandard.GetListByExtend(projectId,"standard");
+            });
+            tasks.push(function () {
+              return remote.Assessment.GetMeasureItemInfoByAreaID(projectId, "pack" + item.AssessmentID);
+            });
+            tasks.push(function () {
+              return remote.Assessment.GetRegionTreeInfo(projectId, "pack" + item.AssessmentID);
+            });
+            tasks.push(function () {
+              return remote.Assessment.GetBaseMeasure("pack" + item.AssessmentID).then(function (r) {
+                var d = r.data && r.data.data ? r.data.data : [];
+                d.forEach(function (k) {
+                  if (k.WPAcceptanceList.length) {
+                    vm.sc = vm.sc.concat(k.WPAcceptanceList);
+                  }
+                  if (k.SpecialtyChildren && k.SpecialtyChildren.length) {
+                    k.SpecialtyChildren.forEach(function (n) {
+                      if (n.WPAcceptanceList && n.WPAcceptanceList.length) {
+                        vm.sc = vm.sc.concat(n.WPAcceptanceList);
+                      }
+                    });
+                  }
+                })
+                return r;
               })
-              return r;
             })
-          })
-          tasks = tasks.concat(projectTask(item.RegionID));
-          item.percent = item.current = 0;
-          item.total = tasks.length;
-          api.task(tasks, {
-            event: 'downloadsc',
-            target: item
-          })(null, function () {
-            if (!isReflsh) {
-              callBack();
-            } else {
-              utils.alert("刷新成功!");
-            }
-          }, function (timeout) {
-            item.percent = item.current = item.total = null;
-            var msg = timeout ? '请求超时,任务下载失败!' : '下载失败,请检查网络';
-            $mdDialog.cancel();
-            utils.alert(msg);
-          })
-        }],
-        template: '<md-dialog aria-label="正在下载"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
-        parent: angular.element(document.body),
-        clickOutsideToClose: false,
-        fullscreen: false
-      });
-      evt && evt.stopPropagation();
+            tasks = tasks.concat(projectTask(item.RegionID));
+            item.percent = item.current = 0;
+            item.total = tasks.length;
+            api.task(tasks, {
+              event: 'downloadsc',
+              target: item
+            })(null, function () {
+              if (!isReflsh) {
+                callBack();
+              } else {
+                utils.alert("刷新成功!");
+              }
+            }, function (timeout) {
+              item.percent = item.current = item.total = null;
+              var msg = timeout ? '请求超时,任务下载失败!' : '下载失败,请检查网络';
+              $mdDialog.cancel();
+              utils.alert(msg);
+            })
+          }],
+          template: '<md-dialog aria-label="正在下载"  ng-cloak><md-dialog-content> <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular><p style="padding-left: 6px;">正在下载：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p></md-dialog-content></md-dialog>',
+          parent: angular.element(document.body),
+          clickOutsideToClose: false,
+          fullscreen: false
+        });
+        evt && evt.stopPropagation();
+      })
+
     }
 
     api.event('downloadsc', function (s, e) {

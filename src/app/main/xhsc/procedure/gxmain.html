@@ -25,7 +25,7 @@
     </md-progress-circular>
     <md-list ng-show="vm.isOver" style="background-color: #FFFFFF">
       <md-list-item style="background-color: #FFFFFF" ng-click="vm.zbzgAction(item)" layout="row" ng-repeat="item in vm.zglist|filter:{Status:4}">
-        <div  layout="column" style="padding-bottom: 16px">
+        <div  layout="column" flex="80" style="padding-bottom: 16px">
           <p style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
             {{item.AcceptanceItemName}}<span style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">总包整改</span>
           </p>
@@ -65,7 +65,7 @@
     </md-progress-circular>
     <md-list ng-show="vm.isOver" style="background-color: #FFFFFF">
       <md-list-item style="background-color: #FFFFFF" layout="row" ng-click="vm.jlysAction(item)" ng-repeat="item in vm.Inspections">
-        <div layout="column"  style="padding-bottom: 16px">
+        <div layout="column"  flex="80" style="padding-bottom: 16px">
           <p  style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
             {{item.AcceptanceItemName}}
             <span
@@ -82,7 +82,7 @@
         <span class="border1px bottom1px"></span>
       </md-list-item>
       <md-list-item style="background-color: #FFFFFF" ng-click="vm.jlfyAction(item)" ng-repeat="item in vm.zglist|filter:{Status:16}">
-        <div style="padding-bottom: 16px" layout="column">
+        <div style="padding-bottom: 16px" flex="80" layout="column">
           <p  style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
             {{item.AcceptanceItemName}} <span
             style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">监理复验</span>

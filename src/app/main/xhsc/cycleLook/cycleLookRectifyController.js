@@ -68,6 +68,7 @@
           return;
         }
         if (noValid){
+          vm.regionSelect = item;
           vm.regionSelect.hasCheck = true;
           vm.AcceptanceItemID=item.AcceptanceItemID;
           vm.AcceptanceItemName=item.AcceptanceItemName;

@@ -18,7 +18,7 @@
   function cycle_detailController($stateParams,remote,$rootScope,$scope,$state,xhUtils){
     var inspectionId=$stateParams.inspectionId;
     var vm=this;
-    vm.selectSize=10;
+
     vm.showImg=function (img) {
       img.url = img.FileContent||img.Url;
       img.alt = ' ';
@@ -66,7 +66,7 @@
         vm.source.rectifysItem=vm.source.Rectifys[vm.source.Rectifys.length-1];
       }
 
-      vm.source.third={};
+      vm.source.companysItem={};
       vm.source.Companys.sort(function (a,b) {
         if (!a.Time){
           return true;
@@ -74,7 +74,7 @@
         return a.Time.localeCompare(a,b);
       })
       if (vm.source.Companys.length>0){
-        vm.source.third=vm.source.Companys[vm.source.Companys.length-1];
+        vm.source.companysItem=vm.source.Companys[vm.source.Companys.length-1];
       }
     })
 

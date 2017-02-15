@@ -2,21 +2,21 @@
   <th colspan="8">{{vm.source.ExtendDescribe}}</th>
   <tr>
     <td>
-      项目名称：
+      项目名称
     </td>
     <td colspan="7">
       {{vm.source.ProjectName}}
     </td>
 
     <!--<td>-->
-    <!--验收部位-->
+      <!--验收部位-->
     <!--</td>-->
 
     <!--<td colspan="2">-->
     <!--</td>-->
   </tr>
   <tr class="min80">
-    <td style="min-width: 98px">施工单位：</td>
+    <td style="min-width: 98px">施工单位</td>
     <td>{{vm.source.rectifysItem.CompanyName}}</td>
     <td>项目经理</td>
     <td>{{vm.source.rectifysItem.HeadName}}</td>
@@ -26,7 +26,7 @@
     <td>{{vm.source.rectifysItem.Time}}</td>
   </tr>
   <tr class="min80">
-    <td style="min-width: 98px" rowspan="2">监理单位：</td>
+    <td style="min-width: 98px" rowspan="2">监理单位</td>
     <td rowspan="2">{{vm.source.supervisionsItem.CompanyName}}</td>
     <td rowspan="2">项目总监</td>
     <td rowspan="2">{{vm.source.supervisionsItem.HeadName}}</td>
@@ -40,6 +40,12 @@
     <td>{{vm.source.reviewsItem.NickName}}</td>
     <td>复查时间</td>
     <td>{{vm.source.reviewsItem.Time}}</td>
+  </tr>
+  <tr class="min80">
+    <td>建设单位</td>
+    <td>{{vm.source.companysItem.CompanyName}}</td>
+    <td>项目经理</td>
+    <td colspan="5">{{vm.source.companysItem.HeadName}}</td>
   </tr>
   <!--<tr class="min80">-->
     <!--<td style="min-width: 98px">建设单位：</td>-->
@@ -62,7 +68,7 @@
           <td colspan="8">{{item.AreaFullName}}</td>
         </tr>
         <tr ng-if="item.QualifiedPicList.length">
-          <td colspan="8">
+          <td colspan=8">
             <div class="imgWrap">
               <img ng-repeat="k in  item.QualifiedPicList"  ng-src="{{k.Url}}">
             </div>
@@ -73,11 +79,10 @@
             原位标注
             <span ng-if="item.up" ng-click="vm.up(item)" style="float: right;padding-right: 5px">展开</span>
             <span ng-if="!item.up" ng-click="vm.up(item)" style="float: right;padding-right: 12px">关闭</span></td>
-          </td>
         </tr>
         <tr>
           <td colspan="8" style="padding: 5px" ng-if="!item.up">
-            <div class="ywWrap" sxt-report-view="" loaded="vm.loaded" ponits="item.PointList" region-id="item.AreaID" type="'cycle'" layout="column">
+            <div class="ywWrap" sxt-report-view="" loaded="vm.loaded" ponits="item.PointList" region-id="item.AreaID" type="'week'" layout="column">
               <div flex layout="row" layout-align="center center" ng-if="!vm.loaded" >
                 <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular>
               </div>
@@ -88,7 +93,7 @@
           <td colspan="8">
             <table class="table table-hover table-bordered">
               <tr>
-                <td colspan="6">{{k.ProblemSortName+'.'+k.ProblemDescription}}</td>
+                <td colspan="8">{{k.ProblemSortName+'.'+k.ProblemDescription}}</td>
               </tr>
               <tr>
                 <td>
@@ -101,12 +106,12 @@
               <tr>
                 <td style="width:50%">
                   <div class="zgWrap">
-                    <img ng-repeat="m in k.Front" ng-click="vm.showImg(m)" ng-src="{{m.Url}}">
+                    <img ng-repeat="m in k.Front" ng-src="{{m.Url}}" ng-click="vm.showImg(m)">
                   </div>
                 </td>
                 <td style="width:50%">
                   <div class="zgWrap">
-                    <img ng-repeat="m in k.Back" ng-click="vm.showImg(m)" ng-src="{{ m.Url}}">
+                    <img ng-repeat="m in k.Back" ng-src="{{ m.Url}}" ng-click="vm.showImg(m)">
 
                   </div>
                 </td>

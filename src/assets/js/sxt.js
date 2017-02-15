@@ -42,8 +42,8 @@ window.sxt = (function(win,angular)
     version: '1.1.12',
     app: {
       appDir: appDir,
-      //api:'http://localhost:5000',
-      //fs:'http://vkde.sxtsoft.com:9090',
+      // api:'http://vkde.sxtsoft.com:9091',
+      // fs:'http://vkde.sxtsoft.com:9090',
       api:'http://emp.chngalaxy.com:9091',
       fs:'http://emp.chngalaxy.com:9090',
       version:'http://app.ricent.com/galaxy'

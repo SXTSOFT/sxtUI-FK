@@ -45,10 +45,12 @@
           return;
         }
         if (noValid){
-          vm.regionSelect.hasCheck = true;
           vm.AcceptanceItemID=item.AcceptanceItemID;
           vm.AcceptanceItemName=item.AcceptanceItemName;
           vm.qyslideShow = false;
+          vm.regionSelect = item;
+          vm.regionSelect.hasCheck = true;
+          vm.warter = vm.regionSelect.RegionName + (vm.AcceptanceItemName ? '(' + vm.AcceptanceItemName + ')' : "");
           return;
         }
         $q(function (resolve,reject) {
@@ -81,8 +83,10 @@
             resolve();
           }
         }).then(function () {
+          vm.AcceptanceItemID=item.AcceptanceItemID;
           vm.regionSelect = item;
           vm.regionSelect.hasCheck = true;
+          vm.AcceptanceItemName=item.AcceptanceItemName;
           vm.warter = vm.regionSelect.RegionName + (vm.AcceptanceItemName ? '(' + vm.AcceptanceItemName + ')' : "");
           vm.qyslideShow = false;
         })
