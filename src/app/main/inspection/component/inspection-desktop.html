@@ -21,7 +21,7 @@
         <md-list class="p-0 mt-10" style="border-bottom: solid 1px silver;border-top: solid 1px silver;background-color: white;" >
           <md-list-item class="white-bg" ng-click="vm.goChecked(item)" ng-repeat="item in vm.data.processing">
             <div class="md-list-item-text" flex>{{item.room.full_name}}</div>
-            <md-button class="md-secondary" ng-click="vm.fh(item)" style="font-size: 12px;background-color: #00acee;color: white;">反测试</md-button>
+            <!--<md-button class="md-secondary" ng-click="vm.fh(item)" style="font-size: 12px;background-color: #00acee;color: white;">反测试</md-button>-->
             <md-button class="md-secondary" ng-click="vm.upload(item)"  style="font-size: 12px;background-color: #00acee;color: white;">验房完成</md-button>
             <md-divider style="position: absolute; bottom: 0;left: 4%;width: 96%;" ng-if="$index!=vm.data.length-1"></md-divider>
           </md-list-item>
@@ -49,7 +49,7 @@
 </div>
 
 <div ng-if="!vm.show" style="width: 100%;text-align: center;padding-top: 50%;height: 100%;">
-  <div layout="row" layout-sm="column" layout-align="space-around">
+  <div layout="row" layout="column" layout-align="center center">
     <md-progress-circular md-diameter="48"  class="md-accent" ></md-progress-circular>
   </div>
   <div  style="color: #808080;font-size: 14px;padding-top: 10px;">加载中</div>

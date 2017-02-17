@@ -16,8 +16,7 @@
 
   function inspectionServe($mdDialog, $q,$window,$http,api,ys_file) {
     var  serve={
-        downloadDeliveryTask:function (item) {
-          var  task=[];
+        downloadDeliveryTask:function (item,task) {
           task.push(function () {
             return api.inspection.estate.getDelivery(item.delivery_id).then(function (r) {
               if (r.data){
@@ -38,7 +37,6 @@
               });
             })
           })
-          return task;
         },
         markerImgOption:{
           all:function (marker) {

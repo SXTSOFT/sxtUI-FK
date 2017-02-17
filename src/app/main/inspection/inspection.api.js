@@ -60,6 +60,7 @@
           _id:'deliveryProcessing',
           idField:'delivery_id',
           dataType:1,
+          mode:2,
           filter:function (item,delivery_id) {
             return item.delivery_id==delivery_id;
           }
@@ -82,6 +83,7 @@
           _id:'issues',
           idField:'type',
           dataType:3,
+          mode:2,
           filter:function (arg,item) {
             return item.type==arg.type
           }

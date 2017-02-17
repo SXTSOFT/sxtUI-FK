@@ -42,15 +42,17 @@
           if(!window.cordova || !window.cordova.file){
             resolve();
           }else {
-            const fileTransfer = new Transfer();
+            var fileTransfer = new FileTransfer();
             fileTransfer.download(
               src,
-              window.cordova.file.dataDirectory + '/file/' + uniqueId + '.file'
-            ).then(function () {
-              resolve();
-            }).catch(function () {
-              reject();
-            })
+              window.cordova.file.dataDirectory + '/file/' + uniqueId + '.file',
+              function (entry) {
+                resolve();
+              },
+              function (err) {
+                reject();
+              }
+            );
           }
         })
      }

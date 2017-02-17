@@ -7,31 +7,57 @@
       <fieldset class="demo-fieldset" >
         <div layout="row" layout-wrap flex>
 
-          <div flex-xs flex="50">
-            <md-checkbox aria-label="全选"
+          <div flex-xs flex="100" class="mt-10 mb-10" ng-click="vm.toggleAll()">
+            <md-checkbox class="mb-10" aria-label="全选"
                          aria-label="Select All"
                          ng-checked="vm.isChecked"
-                         ng-click="vm.toggleAll()">
+                         >
               <span>全选</span>
             </md-checkbox>
+            <md-divider></md-divider>
           </div>
-          <div class="demo-select-all-checkboxes" flex="100" ng-repeat="item in vm.projects">
-            <md-checkbox ng-checked="item.selected" ng-click="vm.toggle(item)">
+          <div class="demo-select-all-checkboxes mb-10" flex="100" ng-repeat="item in vm.projects"  ng-click="vm.toggle(item)">
+            <md-checkbox class="mb-10" ng-checked="item.selected">
               {{ item.name }}
             </md-checkbox>
+            <md-divider></md-divider>
           </div>
         </div>
       </fieldset>
     </div>
+      <div layout="row" class="newinput pt-8">
+        <div flex="50" style="text-align: center">
+          从<md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间" md-open-on-focus></md-datepicker>
+        </div>
+        <div flex style="text-align: center">
+          至<md-datepicker style="margin-right:0;padding-right:0;" ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间" md-open-on-focus></md-datepicker>
+        </div>
+      </div>
 
-    <div layout="row" class="newinput">
-      <div flex="50" style="text-align: center">
-        从 <md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间"></md-datepicker>
-      </div>
-      <div flex style="text-align: center">
-        至 <md-datepicker ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间"></md-datepicker>
-      </div>
-    </div>
+    <!--<div layout="row" flex class="newinput pt-8" layout-align="space-between center">-->
+      <!--<div layout="column" flex layout-align="center center">-->
+        <!--<div layout="row" layout-align="start center">-->
+          <!--从<md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间" md-open-on-focus></md-datepicker>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div layout="column" flex layout-align="center center">-->
+        <!--<div layout="row" layout-align="start center">-->
+          <!--从<md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间" md-open-on-focus></md-datepicker>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+
+
+    <!--<div flex class="newinput">-->
+      <!--<div layout="row">-->
+        <!--<div flex="50" style="text-align: center">-->
+          <!--从 <md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间"></md-datepicker>-->
+        <!--</div>-->
+        <!--<div flex style="text-align: center">-->
+          <!--至 <md-datepicker ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间"></md-datepicker>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
 
     <div layout="row" style="background:#fff;font-size:14px;">
       <p class="md-padding" style="margin-bottom: 0;">班组</p>

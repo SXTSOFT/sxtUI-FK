@@ -10,7 +10,7 @@
 
   function versionUpdate($mdDialog, $window,$http) {
 
-    var version = '1.10.12';
+    var version = '3.10.12';
     this.version = version;
     function versionToNumber(version) {
       var n = version.split('.');

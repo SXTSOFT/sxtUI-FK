@@ -1,50 +1,112 @@
 <md-content flex layout="column" ng-show="!vm.searBarHide" class="menu-toggle-list">
   <div flex style="overflow: auto">
-        <sxt-projects-jd ng-model="vm.project.pid" object-scope="vm" levels="0" region-type="vm.project.type" region-name="vm.project.typeName" project-id="vm.project.projectId" project-name="vm.project.projectName" id-tree="vm.project.idTree" name-tree="vm.project.nameTree">
-
-          <div layout="row" class="newinput">
+          <div layout="row" class="newinput pt-8">
             <div flex="50" style="text-align: center">
-              从<md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间"></md-datepicker>
+              从<md-datepicker ng-model="vm.m.sDate" class="md-block" md-placeholder="开始时间" md-open-on-focus></md-datepicker>
             </div>
             <div flex style="text-align: center">
-              至<md-datepicker ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间"></md-datepicker>
+              至<md-datepicker style="margin-right:0;padding-right:0;" ng-model="vm.m.eDate" class="md-block" md-placeholder="截止时间" md-open-on-focus></md-datepicker>
             </div>
           </div>
-
-        </sxt-projects-jd>
   <div class="md-padding" layout="row">
 
     <md-button type="submit" flex ng-click="vm.searBarHide=true"  class="md-raised md-primary"> 确定  </md-button>
   </div></div>
     </md-content>
-    <md-content flex id="dvBatchCount" ng-show="vm.searBarHide">
-            <table class="table table-border" contenteditable="true" width="100%">
-              <caption>项目填报统计表</caption>
-                <thead>
-                    <tr>
-                        <th width="30%">项目名称</th>
-                        <th width="15%">时间</th>
-                        <th width="18%">录入人数</th>
-                        <th width="10%">土建</th>
-                        <th width="10%">机电</th>
-                        <th width="10%">装修</th>
-                        <th width="17%">合计</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="item in vm.batchData2" style="background :{{item.myCol}};border-bottom:1px solid #ddd; padding:8px">
-                        <td rowspan="{{item.colp}}" ng-if="item.colp">{{item.projectName}}</td>
-                        <td>{{item.CreatedTime}}</td>
-                        <td>{{item.jlNumber}}</td>
-                        <td>{{item.tjNumber}}</td>
-                        <td>{{item.jdNumber}}</td>
-                        <td>{{item.zxNumber}}</td>
-                        <td>{{item.dayCountNumber}}</td>
-                    </tr>
+    <md-content flex id="dvBatchCount"  ng-show="vm.searBarHide">
+      <div ng-switch="vm.switch">
+        <div ng-switch-default>
+      <table class="table wk-table" width="100%">
+        <thead>
+        <tr style="border-bottom:1px solid #fff;">
+          <th rowspan="2" width="30%"  style="border-right:1px solid #fff;">项目名称</th>
+          <th rowspan="2" width="15%"  style="border-right:1px solid #fff;">施工单位</th>
+          <th colspan="5" style="border-right:1px solid #fff;">监理工序验收</th>
+          <th colspan="2">隐蔽工程</th>
+          <th rowspan="2" width="15%"  style="border-right:1px solid #fff;">第三方</th>
+          <th rowspan="2" width="15%"  style="border-right:1px solid #fff;">万科</th>
 
-                </tbody>
-            </table>
+        </tr>
+        <tr>
+          <th style="border-right:1px solid #fff;">人数</th>
+          <th style="border-right:1px solid #fff;">数量</th>
+          <th style="border-right:1px solid #fff;">土建</th>
+          <th style="border-right:1px solid #fff;">机电</th>
+          <th style="border-right:1px solid #fff;">装修</th>
+          <th style="border-right:1px solid #fff;">户数</th>
+          <th>照片数</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item2 in projectBatchCount" ng-click="viewDetail(item2)" style="border-bottom:1px solid #ddd; padding:8px">
+          <td><a href="javascript:void(0)" >{{item2.RegionNameTree}}</a></td>
+          <td align="center">{{item2.zbNum}}</td>
+          <td align="center">{{item2.jlNum}}</td>
+          <td align="center">{{item2.tjNum+item2.jdNum+item2.zxNum}}</td>
+          <td align="center">{{item2.tjNum}}</td>
+          <td align="center">{{item2.jdNum}}</td>
+          <td align="center">{{item2.zxNum}}</td>
+          <td align="center">{{item2.rNum}}</td>
+          <td align="center">{{item2.pNum}}</td>
+          <td align="center">{{item2.rdNum}}</td>
+          <td align="center">{{item2.wkNum}}</td>
+        </tr>
+        </tbody>
+      </table>
+        </div>
+        <div ng-switch-when="detail">
+
+          <table class="table wk-table" width="100%">
+            <caption><h3 style="text-align: center">施工单位自检数量统计</h3></caption>
+            <thead>
+            <tr style="border-bottom:2px solid #000;">
+              <th width="30%">施工单位</th>
+              <th width="15%">自检人员</th>
+              <th width="15%">自检数量</th>
+              <th width="10%">土建</th>
+              <th width="10%">机电</th>
+              <th width="10%">装修</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in batchDataD1" style="border-bottom:1px solid #ddd; padding:8px">
+              <td rowspan="{{item.colp}}" ng-if="item.colp">{{item.CompanyName}}</td>
+              <td>{{item.CheckWorkerName}}</td>
+              <td>{{item.tjNum+item.jdNum+item.zxNum}}</td>
+              <td>{{item.tjNum}}</td>
+              <td>{{item.jdNum}}</td>
+              <td>{{item.zxNum}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <md-directive></md-directive>
+          <table class="table wk-table" width="100%">
+            <caption><h3 style="text-align: center">监理单位验收数量统计</h3></caption>
+            <thead>
+            <tr style="border-bottom:2px solid #000;">
+              <th width="30%">监理单位</th>
+              <th width="15%">验收人员</th>
+              <th width="15%">验收数量</th>
+              <th width="10%">土建</th>
+              <th width="10%">机电</th>
+              <th width="10%">装修</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in batchDataD2" style="border-bottom:1px solid #ddd; padding:8px">
+              <td rowspan="{{item.colp}}" ng-if="item.colp">{{item.CompanyName}}</td>
+              <td>{{item.CheckWorkerName}}</td>
+              <td>{{item.tjNum+item.jdNum+item.zxNum}}</td>
+              <td>{{item.tjNum}}</td>
+              <td>{{item.jdNum}}</td>
+              <td>{{item.zxNum}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <md-progress-circular ng-show="vm.loading" md-mode="indeterminate"></md-progress-circular>
     </md-content>
-    <div style="position: absolute; top:0px; right:0px;">
+    <div ng-show="vm.switch!='detail'" style="position: absolute; top:0px; right:0px;">
       <toggle-menu inst="vm.searBarHide"></toggle-menu></div>
 
