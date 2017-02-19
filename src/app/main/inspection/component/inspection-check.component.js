@@ -29,7 +29,7 @@
             var url = ys_file.getUrl(vm.delivery.room.room_id, vm.delivery.room.layout.drawing_url);
             vm.mapUrl = url;
             $timeout(function () {
-              $rootScope.title=vm.delivery.room.full_name;
+              $rootScope.title=vm.delivery.room.name;
             })
 
           }
