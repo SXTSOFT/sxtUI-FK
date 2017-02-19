@@ -8,35 +8,42 @@
     },
     "installed_plugins": {
         "cordova-plugin-app-version": {
-            "PACKAGE_NAME": "com.sxt.szgc"
+            "PACKAGE_NAME": "com.vanke.sxt.iphone"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.vanke.sxt.iphone"
         },
         "cordova-plugin-file": {
-            "PACKAGE_NAME": "com.sxt.szgc"
-        },
-        "cordova-plugin-file-transfer": {
-            "PACKAGE_NAME": "com.sxt.szgc"
-        },
-        "cordova-plugin-indexedDB": {
-            "PACKAGE_NAME": "com.sxt.szgc"
-        },
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.sxt.szgc"
-        },
-        "cordova-plugin-keyboard": {
-            "PACKAGE_NAME": "com.sxt.szgc"
+            "PACKAGE_NAME": "com.vanke.sxt.iphone"
         },
         "cordova-plugin-file-opener2": {
-            "PACKAGE_NAME": "com.sxt.szgc"
+            "PACKAGE_NAME": "com.vanke.sxt.iphone"
+        },
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "com.vanke.sxt.iphone"
+        },
+        "cordova-plugin-keyboard": {
+            "PACKAGE_NAME": "com.vanke.sxt.iphone"
         },
         "cordova-plugin-network-information": {
             "PACKAGE_NAME": "com.vanke.sxt.iphone"
         },
-        "cordova-plugin-camera": {
+        "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.vanke.sxt.iphone"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.vanke.sxt.iphone"
+        },
+        "cordova-plugin-image-picker": {
+            "PHOTO_LIBRARY_USAGE_DESCRIPTION": " ",
+            "PACKAGE_NAME": "com.vanke.sxt.iphone"
+        },
+        "cordova-plugin-indexedDB": {
+            "PACKAGE_NAME": "com.vanke.sxt.iphone"
+        },
+        "cordova-plugin-wkwebview-engine": {
             "PACKAGE_NAME": "com.vanke.sxt.iphone"
         }
     }

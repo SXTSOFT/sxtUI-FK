@@ -1,4 +1,5 @@
-cordova.define("cordova-plugin-app-version.AppVersionPlugin", function(require, exports, module) { /*jslint indent: 2 */
+cordova.define("cordova-plugin-app-version.AppVersionPlugin", function(require, exports, module) {
+/*jslint indent: 2 */
 /*global window, jQuery, angular, cordova */
 "use strict";
 
@@ -15,6 +16,11 @@ var getPromisedCordovaExec = function (command, success, fail) {
       injector = angular.injector(["ng"]);
       $q = injector.get("$q");
       deferred = $q.defer();
+      success = deferred.resolve;
+      fail = deferred.reject;
+      toReturn = deferred.promise;
+    } else if (window.when && window.when.promise) {
+      deferred = when.defer();
       success = deferred.resolve;
       fail = deferred.reject;
       toReturn = deferred.promise;

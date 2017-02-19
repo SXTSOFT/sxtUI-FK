@@ -40,6 +40,7 @@
     }
     return self;
 }
+
 - (void)viewDidLayoutSubviews{
     
     if ([self respondsToSelector:@selector(topLayoutGuide)]) // iOS 7 or above
@@ -60,7 +61,6 @@
     
     
 }
-
 
 - (id)init
 {
@@ -105,12 +105,6 @@
     // e.g. self.myOutlet = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
 /* Comment out the block below to over-ride */
 
 /*
@@ -118,37 +112,119 @@
 {
     return[super newCordovaViewWithFrame:bounds];
 }
-*/
 
-#pragma mark UIWebDelegate implementation
-
-- (void)webViewDidFinishLoad:(UIWebView*)theWebView
+- (NSUInteger)supportedInterfaceOrientations 
 {
-    // Black base color for background matches the native apps
-    theWebView.backgroundColor = [UIColor blackColor];
-
-    return [super webViewDidFinishLoad:theWebView];
+    return [super supportedInterfaceOrientations];
 }
 
-/* Comment out the block below to over-ride */
-
-/*
-
-- (void) webViewDidStartLoad:(UIWebView*)theWebView
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
-    return [super webViewDidStartLoad:theWebView];
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
-- (void) webView:(UIWebView*)theWebView didFailLoadWithError:(NSError*)error
+- (BOOL)shouldAutorotate 
 {
-    return [super webView:theWebView didFailLoadWithError:error];
-}
-
-- (BOOL) webView:(UIWebView*)theWebView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    return [super webView:theWebView shouldStartLoadWithRequest:request navigationType:navigationType];
+    return [super shouldAutorotate];
 }
 */
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    
+    [self updateVersion];
+    
+    NSLog(@"---applicationDidBecomeActive----");
+    //进入前台
+    
+    
+}
+//#pragma mark---判断版本号
+-(void)updateVersion
+{
+    //  NSError *error;
+    NSString *urlStr=[NSString stringWithFormat:@"%@",@"https://vkde.sxtsoft.com:4443/apps/manifest.plist"];
+    
+    //VersionPlistPath是你的Plist文件的位置，如http://xxx.xxx.xxx/xxx.plist
+    NSDictionary* dict = [NSDictionary dictionaryWithContentsOfURL:[NSURL URLWithString:urlStr]];
+    NSString *_latestVersion;
+    if (dict) {
+        
+        NSArray* list = [dict objectForKey:@"items"];
+        NSDictionary* dict2 = [list objectAtIndex:0];
+        
+        NSDictionary* dict3 = [dict2 objectForKey:@"metadata"];
+        _latestVersion= [dict3 objectForKey:@"bundle-version"];
+        
+    }
+    
+    
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    
+    // app名称
+    NSString *app_Name = [infoDictionary objectForKey:@"CFBundleDisplayName"];
+    // app版本
+    NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    NSLog(@"app_Versionapp_Version%@",app_Version);
+    
+    if ([_latestVersion isEqualToString:@"null"])
+    {
+        
+        //当从plist获取的版本号为null时，则什么不做。
+        
+    }
+    else{
+        BOOL  isEuqal=[app_Version isEqualToString:_latestVersion];
+        if (isEuqal)
+        {
+            //已经是最新版本  版本号为。。。。
+            
+            
+        }
+        
+        else
+            
+        {
+            //不是最新版本  提醒用户是否跟新
+            NSString *title =[NSString stringWithFormat:@"检测更新：%@",app_Name];
+            NSString *message = [NSString stringWithFormat:@"发现新版本(%@),是否升级",_latestVersion];
+            NSString *cancelButtonTitle = NSLocalizedString(@"取消", nil);
+            NSString *otherButtonTitle = NSLocalizedString(@"升级", nil);
+            
+            UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:title message:message delegate:self cancelButtonTitle:cancelButtonTitle
+                                                   otherButtonTitles:otherButtonTitle,nil                  ];
+            
+            
+            [alertView show];
+            
+            
+            
+            
+            
+        }
+        
+    }
+    
+    
+    
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+    NSLog(@"buttonIndex%ld",(long)buttonIndex);
+    if (buttonIndex==1)
+    {
+        
+        
+        [[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://m.vanke.com/pcStore/detailsPhone/vkappcan10102_1"]];
+        
+        
+    }
+    
+}
+
 
 @end
 

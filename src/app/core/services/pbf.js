@@ -9,7 +9,7 @@
     .factory('pbf',pbf);
 
   /** @inject */
-  function pbf($http) {
+  function pbf($http,$q) {
     var Buffer = (function () {
       var ieee754 = (function () {
         return {
@@ -682,6 +682,25 @@
         return new Pbf(buf);
       },
       load:function (url) {
+        if(cordova){
+          return $q(function (resolve,reject) {
+            url=cordova.file.applicationDirectory+"/www/assets/res.pbf"
+            window.resolveLocalFileSystemURL(url, function (fileEntry) {
+              fileEntry.file(function (file) {
+                var reader = new FileReader();
+
+                reader.onloadend = function (e) {
+                  resolve(new Pbf(new Uint8Array(this.result)));
+                };
+                reader.readAsArrayBuffer(file);
+              },function () {
+                resolve()
+              });
+            }, function () {
+              resolve()
+            });
+          })
+        }
         return $http.get(url,{responseType: "arraybuffer"}).then(function (result) {
           return new Pbf(new Uint8Array(result.data));
         });

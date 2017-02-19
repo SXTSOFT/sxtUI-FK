@@ -1,10 +1,10 @@
 <md-content layout="column" flex style="background: #f0f0f0">
 
-  <div ng-if="!vm.show" style="width: 100%;text-align: center;padding-top: 50%;height: 100%;">
-    <div layout="row" layout-sm="column" layout-align="space-around">
-      <md-progress-circular md-diameter="48"  class="md-accent" ></md-progress-circular>
-    </div>
-    <div  style="color: #808080;font-size: 14px;padding-top: 10px;">加载中</div>
+  <div flex ng-if="!vm.show" layout-align="center center" layout="column">
+     <div>
+       <md-progress-circular md-diameter="48"  class="md-accent" ></md-progress-circular>
+       <div  style="color: #808080;font-size: 14px;padding-top: 10px;">加载中</div>
+     </div>
   </div>
   <div ng-if="vm.show">
   <div class="comments">
