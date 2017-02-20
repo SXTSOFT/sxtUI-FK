@@ -13,7 +13,7 @@
           <md-divider></md-divider>
           <md-subheader class="md-no-sticky">当前</md-subheader>
           <md-list-item>
-<p>版本</p> <p class="md-secondary md-hue-3">{{ vm.serverAppVersion}}</p>
+<p>版本</p> <p class="md-secondary md-hue-3">{{ vm.appVersion}}</p>
           </md-list-item>
           <md-list-item>
             <p>模式({{vm.networkState?'离线':'在线'}})</p> <p class="md-secondary md-hue-3">
@@ -38,7 +38,7 @@
             <md-subheader class="md-no-sticky">个人信息</md-subheader>
             <md-list-item>
               <p>公司名称</p>
-              <p class="md-secondary">{{vm.profile.corporation.name}}</p>
+              <p class="md-secondary">{{vm.profile.company}}</p>
             </md-list-item>
             <md-list-item>
               <p>员工姓名</p>

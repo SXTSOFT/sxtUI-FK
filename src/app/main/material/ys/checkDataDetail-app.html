@@ -17,7 +17,7 @@
     <md-divider></md-divider>
     <md-list-item>
       <label flex>供货方</label>
-      <label>{{dataInfo.SupplierName}}</label>
+      <label>{{dataInfo.SupplierId}}</label>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item>
@@ -71,6 +71,20 @@
       <md-button ng-if="dataInfo.HandleOption.length>20" class="md-secondary md-primary" ng-click="showAlert($event)"   >
         详细
       </md-button>
+    </md-list-item>
+    <md-divider></md-divider>
+     <md-list-item style="background-color: #f5f6f7;">
+      <label>检查指标</label>
+    </md-list-item>
+    <md-divider></md-divider>
+    <md-list-item style="margin-bottom: 10px;">
+       <md-list>
+        <md-list-item ng-repeat="n in targets" ng-disabled="n.need">
+          <div class="md-list-item-text" flex layout="column">
+            <h3 style="margin-top: 10px; margin-bottom: 5px;font-size: 1.6rem">{{$index+1}}、{{n.TargetName}}</h3>
+          </div>
+        </md-list-item>
+      </md-list>
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item style="background-color: #f5f6f7;">

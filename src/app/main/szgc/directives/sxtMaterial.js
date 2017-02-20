@@ -20,6 +20,8 @@
         value:'=ngModel',
         nameValue:'=',
         materialUnit:'=',
+        materialModels:'=',
+        materialSupply:'=',
         inc :'@'
       },
       template:'<div layout="row">' +
@@ -59,6 +61,8 @@
         scope.value = p.ProcedureId;
         scope.nameValue = p.ProcedureName;
         scope.materialUnit = p.Unit;
+        scope.materialModels = p.Model?p.Model.split(/、|；|;/):p.Model;
+        scope.materialSupply = p.Supply;
         ctrl.$setViewValue(scope.value);
       }
 
@@ -85,6 +89,8 @@
         scope.value = null;
         scope.nameValue = null;
         scope.materialUnit = null;
+        scope.materialModels = null;
+        scope.materialSupply = null;
         ctrl.$setViewValue();
         if(!scope.regionType && !scope.inc)return;
         var t = 1,ex=[1],q={
@@ -114,7 +120,6 @@
         }
 
         api.material.BatchSetService.getAll(q).then(function(result) {
-          console.log(result);
           var data = [];
           result.data.Rows.forEach(function(item) {
             data.push(item);

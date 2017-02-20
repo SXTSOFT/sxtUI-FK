@@ -38,7 +38,7 @@
   </div>
     </md-content>
 <div style="color:#f00;height:40px;line-height: 20px;border-bottom: 1px solid #ddd;width:100%;padding-left:8px;" ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')">左右滑动查看全部数据<br/> <span style="color:{{s.color}}" ng-repeat="s in vm.states">({{s.title}}) </span></div>
-    <md-content class="md-padding"  ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')" layout="column" flex>
+    <md-content class="md-padding  repeat-top"  ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')" layout="column" flex>
       <md-virtual-repeat-container flex id="vertical-container">
         <div style="width:880px;overflow-x: hidden;">
         <div>

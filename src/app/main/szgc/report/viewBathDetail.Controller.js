@@ -10,11 +10,15 @@
 
     $stateParams.bathid = $stateParams.bathid||$stateParams.bathId;
     var vm = this;
+    vm.answer = function () {
+      $mdDialog.hide();
+    };
     vm.back = function(){
       $state.go('app.szgc.report.viewBath')
     }
     vm.isPartner = api.szgc.vanke.isPartner(1);
     vm.goAdd = function () {
+      vm.answer();
       $state.go('app.szgc.ys.addnew',{
         projectid:$scope.titol.regionId,
         name:$scope.titol.RegionName,

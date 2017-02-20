@@ -207,6 +207,18 @@
           },
         }).bind(function (id) {
           return $http.get($http.url('/api/MLMaterialCheckData/GetMLFilesById',{id:id}));
+        }),
+        getPartners:$http.db({
+          _id:'Ms_MaterialPartners',
+          idField:function(item){
+            return item.UnitId+item.RegionIdTree;
+          },
+          dataType:5,
+          filter:function(item,regionIdTree){
+            return item.RegionIdTree == regionIdTree;
+          },
+        }).bind(function(regionIdTree){
+          return $http.get($http.url('/api/ProjectSetting/GetByTree',{treeId:regionIdTree,unitType:3}));
         })
       },
 
@@ -260,8 +272,22 @@
           _id:'Ms_MaterialTargetRelationList',
           idField:'Id',
           dataType:5,
+          filter:function (item,data) {
+            return item.ProjectId==data.projectId && item.MaterialId ==data.materialId;
+          }
         }).bind(function (args) {
           return $http.get($http.url('/api/MaterialTargetRelation/GetByProjectId',args));
+        }),
+
+        getByCheckDataId:$http.db({
+          _id:'Ms_CheckDataTargetRelation',
+          idField:'Id',
+          dataType:5,
+          filter:function (item,args) {
+            return item.ProjectId==args.projectId && item.MaterialId ==args.materialId && item.CheckDataId == args.checkDataId;
+          }
+        }).bind(function (args) {
+          return $http.get($http.url('/api/MaterialTargetRelations/GetSelect',{projectId:args.projectId,materialId:args.materialId,checkDataId:args.checkDataId}));
         })
       },
       TargetService:{
@@ -269,6 +295,9 @@
           _id:'Ms_MaterialTargetList',
           idField:'Id',
           dataType:5,
+          filter:function (item,args) {
+            return item.ProcedureId==args;
+          }
         }).bind(function (args) {
           return $http.get($http.url('/api/MLPProcedure/' + args + '/MLEngineeringTarget/null'));
         })

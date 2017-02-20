@@ -40,7 +40,10 @@
         }
       });
     }
-    vm.serverAppVersion = versionUpdate.version;
+    vm.appVersion = versionUpdate.version;
+    versionUpdate.check().then(function () {
+      vm.appVersion = versionUpdate.version;
+    });
     //服务器上保存版本信息
   /*  api.szgc.version().then(function (r) {
       //vm.serverAppVersion = r.data.verInfo;
