@@ -200,7 +200,7 @@
           </table>
 </div>
   <div sxt-image-view is-container="true">
-            <sxt-images ng-model="data.selected.zb.GroupImg" project="data.projectInfo"></sxt-images>
+            <sxt-images files="vm.files" ng-model="data.selected.zb.GroupImg" project="data.projectInfo"></sxt-images>
           </div>
         </fieldset>
         <fieldset  ng-if="data.ps.jl">
@@ -240,7 +240,7 @@
 
           </table>
           </div>
-          <div sxt-image-view is-container="true"> <sxt-images ng-model="data.selected.step.GroupImg" project="data.projectInfo"></sxt-images></div>
+          <div sxt-image-view is-container="true"> <sxt-images files="vm.files" ng-model="data.selected.step.GroupImg" project="data.projectInfo"></sxt-images></div>
         </fieldset>
         <fieldset  ng-if="data.ps.eg">
           <legend style="font-size:14px">项目部</legend>
@@ -280,7 +280,7 @@
           </table>
           </div>
           <div sxt-image-view is-container="true">
-            <sxt-images ng-model="data.selected.zb.GroupImg" project="data.projectInfo"></sxt-images>
+            <sxt-images files="vm.files" ng-model="data.selected.zb.GroupImg" project="data.projectInfo"></sxt-images>
           </div>
         </fieldset>
       </fieldset>
@@ -288,15 +288,15 @@
         <legend style="margin-left:-20px;">附件</legend>
         <fieldset  ng-if="data.ps.zb">
           <legend style="font-size:14px">施工单位</legend>
-          <div><sxt-images ng-model="data.selected.zb.GroupImg2" project="data.projectInfo"></sxt-images></div>
+          <div><sxt-images files="vm.files" ng-model="data.selected.zb.GroupImg2" project="data.projectInfo"></sxt-images></div>
         </fieldset>
         <fieldset  ng-if="data.ps.jl">
           <legend style="font-size:14px">监理</legend>
-          <div><sxt-images ng-model="data.selected.step.GroupImg2" project="data.projectInfo"></sxt-images></div>
+          <div><sxt-images files="vm.files" ng-model="data.selected.step.GroupImg2" project="data.projectInfo"></sxt-images></div>
         </fieldset>
         <fieldset  ng-if="data.ps.eg">
           <legend style="font-size:14px">项目部</legend>
-          <div><sxt-images ng-model="data.selected.eg.GroupImg2" project="data.projectInfo"></sxt-images></div>
+          <div><sxt-images files="vm.files" ng-model="data.selected.eg.GroupImg2" project="data.projectInfo"></sxt-images></div>
         </fieldset>
       </fieldset>
     </div>
