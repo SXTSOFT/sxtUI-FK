@@ -17,7 +17,6 @@
     //所有全局任务
     xhscService.getProfile().then(function (profile) {
       vm.role = profile.role;
-      vm.OUType = profile.ouType;
     });
 
     var globalTask = [

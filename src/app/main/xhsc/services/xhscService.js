@@ -56,10 +56,15 @@
             // }
             remote.profile().then(function (r) {
               var profile = {
-                role: r.data.Role.MemberType === 0 || r.data.Role.MemberType ? r.data.Role.MemberType : null,
-                ouType: r.data.Role.OUType === 0 || r.data.Role.OUType ? r.data.Role.OUType : null,
-                user: r.data,
-                duties:r.data.Role.Duties
+                userId:r.data.UserId,
+                userName:r.data.Name,
+                role: r.data.Role.MemberType,
+                roleDes:  r.data.Role.MemberTypeName,
+                OUID: r.data.Role.OUID,
+                OUName: r.data.Role.OUName,
+                // user: r.data,
+                permisses:r.data.Permisses,
+                duties:r.data.Dutity
               }
               resolve(profile);
             }).catch(function () {

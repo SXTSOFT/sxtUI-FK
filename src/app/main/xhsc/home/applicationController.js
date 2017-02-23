@@ -13,26 +13,26 @@
     var vm = this
     xhscService.getProfile().then(function (profile) {
       vm.role = profile.role;
-      vm.OUType = profile.ouType;
+      // vm.OUType = profile.ouType;
       vm.loaded = true;
       vm.duties=profile.duties||[];
 
-
-      var isJlorzb = (vm.role == "0" || vm.role == 0) || (vm.role == "2" || vm.role == 2)
+      //memberType[0:总包,2:监理,4:项目部,8:工程管理部|公司,16:星河集团|工程管理中心,32:分包]
+      var ignore = vm.role == "8" || vm.role == "16";
       vm.yw=[
         {
           type:"zl",
           name:"质量",
           items:[
             {
-              right: vm.duties.indexOf("1")>-1,
+              right: vm.duties.indexOf("1")>-1||ignore,
               type:"zl",
               title: "实测实量",
               img: "app/main/xhsc/images/application/scsl.svg",
               state: "app.xhsc.scsl.scslmain",
               stateParams: null
             }, {
-              right: vm.duties.indexOf("2")>-1,
+              right: vm.duties.indexOf("2")>-1||ignore,
               type:"zl",
               title: "工序验收",
               img: "app/main/xhsc/images/application/gxys.svg",
@@ -40,7 +40,7 @@
               stateParams: null
             },
             {
-              right: vm.duties.indexOf("2")>-1,
+              right: vm.duties.indexOf("2")>-1||ignore,
               title: "日常巡检",
               type:"zl",
               img: "app/main/xhsc/images/application/cycke.svg",
@@ -48,7 +48,7 @@
               stateParams: null
             },
             {
-              right: vm.OUType == 1 || vm.OUType == "1",
+              right: vm.role == "16"||ignore,
               title: "现场评估",
               type:"zl",
               img: "app/main/xhsc/images/application/xcpg.svg",
@@ -56,7 +56,7 @@
               stateParams: null
             },
             {
-              right:vm.duties.indexOf("6")>-1,
+              right:vm.duties.indexOf("6")>-1||ignore,
               title: "移动验房",
               type:"zl",
               img: "app/main/xhsc/images/application/yf.svg",
@@ -64,7 +64,7 @@
               stateParams: null
             },
             {
-              right:vm.duties.indexOf("4")>-1,
+              right:vm.duties.indexOf("4")>-1||ignore,
               title: "材料验收",
               type:"zl",
               img: "app/main/xhsc/images/application/material.svg",
@@ -78,7 +78,7 @@
           name:"安全",
           items:[
             {
-              right: vm.duties.indexOf("5")>-1,
+              right: vm.duties.indexOf("5")>-1||ignore,
               type:"aq",
               title: "安全验收",
               img: "app/main/xhsc/images/application/weekys.svg",
@@ -94,7 +94,7 @@
             //   stateParams: null
             // },
             {
-              right: vm.duties.indexOf("5")>-1,
+              right: vm.duties.indexOf("5")>-1||ignore,
               title: "周安全检查",
               type:"aq",
               img: "app/main/xhsc/images/application/weekjc.svg",
@@ -107,7 +107,7 @@
           name:"计划",
           items:[
             {
-              right:vm.duties.indexOf("7")>-1,
+              right:vm.duties.indexOf("7")>-1||ignore,
               title: "计划管理",
               type:"jh",
               img: "app/main/xhsc/images/application/plan.svg",

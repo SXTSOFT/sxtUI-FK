@@ -320,9 +320,9 @@
         remote.Procedure.getZGlist(23).then(function (r) {
           return $q(function (resolve, reject) {
             vm.zglist = [];
-            if (angular.isArray(r.data)) {
+            if (r.data&& angular.isArray(r.data.data)) {
               var zg = [];
-              r.data.forEach(function (o) {
+              r.data.data.forEach(function (o) {
                 zg.push(o);
               });
               remote.offline.query().then(function (r) {
@@ -351,9 +351,9 @@
         remote.Procedure.getInspections(1).then(function (r) {
           $q(function (resolve, reject) {
             vm.Inspections = [];
-            if (angular.isArray(r.data)) {
+            if (r.data&& angular.isArray(r.data.data)) {
               var ys = [];
-              r.data.forEach(function (o) {
+              r.data.data.forEach(function (o) {
                 ys.push(o);
               });
               remote.offline.query().then(function (r) {

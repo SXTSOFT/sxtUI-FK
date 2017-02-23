@@ -586,14 +586,26 @@
         }),
         getInspections: $http.db({
           _id: 'InspectionInfoList',
-          idField: 'InspectionId',
-          dataType: 1,
-          mode: 2,
-          filter: function (item, status) {
-            return item.status | status == status;
-          }
+          idField: function () {
+            return "InspectionInfoList";
+          },
+          filter:function (item) {
+            return item.id='InspectionInfoList';
+          },
+          dataType: 3,
+          mode: 2
+          // filter: function (item, status) {
+          //   return item.status | status == status;
+          // }
         }).bind(function (status) {
-          return $http.get($http.url('/api/InspectionApi/GetInspectionInfoList', {status: status}))
+          return $http.get($http.url('/api/InspectionApi/GetInspectionInfoList', {status: status})).then(function (result) {
+            result.data = result.data ? result.data : [];
+            return {
+              data: {
+                data: result.data
+              }
+            }
+          })
         }),
         getZGlistbyProjectId: function (projectID) {
           return $http.get($http.url('/api/InspectionRectificationApi/List', {projectId: projectID}))
@@ -647,11 +659,23 @@
         }),
         getZGlist: $http.db({
           _id: 'tblEMBDInspectionRectification',
-          idField: 'RectificationID',
-          dataType: 1,
+          idField: function () {
+             return "rectifications";
+          },
+          filter:function (item) {
+            return item.id='rectifications';
+          },
+          dataType: 3,
           mode: 2
         }).bind(function (status) {
-          return $http.get($http.url('/api/InspectionRectificationApi/GetByStatus', {status: status}));
+          return $http.get($http.url('/api/InspectionRectificationApi/GetByStatus', {status: status})).then(function (result) {
+            result.data = result.data ? result.data : [];
+            return {
+              data:{
+                data: result.data
+              }
+            }
+          });
         }),
         getRectification: $http.db({
           _id: 'ByRectificationId',
