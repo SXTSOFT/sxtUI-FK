@@ -682,6 +682,7 @@
         return new Pbf(buf);
       },
       load:function (url) {
+        var cordova=window.cordova;
         if(cordova){
           return $q(function (resolve,reject) {
             url=cordova.file.applicationDirectory+"/www/assets/res.pbf"

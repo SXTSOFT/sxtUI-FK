@@ -163,10 +163,10 @@
                           }
                           else {
                             var el, conents = [];
-                            conents.push('<div>'+(layer.options.itemName||'')+'<br /><button class="md-button md-raised ld" style="margin: 4px 2px 4px -4px;width:44px;min-width: 44px;">主体</button>');
-                            conents.push('<button class="md-button md-raised yj" style="margin: 4px -4px 4px 2px;width:44px;min-width: 44px;" disabled>园建</button> &nbsp;');
-                            conents.push('<button class="md-button md-raised zj" style="margin: 4px -4px 4px 2px;width:44px;min-width: 44px;" disabled>桩基</button> &nbsp;');
-                            conents.push('<button class="md-button md-raised dx" style="margin: 4px -4px 4px 2px;width:54px;min-width: 54px;" disabled>地下室</button></div>');
+                            conents.push('<div>'+(layer.options.itemName||'')+'<br /><button class="md-button md-raised ld" style="margin: 4px 2px 4px -4px;width:44px;min-width: 44px;background-color: white">主体</button>');
+                            conents.push('<button class="md-button md-raised yj" style="margin: 4px -4px 4px 2px;width:44px;min-width: 44px;background-color: white" disabled>园建</button> &nbsp;');
+                            conents.push('<button class="md-button md-raised zj" style="margin: 4px -4px 4px 2px;width:44px;min-width: 44px;background-color: white" disabled>桩基</button> &nbsp;');
+                            conents.push('<button class="md-button md-raised dx" style="margin: 4px -4px 4px 2px;width:54px;min-width: 54px;background-color: white" disabled>地下室</button></div>');
 
                             el = $(conents.join(''));
                             api.szgc.vanke.yj(layer.options.itemId).then(function (r) {
