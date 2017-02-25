@@ -563,15 +563,27 @@
                   cb();
                   resolve(value)
                 }else {
-                  readText(provider.$window.cordova.file.dataDirectory,id + '.bin').then(function (result) {
-                    var r = provider.$window.JSON.parse(result);
-                    provider.cache.setValue(id,r);
-                    cb();
-                    resolve(r);
+                  provider.$cordovaFile.readAsText(provider.$window.cordova.file.dataDirectory,id + '.bin').then(function (result) {
+                      if (!result){
+                        readText(provider.$window.cordova.file.dataDirectory,id + '.bin').then(function (k) {
+                          var r = provider.$window.JSON.parse(k);
+                          provider.cache.setValue(id,r);
+                          cb();
+                          resolve(r);
+                        },function () {
+                          cb();
+                          reject(null);
+                        });
+                      }else {
+                        var r = provider.$window.JSON.parse(result);
+                        provider.cache.setValue(id,r);
+                        cb();
+                        resolve(r);
+                      }
                   },function () {
                     cb();
                     reject(null);
-                  });
+                  })
                 }
               })
             });
