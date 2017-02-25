@@ -137,13 +137,13 @@
               return remote.PQMeasureStandard.GetListByExtend(projectId,"standard");
             });
             tasks.push(function () {
-              return remote.Assessment.GetMeasureItemInfoByAreaID(projectId, "pack" + item.AssessmentID);
+              return remote.Assessment.GetMeasureItemInfoByAreaID(projectId, "pack1" + item.AssessmentID);
             });
             tasks.push(function () {
-              return remote.Assessment.GetRegionTreeInfo(projectId, "pack" + item.AssessmentID);
+              return remote.Assessment.GetRegionTreeInfo(projectId, "pack2" + item.AssessmentID);
             });
             tasks.push(function () {
-              return remote.Assessment.GetBaseMeasure("pack" + item.AssessmentID).then(function (r) {
+              return remote.Assessment.GetBaseMeasure("pack3" + item.AssessmentID).then(function (r) {
                 var d = r.data && r.data.data ? r.data.data : [];
                 d.forEach(function (k) {
                   if (k.WPAcceptanceList.length) {
@@ -226,7 +226,7 @@
                         pack.sc.removeSc(item.AssessmentID, function () {
                           $q.all([
                             // remote.Assessment.GetMeasurePointAll(item.RegionID),
-                            remote.Assessment.GetRegionTreeInfo(item.ProjectID, "pack" + item.AssessmentID)
+                            remote.Assessment.GetRegionTreeInfo(item.ProjectID, "pack2" + item.AssessmentID)
                           ]).then(function(){
                             resolve()
                           }).catch(function(){

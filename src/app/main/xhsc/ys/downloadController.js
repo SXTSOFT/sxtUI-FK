@@ -115,10 +115,10 @@
             $scope.item=item;
             var tasks=[];
             tasks.push(function () {
-              return remote.Assessment.GetMeasureItemInfoByAreaID(item.ProjectID,"pack"+item.AssessmentID);
+              return remote.Assessment.GetMeasureItemInfoByAreaID(item.ProjectID,"pack1"+item.AssessmentID);
             });
             tasks.push(function () {
-              return remote.Assessment.GetRegionTreeInfo(item.ProjectID,"pack"+item.AssessmentID);
+              return remote.Assessment.GetRegionTreeInfo(item.ProjectID,"pack2"+item.AssessmentID);
             });
             tasks = tasks.concat(projectTask(item.AreaID,item.AssessmentID));
             item.percent = item.current =0; item.total = tasks.length;
