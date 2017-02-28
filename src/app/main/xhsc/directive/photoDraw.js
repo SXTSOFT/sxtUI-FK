@@ -136,9 +136,11 @@
         $cordovaCamera.getPicture ({
           quality: 50,
           destinationType: 0,
-          sourceType: 1,
+          // sourceType: s,
           allowEdit: false,
           encodingType: 0,
+          targetHeight:600,
+          encodingType:0,
           saveToPhotoAlbum: true,
           correctOrientation: true
         }).then (function (imageData) {
