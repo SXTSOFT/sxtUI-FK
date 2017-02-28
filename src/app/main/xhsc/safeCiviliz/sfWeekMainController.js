@@ -361,7 +361,10 @@
                         return remote.safe.inserFile({
                           FileName:k.FileID,
                           Base64:k.FileContent
-                        }).then(function () {
+                        }).then(function (res) {
+                          if(res&&res.data&&res.data.ID){
+                            k.FileID=res.data.ID;
+                          }
                           delete k.FileContent
                         })
                       });
@@ -411,35 +414,6 @@
                             return  points.db.destroy()
                           })
                         }
-
-                        // if (ckpoints && ckpoints.vals) {
-                        //   ckpoints.vals.forEach(function (m) {
-                        //     tasks.push(function () {
-                        //       return  ckpoints.db.delete(m._id);
-                        //     })
-                        //   });
-                        // }
-                        // if (problemRecords && problemRecords.vals) {
-                        //   problemRecords.vals.forEach(function (m) {
-                        //     tasks.push(function () {
-                        //       return  problemRecords.db.delete(m._id);
-                        //     })
-                        //   });
-                        // }
-                        // if (InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals) {
-                        //   InspectionProblemRecordFiles.vals.forEach(function (m) {
-                        //     tasks.push(function () {
-                        //       return  InspectionProblemRecordFiles.db.delete(m._id);
-                        //     })
-                        //   });
-                        // }
-                        // if (points && points.vals){
-                        //   points.vals.forEach(function (t) {
-                        //     tasks.push(function () {
-                        //       return  points.db.delete(t._id)
-                        //     })
-                        //   })
-                        // }
                       }
                       return remote.safe.safeUp(post,"WeekInspects").then(function () {
                         clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points);
