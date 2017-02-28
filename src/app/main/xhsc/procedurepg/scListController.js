@@ -27,7 +27,7 @@
       }
     }
 
-    scRemote.Assessment.GetMeasureItemInfoByAreaID(vm.projectId,'pack'+vm.assessmentID).then(callback);
+    scRemote.Assessment.GetMeasureItemInfoByAreaID(vm.projectId,'pack1'+vm.assessmentID).then(callback);
     //if (isReport=='0'||isReport==0){
     //  var _db=db('pack'+ vm.assessmentID);
     //  _db.get("GetMeasureItemInfoByAreaID").then(callback);

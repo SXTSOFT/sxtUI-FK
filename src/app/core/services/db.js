@@ -285,16 +285,76 @@
       id:'sxt-global'
     };
     var poolss = {};
+
+    function  cache() {
+      var defaultOptions={
+        timeout:60000
+      }
+
+      function  _cache() {
+        this.cacheContainer={};
+        this.options=defaultOptions;
+        this.clearfun={};
+      }
+
+      _cache.prototype.setOption=function (options) {
+        if (angular.isObject(options)){
+          this.options=angular.extend(this.options,options)
+        }
+      }
+
+      _cache.prototype.clear=function (key) {
+        if (!key){
+          this.cacheContainer={};
+        }else {
+          if (this.cacheContainer.hasOwnProperty(key)){
+            this.cacheContainer[key]=null;
+          }
+        }
+
+      }
+
+
+      _cache.prototype.getValue=function (key) {
+        var self=this;
+        if (this.clearfun.hasOwnProperty(key)&&this.clearfun[key]){
+          clearTimeout(this.clearfun[key]);
+        }
+        this.clearfun[key]=setTimeout(function () {
+          self.clear(key);
+        },self.options.timeout);
+        if (key&&this.cacheContainer.hasOwnProperty(key)){
+          return this.cacheContainer[key];
+        }
+        return null;
+      }
+
+      _cache.prototype.setValue=function (key,value) {
+        var self=this;
+        if (!key){
+          return;
+        }
+        if (this.clearfun.hasOwnProperty(key)&&this.clearfun[key]){
+          clearTimeout(this.clearfun[key]);
+        }
+        this.clearfun[key]=setTimeout(function () {
+          self.clear(key);
+        },self.options.timeout);
+        self.cacheContainer[key]=value;
+      }
+
+      return new  _cache();
+    }
     provider.$get = getApi;
     /** @ngInject */
     function getApi($q, $window, $cordovaFileTransfer, $timeout,$cordovaFile,$rootScope) {
+      provider.cache=cache();
       provider.$q = $q;
       provider.$cordovaFileTransfer = $cordovaFileTransfer;
       provider.$timeout = $timeout;
       provider.$window = $window;
       provider.$rootScope = $rootScope;
       provider.$cordovaFile = $cordovaFile;
-
       return function pouchDB(name, options) {
         var dbs= window.localStorage.getItem("dbs");
         if (!dbs){
@@ -442,6 +502,7 @@
               })
             },
             clear: function () {
+              provider.cache.clear();
               return provider.$cordovaFile.removeRecursively(provider.$window.cordova.file.dataDirectory, "")
                 .then(function (success) {
                   alert(success);
@@ -451,6 +512,7 @@
             },
             destroy: function (id) {
               delete cache[id];
+              provider.cache.clear(id);
               return provider.$q(function (resolve, reject) {
                 lock(id, function (cb) {
                   if(!provider.$window.cordova){
@@ -496,26 +558,110 @@
           function get(id, cfg) {
             return provider.$q(function (resolve, reject) {
               lock(id, function (cb) {
-                provider.$cordovaFile.readAsText(provider.$window.cordova.file.dataDirectory, id + '.bin').then(function (result) {
-                  var r = provider.$window.JSON.parse(result);
-                  //if(!globalDb.noCache || (cfg && cfg.fileField))
-                  //  cache[id] = r;
+                var value=provider.cache.getValue(id);
+                if (value){
                   cb();
-                  resolve(r);
-
-                }).catch(function (result) {
-                  cb();
-                  reject(null);
-
-                });
+                  resolve(value)
+                }else {
+                  provider.$cordovaFile.readAsText(provider.$window.cordova.file.dataDirectory,id + '.bin').then(function (result) {
+                      if (!result){
+                        readText(provider.$window.cordova.file.dataDirectory,id + '.bin').then(function (k) {
+                          var r = provider.$window.JSON.parse(k);
+                          provider.cache.setValue(id,r);
+                          cb();
+                          resolve(r);
+                        },function () {
+                          cb();
+                          reject(null);
+                        });
+                      }else {
+                        var r = provider.$window.JSON.parse(result);
+                        provider.cache.setValue(id,r);
+                        cb();
+                        resolve(r);
+                      }
+                  },function () {
+                    cb();
+                    reject(null);
+                  })
+                }
               })
-              /*              if(cache[id]){
-               resolve(cache[id]);
-               }
-               else{
-
-               }*/
             });
+          }
+
+
+
+
+          function utf8ByteToUnicodeStr(utf8Bytes) {
+            var unicodes = [];
+            for (var pos = 0; pos < utf8Bytes.length;){
+              var flag= utf8Bytes[pos];
+              var unicode = 0 ;
+              if ((flag >>>7) === 0 ) {
+                unicodes.push(String.fromCharCode(utf8Bytes[pos]));
+                pos += 1;
+
+              } else if ((flag &0xFC) === 0xFC ){
+                unicode = (utf8Bytes[pos] & 0x3) << 30;
+                unicode |= (utf8Bytes[pos+1] & 0x3F) << 24;
+                unicode |= (utf8Bytes[pos+2] & 0x3F) << 18;
+                unicode |= (utf8Bytes[pos+3] & 0x3F) << 12;
+                unicode |= (utf8Bytes[pos+4] & 0x3F) << 6;
+                unicode |= (utf8Bytes[pos+5] & 0x3F);
+                unicodes.push(String.fromCharCode(unicode));
+                pos += 6;
+
+              }else if ((flag &0xF8) === 0xF8 ){
+                unicode = (utf8Bytes[pos] & 0x7) << 24;
+                unicode |= (utf8Bytes[pos+1] & 0x3F) << 18;
+                unicode |= (utf8Bytes[pos+2] & 0x3F) << 12;
+                unicode |= (utf8Bytes[pos+3] & 0x3F) << 6;
+                unicode |= (utf8Bytes[pos+4] & 0x3F);
+                unicodes.push(String.fromCharCode(unicode));
+                pos += 5;
+
+              } else if ((flag &0xF0) === 0xF0 ){
+                unicode = (utf8Bytes[pos] & 0xF) << 18;
+                unicode |= (utf8Bytes[pos+1] & 0x3F) << 12;
+                unicode |= (utf8Bytes[pos+2] & 0x3F) << 6;
+                unicode |= (utf8Bytes[pos+3] & 0x3F);
+                unicodes.push(String.fromCharCode(unicode));
+                pos += 4;
+
+              } else if ((flag &0xE0) === 0xE0 ){
+                unicode = (utf8Bytes[pos] & 0x1F) << 12;
+                unicode |= (utf8Bytes[pos+1] & 0x3F) << 6;
+                unicode |= (utf8Bytes[pos+2] & 0x3F);
+                unicodes.push(String.fromCharCode(unicode));
+                pos += 3;
+
+              } else if ((flag &0xC0) === 0xC0 ){ //110
+                unicode = (utf8Bytes[pos] & 0x3F) << 6;
+                unicode |= (utf8Bytes[pos+1] & 0x3F);
+                unicodes.push(String.fromCharCode(unicode));
+                pos += 2;
+
+              } else{
+                unicodes.push(String.fromCharCode(utf8Bytes[pos]));
+                pos += 1;
+              }
+            }
+            return unicodes.join('');
+          }
+
+
+          function readText(dir,fileName) {
+            return  provider.$q(function (resolve,reject) {
+              provider.$cordovaFile.readAsArrayBuffer(dir, fileName).then(function (data) {
+                  var arr= new Uint8Array(data);
+                  var  res=utf8ByteToUnicodeStr(arr);
+                  resolve(res);
+
+              }).catch(function (err) {
+                reject(err);
+              })
+
+            })
           }
 
           function put(doc, cfg) {
@@ -524,11 +670,10 @@
 
             //if(cfg && cfg.upload && cache[doc._id])
             //  delete cache[doc._id];
-
-
+            provider.cache.setValue(doc._id,doc);
             return provider.$q(function (resolve, reject) {
               lock(doc._id, function (cb) {
-                provider.$cordovaFile.writeFile(provider.$window.cordova.file.dataDirectory, doc._id + '.bin', provider.$window.JSON.stringify(doc), true)
+                provider.$cordovaFile.writeFile(provider.$window.cordova.file.dataDirectory, doc._id + '.bin',provider.$window.JSON.stringify(doc) , true)
                   .then(function (result) {
                     resolve(result)
                     cb();

@@ -783,7 +783,7 @@
             return 'GetMeasureItemInfoByAreaID';
           },
           filter: function (item) {
-            return item._id == 'GetMeasureItemInfoByAreaID'
+            return item._id == 'GetMeasureItemInfoByAreaID'||item.id=='GetMeasureItemInfoByAreaID '
           },
           dataType: 3
         }).bind(function (AreaID, db) {
@@ -805,7 +805,7 @@
           },
           dataType: 3,
           filter: function (item) {
-            return item._id == 'GetRegionTreeInfo'
+            return item._id == 'GetRegionTreeInfo'||item.id == 'GetRegionTreeInfo'
           },
         }).bind(function (AreaID, db) {
           return $http.get($http.url('/Api/ProjectInfoApi/GetRegionTreeInfoNotUser', {AreaID: AreaID})).then(function (result) {
@@ -847,7 +847,7 @@
           },
           dataType: 3,
           filter: function (item) {
-            return item._id == 'GetBaseMeasure'
+            return item._id == 'GetBaseMeasure'|| item.id == 'GetBaseMeasure'
           },
         }).bind(function (db) {
           return $http.get($http.url('/api/MeasureInfo/GetBaseMeasure')).then(function (result) {

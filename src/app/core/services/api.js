@@ -743,6 +743,9 @@
                 if (result.data) {
                   var data = result.data;
                   data.data=data.data?data.data:data.Data;
+                  if (!data.data){
+                    data.data={};
+                  }
                   if (cfg.dataType == 1) {
                     var arr=[];
                     data.forEach(function (d) {

@@ -30,7 +30,7 @@
     var areaId = vm.info.regionId.substr(0, 10);
     api.setNetwork(1).then(function(){
       $rootScope.title =vm.info.name;
-      var packdb = db('pack'+vm.info.db);
+      var packdb = db('pack1'+vm.info.db);
       var arr=[
         packdb.get('GetMeasureItemInfoByAreaID'),
         remote.Project.getDrawingRelations(areaId, "scDrawingRelation"),

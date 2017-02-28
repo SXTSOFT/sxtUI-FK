@@ -131,7 +131,7 @@
         }
         vm.houses = project.Children;
       }
-      remote.Assessment.GetRegionTreeInfo(projectId, 'pack' + assessmentID).then(callBack)
+      remote.Assessment.GetRegionTreeInfo(projectId, 'pack2' + assessmentID).then(callBack)
     }
 
     load();
