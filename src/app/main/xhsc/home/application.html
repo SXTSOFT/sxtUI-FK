@@ -6,7 +6,7 @@
 <div ng-if="vm.loaded"  class="applicationPage">
   <div ng-repeat="item in vm.yw">
     <p  class="subtitle">{{item.name}}<p/>
-    <div class="fl" ng-repeat="k in item.items" ng-if="item.items.length">
+    <div class="fl" ng-repeat="k in item.items">
         <a ng-click="vm.click(k)"  layout="column" layout-align="center center">
           <img ng-src="{{k.img}}"/>
           <p>{{k.title}}</p>

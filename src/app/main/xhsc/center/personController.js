@@ -28,24 +28,8 @@
       if (role&&role.data&&role.data){
           vm.user.name= role.data.Name;
           vm.user.userName= role.data.UserName;
-          vm.user.memberTypeName = role.data.Role.MemberTypeName;
-        switch (role.data.Role.MemberType){
-          case 0:
-            vm.user.role='总包';
-            break
-          case 2:
-            vm.user.role='监理';
-            break;
-          case 4:
-            vm.user.role="项目部";
-            break;
-          case 8:
-            vm.user.role="工程管理部";
-            break;
-          case 16:
-            vm.user.role="集团";
-            break;
-        }
+          vm.user.OUName = role.data.Role.OUName;
+          vm.user.role=role.data.Role.MemberTypeName;
       }
     });
 
