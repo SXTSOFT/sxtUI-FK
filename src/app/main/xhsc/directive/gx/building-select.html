@@ -1,0 +1,29 @@
+<md-progress-circular id="toolbar-progress" ng-if="!show" class="md-accent"
+                      md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+</md-progress-circular>
+<md-tabs  flex  ng-if="show" class="selfGx">
+  <md-tab  ng-repeat="prjs in data" label="{{prjs.RegionName}}">
+    <md-tab-content flex layout-fill layout="column">
+      <md-list>
+        <section  ng-if="prjs.Children.length" ng-repeat="item in  prjs.Children"  style="position: relative">
+          <div style="position: absolute;right: 0px;z-index: 9999">
+            <md-button ng-click="zk(item)" style="min-width: 50px;color: rgba(0,0,0,0.541176)"><span
+              ng-show="item.hide">展开</span><span ng-show="!item.hide">收起</span></md-button>
+          </div>
+          <md-subheader class="md-no-sticky"  style="background:#f0f0f0 " layout="row">
+            {{item.RegionName}}
+          </md-subheader>
+          <md-list-item  style="background: white;" layout="row" ng-repeat="k in  item.Children" ng-show="!item.hide">
+            <md-checkbox ng-disabled="k.disable" ng-model="k.checked" ng-click="checked(k)" >
+              <span>{{k.RegionName}}</span>
+            </md-checkbox>
+            <md-divider  style="margin-left: 16px"  ng-if="!$last"></md-divider>
+          </md-list-item>
+        </section>
+      </md-list>
+    </md-tab-content>
+  </md-tab>
+</md-tabs>
+
+
+
