@@ -391,6 +391,10 @@
     vm.setModule = function (val) {
       $state.go('app.xhsc.gx.yw', {yw: val})
     }
+    vm.goSelf = function () {
+      $state.go('app.xhsc.gx.selfMain')
+    }
+
 
     vm.jlysAction = function (item) {
       if (!item.isOffline) {

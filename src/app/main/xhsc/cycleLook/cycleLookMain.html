@@ -1,4 +1,7 @@
-<div flex ng-if="vm.role==0||vm.role==32" class="gxbg" layout="column" ms-scroll>
+<md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
+                      md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+</md-progress-circular>
+<div flex ng-if="vm.isOver&&vm.role==0||vm.role==32" class="gxbg" layout="column" ms-scroll>
   <div class="gxheadzb">
     <ul>
       <li ng-click="vm.setModule(4)">
@@ -12,9 +15,6 @@
     </ul>
   </div>
   <div flex style="background-color: white;">
-    <md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
-                          md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
-    </md-progress-circular>
     <md-list ng-show="vm.isOver" style="background-color: #FFFFFF">
       <md-list-item style="background-color: #FFFFFF" ng-click="vm.zbzgAction(item)" layout="row" ng-repeat="item in vm.zglist|zgFilter:[1,8]">
         <div  layout="column" style="padding-bottom: 16px">
@@ -36,7 +36,7 @@
   </div>
 </div>
 
-<div flex ng-if="!(vm.role==0||vm.role==32)" class="gxbg" layout="column" ms-scroll>
+<div flex ng-if="vm.isOver&&!(vm.role==0||vm.role==32)" class="gxbg" layout="column" ms-scroll>
   <div class="gxheadjl">
     <ul>
       <li ng-click="vm.create()">
@@ -54,9 +54,6 @@
     </ul>
   </div>
   <div flex style="background-color: white;">
-    <md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
-                          md-mode="indeterminate" md-diameter="32" style="margin-left: 8px;margin-top: 8px">
-    </md-progress-circular>
     <md-list ng-show="vm.isOver" style="background-color: #FFFFFF">
       <md-list-item style="background-color: #FFFFFF" layout="row" ng-click="vm.jlysAction(item)" ng-repeat="item in vm.Inspections">
         <div layout="column">

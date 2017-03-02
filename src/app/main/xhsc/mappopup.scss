@@ -4270,6 +4270,14 @@ p{
   }
 
 }
+.selfGx{
+  md-checkbox{
+    width: 80% !important;
+    .md-label{
+      display: block !important;
+    }
+  }
+}
 
 
 

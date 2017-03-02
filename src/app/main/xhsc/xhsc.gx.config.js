@@ -31,7 +31,7 @@
         showgrzx:false,
         rightArrow: false,
         leftArrow: false,
-        //title: '工序验收',
+        title: '工序验收',
         url: '',
         swap:[
           {active:true,label:'材料验收',material:true},
@@ -234,6 +234,50 @@
         url   :'/regionStates/{acceptanceItemID}/{projectId}/{acceptanceItemName}/{maxRegion}',
         templateUrl : 'app/main/xhsc/procedure/regionStates.html',
         controller:'regionStatesController as vm',
+      })
+      .state('app.xhsc.gx.selfMain',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'工序自检',
+        url   :'/self/selfMain',
+        templateUrl : 'app/main/xhsc/procedure/self/selfMain.html',
+        controller:'selfMainController as vm',
+
+      })
+      .state('app.xhsc.gx.selfGx',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'工序范围',
+        url   :'/self/selfGx',
+        templateUrl : 'app/main/xhsc/procedure/self/selfGx.html',
+        controller:'selfGxController as vm',
+
+      })
+      .state('app.xhsc.gx.selfRegion',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'测量区域范围',
+        url   :'/self/selfRegion/{acceptanceitemIDs}',
+        templateUrl : 'app/main/xhsc/procedure/self/selfRegion.html',
+        controller:'selfRegionController as vm',
+
+      })
+      .state('app.xhsc.gx.selfPicture',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'工序自检',
+        url   :'/self/selfMain',
+        templateUrl : 'app/main/xhsc/procedure/self/selfPicture.html',
+        controller:'selfPictureController as vm',
+
       })
   }
 })();
