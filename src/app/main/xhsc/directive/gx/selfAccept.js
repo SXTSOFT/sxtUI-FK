@@ -1,7 +1,4 @@
 /**
- * Created by shaoshun on 2017/3/2.
- */
-/**
  * Created by shaoshun on 2016/11/29.
  */
 /**
@@ -18,7 +15,7 @@
   function selfAccept($timeout,remote,mapPopupSerivce,sxt,utils,$window,xhUtils) {
     return {
       scope:{
-        item:'=selfAccept',
+        item:'=xjAccept',
         procedure:'=',
         regionId:'=',
         inspectionId:'=',
@@ -226,7 +223,19 @@
           }, 300);
         }
       };
-
+      scope.$watch('regionId', function () {
+        if(!scope.loading&&scope.regionId&&scope.imgId) {
+          if(map){
+            map.remove();
+            map = null;
+          }
+          install();
+          scope.loading=true;
+          $timeout(function () {
+            scope.loading=false;
+          },300)
+        }
+      });
       scope.$watch('imgId', function () {
         if(!scope.loading&&scope.imgId) {
           if(map){
@@ -250,6 +259,7 @@
           }
         }
       })
+
       scope.$on('destroy',function () {
         if(map){
           map.remove();
