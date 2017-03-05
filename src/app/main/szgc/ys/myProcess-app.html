@@ -27,7 +27,7 @@
           <md-list-item ng-click="vm.openNav('nav_region')" layout="row"><p style="white-space: nowrap;color:#8c8c8c;
 " flex="none">部位：</p><p flex style="color:#1e1e1e;text-align:right; white-space: nowrap;overflow: hidden;text-overflow:ellipsis;direction: rtl;">{{project.nameTree}}</p></md-list-item>
           <md-divider></md-divider>
-          <md-list-item ng-click="vm.openNav('nav_procedure')" layout="row"><p flex="none" style="color:#8c8c8c;">工序：</p><p flex style="color:#1e1e1e;text-align:right;text-overflow:ellipsis;">{{project.procedureName}}</p></md-list-item>
+          <md-list-item ng-click="vm.openNav('nav_procedure')" layout="row"><p flex="none" style="color:#8c8c8c;">工序：</p><p flex style="color:#1e1e1e;text-align:right;text-overflow:ellipsis;">{{project.procedureName||'请选择工序'}}</p></md-list-item>
           <md-divider></md-divider>
         </md-list>
 
