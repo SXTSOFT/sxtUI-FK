@@ -5,22 +5,25 @@
   project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed"
   is-more="project.isMore">
   <md-list style="padding:0;">
-<md-subheader class="md-no-sticky">材料</md-subheader>
+<!--<md-subheader class="md-no-sticky">材料</md-subheader>
 <md-list-item>
   <sxt-material style="width:100%;margin:0;" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId" material-Unit="project.materialUnit" material-models="project.materialModels"
 name-value="project.procedureName" material-supply="project.materialSupply" region-type="project.type" class="md-block"></sxt-material>
-</md-list-item>
+</md-list-item>-->
+  <md-list-item ng-click="vm.openNav('nav_material')" layout="row"><p flex="none" style="color:#8c8c8c;">材料</p>
+  <p flex style="color:#1e1e1e;text-align:right;text-overflow:ellipsis;">{{project.procedureName}}</p></md-list-item>
+  <md-divider></md-divider>
 </md-list>
 
 </sxt-projects-jd>
 <div class="md-padding">
-<md-input-container class="md-block">
-<label>规格/型号</label>
-<md-select ng-model="vm.checkData.Model">
-  <md-option ng-value="m" ng-repeat="m in project.materialModels">{{m}}</md-option>
-</md-select>
-</md-input-container>
-<div style="height: 6px" ng-if="project.materialSupply!=0"></div>
+  <md-input-container class="md-block">
+    <label>规格/型号</label>
+    <md-select ng-model="vm.checkData.Model">
+      <md-option ng-value="m" ng-repeat="m in project.materialModels">{{m}}</md-option>
+    </md-select>
+  </md-input-container>
+  <div style="height: 6px" ng-if="project.materialSupply!=0"></div>
 <md-input-container class="md-block" ng-if="project.materialSupply!=0">
   <label>供货方</label>
   <md-select ng-model="vm.checkData.SupplierId">
@@ -80,7 +83,9 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
 <md-list>
   <md-list-item ng-repeat="n in Targets" ng-click="n.isOK=!n.isOK" ng-disabled="n.need">
     <div class="md-list-item-text" flex layout="column">
-      <h3 style="margin-top: 10px; margin-bottom: 5px;font-size: 1.6rem">{{$index+1}}、{{n.TargetName}}</h3>
+      <h3 style="margin-top: 10px; margin-bottom: 5px;font-size: 1.6rem;font-family: 'SJQY' !important;">
+        {{$index+1}}、{{n.TargetName}}
+      </h3>
 <!--<p ng-if="n.Remark" style="margin: 0;line-height: 120%;font-size: 13px !important; ">-->
 <!--{{n.Remark}}-->
 <!--</p>-->
@@ -194,5 +199,16 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
   <md-button flex class="md-raised md-primary" ng-click="vm.ok()"> 完成</md-button>
 </div>
 </div>
+
+<md-sidenav class="md-sidenav-right" md-component-id="nav_material"  md-is-open="vm.isRightOpen" md-whiteframe="4" layout="column">
+  <md-content flex layout="column" style="background: white">
+    <sxt-material flex layout="column" on-select="vm.closeNav('nav_material')" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId"  material-Unit="project.materialUnit"
+    material-models="project.materialModels" name-value="project.procedureName" material-supply="project.materialSupply" region-type="project.type" class="md-block"></sxt-material>
+    <div class="md-padding" layout="row">
+      <md-button flex ng-click="vm.closeNav('nav_material')"  class="md-raised md-primary">确定</md-button>
+    </div>
+  </md-content>
+</md-sidenav>
+
 </form>
 </md-content>

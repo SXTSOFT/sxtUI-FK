@@ -12,7 +12,7 @@
     .controller('MMyProcessController', MMyProcessController);
 
   /** @ngInject */
-  function MMyProcessController($scope, api, utils, $state, $q, sxt, xhUtils, $timeout, $mdDialog, $stateParams) {
+  function MMyProcessController($scope, api, utils, $state, $q, sxt, xhUtils, $timeout, $mdDialog, $stateParams,$mdSidenav) {
 
     var vm = this;
     vm.AttachmentSHow = false;
@@ -35,6 +35,19 @@
       imgs5: []
 
     };
+
+
+    vm.openNav = function (id) {
+      vm.isRightOpen = true;
+      $mdSidenav(id).open()
+    };
+    vm.closeNav = function (id) {
+      vm.isRightOpen = false;
+      $mdSidenav(id).close().then(function () {
+
+      });
+    };
+
     vm.change = function (item) {
       vm.fjType = item.value;
     }
@@ -125,7 +138,7 @@
       vm.checkData.RegionId = $scope.project.pid;
       vm.checkData.ProjectName = $scope.project.projectName;
       vm.checkData.RegionName = $scope.project.typeName;
-      
+
       if (vm.checkData.WgCheck == 0 || vm.checkData.InspectionReport == 0) {
         $mdDialog.show({
           controller: ['$scope', function ($scope) {
@@ -187,17 +200,18 @@
     };
 
     vm._save = function (addForm) {
-      $scope.Targets.forEach(function (r) {
-        if (r.isOK) {
-          var n = {
-            ProjectId: vm.checkData.ProjectId,
-            MaterialId: vm.checkData.MaterialId,
-            TargetId: r.Id
-          };
-          vm.checkData.MaterialTargets.push(n);
-        }
-      });
-
+      if(vm.checkData.IsInspection != 0){
+        $scope.Targets.forEach(function (r) {
+          if (r.isOK) {
+            var n = {
+              ProjectId: vm.checkData.ProjectId,
+              MaterialId: vm.checkData.MaterialId,
+              TargetId: r.Id
+            };
+            vm.checkData.MaterialTargets.push(n);
+          }
+        });
+      }
       api.material.addProcessService.Insert({
         Id: sxt.uuid(),
         CheckData: vm.checkData,
@@ -548,10 +562,6 @@
                   }
                 }
               });
-
-              //item.
-
-
             });
 
             results.forEach(function (item) {
