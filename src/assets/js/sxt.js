@@ -47,8 +47,8 @@ window.sxt = (function(win,angular)
       // api:'http://emp.chngalaxy.com:9091',
       // fs:'http://emp.chngalaxy.com:9090',
       api:'http://localhost:5000',
-      fs:'http://emp.chngalaxy.com:9090',
-      version:'http://app.ricent.com/galaxy'
+      fs:'http://emp.chngalaxy.com:9090'
+      // version:'http://app.ricent.com/galaxy'
     },
     download:download
   };

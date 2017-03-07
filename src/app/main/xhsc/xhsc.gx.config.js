@@ -270,11 +270,11 @@
       })
       .state('app.xhsc.gx.selfPicture',{
         noBack:true,
-        sendBt:false,
+        sendBt: true,
         rightArrow:false,
         leftArrow:false,
         title :'工序自检',
-        url   :'/self/selfMain',
+        url   :'/self/selfPicture/{inspectionID}',
         templateUrl : 'app/main/xhsc/procedure/self/selfPicture.html',
         controller:'selfPictureController as vm',
 

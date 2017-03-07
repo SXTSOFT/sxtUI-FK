@@ -85,6 +85,53 @@
         controller: 'safe_civiliz_rectifyController as vm'
       })
 
+      .state('app.xhsc.sf.selfMain',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'安全自检',
+        url   :'/self/selfMain',
+        templateUrl : 'app/main/xhsc/safeCiviliz/self/safe_self_main.html',
+        controller:'safeSelfMainController as vm',
+
+      })
+      .state('app.xhsc.sf.selfItem',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'安全项范围',
+        url   :'/self/selfItem',
+        templateUrl : 'app/main/xhsc/safeCiviliz/self/safe_self_item.html',
+        controller:'safeSelfItemController as vm',
+
+      })
+      .state('app.xhsc.sf.selfRegion',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        title :'测量区域范围',
+        url   :'/self/selfRegion/{acceptanceitemIDs}',
+        templateUrl : 'app/main/xhsc/safeCiviliz/self/safe_region.html',
+        controller:'safeSelfRegionController as vm',
+
+      })
+      .state('app.xhsc.gx.selfAccept',{
+        noBack:true,
+        sendBt: true,
+        rightArrow:false,
+        leftArrow:false,
+        title :'安全自检',
+        url   :'/self/selfAccept/{inspectionID}',
+        templateUrl : 'app/main/xhsc/safeCiviliz/self/safe_self_accept.html',
+        controller:'safeSelfAcceptController as vm',
+
+      })
+
+
+
     $stateProvider
       .state('app.xhsc.dyn',{
         url:'/dyn',

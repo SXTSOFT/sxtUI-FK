@@ -10,12 +10,12 @@
 (function () {
   angular
     .module('app.xhsc')
-    .directive('selfAccept',selfAccept);
+    .directive('safeSelfAccept',safeSelfAccept);
   /** @ngInject */
-  function selfAccept($timeout,remote,mapPopupSerivce,sxt,utils,$window,xhUtils,$q) {
+  function safeSelfAccept($timeout,remote,mapPopupSerivce,sxt,utils,$window,xhUtils,$q) {
     return {
       scope:{
-        item:'=selfAccept',
+        item:'=safeSelfAccept',
         procedure:'=',
         regionId:'=',
         inspectionId:'=',
@@ -40,7 +40,7 @@
             var areaID=scope.regionId.substr(0,10);
             remote.safe.getDrawingRelate.cfgSet({
               offline: true
-            })("cycle",areaID).then(function (result) {
+            })("Acceptances",areaID).then(function (result) {
               imgId = result.data.find(function (item) {
                 return item.AcceptanceItemID==scope.procedure && item.RegionId ==scope.regionId;
               });
@@ -85,7 +85,7 @@
                 cb();
               },
               onLoad: function (cb) {
-                remote.self.zb.pointQuery.cfgSet({
+                remote.self.safe.pointQuery.cfgSet({
                   filter:function (item){
                     return item.RegionID==scope.regionId&&item.AcceptanceItemID==scope.procedure;
                   }
@@ -158,14 +158,14 @@
                   }
                   fg.data.push(v);
                   scope.ct && scope.ct.cancelMode && scope.ct.cancelMode();
-                  remote.self.zb.pointCreate(v);
+                  remote.self.safe.pointCreate(v);
 
                 }
                 cb(layer);
               },
               onPopupClose: function (cb) {
                 var self = this;
-                var edit = mapPopupSerivce.get('selfAcceptPopup'),
+                var edit = mapPopupSerivce.get('safeSelfAcceptPopup'),
                   scope = edit.scope;
                 if(scope.data && scope.isSaveData!==false){
                   scope.isSaveData = false;
@@ -175,7 +175,7 @@
               },
               onUpdateData: function (context, data, editScope) {
                 if(data.v.ProblemSortName == 'T'){
-                  remote.self.zb.pointCreate(data.v);
+                  remote.self.safe.pointCreate(data.v);
                 }
               },
               onDelete: function (layer,cb) {
@@ -187,17 +187,17 @@
                   }),ix = fg.data.indexOf(v);
                   fg.data.splice(ix,1);
                   //删除检查点
-                  remote.self.zb.pointDelete({CheckpointID:v.CheckpointID}).then(function () {
+                  remote.self.safe.pointDelete({CheckpointID:v.CheckpointID}).then(function () {
                     //删除记录
-                    remote.self.zb.problemRecordQuery(v.CheckpointID).then(function (k) {
+                    remote.self.safe.problemRecordQuery(v.CheckpointID).then(function (k) {
                       if (angular.isArray(k.data)){
                         k.data.forEach(function (w) {
                           //删除照片
-                          remote.self.zb.problemRecordDelete(w).then(function () {
-                            remote.self.zb.problemRecordFileQuery(w.ProblemRecordID).then(function (m) {
+                          remote.self.safe.problemRecordDelete(w).then(function () {
+                            remote.self.safe.problemRecordFileQuery(w.ProblemRecordID).then(function (m) {
                               if (angular.isArray(m.data)){
                                 m.data.forEach(function (q) {
-                                  remote.self.zb.problemRecordFileDelete(q);
+                                  remote.self.safe.problemRecordFileDelete(q);
                                 })
                               }
                             })
@@ -210,7 +210,7 @@
                 cb(layer);
               },
               onPopup: function (layer,cb) {
-                var edit = mapPopupSerivce.get('selfAcceptPopup');
+                var edit = mapPopupSerivce.get('safeSelfAcceptPopup');
                 if(edit) {
                   edit.scope.context = {
                     fg:fg,
@@ -254,15 +254,15 @@
         })
       };
 
-      scope.$watch('procedure', function () {
-        if(!scope.asy&&scope.regionId&&scope.procedure) {
-          if(map){
-            map.remove();
-            fg=map = null;
-          }
-          install();
-        }
-      });
+      // scope.$watch('procedure', function () {
+      //   if(!scope.asy&&scope.regionId&&scope.procedure) {
+      //     if(map){
+      //       map.remove();
+      //       fg=map = null;
+      //     }
+      //     install();
+      //   }
+      // });
 
       scope.$watch('regionId', function () {
         if(!scope.asy&&scope.regionId&&scope.procedure) {

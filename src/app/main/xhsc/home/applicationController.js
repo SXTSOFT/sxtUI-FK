@@ -85,14 +85,14 @@
               state: "app.xhsc.sf.sfmain",
               stateParams: null
             },
-            // {
-            //   right: vm.duties.indexOf("5")>-1,
-            //   type:"aq",
-            //   title: "动态危险源",
-            //   img: "app/main/xhsc/images/application/dyn.svg",
-            //   state: "app.xhsc.dyn.sfDynamicMain",
-            //   stateParams: null
-            // },
+            {
+              right: vm.duties.indexOf("5")>-1&&vm.role=="0",
+              type:"aq",
+              title: "安全自检",
+              img: "app/main/xhsc/images/application/dyn.svg",
+              state: "app.xhsc.sf.selfMain",
+              stateParams: null
+            },
             {
               right: vm.duties.indexOf("5")>-1||ignore,
               title: "周安全检查",

@@ -11,16 +11,16 @@
   'use strict';
   angular
     .module('app.xhsc')
-    .directive('selfAcceptPopup',selfAcceptPopup);
+    .directive('safeSelfAcceptPopup',safeSelfAcceptPopup);
   /** @ngInject */
-  function selfAcceptPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote){
+  function safeSelfAcceptPopup(mapPopupSerivce,$timeout,sxt,xhUtils,remote){
     return {
       restrict:'E',
       scope:{
         readonly:'=',
         warter:"="
       },
-      templateUrl:'app/main/xhsc/directive/gx/selfAcceptPopup.html',
+      templateUrl:'app/main/xhsc/directive/safe_self/safeSelfAcceptPopup.html',
       link:link
     }
 
@@ -37,7 +37,7 @@
           scope.status=scope.data.v.Status==1?false:true;
         }
         scope.$apply();
-        remote.self.zb.problemRecordQuery(scope.data.v.Id).then(function (r) {
+        remote.self.safe.problemRecordQuery(scope.data.v.Id).then(function (r) {
           var p = null;
           if (r.data.length) {
             p = r.data[0];
@@ -52,10 +52,10 @@
               Describe: scope.data.v.ProblemDescription,
               DescRole: 'zb'
             };
-            remote.self.zb.problemRecordCreate(p);
+            remote.self.safe.problemRecordCreate(p);
           }
           scope.data.p = p;
-          remote.self.zb.problemRecordFileQuery(p.Id).then(function (r) {
+          remote.self.safe.problemRecordFileQuery(p.Id).then(function (r) {
             scope.data.images = r.data;
             if (scope.data.v.isNew  && scope.data.images.length == 0) {
               scope.addPhoto(scope.warter);
@@ -70,7 +70,7 @@
          scope.data.v.Status=1;
        }
         scope.context.fg.updateStatus(scope.data.v.PositionID,scope.data.v.Status);
-        remote.self.zb.pointCreate(scope.data.v);
+        remote.self.safe.pointCreate(scope.data.v);
       }
 
       scope.removeLayer = function(){
@@ -107,17 +107,17 @@
               CheckpointID:scope.data.v.CheckpointID,
               FileContent:image
             };
-            remote.self.zb.problemRecordFileCreate(img);
+            remote.self.safe.problemRecordFileCreate(img);
             scope.data.images.push(img);
           }
         });
       }
-      mapPopupSerivce.set('selfAcceptPopup',{
+      mapPopupSerivce.set('safeSelfAcceptPopup',{
         el:element,
         scope:scope
       });
       scope.$on('$destroy',function(){
-        mapPopupSerivce.remove('selfAcceptPopup');
+        mapPopupSerivce.remove('safeSelfAcceptPopup');
         $(element).remove();
       });
     }

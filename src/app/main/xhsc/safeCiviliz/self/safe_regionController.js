@@ -1,4 +1,7 @@
 /**
+ * Created by shaoshun on 2017/3/7.
+ */
+/**
  * Created by shaoshun on 2017/3/1.
  */
 /**
@@ -12,10 +15,10 @@
 
   angular
     .module('app.xhsc')
-    .controller('selfRegionController',selfRegionController);
+    .controller('safeSelfRegionController',safeSelfRegionController);
 
   /** @ngInject */
-  function selfRegionController($state,$rootScope,$scope,$mdDialog,$stateParams,remote,$q,utils,xhUtils,xhscService,sxt,$timeout){
+  function safeSelfRegionController($state,$rootScope,$scope,$mdDialog,$stateParams,remote,$q,utils,xhUtils,xhscService,sxt,$timeout){
     var vm = this;
     vm.isOver=true;
     vm.selected=[];
@@ -37,7 +40,7 @@
         var hour=date.getHours();
         hour=hour.toString().length==1?("0"+hour):hour;
         var min=date.getMinutes();
-        var defaultDes=year+"年"+month+"月"+day+"日"+hour+":"+min+"总包自检";
+        var defaultDes=year+"年"+month+"月"+day+"日"+hour+":"+min+"安全自检";
         before(defaultDes).then(function (res) {
           $mdDialog.show({
             controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
@@ -50,9 +53,9 @@
                   RegionID:regionIds,
                   AcceptanceItemID:vm.acceptanceitemIDs
                 }
-              },"Inspection").then(function () {
+              },"safe").then(function () {
                 $mdDialog.hide();
-                $state.go("app.xhsc.gx.selfMain");
+                $state.go("app.xhsc.sf.selfMain");
               })
             }],
             template: '<md-dialog aria-label="正在提交"  ng-cloak><md-dialog-content> <md-progress-circular md-diameter="28" md-mode="indeterminate"></md-progress-circular><p style="padding-left: 6px;">正在提交数据...</p></md-dialog-content></md-dialog>',

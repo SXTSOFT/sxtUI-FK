@@ -1,0 +1,23 @@
+<md-progress-circular id="toolbar-progress" ng-if="!show" class="md-accent"
+                      md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+</md-progress-circular>
+  <md-tabs  flex ng-if="show" class="selfGx">
+    <md-tab ng-if="showTab(gx1)" ng-repeat="gx1 in data" label="{{gx1.SpecialtyName}}">
+      <md-tab-content flex layout-fill layout="column">
+        <md-list>
+          <section  ng-if="item.WPAcceptanceList.length" ng-repeat="item in  gx1.SpecialtyChildren">
+            <md-subheader class="md-no-sticky"  style="background:#f0f0f0 ">{{item.SpecialtyName}}</md-subheader>
+            <md-list-item  style="background: white;" ng-repeat="k in  item.WPAcceptanceList">
+              <md-checkbox ng-model="k.checked" ng-click="checked(k)">
+                <span>{{k.AcceptanceItemName}}</span>
+              </md-checkbox>
+              <md-divider  style="margin-left: 16px"  ng-if="!$last"></md-divider>
+            </md-list-item>
+          </section>
+        </md-list>
+      </md-tab-content>
+    </md-tab>
+  </md-tabs>
+
+
+

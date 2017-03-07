@@ -1,4 +1,7 @@
 /**
+ * Created by shaoshun on 2017/3/7.
+ */
+/**
  * Created by shaoshun on 2017/3/1.
  */
 /**
@@ -9,17 +12,17 @@
 
   angular
     .module('app.xhsc')
-    .controller('selfMainController',selfMainController);
+    .controller('safeSelfMainController',safeSelfMainController);
 
   /** @ngInject */
-  function selfMainController($state,$rootScope,$scope,$mdDialog,$mdBottomSheet,$stateParams,remote,$q,utils,xhUtils,api,xhscService,sxt){
+  function safeSelfMainController($state,$rootScope,$scope,$mdDialog,$mdBottomSheet,$stateParams,remote,$q,utils,xhUtils,api,xhscService,sxt){
     var vm = this;
     vm.procedure=[];
     var globalTask = [
       function () {
         return remote.safe.getSecurityItem.cfgSet({
           offline: true
-        })("cycle").then(function (r) {
+        })().then(function (r) {
           if (r.data && r.data.length) {
             r.data.forEach(function (k) {
               if (k.SpecialtyChildren.length) {
@@ -43,14 +46,14 @@
         var  areaID=regions[0].substr(0,10);
         var acceptanceItems=acceptanceItemIDs?acceptanceItemIDs.split(','):[];
         filter=  function filter(item) {
-           return  regions.find(function (n) {
-                return  item.RegionId.toString().indexOf(n)>-1
-           })&& acceptanceItems.indexOf(item.AcceptanceItemID.toString())>-1
+          return  regions.find(function (n) {
+              return  item.RegionId.toString().indexOf(n)>-1
+            })&& acceptanceItems.indexOf(item.AcceptanceItemID.toString())>-1
         }
       }
       var relates=remote.safe.getDrawingRelate.cfgSet({
         offline: true
-      })("cycle",areaID)
+      })("Acceptances",areaID)
       return [
         function (tasks) {
           return $q(function (resolve, reject) {
@@ -70,14 +73,14 @@
     function getbasinfo(item) {
       return [
         function (tasks) {
-          return remote.self.getBaseInfo("Inspection",item.Id).then(function (r) {
+          return remote.self.getBaseInfo("safe",item.Id).then(function (r) {
             if (r && r.data) {
               var Checkpoints = r.data.Ponits; //插入点
               if (angular.isArray(Checkpoints)) {
                 Checkpoints.forEach(function (t) {
                   t.isUpload=true;
                   tasks.push(function () {
-                    return remote.self.zb.pointCreate(t)
+                    return remote.self.safe.pointCreate(t)
                   });
                 });
               }
@@ -86,7 +89,7 @@
                 ProblemRecords.forEach(function (t) {
                   t.isUpload=true;
                   tasks.push(function () {
-                    return remote.self.zb.problemRecordCreate(t)
+                    return remote.self.safe.problemRecordCreate(t)
                   });
                 });
               }
@@ -97,7 +100,7 @@
                   tasks.push(function () {
                     return remote.self.fileQuery(t.FileID).then(function (r) {
                       t.FileContent=r.data.Base64;
-                      return remote.self.zb.problemRecordFileCreate(t)
+                      return remote.self.safe.problemRecordFileCreate(t)
                     });
                   });
                 });
@@ -121,13 +124,13 @@
                 }])
                 .concat(getbasinfo(item))
                 .concat(function () {
-                  return remote.self.getSafePointGeo("Inspection",item.Id);
+                  return remote.self.getSafePointGeo("safe",item.Id);
                 })
                 .concat(function () {
-                  return remote.offline.create({Id: 'selfZb' + item.Id});
+                  return remote.offline.create({Id: 'selfSafe' + item.Id});
                 })
               api.task(tasks, {
-                event: 'selfZbys',
+                event: 'selfSafe',
                 target: item.Id
               })(null, function () {
                 item.percent = item.current = item.total = null;
@@ -153,7 +156,7 @@
         })
       });
     }
-    api.event('selfZbys', function (s, e) {
+    api.event('selfSafe', function (s, e) {
       var current = vm.Inspections && vm.Inspections.find(function (item) {
           return item.Id == e.target;
         });
@@ -201,7 +204,7 @@
                   })
                 });
               }else {
-                  utils.alert("没有要上传的数据!");
+                utils.alert("没有要上传的数据!");
               }
             });
           }],
@@ -255,69 +258,69 @@
     }
 
     up.prototype._nextStepUp=function (tasks,params) {
-        var data=this.buildData(params);
-        var inspectionsIds=[];
-        if (data&&data.length){
-            data.forEach(function (k) {
-              if (inspectionsIds.indexOf(k.InspectionID)==-1){
-                inspectionsIds.push(k.InspectionID);
-              }
-              tasks.push(function () {
-                  return remote.self.self_upload("Inspection",k);
-              })
-          });
-        }
-        inspectionsIds.forEach(function (o) {
+      var data=this.buildData(params);
+      var inspectionsIds=[];
+      if (data&&data.length){
+        data.forEach(function (k) {
+          if (inspectionsIds.indexOf(k.InspectionID)==-1){
+            inspectionsIds.push(k.InspectionID);
+          }
           tasks.push(function () {
-            return remote.self.updateStatus("Inspection",o);
+            return remote.self.self_upload("safe",k);
           })
+        });
+      }
+      inspectionsIds.forEach(function (o) {
+        tasks.push(function () {
+          return remote.self.updateStatus("safe",o);
         })
-        return tasks;
+      })
+      return tasks;
     }
 
     up.prototype.buildData=function (params) {
-        var areas=[];
-        var checkpointInput=params.CheckpointInput;
-        if (checkpointInput&&checkpointInput.length){
-          checkpointInput.forEach(function (q) {
-              if (!areas.find(function (k) {
-                  return q.RegionID==k.RegionID&&q.AcceptanceItemID==k.AcceptanceItemID&&k.InspectionID==q.InspectionID;
-                })){
-                areas.push({
-                  Id:sxt.uuid(),
-                  RegionID:q.RegionID,
-                  AcceptanceItemID:q.AcceptanceItemID,
-                  InspectionID:q.InspectionID,
-                  SelfCheckType:"Inspection"
+      var areas=[];
+      var checkpointInput=params.CheckpointInput;
+      if (checkpointInput&&checkpointInput.length){
+        checkpointInput.forEach(function (q) {
+          if (!areas.find(function (k) {
+              return q.RegionID==k.RegionID&&q.AcceptanceItemID==k.AcceptanceItemID&&k.InspectionID==q.InspectionID;
+            })){
+            areas.push({
+              Id:sxt.uuid(),
+              RegionID:q.RegionID,
+              AcceptanceItemID:q.AcceptanceItemID,
+              InspectionID:q.InspectionID,
+              SelfCheckType:"safe"
+            })
+          }
+        });
+        areas.forEach(function (k) {
+          var Status=2;
+          k.CheckPoint=checkpointInput.filter(function (q) {
+            return q.RegionID==k.RegionID&&q.AcceptanceItemID==k.AcceptanceItemID&&k.InspectionID==q.InspectionID;
+          })
+          if (k.CheckPoint&&k.CheckPoint.length){
+            k.CheckPoint.forEach(function (n) {
+              if (n.Status==1){
+                Status=1;
+              }
+              n.ProblemRecordInput=params.ProblemRecordInput.filter(function (q) {
+                return  q.CheckpointID==n.CheckpointID
+              })
+              if (n.ProblemRecordInput&&n.ProblemRecordInput.length){
+                n.ProblemRecordInput.forEach(function (t) {
+                  t.ProblemRecordFileInput=params.ProblemRecordFileInput.filter(function (q) {
+                    return q.ProblemRecordID==t.ProblemRecordID;
+                  })
                 })
               }
-          });
-          areas.forEach(function (k) {
-            var Status=2;
-            k.CheckPoint=checkpointInput.filter(function (q) {
-              return q.RegionID==k.RegionID&&q.AcceptanceItemID==k.AcceptanceItemID&&k.InspectionID==q.InspectionID;
             })
-            if (k.CheckPoint&&k.CheckPoint.length){
-              k.CheckPoint.forEach(function (n) {
-                if (n.Status==1){
-                  Status=1;
-                }
-                n.ProblemRecordInput=params.ProblemRecordInput.filter(function (q) {
-                   return  q.CheckpointID==n.CheckpointID
-                })
-                if (n.ProblemRecordInput&&n.ProblemRecordInput.length){
-                  n.ProblemRecordInput.forEach(function (t) {
-                      t.ProblemRecordFileInput=params.ProblemRecordFileInput.filter(function (q) {
-                        return q.ProblemRecordID==t.ProblemRecordID;
-                      })
-                  })
-                }
-              })
-            }
-            k.Status=Status;
-          })
-          return areas;
-        }
+          }
+          k.Status=Status;
+        })
+        return areas;
+      }
     }
 
     up.prototype.getPostParams=function () {
@@ -334,28 +337,28 @@
       }
       return $q(function (resolve,reject) {
         api.getUploadData(function (cfg) {
-          return cfg.mark == "selfZbUp"||cfg.mark =="allUp";
+          return cfg.mark == "selfSafeUp"||cfg.mark =="allUp";
         }).then(function (val) {
-            var params={},t;
-            if (val&&val.length){
-              t=val.find(function (o) {
-                return o.key == "InspectionPoint";
-              });
-              params.InspectionPoint=convert(t);
-              t = val.find(function (o) {
-                return o.key == "selfZbPoints";
-              });
-              params.CheckpointInput=convert(t,true);
-              t = val.find(function (o) {
-                return o.key == "selfZbProblemRecord";
-              });
-              params.ProblemRecordInput=convert(t);
-              t = val.find(function (o) {
-                return o.key == "selfZbInspectionProblemRecordFile";
-              });
-              params.ProblemRecordFileInput=convert(t);
-            }
-            resolve(params);
+          var params={},t;
+          if (val&&val.length){
+            t=val.find(function (o) {
+              return o.key == "InspectionPoint";
+            });
+            params.InspectionPoint=convert(t);
+            t = val.find(function (o) {
+              return o.key == "selfSafePoints";
+            });
+            params.CheckpointInput=convert(t,true);
+            t = val.find(function (o) {
+              return o.key == "selfSafeProblemRecord";
+            });
+            params.ProblemRecordInput=convert(t);
+            t = val.find(function (o) {
+              return o.key == "selfSafeInspectionProblemRecordFile";
+            });
+            params.ProblemRecordFileInput=convert(t);
+          }
+          resolve(params);
         }).catch(function () {
           resolve({});
         })
@@ -374,7 +377,7 @@
     up.prototype.clear=function () {
       var self=this;
       self.dbs.forEach(function (db) {
-         db.destroy();
+        db.destroy();
       })
     }
     up.prototype.progress=function (percent,current,total) {
@@ -393,7 +396,7 @@
       remote.offline.query().then(function(m){
         if(angular.isArray(m.data)){
           m.data.forEach(function(n){
-            if(n.Id&&(n.Id.indexOf("selfZb")>-1||n.Id.indexOf("selfZb")>-1)){
+            if(n.Id&&(n.Id.indexOf("selfSafe")>-1||n.Id.indexOf("selfSafe")>-1)){
               remote.offline.delete({Id:n.Id});
             }
           });
@@ -422,7 +425,7 @@
     function load() {
       return remote.self.getInspection.cfgSet({
         mode:2
-      })("Inspection").then(function (r) {
+      })("safe").then(function (r) {
         var  data=r.data
         vm.Inspections = [];
         if (data&&angular.isArray(data.data)) {
@@ -434,7 +437,7 @@
             if (r&&angular.isArray(r.data)) {
               ys.forEach(function (k) {
                 if (r.data.find(function (m) {
-                    return m.Id == "selfZb" + k.Id;
+                    return m.Id == "selfSafe" + k.Id;
                   })) {
                   k.isOffline = true;
                 }
@@ -455,12 +458,12 @@
       if (!item.isOffline) {
         vm.downloadys(item).then(function () {
           api.setNetwork(1).then(function () {
-            $state.go("app.xhsc.gx.selfPicture",{inspectionID:item.Id});
+            $state.go("app.xhsc.gx.selfAccept",{inspectionID:item.Id});
           });
         })
       } else {
         api.setNetwork(1).then(function () {
-          $state.go("app.xhsc.gx.selfPicture",{inspectionID:item.Id});
+          $state.go("app.xhsc.gx.selfAccept",{inspectionID:item.Id});
         });
       }
     }

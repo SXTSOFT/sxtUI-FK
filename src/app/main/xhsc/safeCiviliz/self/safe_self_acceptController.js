@@ -4,10 +4,10 @@
 
   angular
     .module('app.xhsc')
-    .controller('selfPictureController',selfPictureController);
+    .controller('safeSelfAcceptController',safeSelfAcceptController);
 
   /** @ngInject */
-  function selfPictureController($state,$rootScope,$scope,$mdDialog,$stateParams,remote,$q,utils,xhUtils,$mdSidenav,$timeout,xhscService,api){
+  function safeSelfAcceptController($state,$rootScope,$scope,$mdDialog,$stateParams,remote,$q,utils,xhUtils,$mdSidenav,$timeout,xhscService,api){
     var vm = this;
     vm.num=0;
 
@@ -55,7 +55,7 @@
       function initgx(res) {
         return  remote.safe.getSecurityItem.cfgSet({
           offline: true
-        })("cycle").then(function (r) {
+        })().then(function (r) {
           var acceptItemIds="";
           if (res&&res.Extends&&res.Extends.AcceptanceItemID){
             acceptItemIds=res.Extends.AcceptanceItemID;
@@ -130,7 +130,7 @@
           initRegion(res);
         })
       })(function () {
-        return remote.self.getInspection("Inspection").then(function (r) {
+        return remote.self.getInspection("safe").then(function (r) {
           var data=r.data;
           if (data&&angular.isArray(data.data)){
             vm.inspection=data.data.find(function (o) {
@@ -179,9 +179,8 @@
                   if (k.Children&&k.Children.length){
                     k.Children.forEach(function (u) {
                       vm.num++;
-                      u.style=null;
                       var area=areaList.find(function (q) {
-                        return q.RegionID==u.RegionID&&q.AcceptanceItemID==$scope.current.procedure.AcceptanceItemID;
+                        return q.RegionID==u.RegionID;
                       })
                       if (area){
                         u.Status=area.Status;
@@ -193,10 +192,10 @@
                         }
                       }else {
                         if (points.find(function (q) {
-                          if ($scope.current.procedure){
-                            return q.RegionID==u.RegionID&&q.AcceptanceItemID==$scope.current.procedure.AcceptanceItemID;
-                          }
-                          return false;
+                            if ($scope.current.procedure){
+                              return q.RegionID==u.RegionID&&q.AcceptanceItemID==$scope.current.procedure.AcceptanceItemID;
+                            }
+                            return false;
                           })){
                           u.checked=true;
                         }else {
@@ -213,9 +212,8 @@
                   if (k.Children&&k.Children.length){
                     k.Children.forEach(function (u) {
                       vm.num++;
-                      u.style=null;
                       var area=areaList.find(function (q) {
-                        return q.RegionID==u.RegionID&&q.AcceptanceItemID==$scope.current.procedure.AcceptanceItemID;
+                        return q.RegionID==u.RegionID;
                       })
                       if (area){
                         u.Status=area.Status;
@@ -241,9 +239,8 @@
                       if (u.Children&&u.Children.length){
                         u.Children.forEach(function (n) {
                           vm.num++;
-                          u.style=null;
                           area=areaList.find(function (q) {
-                            return q.RegionID==n.RegionID&&q.AcceptanceItemID==$scope.current.procedure.AcceptanceItemID;
+                            return q.RegionID==n.RegionID;
                           })
                           if (area){
                             u.Status=area.Status;
@@ -277,7 +274,7 @@
         })
       })(function () {
         return  $q(function (resolve,reject) {
-          return remote.self.zb.pointQuery().then(function (r) {
+          return remote.self.safe.pointQuery().then(function (r) {
             if (r&&r.data){
               resolve(r.data);
             }else {
@@ -299,45 +296,48 @@
       vm.info.current = null;
     }
 
-      var sendResult = $rootScope.$on('sendGxResult',function(){
-        utils.alert("提交成功，请稍后离线上传数据！",null,function () {
-          $state.go('app.xhsc.gx.selfMain');
-        });
-      })
-      $scope.$on("$destroy",function(){
-        sendResult();
-        sendResult = null;
+    var sendResult = $rootScope.$on('sendGxResult',function(){
+      utils.alert("提交成功，请稍后离线上传数据！",null,function () {
+        $state.go('app.xhsc.sf.selfMain');
       });
+    })
+    $scope.$on("$destroy",function(){
+      sendResult();
+      sendResult = null;
+    });
 
 
-      $scope.$watch("current.region",function (v,o) {
-        if (v){
-          if ($scope.current.procedure){
-            vm.info.show=true;
-          }else {
-            vm.info.show=false;
-          }
+    $scope.$watch("current.region",function (v,o) {
+      if (v){
+        if ($scope.current.procedure){
+          vm.info.show=true;
+        }else {
+          vm.info.show=false;
         }
-      })
-      $scope.$watch("current.procedure",function (v,o) {
-        if (v){
-          if ($scope.current.region){
-            vm.info.show=true;
-          }else {
-            vm.info.show=false;
-          }
-          vm.procedureData=[v];
-          vm.procedureData.forEach(function(t){
-            t.SpecialtyChildren = t.ProblemClassifyList;
-            t.ProblemClassifyList.forEach(function(_t){
-              _t.WPAcceptanceList = _t.ProblemLibraryList;
-              _t.SpecialtyName = _t.ProblemClassifyName;
-              _t.ProblemLibraryList.forEach(function(_tt){
-                _tt.AcceptanceItemName = _tt.ProblemSortName +'.'+ _tt.ProblemDescription;
-              })
+      }
+    })
+    $scope.$watch("current.procedure",function (v,o) {
+      if (v){
+        if ($scope.current.region){
+          vm.info.show=true;
+        }else {
+          vm.info.show=false;
+        }
+        vm.procedureData=[v];
+        vm.procedureData.forEach(function(t){
+          t.SpecialtyChildren = t.ProblemClassifyList;
+          t.ProblemClassifyList.forEach(function(_t){
+            _t.WPAcceptanceList = _t.ProblemLibraryList;
+            _t.SpecialtyName = _t.ProblemClassifyName;
+            _t.ProblemLibraryList.forEach(function(_tt){
+              _tt.AcceptanceItemName = _tt.ProblemSortName +'.'+ _tt.ProblemDescription;
             })
           })
-        }
-      })
+        })
+      }
+    })
   }
 })();
+/**
+ * Created by shaoshun on 2017/3/7.
+ */
