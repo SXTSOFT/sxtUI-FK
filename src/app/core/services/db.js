@@ -675,6 +675,7 @@
               lock(doc._id, function (cb) {
                 provider.$cordovaFile.writeFile(provider.$window.cordova.file.dataDirectory, doc._id + '.bin',provider.$window.JSON.stringify(doc) , true)
                   .then(function (result) {
+
                     resolve(result)
                     cb();
                   }).catch(function (result) {

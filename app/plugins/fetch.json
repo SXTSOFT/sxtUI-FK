@@ -32,22 +32,18 @@
             "id": "cordova-plugin-ios-camera-permissions"
         },
         "is_top_level": true,
-        "variables": {}
+        "variables": {
+            "CAMERA_USAGE_DESCRIPTION": "This app needs camera access",
+            "MICROPHONE_USAGE_DESCRIPTION": "This app needs microphone access",
+            "PHOTOLIBRARY_USAGE_DESCRIPTION": "This app needs photo library access"
+        }
     },
-    "cordova-plugin-device": {
+    "cordova-plugin-compat": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-device"
+            "id": "cordova-plugin-compat"
         },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-wkwebview-engine": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-wkwebview-engine"
-        },
-        "is_top_level": true,
+        "is_top_level": false,
         "variables": {}
     },
     "cordova-plugin-whitelist": {
@@ -56,14 +52,6 @@
             "id": "cordova-plugin-whitelist@1"
         },
         "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-compat": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-compat"
-        },
-        "is_top_level": false,
         "variables": {}
     }
 }
