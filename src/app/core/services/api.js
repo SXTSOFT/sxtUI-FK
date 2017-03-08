@@ -250,7 +250,13 @@
     function setting(key, value) {
       return provider.$q(function (resolve) {
         if (!settingDb) {
-          settingDb = pouchdb('systemstting');
+          if (window.cordova){
+            settingDb = new SingleDB({
+              _id:'systemsetting'
+            });
+          }else {
+            settingDb = pouchdb('systemstting');
+          }
         }
         if (value) {
           settingDb.addOrUpdate({
@@ -485,7 +491,14 @@
     function uploadTask(itemOrFilter, value) {
       return provider.$q(function (resolve) {
         if (!uploadDb) {
-          uploadDb = pouchdb('systemupload');
+          if (window.cordova){
+            uploadDb = new SingleDB({
+              _id:'systemupload'
+            });
+          }else {
+            uploadDb = pouchdb('systemupload');
+          }
+
         }
         if (!angular.isFunction(itemOrFilter)) {
           if (networkState == 1) {

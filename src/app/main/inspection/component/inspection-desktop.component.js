@@ -98,6 +98,8 @@
                   delete copy.id;
                   return api.inspection.estate.insertrepair_tasks(copy).then(function () {
                     return api.inspection.estate.deleteRepair_tasks_off(k);
+                  }).catch(function () {
+                    utils.alert("没有设置责任单位");
                   });
                 })
               });

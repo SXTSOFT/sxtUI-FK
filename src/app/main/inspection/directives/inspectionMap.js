@@ -235,7 +235,23 @@
                     closePopupOnClick: false
                   });
                   var layer;
-                  layer = L.sheetLayer(scope.mapUrl);
+                  layer = L.sheetLayer(scope.mapUrl,{
+                    loadUrl:window.cordova?function (url,callback) {
+                      window.resolveLocalFileSystemURL(url, function (fileEntry) {
+                        fileEntry.file(function (file) {
+                          var reader = new FileReader();
+                          reader.onloadend = function (e) {
+                            callback(this.result);
+                          };
+                          reader.readAsArrayBuffer(file);
+                        },function () {
+                        });
+                      }, function () {
+
+                      });
+
+                    }:null
+                  });
                   layer.addTo(map);
                   var regionLayer = L.layerGroup();
                   regionLayer.addTo(map);
