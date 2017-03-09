@@ -10,6 +10,14 @@
             "PHOTOLIBRARY_USAGE_DESCRIPTION": " "
         }
     },
+    "cordova-plugin-device": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-device"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "cordova-plugin-file": {
         "source": {
             "type": "registry",
@@ -37,6 +45,14 @@
             "MICROPHONE_USAGE_DESCRIPTION": "This app needs microphone access",
             "PHOTOLIBRARY_USAGE_DESCRIPTION": "This app needs photo library access"
         }
+    },
+    "cordova-plugin-wkwebview-engine": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-wkwebview-engine"
+        },
+        "is_top_level": true,
+        "variables": {}
     },
     "cordova-plugin-compat": {
         "source": {
