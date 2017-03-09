@@ -18,26 +18,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-ios-camera-permissions": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-ios-camera-permissions"
-        },
-        "is_top_level": true,
-        "variables": {
-            "CAMERA_USAGE_DESCRIPTION": "This app needs camera access",
-            "MICROPHONE_USAGE_DESCRIPTION": "This app needs microphone access",
-            "PHOTOLIBRARY_USAGE_DESCRIPTION": "This app needs photo library access"
-        }
-    },
-    "cordova-plugin-splashscreen": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-splashscreen@4.0.1"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-file-transfer": {
         "source": {
             "type": "registry",
@@ -46,10 +26,26 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-compat": {
+    "cordova-plugin-ios-camera-permissions": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-compat"
+            "id": "cordova-plugin-ios-camera-permissions"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-device": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-device"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-wkwebview-engine": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-wkwebview-engine"
         },
         "is_top_level": true,
         "variables": {}
@@ -60,6 +56,14 @@
             "id": "cordova-plugin-whitelist@1"
         },
         "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-compat": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-compat"
+        },
+        "is_top_level": false,
         "variables": {}
     }
 }
