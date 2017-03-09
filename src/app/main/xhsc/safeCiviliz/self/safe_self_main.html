@@ -1,0 +1,34 @@
+<md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
+                      md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
+</md-progress-circular>
+
+<div flex  class="gxbg" layout="column" ms-scroll ng-if="vm.isOver">
+  <div class="gxheadzb">
+    <ul>
+      <li ui-sref="app.xhsc.sf.selfItem">
+        <img src="app/main/xhsc/images/zbzj.png">
+        <p>创建自检单</p>
+      </li>
+      <li ng-click="vm.upload()">
+        <img src="app/main/xhsc/images/upload.png">
+        <p>离线上传</p>
+      </li>
+    </ul>
+  </div>
+  <div flex style="background-color: white;">
+    <md-list style="background-color: #FFFFFF">
+      <md-list-item style="gubackground-color: #FFFFFF" ng-repeat="k in  vm.Inspections"  layout="row" ng-click="vm.jlysAction(k)">
+        <div  layout="column" flex="80" style="padding-bottom: 16px">
+          <p style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 0px">
+            {{k.Describe}}
+            <span style="margin-left:2%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px">未关闭</span>
+          </p>
+        </div>
+        <span flex></span>
+        <md-button ng-click="vm.jlysbtnAction(k,$event)" class="md-icon-button" aria-label="More">
+          <img ng-src="app/main/xhsc/images/more_vert.svg"></img>
+        </md-button>
+        <span class="border1px bottom1px"></span>
+      </md-list-item>
+    </md-list>
+  </div>

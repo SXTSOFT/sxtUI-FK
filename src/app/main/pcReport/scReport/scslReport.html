@@ -25,17 +25,17 @@
         <tr data-ng-repeat="item in vm.source">
           <td>{{$index+1}}</td>
           <td style="text-align: left;padding-left: 15px;min-width: 120px">{{item.MeasureTime}}</td>
-          <!--<td style="text-align: left;padding-left: 15px;min-width: 120px">-->
-            <!--{{item.ProjectName}}-->
-          <!--</td>-->
-          <td style="text-align: left;min-width: 120px;padding-left: 15px">
-            {{item.MeasureItemName}}
-          </td>
+
+          <td style="text-align: left;min-width: 120px;padding-left: 15px;">{{item.MeasureItemName}}</td>
           <td style="text-align: left;padding-left: 15px;min-width: 120px">
             {{item.AreaName}}
           </td>
-          <td>
-            <md-button  class="md-primary"  ng-click="vm.go(item)" aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>查看</md-button>
+          <td >
+            <div layout="column" layout-align="center center">
+              <md-button  style="text-align: left"  class="md-primary"  ng-click="vm.go(item,0)" aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>总包</md-button>
+              <md-button style="text-align: left"  class="md-primary"  ng-click="vm.go(item,2)" aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>监理</md-button>
+              <md-button  style="text-align: left"  class="md-primary"  ng-click="vm.go(item,4)" aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>项目部</md-button>
+            </div>
           </td>
         </tr>
         </tbody>

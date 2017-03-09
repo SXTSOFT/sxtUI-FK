@@ -1,0 +1,119 @@
+ <div layout="row" style="background-color: rgb(245,246,245);border-bottom: 1px solid #d8d8d8">
+   <div flex layout="row">
+     <md-button flex ng-click="vm.open('acceptItem')">{{current.procedure.AcceptanceItemName||'工序'}}</md-button>
+   </div>
+    <div flex layout="row" style="border-right:1px solid #d8d8d8">
+      <md-button flex ng-click="vm.open('region')">{{current.region.fullName||'区 域'}}</md-button>
+    </div>
+  </div>
+
+
+  <md-sidenav
+    class="md-sidenav-left"
+    md-component-id="acceptItem"
+    md-whiteframe="4"
+    style="min-width: 70%">
+    <md-toolbar class="md-theme-indigo" layout="row">
+      <span class="md-toolbar-tools" style="font-size: 14px">可选工序</span>
+      <span flex=""></span>
+    </md-toolbar>
+    <md-list style="background-color: rgb(255,255,255)">
+      <md-list-item  ng-repeat="item in vm.procedure " ng-click="vm.selectItem(item)">
+        {{item.AcceptanceItemName}}
+        <md-divider  style="margin-left: 16px"  ng-if="!$last"></md-divider>
+      </md-list-item>
+    </md-list>
+  </md-sidenav>
+
+  <md-sidenav
+    class="md-sidenav-right"
+    md-component-id="region"
+    md-whiteframe="4"
+    style="min-width: 70%;background-color: white"
+    layout="column">
+    <div flex="none" layout="column" style="max-height:50px;height:50px;width:100%;z-index: 10;" class="gxxz">
+      <md-list flex layout="row" class="gxfilter">
+        <md-list-item  flex><md-button style="margin:6px auto;"><span>全部</span><span>{{vm.num}}</span></md-button></md-list-item>
+        <md-list-item  flex><md-button  style="margin:6px auto;"><span><i class="wait"></i>未检</span><span>{{vm.wy_num}}</span></md-button></md-list-item>
+        <md-list-item  flex><md-button  style="margin:6px auto;"><span><i class="ng"></i>不合格</span><span>{{vm.bhg_num}}</span></md-button></md-list-item>
+        <md-list-item  flex><md-button  style="margin:6px auto;"><span><i  class="pass"></i>合格</span><span>{{vm.hg_num}}</span></md-button></md-list-item>
+      </md-list>
+    </div>
+    <md-content flex ng-cloak  style="background:#f4f4f4;" layout="column">
+      <div layout="row" layout-sm="column" layout-align="space-around" ng-show="!vm.loaded">
+        <md-progress-circular md-mode="indeterminate" md-diameter="28"></md-progress-circular>
+      </div>
+      <div flex  ng-repeat="h in vm.houses" ng-show="vm.loaded" layout="column">
+        <p style="font-size:12px;background: #f4f4f6;padding:10px;margin:0;">{{h.RegionName }}</p>
+        <div class="floor-list gxroomlist"  layout="column" flex>
+          <md-virtual-repeat-container flex>
+            <md-list-item   ng-repeat="d in vm.building" class="repeat"
+                            style="padding:0;background: #fff;margin-bottom:10px;border-top:1px solid #dedede;">
+              <div flex>
+                <div flex class="gxrooms" style="padding-left:10px;padding-right:10px;"><span class="roomname">{{d.RegionName}}</span><md-button ng-click="vm.zk(d)" style="color:#49affe;min-width: 50px;"><span ng-show="d.show">展开</span><span ng-show="!d.show">收起</span></md-button></div>
+                <md-list ng-if="maxRegion>8" style="padding-left:10px;padding-right:10px;">
+                  <md-list-item  ng-if="c.Children.length"  ng-repeat="c in d.Children|filter:{}">
+                    <div flex layout="column">
+                      <div flex class="gxrooms" style="overflow: hidden;">
+                        <div style=" width:20%;float:left;padding:2px 5px;">
+                          <div ng-click="vm.selectRegion(c)" class="room-st {{c.style}}" ng-class="{'checked':r.checked}">
+                            <div style="height:100%;width:{{c.Percentage}}%"></div><span>{{c.RegionName}}</span>
+                          </div>
+                        </div>
+                        <md-button ng-click="vm.zk(c)" style="color:#49affe;min-width: 50px;"><span ng-show="c.show">展开</span><span ng-show="!c.show">收起</span></md-button></div>
+                      <md-list class="roomllist" ng-if="!c.show" style="border-bottom: 1px solid #dedede;margin-top:10px;">
+                        <md-list-item  ng-repeat="r in c.Children">
+                          <div class="room-st {{r.style}}" ng-click="vm.selectRegion(r)" ng-class="{'checked':r.checked}">
+                            <div style="height:100%;width:100%;"></div><span>{{r.RegionName}}</span>
+                          </div>
+                        </md-list-item>
+                      </md-list>
+                    </div>
+                  </md-list-item>
+                  <section>
+                    <div class="roomllist" >
+                      <md-list-item  ng-repeat="r in d.floors">
+                        <div class="room-st {{r.style}}" ng-click="vm.selectRegion(r)" ng-class="{'checked':r.checked}">
+                          <div style="height:100%;width:{{r.Percentage}}%;"></div><span>{{r.RegionName}}</span>
+                        </div>
+                      </md-list-item>
+                    </div>
+                  </section>
+                </md-list>
+                <div layout="column"  ng-if="maxRegion ==8">
+                  <md-list class="roomllist" ng-if="!d.show"  style="border-bottom: 1px solid #dedede;padding:10px 5px 0;">
+                    <md-list-item   ng-repeat="r in d.Children">
+                      <div class="room-st {{r.style}}" ng-click="vm.selectRegion(r)" ng-class="{'checked':r.checked}">
+                        <div style="height:100%;width:100%;"></div><span>{{r.RegionName}}</span>
+                      </div>
+                    </md-list-item>
+                  </md-list>
+                </div>
+              </div>
+            </md-list-item>
+          </md-virtual-repeat-container>
+        </div>
+      </div>
+    </md-content>
+  </md-sidenav>
+
+ <div class="mapcheck" layout="column" style="position: relative" flex self-accept="vm.info.current" inspection-id="vm.inspectionID"
+     procedure="current.procedure.AcceptanceItemID" ct="vm.info" region-id="current.region.RegionID"
+     ng-if="vm.info.show"  gx="current.procedure" img-id="vm.imgId">
+
+  <div flex layout="row" layout-align="center center" ng-if="vm.info.loading">
+    <md-progress-circular md-mode="indeterminate" md-diameter="28">
+    </md-progress-circular>
+  </div>
+  <div style="position: absolute;z-index: 79;bottom: 0px;right: 0px" ng-show="vm.info.current">
+    <md-button class="md-fab md-mini md-green" fast-click="vm.cancelCurrent($event)">
+      <md-icon md-font-icon="icon-undo-variant"></md-icon>
+    </md-button>
+  </div>
+</div>
+<md-divider></md-divider>
+<safe-slide-menu flex="none" style="height: 195px" ng-if="vm.info.show" layout="column" slide-data="vm.procedureData"
+      current="vm.info.current" show-check="true" level="2"></safe-slide-menu>
+<div style="display: none">
+  <self-accept-popup warter="vm.water"></self-accept-popup>
+</div>

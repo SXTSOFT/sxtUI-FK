@@ -11,12 +11,10 @@
   /**@ngInject*/
   function schztbdetailController(remote,$rootScope,$stateParams){
     var vm = this;
-    vm.acceptanceItemID = $stateParams.acceptanceItemID;
-    vm.regionId = $stateParams.regionId;
-    console.log($stateParams)
-    remote.Assessment.GetMeasureIndexMeasureInfo($stateParams.regionId,$stateParams.itemId).then(function (result) {
+    vm.acceptanceItemID=$stateParams.acceptanceItemID;
+    vm.regionId=$stateParams.regionId;
+    remote.Assessment.GetMeasureIndexMeasureInfo_v2($stateParams.regionId,$stateParams.itemId,$stateParams.relative).then(function (result) {
       vm.data = result.data;
-      console.log('data',vm.data)
       $rootScope.title = vm.data.Region.FullRegionName + (vm.data.Region.HouseTypeName?'('+vm.data.Region.HouseTypeName+')':'');
     });
   }

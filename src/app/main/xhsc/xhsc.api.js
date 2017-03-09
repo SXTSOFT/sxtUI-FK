@@ -960,6 +960,14 @@
             acceptanceIndexID: itemId
           }));
         },
+        GetMeasureIndexMeasureInfo_v2: function (regionId,acceptanceIndexID, relate) {
+          return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfoNew_v2', {
+            regionId: regionId,
+            acceptanceIndexID: acceptanceIndexID,
+            RelationID:relate
+          }));
+        },
+
         GetMeasureIndexMeasureInfo_new: function (regionId, itemId, measureRecordID) {
           return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfoNew2', {
             RegionID: regionId,
@@ -1006,6 +1014,17 @@
             return result;
           });
         }),
+        getMeasure_v2:function (param) {
+          return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResult_v2', param)).then(function (result) {
+            var data = result.data;
+            result.data = [{
+              CheckRegionID: param.RegionID,
+              AcceptanceItemID: param.AcceptanceItemID,
+              data: data
+            }]
+            return result;
+          });
+        },
         getMeasureNew: $http.db({
           db: function (param, db) {
             if (db == "nodb") {
@@ -2318,6 +2337,207 @@
 
         }
         // /api/ReportFormSummary
+      },
+      self:{
+        insertInspection:function (info,selfCheckType) {
+          return $http.post($http.url('/api/'+selfCheckType+'/SelfCheckInfo'),info)
+        },
+        getInspection:$http.wrap ({
+          offline:true,
+          dataType:3,
+          model:2,
+          filter:function (item,type) {
+            return item.identity==type+"info";
+          },
+          _id: 'selfZbInfo',
+          idField: "identity",
+          fn:function (type) {
+            return $http.get($http.url('/api/'+type+'/SelfCheckInfo')).then(function (r) {
+              return {
+                data:{
+                  identity:type+"info",
+                  data:r.data
+                }
+              }
+            })
+          }
+        }),
+        getBaseInfo:$http.wrap ({
+          fn:function (type,inspectionId) {
+            return $http.get($http.url('/api/'+type+'/SelfCheckInfo/baseInfo',{inspection:inspectionId}));
+          }
+        }),
+        fileQuery:function (fileId) {
+          return $http.get($http.url('/api/FileServer/Query/'+fileId+'/Base64'));
+        },
+        self_upload:function (type,params) {
+          return $http.post($http.url('/api/'+type+'/SelfCheckInfo/AreaInfo'),params);
+        },
+        getSafePointGeo: $http.wrap({
+          _id: 'InspectionPoint',
+          offline: true,
+          idField: 'MeasurePointID',
+          dataType: 1,
+          fn: function (type,inspectionId) {
+            return $http.get($http.url('/api/'+type+'/SelfCheckInfo/getSelfPoint',{inspectionId:inspectionId}));
+          }
+        }),
+        updateStatus: function (type,inspectionId) {
+          return $http.put($http.url('/api/'+type+'/SelfCheckInfo/UpdateStatus',{inspectionId:inspectionId}));
+        },
+        zb:{
+          pointCreate: $http.wrap({ //创建点
+            offline: true,
+            dataType: 1,
+            mark: "selfZbUp",
+            _id: "selfZbPoints",
+            idField: 'Id',
+            upload: true
+          }),
+          pointQuery: $http.wrap({ //查询点
+            offline: true,
+            dataType: 1,
+            _id: "selfZbPoints",
+            idField: 'Id'
+          }),
+          pointDelete: $http.wrap({ //删除点
+            offline: true,
+            dataType: 1,
+            delete: true,
+            _id: "selfZbPoints",
+            idField: 'Id'
+          }),
+          problemRecordCreate: $http.wrap({ //创建记录
+            offline: true,
+            dataType: 1,
+            upload: true,
+            mark: "selfZbUp",
+            _id: "selfZbProblemRecord",
+            idField: 'Id'
+          }),
+          problemRecordQuery: $http.wrap({ //查询记录
+            offline: true,
+            dataType: 1,
+            filter: function (item, CheckpointID) {
+              return item.CheckpointID == CheckpointID;
+            },
+            _id: "selfZbProblemRecord",
+            idField: 'Id'
+          }),
+          problemRecordDelete: $http.wrap({// 删除记录
+            offline: true,
+            dataType: 1,
+            delete: true,
+            _id: "selfZbProblemRecord",
+            idField: 'Id'
+          }),
+          problemRecordFileCreate: $http.wrap({ //创建文件
+            offline: true,
+            dataType: 1,
+            fileField: ['FileContent'],
+            mark: "selfZbUp",
+            _id: 'selfZbInspectionProblemRecordFile',
+            idField: 'Id',
+            upload: true
+          }),
+          problemRecordFileQuery: $http.wrap({ //查询文件
+            offline: true,
+            _id: 'selfZbInspectionProblemRecordFile',
+            fileField: ['FileContent'],
+            idField: function (d) {
+              return d.Id || d.ProblemRecordFileID
+            },
+            dataType: 1,
+            filter: function (item, ProblemRecordID) {
+              return item.ProblemRecordID == ProblemRecordID;
+            }
+          }),
+          problemRecordFileDelete: $http.wrap({ //删除文件
+            fileField: ['FileContent'],
+            offline: true,
+            dataType: 1,
+            _id: 'selfZbInspectionProblemRecordFile',
+            idField: 'Id',
+            delete: true
+          })
+        },
+        safe:{
+          pointCreate: $http.wrap({ //创建点
+            offline: true,
+            dataType: 1,
+            mark: "selfSafeUp",
+            _id: "selfSafePoints",
+            idField: 'Id',
+            upload: true
+          }),
+          pointQuery: $http.wrap({ //查询点
+            offline: true,
+            dataType: 1,
+            _id: "selfSafePoints",
+            idField: 'Id'
+          }),
+          pointDelete: $http.wrap({ //删除点
+            offline: true,
+            dataType: 1,
+            delete: true,
+            _id: "selfSafePoints",
+            idField: 'Id'
+          }),
+          problemRecordCreate: $http.wrap({ //创建记录
+            offline: true,
+            dataType: 1,
+            upload: true,
+            mark: "selfSafeUp",
+            _id: "selfSafeProblemRecord",
+            idField: 'Id'
+          }),
+          problemRecordQuery: $http.wrap({ //查询记录
+            offline: true,
+            dataType: 1,
+            filter: function (item, CheckpointID) {
+              return item.CheckpointID == CheckpointID;
+            },
+            _id: "selfSafeProblemRecord",
+            idField: 'Id'
+          }),
+          problemRecordDelete: $http.wrap({// 删除记录
+            offline: true,
+            dataType: 1,
+            delete: true,
+            _id: "selfSafeProblemRecord",
+            idField: 'Id'
+          }),
+          problemRecordFileCreate: $http.wrap({ //创建文件
+            offline: true,
+            dataType: 1,
+            fileField: ['FileContent'],
+            mark: "selfSafeUp",
+            _id: 'selfSafeInspectionProblemRecordFile',
+            idField: 'Id',
+            upload: true
+          }),
+          problemRecordFileQuery: $http.wrap({ //查询文件
+            offline: true,
+            _id: 'selfSafeInspectionProblemRecordFile',
+            fileField: ['FileContent'],
+            idField: function (d) {
+              return d.Id || d.ProblemRecordFileID
+            },
+            dataType: 1,
+            filter: function (item, ProblemRecordID) {
+              return item.ProblemRecordID == ProblemRecordID;
+            }
+          }),
+          problemRecordFileDelete: $http.wrap({ //删除文件
+            fileField: ['FileContent'],
+            offline: true,
+            dataType: 1,
+            _id: 'selfSafeInspectionProblemRecordFile',
+            idField: 'Id',
+            delete: true
+          })
+        }
+
       }
     });
   }

@@ -34,7 +34,7 @@
         up:function (id) {
           return remotePack.pack({
             _id:id,
-            max:200,
+            max:400,
             db:{
               sc: {
                 url:sxt.app.api+'/Api/MeasureValueApi/CreateMeasureValue',

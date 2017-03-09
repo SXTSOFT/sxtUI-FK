@@ -59,8 +59,10 @@
           }
           if (fg)
             map._map.removeLayer(fg);
-          if (toolbar)
+          if (toolbar){
             map._map.removeControl(toolbar);
+            toolbar=null
+          }
           function findImg(source) {
             var result = source;
 

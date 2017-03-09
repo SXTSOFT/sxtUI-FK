@@ -271,15 +271,58 @@
                     var points = val.find(function (o) {
                       return o.key == "InspectionPoint";
                     });
+
                     var ckpoints = val.find(function (o) {
                       return o.key == "ckPoints";
                     });
+                    var ckpointsVal=ckpoints && ckpoints.vals ? ckpoints.vals : [];
+
                     var problemRecords = val.find(function (o) {
                       return o.key == "problemRecord";
                     });
+
+                    var problemRecordsVal=problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [];
+
                     var InspectionProblemRecordFiles = val.find(function (o) {
                       return o.key == "InspectionProblemRecordFile";
                     });
+                    var InspectionProblemRecordFilesVal=InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?
+                      filterUpload(InspectionProblemRecordFiles.vals): [];
+                    InspectionProblemRecordFilesVal.forEach(function (k) {
+                      tasks.push(function () {
+                        return remote.safe.inserFile({
+                          FileName:k.FileID,
+                          Base64:k.FileContent
+                        }).then(function (res) {
+                          if(res&&res.data&&res.data.ID){
+                            k.FileID=res.data.ID;
+                          }
+                          delete k.FileContent
+                        })
+                      });
+                    });
+                    //几何位置单独上传
+                    if (points && points.vals) {
+                      points.vals.forEach(function (t) {
+                        if (t.geometry) {
+                          t.Geometry = t.geometry;
+                        }
+                        if (typeof t.Geometry === 'string') {
+                          t.Geometry = JSON.parse(t.Geometry);
+                        }
+                        tasks.push(function () {
+                          return remote.Procedure.InspectionPoint.create(t)
+                        });
+                      });
+                    }
+
+
+                    var post={
+                      "CheckpointInput": ckpointsVal,
+                      "ProblemRecordInput": problemRecordsVal,
+                      "ProblemRecordFileInput": InspectionProblemRecordFilesVal
+                    }
+
                     tasks.push(function () {
                       function clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points) {
                         if (ckpoints&&ckpoints.db){
@@ -303,54 +346,8 @@
                             return  points.db.destroy()
                           })
                         }
-
-                        // if (ckpoints && ckpoints.vals) {
-                        //   ckpoints.vals.forEach(function (m) {
-                        //     tasks.push(function () {
-                        //       return  ckpoints.db.delete(m._id);
-                        //     })
-                        //   });
-                        // }
-                        // if (problemRecords && problemRecords.vals) {
-                        //   problemRecords.vals.forEach(function (m) {
-                        //     tasks.push(function () {
-                        //       return  problemRecords.db.delete(m._id);
-                        //     })
-                        //   });
-                        // }
-                        // if (InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals) {
-                        //   InspectionProblemRecordFiles.vals.forEach(function (m) {
-                        //     tasks.push(function () {
-                        //       return  InspectionProblemRecordFiles.db.delete(m._id);
-                        //     })
-                        //   });
-                        // }
-                        // if (points && points.vals){
-                        //   points.vals.forEach(function (t) {
-                        //     tasks.push(function () {
-                        //       return  points.db.delete(t._id)
-                        //     })
-                        //   })
-                        // }
                       }
-                      if (points && points.vals) {
-                        points.vals.forEach(function (t) {
-                          if (t.geometry) {
-                            t.Geometry = t.geometry;
-                          }
-                          if (typeof t.Geometry === 'string') {
-                            t.Geometry = JSON.parse(t.Geometry);
-                          }
-                          tasks.push(function () {
-                            return remote.Procedure.InspectionPoint.create(t)
-                          })
-                        });
-                      }
-                      return remote.safe.safeUp({
-                        "CheckpointInput": ckpoints && ckpoints.vals ? ckpoints.vals : [],
-                        "ProblemRecordInput": problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [],
-                        "ProblemRecordFileInput": InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?filterUpload(InspectionProblemRecordFiles.vals): []
-                      }).then(function () {
+                      return remote.safe.safeUp(post).then(function () {
                         clear(ckpoints,problemRecords,InspectionProblemRecordFiles,points);
                       });
                     });

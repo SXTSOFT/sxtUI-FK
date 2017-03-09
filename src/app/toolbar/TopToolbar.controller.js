@@ -7,9 +7,12 @@
         .controller('TopToolbarController', TopToolbarController);
 
     /** @ngInject */
-    function TopToolbarController($scope,api,$rootScope,remote) {
+    function TopToolbarController($scope,api,$rootScope,remote,$state ) {
       var vm=this;
-
+      vm.is = isRoute;
+      function isRoute(route){
+        return $state.includes(route);
+      }
       $rootScope.$on('sxt:online', function(event, state){
         vm.networkState = api.getNetwork();
       });
@@ -20,6 +23,10 @@
       vm.setNetwork = function () {
         vm.networkState = vm.networkState==0?1:0;
         api.setNetwork(vm.networkState);
+      }
+
+      $scope.ok=function () {
+        $rootScope.$emit("ok")
       }
 
       $scope.goBack = function(){
