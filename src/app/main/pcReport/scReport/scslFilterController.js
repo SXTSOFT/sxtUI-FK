@@ -43,25 +43,18 @@
 
         })
 
-        remote.Procedure.authorityByUserId().then(function(res) {
-            if (res && res.data && res.data.length) {
-                vm.role = res.data[0].MemberType;
-            } else {
-                vm.role = 0;
-            }
-            vm.go = function(item) {
-                    $state.go("app.xhsc.scsl.schztb", {
-                        regionId: item.AreaID,
-                        RegionName: item.AreaName,
-                        name: item.AreaName,
-                        //regionType:Math.pow(2,(item.AreaID.length/5)),
-                        db: 'scsl' + item.ProjectID + '_' + vm.role,
-                        measureItemID: item.AcceptanceItemID,
-                        pname: item.MeasureItemName
-                    });
-                }
-                //业务数据包
-        }).catch(function(r) {});
+      vm.go = function(item,role) {
+        $state.go("app.xhsc.scsl.schztb", {
+          regionId: item.AreaID,
+          RegionName: item.AreaName,
+          name: item.AreaName,
+          db: 'scsl' + item.ProjectID + '_' + role,
+          measureItemID: item.AcceptanceItemID,
+          pname: item.MeasureItemName
+        });
+      }
+
+
 
         if ($rootScope.scslFilter) {
             $scope.currentSC = $rootScope.scslFilter.currentSC;

@@ -960,6 +960,14 @@
             acceptanceIndexID: itemId
           }));
         },
+        GetMeasureIndexMeasureInfo_v2: function (regionId,acceptanceIndexID, relate) {
+          return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfoNew_v2', {
+            regionId: regionId,
+            acceptanceIndexID: acceptanceIndexID,
+            RelationID:relate
+          }));
+        },
+
         GetMeasureIndexMeasureInfo_new: function (regionId, itemId, measureRecordID) {
           return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexMeasureInfoNew2', {
             RegionID: regionId,
@@ -1006,6 +1014,17 @@
             return result;
           });
         }),
+        getMeasure_v2:function (param) {
+          return $http.get($http.url('/Api/MeasureValueApi/GetMeasureIndexResult_v2', param)).then(function (result) {
+            var data = result.data;
+            result.data = [{
+              CheckRegionID: param.RegionID,
+              AcceptanceItemID: param.AcceptanceItemID,
+              data: data
+            }]
+            return result;
+          });
+        },
         getMeasureNew: $http.db({
           db: function (param, db) {
             if (db == "nodb") {

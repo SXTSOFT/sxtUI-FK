@@ -73,7 +73,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url: '/schztbdetail/{regionId}/{itemId}/{acceptanceItemID}/{MeasureRecordID}',
+        url: '/schztbdetail/{regionId}/{itemId}/{acceptanceItemID}/{relative}',
         templateUrl: 'app/main/xhsc/procedurepg/schztbdetail.html',
         controller: 'schztbdetailController as vm'
       })

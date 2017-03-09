@@ -279,6 +279,15 @@
               //db("s_offline").destroy();
               utils.alert('上传成功');
               load();
+              remote.offline.query().then(function(m){
+                if(angular.isArray(m.data)){
+                  m.data.forEach(function(n){
+                    if(n.Id&&(n.Id.indexOf("ys")>-1||n.Id.indexOf("zg")>-1)){
+                      remote.offline.delete({Id:n.Id});
+                    }
+                  });
+                }
+              });
               vm.uploadInfo.tasks = [];
               vm.uploadInfo.uploading = false;
             }, function (timeout) {

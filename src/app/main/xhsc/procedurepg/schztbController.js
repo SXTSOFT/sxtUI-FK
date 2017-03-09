@@ -18,6 +18,7 @@
     };
     vm.regionId=$stateParams.regionId;
     vm.AcceptanceItemID = $stateParams.measureItemID;
+    vm.db=$stateParams.db;
     $rootScope.title = vm.info.name+'('+vm.info.pname+')';
     vm.back = function () {
       history.back();
@@ -29,10 +30,9 @@
     for(var i=0;i<20;i++){
       vm.twentyRows.push({});
     }
-    remote.Assessment.getMeasure({
+    remote.Assessment.getMeasure_v2({
       RegionID:$stateParams.regionId,//'0001500000000010000000001',//,
       AcceptanceItemID:$stateParams.measureItemID,//'c9ba481a76644c949d13fdb14b4b4adb',//,
-      RecordType:1,
       RelationID:$stateParams.db//'a55164d5c46f454ca8df799f520bbba8'//
     },"nodb").then(function (result){
 
@@ -206,7 +206,7 @@
               }
             })
             m.ExtendedField1&&m.ExtendedField1.forEach(function(fileds){
-              var i = fileds.Value.indexOf(',')
+              var i =fileds.Value?fileds.Value.indexOf(','):0;
               if(i>0){
                 exist = 1;
               }
@@ -236,7 +236,7 @@
             if(exist){
               var max= 0,nums=[];
               for(var i=0;i< m.ExtendedField1.length;i++){
-                if(m.ExtendedField1[i].Value.indexOf(',')){
+                if(m.ExtendedField1[i].Value&&m.ExtendedField1[i].Value.indexOf(',')){
                   var num = m.ExtendedField1[i].Value.split(',');
                   nums.push(num);
                   if(num.length > max) max = num.length;
@@ -298,94 +298,6 @@
           })
           newD.push(item);
         }
-
-
-        //修正
-        // var role=[];
-        // item.QualifiedRate.forEach(function (ee) {
-        //   role.push(ee.Role);
-        // });
-
-        // buildSource(item,role);
-        // function  buildSource(item,role) {
-        //   var len= Math.ceil(item.List.length/20)
-        //   item.pointArr=[];
-        //   var arr;
-        //   for (var i=0;i<len;i++){
-        //     arr=item.List.slice(i*20,i*20+20);
-        //     item.pointArr.push(arr)
-        //   }
-        // }
-
-
-
-        // function  buildSource(item,role) {
-        //   var zb=item.List.filter(function (w) {
-        //     return w.MeasureValue.find(function (n) {
-        //       return n.Role==0;
-        //     })
-        //   });
-        //   zb.forEach(function (o) {
-        //       o.MeasureValue=o.MeasureValue.filter(function (t) {
-        //           return t.Role==0;
-        //       });
-        //   });
-        //   item.pointArr=[]
-        //   var zbArr=[];
-        //   var arr;
-        //   var len= Math.ceil(zb.length/20)
-        //   for (var i=0;i<len;i++){
-        //     arr=zb.slice(i*20,i*20+20);
-        //     zbArr.push(arr);
-        //     item.pointArr.push(arr)
-        //   }
-        //
-        //   var jl=item.List.filter(function (w) {
-        //     return w.MeasureValue.find(function (n) {
-        //       return n.Role==2;
-        //     })
-        //   });
-        //   jl.forEach(function (o) {
-        //     o.MeasureValue=o.MeasureValue.filter(function (t) {
-        //       return t.Role==2;
-        //     });
-        //   });
-        //   var jlArr=[];
-        //   len= Math.ceil(jl.length/20)
-        //   for (var i=0;i<len;i++){
-        //     arr=jl.slice(i*20,i*20+20);
-        //     jlArr.push(arr);
-        //     item.pointArr.push(arr)
-        //   }
-        //
-        //
-        //   var  xmb=item.List.filter(function (w) {
-        //     return w.MeasureValue.find(function (n) {
-        //       return n.Role==4;
-        //     })
-        //   });
-        //   xmb.forEach(function (o) {
-        //     o.MeasureValue=o.MeasureValue.filter(function (t) {
-        //       return t.Role==4;
-        //     });
-        //   });
-        //   var xmbArr=[];
-        //   len= Math.ceil(xmb.length/20)
-        //   for (var i=0;i<len;i++){
-        //     arr=jl.slice(i*20,i*20+20);
-        //     xmbArr.push(arr);
-        //     item.pointArr.push(arr)
-        //   }
-        //
-        //   item.points={
-        //     zbArr:zbArr,
-        //     jlArr:jlArr,
-        //     xmbArr:xmbArr
-        //   }
-        //
-        //
-        //   item.maxRow=xmbArr.length+jlArr.length+zbArr.length;
-        // }
       });
       vm.scData = newD;
     });

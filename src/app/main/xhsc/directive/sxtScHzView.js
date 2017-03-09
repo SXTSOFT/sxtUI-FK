@@ -87,15 +87,15 @@
                 v.MeasureValue=!v.MeasureValue?"0":v.MeasureValue;
                 geo.options.MeasureValue = v.MeasureValue;
                 geo.options.ExtendedField1 = v.ExtendedField1;
-                geo.options.seq =geo.properties.seq;
+                geo.options.seq =v.MeasureValue;
                 geo.options.customSeq = true;
                 geo.options.PointChilden=point.PointChilden;
                 switch(v.MeasureStatus) {
                   case 1:
-                    geo.options.color = '#000000';
+                    geo.options.color = 'blue';
                     break;
                   case 2:
-                    geo.options.color = '#eb7400';
+                    geo.options.color = 'red';
                     break;
                 }
               }

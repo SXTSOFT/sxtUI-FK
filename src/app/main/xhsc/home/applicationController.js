@@ -48,7 +48,7 @@
               stateParams: null
             },
             {
-              right: vm.role == "16"||ignore,
+              right: vm.role == "16",
               title: "现场评估",
               type:"zl",
               img: "app/main/xhsc/images/application/xcpg.svg",
@@ -78,19 +78,19 @@
           name:"安全",
           items:[
             {
-              right: vm.duties.indexOf("5")>-1||ignore,
-              type:"aq",
-              title: "安全验收",
-              img: "app/main/xhsc/images/application/weekys.svg",
-              state: "app.xhsc.sf.sfmain",
-              stateParams: null
-            },
-            {
               right: vm.duties.indexOf("5")>-1&&vm.role=="0",
               type:"aq",
               title: "安全自检",
               img: "app/main/xhsc/images/application/dyn.svg",
               state: "app.xhsc.sf.selfMain",
+              stateParams: null
+            },
+            {
+              right: vm.duties.indexOf("5")>-1||ignore,
+              type:"aq",
+              title: "安全验收",
+              img: "app/main/xhsc/images/application/weekys.svg",
+              state: "app.xhsc.sf.sfmain",
               stateParams: null
             },
             {
