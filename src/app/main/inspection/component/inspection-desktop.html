@@ -36,6 +36,7 @@
         <md-list class="p-0 mt-10" style="border-bottom: solid 1px silver;border-top: solid 1px silver;background-color: white;" >
           <md-list-item class="white-bg" ng-click="vm.repeatCheck(item)" ng-repeat="item in vm.data.inspection_completed">
             <div class="md-list-item-text" flex ng-click="vm.check(item.room.room_id,item.delivery_id,item.status)">{{item.room.full_name}}</div>
+            <!--<md-button class="md-secondary" ng-click="vm.fh(item)" style="font-size: 12px;background-color: #00acee;color: white;">反测试</md-button>-->
             <md-divider style="position: absolute; bottom: 0;left: 4%;width: 96%;"></md-divider>
           </md-list-item>
         </md-list>

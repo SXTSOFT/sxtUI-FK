@@ -18,24 +18,49 @@
     var  serve={
         downloadDeliveryTask:function (item,task) {
           task.push(function () {
-            return api.inspection.estate.getDelivery(item.delivery_id).then(function (r) {
-              if (r.data){
-                r.data.downloaded=true;
-              }
-              return r.data;
-            }).then(function (m) {
-              task.push(function () {
-                return  $q(function (resove,reject) {
+            return $q(function (resolve,reject) {
+              api.inspection.estate.getDelivery(item.delivery_id).then(function (r) {
+                if (r.data){
+                  var m=r.data;
+                  m.downloaded=true;
                   if (m.room&&m.room.layout&&m.room.layout.drawing_url){
-                    return ys_file.downUniqueFile(m.room.room_id,m.room.layout.drawing_url).then(function () {
-                      resove();
+                    return ys_file.downUniqueFile(m.room.room_id,m.room.layout.drawing_url).then(function (res) {
+                      resolve();
+                    }).catch(function (err) {
+                      reject();
                     });
                   }else {
-                    resove();
+                    resolve();
                   }
-                })
-              });
+                }
+                else {
+                  reject();
+                }
+              }).catch(function () {
+                reject()
+              })
             })
+
+            // api.inspection.estate.getDelivery(item.delivery_id).then(function (r) {
+            //   if (r.data){
+            //     r.data.downloaded=true;
+            //   }
+            //
+            //
+            //   return r.data;
+            // }).then(function (m) {
+            //   task.push(function () {
+            //     return  $q(function (resove,reject) {
+            //       if (m.room&&m.room.layout&&m.room.layout.drawing_url){
+            //         return ys_file.downUniqueFile(m.room.room_id,m.room.layout.drawing_url).then(function () {
+            //           resove();
+            //         });
+            //       }else {
+            //         resove();
+            //       }
+            //     })
+            //   });
+            // })
           })
         },
         markerImgOption:{

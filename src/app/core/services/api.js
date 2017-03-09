@@ -946,11 +946,12 @@
                     var r = provider.$window.JSON.parse(result);
                     //if(!globalDb.noCache || (cfg && cfg.fileField))
                     //  cache[id] = r;
+                    cb();
                     resolve(r);
-                    cb();
+
                   }).catch(function (result) {
-                    reject(null);
                     cb();
+                    reject(null);
                   });
                 })
                 /*              if(cache[id]){

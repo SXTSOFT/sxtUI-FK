@@ -96,11 +96,20 @@
                 task.push(function () {
                   var copy = angular.extend({}, k)
                   delete copy.id;
-                  return api.inspection.estate.insertrepair_tasks(copy).then(function () {
-                    return api.inspection.estate.deleteRepair_tasks_off(k);
-                  }).catch(function () {
-                    utils.alert("没有设置责任单位");
-                  });
+                  return $q(function (resolve,reject) {
+                    api.inspection.estate.insertrepair_tasks(copy).then(function () {
+                      return api.inspection.estate.deleteRepair_tasks_off(k).then(function () {
+                        resolve();
+                      }).catch(function () {
+                        resolve();
+                      });
+                    }).catch(function () {
+                      var msg="没有设置责任单位";
+                      utils.alert(msg);
+                      reject(msg);
+                    });
+                  })
+
                 })
               });
             }
@@ -115,8 +124,10 @@
             vm.selected = 2;
             vm.load();
           });
-        }, function () {
-          utils.alert("系统在上传数据的时候发生错误,上传失败");
+        }, function (msg) {
+          if (!msg){
+            utils.alert("系统在上传数据的时候发生错误,上传失败");
+          }
         }, "正在上传数据")
       }
 
@@ -192,13 +203,14 @@
             api.inspection.estate.putDelivery(item.delivery_id, {
               status: "processing"
             }).then(function (r) {
+              item.status="processing";
               api.inspection.estate.addOrUpdateDelivery(item).then(function () {
                 utils.confirm("抢单成功,是否继续?").then(function () {
-                }).catch(function () {
+                }).catch(function (err) {
                   vm.selected = 1;
                 });
                 vm.load();
-              }).catch(function () {
+              }).catch(function (err) {
                 utils.alert("系统在抢单,刷新单据状态的时候发生错误");
               });
             })

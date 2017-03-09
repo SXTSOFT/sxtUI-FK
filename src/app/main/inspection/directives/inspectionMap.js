@@ -246,8 +246,8 @@
                           reader.readAsArrayBuffer(file);
                         },function () {
                         });
-                      }, function () {
-
+                      }, function (err) {
+                          console.log(err);
                       });
 
                     }:null
