@@ -72,6 +72,9 @@
             }
         }, true);
 
+      vm.btnShow=function (item,indentiy) {
+        return item.RelationID.indexOf(indentiy)>-1;
+      }
         function load() {
             remote.Assessment.GetMeasureList({
                 ProjectId: $scope.project.pid ? $scope.project.pid : "",

@@ -2318,6 +2318,9 @@
         getReportFormMeasure:function (areaId) {
           return $http.get($http.url('/api/ReportFormMeasure?areaId='+areaId))
         },
+        getJtReport:function(){
+          return $http.get($http.url('/api/ReportFormInspection/jt'));
+        },
         getReportFormInspection:function(areaId){
           return $http.get($http.url('/api/ReportFormInspection?areaId='+areaId))
         },getReportFormAssessmentXmb:function(quarter){
