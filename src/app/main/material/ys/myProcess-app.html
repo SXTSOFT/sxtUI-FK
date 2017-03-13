@@ -19,8 +19,8 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
 <div class="md-padding">
   <md-input-container class="md-block">
     <label>规格/型号</label>
-    <md-select ng-model="vm.checkData.Model">
-      <md-option ng-value="m" ng-repeat="m in project.materialModels">{{m}}</md-option>
+    <md-select style="font-family: 'SJQY' !important;" ng-model="vm.checkData.Model">
+      <md-option ng-value="m" ng-repeat="m in project.materialModels" style="font-family: 'SJQY' !important;">{{m}}</md-option>
     </md-select>
   </md-input-container>
   <div style="height: 6px" ng-if="project.materialSupply!=0"></div>
