@@ -259,6 +259,12 @@
         controller: 'batchCountController as vm',
         templateUrl: 'app/main/szgc/report/batchCount-app.html'
       })
+      .state('app.szgc.report.materialReport', {
+        title :'材料验收统计',
+        url:'/materialReport',
+        controller: 'materialReportController as vm',
+        templateUrl: 'app/main/szgc/report/materialReport.html'
+      })
       .state('app.szgc.report.batchRaio', {
         title :'班组验收合格率对比',
         url:'/batchRaio',
