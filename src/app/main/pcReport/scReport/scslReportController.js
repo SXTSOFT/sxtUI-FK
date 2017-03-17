@@ -30,6 +30,10 @@
       total:0
     }
 
+    vm.btnShow=function (item,indentiy) {
+       return item.RelationID.indexOf(indentiy)>-1;
+    }
+
     $scope.$watch("pageing.pageSize",function(){
       if ($scope.pageing.pageSize){
         load();

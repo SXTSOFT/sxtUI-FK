@@ -24,8 +24,12 @@
           return;
         }
         var arr=[];
+        var  role=vm.role;
+        if (role=="16"&&role=="8"){
+          role="4";
+        }
         result.forEach(function (m) {
-          m.AssessmentID = 'scsl' + m.RegionID + '_' + vm.role;
+          m.AssessmentID = 'scsl' + m.RegionID + '_' + role;
           m.Children.forEach(function (n) {
             var f;
             n.AssessmentID = m.AssessmentID;

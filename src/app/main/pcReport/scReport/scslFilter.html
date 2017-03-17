@@ -51,11 +51,11 @@
                         {{item.AreaName}}
                     </td>
                     <td style="vertical-align: middle;border: 1px solid #ddd;">
-                      <md-button style="text-align: left"  class="md-primary" ng-click="vm.go(item,0)" aria-label="Settings">
+                      <md-button style="text-align: left" ng-if="vm.btnShow(item,'_0')" class="md-primary" ng-click="vm.go(item,0)" aria-label="Settings">
                         <md-icon md-font-icon="icon-magnify" class="icon s24"></md-icon>总包</md-button>
-                      <md-button style="text-align: left"  class="md-primary" ng-click="vm.go(item,2)" aria-label="Settings">
+                      <md-button style="text-align: left"  ng-if="vm.btnShow(item,'_2')" class="md-primary" ng-click="vm.go(item,2)" aria-label="Settings">
                         <md-icon md-font-icon="icon-magnify" class="icon s24"></md-icon>监理</md-button>
-                        <md-button style="text-align: left"  class="md-primary" ng-click="vm.go(item,4)" aria-label="Settings">
+                        <md-button style="text-align: left"  ng-if="vm.btnShow(item,'_4')" class="md-primary" ng-click="vm.go(item,4)" aria-label="Settings">
                             <md-icon md-font-icon="icon-magnify" class="icon s24"></md-icon>项目部</md-button>
                     </td>
                 </tr>

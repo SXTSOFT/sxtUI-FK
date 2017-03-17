@@ -32,9 +32,9 @@
           </td>
           <td >
             <div layout="column" layout-align="center center">
-              <md-button  style="text-align: left"  class="md-primary"  ng-click="vm.go(item,0)" aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>总包</md-button>
-              <md-button style="text-align: left"  class="md-primary"  ng-click="vm.go(item,2)" aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>监理</md-button>
-              <md-button  style="text-align: left"  class="md-primary"  ng-click="vm.go(item,4)" aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>项目部</md-button>
+              <md-button  style="text-align: left"  class="md-primary" ng-if="vm.btnShow(item,'_0')"  ng-click="vm.go(item,0)" aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>总包</md-button>
+              <md-button style="text-align: left"  class="md-primary" ng-if="vm.btnShow(item,'_2')"  ng-click="vm.go(item,2)" aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>监理</md-button>
+              <md-button  style="text-align: left"  class="md-primary" ng-if="vm.btnShow(item,'_4')"  ng-click="vm.go(item,4)" aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>项目部</md-button>
             </div>
           </td>
         </tr>

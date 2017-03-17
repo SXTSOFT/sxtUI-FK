@@ -58,6 +58,16 @@
           }
         }
       })
+      .state('app.progress',{
+        url:'/progress/{projectId}/{projectName}',
+        noBack:true,
+        views:{
+          'content@app':{
+            templateUrl: 'app/main/pcReport/progress.html',
+            controller : 'progressController as vm',
+          }
+        }
+      })
       .state('app.pcReport_bdd',{
         title:"验收状态",
         noBack:true,

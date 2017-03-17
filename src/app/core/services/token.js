@@ -22,10 +22,14 @@
 
     function setToken(tk){
       token = tk && tk.access_token ? (tk.token_type||'Bearer') + ' ' + tk.access_token : null;
-      if(token)
+      if(token){
         $cookies.put('token',token);
-      else
+        localStorage.setItem('token',token);
+      }
+      else{
         $cookies.remove('token');
+        localStorage.removeItem('token',token)
+      }
     }
 
     function getToken(){
