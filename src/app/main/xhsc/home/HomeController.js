@@ -36,13 +36,13 @@
       }
       vm.changeItem = function(item){
         $timeout(function(){
-          $state.go('app.pcReport_bd',{projectId:item.projectId, projectName: item.title});
+          $state.go('app.progress',{projectId:item.projectId, projectName: item.title});
         },200)
 
       }
       function markerClick($current){
         //$state.go('app.xhsc.xxjd.xxjdmain',{projectId:$current.projectId, projectName:$current.title});
-        $state.go('app.pcReport_bd',{projectId:$current.projectId, projectName:$current.title});
+        $state.go('app.progress',{projectId:$current.projectId, projectName:$current.title});
       }
     })
   }
