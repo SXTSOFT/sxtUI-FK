@@ -1,214 +1,231 @@
 ﻿<md-content flex layout="column" ui-view>
   <form name="addForm" class="form-horizontal addform" style="font-size:14px; color: rgba(0,0,0,0.54);" ng-submit="save(addForm)">
-<div flex style="overflow: auto" ng-show="!vm.AttachmentSHow">
-<sxt-projects-jd ng-model="project.pid" object-scope="project" levels="2" region-type="project.type" region-name="project.typeName"
-  project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree" on-queryed="project.onQueryed"
-  is-more="project.isMore">
-  <md-list style="padding:0;">
-<!--<md-subheader class="md-no-sticky">材料</md-subheader>
+    <div flex style="overflow: auto" ng-show="!vm.AttachmentSHow">
+      <sxt-projects-jd ng-model="project.pid" object-scope="project" levels="2" region-type="project.type" region-name="project.typeName"
+        project-id="project.projectId" project-name="project.projectName" id-tree="project.idTree" name-tree="project.nameTree"
+        on-queryed="project.onQueryed" is-more="project.isMore">
+        <md-list style="padding:0;">
+          <!--<md-subheader class="md-no-sticky">材料</md-subheader>
 <md-list-item>
   <sxt-material style="width:100%;margin:0;" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId" material-Unit="project.materialUnit" material-models="project.materialModels"
 name-value="project.procedureName" material-supply="project.materialSupply" region-type="project.type" class="md-block"></sxt-material>
 </md-list-item>-->
-  <md-list-item ng-click="vm.openNav('nav_material')" layout="row"><p flex="none" style="color:#8c8c8c;">材料</p>
-  <p flex style="color:#1e1e1e;text-align:right;text-overflow:ellipsis;">{{project.procedureName}}</p></md-list-item>
-  <md-divider></md-divider>
-</md-list>
+          <md-list-item ng-click="vm.openNav('nav_material')" layout="row">
+            <p flex="none" style="color:#8c8c8c;">材料</p>
+            <p flex style="color:#1e1e1e;text-align:right;text-overflow:ellipsis;">{{project.procedureName}}</p>
+          </md-list-item>
+          <md-divider></md-divider>
+        </md-list>
 
-</sxt-projects-jd>
-<div class="md-padding">
-  <md-input-container class="md-block">
-    <label>规格/型号</label>
-    <md-select style="font-family: 'SJQY' !important;" ng-model="vm.checkData.Model">
-      <md-option ng-value="m" ng-repeat="m in project.materialModels" style="font-family: 'SJQY' !important;">{{m}}</md-option>
-    </md-select>
-  </md-input-container>
-  <div style="height: 6px" ng-if="project.materialSupply!=0"></div>
-<md-input-container class="md-block" ng-if="project.materialSupply!=0">
-  <label>供货方</label>
-  <md-select ng-model="vm.checkData.SupplierId">
-    <md-option ng-value="s.UnitName" ng-repeat="s in suppliers2">{{s.UnitName}}</md-option>
-  </md-select>
-</md-input-container>
-<div style="height: 6px"></div>
-<md-input-container class="md-block">
-  <label>厂家/品牌</label>
-  <!--<input style="width: 100%;" ng-model="vm.checkData.Manufactor">-->
-  <md-select ng-model="vm.checkData.Manufactor">
-    <md-option ng-value="s.Name" ng-repeat="s in suppliers">{{s.Name}}</md-option>
-  </md-select>
-</md-input-container>
-<div style="height: 6px"></div>
-<md-input-container class="md-block">
-  <label>合同编号</label>
-  <input ng-model="vm.checkData.ContractNumber">
-</md-input-container>
-<md-input-container class="md-block">
-  <label>数量(单位:{{project.materialUnit}})</label>
-  <input ng-model="vm.checkData.Number">
-</md-input-container>
-<md-input-container class="md-block">
-  <label>验收时间</label>
-  <md-datepicker ng-model="vm.checkData.CheckTime" md-open-on-focus></md-datepicker>
-</md-input-container>
-</div>
-<md-divider></md-divider>
-<md-list>
-  <md-list-item>
-    <p>外观检查</p>
-    <md-switch class="md-secondary" ng-model="vm.checkData.WgCheck" ng-true-value="1" ng-false-value="0">
-      {{vm.checkData.WgCheck ? '合格':'不合格' }}
-    </md-switch>
-  </md-list-item>
-</md-list>
-<div style="padding: 0 15px;" ng-show="vm.checkData.WgCheck==0">
-<md-input-container class="md-block">
-  <label>不合格说明</label>
-  <input ng-model="vm.checkData.WgFailedRemark">
-</md-input-container>
-</div>
-<md-list>
-  <md-divider ng-show="vm.checkData.WgCheck==0"></md-divider>
-  <md-list-item ng-show="vm.checkData.WgCheck==1">
-    <p>是否送检</p>
-    <md-switch class="md-secondary" ng-model="vm.checkData.IsInspection" ng-true-value="1" ng-false-value="0" ng-disabled="vm.checkData.WgCheck == 0">
+      </sxt-projects-jd>
+      <div class="md-padding">
+        <md-input-container class="md-block">
+          <label>规格/型号</label>
+          <md-select style="font-family: 'SJQY' !important;" ng-model="vm.checkData.Model">
+            <md-option ng-value="m" ng-repeat="m in project.materialModels" style="font-family: 'SJQY' !important;">{{m}}</md-option>
+          </md-select>
+        </md-input-container>
+        <div style="height: 6px" ng-if="project.materialSupply!=0"></div>
+        <md-input-container class="md-block" ng-if="project.materialSupply!=0">
+          <label>供货方</label>
+          <md-select ng-model="vm.checkData.SupplierId">
+            <md-option ng-value="s.UnitName" ng-repeat="s in suppliers2">{{s.UnitName}}</md-option>
+          </md-select>
+        </md-input-container>
+        <div style="height: 6px"></div>
+        <md-input-container class="md-block">
+          <label>厂家/品牌</label>
+          <!--<input style="width: 100%;" ng-model="vm.checkData.Manufactor">-->
+          <md-select ng-model="vm.checkData.Manufactor">
+            <md-option ng-value="s.Name" ng-repeat="s in suppliers">{{s.Name}}</md-option>
+          </md-select>
+        </md-input-container>
+        <div style="height: 6px"></div>
+        <md-input-container class="md-block">
+          <label>合同编号</label>
+          <input ng-model="vm.checkData.ContractNumber">
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>数量(单位:{{project.materialUnit}})</label>
+          <input ng-model="vm.checkData.Number">
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>验收时间</label>
+          <md-datepicker ng-model="vm.checkData.CheckTime" md-open-on-focus></md-datepicker>
+        </md-input-container>
+      </div>
+      <md-divider></md-divider>
+      <md-list>
+        <md-list-item>
+          <p>外观检查</p>
+          {{vm.checkData.WgCheck ? '合格':'不合格' }}&nbsp;&nbsp;
+          <md-switch class="md-secondary" ng-model="vm.checkData.WgCheck" ng-true-value="1" ng-false-value="0">
+          </md-switch>
+        </md-list-item>
+      </md-list>
+      <div style="padding: 0 15px;" ng-show="vm.checkData.WgCheck==0">
+        <md-input-container class="md-block">
+          <label>不合格说明</label>
+          <input ng-model="vm.checkData.WgFailedRemark">
+        </md-input-container>
+      </div>
+      <md-list>
+        <md-divider ng-show="vm.checkData.WgCheck==0"></md-divider>
+        <md-list-item ng-show="vm.checkData.WgCheck==1">
+          <p>送检方式</p>
+          <!--<md-switch class="md-secondary" ng-model="vm.checkData.IsInspection" ng-true-value="1" ng-false-value="0" ng-disabled="vm.checkData.WgCheck == 0">
       {{vm.checkData.IsInspection ? '需要':'不需要' }}
-    </md-switch>
-  </md-list-item>
-  <md-divider ng-show="vm.checkData.WgCheck==1"></md-divider>
-</md-list>
-<div class="md-padding" ng-if="vm.checkData.WgCheck==1 && vm.checkData.IsInspection==1 && project.procedureId" style="color: rgba(0,0,0,0.87);">
-<fieldset>
-  <legend style="font-size: 1.6rem;">检查指标</legend>
-<md-list>
-  <md-list-item ng-repeat="n in Targets" ng-click="n.isOK=!n.isOK" ng-disabled="n.need">
-    <div class="md-list-item-text" flex layout="column">
-      <h3 style="margin-top: 10px; margin-bottom: 5px;font-size: 1.6rem;font-family: 'SJQY' !important;">
-        {{$index+1}}、{{n.TargetName}}
-      </h3>
-<!--<p ng-if="n.Remark" style="margin: 0;line-height: 120%;font-size: 13px !important; ">-->
-<!--{{n.Remark}}-->
-<!--</p>-->
-</div>
-<md-switch ng-disabled="n.need" ng-click="$event.stopPropagation()" ng-model="n.isOK"></md-switch>
-</md-list-item>
-<div layout="row">
-  <md-button flex="33" ng-click="math(1)" class="md-raised md-primary">随机1个</md-button>
-  <md-button flex="33" ng-click="math(2)" class="md-raised md-primary">随机2个</md-button>
-  <md-button flex="33" ng-click="math(3)" class="md-raised md-primary">随机3个</md-button>
-</div>
-</md-list>
-</fieldset>
-</div>
-<md-divider ng-if="vm.checkData.WgCheck==1 && vm.checkData.IsInspection==1 && project.procedureId"></md-divider>
-<md-list-item ng-click="vm.AttachmentSHow = true">
-  <div class="md-list-item-text" flex="25" layout="column" style="height: 76px; line-height: 48px;">
-<p style="text-align: left;">附件</p>
-</div>
-<a class="md-secondary">添加</a>
-</md-list-item>
-<md-divider></md-divider>
-<md-subheader style="background-color: #f5f6f7;" class="md-no-sticky" ng-hide="data.imgs1.length == 0 && data.imgs2.length == 0 && data.imgs3.length == 0&& data.imgs4.length
+    </md-switch>-->
+          <md-radio-group ng-model="vm.checkData.IsInspection">
+            <md-radio-button style="display: inline-block; margin-bottom: 0;" value="0" class="md-primary">例常送检</md-radio-button>&nbsp;&nbsp;
+            <md-radio-button style="display: inline-block; margin-bottom: 0;" value="1" class="md-primary">天网送检</md-radio-button>
+          </md-radio-group>
+        </md-list-item>
+        <md-divider ng-show="vm.checkData.WgCheck==1"></md-divider>
+      </md-list>
+      <div class="md-padding" ng-if="vm.checkData.WgCheck==1 && vm.checkData.IsInspection==1 && project.procedureId" style="color: rgba(0,0,0,0.87);">
+        <fieldset>
+          <legend style="font-size: 1.6rem;">检查指标</legend>
+          <md-list>
+            <legend style="font-size: 1.6rem;">必检项</legend>
+            <md-list-item ng-repeat="n in Targets | filter:{need:true}" ng-click="n.isOK=!n.isOK" ng-disabled="n.need">
+              <div class="md-list-item-text" flex layout="column">
+                <h3 style="margin-top: 10px; margin-bottom: 5px;font-size: 1.6rem;font-family: 'SJQY' !important;">
+                  {{$index+1}}、{{n.TargetName}}
+                </h3>
+              </div>
+              <!--<md-switch ng-disabled="n.need" ng-click="$event.stopPropagation()" ng-model="n.isOK"></md-switch>-->
+            </md-list-item>
+            <legend style="font-size: 1.6rem;">非必检项</legend>
+            <md-list-item ng-repeat="n in Targets | filter:{need:false}" ng-click="n.isOK=!n.isOK" ng-disabled="n.need">
+              <div class="md-list-item-text" flex layout="column">
+                <h3 style="margin-top: 10px; margin-bottom: 5px;font-size: 1.6rem;font-family: 'SJQY' !important;">
+                  {{$index+1}}、{{n.TargetName}}
+                </h3>
+                <!--<p ng-if="n.Remark" style="margin: 0;line-height: 120%;font-size: 13px !important; ">-->
+                <!--{{n.Remark}}-->
+                <!--</p>-->
+              </div>
+              <md-switch ng-disabled="n.need" ng-click="$event.stopPropagation()" ng-model="n.isOK"></md-switch>
+            </md-list-item>
+            <div layout="row">
+              <md-button flex="33" ng-click="math(1)" class="md-raised md-primary">随机1个</md-button>
+              <md-button flex="33" ng-click="math(2)" class="md-raised md-primary">随机2个</md-button>
+              <md-button flex="33" ng-click="math(3)" class="md-raised md-primary">随机3个</md-button>
+            </div>
+          </md-list>
+        </fieldset>
+      </div>
+      <md-divider ng-if="vm.checkData.WgCheck==1 && vm.checkData.IsInspection==1 && project.procedureId"></md-divider>
+      <md-list-item ng-click="vm.AttachmentSHow = true">
+        <div class="md-list-item-text" flex="25" layout="column" style="height: 76px; line-height: 48px;">
+          <p style="text-align: left;">附件</p>
+        </div>
+        <a class="md-secondary">添加</a>
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-subheader style="background-color: #f5f6f7;" class="md-no-sticky" ng-hide="data.imgs1.length == 0 && data.imgs2.length == 0 && data.imgs3.length == 0&& data.imgs4.length
 == 0&& data.imgs5.length == 0">附件
-</md-subheader>
-<md-list-item ng-show="vm.EnclosureType.length != 0">
-  <div sxt-image-view is-container="true">
-    <p ng-repeat="item in vm.EnclosureType">
-      <sxt-images ng-model="item.GroupImg"></sxt-images>
-      </fieldset>
-    </p>
-  </div>
-</md-list-item>
-<md-divider ng-hide="data.imgs1.length == 0 && data.imgs2.length == 0 && data.imgs3.length == 0&& data.imgs4.length == 0&& data.imgs5.length == 0"></md-divider>
-<div class="md-padding" layout="row">
-  <md-button type="submit" flex class="md-raised md-primary"> 确定</md-button>
-</div>
-</div>
-
-<div flex ng-show="vm.AttachmentSHow" style="padding: 16px">
-<md-input-container class="md-block">
-  <label>附件类型</label>
-  <md-select ng-model="vm.fjType">
-    <md-option ng-repeat="item in vm.Type" ng-value="item.value">
-      {{item.name}}
-    </md-option>
-  </md-select>
-</md-input-container>
-
-<div ng-show="vm.fjType==16">
-  <div layout-align="start center">
-    <md-radio-group ng-model="vm.checkData.sjReport">
-      <md-radio-button flex ng-value="1" style="display: inline-block;" class="md-primary">合格</md-radio-button>
-<md-radio-button flex ng-value="0" style="display: inline-block;" class="md-primary">不合格</md-radio-button>
-</md-radio-group>
-</div>
-</div>
-<md-divider></md-divider>
-<div ng-show="vm.checkData.sjReport == 0">
-  <div style="height: 6px"></div>
-<md-input-container class="md-block">
-  <label>不合格说明</label>
-  <input ng-model="vm.checkData.CheckReportRemark">
-</md-input-container>
-</div>
-<md-divider></md-divider>
-<div class="md-padding">
-  <div ng-show="vm.fjType == 2">
-
-    <span class="fs-display-1 display-block">添加照片</span>
-    <div>
-      <small></small>
+      </md-subheader>
+      <md-list-item ng-show="vm.EnclosureType.length != 0">
+        <div sxt-image-view is-container="true">
+          <p ng-repeat="item in vm.EnclosureType">
+            <sxt-images ng-model="item.GroupImg"></sxt-images>
+            </fieldset>
+          </p>
+        </div>
+      </md-list-item>
+      <md-divider ng-hide="data.imgs1.length == 0 && data.imgs2.length == 0 && data.imgs3.length == 0&& data.imgs4.length == 0&& data.imgs5.length == 0"></md-divider>
+      <div class="md-padding" layout="row">
+        <md-button type="submit" flex class="md-raised md-primary"> 确定</md-button>
+      </div>
     </div>
-    <sxt-images ng-model="vm.groupId_2" files="data.imgs1" project="data.projectInfo" edit="true"></sxt-images>
-  </div>
-  <div ng-show="vm.fjType == 4">
 
-    <span class="fs-display-1 display-block">添加照片</span>
-    <div>
-      <small></small>
+    <div flex ng-show="vm.AttachmentSHow" style="padding: 16px">
+      <md-input-container class="md-block">
+        <label>附件类型</label>
+        <md-select ng-model="vm.fjType">
+          <md-option ng-repeat="item in vm.Type" ng-value="item.value">
+            {{item.name}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+      <div ng-show="vm.fjType==16">
+        <div layout-align="start center">
+          <md-radio-group ng-model="vm.checkData.sjReport">
+            <md-radio-button flex ng-value="1" style="display: inline-block;" class="md-primary">合格</md-radio-button>
+            <md-radio-button flex ng-value="0" style="display: inline-block;" class="md-primary">不合格</md-radio-button>
+          </md-radio-group>
+        </div>
+      </div>
+      <md-divider></md-divider>
+      <div ng-show="vm.checkData.sjReport == 0">
+        <div style="height: 6px"></div>
+        <md-input-container class="md-block">
+          <label>不合格说明</label>
+          <input ng-model="vm.checkData.CheckReportRemark">
+        </md-input-container>
+      </div>
+      <md-divider></md-divider>
+      <div class="md-padding">
+        <div ng-show="vm.fjType == 2">
+
+          <span class="fs-display-1 display-block">添加照片</span>
+          <div>
+            <small></small>
+          </div>
+          <sxt-images ng-model="vm.groupId_2" files="data.imgs1" project="data.projectInfo" edit="true"></sxt-images>
+        </div>
+        <div ng-show="vm.fjType == 4">
+
+          <span class="fs-display-1 display-block">添加照片</span>
+          <div>
+            <small></small>
+          </div>
+          <sxt-images ng-model="vm.groupId_4" files="data.imgs2" project="data.projectInfo" edit="true"></sxt-images>
+        </div>
+        <div ng-show="vm.fjType == 8">
+
+          <span class="fs-display-1 display-block">添加照片</span>
+          <div>
+            <small></small>
+          </div>
+          <sxt-images ng-model="vm.groupId_8" files="data.imgs3" project="data.projectInfo" edit="true"></sxt-images>
+        </div>
+        <div ng-show="vm.fjType == 16">
+
+          <span class="fs-display-1 display-block">添加照片</span>
+          <div>
+            <small></small>
+          </div>
+          <sxt-images ng-model="vm.groupId_16" files="data.imgs4" project="data.projectInfo" edit="true"></sxt-images>
+        </div>
+        <div ng-show="vm.fjType == 32">
+
+          <span class="fs-display-1 display-block">添加照片</span>
+          <div>
+            <small></small>
+          </div>
+          <sxt-images ng-model="vm.groupId_32" files="data.imgs5" project="data.projectInfo" edit="true"></sxt-images>
+        </div>
+        <div style="clear: both"></div>
+      </div>
+      <div class="md-padding" layout="row">
+        <md-button flex class="md-raised md-primary" ng-click="vm.ok()"> 完成</md-button>
+      </div>
     </div>
-    <sxt-images ng-model="vm.groupId_4" files="data.imgs2" project="data.projectInfo" edit="true"></sxt-images>
-  </div>
-  <div ng-show="vm.fjType == 8">
 
-    <span class="fs-display-1 display-block">添加照片</span>
-    <div>
-      <small></small>
-    </div>
-    <sxt-images ng-model="vm.groupId_8" files="data.imgs3" project="data.projectInfo" edit="true"></sxt-images>
-  </div>
-  <div ng-show="vm.fjType == 16">
+    <md-sidenav class="md-sidenav-right" md-component-id="nav_material" md-is-open="vm.isRightOpen" md-whiteframe="4" layout="column">
+      <md-content flex layout="column" style="background: white">
+        <sxt-material flex layout="column" on-select="vm.closeNav('nav_material')" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId"
+          material-Unit="project.materialUnit" material-models="project.materialModels" name-value="project.procedureName"
+          material-supply="project.materialSupply" region-type="project.type" class="md-block"></sxt-material>
+        <div class="md-padding" layout="row">
+          <md-button flex ng-click="vm.closeNav('nav_material')" class="md-raised md-primary">确定</md-button>
+        </div>
+      </md-content>
+    </md-sidenav>
 
-    <span class="fs-display-1 display-block">添加照片</span>
-    <div>
-      <small></small>
-    </div>
-    <sxt-images ng-model="vm.groupId_16" files="data.imgs4" project="data.projectInfo" edit="true"></sxt-images>
-  </div>
-  <div ng-show="vm.fjType == 32">
-
-    <span class="fs-display-1 display-block">添加照片</span>
-    <div>
-      <small></small>
-    </div>
-    <sxt-images ng-model="vm.groupId_32" files="data.imgs5" project="data.projectInfo" edit="true"></sxt-images>
-  </div>
-  <div style="clear: both"></div>
-</div>
-<div class="md-padding" layout="row">
-  <md-button flex class="md-raised md-primary" ng-click="vm.ok()"> 完成</md-button>
-</div>
-</div>
-
-<md-sidenav class="md-sidenav-right" md-component-id="nav_material"  md-is-open="vm.isRightOpen" md-whiteframe="4" layout="column">
-  <md-content flex layout="column" style="background: white">
-    <sxt-material flex layout="column" on-select="vm.closeNav('nav_material')" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId"  material-Unit="project.materialUnit"
-    material-models="project.materialModels" name-value="project.procedureName" material-supply="project.materialSupply" region-type="project.type" class="md-block"></sxt-material>
-    <div class="md-padding" layout="row">
-      <md-button flex ng-click="vm.closeNav('nav_material')"  class="md-raised md-primary">确定</md-button>
-    </div>
-  </md-content>
-</md-sidenav>
-
-</form>
+  </form>
 </md-content>
