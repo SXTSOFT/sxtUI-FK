@@ -22,7 +22,7 @@
     vm.checkData = {};
     vm.EnclosureType = [];
     vm.checkData.WgCheck = 1;
-    vm.checkData.IsInspection = 1;
+    vm.checkData.IsInspection = 0;
     vm.checkData.CheckTime = new Date();
     vm.checkData.sjReport = null;
     vm.checkData.MaterialTargets = [];
@@ -80,6 +80,11 @@
 
 
     $scope.math = function (count) {
+      $scope.Targets.forEach(t=>{
+        if(t.isOK && t.IsCheck == 0){
+          t.isOK = false;
+        }
+      });
       var arr = $scope.Targets.filter(function (t) {
         return !t.isOK && t.IsCheck != 2;
       });
@@ -304,12 +309,13 @@
               $scope.Targets = data.data.Rows;
               api.material.TargetRelationService.getByProjectId({ projectId: $scope.project.projectId, materialId: $scope.project.procedureId, isChecked: true })
                 .then(function (data) {
-                  console.log(data);
                   for (var i = 0; i < $scope.Targets.length; i++) {
                     if ($scope.Targets[i].IsCheck == 1) {
                       $scope.Targets[i].isOK = true;
                       $scope.Targets[i].need = true;
                       continue;
+                    }else{
+                      $scope.Targets[i].need = false;
                     }
                     for (var j = 0; j < data.data.Rows.length; j++) {
                       if ($scope.Targets[i].Id == data.data.Rows[j].TargetId) {
