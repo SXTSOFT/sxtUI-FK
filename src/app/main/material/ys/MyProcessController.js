@@ -80,7 +80,7 @@
 
 
     $scope.math = function (count) {
-      $scope.Targets.forEach(t=>{
+      $scope.Targets.forEach(function(t){
         if(t.isOK && t.IsCheck == 0){
           t.isOK = false;
         }
