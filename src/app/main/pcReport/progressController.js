@@ -19,6 +19,7 @@
   {
     var vm = this;
     vm.projectName=$stateParams.projectName;
-    vm.projectId=$stateParams.projectId;
+    var projectId=$stateParams.projectId;
+    vm.href="www/index.html?projectId="+projectId;
   }
 })();
