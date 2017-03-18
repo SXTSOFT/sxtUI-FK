@@ -37,9 +37,9 @@
 
 
       vm.serverAppVersion = versionUpdate.version;
-      versionUpdate.check().then(function () {
-        vm.serverAppVersion = versionUpdate.version;
-      });
+      // versionUpdate.check().then(function () {
+      //   vm.serverAppVersion = versionUpdate.version;
+      // });
 
       vm.clearCache=function(){
         utils.confirm('确定清除所有缓存数据吗?').then(function (result) {
