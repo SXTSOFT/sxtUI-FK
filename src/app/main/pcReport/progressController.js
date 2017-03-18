@@ -15,11 +15,13 @@
     .controller('progressController', progressController);
 
   /** @ngInject */
-  function progressController($scope,$stateParams,$mdSidenav,api,$q,utils,remote,$timeout,cookie)
+  function progressController($scope,$stateParams,$rootScope,$mdSidenav,api,$q,utils,remote,$timeout,cookie,authToken)
   {
     var vm = this;
-    vm.projectName=$stateParams.projectName;
+    var projectName=$stateParams.projectName;
     var projectId=$stateParams.projectId;
-    vm.href="www/index.html?projectId="+projectId;
+    $rootScope.title=projectName;
+    var token=authToken.getToken();
+    vm.href="www/index.html?projectId="+projectId+"&token="+token;
   }
 })();
