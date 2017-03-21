@@ -322,7 +322,7 @@
 
     })
 
-    
+
 
     $scope.$watch('project.procedureId',
       function () {
@@ -441,9 +441,12 @@
       vm.checkData.Manufactor = null;
       vm.checkData.Model = null;
       if ($scope.project.type == 2) {
-        api.material.MaterialService.getPartners($scope.project.idTree).then(function (r) {
-          $scope.suppliers2 = r.data.Rows;
-        });
+        $q.all([api.material.MaterialService.getPartners($scope.project.idTree, 3),
+        api.material.MaterialService.getPartners($scope.project.idTree, 2)])
+          .then(function (r) {
+            $scope.suppliers2 = r[0].data.Rows;
+             $scope.suppliers2 = $scope.suppliers2.concat(r[1].data.Rows);
+          })
       }
     });
 
