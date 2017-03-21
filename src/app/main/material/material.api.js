@@ -222,8 +222,8 @@
           filter: function (item, regionIdTree) {
             return item.RegionIdTree == regionIdTree;
           },
-        }).bind(function (regionIdTree) {
-          return $http.get($http.url('/api/ProjectSetting/GetByTree', { treeId: regionIdTree, unitType: 3 }));
+        }).bind(function (regionIdTree,unitType) {
+          return $http.get($http.url('/api/ProjectSetting/GetByTree', { treeId: regionIdTree, unitType: unitType }));
         })
       },
 

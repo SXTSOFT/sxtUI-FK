@@ -19,37 +19,40 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
 
       </sxt-projects-jd>
       <div class="md-padding">
-        <md-input-container class="md-block">
+        <md-input-container class="md-block" style="margin: 12px 0;">
           <label>规格/型号</label>
           <md-select style="font-family: 'SJQY' !important;" ng-model="vm.checkData.Model">
             <md-option ng-value="m" ng-repeat="m in project.materialModels" style="font-family: 'SJQY' !important;">{{m}}</md-option>
           </md-select>
         </md-input-container>
         <div style="height: 6px" ng-if="project.materialSupply!=0"></div>
-        <md-input-container class="md-block" ng-if="project.materialSupply!=0">
+        <md-input-container class="md-block" ng-if="project.materialSupply!=0" style="margin: 12px 0;">
           <label>供货方</label>
           <md-select ng-model="vm.checkData.SupplierId">
             <md-option ng-value="s.UnitName" ng-repeat="s in suppliers2">{{s.UnitName}}</md-option>
           </md-select>
         </md-input-container>
         <div style="height: 6px"></div>
-        <md-input-container class="md-block">
+        <md-input-container class="md-block" style="margin: 12px 0;">
           <label>厂家/品牌</label>
-          <!--<input style="width: 100%;" ng-model="vm.checkData.Manufactor">-->
-          <md-select ng-model="vm.checkData.Manufactor">
-            <md-option ng-value="s.Name" ng-repeat="s in suppliers">{{s.Name}}</md-option>
+          <md-select ng-model="vm.checkData.Manufactor" md-on-close="clearSearchTerm()" data-md-container-class="selectdemoSelectHeader">
+            <!--<md-select-header class="demo-select-header">
+              <input ng-model="searchTerm" type="search" placeholder="搜索.." class="demo-header-searchbox md-text">
+            </md-select-header>-->
+            <md-option ng-value="s.ShortName?s.ShortName:s.Name" ng-repeat="s in vm.supplier |
+              filter:searchTerm">{{s.ShortName?s.ShortName:s.Name}}</md-option>
           </md-select>
         </md-input-container>
         <div style="height: 6px"></div>
-        <md-input-container class="md-block">
+        <md-input-container class="md-block" style="margin: 12px 0;">
           <label>合同编号</label>
           <input ng-model="vm.checkData.ContractNumber">
         </md-input-container>
-        <md-input-container class="md-block">
+        <md-input-container class="md-block" style="margin: 12px 0;">
           <label>数量(单位:{{project.materialUnit}})</label>
           <input ng-model="vm.checkData.Number">
         </md-input-container>
-        <md-input-container class="md-block">
+        <md-input-container class="md-block" style="margin: 12px 0; height: 30px;">
           <label>验收时间</label>
           <md-datepicker ng-model="vm.checkData.CheckTime" md-open-on-focus></md-datepicker>
         </md-input-container>
@@ -97,7 +100,19 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
               <!--<md-switch ng-disabled="n.need" ng-click="$event.stopPropagation()" ng-model="n.isOK"></md-switch>-->
             </md-list-item>
             <legend style="font-size: 1.6rem;">非必检项</legend>
-            <md-list-item ng-repeat="n in Targets | filter:{need:false}" ng-click="n.isOK=!n.isOK" ng-disabled="n.need">
+            <md-list-item ng-repeat="n in Targets | filter:{need:false,IsCheck:0}" ng-click="n.isOK=!n.isOK" ng-disabled="n.need">
+              <div class="md-list-item-text" flex layout="column">
+                <h3 style="margin-top: 10px; margin-bottom: 5px;font-size: 1.6rem;font-family: 'SJQY' !important;">
+                  {{$index+1}}、{{n.TargetName}}
+                </h3>
+                <!--<p ng-if="n.Remark" style="margin: 0;line-height: 120%;font-size: 13px !important; ">-->
+                <!--{{n.Remark}}-->
+                <!--</p>-->
+              </div>
+              <md-switch ng-disabled="n.need" ng-click="$event.stopPropagation()" ng-model="n.isOK"></md-switch>
+            </md-list-item>
+            <legend style="font-size: 1.6rem;">非必常规不送检</legend>
+            <md-list-item ng-repeat="n in Targets | filter:{need:false,IsCheck:2}" ng-click="n.isOK=!n.isOK" ng-disabled="n.need">
               <div class="md-list-item-text" flex layout="column">
                 <h3 style="margin-top: 10px; margin-bottom: 5px;font-size: 1.6rem;font-family: 'SJQY' !important;">
                   {{$index+1}}、{{n.TargetName}}
@@ -117,13 +132,13 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
         </fieldset>
       </div>
       <md-divider ng-if="vm.checkData.WgCheck==1 && vm.checkData.IsInspection==1 && project.procedureId"></md-divider>
-      <md-list-item ng-click="vm.AttachmentSHow = true">
+      <md-list-item ng-if="vm.checkData.IsInspection" ng-click="vm.AttachmentSHow = true">
         <div class="md-list-item-text" flex="25" layout="column" style="height: 76px; line-height: 48px;">
           <p style="text-align: left;">附件</p>
         </div>
         <a class="md-secondary">添加</a>
       </md-list-item>
-      <md-divider></md-divider>
+      <md-divider ng-if="vm.checkData.IsInspection"></md-divider>
       <md-subheader style="background-color: #f5f6f7;" class="md-no-sticky" ng-hide="data.imgs1.length == 0 && data.imgs2.length == 0 && data.imgs3.length == 0&& data.imgs4.length
 == 0&& data.imgs5.length == 0">附件
       </md-subheader>
@@ -220,7 +235,7 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
       <md-content flex layout="column" style="background: white">
         <sxt-material flex layout="column" on-select="vm.closeNav('nav_material')" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId"
           material-Unit="project.materialUnit" material-models="project.materialModels" name-value="project.procedureName"
-          material-supply="project.materialSupply" region-type="project.type" class="md-block"></sxt-material>
+          material-supply="project.materialSupply" region-type="project.type" material-supplier="project.supplier" class="md-block"></sxt-material>
         <div class="md-padding" layout="row">
           <md-button flex ng-click="vm.closeNav('nav_material')" class="md-raised md-primary">确定</md-button>
         </div>

@@ -647,7 +647,11 @@
         },
 
         function(){
-          return api.material.MaterialService.getPartners(idTree);
+          return api.material.MaterialService.getPartners(idTree,3);
+        },
+
+        function(){
+          return api.material.MaterialService.getPartners(idTree,2);
         },
 
         //工序验收表
