@@ -68,8 +68,13 @@
     }
     //获取所有材料验收信息
     vm.load = function () {
-      api.material.MaterialService.GetAll().then(function(result){
-        $scope.mlCheckData = result.data.Rows;
+      api.szgc.vanke.projects({ page_size: 1000, page_number: 1 }).then(function(result){
+        console.log(result.data.data);
+        return api.material.MaterialService.GetAll({projects:result.data.data.map(function (m) {
+          return m.project_id;
+        }).join(',')}).then(function(result){
+          $scope.mlCheckData = result.data.Rows;
+        });
       });
     };
 
