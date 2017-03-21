@@ -173,7 +173,7 @@
                 <p>{{ item.Material }}</p>
               </div>
               <div class="md-list-item-text" flex="30" layout="column">
-                <md-button style="margin: 0;" class="md-secondary md-primary" ui-sref="app.szgc.ys.material({id:item.Id})" ng-show="(item.WgCheck == 1 && item.IsInspection == 1 && item.Report == 0)">追加送检报告</md-button>
+                <md-button style="margin: 0;" class="md-secondary md-primary" ui-sref="app.szgc.ys.material({id:item.Id})" ng-show="(item.WgCheck == 1 && (item.IsInspection == 1 || item.IsInspection == 0) && item.Report == 0)">追加送检报告</md-button>
               </div>
               <md-divider></md-divider>
             </md-list-item>

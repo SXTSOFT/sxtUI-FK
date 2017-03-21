@@ -199,13 +199,17 @@
         });
       }
       else {
-        if (vm.checkData.WgCheck == 1 && vm.checkData.InspectionReport == null && vm.checkData.IsInspection == 1) {
-          vm.checkData.CheckResult = 2; //状态：未知
-          vm.checkData.InspectionReport = 2; //未提供
+        if (vm.checkData.IsInspection == 1 || vm.checkData.IsInspection == 0) {
+          if (vm.checkData.InspectionReport == null) {
+            vm.checkData.CheckResult = 2; //状态：未知
+            vm.checkData.InspectionReport = 2; //未提供
+          } else {
+            vm.checkData.CheckResult = 2; //状态：未知
+          }
+
         } else {
           vm.checkData.CheckResult = 1; //状态：合格
-          if (vm.checkData.InspectionReport == null)
-            vm.checkData.InspectionReport = 3; //   N/A
+          vm.checkData.InspectionReport = 3; //   N/A
         }
         vm._save(addForm);
       }
@@ -445,7 +449,7 @@
         api.material.MaterialService.getPartners($scope.project.idTree, 2)])
           .then(function (r) {
             $scope.suppliers2 = r[0].data.Rows;
-             $scope.suppliers2 = $scope.suppliers2.concat(r[1].data.Rows);
+            $scope.suppliers2 = $scope.suppliers2.concat(r[1].data.Rows);
           })
       }
     });
