@@ -22,14 +22,14 @@
                     p.JD = c.JD;
                     p.ZX = c.ZX;
                 }else{
-                    p.TJ = 0;
-                    p.JD = 0;
-                    p.ZX = 0;
+                    p.TJ = '-';
+                    p.JD = '-';
+                    p.ZX = '-';
                 }
                 vm.data.push(p);
             })
         })
-        
+
         vm.loading = false;
     }
 })();
