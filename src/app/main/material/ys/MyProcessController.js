@@ -133,6 +133,12 @@
         utils.alert('请输入合同编号');
         return;
       }
+
+      if(vm.checkData.sjReport != null && $scope.data.imgs4.length == 0){
+        utils.alert('请添加送检报告附件');
+          return;
+      }
+
       // if ($scope.data.imgs1.length == 0 &&
       //   $scope.data.imgs2.length == 0 &&
       //   $scope.data.imgs3.length == 0 &&
