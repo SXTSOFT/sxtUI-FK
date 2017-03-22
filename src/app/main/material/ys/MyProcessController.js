@@ -40,9 +40,9 @@
     $scope.clearSearchTerm = function () {
       $scope.searchTerm = '';
     };
-    $element.find('input').on('keydown', function (ev) {
-      ev.stopPropagation();
-    });
+    // $element.find('input').on('keydown', function (ev) {
+    //   ev.stopPropagation();
+    // });
 
     vm.openNav = function (id) {
       vm.isRightOpen = true;
@@ -210,7 +210,7 @@
             vm.checkData.CheckResult = 2; //状态：未知
             vm.checkData.InspectionReport = 2; //未提供
           } else {
-            vm.checkData.CheckResult = 2; //状态：未知
+            vm.checkData.CheckResult = 1; //状态：合格
           }
 
         } else {
