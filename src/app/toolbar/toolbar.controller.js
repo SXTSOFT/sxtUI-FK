@@ -7,7 +7,7 @@
         .controller('ToolbarController', ToolbarController);
 
     /** @ngInject */
-    function ToolbarController($rootScope, xhscService,$mdSidenav, $translate, $mdToast, auth, $state,sxtlocaStorage)
+    function ToolbarController($rootScope, xhscService,$mdSidenav, $translate, $mdToast, auth, $state,sxtlocaStorage,$mdDialog,remote,$http)
     {
         var vm = this;
         vm.is = isRoute;
@@ -102,6 +102,7 @@
         vm.changeLanguage = changeLanguage;
         vm.setUserStatus = setUserStatus;
         vm.toggleHorizontalMobileMenu = toggleHorizontalMobileMenu;
+        vm.resetPassword = resetPassword;
 
         //////////
 
@@ -203,6 +204,107 @@
         {
             vm.bodyEl.toggleClass('ms-navigation-horizontal-mobile-menu-active');
         }
+      function resetPassword(ev, item) {
+      $mdDialog.show({
+        controller: resetPasswordController,
+        templateUrl: 'app/main/auth/components/reset-password.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        locals: {
+          model: angular.copy(item)
+        },
+        clickOutsideToClose: false
+      }).then(function () {
+      }, function () {
+      });
+    };
+    function resetPasswordController($rootScope, $state, $scope, api, utils, auth, $timeout, $mdDialog,remote,$q,$http) {
+      var vm = this;
+      init();
+
+      $scope.sending = false;
+      $scope.send = function () {
+        if ($scope.sending) return;
+        $scope.timing = 60;
+        $scope.sending = 'S后重新发送';
+        api.auth.verificationCode.post({ identitySign: $scope.d.LoginID, type: 'ResetPassword' }).then(function () {
+          $timeout(function () {
+            updateTime();
+          }, 1000);
+        });
+      }
+
+      function updateTime() {
+        $scope.timing--;
+        if ($scope.timing == 0) {
+          $scope.sending = false;
+          $scope.timing = 0;
+        } else {
+          $timeout(function () {
+            updateTime();
+          }, 1000);
+        }
+      }
+
+      $scope.submit = function () {
+        if ($scope.d.NewPassword.length < 6) {
+          $scope.resetError = '*新密码不少于6位字符';
+          return;
+        }
+
+        if ($scope.d.NewPassword !== $scope.d.passwordConfirm) {
+          $scope.resetError = '*两次输入的密码不一致';
+          return;
+        }
+        // auth.reset({
+        //   LoginID: $scope.d.username,
+        //   CurrentPassword: $scope.d.oldPassword,
+        //   NewPassword: $scope.d.newPassword,
+        //   IsSaveButtonClick:true
+        // }).then(function (r) {
+        //   $mdDialog.cancel();
+        //   $rootScope.$emit('user:needlogin');
+        // }, function (reject) {
+        //   $scope.resetError = '*原密码不正确';
+        // })
+        $http({
+        method  : 'POST',
+        url     : 'http://emp.chngalaxy.com:9090/Api/User/ChangePassword',
+        data    : $.param($scope.d),  // pass in data as strings
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+      }).then(function (r) {
+          $scope.resetTrue = '修改成功,即将跳转到登录页';
+          setTimeout(function(){
+            $mdDialog.cancel(),
+            $rootScope.$emit('user:needlogin')
+          },3000)
+        }, function (reject) {
+          $scope.resetError = '*原密码不正确';
+        })
+      }
+
+     function init() {
+      var pro=[
+          remote.profile()
+        ];
+        $q.all(pro).then(function(r){
+          console.log(r)
+          var role=r[0];
+          if (role&&role.data&&role.data){
+                      $scope.d = {
+              LoginID:role.data.UserName,
+              IsSaveButtonClick:true,
+              IsSaveCloseButtonClick:null,
+              IsEdit:true
+            }
+          }
+        });
+      }
+
+      $scope.cancel = function () {
+        $mdDialog.cancel();
+      };
+    }
     }
 
 })();
