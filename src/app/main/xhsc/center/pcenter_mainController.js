@@ -215,13 +215,16 @@
         data    : $.param($scope.d),  // pass in data as strings
         headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
       }).then(function (r) {
+        console.log(r)
+        if(r.data.ErrorMessage=="密码验证失败"){
+          $scope.resetError = '*原密码不正确';
+        }else if(r.data.ErrorMessage=="修改密码成功"){
           $scope.resetTrue = '修改成功,即将跳转到登录页';
           setTimeout(function(){
             $mdDialog.cancel(),
             $rootScope.$emit('user:needlogin')
           },3000)
-        }, function (reject) {
-          $scope.resetError = '*原密码不正确';
+        }
         })
       }
 
