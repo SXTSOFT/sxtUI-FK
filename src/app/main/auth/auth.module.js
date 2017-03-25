@@ -35,7 +35,16 @@
             controller: 'LoginController as vm'
           }
         }
-      });
+      })
+      .state('app.auth.resetpassword', {
+       url: '/resetpassword',
+        views    : {
+          'content@app.auth': {
+            templateUrl: 'app/main/auth/components/reset-password.html',
+            controller: 'ResetPsdController as vm'
+          }
+        }
+     });
 
     // Translation
     $translatePartialLoaderProvider.addPart('app/main/auth');

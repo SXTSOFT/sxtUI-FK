@@ -17,9 +17,9 @@
 
     this.$get = appAuth;
 
-    appAuth.$injector = ['$q','$injector','authToken','$state','$rootScope','$location','sxt'];
+    appAuth.$injector = ['$q','$injector','authToken','$state','$rootScope','$location','sxt','$http'];
 
-    function appAuth($q,$injector,authToken,$state,$rootScope,$location, sxt,api){
+    function appAuth($q,$injector,authToken,$state,$rootScope,$location, sxt,api,$http){
 
       var s = {
         isLoggedIn : isLoggedIn,
@@ -29,7 +29,8 @@
         getUser    : getUser,
         autoLogin  : autoLogin,
         current    : currentUser,
-        logout     : logout
+        logout     : logout,
+        reset      : reset,
       };
 
       authToken.on401(function (response) {
@@ -132,6 +133,11 @@
           }
         })
       }
+
+      //修改密码
+      function reset(input){
+          return $http.post('http://emp.chngalaxy.com:9090/Api/User/ChangePassword',input);
+        }
 
       // 自动登录获取，不跳转
       function autoLogin(){

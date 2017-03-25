@@ -40,12 +40,15 @@
                         <md-icon md-font-icon="icon-account" class="icon"></md-icon>
                         <md-button>个人信息</md-button>
                     </md-menu-item>
-
                     <md-menu-item class="md-indent" ui-sref="app.mail">
                         <md-icon md-font-icon="icon-email" class="icon"></md-icon>
                         <md-button>收件箱</md-button>
                     </md-menu-item>
 
+                    <md-menu-item class="md-indent" ng-click="vm.resetPassword()">
+                        <md-icon md-svg-icon="app/main/auth/images/password.svg" class="icon"></md-icon>
+                        <md-button><span style="margin-top: -1px;">修改密码</span></md-button>
+                    </md-menu-item>
                     <md-menu-item class="md-indent">
                         <md-icon md-font-icon ng-class="vm.userStatus.icon"
                                  ng-style="{'color': vm.userStatus.color }" class="icon"></md-icon>
