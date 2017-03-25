@@ -145,7 +145,8 @@
         }
       }
     })
-    function resetPassword(ev, item) {
+
+    vm.resetPassword= function(ev, item) {
       $mdDialog.show({
         controller: resetPasswordController,
         templateUrl: 'app/main/auth/components/reset-password.html',
