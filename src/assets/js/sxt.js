@@ -38,8 +38,11 @@ window.sxt = (function(win,angular)
 
   sxt = {
     js:js,
+    identity:"galaxy_test",
+    update:"https://app.ricent.com",
+
     requireSSL:true,
-    version: '1.1.12',
+    version: '1.3.0.0',
     app: {
       appDir: appDir,
       // api:'http://vkde.sxtsoft.com:9091',
@@ -62,6 +65,9 @@ window.sxt = (function(win,angular)
     if (win.cordova) {
       document.addEventListener('deviceready', function () {
         // load();
+        IonicDeploy.init(sxt.identity,sxt.update,function () {
+        },function () {
+        })
         bootstrap();
       }, false);
     }

@@ -10,10 +10,17 @@
     .controller('HomeController', HomeController);
 
   /** @ngInject */
-  function HomeController($scope,auth,$state,$rootScope,$timeout, utils,remote,api,versionUpdate)
+  function HomeController($scope,auth,$state,$rootScope,$timeout, utils,remote,api,versionUpdate,delopy)
   {
-    versionUpdate.check();
+    // versionUpdate.check();
     var vm = this;
+    delopy.update(function (self,r0,version,isIntall) {
+      if (isIntall)
+        return utils.confirm('发现新版本：' + r0 + '，是否更新？')
+      else
+        return utils.confirm('发现新版本：' + r0 + '，是否后台更新，更新重启后生效？')
+    });
+
     api.setNetwork(0).then(function(){
       remote.profile()
       vm.data = {};

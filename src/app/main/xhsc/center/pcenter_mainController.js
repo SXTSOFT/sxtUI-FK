@@ -34,9 +34,11 @@
         vm.show=true;
         utils.alert("当前网络异常！");
       });
+      vm.serverAppVersion = sxt.version;
+      // var on= $rootScope.$on("updateVison",function (s,v) {
+      //   vm.serverAppVersion=sxt.version+'('+v+')'
+      // })
 
-
-      vm.serverAppVersion = versionUpdate.version;
       // versionUpdate.check().then(function () {
       //   vm.serverAppVersion = versionUpdate.version;
       // });
