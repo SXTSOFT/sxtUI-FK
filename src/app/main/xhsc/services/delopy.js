@@ -126,7 +126,7 @@
         result.state = '正在解压';
         result.stateNumber = 2;
         result.progress = '0';
-
+        self.sendEvent();
         return $q(function (resolve,reject) {
 
           //$rootScope.$broadcast('extract:begion');
@@ -134,6 +134,10 @@
             function(s){
               if(s!=='done') {
                 result.progress = s;
+                if (result.progress ==100){
+
+
+                }
                 self.sendEvent();
                 //$rootScope.$broadcast('updateVison:progress', result);
               }
@@ -157,8 +161,11 @@
       update:function (confirm) {
         var self=this;
         return $q(function (resolve,reject) {
+          if (result.ready){
+            resolve();
+            return;
+          }
           if (result.checking){
-            //reject('checking');
             var fn = $rootScope.$on('updateVison:progress', function (e,r) {
               if(!result.checking) {
                 resolve();
@@ -167,8 +174,6 @@
             });
             return;
           }
-
-
           self.check().then(function (r0) {
             if(self.toVersion(r0,2)>self.toVersion(sxt.version,2)){
               result.checking =false;
@@ -180,38 +185,33 @@
                 self.sendEvent();
                 self.install().then(function () {
                   resolve(Object.assign({},result));
-                  result.complete = true;
                 }).catch(function () {
-                  result.beigingg=false;
+
                 });
               },function () {
               });
             }
             else if(self.toVersion(r0,4)>self.toVersion(sxt.version,4)){
-              result.checking =false;
-              confirm && confirm(self,r0,sxt.version).then(function () {
-                result.checking = true;
-                self.download().then(function () {
-                  self.extract().then(function () {
-                    result.complete = true;
-                    result.beigingg=false;
-                    result.checking =false;
-                    result.ready = true;
-                    self.sendEvent();
-                    //$rootScope.$broadcast('updateVison:progress', result);
-                    //$rootScope.$broadcast('extract:over', "版本有更新，请重启!");
-                  }).catch(function () {
-                    result.beigingg=false;
-                    result.checking =false;
-                    self.sendEvent();
-                  })
+              self.download().then(function () {
+                self.extract().then(function () {
+                  result.complete = true;
+                  result.checking =false;
+                  result.ready = true;
+                  result.state = r0+'(重启后生效)';
+                  self.sendEvent();
+                  // confirm(self,r0,sxt.version).then(function () {
+                  //   self.redirect();
+                  // });
+                }).catch(function () {
+                  result.beigingg=false;
+                  result.checking =false;
+                  self.sendEvent();
                 })
               })
             }
           }).catch(function () {
             result.state = '检查失败';
             result.complete = true;
-            result.beigingg=false;
             result.checking =false;
             self.sendEvent();
             reject(result)

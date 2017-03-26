@@ -36,16 +36,25 @@
       });
       vm.serverAppVersion = sxt.version;
       $scope.$on('$destroy',$rootScope.$on("updateVison:progress",function (s,info) {
-        var tips = (info.ready || info.checking)?
+        $timeout(function () {
+          var tips = (info.ready || info.checking)?
           info.state + (info.complete || info.stateNumber == 3 ? '' : '(' + info.progress + '%)'):
-          sxt.version;
-        vm.serverAppVersion= tips;
+            sxt.version;
+          vm.serverAppVersion= tips;
+        })
       }));
       delopy.update(function (self,r0,version,isIntall) {
         if (isIntall)
           return utils.confirm('发现新版本：' + r0 + '，是否更新？')
-        else
-          return utils.confirm('发现新版本：' + r0 + '，是否后台更新，更新重启后生效？')
+        else {
+          return utils.confirm('版本已经更新完毕，是否重新启动?')
+        }
+      }).then(function (res) {
+        if (res&&res.info){
+          $timeout(function () {
+            sxt.version=res.info;
+          })
+        }
       });
       // versionUpdate.check().then(function () {
       //   vm.serverAppVersion = versionUpdate.version;
