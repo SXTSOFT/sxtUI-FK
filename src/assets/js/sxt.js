@@ -38,21 +38,21 @@ window.sxt = (function(win,angular)
 
   sxt = {
     js:js,
-    identity:"galaxy_test",
+    identity:"galaxy",
     update:"https://app.ricent.com",
 
     requireSSL:true,
-    version: '1.3.0.0',
+    version: '1.3.0.3',
     app: {
       appDir: appDir,
       // api:'http://vkde.sxtsoft.com:9091',
       // fs:'http://vkde.sxtsoft.com:9090',
       //
-      // api:'http://emp.chngalaxy.com:9091',
-      // fs:'http://emp.chngalaxy.com:9090'
+      api:'http://emp.chngalaxy.com:9091',
+      fs:'http://emp.chngalaxy.com:9090'
 
-      api:'http://galaxyapi.ricent.com',
-      fs:'http://galaxyweb.ricent.com'
+      // api:'http://galaxyapi.ricent.com',
+      // fs:'http://galaxyweb.ricent.com'
 
       // api:'http://localhost:5000',
       // fs:'http://emp.chngalaxy.com:9090'
