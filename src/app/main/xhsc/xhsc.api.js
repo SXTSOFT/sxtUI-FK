@@ -52,6 +52,9 @@
           }
         }
       }),
+      reset:function () {
+        return $http.post('/Api/User/ChangePassword',input);
+      },
       Project: {
         getMap: $http.db({
           db: function (db) {
