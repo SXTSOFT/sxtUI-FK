@@ -14,11 +14,30 @@
 
     vm.show=false;
     vm.go=function(item,role){
+      var relaArr=item.RelationID.split(',');
+      var relationID;
+      switch (role){
+        case 0:
+          relationID=relaArr.find(function (o) {
+            return o.indexOf("_0")>-1;
+          })
+          break;
+        case 2:
+          relationID=relaArr.find(function (o) {
+            return o.indexOf("_2")>-1;
+          })
+          break;
+        default:
+          relationID=relaArr.find(function (o) {
+            return o.indexOf("_2")==-1&&o.indexOf("_0")==-1;
+          })
+          break;
+      }
       $state.go("app.xhsc.scsl.schztb",{
         regionId: item.AreaID,
         RegionName: item.AreaName,
         name: item.AreaName,
-        db:'scsl'+ item.ProjectID+'_'+role,
+        db:relationID,
         measureItemID: item.AcceptanceItemID,
         pname: item.MeasureItemName
       });
@@ -31,7 +50,13 @@
     }
 
     vm.btnShow=function (item,indentiy) {
-       return item.RelationID.indexOf(indentiy)>-1;
+      var r =item.RelationID.indexOf(indentiy)>-1
+      if (!r&&indentiy=='_4'){
+        if (item.RelationID.indexOf('_0')==-1&&item.RelationID.indexOf('_2')==-1){
+          return true
+        }
+      }
+      return r;
     }
 
     $scope.$watch("pageing.pageSize",function(){
