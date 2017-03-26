@@ -12,7 +12,7 @@
     .controller('pcenter_mainController',pcenter_mainController);
 
   /**@ngInject*/
-  function pcenter_mainController($scope,xhscService,$mdDialog,db,auth,$rootScope,api,utils,$q,remote,versionUpdate,$state,$timeout,$mdBottomSheet,delopy){
+  function pcenter_mainController($scope,xhscService,$mdDialog,db,auth,$rootScope,api,utils,$q,remote,versionUpdate,$state,$timeout,sxt,delopy){
     var vm = this;
     vm.projects=[];
     api.setNetwork(0).then(function () {
@@ -36,7 +36,9 @@
       });
       vm.serverAppVersion = sxt.version;
       $scope.$on('$destroy',$rootScope.$on("updateVison:progress",function (s,info) {
-        var tips = info.state + (info.complete || info.stateNumber == 3 ? '' : '(' + info.progress + '%)');
+        var tips = (info.ready || info.checking)?
+          info.state + (info.complete || info.stateNumber == 3 ? '' : '(' + info.progress + '%)'):
+          sxt.version;
         vm.serverAppVersion= tips;
       }));
       delopy.update(function (self,r0,version,isIntall) {
@@ -217,31 +219,23 @@
         // }, function (reject) {
         //   $scope.resetError = '*原密码不正确';
         // })
-        remote.reset($.param($scope.d)).then(function () {
+        $http({
+        method  : 'POST',
+        url     : 'http://emp.chngalaxy.com:9090/Api/User/ChangePassword',
+        data    : $.param($scope.d),  // pass in data as strings
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+      }).then(function (r) {
+        console.log(r)
+        if(r.data.ErrorMessage=="密码验证失败"){
+          $scope.resetError = '*原密码不正确';
+        }else if(r.data.ErrorMessage=="修改密码成功"){
           $scope.resetTrue = '修改成功,即将跳转到登录页';
           setTimeout(function(){
             $mdDialog.cancel(),
-              $rootScope.$emit('user:needlogin')
+            $rootScope.$emit('user:needlogin')
           },3000)
-        });
-
-      //   $http({
-      //   method  : 'POST',
-      //   url     : 'http://emp.chngalaxy.com:9090/Api/User/ChangePassword',
-      //   data    : $.param($scope.d),  // pass in data as strings
-      //   headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
-      // }).then(function (r) {
-      //   console.log(r)
-      //   if(r.data.ErrorMessage=="密码验证失败"){
-      //     $scope.resetError = '*原密码不正确';
-      //   }else if(r.data.ErrorMessage=="修改密码成功"){
-      //     $scope.resetTrue = '修改成功,即将跳转到登录页';
-      //     setTimeout(function(){
-      //       $mdDialog.cancel(),
-      //       $rootScope.$emit('user:needlogin')
-      //     },3000)
-      //   }
-      //   })
+        }
+        })
       }
 
      function init() {

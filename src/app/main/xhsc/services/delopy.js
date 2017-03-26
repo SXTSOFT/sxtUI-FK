@@ -196,6 +196,7 @@
                     result.complete = true;
                     result.beigingg=false;
                     result.checking =false;
+                    result.ready = true;
                     self.sendEvent();
                     //$rootScope.$broadcast('updateVison:progress', result);
                     //$rootScope.$broadcast('extract:over', "版本有更新，请重启!");
