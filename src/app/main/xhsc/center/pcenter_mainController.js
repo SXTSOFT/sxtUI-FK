@@ -12,7 +12,7 @@
     .controller('pcenter_mainController',pcenter_mainController);
 
   /**@ngInject*/
-  function pcenter_mainController($scope,xhscService,$mdDialog,db,auth,$rootScope,api,utils,$q,remote,versionUpdate,$state,$timeout,$mdBottomSheet){
+  function pcenter_mainController($scope,xhscService,$mdDialog,db,auth,$rootScope,api,utils,$q,remote,versionUpdate,$state,$timeout,sxt,delopy){
     var vm = this;
     vm.projects=[];
     api.setNetwork(0).then(function () {
@@ -35,10 +35,18 @@
         utils.alert("当前网络异常！");
       });
       vm.serverAppVersion = sxt.version;
-      // var on= $rootScope.$on("updateVison",function (s,v) {
-      //   vm.serverAppVersion=sxt.version+'('+v+')'
-      // })
-
+      $scope.$on('$destroy',$rootScope.$on("updateVison:progress",function (s,info) {
+        var tips = (info.ready || info.checking)?
+          info.state + (info.complete || info.stateNumber == 3 ? '' : '(' + info.progress + '%)'):
+          sxt.version;
+        vm.serverAppVersion= tips;
+      }));
+      delopy.update(function (self,r0,version,isIntall) {
+        if (isIntall)
+          return utils.confirm('发现新版本：' + r0 + '，是否更新？')
+        else
+          return utils.confirm('发现新版本：' + r0 + '，是否后台更新，更新重启后生效？')
+      });
       // versionUpdate.check().then(function () {
       //   vm.serverAppVersion = versionUpdate.version;
       // });
@@ -146,7 +154,7 @@
           $state.go("app.xhsc.standarRegion",{projectID:vm.projects[0].RegionID});
         }
       }
-    })
+    });
 
     vm.resetPassword= function(ev, item) {
       $mdDialog.show({
