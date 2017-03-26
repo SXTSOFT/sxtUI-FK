@@ -11,7 +11,7 @@
   function versionUpdate($mdDialog, $cordovaFileTransfer, $window,$http,sxt) {
 
     var self = this;
-    var version = '1.2.9.0',
+    var version = '1.3.0.0',
       versionOld = version;
     this.version = version;
 
@@ -33,37 +33,37 @@
     }
 
     this.check = function () {
-      return $http.get(sxt.app.version+'/version.json?r='+(new Date()).valueOf())
-        .then(function (data) {
-          var serverAppVersion = data.data.version || data.data.vankeVersion;
-          if (versionToNumber2(version) < versionToNumber2(serverAppVersion)) {
-            var confirm = $mdDialog.confirm()
-              .title('发现新版本' + serverAppVersion)
-              .htmlContent(data.data.vankeLog || '')
-              .ok('更新!')
-              .cancel('暂不更新');
-            $mdDialog.show(confirm).then(function () {
-              var u = $window.navigator.userAgent;
-              var isAndroid = u.indexOf('Android') > -1 //|| u.indexOf('Linux') > -1; //android终端或者uc浏览器
-              var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-              if (isAndroid) {
-                window.location.replace("https://app.ricent.com/galaxy");
-              }
-              if (isiOS) {
-                window.location.href = "sxt://update";
-              }
-            });
-          }
-          else if (versionToNumber(version) < versionToNumber(serverAppVersion)) {
-            version = serverAppVersion;
-            self.version = versionOld + '(' + serverAppVersion + '正在更新)';
-            sxt.download(function () {
-              self.version = versionOld + '(' + serverAppVersion + '重启生效)';
-            },function () {
-              version = versionOld;
-            });
-          }
-        });
+      // return $http.get(sxt.app.version+'/version.json?r='+(new Date()).valueOf())
+      //   .then(function (data) {
+      //     var serverAppVersion = data.data.version || data.data.vankeVersion;
+      //     if (versionToNumber2(version) < versionToNumber2(serverAppVersion)) {
+      //       var confirm = $mdDialog.confirm()
+      //         .title('发现新版本' + serverAppVersion)
+      //         .htmlContent(data.data.vankeLog || '')
+      //         .ok('更新!')
+      //         .cancel('暂不更新');
+      //       $mdDialog.show(confirm).then(function () {
+      //         var u = $window.navigator.userAgent;
+      //         var isAndroid = u.indexOf('Android') > -1 //|| u.indexOf('Linux') > -1; //android终端或者uc浏览器
+      //         var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      //         if (isAndroid) {
+      //           window.location.replace("https://app.ricent.com/galaxy");
+      //         }
+      //         if (isiOS) {
+      //           window.location.href = "sxt://update";
+      //         }
+      //       });
+      //     }
+      //     else if (versionToNumber(version) < versionToNumber(serverAppVersion)) {
+      //       version = serverAppVersion;
+      //       self.version = versionOld + '(' + serverAppVersion + '正在更新)';
+      //       sxt.download(function () {
+      //         self.version = versionOld + '(' + serverAppVersion + '重启生效)';
+      //       },function () {
+      //         version = versionOld;
+      //       });
+      //     }
+      //   });
     }
   }
 })();

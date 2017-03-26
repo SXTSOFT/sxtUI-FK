@@ -12,7 +12,7 @@
     .controller('pcenter_mainController',pcenter_mainController);
 
   /**@ngInject*/
-  function pcenter_mainController($scope,xhscService,$mdDialog,db,auth,$rootScope,api,utils,$q,remote,versionUpdate,$state,$timeout,$mdBottomSheet,$http){
+  function pcenter_mainController($scope,xhscService,$mdDialog,db,auth,$rootScope,api,utils,$q,remote,versionUpdate,$state,$timeout,$mdBottomSheet){
     var vm = this;
     vm.projects=[];
     api.setNetwork(0).then(function () {
@@ -34,13 +34,14 @@
         vm.show=true;
         utils.alert("当前网络异常！");
       });
+      vm.serverAppVersion = sxt.version;
+      // var on= $rootScope.$on("updateVison",function (s,v) {
+      //   vm.serverAppVersion=sxt.version+'('+v+')'
+      // })
 
-
-      vm.serverAppVersion = versionUpdate.version;
-        vm.resetPassword = resetPassword;
-      versionUpdate.check().then(function () {
-        vm.serverAppVersion = versionUpdate.version;
-      });
+      // versionUpdate.check().then(function () {
+      //   vm.serverAppVersion = versionUpdate.version;
+      // });
 
       vm.clearCache=function(){
         utils.confirm('确定清除所有缓存数据吗?').then(function (result) {
@@ -146,7 +147,8 @@
         }
       }
     })
-    function resetPassword(ev, item) {
+
+    vm.resetPassword= function(ev, item) {
       $mdDialog.show({
         controller: resetPasswordController,
         templateUrl: 'app/main/auth/components/reset-password.html',

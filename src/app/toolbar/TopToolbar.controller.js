@@ -7,7 +7,7 @@
         .controller('TopToolbarController', TopToolbarController);
 
     /** @ngInject */
-    function TopToolbarController($scope,api,$rootScope,remote,$state ) {
+    function TopToolbarController($scope,api,$rootScope,remote,$state,$timeout,utils,delopy) {
       var vm=this;
       vm.is = isRoute;
       function isRoute(route){
@@ -51,11 +51,18 @@
       vm.operateMsg = function(){
         $rootScope.$emit('operateMsg');
       }
+      var updateVison= $rootScope.$on('updateVison:begion', function (s,v) {
+         vm.updateVison=true;
+      });
+
+       var extract=  $rootScope.$on('extract:over',function () {
+         vm.updateVison=false;
+         utils.alert('新版本已经更新到本地，在程序下次启动的时候生效')
+       });
 
       $scope.$on("$destroy",function(){
-        //change();
-        //sendGxResult();
-        //operateMsg();
+        updateVison()
+        extract();
       });
       $scope.msgFlag=true;
       $scope.setMsg=function(flag){

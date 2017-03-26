@@ -24,6 +24,7 @@
    <md-button flex="none" style="font-size:14px;" ng-show="$root.refreshBtn===true" class="md-link md-mini">
       <md-icon><img src="app/main/xhsc/images/refresh.png"></md-icon>
     </md-button>
+   <md-progress-circular  id="updateV" md-diameter="24" md-mode="indeterminate" ng-if="vm.updateVison"></md-progress-circular>
   <!--<md-button flex="none" style="font-size:14px;" ng-show="$root.showgrzx" ui-sref="app.xhsc.mcenter"><md-icon><img src="app/main/xhsc/images/msg.png" width="21"></md-icon></md-button>-->
   <!--<div  flex="none" style="font-size:14px;">-->
   <!--<md-progress-circular id="toolbar-progress" ng-if="$root.loadingProgress"-->

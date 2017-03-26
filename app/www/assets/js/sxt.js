@@ -38,15 +38,25 @@ window.sxt = (function(win,angular)
 
   sxt = {
     js:js,
+    identity:"galaxy_test",
+    update:"https://app.ricent.com",
+
     requireSSL:true,
-    version: '1.1.12',
+    version: '1.3.0.0',
     app: {
       appDir: appDir,
       // api:'http://vkde.sxtsoft.com:9091',
       // fs:'http://vkde.sxtsoft.com:9090',
-      api:'http://emp.chngalaxy.com:9091',
-      fs:'http://emp.chngalaxy.com:9090',
-      version:'http://app.ricent.com/galaxy'
+      //
+      // api:'http://emp.chngalaxy.com:9091',
+      // fs:'http://emp.chngalaxy.com:9090'
+
+      api:'http://galaxyapi.ricent.com',
+      fs:'http://galaxyweb.ricent.com'
+
+      // api:'http://localhost:5000',
+      // fs:'http://emp.chngalaxy.com:9090'
+      // version:'http://app.ricent.com/galaxy'
     },
     download:download
   };
@@ -55,6 +65,11 @@ window.sxt = (function(win,angular)
     if (win.cordova) {
       document.addEventListener('deviceready', function () {
         // load();
+        IonicDeploy.init(sxt.identity,sxt.update,function () {
+      alert(1)
+        },function () {
+          alert(2)
+        })
         bootstrap();
       }, false);
     }
