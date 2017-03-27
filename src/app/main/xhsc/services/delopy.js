@@ -209,6 +209,12 @@
                 })
               })
             }
+            else {
+              result.checking=false;
+              result.state=sxt.version;
+              result.complete=true;
+              self.sendEvent();
+            }
           }).catch(function () {
             result.state = '检查失败';
             result.complete = true;
