@@ -43,7 +43,7 @@
         }
       })
       .state('app.statistics.problem', {
-        url:'/statistics',
+        url:'/statistics/{roomid}',
         title:'',
         shell:{
           yfbar:true,
@@ -69,7 +69,7 @@
         template:'<statistics-problemdetail layout="column" flex></statistics-problemdetail>'
       })
       .state('app.statistics.problempage', {
-        url:'/problempage',
+        url:'/problempage/{roomid}',
         title:'问题统计',
         noBack:false,
         hideFootbar:false,
@@ -106,9 +106,9 @@
         url:'/meterreading/{delivery_id}/{userId}',
         title:'抄水电表',
         noBack:false,
-        shell:{
-          save:true
-        },
+        // shell:{
+        //   save:true
+        // },
         template:'<meterreading-page layout="column" flex></meterreading-page>'
       })
 

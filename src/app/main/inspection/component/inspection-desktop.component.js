@@ -19,7 +19,7 @@
     vm.selected = $stateParams.index ? $stateParams.index : 0;//tab 初始选项
     api.szgc.vanke.profile().then(function (profile) {
       vm.profile = profile.data.data;
-      vm.upload = function (item) {
+      vm.upload = function (item,callback) {
         var task = [];
         var roomId = item.room.room_id;
 
@@ -120,6 +120,9 @@
           api.inspection.estate.putDelivery(item.delivery_id, {
             status: "inspection_completed"
           }).then(function () {
+            if (callback){
+              callback();
+            }
             utils.alert("验房成功");
             vm.selected = 2;
             vm.load();
@@ -205,6 +208,7 @@
             }).then(function (r) {
               item.status="processing";
               api.inspection.estate.addOrUpdateDelivery(item).then(function () {
+                $rootScope.$emit("room_upload_over");
                 utils.confirm("抢单成功,是否继续?").then(function () {
                 }).catch(function (err) {
                   vm.selected = 1;
@@ -225,6 +229,10 @@
       vm.repeatCheck = function (item) {
         if (item.status == 'processing')
           $state.go('app.inspection.check', {delivery_id: item.delivery_id})
+
+        if (item.status=='inspection_completed'){
+          $state.go('app.statistics.problem', {roomid: item.room.room_id})
+        }
       }
 
 
@@ -305,6 +313,18 @@
       }
 
       vm.load();
+
+      $rootScope.$$listeners["room_upload"]=[];
+      $rootScope.$$listeners["room_upload"].push(function (v1,v2) {
+          var item=vm.data.processing.find(function (k) {
+             return k.delivery_id==v2;
+          })
+        if (item){
+          vm.upload(item,function () {
+            $rootScope.$emit("room_upload_over");
+          });
+        }
+      })
 
       $scope.$on('$destroy', $rootScope.$on('goBack', function (s, e) {
         e.cancel = true;
