@@ -18,13 +18,13 @@
   <!--<md-button flex="none" class="little-btn"  ng-if="$root.shell.swap" ng-click="vm.cmd('tj')">
     <md-icon style="width: 40px;" md-svg-src="app/toolbar/images/icon-statistics.svg" class=""></md-icon>
   </md-button>-->
-  <img flex="none" class="little-btn"  ng-if="$root.shell.statistics" ng-click="vm.cmd('statistics')">
-    <!--<md-icon style="width: 20px;" md-svg-src="app/toolbar/images/icon-statistics2.svg" class=""></md-icon>-->
-    <img style="width: 20px;" ng-src="app/toolbar/images/icon-meterreading.svg"></img>
-  </md-button>
-  <md-button flex="none" class="little-btn" style="min-width: 48px;"  ng-if="$root.shell.csb&&!vm.networking" ng-click="vm.cmd('csb')">
+  <!--<md-button flex="none" class="little-btn"  ng-if="$root.shell.statistics" ng-click="vm.cmd('statistics')">-->
+    <!--&lt;!&ndash;<md-icon style="width: 20px;" md-svg-src="app/toolbar/images/icon-statistics2.svg" class=""></md-icon>&ndash;&gt;-->
+    <!--<img style="width: 20px;" ng-src="app/toolbar/images/icon-meterreading.svg"/>-->
+  <!--</md-button>-->
+  <md-button flex="none" class="little-btn" style="min-width: 48px;"  layout="row" layout-align="center center" ng-if="$root.shell.csb&&!vm.networking" ng-click="vm.cmd('csb')">
     <!--<md-icon style="width: 30px;" md-svg-src="app/toolbar/images/icon-meterreading.svg" class="p-3"></md-icon>-->
-    <img style="width: 30px;" ng-src="app/toolbar/images/icon-meterreading.svg" class="p-3"></img>
+    <img style="width: 20px;" ng-src="app/toolbar/images/icon-meterreading.svg" class="p-3"></img>
   </md-button>
   <!--<md-button flex="none"class="little-btn" style="min-width: 48px;" ng-if="$root.shell.cjwt" ng-click="vm.cmd('cjwt')">-->
     <!--<md-icon style="width: 30px;" md-svg-src="app/toolbar/images/icon-problem.svg" class="p-3"></md-icon>-->
