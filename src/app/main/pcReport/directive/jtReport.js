@@ -21,7 +21,8 @@
         element.scroll(function (event) {
             var left= element.scrollLeft();
             var  top =element.scrollTop();
-            $('#'+scope.fixTitle).css( 'transform', 'translateX('+(-left)+'px)');
+            var s=170;
+            $('#'+scope.fixTitle).css( 'transform', 'translateX('+(s-left)+'px)');
             $("#"+scope.itemName).css('transform', 'translateY('+(-top)+'px)')
         })
       }

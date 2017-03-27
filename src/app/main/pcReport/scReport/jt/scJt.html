@@ -6,38 +6,6 @@
 
 <div flex style="overflow: hidden;position: relative" layout="column" ng-if="vm.loaded">
   <div flex style="margin-left: 170px;margin-top: 118px;overflow: scroll" fix-title="fixTitle" item-name="itemName" jt-report>
-    <div layout="row" style="border: 1px solid #d8d8d8;position: absolute;top:0px;left:0px;z-index: 100; height: 118px;background-color: white">
-        <div layout="row">
-        <div style="width: 50px;min-width: 50px;border-right: 1px solid #d8d8d8" layout="row"
-             layout-align="center center">序号</div>
-        <div style="width: 120px;min-width: 120px" layout="row" layout-align="center center">实测项</div>
-      </div>
-    </div>
-    <table id="itemName" class="table table-bordered" style="position: absolute;top:118px;left: 0px;z-index: 50;width: 171px">
-      <tr ng-repeat="nav in vm.leftNav">
-        <td width="51px">
-          <div style="height: 25px">{{nav.sco}}</div>
-        </td>
-        <td>
-          <div style="height: 25px">{{nav.name}}</div>
-        </td>
-      </tr>
-    </table>
-    <table id="fixTitle"  class="table table-bordered" style="position: absolute;top:1px;z-index: 50" >
-      <thead>
-      <tr>
-      <th  ng-repeat="ti in vm.tilte.head" colspan="{{3*ti.secNums}}">{{ti.ProjectName}}</th>
-      </tr>
-      <tr>
-        <th  ng-repeat="su in vm.tilte.subHead" colspan="3">
-          {{su.SectionName}}
-        </th>
-      </tr>
-      <tr>
-        <th  ng-repeat="ft in vm.tilte.footHead"><div style="width: 80px">{{ft.des}}</div></th>
-      </tr>
-      </thead>
-    </table>
     <table  class="table table-bordered"  >
       <tbody>
       <tr ng-repeat="item in  vm.vals">
@@ -52,6 +20,38 @@
       </tbody>
     </table>
   </div>
+  <div layout="row" style="border: 1px solid #d8d8d8;position: absolute;top:0px;left:0px;z-index: 100; height: 118px;background-color: white">
+    <div layout="row">
+      <div style="width: 50px;min-width: 50px;border-right: 1px solid #d8d8d8" layout="row"
+           layout-align="center center">序号</div>
+      <div style="width: 120px;min-width: 120px" layout="row" layout-align="center center">实测项</div>
+    </div>
+  </div>
+  <table id="itemName" class="table table-bordered" style="position: absolute;top:118px;left: 0px;z-index: 50;width: 171px">
+    <tr ng-repeat="nav in vm.leftNav">
+      <td width="51px">
+        <div style="height: 25px">{{nav.sco}}</div>
+      </td>
+      <td>
+        <div style="height: 25px">{{nav.name}}</div>
+      </td>
+    </tr>
+  </table>
+  <table id="fixTitle"  class="table table-bordered" style="position: absolute;top:1px;z-index: 50" >
+    <thead>
+    <tr>
+      <th  ng-repeat="ti in vm.tilte.head" colspan="{{3*ti.secNums}}">{{ti.ProjectName}}</th>
+    </tr>
+    <tr>
+      <th  ng-repeat="su in vm.tilte.subHead" colspan="3">
+        {{su.SectionName}}
+      </th>
+    </tr>
+    <tr>
+      <th  ng-repeat="ft in vm.tilte.footHead"><div style="width: 80px">{{ft.des}}</div></th>
+    </tr>
+    </thead>
+  </table>
 </div>
 
 
