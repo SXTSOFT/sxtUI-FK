@@ -246,6 +246,12 @@ module.exports = [
         ]
     },
     {
+        "id": "cordova-plugin-indexedDB.IndexedDBShim",
+        "file": "plugins/cordova-plugin-indexedDB/www/IndexedDBShim.min.js",
+        "pluginId": "cordova-plugin-indexedDB",
+        "runs": true
+    },
+    {
         "id": "cordova-plugin-keyboard.keyboard",
         "file": "plugins/cordova-plugin-keyboard/www/keyboard.js",
         "pluginId": "cordova-plugin-keyboard",
@@ -289,10 +295,11 @@ module.exports.metadata =
     "cordova-plugin-file-opener2": "2.0.7",
     "cordova-plugin-file-transfer": "1.5.0",
     "cordova-plugin-image-picker": "1.1.1",
+    "cordova-plugin-indexedDB": "0.1.2",
     "cordova-plugin-keyboard": "1.1.4",
     "cordova-plugin-network-information": "1.2.1",
     "cordova-plugin-whitelist": "1.2.1",
-    "cordova-plugin-wkwebview-engine": "1.1.2"
+    "cordova-plugin-wkwebview-engine": "1.1.1"
 };
 // BOTTOM OF METADATA
 });

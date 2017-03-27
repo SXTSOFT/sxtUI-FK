@@ -30,9 +30,6 @@
         },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.vanke.sxt.iphone"
-        },
-        "cordova-plugin-wkwebview-engine": {
-            "PACKAGE_NAME": "com.sxt.szgc"
         }
     },
     "dependent_plugins": {
@@ -41,6 +38,12 @@
         },
         "cordova-plugin-image-picker": {
             "PHOTO_LIBRARY_USAGE_DESCRIPTION": " ",
+            "PACKAGE_NAME": "com.vanke.sxt.iphone"
+        },
+        "cordova-plugin-indexedDB": {
+            "PACKAGE_NAME": "com.vanke.sxt.iphone"
+        },
+        "cordova-plugin-wkwebview-engine": {
             "PACKAGE_NAME": "com.vanke.sxt.iphone"
         }
     }

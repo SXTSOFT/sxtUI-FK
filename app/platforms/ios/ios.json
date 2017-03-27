@@ -96,6 +96,9 @@
             "PHOTO_LIBRARY_USAGE_DESCRIPTION": " ",
             "PACKAGE_NAME": "com.vanke.sxt.iphone"
         },
+        "cordova-plugin-indexedDB": {
+            "PACKAGE_NAME": "com.vanke.sxt.iphone"
+        },
         "cordova-plugin-keyboard": {
             "PACKAGE_NAME": "com.vanke.sxt.iphone"
         },
@@ -106,7 +109,7 @@
             "PACKAGE_NAME": "com.vanke.sxt.iphone"
         },
         "cordova-plugin-wkwebview-engine": {
-            "PACKAGE_NAME": "com.sxt.szgc"
+            "PACKAGE_NAME": "com.vanke.sxt.iphone"
         }
     },
     "dependent_plugins": {},
@@ -357,6 +360,12 @@
             ]
         },
         {
+            "id": "cordova-plugin-indexedDB.IndexedDBShim",
+            "file": "plugins/cordova-plugin-indexedDB/www/IndexedDBShim.min.js",
+            "pluginId": "cordova-plugin-indexedDB",
+            "runs": true
+        },
+        {
             "id": "cordova-plugin-keyboard.keyboard",
             "file": "plugins/cordova-plugin-keyboard/www/keyboard.js",
             "pluginId": "cordova-plugin-keyboard",
@@ -398,9 +407,10 @@
         "cordova-plugin-file-opener2": "2.0.7",
         "cordova-plugin-file-transfer": "1.5.0",
         "cordova-plugin-image-picker": "1.1.1",
+        "cordova-plugin-indexedDB": "0.1.2",
         "cordova-plugin-keyboard": "1.1.4",
         "cordova-plugin-network-information": "1.2.1",
         "cordova-plugin-whitelist": "1.2.1",
-        "cordova-plugin-wkwebview-engine": "1.1.2"
+        "cordova-plugin-wkwebview-engine": "1.1.1"
     }
 }

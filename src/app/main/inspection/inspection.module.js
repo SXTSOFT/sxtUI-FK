@@ -53,7 +53,7 @@
             {active:true,label:'问题',type:false}
           ]
         },
-        noBack:true,
+        noBack:false,
         template:'<statistics-problem layout="column" flex></statistics-problem>'
       })
       .state('app.statistics.problemdetail', {

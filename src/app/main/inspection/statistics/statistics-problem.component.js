@@ -13,7 +13,7 @@
     });
 
   /**@ngInject*/
-  function statisticsProblemController($state,$stateParams,utils,$scope,api,auth,$q,$timeout){
+  function statisticsProblemController($state,$stateParams,utils,$scope,api,auth,$q,$timeout,$rootScope){
     var vm = this;
     vm.parm={
       page_size:500 ,
@@ -79,6 +79,10 @@
           }
         }
       })
+    })
+    $rootScope.$on("goBack",function (ev,data) {
+      data.cancel=true;
+      $state.go('app.szgc.ys');
     })
 
     vm.load=function() {
