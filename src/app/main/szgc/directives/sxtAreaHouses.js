@@ -18,6 +18,7 @@
         itemName:'='
       },
       link: function (scope, element, attrs, ctrl) {
+        element.css('background','white');
         function setDefault(options,def) {
           options = options || {};
           if (def) {

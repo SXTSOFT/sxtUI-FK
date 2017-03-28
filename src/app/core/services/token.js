@@ -46,7 +46,7 @@
             lastRequestTime[config.url].isNetworking = true;
             $rootScope.$emit('sxt:onNetworking', config);
           }
-        }, 5000);
+        }, 35000);
       }
       return config;
     }

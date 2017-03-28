@@ -7,7 +7,7 @@
 
     <div ng-repeat="st in selectors" data-title="{{st.label}}" ng-if="st.items.length"  ng-show="isShow(st)">
 <div class="md-padding">
-  <md-autocomplete ng-if="$index===0" class="md-block" ng-model="st.current" ng-disabled="st.loading" md-selected-item-change="item_selected(item, st.index)" md-item-text="item.$name" placeholder="{{st.label}}" md-min-length="0"  md-items="item in querySearch(st.items,searchText)" md-search-text="searchText">
+  <md-autocomplete ng-if="$index===0"  class="md-block" ng-model="st.current" ng-disabled="st.loading" md-selected-item-change="item_selected(item, st.index)" md-item-text="item.$name" placeholder="{{st.label}}" md-min-length="0"  md-items="item in querySearch(st.items,searchText)" md-search-text="searchText">
     <md-item-template>
       {{item.$name}}
     </md-item-template>

@@ -20,6 +20,7 @@
         pid:'='
       },
       link: function (scope, element, attrs, ctrl) {
+        element.css('background','white');
         var map, layer, apiLayer, drawControl;
         L.drawLocal = {
           draw: {

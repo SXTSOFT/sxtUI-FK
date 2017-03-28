@@ -1,10 +1,7 @@
 ﻿/**
  * Created by zhangzhaoyong on 16/2/1.
  */
-/**
- * Created by zhangzhaoyong on 16/2/1.
- */
-(function(){
+(function(angular,undefined){
   'use strict';
 
   angular
@@ -73,8 +70,13 @@
     }
     //获取所有材料验收信息
     vm.load = function () {
-      api.material.MaterialService.GetAll().then(function(result){
-        $scope.mlCheckData = result.data.Rows;
+      api.szgc.vanke.projects({ page_size: 1000, page_number: 1 }).then(function(result){
+        console.log(result.data.data);
+        return api.material.MaterialService.GetAll({projects:result.data.data.map(function (m) {
+          return m.project_id;
+        }).join(',')}).then(function(result){
+          $scope.mlCheckData = result.data.Rows;
+        });
       });
     };
 
@@ -96,7 +98,10 @@
       },
       addzj:function (item) {
         $scope.project.zjs.push(item);
-        $scope.project.searchTerm='';
+        $scope.project.searchTerm = '';
+        if (item.tp == 'A') {
+          $scope.project.ok();
+        }
       },
       searchTerm:'',
       addSearchTerm:function (k) {
@@ -139,7 +144,7 @@
         id: -1,
         color: '',
         title: '全部',
-        selected: true,
+        selected: true
       }, {
         id: 0,
         color: 'slategrey',
@@ -173,12 +178,12 @@
       }],
       onQueryed: function(data) {
         $scope.project.data = data;
-        //$scope.project.filter();
+        $scope.project.filter();
       },
       //filterBatch: function (sources) {
       //    console.log('sources', sources);
       //},
-      filter: function(reload) {
+      filter2: function(reload) {
         vm.loading = true;
         if (!$scope.project.procedureId || !$scope.project.data || !$scope.project.data.items) return;
         if (reload === true || ($scope.project.data && !$scope.project.data.fd)) {
@@ -201,7 +206,7 @@
                     item.stateName = state.title + ((item.ECCheckResult == 1 || item.ECCheckResult == 3) && item.MinPassRatio && item.MinPassRatio >= 80 ? '(偏差)' : '');
                   }
                   item.hasTask = $scope.hasTasks(item);
-                })
+                });
                 $scope.project.data.items.forEach(function (item) {
                   item.batchs = result.data.Rows.filter(function (it) {
                     return it.RegionId == item.$id;
@@ -224,12 +229,17 @@
                 });
               });
               if($scope.project.data.items) {
-                $scope.project.data.items = $scope.project.data.items.filter(function (t) {
+                $scope.project.data.items2 = $scope.project.data.items.filter(function (t) {
+                  console.log(t, $scope.project.procedureId);
+                  if((t.tp!='A' && $scope.project.procedureId=='0c8b2dac-3e55-4c19-b6d3-bf2cafd39c5b')||
+                    (t.tp !='B' && $scope.project.procedureId=='8fd3941a-af0b-4267-9a1f-14a749770b6f')){
+                    return false;
+                  }
                   return t.hasV === false;
                 });
                 $scope.project.data.switch = $scope.project.data.items.length>0?'new':'batchs';
               }
-              $scope.project.data.results = result.data.Rows;
+
               $rootScope.hideFootbar = true;
               vm.loading = false;
             }
@@ -339,6 +349,15 @@
           $scope.project.rows = rows;
           vm.loading = false;
         }
+      },
+      filter:function (reload) {
+        if(vm.filterTime) {
+          $timeout.cancel(vm.filterTime);
+        }
+        vm.filterTime = $timeout(function () {
+          $scope.project.filter2(reload);
+          vm.filterTime = undefined;
+        },500);
       }
     };
     $scope.$watch('project.pid',function () {
@@ -391,6 +410,16 @@
         vm.ys();
       });
     };
+/*    $scope.$watch('vm.isLeftOpen',function () {
+      if(vm.isLeftOpen===false){
+        vm.ys();
+      }
+    });
+    $scope.$watch('vm.isRightOpen',function () {
+      if(vm.isRightOpen===false){
+        vm.ys();
+      }
+    })*/
     vm.ys = function () {
       if (!$scope.project.pid || !$scope.project.procedureId) {
         if(!$scope.project.pid){
@@ -603,6 +632,14 @@
           return api.material.MaterialService.GetInfoById();
         },
 
+        function () {
+          return api.material.MaterialService.GetAll();
+        },
+
+        function(){
+          return api.material.TargetRelationService.getByCheckDataId({projectId:project.project_id});
+        },
+
         //获取所有材料验收所选附件
         function () {
           return api.material.MaterialService.GetMLFilesById();
@@ -614,6 +651,14 @@
 
         function (){
           return api.material.TargetRelationService.getByProjectId({projectId:project.project_id,materialId:null,isChecked:true});
+        },
+
+        function(){
+          return api.material.MaterialService.getPartners(idTree,3);
+        },
+
+        function(){
+          return api.material.MaterialService.getPartners(idTree,2);
         },
 
         //工序验收表
@@ -802,4 +847,4 @@
       }
     })
   }
-})();
+})(angular,undefined);

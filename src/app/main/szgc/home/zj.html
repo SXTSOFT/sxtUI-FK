@@ -1,11 +1,90 @@
-<div flex="none">
-  <h5 style="text-align: center">{{vm.zj.itemName}} - 桩基</h5>
+<div flex layout="column">
+  <div flex="none" layout="row">
+    <div flex layout="row" >
+      <md-button ng-hide="vm.isE(true)" style="margin:0" class="md-icon-button" ng-click="toggleView()" aria-label="More">
+        <md-icon md-font-icon="icon-chevron-left"></md-icon>
+      </md-button>
+      <span flex layout="row">
+        <md-menu flex md-offset="50,0" >
+          <div style="display: block;text-align: center;line-height: 40px" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+           {{vm.yj.itemName }}
+          </div>
+          <md-menu-content width="6" >
+            <md-menu-item ng-repeat="item in vm.areas">
+              <md-button ng-click="vm.setYj(item)">
+                   {{item.itemName}}
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </span>
+      <md-button ng-hide="vm.isE(false)" style="margin:0"  class="md-icon-button" aria-label="More">
+        <md-icon md-font-icon="icon-chevron-right"></md-icon>
+      </md-button>
+      <md-button ng-show="vm.currentD" ng-click="vm.setP()"  class="md-raised" >
+        取消选桩
+      </md-button>
+    </div>
+    <div flex="none">
+
+    </div>
+  </div>
+  <section flex layout="row" style="border-top: 1px solid grey;border-bottom: 1px solid grey">
+    <div flex class="map" sxt-map-show="vm.context" show-labels="false">
+
+    </div>
+  </section>
+  <div flex="35" class="animate-fade-in-out" layout="column" >
+    <div flex="none" layout="row" style="border: 1px solid silver;line-height: 150%;">
+      <div flex style="background: rgba(225,225,225,1);text-align: center">未验</div>
+      <div flex style="background: rgba(44,157,251,1);text-align: center">施工</div>
+      <div flex style="background: rgba(0,195,213,1);text-align: center">监理</div>
+      <div flex style="background: rgba(0,150,136,1);text-align: center">施工/监理</div>
+      <div flex style="color: red;text-align: center">验收不合格</div>
+    </div>
+    <md-content flex>
+      <div style="width:880px;overflow-x: hidden;">
+        <div>
+          <div>
+            <div style="border-bottom: 1px solid #ccc;padding-left:0;position: relative;">
+              <span style="width:120px;display: inline-block;height:40px;padding-top: 18px;vertical-align: top">部位</span>
+              <span style="width:80px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">工序</span>
+              <span style="width:55px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top;text-align: center;">班组</span>
+              <span style="width:36px;display: inline-block;height:40px;;padding-top: 10px;vertical-align: top;text-align: center;">施工单位</span>
+              <span style="width:65px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">自检时间</span>
+              <span style="width:36px;display: inline-block;height:40px;padding-top: 10px;">监理首验</span>
+              <span style="width:36px;display: inline-block;height:40px;padding-top: 10px;">监理再验</span>
+              <span style="width:60px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">监理员</span>
+              <span style="width:65px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">查验时间</span>
+              <span style="width:50px;display: inline-block;height:40px;padding-top: 10px;">万科、<br>第三方</span>
+              <span style="width:40px;display: inline-block;height:40px;padding-top: 18px;vertical-align: top">符合率</span>
+              <span style="width:80px;display: inline-block;height:40px;padding-top: 18px;vertical-align: top;text-align: center">检查员</span>
+              <span style="width:65px;display: inline-block;height:40px;;padding-top: 18px;vertical-align: top">查验时间</span>
+            </div>
+          </div>
+
+          <div ng-repeat="item in vm.rows" class="repeated-item" flex>
+            <div style="width:880px;height: 30px; border-bottom: 1px solid #e0e0e0;">
+              <div style=" position: relative;height: 30px;color:{{vm.getStateColor(item.ECCheckResult)}};"  ng-click="vm.openView({bathid:item.Id})">
+                <span style="width:120px;display: inline-block;white-space: nowrap;overflow:hidden;padding-right: 5px;text-overflow:ellipsis;direction: rtl">{{ item.RegionNameTree}} {{item.RegionName}}</span>
+                <span style="width:80px;display: inline-block;white-space: nowrap;overflow:hidden;text-overflow:ellipsis;">{{item.ProcedureName}}</span>
+                <span style="width:55px; white-space: nowrap; display: inline-block;text-align: center;">{{item.GrpWokerName | filterGrpWokerName}}</span>
+                <span style="width:36px;display: inline-block;">{{(item.ZbLast||item.ZbFirst)|number:1}}</span>
+                <span style="width:65px;display: inline-block;">{{item.ZbDate|sxtdate}}</span>
+                <span ng-if="!item.JLFirst" style="width: 75px;display: inline-block">{{vm.getState(item.ECCheckResult)}}</span>
+                <span ng-if="item.JLFirst" style="width:36px;display: inline-block;">{{item.JLFirst|number:1}}</span>
+                <span  ng-if="item.JLFirst" style="width:36px;display: inline-block;">{{item.JLLast|number:1}}</span>
+                <span style="width:60px;display: inline-block;">{{item.JLUser}}</span>
+                <span style="width:65px;display: inline-block;">{{item.JLDate|sxtdate}}</span>
+                <span style="width:50px;display: inline-block;">{{item.WKLast}}</span>
+                <span style="width:40px;display: inline-block;">{{item.AccordRatio|number:1}}</span>
+                <span style="width:80px;display: inline-block;text-align: center">{{item.WKLastUser}}</span>
+                <span style="width:65px;display: inline-block;">{{item.VKDate|sxtdate}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </md-content>
+  </div>
 </div>
-<div flex="none" layout="row" style="border: 1px solid silver;line-height: 150%;">
-  <div flex style="background: rgba(225,225,225,1);text-align: center">未验</div>
-  <div flex style="background: rgba(44,157,251,1);text-align: center">施工</div>
-  <div flex style="background: rgba(0,195,213,1);text-align: center">监理</div>
-  <div flex style="background: rgba(0,150,136,1);text-align: center">施工/监理</div>
-  <div flex style="color: red;text-align: center">验收不合格</div>
-</div>
-<div flex sxt-area-zj-view="vm.zj"></div>
