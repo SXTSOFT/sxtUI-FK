@@ -32,6 +32,7 @@
         materialModels:'=',
         materialSupply:'=',
         materialSupplier:'=',
+        isGeneral:'=',
         inc :'@'
       },
 
@@ -64,7 +65,8 @@
         scope.materialUnit = p.Unit;
         scope.materialModels = p.Model?p.Model.split(/、|；|;/):p.Model;
         scope.materialSupply = p.Supply;
-        scope.materialSupplier = p.SupplierId?p.SupplierId.split(','):[]
+        scope.materialSupplier = p.SupplierId?p.SupplierId.split(','):[];
+        scope.isGeneral = p.isGeneral;
         ctrl.$setViewValue(scope.value);
         if(!scope.inc) {
           var odd = appCookie.get('prev_material'),
@@ -122,7 +124,8 @@
         scope.materialUnit = null;
         scope.materialModels = null;
         scope.materialSupply = null;
-        scope.materialSupplier = null
+        scope.materialSupplier = null;
+        scope.isGeneral = null;
         ctrl.$setViewValue();
         if(!scope.regionType && !scope.inc)return;
         var t = 1,ex=[1],q={

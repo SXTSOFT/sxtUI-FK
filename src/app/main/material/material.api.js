@@ -198,6 +198,16 @@
         }).bind(function (id) {
           return $http.get($http.url('/api/MLMaterialCheckData/GetInfoById', { Id: id }));
         }),
+        GetBrandModels:$http.db({
+          _id: 'Ms_BrandModels',
+          idField: 'Id',
+          dataType: 5,
+          filter: function (item, procedureId,supplierId) {
+            return item.ProcedureId == procedureId && item.SupplierId == supplierId;
+          },
+        }).bind(function (args) {
+          return $http.get($http.url('/api/MLPProcedure/GetBrandModels', args));
+        }),
         GetMLFilesById: $http.db({
           _id: 'Ms_MaterialCheckDataFiles',
           idField: 'MaterialCheckDataId',
