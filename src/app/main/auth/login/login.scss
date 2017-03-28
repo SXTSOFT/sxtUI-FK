@@ -9,53 +9,58 @@
 
 #login-form{
 
-  width: 295px;
-  height: 525px;
+  width: 100%;
+  height: 630px;
 
 
   .logo{
-    margin-top: 25px;
+    margin-top: 14px;
     text-align: center;
     img{
-      width:151px;
+     width:80px ;
+     height:80px;
     }
   }
 
   .login-name{
-    background: white;
-    border: 1px solid #c1c1c1;
-    padding: 0 15px;
-    margin: 30px 0 20px 0;
-    width: 295px;
-    border-radius: 10px;
+   padding: 0 15px;
+    margin: 30px 0;
+    width: 100%;
   }
 
   md-input-container{
     margin:10px 0;
-
     input{
       background: transparent!important;
       line-height: 24px!important;
       border: 0px!important;
+      padding-left: 10px;
       &.ng-invalid {
         &::-webkit-input-placeholder { /* WebKit, Blink, Edge */
           color: #808080;
         }
         &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
           color:#808080;
+          font-size: 15px;
           opacity: 1;
         }
         &::-moz-placeholder { /* Mozilla Firefox 19+ */
           color:#808080;
+           font-size: 15px;
           opacity: 1;
         }
         &:-ms-input-placeholder { /* Internet Explorer 10-11 */
           color:#808080;
+           font-size: 15px;
         }
         &:placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
           color:  #808080;
+           font-size: 15px;
         }
       }
+    }
+    .account{
+      padding: 2px;
     }
   }
 
@@ -65,13 +70,18 @@
 
   button.login{
     height: 44px!important;
-    width: 295px!important;
+    width: 100%!important;
     background:url('../app/main/auth/login/btn.png') no-repeat;
     background-size: contain;
     font-size: 18px;
     color:white;
     letter-spacing: 7px;
     text-shadow: 1px 1px 1px #666666;
-
+    background: #e83435;
+    border-radius: 5px;
+    margin: 0 15px;
+  }
+  button.login:active{
+    background: #d22021;
   }
 }

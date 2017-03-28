@@ -12,7 +12,7 @@
     .controller('MMyProcessController', MMyProcessController);
 
   /** @ngInject */
-  function MMyProcessController($scope, api, utils, $state, $q, sxt, xhUtils, $timeout, $mdDialog, $stateParams) {
+  function MMyProcessController($scope, api, utils, $state, $q, sxt, xhUtils, $timeout, $mdDialog, $stateParams, $mdSidenav, $element) {
 
     var vm = this;
     vm.AttachmentSHow = false;
@@ -22,7 +22,7 @@
     vm.checkData = {};
     vm.EnclosureType = [];
     vm.checkData.WgCheck = 1;
-    vm.checkData.IsInspection = 1;
+    vm.checkData.IsInspection = null;
     vm.checkData.CheckTime = new Date();
     vm.checkData.sjReport = null;
     vm.checkData.MaterialTargets = [];
@@ -35,6 +35,26 @@
       imgs5: []
 
     };
+
+    $scope.searchTerm;
+    $scope.clearSearchTerm = function () {
+      $scope.searchTerm = '';
+    };
+    // $element.find('input').on('keydown', function (ev) {
+    //   ev.stopPropagation();
+    // });
+
+    vm.openNav = function (id) {
+      vm.isRightOpen = true;
+      $mdSidenav(id).open()
+    };
+    vm.closeNav = function (id) {
+      vm.isRightOpen = false;
+      $mdSidenav(id).close().then(function () {
+
+      });
+    };
+
     vm.change = function (item) {
       vm.fjType = item.value;
     }
@@ -67,6 +87,11 @@
 
 
     $scope.math = function (count) {
+      $scope.Targets.forEach(function (t) {
+        if (t.isOK && t.IsCheck == 0) {
+          t.isOK = false;
+        }
+      });
       var arr = $scope.Targets.filter(function (t) {
         return !t.isOK && t.IsCheck != 2;
       });
@@ -87,7 +112,7 @@
         return;
       }
 
-      vm.checkData.SupplierId = $scope.project.materialSupply==0?vm.checkData.Manufactor:vm.checkData.SupplierId;
+      vm.checkData.SupplierId = $scope.project.materialSupply == 0 ? vm.checkData.Manufactor : vm.checkData.SupplierId;
 
       if (!vm.checkData.SupplierId) {
         utils.alert('请选择供货方');
@@ -108,15 +133,21 @@
         utils.alert('请输入合同编号');
         return;
       }
-      if ($scope.data.imgs1.length == 0 &&
-        $scope.data.imgs2.length == 0 &&
-        $scope.data.imgs3.length == 0 &&
-        $scope.data.imgs4.length == 0 &&
-        $scope.data.imgs5.length == 0
-      ) {
-        utils.alert('请添加附件');
-        return;
+
+      if(vm.checkData.sjReport != null && $scope.data.imgs4.length == 0){
+        utils.alert('请添加送检报告附件');
+          return;
       }
+
+      // if ($scope.data.imgs1.length == 0 &&
+      //   $scope.data.imgs2.length == 0 &&
+      //   $scope.data.imgs3.length == 0 &&
+      //   $scope.data.imgs4.length == 0 &&
+      //   $scope.data.imgs5.length == 0
+      // ) {
+      //   utils.alert('请添加附件');
+      //   return;
+      // }
 
       vm.checkData.InspectionReport = vm.checkData.sjReport;
       vm.checkData.ProjectId = $scope.project.projectId;
@@ -125,7 +156,7 @@
       vm.checkData.RegionId = $scope.project.pid;
       vm.checkData.ProjectName = $scope.project.projectName;
       vm.checkData.RegionName = $scope.project.typeName;
-      
+
       if (vm.checkData.WgCheck == 0 || vm.checkData.InspectionReport == 0) {
         $mdDialog.show({
           controller: ['$scope', function ($scope) {
@@ -174,30 +205,35 @@
         });
       }
       else {
-        if (vm.checkData.WgCheck == 1 && vm.checkData.InspectionReport == null && vm.checkData.IsInspection == 1) {
-          vm.checkData.CheckResult = 2; //状态：未知
-          vm.checkData.InspectionReport = 2; //未提供
+        if (vm.checkData.IsInspection == 1 || vm.checkData.IsInspection == 0) {
+          if (vm.checkData.InspectionReport == null) {
+            vm.checkData.CheckResult = 2; //状态：未知
+            vm.checkData.InspectionReport = 2; //未提供
+          } else {
+            vm.checkData.CheckResult = 1; //状态：合格
+          }
+
         } else {
           vm.checkData.CheckResult = 1; //状态：合格
-          if (vm.checkData.InspectionReport == null)
-            vm.checkData.InspectionReport = 3; //   N/A
+          vm.checkData.InspectionReport = 3; //   N/A
         }
         vm._save(addForm);
       }
     };
 
     vm._save = function (addForm) {
-      $scope.Targets.forEach(function (r) {
-        if (r.isOK) {
-          var n = {
-            ProjectId: vm.checkData.ProjectId,
-            MaterialId: vm.checkData.MaterialId,
-            TargetId: r.Id
-          };
-          vm.checkData.MaterialTargets.push(n);
-        }
-      });
-
+      if (vm.checkData.IsInspection != 0) {
+        $scope.Targets.forEach(function (r) {
+          if (r.isOK) {
+            var n = {
+              ProjectId: vm.checkData.ProjectId,
+              MaterialId: vm.checkData.MaterialId,
+              TargetId: r.Id
+            };
+            vm.checkData.MaterialTargets.push(n);
+          }
+        });
+      }
       api.material.addProcessService.Insert({
         Id: sxt.uuid(),
         CheckData: vm.checkData,
@@ -279,6 +315,25 @@
       });
     }
 
+    $scope.$watch('project.supplier', function () {
+      vm.supplier = [];
+      if ($scope.project.supplier && $scope.project.supplier.length > 0) {
+        $scope.project.supplier.forEach(function (s) {
+          var v = $scope.suppliers.find(function (s2) {
+            return s == s2.Id;
+          })
+          if (v) {
+            vm.supplier.push(v);
+          }
+        })
+      } else {
+        vm.supplier = $scope.suppliers;
+      }
+
+    })
+
+
+
     $scope.$watch('project.procedureId',
       function () {
         vm.checkData.SupplierId = null;
@@ -288,14 +343,16 @@
           api.material.TargetService.getAll($scope.project.procedureId)
             .then(function (data) {
               $scope.Targets = data.data.Rows;
+              console.log($scope.Targets);
               api.material.TargetRelationService.getByProjectId({ projectId: $scope.project.projectId, materialId: $scope.project.procedureId, isChecked: true })
                 .then(function (data) {
-                  console.log(data);
                   for (var i = 0; i < $scope.Targets.length; i++) {
                     if ($scope.Targets[i].IsCheck == 1) {
                       $scope.Targets[i].isOK = true;
                       $scope.Targets[i].need = true;
                       continue;
+                    } else {
+                      $scope.Targets[i].need = false;
                     }
                     for (var j = 0; j < data.data.Rows.length; j++) {
                       if ($scope.Targets[i].Id == data.data.Rows[j].TargetId) {
@@ -385,18 +442,21 @@
       }
     };
 
-    $q.all([api.material.SupplierService.GetAll({ startrowIndex: 0, maximumRows: 100, Status: 4 })]).then(function(r){
+    $q.all([api.material.SupplierService.GetAll({ startrowIndex: 0, maximumRows: 100, Status: 4 })]).then(function (r) {
       $scope.suppliers = r[0].data.Rows;
     });
 
-    $scope.$watch('project.pid',function () {
+    $scope.$watch('project.pid', function () {
       vm.checkData.SupplierId = null;
       vm.checkData.Manufactor = null;
       vm.checkData.Model = null;
-      if($scope.project.type == 2){
-        api.material.MaterialService.getPartners($scope.project.idTree).then(function(r) {
-          $scope.suppliers2 = r.data.Rows;
-      });
+      if ($scope.project.type == 2) {
+        $q.all([api.material.MaterialService.getPartners($scope.project.idTree, 3),
+        api.material.MaterialService.getPartners($scope.project.idTree, 2)])
+          .then(function (r) {
+            $scope.suppliers2 = r[0].data.Rows;
+            $scope.suppliers2 = $scope.suppliers2.concat(r[1].data.Rows);
+          })
       }
     });
 
@@ -548,10 +608,6 @@
                   }
                 }
               });
-
-              //item.
-
-
             });
 
             results.forEach(function (item) {

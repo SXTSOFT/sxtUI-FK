@@ -161,7 +161,7 @@
               <p flex>{{ item.CheckTime }}</p>
               <md-button style="margin: 0; height: 40px;" class="md-secondary md-primary" ui-sref="app.szgc.ys.material({id:item.Id})" ng-show="(item.WgCheck == 1 && item.IsInspection == 1 && item.Report == 0)">追加送检报告</md-button>
             </div>-->
-            <md-list-item class="md-3-line" style="min-height: 60px;">
+            <md-list-item>
               <!--<img ng-src="{{getImgURl(item.imgUrl)}}" style="width: 80px; height: 80px; padding: 8px 8px 8px 0" />-->
               <!--<div class="md-list-item-text" layout="column">
                 <h6 style="margin: 0;">{{ item.RegionNameTree }}</h6>
@@ -170,11 +170,9 @@
               </div>-->
                <div class="md-list-item-text" flex="70" layout="column" ng-click="goMaterialDetail(item.Id)">
                 <h4>{{ item.RegionNameTree }}</h4>
-                <p>{{ item.Material }}</p>
+                <p>{{ item.Material }} ({{item.CheckTime|date:'yyyy-MM-dd'}})</p>
               </div>
-              <div class="md-list-item-text" flex="30" layout="column">
-                <md-button style="margin: 0;" class="md-secondary md-primary" ui-sref="app.szgc.ys.material({id:item.Id})" ng-show="(item.WgCheck == 1 && item.IsInspection == 1 && item.Report == 0)">追加送检报告</md-button>
-              </div>
+                <md-button style="margin: 0;" class="md-secondary md-primary" ui-sref="app.szgc.ys.material({id:item.Id})"  ng-show="(item.IsInspection==1 || item.IsInspection==0) && item.Report == 0">追加送检报告</md-button>
               <md-divider></md-divider>
             </md-list-item>
           </div>
@@ -182,7 +180,7 @@
 
       </md-content>
       <div class="md-padding" layout="row" style="position:relative; width:100%; background-color: white;" ng-hide="is('app.szgc.ys.material') || is('app.szgc.ys.detail')">
-        <md-button  flex ui-sref="app.szgc.ys.material" class="md-raised md-primary">添加材料验收</md-button>
+        <md-button flex ui-sref="app.szgc.ys.material" class="md-raised md-primary md-block">添加材料验收</md-button>
       </div>
       <ui-view layout="column" flex ng-show="is('app.szgc.ys.material') || is('app.szgc.ys.detail')"></ui-view>
     </md-tab-content>

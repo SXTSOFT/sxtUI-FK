@@ -615,6 +615,7 @@
           });
         }),
         buildingsInfo:http.custom(function(type, typeId){
+          var me = this;
           if(type == 2) {
             return get (http.url (baseUri +'buildings', {
               project_item_id: typeId,
@@ -636,7 +637,17 @@
                 else
                   return i1.name.localeCompare (i2.name);
               });
-              return r;
+              return me._filter(4).then(function (r3) {
+                if(r3.data.Rows) {
+                  r.data.data = r.data.data.filter(function (it) {
+                    return !r3.data.Rows.find(function (it1) {
+                      return !it1.IsEnable && it1.RegionId == it.building_id;
+                    });
+                  });
+                }
+                return r;
+              });
+              //return r;
             });
           }
           else{
