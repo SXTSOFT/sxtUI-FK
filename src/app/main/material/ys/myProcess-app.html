@@ -244,7 +244,8 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
       <md-content flex layout="column" style="background: white">
         <sxt-material flex layout="column" on-select="vm.closeNav('nav_material')" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId"
           material-Unit="project.materialUnit" material-models="project.materialModels" name-value="project.procedureName"
-          material-supply="project.materialSupply" region-type="project.type" material-supplier="project.supplier" class="md-block"></sxt-material>
+          material-supply="project.materialSupply" region-type="project.type" material-supplier="project.supplier" class="md-block"
+          is-general="project.isGeneral"></sxt-material>
         <div class="md-padding" layout="row">
           <md-button flex ng-click="vm.closeNav('nav_material')" class="md-raised md-primary">确定</md-button>
         </div>
