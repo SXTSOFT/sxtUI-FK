@@ -121,7 +121,7 @@
         }
       }
 
-      if (!vm.checkData.ManufactorId) {
+      if (!vm.checkData.Manufactor) {
         utils.alert('请输入厂家/品牌');
         return;
       }
@@ -340,7 +340,6 @@
       } else {
         vm.supplier = $scope.suppliers;
       }
-      console.log(vm.supplier);
     })
 
     $scope.$watch('vm.checkData.Model',
@@ -355,15 +354,15 @@
         }
       })
 
-    $scope.$watch('vm.checkData.ManufactorId',
+    $scope.$watch('vm.Manufactor',
       function () {
         if ($scope.project.isGeneral == 0) {
           var a = vm.Manufactors.find(function (val) {
-            return val.SupplierId == vm.checkData.ManufactorId
+            return val.SupplierId == vm.Manufactor.Id
           })
           $scope.project.materialModels = a.Models.split(';')
-          console.log($scope.project.materialModels)
         }
+        vm.checkData.Manufactor = vm.Manufactor.ShortName?vm.Manufactor.ShortName:vm.Manufactor.Name;
       })
 
     $scope.$watch('project.procedureId',
@@ -378,7 +377,6 @@
           api.material.TargetService.getAll($scope.project.procedureId)
             .then(function (data) {
               $scope.Targets = data.data.Rows;
-              console.log($scope.Targets);
               api.material.TargetRelationService.getByProjectId({ projectId: $scope.project.projectId, materialId: $scope.project.procedureId, isChecked: true })
                 .then(function (data) {
                   for (var i = 0; i < $scope.Targets.length; i++) {

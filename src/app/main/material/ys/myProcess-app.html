@@ -29,11 +29,11 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
         <div style="height: 6px"></div>
         <md-input-container class="md-block" style="margin: 12px 0;">
           <label>厂家/品牌</label>
-          <md-select ng-model="vm.checkData.ManufactorId" md-on-close="clearSearchTerm()" data-md-container-class="selectdemoSelectHeader">
+          <md-select ng-model="vm.Manufactor" md-on-close="clearSearchTerm()" data-md-container-class="selectdemoSelectHeader">
             <md-select-header class="demo-select-header">
               <input ng-model="searchTerm" type="search" ng-keydown="$event.stopPropagation()" placeholder="搜索.." class="demo-header-searchbox md-text">
             </md-select-header>
-            <md-option ng-value="s.Id" ng-repeat="s in vm.supplier |
+            <md-option ng-value="s" ng-repeat="s in vm.supplier |
               filter:searchTerm">{{s.ShortName?s.ShortName:s.Name}}</md-option>
           </md-select>
         </md-input-container>

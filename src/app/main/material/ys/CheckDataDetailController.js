@@ -12,7 +12,6 @@
         $scope.dataInfo = result.data.Rows[0];
         api.material.TargetRelationService.getByCheckDataId({projectId:$scope.dataInfo.ProjectId,materialId:$scope.dataInfo.MaterialId,checkDataId:$stateParams.id}).then(function(r){
           $scope.targets = r.data.Rows;
-          console.log($scope.targets);
         })
       });
 
