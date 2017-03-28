@@ -19,12 +19,6 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
 
       </sxt-projects-jd>
       <div class="md-padding">
-        <md-input-container class="md-block" style="margin: 12px 0;">
-          <label>规格/型号</label>
-          <md-select style="font-family: 'SJQY' !important;" ng-model="vm.checkData.Model">
-            <md-option ng-value="m" ng-repeat="m in project.materialModels" style="font-family: 'SJQY' !important;">{{m}}</md-option>
-          </md-select>
-        </md-input-container>
         <div style="height: 6px" ng-if="project.materialSupply!=0"></div>
         <md-input-container class="md-block" ng-if="project.materialSupply!=0" style="margin: 12px 0;">
           <label>供货方</label>
@@ -44,14 +38,28 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
           </md-select>
         </md-input-container>
         <div style="height: 6px"></div>
-        <md-input-container class="md-block" style="margin: 12px 0;">
+        <!--<md-input-container class="md-block" style="margin: 12px 0;">
           <label>合同编号</label>
           <input ng-model="vm.checkData.ContractNumber">
-        </md-input-container>
+        </md-input-container>-->
         <md-input-container class="md-block" style="margin: 12px 0;">
+          <label>规格/型号</label>
+          <md-select style="font-family: 'SJQY' !important;" ng-model="vm.checkData.Model" multiple>
+            <md-option ng-value="m" ng-repeat="m in project.materialModels" style="font-family: 'SJQY' !important;">{{m}}</md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container flex class="" style="margin: 12px 0;" ng-repeat="m in vm.checkData.Volumes">
+          <label style="font-family: 'SJQY' !important;">{{m.Model}}数量(单位:{{project.materialUnit}})</label>
+          <input ng-model="m.Number">
+        </md-input-container>
+        <!--<md-input-container class="" style="margin: 12px 0;">
           <label>数量(单位:{{project.materialUnit}})</label>
           <input ng-model="vm.checkData.Number">
         </md-input-container>
+        <md-input-container class="" style="margin: 12px 0;">
+          <label>数量(单位:{{project.materialUnit}})</label>
+          <input ng-model="vm.checkData.Number">
+        </md-input-container>-->
         <md-input-container class="md-block" style="margin: 12px 0; height: 30px;">
           <label>验收时间</label>
           <md-datepicker ng-model="vm.checkData.CheckTime" md-open-on-focus></md-datepicker>
@@ -80,7 +88,7 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
       {{vm.checkData.IsInspection ? '需要':'不需要' }}
     </md-switch>-->
           <md-radio-group ng-model="vm.checkData.IsInspection">
-            <!--<md-radio-button style="display: inline-block; margin-bottom: 0;" value="2" class="md-primary">不送检</md-radio-button>&nbsp;&nbsp;-->
+            <md-radio-button style="display: inline-block; margin-bottom: 0;" value="4" class="md-primary">不送检</md-radio-button>&nbsp;&nbsp;
             <md-radio-button style="display: inline-block; margin-bottom: 0;" value="0" class="md-primary">例行送检</md-radio-button>&nbsp;&nbsp;
             <md-radio-button style="display: inline-block; margin-bottom: 0;" value="1" class="md-primary">天网送检</md-radio-button>
           </md-radio-group>

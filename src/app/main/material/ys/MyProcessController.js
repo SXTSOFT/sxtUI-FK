@@ -22,7 +22,7 @@
     vm.checkData = {};
     vm.EnclosureType = [];
     vm.checkData.WgCheck = 1;
-    vm.checkData.IsInspection = null;
+    vm.checkData.IsInspection = 4;
     vm.checkData.CheckTime = new Date();
     vm.checkData.sjReport = null;
     vm.checkData.MaterialTargets = [];
@@ -129,14 +129,14 @@
         return;
       }
 
-      if (!vm.checkData.ContractNumber) {
-        utils.alert('请输入合同编号');
-        return;
-      }
+      // if (!vm.checkData.ContractNumber) {
+      //   utils.alert('请输入合同编号');
+      //   return;
+      // }
 
-      if(vm.checkData.sjReport != null && $scope.data.imgs4.length == 0){
+      if (vm.checkData.sjReport != null && $scope.data.imgs4.length == 0) {
         utils.alert('请添加送检报告附件');
-          return;
+        return;
       }
 
       // if ($scope.data.imgs1.length == 0 &&
@@ -332,7 +332,17 @@
 
     })
 
-
+    $scope.$watch('vm.checkData.Model',
+      function () {
+        if (vm.checkData.Model) {
+          vm.checkData.Volumes = vm.checkData.Model.map(function (value) {
+            return {
+              Model: value,
+              Number: null
+            }
+          })
+        }
+      })
 
     $scope.$watch('project.procedureId',
       function () {
@@ -455,6 +465,13 @@
         api.material.MaterialService.getPartners($scope.project.idTree, 2)])
           .then(function (r) {
             $scope.suppliers2 = r[0].data.Rows;
+            for(var i = 0; i< r[0].data.Rows.length; i++){
+              for(var j = 0; j< r[1].data.Rows.length; j++){
+                if(r[1].data.Rows[j].UnitId == r[0].data.Rows[i].UnitId){
+                  r[1].data.Rows.splice(j,1)
+                }
+              }
+            }
             $scope.suppliers2 = $scope.suppliers2.concat(r[1].data.Rows);
           })
       }
