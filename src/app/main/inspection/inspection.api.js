@@ -157,7 +157,11 @@
         }).bind(),
 
         getrepair_tasks:function (parm) {
-          return get(http.url('/tasks/v1/repair_tasks?page_size='+parm.page_size+'&page_number='+parm.page_number));
+          if(parm.room_id){
+            return get(http.url('/tasks/v1/repair_tasks?page_size='+parm.page_size+'&page_number='+parm.page_number+'&room_id='+parm.room_id));
+          }else {
+            return get(http.url('/tasks/v1/repair_tasks?page_size='+parm.page_size+'&page_number='+parm.page_number));
+          }
         },
 
         insertrepair_tasks:function(parm){

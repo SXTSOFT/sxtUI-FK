@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 (function(){
   'use strict';
 
@@ -19,7 +19,7 @@
       globalDb = {
         id: 'sxt_global_db',
         noCache:false
-      },poolss={};
+      };
 
     provider.register = register;
     //provider.getNetwork = getNetwork;
@@ -30,7 +30,7 @@
     });
     provider.$q = function () {
       return provider.$q.$q.apply(provider, toArray(arguments));
-    };
+    }
 
 
     provider.$get = getApi;
@@ -250,7 +250,13 @@
     function setting(key, value) {
       return provider.$q(function (resolve) {
         if (!settingDb) {
-          settingDb = pouchdb('systemstting');
+          if (window.cordova){
+            settingDb = new SingleDB({
+              _id:'systemsetting'
+            });
+          }else {
+            settingDb = pouchdb('systemstting');
+          }
         }
         if (value) {
           settingDb.addOrUpdate({
@@ -363,12 +369,7 @@
                         }, function (err) {
                           err = err || {};
                           err.errcode = err.errcode || '080005';
-                          if (confirm('网络发生错误,如果确认网络正常,请继续尝试(080005)？')) {
-                            resolve(row);
-                          }
-                          else {
-                            reject(err);
-                          }
+                          reject(err)
                         });
                       },
                       function (err) {
@@ -490,7 +491,14 @@
     function uploadTask(itemOrFilter, value) {
       return provider.$q(function (resolve) {
         if (!uploadDb) {
-          uploadDb = pouchdb('systemupload');
+          if (window.cordova){
+            uploadDb = new SingleDB({
+              _id:'systemupload'
+            });
+          }else {
+            uploadDb = pouchdb('systemupload');
+          }
+
         }
         if (!angular.isFunction(itemOrFilter)) {
           if (networkState == 1) {
@@ -560,7 +568,9 @@
                 return userOffline(caller, lodb, args, cb, fn);
               }
               else {
-                return userNetwork(caller, lodb, args, cb, fn);
+                return userNetwork(caller, lodb, args, cb, fn).catch(function () {
+                  return userOffline(caller, lodb, args, cb, fn);
+                });
               }
             }
           }
@@ -741,7 +751,7 @@
                     }
                   }
                   else {
-                    lodb.saveItems(result.data);
+                     lodb.saveItems(result.data);
                     //db_save(cfg, result.data);
                   }
                   resolve(result);
@@ -831,12 +841,6 @@
       };
     }
 
-    SingleDB.prototype.destroy = function(){
-      return get_globalDb().destroy(this.cfg._id);
-    }
-    SingleDB.prototype.clear = function(){
-      return get_globalDb().clear();
-    }
     SingleDB.prototype.findAll = function (filter) {
       return db_findAll(this.cfg, filter);
     }
@@ -846,8 +850,7 @@
 
       return db_save({
         _id: this.cfg._id,
-        delete: !0,
-        fileField:this.cfg.fileField,
+        delete: !0
       }, id, this.idFn);
     }
     SingleDB.prototype.addOrUpdate = function (items) {
@@ -857,23 +860,15 @@
 
       if (!angular.isArray(items))
         items = [items];
-      return db_save({_id: cfg._id, fileField:cfg.fileField, upload: !0}, items, this.idFn);
+      return db_save({_id: cfg._id, upload: !0,fileField:cfg.fileField}, items, this.idFn);
     }
-    SingleDB.prototype.bulkAddOrUpdate=function(arr){
-      return db_save(this.cfg,arr,this.idFn);
-    }
-    SingleDB.prototype.getOrAdd=function (obj) {
-      return this.addOrUpdate(obj).then(function () {
-        return obj;
-      });
-    };
     SingleDB.prototype.saveItems = function (result) {
       return db_save(this.cfg, result, this.idFn);
     }
     SingleDB.prototype.get = function (id) {
       var self = this;
       return self.findAll(function (item) {
-        return  (id && self.idFn(item) == id) || (self.cfg.filter && self.cfg.filter(id)) ||self.cfg.single===true;
+        return  (id && self.idFn(item) == id) || (self.cfg.filter && self.cfg.filter(id,item)) ||self.cfg.single===true;
       }).then(function (r) {
         if(self.cfg.fileField && r.rows && r.rows[0]){
           return get_globalDb().get(r.rows[0]._id)
@@ -882,129 +877,124 @@
       });
     }
     SingleDB.prototype.allDocs = function () {
-      return provider.$q(function (resolve) {
+      return provider.$q.$q(function (resolve) {
         resolve();
       })
     }
 
     function get_globalDb() {
-      if(!globalDb.db && provider.$window.cordova){
-        globalDb.db = (function () {
-          var cache = {}, locks = {};
-          return {
-            get: get,
-            put: put,
-            allDocs: function () {
-              return provider.$q(function (resolve) {
-                resolve();
-              })
-            },
-            clear: function () {
-              return provider.$cordovaFile.removeRecursively(provider.$window.cordova.file.dataDirectory, "")
-                .then(function (success) {
-                  alert(success);
-                }, function (error) {
-                  console.log(error);
+      if(provider.$window.cordova){
+        if (!globalDb.db){
+          globalDb.db = (function () {
+            var cache = {}, locks = {};
+            return {
+              get: get,
+              put: put,
+              allDocs: function () {
+                return provider.$q(function (resolve) {
+                  resolve();
+                })
+              },
+              destroy: function (id) {
+                delete cache[id];
+                return provider.$q(function (resolve, reject) {
+                  lock(id, function (cb) {
+                    if(!provider.$window.cordova){
+                      resolve();
+                    }
+                    else {
+                      provider.$cordovaFile.removeFile(provider.$window.cordova.file.dataDirectory, id + '.bin').then(function () {
+                        resolve();
+                        cb();
+                      }).catch(function () {
+                        resolve();
+                        cb();
+                      })
+                    }
+                  })
                 });
-            },
-            destroy: function (id) {
-              delete cache[id];
+              }
+            }
+            function lock(id, doFn) {
+              var cb = function () {
+                var buff = locks[id];
+                buff.shift();
+                run();
+              }, run = function () {
+                var buff = locks[id];
+                if (buff && buff.length) {
+                  if (!buff.find(function (fn) {
+                      return fn.runing === true;
+                    })) {
+                    var fn = locks[id][0];
+                    fn.runing = true;
+                    fn(cb);
+                  }
+                }
+              };
+              if (!locks[id]) {
+                locks[id] = [];
+              }
+              locks[id].push(doFn);
+              run();
+            }
+
+            function get(id, cfg) {
               return provider.$q(function (resolve, reject) {
                 lock(id, function (cb) {
-                  if(!provider.$window.cordova){
-                    resolve();
-                  }
-                  else {
-                    provider.$cordovaFile.removeFile(provider.$window.cordova.file.dataDirectory, id + '.bin').then(function () {
-                      resolve();
+                  provider.$cordovaFile.readAsText(provider.$window.cordova.file.dataDirectory, id + '.bin').then(function (result) {
+                    var r = provider.$window.JSON.parse(result);
+                    //if(!globalDb.noCache || (cfg && cfg.fileField))
+                    //  cache[id] = r;
+                    cb();
+                    resolve(r);
+
+                  }).catch(function (result) {
+                    cb();
+                    reject(null);
+                  });
+                })
+                /*              if(cache[id]){
+                 resolve(cache[id]);
+                 }
+                 else{
+
+                 }*/
+              });
+            }
+
+            function put(doc, cfg) {
+              //if((!cfg || !cfg.upload) && !globalDb.noCache && !cfg.fileField)
+              //  cache[doc._id] = doc;
+
+              //if(cfg && cfg.upload && cache[doc._id])
+              //  delete cache[doc._id];
+
+
+              return provider.$q(function (resolve, reject) {
+                lock(doc._id, function (cb) {
+                  provider.$cordovaFile.writeFile(provider.$window.cordova.file.dataDirectory, doc._id + '.bin', provider.$window.JSON.stringify(doc), true)
+                    .then(function (result) {
+                      resolve(result)
                       cb();
-                    }).catch(function () {
-                      resolve();
-                      cb();
-                    })
-                  }
+                    }).catch(function (result) {
+                    reject(result);
+                    cb();
+                  })
                 })
               });
             }
-          }
-          function lock(id, doFn) {
-            var cb = function () {
-              var buff = locks[id];
-              buff.shift();
-              run();
-            }, run = function () {
-              var buff = locks[id];
-              if (buff && buff.length) {
-                if (!buff.find(function (fn) {
-                    return fn.runing === true;
-                  })) {
-                  var fn = locks[id][0];
-                  fn.runing = true;
-                  fn(cb);
-                }
-              }
-            };
-            if (!locks[id]) {
-              locks[id] = [];
-            }
-            locks[id].push(doFn);
-            run();
-          }
-
-          function get(id, cfg) {
-            return provider.$q(function (resolve, reject) {
-              lock(id, function (cb) {
-                provider.$cordovaFile.readAsText(provider.$window.cordova.file.dataDirectory, id + '.bin').then(function (result) {
-                  var r = provider.$window.JSON.parse(result);
-                  //if(!globalDb.noCache || (cfg && cfg.fileField))
-                  //  cache[id] = r;
-                  cb();
-                  resolve(r);
-
-                }).catch(function (result) {
-                  cb();
-                  reject(null);
-
-                });
-              })
-              /*              if(cache[id]){
-               resolve(cache[id]);
-               }
-               else{
-
-               }*/
-            });
-          }
-
-          function put(doc, cfg) {
-            //if((!cfg || !cfg.upload) && !globalDb.noCache && !cfg.fileField)
-            //  cache[doc._id] = doc;
-
-            //if(cfg && cfg.upload && cache[doc._id])
-            //  delete cache[doc._id];
-
-
-            return provider.$q(function (resolve, reject) {
-              lock(doc._id, function (cb) {
-                provider.$cordovaFile.writeFile(provider.$window.cordova.file.dataDirectory, doc._id + '.bin', provider.$window.JSON.stringify(doc), true)
-                  .then(function (result) {
-                    resolve(result)
-                    cb();
-                  }).catch(function (result) {
-                  reject(result);
-                  cb();
-                })
-              })
-            });
-          }
-        })();
+          })();
+        }
+      }else {
+        globalDb.db = pouchdb(globalDb.id);
       }
-      return globalDb.db || (globalDb.db = pouchdb(globalDb.id));
+      return globalDb.db;
     }
 
     function db_findAll(cfg, filter) {
       var db = get_globalDb();
-      return provider.$q(function (resolve, reject) {
+      return provider.$q.$q(function (resolve, reject) {
         var result = {
           "rows": []
         };
@@ -1030,39 +1020,10 @@
       }
       return o;
     }
-
     function db_save(cfg, result, idFn) {
-      return provider.$q(function (resolve, reject) {
-        var pools = poolss[cfg._id];
-        if(!pools)
-          pools = poolss[cfg._id] = [];
-        pools.push(task(cfg,result,idFn));
-        if(pools.length===1){
-          run();
-        }
-        function run() {
-          var first = pools[0];
-          if(first) {
-            first().then(function (r) {
-              pools.shift();
-              return r;
-            },function (r) {
-              pools.shift();
-              provider.$q.reject(r);
-            }).then(run, run);
-          }
-        }
-        function task(cfg, result, idFn) {
-          return function () {
-            return db_save1(cfg, result, idFn).then(resolve,reject);
-          }
-        }
-      });
-    }
-    function db_save1(cfg, result, idFn) {
-      if(!result) return provider.$q(function (resolve, reject) {resolve()});
+      if(!result) return;
       var db = get_globalDb();
-      return provider.$q(function (resolve, reject) {
+      return provider.$q.$q(function (resolve, reject) {
         db.get(cfg._id,cfg).then(save_to).catch(save_to);
         function save_to(doc) {
           provider.$q(function (resolve, reject) {
@@ -1133,7 +1094,9 @@
                 replace_db(result.Rows, doc.rows, idFn);
               }
             }
-            return db.put(doc, cfg).then(resolve, reject);
+            return db.put(doc, cfg).then(resolve, function (err) {
+                console.log(err);
+            });
 
           });
         }
@@ -1168,7 +1131,5 @@
         }
       }
     }
-
-
   }
 })();

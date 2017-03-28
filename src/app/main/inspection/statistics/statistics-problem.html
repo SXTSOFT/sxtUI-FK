@@ -1,5 +1,5 @@
 
-<md-tabs md-dynamic-height md-border-bottom>
+<md-tabs md-dynamic-height md-border-bottom ng-if="vm.show">
   <md-tab ng-click="vm.tab('')" label="全部">
 
   </md-tab>
@@ -18,14 +18,14 @@
 
 
 
-<md-content layout="column" flex style="background: #f5f5f5;height: 100%;" class="is-list">
-  <div ng-if="!vm.show" style="width: 100%;text-align: center;padding-top: 50%;height: 100%;">
-  <div layout="row" layout-sm="column" layout-align="space-around">
-    <md-progress-circular md-diameter="48"  class="md-accent" ></md-progress-circular>
-  </div>
-  <div  style="color: #808080;font-size: 14px;padding-top: 10px;">加载中</div>
-</div>
-  <div ng-if="vm.show">
+<md-content ng-if="vm.show" layout="column"  flex style="background: #f5f5f5;height: 100%;" class="is-list">
+  <!--<div ng-if="!vm.show" style="width: 100%;text-align: center;padding-top: 50%;height: 100%;">-->
+  <!--<div layout="row" layout-sm="column" layout-align="space-around">-->
+    <!--<md-progress-circular md-diameter="48"  class="md-accent" ></md-progress-circular>-->
+  <!--</div>-->
+  <!--<div  style="color: #808080;font-size: 14px;padding-top: 10px;">加载中</div>-->
+<!--</div>-->
+  <div>
   <div layout="column" ng-if="vm.count!=0"  style="height: 100%;">
     <md-card layout="row" style="min-height: 130px;" flex ng-repeat="item in vm.data | itemFilter:vm.data.type:vm.data.userid">
       <md-card-title class="p-0 m-0" style="background-color: white;" id="{{item.status}}">
@@ -43,11 +43,17 @@
     </md-card>
   </div>
 
-
   <div class="img-list" ng-if="vm.count==0"  style="width: 100%;text-align: center;padding-top: 50%;height: 100%;">
     <img  src="app/main/szgc/images/null.jpg" style="width: 120px;height: 120px;">
     <div  style="color: #808080;font-size: 14px;padding-top: 10px;">暂无数据</div>
   </div>
   </div>
 </md-content>
+
+<div ng-if="!vm.show" style="width: 100%;text-align: center;padding-top: 50%;height: 100%;">
+  <div layout="row" layout="column" layout-align="center center">
+    <md-progress-circular md-diameter="48"  class="md-accent" ></md-progress-circular>
+  </div>
+  <div  style="color: #808080;font-size: 14px;padding-top: 10px;">加载中</div>
+</div>
 

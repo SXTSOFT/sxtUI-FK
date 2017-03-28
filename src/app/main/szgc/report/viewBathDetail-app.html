@@ -195,14 +195,14 @@
             </div>
           </div>
           <div sxt-image-view is-container="true" ng-if="!vm.showData">
-          <sxt-images  ng-model="data.selected.step.GroupImg" project="data.projectInfo" ></sxt-images>
+          <sxt-images files="vm.files" ng-model="data.selected.step.GroupImg" project="data.projectInfo" ></sxt-images>
           </div>
       </fieldset>
 
       <fieldset>
           <legend>附件</legend>
           <div  sxt-image-view is-container="true">
-            <sxt-images  ng-model="data.selected.step.GroupImg2" project="data.projectInfo"></sxt-images>
+            <sxt-images files="vm.files" ng-model="data.selected.step.GroupImg2" project="data.projectInfo"></sxt-images>
           </div>
       </fieldset>
     </div>

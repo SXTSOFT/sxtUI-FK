@@ -19,7 +19,7 @@
     vm.selected = $stateParams.index ? $stateParams.index : 0;//tab 初始选项
     api.szgc.vanke.profile().then(function (profile) {
       vm.profile = profile.data.data;
-      vm.upload = function (item) {
+      vm.upload = function (item,callback) {
         var task = [];
         var roomId = item.room.room_id;
 
@@ -96,9 +96,20 @@
                 task.push(function () {
                   var copy = angular.extend({}, k)
                   delete copy.id;
-                  return api.inspection.estate.insertrepair_tasks(copy).then(function () {
-                    return api.inspection.estate.deleteRepair_tasks_off(k);
-                  });
+                  return $q(function (resolve,reject) {
+                    api.inspection.estate.insertrepair_tasks(copy).then(function () {
+                      return api.inspection.estate.deleteRepair_tasks_off(k).then(function () {
+                        resolve();
+                      }).catch(function () {
+                        resolve();
+                      });
+                    }).catch(function () {
+                      var msg="没有设置责任单位";
+                      utils.alert(msg);
+                      reject(msg);
+                    });
+                  })
+
                 })
               });
             }
@@ -109,12 +120,17 @@
           api.inspection.estate.putDelivery(item.delivery_id, {
             status: "inspection_completed"
           }).then(function () {
+            if (callback){
+              callback();
+            }
             utils.alert("验房成功");
             vm.selected = 2;
             vm.load();
           });
-        }, function () {
-          utils.alert("系统在上传数据的时候发生错误,上传失败");
+        }, function (msg) {
+          if (!msg){
+            utils.alert("系统在上传数据的时候发生错误,上传失败");
+          }
         }, "正在上传数据")
       }
 
@@ -190,13 +206,15 @@
             api.inspection.estate.putDelivery(item.delivery_id, {
               status: "processing"
             }).then(function (r) {
+              item.status="processing";
               api.inspection.estate.addOrUpdateDelivery(item).then(function () {
+                $rootScope.$emit("room_upload_over");
                 utils.confirm("抢单成功,是否继续?").then(function () {
-                }).catch(function () {
+                }).catch(function (err) {
                   vm.selected = 1;
                 });
                 vm.load();
-              }).catch(function () {
+              }).catch(function (err) {
                 utils.alert("系统在抢单,刷新单据状态的时候发生错误");
               });
             })
@@ -211,6 +229,10 @@
       vm.repeatCheck = function (item) {
         if (item.status == 'processing')
           $state.go('app.inspection.check', {delivery_id: item.delivery_id})
+
+        if (item.status=='inspection_completed'){
+          $state.go('app.statistics.problem', {roomid: item.room.room_id})
+        }
       }
 
 
@@ -291,6 +313,18 @@
       }
 
       vm.load();
+
+      $rootScope.$$listeners["room_upload"]=[];
+      $rootScope.$$listeners["room_upload"].push(function (v1,v2) {
+          var item=vm.data.processing.find(function (k) {
+             return k.delivery_id==v2;
+          })
+        if (item){
+          vm.upload(item,function () {
+            $rootScope.$emit("room_upload_over");
+          });
+        }
+      })
 
       $scope.$on('$destroy', $rootScope.$on('goBack', function (s, e) {
         e.cancel = true;

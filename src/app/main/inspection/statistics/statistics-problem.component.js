@@ -13,13 +13,16 @@
     });
 
   /**@ngInject*/
-  function statisticsProblemController($state,utils,$scope,api,auth,$q,$timeout){
+  function statisticsProblemController($state,$stateParams,utils,$scope,api,auth,$q,$timeout,$rootScope){
     var vm = this;
     vm.parm={
-      page_size:10 ,
+      page_size:500 ,
       page_number:1
     }
-
+    vm.roomid=$stateParams.roomid;
+    if (vm.roomid){
+      vm.parm.room_id=vm.roomid;
+    }
 
     auth.getUser().then(function (r) {
       vm.userid=r.Id;
@@ -77,11 +80,20 @@
         }
       })
     })
+    $rootScope.$on("goBack",function (ev,data) {
+      data.cancel=true;
+      $state.go('app.szgc.ys');
+    })
 
     vm.load=function() {
       return api.inspection.estate.getrepair_tasks(vm.parm).then(function (r) {
         $timeout(function(){
           vm.data=r.data.data;
+          if (vm.roomid){
+            vm.data=vm.data.filter(function (o) {
+              return o.room.id==vm.roomid;
+            });
+          }
           //vm.data=vm.dataList;
           vm.show=true;
         })

@@ -35,6 +35,7 @@
           }
           vm.loaded = true;
         }
+
       }).catch(function () {
         vm.loaded = false;
       });
@@ -161,7 +162,7 @@
           if (delivery&&vm.mapUrl){
             if ((delivery.water_degree!=0&&!delivery.water_degree)||
               (delivery.electricity_degree!=0&&!delivery.electricity_degree)){
-              utils.confirm("您还没有完成水电表抄送,是否现在就去抄送,选择否将直接返回").then(function () {
+              utils.confirm("是否抄读水电表").then(function () {
                 $state.go('app.meterreading.page', {delivery_id: $stateParams.delivery_id,userId:vm.userId})
               }).catch(function () {
                 $state.go("app.inspection.desktop",{index:1})
