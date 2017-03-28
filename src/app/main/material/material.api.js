@@ -202,8 +202,8 @@
           _id: 'Ms_BrandModels',
           idField: 'Id',
           dataType: 5,
-          filter: function (item, procedureId,supplierId) {
-            return item.ProcedureId == procedureId && item.SupplierId == supplierId;
+          filter: function (item, data) {
+            return item.ProcedureId == data.procedureId;
           },
         }).bind(function (args) {
           return $http.get($http.url('/api/MLPProcedure/GetBrandModels', args));

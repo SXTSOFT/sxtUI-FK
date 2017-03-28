@@ -66,7 +66,7 @@
         scope.materialModels = p.Model?p.Model.split(/、|；|;/):p.Model;
         scope.materialSupply = p.Supply;
         scope.materialSupplier = p.SupplierId?p.SupplierId.split(','):[];
-        scope.isGeneral = p.isGeneral;
+        scope.isGeneral = p.IsGeneral;
         ctrl.$setViewValue(scope.value);
         if(!scope.inc) {
           var odd = appCookie.get('prev_material'),

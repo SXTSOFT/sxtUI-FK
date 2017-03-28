@@ -646,6 +646,10 @@
         function (){
           return api.material.TargetService.getAll(0);
         },
+        // 获取所有品牌的规格
+        function (){
+          return api.material.MaterialService.GetBrandModels();
+        },
 
         function (){
           return api.material.TargetRelationService.getByProjectId({projectId:project.project_id,materialId:null,isChecked:true});

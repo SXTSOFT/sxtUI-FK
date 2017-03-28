@@ -29,11 +29,11 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
         <div style="height: 6px"></div>
         <md-input-container class="md-block" style="margin: 12px 0;">
           <label>厂家/品牌</label>
-          <md-select ng-model="vm.checkData.Manufactor" md-on-close="clearSearchTerm()" data-md-container-class="selectdemoSelectHeader">
+          <md-select ng-model="vm.checkData.ManufactorId" md-on-close="clearSearchTerm()" data-md-container-class="selectdemoSelectHeader">
             <md-select-header class="demo-select-header">
               <input ng-model="searchTerm" type="search" ng-keydown="$event.stopPropagation()" placeholder="搜索.." class="demo-header-searchbox md-text">
             </md-select-header>
-            <md-option ng-value="s.ShortName?s.ShortName:s.Name" ng-repeat="s in vm.supplier |
+            <md-option ng-value="s.Id" ng-repeat="s in vm.supplier |
               filter:searchTerm">{{s.ShortName?s.ShortName:s.Name}}</md-option>
           </md-select>
         </md-input-container>
@@ -141,13 +141,13 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
         </fieldset>
       </div>
       <md-divider ng-if="vm.checkData.WgCheck==1 && vm.checkData.IsInspection==1 && project.procedureId"></md-divider>
-      <md-list-item ng-if="vm.checkData.IsInspection" ng-click="vm.AttachmentSHow = true">
+      <md-list-item ng-if="vm.checkData.IsInspection!=4" ng-click="vm.AttachmentSHow = true">
         <div class="md-list-item-text" flex="25" layout="column" style="height: 76px; line-height: 48px;">
           <p style="text-align: left;">附件</p>
         </div>
         <a class="md-secondary">添加</a>
       </md-list-item>
-      <md-divider ng-if="vm.checkData.IsInspection"></md-divider>
+      <md-divider ng-if="vm.checkData.IsInspection!=4"></md-divider>
       <md-subheader style="background-color: #f5f6f7;" class="md-no-sticky" ng-hide="data.imgs1.length == 0 && data.imgs2.length == 0 && data.imgs3.length == 0&& data.imgs4.length
 == 0&& data.imgs5.length == 0">附件
       </md-subheader>

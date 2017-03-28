@@ -114,26 +114,37 @@
 
       vm.checkData.SupplierId = $scope.project.materialSupply == 0 ? vm.checkData.Manufactor : vm.checkData.SupplierId;
 
-      if (!vm.checkData.SupplierId) {
-        utils.alert('请选择供货方');
-        return;
+      if ($scope.project.materialSupply != 0) {
+        if (!vm.checkData.SupplierId) {
+          utils.alert('请选择供货方');
+          return;
+        }
       }
 
-      if (!vm.checkData.Manufactor) {
+      if (!vm.checkData.ManufactorId) {
         utils.alert('请输入厂家/品牌');
         return;
       }
 
-      if (!vm.checkData.Number) {
-        utils.alert('请输入数量');
-        return;
-      }
-
+      // if (!vm.checkData.Volumes) {
+      //   utils.alert('请输入数量');
+      //   return;
+      // }
+      var modelNumber = false;
+      vm.checkData.Volumes.forEach(function (v) {
+        if (!v.Number) {
+          aa = true;
+          utils.alert('请输入' + v.Model + '数量');
+        }
+      })
       // if (!vm.checkData.ContractNumber) {
       //   utils.alert('请输入合同编号');
       //   return;
       // }
-
+      if (modelNumber) {
+        return;
+      }
+        
       if (vm.checkData.sjReport != null && $scope.data.imgs4.length == 0) {
         utils.alert('请添加送检报告附件');
         return;
@@ -329,7 +340,7 @@
       } else {
         vm.supplier = $scope.suppliers;
       }
-
+      console.log(vm.supplier);
     })
 
     $scope.$watch('vm.checkData.Model',
@@ -344,8 +355,22 @@
         }
       })
 
+    $scope.$watch('vm.checkData.ManufactorId',
+      function () {
+        if ($scope.project.isGeneral == 0) {
+          var a = vm.Manufactors.find(function (val) {
+            return val.SupplierId == vm.checkData.ManufactorId
+          })
+          $scope.project.materialModels = a.Models.split(';')
+          console.log($scope.project.materialModels)
+        }
+      })
+
     $scope.$watch('project.procedureId',
       function () {
+        api.material.MaterialService.GetBrandModels({ procedureId: $scope.project.procedureId }).then(function (res) {
+          vm.Manufactors = res.data.Rows
+        })
         vm.checkData.SupplierId = null;
         vm.checkData.Manufactor = null;
         vm.checkData.Model = null;
@@ -465,10 +490,10 @@
         api.material.MaterialService.getPartners($scope.project.idTree, 2)])
           .then(function (r) {
             $scope.suppliers2 = r[0].data.Rows;
-            for(var i = 0; i< r[0].data.Rows.length; i++){
-              for(var j = 0; j< r[1].data.Rows.length; j++){
-                if(r[1].data.Rows[j].UnitId == r[0].data.Rows[i].UnitId){
-                  r[1].data.Rows.splice(j,1)
+            for (var i = 0; i < r[0].data.Rows.length; i++) {
+              for (var j = 0; j < r[1].data.Rows.length; j++) {
+                if (r[1].data.Rows[j].UnitId == r[0].data.Rows[i].UnitId) {
+                  r[1].data.Rows.splice(j, 1)
                 }
               }
             }
