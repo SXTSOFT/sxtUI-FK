@@ -318,6 +318,8 @@
     vm.upload = function () {
       api.setNetwork(0).then(function () {
         vm.uploadInfo.uploading = true;
+        $scope.uploadInfo.current=0;
+        $scope.uploadInfo.total=0;
         vm.uploadInfo.percent = '0%'
         $mdDialog.show({
           controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
@@ -428,7 +430,8 @@
             }
             buildTask().then(function (tasks) {
               api.task(tasks)(function (percent, current, total) {
-                vm.uploadInfo.percent = parseInt(percent * 100) + ' %';
+                var percent=percent?parseInt(percent * 100):0;
+                vm.uploadInfo.percent = percent + ' %';
                 vm.uploadInfo.current = current;
                 vm.uploadInfo.total = total;
               }, function () {

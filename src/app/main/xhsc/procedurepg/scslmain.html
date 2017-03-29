@@ -26,9 +26,12 @@
                 <md-button ng-click="vm.download(k,null,$event)" ng-if="!k.isComplete" style="margin: 6px -28px" >
                   <i class="icon icon-download s30"></i>
                 </md-button>
-                <md-button ng-click="vm.action(k,$event)"  ng-if="k.isComplete" style="margin: 6px -28px"   aria-label="More">
-                  <img ng-src="app/main/xhsc/images/more_vert.svg" style="color: rgba(0,0,0,0.87)"></img>
-                </md-button>
+                <md-button  ng-if="k.isComplete"  ng-click="vm.uploadW(k,$event)" style="min-width: 40px;width: 40px;padding: 6px 0px;">上传</md-button>
+                <md-button  ng-if="k.isComplete"  ng-click="vm.Refresh(k,$event)"  style="min-width: 40px;width: 40px;padding: 6px 0px;margin-right:2px ">刷新</md-button>
+
+                <!--<md-button ng-click="vm.action(k,$event)"  ng-if="k.isComplete" style="margin: 6px -28px"   aria-label="More">-->
+                  <!--<img ng-src="app/main/xhsc/images/more_vert.svg" style="color: rgba(0,0,0,0.87)"></img>-->
+                <!--</md-button>-->
               </md-list-item>
             </md-list>
             <span class="border1px bottom1px"></span>

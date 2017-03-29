@@ -208,12 +208,15 @@
 
     vm.upload = function (item) {
       item.progress = 0;
-      remote.Project.getMap(item.ProjectID).then(function (result) {
-        if (result.data && result.data.length) {
-          $mdDialog.show({
-            controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
-              $scope.item = item;
-              $scope.loading=false;
+      $mdDialog.show({
+        controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
+          $scope.item = item;
+          $scope.loading=false;
+          item.percent=100+"%";
+          item.current=0;
+          item.total=0;
+          remote.Project.getMap(item.ProjectID).then(function (result) {
+            if (result.data && result.data.length) {
               var pk = pack.sc.up(item.AssessmentID);
               pk.upload(function (proc, curent, total) {
                 if (proc != -1) {
@@ -254,20 +257,19 @@
                   }
                 }
               });
-            }],
-            template: '<md-dialog aria-label="正在上传..."  ng-cloak><md-dialog-content> <md-progress-circular md-diameter="28" md-mode="indeterminate"></md-progress-circular><p ng-if="!loading" style="padding-left: 6px;">正在上传：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p><p ng-if="loading" style="padding-left: 6px;">正在刷新数据,请稍后....</p></md-dialog-content></md-dialog>',
-            parent: angular.element(document.body),
-            clickOutsideToClose: false,
-            fullscreen: false
-          });
-        }
-        else {
-          utils.alert(result.data.ErrorMessage);
-        }
-      }).catch(function () {
-        utils.alert('网络出现异常')
-      })
-
+            }
+            else {
+              utils.alert(result.data.ErrorMessage);
+            }
+          }).catch(function () {
+            utils.alert('网络出现异常')
+          })
+        }],
+        template: '<md-dialog aria-label="正在上传..."  ng-cloak><md-dialog-content> <md-progress-circular md-diameter="28" md-mode="indeterminate"></md-progress-circular><p ng-if="!loading" style="padding-left: 6px;">正在上传：{{item.ProjectName}} {{item.percent}}({{item.current}}/{{item.total}})</p><p ng-if="loading" style="padding-left: 6px;">正在刷新数据,请稍后....</p></md-dialog-content></md-dialog>',
+        parent: angular.element(document.body),
+        clickOutsideToClose: false,
+        fullscreen: false
+      });
     }
 
     vm.go = function (item) {
@@ -281,6 +283,19 @@
         $state.go("app.xhsc.scsl.sclist", routeData)
       })
     }
+
+
+    vm.uploadW=function (item,evt) {
+      vm.upload(item);
+      evt.stopPropagation();
+    }
+
+
+    vm.Refresh=function (item,evt) {
+      vm.download(item, true, evt);
+      evt.stopPropagation();
+    }
+
 
     vm.action = function (item, evt) {
       $mdBottomSheet.show({
@@ -301,8 +316,7 @@
           }, {
             title: '上 传',
             action: function () {
-              vm.upload(item);
-              $mdBottomSheet.hide();
+
             }
           }, {
             title: '删 除',
