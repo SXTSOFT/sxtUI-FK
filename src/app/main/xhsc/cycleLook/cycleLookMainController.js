@@ -412,9 +412,9 @@
                     });
                   }
                   resolve(tasks);
+                }).catch(function (err) {
+                  reject(err)
                 })
-              }).catch(function () {
-                reject(tasks);
               })
             }
             buildTask().then(function (tasks) {

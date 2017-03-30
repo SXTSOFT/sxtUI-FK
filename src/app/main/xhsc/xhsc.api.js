@@ -1781,7 +1781,6 @@
         weekProblemRecordFileCreate: $http.wrap({ //创建文件
           offline: true,
           dataType: 1,
-          fileField: ['FileContent'],
           mark: "weekUp",
           _id: 'weekInspectionProblemRecordFile',
           idField: 'ProblemRecordFileID',
@@ -1793,7 +1792,6 @@
           idField: function (d) {
             return d.Id || d.ProblemRecordFileID
           },
-          fileField: ['FileContent'],
           fn: function (ProblemRecordFileID) {
             return $http.get($http.url('/api/WeekInspects/SecurityCheckpoint/GetProblemRecordFile/' + ProblemRecordFileID)).then(function (r) {
               if (r && !angular.isArray(r.data)) {
@@ -1813,7 +1811,6 @@
         weekProblemRecordFileDelete: $http.wrap({ //删除文件
           offline: true,
           dataType: 1,
-          fileField: ['FileContent'],
           _id: 'weekInspectionProblemRecordFile',
           idField: 'ProblemRecordFileID',
           delete: true
@@ -1868,15 +1865,13 @@
           offline: true,
           dataType: 1,
           mark: "up",
-          fileField: ['FileContent'],
-          _id: 'InspectionProblemRecordFile',
+          _id: 'secInspectionProblemRecordFile',
           idField: 'ProblemRecordFileID',
           upload: true
         }),
         ProblemRecordFileQuery: $http.wrap({ //查询文件
           offline: true,
-          _id: 'InspectionProblemRecordFile',
-          fileField: ['FileContent'],
+          _id: 'secInspectionProblemRecordFile',
           idField: function (d) {
             return d.Id || d.ProblemRecordFileID
           },
@@ -1899,8 +1894,7 @@
         ProblemRecordFileDelete: $http.wrap({ //删除文件
           offline: true,
           dataType: 1,
-          fileField: ['FileContent'],
-          _id: 'InspectionProblemRecordFile',
+          _id: 'secInspectionProblemRecordFile',
           idField: 'ProblemRecordFileID',
           delete: true
         }),
@@ -2186,7 +2180,6 @@
         cycleProblemRecordFileCreate: $http.wrap({ //创建文件
           offline: true,
           dataType: 1,
-          fileField: ['FileContent'],
           mark: "cycleUp",
           _id: 'cycleInspectionProblemRecordFile',
           idField: 'ProblemRecordFileID',
@@ -2195,7 +2188,6 @@
         cycleProblemRecordFileQuery: $http.wrap({ //查询文件
           offline: true,
           _id: 'cycleInspectionProblemRecordFile',
-          fileField: ['FileContent'],
           idField: function (d) {
             return d.Id || d.ProblemRecordFileID
           },
@@ -2216,7 +2208,6 @@
           }
         }),
         cycleProblemRecordFileDelete: $http.wrap({ //删除文件
-          fileField: ['FileContent'],
           offline: true,
           dataType: 1,
           _id: 'cycleInspectionProblemRecordFile',
@@ -2440,7 +2431,6 @@
           problemRecordFileCreate: $http.wrap({ //创建文件
             offline: true,
             dataType: 1,
-            fileField: ['FileContent'],
             mark: "selfZbUp",
             _id: 'selfZbInspectionProblemRecordFile',
             idField: 'Id',
@@ -2449,7 +2439,6 @@
           problemRecordFileQuery: $http.wrap({ //查询文件
             offline: true,
             _id: 'selfZbInspectionProblemRecordFile',
-            fileField: ['FileContent'],
             idField: function (d) {
               return d.Id || d.ProblemRecordFileID
             },
@@ -2459,7 +2448,6 @@
             }
           }),
           problemRecordFileDelete: $http.wrap({ //删除文件
-            fileField: ['FileContent'],
             offline: true,
             dataType: 1,
             _id: 'selfZbInspectionProblemRecordFile',
@@ -2516,7 +2504,6 @@
           problemRecordFileCreate: $http.wrap({ //创建文件
             offline: true,
             dataType: 1,
-            fileField: ['FileContent'],
             mark: "selfSafeUp",
             _id: 'selfSafeInspectionProblemRecordFile',
             idField: 'Id',
@@ -2525,7 +2512,6 @@
           problemRecordFileQuery: $http.wrap({ //查询文件
             offline: true,
             _id: 'selfSafeInspectionProblemRecordFile',
-            fileField: ['FileContent'],
             idField: function (d) {
               return d.Id || d.ProblemRecordFileID
             },
@@ -2535,7 +2521,6 @@
             }
           }),
           problemRecordFileDelete: $http.wrap({ //删除文件
-            fileField: ['FileContent'],
             offline: true,
             dataType: 1,
             _id: 'selfSafeInspectionProblemRecordFile',

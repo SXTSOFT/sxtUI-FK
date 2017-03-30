@@ -1,8 +1,16 @@
 {
+    "cordova-plugin-app-version": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-app-version"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "cordova-plugin-camera": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-camera@~2.4.0"
+            "id": "cordova-plugin-camera"
         },
         "is_top_level": true,
         "variables": {
@@ -10,18 +18,18 @@
             "PHOTOLIBRARY_USAGE_DESCRIPTION": " "
         }
     },
-    "cordova-plugin-device": {
+    "cordova-plugin-file": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-device"
+            "id": "cordova-plugin-file"
         },
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-file": {
+    "cordova-plugin-file-opener2": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-file@~4.3.2"
+            "id": "cordova-plugin-file-opener2"
         },
         "is_top_level": true,
         "variables": {}
@@ -29,7 +37,39 @@
     "cordova-plugin-file-transfer": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-file-transfer@~1.6.2"
+            "id": "cordova-plugin-file-transfer"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-keyboard": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-keyboard"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-network-information": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-network-information"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-whitelist": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-whitelist@1"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-compat": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-compat"
         },
         "is_top_level": true,
         "variables": {}
@@ -46,34 +86,18 @@
             "PHOTOLIBRARY_USAGE_DESCRIPTION": "This app needs photo library access"
         }
     },
-    "cordova-plugin-wkwebview-engine": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-wkwebview-engine"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-compat": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-compat"
-        },
-        "is_top_level": false,
-        "variables": {}
-    },
-    "cordova-plugin-whitelist": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-whitelist@1"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-splashscreen": {
         "source": {
             "type": "registry",
             "id": "cordova-plugin-splashscreen@4.0.2"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-wkwebview-engine": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-wkwebview-engine"
         },
         "is_top_level": true,
         "variables": {}
@@ -88,14 +112,6 @@
             "APP_KEY": "2de17df7f407b88bc0a6f745"
         }
     },
-    "cordova-plugin-jcore": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-jcore"
-        },
-        "is_top_level": false,
-        "variables": {}
-    },
     "ionic-plugin-deploy": {
         "source": {
             "type": "git",
@@ -103,6 +119,22 @@
             "subdir": "."
         },
         "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-device": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-device"
+        },
+        "is_top_level": false,
+        "variables": {}
+    },
+    "cordova-plugin-jcore": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-jcore"
+        },
+        "is_top_level": false,
         "variables": {}
     }
 }

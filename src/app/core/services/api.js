@@ -354,8 +354,8 @@
             i++;
           });
           resolve(arr);
-        }).catch(function () {
-          reject();
+        }).catch(function (err) {
+          reject(err);
         });
       })
     }
