@@ -253,7 +253,7 @@
                         item.Children.forEach(function (area) {
                           tasks.push(
                             function () {
-                              return remote.safe.getSafePointGeo(item.InspectionID, item.AcceptanceItemID, area.AreaID)
+                              return remote.safe.weekGetSafePointGeo(item.InspectionID, item.AcceptanceItemID, area.AreaID)
                             }
                           );
                         })
@@ -334,11 +334,11 @@
               var tasks = [];
               return $q(function (resolve, reject) {
                 api.getUploadData(function (cfg) {
-                  return cfg.mark == "weekUp"||cfg.mark =="allUp";
+                  return cfg.mark == "weekUp";
                 }).then(function (val) {
                   if (val && val.length) {
                     var points = val.find(function (o) {
-                      return o.key == "InspectionPoint";
+                      return o.key == "weekPointGeos";
                     });
                     var ckpoints = val.find(function (o) {
                       return o.key == "weekPoints";

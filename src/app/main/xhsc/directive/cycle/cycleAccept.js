@@ -61,7 +61,7 @@
                     return item.AreaID==AreaID&&item.InspectionExtendID==inspectionId;
                   }
                 })(scope.procedure,scope.regionId,scope.inspectionId).then(function (r) {
-                  remote.Procedure.InspectionPoint.query(scope.inspectionId,scope.procedure, scope.regionId).then(function (r1) {
+                  remote.cycleLook.cycleGeoQuery(scope.inspectionId,scope.procedure, scope.regionId).then(function (r1) {
                     fg.data = r.data,fs=[];
                     r.data.forEach(function (c) {
                       var p = r1.data.find(function (p1) {
@@ -102,7 +102,7 @@
                   MeasurePointID:layer.properties.$id,
                   geometry:layer
                 };
-                remote.Procedure.InspectionPoint.create(point);
+                remote.cycleLook.cycleGeoCreate(point);
                 if(isNew || !fg.data.find(function (d) {
                     return d.PositionID == point.MeasurePointID;
                   })) {
@@ -151,7 +151,7 @@
               onDelete: function (layer,cb) {
                 var id = layer.properties.$id;
                 //删除几何点
-                remote.Procedure.InspectionPoint.delete({MeasurePointID:id}).then(function (r) {
+                remote.cycleLook.cycleGeoDelete({MeasurePointID:id}).then(function (r) {
                   var v = fg.data.find(function (d) {
                     return d.PositionID == id;
                   }),ix = fg.data.indexOf(v);

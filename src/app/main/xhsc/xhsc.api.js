@@ -1648,6 +1648,7 @@
           });
         })
       },
+
       safe: {
         dynPointCreate: $http.wrap({ //创建点
           offline: true,
@@ -1733,6 +1734,38 @@
         }),
 
 
+
+
+        weekGetSafePointGeo: $http.wrap({
+          _id: 'weekPointGeos',
+          offline: true,
+          idField: 'MeasurePointID',
+          dataType: 1,
+          fn: function (inspectionId, acceptanceItemId, areaId) {
+            return $http.get($http.url('/api/WeekInspects/SecurityCheckpoint/GetSecurityPoint/' + inspectionId + '/' + areaId + '/' + acceptanceItemId));
+          }
+        }),
+        weekPointGeoCreate:$http.wrap({ //创建点
+          offline: true,
+          dataType: 1,
+          mark: "weekUp",
+          _id: "weekPointGeos",
+          idField: 'MeasurePointID',
+          upload: true
+        }),
+        weekPointGeoQuery: $http.wrap({ //查询点
+          offline: true,
+          dataType: 1,
+          _id: "weekPointGeos",
+          idField: 'MeasurePointID'
+        }),
+        weekpointGeoDelete: $http.wrap({ //删除点
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "weekPointGeos",
+          idField: 'MeasurePointID'
+        }),
         weekPointCreate: $http.wrap({ //创建点
           offline: true,
           dataType: 1,
@@ -1814,6 +1847,39 @@
           _id: 'weekInspectionProblemRecordFile',
           idField: 'ProblemRecordFileID',
           delete: true
+        }),
+
+
+
+        safePointGeo: $http.wrap({
+          _id: 'PointGeos',
+          offline: true,
+          idField: 'MeasurePointID',
+          dataType: 1,
+          fn: function (inspectionId, acceptanceItemId, areaId) {
+            return $http.get($http.url('/api/Acceptances/SecurityCheckpoint/GetSecurityPoint/' + inspectionId + '/' + areaId + '/' + acceptanceItemId));
+          }
+        }),
+        pointGeoCreate:$http.wrap({ //创建点
+          offline: true,
+          dataType: 1,
+          mark: "up",
+          _id: "PointGeos",
+          idField: 'MeasurePointID',
+          upload: true
+        }),
+        pointGeoQuery: $http.wrap({ //查询点
+          offline: true,
+          dataType: 1,
+          _id: "PointGeos",
+          idField: 'MeasurePointID'
+        }),
+        pointGeoDelete: $http.wrap({ //删除点
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "PointGeos",
+          idField: 'MeasurePointID'
         }),
 
         ckPointCreate: $http.wrap({ //创建点
@@ -2132,6 +2198,38 @@
         })
       },
       cycleLook:{
+        cyclePointGeo: $http.wrap({
+          _id: 'cyclePointGeos',
+          offline: true,
+          idField: 'MeasurePointID',
+          dataType: 1,
+          fn: function (inspectionId, acceptanceItemId, areaId) {
+            return $http.get($http.url('/api/cycle/SecurityCheckpoint/GetSecurityPoint/' + inspectionId + '/' + areaId + '/' + acceptanceItemId));
+          }
+        }),
+        cycleGeoCreate:$http.wrap({ //创建点
+          offline: true,
+          dataType: 1,
+          mark: "cycleUp",
+          _id: "cyclePointGeos",
+          idField: 'MeasurePointID',
+          upload: true
+        }),
+        cycleGeoQuery: $http.wrap({ //查询点
+          offline: true,
+          dataType: 1,
+          _id: "cyclePointGeos",
+          idField: 'MeasurePointID'
+        }),
+        cycleGeoDelete: $http.wrap({ //删除点
+          offline: true,
+          dataType: 1,
+          delete: true,
+          _id: "cyclePointGeos",
+          idField: 'MeasurePointID'
+        }),
+
+
         cyclePointCreate: $http.wrap({ //创建点
           offline: true,
           dataType: 1,
@@ -2211,90 +2309,6 @@
           offline: true,
           dataType: 1,
           _id: 'cycleInspectionProblemRecordFile',
-          idField: 'ProblemRecordFileID',
-          delete: true
-        })
-      },
-      yf:{
-        yfPointCreate: $http.wrap({ //创建点
-          offline: true,
-          dataType: 1,
-          mark: "yfUp",
-          _id: "yfPoints",
-          idField: 'CheckpointID',
-          upload: true
-        }),
-        yfPointQuery: $http.wrap({ //查询点
-          offline: true,
-          dataType: 1,
-          _id: "yfPoints",
-          idField: 'CheckpointID'
-        }),
-        yfPointDelete: $http.wrap({ //删除点
-          offline: true,
-          dataType: 1,
-          delete: true,
-          _id: "yfPoints",
-          idField: 'CheckpointID'
-        }),
-        yfProblemRecordCreate: $http.wrap({ //创建记录
-          offline: true,
-          dataType: 1,
-          upload: true,
-          mark: "yfUp",
-          _id: "yfProblemRecord",
-          idField: 'ProblemRecordID'
-        }),
-        yfProblemRecordQuery: $http.wrap({ //查询记录
-          offline: true,
-          dataType: 1,
-          filter: function (item, CheckpointID) {
-            return item.CheckpointID == CheckpointID;
-          },
-          _id: "yfProblemRecord",
-          idField: 'ProblemRecordID'
-        }),
-        yfProblemRecordDelete: $http.wrap({// 删除记录
-          offline: true,
-          dataType: 1,
-          delete: true,
-          _id: "yfProblemRecord",
-          idField: 'ProblemRecordID'
-        }),
-        yfProblemRecordFileCreate: $http.wrap({ //创建文件
-          offline: true,
-          dataType: 1,
-          mark: "yfUp",
-          _id: 'yfInspectionProblemRecordFile',
-          idField: 'ProblemRecordFileID',
-          upload: true
-        }),
-        yfProblemRecordFileQuery: $http.wrap({ //查询文件
-          offline: true,
-          _id: 'yfInspectionProblemRecordFile',
-          idField: function (d) {
-            return d.Id || d.ProblemRecordFileID
-          },
-          fn: function (ProblemRecordFileID) {
-            return $http.get($http.url('/api/house/SecurityCheckpoint/GetProblemRecordFile/' + ProblemRecordFileID)).then(function (r) {
-              if (r && !angular.isArray(r.data)) {
-                r.data = [r.data];
-                r.data.forEach(function (t) {
-                  t.isUpload = true;
-                })
-              }
-              return r;
-            });
-          },
-          dataType: 1,
-          filter: function (item, ProblemRecordID) {
-            return item.ProblemRecordID == ProblemRecordID;
-          }
-        }),
-        yfProblemRecordFileDelete: $http.wrap({ //删除文件
-          offline: true,
-          dataType: 1,
-          _id: 'yfInspectionProblemRecordFile',
           idField: 'ProblemRecordFileID',
           delete: true
         })

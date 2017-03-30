@@ -244,7 +244,7 @@
                         item.Children.forEach(function (area) {
                           tasks.push(
                             function () {
-                              return remote.safe.getSafePointGeo(item.InspectionID, item.AcceptanceItemID, area.AreaID)
+                              return remote.cycleLook.cyclePointGeo(item.InspectionID, item.AcceptanceItemID, area.AreaID)
                             }
                           );
                         })
@@ -324,11 +324,11 @@
               var tasks = [];
               return $q(function (resolve, reject) {
                 api.getUploadData(function (cfg) {
-                  return cfg.mark == "cycleUp"||cfg.mark =="allUp";
+                  return cfg.mark == "cycleUp";
                 }).then(function (val) {
                   if (val && val.length) {
                     var points = val.find(function (o) {
-                      return o.key == "InspectionPoint";
+                      return o.key == "cyclePoints";
                     });
                     var ckpoints = val.find(function (o) {
                       return o.key == "cyclePoints";

@@ -190,7 +190,7 @@
                     item.Children.forEach(function (area) {
                       tasks.push(
                         function () {
-                          return remote.safe.getSafePointGeo(item.InspectionID, item.AcceptanceItemID, area.AreaID)
+                          return remote.safe.safePointGeo(item.InspectionID, item.AcceptanceItemID, area.AreaID)
                         }
                       );
                     })
@@ -265,11 +265,11 @@
               var tasks = [];
               return $q(function (resolve, reject) {
                 api.getUploadData(function (cfg) {
-                  return cfg.mark == "up"||cfg.mark=="allUp";
+                  return cfg.mark == "up";
                 }).then(function (val) {
                   if (val && val.length) {
                     var points = val.find(function (o) {
-                      return o.key == "InspectionPoint";
+                      return o.key == "PointGeos";
                     });
 
                     var ckpoints = val.find(function (o) {
@@ -284,7 +284,7 @@
                     var problemRecordsVal=problemRecords && problemRecords.vals ? filterUpload(problemRecords.vals) : [];
 
                     var InspectionProblemRecordFiles = val.find(function (o) {
-                      return o.key == "InspectionProblemRecordFile";
+                      return o.key == "secInspectionProblemRecordFile";
                     });
                     var InspectionProblemRecordFilesVal=InspectionProblemRecordFiles && InspectionProblemRecordFiles.vals ?
                       filterUpload(InspectionProblemRecordFiles.vals): [];
