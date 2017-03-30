@@ -309,8 +309,8 @@
       api.setNetwork(0).then(function () {
         vm.uploadInfo.uploading = true;
         vm.uploadInfo.percent = '0%';
-        $scope.uploadInfo.current=0;
-        $scope.uploadInfo.total=0;
+        vm.uploadInfo.current=0;
+        vm.uploadInfo.total=0;
         $mdDialog.show({
           controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
             $scope.uploadInfo = vm.uploadInfo;
@@ -330,7 +330,7 @@
                 }).then(function (val) {
                   if (val && val.length) {
                     var points = val.find(function (o) {
-                      return o.key == "cyclePoints";
+                      return o.key == "cyclePointGeos";
                     });
                     var ckpoints = val.find(function (o) {
                       return o.key == "cyclePoints";

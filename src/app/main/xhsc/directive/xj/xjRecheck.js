@@ -73,7 +73,7 @@
                     return  item.AreaID==scope.regionId&&item.InspectionExtendID==inspectionId;
                   }
                 })(scope.inspectionId),
-                remote.safe.getSafePointGeo()
+                remote.cycleLook.cyclePointGeo()
               ]).then(function (res) {
                 var fs = [];
                 fg.data = res[0].data;
