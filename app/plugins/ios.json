@@ -10,9 +10,6 @@
         "cordova-plugin-app-version": {
             "PACKAGE_NAME": "com.vanke.sxt.iphone"
         },
-        "cordova-plugin-camera": {
-            "PACKAGE_NAME": "com.vanke.sxt.iphone"
-        },
         "cordova-plugin-file": {
             "PACKAGE_NAME": "com.vanke.sxt.iphone"
         },
@@ -30,12 +27,14 @@
         },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.vanke.sxt.iphone"
+        },
+        "cordova-plugin-camera": {
+            "CAMERA_USAGE_DESCRIPTION": " ",
+            "PHOTOLIBRARY_USAGE_DESCRIPTION": " ",
+            "PACKAGE_NAME": "com.sxt.szgc"
         }
     },
     "dependent_plugins": {
-        "cordova-plugin-compat": {
-            "PACKAGE_NAME": "com.vanke.sxt.iphone"
-        },
         "cordova-plugin-image-picker": {
             "PHOTO_LIBRARY_USAGE_DESCRIPTION": " ",
             "PACKAGE_NAME": "com.vanke.sxt.iphone"
@@ -45,6 +44,9 @@
         },
         "cordova-plugin-wkwebview-engine": {
             "PACKAGE_NAME": "com.vanke.sxt.iphone"
+        },
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.sxt.szgc"
         }
     }
 }

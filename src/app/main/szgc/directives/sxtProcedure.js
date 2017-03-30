@@ -139,11 +139,11 @@
         switch (scope.regionType) {
           case 1:
             t = 2;
-            ex = ex.concat([2,8,32,64,128,256,512]);
+            ex = ex.concat([2,8,32,64,128,256]);
             break;
           case 2:
             t = 8;
-            ex = ex.concat([ 8,32,64,128,256,512]);
+            ex = ex.concat([ 8,32,64,128,256]);
             break;
           case 8:
             t = 32;
@@ -160,10 +160,6 @@
           case 256:
             t = 256;
             ex = ex.concat([256]);
-            break;
-          case 512:
-            t = 512;
-            ex = ex.concat([512]);
             break;
           default:
             ex = ex.concat([2, 8, 32, 64]);

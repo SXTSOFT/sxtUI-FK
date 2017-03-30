@@ -16,30 +16,16 @@
         roleId:'='
       },
       link: function (scope, element, attrs, ctrl) {
-        element.css('background','white');
         var map,layer,el;
         var ran = function () {
           if(!scope.values || !scope.project || !scope.project.pid) return;
           var zy = 0;
           switch (scope.project.rootTypeId){
             case '564d959b5a4155a678594890':zy=1;break;
-            case '565a6d15778e350743c2fb56':
-              switch (scope.project.procedureTypeId){
-                case '565a70e7a4251201434f4917':
-                case '565a70d7a4251201434f4915':
-                  zy=1;break;
-                default:
-                  zy=2;
-                  break;
-              }
-
-              break;
+            case '565a6d15778e350743c2fb56':zy=2;break;
           }
           //console.log('scope.project.rootTypeId',scope.project.rootTypeId)
-          var groupId = scope.project.pid;
-          if(zy != 0)
-            groupId = groupId + (zy==0?'':'-'+zy)
-          api.szgc.FilesService.group(groupId).then(function (fs) {
+          api.szgc.FilesService.group(scope.project.pid).then(function (fs) {
             if (fs.data.Files.length == 0) return;
             map = L.map(element[0], {
               crs: L.extend({}, L.CRS, {

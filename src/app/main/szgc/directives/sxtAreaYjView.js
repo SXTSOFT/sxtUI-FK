@@ -14,7 +14,6 @@
         value:'=sxtAreaYjView',
       },
       link: function (scope, element, attrs, ctrl) {
-        element.css('background','white');
         var map,layer,el;
         var ran = function () {
           if (!scope.value) return;
@@ -23,7 +22,7 @@
 
           var yjId = scope.value.itemId.split('>'),
             projectId = yjId[0];
-          yjId = yjId[yjId.length - 1] + '-' + scope.value.zy;
+          yjId = yjId[yjId.length - 1];
           api.szgc.FilesService.group(yjId).then(function (fs) {
             if (fs.data.Files.length == 0) return;
             map = L.map(element[0], {
@@ -134,8 +133,8 @@
               });
             }
           });
-        };
-        scope.$watch('value', ran);
+        }
+        //scope.$watch('value', ran);
         scope.$watch('value.zy',ran);
       }
     }

@@ -202,24 +202,6 @@
             rows.push(row);
             //}
           });
-          rows.sort(function (s1,s2) {
-            var f1 = parseInt(s1.floor),
-              f2 = parseInt(s2.floor),
-              r;
-            if(isNaN(f1) && isNaN(f2)) {
-              r = 0;
-            }
-            else if(isNaN(f1)){
-              r = 1;
-            }
-            else if(isNaN(f2)){
-              r = -1
-            }
-            else{
-              r = f2 - f1;
-            }
-            return r===0? s2.name.localeCompare(s1.name):r;
-          })
           vm.project.rows = rows;
           vm.project.loading = false;
         });

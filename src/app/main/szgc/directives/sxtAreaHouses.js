@@ -1,4 +1,4 @@
-﻿/**
+﻿﻿﻿/**
  * Created by jiuyuong on 2016/5/19.
  */
 (function () {
@@ -18,7 +18,6 @@
         itemName:'='
       },
       link: function (scope, element, attrs, ctrl) {
-        element.css('background','white');
         function setDefault(options,def) {
           options = options || {};
           if (def) {

@@ -105,10 +105,7 @@
               def =false;
             },
             viewed:function () {
-              if(defaultIndex) {
-                viewer.view(defaultIndex);
-                defaultIndex = 0;
-              }
+              viewer.view(defaultIndex);
             },
             build:function(){
 

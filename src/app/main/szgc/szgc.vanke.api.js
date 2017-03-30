@@ -63,13 +63,6 @@
         }).bind(function(){
           return get(baseUri +'profile').then(function (result) {
             result.data.Id = result.data.data.employee_id;
-            try{
-             result.data.data.company = result.data.data.partner?result.data.data.partner.name:
-                 result.data.data.corporation?result.data.data.corporation.name:
-                   '深圳万科';
-            }catch (ex){
-
-            }
             return result;
           });
         },function (result) {
@@ -139,7 +132,7 @@
         },
           function (result,cfg,args) {
           var me = this,arg=args[0],root = me.root;
-          if(root.getNetwork()==1 && (!args || !args[0] || !args[0].all)){
+          if(root.getNetwork()==1 && (!args || !args[0].all)){
             return $q(function (resolve,reject) {
               var teamIds = getAuth().current().TeamId.split(',');
               var ps = [];
@@ -379,16 +372,7 @@
                   type: r.RegionType
                 });
               });
-              return me._filter(4).then(function (r3) {
-                if(r3.data.Rows) {
-                  r1.data.data = r1.data.data.filter(function (it) {
-                    return !r3.data.Rows.find(function (it1) {
-                      return !it1.IsEnable && it1.RegionId == it.building_id;
-                    });
-                  });
-                }
-                return r1;
-              });
+              return r1;
             });
           });
         },function (result) {
@@ -615,7 +599,6 @@
           });
         }),
         buildingsInfo:http.custom(function(type, typeId){
-          var me = this;
           if(type == 2) {
             return get (http.url (baseUri +'buildings', {
               project_item_id: typeId,
@@ -637,17 +620,7 @@
                 else
                   return i1.name.localeCompare (i2.name);
               });
-              return me._filter(4).then(function (r3) {
-                if(r3.data.Rows) {
-                  r.data.data = r.data.data.filter(function (it) {
-                    return !r3.data.Rows.find(function (it1) {
-                      return !it1.IsEnable && it1.RegionId == it.building_id;
-                    });
-                  });
-                }
-                return r;
-              });
-              //return r;
+              return r;
             });
           }
           else{

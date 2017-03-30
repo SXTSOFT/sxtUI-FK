@@ -10,10 +10,6 @@
     .controller('CheckDataDetailController',['$scope','api','$stateParams','$state','$mdDialog',function($scope,api,$stateParams,$state, $mdDialog){
       api.material.MaterialService.GetInfoById($stateParams.id).then(function(result){
         $scope.dataInfo = result.data.Rows[0];
-        api.material.TargetRelationService.getByCheckDataId({projectId:$scope.dataInfo.ProjectId,materialId:$scope.dataInfo.MaterialId,checkDataId:$stateParams.id}).then(function(r){
-          $scope.targets = r.data.Rows;
-          console.log($scope.targets);
-        })
       });
 
       api.material.MaterialService.GetMLFilesById($stateParams.id).then(function(result){

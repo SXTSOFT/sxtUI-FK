@@ -11,12 +11,8 @@
   function SzgcyhydDlgController(project,$mdDialog){
     var vm = this;
     vm.project = project;
-    if(vm.project.nameTree){
-      vm.rtlName = vm.project.nameTree.length>16?
-        '..'+vm.project.nameTree.substr(vm.project.nameTree.length-16,16):
-        vm.project.nameTree;
-    }
     vm.show = false;
+    console.log('project',project);
 
     vm.answer = function () {
       //cb ();

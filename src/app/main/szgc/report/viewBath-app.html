@@ -1,4 +1,4 @@
-﻿<md-sidenav
+﻿﻿﻿﻿<md-sidenav
   class="md-sidenav-right"
   md-component-id="nav_region",
   md-whiteframe="4" layout="column">
@@ -23,7 +23,7 @@
   </md-list-item>
   <md-list-item>班组</md-list-item>
   <md-list-item>
-    <sxt-select ng-model="vm.workGroupkey" sources="vm.workGroupSources" text-field="name" value-field="id" style="width:100%;" class="mdselect"></sxt-select>
+    <sxt-select name-value="vm.nameValue" obj-value="vm.objValue" ng-model="vm.workGroupkey" sources="vm.workGroupSources" text-field="name" value-field="id" style="width:100%;" class="mdselect"></sxt-select>
     <!--<md-input-container style="width:100%" class="md-block" md-no-float >-->
       <!--<label>班组</label>-->
       <!--<input ng-model="vm.ddd.grpKey" >-->
@@ -38,8 +38,8 @@
   </div>
     </md-content>
 <div style="color:#f00;height:40px;line-height: 20px;border-bottom: 1px solid #ddd;width:100%;padding-left:8px;" ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')">左右滑动查看全部数据<br/> <span style="color:{{s.color}}" ng-repeat="s in vm.states">({{s.title}}) </span></div>
-    <md-content class="md-padding  repeat-top"  ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')" layout="column" flex>
-      <md-virtual-repeat-container flex id="vertical-container">
+    <md-content class="md-padding"  ng-show="vm.searBarHide && vm.is('app.szgc.report.viewBath')" layout="column" flex>
+      <md-virtual-repeat-container flex id="vertical-container" style="width: 750px">
         <div style="width:880px;overflow-x: hidden;">
         <div>
           <div>

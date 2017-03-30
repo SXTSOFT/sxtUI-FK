@@ -33,7 +33,6 @@
       else{
         vm.yj = item;
       }
-      console.log(vm.yj);
     }
     //vm.yj = yj;
   }

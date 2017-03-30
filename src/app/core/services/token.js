@@ -1,4 +1,4 @@
-﻿/**
+﻿﻿﻿/**
  * Created by jiuyuong on 2016/1/22.
  */
 (function(){
@@ -46,7 +46,7 @@
             lastRequestTime[config.url].isNetworking = true;
             $rootScope.$emit('sxt:onNetworking', config);
           }
-        }, 35000);
+        }, 5000);
       }
       return config;
     }

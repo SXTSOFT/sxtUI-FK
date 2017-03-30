@@ -6,7 +6,7 @@
   'use strict';
 
   angular
-    .module('app.material', ['app.core','angular-echarts','angularFileUpload','app.szgc','ngMaterial'])
+    .module('app.material', ['app.core','angular-echarts','angularFileUpload','app.szgc'])
     .config(config);
 
   /** @ngInject */

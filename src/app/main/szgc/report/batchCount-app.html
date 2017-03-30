@@ -1,4 +1,4 @@
-﻿<md-content flex layout="column" ng-show="!vm.searBarHide" class="menu-toggle-list">
+﻿﻿﻿<md-content flex layout="column" ng-show="!vm.searBarHide" class="menu-toggle-list">
   <div flex style="overflow: auto">
           <div layout="row" class="newinput pt-8">
             <div flex="50" style="text-align: center">
@@ -60,24 +60,22 @@
             <caption><h3 style="text-align: center">施工单位自检数量统计</h3></caption>
             <thead>
             <tr style="border-bottom:2px solid #000;">
-              <th width="25%">施工单位</th>
+              <th width="30%">施工单位</th>
               <th width="15%">自检人员</th>
               <th width="15%">自检数量</th>
               <th width="10%">土建</th>
               <th width="10%">机电</th>
               <th width="10%">装修</th>
-              <th width="15%">铝合金及幕墙</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="item in batchDataD1" style="border-bottom:1px solid #ddd; padding:8px">
               <td rowspan="{{item.colp}}" ng-if="item.colp">{{item.CompanyName}}</td>
               <td>{{item.CheckWorkerName}}</td>
-              <td>{{item.tjNum+item.jdNum+item.zxNum+item.lhjNum}}</td>
+              <td>{{item.tjNum+item.jdNum+item.zxNum}}</td>
               <td>{{item.tjNum}}</td>
               <td>{{item.jdNum}}</td>
               <td>{{item.zxNum}}</td>
-              <td>{{item.lhjNum}}</td>
             </tr>
             </tbody>
           </table>
@@ -86,30 +84,28 @@
             <caption><h3 style="text-align: center">监理单位验收数量统计</h3></caption>
             <thead>
             <tr style="border-bottom:2px solid #000;">
-              <th width="25%">监理单位</th>
+              <th width="30%">监理单位</th>
               <th width="15%">验收人员</th>
               <th width="15%">验收数量</th>
               <th width="10%">土建</th>
               <th width="10%">机电</th>
               <th width="10%">装修</th>
-              <th width="15%">铝合金及幕墙</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="item in batchDataD2" style="border-bottom:1px solid #ddd; padding:8px">
               <td rowspan="{{item.colp}}" ng-if="item.colp">{{item.CompanyName}}</td>
               <td>{{item.CheckWorkerName}}</td>
-              <td>{{item.tjNum+item.jdNum+item.zxNum+item.lhjNum}}</td>
+              <td>{{item.tjNum+item.jdNum+item.zxNum}}</td>
               <td>{{item.tjNum}}</td>
               <td>{{item.jdNum}}</td>
               <td>{{item.zxNum}}</td>
-              <td>{{item.lhjNum}}</td>
             </tr>
             </tbody>
           </table>
         </div>
       </div>
-      <md-progress-circular ng-show="vm.loading"  md-diameter="20" md-mode="indeterminate"></md-progress-circular>
+      <md-progress-circular ng-show="vm.loading" md-mode="indeterminate"></md-progress-circular>
     </md-content>
     <div ng-show="vm.switch!='detail'" style="position: absolute; top:0px; right:0px;">
       <toggle-menu inst="vm.searBarHide"></toggle-menu></div>

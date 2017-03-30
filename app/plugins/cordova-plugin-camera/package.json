@@ -1,7 +1,8 @@
 {
   "name": "cordova-plugin-camera",
-  "version": "2.2.0",
+  "version": "2.4.0",
   "description": "Cordova Camera Plugin",
+  "types": "./types/index.d.ts",
   "cordova": {
     "id": "cordova-plugin-camera",
     "platforms": [
@@ -38,9 +39,6 @@
     "cordova-browser",
     "cordova-windows"
   ],
-  "peerDependencies": {
-    "cordova-plugin-file": ">=2.0.0"
-  },
   "scripts": {
     "precommit": "npm run gen-docs && git add README.md",
     "gen-docs": "jsdoc2md --template \"jsdoc2md/TEMPLATE.md\" \"www/**/*.js\" --plugin \"dmd-plugin-cordova-plugin\" > README.md",
@@ -49,6 +47,13 @@
   },
   "author": "Apache Software Foundation",
   "license": "Apache-2.0",
+  "engines": {
+    "cordovaDependencies": {
+      "3.0.0": {
+        "cordova": ">100"
+      }
+    }
+  },
   "devDependencies": {
     "dmd-plugin-cordova-plugin": "^0.1.0",
     "husky": "^0.10.1",

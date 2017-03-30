@@ -14,7 +14,6 @@
         value:'=sxtAreaZjView'
       },
       link: function (scope, element, attrs, ctrl) {
-        element.css('background','white');
         var map,layer,el;
         var ran = function () {
           if (!scope.value) return;

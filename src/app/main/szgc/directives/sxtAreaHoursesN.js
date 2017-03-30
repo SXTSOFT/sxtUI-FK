@@ -17,7 +17,6 @@
         itemName:'='
       },
       link: function (scope, element, attrs, ctrl) {
-        element.css('background','white');
         function isMiddleNumber(n1, n2, n, f) {
           if(f){ //修正线难被点到的问题
             if(Math.abs(n1-n2)<0.02){

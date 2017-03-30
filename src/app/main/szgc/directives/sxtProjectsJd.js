@@ -164,8 +164,7 @@
               else {
                 init = false;
                 innerScope && scope.onChanged(innerScope);
-                value = value.replace('--','-~');
-                return api.szgc.vanke.rooms({ page_number: 1, page_size: 1000, building_id: value.split('-')[0], floor: value.split('-')[1].replace('~','-') }).then(function (result) {
+                return api.szgc.vanke.rooms({ page_number: 1, page_size: 1000, building_id: value.split('-')[0], floor: value.split('-')[1] }).then(function (result) {
                   result.data.data.forEach(function (r) {
                     if (r.unit) {
                       r.name = r.unit + '-' + r.name;
