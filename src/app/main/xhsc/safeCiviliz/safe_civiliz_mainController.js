@@ -252,6 +252,8 @@
         $mdDialog.show({
           controller: ['$scope', 'utils', '$mdDialog', function ($scope, utils, $mdDialog) {
             $scope.uploadInfo = vm.uploadInfo;
+            $scope.uploadInfo.current=0;
+            $scope.uploadInfo.total=0;
             function buildTask() {
               function filterUpload(arr) {
                 if (angular.isArray(arr)){
@@ -358,10 +360,10 @@
                 })
               })
             }
-
             buildTask().then(function (tasks) {
               api.task(tasks)(function (percent, current, total) {
-                vm.uploadInfo.percent = parseInt(percent * 100) + ' %';
+                var percent=percent?parseInt(percent * 100):0;
+                vm.uploadInfo.percent = percent + ' %';
                 vm.uploadInfo.current = current;
                 vm.uploadInfo.total = total;
               }, function () {
