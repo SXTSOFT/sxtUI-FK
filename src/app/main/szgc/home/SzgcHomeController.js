@@ -98,7 +98,7 @@
           var lastdate = new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + day.getDate() + " 23:59:59");
           var time = JSON.parse(appCookie.get("projectProgress"));
 
-          if (date > startDate && date < lastdate) {
+          if (date >= startDate && date <= lastdate) {
             if (!time) {
               vm.projectId = vm.project[0].project_id;
               var date = new Date;
