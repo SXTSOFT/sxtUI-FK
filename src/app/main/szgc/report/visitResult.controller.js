@@ -25,7 +25,7 @@
 
     var initData = [
       { project: '渔一村', user: '官有风',times:0 },
-      { project: '南科大', user: '王和贵', times: 0 },
+      //{ project: '南科大', user: '王和贵', times: 0 },
       { project: '兰江', user: '秦朝胜', times: 0 },
       { project: '车公庙', user: '姜丽丽', times: 0 },
       { project: '北站', user: '林雪旭', times: 0 },
@@ -40,7 +40,7 @@
       { project: '云城三街坊', user: '赵偲翼', times: 0 },
       { project: '云城四街坊', user: '杨帆', times: 0 },
       { project: '云城五街坊', user: '吴勤成', times: 0 },
-      { project: '云城', user: '朱志荣', times: 0 },
+      //{ project: '云城', user: '朱志荣', times: 0 },
       { project: '九龙山', user: '吴煜楷', times: 0 },
       { project: '水径', user: '程含涛', times: 0 },
       { project: '壹海城', user: '沈爱民', times: 0 },
