@@ -85,44 +85,47 @@
       "宿伟",
       "杨业标"];
 
-    $q.all([api.szgc.vanke.profile(),
-    api.szgc.vanke.projects()]).then(function (r) {
-      vm.profile = r[0].data.data;
-      vm.project = r[1].data.data;
-      if (vm.profile.type == "employee" && managers.findIndex(function (m) { return m == vm.profile.name }) != -1) {
-        var date = new Date();
-        var startDate = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-25 00:00:00");
-        var day = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-        var lastdate = new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + day.getDate() + " 23:59:59");
-        var time = JSON.parse(appCookie.get("projectProgress"));
+    var user = auth.current();
+    if (managers.findIndex(function (m) { return m == user.RealName }) != -1) {
+      $q.all([api.szgc.vanke.profile(),
+      api.szgc.vanke.projects()]).then(function (r) {
+        vm.profile = r[0].data.data;
+        vm.project = r[1].data.data;
+        if (vm.profile.type == "employee") {
+          var date = new Date();
+          var startDate = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-25 00:00:00");
+          var day = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+          var lastdate = new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + day.getDate() + " 23:59:59");
+          var time = JSON.parse(appCookie.get("projectProgress"));
 
-        if (date > startDate && date < lastdate) {
-          if (!time) {
-            vm.projectId = vm.project[0].project_id;
-            var date = new Date;
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            $q.all([api.szgc.ProjectSettingsSevice.ex.getProjectBuildingProcedure(vm.projectId),
-            api.szgc.projectProgressService.getProjectBuildingProcedure(vm.projectId, year + '-' + month)]).then(function (res) {
-              vm.list = res[1].data.Rows.map(function (p) { return { id: p.Id, buildingId: p.BuildingId, procedureId: p.ProcedureId, procedureName: p.ProcedureName, count: p.Value } });
-              for (var i = 0; i < res[0].data.Rows.length; i++) {
-                var p = vm.list.find(function (p) { return p.buildingId == res[0].data.Rows[i].BuildingId && p.procedureId == res[0].data.Rows[i].ProcedureId });
-                if (!p || !p.count) {
-                  appCookie.put('projectProgress', JSON.stringify({ time: new Date() }))
-                  utils.confirm('您有项目进度未设置，是否设置？').then(function (result) {
-                    $state.go('app.szgc.settings');
-                  });
-                  break;
+          if (date > startDate && date < lastdate) {
+            if (!time) {
+              vm.projectId = vm.project[0].project_id;
+              var date = new Date;
+              var year = date.getFullYear();
+              var month = date.getMonth() + 1;
+              $q.all([api.szgc.ProjectSettingsSevice.ex.getProjectBuildingProcedure(vm.projectId),
+              api.szgc.projectProgressService.getProjectBuildingProcedure(vm.projectId, year + '-' + month)]).then(function (res) {
+                vm.list = res[1].data.Rows.map(function (p) { return { id: p.Id, buildingId: p.BuildingId, procedureId: p.ProcedureId, procedureName: p.ProcedureName, count: p.Value } });
+                for (var i = 0; i < res[0].data.Rows.length; i++) {
+                  var p = vm.list.find(function (p) { return p.buildingId == res[0].data.Rows[i].BuildingId && p.procedureId == res[0].data.Rows[i].ProcedureId });
+                  if (!p || !p.count) {
+                    appCookie.put('projectProgress', JSON.stringify({ time: new Date() }))
+                    utils.confirm('您有项目进度未设置，是否设置？').then(function (result) {
+                      $state.go('app.szgc.settings');
+                    });
+                    break;
+                  }
                 }
-              }
-            })
-          }
-        } else {
-          if (time) {
-            $cookies.remove('projectProgress');
+              })
+            }
+          } else {
+            if (time) {
+              appCookie.remove('projectProgress');
+            }
           }
         }
-      }
-    });
+      });
+    }
   }
 })();
