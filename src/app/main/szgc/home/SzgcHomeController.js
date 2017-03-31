@@ -37,13 +37,59 @@
       $state.go('app.szgc.project', { pid: $current.projectId, pname: $current.title });
     }
 
+
+    var managers = [
+      "秦洪磊",
+      "江焕志",
+      "王冬臻",
+      "刘志毅",
+      "江海平",
+      "陈战国",
+      "吴文操",
+      "魏鲁喆",
+      "李文俊",
+      "陈世旅",
+      "聂旸",
+      "刘健",
+      "关奥",
+      "陈俊儒",
+      "吴崇德",
+      "靳启言",
+      "王曦",
+      "周千军",
+      "张天一",
+      "贺行",
+      "严章猛",
+      "梅忠敏",
+      "秦国奎",
+      "刘啸",
+      "余晓华",
+      "廖毅",
+      "赵新平",
+      "罗亦",
+      "黄敏",
+      "黄鑫",
+      "邓伟栋",
+      "李永涛",
+      "邓朝",
+      "钱一戈",
+      "张智强",
+      "蓝铭",
+      "胡铁山",
+      "戈轶峰",
+      "王静博",
+      "梁峰铭",
+      "黄兵勇",
+      "张顺",
+      "张波",
+      "宿伟",
+      "杨业标"];
+
     $q.all([api.szgc.vanke.profile(),
     api.szgc.vanke.projects()]).then(function (r) {
       vm.profile = r[0].data.data;
       vm.project = r[1].data.data;
-
-
-      if (vm.profile.type == "employee") {
+      if (vm.profile.type == "employee" && managers.findIndex(function (m) { return m == vm.profile.name }) != -1) {
         var date = new Date();
         var startDate = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-25 00:00:00");
         var day = new Date(date.getFullYear(), date.getMonth() + 1, 0);
