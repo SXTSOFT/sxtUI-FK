@@ -62,6 +62,8 @@
       })
       .state('app.material.materialReport',{
         url:'/materialReport',
+        noBack:true,
+        title:'材料验收',
         template:'<material-Report flex layout="column"></material-Report>'
       });
 
