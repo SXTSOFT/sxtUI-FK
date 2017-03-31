@@ -23,6 +23,9 @@
         //  clickOutsideToClose:false,
         //  fullscreen: false
         //});
+
+        var mobileDetect = new MobileDetect(window.navigator.userAgent);
+        vm.isMobile = mobileDetect.mobile();
         vm.selecte = function(item) {
             vm.current = item;
             $mdSidenav("reportDT")
