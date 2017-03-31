@@ -18,6 +18,9 @@
         vm.host = sxt.app.api;
         vm.projects = [];
        
+        var mobileDetect = new MobileDetect(window.navigator.userAgent);
+        vm.isMobile = mobileDetect.mobile();
+
         vm.getProjects = function(){
             if(vm.projects.length == 0){
                 return api.xhsc.Project.getMap().then(function (r) {
