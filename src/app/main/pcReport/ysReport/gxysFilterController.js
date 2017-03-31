@@ -191,17 +191,5 @@
             $state.go('app.xhsc.gx.gxzgreport', { InspectionId: item.InspectionId, acceptanceItemID: item.AcceptanceItemID, acceptanceItemName: item.AcceptanceItemName, projectId: item.ProjectID });
         }
 
-
-        vm.printBatchCount = function() {
-            var $html = $("#divReport").clone(false);
-            $html.find('div[class="layout-row"]').remove();
-            $html.find('table tr').each(function(index, element) {
-                $(element).find('th:last').remove();
-                $(element).find('td:last').remove();
-            });
-            $('#export').val($html.html());
-        }
-
-
     }
 })();
