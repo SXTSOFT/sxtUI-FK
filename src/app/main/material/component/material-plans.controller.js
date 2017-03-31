@@ -22,7 +22,8 @@
     vm.SectionId = '';
     $scope.pageing={
       page:1,
-      pageSize:10
+      pageSize:10,
+      total:0
     };
     var role = [];
     vm.projects = [];
