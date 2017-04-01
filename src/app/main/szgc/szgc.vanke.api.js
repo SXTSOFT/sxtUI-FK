@@ -569,8 +569,8 @@
         }).bind(function (project_item_id) {
           return get(http.url(baseUri +'types', { project_item_id: project_item_id, page_size: 0, page_number:1}));
         }),
-        rooms:function (args) {
-          return this.root.szgc.vanke._rooms(args.building_id,args);
+        rooms:function (args,hide) {
+          return this.root.szgc.vanke._rooms(args.building_id,args,hide);
         },
         partners: http.custom(function (arg) {
           return get(http.url(baseUri +'partners', arg));

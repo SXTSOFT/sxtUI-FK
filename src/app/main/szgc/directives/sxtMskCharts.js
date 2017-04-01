@@ -61,7 +61,7 @@
               ],
               gx = [];
           (query||(query=$q.all([
-              api.szgc.vanke.rooms({building_id: bid[bid.length - 1]}),
+              api.szgc.vanke.rooms({building_id: bid[bid.length - 1]},true),
               api.szgc.ProjectExService.building3(scope.value)]))
           ).then(function (rs) {
               var r = rs[0], r2 = rs[1],r3 ={data:{Rows:scope.procedures}} ;
@@ -109,6 +109,12 @@
                 }
               });
               floors.forEach(function (f) {
+                var rooms = f.rooms.filter(function (r) {
+                  return r.engineering.status != 'hide'
+                });
+                if(rooms.length == 0)
+                  rooms.push(f.rooms[0]);
+                f.rooms = rooms;
                 if (maxRooms < f.rooms.length)
                   maxRooms = f.rooms.length;
               });
@@ -163,8 +169,13 @@
                     var room = f.rooms[i];
                     if (room) {
                       var _z = r2.data.Rows.find(function (row) {
-                        return row.ProcedureId == gx.id && (row.RegionId == room.room_id||room.building_id+'-'+room.floor==row.RegionId );
+                        return row.ProcedureId == gx.id && (row.RegionId == room.room_id);
                       });
+                      if(!_z){
+                        _z = r2.data.Rows.find(function (row) {
+                          return row.ProcedureId == gx.id && (room.building_id+'-'+room.floor==row.RegionId );
+                        });
+                      }
                       if (_z) {
                         _p = _z.ZbDate && _z.JLDate ? 3 :
                             _z.JLDate ? 2 :
