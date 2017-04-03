@@ -77,8 +77,13 @@
               <div ng-if="s.show" ng-repeat="item in s.buildings" layout="column" style="padding-left: 10px;">
                 <md-button ng-click="loadProcedure(item)" style="text-align: left"> {{ item.buildingName }} </md-button>
                 <div ng-if="item.show" ng-repeat="p in item.procedures" layout="row" style="padding-left: 20px;">
-                  <p flex="75" style="margin: 0; line-height: 35px;"> {{ p.procedureName }} </p>
-                  <label style="line-height: 35px; margin-left: 10px">{{p.count}}层</label>
+                  <!--<p flex="70" style="margin: 0; line-height: 35px;"> {{ p.procedureName }} </p>
+                  <label style="line-height: 35px; margin-left: 10px">{{p.count}}层</label>-->
+                  <p flex="70" style="margin: 0; line-height: 35px;"> {{ p.procedureName }} </p>
+                  <md-input-container class="md-block" flex="15" style="margin:0 0 0 10px; height: 35px;">
+                    <input type="number" ng-model="p.count">
+                  </md-input-container>
+                  <label style="line-height: 35px;">层</label>
                 </div>
               </div>
             </div>
@@ -97,7 +102,7 @@
                   </md-input-container>
                   <label style="line-height: 35px;">层</label>
                 </div>
-                <md-button style="width:100px;" ng-click="vm.openNav('nav_procedure',item)" class="md-raised md-primary md-block" ng-click="">添加工序</md-button>
+                <md-button style="width:100px;" ng-click="vm.openGx();vm.current=item" class="md-raised md-primary md-block" ng-click="">添加工序</md-button>
               </div>
             </div>
             <md-divider></md-divider>
@@ -108,7 +113,7 @@
     </md-tab-content>
   </md-tab>
 </md-tabs>
-<md-sidenav class="md-sidenav-right" md-component-id="nav_procedure" md-is-open="vm.isRightOpen" md-whiteframe="4" layout="column">
+<!--<md-sidenav class="md-sidenav-right" md-component-id="nav_procedure" md-is-open="vm.isRightOpen" md-whiteframe="4" layout="column">
   <md-content flex layout="column" style="background: white">
 
     <sxt-procedure flex layout="column" on-select="vm.closeNav('nav_procedure')" ng-model="project.procedureId" procedure-type-id="project.procedureTypeId"
@@ -120,4 +125,44 @@
       <md-button type="submit" flex ng-click="vm.closeNav('nav_procedure')" class="md-raised md-primary">确定</md-button>
     </div>
   </md-content>
+</md-sidenav>-->
+
+<md-sidenav layout="column" class="md-sidenav-right" md-is-open="vm.build.isOpen" md-component-id="procedure_right">
+  <md-toolbar flex="none" class="md-theme-indigo">
+    <h4 class="md-toolbar-tools">选择工序(点击左侧灰色区关闭)</h4>
+  </md-toolbar>
+  <md-tabs flex layout="column" md-border-bottom>
+    <md-tab label="已选择工序">
+      <md-tab-content flex layout-fill layout="column">
+        <md-list>
+          <section>
+            <md-subheader class="md-primary">
+              <div layout="row" layout-align="space-between center">
+                <div layout="column" layout-align="start center">已选择工序</div>
+                <div layout="column" layout-align="start center"><a ng-click="vm.clearAll()" ng-if="vm.selected.ps.length">清除</a></div>
+              </div>
+              <!--<span>已选择工序</span><span flex></span><a ng-click="vm.clearAll()">清除</a>-->
+            </md-subheader>
+            <md-list-item ng-repeat="p in vm.selected.ps" ng-click="vm.itemChecked1(p,vm.selected)">
+              <p> {{p.ProcedureName}}</p>
+              <md-checkbox class="md-secondary" ng-click="vm.itemChecked(p)" ng-model="p.checked"></md-checkbox>
+            </md-list-item>
+          </section>
+        </md-list>
+      </md-tab-content>
+    </md-tab>
+    <md-tab ng-repeat="g in vm.types|sxtProcedureS" label="{{g.name}}({{g.ps.length}})">
+      <md-tab-content flex layout-fill layout="column">
+        <md-list>
+          <section ng-repeat="c in g.children|sxtProcedureS">
+            <md-subheader class="md-primary">{{c.name}}({{c.ps.length}})</md-subheader>
+            <md-list-item ng-repeat="p in c.ps" ng-click="vm.itemChecked1(p,c)">
+              <p> {{p.ProcedureName}}</p>
+              <md-checkbox class="md-secondary" ng-click="vm.itemChecked(p)" ng-model="p.checked"></md-checkbox>
+            </md-list-item>
+          </section>
+        </md-list>
+      </md-tab-content>
+    </md-tab>
+  </md-tabs>
 </md-sidenav>
