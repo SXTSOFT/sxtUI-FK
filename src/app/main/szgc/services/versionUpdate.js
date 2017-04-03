@@ -11,7 +11,7 @@
 
   function versionUpdate($mdDialog, $window,$http ,sxt) {
 
-    var version = '1.9.16.34',versionOld = version;
+    var version = '1.9.16.38',versionOld = version;
     this.version = version;
     var self = this;
     function versionToNumber(version) {
@@ -26,7 +26,7 @@
     }
     function toNum(n) {
       var r = parseInt(n);
-      var s = '000'+new String(isNaN(r)?0:r);
+      var s = '000'+ String(isNaN(r)?0:r);
       return s.substring(s.length-3);
     }
     this.check = function () {
