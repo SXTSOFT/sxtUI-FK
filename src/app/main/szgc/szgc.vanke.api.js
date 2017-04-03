@@ -532,7 +532,9 @@
             return {
               data:{
                 building_id:building_id,
-                rooms:result.data.data
+                rooms:result.data.data.filter(function (r) {
+                  return !!r.floor;
+                })
               }
             };
           });

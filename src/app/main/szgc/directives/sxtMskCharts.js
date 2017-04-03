@@ -65,6 +65,9 @@
               api.szgc.ProjectExService.building3(scope.value)]))
           ).then(function (rs) {
               var r = rs[0], r2 = rs[1],r3 ={data:{Rows:scope.procedures}} ;
+              r.data.data = r.data.data.filter(function (room) {
+                return !isNaN(room.floor);
+              });
               r.data.data.sort(function (i1, i2) {
                 var n1 = getNumName(i1.floor),
                   n2 = getNumName(i2.floor),
