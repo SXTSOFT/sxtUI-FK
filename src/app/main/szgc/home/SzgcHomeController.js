@@ -83,7 +83,11 @@
       "张顺",
       "张波",
       "宿伟",
-      "杨业标"];
+      "杨业标",
+      "汪尚毅",
+      "王曦",
+      "黄书韵"
+    ];
 
     var user = auth.current();
     if (managers.findIndex(function (m) { return m == user.RealName }) != -1) {
