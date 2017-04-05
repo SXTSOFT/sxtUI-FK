@@ -25,12 +25,12 @@
         </div>
       </div>
     </md-input-container>
-    <md-input-container class="md-block">
+    <md-input-container ng-if="!vm.pageState" class="md-block">
       <label>型号</label>
       <input type="text" ng-model="vm.data.Model" ng-disabled="vm.pageState">
       <div class="hint">多个型号请用中文逗号"，"分隔</div>
     </md-input-container>
-    <md-input-container class="md-block">
+    <md-input-container ng-if="!vm.pageState" class="md-block">
       <label>规格</label>
       <input type="text" ng-model="vm.data.Specifications" ng-disabled="vm.pageState">
       <div class="hint">多个规格请用中文逗号"，"分隔</div>
@@ -41,8 +41,9 @@
       <div class="hint">多个厂家/品牌请用中文逗号"、"分隔</div>
     </md-input-container>
 
-    <md-chips ng-if="vm.pageState" ng-model="vm.Brands" name="fruitName" readonly="true"
-              md-removable="true" md-max-chips="5">
+    <label ng-if="vm.pageState">厂家/品牌</label>
+    <md-chips ng-if="vm.pageState" ng-model="vm.Brands" name="fruitName" readonly="false" placeholder="输入按下Enter添加..."
+              md-removable="true">
       <md-chip-template>
         <strong>{{$chip}}</strong>
       </md-chip-template>
