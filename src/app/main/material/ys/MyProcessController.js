@@ -36,6 +36,8 @@
 
     };
 
+    vm.checkData.Volumes = [];
+
     $scope.searchTerm;
     $scope.clearSearchTerm = function () {
       $scope.searchTerm = '';
@@ -130,21 +132,20 @@
       //   utils.alert('请输入数量');
       //   return;
       // }
-      var modelNumber = false;
-      vm.checkData.Volumes.forEach(function (v) {
-        if (!v.Number) {
-          aa = true;
-          utils.alert('请输入' + v.Model + '数量');
-        }
-      })
-      // if (!vm.checkData.ContractNumber) {
-      //   utils.alert('请输入合同编号');
-      //   return;
-      // }
-      if (modelNumber) {
+
+      if (vm.checkData.Volumes.length == 0) {
+        utils.alert('请选择规格/型号');
         return;
+      } else {
+        for (var i = 0; i < vm.checkData.Volumes.length; i++) {
+          if (!vm.checkData.Volumes[i].Number) {
+            utils.alert('请输入' + vm.checkData.Volumes[i].Model + '数量');
+            return;
+          }
+        }
       }
-        
+
+
       if (vm.checkData.sjReport != null && $scope.data.imgs4.length == 0) {
         utils.alert('请添加送检报告附件');
         return;
@@ -362,7 +363,7 @@
           })
           $scope.project.materialModels = a.Models.split(';')
         }
-        vm.checkData.Manufactor = vm.Manufactor.ShortName?vm.Manufactor.ShortName:vm.Manufactor.Name;
+        vm.checkData.Manufactor = vm.Manufactor.ShortName ? vm.Manufactor.ShortName : vm.Manufactor.Name;
       })
 
     $scope.$watch('project.procedureId',
