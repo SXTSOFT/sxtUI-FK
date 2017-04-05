@@ -22,65 +22,12 @@
       ps: []
     }
 
-    var managers = [
-      "DSZIA09.秦洪磊",
-      "江焕志",
-      "DSZDH06.王冬臻",
-      "DSZIA07.刘志毅",
-      "江海平",
-      "陈战国",
-      "吴文操",
-      "魏鲁喆",
-      "李文俊",
-      "陈世旅",
-      "聂旸",
-      "刘健",
-      "DSZIA10.关奥",
-      "陈俊儒",
-      "DSZIE07.吴崇德",
-      "靳启言",
-      "王曦",
-      "周千军",
-      "张天一",
-      "贺行",
-      "严章猛",
-      "梅忠敏",
-      "秦国奎",
-      "刘啸",
-      "余晓华",
-      "廖毅",
-      "赵新平",
-      "罗亦",
-      "黄敏",
-      "黄鑫",
-      "邓伟栋",
-      "李永涛",
-      "邓朝",
-      "钱一戈",
-      "张智强",
-      "DSZIA08.蓝铭",
-      "胡铁山",
-      "戈轶峰",
-      "DSZIA06.王静博",
-      "梁峰铭",
-      "黄兵勇",
-      "张顺",
-      "DGZVA04.张波",
-      "宿伟",
-      "杨业标",
-      "汪尚毅",
-      "王曦",
-      "黄书韵",
-      "谢卫波",
-      "张招勇"];
-
     $q.all([api.szgc.vanke.profile(),
     api.szgc.vanke.projects()]).then(function (r) {
       vm.profile = r[0].data.data;
       vm.project = r[1].data.data;
 
-      //vm.projectId = '52ba76053cf7fbe61100001b';
-      if (managers.findIndex(function (m) { return m == vm.profile.name }) != -1) {
+      if (vm.profile.type == "employee") {
         vm.projectId = vm.project.map(function (p) { return p.project_id }).join(',');
       }
     });
