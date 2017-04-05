@@ -36,9 +36,9 @@
     }
 
     vm.delete = function(id){
-      utils.confirm('确认删除此材料信息').then(function () {
-        api.material.materialPlan.delete(id).then(function () {
-          Load();
+      utils.confirm('确认删除此合同信息').then(function () {
+        api.material.contract.delete(id).then(function () {
+          load();
         })
       });
     }

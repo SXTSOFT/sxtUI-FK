@@ -32,7 +32,7 @@
 
     function loadAll() {
       var allStates = vm.Specifications && vm.Specifications != [] ? vm.Specifications.join(", ") : '';
-      return allStates.split(/, +/g).map( function (state) {
+      return allStates.split(/、|,|，|；|;/).map( function (state) {
         return {
           value: state.toLowerCase(),
           display: state || '暂无数据'
@@ -42,7 +42,7 @@
 
     function loadAll2() {
       var allStates = vm.Models  && vm.Models != []  ? vm.Models.join(", ") : '';
-      return allStates.split(/, +/g).map( function (state) {
+      return allStates.split(/、|,|，|；|;/).map( function (state) {
         return {
           value: state.toLowerCase(),
           display: state||'暂无数据'
@@ -147,8 +147,8 @@
     // });
 
     vm.init = function (m) {
-      vm.Specifications = m.Specifications?m.Specifications.split('，'):[];
-      vm.Models = m.Model?m.Model.split('，'):[];
+      vm.Specifications = m.Specifications?m.Specifications.split(/、|,|，|；|;/):[];
+      vm.Models = m.Model?m.Model.split(/、|,|，|；|;/):[];
 
       vm.states = loadAll()
       vm.states2 = loadAll2();

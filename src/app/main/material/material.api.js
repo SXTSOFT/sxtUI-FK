@@ -112,6 +112,9 @@
         UpdateContract:function (data) {
           return $http.put('/api/MaterialContract/UpdateContract',data);
         },
+        delete:function(id){
+          return $http.delete('/api/MaterialContract/'+id);
+        }
       }
     })
   }
