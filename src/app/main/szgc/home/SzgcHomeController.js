@@ -39,10 +39,10 @@
 
 
     var managers = [
-      "秦洪磊",
+      "DSZIA09.秦洪磊",
       "江焕志",
-      "王冬臻",
-      "刘志毅",
+      "DSZDH06.王冬臻",
+      "DSZIA07.刘志毅",
       "江海平",
       "陈战国",
       "吴文操",
@@ -51,9 +51,9 @@
       "陈世旅",
       "聂旸",
       "刘健",
-      "关奥",
+      "DSZIA10.关奥",
       "陈俊儒",
-      "吴崇德",
+      "DSZIE07.吴崇德",
       "靳启言",
       "王曦",
       "周千军",
@@ -74,19 +74,21 @@
       "邓朝",
       "钱一戈",
       "张智强",
-      "蓝铭",
+      "DSZIA08.蓝铭",
       "胡铁山",
       "戈轶峰",
-      "王静博",
+      "DSZIA06.王静博",
       "梁峰铭",
       "黄兵勇",
       "张顺",
-      "张波",
+      "DGZVA04.张波",
       "宿伟",
       "杨业标",
       "汪尚毅",
       "王曦",
-      "黄书韵"
+      "黄书韵",
+      "谢卫波",
+      "张招勇"
     ];
 
     var user = auth.current();
@@ -107,7 +109,7 @@
           }
 
           if (!yesterday || now > yesterday) {
-            vm.projectId = vm.project[0].project_id;
+            vm.projectId = vm.project.map(function (p) { return p.project_id }).join(',');
             var date = new Date;
             var year = date.getFullYear();
             var month = date.getMonth() + 1;

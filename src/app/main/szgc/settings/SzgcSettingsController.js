@@ -23,10 +23,10 @@
     }
 
     var managers = [
-      "秦洪磊",
+      "DSZIA09.秦洪磊",
       "江焕志",
-      "王冬臻",
-      "刘志毅",
+      "DSZDH06.王冬臻",
+      "DSZIA07.刘志毅",
       "江海平",
       "陈战国",
       "吴文操",
@@ -35,9 +35,9 @@
       "陈世旅",
       "聂旸",
       "刘健",
-      "关奥",
+      "DSZIA10.关奥",
       "陈俊儒",
-      "吴崇德",
+      "DSZIE07.吴崇德",
       "靳启言",
       "王曦",
       "周千军",
@@ -58,24 +58,30 @@
       "邓朝",
       "钱一戈",
       "张智强",
-      "蓝铭",
+      "DSZIA08.蓝铭",
       "胡铁山",
       "戈轶峰",
-      "王静博",
+      "DSZIA06.王静博",
       "梁峰铭",
       "黄兵勇",
       "张顺",
-      "张波",
+      "DGZVA04.张波",
       "宿伟",
-      "杨业标"];
+      "杨业标",
+      "汪尚毅",
+      "王曦",
+      "黄书韵",
+      "谢卫波",
+      "张招勇"];
 
     $q.all([api.szgc.vanke.profile(),
     api.szgc.vanke.projects()]).then(function (r) {
       vm.profile = r[0].data.data;
       vm.project = r[1].data.data;
+
       //vm.projectId = '52ba76053cf7fbe61100001b';
       if (managers.findIndex(function (m) { return m == vm.profile.name }) != -1) {
-        vm.projectId = vm.project[0].project_id;
+        vm.projectId = vm.project.map(function (p) { return p.project_id }).join(',');
       }
     });
     vm.logout = function () {
@@ -180,7 +186,7 @@
     $scope.loadBuildings = function (s) {
       if (!s.buildings) {
         api.szgc.vanke.buildings({
-          project_id: vm.projectId,
+          project_id: s.projectId,
           project_item_id: s.stageId,
           page_size: 0,
           page_number: 1
@@ -203,29 +209,43 @@
       }
     }
 
+    $scope.loadStages = function (p) {
+      if (!p.stages) {
+        api.szgc.vanke.project_items({ project_id: p.project_id, page_size: 0, page_number: 1 }).then(function (res) {
+          p.show = true;
+          p.stages = res.data.data.map(function (v) { return { show: true, projectId: v.project.project_id, stageId: v.project_item_id, name: v.name } })
+        });
+      } else {
+        p.show = !p.show;
+      }
+    }
+
     $scope.loadProcedure = function (item) {
       item.show = !item.show;
     }
 
     var list3 = [];
     vm.openProjectSetting = function () {
+      vm.loading = true;
       if (vm.data) return;
+      vm.data = vm.project;
+      vm.Downloaded = vm.project.map(function (p) { return { projectId: p.project_id, name: p.name } });
       var date = new Date();
       var year = date.getFullYear();
       var month = date.getMonth() + 1;
-      api.szgc.vanke.project_items({ project_id: vm.projectId, page_size: 0, page_number: 1 }).then(function (res) {
-        vm.data = res.data.data;
-        vm.data = vm.data.map(function (v) { return { projectId: v.project.project_id, stageId: v.project_item_id, name: v.name } });
-      })
+      // api.szgc.vanke.project_items({ project_id: vm.projectId, page_size: 0, page_number: 1 }).then(function (res) {
+      //   vm.data = res.data.data;
+      //   vm.data = vm.data.map(function (v) { return { projectId: v.project.project_id, stageId: v.project_item_id, name: v.name } });
+      // })
 
       $q.all([api.szgc.ProjectSettingsSevice.ex.getProjectBuildingProcedure(vm.projectId),
       api.szgc.projectProgressService.getProjectBuildingProcedure(vm.projectId, year + '-' + month)]).then(function (res) {
-        vm.Downloaded = [];
+        //vm.Downloaded = [];
         // vm.list = res[1].data.Rows.map(function (p) { return { id: p.Id, buildingId: p.BuildingId, procedureId: p.ProcedureId, procedureName: p.ProcedureName, count: p.Value } });
         vm.list = []
         var list2 = [];
+        var download = [];
         list3 = res[1].data.Rows.map(function (p) { return { id: p.Id, buildingId: p.BuildingId, procedureId: p.ProcedureId, procedureName: p.ProcedureName, count: p.Value } });
-
         vm.list = res[0].data.Rows.map(function (r) {
           return { id: null, buildingId: r.BuildingId, procedureId: r.ProcedureId, procedureName: r.ProcedureName, isPull: true };
         })
@@ -239,8 +259,8 @@
         })
 
         res[0].data.Rows.forEach(function (r) {
-          if (!vm.Downloaded.find(function (s) { return s.stageId == r.StageId })) {
-            vm.Downloaded.push({ projectId: r.ProjectId, stageId: r.StageId, stage: r.Stage })
+          if (!download.find(function (s) { return s.stageId == r.StageId })) {
+            download.push({ projectId: r.ProjectId, stageId: r.StageId, stage: r.Stage })
           }
           if (!list2.find(function (s) { return s.buildingId == r.BuildingId })) {
             list2.push({ stageId: r.StageId, buildingId: r.BuildingId, buildingName: r.Building })
@@ -248,8 +268,8 @@
         })
 
         res[1].data.Rows.forEach(function (r) {
-          if (!vm.Downloaded.find(function (s) { return s.stageId == r.StageId })) {
-            vm.Downloaded.push({ projectId: r.ProjectId, stageId: r.StageId, stage: r.StageName })
+          if (!download.find(function (s) { return s.stageId == r.StageId })) {
+            download.push({ projectId: r.ProjectId, stageId: r.StageId, stage: r.StageName })
           }
 
           if (!list2.find(function (s) { return s.buildingId == r.BuildingId })) {
@@ -262,55 +282,73 @@
           r.procedures = f;
         })
 
-        vm.Downloaded.forEach(function (r) {
+        download.forEach(function (r) {
           var f = list2.filter(function (s) { return s.stageId == r.stageId && s.procedures.length != 0 });
           r.buildings = f;
         })
 
-        vm.Downloaded = vm.Downloaded.filter(function (x) {
+        download = download.filter(function (x) {
           return x.buildings.length != 0;
         })
+
+        vm.Downloaded.forEach(function (d) {
+          d.stages = download.filter(function (s) {
+            return d.projectId == s.projectId;
+          })
+        })
+
+        vm.Downloaded = vm.Downloaded.filter(function (p) {
+          return p.stages.length != 0;
+        })
+
+        vm.loading = false;
       })
     }
-
+    vm.loading = false;
     vm.save = function () {
       var data = [];
-      vm.data.forEach(function (r) {
-        r.buildings && r.buildings.forEach(function (b) {
-          b.procedures.forEach(function (p) {
-            if (p.count) {
-              data.push({
-                id: p.id,
-                ProjectId: r.projectId,
-                StageId: b.stageId,
-                StageName: r.name,
-                BuildingId: p.buildingId,
-                BuildingName: b.name,
-                ProcedureId: p.procedureId,
-                Value: p.count
-              })
-            }
+      vm.loading = true;
+      vm.data.forEach(function (s) {
+        s.stages && s.stages.forEach(function (r) {
+          r.buildings && r.buildings.forEach(function (b) {
+            b.procedures.forEach(function (p) {
+              if (p.count) {
+                data.push({
+                  id: p.id,
+                  ProjectId: r.projectId,
+                  StageId: b.stageId,
+                  StageName: r.name,
+                  BuildingId: p.buildingId,
+                  BuildingName: b.name,
+                  ProcedureId: p.procedureId,
+                  Value: p.count
+                })
+              }
+            })
           })
         })
       })
 
-      vm.Downloaded.forEach(function (r) {
-        r.buildings && r.buildings.forEach(function (b) {
-          b.procedures.forEach(function (p) {
-            data.push({
-              id: p.id,
-              ProjectId: r.projectId,
-              StageId: b.stageId,
-              StageName: r.name,
-              BuildingId: p.buildingId,
-              BuildingName: b.name,
-              ProcedureId: p.procedureId,
-              Value: p.count
+      vm.Downloaded.forEach(function (s) {
+        s.stages && s.stages.forEach(function (r) {
+          r.buildings && r.buildings.forEach(function (b) {
+            b.procedures.forEach(function (p) {
+              data.push({
+                id: p.id,
+                ProjectId: r.projectId,
+                StageId: b.stageId,
+                StageName: r.stage,
+                BuildingId: p.buildingId,
+                BuildingName: b.buildingName,
+                ProcedureId: p.procedureId,
+                Value: p.count
+              })
             })
           })
         })
       })
       api.szgc.projectProgressService.postData(data).then(function (r) {
+        vm.loading = false;
         utils.alert('设置成功');
       })
     }
@@ -365,7 +403,7 @@
           selected.children[0].ps = [];
           g.forEach(function (x) {
             var gx = vm.current.procedures.find(function (p) { return p.procedureId == x.ProcedureId });
-            if (!gx && !list3.find(function(g){ return g.buildingId == vm.current.buildingId && g.procedureId == x.ProcedureId })) {
+            if (!gx && !list3.find(function (g) { return g.buildingId == vm.current.buildingId && g.procedureId == x.ProcedureId })) {
               vm.current.procedures.push({ id: null, buildingId: vm.current.buildingId, procedureId: x.ProcedureId, procedureName: x.ProcedureName, isPull: false })
             }
           })
@@ -409,17 +447,6 @@
           selected.children[0].ps.push(gx);
         }
       });
-
-      // if(selected.ps.length>4){
-      //   utils.alert('一次仅能显示四种工序');
-      //   p.checked =false;
-      // }
-      // for(var i=selected.ps.length-1;i>=0;i--){
-      //   if(!selected.ps[i].checked){
-      //     selected.ps.splice(i,1);
-      //     selected.children[0].ps.splice(i,1);
-      //   }
-      // }
     }
 
     $q.all([
@@ -446,7 +473,6 @@
         g.children.forEach(function (c) {
           c.ps = [];
           results[1].data.Rows.forEach(function (p) {
-            //console.log(p,c);
             if (p.ProcedureTypeId == c.skill_id) {
               c.ps.push(p);
               g.ps.push(p);
@@ -454,29 +480,8 @@
           })
         });
       });
-      //console.log('s',s);
       vm.types = s;
       vm.procedures = results[1].data.Rows;
-      // var g = appCookie.get('_gx_');
-      // if(g){
-      //   g = angular.isArray(g)?g:g.replace('[','').replace(']','').split(',');
-      //   g.forEach(function (item) {
-      //     var fd = vm.procedures.find(function (gx) {
-      //       return gx.ProcedureId==item;
-      //     });
-      //     if(fd){
-      //       fd.checked = true;
-      //       selected.ps.push(fd);
-      //       selected.children[0].ps.push(fd);
-      //     }
-      //   });
-      // }
-      // if(g && g.length) {
-      //   vm.query();
-      // }
-      // else{
-      //   vm.openGx();
-      // }
 
     });
   }

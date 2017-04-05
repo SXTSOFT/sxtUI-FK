@@ -71,44 +71,50 @@
       <md-content flex layout="column">
         <md-list style="margin-bottom: 64px;" md-cloak>
           <md-subheader class="md-no-sticky">已设置</md-subheader>
-          <md-list-item ng-repeat="s in vm.Downloaded">
+          <md-list-item ng-repeat="p in vm.Downloaded">
             <div flex layout="column">
-              <md-button ng-click="loadBuildings(s)" style="text-align: left"> {{ s.stage }} </md-button>
-              <div ng-if="s.show" ng-repeat="item in s.buildings" layout="column" style="padding-left: 10px;">
-                <md-button ng-click="loadProcedure(item)" style="text-align: left"> {{ item.buildingName }} </md-button>
-                <div ng-if="item.show" ng-repeat="p in item.procedures" layout="row" style="padding-left: 20px;">
-                  <!--<p flex="70" style="margin: 0; line-height: 35px;"> {{ p.procedureName }} </p>
+              <md-button ng-click="loadStages(p)" style="text-align: left"> {{ p.name }} </md-button>
+              <div ng-if="p.show" ng-repeat="s in p.stages" layout="column" style="padding-left: 10px;">
+                <md-button ng-click="loadBuildings(s)" style="text-align: left"> {{ s.stage }} </md-button>
+                <div ng-if="s.show" ng-repeat="b in s.buildings" layout="column" style="padding-left: 10px;">
+                  <md-button ng-click="loadProcedure(b)" style="text-align: left"> {{ b.buildingName }} </md-button>
+                  <div ng-if="b.show" ng-repeat="g in b.procedures" layout="row" style="padding-left: 20px;">
+                    <!--<p flex="70" style="margin: 0; line-height: 35px;"> {{ p.procedureName }} </p>
                   <label style="line-height: 35px; margin-left: 10px">{{p.count}}层</label>-->
-                  <p flex="70" style="margin: 0; line-height: 35px;"> {{ p.procedureName }} </p>
-                  <md-input-container class="md-block" flex="15" style="margin:0 0 0 10px; height: 35px;">
-                    <input type="number" ng-model="p.count">
-                  </md-input-container>
-                  <label style="line-height: 35px;">层</label>
+                    <p flex="70" style="margin: 0; line-height: 35px;"> {{ g.procedureName }} </p>
+                    <md-input-container class="md-block" flex="15" style="margin:0 0 0 10px; height: 35px;">
+                      <input type="number" ng-model="g.count">
+                    </md-input-container>
+                    <label style="line-height: 35px;">层</label>
+                  </div>
                 </div>
               </div>
             </div>
             <md-divider></md-divider>
           </md-list-item>
           <md-subheader class="md-no-sticky">设置</md-subheader>
-          <md-list-item ng-repeat="s in vm.data">
+          <md-list-item ng-repeat="p in vm.data">
             <div flex layout="column">
-              <md-button ng-click="loadBuildings(s)" style="text-align: left"> {{ s.name }} </md-button>
-              <div ng-if="s.show" ng-repeat="item in s.buildings" layout="column" style="padding-left: 10px;">
-                <md-button ng-click="loadProcedure(item)" style="text-align: left"> {{ item.name }} </md-button>
-                <div ng-if="item.show" ng-repeat="p in item.procedures" layout="row" style="padding-left: 20px;">
-                  <p flex="70" style="margin: 0; line-height: 35px;"> {{ p.procedureName }} </p>
-                  <md-input-container class="md-block" flex="15" style="margin:0 0 0 10px; height: 35px;">
-                    <input type="number" ng-model="p.count">
-                  </md-input-container>
-                  <label style="line-height: 35px;">层</label>
+              <md-button ng-click="loadStages(p)" style="text-align: left"> {{ p.name }} </md-button>
+              <div ng-if="p.show" ng-repeat="s in p.stages" layout="column" style="padding-left: 10px;">
+                <md-button ng-click="loadBuildings(s)" style="text-align: left"> {{ s.name }} </md-button>
+                <div ng-if="s.show" ng-repeat="b in s.buildings" layout="column" style="padding-left: 10px;">
+                  <md-button ng-click="loadProcedure(b)" style="text-align: left"> {{ b.name }} </md-button>
+                  <div ng-if="b.show" ng-repeat="g in b.procedures" layout="row" style="padding-left: 20px;">
+                    <p flex="70" style="margin: 0; line-height: 35px;"> {{ g.procedureName }} </p>
+                    <md-input-container class="md-block" flex="15" style="margin:0 0 0 10px; height: 35px;">
+                      <input type="number" ng-model="g.count">
+                    </md-input-container>
+                    <label style="line-height: 35px;">层</label>
+                  </div>
+                  <md-button style="width:100px;" ng-click="vm.openGx();vm.current=b" class="md-raised md-primary md-block" ng-click="">添加工序</md-button>
                 </div>
-                <md-button style="width:100px;" ng-click="vm.openGx();vm.current=item" class="md-raised md-primary md-block" ng-click="">添加工序</md-button>
               </div>
             </div>
             <md-divider></md-divider>
           </md-list-item>
         </md-list>
-        <md-button flex ng-click="vm.save()" style="position: fixed;" class="md-primary md-fab md-fab-bottom-right">确定</md-button>
+        <md-button ng-disabled="vm.loading" flex ng-click="vm.save()" style="position: fixed;" class="md-primary md-fab md-fab-bottom-right">确定</md-button>
       </md-content>
     </md-tab-content>
   </md-tab>
@@ -141,7 +147,6 @@
                 <div layout="column" layout-align="start center">已选择工序</div>
                 <div layout="column" layout-align="start center"><a ng-click="vm.clearAll()" ng-if="vm.selected.ps.length">清除</a></div>
               </div>
-              <!--<span>已选择工序</span><span flex></span><a ng-click="vm.clearAll()">清除</a>-->
             </md-subheader>
             <md-list-item ng-repeat="p in vm.selected.ps" ng-click="vm.itemChecked1(p,vm.selected)">
               <p> {{p.ProcedureName}}</p>
@@ -166,3 +171,4 @@
     </md-tab>
   </md-tabs>
 </md-sidenav>
+<md-progress-circular ng-show="vm.loading"  md-diameter="20" md-mode="indeterminate"></md-progress-circular>
