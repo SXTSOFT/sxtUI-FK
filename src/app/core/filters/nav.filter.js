@@ -24,10 +24,10 @@
                 case 'm':
                   item.children = item.children.filter(function(c){
                     return !!c.allow.find(function (a) {
-                      return (user.Role.MemberType|a.memberType) == a.memberType;
+                      return (user.Role.MemberType|a.memberType) == a.memberType && user.Role.MemberType != 0;
                     });
                   });
-                  return (user.Role.MemberType|allow.memberType) == allow.memberType;
+                  return (user.Role.MemberType|allow.memberType) == allow.memberType && user.Role.MemberType != 0;
                 break;
               }
             });

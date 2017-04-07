@@ -66,7 +66,7 @@
       });
 
     msNavigationServiceProvider.saveItem('material', {
-      allow: [{user: 'm',memberType:20}],
+      allow: [{user: 'm',memberType:28}],
       title: '材料验收',
       group: true,
       weight: 2
@@ -95,7 +95,7 @@
     });
 
     msNavigationServiceProvider.saveItem('material.materialReport', {
-      allow: [{user: 'm',memberType:20}],
+      allow: [{user: 'm',memberType:28}],
       title: '材料验收报表',
       icon: 'icon-calendar-blank',
       state: 'app.material.materialReport',
@@ -103,7 +103,7 @@
     });
 
     msNavigationServiceProvider.saveItem('material.contracts', {
-      allow: [{user: 'm',memberType:20}],
+      allow: [{user: 'm',memberType:28}],
       title: '项目材料管理',
       icon: 'icon-account',
       state: 'app.material.contracts',
@@ -111,7 +111,7 @@
     });
 
     msNavigationServiceProvider.saveItem('material.plans', {
-      allow: [{user: 'm',memberType:20}],
+      allow: [{user: 'm',memberType:28}],
       title: '材料进场计划',
       icon: 'icon-calendar-text',
       state: 'app.material.plans',
