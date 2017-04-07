@@ -97,7 +97,7 @@
     });
 
     msNavigationServiceProvider.saveItem('material.materialReport', {
-      allow: [{user: 'm',memberType:16}],
+      allow: [{user: 'm',memberType:28}],
       title: '材料验收报表',
       icon: 'icon-calendar-blank',
       state: 'app.material.materialReport',

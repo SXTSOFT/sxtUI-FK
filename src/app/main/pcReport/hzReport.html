@@ -6,7 +6,7 @@
             <form method="post" action="http://emp.chngalaxy.com:9091/api/MaterialPlan/GetMaterialReportXls" target="_blank">
                 <input id="export" type="hidden" name="table" />
                 <input id="tital" type="hidden" name="tital" value="汇总清单" />
-                <md-button class="md-raised md-primary" type="submit" ng-click="vm.printBatchCount()">Excel导出</md-button>
+                <md-button class="md-raised md-primary" type="submit" ng-click="vm.printBatchCount()" ng-if="vm.isMobile == null">Excel导出</md-button>
             </form>
             <div id="divReport">
                 <table class="summaryReport">
