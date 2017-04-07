@@ -91,7 +91,7 @@
     ];
 
     var user = auth.current();
-    if (managers.findIndex(function (m) { return m == user.RealName }) != -1) {
+    if (managers.indexOf(user.RealName) != -1) {
       $q.all([api.szgc.vanke.profile(),
       api.szgc.vanke.projects()]).then(function (r) {
         vm.profile = r[0].data.data;
