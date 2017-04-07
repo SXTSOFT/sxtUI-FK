@@ -1,7 +1,7 @@
 <div ng-cloak>
   <md-content>
     <md-tabs md-dynamic-height md-border-bottom>
-      <md-tab label="全部">
+      <md-tab label="全部" ng-if="vm.status == 46">
         <md-list flex>
           <md-list-item ng-repeat="item in vm.planList" class="md-long-text"
                         ui-sref="app.xhsc.materialys.materialPlanProgress({id:item.Id})">
@@ -40,7 +40,7 @@
           </md-list-item>
         </md-list>
       </md-tab>
-      <md-tab label="未进场">
+      <md-tab label="未进场" ng-if="vm.status == 1">
         <md-list flex>
           <md-list-item ng-repeat="item in vm.planList | filter:{Status:1}:true" class="md-long-text"
                         ui-sref="app.xhsc.materialys.materialPlanProgress({id:item.Id})">
@@ -55,7 +55,7 @@
           </md-list-item>
         </md-list>
       </md-tab>
-      <md-tab label="未验收">
+      <md-tab label="未验收" ng-if="vm.status == 46">
         <md-list flex>
           <md-list-item ng-repeat="item in vm.planList | filter:{Status:2}:true" class="md-long-text"
                         ui-sref="app.xhsc.materialys.materialPlanProgress({id:item.Id})">
@@ -69,7 +69,7 @@
           </md-list-item>
         </md-list>
       </md-tab>
-      <md-tab label="未送检">
+      <md-tab label="未送检" ng-if="vm.status == 46">
         <md-content class="md-padding">
           <md-list flex>
             <md-list-item ng-repeat="item in vm.planList | filter:{Status:4}:true" class="md-long-text"
@@ -86,7 +86,7 @@
           </md-list>
         </md-content>
       </md-tab>
-      <md-tab label="未归档">
+      <md-tab label="未归档" ng-if="vm.status == 46">
         <md-list flex>
           <md-list-item ng-repeat="item in vm.planList | filter:{Status:8}:true" class="md-long-text"
                         ui-sref="app.xhsc.materialys.materialPlanProgress({id:item.Id})">
@@ -101,7 +101,7 @@
           </md-list-item>
         </md-list>
       </md-tab>
-      <md-tab label="未批示">
+      <md-tab label="未批示" ng-if="vm.status == 16">
         <md-content class="md-padding">
           <md-list flex>
             <md-list-item ng-repeat="item in vm.planList | filter:{Status:16}:true" class="md-long-text"
@@ -118,7 +118,7 @@
           </md-list>
         </md-content>
       </md-tab>
-      <md-tab label="未退场">
+      <md-tab label="未退场"  ng-if="vm.status == 46">
         <md-content class="md-padding">
           <md-list flex>
             <md-list-item ng-repeat="item in vm.planList | filter:{Status:32}:true" class="md-long-text"

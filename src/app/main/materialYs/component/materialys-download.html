@@ -1,7 +1,7 @@
 <div flex ng-if="vm.material" layout="column" class="download">
   <div style="background-color: #F5F5F5;" layout="row" ng-if="vm.offlines.length">
     <span style="display: inline-block; font-size: 12px; color: #757575; padding: 16px 32px;" flex="80">已下载列表</span>
-    <md-button ng-click="vm.upload()" style="color: black;margin-right: 0;font-size: 14px;" flex="20">上传</md-button>
+    <md-button ng-click="vm.upload()" style="color: black;margin-right: 0;font-size: 14px;" flex="20" ng-if="vm.userType != 'xmjl'">上传</md-button>
   </div>
   <span class="border1px" ng-if="vm.offlines.length"></span>
   <md-list style="overflow-x: hidden; padding: 0;">
@@ -10,7 +10,7 @@
         <span>{{item.FullName}}</span>
       </p>
       <span flex></span>
-      <md-button ng-click="vm.Refresh(item,$event)" style="min-width: 40px;width: 40px;padding: 6px 0px;">刷新</md-button>
+      <md-button ng-click="vm.Refresh(item,$event)" style="min-width: 40px;width: 40px;padding: 6px 0px;" ng-if="vm.userType != 'xmjl'">刷新</md-button>
     </md-list-item>
   </md-list>
   <md-subheader ng-if="vm.section.length">未下载列表</md-subheader>

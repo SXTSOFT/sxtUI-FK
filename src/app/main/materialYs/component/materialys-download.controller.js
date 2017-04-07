@@ -21,6 +21,12 @@
     vm.material = true;
     var user = auth.current();
 
+    if(user.Role.MemberType==8){
+      vm.userType = 'xmjl';
+    }else{
+      vm.userType = 'default';
+    }
+
     utils.onCmd($scope, ['swap'], function (cmd, e) {
       vm.material = e.arg.material;
     });
@@ -77,8 +83,11 @@
         });
       });
     }
+
+
+
     vm.downloadPlan = function (item, isReflsh, evt) {
-      var status = user.Role.MemberType == 0 || 32 ? 1 : 46;
+      var status = (user.Role.MemberType == 0 || user.Role.MemberType == 32) ? 1 : 46;
       //下载成功回掉
       function callBack() {
         var ix = vm.section.indexOf(item);
