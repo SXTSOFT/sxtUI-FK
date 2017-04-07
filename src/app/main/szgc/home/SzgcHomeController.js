@@ -91,7 +91,7 @@
     ];
 
     var user = auth.current();
-    if (managers.findIndex(function (m) { return m == user.RealName }) != -1) {
+    if (managers.indexOf(user.RealName) != -1) {
       $q.all([api.szgc.vanke.profile(),
       api.szgc.vanke.projects()]).then(function (r) {
         vm.profile = r[0].data.data;
@@ -109,7 +109,7 @@
 
           if (!yesterday || now > yesterday) {
             vm.projectId = vm.project.map(function (p) { return p.project_id }).join(',');
-            var date = new Date;
+            var date = new Date();
             var year = date.getFullYear();
             var month = date.getMonth() + 1;
             $q.all([api.szgc.ProjectSettingsSevice.ex.getProjectBuildingProcedure(vm.projectId),
