@@ -72,7 +72,7 @@
       })
       .state('app.xhsc.materialys.approval',{
         noBack:true,
-        sendBt:true,
+        sendPs:true,
         title:'材料验收详情',
         url:'/approval/{planId}/{id}',
         template: '<material-ys-approval flex layout="column"></material-ys-approval>'

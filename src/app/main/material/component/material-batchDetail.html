@@ -47,6 +47,17 @@
               <p ng-if="vm.data.PlanModel.PlanDetail.SupplyType == 2">认质认价</p>
               <p ng-if="vm.data.PlanModel.PlanDetail.SupplyType == 4">甲指乙供</p>
             </md-list-item>
+            <md-list-item>
+              <p flex="15">状态：</p>
+              <p ng-if="vm.data.PlanModel.PlanDetail.Status == 1">未进场</p>
+              <p ng-if="vm.data.PlanModel.PlanDetail.Status == 2">未验收</p>
+              <p ng-if="vm.data.PlanModel.PlanDetail.Status == 4">未送检</p>
+              <p ng-if="vm.data.PlanModel.PlanDetail.Status == 8">未归档</p>
+              <p ng-if="vm.data.PlanModel.PlanDetail.Status == 16">未批示</p>
+              <p ng-if="vm.data.PlanModel.PlanDetail.Status == 32">未退场</p>
+              <p ng-if="vm.data.PlanModel.PlanDetail.Status == 64">已完成</p>
+              <p ng-if="vm.data.PlanModel.PlanDetail.Status == 128">分批进场</p>
+            </md-list-item>
             <!--<md-list-item>-->
               <!--<p flex="15">计划状态：</p>-->
               <!--<p ng-if="vm.data.PlanModel.PlanDetail.Status == 1">未进场</p>-->
@@ -79,6 +90,16 @@
             <md-list-item>
               <p flex="15">有无封样：</p>
               <p>{{item.IsPacking?'有':'无'}}</p>
+            </md-list-item>
+            <md-list-item>
+              <p flex="15">状态：</p>
+              <p ng-if="item.Status == 1">未进场</p>
+              <p ng-if="item.Status == 2">未验收</p>
+              <p ng-if="item.Status == 4">未送检</p>
+              <p ng-if="item.Status == 8">未归档</p>
+              <p ng-if="item.Status == 16">未批示</p>
+              <p ng-if="item.Status == 32">未退场</p>
+              <p ng-if="item.Status == 64">已完成</p>
             </md-list-item>
             <md-list-item>
               <p flex="15">检查人：</p>

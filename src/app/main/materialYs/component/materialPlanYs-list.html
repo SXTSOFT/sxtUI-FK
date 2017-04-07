@@ -11,7 +11,7 @@
             <md-button ng-disabled="true" class="md-fab md-mini" ng-if="item.Status == 8">未档</md-button>
             <md-button ng-disabled="true" class="md-fab md-mini" ng-if="item.Status == 16">未批</md-button>
             <md-button ng-disabled="true" class="md-fab md-mini" ng-if="item.Status == 32">未退</md-button>
-            <md-button ng-disabled="true" class="md-fab md-mini" ng-if="item.Status == 64">未闭</md-button>
+            <!--<md-button ng-disabled="true" class="md-fab md-mini" ng-if="item.Status == 64">未闭</md-button>-->
             <div flex class="md-3-line md-list-item-text">
               <p>{{item.PlanName}}</p>
             </div>
@@ -33,9 +33,9 @@
             <md-button ng-if="item.Status == 32" style="color: black;margin-right: 0px"
                        ui-sref="app.xhsc.materialys.unqualifiedExit({id:item.Id})">退场
             </md-button>
-            <md-button style="color: black;margin-right: 0px" ng-if="item.Status == 64"
+            <!--<md-button style="color: black;margin-right: 0px" ng-if="item.Status == 64"
                        ui-sref="app.xhsc.materialys.exit({id:item.PlanId})">退场
-            </md-button>
+            </md-button>-->
             <span class="border1px bottom1px"></span>
           </md-list-item>
         </md-list>
@@ -135,7 +135,7 @@
           </md-list>
         </md-content>
       </md-tab>
-      <md-tab label="未关闭">
+      <!--<md-tab label="未关闭">
         <md-content class="md-padding">
           <md-list flex>
             <md-list-item ng-repeat="item in vm.planList | filter:{Status:64}:true" class="md-long-text"
@@ -151,7 +151,7 @@
             </md-list-item>
           </md-list>
         </md-content>
-      </md-tab>
+      </md-tab>-->
     </md-tabs>
   </md-content>
 </div>

@@ -17,12 +17,12 @@
     $rootScope.title = $stateParams.title;
     var user = auth.current();
     var status;
-    if(user.Role.MemberType===4){
+    if(user.Role.MemberType==8){
       api.setNetwork(0);
       status = 16;
     }else{
       api.setNetwork(1);
-      status = user.Role.MemberType == 0?1:110;
+      status = user.Role.MemberType == 0 || 32 ?1:46;
     }
 
 

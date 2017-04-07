@@ -91,8 +91,8 @@
         }
       },
       contract:{
-        getSysOrgOU:function () {
-          return $http.get($http.url('/api/ProjectInfoApi/GetOrgOU'));
+        getSysOrgOU:function (args) {
+          return $http.get($http.url('/api/ProjectInfoApi/GetOrgOU',{projects:args}));
         },
         create: function (args) {
           return $http.post('/api/MaterialContract', args)
@@ -101,7 +101,7 @@
           return $http.put('/api/MaterialContract/'+data.Id,data);
         },
         getList: function (param) {
-          return $http.get($http.url('/api/MaterialContract', {Skip: param.Skip, Limit: param.Limit}));
+          return $http.get($http.url('/api/MaterialContract?projects='+param.projects, {Skip: param.Skip, Limit: param.Limit}));
         },
         getById:function(id){
           return $http.get($http.url('/api/MaterialContract/'+id));
