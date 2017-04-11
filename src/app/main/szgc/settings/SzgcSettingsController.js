@@ -296,6 +296,7 @@
       })
       api.szgc.projectProgressService.postData(data).then(function (r) {
         vm.loading = false;
+        vm.openProjectSetting();
         utils.alert('设置成功');
       })
     }
