@@ -95,7 +95,7 @@
         noBack:true,
         sendBt:true,
         title:'材料退场',
-        url:'/unqualifiedExit/{id}',
+        url:'/unqualifiedExit/{id}/{unit}',
         template: '<material-unqualified-exit flex layout="column"></material-unqualified-exit>'
       })
       .state('app.xhsc.materialys.materialPlanProgress',{

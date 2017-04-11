@@ -7,9 +7,10 @@
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
       <label flex="50">进场数量</label>
-      <md-input-container flex="50"  style="margin:0;padding: 0;">
+      <md-input-container flex  style="margin:0;padding: 0;">
         <input type="number" ng-model="vm.data.ApproachCount" style="top: 10px;position: relative; text-align: right;" min="0" required />
       </md-input-container>
+       <label style="text-align:right;" flex="10">{{vm.data.Unit}}</label>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item style="height: 54px;">
