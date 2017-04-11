@@ -42,6 +42,7 @@
         vm.selectedArea = vm.Areas[0];
       })*/
 
+
       vm.change = function(){
         $rootScope.$emit('areaSelect',vm.selectedArea)
       }

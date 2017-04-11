@@ -15,6 +15,17 @@
     $scope.$on('hidebar', function () {
       $scope.isHideBar = true;
     });
+
+    $rootScope.$on('hidebar', function () {
+      console.log($scope.isHideBar);
+      $scope.isHideBar = true;
+    });
+
+    $rootScope.$on('openbar', function () {
+      console.log($scope.isHideBar);
+      $scope.isHideBar = false;
+    });
+
     $scope.theme= $cookies.get("selectedTheme");
 
   }

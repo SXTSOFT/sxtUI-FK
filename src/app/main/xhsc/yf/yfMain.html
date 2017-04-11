@@ -1,92 +1,93 @@
-<div flex ng-if="vm.role==0" class="gxbg" layout="column" ms-scroll>
-  <div class="gxheadzb">
-    <ul>
-      <li ng-click="vm.setModule(4)">
-        <img src="app/main/xhsc/images/zbzg.png">
-        <p>验房整改</p>
-      </li>
-      <li ng-click="vm.upload()">
-        <img src="app/main/xhsc/images/upload.png">
-        <p>离线上传</p>
-      </li>
-    </ul>
-  </div>
-  <div flex style="background-color: white;">
-    <md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
-                          md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">
-    </md-progress-circular>
-    <md-list ng-show="vm.isOver" style="background-color: #FFFFFF">
-      <md-list-item style="background-color: #FFFFFF" ng-click="vm.zbzgAction(item)" layout="row" ng-repeat="item in vm.zglist|zgFilter:[1,8]">
-        <div  layout="column" style="padding-bottom: 16px">
-          <p style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 12px">
-            <span style="margin-left:1%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px;white-space: nowrap">总包整改</span>
-          </p>
+<!--<div flex ng-if="vm.role==0" class="gxbg" layout="column" ms-scroll>-->
+  <!--<div class="gxheadzb">-->
+    <!--<ul>-->
+      <!--<li ng-click="vm.setModule(4)">-->
+        <!--<img src="app/main/xhsc/images/zbzg.png">-->
+        <!--<p>验房整改</p>-->
+      <!--</li>-->
+      <!--<li ng-click="vm.upload()">-->
+        <!--<img src="app/main/xhsc/images/upload.png">-->
+        <!--<p>离线上传</p>-->
+      <!--</li>-->
+    <!--</ul>-->
+  <!--</div>-->
+  <!--<div flex style="background-color: white;">-->
+    <!--<md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"-->
+                          <!--md-mode="indeterminate" md-diameter="28" style="margin-left: 8px;margin-top: 8px">-->
+    <!--</md-progress-circular>-->
+    <!--<md-list ng-show="vm.isOver" style="background-color: #FFFFFF">-->
+      <!--<md-list-item style="background-color: #FFFFFF" ng-click="vm.zbzgAction(item)" layout="row" ng-repeat="item in vm.zglist|zgFilter:[1,8]">-->
+        <!--<div  layout="column" style="padding-bottom: 16px">-->
+          <!--<p style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 12px">-->
+            <!--<span style="margin-left:1%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px;white-space: nowrap">总包整改</span>-->
+          <!--</p>-->
 
-          <p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px;line-height: 22px">
-            {{item.Describe}}
-          </p>
-        </div>
-        <span flex></span>
-        <md-button ng-click="vm.zbzgbtnAction(item,$event)" class="md-icon-button" aria-label="More">
-          <img ng-src="app/main/xhsc/images/more_vert.svg"></img>
-        </md-button>
-        <span class="border1px bottom1px"></span>
-      </md-list-item>
-    </md-list>
-  </div>
-</div>
+          <!--<p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px;line-height: 22px">-->
+            <!--{{item.Describe}}-->
+          <!--</p>-->
+        <!--</div>-->
+        <!--<span flex></span>-->
+        <!--<md-button ng-click="vm.zbzgbtnAction(item,$event)" class="md-icon-button" aria-label="More">-->
+          <!--<img ng-src="app/main/xhsc/images/more_vert.svg"></img>-->
+        <!--</md-button>-->
+        <!--<span class="border1px bottom1px"></span>-->
+      <!--</md-list-item>-->
+    <!--</md-list>-->
+  <!--</div>-->
+<!--</div>-->
 
-<div flex ng-if="vm.role==2||vm.role==4||vm.role==8" class="gxbg" layout="column" ms-scroll>
-  <div class="gxheadjl">
-    <ul>
-      <li ng-click="vm.create()">
-        <img src="app/main/xhsc/images/jlys.png">
-        <p>新建验房</p>
-      </li>
-      <li ng-click="vm.setModule(32)">
-        <img src="app/main/xhsc/images/jlfy.png">
-        <p>验房复查</p>
-      </li>
-      <li ng-click="vm.upload()">
-        <img src="app/main/xhsc/images/upload.png">
-        <p>离线上传</p>
-      </li>
-    </ul>
-  </div>
-  <div flex style="background-color: white;">
-    <md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"
-                          md-mode="indeterminate" md-diameter="32" style="margin-left: 8px;margin-top: 8px">
-    </md-progress-circular>
-    <md-list ng-show="vm.isOver" style="background-color: #FFFFFF">
-      <md-list-item style="background-color: #FFFFFF" layout="row" ng-click="vm.jlysAction(item)" ng-repeat="item in vm.Inspections">
-        <div layout="column">
-          <p  style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:12px;margin-bottom: 0px">
-            <span style="margin-left:1%;color:white;background-color: #359df5;font-size:12px;border-radius: 3px;white-space: nowrap">验房检查</span>
-          </p>
-          <p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px;line-height: 22px">
-            <span style="display:inline-block;line-height:22px;padding-top: 8px" > {{item.Describe}} </span>
-          </p>
-        </div>
-        <span flex></span>
-        <md-button ng-click="vm.jlysbtnAction(item,$event)" class="md-icon-button" aria-label="More">
-          <img ng-src="app/main/xhsc/images/more_vert.svg"></img>
-        </md-button>
-        <span class="border1px bottom1px"></span>
-      </md-list-item>
-      <md-list-item style="background-color: #FFFFFF" ng-click="vm.jlfyAction(item)" ng-repeat="item in vm.zglist|zgFilter:[64]">
-        <div style="padding-bottom: 16px" layout="column">
-          <p style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 12px">
-            <span style="margin-left:1%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px;white-space: nowrap">验房复查</span>
-          </p>
-          <p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px;line-height: 22px"><span style="display: block;height: 24px">
-            {{item.Describe}} </span></p>
-        </div>
-        <span flex></span>
-        <md-button ng-click="vm.jlfybtnAction(item,$event)" class="md-icon-button" aria-label="More">
-          <img  ng-src="app/main/xhsc/images/more_vert.svg"></img>
-        </md-button>
-        <span class="border1px bottom1px"></span>
-      </md-list-item>
-    </md-list>
-  </div>
-</div>
+<!--<div flex ng-if="vm.role==2||vm.role==4||vm.role==8" class="gxbg" layout="column" ms-scroll>-->
+  <!--<div class="gxheadjl">-->
+    <!--<ul>-->
+      <!--<li ng-click="vm.create()">-->
+        <!--<img src="app/main/xhsc/images/jlys.png">-->
+        <!--<p>新建验房</p>-->
+      <!--</li>-->
+      <!--<li ng-click="vm.setModule(32)">-->
+        <!--<img src="app/main/xhsc/images/jlfy.png">-->
+        <!--<p>验房复查</p>-->
+      <!--</li>-->
+      <!--<li ng-click="vm.upload()">-->
+        <!--<img src="app/main/xhsc/images/upload.png">-->
+        <!--<p>离线上传</p>-->
+      <!--</li>-->
+    <!--</ul>-->
+  <!--</div>-->
+  <!--<div flex style="background-color: white;">-->
+    <!--<md-progress-circular id="toolbar-progress" ng-if="!vm.isOver" class="md-accent"-->
+                          <!--md-mode="indeterminate" md-diameter="32" style="margin-left: 8px;margin-top: 8px">-->
+    <!--</md-progress-circular>-->
+    <!--<md-list ng-show="vm.isOver" style="background-color: #FFFFFF">-->
+      <!--<md-list-item style="background-color: #FFFFFF" layout="row" ng-click="vm.jlysAction(item)" ng-repeat="item in vm.Inspections">-->
+        <!--<div layout="column">-->
+          <!--<p  style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:12px;margin-bottom: 0px">-->
+            <!--<span style="margin-left:1%;color:white;background-color: #359df5;font-size:12px;border-radius: 3px;white-space: nowrap">验房检查</span>-->
+          <!--</p>-->
+          <!--<p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px;line-height: 22px">-->
+            <!--<span style="display:inline-block;line-height:22px;padding-top: 8px" > {{item.Describe}} </span>-->
+          <!--</p>-->
+        <!--</div>-->
+        <!--<span flex></span>-->
+        <!--<md-button ng-click="vm.jlysbtnAction(item,$event)" class="md-icon-button" aria-label="More">-->
+          <!--<img ng-src="app/main/xhsc/images/more_vert.svg"></img>-->
+        <!--</md-button>-->
+        <!--<span class="border1px bottom1px"></span>-->
+      <!--</md-list-item>-->
+      <!--<md-list-item style="background-color: #FFFFFF" ng-click="vm.jlfyAction(item)" ng-repeat="item in vm.zglist|zgFilter:[64]">-->
+        <!--<div style="padding-bottom: 16px" layout="column">-->
+          <!--<p style="padding-right: 20px;font-size:16px;line-height: 20px;padding-left:8px;margin-bottom: 12px">-->
+            <!--<span style="margin-left:1%;color:white;background-color: #ff6d1f;font-size:12px;border-radius: 3px;white-space: nowrap">验房复查</span>-->
+          <!--</p>-->
+          <!--<p style="color:#999;padding-right: 20px;margin:0;font-size:12px;padding-left:8px;line-height: 22px"><span style="display: block;height: 24px">-->
+            <!--{{item.Describe}} </span></p>-->
+        <!--</div>-->
+        <!--<span flex></span>-->
+        <!--<md-button ng-click="vm.jlfybtnAction(item,$event)" class="md-icon-button" aria-label="More">-->
+          <!--<img  ng-src="app/main/xhsc/images/more_vert.svg"></img>-->
+        <!--</md-button>-->
+        <!--<span class="border1px bottom1px"></span>-->
+      <!--</md-list-item>-->
+    <!--</md-list>-->
+  <!--</div>-->
+<!--</div>-->
+<iframe flex style="border: 0px;padding: 0px;margin: 0px" ng-src="{{vm.href}}" ></iframe>

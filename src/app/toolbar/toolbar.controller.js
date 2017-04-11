@@ -20,6 +20,7 @@
         vm.user=profile.user;
       });
 
+
       // remote.profile().then(function(r){
       //      if (r.data&& r.data.Role){
       //        vm.user=r.data;
@@ -125,6 +126,7 @@
         }
 
         vm.active_selected=function(route){
+          $rootScope.$emit("openbar");
           vm.current_active=route;
         }
         vm.current_active="app.xhsc.home";
