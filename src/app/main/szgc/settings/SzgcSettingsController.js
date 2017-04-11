@@ -263,6 +263,7 @@
                 data.push({
                   id: p.id,
                   ProjectId: r.projectId,
+                  ProjectName:s.name,
                   StageId: b.stageId,
                   StageName: r.name,
                   BuildingId: p.buildingId,
