@@ -193,7 +193,7 @@
         vm.data.RegionId = vm.RegionId;
         vm.data.SectionId = vm.SectionId;
         vm.data.MaterialId = vm.data.Material.Id;
-        vm.data.PlanTime = new Date(vm.data.PlanTime);
+        vm.data.PlanTime = vm.data.PlanTime.Format('yyyy-MM-dd');
         if (vm.data.Id) {
           api.material.materialPlan.putMaterial(vm.data).then(function () {
             utils.alert("提交成功", null, function () {
