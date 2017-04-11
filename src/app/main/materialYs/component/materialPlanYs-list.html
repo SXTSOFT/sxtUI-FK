@@ -31,7 +31,7 @@
                        ui-sref="app.xhsc.materialys.approval({planId:item.PlanId,id:item.Id})">批示
             </md-button>
             <md-button ng-if="item.Status == 32" style="color: black;margin-right: 0px"
-                       ui-sref="app.xhsc.materialys.unqualifiedExit({id:item.Id})">退场
+                       ui-sref="app.xhsc.materialys.unqualifiedExit({id:item.Id,unit:item.Unit})">退场
             </md-button>
             <!--<md-button style="color: black;margin-right: 0px" ng-if="item.Status == 64"
                        ui-sref="app.xhsc.materialys.exit({id:item.PlanId})">退场
@@ -128,7 +128,7 @@
                 <p>{{item.PlanName}}</p>
               </div>
               <md-button style="color: black;margin-right: 0px" ng-if="item.Status == 32"
-                         ui-sref="app.xhsc.materialys.unqualifiedExit({id:item.Id})">退场
+                         ui-sref="app.xhsc.materialys.unqualifiedExit({id:item.Id,unit:item.Unit})">退场
               </md-button>
               <span class="border1px bottom1px"></span>
             </md-list-item>

@@ -10,9 +10,10 @@
       <md-divider  class="md-no-sticky"></md-divider>
       <md-list-item>
         <label flex="40">退场数量</label>
-        <md-input-container flex="60" class="md-block" style="height: 48px; margin: 0;padding: 0;">
+        <md-input-container flex class="md-block" style="height: 48px; margin: 0;padding: 0;">
           <input type="number" required ng-model="vm.data.ExitCount" min="0" style="padding: 0;margin-top: 10px;text-align: right;" required />
         </md-input-container>
+        <label style="text-align:right;" flex="10">{{vm.data.Unit}}</label>
       </md-list-item>
       <md-divider class="md-no-sticky"></md-divider>
       <md-list-item style="height: 48px;">

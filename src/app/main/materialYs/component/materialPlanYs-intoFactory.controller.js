@@ -31,6 +31,7 @@
 
     api.xhsc.materialPlan.getMaterialPlanDetail($stateParams.BatchId).then(function (q) {
       vm.data.Id = q.data.Id;
+      vm.data.Unit = q.data.Unit;
       vm.data.PlanId = q.data.PlanId;
       vm.Brands = q.data.Brands.split(/、|,|，|；|;/) || [];
       if (vm.data.ApproachType == 1) {
