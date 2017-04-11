@@ -14,7 +14,8 @@
       'app.pcReport_yf',
       'app.pcReport_cycle',
       'app.pcReport_week',
-      'app.pcReport_safeys'
+      'app.pcReport_safeys',
+      'app.insideYs'
     ])
     .config(config);
   /** @ngInject */

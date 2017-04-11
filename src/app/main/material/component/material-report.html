@@ -1,4 +1,4 @@
-<div>
+<div ng-if="!vm.isMobile||vm.isiPad">
   <md-card style="background-color: white;" md-theme-watch>
     <md-card-content>
       <div flex layout="row">
@@ -39,8 +39,8 @@
    <!--<form method="post" action="http://localhost:5000/api/MaterialPlan/GetMaterialReportXls" target="_blank">-->
               <input id="export" type="hidden" name="table" />
               <input id="tital" type="hidden" name="tital" value="材料验收统计" />
-
-              <md-button ng-if="!(vm.isMobile||vm.isiPad)" class="md-raised md-primary" type="submit" ng-click="vm.printBatchCount()">Excel导出</md-button>
+              
+              <md-button class="md-raised md-primary" type="submit" ng-click="vm.printBatchCount()" ng-if="vm.isiPad == null">Excel导出</md-button>
           </form>
   <div layout="row" flex>
     <div id="divReport" style="margin: 24px 16px;overflow:auto;">

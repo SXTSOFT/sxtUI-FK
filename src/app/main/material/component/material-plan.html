@@ -38,7 +38,7 @@
       <md-input-container class="md-block" flex="30">
         <label>标段</label>
         <md-select name="SectionId" required md-on-open="vm.getSections(vm.RegionId)" ng-model="vm.SectionId">
-          <md-option ng-value="p.RegionID" ng-repeat="p in vm.sections">{{p.RegionName}}
+          <md-option ng-value="p.RegionID" ng-click="vm.getContracts()" ng-repeat="p in vm.sections">{{p.RegionName}}
           </md-option>
         </md-select>
         <div ng-messages="myForm.SectionId.$error" ng-show="myForm.SectionId.$touched" role="alert">

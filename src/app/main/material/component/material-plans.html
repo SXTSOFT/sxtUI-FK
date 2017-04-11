@@ -61,7 +61,12 @@
         <!--{{item.Status}}-->
         <label ng-if="item.Status == 1">未进场</label>
         <label ng-if="item.Status == 2">未验收</label>
-        <label ng-if="item.Status == 4">已关闭</label>
+        <label ng-if="item.Status == 4">未送检</label>
+        <label ng-if="item.Status == 8">未归档</label>
+        <label ng-if="item.Status == 16">未批示</label>
+        <label ng-if="item.Status == 32">未退场</label>
+        <label ng-if="item.Status == 64">已完成</label>
+        <label ng-if="item.Status == 128">分批进场</label>
       </td>
       <td class="actions">
         <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.plan({id:item.Id})" ng-hide="item.Status!=1" style="margin: 0;">

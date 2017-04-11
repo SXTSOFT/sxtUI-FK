@@ -1,0 +1,62 @@
+<md-card style="background-color: white;min-height:140px" md-theme-watch>
+    <md-card-content>
+        <div flex layout="row">
+            <md-input-container md-theme="default" flex>
+                <label>整改单位</label>
+                <md-select ng-model="vm.project" multiple>
+                    <md-option ng-value="item.rectifyOu" ng-repeat="item in vm.projectData">
+                        {{item.rectifyOuName}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div style="width: 20px"></div>
+        <div layout="row" layout-align="start">
+            <md-checkbox ng-value="1"  ng-click="vm.toggle('未反馈', vm.selected)">
+                未反馈
+            </md-checkbox>
+            <md-checkbox ng-value="4"  ng-click="vm.toggle('未确认', vm.selected)">
+                未确认
+            </md-checkbox>
+            <md-checkbox ng-value="2" ng-click="vm.toggle('已关闭', vm.selected)">
+                已关闭
+            </md-checkbox>
+        </div>
+    </md-card-content>
+</md-card>
+<md-content flex layout="column" ms-scroll>
+    <table class="summaryReport">
+        <header>
+        <tr>
+            <th>序号</th>
+            <th>项目/分期/批次</th>
+            <th>楼栋/区域</th>
+            <th>楼层</th>
+            <th>房号</th>
+            <th>部位</th>
+            <th>区域类型</th>
+            <th>一级分类</th>
+            <th>二级分类</th>
+            <th>三级分类</th>
+            <th>问题描述</th>
+            <th>问题级别</th>
+            <th>所属专业</th>
+            <th>验收时间</th>
+            <th>验收人</th>
+            <th>整改单位</th>
+            <th>是否已整改</th>
+            <th>复查状态</th>
+            <th>整改时间</th>
+            <th>关闭时间</th>
+            <th>关闭人员</th>
+            <th>问题状态</th>
+        </tr>
+        </header>
+        <tbody>
+            <tr ng-repeat="item in vm.data">
+                <td>{{$index+1}}</td>
+                <td ng-repeat="(i,n) in item" ng-if="i!='rectifyOu'">{{n}}</td>
+            </tr>
+        </tbody>
+    </table>
+</md-content>

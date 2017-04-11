@@ -28,19 +28,17 @@
     vm.data.Inspector = user.Name;
     vm.data.IsPacking = true;
     var status = user.Role.MemberType == 0 ? 1 : 110;
-    vm.CountDisabled = false;
 
     api.xhsc.materialPlan.getMaterialPlanDetail($stateParams.BatchId).then(function (q) {
       vm.data.Id = q.data.Id;
       vm.data.PlanId = q.data.PlanId;
-      vm.Brands = q.data.Brands.split('、') || [];
+      vm.Brands = q.data.Brands.split(/、|,|，|；|;/) || [];
       if (vm.data.ApproachType == 1) {
         vm.data.Id = sxt.uuid();
       }
 
       api.xhsc.materialPlan.getMaterialBatchIntoFactory().then(function (r) {
         if(r.data && r.data.length > 0){
-          vm.CountDisabled = false;
           var _subCount = 0;
           r.data.forEach(function (e) {
             if (vm.data.PlanId == e.PlanId) {
@@ -52,7 +50,6 @@
           vm.data.ApproachCount = _subCount > 0 ? _subCount : 0;
         } else {
           vm.data.ApproachCount = parseFloat(q.data.PlanCount);
-          vm.CountDisabled = vm.data.ApproachType == 0 ? true : false;
         }
       });
     });
@@ -78,14 +75,16 @@
       //   utils.alert('请上传至少一张车辆检查照片');
       //   return;
       // }
-      if (vm.goodsImgs.length == 0) {
-        utils.alert('请上传至少一张货物检查照片');
-        return;
-      }
       // if (vm.rummagerImgs.length == 0) {
       //   utils.alert('请上传至少一张检查人照片');
       //   return;
       // }
+
+      if (vm.goodsImgs.length == 0) {
+        utils.alert('请上传至少一张货物检查照片');
+        return;
+      }
+      
       if (vm.CertificateImgs.length == 0) {
         utils.alert('请上传至少一张合格证照片');
         return;
@@ -144,7 +143,7 @@
       var _id = sxt.uuid();
       arr.push({
         Id: sxt.uuid(),
-        BatchId: $stateParams.id,
+        BatchId: $stateParams.BatchId,
         OptionType: type,
         ApproachStage: 1,
         ImageName: _id + ".jpeg",
