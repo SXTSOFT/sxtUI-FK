@@ -197,56 +197,66 @@
           return { id: null, buildingId: r.BuildingId, procedureId: r.ProcedureId, procedureName: r.ProcedureName, isPull: true };
         })
 
-        //过滤已设置的工序
-        list3.forEach(function (r) {
-          var r = vm.list.find(function (s) { return s.buildingId == r.buildingId && s.procedureId == r.procedureId });
+        list3.forEach(function (item) {
+          var r = vm.list.find(function (s) { return s.buildingId == item.buildingId && s.procedureId == item.procedureId });
           if (r) {
-            vm.list.splice($.inArray(r, vm.list), 1)
+            r.id = item.id;
+            r.count = item.count;
           }
         })
 
-        res[0].data.Rows.forEach(function (r) {
-          if (!download.find(function (s) { return s.stageId == r.StageId })) {
-            download.push({ projectId: r.ProjectId, stageId: r.StageId, stage: r.Stage })
-          }
-          if (!list2.find(function (s) { return s.buildingId == r.BuildingId })) {
-            list2.push({ stageId: r.StageId, buildingId: r.BuildingId, buildingName: r.Building })
-          }
-        })
+        console.log(vm.list);
 
-        res[1].data.Rows.forEach(function (r) {
-          if (!download.find(function (s) { return s.stageId == r.StageId })) {
-            download.push({ projectId: r.ProjectId, stageId: r.StageId, stage: r.StageName })
-          }
+        //过滤已设置的工序
+        // list3.forEach(function (r) {
+        //   var r = vm.list.find(function (s) { return s.buildingId == r.buildingId && s.procedureId == r.procedureId });
+        //   if (r) {
+        //     vm.list.splice($.inArray(r, vm.list), 1)
+        //   }
+        // })
 
-          if (!list2.find(function (s) { return s.buildingId == r.BuildingId })) {
-            list2.push({ stageId: r.StageId, buildingId: r.BuildingId, buildingName: r.BuildingName })
-          }
-        })
+        // res[0].data.Rows.forEach(function (r) {
+        //   if (!download.find(function (s) { return s.stageId == r.StageId })) {
+        //     download.push({ projectId: r.ProjectId, stageId: r.StageId, stage: r.Stage })
+        //   }
+        //   if (!list2.find(function (s) { return s.buildingId == r.BuildingId })) {
+        //     list2.push({ stageId: r.StageId, buildingId: r.BuildingId, buildingName: r.Building })
+        //   }
+        // })
 
-        list2.forEach(function (r) {
-          var f = list3.filter(function (s) { return s.id && s.buildingId == r.buildingId });
-          r.procedures = f;
-        })
+        // res[1].data.Rows.forEach(function (r) {
+        //   if (!download.find(function (s) { return s.stageId == r.StageId })) {
+        //     download.push({ projectId: r.ProjectId, stageId: r.StageId, stage: r.StageName })
+        //   }
 
-        download.forEach(function (r) {
-          var f = list2.filter(function (s) { return s.stageId == r.stageId && s.procedures.length != 0 });
-          r.buildings = f;
-        })
+        //   if (!list2.find(function (s) { return s.buildingId == r.BuildingId })) {
+        //     list2.push({ stageId: r.StageId, buildingId: r.BuildingId, buildingName: r.BuildingName })
+        //   }
+        // })
 
-        download = download.filter(function (x) {
-          return x.buildings.length != 0;
-        })
+        // list2.forEach(function (r) {
+        //   var f = list3.filter(function (s) { return s.id && s.buildingId == r.buildingId });
+        //   r.procedures = f;
+        // })
 
-        vm.Downloaded.forEach(function (d) {
-          d.stages = download.filter(function (s) {
-            return d.projectId == s.projectId;
-          })
-        })
+        // download.forEach(function (r) {
+        //   var f = list2.filter(function (s) { return s.stageId == r.stageId && s.procedures.length != 0 });
+        //   r.buildings = f;
+        // })
 
-        vm.Downloaded = vm.Downloaded.filter(function (p) {
-          return p.stages.length != 0;
-        })
+        // download = download.filter(function (x) {
+        //   return x.buildings.length != 0;
+        // })
+
+        // vm.Downloaded.forEach(function (d) {
+        //   d.stages = download.filter(function (s) {
+        //     return d.projectId == s.projectId;
+        //   })
+        // })
+
+        // vm.Downloaded = vm.Downloaded.filter(function (p) {
+        //   return p.stages.length != 0;
+        // })
 
         vm.loading = false;
       })
