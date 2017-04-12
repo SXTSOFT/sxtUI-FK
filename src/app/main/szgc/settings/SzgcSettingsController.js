@@ -9,7 +9,7 @@
     .controller('SzgcSettingsController', SzgcSettingsController);
 
   /** @ngInject */
-  function SzgcSettingsController(auth, api, $scope, utils, $rootScope, appCookie, $mdDialog, versionUpdate, $q, $mdSidenav) {
+  function SzgcSettingsController(auth, api, $scope, utils, $rootScope, appCookie, $mdDialog, versionUpdate, $q, $mdSidenav,sxt) {
 
     var vm = this, selected;
 
@@ -28,7 +28,14 @@
       vm.project = r[1].data.data;
 
       if (vm.profile.type == "employee") {
-        vm.projectId = vm.project.map(function (p) { return p.project_id }).join(',');
+        vm.projectId = [];
+        for(var i=0;i<vm.project.length;i++)
+        {
+          vm.projectId.push(vm.project[i].project_id);
+        }
+        vm.projectId = vm.projectId.join(',');
+        //console.log(vm.projectId);
+        //vm.projectId = vm.project.map(function (p) { return p.project_id }).join(',');
       }
     });
     vm.logout = function () {
@@ -172,11 +179,14 @@
     }
 
     var list3 = [];
-    vm.openProjectSetting = function () {
+    vm.openProjectSetting = function (isRefresh) {
       vm.loading = true;
-      if (vm.data) return;
+      if (vm.data && !isRefresh){
+        return;
+      }
+      
       vm.data = vm.project;
-      vm.Downloaded = vm.project.map(function (p) { return { projectId: p.project_id, name: p.name } });
+      //vm.Downloaded = vm.project.map(function (p) { return { projectId: p.project_id, name: p.name } });
       var date = new Date();
       var year = date.getFullYear();
       var month = date.getMonth() + 1;
@@ -192,7 +202,7 @@
         vm.list = []
         var list2 = [];
         var download = [];
-        list3 = res[1].data.Rows.map(function (p) { return { id: p.Id, buildingId: p.BuildingId, procedureId: p.ProcedureId, procedureName: p.ProcedureName, count: p.Value } });
+        list3 = res[1].data.Rows.map(function (p) { return { id: p.Id, buildingId: p.BuildingId, procedureId: p.ProcedureId, procedureName: p.ProcedureName, count: p.Value,isPull:true } });
         vm.list = res[0].data.Rows.map(function (r) {
           return { id: null, buildingId: r.BuildingId, procedureId: r.ProcedureId, procedureName: r.ProcedureName, isPull: true };
         })
@@ -202,10 +212,12 @@
           if (r) {
             r.id = item.id;
             r.count = item.count;
+          }else{
+            vm.list.push(item);
           }
         })
 
-        console.log(vm.list);
+        //console.log(vm.list);
 
         //过滤已设置的工序
         // list3.forEach(function (r) {
@@ -269,7 +281,9 @@
         s.stages && s.stages.forEach(function (r) {
           r.buildings && r.buildings.forEach(function (b) {
             b.procedures.forEach(function (p) {
-              if (p.count) {
+              if (p.id || p.count) {
+                var isAdd = p.id?false:true;
+                p.id = p.id?p.id:sxt.uuid();
                 data.push({
                   id: p.id,
                   ProjectId: r.projectId,
@@ -279,7 +293,8 @@
                   BuildingId: p.buildingId,
                   BuildingName: b.name,
                   ProcedureId: p.procedureId,
-                  Value: p.count
+                  Value: p.count,
+                  IsAdd:isAdd
                 })
               }
             })
@@ -287,27 +302,26 @@
         })
       })
 
-      vm.Downloaded.forEach(function (s) {
-        s.stages && s.stages.forEach(function (r) {
-          r.buildings && r.buildings.forEach(function (b) {
-            b.procedures.forEach(function (p) {
-              data.push({
-                id: p.id,
-                ProjectId: r.projectId,
-                StageId: b.stageId,
-                StageName: r.stage,
-                BuildingId: p.buildingId,
-                BuildingName: b.buildingName,
-                ProcedureId: p.procedureId,
-                Value: p.count
-              })
-            })
-          })
-        })
-      })
+      // vm.Downloaded.forEach(function (s) {
+      //   s.stages && s.stages.forEach(function (r) {
+      //     r.buildings && r.buildings.forEach(function (b) {
+      //       b.procedures.forEach(function (p) {
+      //         data.push({
+      //           id: p.id,
+      //           ProjectId: r.projectId,
+      //           StageId: b.stageId,
+      //           StageName: r.stage,
+      //           BuildingId: p.buildingId,
+      //           BuildingName: b.buildingName,
+      //           ProcedureId: p.procedureId,
+      //           Value: p.count
+      //         })
+      //       })
+      //     })
+      //   })
+      // })
       api.szgc.projectProgressService.postData(data).then(function (r) {
-        vm.loading = false;
-        vm.openProjectSetting();
+        vm.openProjectSetting(true);
         utils.alert('设置成功');
       })
     }
