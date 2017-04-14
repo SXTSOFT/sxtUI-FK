@@ -141,13 +141,13 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
         </fieldset>
       </div>
       <md-divider ng-if="vm.checkData.WgCheck==1 && vm.checkData.IsInspection==1 && project.procedureId"></md-divider>
-      <md-list-item ng-if="vm.checkData.IsInspection!=4" ng-click="vm.AttachmentSHow = true">
+      <md-list-item ng-click="vm.AttachmentSHow = true">
         <div class="md-list-item-text" flex="25" layout="column" style="height: 76px; line-height: 48px;">
           <p style="text-align: left;">附件</p>
         </div>
         <a class="md-secondary">添加</a>
       </md-list-item>
-      <md-divider ng-if="vm.checkData.IsInspection!=4"></md-divider>
+      <md-divider></md-divider>
       <md-subheader style="background-color: #f5f6f7;" class="md-no-sticky" ng-hide="data.imgs1.length == 0 && data.imgs2.length == 0 && data.imgs3.length == 0&& data.imgs4.length
 == 0&& data.imgs5.length == 0">附件
       </md-subheader>
@@ -160,7 +160,7 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
         </div>
       </md-list-item>
       <md-divider ng-hide="data.imgs1.length == 0 && data.imgs2.length == 0 && data.imgs3.length == 0&& data.imgs4.length == 0&& data.imgs5.length == 0"></md-divider>
-      <div class="md-padding" layout="row">
+      <div class="md-padding" layout="row"> 
         <md-button type="submit" flex class="md-raised md-primary"> 确定</md-button>
       </div>
     </div>

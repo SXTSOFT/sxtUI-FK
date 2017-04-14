@@ -167,12 +167,16 @@
       if (!p.stages) {
         api.szgc.vanke.project_items({ project_id: p.project_id, page_size: 0, page_number: 1 }).then(function (res) {
           p.show = true;
-          p.stages = res.data.data.map(function (v) { return { show: true, projectId: v.project.project_id, stageId: v.project_item_id, name: v.name } })
+          p.stages = res.data.data.map(function (v) { return { show: false, projectId: v.project.project_id, stageId: v.project_item_id, name: v.name } })
         });
       } else {
         p.show = !p.show;
       }
     }
+
+    // $scope.getValue = function(g){
+    //   console.log(g);
+    // }
 
     $scope.loadProcedure = function (item) {
       item.show = !item.show;
@@ -182,6 +186,7 @@
     vm.openProjectSetting = function (isRefresh) {
       vm.loading = true;
       if (vm.data && !isRefresh){
+        vm.loading = false;
         return;
       }
       
@@ -387,6 +392,7 @@
               vm.current.procedures.splice(i, 1);
             }
           }
+          
         } else {
           vm.current.procedures.forEach(function (gx) {
             var g = vm.procedures.find(function (p) { return p.ProcedureId == gx.procedureId });
@@ -397,6 +403,7 @@
             }
           })
         }
+        vm.current.show = true;
       }
     })
 

@@ -100,24 +100,27 @@
 
           var dateFilter = $filter('date');
 
-          var now = dateFilter(new Date(), 'yyyy-MM-dd');
+          var date = new Date();
+          var now = dateFilter(date, 'yyyy-MM-dd');
           var time = JSON.parse(appCookie.get("projectProgress"));
           var yesterday;
           if (time) {
             yesterday = dateFilter(time.time, 'yyyy-MM-dd');
           }
 
-          if (!yesterday || now > yesterday) {
+          var year = date.getFullYear();
+          var month = date.getMonth() + 1;
+          var lastDay = year+'-'+month+'-'+new Date(year,month,0).getDate();//获取当月最后一天日期
+
+          if (!yesterday || now > yesterday || (vm.project.length == 1 && now == lastDay)) {
             vm.projectId = vm.project.map(function (p) { return p.project_id }).join(',');
-            var date = new Date();
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
             $q.all([api.szgc.ProjectSettingsSevice.ex.getProjectBuildingProcedure(vm.projectId),
             api.szgc.projectProgressService.getProjectBuildingProcedure(vm.projectId, year + '-' + month)]).then(function (res) {
               vm.list = res[1].data.Rows.map(function (p) { return { id: p.Id, buildingId: p.BuildingId, procedureId: p.ProcedureId, procedureName: p.ProcedureName, count: p.Value } });
               for (var i = 0; i < res[0].data.Rows.length; i++) {
                 var p = vm.list.find(function (p) { return p.buildingId == res[0].data.Rows[i].BuildingId && p.procedureId == res[0].data.Rows[i].ProcedureId });
                 if (!p || !p.count) {
+                  appCookie.remove("projectProgress");
                   appCookie.put('projectProgress', JSON.stringify({ time: new Date() }))
                   utils.confirm('您有项目进度未设置，是否设置？').then(function (result) {
                     $state.go('app.szgc.settings');

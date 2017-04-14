@@ -68,7 +68,7 @@
   </md-tab>
   <md-tab label="项目进度设置" ng-if="vm.projectId" ng-click="vm.openProjectSetting()">
     <md-tab-content flex layout-fill layout="column">
-      <md-content flex layout="column">
+      <md-content flex layout-fill layout="column">
         <md-list style="margin-bottom: 64px;" md-cloak>
           <!--<md-subheader class="md-no-sticky">已设置</md-subheader>
           <md-list-item ng-repeat="p in vm.Downloaded">
@@ -90,14 +90,19 @@
             </div>
             <md-divider></md-divider>
           </md-list-item>-->
-          <md-subheader class="md-no-sticky">设置</md-subheader>
+          <!--<md-subheader class="md-no-sticky">设置</md-subheader>-->
+          
           <md-list-item ng-repeat="p in vm.data">
             <div flex layout="column">
               <md-button ng-click="loadStages(p)" style="text-align: left"> {{ p.name }} </md-button>
+              <!--<div ng-if="p.show" style="width:94%;height:1px;border-top:1px solid rgba(0,0,0,0.12);margin-left: auto;margin-right: auto;"></div>-->
               <div ng-if="p.show" ng-repeat="s in p.stages" layout="column" style="padding-left: 10px;">
                 <md-button ng-click="loadBuildings(s)" style="text-align: left"> {{ s.name }} </md-button>
                 <div ng-if="s.show" ng-repeat="b in s.buildings" layout="column" style="padding-left: 10px;">
-                  <md-button ng-click="loadProcedure(b)" style="text-align: left"> {{ b.name }} </md-button>
+                  <div>
+                    <md-button ng-click="loadProcedure(b)" style="text-align: left; width:60%;"> {{ b.name }} </md-button>
+                    <md-button style="float:right;color:rgb(183,28,28);" ng-click="vm.openGx();vm.current=b">添加工序</md-button>
+                  </div>
                   <div ng-if="b.show" ng-repeat="g in b.procedures" layout="row" style="padding-left: 20px;">
                     <p flex="70" style="margin: 0; line-height: 35px;"> {{ g.procedureName }} </p>
                     <md-input-container class="md-block" flex="15" style="margin:0 0 0 10px; height: 35px;">
@@ -105,15 +110,22 @@
                     </md-input-container>
                     <label style="line-height: 35px;">层</label>
                   </div>
-                  <md-button style="width:100px;" ng-click="vm.openGx();vm.current=b" class="md-raised md-primary md-block" ng-click="">添加工序</md-button>
+                  <div ng-if="!$last" style="width:94%;height:1px;border-top:1px solid rgba(0,0,0,0.12);margin-left: auto;margin-right: auto;"></div>
                 </div>
+                <div ng-if="!$last" style="width:94%;height:1px;border-top:1px solid rgba(0,0,0,0.12);margin-left: auto;margin-right: auto;"></div>
               </div>
             </div>
             <md-divider></md-divider>
           </md-list-item>
+
         </md-list>
-        <md-button ng-disabled="vm.loading" flex ng-click="vm.save()" style="position: fixed;" class="md-primary md-fab md-fab-bottom-right">确定</md-button>
+
+        <!--<md-button ng-disabled="vm.loading" flex ng-click="vm.save()" style="position: fixed;" class="md-primary md-fab md-fab-bottom-right">确定</md-button>-->
       </md-content>
+      <div class="md-padding" layout="row" style="position:relative; bottom:0; width:100%; background-color: white;">
+        <md-progress-circular ng-show="vm.loading" md-diameter="20" md-mode="indeterminate"></md-progress-circular>
+        <md-button flex ng-disabled="vm.loading" ng-click="vm.save()" class="md-raised md-primary md-block">确定</md-button>
+      </div>
     </md-tab-content>
   </md-tab>
 </md-tabs>
@@ -169,4 +181,3 @@
     </md-tab>
   </md-tabs>
 </md-sidenav>
-<md-progress-circular ng-show="vm.loading"  md-diameter="20" md-mode="indeterminate"></md-progress-circular>
