@@ -72,7 +72,7 @@
       })
       .state('app.xhsc.materialys.approval',{
         noBack:true,
-        sendBt:true,
+        sendPs:true,
         title:'材料验收详情',
         url:'/approval/{planId}/{id}',
         template: '<material-ys-approval flex layout="column"></material-ys-approval>'
@@ -95,7 +95,7 @@
         noBack:true,
         sendBt:true,
         title:'材料退场',
-        url:'/unqualifiedExit/{id}',
+        url:'/unqualifiedExit/{id}/{unit}',
         template: '<material-unqualified-exit flex layout="column"></material-unqualified-exit>'
       })
       .state('app.xhsc.materialys.materialPlanProgress',{

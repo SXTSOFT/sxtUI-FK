@@ -16,17 +16,17 @@
     var vm = this;
     $rootScope.title = $stateParams.title;
     var user = auth.current();
-    var status;
-    if(user.Role.MemberType===4){
+    vm.status;
+    if(user.Role.MemberType==8){
       api.setNetwork(0);
-      status = 16;
+      vm.status = 16;
     }else{
       api.setNetwork(1);
-      status = user.Role.MemberType == 0?1:110;
+      vm.status = (user.Role.MemberType == 0 || user.Role.MemberType == 32)?1:46;
     }
 
 
-    api.xhsc.materialPlan.getMaterialPlanBatch($stateParams.id,status).then(function (r) {
+    api.xhsc.materialPlan.getMaterialPlanBatch($stateParams.id,vm.status).then(function (r) {
       vm.planList = r.data;
     });
 

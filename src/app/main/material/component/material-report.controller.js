@@ -2,32 +2,39 @@
  * Created by lukehua on 2017/1/4.
  */
 
-(function(angular,undefined){
+(function (angular, undefined) {
     'use strict';
     angular
-    .module('app.material')
-    .component('materialReport',{
-      templateUrl:'app/main/material/component/material-report.html',
-      controller:materialReport,
-      controllerAs:'vm'
-    });
+        .module('app.material')
+        .component('materialReport', {
+            templateUrl: 'app/main/material/component/material-report.html',
+            controller: materialReport,
+            controllerAs: 'vm'
+        });
 
     /** @ngInject */
-    function materialReport($scope,api,sxt){
+    function materialReport($scope, api, sxt, utils) {
         var vm = this;
+        $scope.pageing = {
+            page: 1,
+            pageSize: 10,
+            total: 0
+        };
         vm.host = sxt.app.api;
         vm.projects = [];
        
-        vm.getProjects = function(){
-            if(vm.projects.length == 0){
+        var mobileDetect = new MobileDetect(window.navigator.userAgent);
+        vm.isMobile = mobileDetect.mobile();
+        vm.getProjects = function () {
+            if (vm.projects.length == 0) {
                 return api.xhsc.Project.getMap().then(function (r) {
                     vm.projects = r.data;
                 });
             }
         };
 
-        vm.clearRegion = function(){
-            vm.regions=[];
+        vm.clearRegion = function () {
+            vm.regions = [];
             vm.sections = [];
             vm.regionId = null;
             vm.sectionId = null;
@@ -39,7 +46,7 @@
             });
         };
 
-        vm.clearSection = function(){
+        vm.clearSection = function () {
             vm.sections = [];
             vm.sectionId = null;
         }
@@ -50,14 +57,24 @@
             });
         };
 
-        vm.getData = function(sid){
-            return api.material.materialPlan.getMaterialReport(sid).then(function(r){
-                vm.source = r.data;
+        vm.getData = function (sid) {
+            var page = utils.getPage($scope.pageing);
+            return api.material.materialPlan.getMaterialReport(sid, { Skip: page.Skip, Limit: page.Limit }).then(function (r) {
+                vm.source = r.data.Items || [];
+                $scope.pageing.total = r.data.TotalCount;
             });
         }
 
-        vm.printBatchCount = function(){
+        vm.pageAction = function (title, page, pageSize, total) {
+            $scope.pageing.page = page;
+        }
+
+        $scope.$watch("pageing", function () {
+            vm.getData(vm.sectionId);
+        }, true);
+
+        vm.printBatchCount = function () {
             $('#export').val($("#divReport").html());
         }
     };
-})(angular,undefined);
+})(angular, undefined);

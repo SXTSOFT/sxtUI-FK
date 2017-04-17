@@ -21,6 +21,7 @@
     vm.data.MaterialFiles = [];
     vm.data.ExitOperatorTime = $filter('date')(new Date(),'yyyy-MM-dd hh:mm:ss');
     vm.data.ExitWitness = user.Name;
+    vm.data.Unit = $stateParams.unit;
 
     var sendgxResult =$rootScope.$on('sendGxResult',function(){
       if(vm.data.ExitReason == null){

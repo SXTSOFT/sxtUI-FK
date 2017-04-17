@@ -22,7 +22,8 @@
     vm.SectionId = '';
     $scope.pageing={
       page:1,
-      pageSize:10
+      pageSize:10,
+      total:0
     };
     var role = [];
     vm.projects = [];
@@ -32,23 +33,11 @@
       });
     }
 
-
-    api.xhsc.Project.getMap().then(function (r) {
-      // if(user.Role.MemberType !== ''){
-      //   role.forEach(function (o) {
-      //     var pj = r.data.find(function (p) {
-      //       return p.ProjectID == o.ProjectId;
-      //     });
-      //     if(pj){
-      //       vm.projects.push(pj);
-      //     }
-      //   })
-      // }else{
-      //   vm.projects = r.data;
-      // }
+    var projects = null;
+    api.xhsc.Project.getMap("nodb").then(function (r) {
       vm.projects = r.data;
-      if(vm.projects.length != 0)
-        vm.projects[0].selected = true;
+      projects = r.data.map(function (r) { return r.ProjectID }).join(',');
+      Load();
     });
 
     vm.getSections = function () {
@@ -70,28 +59,10 @@
       vm.RegionId = '';
       vm.SectionId = '';
       api.xhsc.Project.GetAreaChildenbyID(vm.ProjectId).then(function (r) {
-        // if(user.Role.MemberType !== ''){
-        //   role.forEach(function (o) {
-        //     var pj = r.data.find(function (p) {
-        //       return p.RegionID == o.AreaId;
-        //     });
-        //     if(pj){
-        //       vm.regions.push(pj);
-        //     }
-        //   });
-        // }else{
-        //   vm.regions = r.data;
-        // }
+        
         vm.regions = r.data;
-        if(vm.regions.length != 0)
-          vm.regions[0].selected = true;
-
-        // vm.regions.forEach(function (r) {
-        //   r.tempId = r.RegionID.substr(5,10);
-        //   if(r.tempId == vm.data.RegionId){
-        //     r.selected = true;
-        //   }
-        // });
+        // if(vm.regions.length != 0)
+        //   vm.regions[0].selected = true;
       });
     },true);
 
@@ -100,14 +71,8 @@
       vm.SectionId = '';
       api.material.materialPlan.GetProjectSection(vm.RegionId).then(function (e) {
         vm.sections = e.data;
-        if(vm.sections.length != 0)
-          vm.sections[0].selected = true;
-
-        // vm.sections.forEach(function (p) {
-        //   if(p.RegionID == vm.data.RegionId){
-        //     p.selected = true;
-        //   }
-        // });
+        // if(vm.sections.length != 0)
+        //   vm.sections[0].selected = true;
       });
     },true);
 
@@ -116,15 +81,11 @@
     },true);
 
     function Load() {
-      if(!vm.SectionId) return;
-      var ProjectId = vm.ProjectId || '';
-      var RegionId = vm.RegionId || '';
+      projects = vm.ProjectId?vm.ProjectId:projects;
       var SectionId = vm.SectionId || '';
 
-      ProjectId = RegionId != '' ? RegionId : ProjectId;
-
       var page = utils.getPage($scope.pageing);
-      api.material.materialPlan.getList({RegionId:ProjectId,SectionId:SectionId,Skip:page.Skip,Limit:page.Limit}).then(function (q) {
+      api.material.materialPlan.getList({RegionId:projects,SectionId:SectionId,Skip:page.Skip,Limit:page.Limit}).then(function (q) {
         vm.data = q.data.Items||[];
         $scope.pageing.total = q.data.TotalCount;
       });

@@ -2,49 +2,53 @@
  * Created by lukehua on 2016/11/15.
  */
 
-(function(angular,undefined){
+(function (angular, undefined) {
   'use strict';
   angular
     .module('app.material')
-    .component('materialContracts',{
-      templateUrl:'app/main/material/component/material-contracts.html',
-      controller:materialContracts,
-      controllerAs:'vm'
+    .component('materialContracts', {
+      templateUrl: 'app/main/material/component/material-contracts.html',
+      controller: materialContracts,
+      controllerAs: 'vm'
     });
 
   /** @ngInject */
-  function materialContracts($scope,api,utils){
+  function materialContracts($scope, api, utils, auth) {
     var vm = this;
-
-    $scope.pageing={
-      page:1,
-      pageSize:10,
-      total:0
+    var user = auth.current();
+    $scope.pageing = {
+      page: 1,
+      pageSize: 10,
+      total: 0
     };
-
-    vm.pageAction = function(title, page, pageSize, total){
+    vm.pageAction = function (title, page, pageSize, total) {
       $scope.pageing.page = page;
-    };
+    }
+    $scope.$watch("pageing", function () {
+      load();
+    }, true);
 
-    $scope.$watch("pageing",function(){
-      Load();
-    },true);
+    api.xhsc.Project.getMap("nodb").then(function (r) {
+      vm.projects = r.data.map(function (r) { return r.ProjectID });
+      load();
+    });
 
-    function Load() {
+    function load() {
       var page = utils.getPage($scope.pageing);
-      api.material.contract.getList({Skip:page.Skip,Limit:page.Limit}).then(function (q) {
-        vm.data = q.data.Items||[];
+      if(!vm.projects) return;
+      api.material.contract.getList({ Skip: page.Skip, Limit: page.Limit, projects: vm.projects.join(',') }).then(function (q) {
+        vm.data = q.data.Items || [];
         $scope.pageing.total = q.data.TotalCount;
       });
     }
 
-    vm.delete = function(id){
-      utils.confirm('确认删除此材料信息').then(function () {
-        api.material.materialPlan.delete(id).then(function () {
-          Load();
+    vm.delete = function (id) {
+      utils.confirm('确认删除此合同信息').then(function () {
+        api.material.contract.delete(id).then(function () {
+          load();
         })
       });
     }
   }
 
-})(angular,undefined);
+})(angular, undefined);

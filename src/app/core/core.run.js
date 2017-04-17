@@ -57,6 +57,7 @@
         else{
           $rootScope.noBack = toState.noBack;
           $rootScope.sendBt = toState.sendBt;
+          $rootScope.sendPs = toState.sendPs;
           $rootScope.subtitle = toState.subtitle;
           $rootScope.leftArrow = toState.leftArrow;
           $rootScope.rightArrow = toState.rightArrow;

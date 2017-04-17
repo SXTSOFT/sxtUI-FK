@@ -13,7 +13,6 @@
 
   /** @ngInject */
   function approval($rootScope,$scope,api,$mdBottomSheet,$stateParams,utils,$filter,$state,$mdDialog,sxt){
-    $rootScope.sendBtName = '批示';
     var vm = this;
     vm.data = {};
     vm.intoFactoryImgs = [];
@@ -37,7 +36,7 @@
       sendApprovalResult = null;
     });
 
-    var sendApprovalResult = $rootScope.$on('sendGxResult',function() {
+    var sendApprovalResult = $rootScope.$on('sendClResult',function() {
       $mdBottomSheet.show({
         templateUrl: 'app/main/xhsc/procedure/action.html',
         controller:function($scope){
@@ -104,7 +103,6 @@
       api.xhsc.materialPlan.PostApprovalInfo(vm.flag,batch).then(function (r) {
         utils.alert('提交成功!',null,function () {
           api.xhsc.materialPlan.deleteMaterialPlanBatch(batch.Id);
-          $rootScope.sendBtName = '';
           $state.go("app.xhsc.materialys.materialdownload");
         });
       });
@@ -124,12 +122,11 @@
           api.xhsc.materialPlan.PostApprovalInfo(vm.flag,vm.batch).then(function (r) {
             utils.alert('提交成功!',null,function () {
               api.xhsc.materialPlan.deleteMaterialPlanBatch(vm.batch.Id);
-              $rootScope.sendBtName = '';
               $state.go("app.xhsc.materialys.materialdownload");
             });
           });
         }else{
-          utils.alert('尚未输入让步接收原因，，取消当前操作。');
+          utils.alert('尚未输入让步接收原因，取消当前操作。');
         }
       }, function() {
         //console.log('Cancel');

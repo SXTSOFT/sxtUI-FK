@@ -86,13 +86,13 @@
         getUserProjectSectionForPc:function(){
           return $http.get($http.url('/api/ProjectInfoApi/GetUserSectionForPc'))
         },
-        getMaterialReport:function(sid){
-          return $http.get($http.url('/api/MaterialPlan/GetMaterialReportBySectionId/' + sid))
+        getMaterialReport:function(sid,param){
+          return $http.get($http.url('/api/MaterialPlan/GetMaterialReportBySectionId/' + sid, {Skip: param.Skip, Limit: param.Limit}))
         }
       },
       contract:{
-        getSysOrgOU:function () {
-          return $http.get($http.url('/api/ProjectInfoApi/GetOrgOU'));
+        getSysOrgOU:function (args) {
+          return $http.get($http.url('/api/ProjectInfoApi/GetOrgOU',{projects:args}));
         },
         create: function (args) {
           return $http.post('/api/MaterialContract', args)
@@ -101,7 +101,7 @@
           return $http.put('/api/MaterialContract/'+data.Id,data);
         },
         getList: function (param) {
-          return $http.get($http.url('/api/MaterialContract', {Skip: param.Skip, Limit: param.Limit}));
+          return $http.get($http.url('/api/MaterialContract?projects='+param.projects, {Skip: param.Skip, Limit: param.Limit}));
         },
         getById:function(id){
           return $http.get($http.url('/api/MaterialContract/'+id));
@@ -112,6 +112,9 @@
         UpdateContract:function (data) {
           return $http.put('/api/MaterialContract/UpdateContract',data);
         },
+        delete:function(id){
+          return $http.delete('/api/MaterialContract/'+id);
+        }
       }
     })
   }
