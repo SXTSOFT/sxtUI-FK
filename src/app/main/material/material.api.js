@@ -223,6 +223,12 @@
         }).bind(function (key) {
           return $http.get('/api/MLMaterialCheckData/GetMaterialCount');
         }),
+        materialCountDetail: function (id) {
+          return $http.get($http.url('/api/MLMaterialCheckData/GetMaterialCountDetail',{projectId:id}));
+        },
+        materialCountResult: function (id,procedureId) {
+          return $http.get($http.url('/api/MLMaterialCheckData/GetMaterialCountResult',{projectId:id,procedureId:procedureId}));
+        },
         getPartners: $http.db({
           _id: 'Ms_MaterialPartners',
           idField: function (item) {
