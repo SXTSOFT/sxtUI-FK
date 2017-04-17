@@ -48,14 +48,14 @@ window.sxt = (function(win,angular)
       // api:'http://vkde.sxtsoft.com:9091',
       // fs:'http://vkde.sxtsoft.com:9090',
       //
-      api:'http://emp.chngalaxy.com:9091',
-      fs:'http://emp.chngalaxy.com:9090'
+      // api:'http://emp.chngalaxy.com:9091',
+      // fs:'http://emp.chngalaxy.com:9090'
 
       // api:'http://galaxyapi.ricent.com',
       // fs:'http://galaxyweb.ricent.com'
 
-      // api:'http://localhost:5000',
-      // fs:'http://emp.chngalaxy.com:9090'
+      api:'http://localhost:5000',
+      fs:'http://emp.chngalaxy.com:9090'
       // version:'http://app.ricent.com/galaxy'
     },
     download:download
