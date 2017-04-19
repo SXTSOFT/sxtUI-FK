@@ -240,13 +240,9 @@ static NSString* toBase64(NSData* data) {
 
 - (void)repositionPopover:(CDVInvokedUrlCommand*)command
 {
-    if (([[self pickerController] pickerPopoverController] != nil) && [[[self pickerController] pickerPopoverController] isPopoverVisible]) {
+    NSDictionary* options = [command argumentAtIndex:0 withDefault:nil];
 
-        [[[self pickerController] pickerPopoverController] dismissPopoverAnimated:NO];
-
-        NSDictionary* options = [command argumentAtIndex:0 withDefault:nil];
-        [self displayPopover:options];
-    }
+    [self displayPopover:options];
 }
 
 - (NSInteger)integerValueForKey:(NSDictionary*)dict key:(NSString*)key defaultValue:(NSInteger)defaultValue
@@ -524,11 +520,9 @@ static NSString* toBase64(NSData* data) {
         NSString* mediaType = [info objectForKey:UIImagePickerControllerMediaType];
         if ([mediaType isEqualToString:(NSString*)kUTTypeImage]) {
             [weakSelf resultForImage:cameraPicker.pictureOptions info:info completion:^(CDVPluginResult* res) {
-                if (![self usesGeolocation] || picker.sourceType != UIImagePickerControllerSourceTypeCamera) {
-                    [weakSelf.commandDelegate sendPluginResult:res callbackId:cameraPicker.callbackId];
-                    weakSelf.hasPendingOperation = NO;
-                    weakSelf.pickerController = nil;
-                }
+                [weakSelf.commandDelegate sendPluginResult:res callbackId:cameraPicker.callbackId];
+                weakSelf.hasPendingOperation = NO;
+                weakSelf.pickerController = nil;
             }];
         }
         else {

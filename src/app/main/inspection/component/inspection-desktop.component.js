@@ -118,7 +118,8 @@
 
         taskRun(task, function () {
           api.inspection.estate.putDelivery(item.delivery_id, {
-            status: "inspection_completed"
+            status: "inspection_completed",
+            validate_end_at:new Date().toISOString()
           }).then(function () {
             if (callback){
               callback();
@@ -154,7 +155,12 @@
 
 
       vm.goChecked = function (item) {
-        $state.go('app.inspection.check', {delivery_id: item.delivery_id, userId: vm.profile.loginname})
+        // api.inspection.estate.putDelivery(item.delivery_id, {
+        //   status: "processing",
+        //   validate_end_at:new Date().toISOString()
+        // })
+        $state.go('app.inspection.check', {delivery_id: item.delivery_id, userId: vm.profile.loginname});
+
       }
 
 
@@ -204,7 +210,8 @@
         taskRun(task, function () {
           $timeout(function () {
             api.inspection.estate.putDelivery(item.delivery_id, {
-              status: "processing"
+              status: "processing",
+              validate_begin_at:new Date().toISOString()
             }).then(function (r) {
               item.status="processing";
               api.inspection.estate.addOrUpdateDelivery(item).then(function () {

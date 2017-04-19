@@ -30,6 +30,9 @@
         },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.sxt.szgc"
+        },
+        "cordova-plugin-wkwebview-engine": {
+            "PACKAGE_NAME": "com.sxt.szgc"
         }
     },
     "dependent_plugins": {
@@ -37,12 +40,6 @@
             "PACKAGE_NAME": "com.sxt.szgc"
         },
         "cordova-plugin-image-picker": {
-            "PACKAGE_NAME": "com.sxt.szgc"
-        },
-        "cordova-plugin-indexedDB": {
-            "PACKAGE_NAME": "com.sxt.szgc"
-        },
-        "cordova-plugin-wkwebview-engine": {
             "PACKAGE_NAME": "com.sxt.szgc"
         }
     }
