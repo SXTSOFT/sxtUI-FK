@@ -88,6 +88,7 @@
 
     vm.downloadPlan = function (item, isReflsh, evt) {
       var status = (user.Role.MemberType == 0 || user.Role.MemberType == 32) ? 1 : 46;
+      var role = status == 1?1:null;
       //下载成功回掉
       function callBack() {
         var ix = vm.section.indexOf(item);
@@ -105,13 +106,13 @@
           $scope.item = item;
           var tasks = []
             .concat(function () {
-              return api.xhsc.materialPlan.getMaterialPlanBatch(item.SectionID, status);
+              return api.xhsc.materialPlan.getMaterialPlanBatch(item.SectionID, status,role);
             })
             .concat(function () {
-              return api.xhsc.materialPlan.getMaterialPlanDetailList(item.SectionID, status);
+              return api.xhsc.materialPlan.getMaterialPlanDetailList(item.SectionID, status,role);
             })
             .concat(function () {
-              return api.xhsc.materialPlan.getMaterialBatchProgress(item.SectionID, status);
+              return api.xhsc.materialPlan.getMaterialBatchProgress(item.SectionID, status,role);
             })
             .concat(function () {
               return remote.offline.create({ Id: 'msy' + item.SectionID, SectionID: item.SectionID, FullName: item.FullName });

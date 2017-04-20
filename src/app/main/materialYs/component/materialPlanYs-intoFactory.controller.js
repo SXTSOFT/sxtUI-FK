@@ -29,11 +29,12 @@
     vm.data.IsPacking = true;
     var status = user.Role.MemberType == 0 ? 1 : 110;
 
-    api.xhsc.materialPlan.getMaterialPlanDetail($stateParams.BatchId).then(function (q) {
-      vm.data.Id = q.data.Id;
-      vm.data.Unit = q.data.Unit;
-      vm.data.PlanId = q.data.PlanId;
-      vm.Brands = q.data.Brands.split(/、|,|，|；|;/) || [];
+    api.xhsc.materialPlan.getMaterialPlanDetail($stateParams.SectionId).then(function (q) {
+      var data = q.data.Result.find(function(item){ return item.Id == $stateParams.BatchId});
+      vm.data.Id = data.Id;
+      vm.data.Unit = data.Unit;
+      vm.data.PlanId = data.PlanId;
+      vm.Brands = data.Brands.split(/、|,|，|；|;/) || [];
       if (vm.data.ApproachType == 1) {
         vm.data.Id = sxt.uuid();
       }
@@ -47,10 +48,10 @@
             }
           });
 
-          _subCount = q.data.PlanCount - _subCount;
+          _subCount = data.PlanCount - _subCount;
           vm.data.ApproachCount = _subCount > 0 ? _subCount : 0;
         } else {
-          vm.data.ApproachCount = parseFloat(q.data.PlanCount);
+          vm.data.ApproachCount = parseFloat(data.PlanCount);
         }
       });
     });
