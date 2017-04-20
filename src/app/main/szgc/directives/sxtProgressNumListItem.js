@@ -23,11 +23,7 @@
                     if (v || v == '0') {
                         scope.value.value = v;
                     }
-                    else if (i > 1 && i < l) {
-                        if (!$(els).parent().hasClass('current')) {
-                            $(els).parent().parent().remove();
-                        }
-                    }
+                    
                 })
             }
         }
