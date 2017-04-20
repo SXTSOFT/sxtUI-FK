@@ -86,8 +86,9 @@
         getUserProjectSectionForPc:function(){
           return $http.get($http.url('/api/ProjectInfoApi/GetUserSectionForPc'))
         },
-        getMaterialReport:function(sid,param){
-          return $http.get($http.url('/api/MaterialPlan/GetMaterialReportBySectionId/' + sid, {Skip: param.Skip, Limit: param.Limit}))
+        getMaterialReport:function(param){
+          return $http.get($http.url('/api/MaterialPlan/GetMaterialReportBySectionId?projects=' + param.pids + '&regionId=' + param.rid + '&id='+param.sid + '&sDate=' + param.sDate + '&eDate=' + param.eDate, 
+          {Skip: param.Skip, Limit: param.Limit}))
         }
       },
       contract:{

@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function materialPlan($scope, api, utils, $stateParams, $state, moment, auth, $element, $timeout, $q, $log) {
+  function materialPlan($scope, api, utils, $stateParams, $state, moment, auth, $element, $timeout, $q, $log,$filter) {
     var vm = this;
     var user = auth.current();
     vm.data = {};
@@ -24,6 +24,7 @@
       { type: 2, name: '认质认价' },
       { type: 4, name: '甲指乙供' }
     ];
+    var dateFilter = $filter('date')
     vm.data.PlanTime = new Date();
 
     vm.states = loadAll();
@@ -166,7 +167,7 @@
         vm.data.ProjectId = r.data.RegionId.substr(0, 5);
         //vm.data.RegionId = r.data.RegionId.substr(5,10);
         vm.data.SectionId = r.data.SectionId;
-        vm.data.PlanTime = r.data.PlanTime == null ? new Date() : new moment(r.data.PlanTime).toDate();
+        vm.data.PlanTime = r.data.PlanTime == null ? new Date() : new Date(r.data.PlanTime);
 
         vm.getAreas(vm.data.ProjectId);
         vm.RegionId = r.data.RegionId;
@@ -193,7 +194,7 @@
         vm.data.RegionId = vm.RegionId;
         vm.data.SectionId = vm.SectionId;
         vm.data.MaterialId = vm.data.Material.Id;
-        vm.data.PlanTime = vm.data.PlanTime.Format('yyyy-MM-dd');
+        vm.data.PlanTime = dateFilter(vm.data.PlanTime, 'yyyy-MM-dd');
         if (vm.data.Id) {
           api.material.materialPlan.putMaterial(vm.data).then(function () {
             utils.alert("提交成功", null, function () {
