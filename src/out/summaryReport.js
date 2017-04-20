@@ -6,22 +6,26 @@ angular.module('myApp', [])
   var vm=this;
 
     function getPlan(key,callback) {
+      callback(getQuery(key));
+
+    }
+
+    function getQuery(key) {
       var val;
       var href=window.location.href;
       var url= new window.URI(href);
       var query= url.query();
       query=query?query.split("&"):[];
       query.forEach(function (t) {
-         t=t.split("=");
-         if (t[0]==key){
-           val=t[1];
-         }
+        t=t.split("=");
+        if (t[0]==key){
+          val=t[1];
+        }
       })
-      callback(val);
-
+      return val;
     }
 
-
+    $scope.subject=decodeURI(getQuery("des"));
 
   var legend=[],data=[];
   vm.load=function (plan,callback) {

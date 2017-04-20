@@ -66,9 +66,11 @@
 
 
     vm.open=function (flag,item) {
+      var des=item.projectName+item.description
+      console.log(des);
       switch (flag){
         case "summary":
-          $window.open("out/summaryReport.html?id="+item.id)
+          $window.open("out/summaryReport.html?id="+item.id+"&des="+des)
           break;
         case "daily":
           $window.open("out/dailyReport.html?id="+item.id)

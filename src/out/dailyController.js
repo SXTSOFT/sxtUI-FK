@@ -60,6 +60,7 @@ app.controller("myController", function ($scope, $http) {
   }
 
 
+
   function getSeries(souce) {
     var serial = [];
     var x = [];
@@ -84,7 +85,8 @@ app.controller("myController", function ($scope, $http) {
     }
   }
 
-  function getPlan(key,callback) {
+
+  function getQuery(key) {
     var val;
     var href=window.location.href;
     var url= new window.URI(href);
@@ -96,7 +98,13 @@ app.controller("myController", function ($scope, $http) {
         val=t[1];
       }
     })
-    callback(val);
+    return val;
+  }
+
+  $scope.subject=decodeURI(getQuery("des"));
+
+  function getPlan(key,callback) {
+    callback(getQuery(key));
 
   }
 
