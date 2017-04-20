@@ -9,7 +9,7 @@
     .controller('SzgcSettingsController', SzgcSettingsController);
 
   /** @ngInject */
-  function SzgcSettingsController(auth, api, $scope, utils, $rootScope, appCookie, $mdDialog, versionUpdate, $q, $mdSidenav,sxt) {
+  function SzgcSettingsController(auth, api, $scope, utils, $rootScope, appCookie, $mdDialog, versionUpdate, $q, $mdSidenav, sxt, $element) {
 
     var vm = this, selected;
 
@@ -21,7 +21,7 @@
       }],
       ps: []
     }
-
+    vm.setProcedure = null;
     $q.all([api.szgc.vanke.profile(),
     api.szgc.vanke.projects()]).then(function (r) {
       vm.profile = r[0].data.data;
@@ -29,8 +29,7 @@
 
       if (vm.profile.type == "employee") {
         vm.projectId = [];
-        for(var i=0;i<vm.project.length;i++)
-        {
+        for (var i = 0; i < vm.project.length; i++) {
           vm.projectId.push(vm.project[i].project_id);
         }
         vm.projectId = vm.projectId.join(',');
@@ -185,11 +184,11 @@
     var list3 = [];
     vm.openProjectSetting = function (isRefresh) {
       vm.loading = true;
-      if (vm.data && !isRefresh){
+      if (vm.data && !isRefresh) {
         vm.loading = false;
         return;
       }
-      
+
       vm.data = vm.project;
       //vm.Downloaded = vm.project.map(function (p) { return { projectId: p.project_id, name: p.name } });
       var date = new Date();
@@ -203,11 +202,11 @@
       $q.all([api.szgc.ProjectSettingsSevice.ex.getProjectBuildingProcedure(vm.projectId),
       api.szgc.projectProgressService.getProjectBuildingProcedure(vm.projectId, year + '-' + month)]).then(function (res) {
         //vm.Downloaded = [];
-        // vm.list = res[1].data.Rows.map(function (p) { return { id: p.Id, buildingId: p.BuildingId, procedureId: p.ProcedureId, procedureName: p.ProcedureName, count: p.Value } });
+        // vm.list = res[1].data.Rows.map(function (p) { return { id: p.Id, buildingId: p.BuildingId, procedureId: p.ProcedureId, procedureName: p.ProcedureName, value: p.Value } });
         vm.list = []
         var list2 = [];
         var download = [];
-        list3 = res[1].data.Rows.map(function (p) { return { id: p.Id, buildingId: p.BuildingId, procedureId: p.ProcedureId, procedureName: p.ProcedureName, count: p.Value,isPull:true } });
+        list3 = res[1].data.Rows.map(function (p) { return { id: p.Id, buildingId: p.BuildingId, procedureId: p.ProcedureId, procedureName: p.ProcedureName, value: p.Value, isPull: true } });
         vm.list = res[0].data.Rows.map(function (r) {
           return { id: null, buildingId: r.BuildingId, procedureId: r.ProcedureId, procedureName: r.ProcedureName, isPull: true };
         })
@@ -216,12 +215,12 @@
           var r = vm.list.find(function (s) { return s.buildingId == item.buildingId && s.procedureId == item.procedureId });
           if (r) {
             r.id = item.id;
-            r.count = item.count;
-          }else{
+            r.value = item.value;
+          } else {
             vm.list.push(item);
           }
         })
-
+        console.log($(this).hasClass('n'));
         //console.log(vm.list);
 
         //过滤已设置的工序
@@ -286,20 +285,20 @@
         s.stages && s.stages.forEach(function (r) {
           r.buildings && r.buildings.forEach(function (b) {
             b.procedures.forEach(function (p) {
-              if (p.id || p.count) {
-                var isAdd = p.id?false:true;
-                p.id = p.id?p.id:sxt.uuid();
+              if (p.id || p.value) {
+                var isAdd = p.id ? false : true;
+                p.id = p.id ? p.id : sxt.uuid();
                 data.push({
                   id: p.id,
                   ProjectId: r.projectId,
-                  ProjectName:s.name,
+                  ProjectName: s.name,
                   StageId: b.stageId,
                   StageName: r.name,
                   BuildingId: p.buildingId,
                   BuildingName: b.name,
                   ProcedureId: p.procedureId,
-                  Value: p.count,
-                  IsAdd:isAdd
+                  Value: p.value,
+                  IsAdd: isAdd
                 })
               }
             })
@@ -319,7 +318,7 @@
       //           BuildingId: p.buildingId,
       //           BuildingName: b.buildingName,
       //           ProcedureId: p.procedureId,
-      //           Value: p.count
+      //           Value: p.value
       //         })
       //       })
       //     })
@@ -392,7 +391,7 @@
               vm.current.procedures.splice(i, 1);
             }
           }
-          
+
         } else {
           vm.current.procedures.forEach(function (gx) {
             var g = vm.procedures.find(function (p) { return p.ProcedureId == gx.procedureId });
@@ -463,6 +462,45 @@
       vm.types = s;
       vm.procedures = results[1].data.Rows;
 
+    });
+    vm.setValue = function ($event, g) {
+      var idx = $(".progress").find('div.point').index($($event.target).parent());
+      vm.keyboard = true;
+      pontTo(idx);
+    }
+    // $element.on('click', ' div.point', function (e) {
+    //   console.log($(e.target).parent());
+    //   var idx = $(".progress").find('div.point').index($(e.target).parent());
+    //   $scope.$apply();
+    //   pontTo(idx);
+    // });
+    var currentPoint = null;
+    function pontTo(index) {
+      $scope.index = index;
+      var p = currentPoint = $('div.point', $(".progress")).eq(index), span = p.find('span');
+      if (p) {
+        $rootScope.$emit('keyboard:setvalue',currentPoint.find('span').text());
+        $(".progress").animate({
+          scrollTop: $(".progress").scrollTop() + p.offset().top - $(".progress").height() + p.height() - $(".progress").offset().top
+        });
+      }
+    }
+
+    $rootScope.$on('keyboard:nextpoint', function () {
+      //pontTo($scope.index + 1);
+      var datas = $('.datas', $(".progress")), eq = datas.index($(currentPoint.parents('.datas')[0])) + 1, curdata = datas.index($(currentPoint.parents('.datas')[0]));
+      var nextItem = datas.eq(eq);
+      var ilen = datas.eq(curdata).find('.point').length;
+
+      if (eq < datas.length) {
+        pontTo($('div.point', $(".progress")).index(nextItem.find('div.point').eq(0)));
+      } else {
+        vm.keyboard = false;
+      }
+    });
+
+    $rootScope.$on('keyboard:value', function ($event, value) {
+      currentPoint && currentPoint.find('span').text(value);
     });
   }
 

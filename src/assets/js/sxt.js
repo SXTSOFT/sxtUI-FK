@@ -22,11 +22,11 @@ window.sxt = (function(win,angular)
     app: {
       appDir: appDir,
       serve: 'http://10.245.9.151:3000',
-      api:'http://szdp.vanke.com:8088',
+      //api:'http://szdp.vanke.com:8088',
       //api:'http://10.245.9.116:8090',
-      // api:'http://10.245.9.89:8088',
+      //api:'http://10.245.9.89:8088',
       //api:'http://vkde.sxtsoft.com',
-      //api:'http://localhost:46844',
+      api:'http://localhost:46844',
       version:'https://app.ricent.com/vanke'
     },
     download:download
