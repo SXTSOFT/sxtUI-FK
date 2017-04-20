@@ -463,17 +463,17 @@
       vm.procedures = results[1].data.Rows;
 
     });
-    vm.setValue = function ($event, g) {
-      var idx = $(".progress").find('div.point').index($($event.target).parent());
-      vm.keyboard = true;
-      pontTo(idx);
-    }
-    // $element.on('click', ' div.point', function (e) {
-    //   console.log($(e.target).parent());
-    //   var idx = $(".progress").find('div.point').index($(e.target).parent());
-    //   $scope.$apply();
+    // vm.setValue = function ($event, g) {
+    //   var idx = $(".progress").find('div.point').index($($event.target).parent());
+    //   vm.keyboard = true;
     //   pontTo(idx);
-    // });
+    // }
+    $element.on('click', ' div.point', function (e) {
+      var idx = $(".progress").find('div.point').index($(e.target).parent());
+      vm.keyboard = true;
+      $scope.$apply();
+      pontTo(idx);
+    });
     var currentPoint = null;
     function pontTo(index) {
       $scope.index = index;
@@ -481,7 +481,7 @@
       if (p) {
         $rootScope.$emit('keyboard:setvalue',currentPoint.find('span').text());
         $(".progress").animate({
-          scrollTop: $(".progress").scrollTop() + p.offset().top - $(".progress").height() + p.height() - $(".progress").offset().top
+          scrollTop: $(".progress").scrollTop() + p.offset().top - $(".progress").height() + p.height() - $(".progress").offset().top + 10
         });
       }
     }

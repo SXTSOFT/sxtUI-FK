@@ -103,17 +103,17 @@
                     <md-button ng-click="loadProcedure(b)" style="text-align: left; width:60%;"> {{ b.name }} </md-button>
                     <md-button style="float:right;color:rgb(183,28,28);" ng-click="vm.openGx();vm.current=b">添加工序</md-button>
                   </div>
-                  <div ng-if="b.show" ng-repeat="g in b.procedures" layout="row" class="datas" style="padding-left: 20px;">
+                  <div ng-if="b.show" ng-repeat="g in b.procedures" layout="row" class="datas" style="padding-left: 20px; margin:5px 0;">
                     <p flex="65" style="margin: 0; line-height: 35px;"> {{ g.procedureName }} </p>
-                    <div flex="20"  sxt-number-list-item ng-model="g">
-                      <div style="margin-left:10px;" class="point" ng-click="vm.setValue($event,g)">
-                        <span style="display: block;height: 35px;line-height: 35px;">{{g.value}}</span>
+                    <div flex="20"  sxt-progress-num-list-item ng-model="g">
+                      <div class="point" style="border: 1px solid #E2E8EF;">
+                        <span style="display: block;height: 35px;line-height: 35px; text-align:center;">{{g.value}}</span>
                       </div>
                     </div>
                     <!--<md-input-container class="md-block" flex="15" style="margin:0 0 0 10px; height: 35px;">
                       <input type="number" ng-click="vm.keyboard.show = true" ng-model="g.count">
                     </md-input-container>-->
-                    <label style="line-height: 35px;">层</label>
+                    <label style="line-height: 35px;margin-left:5px;">层</label>
                   </div>
                   <div ng-if="!$last" style="width:94%;height:1px;border-top:1px solid rgba(0,0,0,0.12);margin-left: auto;margin-right: auto;"></div>
                 </div>
