@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no">
+  <title>验收日报</title>
+  <link href="report.css" rel="stylesheet"/>
+  <link href="../../../../assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body ng-controller="myController">
+<div class="container summaryReport" style="margin-top: 20px">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">基本信息</div>
+        <table class="table table-bordered">
+          <tr>
+            <td>总套数:</td>
+            <td>{{data.base.totalNum}}</td>
+            <td>验收完成套数:</td>
+            <td>{{data.base.qualifiedNum}}</td>
+            <td>验收完成比例:</td>
+            <td>{{data.base.compeletedRate}}</td>
+
+          </tr>
+          <tr>
+            <td>问题总数：</td>
+            <td>{{data.base.questionNum}}</td>
+            <td>整改完成数：</td>
+            <td>{{data.base.recNum}}</td>
+            <td>整改完成率：</td>
+            <td>{{data.base.recRate}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">实时进度</div>
+        <div id="chart" style="border: 0px solid;min-height: 520px">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<script src="../../../../assets/js/jquery-3.1.1.min.js"></script>
+<script src="../../../../assets/js/angular.min.js"></script>
+<script src="../../../../assets/js/echarts.js"></script>
+<script src="../../../../assets/js/URI.js"></script>
+<script src="../../../../assets/js/jslinq.min.js"></script>
+<script src="dailyController.js"></script>
+</body>
+</html>

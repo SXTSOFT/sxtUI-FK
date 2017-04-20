@@ -2543,6 +2543,11 @@
           })
         }
 
+      },
+      vaSass:{
+        insertInspection:function (plan) {
+          return $http.get($http.url('/api/v1/Enterprise/report/planWholeReport/'+plan))
+        },
       }
     });
   }

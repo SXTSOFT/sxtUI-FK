@@ -10,6 +10,7 @@
       'app.pcReport_sl',
       'app.pcReport_ys',
       'app.pcReport_pg',
+      'app.pcReport_v2Sass',
       'bw.paging',
       'app.pcReport_yf',
       'app.pcReport_cycle',
@@ -143,6 +144,11 @@
       title: '现场评估',
       weight:1,
       state:'app.pcReport_pg'
+    });
+    msNavigationServiceProvider.saveItem('xh.v2Sass', {
+      title: '验房报表',
+      icon  : 'icon-tile-four',
+      state:'app.pcReport_v2Sass_plan',
     });
   }
 })();
