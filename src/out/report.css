@@ -1,0 +1,28 @@
+.summaryReport{}
+
+.summaryReport h3{
+  text-align: center;
+}
+
+.summaryReport #chart{
+  height: 350px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.summaryReport .imgWrap{
+  text-align: center;
+}
+
+
+.summaryReport  img{
+  min-width: 90%;
+  min-height: 250px;
+  max-height: 350px;
+}
+
+
+.summaryReport table td,.summaryReport table th{
+   vertical-align:middle;
+}

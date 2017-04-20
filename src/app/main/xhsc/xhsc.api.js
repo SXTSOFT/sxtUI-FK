@@ -2545,8 +2545,13 @@
 
       },
       vaSass:{
-        insertInspection:function (plan) {
-          return $http.get($http.url('/api/v1/Enterprise/report/planWholeReport/'+plan))
+        getPlan:function (projectId,Skip,Limit) {
+          //'/api/v1/enterpirse/XHJT/batchs/GetPlan?ProjectId=00068&Skip=0&Limit=20'
+          return $http.get($http.url('/api/v1/enterpirse/XHJT/batchs/GetPlan',{
+            ProjectId:projectId,
+            Limit:Limit,
+            Skip:Skip
+          }))
         },
       }
     });

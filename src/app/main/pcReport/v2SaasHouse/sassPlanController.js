@@ -10,16 +10,73 @@
   /**@ngInject*/
   function v2SassPlanController($scope,remote,$mdDialog,$stateParams,$state,$rootScope ,$q,$window){
     var vm = this;
-    vm.open=function (flag) {
+    vm.regions = [];
+    remote.Project.getMap("nodb").then(function(result) {
+      vm.regions.push({
+        RegionID: "",
+        RegionName: "全部"
+      })
+      result.data.forEach(function(m) {
+        vm.regions.push({
+          RegionID: m.ProjectID,
+          RegionName: m.ProjectName
+        })
+      });
+    });
+    vm.ck = function(item) {
+      $scope.project = item.RegionID;
+    }
+
+    $scope.pageing = {
+      page: 1,
+      pageSize: 10,
+      total: 0
+    }
+    $scope.$watch("pageing.pageSize", function() {
+      if ($scope.pageing.pageSize) {
+        load();
+      }
+    }, true);
+
+    $scope.$watch("project", function() {
+      if ($scope.project && $scope.project != "-" || $scope.project === "") {
+        load();
+      }
+    });
+    function load() {
+      var t = [];
+      vm.source = [];
+      remote.vaSass.getPlan(
+        $scope.project && $scope.project != "-" ? $scope.project : "",
+        ($scope.pageing.page-1)*$scope.pageing.pageSize,
+        $scope.pageing.pageSize
+      ).then(function(r) {
+        $scope.pageing.total = r.data.totalCount;
+        r.data.items.forEach(function(o) {
+          vm.source.push(o);
+        });
+
+      }).catch(function() {});
+    }
+
+    vm.pageAction = function(title, page, pageSize, total) {
+      $scope.pageing.page = page;
+      load();
+    }
+
+
+    vm.open=function (flag,item) {
       switch (flag){
         case "summary":
-          $window.open("app/main/pcReport/v2SaasHouse/summaryReport.html")
+          $window.open("out/summaryReport.html?id="+item.id)
           break;
         case "daily":
-          $window.open("app/main/pcReport/v2SaasHouse/dailyReport.html")
+          $window.open("out/dailyReport.html?id="+item.id)
+          break;
+        case "pro":
+          $state.go("app.insideYs.list",{id:item.id});
           break;
       }
-
     };
   }
 })();

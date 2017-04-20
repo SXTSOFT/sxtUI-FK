@@ -21,22 +21,22 @@
         abstract: true
       })
       .state('app.insideYs.list', {
-        url:'/list',
+        url:'/list/{id}',
         template:'<inside-ys-list flex layout="column"></inside-ys-list>'
       })
 
-    msNavigationServiceProvider.saveItem('insideYs', {
-      title: '内部验收',
-      group: true,
-      weight: 2
-    });
-
-    msNavigationServiceProvider.saveItem('insideYs.list', {
-      title: '问题明细报表',
-      icon: 'icon-view-list',
-      state: 'app.insideYs.list',
-      weight: 1
-    });
+    // msNavigationServiceProvider.saveItem('insideYs', {
+    //   title: '内部验收',
+    //   group: true,
+    //   weight: 2
+    // });
+    //
+    // msNavigationServiceProvider.saveItem('insideYs.list', {
+    //   title: '问题明细报表',
+    //   icon: 'icon-view-list',
+    //   state: 'app.insideYs.list',
+    //   weight: 1
+    // });
 
   }
 })(angular, undefined);

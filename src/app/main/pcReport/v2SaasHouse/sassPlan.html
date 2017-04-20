@@ -1,4 +1,78 @@
-<div  class="v2SaasPlan">
-    <md-button class="md-raised md-primary" ng-click="vm.open('summary')"> 弹出窗口1</md-button>
-    <md-button class="md-raised md-primary"  ng-click="vm.open('daily')"> 弹出窗口2</md-button>
+<div>
+  <md-card style="background-color: white;" md-theme-watch>
+    <md-card-content>
+      <div flex layout="row">
+        <md-input-container md-theme="default" flex>
+          <label>项目</label>
+          <md-select ng-model="project">
+            <md-option  ng-click="vm.ck(item)" ng-repeat="item in vm.regions" ng-value="item.RegionID">
+              {{item.RegionName}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+    </md-card-content>
+  </md-card>
+  <div flex style="margin: 24px 16px">
+    <table class="table table-hover ">
+      <thead>
+      <tr>
+        <th style="text-align: center">序号</th>
+        <th style="text-align: center">项目</th>
+        <th style="text-align: center">描述</th>
+        <th style="text-align: center">创建时间</th>
+        <th style="text-align: center;">报表类别</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr data-ng-repeat="item in vm.source">
+        <td style="text-align: center;vertical-align: middle;width: 50px">{{$index+1}}</td>
+        <td style="text-align: center;min-width: 120px;vertical-align: middle">{{item.projectName}}</td>
+        <td style="text-align: left;min-width: 120px;vertical-align: middle">
+          {{item.description}}
+        </td>
+        <td  style="text-align: center;vertical-align: middle;">
+          {{item.assessmentDate}}
+        </td>
+        <td  style="text-align: center;vertical-align: middle;width: 80px">
+          <div  class="v2SaasPlan">
+            <md-button class="md-raised md-primary" ng-click="vm.open('summary',item)"> 验收整体报告</md-button>
+            <md-button class="md-raised md-primary"  ng-click="vm.open('daily',item)"> 验收日报</md-button>
+            <md-button class="md-raised md-primary"  ng-click="vm.open('pro',item)"> 问题明细表</md-button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div layout="row">
+      <span flex></span>
+      <md-select ng-model="pageing.pageSize" class="pageSZ" style="max-height: 35px;">
+        <md-option value="10">10</md-option>
+        <md-option value="20">20</md-option>
+        <md-option value="40">40</md-option>
+        <md-option value="80">80</md-option>
+        <md-option value="100">100</md-option>
+      </md-select>
+      <div style="text-align: right;margin-right: 15px"
+           paging page="pageing.page"
+           page-size="pageing.pageSize"
+           total="pageing.total"
+           paging-action="vm.pageAction('', page, pageSize, total)">
+      </div>
+    </div>
+  </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

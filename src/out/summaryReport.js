@@ -4,6 +4,25 @@
 angular.module('myApp', [])
   .controller("myController",function ($scope,$http,$timeout) {
   var vm=this;
+
+    function getPlan(key,callback) {
+      var val;
+      var href=window.location.href;
+      var url= new window.URI(href);
+      var query= url.query();
+      query=query?query.split("&"):[];
+      query.forEach(function (t) {
+         t=t.split("=");
+         if (t[0]==key){
+           val=t[1];
+         }
+      })
+      callback(val);
+
+    }
+
+
+
   var legend=[],data=[];
   vm.load=function (plan,callback) {
     var url="/api/v1/Enterprise/report/planWholeReport/";
@@ -62,38 +81,40 @@ angular.module('myApp', [])
     })
   }
 
-  vm.load('1039388f86254e409467c33d29b7cc73',function (r) {
-    vm.option = {
-      title : {
-        text: '问题分类统计',
-        x:'center'
-      },
-      legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: legend
-      },
-      series : [
-        {
-          name: '访问来源',
-          type: 'pie',
-          radius : '55%',
-          center: ['50%', '60%'],
-          data:data,
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
+
+  getPlan("id",function (id) {
+    vm.load(id,function (r) {
+      vm.option = {
+        title : {
+          text: '问题分类统计',
+          x:'center'
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'left',
+          data: legend
+        },
+        series : [
+          {
+            name: '访问来源',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data:data,
+            itemStyle: {
+              emphasis: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
             }
           }
-        }
-      ]
-    };
-    var myChart = echarts.init(document.getElementById('chart'));
-    myChart.setOption(vm.option);
-    console.log(vm.option);
-  });
+        ]
+      };
+      var myChart = echarts.init(document.getElementById('chart'));
+      myChart.setOption(vm.option);
+    });
+  })
 
 });
 

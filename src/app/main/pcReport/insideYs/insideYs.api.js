@@ -10,8 +10,8 @@
       $q = apiProvider.$q;
     apiProvider.register('insideYs', {
       batch: {
-        getList: function (param) {
-          return $http.get($http.url('/api/v1/enterpirse/report/problemdetails', {rectifyOu: param.rectifyOu, status: param.status}));
+        getList: function (param,id) {
+          return $http.get($http.url('/api/v1/enterpirse/report/problemdetails/'+id, param));
         }
       }
     })
