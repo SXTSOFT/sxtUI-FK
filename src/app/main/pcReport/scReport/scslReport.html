@@ -14,22 +14,21 @@
         <thead>
         <tr>
           <th>序号</th>
+          <th>区域</th>
+          <th style="min-width: 50px">实测项</th>
           <th style="width:20%">时间</th>
           <!--<th style="width:20%">项目</th>-->
-          <th style="min-width: 50px">实测项</th>
-          <th>区域</th>
           <th style="min-width: 50px">操作</th>
         </tr>
         </thead>
         <tbody>
         <tr data-ng-repeat="item in vm.source">
           <td>{{$index+1}}</td>
-          <td style="text-align: left;padding-left: 15px;min-width: 120px">{{item.MeasureTime}}</td>
-
-          <td style="text-align: left;min-width: 120px;padding-left: 15px;">{{item.MeasureItemName}}</td>
           <td style="text-align: left;padding-left: 15px;min-width: 120px">
             {{item.AreaName}}
           </td>
+          <td style="text-align: left;min-width: 120px;padding-left: 15px;">{{item.MeasureItemName}}</td>
+          <td style="text-align: left;padding-left: 15px;min-width: 120px">{{item.MeasureTime}}</td>
           <td >
             <div layout="column" layout-align="center center">
               <md-button  style="text-align: left"  class="md-primary" ng-if="vm.btnShow(item,'_0')"  ng-click="vm.go(item,0)" aria-label="Settings"> <md-icon  md-font-icon="icon-magnify" class="icon s24"></md-icon>总包</md-button>

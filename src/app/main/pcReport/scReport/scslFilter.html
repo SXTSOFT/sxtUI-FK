@@ -25,34 +25,34 @@
             <thead>
                 <tr>
                     <th style="width: 60px;text-align: center;border: 1px solid #ddd;">序号</th>
-                    <th style="width:20%;text-align: center;border: 1px solid #ddd;">时间</th>
-                    <th style="width:20%;text-align: center;border: 1px solid #ddd;">项目</th>
-                    <th style="width: 20%;text-align: center;border: 1px solid #ddd;" >实测项</th>
                     <th style="text-align: center;border: 1px solid #ddd;">区域</th>
+                    <th style="width: 20%;text-align: center;border: 1px solid #ddd;" >实测项</th>
+                    <th style="width:20%;text-align: center;border: 1px solid #ddd;">时间</th>
+                    <!--<th style="width:20%;text-align: center;border: 1px solid #ddd;">项目</th>-->
                     <th style="min-width: 50px;text-align: center;border: 1px solid #ddd;">操作</th>
                 </tr>
             </thead>
             <tbody>
                 <tr data-ng-repeat="item in vm.source">
-                    <td style="vertical-align: middle;border: 1px solid #ddd;">{{$index+1}}</td>
-                    <td style="text-align: left;padding-left: 36px;min-width: 120px;vertical-align: middle;border: 1px solid #ddd;">{{item.MeasureTime}}</td>
-                    <td style="text-align: left;padding-left: 32px;min-width: 120px;vertical-align: middle;border: 1px solid #ddd;">
-                        {{item.ProjectName}}
-                    </td>
-                    <td style="text-align: left;min-width: 120px;padding-left: 15px;vertical-align: middle;border: 1px solid #ddd;">
-                        {{item.MeasureItemName}}
-                    </td>
-                    <td style="text-align: left;padding-left: 15px;min-width: 120px;vertical-align: middle;border: 1px solid #ddd;">
-                        {{item.AreaName}}
-                    </td>
-                    <td style="vertical-align: middle;border: 1px solid #ddd;">
+                  <td style="vertical-align: middle;border: 1px solid #ddd;">{{$index+1}}</td>
+                  <td style="text-align: left;padding-left: 15px;min-width: 120px;vertical-align: middle;border: 1px solid #ddd;">
+                      {{item.AreaName}}
+                  </td>
+                  <td style="text-align: left;min-width: 120px;padding-left: 15px;vertical-align: middle;border: 1px solid #ddd;">
+                    {{item.MeasureItemName}}
+                  </td>
+                  <td style="text-align: left;padding-left: 36px;min-width: 120px;vertical-align: middle;border: 1px solid #ddd;">{{item.MeasureTime}}</td>
+                  <!--<td style="text-align: left;padding-left: 32px;min-width: 120px;vertical-align: middle;border: 1px solid #ddd;">-->
+                        <!--{{item.ProjectName}}-->
+                  <!--</td>-->
+                  <td style="vertical-align: middle;border: 1px solid #ddd;">
                       <md-button style="text-align: left" ng-if="vm.btnShow(item,'_0')" class="md-primary" ng-click="vm.go(item,0)" aria-label="Settings">
                         <md-icon md-font-icon="icon-magnify" class="icon s24"></md-icon>总包</md-button>
                       <md-button style="text-align: left"  ng-if="vm.btnShow(item,'_2')" class="md-primary" ng-click="vm.go(item,2)" aria-label="Settings">
                         <md-icon md-font-icon="icon-magnify" class="icon s24"></md-icon>监理</md-button>
                         <md-button style="text-align: left"  ng-if="vm.btnShow(item,'_4')" class="md-primary" ng-click="vm.go(item,4)" aria-label="Settings">
                             <md-icon md-font-icon="icon-magnify" class="icon s24"></md-icon>项目部</md-button>
-                    </td>
+                  </td>
                 </tr>
             </tbody>
         </table>

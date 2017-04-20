@@ -16,9 +16,10 @@
   function materialPlanProgress($rootScope,$stateParams,api,utils,$state){
     var vm = this;
     var batchId = $stateParams.id;
+    var sectionId = $stateParams.sectionId;
 
-    api.xhsc.materialPlan.getBatchProgressById(batchId).then(function (r) {
-      vm.data = r.data;
+    api.xhsc.materialPlan.getBatchProgressById(sectionId).then(function (r) {
+      vm.data = r.data.Result.find(function(item){ return item.Id == batchId});
     });
 
   }

@@ -44,7 +44,7 @@
         sendBt: false,
         rightArrow: false,
         leftArrow: false,
-        url:'/planDetail/{batchId}',
+        url:'/planDetail/{batchId}/{sectionId}',
         template:'<material-plan-detail></material-plan-detail>'
       })
       .state('app.xhsc.materialys.intoFactory',{
@@ -53,21 +53,21 @@
         sendBt: true,
         rightArrow: false,
         leftArrow: false,
-        url:'/intoFactory/{status}/{BatchId}/{PlanId}/{PlanCount}/{Brand}',
+        url:'/intoFactory/{status}/{BatchId}/{PlanId}/{PlanCount}/{Brand}/{SectionId}',
         template:'<material-into-factory flex layout="column"></material-into-factory>'
       })
       .state('app.xhsc.materialys.checkInfo',{
         noBack:true,
         sendBt:true,
         title:'材料验收',
-        url:'/checkInfo/{id}',
+        url:'/checkInfo/{id}/{sectionId}',
         template: '<material-ys-check-info flex layout="column"></material-ys-check-info>'
       })
       .state('app.xhsc.materialys.inspectionReport',{
         noBack:true,
         sendBt:true,
         title:'送检报告归档',
-        url:'/inspectionReport/{id}',
+        url:'/inspectionReport/{id}/{sectionId}',
         template: '<material-ys-inspection-report flex layout="column"></material-ys-inspection-report>'
       })
       .state('app.xhsc.materialys.approval',{
@@ -81,7 +81,7 @@
         noBack:true,
         sendBt:true,
         title:'材料送检',
-        url:'/inspection/{id}',
+        url:'/inspection/{id}/{sectionId}',
         template: '<material-plan-inspection flex layout="column"></material-plan-inspection>'
       })
       .state('app.xhsc.materialys.exit',{
@@ -95,13 +95,13 @@
         noBack:true,
         sendBt:true,
         title:'材料退场',
-        url:'/unqualifiedExit/{id}/{unit}',
+        url:'/unqualifiedExit/{id}/{unit}/{sectionId}',
         template: '<material-unqualified-exit flex layout="column"></material-unqualified-exit>'
       })
       .state('app.xhsc.materialys.materialPlanProgress',{
         noBack:true,
         title:'流程跟踪',
-        url:'/materialPlanProgress/{id}',
+        url:'/materialPlanProgress/{id}/{sectionId}',
         template: '<material-plan-progress flex layout="column"></material-plan-progress>'
       })
       .state('app.xhsc.materialys.materialdownload',{
