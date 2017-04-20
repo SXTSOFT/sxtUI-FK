@@ -39,14 +39,12 @@
             <th>二级分类</th>
             <th>三级分类</th>
             <th>问题描述</th>
-            <th>问题级别</th>
-            <th>所属专业</th>
             <th>验收时间</th>
             <th>验收人</th>
             <th>整改单位</th>
             <th>是否已整改</th>
-            <th>复查状态</th>
             <th>整改时间</th>
+            <th>整改人</th>
             <th>关闭时间</th>
             <th>关闭人员</th>
             <th>问题状态</th>
@@ -55,7 +53,25 @@
         <tbody>
             <tr ng-repeat="item in vm.data">
                 <td>{{$index+1}}</td>
-                <td ng-repeat="(i,n) in item" ng-if="i!='rectifyOu'">{{n}}</td>
+                <td style="width:400px;">{{item.projectName}}</td>
+                <td>{{item.building}}</td>
+                <td>{{item.floor}}</td>
+                <td>{{item.room}}</td>
+                <td>{{item.position}}</td>
+                <td>{{item.typeName}}</td>
+                <td>{{item.classify1}}</td>
+                <td>{{item.classify2}}</td>
+                <td>{{item.classify3}}</td>
+                <td>{{item.problemDescription}}</td>
+                <td>{{item.acceptanceTime}}</td>
+                <td>{{item.acceptanceUser}}</td>
+                <td>{{item.rectifyOuName}}</td>
+                <td>{{item.isRectify}}</td>
+                <td>{{item.rectifyTime}}</td>
+                <td>{{item.rectifyUser}}</td>
+                <td>{{item.closeTime}}</td>
+                <td>{{item.closeUser}}</td>
+                <td>{{item.status}}</td>
             </tr>
         </tbody>
     </table>
