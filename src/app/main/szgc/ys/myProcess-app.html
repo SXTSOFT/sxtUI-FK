@@ -169,8 +169,9 @@
                 <p>{{ item.Number + item.Unit }}</p>
               </div>-->
                <div class="md-list-item-text" flex="70" layout="column" ng-click="goMaterialDetail(item.Id)">
-                <h4>{{ item.RegionNameTree }}</h4>
-                <p>{{ item.Material }} ({{item.CheckTime|date:'yyyy-MM-dd'}})</p>
+                <h4 style="display: block;margin-top: 10px;margin-bottom: 0;">{{ item.RegionNameTree }}</h4>
+                <p style="display: block;margin-top: 10px;margin-bottom: 0;">{{ item.Material }} ({{item.CheckTime|date:'yyyy-MM-dd'}})</p>
+                <p style="display: block;margin-top: 10px;margin-bottom: 10px;">{{ item.CheckUser }}</p>
               </div>
                 <md-button style="margin: 0;" class="md-secondary md-primary" ui-sref="app.szgc.ys.material({id:item.Id})"  ng-show="(item.IsInspection==1 || item.IsInspection==0) && item.Report == 0">追加送检报告</md-button>
               <md-divider></md-divider>

@@ -30,8 +30,16 @@ name-value="project.procedureName" material-supply="project.materialSupply" regi
         <md-input-container class="md-block" style="margin: 12px 0;">
           <label>厂家/品牌</label>
           <md-select ng-model="vm.Manufactor" md-on-close="clearSearchTerm()" data-md-container-class="selectdemoSelectHeader">
-            <md-select-header class="demo-select-header">
-              <input ng-model="searchTerm" type="search" ng-keydown="$event.stopPropagation()" placeholder="搜索.." class="demo-header-searchbox md-text">
+            <md-select-header style="box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(0, 0, 0, 0.12);
+    padding-left: 10.667px;
+    height: 48px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: auto;">
+              <input ng-model="searchTerm" type="search" ng-keydown="$event.stopPropagation()" placeholder="搜索.." 
+              style="border: none;outline: none;height: 100%;width: 100%;padding: 0;" class="md-text">
             </md-select-header>
             <md-option ng-value="s" ng-repeat="s in vm.supplier |
               filter:searchTerm">{{s.ShortName?s.ShortName:s.Name}}</md-option>

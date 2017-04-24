@@ -12,9 +12,10 @@
     .controller('MMyProcessController', MMyProcessController);
 
   /** @ngInject */
-  function MMyProcessController($scope, api, utils, $state, $q, sxt, xhUtils, $timeout, $mdDialog, $stateParams, $mdSidenav, $element) {
+  function MMyProcessController($scope, api, utils, $state, $q, sxt, xhUtils, $timeout, $mdDialog, $stateParams, $mdSidenav, $element,auth) {
 
     var vm = this;
+    var user=auth.current();
     vm.AttachmentSHow = false;
     vm.parentLoad = function () {
       $scope.$parent.vm.load();
@@ -168,6 +169,7 @@
       vm.checkData.RegionId = $scope.project.pid;
       vm.checkData.ProjectName = $scope.project.projectName;
       vm.checkData.RegionName = $scope.project.typeName;
+      vm.checkData.CheckUser = user.RealName;
 
       if (vm.checkData.WgCheck == 0 || vm.checkData.InspectionReport == 0) {
         $mdDialog.show({
@@ -424,7 +426,6 @@
                 }
 
                 vm.checkData.HandleOption = $scope.clyj;
-                console.log(vm.checkData);
                 api.material.addProcessService.Insert({
                   CheckData: { Id: vm.checkDataId, InspectionReport: vm.checkData.sjReport, CheckResult: vm.checkData.sjReport, HandleOption: vm.checkData.HandleOption, CheckReportRemark: vm.checkData.CheckReportRemark },
                   CheckDataOptions: [{ OptionType: 16, GroupImg: vm.groupId_16 }]

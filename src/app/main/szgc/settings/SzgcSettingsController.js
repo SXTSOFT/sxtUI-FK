@@ -9,7 +9,7 @@
     .controller('SzgcSettingsController', SzgcSettingsController);
 
   /** @ngInject */
-  function SzgcSettingsController(auth, api, $scope, utils, $rootScope, appCookie, $mdDialog, versionUpdate, $q, $mdSidenav, sxt, $element) {
+  function SzgcSettingsController(auth, api, $scope, utils, $rootScope, appCookie, $mdDialog, versionUpdate, $q, $mdSidenav, sxt, $element, $filter) {
 
     var vm = this, selected;
 
@@ -182,6 +182,7 @@
     }
 
     var list3 = [];
+    var dateFilter = $filter('date');
     vm.openProjectSetting = function (isRefresh) {
       vm.loading = true;
       if (vm.data && !isRefresh) {
@@ -192,15 +193,13 @@
       vm.data = vm.project;
       //vm.Downloaded = vm.project.map(function (p) { return { projectId: p.project_id, name: p.name } });
       var date = new Date();
-      var year = date.getFullYear();
-      var month = date.getMonth() + 1;
       // api.szgc.vanke.project_items({ project_id: vm.projectId, page_size: 0, page_number: 1 }).then(function (res) {
       //   vm.data = res.data.data;
       //   vm.data = vm.data.map(function (v) { return { projectId: v.project.project_id, stageId: v.project_item_id, name: v.name } });
       // })
 
       $q.all([api.szgc.ProjectSettingsSevice.ex.getProjectBuildingProcedure(vm.projectId),
-      api.szgc.projectProgressService.getProjectBuildingProcedure(vm.projectId, year + '-' + month)]).then(function (res) {
+      api.szgc.projectProgressService.getProjectBuildingProcedure(vm.projectId, dateFilter(date, 'yyyy-MM'))]).then(function (res) {
         //vm.Downloaded = [];
         // vm.list = res[1].data.Rows.map(function (p) { return { id: p.Id, buildingId: p.BuildingId, procedureId: p.ProcedureId, procedureName: p.ProcedureName, value: p.Value } });
         vm.list = []
@@ -220,7 +219,7 @@
             vm.list.push(item);
           }
         })
-        console.log($(this).hasClass('n'));
+
         //console.log(vm.list);
 
         //过滤已设置的工序
@@ -476,10 +475,14 @@
     });
     var currentPoint = null;
     function pontTo(index) {
+      if (currentPoint) {
+        currentPoint.removeClass('current');
+      }
       $scope.index = index;
       var p = currentPoint = $('div.point', $(".progress")).eq(index), span = p.find('span');
       if (p) {
-        $rootScope.$emit('keyboard:setvalue',currentPoint.find('span').text());
+        currentPoint.addClass('current');
+        $rootScope.$emit('keyboard:setvalue', currentPoint.find('span').text());
         $(".progress").animate({
           scrollTop: $(".progress").scrollTop() + p.offset().top - $(".progress").height() + p.height() - $(".progress").offset().top + 10
         });

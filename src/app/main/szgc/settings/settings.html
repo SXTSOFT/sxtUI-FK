@@ -1,5 +1,5 @@
 <md-tabs md-border-bottom flex md-selected="vm.selectedIndex">
-  <md-tab label="系统设置">
+  <md-tab label="系统设置" ng-click="vm.keyboard = false">
     <md-tab-content flex layout-fill layout="column">
       <md-content flex>
         <md-list>
@@ -33,7 +33,7 @@
       </md-content>
     </md-tab-content>
   </md-tab>
-  <md-tab label="个人信息">
+  <md-tab label="个人信息" ng-click="vm.keyboard = false">
     <md-tab-content flex layout-fill layout="column">
       <md-content flex>
         <md-list>
@@ -66,9 +66,9 @@
       </md-content>
     </md-tab-content>
   </md-tab>
-  <md-tab label="项目进度设置" ng-if="vm.projectId" ng-click="vm.openProjectSetting()">
+  <md-tab label="项目进度设置" ng-if="vm.projectId"ng-click="vm.openProjectSetting()">
     <md-tab-content flex layout-fill layout="column">
-      <md-content class="progress" flex layout-fill layout="column">
+      <md-content class="progress"  style="background-color:#f9f9f9;"  flex layout-fill layout="column">
         <md-list style="margin-bottom: 64px;">
           <!--<md-subheader class="md-no-sticky">已设置</md-subheader>
           <md-list-item ng-repeat="p in vm.Downloaded">
@@ -92,13 +92,13 @@
           </md-list-item>-->
           <!--<md-subheader class="md-no-sticky">设置</md-subheader>-->
 
-          <md-list-item ng-repeat="p in vm.data">
+          <md-list-item ng-repeat="p in vm.data" style="margin-bottom:6px;background-color:white; border-top: 1px solid #e0e0e0; border-bottom: 1px solid #e0e0e0;">
             <div flex layout="column">
-              <md-button ng-click="loadStages(p)" style="text-align: left"> {{ p.name }} </md-button>
+              <md-button ng-click="loadStages(p)" style="text-align: left"> {{ p.name }} <span style="float:right;">{{!p.show?'<':'∨'}}</span></md-button>
               <!--<div ng-if="p.show" style="width:94%;height:1px;border-top:1px solid rgba(0,0,0,0.12);margin-left: auto;margin-right: auto;"></div>-->
               <div ng-if="p.show" ng-repeat="s in p.stages" layout="column" style="padding-left: 10px;">
-                <md-button ng-click="loadBuildings(s)" style="text-align: left"> {{ s.name }} </md-button>
-                <div ng-if="s.show" ng-repeat="b in s.buildings" layout="column" style="padding-left: 10px;">
+                <md-button ng-click="!vm.loading && loadBuildings(s)" style="text-align: left"> {{ s.name }}  <span style="float:right;">{{!s.show?'<':'∨'}}</span></md-button>
+                <div class="setBtn" ng-if="s.show" ng-repeat="b in s.buildings" layout="column" style="padding-left: 10px;">
                   <div>
                     <md-button ng-click="loadProcedure(b)" style="text-align: left; width:60%;"> {{ b.name }} </md-button>
                     <md-button style="float:right;color:rgb(183,28,28);" ng-click="vm.openGx();vm.current=b">添加工序</md-button>
@@ -122,12 +122,11 @@
             </div>
             <md-divider></md-divider>
           </md-list-item>
-
         </md-list>
 
         <!--<md-button ng-disabled="vm.loading" flex ng-click="vm.save()" style="position: fixed;" class="md-primary md-fab md-fab-bottom-right">确定</md-button>-->
       </md-content>
-      <div class="md-padding" layout="row" ng-if="!vm.keyboard" style="position:relative; bottom:0; width:100%; background-color: white;">
+      <div class="md-padding" layout="row" ng-show="!vm.keyboard" style="position:relative; bottom:0; width:100%; background-color: white;">
         <md-progress-circular ng-show="vm.loading" md-diameter="20" md-mode="indeterminate"></md-progress-circular>
         <md-button flex ng-disabled="vm.loading" ng-click="vm.save()" class="md-raised md-primary md-block">确定</md-button>
       </div>
@@ -147,7 +146,7 @@
     </div>
   </md-content>
 </md-sidenav>-->
-<sxt-num-keyboard flex-auto ng-if="vm.keyboard" show="vm.keyboard" ng-model="user" on-next="onNext($point)"></sxt-num-keyboard>
+<sxt-num-keyboard flex-auto ng-show="vm.keyboard" show="vm.keyboard" ng-model="user" on-next="onNext($point)"></sxt-num-keyboard>
 <md-sidenav layout="column" class="md-sidenav-right" md-is-open="vm.build.isOpen" md-component-id="procedure_right">
   <md-toolbar flex="none" class="md-theme-indigo">
     <h4 class="md-toolbar-tools">选择工序(点击左侧灰色区关闭)</h4>
