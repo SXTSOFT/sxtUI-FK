@@ -95,14 +95,18 @@
           <md-list-item ng-repeat="p in vm.data" style="margin-bottom:6px;background-color:white; border-top: 1px solid #e0e0e0; border-bottom: 1px solid #e0e0e0;">
             <div flex layout="column">
               <md-button style="margin:0;padding:0 10px 0 10px;text-align: left" ng-click="loadStages(p)"> {{ p.name }}
-                <md-icon style="float:right;margin-top:5px;" ng-style="{transform: p.show?'rotate(0)':'rotate(-90deg)'}" md-svg-src="app/main/szgc/images/Shape2.svg"
-                  class="s24"></md-icon>
+                <md-icon style="float:right;margin-top:5px;" ng-style="{transform: p.show?'rotate(0)':'rotate(-90deg)'}"
+                  class="s24">
+                    <img src="data:image/svg+xml;base64,PCEtLSBHZW5lcmF0ZWQgYnkgSWNvTW9vbi5pbyAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDI0IiBoZWlnaHQ9IjEwMjQiIHZpZXdCb3g9IjAgMCAxMDI0IDEwMjQiPg0KPHRpdGxlPjwvdGl0bGU+DQoNCjxwYXRoIGZpbGw9IiNjY2MiIGQ9Ik03NTYuODg1IDM5NS43MzdjMCA2LjAyMy0yLjA4MSAxMi4xMTMtNi4yNDYgMTcuMTk0bC0yMjEuODYyIDI2NS45NjFjLTUuNDAzIDYuNDYyLTEzLjUzMiAxMC4yMzEtMjIuMTk0IDEwLjIzMS04LjU4OSAwLTE2Ljc5MS0zLjc2Ni0yMi4xMjUtMTAuMjMxbC0yMjAuNjg2LTI2NC44MzZjLTkuODIzLTExLjc5OS03Ljg4LTI5LjA1NiA0LjM2MS0zOC41MzNzMzAuMTMtNy41OTYgMzkuOTU5IDQuMjAzbDE5OC41NjUgMjM4LjIyNyAxOTkuNjctMjM5LjQxM2M5LjgyMy0xMS43OTkgMjcuNzI1LTEzLjY4MyAzOS45NTktNC4yMDQgNi45NjggNS40NTggMTAuNjA2IDEzLjM3MiAxMC42MDYgMjEuMzk1djB6Ij48L3BhdGg+DQo8L3N2Zz4NCg==">
+                  </md-icon>
               </md-button>
               <!--<div ng-if="p.show" style="width:94%;height:1px;border-top:1px solid rgba(0,0,0,0.12);margin-left: auto;margin-right: auto;"></div>-->
               <div ng-if="p.show" ng-repeat="s in p.stages" layout="column">
                 <md-button ng-click="!vm.loading && loadBuildings(s)" style="text-align: left;margin:0;padding:0 10px 0 20px;"> {{ s.name }}
-                  <md-icon style="float:right;margin-top:5px;" ng-style="{transform: s.show?'rotate(0)':'rotate(-90deg)'}" md-svg-src="app/main/szgc/images/Shape2.svg"
-                    class="s24"></md-icon>
+                  <md-icon style="float:right;margin-top:5px;" ng-style="{transform: s.show?'rotate(0)':'rotate(-90deg)'}"
+                    class="s24">
+                      <img src="data:image/svg+xml;base64,PCEtLSBHZW5lcmF0ZWQgYnkgSWNvTW9vbi5pbyAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDI0IiBoZWlnaHQ9IjEwMjQiIHZpZXdCb3g9IjAgMCAxMDI0IDEwMjQiPg0KPHRpdGxlPjwvdGl0bGU+DQoNCjxwYXRoIGZpbGw9IiNjY2MiIGQ9Ik03NTYuODg1IDM5NS43MzdjMCA2LjAyMy0yLjA4MSAxMi4xMTMtNi4yNDYgMTcuMTk0bC0yMjEuODYyIDI2NS45NjFjLTUuNDAzIDYuNDYyLTEzLjUzMiAxMC4yMzEtMjIuMTk0IDEwLjIzMS04LjU4OSAwLTE2Ljc5MS0zLjc2Ni0yMi4xMjUtMTAuMjMxbC0yMjAuNjg2LTI2NC44MzZjLTkuODIzLTExLjc5OS03Ljg4LTI5LjA1NiA0LjM2MS0zOC41MzNzMzAuMTMtNy41OTYgMzkuOTU5IDQuMjAzbDE5OC41NjUgMjM4LjIyNyAxOTkuNjctMjM5LjQxM2M5LjgyMy0xMS43OTkgMjcuNzI1LTEzLjY4MyAzOS45NTktNC4yMDQgNi45NjggNS40NTggMTAuNjA2IDEzLjM3MiAxMC42MDYgMjEuMzk1djB6Ij48L3BhdGg+DQo8L3N2Zz4NCg==">
+                    </md-icon>
                 </md-button>
                 <div ng-if="s.show" ng-repeat="b in s.buildings" layout="column">
                   <div flex>
