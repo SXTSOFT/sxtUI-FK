@@ -80,12 +80,12 @@
             utils.alert('暂无图片')
             return;
           }
-          imagedata.sort(function(s1,s2){
-            if(s1.date && s2.date){
-              return s2.date.localeCompare(s1.date);
-            }
-            return 0;
-          })
+          // imagedata.sort(function(s1,s2){
+          //   if(s1.date && s2.date){
+          //     return s2.date.localeCompare(s1.date);
+          //   }
+          //   return 0;
+          // })
           //console.log('img',img)
           var str = [];
           str.push('<ul>')
