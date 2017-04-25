@@ -13,9 +13,9 @@
         });
 
     /** @ngInject */
-    function materialReport($scope, api, sxt, utils,$filter) {
+    function materialReport($scope, api, sxt, utils, $filter) {
         var vm = this;
-        vm.total=0;
+        vm.total = 0;
         $scope.pageing = {
             page: 1,
             pageSize: 10
@@ -27,7 +27,7 @@
         var date_tmp = new Date()
         date_tmp.setDate(date_tmp.getDate() - 7);
         vm.date.sDate = date_tmp;
-        vm.regionId = '',vm.sectionId = '';
+        vm.regionId = '', vm.sectionId = '';
 
         vm.host = sxt.app.api;
         vm.projects = [];
@@ -44,10 +44,15 @@
         //     }
         // };
 
+        vm.isShowData = true;
+        if (vm.isMobile) {
+            vm.isShowData = false;
+        }
+
         api.xhsc.Project.getMap().then(function (r) {
             vm.projects = r.data;
             vm.pids = r.data.map(function (r) { return r.ProjectID });
-            getData(vm.pids,'','','','');
+            getData(vm.pids, '', '', '', '');
         });
 
         vm.clearRegion = function (pid) {
@@ -84,10 +89,10 @@
             // });
         }
 
-        function getData(pids,rid,sid,sDate,eDate){
+        function getData(pids, rid, sid, sDate, eDate) {
             vm.rendered = false;
             var page = utils.getPage($scope.pageing);
-            return api.material.materialPlan.getMaterialReport({pids:pids,rid:rid,sid:sid,sDate:dateFilter(sDate, 'yyyy-MM-dd'),eDate:dateFilter(eDate, 'yyyy-MM-dd'), Skip: page.Skip, Limit: page.Limit }).then(function (r) {
+            return api.material.materialPlan.getMaterialReport({ pids: pids, rid: rid, sid: sid, sDate: dateFilter(sDate, 'yyyy-MM-dd'), eDate: dateFilter(eDate, 'yyyy-MM-dd'), Skip: page.Skip, Limit: page.Limit }).then(function (r) {
                 vm.source = r.data.Items || [];
                 vm.total = r.data.TotalCount;
                 vm.rendered = true;
@@ -99,16 +104,23 @@
         }
 
         $scope.$watch("pageing", function () {
-            if(vm.pids)
-                getData(vm.pids,vm.regionId,vm.sectionId,vm.date.sDate,vm.date.eDate)
+            if (vm.pids)
+                getData(vm.pids, vm.regionId, vm.sectionId, vm.date.sDate, vm.date.eDate)
         }, true);
 
         vm.printBatchCount = function () {
             $('#export').val($("#divReport").html());
         }
 
-        vm.cx = function(){
-            getData(vm.pids,vm.regionId,vm.sectionId,vm.date.sDate,vm.date.eDate)
+        vm.cx = function () {
+            getData(vm.pids, vm.regionId, vm.sectionId, vm.date.sDate, vm.date.eDate)
+            if (vm.isMobile) {
+                vm.isShowData = true;
+            }
+        }
+
+        vm.goBack = function () {
+            vm.isShowData = false;
         }
     };
 })(angular, undefined);
