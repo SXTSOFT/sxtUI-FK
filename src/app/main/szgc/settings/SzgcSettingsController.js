@@ -476,12 +476,12 @@
     var currentPoint = null;
     function pontTo(index) {
       if (currentPoint) {
-        currentPoint.removeClass('current');
+        currentPoint.css({'background': '','color':''})
       }
       $scope.index = index;
       var p = currentPoint = $('div.point', $(".progress")).eq(index), span = p.find('span');
       if (p) {
-        currentPoint.addClass('current');
+        currentPoint.css({'background': '#e93030','color':'#fff'})
         $rootScope.$emit('keyboard:setvalue', currentPoint.find('span').text());
         $(".progress").animate({
           scrollTop: $(".progress").scrollTop() + p.offset().top - $(".progress").height() + p.height() - $(".progress").offset().top + 10

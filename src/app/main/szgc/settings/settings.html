@@ -104,7 +104,7 @@
                   <md-icon style="float:right;margin-top:5px;" ng-style="{transform: s.show?'rotate(0)':'rotate(-90deg)'}" md-svg-src="app/main/szgc/images/Shape2.svg"
                     class="s24"></md-icon>
                 </md-button>
-                <div class="setBtn" ng-if="s.show" ng-repeat="b in s.buildings" layout="column">
+                <div ng-if="s.show" ng-repeat="b in s.buildings" layout="column">
                   <div flex>
                     <md-button ng-click="loadProcedure(b)" style="text-align: left; width:70%;margin:0;padding:0;padding-left: 30px;"> {{ b.name }} </md-button>
                     <md-button style="float:right;color:rgb(183,28,28); width:30%;margin:0;padding:0;" ng-click="vm.openGx();vm.current=b">添加工序</md-button>

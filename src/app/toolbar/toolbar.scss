@@ -248,37 +248,6 @@
   }
 }
 
-.setBtn{
-  >div{
-    >div{
-
-      >div{
-        border:1px solid #d8d8d8;
-        text-align: center;
-        white-space:nowrap;
-        overflow: hidden;
-        >span{
-          display: block;height:50px;line-height: 50px;
-          &.n{
-            color:#d8d8d8;
-          }
-        }
-
-        &.done{
-          border-color:#e93030;
-          background-color: #fff;
-          color:#e93030;
-        }
-        &.current{
-          border-color:#e93030;
-          background:#e93030;
-          color:#fff;
-        }
-      }
-    }
-  }
-}
-
 .circle{
   >div{
     >div{
