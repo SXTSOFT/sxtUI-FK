@@ -66,9 +66,9 @@
       </md-content>
     </md-tab-content>
   </md-tab>
-  <md-tab label="项目进度设置" ng-if="vm.projectId"ng-click="vm.openProjectSetting()">
+  <md-tab label="项目进度设置" ng-if="vm.projectId" ng-click="vm.openProjectSetting()">
     <md-tab-content flex layout-fill layout="column">
-      <md-content class="progress"  style="background-color:#f9f9f9;"  flex layout-fill layout="column">
+      <md-content class="progress" style="background-color:#f9f9f9;" flex layout-fill layout="column">
         <md-list style="margin-bottom: 64px;">
           <!--<md-subheader class="md-no-sticky">已设置</md-subheader>
           <md-list-item ng-repeat="p in vm.Downloaded">
@@ -94,18 +94,24 @@
 
           <md-list-item ng-repeat="p in vm.data" style="margin-bottom:6px;background-color:white; border-top: 1px solid #e0e0e0; border-bottom: 1px solid #e0e0e0;">
             <div flex layout="column">
-              <md-button ng-click="loadStages(p)" style="text-align: left"> {{ p.name }} <span style="float:right;">{{!p.show?'<':'∨'}}</span></md-button>
+              <md-button style="margin:0;padding:0 10px 0 10px;text-align: left" ng-click="loadStages(p)"> {{ p.name }}
+                <md-icon style="float:right;margin-top:5px;" ng-style="{transform: p.show?'rotate(0)':'rotate(-90deg)'}" md-svg-src="app/main/szgc/images/Shape2.svg"
+                  class="s24"></md-icon>
+              </md-button>
               <!--<div ng-if="p.show" style="width:94%;height:1px;border-top:1px solid rgba(0,0,0,0.12);margin-left: auto;margin-right: auto;"></div>-->
-              <div ng-if="p.show" ng-repeat="s in p.stages" layout="column" style="padding-left: 10px;">
-                <md-button ng-click="!vm.loading && loadBuildings(s)" style="text-align: left"> {{ s.name }}  <span style="float:right;">{{!s.show?'<':'∨'}}</span></md-button>
-                <div class="setBtn" ng-if="s.show" ng-repeat="b in s.buildings" layout="column" style="padding-left: 10px;">
-                  <div>
-                    <md-button ng-click="loadProcedure(b)" style="text-align: left; width:60%;"> {{ b.name }} </md-button>
-                    <md-button style="float:right;color:rgb(183,28,28);" ng-click="vm.openGx();vm.current=b">添加工序</md-button>
+              <div ng-if="p.show" ng-repeat="s in p.stages" layout="column">
+                <md-button ng-click="!vm.loading && loadBuildings(s)" style="text-align: left;margin:0;padding:0 10px 0 20px;"> {{ s.name }}
+                  <md-icon style="float:right;margin-top:5px;" ng-style="{transform: s.show?'rotate(0)':'rotate(-90deg)'}" md-svg-src="app/main/szgc/images/Shape2.svg"
+                    class="s24"></md-icon>
+                </md-button>
+                <div class="setBtn" ng-if="s.show" ng-repeat="b in s.buildings" layout="column">
+                  <div flex>
+                    <md-button ng-click="loadProcedure(b)" style="text-align: left; width:70%;margin:0;padding:0;padding-left: 30px;"> {{ b.name }} </md-button>
+                    <md-button style="float:right;color:rgb(183,28,28); width:30%;margin:0;padding:0;" ng-click="vm.openGx();vm.current=b">添加工序</md-button>
                   </div>
-                  <div ng-if="b.show" ng-repeat="g in b.procedures" layout="row" class="datas" style="padding-left: 20px; margin:5px 0;">
-                    <p flex="65" style="margin: 0; line-height: 35px;"> {{ g.procedureName }} </p>
-                    <div flex="20"  sxt-progress-num-list-item ng-model="g">
+                  <div ng-if="b.show" ng-repeat="g in b.procedures" layout="row" class="datas" style="padding-left: 30px; margin:5px 0;">
+                    <p flex="70" style="margin: 0; line-height: 35px;"> {{ g.procedureName }} </p>
+                    <div flex="20" sxt-progress-num-list-item ng-model="g">
                       <div class="point" style="border: 1px solid #E2E8EF;">
                         <span style="display: block;height: 35px;line-height: 35px; text-align:center;">{{g.value}}</span>
                       </div>
@@ -113,14 +119,13 @@
                     <!--<md-input-container class="md-block" flex="15" style="margin:0 0 0 10px; height: 35px;">
                       <input type="number" ng-click="vm.keyboard.show = true" ng-model="g.count">
                     </md-input-container>-->
-                    <label style="line-height: 35px;margin-left:5px;">层</label>
+                    <label flex style="line-height: 35px;margin-left:5px;">层</label>
                   </div>
                   <div ng-if="!$last" style="width:94%;height:1px;border-top:1px solid rgba(0,0,0,0.12);margin-left: auto;margin-right: auto;"></div>
                 </div>
                 <div ng-if="!$last" style="width:94%;height:1px;border-top:1px solid rgba(0,0,0,0.12);margin-left: auto;margin-right: auto;"></div>
               </div>
             </div>
-            <md-divider></md-divider>
           </md-list-item>
         </md-list>
 
