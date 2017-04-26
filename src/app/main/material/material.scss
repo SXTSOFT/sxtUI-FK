@@ -79,3 +79,33 @@
 .chipsdemoBasicUsage .custom-chips md-chips-wrap.md-removable md-chip md-chip-template {
   padding-right: 5px; }
 
+.materialReport{
+  md-list-item{
+    >p:first-of-type{
+       max-width:80px;
+       width: 80px ;
+       overflow: hidden;
+       text-overflow: ellipsis;
+       white-space: nowrap;
+        padding-left:0px; 
+    }
+     p{
+        font-size:14px ;
+        text-align:left;
+        padding-left:24px; 
+     } 
+  }
+}
+
+@media screen and (min-width: 725px) {
+    .materialReport{
+    md-list-item{
+      >p:first-of-type{
+        max-width:128px;
+        width: 128px ;
+      }
+    }
+  }
+}
+  
+  

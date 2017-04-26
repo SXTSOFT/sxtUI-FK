@@ -31,6 +31,10 @@
       }
     });
 
+    vm.goBack=function(){
+      window.history.go(-1);
+    }
+
     // api.xhsc.materialPlan.GetMaterialPlanBatchByPlanId(vm.data.PlanId).then(function (r) {
     //   vm.data.BatchList = r.data||[];
     //   vm.data.BatchList.forEach(function (b) {

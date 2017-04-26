@@ -1,7 +1,7 @@
 <md-progress-circular id="toolbar-progress" ng-if="!vm.rendered" class="md-accent" md-mode="indeterminate" md-diameter="28">
 </md-progress-circular>
 <div ng-show="vm.rendered">
-  <md-card style="background-color: white;" md-theme-watch>
+  <md-card ng-if="!vm.isMobile" style="background-color: white;" md-theme-watch>
     <md-card-content>
       <div flex layout="row">
         <md-input-container md-theme="default" flex>
@@ -40,13 +40,61 @@
           <label>结束时间</label>
           <md-datepicker ng-model="vm.date.eDate" md-open-on-focus></md-datepicker>
         </md-input-container>
-        <!--<md-input-container md-theme="default" flex>
+        <md-input-container md-theme="default" flex>
           <md-button class="md-raised md-primary" ng-click="vm.cx()">查询</md-button>
-        </md-input-container>-->
+        </md-input-container>
       </div>
-      <div layout="row">
+  </md-card>
+  <md-card ng-if="vm.isMobile && !vm.isShowData" style="background-color: white;" md-theme-watch>
+    <md-card-content>
+      <div flex layout="row">
+        <md-input-container md-theme="default" flex>
+          <label>项目</label>
+          <md-select ng-model="vm.projectId">
+            <md-option ng-click="vm.clearRegion(item.ProjectID)" ng-repeat="item in vm.projects" ng-value="item.ProjectID">
+              {{item.ProjectName}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div flex layout="row">
+        <md-input-container md-theme="default" flex>
+          <label>分期</label>
+          <md-select md-on-open="vm.getAreas(vm.projectId)" ng-model="vm.regionId">
+            <md-option ng-click="vm.clearSection(item.RegionID)" ng-repeat="item in vm.regions" ng-value="item.RegionID">
+              {{item.RegionName}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div flex layout="row">
+        <md-input-container md-theme="default" flex>
+          <label>标段</label>
+          <md-select md-on-open="vm.getSections(vm.regionId)" ng-model="vm.sectionId">
+            <md-option ng-click="vm.getData(item.RegionID)" ng-repeat="item in vm.sections" ng-value="item.RegionID">
+              {{item.RegionName}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div flex layout="row">
+        <md-input-container md-theme="default" flex="100">
+          <label>开始时间</label>
+          <md-datepicker ng-model="vm.date.sDate" md-open-on-focus></md-datepicker>
+        </md-input-container>
+      </div>
+      <div flex layout="row">
+        <md-input-container md-theme="default" flex="100">
+          <label>结束时间</label>
+          <md-datepicker ng-model="vm.date.eDate" md-open-on-focus></md-datepicker>
+        </md-input-container>
+      </div>
+      <div flex layout="row">
+        <md-button flex style="margin: 12px auto;" class="md-raised md-primary" ng-click="vm.cx()">查询</md-button>
+      </div>
+      <!--<div layout="row">
         <md-button style="margin: 12px auto;" class="md-raised md-primary" flex="{{!vm.isMobile?50:100}}" ng-click="vm.cx()"> 确定</md-button>
-      </div>
+      </div>-->
       <!--<div flex layout="row">
         
       </div>
@@ -65,79 +113,64 @@
     <md-button class="md-raised md-primary" type="submit" ng-click="vm.printBatchCount()">Excel导出</md-button>
   </form>
 
-  <md-content flex layout="column" ms-scroll>
-    <div id="divReport" flex style="margin: 24px 0;">
-      <table class="materialReport">
-        <thead>
-          <tr>
-            <th style="border: 1px solid #ddd">项目</th>
-            <th style="border: 1px solid #ddd">分期</th>
-            <th style="border: 1px solid #ddd">标段</th>
-            <th style="border: 1px solid #ddd">进场计划</th>
-            <th style="border: 1px solid #ddd">材料设备名称</th>
-            <th style="border: 1px solid #ddd">计划进场时间</th>
-            <th style="border: 1px solid #ddd">计划进场数量</th>
-            <th style="border: 1px solid #ddd">使用部位</th>
-            <th style="border: 1px solid #ddd">合同编号</th>
-            <th style="border: 1px solid #ddd">供货方式</th>
-            <th style="border: 1px solid #ddd">型号</th>
-            <th style="border: 1px solid #ddd">规格</th>
-            <th style="border: 1px solid #ddd">厂家品牌</th>
-            <th style="border: 1px solid #ddd">实际进场数量</th>
-            <th style="border: 1px solid #ddd">有无封样</th>
-            <th style="border: 1px solid #ddd">进场时间</th>
-            <th style="border: 1px solid #ddd">供货方</th>
-            <th style="border: 1px solid #ddd">进场验收时间</th>
-            <th style="border: 1px solid #ddd">验收人</th>
-            <th style="border: 1px solid #ddd">验收情况</th>
-            <th style="border: 1px solid #ddd">送检需要</th>
-            <th style="border: 1px solid #ddd">不合格处理</th>
-            <th style="border: 1px solid #ddd">送检时间</th>
-            <th style="border: 1px solid #ddd">送检人</th>
-            <th style="border: 1px solid #ddd">检验单编号</th>
-            <th style="border: 1px solid #ddd">报告日期</th>
-            <th style="border: 1px solid #ddd">报告单编号</th>
-            <th style="border: 1px solid #ddd">检验情况</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr data-ng-repeat="item in vm.source">
-            <td style="border: 1px solid #ddd; min-width: 150px; min-height: 100px;height: 100px;" rowspan="{{item.colp}}" ng-if="item.colp">{{item.ProjectName}}</td>
-            <td style="border: 1px solid #ddd;" rowspan="{{item.colp}}" ng-if="item.colp">{{item.RegionName}}</td>
-            <td style="border: 1px solid #ddd;" rowspan="{{item.colp}}" ng-if="item.colp">{{item.SectionName}}</td>
-            <td style="border: 1px solid #ddd; min-width: 150px;" rowspan="{{item.colp}}" ng-if="item.colp">{{item.PlanName}}</td>
-            <td style="border: 1px solid #ddd" rowspan="{{item.colp}}" ng-if="item.colp">{{item.MaterialName}}</td>
-            <td style="border: 1px solid #ddd" rowspan="{{item.colp}}" ng-if="item.colp">{{item.PlanTime | date:'yyyy-MM-dd'}}</td>
-            <td style="border: 1px solid #ddd" rowspan="{{item.colp}}" ng-if="item.colp">{{item.PlanCount}}</td>
-            <td style="border: 1px solid #ddd" rowspan="{{item.colp}}" ng-if="item.colp">{{item.Position}}</td>
-            <td style="border: 1px solid #ddd" rowspan="{{item.colp}}" ng-if="item.colp">{{item.Contract}}</td>
-            <td style="border: 1px solid #ddd" rowspan="{{item.colp}}" ng-if="item.colp">{{item.SupplyType==1?'甲供':item.SupplyType==2?'认质认价':'甲指乙供'}}</td>
-            <td style="border: 1px solid #ddd; min-height:35px;height:35px;">{{item.Model}}</td>
-            <td style="border: 1px solid #ddd">{{item.Specifications}}</td>
-            <td style="border: 1px solid #ddd">{{item.Brand}}</td>
-            <td style="border: 1px solid #ddd">{{item.ApproachCount!=null?item.ApproachCount:''}}</td>
-            <td style="border: 1px solid #ddd">{{item.IsPacking!=null?item.IsPacking?'有':'无':''}}</td>
-            <td style="border: 1px solid #ddd;min-width: 150px;">{{item.ApproachTime|date:'yyyy-MM-dd hh:mm'}}</td>
-            <td style="border: 1px solid #ddd">{{item.Supplier}}</td>
-            <td style="border: 1px solid #ddd;min-width: 150px;">{{item.CheckTime|date:'yyyy-MM-dd hh:mm'}}</td>
-            <td style="border: 1px solid #ddd">{{item.CurrentInspectorName}}</td>
-            <td style="border: 1px solid #ddd">{{item.WgCheck!=null?item.WgCheck?'合格':'不合格':''}}</td>
-            <td style="border: 1px solid #ddd">{{item.IsInspection!=null?item.IsInspection?'需要':'不需要':''}}</td>
-            <td style="border: 1px solid #ddd">{{item.Opinion}}</td>
-            <td style="border: 1px solid #ddd;min-width: 150px;">{{item.InspectionTime|date:'yyyy-MM-dd hh:mm'}}</td>
-            <td style="border: 1px solid #ddd">{{item.Inspectioner}}</td>
-            <td style="border: 1px solid #ddd">{{item.CheckList}}</td>
-            <td style="border: 1px solid #ddd;min-width: 150px;">{{item.ReportTime|date:'yyyy-MM-dd hh:mm'}}</td>
-            <td style="border: 1px solid #ddd">{{item.Report}}</td>
-            <td style="border: 1px solid #ddd">{{item.LabCheck!=null?item.LabCheck?'合格':'不合格':''}}</td>
-          </tr>
-        </tbody>
-      </table>
+  <!--<md-contentflex layout="column" ms-scroll>-->
 
-    </div>
-  </md-content>
 </div>
-<div ng-show="vm.rendered" layout="row">
+
+<div ng-if="vm.isMobile && vm.isShowData" style="position: absolute;right: 8px">
+  <md-button class="md-fab md-mini" ng-click="vm.goBack()">
+    <md-icon md-svg-src="app/main/xhsc/images/icon-comeback.svg"></md-icon>
+  </md-button>
+</div>
+
+<md-tabs ng-if="vm.isShowData" flex layout="column">
+  <md-tab flex layout="column" label="材料验收">
+    <md-tab-content class="download" style="padding: 0px" ms-scroll>
+      <div id="divReport" flex style="margin: 24px 0;">
+        <table class="materialReport">
+          <thead>
+            <tr>
+              <th style="border: 1px solid #ddd;width:15%;">项目</th>
+              <th style="border: 1px solid #ddd;width:10%;">分期</th>
+              <th style="border: 1px solid #ddd;width:10%;">标段</th>
+              <th style="border: 1px solid #ddd;width:20%;">进场计划</th>
+              <th style="border: 1px solid #ddd;width:20%;">材料设备名称</th>
+              <th style="border: 1px solid #ddd;width:10%;">合同编号</th>
+              <th style="border: 1px solid #ddd;width:10%;">状态</th>
+              <th style="border: 1px solid #ddd;width:5%;">查看</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-ng-repeat="item in vm.source">
+              <td style="border: 1px solid #ddd;">{{item.ProjectName}}</td>
+              <td style="border: 1px solid #ddd;">{{item.RegionName}}</td>
+              <td style="border: 1px solid #ddd;">{{item.SectionName}}</td>
+              <td style="border: 1px solid #ddd;">{{item.PlanName}}</td>
+              <td style="border: 1px solid #ddd">{{item.MaterialName}}</td>
+              <td style="border: 1px solid #ddd">{{item.Contract}}</td>
+              <td style="border: 1px solid #ddd">
+                <label ng-if="item.Status == 1">未进场</label>
+                <label ng-if="item.Status == 2">未验收</label>
+                <label ng-if="item.Status == 4">未送检</label>
+                <label ng-if="item.Status == 8">未归档</label>
+                <label ng-if="item.Status == 16">未批示</label>
+                <label ng-if="item.Status == 32">未退场</label>
+                <label ng-if="item.Status == 64">已完成</label>
+                <label ng-if="item.Status == 128">分批进场</label>
+              </td>
+              <td style="border: 1px solid #ddd">
+                <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.batchDetail({planId:item.PlanId})" style="margin: 0;">
+                  <md-icon md-font-icon="icon-document" class="icon s24"></md-icon>
+                </md-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </md-tab-content>
+  </md-tab>
+</md-tabs>
+<div ng-show="vm.rendered && vm.isShowData" layout="row">
   <span flex></span>
   <md-select ng-model="pageing.pageSize" class="pageSZ">
     <md-option value="10">10</md-option>
