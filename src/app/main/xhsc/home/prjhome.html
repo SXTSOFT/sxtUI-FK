@@ -1,0 +1,33 @@
+<md-content flex class="jthome" style="background-color: #f5f5f9">
+  <md-list>
+    <md-list-item layout="row">
+      <p flex style="font-size: 12px">公司汇总</p>
+      <p flex layout="column">
+        <span>{{vm.Measure|percent}}</span>
+        <span>实测实量</span>
+      </p>
+      <p flex layout="column">
+        <span>{{vm.Inspection|percent}}</span>
+        <span>工序验收</span>
+      </p>
+      <p flex layout="column">
+        <span>{{vm.Security|percent}}</span>
+        <span>安全文明</span>
+      </p>
+      <p flex layout="column">
+        <span>{{vm.Assessment|percent}}</span>
+        <span>评估得分</span>
+      </p>
+    </md-list-item>
+  </md-list>
+  <md-list>
+    <md-list-item layout="row" ng-click="vm.go(item)" ng-repeat="item in vm.data">
+      <p flex>{{item.Name}}</p>
+      <p flex><span>{{item.Measure|percent:true}}</span></p>
+      <p flex><span>{{item.Inspection|percent}}</span></p>
+      <p flex><span>{{item.Security|percent}}</span></p>
+      <p flex><span>{{item.Assessment|percent:true}}</span></p>
+      <md-divider ng-if="$index!=vm.data.length-1"></md-divider>
+    </md-list-item>
+  </md-list>
+</md-content>

@@ -12,7 +12,8 @@ app.controller("myController", function ($scope, $http) {
     {value: 0, label: '未验', color: 'rgba(225,225,225,1)'},
     {value: 1, label: '不合格', color: 'red'},
     {value: 2, label: '合格', color: 'green'},
-    {value: 4, label: '已确认', color: 'blue'}
+    {value: 4, label: '已确认', color: 'blue'},
+    {value: -1, label: '不参与验收', color: '#555555'}
   ];
 
 

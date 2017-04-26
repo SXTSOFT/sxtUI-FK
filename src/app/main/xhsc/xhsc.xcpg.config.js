@@ -16,14 +16,45 @@
   {
     // State
     $stateProvider
-      .state('app.xhsc.home',{
+      .state('app.xhsc.jthome',{
         noBack:false,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
         showgrzx:true,
-        title :'工程管理',
+
+        title :'星河集团',
         url   :'/',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/home/Jthome.html',
+            controller:'jthomeController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.prjhome',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        // showgrzx:true,
+        title :'深圳雅宝',
+        url   :'/prjhome/{companyId}/{companyName}',
+        views :{
+          'content@app':{
+            templateUrl : 'app/main/xhsc/home/prjhome.html',
+            controller:'prjhomeController as vm'
+          }
+        }
+      })
+      .state('app.xhsc.home',{
+        noBack:true,
+        sendBt:false,
+        rightArrow:false,
+        leftArrow:false,
+        // showgrzx:true,
+        title :'工程管理',
+        url   :'/index',
         views :{
           'content@app':{
             templateUrl : 'app/main/xhsc/home/home.html',

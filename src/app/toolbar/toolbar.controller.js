@@ -129,7 +129,7 @@
           $rootScope.$emit("openbar");
           vm.current_active=route;
         }
-        vm.current_active="app.xhsc.home";
+        vm.current_active="app.xhsc.jthome";
 
 
 

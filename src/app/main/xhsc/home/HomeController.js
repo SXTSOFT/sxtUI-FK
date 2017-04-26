@@ -14,13 +14,13 @@
   {
     // versionUpdate.check();
     var vm = this;
-    delopy.update(function (self,r0,version,isIntall) {
-      if (isIntall)
-        return utils.confirm('发现新版本：' + r0 + '，是否更新？')
-      else {
-        return utils.confirm('版本已经更新完毕，是否重新启动?')
-      }
-    });
+    // delopy.update(function (self,r0,version,isIntall) {
+    //   if (isIntall)
+    //     return utils.confirm('发现新版本：' + r0 + '，是否更新？')
+    //   else {
+    //     return utils.confirm('版本已经更新完毕，是否重新启动?')
+    //   }
+    // });
 
     api.setNetwork(0).then(function(){
       remote.profile()

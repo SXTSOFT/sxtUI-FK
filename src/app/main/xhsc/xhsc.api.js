@@ -2546,13 +2546,24 @@
       },
       vaSass:{
         getPlan:function (projectId,Skip,Limit) {
-          //'/api/v1/enterpirse/XHJT/batchs/GetPlan?ProjectId=00068&Skip=0&Limit=20'
           return $http.get($http.url('/api/v1/enterpirse/XHJT/batchs/GetPlan',{
             ProjectId:projectId,
             Limit:Limit,
             Skip:Skip
           }))
         },
+      },
+      progress:{
+        getCompanyData:function () {
+          return $http.get($http.url('/api/ReportFormSchedule/ScheduleSummary/Company'));
+        },
+        getProjectData:function (companyId) {
+          var url='/api/ReportFormSchedule/ScheduleSummary/Project'
+          if (companyId){
+            url=url+"/"+companyId;
+          }
+          return $http.get($http.url(url));
+        }
       }
     });
   }

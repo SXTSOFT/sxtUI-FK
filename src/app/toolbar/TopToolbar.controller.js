@@ -43,6 +43,15 @@
       })*/
 
 
+
+       vm.search=function () {
+        $rootScope.$emit('search');
+      }
+
+      vm.map=function () {
+        $rootScope.$emit('goMap');
+      }
+
       vm.change = function(){
         $rootScope.$emit('areaSelect',vm.selectedArea)
       }

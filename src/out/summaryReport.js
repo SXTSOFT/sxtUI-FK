@@ -37,12 +37,12 @@ angular.module('myApp', [])
     function getName(categories,questionNum,curentNum) {
       var percent;
       if (curentNum){
-         percent=(categories.rate/questionNum).toFixed(2)*100+"%";
-         return categories+":"+percent;
+         percent=((categories.rate/questionNum)*100).toFixed(0);
+         return categories+":"+percent+"%";
       }
       if (questionNum){
-        percent=(categories.rate/questionNum).toFixed(2)*100+"%";
-        return (categories.fullName+":"+percent);
+        percent=((categories.rate/questionNum)*100).toFixed(0);
+        return (categories.fullName+":"+percent+"%");
       }
     }
 

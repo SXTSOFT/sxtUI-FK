@@ -77,6 +77,5 @@
   <!--<preference name="SplashScreenDelay" value="0"/>-->
   <!--<preference name="FadeSplashScreenDuration" value="0"/>-->
   <!--<preference name="AutoHideSplashScreen" value="true" />-->
-  <!--<preference name="loadUrlTimeoutValue" value="700000" />-->
   <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
 </widget>

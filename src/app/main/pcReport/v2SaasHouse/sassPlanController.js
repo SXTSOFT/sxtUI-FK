@@ -73,7 +73,7 @@
           $window.open("out/summaryReport.html?id="+item.id+"&des="+des)
           break;
         case "daily":
-          $window.open("out/dailyReport.html?id="+item.id)
+          $window.open("out/dailyReport.html?id="+item.id+"&des="+des)
           break;
         case "pro":
           $state.go("app.insideYs.list",{id:item.id});

@@ -113,8 +113,7 @@
             profile.user = user;
             $rootScope.$emit('user:login', profile);
             if (!autoLoginPath) {
-              $state.go('app.xhsc.home')
-              //$location.path('/');
+              $state.go('app.xhsc.jthome');
             }
           }
         });
