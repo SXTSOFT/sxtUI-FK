@@ -468,7 +468,7 @@
     //   pontTo(idx);
     // }
     $element.on('click', ' div.point', function (e) {
-      var idx = $(".progress").find('div.point').index($(e.target).parent());
+      var idx = $(".setProgress").find('div.point').index($(e.target).parent());
       vm.keyboard = true;
       $scope.$apply();
       pontTo(idx);
@@ -478,23 +478,23 @@
       // if (currentPoint) {
       //   currentPoint.css({'background': '','color':''});
       // }
-       $(".progress").find('.current').removeClass('current').css({'background': '','color':''});
+       $(".setProgress").find('.current').removeClass('current').css({'background': '','color':''});
       $scope.index = index;
-      var p = currentPoint = $('div.point', $(".progress")).eq(index), span = p.find('span');
+      var p = currentPoint = $('div.point', $(".setProgress")).eq(index), span = p.find('span');
       if (p) {
         currentPoint.css({'background': '#e93030','color':'#fff'})
         currentPoint.addClass('current');
         $rootScope.$emit('keyboard:setvalue', '');
-        $(".progress").animate({
-          scrollTop: $(".progress").scrollTop() + p.offset().top - $(".progress").height() + p.height() - $(".progress").offset().top + 10
+        $(".setProgress").animate({
+          scrollTop: $(".setProgress").scrollTop() + p.offset().top - $(".setProgress").height() + p.height() - $(".setProgress").offset().top + 10
         });
       }
     }
 
     $scope.$on('$destroy', $rootScope.$on('keyboard:nextgx', function () {
       //pontTo($scope.index + 1);
-      var datas = $('.datas', $(".progress"));
-      var currentPoint = $(".progress").find('.current');
+      var datas = $('.datas', $(".setProgress"));
+      var currentPoint = $(".setProgress").find('.current');
       var eq = datas.index($(currentPoint.parents('.datas')[0])) + 1;
       ///var curdata = datas.index($(currentPoint.parents('.datas')[0]));
       //var nextItem = datas.eq(eq);
