@@ -52,6 +52,10 @@
         $rootScope.$emit('goMap');
       }
 
+      vm.lst=function () {
+        $state.go("app.xhsc.jthome");
+      }
+
       vm.change = function(){
         $rootScope.$emit('areaSelect',vm.selectedArea)
       }

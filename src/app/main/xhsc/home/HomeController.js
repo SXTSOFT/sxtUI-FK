@@ -22,6 +22,9 @@
     //   }
     // });
 
+    $rootScope.lst=true;
+
+
     api.setNetwork(0).then(function(){
       remote.profile()
       vm.data = {};
@@ -53,5 +56,9 @@
         $state.go('app.progress',{projectId:$current.projectId, projectName:$current.title});
       }
     })
+
+    $scope.$on("$destroy", function () {
+      $rootScope.lst=false;
+    });
   }
 })();

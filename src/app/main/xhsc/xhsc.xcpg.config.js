@@ -48,7 +48,7 @@
         }
       })
       .state('app.xhsc.home',{
-        noBack:true,
+        noBack:false,
         sendBt:false,
         rightArrow:false,
         leftArrow:false,
