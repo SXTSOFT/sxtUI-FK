@@ -78,4 +78,5 @@
   <!--<preference name="FadeSplashScreenDuration" value="0"/>-->
   <!--<preference name="AutoHideSplashScreen" value="true" />-->
   <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
+
 </widget>

@@ -13,7 +13,7 @@
         });
 
     /** @ngInject */
-    function materialReport($scope, api, sxt, utils, $filter) {
+    function materialReport($scope, api, sxt, utils, $filter,$mdDialog) {
         var vm = this;
         vm.total = 0;
         $scope.pageing = {
@@ -87,6 +87,28 @@
             //     vm.source = r.data.Items || [];
             //     $scope.pageing.total = r.data.TotalCount;
             // });
+        }
+
+        vm.pop=function (item) {
+          $mdDialog.show({
+            parent: angular.element(document.body),
+            // targetEvent: $event,
+            template:'<md-dialog style="width: 100%;height: 100%;max-height: 100%;max-width: 100%">' +
+                        '<md-toolbar class="md-hue-2" layout="row"  style="height: 44px;background-color: #e93030" layout-align="center center">'+
+                          '<span flex></span>'+
+                          '<h3>详细信息</h3>'+
+                          '<span flex style="text-align: right"><md-button style="margin-right: -1%"  ng-click="cancel()">关闭</md-button></span>'+
+                        '</md-toolbar>'+
+                        '<material-batch-detail flex layout="column"></material-batch-detail>'+
+                      '</md-dialog>',
+            controller: function ($scope) {
+              $scope.planId=item.PlanId;
+              $scope.cancel=function () {
+                $mdDialog.cancel();
+              }
+            }
+
+          })
         }
 
         function getData(pids, rid, sid, sDate, eDate) {

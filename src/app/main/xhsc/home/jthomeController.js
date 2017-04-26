@@ -100,7 +100,7 @@
       $mdDialog.show({
         controller: ['$scope',  '$mdDialog', controller],
         template: '<md-dialog aria-label="查询" ng-cloak style="width: 100%;height:100%;max-width: 100%;max-height: 100%" layout="column">' +
-                    '<md-toolbar class="md-hue-2" layout="row"  style="height: 44px" layout-align="center center">'+
+                    '<md-toolbar class="md-hue-2" layout="row"  style="height: 44px;background-color: #e93030" layout-align="center center">'+
                       '<span flex></span>'+
                       '<h3>项目列表</h3>'+
                       '<span flex style="text-align: right"><md-button style="margin-right: -1%" ng-click="cancel()">取消</md-button></span>'+

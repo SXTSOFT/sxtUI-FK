@@ -32,7 +32,7 @@
               state: "app.xhsc.scsl.scslmain",
               stateParams: null
             }, {
-              right: vm.duties.indexOf("2")>-1&&(vm.role=="2"||vm.role=="0"||vm.role=="32"),
+              right: (vm.duties.indexOf("2")>-1&&(vm.role=="2"||vm.role=="0"||vm.role=="32"))||ignore,
               type:"zl",
               title: "工序验收",
               img: "app/main/xhsc/images/application/gxys.svg",
@@ -41,7 +41,7 @@
             },
             {
               right: (vm.duties.indexOf("2")>-1&&(vm.role==0||vm.role==32)||vm.role==16||vm.role==8),
-              title: "日常巡检",
+              title: "质量巡检",
               type:"zl",
               img: "app/main/xhsc/images/application/cycke.svg",
               state: "app.xhsc.xj.main",
@@ -86,7 +86,7 @@
               stateParams: null
             },
             {
-              right: vm.duties.indexOf("5")>-1&&(vm.role=="2"||vm.role=="0"||vm.role=="32"),
+              right: (vm.duties.indexOf("5")>-1&&(vm.role=="2"||vm.role=="0"||vm.role=="32"))||ignore,
               type:"aq",
               title: "安全验收",
               img: "app/main/xhsc/images/application/weekys.svg",
@@ -94,7 +94,7 @@
               stateParams: null
             },
             {
-              right: vm.duties.indexOf("5")>-1&&(vm.role=="2"||vm.role=="0"||vm.role=="32"),
+              right: (vm.duties.indexOf("5")>-1&&(vm.role=="2"||vm.role=="0"||vm.role=="32"))||ignore,
               title: "周安全检查",
               type:"aq",
               img: "app/main/xhsc/images/application/weekjc.svg",

@@ -16,7 +16,7 @@
   function materialBatchDetail($scope,api,utils,$state,$stateParams) {
     var vm = this;
     vm.data = {};
-    vm.data.PlanId = $stateParams.planId;
+    vm.data.PlanId = $stateParams.planId?$stateParams.planId:$scope.$parent.planId;
 
     api.xhsc.materialPlan.GetMaterialPlanInfolById(vm.data.PlanId).then(function (r) {
       if(r.data){

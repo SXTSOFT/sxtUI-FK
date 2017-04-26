@@ -21,8 +21,18 @@
     function  link(scope,element,attr,ctrl){
       $timeout(function () {
         var mks = [];
+        var lgn=[22.604987,114.059852];
+        var map = L.map(element[0], {
+            center: lgn,
+            zoom: 8,
+            attributionControl: false
+          }),
+          layer = L.tileLayer('http://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+            subdomains: "1234"
+          });
+        layer.addTo(map);
         remote.Project.getMap().then(function(result){
-          var lgn=[22.604987,114.059852];
+
           if (result&&angular.isArray(result.data)&&result.data.length){
             var d=result.data[0].Coordinate;
             if (d){
@@ -32,15 +42,6 @@
             }
           }
           //lgn.push(result&&angular.isArray(result.data)&&);
-          var map = L.map(element[0], {
-              center: lgn,
-              zoom: 8,
-              attributionControl: false
-            }),
-            layer = L.tileLayer('http://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
-              subdomains: "1234"
-            });
-          layer.addTo(map);
           scope.markers=[];
           result.data.filter(function(item) {
             return !!item.Coordinate

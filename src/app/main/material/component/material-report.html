@@ -96,11 +96,11 @@
         <md-button style="margin: 12px auto;" class="md-raised md-primary" flex="{{!vm.isMobile?50:100}}" ng-click="vm.cx()"> 确定</md-button>
       </div>-->
       <!--<div flex layout="row">
-        
+
       </div>
       <div style="width: 20px"></div>
       <div flex layout="row">
-        
+
       </div>-->
 
     </md-card-content>
@@ -117,11 +117,11 @@
 
 </div>
 
-<div ng-if="vm.isMobile && vm.isShowData" style="position: absolute;right: 8px">
-  <md-button class="md-fab md-mini" ng-click="vm.goBack()">
-    <md-icon md-svg-src="app/main/xhsc/images/icon-comeback.svg"></md-icon>
-  </md-button>
-</div>
+<!--<div ng-if="vm.isMobile && vm.isShowData" style="position: absolute;right: 8px">-->
+  <!--<md-button class="md-fab md-mini" ng-click="vm.goBack()">-->
+    <!--<md-icon md-svg-src="app/main/xhsc/images/icon-comeback.svg"></md-icon>-->
+  <!--</md-button>-->
+<!--</div>-->
 
 <md-tabs ng-if="vm.isShowData" flex layout="column">
   <md-tab flex layout="column" label="材料验收">
@@ -130,10 +130,10 @@
         <table class="materialReport">
           <thead>
             <tr>
-              <th style="border: 1px solid #ddd;width:15%;">项目</th>
+              <th style="border: 1px solid #ddd;width:25%;min-width: 120px">项目</th>
               <th style="border: 1px solid #ddd;width:10%;">分期</th>
-              <th style="border: 1px solid #ddd;width:10%;">标段</th>
-              <th style="border: 1px solid #ddd;width:20%;">进场计划</th>
+              <!--<th style="border: 1px solid #ddd;width:10%;">标段</th>-->
+              <th style="border: 1px solid #ddd;width:20%;min-width: 170px">进场计划</th>
               <th style="border: 1px solid #ddd;width:20%;">材料设备名称</th>
               <th style="border: 1px solid #ddd;width:10%;">合同编号</th>
               <th style="border: 1px solid #ddd;width:10%;">状态</th>
@@ -144,7 +144,7 @@
             <tr data-ng-repeat="item in vm.source">
               <td style="border: 1px solid #ddd;">{{item.ProjectName}}</td>
               <td style="border: 1px solid #ddd;">{{item.RegionName}}</td>
-              <td style="border: 1px solid #ddd;">{{item.SectionName}}</td>
+              <!--<td style="border: 1px solid #ddd;">{{item.SectionName}}</td>-->
               <td style="border: 1px solid #ddd;">{{item.PlanName}}</td>
               <td style="border: 1px solid #ddd">{{item.MaterialName}}</td>
               <td style="border: 1px solid #ddd">{{item.Contract}}</td>
@@ -159,7 +159,10 @@
                 <label ng-if="item.Status == 128">分批进场</label>
               </td>
               <td style="border: 1px solid #ddd">
-                <md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.batchDetail({planId:item.PlanId})" style="margin: 0;">
+                <!--<md-button class="md-icon-button" aria-label="Settings" ui-sref="app.material.batchDetail({planId:item.PlanId})" style="margin: 0;">-->
+                  <!--<md-icon md-font-icon="icon-document" class="icon s24"></md-icon>-->
+                <!--</md-button>-->
+                <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.pop(item)" style="margin: 0;">
                   <md-icon md-font-icon="icon-document" class="icon s24"></md-icon>
                 </md-button>
               </td>

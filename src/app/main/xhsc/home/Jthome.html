@@ -16,13 +16,13 @@
        </p>
        <p flex layout="column">
          <span>{{vm.Assessment|percent}}</span>
-         <span>评估得分</span>
+         <span>项目评估</span>
        </p>
      </md-list-item>
    </md-list>
    <md-list>
     <md-list-item layout="row" ng-click="vm.go(item)" ng-repeat="item in vm.data">
-      <p flex>{{item.Name}}</p>
+      <p flex style="text-align: left">{{item.Name}}</p>
       <p flex><span>{{item.Measure|percent:true}}</span></p>
       <p flex><span>{{item.Inspection|percent}}</span></p>
       <p flex><span>{{item.Security|percent}}</span></p>
