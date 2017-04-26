@@ -61,8 +61,8 @@
             $rootScope.$emit('keyboard:next');
             return;
             break;
-          case 'nextpoint':
-            $rootScope.$emit('keyboard:nextpoint');
+          case 'nextgx':
+            $rootScope.$emit('keyboard:nextgx');
             return;
             break;
           case 'del':

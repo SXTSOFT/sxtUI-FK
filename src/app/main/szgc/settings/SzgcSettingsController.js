@@ -475,13 +475,15 @@
     });
     var currentPoint = null;
     function pontTo(index) {
-      if (currentPoint) {
-        currentPoint.css({'background': '','color':''})
-      }
+      // if (currentPoint) {
+      //   currentPoint.css({'background': '','color':''});
+      // }
+       $(".progress").find('.current').removeClass('current').css({'background': '','color':''});
       $scope.index = index;
       var p = currentPoint = $('div.point', $(".progress")).eq(index), span = p.find('span');
       if (p) {
         currentPoint.css({'background': '#e93030','color':'#fff'})
+        currentPoint.addClass('current');
         $rootScope.$emit('keyboard:setvalue', '');
         $(".progress").animate({
           scrollTop: $(".progress").scrollTop() + p.offset().top - $(".progress").height() + p.height() - $(".progress").offset().top + 10
@@ -489,20 +491,21 @@
       }
     }
 
-    $rootScope.$on('keyboard:nextpoint', function () {
+    $scope.$on('$destroy', $rootScope.$on('keyboard:nextgx', function () {
       //pontTo($scope.index + 1);
       var datas = $('.datas', $(".progress"));
+      var currentPoint = $(".progress").find('.current');
       var eq = datas.index($(currentPoint.parents('.datas')[0])) + 1;
-      var curdata = datas.index($(currentPoint.parents('.datas')[0]));
-      var nextItem = datas.eq(eq);
-      var ilen = datas.eq(curdata).find('.point').length;
+      ///var curdata = datas.index($(currentPoint.parents('.datas')[0]));
+      //var nextItem = datas.eq(eq);
+      //var ilen = datas.eq(curdata).find('.point').length;
 
       if (eq < datas.length) {
-        pontTo($('div.point', $(".progress")).index(nextItem.find('div.point').eq(0)));
+        pontTo(eq);
       } else {
         vm.keyboard = false;
       }
-    });
+    }));
 
     $rootScope.$on('keyboard:value', function ($event, value) {
       currentPoint && currentPoint.find('span').text(value);
