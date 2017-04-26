@@ -482,7 +482,7 @@
       var p = currentPoint = $('div.point', $(".progress")).eq(index), span = p.find('span');
       if (p) {
         currentPoint.css({'background': '#e93030','color':'#fff'})
-        $rootScope.$emit('keyboard:setvalue', currentPoint.find('span').text());
+        $rootScope.$emit('keyboard:setvalue', '');
         $(".progress").animate({
           scrollTop: $(".progress").scrollTop() + p.offset().top - $(".progress").height() + p.height() - $(".progress").offset().top + 10
         });
@@ -491,7 +491,9 @@
 
     $rootScope.$on('keyboard:nextpoint', function () {
       //pontTo($scope.index + 1);
-      var datas = $('.datas', $(".progress")), eq = datas.index($(currentPoint.parents('.datas')[0])) + 1, curdata = datas.index($(currentPoint.parents('.datas')[0]));
+      var datas = $('.datas', $(".progress"));
+      var eq = datas.index($(currentPoint.parents('.datas')[0])) + 1;
+      var curdata = datas.index($(currentPoint.parents('.datas')[0]));
       var nextItem = datas.eq(eq);
       var ilen = datas.eq(curdata).find('.point').length;
 
