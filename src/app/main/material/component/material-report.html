@@ -130,12 +130,13 @@
         <table class="materialReport">
           <thead>
             <tr>
-              <th style="border: 1px solid #ddd;width:15%;">项目</th>
-              <th style="border: 1px solid #ddd;width:10%;">分期</th>
-              <th style="border: 1px solid #ddd;width:10%;">标段</th>
+              <th style="border: 1px solid #ddd;width:200px;min-width:200px;">项目</th>
+              <th style="border: 1px solid #ddd;">分期</th>
+              <!--<th style="border: 1px solid #ddd;">标段</th>-->
               <th style="border: 1px solid #ddd;width:20%;">进场计划</th>
               <th style="border: 1px solid #ddd;width:20%;">材料设备名称</th>
               <th style="border: 1px solid #ddd;width:10%;">合同编号</th>
+               <th style="border: 1px solid #ddd;width:10%;">计划进场时间</th>
               <th style="border: 1px solid #ddd;width:10%;">状态</th>
               <th style="border: 1px solid #ddd;width:5%;">查看</th>
             </tr>
@@ -144,10 +145,11 @@
             <tr data-ng-repeat="item in vm.source">
               <td style="border: 1px solid #ddd;">{{item.ProjectName}}</td>
               <td style="border: 1px solid #ddd;">{{item.RegionName}}</td>
-              <td style="border: 1px solid #ddd;">{{item.SectionName}}</td>
+              <!--<td style="border: 1px solid #ddd;">{{item.SectionName}}</td>-->
               <td style="border: 1px solid #ddd;">{{item.PlanName}}</td>
               <td style="border: 1px solid #ddd">{{item.MaterialName}}</td>
               <td style="border: 1px solid #ddd">{{item.Contract}}</td>
+              <td style="border: 1px solid #ddd">{{item.PlanTime|date:'yyyy-MM-dd'}}</td>
               <td style="border: 1px solid #ddd">
                 <label ng-if="item.Status == 1">未进场</label>
                 <label ng-if="item.Status == 2">未验收</label>
