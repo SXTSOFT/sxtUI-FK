@@ -35,13 +35,16 @@
 
         vm.current = {};
         vm.showDetail = function (item) {
-            api.material.MaterialService.materialCountDetail(item.project_id).then(function (res) {
-                $scope.batchData = res.data.Rows;
+            $q.all([api.material.MaterialService.materialCountDetail(item.project_id),
+                api.material.MaterialService.getSupervisorMaterialCount(item.project_id)]).then(function (res) {
+                $scope.batchData = res[0].data.Rows;
+                $scope.supervisorData = res[1].data.Rows;
             });
             vm.current = item;
             $scope.mlCheckData = [];
             vm.switch = 'detail';
             vm.listHide = false;
+            vm.selType = 1;
         }
 
         vm.showResult = function (item) {

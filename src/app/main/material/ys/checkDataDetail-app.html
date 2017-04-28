@@ -81,12 +81,12 @@
       <label flex>检查人</label>
       <label>{{dataInfo.CheckUser}}</label>
     </md-list-item>
-    <md-divider ng-if="targets.length !=0"></md-divider>
-     <md-list-item ng-if="targets.length !=0" style="background-color: #f5f6f7;">
+    <md-divider ng-if="dataInfo.IsInspection==1 && targets.length !=0"></md-divider>
+     <md-list-item ng-if="dataInfo.IsInspection==1 && targets.length !=0" style="background-color: #f5f6f7;">
       <label>检查指标</label>
     </md-list-item>
-    <md-divider ng-if="targets.length !=0"></md-divider>
-    <md-list-item ng-if="targets.length !=0" style="margin-bottom: 10px;">
+    <md-divider ng-if="dataInfo.IsInspection==1 && targets.length !=0"></md-divider>
+    <md-list-item ng-if="dataInfo.IsInspection==1 && targets.length !=0" style="margin-bottom: 10px;">
        <md-list>
         <md-list-item ng-repeat="n in targets" ng-disabled="n.need">
           <div class="md-list-item-text" flex layout="column">

@@ -24,7 +24,15 @@
             </table>
         </div>
         <div ng-switch-when="detail">
-            <table class="table wk-table" width="100%">
+            <div flex layout="row" style="padding:20px;">
+                <!--<md-radio-group ng-model="vm.selType">
+                    <md-radio-button style="display: inline-block; margin-bottom: 0;" value="1">数量统计</md-radio-button>
+                    <md-radio-button style="display: inline-block; margin-bottom: 0;" value="2">监理验收统计</md-radio-button>
+                </md-radio-group>-->
+                <md-button class="md-raised" ng-class="{'md-primary':vm.selType==1}" ng-click="vm.selType=1" style="margin-right:0;margin-left:auto;">材料数量统计</md-button>
+                <md-button class="md-raised" ng-class="{'md-primary':vm.selType==2}" ng-click="vm.selType=2" style="margin-left:0;margin-right:auto;">监理验收统计</md-button>
+            </div>
+            <table ng-show="vm.selType==1" class="table wk-table" width="100%">
                 <caption>
                     <h3 style="text-align: center">{{vm.current.name}}</h3>
                 </caption>
@@ -43,6 +51,35 @@
                     </tr>
                 </tbody>
             </table>
+
+            <table ng-show="vm.selType==2" class="table wk-table" width="100%">
+                <caption>
+                    <h3 style="text-align: center">{{vm.current.name}}</h3>
+                </caption>
+                <thead>
+                    <tr>
+                        <th colspan="6" style="text-align:center;">监理验收数量统计</th>
+                    </tr>
+                    <tr style="border-bottom:2px solid #000;">
+                        <th>监理单位</th>
+                        <th>验收人员</th>
+                        <th>验收数量</th>
+                        <th>土建</th>
+                        <th>机电</th>
+                        <th>装修</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in supervisorData" style="border-bottom:1px solid #ddd; padding:8px">
+                        <td>{{item.SupervisorCompanyName}}</td>
+                        <td>{{item.CheckUser}}</td>
+                        <td>{{item.TJ+item.JD+item.ZX}}</td>
+                        <td>{{item.TJ}}</td>
+                        <td>{{item.JD}}</td>
+                        <td>{{item.ZX}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div ng-switch-when="result">
             <md-list class="md-dense" flex style="padding: 0;">
@@ -50,7 +87,7 @@
                     <md-list-item>
                         <div class="md-list-item-text" flex layout="column" ng-click="goMaterialDetail(item.Id)">
                             <!--<h4>{{ item.RegionNameTree }}</h4>-->
-                            <p>{{ item.RegionName }}》{{ item.ProcedureName }}》{{ item.Manufactor }}》{{ item.Count }}{{item.Unit}}</p>
+                            <p>{{ item.RegionName }}》{{ item.ProcedureName }}》{{ item.Manufactor }}》{{ item.Count }}{{item.Unit}}》{{item.CheckUser}}》{{item.CheckTime}}</p>
                         </div>
                         <md-button style="margin: 0;" class="md-secondary md-primary" ui-sref="app.szgc.ys.material({id:item.Id})" ng-show="(item.IsInspection==1 || item.IsInspection==0) && item.Report == 0">追加送检报告</md-button>
                         <md-divider></md-divider>
@@ -61,6 +98,6 @@
     </div>
     <md-progress-circular ng-show="vm.loading" md-diameter="20" md-mode="indeterminate"></md-progress-circular>
 </md-content>
-<div ng-show="vm.switch == 'detail' || vm.switch == 'result'" style="position: absolute; top:0px; right:0px;">
+<div ng-show="vm.switch == 'result'" style="position: absolute; top:0px; right:0px;">
     <toggle-menu inst="vm.listHide"></toggle-menu>
 </div>

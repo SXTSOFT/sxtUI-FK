@@ -169,7 +169,11 @@
       vm.checkData.RegionId = $scope.project.pid;
       vm.checkData.ProjectName = $scope.project.projectName;
       vm.checkData.RegionName = $scope.project.typeName;
+      vm.checkData.CreateId = user.Id;
       vm.checkData.CheckUser = user.RealName;
+      vm.checkData.SupervisorCompanyId = user.Partner;
+      vm.checkData.SupervisorCompanyName = user.PartnerName;
+      
 
       if (vm.checkData.WgCheck == 0 || vm.checkData.InspectionReport == 0) {
         $mdDialog.show({
@@ -236,7 +240,7 @@
     };
 
     vm._save = function (addForm) {
-      if (vm.checkData.IsInspection != 0) {
+      if (vm.checkData.IsInspection == 1) {
         $scope.Targets.forEach(function (r) {
           if (r.isOK) {
             var n = {

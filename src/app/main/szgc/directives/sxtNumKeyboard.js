@@ -44,7 +44,7 @@
           case 'ac':
             str = '';
             break;
-          case '+-':
+          case '-':
             str = (-num) + '';
             break;
           case '%':

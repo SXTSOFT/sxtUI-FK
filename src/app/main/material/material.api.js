@@ -223,6 +223,9 @@
         }).bind(function (key) {
           return $http.get('/api/MLMaterialCheckData/GetMaterialCount');
         }),
+        getSupervisorMaterialCount: function (id) {
+          return $http.get($http.url('/api/MLMaterialCheckData/GetSupervisorMaterialCount',{projectId:id}));
+        },
         materialCountDetail: function (id) {
           return $http.get($http.url('/api/MLMaterialCheckData/GetMaterialCountDetail',{projectId:id}));
         },
