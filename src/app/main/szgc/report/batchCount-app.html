@@ -16,7 +16,57 @@
     <md-content flex id="dvBatchCount"  ng-show="vm.searBarHide">
       <div ng-switch="vm.switch">
         <div ng-switch-default>
-      <table class="table wk-table" width="100%">
+                  <table style="border-collapse: collapse;">
+            <tbody>
+                <tr>
+                    <td style="text-align: center;width: 120px; height: 64px;border: 1px solid #000;background-color: #fff;position: relative;z-index: 15;">项目名称</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="scroll-width" style="position: absolute;z-index: 10;left: 121px;top: 0px" ng-style="vm.Swidth">
+            <table id="fiexTitle" class="scroll-tittle" style="width:780px;border-collapse: collapse;">
+            <tr>
+          <th rowspan="2" width="15%"  style="border-right:1px solid #fff;height: 64px;border-right: 1px solid #000;border-bottom: 1px solid #000;border-top: 1px solid #000;">施工单位</th>
+          <th colspan="2" style="border-right:1px solid #fff;height: 32px;border-right: 1px solid #000;border-bottom: 1px solid #000;border-top: 1px solid #000;">监理工序验收</th>
+          <th colspan="2" style="border-right:1px solid #fff;border-right: 1px solid #000;border-bottom: 1px solid #000;border-top: 1px solid #000;">隐蔽工程</th>
+          <th rowspan="2" width="15%"  style="border-right:1px solid #fff;border-right: 1px solid #000;border-bottom: 1px solid #000;border-top: 1px solid #000;">第三方</th>
+          <th rowspan="2" width="15%"  style="border-right:1px solid #fff;border-right: 1px solid #000;border-bottom: 1px solid #000;border-top: 1px solid #000;">万科</th>
+            </tr>
+            <tr class="second-tittle">
+          <th style="border-right:1px solid #fff;width: 60px;border-right: 1px solid #000;border-bottom: 1px solid #000;">人数</th>
+          <th style="border-right:1px solid #fff;width: 60px;border-right: 1px solid #000;border-bottom: 1px solid #000;">数量</th>
+          <!--<th style="border-right:1px solid #fff;width: 60px;border-right: 1px solid #000;border-bottom: 1px solid #000;">土建</th>
+          <th style="border-right:1px solid #fff;width: 60px;border-right: 1px solid #000;border-bottom: 1px solid #000;">机电</th>
+          <th style="border-right:1px solid #fff;width: 60px;border-right: 1px solid #000;border-bottom: 1px solid #000;">装修</th>-->
+          <th style="border-right:1px solid #fff;width: 60px;border-right: 1px solid #000;border-bottom: 1px solid #000;">户数</th>
+          <th style="width: 60px;border-right: 1px solid #000;border-bottom: 1px solid #000;">照片数</th>
+            </tr>
+        </table>
+        </div>
+        <div class="region-names" style="overflow: hidden; z-index: 10" ng-style="vm.Sheight">
+            <table id="itemNames" class="region-name" style="border-collapse: collapse;">
+            <tr ng-repeat="item2 in projectBatchCount" ng-click="viewDetail(item2)" style="border-bottom:1px solid #ddd; padding:8px">
+                <td style="width: 120px; height: 32px;border-right: 1px solid #000;border-bottom: 1px solid #000;border-left: 1px solid #000;"><a href="javascript:void(0)" >{{item2.RegionNameTree}}</a></td>
+            </tr>
+        </table>
+        </div>
+        <div class="datas" style="position: absolute;top: 0px;margin-left: 121px; margin-top: 65px;overflow: scroll;" ng-style="vm.Swh" item-names="itemNames" fiex-title="fiexTitle" bc-report>
+            <table style="width:780px;border-collapse: collapse;">
+                <tr ng-repeat="item2 in projectBatchCount" ng-click="viewDetail(item2)" style="border-bottom:1px solid #ddd; padding:8px">
+          <td  width="15%"  style="border-right:1px solid #fff;border-right: 1px solid #000;border-bottom: 1px solid #000;" align="center">{{item2.zbNum}}</td>
+          <td style="height:32px;border-right:1px solid #fff;width: 60px;border-right: 1px solid #000;border-bottom: 1px solid #000;" align="center">{{item2.jlNum}}</td>
+          <td style="border-right:1px solid #fff;width: 60px;border-right: 1px solid #000;border-bottom: 1px solid #000;" align="center">{{item2.tjNum+item2.jdNum+item2.zxNum}}</td>
+          <td style="border-right:1px solid #fff;width: 60px;border-right: 1px solid #000;border-bottom: 1px solid #000;" align="center">{{item2.tjNum}}</td>
+          <td style="border-right:1px solid #fff;width: 60px;border-right: 1px solid #000;border-bottom: 1px solid #000;" align="center">{{item2.jdNum}}</td>
+          <!--<td style="border-right:1px solid #fff;width: 60px;border-right: 1px solid #000;border-bottom: 1px solid #000;" align="center">{{item2.zxNum}}</td>
+          <td style="border-right:1px solid #fff;width: 60px;border-right: 1px solid #000;border-bottom: 1px solid #000;" align="center">{{item2.rNum}}</td>
+          <td style="border-right:1px solid #fff;width: 60px;border-right: 1px solid #000;border-bottom: 1px solid #000;" align="center">{{item2.pNum}}</td>-->
+          <td  width="15%"  style="border-right:1px solid #fff;border-right: 1px solid #000;border-bottom: 1px solid #000;" align="center">{{item2.rdNum}}</td>
+          <td  width="15%"  style="border-right:1px solid #fff;border-right: 1px solid #000;border-bottom: 1px solid #000;" align="center">{{item2.wkNum}}</td>
+                </tr>
+            </table>
+        </div>
+      <!--<table class="table wk-table" width="100%">
         <thead>
         <tr style="border-bottom:1px solid #fff;">
           <th rowspan="2" width="30%"  style="border-right:1px solid #fff;">项目名称</th>
@@ -52,7 +102,7 @@
           <td align="center">{{item2.wkNum}}</td>
         </tr>
         </tbody>
-      </table>
+      </table>-->
         </div>
         <div ng-switch-when="detail">
 
