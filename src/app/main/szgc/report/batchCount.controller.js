@@ -9,11 +9,30 @@
     .controller('batchCountController',batchCountController);
 
   /** @ngInject */
-  function batchCountController($scope,$filter,api,utils,$q){
+  function batchCountController($scope,$filter,api,utils,$q,$element){
     var vm = this;
     vm.m = { countType: 0 };
     vm.projectBatchCount = [];
     var tb = "";
+    vm.Swidth = {
+      "width":(screen.width - 120) + 'px'
+    }
+    vm.Sheight = {
+      "height":(screen.height - 207 )+ 'px'
+    }
+    vm.Swh = {
+      "width":(screen.width - 120) + 'px',
+      "height":(screen.height - 207 )+ 'px'
+    }
+    // var scroll_datas = $('.datas')
+    // $element.on("scroll",".datas",function() {
+    //     $('.scroll-tittle').css('transform','translateX('+(-scroll_datas.scrollLeft()) + 'px)')
+    //     $('.region-name').css('transform','translateY('+(-scroll_datas.scrollTop()) + 'px)')
+    // })
+    // $('.datas').scroll(function() {
+    //     $('.scroll-tittle').css('transform','translateX('+(-scroll_datas.scrollLeft()) + 'px)')
+    //     $('.region-name').css('transform','translateY('+(-scroll_datas.scrollTop()) + 'px)')
+    // })
     vm.printBatchCount = function () {
       if (vm.m.countType == 0) {
         $('#export').val($("#dvBatchCount").html());
