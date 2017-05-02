@@ -9,11 +9,11 @@
       controllerAs: 'vm'
     });
   /** @ngInject */
-  function insideYs($scope, api,$stateParams, utils) {
+  function insideYs($scope, api, $stateParams, utils) {
     var vm = this;
     vm.projectData = [];
-    vm.selected = [];
-    vm.id=$stateParams.id;
+    vm.selected = [1,2,4];
+    vm.id = $stateParams.id;
 
     $scope.pageing = {
       page: 1,
@@ -21,42 +21,49 @@
       total: 0
     }
 
-    $scope.$watch("vm.selected", function () {
-      vm.data = vm.lsData && vm.lsData.filter(function (f) {
-        return vm.selected.length == 0 || vm.selected.find(function (select) { return f.status == select })
-      });
+    $scope.$watch("vm.selected + vm.project + pageing.pageSize + pageing.page", function () {
+      var status = vm.selected.reduce(function (item, value) { return item + value; },0);
+      var project = (vm.project&&vm.project.join(','))||null;
+      load(project,status);
     }, true);
 
-    $scope.$watch("vm.project", function () {
-      vm.data = vm.lsData && vm.lsData.filter(function (f) {
-        return vm.project.length == 0 || vm.project.find(function (select) { return f.rectifyOu == select })
-      });
-    }, true);
+
     function load(rectifyOu, status) {
       api.insideYs.batch.getList(
-        { rectifyOu: rectifyOu,
+        {
+          rectifyOu: rectifyOu,
           status: status,
-          Limit:$scope.pageing.pageSize,
-          Skip: ($scope.pageing.page-1)*$scope.pageing.pageSize
-        },vm.id).then(function (r) {
-        vm.data = r.data;
-        $scope.pageing.total = vm.data.totalCount;
-        vm.lsData = vm.data;
-        r.data.items.forEach(function (item) {
-          if (!vm.projectData.find(function (f) { return f.rectifyOu == item.rectifyOu }) && item.rectifyOu) {
-            vm.projectData.push({ rectifyOu: item.rectifyOu, rectifyOuName: item.rectifyOuName })
-          }
-        }, this);
+          Limit: $scope.pageing.pageSize,
+          Skip: ($scope.pageing.page - 1) * $scope.pageing.pageSize
+        }, vm.id).then(function (r) {
+          vm.data = r.data;
+          $scope.pageing.total = vm.data.totalCount;
 
-      });
+            r.data.items.forEach(function(item){
+
+             if (item.rectifyOu && item.rectifyOuName) {
+
+              var ou = item.rectifyOu.split(',');
+              var name = item.rectifyOuName.split(',');
+              for(var i=0;i<ou.length;i++)
+              {
+                if(!vm.projectData.find(function (f) { return f.rectifyOu == ou[i] }))
+                {
+                  vm.projectData.push({ rectifyOu: ou[i], rectifyOuName: name[i] })
+                }
+              } 
+            }
+
+          },this);
+
+        });
     };
 
-    load();
-    $scope.$watch("pageing.pageSize", function() {
-      if ($scope.pageing.pageSize) {
-        load();
-      }
-    }, true);
+    // $scope.$watch("pageing.pageSize", function () {
+    //   if ($scope.pageing.pageSize) {
+    //     load();
+    //   }
+    // }, true);
 
 
     vm.toggle = function (item, list) {
@@ -70,5 +77,13 @@
       }
     };
 
+    vm.exists = function (item, list) {
+      return list.indexOf(item) > -1;
+    };
+    vm.exportExcel = function () {
+      var url = window.sxt.app.api;
+      return url + api.insideYs.batch.getListExcel(vm.id);
+    }
+    
   }
 })(angular, undefined);
