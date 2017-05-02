@@ -26,7 +26,7 @@ angular.module('myApp', [])
     }
 
     $scope.subject=decodeURI(getQuery("des"));
-
+    window.localhost=getQuery('localhost');
   var legend=[],data=[];
   vm.load=function (plan,callback) {
     var url="/api/v1/Enterprise/report/planWholeReport/";
@@ -122,4 +122,4 @@ angular.module('myApp', [])
 
 });
 
-window.localhost="http://galaxyapi.ricent.com";
+// window.localhost="http://emp.chngalaxy.com:9091";

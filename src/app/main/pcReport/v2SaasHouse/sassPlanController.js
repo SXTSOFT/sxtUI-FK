@@ -70,10 +70,10 @@
       console.log(des);
       switch (flag){
         case "summary":
-          $window.open("out/summaryReport.html?id="+item.id+"&des="+des)
+          $window.open("out/summaryReport.html?id="+item.id+"&des="+des+"&localhost="+sxt.app.api)
           break;
         case "daily":
-          $window.open("out/dailyReport.html?id="+item.id+"&des="+des)
+          $window.open("out/dailyReport.html?id="+item.id+"&des="+des+"&localhost="+sxt.app.api)
           break;
         case "pro":
           $state.go("app.insideYs.list",{id:item.id});

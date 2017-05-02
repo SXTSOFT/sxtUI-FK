@@ -22,6 +22,6 @@
     var projectId=$stateParams.projectId;
     $rootScope.title=projectName;
     var token=authToken.getToken();
-    vm.href="www/index.html?projectId="+projectId+"&token="+token;
+    vm.href="www/index.html?action=progress&projectId="+projectId+"&token="+token;
   }
 })();

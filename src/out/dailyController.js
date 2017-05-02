@@ -103,6 +103,7 @@ app.controller("myController", function ($scope, $http) {
   }
 
   $scope.subject=decodeURI(getQuery("des"));
+  window.localhost=getQuery('localhost');
 
   function getPlan(key,callback) {
     callback(getQuery(key));
@@ -216,8 +217,6 @@ app.controller("myController", function ($scope, $http) {
   })
 });
 
-
-window.localhost = "http://galaxyapi.ricent.com";
 
 
 
