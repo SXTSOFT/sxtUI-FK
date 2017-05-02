@@ -12,18 +12,19 @@
         </div>
         <div style="width: 20px"></div>
         <div layout="row" layout-align="start">
-            <md-checkbox ng-value="1"  ng-click="vm.toggle('未反馈', vm.selected)">
+            <md-checkbox ng-value="1"  ng-checked="vm.exists(1,vm.selected)" ng-click="vm.toggle(1, vm.selected)">
                 未反馈
             </md-checkbox>
-            <md-checkbox ng-value="4"  ng-click="vm.toggle('未确认', vm.selected)">
+            <md-checkbox ng-value="4" ng-checked="vm.exists(4,vm.selected)" ng-click="vm.toggle(4, vm.selected)">
                 未确认
             </md-checkbox>
-            <md-checkbox ng-value="2" ng-click="vm.toggle('已关闭', vm.selected)">
+            <md-checkbox ng-value="2" ng-checked="vm.exists(2,vm.selected)" ng-click="vm.toggle(2, vm.selected)">
                 已关闭
             </md-checkbox>
         </div>
     </md-card-content>
 </md-card>
+<md-button target="_blank" href="{{vm.exportExcel()}}" class="md-raised md-primary" type="submit" style="width:88px;">Excel导出</md-button>
 <md-content flex layout="column" ms-scroll>
     <table class="summaryReport">
         <header>

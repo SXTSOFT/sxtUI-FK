@@ -12,6 +12,9 @@
       batch: {
         getList: function (param,id) {
           return $http.get($http.url('/api/v1/enterpirse/report/problemdetails/'+id, param));
+        },
+        getListExcel:function(id){
+        return $http.url('/api/v1/enterpirse/report/problemdetails/'+id+'/excel?Skip=0&Limit=9999');
         }
       }
     })
