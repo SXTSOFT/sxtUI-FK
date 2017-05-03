@@ -36,9 +36,11 @@
         vm.current = {};
         vm.showDetail = function (item) {
             $q.all([api.material.MaterialService.materialCountDetail(item.project_id),
-                api.material.MaterialService.getSupervisorMaterialCount(item.project_id)]).then(function (res) {
+                api.material.MaterialService.getSupervisorMaterialCount(item.project_id),
+                api.material.MaterialService.materialCountResult(item.project_id)]).then(function (res) {
                 $scope.batchData = res[0].data.Rows;
                 $scope.supervisorData = res[1].data.Rows;
+                $scope.mlCheckData = res[2].data.Rows;
             });
             vm.current = item;
             $scope.mlCheckData = [];

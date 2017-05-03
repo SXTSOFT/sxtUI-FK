@@ -30,7 +30,8 @@
                     <md-radio-button style="display: inline-block; margin-bottom: 0;" value="2">监理验收统计</md-radio-button>
                 </md-radio-group>-->
                 <md-button class="md-raised" ng-class="{'md-primary':vm.selType==1}" ng-click="vm.selType=1" style="margin-right:0;margin-left:auto;">材料数量统计</md-button>
-                <md-button class="md-raised" ng-class="{'md-primary':vm.selType==2}" ng-click="vm.selType=2" style="margin-left:0;margin-right:auto;">监理验收统计</md-button>
+                <md-button class="md-raised" ng-class="{'md-primary':vm.selType==2}" ng-click="vm.selType=2" style="margin-left:0;margin-right:0;">监理验收统计</md-button>
+                <md-button class="md-raised" ng-class="{'md-primary':vm.selType==4}" ng-click="vm.selType=4" style="margin-left:0;margin-right:auto;">材料详单</md-button>
             </div>
             <table ng-show="vm.selType==1" class="table wk-table" width="100%">
                 <caption>
@@ -45,7 +46,8 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="item in batchData" style="border-bottom:1px solid #ddd; padding:8px">
-                        <td><a href="javascript:void(0)" ng-click="vm.showResult(item)">{{item.ProcedureName}}</a></td>
+                        <!--<td><a href="javascript:void(0)" ng-click="vm.showResult(item)">{{item.ProcedureName}}</a></td>-->
+                        <td>{{item.ProcedureName}}</td>
                         <td>{{item.BatchCount}}</td>
                         <td>{{item.Count}}{{item.Unit}}</td>
                     </tr>
@@ -80,9 +82,8 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
-        <div ng-switch-when="result">
-            <md-list class="md-dense" flex style="padding: 0;">
+
+            <md-list ng-show="vm.selType==4" class="md-dense" flex style="padding: 0;">
                 <div flex ng-repeat="item in mlCheckData">
                     <md-list-item>
                         <div class="md-list-item-text" flex layout="column" ng-click="goMaterialDetail(item.Id)">
@@ -96,8 +97,21 @@
             </md-list>
         </div>
     </div>
+    <!--<div ng-switch-when="result">
+            <md-list class="md-dense" flex style="padding: 0;">
+                <div flex ng-repeat="item in mlCheckData">
+                    <md-list-item>
+                        <div class="md-list-item-text" flex layout="column" ng-click="goMaterialDetail(item.Id)">
+                            <p>{{ item.RegionName }}》{{ item.ProcedureName }}》{{ item.Manufactor }}》{{ item.Count }}{{item.Unit}}》{{item.CheckUser}}》{{item.CheckTime}}</p>
+                        </div>
+                        <md-button style="margin: 0;" class="md-secondary md-primary" ui-sref="app.szgc.ys.material({id:item.Id})" ng-show="(item.IsInspection==1 || item.IsInspection==0) && item.Report == 0">追加送检报告</md-button>
+                        <md-divider></md-divider>
+                    </md-list-item>
+                </div>
+            </md-list>
+        </div>-->
     <md-progress-circular ng-show="vm.loading" md-diameter="20" md-mode="indeterminate"></md-progress-circular>
 </md-content>
-<div ng-show="vm.switch == 'result'" style="position: absolute; top:0px; right:0px;">
+<!--<div ng-show="vm.switch == 'result'" style="position: absolute; top:0px; right:0px;">
     <toggle-menu inst="vm.listHide"></toggle-menu>
-</div>
+</div>-->

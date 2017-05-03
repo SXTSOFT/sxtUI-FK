@@ -55,6 +55,7 @@
             break;
           case 'close':
             scope.show = false;
+            return;
             break;
           case 'next':
             scope.value = '';

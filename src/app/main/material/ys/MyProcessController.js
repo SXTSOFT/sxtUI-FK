@@ -62,6 +62,18 @@
       vm.fjType = item.value;
     }
 
+    // vm.querySearch = function (text) {
+    //   var k = [];
+    //   if (vm.supplier) {
+    //     vm.supplier.forEach(function (item) {
+    //       if (!text || text == '' || item.ShortName.indexOf(text) != -1 || item.pinyin.indexOf(text) != -1) {
+    //         k.push(item);
+    //       }
+    //     })
+    //   }
+    //   return k;
+    // }
+
     //从一个给定的数组arr中,随机返回num个不重复项
     function getArrayItems(arr, num) {
       //新建一个数组,将传入的数组复制过来,用于运算,而不要直接操作传入的数组;
@@ -341,7 +353,12 @@
             return s == s2.Id;
           })
           if (v) {
-            vm.supplier.push(v);
+            vm.supplier.push({
+              Id:v.Id,
+              Name:v.Name,
+              ShortName:v.ShortName,
+              pinyin:Pinyin.getPinyinArrayFirst(v.ShortName).join('')
+            });
           }
         })
       } else {
