@@ -215,12 +215,12 @@
       vm.inputChange = true;
     };
 
-    var materialName = '', specification = '', model = '', planCount = '', unit = '';
+    var materialName = '', specification = '', model = '',model2 = '', planCount = '', unit = '';
     $scope.$watch('vm.data.Material', function () {
       if (vm.data && vm.data.Material && !vm.inputChange) {
         materialName = '';
         materialName = vm.data.Material.MaterialName;
-        vm.data.PlanName = materialName + specification + model + planCount + unit;
+        vm.data.PlanName = materialName + specification + model + model2 + planCount + unit;
       }
     });
 
@@ -228,15 +228,23 @@
       if (vm.data && vm.data.Specifications && !vm.inputChange) {
         specification = '';
         specification = '_' + vm.data.Specifications;
-        vm.data.PlanName = materialName + specification + model + planCount + unit;
+        vm.data.PlanName = materialName + specification + model + model2 + planCount + unit;
       }
     });
 
-    $scope.$watch('vm.data.Model', function () {
-      if (vm.data && vm.data.Model && !vm.inputChange) {
+    $scope.$watch('vm.searchText', function () {
+      if (vm.data && vm.searchText && !vm.inputChange) {
         model = '';
-        model = '_' + vm.data.Model;
-        vm.data.PlanName = materialName + specification + model + planCount + unit;
+        model = '_' + vm.searchText;
+        vm.data.PlanName = materialName + specification + model + model2 + planCount + unit;
+      }
+    });
+
+    $scope.$watch('vm.searchText2', function () {
+      if (vm.data && vm.searchText2 && !vm.inputChange) {
+        model2 = '';
+        model2 = '_' + vm.searchText2;
+        vm.data.PlanName = materialName + specification + model + model2 + planCount + unit;
       }
     });
 
@@ -244,7 +252,7 @@
       if (vm.data && vm.data.PlanCount && !vm.inputChange) {
         planCount = '';
         planCount = '_' + vm.data.PlanCount;
-        vm.data.PlanName = materialName + specification + model + planCount + unit;
+        vm.data.PlanName = materialName + specification + model + model2 + planCount + unit;
       }
     });
 
@@ -252,7 +260,7 @@
       if (vm.data && vm.data.Unit && !vm.inputChange) {
         unit = '';
         unit = vm.data.Unit + '_' + new Date(vm.data.PlanTime).Format('yyMMdd');
-        vm.data.PlanName = materialName + specification + model + planCount + unit;
+        vm.data.PlanName = materialName + specification + model + model2 + planCount + unit;
       }
     });
   }
