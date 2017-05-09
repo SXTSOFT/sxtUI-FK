@@ -617,7 +617,7 @@
                 ManuallyClose: item.ManuallyClose,
                 IsRelatedObject:item.IsRelatedObject,
                 State:item.State,
-                Color:setColor(item.State),
+                Color:item.IsInterlude==true&&item.State==1?'#FF9903':setColor(item.State),
                 _State:setSatus(item.State),
                 switch:item.State!=4?false:true,
                 UploadPhotoFileId:item.UploadPhotoFileId,
@@ -652,7 +652,7 @@
                       ManuallyClose: t.ManuallyClose,
                       IsRelatedObject: t.IsRelatedObject,
                       State: t.State,
-                      Color:setColor(t.State),
+                      Color:t.IsInterlude==true&&t.State==1?'#FF9903':setColor(t.State),
                       _State:setSatus(t.State),
                       switch:t.State!=4?false:true,
                       UploadPhotoFileId:t.UploadPhotoFileId,
@@ -806,7 +806,7 @@
                       f.ActualStartTime = _r.ActualStartTime;
                       f.ActualEndTime = _r.ActualEndTime;
                       f._State=setSatus(_r.State);
-                      f.Color=setColor(_r.State);
+                      f.Color=_r.IsInterlude==true&&_r.State==1?'#FF9903':setColor(_r.State);
                       f.State = _r.State;
                       f.IsAbleStart = _r.IsAbleStart;
                       f.IsInterlude = _r.IsInterlude;
@@ -1002,7 +1002,8 @@
         }).then(function(r){
           if(!r.data.Items.length) return;
           var newdata = angular.extend({
-            id:Id
+            id:Id,
+            name:data.Name
           },data)
           editDialog('','',newdata);
         })

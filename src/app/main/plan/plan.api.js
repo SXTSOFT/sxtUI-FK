@@ -148,6 +148,9 @@
         //开启精装修
         startRenovation:function(id){
           return $http.put($http.url('/api/BuildingPlans/'+id+'/StartUpRenovation'))
+        },
+        getStatus:function(id){
+          return $http.get($http.url('api/BuildingPlans/'+id+'/Status'))
         }
       },
       MileStone:{
@@ -231,6 +234,9 @@
         //reset:function(param){
         //  return $http.post($http.url('/api/TaskFlowRoles/Reset'),param)
         //}
+        ForPlans:function(){
+            return $http.get($http.url('/api/UserGroup/ForPlans'));
+        }
       },
       TaskFlowRole:{
         queryByFlowId:function (flowId) {

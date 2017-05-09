@@ -540,10 +540,10 @@
             }));
           }
           $q.all([
-            api.plan.UserGroup.query(),
+            api.plan.UserGroup.ForPlans(),
             api.plan.TaskFlow.getRoleByFlowId(item.TaskFlowId)
           ]).then(function(res){
-            vm.nextUserGroups = res[0].data.Items;
+            vm.nextUserGroups = res[0].data;
             var users = res[1].data.Items;
             if(!users.length) return;
             users&&users.forEach(function(r){

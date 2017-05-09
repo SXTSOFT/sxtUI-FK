@@ -15,6 +15,7 @@
   /**@ngInject*/
   function  planGanttlist($scope,$state,api,utils){
     var vm = this;
+    
     $scope.pageing={
       page:1,
       pageSize:10,
@@ -27,10 +28,14 @@
       load();
     },true);
     function load(){
+      vm.loading = false;
       var page= utils.getPage($scope.pageing);
       api.plan.BuildPlan.getList({status:'Generated',Skip:page.Skip,Limit:page.Limit}).then(function(r){
         vm.items = r.data.Items;
+        vm.loading = true;
         $scope.pageing.total = r.data.TotalCount;
+      },function(err){
+        
       });
     }
     //load();
@@ -45,6 +50,18 @@
         })
       })
 
+    }
+    vm.edit = function(item){
+      if(item.status == 0){
+        utils.alert('计划正在创建，请稍后').then(function(){
+            load();
+          },function(err){
+            //utils.alert(err.data||'开启精装修失败')
+          })
+      }else{
+        $state.go("app.plan.milestone.gantt",{id:item.Id})
+      }
+      
     }
     vm.openJzx = function(item){
       utils.confirm('确定开启精装修',null).then(function(){
