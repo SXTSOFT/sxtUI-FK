@@ -552,6 +552,7 @@
     /** @ngInject */
     function GanttChartAddEditDialogController(dialogData,originData,template,$timeout,$mdPanel,$scope) {
       var vm = this;
+      vm.loading = false;
       function setSatus(i){
         var str='';
         switch (i){
@@ -672,6 +673,7 @@
             Name:'流程'
           };
           vm.data = task;
+          vm.loading = true;
           vm.onLoadTemplate();
         })
       }
@@ -993,7 +995,6 @@
         });
         vm.flows = temp.load(vm.data);
       }
-
       vm.openDialog = function(data,Id){
         api.plan.BuildPlan.getGantt({
           ParentTaskId:Id,
@@ -1004,7 +1005,7 @@
           var newdata = angular.extend({
             id:Id,
             name:data.Name
-          },data)
+          },data);
           editDialog('','',newdata);
         })
 

@@ -47,7 +47,10 @@
             </td>
           </tr>
           <tr>
-            <td colspan="5" ng-if="!vm.flows.length">无流程信息</td>
+            <td colspan="7" ng-if="!vm.flows.length&&vm.loading" style="text-align: center">无流程信息</td>
+          </tr>
+          <tr>
+            <td colspan="7" ng-if="!vm.loading" style="text-align: center">加载中...</td>
           </tr>
           </tbody>
         </table>
