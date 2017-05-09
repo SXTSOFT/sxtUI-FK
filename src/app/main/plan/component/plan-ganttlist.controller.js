@@ -35,7 +35,7 @@
         vm.loading = true;
         $scope.pageing.total = r.data.TotalCount;
       },function(err){
-        
+
       });
     }
     //load();
@@ -52,15 +52,25 @@
 
     }
     vm.edit = function(item){
-      if(item.status == 0){
-        utils.alert('计划正在创建，请稍后').then(function(){
-            load();
-          },function(err){
-            //utils.alert(err.data||'开启精装修失败')
-          })
-      }else{
-        $state.go("app.plan.milestone.gantt",{id:item.Id})
-      }
+      api.plan.BuildPlan.getStatus(item.Id).then(function(r){
+          if(r.data.Status==0){
+            $state.go("app.plan.milestone.gantt",{id:item.Id})
+          }else{
+            utils.alert(r.data.StatusDesc||'创建计划出错');
+            return;
+          }
+      },function(err){
+        
+      })
+      // if(item.status == 0){
+      //   utils.alert('计划正在创建，请稍后').then(function(){
+      //       load();
+      //     },function(err){
+      //       //utils.alert(err.data||'开启精装修失败')
+      //     })
+      // }else{
+      //   $state.go("app.plan.milestone.gantt",{id:item.Id})
+      // }
       
     }
     vm.openJzx = function(item){

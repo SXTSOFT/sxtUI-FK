@@ -150,7 +150,7 @@
           return $http.put($http.url('/api/BuildingPlans/'+id+'/StartUpRenovation'))
         },
         getStatus:function(id){
-          return $http.get($http.url('api/BuildingPlans/'+id+'/Status'))
+          return $http.get($http.url('/api/BuildingPlans/'+id+'/Status'))
         }
       },
       MileStone:{

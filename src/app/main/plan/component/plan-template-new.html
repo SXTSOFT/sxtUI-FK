@@ -1,7 +1,8 @@
 <md-tabs md-border-bottom flex layout="column">
   <md-tab label="任务流程"  >
     <md-tab-content flex layout-fill layout="row">
-      <md-content layout="row" flex ms-scroll style="min-width:900px;">
+      <md-content layout="row" flex ms-scroll >
+        <div style="min-width:900px;" layout="row" layout-align="start start">
         <div flex="100" layout="row"  layout-align="center start" class="mt-20" ng-show="vm.loading">
           <md-progress-circular md-mode="indeterminate"></md-progress-circular>
         </div>
@@ -107,6 +108,7 @@
         </div>
         <div flex="20" style="padding-top:60px">
           <div id="gitGraph"></div>
+        </div>
         </div>
       </md-content>
     </md-tab-content>
