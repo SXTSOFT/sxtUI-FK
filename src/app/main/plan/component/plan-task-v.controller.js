@@ -655,49 +655,41 @@
           }
         }],
         controllerAs:'vm',
-        template:`<md-dialog>
-  <md-toolbar class="md-hue-2">
-    <div class="md-toolbar-tools tasks-list">
-      <h2>
-        <span>关联项选择</span>
-      </h2>
-      <span flex></span>
-    </div>
-  </md-toolbar>
-  <md-dialog-content  style="padding: 0;width:400px;">
-    <div ng-if="!vm.loadMeasure">loading...</div>
-    <div>
-      <md-tabs md-dynamic-height ng-if="vm.loadMeasure">
-        <md-tab label="关联工序">
-          <md-content layout="column" style="background-color: rgb(245,245,245)" flex class="p-15">
-            <md-input-container md-no-float>
-              <input type="text" ng-model="vm.searchT" placeholder="搜索工序">
-            </md-input-container>
-            <div layout="row" class="mb-10">
-              <span>已选工序</span><span flex></span><md-icon md-font-icon="icon-close" ng-click="vm.clrChoose()" ng-if="vm.gxName"></md-icon>
-            </div>
-            <div layout="row" style="color:#999;">
-              {{vm.gxName}}
-            </div>
-            <div>
-              <md-list flex ng-if="vm.proceduresData.length" class="ph-16">
-                <md-list-item ng-class="{'gxselected':vm.current ==ac}" layout="row" flex ng-repeat="ac in vm.proceduresData|filter:vm.searchT" ng-click="vm.choose(ac)">
-                  <div flex style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ac.AcceptanceItemName}}</div>
-                </md-list-item>
-              </md-list>
-            </div>
-          </md-content>
-        </md-tab>
-      </md-tabs>
-    </div>
-  </md-dialog-content>
-  <md-dialog-actions layout="row">
-    <md-button ng-click="vm.select(selectedIndex)" class="md-raised">
-      确定
-    </md-button>
-  </md-dialog-actions>
-</md-dialog>
-        `,
+        template:'<md-dialog>\
+  <md-toolbar class="md-hue-2">\
+    <div class="md-toolbar-tools tasks-list">\
+      <h2><span>关联项选择</span></h2>\
+      <span flex></span></div></md-toolbar>\
+  <md-dialog-content  style="padding: 0;width:400px;">\
+    <div ng-if="!vm.loadMeasure">loading...</div>\
+    <div>\
+      <md-tabs md-dynamic-height ng-if="vm.loadMeasure">\
+        <md-tab label="关联工序">\
+          <md-content layout="column" style="background-color: rgb(245,245,245)" flex class="p-15">\
+            <md-input-container md-no-float>\
+              <input type="text" ng-model="vm.searchT" placeholder="搜索工序">\
+            </md-input-container>\
+            <div layout="row" class="mb-10">\
+              <span>已选工序</span><span flex></span><md-icon md-font-icon="icon-close" ng-click="vm.clrChoose()" ng-if="vm.gxName"></md-icon>\
+            </div>\
+            <div layout="row" style="color:#999;">{{vm.gxName}}</div>\
+            <div>\
+              <md-list flex ng-if="vm.proceduresData.length" class="ph-16"><md-list-item ng-class="{\'gxselected\':vm.current ==ac}" layout="row" flex ng-repeat="ac in vm.proceduresData|filter:vm.searchT" ng-click="vm.choose(ac)">\
+                  <div flex style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ac.AcceptanceItemName}}</div>\
+                </md-list-item>\
+              </md-list>\
+            </div>\
+          </md-content>\
+        </md-tab>\
+      </md-tabs>\
+    </div>\
+  </md-dialog-content>\
+  <md-dialog-actions layout="row">\
+    <md-button ng-click="vm.select(selectedIndex)" class="md-raised"> 确定\
+    </md-button>\
+  </md-dialog-actions>\
+</md-dialog>'
+        ,
         // templateUrl:'app/main/plan/component/plan-task-measureinfo.html',
         parent: angular.element(document.body),
         clickOutsideToClose: true,
