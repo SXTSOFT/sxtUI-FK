@@ -380,10 +380,10 @@
               }
             })
           })
-          vm.add = function(cmd){
-            vm.current = cmd;
-            vm.data = {};
-          }
+          // vm.add = function(cmd){
+          //   vm.current = cmd;
+          //   vm.data = {};
+          // }
           vm.select = function () {
             $mdDialog.hide(vm.items.filter(function (t) {
               return t.selected;
@@ -442,36 +442,36 @@
         controller:['$scope',function($scope){
           var vm = this;
           vm.type = type;
-          vm.add = function(){
-            api.plan.UserGroup.create({
-              "GroupName": vm.dataName,
-              "SystemID": "plan",
-              "Description": vm.dataName,
-              "TemplateId":id
-            }).then(function(res){
-              vm.current = 'default';
-              api.plan.UserGroup.query().then(function(r){
-                if(vm.nextUserGroups){
-                  r.data.Items.forEach(function (item) {
-                    item.selected = !!vm.nextUserGroups.find(function (it) {
-                      return it.GroupID == item.GroupID && it.selected;
-                    })
-                  });
-                }
-                vm.nextUserGroups = r.data.Items;
-              });
-            })
-          }
+          // vm.add = function(){
+          //   api.plan.UserGroup.create({
+          //     "GroupName": vm.dataName,
+          //     "SystemID": "plan",
+          //     "Description": vm.dataName,
+          //     "TemplateId":id
+          //   }).then(function(res){
+          //     vm.current = 'default';
+          //     api.plan.UserGroup.query().then(function(r){
+          //       if(vm.nextUserGroups){
+          //         r.data.Items.forEach(function (item) {
+          //           item.selected = !!vm.nextUserGroups.find(function (it) {
+          //             return it.GroupID == item.GroupID && it.selected;
+          //           })
+          //         });
+          //       }
+          //       vm.nextUserGroups = r.data.Items;
+          //     });
+          //   })
+          // }
           vm.select = function () {
             $mdDialog.hide(vm.nextUserGroups.filter(function (t) {
               return t.selected;
             }));
-          }
+          };
           $q.all([
-            api.plan.UserGroup.query(),
+            api.plan.UserGroup.ForPlans(),
             api.plan.TaskFlow.getRoleByFlowId(item.TaskFlowId)
           ]).then(function(res){
-            vm.nextUserGroups = res[0].data.Items;
+            vm.nextUserGroups = res[0].data;
             var users = res[1].data.Items;
             if(!users.length) return;
             users&&users.forEach(function(r){

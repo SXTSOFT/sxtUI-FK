@@ -552,6 +552,7 @@
     /** @ngInject */
     function GanttChartAddEditDialogController(dialogData,originData,template,$timeout,$mdPanel,$scope) {
       var vm = this;
+      vm.loading = false;
       function setSatus(i){
         var str='';
         switch (i){
@@ -617,7 +618,7 @@
                 ManuallyClose: item.ManuallyClose,
                 IsRelatedObject:item.IsRelatedObject,
                 State:item.State,
-                Color:setColor(item.State),
+                Color:item.IsInterlude==true&&item.State==1?'#FF9903':setColor(item.State),
                 _State:setSatus(item.State),
                 switch:item.State!=4?false:true,
                 UploadPhotoFileId:item.UploadPhotoFileId,
@@ -652,7 +653,7 @@
                       ManuallyClose: t.ManuallyClose,
                       IsRelatedObject: t.IsRelatedObject,
                       State: t.State,
-                      Color:setColor(t.State),
+                      Color:t.IsInterlude==true&&t.State==1?'#FF9903':setColor(t.State),
                       _State:setSatus(t.State),
                       switch:t.State!=4?false:true,
                       UploadPhotoFileId:t.UploadPhotoFileId,
@@ -672,6 +673,7 @@
             Name:'流程'
           };
           vm.data = task;
+          vm.loading = true;
           vm.onLoadTemplate();
         })
       }
@@ -806,7 +808,7 @@
                       f.ActualStartTime = _r.ActualStartTime;
                       f.ActualEndTime = _r.ActualEndTime;
                       f._State=setSatus(_r.State);
-                      f.Color=setColor(_r.State);
+                      f.Color=_r.IsInterlude==true&&_r.State==1?'#FF9903':setColor(_r.State);
                       f.State = _r.State;
                       f.IsAbleStart = _r.IsAbleStart;
                       f.IsInterlude = _r.IsInterlude;
@@ -993,7 +995,6 @@
         });
         vm.flows = temp.load(vm.data);
       }
-
       vm.openDialog = function(data,Id){
         api.plan.BuildPlan.getGantt({
           ParentTaskId:Id,
@@ -1002,8 +1003,9 @@
         }).then(function(r){
           if(!r.data.Items.length) return;
           var newdata = angular.extend({
-            id:Id
-          },data)
+            id:Id,
+            name:data.Name
+          },data);
           editDialog('','',newdata);
         })
 
