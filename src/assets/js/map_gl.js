@@ -513,6 +513,9 @@ module.exports={"name":"mapbox-gl","description":"A WebGL interactive maps libra
                     var ns = m.replace(/[a-z]+/ig, '').split(',').map(Number).reverse();
                     if (ns.length > 1)
                         latlngs.push(ns);
+                    else{
+                         latlngs.push(ns,Number(d[++i]||d[0]))
+                    }
                 }
             }
             if (isF) {
