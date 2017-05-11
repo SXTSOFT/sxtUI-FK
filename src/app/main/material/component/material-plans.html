@@ -31,10 +31,11 @@
       <!--<th>材料/设备名称</th>-->
       <!--<th>型号</th>-->
       <!--<th>规格</th>-->
-      <th>进场计划时间</th>
-      <th style="text-align: center;">进场计划数量</th>
+      <th>计划进场时间</th>
+      <th style="text-align: center;">计划进场数量</th>
       <th>使用部位</th>
       <th>合同编号</th>
+       <th>乙方</th>
       <th style="min-width: 80px;">供货方式</th>
       <th style="min-width: 70px;">状态</th>
       <th style="width: 160px; text-align: center;"><span class="pl-16">管理</span></th>
@@ -51,6 +52,7 @@
       <td style="text-align: center;">{{item.PlanCount + item.Unit}}</td>
       <td>{{item.Position}}</td>
       <td>{{item.Contract}}</td>
+      <td>{{item.yf}}</td>
       <td>
         <!--{{item.SupplyType}}-->
         <label ng-if="item.SupplyType == 1">甲供</label>

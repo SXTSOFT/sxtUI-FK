@@ -31,9 +31,9 @@
         if (vm.cid != 0) {
           api.material.contract.GetContractDetailById(vm.cid, vm.data.Id).then(function (r) {
             if (r.data) {
-              vm.Brands = r.data.Brands.split(/、|,|，|；|;/);
+              vm.Brands = r.data.Brands?r.data.Brands.split(/、|,|，|；|;/):[];
             } else {
-              vm.Brands = vm.data.Brands.split(/、|,|，|；|;/);
+              vm.Brands = vm.data.Brands?vm.data.Brands.split(/、|,|，|；|;/):[];
             }
           });
         }

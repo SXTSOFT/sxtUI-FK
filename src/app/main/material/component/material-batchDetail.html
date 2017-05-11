@@ -136,7 +136,7 @@
               <md-divider></md-divider>
             </md-list-item>
             <md-list-item>
-              <p>货物货物：</p>
+              <p>货物：</p>
               <div flex layout="row" class="materialImgWrap" layout-align="end center">
                 <img ng-repeat="img in item.Images | filter:{OptionType:512}:true" flex="50" sxt-images="item.Images"
                      ng-src="{{img.ImageByte}}"/>
@@ -152,7 +152,7 @@
               <md-divider></md-divider>
             </md-list-item>
             <md-list-item>
-              <p>检查人：</p>
+              <p>合格证</p>
               <div flex layout="row" class="materialImgWrap" layout-align="end center">
                 <img ng-repeat="img in item.Images | filter:{OptionType:2048}:true" flex="50" sxt-images="item.Images"
                      ng-src="{{img.ImageByte}}"/>
@@ -191,7 +191,7 @@
             <!--</md-list-item>-->
           </md-list>
           <md-list ng-hide="item.AcceptanceTime == null" flex style="padding-top: 0;margin-bottom:0px;background:#ffffff">
-            <md-subheader  style="text-align: left">经理验收信息</md-subheader>
+            <md-subheader  style="text-align: left">监理验收信息</md-subheader>
             <md-divider></md-divider>
             <md-list-item>
               <p>验收时间：</p>
@@ -225,7 +225,7 @@
               <md-divider></md-divider>
             </md-list-item>
             <md-list-item>
-              <p>货物货物：</p>
+              <p>货物：</p>
               <div flex layout="row" class="materialImgWrap" layout-align="end center">
                 <img ng-repeat="img in item.Images | filter:{OptionType:2}:true" flex="50" sxt-images="item.Images"
                      ng-src="{{img.ImageByte}}"/>

@@ -12,7 +12,7 @@
     });
 
   /** @ngInject */
-  function materialUnqualifiedExit($rootScope,$scope,api,utils,$stateParams,$state,sxt,xhUtils,auth,$filter){
+  function materialUnqualifiedExit($rootScope,$scope,api,utils,$stateParams,$state,sxt,xhUtils,auth,$filter, remote){
     var vm = this;
     var user = auth.current();
     vm.data = {};
@@ -43,6 +43,14 @@
 
       api.xhsc.materialPlan.materialUnqualifiedExit(vm.data).then(function (q) {
         utils.alert("提交成功", null, function () {
+          remote.offline.query().then(function (r) {
+            var list = r.data.filter(function (item) {
+              return item.batchId == vm.data.Id;
+            })
+            list.forEach(function (item) {
+              remote.offline.delete({ Id: item.Id });
+            })
+          })
           api.xhsc.materialPlan.deleteMaterialPlanBatch(vm.data.Id);
           $state.go("app.xhsc.materialys.materialdownload");
         });
@@ -50,7 +58,8 @@
     });
 
     //删除图片操作
-    $rootScope.$on('delete',function (data,index) {
+    $rootScope.$on('delete',function (data,index,id) {
+      remote.offline.delete({ Id: id });
       $scope.$apply();
     });
 
@@ -60,6 +69,11 @@
     });
 
     vm.addPhoto = function (type) {
+      if(vm.data.MaterialFiles.length == 2){
+        utils.alert('材料退场最多拍照两张照片!');
+        return;
+      }
+
       //拍照事件
       xhUtils.photo().then(function (image) {
         if(image){
@@ -70,9 +84,18 @@
       });
     }
 
+    remote.offline.query().then(function (r) {
+      var list = r.data.filter(function (item) {
+        return item.batchId == $stateParams.id;
+      })
+      list.forEach(function (item) {
+        photo2(item.Id, item.type, vm.data.MaterialFiles, item.img);
+      })
+    })
+
     function photo(type,arr,image){
       var _id = sxt.uuid();
-      arr.push({
+      var img = {
         Id: sxt.uuid(),
         BatchId: $stateParams.id,
         OptionType:type,
@@ -80,8 +103,23 @@
         ImageName:_id+".jpeg",
         ImageUrl:_id+".jpeg",
         ImageByte: image
-      });
+      }
+      arr.push(img);
+      remote.offline.create({ Id: img.Id, batchId: $stateParams.id, type: type, img: image });
     }
 
+    function photo2(id, type, arr, image) {
+      var _id = sxt.uuid();
+      var img = {
+        Id: id,
+        BatchId: $stateParams.id,
+        OptionType: type,
+        ApproachStage: 32,
+        ImageName: _id + ".jpeg",
+        ImageUrl: _id + ".jpeg",
+        ImageByte: image
+      }
+      arr.push(img);
+    }
   }
 })(angular,undefined);

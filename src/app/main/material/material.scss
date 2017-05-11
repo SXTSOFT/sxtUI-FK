@@ -82,10 +82,10 @@
 .materialReport{
   md-list-item{
     >p:first-of-type{
-       max-width:80px;
+      //  max-width:80px;
        width: 80px ;
        overflow: hidden;
-       text-overflow: ellipsis;
+      //  text-overflow: ellipsis;
        white-space: nowrap;
        padding-left:0px;
        text-align: left;
