@@ -37,7 +37,7 @@ angular.module('myApp', [])
     function getName(categories,questionNum,curentNum) {
       var percent;
       if (curentNum){
-         percent=((categories.rate/questionNum)*100).toFixed(0);
+         percent=((curentNum/questionNum)*100).toFixed(0);
          return categories+":"+percent+"%";
       }
       if (questionNum){
