@@ -61,6 +61,11 @@
     });
 
     vm.addPhoto = function (type) {
+      if(vm.reportImgs.length == 2){
+        utils.alert('报告单最多拍照两张照片!');
+        return;
+      }
+
       //拍照事件
       xhUtils.photo().then(function (image) {
         if (image) {

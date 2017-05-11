@@ -23,10 +23,12 @@
         vm.rendered = false;
         vm.date = {};
         var dateFilter = $filter('date')
-        vm.date.eDate = new Date();
-        var date_tmp = new Date()
-        date_tmp.setDate(date_tmp.getDate() - 7);
-        vm.date.sDate = date_tmp;
+        vm.date.eDate = null;
+        vm.date.sDate = null;
+        // vm.date.eDate = new Date();
+        // var date_tmp = new Date()
+        // date_tmp.setDate(date_tmp.getDate() - 7);
+        // vm.date.sDate = date_tmp;
         vm.regionId = '', vm.sectionId = '';
 
         vm.host = sxt.app.api;

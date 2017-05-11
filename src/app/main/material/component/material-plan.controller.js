@@ -173,6 +173,7 @@
         vm.RegionId = r.data.RegionId;
         vm.getSections(vm.data.RegionId);
         vm.SectionId = r.data.SectionId;
+        vm.getContracts();
         api.material.materialScience.GetMaterialByTypeId(vm.data.ContractId).then(function (r) {
           vm.materials = r.data || [];
           vm.materials.forEach(function (q) {

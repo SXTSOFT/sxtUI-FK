@@ -32,8 +32,38 @@
     });
 
     vm.addPhoto = function (type) {
+      switch (type) {
+        case 1: {
+          if (vm.vehicleImgs.length == 2) {
+            utils.alert('车辆最多拍照两张照片!');
+            return;
+          }
+          break;
+        }
+        case 2: {
+          if (vm.goodsImgs.length == 2) {
+            utils.alert('货物最多拍照两张照片!');
+            return;
+          }
+          break;
+        }
+        case 4: {
+          if (vm.checkerImgs.length == 2) {
+            utils.alert('验收人最多拍照两张照片!');
+            return;
+          }
+          break;
+        }
+        default:
+          if (vm.certificateImgs.length == 2) {
+            utils.alert('合格证最多拍照两张照片!');
+            return;
+          }
+      }
       //拍照事件
       xhUtils.photo().then(function (image) {
+
+
         if (image) {
           // var image;
           switch (type) {

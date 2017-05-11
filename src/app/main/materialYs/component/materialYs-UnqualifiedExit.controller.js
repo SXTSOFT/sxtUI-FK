@@ -69,6 +69,11 @@
     });
 
     vm.addPhoto = function (type) {
+      if(vm.data.MaterialFiles.length == 2){
+        utils.alert('材料退场最多拍照两张照片!');
+        return;
+      }
+
       //拍照事件
       xhUtils.photo().then(function (image) {
         if(image){

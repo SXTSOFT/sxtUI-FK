@@ -65,7 +65,7 @@
     });
 
     //删除图片操作
-    $rootScope.$on('delete', function (data, index,id) {
+    $rootScope.$on('delete', function (data, index, id) {
       remote.offline.delete({ Id: id });
       $scope.$apply();
     });
@@ -76,6 +76,24 @@
     });
 
     vm.addPhoto = function (type) {
+
+      switch (type) {
+        case 16: {
+          if (vm.samplingProcessImgs.length == 2) {
+            utils.alert('抽样过程最多拍照两张照片!');
+            return;
+          }
+          break;
+        }
+        case 32: {
+          if (vm.checkListImgs.length == 2) {
+            utils.alert('检查单最多拍照两张照片!');
+            return;
+          }
+          break;
+        }
+      }
+
       //拍照事件
       xhUtils.photo().then(function (image) {
         if (image) {
