@@ -36,7 +36,7 @@
 
       // console.log("isIn", isIn);
       if (isIn && isIn.length > 0) {
-        var min = 0,
+        var min = -100000,
           max = parseFloat(isIn[0]);
 
         if (isIn && isIn.length > 1) {

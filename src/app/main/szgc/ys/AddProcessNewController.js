@@ -1035,7 +1035,7 @@
       for (var i = 0, l = $scope.targets.yb.length; i < l; i++) {
         if(!$scope.targets.yb[i].checked) continue;
         var ybd = parseFloat($scope.targets.yb[i].PassRatio);
-        if (!isNaN(ybd) && (!hgl || hgl > ybd)) hgl = ybd;
+        if (!isNaN(ybd) && ((!hgl && hgl!==0) || hgl > ybd)) hgl = ybd;
       }
       return hgl;
     }
