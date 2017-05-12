@@ -5,17 +5,17 @@
         <span>角色选择</span>
       </h2>
       <span flex></span>
-      <md-button ng-if="vm.current !='add'" class="md-icon-button" aria-label="More" ng-click="vm.current='add'">
+      <!--<md-button ng-if="vm.current !='add'" class="md-icon-button" aria-label="More" ng-click="vm.current='add'">
         <md-icon md-font-icon="icon-plus" ></md-icon>
       </md-button>
       <md-button ng-if="vm.current =='add'" class="md-icon-button" ng-click="vm.current ='default'">
         <md-icon md-font-icon="icon-keyboard-return"></md-icon>
-      </md-button>
+      </md-button>-->
     </div>
   </md-toolbar>
   <md-dialog-content style="padding: 0;min-width: 300px;">
-    <div ng-switch="vm.current">
-      <div ng-switch-default>
+    <div>
+      <div>
         <md-list>
           <md-list-item ng-repeat="item in vm.nextUserGroups">
             <md-checkbox ng-model="item.selected"></md-checkbox>
@@ -26,21 +26,21 @@
           </md-list-item>
         </md-list>
       </div>
-      <div ng-switch-when="add" layout-padding="15">
+      <!--<div ng-switch-when="add" layout-padding="15">
         <md-input-container class="md-block">
           <label>角色名字</label>
           <input type="text" ng-model="vm.dataName" md-autofocus>
         </md-input-container>
-      </div>
+      </div>-->
     </div>
   </md-dialog-content>
   <md-dialog-actions layout="row">
-    <md-button ng-if="vm.current !='add'" ng-click="vm.select()" class="md-raised">
+    <md-button ng-click="vm.select()" class="md-raised">
       确定
     </md-button>
-    <md-button  ng-if="vm.current =='add'" ng-click="vm.add()" class="md-raised">
+    <!--<md-button  ng-if="vm.current =='add'" ng-click="vm.add()" class="md-raised">
       添加
-    </md-button>
+    </md-button>-->
   </md-dialog-actions>
 </md-dialog>
 

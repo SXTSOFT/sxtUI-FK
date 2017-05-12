@@ -1,34 +1,34 @@
-(function(angular,undefined){
+(function (angular, undefined) {
   'use strict';
 
   angular
     .module('app.plan')
-    .component('planBuild',{
-      templateUrl:'app/main/plan/component/plan-build.html',
-      controller:planBuild,
-      controllerAs:'vm'
+    .component('planBuild', {
+      templateUrl: 'app/main/plan/component/plan-build.html',
+      controller: planBuild,
+      controllerAs: 'vm'
     });
 
   /** @ngInject */
-  function planBuild($scope,api,template,$q,$mdSidenav,utils,$timeout,$mdDialog,$mdPanel,$state){
+  function planBuild($scope, api, template, $q, $mdSidenav, utils, $timeout, $mdDialog, $mdPanel, $state) {
     var vm = this;
     vm.initLoading = true;
     vm.data = {
-      projects:null
+      projects: null
     }
-    vm.formWizard={
+    vm.formWizard = {
 
     }
-    vm.formWizard.StartTime ?vm.formWizard.StartTime:vm.formWizard.StartTime = new Date();
+    vm.formWizard.StartTime ? vm.formWizard.StartTime : vm.formWizard.StartTime = new Date();
     api.xhsc.Project.getMap().then(function (r) {
       vm.data.projects = r.data;
       vm.initLoading = false;
     })
     vm.getMaps = function () {
-      return vm.data.projects||api.xhsc.Project.getMap().then(function (r) {
-          vm.data.projects = r.data;
-         return vm.data.projects
-        });
+      return vm.data.projects || api.xhsc.Project.getMap().then(function (r) {
+        vm.data.projects = r.data;
+        return vm.data.projects
+      });
     }
     vm.getSections = function () {
       return api.xhsc.Project.GetAreaChildenbyID(vm.formWizard.projectId).then(function (r) {
@@ -41,15 +41,15 @@
         vm.data.buildings = r.data;
       })
     }
-    vm.getYT = function(Id){
-      if(!Id) return;
-      var find = vm.data.projects.find(function(r){
-          return r.ProjectID == Id;
-        })
-      if(find){
-        vm.YT={
-          ProjectFormatName:find.ProjectFormatName&&find.ProjectFormatName?find.ProjectFormatName:'',
-          RegionName:find.RegionName&&find.RegionName?find.RegionName:''
+    vm.getYT = function (Id) {
+      if (!Id) return;
+      var find = vm.data.projects.find(function (r) {
+        return r.ProjectID == Id;
+      })
+      if (find) {
+        vm.YT = {
+          ProjectFormatName: find.ProjectFormatName && find.ProjectFormatName ? find.ProjectFormatName : '',
+          RegionName: find.RegionName && find.RegionName ? find.RegionName : ''
         }
       }
     }
@@ -75,20 +75,20 @@
         .close();
     }
     vm.resetName = function (item) {
-      item.Name = (item.FullName || item.TaskFlowName)+' - ' +
-        (item.selectedTask?item.selectedTask.Name:'')
-      + ' - 可选('+item.OptionalTasks.length+')';
+      item.Name = (item.FullName || item.TaskFlowName) + ' - ' +
+        (item.selectedTask ? item.selectedTask.Name : '')
+        + ' - 可选(' + item.OptionalTasks.length + ')';
 
     }
     function setTask(item) {
       var next = vm.rootTask.Master.find(function (it) {
-        return it.ParentId===item.Id && it.OptionalTasks.find(function (task) {
-          return task.TaskLibraryId===item.selectedTask.TaskLibraryId;
-        })!=null;
+        return it.ParentId === item.Id && it.OptionalTasks.find(function (task) {
+          return task.TaskLibraryId === item.selectedTask.TaskLibraryId;
+        }) != null;
       });
-      if(next){
+      if (next) {
         next.selectedTask = next.OptionalTasks.find(function (task) {
-          return task.TaskLibraryId===item.selectedTask.TaskLibraryId;
+          return task.TaskLibraryId === item.selectedTask.TaskLibraryId;
         });
         next.selectedTask.eDuration = item.selectedTask.eDuration;
         next.selectedTask.xDuration = item.selectedTask.xDuration;
@@ -115,174 +115,174 @@
     //  }
     //}
     vm.reloadTask = function () {
-      if(vm.current) {
+      if (vm.current) {
         vm.resetName(vm.current);
         setTask(vm.current);
       }
       vm.temp.load(vm.rootTask);
 
     }
-    vm.flows=null;
-    vm.branches=null;
+    vm.flows = null;
+    vm.branches = null;
     vm.vars = null;
-    vm.nextStep = function(i,f){
-      if(i==0){
-        var find=vm.data.templates.find(function(r){
-          return r.RootTaskLibraryId==vm.formWizard.RootTaskLibraryId
+    vm.nextStep = function (i, f) {
+      if (i == 0) {
+        var find = vm.data.templates.find(function (r) {
+          return r.RootTaskLibraryId == vm.formWizard.RootTaskLibraryId
         })
-        if(find){
+        if (find) {
           vm.formWizard.TaskTemplateId = find.Id;
         }
         f();
       }
-      else if(i===1){
-        var tasks = [], milestones = [],flag;
-        vm.flows.reduce(function (prev, current) {
-          //if(current.show) flag=true;
-          if (!current.selected) return prev;
-          if (current.type) {
-            milestones.push({
-              Name: current.Name,
-              RelatedFlowId: current.RelatedFlowId,
-              MilestoneTime: current.end&&current.end.format('YYYY-MM-DD')
-            });
-            return prev;
-          }
-          if (!current._id)
-            current._id = sxt.uuid();
+      else if (i === 1) {
+        // var tasks = [], milestones = [], flag;
+        // vm.flows.reduce(function (prev, current) {
+        //   //if(current.show) flag=true;
+        //   if (!current.selected) return prev;
+        //   if (current.type) {
+        //     milestones.push({
+        //       Name: current.Name,
+        //       RelatedFlowId: current.RelatedFlowId,
+        //       MilestoneTime: current.end && current.end.format('YYYY-MM-DD')
+        //     });
+        //     return prev;
+        //   }
+        //   if (!current._id)
+        //     current._id = sxt.uuid();
 
-          tasks.push({
-            "Id": current._id,
-            "DependentTaskFlowId": prev && prev._id,
-            "TaskFlowId": current._TaskFlowId || current.TaskFlowId,
-            "FloorId": current.FloorId,
-            "FloorName": current.FloorName,
-            "Type": current.Type,
-            "OptionalTask": {
-              "TaskLibraryId": current.currentTask.TaskLibraryId,
-              "PlanBeginTime": current.start&&current.start.format('YYYY-MM-DD'),
-              "PlanEndTime": current.end&&current.end.format('YYYY-MM-DD'),
-              "Days": current.days
-            }
-          })
-          return current;
-        }, null);
-        vm.branches.forEach(function (current) {
-          if(!current.selected) return;
-          //var f=vm.flows.find(function(_t){
-          //  return _t.TaskFlowId == current.ParentId;
-          //})
-          tasks.push({
-            "Id": sxt.uuid(),
-            "DependentTaskFlowId": null,
-            "TaskFlowId": current.TaskFlowId,
-            "FloorId": current.FloorId,
-            "FloorName": current.FloorName,
-            "Type": current.Type,
-            "OptionalTask": {
-              "TaskLibraryId": current.currentTask.TaskLibraryId,
-              "PlanBeginTime": current.start&&current.start.format('YYYY-MM-DD'),
-              "PlanEndTime": current.end&&current.end.format('YYYY-MM-DD'),
-              "Days": current.days
-            }
-          })
-        });
-        var b = {
-          "Vars":vm.vars.allVars().filter(function (v) {
-            return v.key.length === 1;
-          }),
-          "BuildingPlanInput": {
-            "BuildingId": vm.formWizard.BuildingId,
-            "Name": vm.formWizard.Name,
-            "TaskTemplateId": vm.formWizard.TaskTemplateId,
-            "StartTime": vm.formWizard.StartTime,
-            "PreSalesTime": "",
-            "ExpectEndTime": ""
-          },
-          "TaskFlows": tasks,
-          "Milestones": milestones
-        };
-        var fg = true;
-        tasks.forEach(function (t) {
-          if(!t.OptionalTask.PlanEndTime){
-            fg = false;
-          }
-        });
-        if(!fg){
-          utils.alert('有工期设置不恰当项存在!').then(function(){
-          });
-        return fg;
-        };
-        //if(flag){
-        //  utils.alert('工期应大于基本工期的80%!').then(function(){
-        //  });
-        //  return;
-        //};
-          var parent = vm;
-          var position = $mdPanel.newPanelPosition()
-            .relativeTo('md-tabs-wrapper')
-            .addPanelPosition($mdPanel.xPosition.CENTER, $mdPanel.yPosition.BELOW)
+        //   tasks.push({
+        //     "Id": current._id,
+        //     "DependentTaskFlowId": prev && prev._id,
+        //     "TaskFlowId": current._TaskFlowId || current.TaskFlowId,
+        //     "FloorId": current.FloorId,
+        //     "FloorName": current.FloorName,
+        //     "Type": current.Type,
+        //     "OptionalTask": {
+        //       "TaskLibraryId": current.currentTask.TaskLibraryId,
+        //       "PlanBeginTime": current.start && current.start.format('YYYY-MM-DD'),
+        //       "PlanEndTime": current.end && current.end.format('YYYY-MM-DD'),
+        //       "Days": current.days
+        //     }
+        //   })
+        //   return current;
+        // }, null);
+        // vm.branches.forEach(function (current) {
+        //   if (!current.selected) return;
+        //   //var f=vm.flows.find(function(_t){
+        //   //  return _t.TaskFlowId == current.ParentId;
+        //   //})
+        //   tasks.push({
+        //     "Id": sxt.uuid(),
+        //     "DependentTaskFlowId": null,
+        //     "TaskFlowId": current.TaskFlowId,
+        //     "FloorId": current.FloorId,
+        //     "FloorName": current.FloorName,
+        //     "Type": current.Type,
+        //     "OptionalTask": {
+        //       "TaskLibraryId": current.currentTask.TaskLibraryId,
+        //       "PlanBeginTime": current.start && current.start.format('YYYY-MM-DD'),
+        //       "PlanEndTime": current.end && current.end.format('YYYY-MM-DD'),
+        //       "Days": current.days
+        //     }
+        //   })
+        // });
+        // var b = {
+        //   "Vars": vm.vars.allVars().filter(function (v) {
+        //     return v.key.length === 1;
+        //   }),
+        //   "BuildingPlanInput": {
+        //     "BuildingId": vm.formWizard.BuildingId,
+        //     "Name": vm.formWizard.Name,
+        //     "TaskTemplateId": vm.formWizard.TaskTemplateId,
+        //     "StartTime": vm.formWizard.StartTime,
+        //     "PreSalesTime": "",
+        //     "ExpectEndTime": ""
+        //   },
+        //   "TaskFlows": tasks,
+        //   "Milestones": milestones
+        // };
+        // var fg = true;
+        // tasks.forEach(function (t) {
+        //   if (!t.OptionalTask.PlanEndTime) {
+        //     fg = false;
+        //   }
+        // });
+        // if (!fg) {
+        //   utils.alert('有工期设置不恰当项存在!').then(function () {
+        //   });
+        //   return fg;
+        // };
+        // //if(flag){
+        // //  utils.alert('工期应大于基本工期的80%!').then(function(){
+        // //  });
+        // //  return;
+        // //};
+        // var parent = vm;
+        // var position = $mdPanel.newPanelPosition()
+        //   .relativeTo('md-tabs-wrapper')
+        //   .addPanelPosition($mdPanel.xPosition.CENTER, $mdPanel.yPosition.BELOW)
 
-          $mdPanel.open({
-            controller: function (mdPanelRef,$scope,utils) {
-              var vm = this;
-              parent.loading1 = false;
-              parent.closePanel1 = function() {
-                return mdPanelRef.close().then(function () {
-                  mdPanelRef.destroy();
-                  parent.loading1 = true;
-                  parent.closePanel1 = null;
-                });
-              }
-            },
-            controllerAs: 'vm',
-            template: '<div layout="row" class="mt-20" layout-align="center center"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div>',
-            hasBackdrop: false,
-            position: position,
-            trapFocus: true,
-            zIndex: 5000,
-            clickOutsideToClose: true,
-            escapeToClose: true,
-            focusOnOpen: true,
-            attachTo:angular.element('#content')
-          });
-          f();
-        var data;
-        vm.formWizard.Id?data=angular.extend({
-          BuildingPlanId:vm.formWizard.Id
-        },b):data=b;
-        vm.currentRoles = null;
-        (vm.formWizard.Id?api.plan.BuildPlan.update(vm.formWizard.Id,data):api.plan.BuildPlan.post(data)).then(function(r){
-            if(!vm.formWizard.Id)
-              vm.formWizard.Id = r.data.Id;
-            api.plan.BuildPlan.getBuildingPlanRoles(r.data.Id).then(function (r) {
-              vm.currentRoles = r.data.Items;
-            });
-            parent.closePanel1();
-           // f();
-          },function(err){
-            parent.closePanel1();
-            utils.alert(err.data||'提交失败');
-            return;
-          });
+        // $mdPanel.open({
+        //   controller: function (mdPanelRef, $scope, utils) {
+        //     var vm = this;
+        //     parent.loading1 = false;
+        //     parent.closePanel1 = function () {
+        //       return mdPanelRef.close().then(function () {
+        //         mdPanelRef.destroy();
+        //         parent.loading1 = true;
+        //         parent.closePanel1 = null;
+        //       });
+        //     }
+        //   },
+        //   controllerAs: 'vm',
+        //   template: '<div layout="row" class="mt-20" layout-align="center center"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div>',
+        //   hasBackdrop: false,
+        //   position: position,
+        //   trapFocus: true,
+        //   zIndex: 5000,
+        //   clickOutsideToClose: true,
+        //   escapeToClose: true,
+        //   focusOnOpen: true,
+        //   attachTo: angular.element('#content')
+        // });
+        // f();
+        // var data;
+        // vm.formWizard.Id ? data = angular.extend({
+        //   BuildingPlanId: vm.formWizard.Id
+        // }, b) : data = b;
+        // vm.currentRoles = null;
+        // (vm.formWizard.Id ? api.plan.BuildPlan.update(vm.formWizard.Id, data) : api.plan.BuildPlan.post(data)).then(function (r) {
+        //   if (!vm.formWizard.Id)
+        //     vm.formWizard.Id = r.data.Id;
+        //   // api.plan.BuildPlan.getBuildingPlanRoles(r.data.Id).then(function (r) {
+        //   //   vm.currentRoles = r.data.Items;
+        //   // });
+        //   parent.closePanel1();
+        //   // f();
+        // }, function (err) {
+        //   parent.closePanel1();
+        //   utils.alert(err.data || '提交失败');
+        //   return;
+        // });
       }
     }
-    function getDataTemplate(){
-      return api.plan.BuildPlan.getBuildPlanFlowTree(vm.formWizard.Id).then(function(r){
+    function getDataTemplate() {
+      return api.plan.BuildPlan.getBuildPlanFlowTree(vm.formWizard.Id).then(function (r) {
         r.data.RootTask.Master = r.data.RootTask.Master.map(function (item) {
           item._TaskFlowId = item.TaskFlowId;
           item.TaskFlowId = item.Id;
-          item.selectedTask = item.OptionalTasks.length==0?null:item.OptionalTasks[0];
+          item.selectedTask = item.OptionalTasks.length == 0 ? null : item.OptionalTasks[0];
           vm.getVars(item.selectedTask);
           //item.selectedTask.Duration = item.selectedTask.Duration?item.selectedTask.Duration:null;
           vm.resetName(item);
           return item;
         });
-        r.data.RootTask.Branch.forEach(function(_t){
-          _t.forEach(function(_tt){
+        r.data.RootTask.Branch.forEach(function (_t) {
+          _t.forEach(function (_tt) {
             _tt._TaskFlowId = _tt.TaskFlowId;
             _tt.TaskFlowId = _tt.Id;
-            _tt.Name = _tt.FullName||_tt.TaskFlowName;
+            _tt.Name = _tt.FullName || _tt.TaskFlowName;
           })
         });
         //vm.temp = new template({
@@ -293,121 +293,231 @@
         //  }
         //});
         vm.rootTask = r.data.RootTask;
-       // vm.reloadTask();
+        // vm.reloadTask();
       });
     }
-    vm.loadUser = function(){
-      if(vm.roleUsers&&vm.roleUsers.length) return;
-        return api.plan.users.queryById({projectId:vm.formWizard.projectId}).then(function(r){
-          vm.roleUsers = r.data;
-        })
+    vm.loadUser = function () {
+      if (vm.roleUsers && vm.roleUsers.length) return;
+      return api.plan.users.queryById({ projectId: vm.formWizard.projectId }).then(function (r) {
+        vm.roleUsers = r.data;
+      })
     }
-    vm.deleteTaskLib = function(){
-      utils.confirm('确认删除',null,'确定','取消').then(function(){
-        api.plan.BuildPlan.deleteTaskLibById(vm.formWizard.Id,vm.current.TaskFlowId).then(function(r){
+    vm.deleteTaskLib = function () {
+      utils.confirm('确认删除', null, '确定', '取消').then(function () {
+        api.plan.BuildPlan.deleteTaskLibById(vm.formWizard.Id, vm.current.TaskFlowId).then(function (r) {
           //console.log(r)
-          if(r.status == 200){
-            utils.alert('删除成功').then(function(){
+          if (r.status == 200) {
+            utils.alert('删除成功').then(function () {
               vm.showBg = false;
               vm.closeRight();
-              $timeout(function(){
+              $timeout(function () {
                 getDataTemplate();
-              },500)
+              }, 500)
             })
           }
         })
       })
     }
-    vm.stop = function(ev){
+    vm.stop = function (ev) {
       ev.stopPropagation();
     }
-    vm.sendForm = function(fn){
-      var resets = [];
-      var p = vm;
-      if(!vm.currentRoles.length){
-        utils.alert('未配置角色');
-        return;
-      }
-        $mdDialog.show({
-          controller:['$scope',function($scope){
-            p.hide = function(){
-              $mdDialog.cancel();
-            }
-          }],
-          template: '<md-dialog style="background-color: transparent;box-shadow: none;"><md-dialog-content ><div layout="row" layout-align="center center"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div><div layout="row" layout-align="center center">正在生成，请稍后...</div></md-dialog-content></md-dialog>',
-          parent: angular.element('#content'),
-          clickOutsideToClose:false,
-          hasBackdrop:true,
-          escapeToClose: true,
-          focusOnOpen: true
+    vm.sendForm = function (fn) {
+       var p = vm;
+      var tasks = [], milestones = [], flag;
+      vm.flows.reduce(function (prev, current) {
+        //if(current.show) flag=true;
+        if (!current.selected) return prev;
+        if (current.type) {
+          milestones.push({
+            Name: current.Name,
+            RelatedFlowId: current.RelatedFlowId,
+            MilestoneTime: current.end && current.end.format('YYYY-MM-DD')
+          });
+          return prev;
+        }
+        if (!current._id)
+          current._id = sxt.uuid();
+
+        tasks.push({
+          "Id": current._id,
+          "DependentTaskFlowId": prev && prev._id,
+          "TaskFlowId": current._TaskFlowId || current.TaskFlowId,
+          "FloorId": current.FloorId,
+          "FloorName": current.FloorName,
+          "Type": current.Type,
+          "OptionalTask": {
+            "TaskLibraryId": current.currentTask.TaskLibraryId,
+            "PlanBeginTime": current.start && current.start.format('YYYY-MM-DD'),
+            "PlanEndTime": current.end && current.end.format('YYYY-MM-DD'),
+            "Days": current.days
+          }
         })
-
-
-      vm.currentRoles&&vm.currentRoles.forEach(function (r) {
-        resets.push(api.plan.BuildPlan.buildingRolesReset(vm.formWizard.Id,{
-          RoleId:r.RoleId,
-          UserIds:r.Users
-        }));
+        return current;
+      }, null);
+      vm.branches.forEach(function (current) {
+        if (!current.selected) return;
+        //var f=vm.flows.find(function(_t){
+        //  return _t.TaskFlowId == current.ParentId;
+        //})
+        tasks.push({
+          "Id": sxt.uuid(),
+          "DependentTaskFlowId": null,
+          "TaskFlowId": current.TaskFlowId,
+          "FloorId": current.FloorId,
+          "FloorName": current.FloorName,
+          "Type": current.Type,
+          "OptionalTask": {
+            "TaskLibraryId": current.currentTask.TaskLibraryId,
+            "PlanBeginTime": current.start && current.start.format('YYYY-MM-DD'),
+            "PlanEndTime": current.end && current.end.format('YYYY-MM-DD'),
+            "Days": current.days
+          }
+        })
       });
-        $q.all(resets).then(function (rs) {
-          //生成计划
-          utils.alert('生成计划完成').then(function(){
-            $state.go('app.plan.gantts');
-            //fn();
-            //p.hide();
-          })
-        },function(err){
-          console.log(err)
+      var b = {
+        "Vars": vm.vars.allVars().filter(function (v) {
+          return v.key.length === 1;
+        }),
+        "BuildingPlanInput": {
+          "BuildingId": vm.formWizard.BuildingId,
+          "Name": vm.formWizard.Name,
+          "TaskTemplateId": vm.formWizard.TaskTemplateId,
+          "StartTime": vm.formWizard.StartTime,
+          "PreSalesTime": "",
+          "ExpectEndTime": ""
+        },
+        "TaskFlows": tasks,
+        "Milestones": milestones
+      };
+      var fg = true;
+      tasks.forEach(function (t) {
+        if (!t.OptionalTask.PlanEndTime) {
+          fg = false;
+        }
+      });
+      if (!fg) {
+        utils.alert('有工期设置不恰当项存在!').then(function () {
         });
+        return fg;
+      };
+      //if(flag){
+      //  utils.alert('工期应大于基本工期的80%!').then(function(){
+      //  });
+      //  return;
+      //};
+      $mdDialog.show({
+        controller: ['$scope', function ($scope) {
+          p.hide = function () {
+            $mdDialog.cancel();
+          }
+        }],
+        template: '<md-dialog style="background-color: transparent;box-shadow: none;"><md-dialog-content ><div layout="row" layout-align="center center"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div><div layout="row" layout-align="center center">正在生成，请稍后...</div></md-dialog-content></md-dialog>',
+        parent: angular.element('#content'),
+        clickOutsideToClose: false,
+        hasBackdrop: true,
+        escapeToClose: true,
+        focusOnOpen: true
+      })
+      var data;
+      vm.formWizard.Id ? data = angular.extend({
+        BuildingPlanId: vm.formWizard.Id
+      }, b) : data = b;
+      //vm.currentRoles = null;
+      (vm.formWizard.Id ? api.plan.BuildPlan.update(vm.formWizard.Id, data) : api.plan.BuildPlan.post(data)).then(function (r) {
+        if (!vm.formWizard.Id)
+          vm.formWizard.Id = r.data.Id;
+          p.hide();
+           $state.go('app.plan.gantts');
+      }, function (err) {
+        utils.alert(err.data || '提交失败');
+        return;
+      });
+      // var resets = [];
+     
+      // if(!vm.currentRoles.length){
+      //   utils.alert('未配置角色');
+      //   return;
+      // }
+      // $mdDialog.show({
+      //   controller:['$scope',function($scope){
+      //     p.hide = function(){
+      //       $mdDialog.cancel();
+      //     }
+      //   }],
+      //   template: '<md-dialog style="background-color: transparent;box-shadow: none;"><md-dialog-content ><div layout="row" layout-align="center center"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div><div layout="row" layout-align="center center">正在生成，请稍后...</div></md-dialog-content></md-dialog>',
+      //   parent: angular.element('#content'),
+      //   clickOutsideToClose:false,
+      //   hasBackdrop:true,
+      //   escapeToClose: true,
+      //   focusOnOpen: true
+      // })
+
+
+      // vm.currentRoles&&vm.currentRoles.forEach(function (r) {
+      //   resets.push(api.plan.BuildPlan.buildingRolesReset(vm.formWizard.Id,{
+      //     RoleId:r.RoleId,
+      //     UserIds:r.Users
+      //   }));
+      // });
+      // $q.all(resets).then(function (rs) {
+      //   //生成计划
+      //   utils.alert('生成计划完成').then(function(){
+      //     $state.go('app.plan.gantts');
+      //     //fn();
+      //     //p.hide();
+      //   })
+      // },function(err){
+      //   console.log(err)
+      // });
 
 
     }
-    vm.change = function(){
+    vm.change = function () {
       vm.inputChange = true;
     }
-    var regionName1='',regionName2='',regionName3='';
-    $scope.$watch('vm.formWizard.projectId',function(){
+    var regionName1 = '', regionName2 = '', regionName3 = '';
+    $scope.$watch('vm.formWizard.projectId', function () {
       vm.data.sections = null;
-      vm.data.buildings=null;
-      if(vm.formWizard&&vm.formWizard.projectId&&!vm.inputChange){
-        regionName1='';
-        var f=vm.data.projects.find(function(r){
+      vm.data.buildings = null;
+      if (vm.formWizard && vm.formWizard.projectId && !vm.inputChange) {
+        regionName1 = '';
+        var f = vm.data.projects.find(function (r) {
           return r.ProjectID == vm.formWizard.projectId;
         })
-        if(f){
+        if (f) {
           regionName1 = f.ProjectName;
           vm.formWizard.Name = regionName1;
         }
-        api.plan.TaskTemplates.GetList({Skip:0,Limit:100,ProjectId:vm.formWizard.projectId}).then(function (r) {
-          vm.data.templates = r.data.Items||[];
+        api.plan.TaskTemplates.GetList({ Skip: 0, Limit: 100, ProjectId: vm.formWizard.projectId }).then(function (r) {
+          vm.data.templates = r.data.Items || [];
         })
       }
     });
-    $scope.$watch('vm.formWizard.sectionId',function(){
-      vm.data.buildings=null;
-      if(vm.formWizard&&vm.formWizard.sectionId&&!vm.inputChange){
+    $scope.$watch('vm.formWizard.sectionId', function () {
+      vm.data.buildings = null;
+      if (vm.formWizard && vm.formWizard.sectionId && !vm.inputChange) {
         regionName2 = '';
-        var f=vm.data.sections.find(function(r){
+        var f = vm.data.sections.find(function (r) {
           return r.RegionID == vm.formWizard.sectionId;
         })
-        if(f){
+        if (f) {
           regionName2 = f.RegionName;
-          vm.formWizard.Name = regionName1+regionName2;
+          vm.formWizard.Name = regionName1 + regionName2;
         }
       }
     })
-    $scope.$watch('vm.formWizard.BuildingId',function(){
-      if(vm.formWizard&&vm.formWizard.BuildingId&&!vm.inputChange){
+    $scope.$watch('vm.formWizard.BuildingId', function () {
+      if (vm.formWizard && vm.formWizard.BuildingId && !vm.inputChange) {
         regionName3 = '';
-        var f=vm.data.buildings.find(function(r){
+        var f = vm.data.buildings.find(function (r) {
           return r.RegionID == vm.formWizard.BuildingId;
         })
-        if(f){
+        if (f) {
           regionName3 = f.RegionName;
-          vm.formWizard.Name = regionName1+regionName2+regionName3;
+          vm.formWizard.Name = regionName1 + regionName2 + regionName3;
         }
       }
     })
 
   }
-})(angular,undefined);
+})(angular, undefined);

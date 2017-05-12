@@ -80,7 +80,7 @@
       //}
     });*/
     var graphTemplate = new $window.GitGraph.Template({
-      colors: [ "#fb9013", "#ffba13", "#93ed12","#11ea6d","#05ecce","0ab5f4" ],
+      colors: [ "#fb9013", "#ffba13", "#93ed12","#11ea6d","#05ecce","#0ab5f4",'#FF9903' ],
       branch: {
         lineWidth: 1,
         spacingX: 20,
