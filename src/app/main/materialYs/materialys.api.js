@@ -94,6 +94,16 @@
         GetMaterialPlanInfolById: function (id) {
           return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanInfolById/' + id));
         },
+
+        //图片
+        MaterialFile: $http.db({
+          _id: 'materialFile',
+          idField: 'Id',
+          upload: true
+        }).bind(function (data) {
+          return $http.post('/api/MaterialPlan/MaterialFileAsync', data);
+        }),
+
         PostCheckInfo: $http.db({
           _id: 'materialPlanCheckInfo',
           idField: 'Id',
@@ -129,6 +139,7 @@
         }).bind(function (data) {
           return $http.post('/api/MaterialPlan/IntoFactoryMaterialBatch', data);
         }),
+
         MaterialInspection: $http.db({
           _id: 'materialBatchInspection',
           idField: 'Id',

@@ -58,6 +58,7 @@
                   <p ng-if="vm.data.PlanModel.PlanDetail.SupplyType == 1">甲供</p>
                   <p ng-if="vm.data.PlanModel.PlanDetail.SupplyType == 2">认质认价</p>
                   <p ng-if="vm.data.PlanModel.PlanDetail.SupplyType == 4">甲指乙供</p>
+                  <p ng-if="vm.data.PlanModel.PlanDetail.SupplyType == 8">乙供</p>
                   <md-divider></md-divider>
                 </md-list-item>
                 <md-list-item>
@@ -152,7 +153,7 @@
               <md-divider></md-divider>
             </md-list-item>
             <md-list-item>
-              <p>合格证</p>
+              <p>送货单</p>
               <div flex layout="row" class="materialImgWrap" layout-align="end center">
                 <img ng-repeat="img in item.Images | filter:{OptionType:2048}:true" flex="50" sxt-images="item.Images"
                      ng-src="{{img.ImageByte}}"/>

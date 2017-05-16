@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function materialPlanInspection($rootScope, $scope, api, utils, $stateParams, $state, sxt, xhUtils, auth, $filter, remote) {
+  function materialPlanInspection($rootScope, $scope, api, utils, $stateParams, $state, sxt, xhUtils, auth, $filter, remote,$q) {
     var vm = this;
     var user = auth.current();
     vm.data = {};
@@ -47,8 +47,12 @@
         return;
       }
 
-      vm.data.MaterialPlanFiles = vm.samplingProcessImgs.concat(vm.checkListImgs);
-      api.xhsc.materialPlan.MaterialInspection(vm.data).then(function (q) {
+      vm.Files = vm.samplingProcessImgs.concat(vm.checkListImgs);
+      var q = [api.xhsc.materialPlan.MaterialInspection(vm.data)];
+      vm.Files.forEach(function (item) {
+        q.push(api.xhsc.materialPlan.MaterialFile(item));
+      })
+      $q.all(q).then(function (r) {
         utils.alert("提交成功", null, function () {
           remote.offline.query().then(function (r) {
             var list = r.data.filter(function (item) {
@@ -76,24 +80,6 @@
     });
 
     vm.addPhoto = function (type) {
-
-      switch (type) {
-        case 16: {
-          if (vm.samplingProcessImgs.length == 2) {
-            utils.alert('抽样过程最多拍照两张照片!');
-            return;
-          }
-          break;
-        }
-        case 32: {
-          if (vm.checkListImgs.length == 2) {
-            utils.alert('检查单最多拍照两张照片!');
-            return;
-          }
-          break;
-        }
-      }
-
       //拍照事件
       xhUtils.photo().then(function (image) {
         if (image) {

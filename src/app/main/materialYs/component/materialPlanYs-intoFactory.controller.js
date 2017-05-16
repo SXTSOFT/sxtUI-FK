@@ -13,14 +13,14 @@
     });
 
   /** @ngInject */
-  function materialIntoFactory($rootScope, $scope, api, utils, $state, $stateParams, sxt, xhUtils, auth, $filter, remote) {
+  function materialIntoFactory($rootScope, $scope, api, utils, $state, $stateParams, sxt, xhUtils, auth, $filter, remote,$q) {
     var vm = this;
     var user = auth.current();
     vm.data = {};
     vm.data.ApproachType = $stateParams.status == 1 ? 1 : 0;
     vm.outPutDate = new Date();
     vm.data.ApproachTime = $filter('date')(new Date(), 'yyyy-MM-dd hh:mm:ss');
-    vm.data.MaterialPlanFiles = [];
+    //vm.data.MaterialPlanFiles = [];
     vm.vehicleImgs = [];
     vm.goodsImgs = [];
     vm.rummagerImgs = [];
@@ -34,6 +34,7 @@
       vm.data.Id = data.Id;
       vm.data.Unit = data.Unit;
       vm.data.PlanId = data.PlanId;
+      vm.data.GroupId = sxt.uuid();
       vm.Brands = data.Brands.split(/、|,|，|；|;/) || [];
       if (vm.data.ApproachType == 1) {
         vm.data.Id = sxt.uuid();
@@ -118,10 +119,16 @@
         return;
       }
 
-      vm.data.MaterialPlanFiles = vm.vehicleImgs.concat(vm.goodsImgs, vm.rummagerImgs, vm.CertificateImgs);
-      api.xhsc.materialPlan.IntoFactoryMaterialBatch(vm.data).then(function (q) {
-        utils.alert("提交成功", null, function () {
+      
 
+      vm.Files = vm.vehicleImgs.concat(vm.goodsImgs, vm.rummagerImgs, vm.CertificateImgs);
+      var q = [api.xhsc.materialPlan.IntoFactoryMaterialBatch(vm.data)];
+      vm.Files.forEach(function (item) {
+        q.push(api.xhsc.materialPlan.MaterialFile(item));
+      })
+
+      $q.all(q).then(function (r) {
+        utils.alert("提交成功", null, function () {
           remote.offline.query().then(function (r) {
             var list = r.data.filter(function (item) {
               return item.planId == vm.data.PlanId;
@@ -139,7 +146,7 @@
 
           $state.go("app.xhsc.materialys.materialdownload");
         });
-      });
+      })
     });
 
     $scope.$on("$destroy", function () {
@@ -154,38 +161,6 @@
     });
 
     vm.addPhoto = function (type) {
-      switch (type) {
-        case 256: {
-          if (vm.vehicleImgs.length == 2) {
-            utils.alert('车辆最多拍照两张照片!');
-            return;
-          }
-          break;
-        }
-        case 512: {
-          if (vm.goodsImgs.length == 2) {
-            utils.alert('货物最多拍照两张照片!');
-            return;
-          }
-          break;
-        }
-        case 1024: {
-          if (vm.rummagerImgs.length == 2) {
-            utils.alert('配合检查人最多拍照两张照片!');
-            return;
-          }
-          break;
-        }
-        case 2048: {
-          if (vm.CertificateImgs.length == 2) {
-            utils.alert('合格证最多拍照两张照片!');
-            return;
-          }
-          break;
-        }
-      }
-
-
       xhUtils.photo().then(function (image) {
         if (image) {
           // var image;
@@ -216,7 +191,8 @@
       var _id = sxt.uuid();
       var img = {
         Id: id,
-        BatchId: $stateParams.BatchId,
+        //BatchId: $stateParams.BatchId,
+        GroupId:vm.data.GroupId,
         OptionType: type,
         ApproachStage: 1,
         ImageName: _id + ".jpeg",
@@ -230,7 +206,8 @@
       var _id = sxt.uuid();
       var img = {
         Id: sxt.uuid(),
-        BatchId: $stateParams.BatchId,
+        //BatchId: $stateParams.BatchId,
+        GroupId:vm.data.GroupId,
         OptionType: type,
         ApproachStage: 1,
         ImageName: _id + ".jpeg",

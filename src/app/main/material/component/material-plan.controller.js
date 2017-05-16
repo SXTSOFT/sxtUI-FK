@@ -22,7 +22,8 @@
     vm.SupplyType = [
       { type: 1, name: '甲供' },
       { type: 2, name: '认质认价' },
-      { type: 4, name: '甲指乙供' }
+      { type: 4, name: '甲指乙供' },
+      { type: 8, name: '乙供' }
     ];
     var dateFilter = $filter('date')
     vm.data.PlanTime = new Date();

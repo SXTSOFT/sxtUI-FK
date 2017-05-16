@@ -42,6 +42,7 @@
       db("materialBatchInspection").destroy();
       db("materialUnqualifiedExit").destroy();
       db("materialBatchProgress").destroy();
+      db("materialFile").destroy();
     }
 
     loadSection();

@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function materialPlanYsCheckInfo($rootScope, $scope, api, utils, $stateParams, xhUtils, sxt, $state, auth, $filter, remote) {
+  function materialPlanYsCheckInfo($rootScope, $scope, api, utils, $stateParams, xhUtils, sxt, $state, auth, $filter, remote,$q) {
 
     var vm = this;
     vm.data = {};
@@ -32,34 +32,7 @@
     });
 
     vm.addPhoto = function (type) {
-      switch (type) {
-        case 1: {
-          if (vm.vehicleImgs.length == 2) {
-            utils.alert('车辆最多拍照两张照片!');
-            return;
-          }
-          break;
-        }
-        case 2: {
-          if (vm.goodsImgs.length == 2) {
-            utils.alert('货物最多拍照两张照片!');
-            return;
-          }
-          break;
-        }
-        case 4: {
-          if (vm.checkerImgs.length == 2) {
-            utils.alert('验收人最多拍照两张照片!');
-            return;
-          }
-          break;
-        }
-        default:
-          if (vm.certificateImgs.length == 2) {
-            utils.alert('合格证最多拍照两张照片!');
-            return;
-          }
-      }
+      
       //拍照事件
       xhUtils.photo().then(function (image) {
 
@@ -176,12 +149,16 @@
         return;
       }
 
-      vm.images = vm.vehicleImgs.concat(vm.goodsImgs).concat(vm.checkerImgs).concat(vm.certificateImgs);
-      vm.data.BatchFile = vm.images;
+      vm.Files = vm.vehicleImgs.concat(vm.goodsImgs).concat(vm.checkerImgs).concat(vm.certificateImgs);
       if (!vm.data.WgCheck) {
         vm.data.IsInspection = null;
       }
-      api.xhsc.materialPlan.PostCheckInfo(vm.data).then(function (r) {
+
+      var q = [api.xhsc.materialPlan.PostCheckInfo(vm.data)];
+      vm.Files.forEach(function (item) {
+        q.push(api.xhsc.materialPlan.MaterialFile(item));
+      })
+      $q.all(q).then(function (r) {
         utils.alert('提交成功!', null, function () {
           remote.offline.query().then(function (r) {
             var list = r.data.filter(function (item) {
@@ -194,7 +171,7 @@
           api.xhsc.materialPlan.deleteMaterialPlanBatch(vm.data.Id);
           $state.go("app.xhsc.materialys.materialdownload");
         });
-      })
+      });
     });
   }
 })(angular, undefined);

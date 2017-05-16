@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function inspectionReport($rootScope, $scope, api, utils, $stateParams, sxt, $state, xhUtils, $filter, remote) {
+  function inspectionReport($rootScope, $scope, api, utils, $stateParams, sxt, $state, xhUtils, $filter, remote,$q) {
     var vm = this;
     vm.data = {};
     vm.data.Id = $stateParams.id;
@@ -37,8 +37,12 @@
         return;
       }
 
-      vm.data.BatchFile = vm.reportImgs;
-      api.xhsc.materialPlan.PostReportInfo(vm.data).then(function (r) {
+      var q = [api.xhsc.materialPlan.PostReportInfo(vm.data)];
+      vm.reportImgs.forEach(function (item) {
+        q.push(api.xhsc.materialPlan.MaterialFile(item));
+      })
+
+      $q.all(q).then(function (r) {
         utils.alert('提交成功!', null, function () {
           remote.offline.query().then(function (r) {
             var list = r.data.filter(function (item) {
@@ -61,11 +65,7 @@
     });
 
     vm.addPhoto = function (type) {
-      if(vm.reportImgs.length == 2){
-        utils.alert('报告单最多拍照两张照片!');
-        return;
-      }
-
+      
       //拍照事件
       xhUtils.photo().then(function (image) {
         if (image) {

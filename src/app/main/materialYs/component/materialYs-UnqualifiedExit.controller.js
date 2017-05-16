@@ -12,13 +12,13 @@
     });
 
   /** @ngInject */
-  function materialUnqualifiedExit($rootScope,$scope,api,utils,$stateParams,$state,sxt,xhUtils,auth,$filter, remote){
+  function materialUnqualifiedExit($rootScope,$scope,api,utils,$stateParams,$state,sxt,xhUtils,auth,$filter, remote,$q){
     var vm = this;
     var user = auth.current();
     vm.data = {};
     vm.data.Id = $stateParams.id;
     vm.data.ExitReason = '材料不合格';
-    vm.data.MaterialFiles = [];
+    vm.MaterialFiles = [];
     vm.data.ExitOperatorTime = $filter('date')(new Date(),'yyyy-MM-dd hh:mm:ss');
     vm.data.ExitWitness = user.Name;
     vm.data.Unit = $stateParams.unit;
@@ -36,12 +36,17 @@
         utils.alert('退场见证人不能为空');
         return;
       }
-      if(vm.data.MaterialFiles.length == 0){
+      if(vm.MaterialFiles.length == 0){
         utils.alert('请至少上传一张材料退场照片');
         return;
       }
 
-      api.xhsc.materialPlan.materialUnqualifiedExit(vm.data).then(function (q) {
+      var q = [api.xhsc.materialPlan.materialUnqualifiedExit(vm.data)];
+      vm.MaterialFiles.forEach(function (item) {
+        q.push(api.xhsc.materialPlan.MaterialFile(item));
+      })
+
+      $q.all(q).then(function (r) {
         utils.alert("提交成功", null, function () {
           remote.offline.query().then(function (r) {
             var list = r.data.filter(function (item) {
@@ -54,7 +59,7 @@
           api.xhsc.materialPlan.deleteMaterialPlanBatch(vm.data.Id);
           $state.go("app.xhsc.materialys.materialdownload");
         });
-      });
+      })
     });
 
     //删除图片操作
@@ -69,16 +74,12 @@
     });
 
     vm.addPhoto = function (type) {
-      if(vm.data.MaterialFiles.length == 2){
-        utils.alert('材料退场最多拍照两张照片!');
-        return;
-      }
-
+      
       //拍照事件
       xhUtils.photo().then(function (image) {
         if(image){
         // var image;
-          photo(type,vm.data.MaterialFiles,image);
+          photo(type,vm.MaterialFiles,image);
           vm.data.ExitOperatorTime = new Date().Format('yyyy-MM-dd hh:mm:ss');
         }
       });
@@ -89,7 +90,7 @@
         return item.batchId == $stateParams.id;
       })
       list.forEach(function (item) {
-        photo2(item.Id, item.type, vm.data.MaterialFiles, item.img);
+        photo2(item.Id, item.type, vm.MaterialFiles, item.img);
       })
     })
 
