@@ -91,7 +91,9 @@
       }
       scope.save =  function () {
         var dataURL = canvas.toDataURL('image/jpeg',0.5);
-        scope.onAnswer && scope.onAnswer({$base64Url:dataURL});
+        $timeout(function () {
+          scope.onAnswer && scope.onAnswer({$base64Url:dataURL});
+        },500)
       }
 
       function findxy(res, e) {
