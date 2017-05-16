@@ -1,7 +1,8 @@
 <md-tabs md-border-bottom flex layout="column">
   <md-tab label="任务流程"  >
     <md-tab-content flex layout-fill layout="row">
-      <md-content layout="row" flex ms-scroll>
+      <md-content layout="row" flex ms-scroll >
+        <div style="min-width:900px;max-width:100%;width:100%;" layout="row" layout-align="start start">
         <div flex="100" layout="row"  layout-align="center start" class="mt-20" ng-show="vm.loading">
           <md-progress-circular md-mode="indeterminate"></md-progress-circular>
         </div>
@@ -84,20 +85,20 @@
               <td ng-if="vm.data.Level==0" align="center"><input  ng-if="flow.line==0" type="checkbox" ng-model="flow.IsRequired" ng-click="vm.updateFlow(flow)"></td>
               <td ng-if="vm.data.Level == 0"><input ng-if="flow.line==0" style="width:90%;color:#C62828" placeholder="无" type="text" ng-blur="vm.updateExpression(flow)" ng-model="flow.Expression" ></td>
               <td ng-if="vm.data.Level==0">
-                <div style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.selectOptionalTask(flow)">{{flow.OptionalTask||'未选择'}}</div>
+                <div style="white-space: nowrap;width: 80px;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.selectOptionalTask(flow)">{{flow.OptionalTask||'未选择'}}</div>
               </td>
               <!--<td ng-if="vm.data.Level==1"><input type="text" style="width:20px" placeholder="无" ng-model="flow.ReservedEndDays" ng-blur="vm.updateReservedEndDays(flow)"></td>-->
               <td>
-                <div  style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.selectUsers(flow,7)">
+                <div  style="white-space: nowrap;width: 60px;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.selectUsers(flow,7)">
                   {{flow.Notice7||'未选择'}}
                 </div>
               </td>
               <td>
-                <div  style="white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.selectUsers(flow,8)">
+                <div  style="white-space: nowrap;width: 60px;overflow: hidden;text-overflow: ellipsis;" ng-click="vm.selectUsers(flow,8)">
                   {{flow.Notice8||'未选择'}}
                 </div>
               </td>
-              <td ng-if="vm.data.Level==0">
+              <td ng-if="vm.data.Level==0" style="width: 110px;min-width: 110px">
                 <input ng-show="!flow.IsFloor" ng-if="flow.line===0" style="width: 90%" placeholder="无里程碑" type="text" ng-blur="vm.updateMilestone(flow)"  ng-model="flow.Milestone">
                 <span ng-if="flow.line!==0"><input  style="width:100%;color:#C62828" placeholder="无介入点" type="text" ng-blur="vm.updateExpression(flow)" ng-model="flow.Expression"></span>
               </td>
@@ -107,6 +108,7 @@
         </div>
         <div flex="20" style="padding-top:60px">
           <div id="gitGraph"></div>
+        </div>
         </div>
       </md-content>
     </md-tab-content>

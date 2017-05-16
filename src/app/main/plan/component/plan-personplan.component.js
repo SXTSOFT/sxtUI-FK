@@ -93,18 +93,19 @@
       console.log(vm.tasksList)
     })
     vm.showTaskD = function(t){
+      if(t.UploadPhotoFileId){
         api.plan.fileService.get(t.UploadPhotoFileId).then(function(r){
           if(r.data.Base64){
             t.images=[{
               url:r.data.Base64,
-              alt:task.EndDescription||''
+              alt:t.EndDescription||''
             }]
             xhUtils.playPhoto(t.images)
           }else if(t.EndDescription){
-            var msg = '反馈信息:'+task.EndDescription+'，无图片';
+            var msg = '反馈信息:'+t.EndDescription+'，无图片';
             utils.alert(msg)
           }else{
-            utils.alert('无图片,无反馈信息')
+            utils.alert('无图片，无反馈信息')
             //$mdToast.show(
             //  $mdToast.simple()
             //    .textContent(task.EndDescription)
@@ -113,7 +114,13 @@
             //);
           }
 
+        },function(err){
+
         })
+      }else{
+        utils.alert('无图片，无反馈信息')
+      }
+        
     }
     vm.startTask = function(t){
       var time = new Date();

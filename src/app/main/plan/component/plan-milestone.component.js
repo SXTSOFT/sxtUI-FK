@@ -13,7 +13,7 @@
     })
 
   /**@ngInject*/
-  function planMilestoneController($stateParams,api,$rootScope,$mdDialog,utils){
+  function planMilestoneController($stateParams,api,$rootScope,$mdDialog,utils,$scope){
     var vm = this;
     vm.current = null;
     vm.tempid= $stateParams.id;
@@ -67,7 +67,7 @@
     $rootScope.$on('md-calendar-change', function(event,data) {
       //if(vm.enter) return;
       //vm.enter = true;
-      if(!data) return;
+      if(!data||!vm.current) return;
       api.plan.BuildPlan.setMileStoneTime($stateParams.id,vm.current.Id,vm.current.setTime).then(function(r){
         //
         if(r.data.State == 1){
@@ -119,6 +119,10 @@
         }
       })
       //console.log(event,data,vm.current)
+    });
+    $scope.$on('$destroy',function(){
+      console.log('destroy')
+      vm.current = null;
     })
   }
 })(angular,undefined);
