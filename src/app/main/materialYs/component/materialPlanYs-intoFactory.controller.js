@@ -13,7 +13,7 @@
     });
 
   /** @ngInject */
-  function materialIntoFactory($rootScope, $scope, api, utils, $state, $stateParams, sxt, xhUtils, auth, $filter, remote,$q) {
+  function materialIntoFactory($rootScope, $scope, api, utils, $state, $stateParams, sxt, xhUtils, auth, $filter, remote, $q) {
     var vm = this;
     var user = auth.current();
     vm.data = {};
@@ -35,7 +35,7 @@
       vm.data.Unit = data.Unit;
       vm.data.PlanId = data.PlanId;
       vm.data.GroupId = sxt.uuid();
-      vm.Brands = data.Brands.split(/、|,|，|；|;/) || [];
+      vm.Brands = data.Brands ? data.Brands.split(/、|,|，|；|;/) : [];
       if (vm.data.ApproachType == 1) {
         vm.data.Id = sxt.uuid();
       }
@@ -119,7 +119,7 @@
         return;
       }
 
-      
+
 
       vm.Files = vm.vehicleImgs.concat(vm.goodsImgs, vm.rummagerImgs, vm.CertificateImgs);
       var q = [api.xhsc.materialPlan.IntoFactoryMaterialBatch(vm.data)];
@@ -192,7 +192,7 @@
       var img = {
         Id: id,
         //BatchId: $stateParams.BatchId,
-        GroupId:vm.data.GroupId,
+        GroupId: vm.data.GroupId,
         OptionType: type,
         ApproachStage: 1,
         ImageName: _id + ".jpeg",
@@ -207,7 +207,7 @@
       var img = {
         Id: sxt.uuid(),
         //BatchId: $stateParams.BatchId,
-        GroupId:vm.data.GroupId,
+        GroupId: vm.data.GroupId,
         OptionType: type,
         ApproachStage: 1,
         ImageName: _id + ".jpeg",
