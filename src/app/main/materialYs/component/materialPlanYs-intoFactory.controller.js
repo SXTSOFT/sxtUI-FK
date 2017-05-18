@@ -40,21 +40,21 @@
         vm.data.Id = sxt.uuid();
       }
 
-      api.xhsc.materialPlan.getMaterialBatchIntoFactory().then(function (r) {
-        if (r.data && r.data.length > 0) {
-          var _subCount = 0;
-          r.data.forEach(function (e) {
-            if (vm.data.PlanId == e.PlanId) {
-              _subCount = parseFloat(e.ApproachCount) + _subCount;
-            }
-          });
+      // api.xhsc.materialPlan.getMaterialBatchIntoFactory().then(function (r) {
+      //   if (r.data && r.data.length > 0) {
+      //     var _subCount = 0;
+      //     r.data.forEach(function (e) {
+      //       if (vm.data.PlanId == e.PlanId) {
+      //         _subCount = parseFloat(e.ApproachCount) + _subCount;
+      //       }
+      //     });
 
-          _subCount = data.PlanCount - _subCount;
-          vm.data.ApproachCount = _subCount > 0 ? _subCount : 0;
-        } else {
-          vm.data.ApproachCount = parseFloat(data.PlanCount);
-        }
-      });
+      //     _subCount = data.PlanCount - _subCount;
+      //     vm.data.ApproachCount = _subCount > 0 ? _subCount : 0;
+      //   } else {
+      //     vm.data.ApproachCount = parseFloat(data.PlanCount);
+      //   }
+      // });
     });
 
     remote.offline.query().then(function (r) {
