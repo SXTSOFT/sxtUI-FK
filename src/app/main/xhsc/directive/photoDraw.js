@@ -90,7 +90,7 @@
         }
       }
       scope.save =  function () {
-        var dataURL = canvas.toDataURL('image/jpeg',0.5);
+        var dataURL = canvas.toDataURL('image/jpeg');
         $timeout(function () {
           scope.onAnswer && scope.onAnswer({$base64Url:dataURL});
         },500)
@@ -136,15 +136,27 @@
           $event.stopPropagation ();
         }
         $cordovaCamera.getPicture ({
-          quality: 50,
+          // quality: 50,
+          // destinationType: 0,
+          // // sourceType: s,
+          // allowEdit: false,
+          // encodingType: 0,
+          // targetHeight:600,
+          // encodingType:0,
+          // saveToPhotoAlbum: true,
+          // correctOrientation: true
+
+          // quality: 50,
+          targetWidth: 600,
+          targetHeight: 600,
           destinationType: 0,
-          // sourceType: s,
+          sourceType: 1,
           allowEdit: false,
           encodingType: 0,
-          targetHeight:600,
-          encodingType:0,
           saveToPhotoAlbum: true,
           correctOrientation: true
+
+
         }).then (function (imageData) {
           if (imageData) {
             image = new Image();
