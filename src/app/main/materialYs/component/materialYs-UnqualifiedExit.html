@@ -26,10 +26,17 @@
       <md-subheader class="md-no-sticky" style="font-size: 1.1em;background-color: #F2F2F2;">退场照片</md-subheader>
       <md-divider class="md-no-sticky"></md-divider>
       <md-list-item style="padding-right:0;">
-        <div flex="70" ng-repeat="img in vm.MaterialFiles" sxt-images-material="vm.MaterialFiles" style="text-align: center;margin:5px 0;">
+        <!--<div flex="70" ng-repeat="img in vm.MaterialFiles" sxt-images-material="vm.MaterialFiles" style="text-align: center;margin:5px 0;">
           <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
         </div>
-        <md-button flex="30" class="md-secondary" ng-click="vm.addPhoto(128)" style="padding-right: 0;"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+        <md-button flex="30" class="md-secondary" ng-click="vm.addPhoto(128)" style="padding-right: 0;"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>-->
+        <div flex>
+        <md-button ng-if="vm.MaterialFiles.length>0" style="margin:6px 0" class="md-secondary" sxt-images-material="vm.MaterialFiles">
+          <md-icon md-font-icon="icon-picture" class="icon s40"></md-icon>
+          <span>{{ vm.MaterialFiles.length }}</span>
+        </md-button>
+        <images-material class="md-secondary" files="vm.MaterialFiles" batch-id="vm.data.Id" type="128" stage="32" edit="true"></images-material>
+      </div>
       </md-list-item>
       <md-divider class="md-no-sticky"></md-divider>
     </md-list>

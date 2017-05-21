@@ -27,34 +27,62 @@
     <md-subheader class="md-no-sticky" style="font-size: 1.1em;background-color: #F2F2F2;">验收照片</md-subheader>
     <md-list-item style="padding-right: 0;">
       <p flex="30" class="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">车辆</p>
-      <div flex="30" ng-repeat="img in vm.vehicleImgs" sxt-images-material="vm.vehicleImgs" style="text-align: center;margin: 5px 0;">
+      <div flex>
+        <md-button ng-if="vm.vehicleImgs.length>0" style="margin:6px 0" class="md-secondary" sxt-images-material="vm.vehicleImgs">
+          <md-icon md-font-icon="icon-picture" class="icon s40"></md-icon>
+          <span>{{ vm.vehicleImgs.length }}</span>
+        </md-button>
+        <images-material class="md-secondary" files="vm.vehicleImgs" batch-id="vm.data.Id" type="1" stage="2" edit="true"></images-material>
+      </div>
+      <!--<div flex="30" ng-repeat="img in vm.vehicleImgs" sxt-images-material="vm.vehicleImgs" style="text-align: center;margin: 5px 0;">
         <img ng-src="{{img.ImageByte}}" class="uploadPhoto" flex="95" style="display: block;"/>
       </div>
-      <md-button class="md-secondary" ng-click="vm.addPhoto(1)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+      <md-button class="md-secondary" ng-click="vm.addPhoto(1)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>-->
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item style="padding-right: 0;">
       <label flex="30" class="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">货物</label>
-      <div flex="30" ng-repeat="img in vm.goodsImgs" sxt-images-material="vm.goodsImgs" style="text-align: center;margin: 5px 0;">
+      <div flex>
+        <md-button ng-if="vm.goodsImgs.length>0" style="margin:6px 0" class="md-secondary" sxt-images-material="vm.goodsImgs">
+          <md-icon md-font-icon="icon-picture" class="icon s40"></md-icon>
+          <span>{{ vm.goodsImgs.length }}</span>
+        </md-button>
+        <images-material class="md-secondary" files="vm.goodsImgs" batch-id="vm.data.Id" type="2" stage="2" edit="true"></images-material>
+      </div>
+      <!--<div flex="30" ng-repeat="img in vm.goodsImgs" sxt-images-material="vm.goodsImgs" style="text-align: center;margin: 5px 0;">
         <img ng-src="{{img.ImageByte}}" class="uploadPhoto" flex="95" style="display: block;"/>
       </div>
-      <md-button class="md-secondary" ng-click="vm.addPhoto(2)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+      <md-button class="md-secondary" ng-click="vm.addPhoto(2)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>-->
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item style="padding-right: 0;">
       <label flex="30" class="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">验收人</label>
-      <div flex="30" ng-repeat="img in vm.checkerImgs" sxt-images-material="vm.checkerImgs" style="text-align: center;margin:5px 0;">
+      <div flex>
+        <md-button ng-if="vm.checkerImgs.length>0" style="margin:6px 0" class="md-secondary" sxt-images-material="vm.checkerImgs">
+          <md-icon md-font-icon="icon-picture" class="icon s40"></md-icon>
+          <span>{{ vm.checkerImgs.length }}</span>
+        </md-button>
+        <images-material class="md-secondary" files="vm.checkerImgs" batch-id="vm.data.Id" type="4" stage="2" edit="true"></images-material>
+      </div>
+      <!--<div flex="30" ng-repeat="img in vm.checkerImgs" sxt-images-material="vm.checkerImgs" style="text-align: center;margin:5px 0;">
         <img ng-src="{{img.ImageByte}}" class="uploadPhoto" flex="95" style="display: block;"/>
       </div>
-      <md-button class="md-secondary" ng-click="vm.addPhoto(4)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+      <md-button class="md-secondary" ng-click="vm.addPhoto(4)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>-->
     </md-list-item>
     <md-divider></md-divider>
     <md-list-item style="padding-right: 0;">
       <label flex="30" class="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">合格证</label>
-      <div flex="30" ng-repeat="img in vm.certificateImgs" sxt-images-material="vm.certificateImgs" style="text-align: center;margin:5px 0;">
+      <div flex>
+        <md-button ng-if="vm.certificateImgs.length>0" style="margin:6px 0" class="md-secondary" sxt-images-material="vm.certificateImgs">
+          <md-icon md-font-icon="icon-picture" class="icon s40"></md-icon>
+          <span>{{ vm.certificateImgs.length }}</span>
+        </md-button>
+        <images-material class="md-secondary" files="vm.certificateImgs" batch-id="vm.data.Id" type="8" stage="2" edit="true"></images-material>
+      </div>
+      <!--<div flex="30" ng-repeat="img in vm.certificateImgs" sxt-images-material="vm.certificateImgs" style="text-align: center;margin:5px 0;">
         <img ng-src="{{img.ImageByte}}" class="uploadPhoto" flex="95" style="display: block;"/>
       </div>
-      <md-button class="md-secondary" ng-click="vm.addPhoto(8)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+      <md-button class="md-secondary" ng-click="vm.addPhoto(8)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>-->
     </md-list-item>
     <md-divider></md-divider>
   </md-list>

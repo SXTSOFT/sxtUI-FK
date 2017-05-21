@@ -63,15 +63,15 @@
       })
       list.forEach(function (item) {
         switch (item.type) {
-          case 1: {
+          case "1": {
             photo2(item.Id, item.type, vm.vehicleImgs, item.img);
             break;
           }
-          case 2: {
+          case "2": {
             photo2(item.Id, item.type, vm.goodsImgs, item.img);
             break;
           }
-          case 4: {
+          case "4": {
             photo2(item.Id, item.type, vm.checkerImgs, item.img);
             break;
           }

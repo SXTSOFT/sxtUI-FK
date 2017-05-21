@@ -7,10 +7,11 @@
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
       <label flex="50">进场数量</label>
-      <md-input-container flex  style="margin:0;padding: 0;">
-        <input type="number" ng-model="vm.data.ApproachCount" style="top: 10px;position: relative; text-align: right;" min="0" required />
+      <md-input-container flex style="margin:0;padding: 0;">
+        <input type="number" ng-model="vm.data.ApproachCount" style="top: 10px;position: relative; text-align: right;" min="0" required
+        />
       </md-input-container>
-       <label style="text-align:right;" flex="10">{{vm.data.Unit}}</label>
+      <label style="text-align:right;" flex="10">{{vm.data.Unit}}</label>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item style="height: 54px;">
@@ -22,7 +23,7 @@
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
       <label flex="50">供货方</label>
-      <md-input-container flex="50"style="margin:0;padding: 0;">
+      <md-input-container flex="50" style="margin:0;padding: 0;">
         <input type="text" ng-model="vm.data.Supplier" style="top: 10px;position: relative; text-align: right;" required />
       </md-input-container>
     </md-list-item>
@@ -31,13 +32,13 @@
       <label flex="50">有无封样</label>
       <div flex="50">
         <label style="float: right; padding-right: 10px;">{{vm.data.IsPacking?'有':'无'}}</label>
-        <md-switch class="md-secondary" ng-model="vm.data.IsPacking" required ></md-switch>
+        <md-switch class="md-secondary" ng-model="vm.data.IsPacking" required></md-switch>
       </div>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item>
       <label flex="50">配合检查人</label>
-      <md-input-container flex="50"style="margin:0;padding: 0;">
+      <md-input-container flex="50" style="margin:0;padding: 0;">
         <input type="text" ng-model="vm.data.Inspector" style="top: 10px;position: relative; text-align: right;" required />
       </md-input-container>
     </md-list-item>
@@ -46,35 +47,68 @@
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item style="padding-right: 0;">
       <label flex="30" style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">车辆</label>
-       <!--<images-material ng-model="vm.groupId_32" files="vm.vehicleImgs" project="vm.vehicleImgs" edit="true"></images-material>-->
-      <div flex="60" ng-repeat="img in vm.vehicleImgs" sxt-images-material="vm.vehicleImgs" style="text-align: center;margin:5px 0;">
+      <div flex>
+        <md-button ng-if="vm.vehicleImgs.length>0" style="margin:6px 0" class="md-secondary" sxt-images-material="vm.vehicleImgs">
+          <md-icon md-font-icon="icon-picture" class="icon s40"></md-icon>
+          <span>{{ vm.vehicleImgs.length }}</span>
+        </md-button>
+      </div>
+      <images-material class="md-secondary" gid="vm.data.GroupId" files="vm.vehicleImgs" plan-id="vm.data.PlanId" type="256" stage="1" edit="true"></images-material>
+      <!--<div flex="60" ng-repeat="img in vm.vehicleImgs" sxt-images-material="vm.vehicleImgs" style="text-align: center;margin:5px 0;">
         <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
       </div>
-      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(256)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(256)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>-->
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
-    <md-list-item  style="padding-right: 0;">
+    <md-list-item style="padding-right: 0;">
       <label flex="30" style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">货物</label>
-      <div flex="60" ng-repeat="img in vm.goodsImgs" sxt-images-material="vm.goodsImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
+      <div flex>
+        <md-button ng-if="vm.goodsImgs.length>0" style="margin:6px 0" class="md-secondary" sxt-images-material="vm.goodsImgs">
+          <md-icon md-font-icon="icon-picture" class="icon s40"></md-icon>
+          <span>{{ vm.goodsImgs.length }}</span>
+        </md-button>
+        <images-material class="md-secondary" gid="vm.data.GroupId" files="vm.goodsImgs" plan-id="vm.data.PlanId" type="512" stage="1" edit="true"></images-material>
       </div>
-      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(512)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+      <!--<div flex="60" ng-repeat="img in vm.goodsImgs" sxt-images-material="vm.goodsImgs" style="text-align: center;margin:5px 0;">
+        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto" />
+      </div>
+      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(512)">
+        <md-icon md-font-icon="icon-camera" class="icon s40"></md-icon>
+      </md-button>-->
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
-    <md-list-item  style="padding-right: 0;">
+    <md-list-item style="padding-right: 0;">
       <label flex="30" style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">配合检查人</label>
-      <div flex="60" ng-repeat="img in vm.rummagerImgs" sxt-images-material="vm.rummagerImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
+      <div flex>
+        <md-button ng-if="vm.rummagerImgs.length>0" style="margin:6px 0" class="md-secondary" sxt-images-material="vm.rummagerImgs">
+          <md-icon md-font-icon="icon-picture" class="icon s40"></md-icon>
+          <span>{{ vm.rummagerImgs.length }}</span>
+        </md-button>
+        <images-material class="md-secondary" gid="vm.data.GroupId" files="vm.rummagerImgs" plan-id="vm.data.PlanId" type="1024" stage="1" edit="true"></images-material>
       </div>
-      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(1024)" ><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+      <!--<div flex="60" ng-repeat="img in vm.rummagerImgs" sxt-images-material="vm.rummagerImgs" style="text-align: center;margin:5px 0;">
+        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto" />
+      </div>
+      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(1024)">
+        <md-icon md-font-icon="icon-camera" class="icon s40"></md-icon>
+      </md-button>-->
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
-    <md-list-item  style="padding-right: 0;">
+    <md-list-item style="padding-right: 0;">
       <label flex="30" style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">送货单</label>
-      <div flex="60" ng-repeat="img in vm.CertificateImgs" sxt-images-material="vm.CertificateImgs" style="text-align: center;margin:5px 0;">
-        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
+      <div flex>
+        <md-button ng-if="vm.CertificateImgs.length>0" style="margin:6px 0" class="md-secondary" sxt-images-material="vm.CertificateImgs">
+          <md-icon md-font-icon="icon-picture" class="icon s40"></md-icon>
+          <span>{{ vm.CertificateImgs.length }}</span>
+        </md-button>
+        <images-material class="md-secondary" gid="vm.data.GroupId" files="vm.CertificateImgs" plan-id="vm.data.PlanId" type="2048" stage="1" edit="true"></images-material>
       </div>
-      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(2048)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+      <!--<div flex="60" ng-repeat="img in vm.CertificateImgs" sxt-images-material="vm.CertificateImgs" style="text-align: center;margin:5px 0;">
+        <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto" />
+      </div>
+      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(2048)">
+        <md-icon md-font-icon="icon-camera" class="icon s40"></md-icon>
+      </md-button>-->
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
   </md-list>

@@ -19,10 +19,17 @@
     </md-list-item>
     <div style="background-color: lightgrey; padding: 16px 16px 16px 8px;">报告单照片</div>
     <md-list-item style="padding-right: 0;">
-      <div flex="60" ng-repeat="img in vm.reportImgs" sxt-images-material="vm.reportImgs" style="text-align: center;margin: 5px 0;">
+      <!--<div flex="60" ng-repeat="img in vm.reportImgs" sxt-images-material="vm.reportImgs" style="text-align: center;margin: 5px 0;">
         <img ng-src="{{img.ImageByte}}" class="uploadPhoto" flex="95"/>
       </div>
-      <md-button class="md-secondary" ng-click="vm.addPhoto(64)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+      <md-button class="md-secondary" ng-click="vm.addPhoto(64)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>-->
+      <div flex>
+        <md-button ng-if="vm.reportImgs.length>0" style="margin:6px 0" class="md-secondary" sxt-images-material="vm.reportImgs">
+          <md-icon md-font-icon="icon-picture" class="icon s40"></md-icon>
+          <span>{{ vm.reportImgs.length }}</span>
+        </md-button>
+        <images-material class="md-secondary" files="vm.reportImgs" batch-id="vm.data.Id" type="64" stage="8" edit="true"></images-material>
+      </div>
     </md-list-item>
     <md-divider></md-divider>
   </md-list>

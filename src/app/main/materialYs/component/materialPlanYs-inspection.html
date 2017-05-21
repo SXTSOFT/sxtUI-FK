@@ -25,18 +25,32 @@
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item style="padding-right: 0;">
       <label flex="30" style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">抽样过程</label>
-      <div flex="60" ng-repeat="img in vm.samplingProcessImgs" sxt-images-material="vm.samplingProcessImgs" style="text-align: center;margin:5px 0;">
+      <!--<div flex="60" ng-repeat="img in vm.samplingProcessImgs" sxt-images-material="vm.samplingProcessImgs" style="text-align: center;margin:5px 0;">
         <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
       </div>
-      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(16)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(16)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>-->
+      <div flex>
+        <md-button ng-if="vm.samplingProcessImgs.length>0" style="margin:6px 0" class="md-secondary" sxt-images-material="vm.samplingProcessImgs">
+          <md-icon md-font-icon="icon-picture" class="icon s40"></md-icon>
+          <span>{{ vm.samplingProcessImgs.length }}</span>
+        </md-button>
+        <images-material class="md-secondary" files="vm.samplingProcessImgs" batch-id="vm.data.Id" type="16" stage="4" edit="true"></images-material>
+      </div>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
     <md-list-item style="padding-right: 0;">
       <label flex="30"style="display: block; word-break:keep-all;white-space:nowrap;padding-right: 5px;">检查单</label>
-      <div flex="60" ng-repeat="img in vm.checkListImgs" sxt-images-material="vm.checkListImgs" style="text-align: center;margin:5px 0;">
+      <!--<div flex="60" ng-repeat="img in vm.checkListImgs" sxt-images-material="vm.checkListImgs" style="text-align: center;margin:5px 0;">
         <img ng-src="{{img.ImageByte}}" flex="95" class="uploadPhoto"/>
       </div>
-      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(32)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>
+      <md-button flex="10" class="md-secondary" ng-click="vm.addPhoto(32)"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>-->
+      <div flex>
+        <md-button ng-if="vm.checkListImgs.length>0" style="margin:6px 0" class="md-secondary" sxt-images-material="vm.checkListImgs">
+          <md-icon md-font-icon="icon-picture" class="icon s40"></md-icon>
+          <span>{{ vm.checkListImgs.length }}</span>
+        </md-button>
+        <images-material class="md-secondary" files="vm.checkListImgs" batch-id="vm.data.Id" type="32" stage="4" edit="true"></images-material>
+      </div>
     </md-list-item>
     <md-divider class="md-no-sticky"></md-divider>
   </md-list>

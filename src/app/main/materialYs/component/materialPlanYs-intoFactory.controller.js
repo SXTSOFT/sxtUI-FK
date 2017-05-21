@@ -63,19 +63,19 @@
       })
       list.forEach(function (item) {
         switch (item.type) {
-          case 256: {
+          case "256": {
             photo2(item.Id, item.type, vm.vehicleImgs, item.img);
             break;
           }
-          case 512: {
+          case "512": {
             photo2(item.Id, item.type, vm.goodsImgs, item.img);
             break;
           }
-          case 1024: {
+          case "1024": {
             photo2(item.Id, item.type, vm.rummagerImgs, item.img);
             break;
           }
-          case 2048: {
+          case "2048": {
             photo2(item.Id, item.type, vm.CertificateImgs, item.img);
             break;
           }

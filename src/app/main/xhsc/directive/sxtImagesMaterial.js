@@ -19,8 +19,9 @@
 
     function link(scope,element,attr,ctrl){
       var player,defaultIndex,viewer,delplayer,o;
-      var imagedata = scope.sxtImagesMaterial;
+      var imagedata;
       player = function(a,e){
+        imagedata = scope.sxtImagesMaterial;
         defaultIndex = $('.img img').index($(a.target))
         if (defaultIndex == -1)
           defaultIndex = 0;
@@ -96,11 +97,12 @@
         $(str1.join('')).appendTo('.viewer-toolbar');
         $('.viewer-delete').on('click',function(){
           var nowIndex = viewer.index;
+           var id = imagedata[nowIndex].Id;
           //console.log('lenght',viewer.length,nowIndex)
           imagedata.splice(nowIndex,1);
           viewer.hide();
           if(imagedata.length) delplayer(nowIndex);
-          $rootScope.$emit('delete',nowIndex)
+          $rootScope.$emit('delete',nowIndex,id)
         })
 
       }
