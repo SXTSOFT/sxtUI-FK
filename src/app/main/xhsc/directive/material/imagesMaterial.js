@@ -46,13 +46,13 @@
                     //var url = 
 
                     $cordovaCamera.getPicture({
-                        quality: 50,
-                        destinationType: 0,
-                        sourceType: s,
-                        allowEdit: false,
+                        targetWidth: 600,
                         targetHeight: 600,
+                        destinationType: 0,
+                        sourceType: 1,
+                        allowEdit: false,
                         encodingType: 0,
-                        saveToPhotoAlbum: (s === 0 ? false : true),
+                        saveToPhotoAlbum: true,
                         correctOrientation: true
                     }).then(function (base64) {
                         if (base64) {
@@ -62,17 +62,6 @@
                     });
 
                 }
-
-                //   api.szgc.FilesService.group(scope.gid || '').then(function (result) {
-                //     var data = result.data;
-                //     if (data.Files) {
-                //       data.Files.forEach(function (att) {
-                //         att.Uploading = undefined;
-                //           scope.files.push(att);
-                //       });
-                //     }
-                //   });
-
             }
         }
     }
