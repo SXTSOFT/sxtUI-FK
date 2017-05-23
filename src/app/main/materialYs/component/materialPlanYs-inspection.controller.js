@@ -53,7 +53,7 @@
         q.push(api.xhsc.materialPlan.MaterialFile(item));
       })
       $q.all(q).then(function (r) {
-        utils.alert("提交成功", null, function () {
+        utils.alert("保存成功", null, function () {
           remote.offline.query().then(function (r) {
             var list = r.data.filter(function (item) {
               return item.batchId == vm.data.Id;

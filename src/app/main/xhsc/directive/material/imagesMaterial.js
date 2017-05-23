@@ -20,12 +20,6 @@
             },
             template: '<md-button flex="10" style="margin:6px 0" class="md-secondary" ng-click ="inputChange()"><md-icon md-font-icon="icon-camera" class="icon s40"></md-icon></md-button>',
             link: function (scope, element, attrs, ngModel) {
-                var gid;
-                gid = scope.gid;
-                scope.files = [];
-                scope.remove = function ($event, item) {
-                    scope.files.splice(scope.files.indexOf(item), 1);
-                }
                 function onSuccess(newBase64) {
                     var _id = sxt.uuid();
                     var img = {
@@ -43,8 +37,8 @@
                 }
                 scope.inputChange = function () {
 
-                    //var url = 
-
+                    // var url = 
+                    // onSuccess(url);
                     $cordovaCamera.getPicture({
                         targetWidth: 600,
                         targetHeight: 600,
