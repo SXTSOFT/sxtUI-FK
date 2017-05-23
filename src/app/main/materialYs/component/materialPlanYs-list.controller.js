@@ -17,7 +17,7 @@
     $rootScope.title = $stateParams.title;
     var user = auth.current();
     vm.status;
-    if(user.Role.MemberType==8){
+    if(user.Role.MemberType==4){
       api.setNetwork(0);
       vm.status = 16;
     }else{

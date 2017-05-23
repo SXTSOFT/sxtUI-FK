@@ -21,8 +21,8 @@
     vm.material = true;
     var user = auth.current();
 
-    if(user.Role.MemberType==8){
-      vm.userType = 'xmjl';
+    if(user.Role.MemberType==4){
+      vm.userType = 'xm';
     }else{
       vm.userType = 'default';
     }
@@ -55,7 +55,7 @@
           utils.alert('暂无项目！');
         }
         else {
-          if (user.Role.MemberType == 8) {
+          if (user.Role.MemberType == 4) {
             vm.offlines = result.data;
           } else {
             remote.offline.query().then(function (r2) {
