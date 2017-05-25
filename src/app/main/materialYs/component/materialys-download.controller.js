@@ -532,7 +532,6 @@
               }, null);
               $mdDialog.hide();
               db("s_offline").destroy();
-
               utils.alert('上传成功');
               deleteMaterialPack();
               loadSection();
