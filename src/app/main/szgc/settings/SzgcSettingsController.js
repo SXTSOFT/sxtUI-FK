@@ -198,8 +198,16 @@
       //   vm.data = vm.data.map(function (v) { return { projectId: v.project.project_id, stageId: v.project_item_id, name: v.name } });
       // })
 
+      var y = date.getFullYear();     
+      var m = date.getMonth()    
+          
+      if(m < 10){     
+          m = "0" + m;     
+      }         
+
       $q.all([api.szgc.ProjectSettingsSevice.ex.getProjectBuildingProcedure(vm.projectId),
-      api.szgc.projectProgressService.getProjectBuildingProcedure(vm.projectId, dateFilter(date, 'yyyy-MM'))]).then(function (res) {
+      api.szgc.projectProgressService.getProjectBuildingProcedure(vm.projectId, dateFilter(date, 'yyyy-MM')),
+      api.szgc.projectProgressService.getProjectBuildingProcedure(vm.projectId, y + '-'+m)]).then(function (res) {
         //vm.Downloaded = [];
         // vm.list = res[1].data.Rows.map(function (p) { return { id: p.Id, buildingId: p.BuildingId, procedureId: p.ProcedureId, procedureName: p.ProcedureName, value: p.Value } });
         vm.list = []
@@ -207,7 +215,7 @@
         var download = [];
         list3 = res[1].data.Rows.map(function (p) { return { id: p.Id, buildingId: p.BuildingId, procedureId: p.ProcedureId, procedureName: p.ProcedureName, value: p.Value, isPull: true } });
         vm.list = res[0].data.Rows.map(function (r) {
-          return { id: null, buildingId: r.BuildingId, procedureId: r.ProcedureId, procedureName: r.ProcedureName, isPull: true };
+          return { id: null, buildingId: r.BuildingId, procedureId: r.ProcedureId, procedureName: r.ProcedureName,value:null, isPull: true };
         })
 
         list3.forEach(function (item) {
@@ -220,6 +228,16 @@
           }
         })
 
+        res[2].data.Rows.forEach(function(item){
+          var r = vm.list.find(function (s) { return s.buildingId == item.BuildingId && s.procedureId == item.ProcedureId });
+          if(r && !r.value){
+            r.value = item.Value;
+          }
+          if(!r){
+            vm.list.push({ id: null, buildingId: item.BuildingId, procedureId: item.ProcedureId, procedureName: item.ProcedureName,value:item.Value, isPull: true })
+          }
+        });
+        
         //console.log(vm.list);
 
         //过滤已设置的工序
