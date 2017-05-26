@@ -30,7 +30,7 @@
     var status = user.Role.MemberType == 0 ? 1 : 110;
 
     api.xhsc.materialPlan.getMaterialPlanDetail($stateParams.SectionId).then(function (q) {
-      var data = q.data.Result.find(function (item) { return item.Id == $stateParams.BatchId });
+      var data = q.data.data.Result.find(function (item) { return item.Id == $stateParams.BatchId });
       vm.data.Id = data.Id + '';
       vm.data.Unit = data.Unit;
       vm.data.PlanId = data.PlanId;

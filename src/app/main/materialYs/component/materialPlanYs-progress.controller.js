@@ -19,7 +19,7 @@
     var sectionId = $stateParams.sectionId;
 
     api.xhsc.materialPlan.getBatchProgressById(sectionId).then(function (r) {
-      vm.data = r.data.Result.find(function(item){ return item.Id == batchId});
+      vm.data = r.data.data.Result.find(function(item){ return item.Id == batchId});
     });
 
   }
