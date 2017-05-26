@@ -20,7 +20,7 @@
           idField: 'SectionId',
           dataType: 3,
           filter: function (item, sectionId) {
-            return item.SectionId == sectionId;
+            return item.data.SectionId == sectionId;
           }
         }).bind(function (sectionId, status, role) {
           return $http.get($http.url('/api/MaterialPlan/GetMaterialPlansBatchBySectionId', { sectionId: sectionId, status: status, role: role })).then(function (res) {
