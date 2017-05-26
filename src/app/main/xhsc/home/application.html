@@ -7,7 +7,7 @@
   <div ng-repeat="item in vm.yw">
     <p  class="subtitle">{{item.name}}<p/>
     <div class="fl" ng-repeat="k in item.items" ng-if="k.right">
-        <a ng-click="vm.click(k)"  layout="column" layout-align="center center">
+        <a my-touchend="vm.click(k)"  layout="column" layout-align="center center">
           <img ng-src="{{k.img}}"/>
           <p>{{k.title}}</p>
         </a>

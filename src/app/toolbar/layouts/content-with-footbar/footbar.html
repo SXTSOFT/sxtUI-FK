@@ -1,7 +1,7 @@
 <md-list flex layout="row">
   <span class="border1px top1px"></span>
   <md-list-item layout="row" flex>
-    <md-button flex ng-click="vm.active_selected('app.xhsc.jthome')" ui-sref="app.xhsc.jthome">
+    <md-button flex my-touchend="vm.active_selected('app.xhsc.jthome')" ui-sref="app.xhsc.jthome">
       <!--<md-icon md-svg-src="app/toolbar/images/xhhome.svg" class="icon s32"-->
                <!--ng-class="{'active':vm.current_active=='app.xhsc.home'}"></md-icon>-->
       <img style="display: inline-block;height: 24px;width: 24px" ng-src="app/toolbar/images/xhhome.svg" ng-if="vm.current_active=='app.xhsc.jthome'" />
@@ -12,7 +12,7 @@
     </md-button>
   </md-list-item>
   <md-list-item layout="row"  flex>
-    <md-button flex ng-click="vm.active_selected('app.xhsc.application')" ui-sref="app.xhsc.application">
+    <md-button flex my-touchend="vm.active_selected('app.xhsc.application')" ui-sref="app.xhsc.application">
       <!--<img src="app/main/xhsc/images/application/app.svg" class="md-avatar" class="icon s32"-->
            <!--ng-class="{'active':vm.current_active=='app.xhsc.application'}">-->
       <!--<md-icon md-svg-src="app/main/xhsc/images/application/app.svg" class="icon s32"-->
@@ -28,7 +28,7 @@
     </md-button>
   </md-list-item>
   <md-list-item layout="row" flex >
-    <md-button flex="" ng-click="vm.active_selected('app.pcReport_main')" ui-sref="app.pcReport_main" class=" ys">
+    <md-button flex="" my-touchend="vm.active_selected('app.pcReport_main')" ui-sref="app.pcReport_main" class=" ys">
       <!--<md-icon md-svg-src="app/toolbar/images/report.svg" class="icon s32"-->
                <!--ng-class="{'active':vm.current_active=='app.pcReport_main'}"></md-icon>-->
 
@@ -41,7 +41,7 @@
     </md-button>
   </md-list-item>
   <md-list-item layout="row" flex>
-    <md-button flex ng-click="vm.active_selected('app.xhsc.pcmain')" ui-sref="app.xhsc.pcmain" class=" ys">
+    <md-button flex my-touchend="vm.active_selected('app.xhsc.pcmain')" ui-sref="app.xhsc.pcmain" class=" ys">
       <!--<md-icon md-svg-src="app/toolbar/images/xhchange.svg" class="icon s32"-->
                <!--ng-class="{'active':vm.current_active=='app.xhsc.pcmain'}"></md-icon>-->
 
