@@ -49,7 +49,7 @@
         switch (role){
           case 0:
             relationID=relaArr.find(function (o) {
-              return o.indexOf("_0")>-1;
+              return o.indexOf("_0")>-1||o.indexOf("_1");
             })
             break;
           case 2:
@@ -91,6 +91,11 @@
 
       vm.btnShow=function (item,indentiy) {
         var r =item.RelationID.indexOf(indentiy)>-1
+        if (!r&&indentiy=="_0"){
+          if (item.RelationID.indexOf('_1')>-1){
+            return true
+          }
+        }
         if (!r&&indentiy=='_4'){
           if (item.RelationID.indexOf('_0')==-1&&item.RelationID.indexOf('_2')==-1){
             return true

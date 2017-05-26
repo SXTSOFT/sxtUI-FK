@@ -17,7 +17,7 @@
       vm.loaded = true;
       vm.duties=profile.duties||[];
 
-      //memberType[0:总包,2:监理,4:项目部,8:工程管理部|公司,16:星河集团|工程管理中心,32:分包]
+      //memberType[1:总包,2:监理,4:项目部,8:工程管理部|公司,16:星河集团|工程管理中心,32:分包]
       var ignore = vm.role == "8" || vm.role == "16";
       vm.yw=[
         {
@@ -32,7 +32,7 @@
               state: "app.xhsc.scsl.scslmain",
               stateParams: null
             }, {
-              right: (vm.duties.indexOf("2")>-1&&(vm.role=="2"||vm.role=="0"||vm.role=="32"))||ignore,
+              right: (vm.duties.indexOf("2")>-1&&(vm.role=="2"||vm.role=="1"||vm.role=="32"))||ignore,
               type:"zl",
               title: "工序验收",
               img: "app/main/xhsc/images/application/gxys.svg",
@@ -40,7 +40,7 @@
               stateParams: null
             },
             {
-              right: (vm.duties.indexOf("2")>-1&&(vm.role==0||vm.role==32)||vm.role==16||vm.role==8),
+              right: (vm.duties.indexOf("2")>-1&&(vm.role=="1"||vm.role=="32")||vm.role=="16"||vm.role=="8"),
               title: "质量巡检",
               type:"zl",
               img: "app/main/xhsc/images/application/cycke.svg",
@@ -55,14 +55,14 @@
               state: "app.xhsc.download",
               stateParams: null
             },
-            {
-              right:vm.duties.indexOf("6")>-1||ignore,
-              title: "移动验房",
-              type:"zl",
-              img: "app/main/xhsc/images/application/yf.svg",
-              state: "app.xhsc.yf.Main",
-              stateParams: null
-            },
+            // {
+            //   right:vm.duties.indexOf("6")>-1||ignore,
+            //   title: "移动验房",
+            //   type:"zl",
+            //   img: "app/main/xhsc/images/application/yf.svg",
+            //   state: "app.xhsc.yf.Main",
+            //   stateParams: null
+            // },
             {
               right:vm.duties.indexOf("4")>-1||ignore,
               title: "材料验收",
@@ -78,7 +78,7 @@
           name:"安全",
           items:[
             {
-              right: vm.duties.indexOf("5")>-1&&vm.role=="0",
+              right: vm.duties.indexOf("5")>-1&&vm.role=="1",
               type:"aq",
               title: "安全自检",
               img: "app/main/xhsc/images/application/dyn.svg",
@@ -86,7 +86,7 @@
               stateParams: null
             },
             {
-              right: (vm.duties.indexOf("5")>-1&&(vm.role=="2"||vm.role=="0"||vm.role=="32"))||ignore,
+              right: (vm.duties.indexOf("5")>-1&&(vm.role=="2"||vm.role=="1"||vm.role=="32"))||ignore,
               type:"aq",
               title: "安全验收",
               img: "app/main/xhsc/images/application/weekys.svg",
@@ -94,7 +94,7 @@
               stateParams: null
             },
             {
-              right: (vm.duties.indexOf("5")>-1&&(vm.role=="2"||vm.role=="0"||vm.role=="32"))||ignore,
+              right: (vm.duties.indexOf("5")>-1&&(vm.role=="2"||vm.role=="1"||vm.role=="32"))||ignore,
               title: "周安全检查",
               type:"aq",
               img: "app/main/xhsc/images/application/weekjc.svg",

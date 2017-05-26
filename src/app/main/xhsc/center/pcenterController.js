@@ -24,7 +24,7 @@
           vm.user.name= role.data.Name,
           vm.user.userName= role.data.UserName
           switch (role.data.Role.MemberType){
-            case 0:
+            case 1:
               vm.user.role='总包';
                   break
             case 2:

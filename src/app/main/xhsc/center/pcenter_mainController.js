@@ -23,8 +23,8 @@
       $q.all(arr).then(function (res) {
         var r=res[0];
         if (r.data && r.data.Role) {
-          vm.role = r.data.Role.MemberType === 0 || r.data.Role.MemberType ? r.data.Role.MemberType : -100;
-          vm.OUType=r.data.Role.OUType===0||r.data.Role.OUType?r.data.Role.OUType:-100;
+          vm.role = r.data.Role.MemberType === 1 || r.data.Role.MemberType ? r.data.Role.MemberType : -100;
+          vm.OUType=r.data.Role.OUType===1||r.data.Role.OUType?r.data.Role.OUType:-100;
         }
         var k=res[1];
         if (k&&k.data){
