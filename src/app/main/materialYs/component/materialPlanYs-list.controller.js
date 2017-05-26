@@ -22,7 +22,7 @@
       vm.status = 16;
     }else{
       api.setNetwork(1);
-      vm.status = (user.Role.MemberType == 0 || user.Role.MemberType == 32)?1:46;
+      vm.status = (user.Role.MemberType == 1 || user.Role.MemberType == 32)?1:46;
     }
 
 

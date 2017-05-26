@@ -88,7 +88,7 @@
 
 
     vm.downloadPlan = function (item, isReflsh, evt) {
-      var status = (user.Role.MemberType == 0 || user.Role.MemberType == 32) ? 1 : 46;
+      var status = (user.Role.MemberType == 1 || user.Role.MemberType == 32) ? 1 : 46;
       var role = status == 1?1:null;
       //下载成功回掉
       function callBack() {
@@ -532,7 +532,6 @@
               }, null);
               $mdDialog.hide();
               db("s_offline").destroy();
-
               utils.alert('上传成功');
               deleteMaterialPack();
               loadSection();

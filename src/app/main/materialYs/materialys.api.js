@@ -47,12 +47,12 @@
           idField: 'Id',
           dataType: 1
         }).bind(),
-        updateMaterialBatchIntoFactory: $http.db({
-          _id: 'materialBatchIntoFactory',
-          idField: 'Id',
-          update: true,
-          local: true
-        }).bind(),
+        // updateMaterialBatchIntoFactory: $http.db({
+        //   _id: 'materialBatchIntoFactory',
+        //   idField: 'Id',
+        //   update: true,
+        //   local: true
+        // }).bind(),
         getMaterialPlanDetailList: $http.db({
           _id: 'materialPlanDetailList',
           idField: 'SectionId',
