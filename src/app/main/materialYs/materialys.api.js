@@ -26,15 +26,14 @@
           return $http.get($http.url('/api/MaterialPlan/GetMaterialPlansBatchBySectionId', { sectionId: sectionId, status: status, role: role })).then(function (res) {
             return {
               data: {
-                SectionId: sectionId,
-                Result: res.data
+                data:{
+                  SectionId: sectionId,
+                  Result: res.data
+                }
+                
               }
             }
           });
-        }, function (res) {
-          return {
-            data: res.data.Result
-          }
         }),
         deleteMaterialPlanBatch: $http.db({
           _id: 'materialPlan',
@@ -61,15 +60,13 @@
           return $http.get($http.url('/api/MaterialPlan/GetMaterialPlanListAsync', { sectionId: sectionId, status: status, role: role })).then(function (res) {
             return {
               data: {
-                SectionId: sectionId,
-                Result: res.data
+                data:{
+                  SectionId: sectionId,
+                  Result: res.data
+                }
               }
             }
           });
-        }, function (res) {
-          return {
-            data: res.data.Result
-          }
         }),
         getMaterialPlanDetail: $http.db({
           _id: 'materialPlanDetailList',
@@ -164,15 +161,13 @@
           return $http.get($http.url('/api/MaterialPlan/GetMaterialBatchProgress', { sectionId: sectionId, status: status, role: role })).then(function (res) {
             return {
               data: {
-                SectionId: sectionId,
-                Result: res.data
+                data:{
+                  SectionId: sectionId,
+                  Result: res.data
+                }
               }
             }
           });
-        }, function (res) {
-          return {
-            data: res.data.Result
-          }
         }),
         getBatchProgressById: $http.db({
           _id: 'materialBatchProgress',

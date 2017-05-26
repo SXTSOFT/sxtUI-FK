@@ -29,7 +29,7 @@
     });
 
     api.xhsc.materialPlan.getMaterialPlanDetail($stateParams.sectionId).then(function (q) {
-      vm.data = q.data.Result.find(function(item){ return item.Id == vm.data.Id});
+      vm.data = q.data.data.Result.find(function(item){ return item.Id == vm.data.Id});
       if(vm.data.FirstBatchTime){
         var _str = JSON.stringify(q.data.FirstBatchTime).replace(/-/g,'/').replace('T',' ');
         var dt = new Date(_str);
