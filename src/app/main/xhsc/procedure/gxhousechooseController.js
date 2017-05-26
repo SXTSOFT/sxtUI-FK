@@ -211,6 +211,31 @@
       })
     };
     vm.selected = function(r){
+
+      if (r.status.length&&r.status.find(function (w) {
+          return w
+        })){
+        return;
+      }
+
+
+      var parent= vm.building.find(function (w) {
+        return w.RegionID==r.ParentID;
+      });
+      if (!parent){
+         parent= vm.floors.find(function (w) {
+          return w.RegionID==r.ParentID;
+        });
+      }
+
+      var ck=parent.Children.filter(function (w) {
+          return w.checked&&w!=r;
+      })
+      if (ck.length>2&&!r.checked){
+        utils.alert('一次最多只能报三层，您可以多次报验')
+        return;
+      }
+
       if (r.inspectionRows&&r.inspectionRows.length){
         var percentage=0;
         r.inspectionRows.forEach(function(t){

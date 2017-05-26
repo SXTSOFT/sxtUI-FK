@@ -240,14 +240,38 @@
       })
     };
     vm.selected = function(r){
-      switch (r.status){
-        case 0:
-          r.checked = !r.checked;
-          break;
-        case 1:
-          r.checked = r.Percentage==100?false:(!r.checked);
-          break;
+
+      if (!r.status||r.status==1&&!r.Percentage||r.Percentage<100){
+        var parent= vm.building.find(function (w) {
+          return w.RegionID==r.ParentID;
+        });
+        if (!parent){
+          parent= vm.floors.find(function (w) {
+            return w.RegionID==r.ParentID;
+          });
+        }
+
+        var ck=parent.Children.filter(function (w) {
+          return w.checked&&w!=r;
+        })
+        if (ck.length>2&&!r.checked){
+          utils.alert('一次最多只能报三层，您可以多次报验')
+          return;
+        }
+
+
+        switch (r.status){
+          case 0:
+            r.checked = !r.checked;
+            break;
+          case 1:
+            r.checked = r.Percentage==100?false:(!r.checked);
+            break;
+        }
+      }else {
+        return;
       }
+
     }
 
 
