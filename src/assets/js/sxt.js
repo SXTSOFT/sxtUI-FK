@@ -42,7 +42,7 @@ window.sxt = (function(win,angular)
     update:"https://app.ricent.com",
 
     requireSSL:true,
-    version: '1.9.0.0',
+    version: '1.11.0.0',
     app: {
       appDir: appDir,
       // api:'http://vkde.sxtsoft.com:9091',

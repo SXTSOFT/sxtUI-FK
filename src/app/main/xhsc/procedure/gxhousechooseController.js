@@ -215,7 +215,16 @@
       if (r.status.length&&r.status.find(function (w) {
           return w
         })){
-        return;
+
+        if (r.inspectionRows&&r.inspectionRows.length){
+          var percentage=0;
+          r.inspectionRows.forEach(function(t){
+            percentage += t.Percentage;
+          })
+          if (percentage>=100){
+            return;
+          }
+        }
       }
 
 
