@@ -21,6 +21,11 @@
           relationID=relaArr.find(function (o) {
             return o.indexOf("_0")>-1||o.indexOf("_1")>-1;
           })
+          if (!relationID){
+            relationID=relaArr.find(function (o) {
+              return o.indexOf("_1")>-1;
+            })
+          }
           break;
         case 2:
           relationID=relaArr.find(function (o) {
