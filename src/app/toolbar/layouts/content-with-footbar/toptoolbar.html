@@ -12,19 +12,19 @@
 
   <span flex></span>
   <md-button flex="none" ng-show="vm.is('app.xhsc.gx.selfGx')||vm.is('app.xhsc.gx.selfRegion')||
-      vm.is('app.xhsc.sf.selfItem')||vm.is('app.xhsc.sf.selfRegion')" my-touchend="ok();" >确定</md-button>
+      vm.is('app.xhsc.sf.selfItem')||vm.is('app.xhsc.sf.selfRegion')" ng-click="ok();" >确定</md-button>
 
   <!--<md-button flex="none" class="md-icon-button" aria-label="net work" >-->
     <!--<md-icon md-svg-icon="assets/images/online.svg" ng-if="vm.networkState==0" style="color:#e0e0e0"></md-icon>-->
     <!--<md-icon md-svg-icon="assets/images/offline.svg" ng-if="vm.networkState==1" style="color:#e0e0e0"></md-icon>-->
   <!--</md-button>-->
-    <md-button  flex="none" style="font-size:14px;" ng-show="$root.sendBt" my-touchend="vm.sendGxResult()">
+    <md-button  flex="none" style="font-size:14px;" ng-show="$root.sendBt" ng-click="vm.sendGxResult()">
       保存
     </md-button>
-    <md-button  flex="none" style="font-size:14px;" ng-show="$root.sendPs" my-touchend="vm.sendClResult()">
+    <md-button  flex="none" style="font-size:14px;" ng-show="$root.sendPs" ng-click="vm.sendClResult()">
       批示
     </md-button>
-   <md-button  flex="none" style="font-size:14px;" ng-show="$root.opBtn" my-touchend="vm.operateMsg($event)">
+   <md-button  flex="none" style="font-size:14px;" ng-show="$root.opBtn" ng-click="vm.operateMsg($event)">
       清除
     </md-button>
    <md-button flex="none" style="font-size:14px;" ng-show="$root.refreshBtn===true" class="md-link md-mini">
@@ -32,15 +32,15 @@
     </md-button>
 
 
-  <md-button my-touchend="vm.lst()" ng-if="$root.lst" style="margin-right: 4px;margin-top: 4px">
+  <md-button ng-click="vm.lst()" ng-if="$root.lst" style="margin-right: 4px;margin-top: 4px">
     <img src="app/toolbar/images/list.svg" style="height: 32px;width: 32px;color: white">
   </md-button>
 
-  <md-button my-touchend="vm.map()" ng-if="$root.hz" style="margin-right: -12px">
+  <md-button ng-click="vm.map()" ng-if="$root.hz" style="margin-right: -12px">
     <img src="app/toolbar/images/map.svg" style="height: 32px;width: 32px;color: white">
   </md-button>
 
-  <md-button my-touchend="vm.search()" ng-if="$root.hz" style="margin-right: 0px">
+  <md-button ng-click="vm.search()" ng-if="$root.hz" style="margin-right: 0px">
     <img src="app/toolbar/images/search.svg"  style="height: 32px;width: 32px;color: white">
   </md-button>
   <!--<md-button flex="none" style="font-size:14px;" ng-show="$root.showgrzx" ui-sref="app.xhsc.mcenter"><md-icon><img src="app/main/xhsc/images/msg.png" width="21"></md-icon></md-button>-->

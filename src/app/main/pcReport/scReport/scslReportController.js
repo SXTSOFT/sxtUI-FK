@@ -34,7 +34,7 @@
           break;
         default:
           relationID=relaArr.find(function (o) {
-            return o.indexOf("_2")==-1&&o.indexOf("_0")==-1;
+            return o.indexOf("_2")==-1&&(o.indexOf("_0")==-1&&o.indexOf("_1")==-1);
           })
           break;
       }
@@ -62,7 +62,7 @@
         }
       }
       if (!r&&indentiy=='_4'){
-        if (item.RelationID.indexOf('_0')==-1&&item.RelationID.indexOf('_2')==-1){
+        if (item.RelationID.indexOf('_0')==-1&&item.RelationID.indexOf('_1')==-1&&item.RelationID.indexOf('_2')==-1){
           return true
         }
       }

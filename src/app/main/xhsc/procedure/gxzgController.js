@@ -120,7 +120,9 @@
         vm.qyslideShow = !vm.qyslideShow;
       }
       $scope.times = xhUtils.zgDays();
-      var gxzgChanged = $rootScope.$on('sendGxResult',function(){
+
+
+      vm.showP=  function showP() {
         var  msg=[];
         vm.pareaList.forEach(function(r){
           if (!r.hasCheck){
@@ -194,7 +196,9 @@
           templateUrl:'app/main/xhsc/procedure/ngTemp.html',
           clickOutsideToClose:true
         })
-      });
+      }
+
+      var gxzgChanged = $rootScope.$on('sendGxResult',vm.showP);
 
       $scope.$on('$destroy', function () {
         gxzgChanged();
