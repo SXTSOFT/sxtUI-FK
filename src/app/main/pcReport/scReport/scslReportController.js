@@ -62,7 +62,7 @@
         }
       }
       if (!r&&indentiy=='_4'){
-        if (item.RelationID.indexOf('_0')==-1&&item.RelationID.indexOf('_1')==-1&&item.RelationID.indexOf('_2')==-1){
+        if (o.indexOf("_32")==-1&&item.RelationID.indexOf('_0')==-1&&item.RelationID.indexOf('_1')==-1&&item.RelationID.indexOf('_2')==-1){
           return true
         }
       }

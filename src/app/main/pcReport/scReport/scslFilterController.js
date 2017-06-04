@@ -66,7 +66,7 @@
             break;
           default:
             relationID=relaArr.find(function (o) {
-              return o.indexOf("_2")==-1&&(o.indexOf("_0")==-1&&o.indexOf("_1")==-1);
+              return o.indexOf("_32")==-1&&o.indexOf("_2")==-1&&(o.indexOf("_0")==-1&&o.indexOf("_1")==-1);
             })
             break;
         }

@@ -9,7 +9,7 @@
 </div>
 <md-tabs ng-show="vm.show" flex layout="column">
   <md-tab flex layout="column" label="实测实量">
-    <md-tab-content ms-scroll class="download" style="padding: 0px">
+    <md-tab-content ms-scroll class="download" layout="column" style="padding: 0px">
       <table class="summaryReport">
         <thead>
         <tr>
@@ -39,7 +39,7 @@
         </tr>
         </tbody>
       </table>
-      <div  layout="row" layout-align="end start" style="min-width: 520px">
+      <div  layout="row" layout-align="end start" style="min-width: 520px;max-height: 66px">
         <md-select ng-model="pageing.pageSize" class="pageSZ">
           <md-option value="10">10</md-option>
           <md-option value="20">20</md-option>

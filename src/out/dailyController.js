@@ -178,6 +178,23 @@ app.controller("myController", function ($scope, $http) {
             show: false
           }
         },
+        dataZoom: [
+          {
+            type: 'inside',
+            xAxisIndex: [0],
+            start:0,
+            end:50
+            // filterMode: 'filter'
+          },
+          {
+
+            type: 'slider',
+            xAxisIndex: [0],
+            start:0,
+            end:50
+            // filterMode: 'empty'
+          }
+        ],
         visualMap: {
           top: 0,
           type: 'piecewise',
